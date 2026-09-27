@@ -29,15 +29,17 @@ written against real rows Research pulls from one past session — never invente
 ## The four reports, and the stored checkpoints under each
 
 The reports are not new observations. They are narrations of checkpoints the desk
-already writes (`lib/desk/schedule.ts`). Each report reads across the checkpoints
-in its window and says, in plain words, what the stored facts already say.
+already writes (`lib/desk/schedule.ts`). **Research owns the mapping and corrected
+it — a report is built from the checkpoint BEFORE the moment it serves, or it
+arrives after that moment has already begun** (`design.md` §3). This table matches
+theirs; the voice is written to fit it.
 
-| Report | Fired going into | Reads from (schedule.ts) | His brief for it |
-|---|---|---|---|
-| **1. Into the premarket** | the trading day | `NEXT_DAY_RECAP` (22:00) + `STRUCTURAL_REFRESH` (06:10) + premarket scans (06:25/06:45/07:00) | "stocks to watch based on AH activity, in a true report narrative fashion" |
-| **2. Into regular hours** | the 09:30 open | `OPEN_SPIKE_ASSESSMENT` (09:25) reading across the PM scans | "moved in PM, what went up and back down, what held, the real catalysts, what to keep an eye on" |
-| **3. Into power hour** | ~15:00 | the `RTH_INTERVAL` checkpoints since the open | (same voice, RTH window) |
-| **4. Into after hours** | the close | `RTH_CLOSE` freezing the regular session | (same voice, close of RTH) |
+| Report | Serves the moment before | Reads (per design.md §3) |
+|---|---|---|
+| **1. Into the premarket** | 04:00–09:30 | `NEXT_DAY_RECAP` (22:00) + `PREMARKET_0700` |
+| **2. Into regular hours** | the 09:30 open | `OPEN_SPIKE_ASSESSMENT` (09:25) — 5 min head-room |
+| **3. Into power hour** | 15:00 | `RTH_INTERVAL` at **14:30**, not 15:00 (15:00 is already inside power hour) |
+| **4. Into after hours** | after 16:00 | `RTH_CLOSE` — the one report that may be built from its own moment, because the session it describes has ended |
 
 **"What moved, what went up and back down, what held"** is not interpretation —
 it is the deterministic change set already computed per ticker in
@@ -79,6 +81,13 @@ Five properties, each testable:
    place his standing brevity preference is a hard rule, not a side effect
    (`README.md`, 2026-09-25). Short sentences. No clause whose only job is to land
    the clause before it (the setup-and-payoff tic he flagged).
+6. **Confident on the facts, candid on the gaps — not careful about everything.**
+   The feature is that it sounds like a competent assistant, and a voice that
+   hedges every line to be safe fails his brief as surely as one that invents
+   (Research's point). Where a fact is stored, the voice states it plainly and
+   without qualifiers. The candour is reserved for what is genuinely unknown, and
+   there it is direct too — an honest "we don't know this" is itself confident.
+   Timid ≠ careful.
 
 **On templates vs data below.** Where this framework shows *phrasing*, it uses
 schematic placeholders — `[NAME]`, `$X.XX`, `+NN%` — to show shape only. Those are
@@ -95,7 +104,8 @@ Each line is a prohibition with its source. The checker enforces them.
 |---|---|---|
 | **buy, sell, enter, exit, size, take it, get in, add** | `assessment.ts`: "No buy/sell language, ever. These lines describe observed state, not what to do about it." It is not a broker and not an adviser. | Describe the observed state and stop. |
 | **any short / fade-it read as a trade** — "shortable", "puts", "fade this" | He is **long-only**. `BACKSIDE`, `OFF HIGH`, `MAJOR_GIVEBACK` are **exit / avoid** reads, not short setups. | "It broke the frontside and gave back NN% off the high" — a reason to stand aside, said as observation. |
-| **"no catalyst"** (bare) | The desk never claims none exists — only that its sources did not surface one. `language.ts` `NONE_FOUND: 'no catalyst found'`; the brief makes it explicit. | **"no catalyst found in our sources"** / "we found no catalyst on file". |
+| **"no catalyst"** (bare) | The short phrasing is a claim about **the market**; the true claim is about **us**. Coverage misses wire-only releases — `AIFF` ran on a release the desk held in an API it already pays for and never queried (`design.md` §5). `language.ts` `NONE_FOUND: 'no catalyst found'`. | **"no catalyst found in our sources"** / "we found no catalyst on file". |
+| **a percent with no frame** — "up 40%" | The store records whether a change is against the PRIOR session's close or the CURRENT one (`referenceBasis`, `assessmentRepo.ts:78`). A percent a paying stranger acts on with no basis is the "value with no frame" defect. | State the basis, in words a reader hears: "up 40% from yesterday's close" vs "up 40% on the session". |
 | **any outcome, return, profit, or "pop" as a promise** | Charter prohibition 2; "RH pop" is his phrase for a hoped-for move and is forward-looking. Nothing predicts a move. | Name what the desk sees set up — "at the high of day, held support into the close" — never what it will do next. |
 | **certainty the desk cannot back** — "will", "clearly a", "confirmed" (unless a stored field says so) | Every claim must trace to a stored field. `intelligenceStatus`, `catalyst` grade, `cycle` are the only warrant. | State the stored grade. If the grade is soft, the sentence is soft. |
 | **engine constants / SCREAMING_SNAKE** — `SECONDARY_STALE`, `AUTO_SOURCE_GAP`, `RED_BACKSIDE` | `language.ts`: these describe the engine, not the stock; humanised before they reach anyone. | The canonical spoken label — "backside", "secondary and stale". |
@@ -142,20 +152,38 @@ And two more the voice states plainly rather than smoothing over:
    → *"Our two reads on [NAME] disagree on the catalyst — we're flagging it rather
    than picking one."*
 
+6. **We did not observe it** — only the top 50 by rank get trade-level capture
+   (`engine.ts:2088`, via `design.md` §5). The voice **must not imply the absence
+   of activity when the absence is of observation.** A quiet line outside the top
+   50 is a name the desk was not watching tick by tick, not a name that did
+   nothing.
+   → *"[NAME] sat below the desk's live-capture cut, so we can't speak to how it
+   traded intraday."* Never *"[NAME] was quiet."*
+
+7. **The checkpoint did not run** — the report says the session has no assessment
+   at that time and **never silently narrates an older one** (`design.md` §5). A
+   09:25 read that quietly used 07:00 describes a market two hours gone.
+   → *"There's no 09:25 read for this session, so we can't give you the pre-open
+   picture."*
+
 ---
 
 ## Specimens — PENDING Research's rows
 
-**Blocked on one input only:** real checkpoint rows for one past session, requested
-from Research-tmi 2026-09-27. I will not write specimens against invented data.
-When the rows arrive I will fill at least two of the four reports here and commit
-again, so this file returns to Research complete.
+**Blocked on one input only:** a real past session to write against. Research is
+pointing me at which stored assessment to read (offered 2026-09-27) so I read the
+store first-hand rather than pick one blind. I will not write specimens against
+invented data. When I have it I will fill at least two of the four reports here and
+commit again, so this file returns to Research complete.
 
-Each specimen, when written, will be built strictly from stored fields
-(`ticker`, `assessmentRank`, `price`, `sessionHigh/Low`, `haltState`, `catalyst`,
-`structure`, `cycle`, `intelligenceStatus`, and the deterministic `changeSummary`)
-and will be annotated line-by-line with the field each sentence restates, so the
-checker can verify nothing was invented. The two I will write first:
+Each specimen will be built strictly from the stored per-ticker, per-checkpoint
+fields (`assessmentRepo.ts:59-96`): `price`, `percentChange` **with its
+`referenceBasis`**, `rvol`/`rvolRank`, the after-hours set
+(`ahPercentChange`/`ahVolume`/`ahParticipation`/`ahRank`), `sessionHigh`/`Low`,
+`cycle`, `catalyst`, `structure`, `intelligenceStatus`, `warnings`, and the
+deterministic `changeSummary`. Each sentence will be annotated line-by-line with
+the field it restates, so the checker can trace it — the specimen is also a worked
+example of what the checker verifies. The two I will write first:
 
 - **Into regular hours (09:25)** — the fullest of his brief: what moved in PM,
   what held, what gave back off the high (exit read, not a short), the real
