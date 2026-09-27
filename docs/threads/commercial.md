@@ -141,6 +141,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 | A contracted newswire licence (a Benzinga or primary-wire agreement, vs. the accepted-exposure posture below) | him | an enquiry to Benzinga or a primary wire's licensing desk; no vendor publishes a self-serve price (`2026-09-25-newswire-licence-landscape.md`); not asked for, not needed to build |
 | Watch, no clock | this seat | CT Plan agreements (2027-04-01; migration since 2026-09-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list |
 | India as a market — deliverable sent 2026-09-26 (`2026-09-26-india-momentum-traders.md`) | him | reading it; the "can they" question is answered (mostly yes, recently), "do they" is not answerable from public sources — a market-research vendor or a direct platform question, both enquiries and both his |
+| Session reports, commercial/legal section — filed 2026-09-27 at `docs/research/session-reports/commercial.md` (this seat's file alone), Research assembles the four-seat design | Research, then him | nothing from this seat; ruled the two flagged phrases (§3), sized the disclaimer gap (§4), named state-level adviser law as unchecked (§6) — does not stand alone, waits on Research's assembly |
 
 ### Hazards a fresh session must know on day one
 
