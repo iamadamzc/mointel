@@ -915,6 +915,21 @@ WEB        idle, holding on the cut-over. Its signup-flow scope is folded into C
 MARKETING  idle.
 ```
 
+### 2026-09-27 ~11:20 UTC — THE THIRTEENTH SEAT OPENED (`local_03437663…`)
+
+```
+969458d   ENUMERATED ALONE to Ops: base 3b78b8c (conditional on /proc), one pick, 161 test files
+          pre-registered, deadline MON 04:00 ET. Sequenced AFTER his restart + its minute_bars
+          reading if he gives it today. Awaiting Ops's /proc report of the resulting sha.
+design    36bbddd/1f4bbc3/ea179ce/ec7a484 are IN production (as 0f26bc2/314f9cb/369575b/54f8539,
+          under 8fd7887) -- verified by git log 757cf6a..3b78b8c. The Monday-07:00 fix is not owed.
+web       says a THIRD item sits with him that LIVE STATE above omitted: payment terms in the
+          adopted terms of service, three routes (Web's message, 2026-09-26). Not blocking.
+titles    an ARCHIVED session still carries the bare title `Integration-tmi` (local_9d3da62d,
+          2026-09-17). Harmless to the default list_sessions; a lookup with include_archived
+          resolves two ways -- check cwd AND isArchived.
+```
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
