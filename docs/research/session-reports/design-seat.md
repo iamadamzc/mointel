@@ -125,8 +125,8 @@ a number, the same shape as the graveyard's presence test.
 
 ```
 Into-RTH briefing · for Mon Sep 28
-data as of 09:25 ET checkpoint · written 09:28 ET (2m ago)
-covers $1–$20 · 50 names with live trade data
+built on the 09:25 open assessment · written 09:28 ET (2m ago)
+covers $1–$20 · 5 of 7 names had live trade data
 ```
 
 - **Data as-of is the one that matters, and it is the CHECKPOINT's time, not
@@ -140,6 +140,12 @@ covers $1–$20 · 50 names with live trade data
   assessment ran`**. It is never a report quietly built on an earlier
   checkpoint. That would be the header-names-one-quantity, rows-drawn-from-
   another defect, in prose.
+- **THE CHECKPOINT IS A RECEIPT, NOT A CLAIM** (Research's `checkpointId`).
+  The header names it in trader words (`09:25 open assessment`, from the
+  schedule's existing label, never the id). **Clicking it opens that
+  checkpoint in the existing frozen `AssessmentSnapshotBoard`**, so a reader
+  can see the exact rows the prose was written from. The surface for this
+  already exists.
 - **THE PROSE IS FROZEN, LIKE THE SNAPSHOT BOARD, AND FOR THE SAME REASON.**
   `AssessmentSnapshotBoard` merges no live data into a checkpoint because
   doing so *"would look like a record and behave like a lie"*. A report
@@ -154,11 +160,16 @@ covers $1–$20 · 50 names with live trade data
 - **A weekend or holiday gap is named, not counted**, using the rule he
   already approved for promoted rows: a Monday premarket report built on
   Friday's after-hours says `since Fri close`, not `3d`.
-- **The "live trade data" count is on the header because of constraint 5.**
-  The writer may narrate trade-level activity only for names with trades
-  capture (the top 50 by rank). The reader deserves to know that a quiet
-  sentence about a name may mean *we did not have its trades*, not *nothing
-  happened*. The count says so in one clause, with no footnote.
+- **The live-trade-data count is on the header because of constraint 5, and
+  it is ALWAYS printed as `m of n` over the names IN THIS REPORT.** ~~The first
+  draft of this file printed `50 names with live trade data`~~, which was the
+  desk's subscription size presented as though it were a property of the
+  report. That is a frameless count, and Research caught it. The writer may
+  narrate trade-level activity only for names with trades capture (the top 50
+  by rank). The reader deserves to know that a quiet sentence about a name may
+  mean *we did not have its trades*, not *nothing happened*. **In the panel,
+  a named ticker WITHOUT a live feed carries the qualifier `minute data`**, so
+  the count's denominator is readable line by line.
 
 ## 3a. Sentences the checker struck: does the reader see them?
 
@@ -220,10 +231,12 @@ the preference for making a problem IMPOSSIBLE over making it VISIBLE.
 ## 4. What this needs from the contract, and nothing more
 
 For each report Design reads: `kind`, `tradingDate` / `targetTradingDate`,
-`scheduledFor`, `relevantUntil`, `dataAsOf[]` (checkpoint times, one per
-checkpoint read), `publishedAt`, `band` (min/max),
-`liveCoverageCount`, `headline`, and `sections[]` of
-`{ heading, lines[] of { ticker | null, text } }`. **Checked text only.** A
+`scheduledFor`, `relevantUntil`, `checkpoints[]` of `{ id, type, completedAt }`
+(one per checkpoint read; Research's `checkpointId`/`checkpointType`),
+`publishedAt`, `band` (min/max), `coverage: { named, withLiveFeed }`
+(Research's shape: the denominator travels with the number), `headline`, and
+`sections[]` of `{ heading, lines[] of { ticker | null, liveFeed: boolean,
+text } }`. **Checked text only.** A
 missing report is an **absent row plus the schedule entry**, never a row with
 empty text. *Two states, not a value and an absence dressed as one.*
 
