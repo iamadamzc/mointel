@@ -838,7 +838,71 @@ PORT 22   closing it is HIS and it is hardening, not a launch condition.
 > names that prompted it.** *The defect rate IS the product risk, and the desk has still never been operated
 > to a standard where an outsider depended on it.*
 
-## LIVE STATE - rewrite or delete this section, never let it go stale
+## LIVE STATE — AS OF 2026-09-27, AT THE TWELFTH SEAT'S HAND-OFF
+
+*A SNAPSHOT. Everything dated above this section is a FACT and is not repeated here; everything below it is the
+MECHANISM ARCHIVE. **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
+
+### PRODUCTION
+
+```
+web / research / assess   3b78b8c   confirmed from /proc 2026-09-26. Carries the 10s capture CODE.
+market worker             d0bc78c   UNTOUCHED, NRestarts 0. Deliberate, not drift.
+the day's lineage         8fd7887 -> 10b4dce (prune fix) -> 8147cf4 (deploy tooling) -> 3b78b8c (capture)
+stranger sees             / /privacy /terms 200 | /desk /signin /api/* 401 | /privacy-x control FIRES
+```
+
+> **⚠️ THREE THINGS ARE SHIPPED AND NOT RUNNING, ALL WAITING ON ONE RESTART: the 10-second capture, the
+> retention-prune fix, and the restart-cost re-measure.** *The worker has not restarted since 2026-09-24, so it
+> is executing `d0bc78c`'s code.* **HIS WORD, IN OPS'S SESSION, NEVER RELAYED. Expect ~2 minutes of
+> `minute_bars`, not under one.**
+
+### OPEN WITH HIM — nothing below is blocked on a seat
+
+1. **THE MARKET-WORKER RESTART.** *One ask, three payoffs, above.*
+2. **IS NON-PAYMENT REVOCATION IMMEDIATE?** *`revokeEmail` ends live sessions in the same transaction, by design.
+   Applied to a lapsed card that is a trader removed from the board mid-move, in the 07:00–10:00 window. **His
+   own ruling meeting a context it was not given for.** Recommendation: not immediate for non-payment.*
+3. **WHAT IS LAUNCH, AND WHAT IS SOLD.** *Commercial's scope (`9d49118`) surfaced "what is the unit sold" as
+   never ruled, and it is the lead item in its own report. **"A stranger can pay" and "a stranger can use it" are
+   different products with different blockers.***
+4. **THE AUTH CUT-OVER.** *He said **"will do"** on the Google OAuth client (redirect
+   `https://tmitrader.com/auth/callback/google`) — **a commitment to create a credential, NOT clearance to cut
+   over.** Still his: the credentials themselves, seeding his address, and a window outside trading hours.*
+5. **THE INDIA RESEARCH'S TWO PATHS.** *Commercial (`7e2a5ef`) established that access is no longer the barrier
+   and that the momentum/small-cap population is **unevidenceable from public sources.** Past that lies a paid
+   report or a direct question to Vested/INDmoney — **both enquiries, both his.***
+
+### ASSIGNED AND IN FLIGHT
+
+```
+RESEARCH   the engine RECORD/QUALIFY split is BUILT (cea5ed2, unshipped, lands inert).
+           Owed next: in-range ordinals OMITTED server-side (4766ea2 decided), and the trade-feed
+           subscription policy with Ops -- sized by a load test NOBODY HAS RUN.
+OPS        bootstrap band = the record band, NO multiplier ("seed exactly what you record") -- ruled,
+           unbuilt, sequenced AFTER cea5ed2, and it must be measured for replay cost first.
+           Also owed: pin the flaky releaseRetention test (cause NOT wall-clock -- fork exhaustion is
+           the suspect), and the preflight aiming fix (re-check AFTER the gate, not announce).
+DESIGN     the range control's shape is specified (4b7fca4). Blocked on Research's split.
+           MONDAY: the post-16:00 read of 8fd7887's evening arm -- never yet seen working.
+COMMERCIAL idle. Billing/onboarding/support scope complete; India research complete.
+WEB        idle, holding on the cut-over. Its signup-flow scope is folded into Commercial's.
+MARKETING  idle.
+```
+
+### THE RESIDUAL NOBODY HAS CLOSED
+
+**The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
+requested range fixes the BOARD by construction. **`engine.ts:2088` still grants trades/quotes over the QUALIFY
+band, and the 10-second capture is gated on that same `highRes` set.*** *So a name ranked 8th inside a viewer's
+range but outside the global top 50 gets a row, **no live feed, and no 10-second buckets.*** **Research's and
+Ops's, sized by a load test nobody has run. Nothing should widen on the assumption it is solved.**
+
+## ARCHIVE — LIVE STATE AS IT STOOD 2026-09-25/26, KEPT FOR MECHANISMS NOT FACTS
+
+*Superseded by the snapshot above. Retained rather than deleted because several entries are the only record of
+how a defect was found. **Nothing below is a current fact.***
+
 
 **AS OF 2026-09-25T21:00Z (17:00 ET).** *Carried forward by the TWELFTH Integration; the snapshot below was
 rewritten at hand-off by the eleventh under his
