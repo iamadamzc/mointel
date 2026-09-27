@@ -198,6 +198,21 @@ be inventing a strategy he does not trade.*
 
 **Design's ask (its §4):** per report — `kind`, `tradingDate`/`targetTradingDate`, `scheduledFor`, `relevantUntil`, `dataAsOf`, `publishedAt`, `band`, `liveCoverageCount`, `headline`, and `sections[]` of `{heading, lines[] of {ticker|null, text}}`. **Checked text only; a missing report is an absent row plus its schedule entry, never a row with empty text.** *Agreed in full, and the last clause is the one that matters most — an empty-text row is a report that exists and says nothing, which is exactly the shape a reader cannot distinguish from a quiet session.*
 
-**⚠️ `liveCoverageCount` NEEDS A DEFINITION OR IT WILL BE READ AS COVERAGE OF THE MARKET.** It can only mean *"how many named tickers in THIS report had a live trades/quotes feed"* — the top-50 `internalRank` set (`engine.ts:2088`). **It is a property of the desk's observation, not of the session**, and a number with no frame beside prose is the defect this layer is most likely to produce. *Proposed: emit it as `{ named: n, withLiveFeed: m }` so the denominator travels with it and no surface has to reconstruct it.*
+**✅ SETTLED — COVERAGE AND THE RECEIPT, and Design's answer on the second is better than what this seat asked for:**
+
+```
+coverage      { named, withLiveFeed }   printed "5 of 7 names had live trade data"
+              plus liveFeed: boolean PER LINE, so a named ticker without a feed
+              carries a quiet "minute data" qualifier and the denominator reads line by line
+checkpoints[] { id, type, completedAt }  one per checkpoint read. The reader never
+              sees the id; the header names it by schedule label ("09:25 open
+              assessment") and CLICKING IT OPENS that checkpoint in the frozen
+              AssessmentSnapshotBoard.
+```
+
+  **The per-line `liveFeed` flag is the part I did not think to ask for: a header count tells a reader how much of the report is observed, and a per-line flag tells them WHICH SENTENCE is.** *Design also struck its own first example — "50 names with live trade data" — which was the desk's SUBSCRIPTION SIZE presented as a property of the report.*
+  **AND THE RECEIPT CAN BE OPENED RATHER THAN ONLY PRINTED.** *I asked for a `checkpointId` so a claim could be verified; Design made it navigable to the frozen board the checkpoint actually produced. **A receipt you can open beats a receipt you can read**, and the surface for it already existed.*
+
+**⚠️ WHY IT NEEDED A DEFINITION AT ALL, kept because the reasoning generalises:** It can only mean *"how many named tickers in THIS report had a live trades/quotes feed"* — the top-50 `internalRank` set (`engine.ts:2088`). **It is a property of the desk's observation, not of the session**, and a number with no frame beside prose is the defect this layer is most likely to produce. *Proposed: emit it as `{ named: n, withLiveFeed: m }` so the denominator travels with it and no surface has to reconstruct it.*
 
 **AND ONE FIELD I WOULD ADD: `checkpointId` and `checkpointType`.** *Design's `dataAsOf` says WHEN; it does not say WHICH checkpoint, and my §5 forbids silently falling back to an older one. With the id on the payload, "this report was built from the 09:25 open-spike assessment" is verifiable by a reader rather than asserted by us.*
