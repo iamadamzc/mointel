@@ -187,90 +187,101 @@ And two more the voice states plainly rather than smoothing over:
 
 ## Specimens — written against the real 2026-09-18 rows
 
-Two of the four reports, written from `facts-2026-09-18.md` (a production snapshot
-on disk dated 2026-09-23, **not the live desk** — nothing here is a claim about
-the market now). Every figure is exact and one-decimal, so the checker can trace
-each clause to a stored field; the tables after each report are that trace, and
-are what the checker produces in reverse. **Percents are stated "from the prior
-close"**: before the session closes there is no current-session close to measure
-against, so that is the only possible basis at 07:00 and 09:25 — but the stored
-`referenceBasis` value was not in the pull, so **Research should confirm it on the
-intraday rows** before this wording is trusted (flagged below).
+Two of the four reports, written from the stored rows I read first-hand out of
+`data/assessments-prod-2026-09-23.db` (a production snapshot on disk, **not the
+live desk** — nothing here is a claim about the market now). Every figure is exact
+and one-decimal; the table after each report traces each clause to a stored field
+in that report's OWN checkpoint, which is what the checker produces in reverse.
+
+**Two rules the first-hand read established, both load-bearing:**
+
+- **Each report is sourced from ONE checkpoint's rows.** The "up and back down"
+  arc his brief asks for is inside a single row — `sessionHigh` against `price`
+  gives it — so no cross-checkpoint reach is needed, and any figure not in the
+  report's own checkpoint is a fact the checker strikes. *This is why I did not
+  write the close report yet: `OBA`'s "new HOD" is in the 14:30 row and its close
+  row is empty, so a close specimen would have leaked a fact from another
+  checkpoint — the exact defect the design exists to prevent.*
+- **The basis is stored and it DIFFERS by report** (`reference_basis`, read
+  directly). The intraday reports (09:25, 14:30, close) are `PRIOR_SESSION` —
+  "from the prior close". The **premarket report is built from the 22:00 recap,
+  which is `CURRENT_SESSION`** — "on the session that just closed". The voice must
+  say the basis each report actually carries; they are not the same sentence.
 
 **"Entered the board" is deliberately absent.** `ENTERED_TOP_N` lives in
 `desk_events`, not the assessment rows, and `OBA` was simply absent from the
-07:00/09:25 checkpoints — inferring an entry from a rank first appearing would be
-the wrong claim. The specimens say a name "ranked #N", never that it "entered".
+earlier checkpoints — inferring entry from a rank first appearing would be the
+wrong claim. The specimens say a name "ranked #N", never that it "entered".
 
-### Specimen 1 — Into the open (built from 09:25)
+### Specimen 1 — Into the open (built from the 09:25 checkpoint, id 423)
 
 > **Into the open — 09:25.** Two names carried the premarket, and both are already
-> off their highs.
+> well off their highs.
 >
 > **IMCC** held #1 into the open at $3.31, up 90.2% from the prior close — but it
-> is down 30.2% since the 07:00 read and 34.6% below its session high of $5.06.
-> The float is dirty: the displayed float understates the shares that can reach the
-> market. The catalyst our sources found grades weak and dilutive. No cycle call
-> yet.
+> is down 30.2% since the last read and sitting 34.6% under its session high of
+> $5.06. The float is dirty: the displayed float understates the shares that can
+> reach the market. The catalyst our sources found grades weak and dilutive. No
+> cycle call yet.
 >
-> **TCRT** ran to +38.8% premarket and round-tripped: −6.3% from the prior close
-> by the open, 52.2% off its high, and it lost $1.84 support since 07:00. No cycle
-> call on it yet either.
+> **TCRT** ran to a high of $3.14 and round-tripped — it's $1.50 now, −6.3% from
+> the prior close and 52% below that high, and it lost $1.84 support since the last
+> read. No cycle call on it yet either.
 
-| Clause | Stored field (09:25 row unless noted) |
+| Clause | Stored field, 09:25 row (id 423) |
 |---|---|
-| "held #1 into the open" | `assessmentRank = 1` |
+| "held #1 into the open" | `assessment_rank = 1` |
 | "$3.31" | `price = 3.31` |
-| "up 90.2% from the prior close" | `percentChange = 90.2` · basis = prior close *(confirm `referenceBasis`)* |
-| "down 30.2% since the 07:00 read" | `changeSummary`: "−30.2% since prior assessment" |
-| "34.6% below its session high of $5.06" | `changeSummary`: "−34.6% off session high"; `sessionHigh = 5.06` |
+| "up 90.2% from the prior close" | `percent_change = 90.23`; `reference_basis = PRIOR_SESSION` |
+| "down 30.2% since the last read" | `change_summary`: "−30.2% since prior assessment" |
+| "34.6% under its session high of $5.06" | `change_summary`: "−34.6% off session high"; `session_high = 5.06` |
 | "the float is dirty … reach the market" | `structure = DIRTY_FLOAT` → `risk.ts:154` verbatim |
 | "catalyst … grades weak and dilutive" | `catalyst = WEAK_NEGATIVE_DILUTIVE` → `language.ts` "weak / negative / dilutive" |
 | "No cycle call yet" | `cycle = UNKNOWN` |
-| "ran to +38.8% premarket" | TCRT 07:00 `percentChange = 38.8` |
-| "−6.3% from the prior close by the open" | TCRT `percentChange = −6.3` · basis prior close *(confirm)* |
-| "52.2% off its high" | TCRT off-high 52.2% |
-| "lost $1.84 support since 07:00" | `changeSummary`: "lost $1.84 support" |
+| "ran to a high of $3.14 … 52% below that high" | TCRT `session_high = 3.14`, `price = 1.50` (giveback is arithmetic on two in-row fields) |
+| "$1.50 now, −6.3% from the prior close" | TCRT `price = 1.50`; `percent_change = −6.25`; `reference_basis = PRIOR_SESSION` |
+| "lost $1.84 support since the last read" | TCRT `change_summary`: "−32.4% since prior assessment; lost $1.84 support" |
 | "No cycle call … either" | TCRT `cycle = UNKNOWN` |
 
-### Specimen 2 — Into the after-hours (built from the 16:00 close)
+*(At 09:25 TCRT's catalyst is still `MODERATE_MIXED_SECONDARY` and its structure
+`CAUTION` — it has not yet downgraded, so the specimen does not call it backside.
+That happens by power hour, below.)*
 
-> **Into the after-hours — the close.**
->
-> **IMCC** led from premarket to the bell — #1 at every checkpoint — and closed at
-> $4.45, up 155.9% from the prior close. It is the day's whole arc in one name: it
-> printed a fresh high of $8.65 after the open, gave it back, and finished 48.5%
-> below that high. The float stayed dirty all day and the catalyst our sources
-> found graded weak and dilutive. Still no cycle call.
->
-> **TCRT** went the other way. From +38.8% premarket it closed −24.4% from the
-> prior close, 61.5% off its high, and the desk now reads it **red — backside**.
-> That is an exit-and-avoid read, not a setup. Its catalyst downgraded through the
-> day to weak and dilutive.
->
-> **OBA** is the honest gap. It ranked as high as #6 into the afternoon and closed
-> #7 around $10.34 on a new high of day — and we have not looked at it yet. No
-> catalyst, no structure, no cycle: it is on the board on tape alone.
+### Specimen 2 — Into power hour (built from the 14:30 checkpoint, id 433)
 
-| Clause | Stored field |
+> **Into power hour — 14:30.**
+>
+> **IMCC** is still #1 at $4.34, up 149.4% from the prior close. It printed a new
+> session high of $8.65 and has given back to 49.8% under it. The float is still
+> dirty and the catalyst our sources found grades weak and dilutive. No cycle call.
+>
+> **TCRT** has broken down: #7 now at $1.26, −21.6% from the prior close and 60%
+> off its high, and the desk reads it **red — backside**. That's an exit-and-avoid
+> read, not a setup — the catalyst has downgraded to weak and dilutive.
+>
+> **OBA** is the honest gap. It's ranked #6 at $10.34 and just printed a new high
+> of day — and we haven't looked at it yet. No catalyst, no structure, no cycle:
+> it's on the board on tape alone.
+
+| Clause | Stored field, 14:30 row (id 433) |
 |---|---|
-| "#1 at every checkpoint" | IMCC `assessmentRank = 1` at 07:00/09:25/14:30/16:00 |
-| "closed at $4.45" | IMCC close `price = 4.452` (to cents) |
-| "up 155.9% from the prior close" | IMCC close `percentChange = 155.9` · basis prior close *(confirm)* |
-| "fresh high of $8.65 … 48.5% below that high" | `sessionHigh` 5.06 (09:25) → 8.65 (14:30); close off-high 48.5% |
-| "float stayed dirty all day" | `structure = DIRTY_FLOAT` every checkpoint |
-| "catalyst … graded weak and dilutive" | `catalyst = WEAK_NEGATIVE_DILUTIVE` |
-| "Still no cycle call" | `cycle = UNKNOWN` all day |
-| "+38.8% premarket … closed −24.4%" | TCRT 07:00 `percentChange = 38.8`; close `= −24.4` |
-| "61.5% off its high" | TCRT close off-high 61.5% |
-| "red — backside … exit-and-avoid, not a setup" | TCRT close `cycle = RED_BACKSIDE` → `language.ts` "red — backside"; long-only framing |
-| "catalyst downgraded … to weak and dilutive" | `catalyst` MODERATE_MIXED_SECONDARY → WEAK_NEGATIVE_DILUTIVE |
-| "ranked as high as #6 … closed #7 around $10.34" | OBA 14:30 `rank = 6`, close `rank = 7`, `price = 10.335` |
-| "new high of day" | OBA `changeSummary`: "OBA: new HOD." |
-| "have not looked … no catalyst, no structure, no cycle … on tape alone" | OBA `intelligenceStatus = NOT_ANALYZED`; `catalyst`/`structure`/`cycle` = null |
+| "still #1 at $4.34" | IMCC `assessment_rank = 1`; `price = 4.34` |
+| "up 149.4% from the prior close" | IMCC `percent_change = 149.43`; `reference_basis = PRIOR_SESSION` |
+| "new session high of $8.65 … 49.8% under it" | IMCC `session_high = 8.65`, `price = 4.34` (giveback arithmetic in-row) |
+| "float still dirty" | IMCC `structure = DIRTY_FLOAT` |
+| "catalyst … grades weak and dilutive" | IMCC `catalyst = WEAK_NEGATIVE_DILUTIVE` |
+| "No cycle call" | IMCC `cycle = UNKNOWN` |
+| "#7 now at $1.26, −21.6% from the prior close" | TCRT `assessment_rank = 7`; `price = 1.255`; `percent_change = −21.56`; `reference_basis = PRIOR_SESSION` |
+| "60% off its high" | TCRT `session_high = 3.14`, `price = 1.255` (arithmetic in-row) |
+| "red — backside … exit-and-avoid, not a setup" | TCRT `cycle = RED_BACKSIDE` → `language.ts` "red — backside"; long-only framing |
+| "catalyst has downgraded to weak and dilutive" | TCRT `catalyst = WEAK_NEGATIVE_DILUTIVE` |
+| "ranked #6 at $10.34" | OBA `assessment_rank = 6`; `price = 10.335` |
+| "just printed a new high of day" | OBA `change_summary`: "OBA: new HOD." |
+| "haven't looked … no catalyst, no structure, no cycle … on tape alone" | OBA `intelligence_status = NOT_ANALYZED`; `catalyst`/`structure`/`cycle` = null |
 
-**No halt is narrated in either specimen** — `halt_state` is `UNKNOWN` on these
-rows and silence is the correct reading.
+**No halt is narrated in either specimen.** At 14:30 IMCC's `halt_state` is
+`TRADING` and the others are `UNKNOWN`; the voice is silent on halts in both cases
+(`language.ts`: halt is silent when trading, and `UNKNOWN` is not an event).
 
 ---
 
