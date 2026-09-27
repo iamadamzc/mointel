@@ -970,9 +970,9 @@ against: restart tonight, separately.**
 `db.ts:121`), not `desk_assessment_tickers` (frozen row, `db.ts:618`), so a report built after its checkpoint
 cannot know the feed state then. ROUTED TO OPS: one nullable column frozen at capture, where old rows read NULL and
 never 0. Until then Research OMITS `liveFeed` rather than guessing (`boolean | null` in Design's contract).
-(b) UNCONFIRMED, this seat's reading of `engine.ts:1713-1760`: rank and latch are both gated on the QUALIFY band,
+(b) CONFIRMED by Research at `72f195b` (every link opened, AH latch checked separately): this seat's reading of `engine.ts:1713-1760`: rank and latch are both gated on the QUALIFY band,
 so a name trading entirely in $20–$50 never gets a live feed unless pinned. Put to Research and Commercial
-to verify.* Commercial scope is at `6cf59df`.
+to verify.* **The 10s capture is gated on the same `highRes`, so a $20–$50 report has neither a live feed nor 10s data, BY DESIGN of the record/qualify split. Put to him as a fact, with the tier question.** Commercial scope is at `6cf59df`.
 *Ops accepted (a): a nullable column copied from `ticker_session.high_res` at capture (assess cannot read engine
 memory), lagging by at most one flush. **COST: a schema bump 27→28 means the migration's `VACUUM INTO` of the 3.7G
 store runs after web/research/assess stop, which is a MULTI-MINUTE PUBLIC OUTAGE.** Ruled (order and process): Ops
