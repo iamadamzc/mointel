@@ -109,6 +109,20 @@ exists and needs no new checkpoint.**
 `sessionLow`, `referenceClose` **and `referenceBasis`**, `cycle`, `catalyst`,
 `structure`, `warnings`, `changedFields`, `changeSummary`.
 
+**⚠️ THE FOUR REPORTS DO NOT SHARE ONE PERCENT BASIS, AND THE PREMARKET ONE IS THE ODD ONE OUT — a constraint created by moving it to 22:00. Measured on the snapshot:**
+
+| checkpoint | `reference_basis` | what the percent MEANS |
+| --- | --- | --- |
+| **22:00 recap** → premarket report | **`CURRENT_SESSION`** (25/25) | **movement since TODAY'S close — i.e. the after-hours move** |
+| 09:25 → into RTH | `PRIOR_SESSION` (25/25) | from the prior close |
+| 14:30 → power hour | `PRIOR_SESSION` (25/25) | from the prior close |
+| 16:00 → after-hours | `PRIOR_SESSION` (25/25) | from the prior close |
+
+  *Snapshot-wide: `PRIOR_SESSION` 11,203 · `CURRENT_SESSION` 622.*
+  **PROVEN ON ONE ROW RATHER THAN INFERRED: at 22:00, `IMCC` carries `percent_change = -25.1%` and `ah_percent_change = -25.1%` — IDENTICAL, against `reference_close = $4.23`, the day's own close.** *At the recap the headline percent IS the after-hours move.*
+  ⇒ **THE PREMARKET REPORT SAYS "since today's close" or "in after-hours", NEVER "from the prior close". A writer applying one wording rule across all four reports gets that one wrong**, and it would be wrong by the width of a whole session: `IMCC` closed **+155.9% from the prior close** and was **−25.1% in after-hours** on the same evening.
+  **AND THE BASIS CONFIRMS THE MAPPING RATHER THAN COMPLICATING IT.** His premarket report is *"based on AH activity"* — **the 22:00 checkpoint is the only one whose percent measures exactly that.** *The intent and the stored basis agree, which is a better reason to trust the 22:00 source than the scheduling argument that got us there.*
+
 **`referenceBasis` is not optional decoration.** It says whether a percent change
 is measured against the PRIOR session's close or the CURRENT one. **A report that
 says "up 40%" without knowing which is the frame is the "a value with no frame"
