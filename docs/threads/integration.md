@@ -958,6 +958,14 @@ in full; Design's band question at design-seat.md:251; Commercial's §3 ruling a
 build approval, and counsel. *Research's message said his restart was "last night". It was not: at 23:00Z
 (19:00 ET) it was still pending that evening. It had no effect on the design.*
 
+**✅ RULED 2026-09-27 ~23:25Z, his words in this session: "1 set ranges, 2 yes, 3 yes."** *(1) reports are
+written per SET price range, one checked report per range per checkpoint, never per exact user range; the board
+stays freely adjustable. (2) Commercial scopes price-based tiers, as a document only. (3) BUILD APPROVED. Routed:
+Research (writer + checker; ranges as CONFIG because tiers may redraw them; timing sized for N ranges; false-pass
+test before any ship), Design (panel + report-range choice), Commercial (tiers, with the internalRank=50
+live-feed coupling as a product constraint).* **On the restart he asked whether to wait for the build. Advised
+against: restart tonight, separately.**
+
 **He called this "the final thing before going live". It is NOT the only one.** *Told him: sign-in cut-over,
 billing, and non-payment revocation are still open. The reports run in parallel with those and do not replace them.*
 
