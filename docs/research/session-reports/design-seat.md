@@ -125,14 +125,21 @@ a number, the same shape as the graveyard's presence test.
 
 ```
 Into-RTH briefing · for Mon Sep 28
-data as of 09:20 ET · written 09:23 ET (4m ago)
+data as of 09:25 ET checkpoint · written 09:28 ET (2m ago)
 covers $1–$20 · 50 names with live trade data
 ```
 
-- **Data as-of is the one that matters, and it is not the publish time.** A
-  report about 09:20 prices published at 09:23 describes 09:20. Two report
+- **Data as-of is the one that matters, and it is the CHECKPOINT's time, not
+  the render or publish time** (Research, `design.md` §5). A report built on
+  the 09:25 checkpoint and published at 09:28 describes 09:25. Two report
   times that differ by a few minutes are harmless; showing only one of them
-  makes the reader assume they are the same.
+  makes the reader assume they are the same. **A report built from TWO
+  checkpoints (premarket reads 22:00 + 07:00) prints both**, because one
+  as-of time would claim the whole report is as fresh as its newer half.
+- **A checkpoint that did not run is a MISSED report, reason `no 09:25
+  assessment ran`**. It is never a report quietly built on an earlier
+  checkpoint. That would be the header-names-one-quantity, rows-drawn-from-
+  another defect, in prose.
 - **THE PROSE IS FROZEN, LIKE THE SNAPSHOT BOARD, AND FOR THE SAME REASON.**
   `AssessmentSnapshotBoard` merges no live data into a checkpoint because
   doing so *"would look like a record and behave like a lie"*. A report
@@ -153,10 +160,68 @@ covers $1–$20 · 50 names with live trade data
   sentence about a name may mean *we did not have its trades*, not *nothing
   happened*. The count says so in one clause, with no footnote.
 
+## 3a. Sentences the checker struck: does the reader see them?
+
+*Research's question, 2026-09-27: the checker returns a strike list, so a
+shipped report can be visibly shorter than a complete one.*
+
+**NO COUNT AND NO MARK OF REMOVED SENTENCES REACHES THE READER. The structure
+instead guarantees that a removal can never create a false claim.** This is
+the preference for making a problem IMPOSSIBLE over making it VISIBLE.
+
+- **Why not show it.** A strike is information about the WRITER (it said
+  something our sources do not support), not about the market. "2 sentences
+  removed" invites the reader to guess what they said. It also makes a
+  report look less trustworthy than a complete one when it is exactly as
+  trustworthy: every line shown has been traced. **Confidence comes from
+  each line linking to the dossier it rests on, not from a strike count.**
+  The strike rate goes to diagnostics, where it is Research's quality
+  measure and feeds the checker's false-pass test.
+- **WHAT MAKES HIDING IT SAFE: three rules the writer's contract must hold.**
+  1. **One self-contained line per ticker.** No "it", no "also", no line
+     that leans on the one above. Removing a line then cannot orphan
+     another, and `lines[]` in §4 is shaped for this.
+  2. **"Nothing happened" is a WRITTEN, CHECKED line, never an empty
+     section.** "None of the morning's movers held their premarket high" is
+     a market claim, so it must be written and must pass the checker like
+     any other. **A section left empty, for any reason, always reads
+     "Nothing in our sources for this section."** So a section emptied by
+     strikes can never read as "nothing held". *Without this rule, striking
+     the only held name would publish a false claim by omission. This is the
+     case a hidden strike list would actually get wrong.*
+  3. **A struck headline is not replaced.** The briefing line shows kind +
+     time + Read, with no sentence. It never falls back to a section heading
+     or an earlier report's headline.
+- **If the checker did not run, nothing publishes.** That state reads
+  `being checked`, then `missed` (§2). Unchecked text never renders; that
+  rule has no exception.
+
+## 3b. Timing, read against Research's mapping
+
+- **The 14:30 correction changes nothing on this surface.** The six states
+  hold under any mapping. **The after-hours report has no head-room by
+  design**, so at 16:00 its line honestly reads `being checked`.
+- **Into-RTH has five minutes of head-room (09:25 checkpoint -> 09:30),
+  and a checkpoint can run late** (`generatedLate` exists because some do).
+  If writer + checker latency plus a late checkpoint passes 09:30, the
+  report publishes marked `late`. **Research should measure writer +
+  checker latency before promising "before the open".**
+- **⚠ A LEAD FOR RESEARCH, NOT A FINDING: the premarket report has the same
+  shape as the 15:00 defect.** The session it serves opens at 04:00; a
+  report built on the 07:00 checkpoint arrives three hours into it. Research's
+  own rule ("built from the checkpoint BEFORE the moment it serves") would put
+  it on the 22:00 recap (+ the 06:10 structural refresh), with 07:00 at most an
+  update. **Which is right depends on what the premarket report is FOR, and
+  that belongs in the block to him, stated from the session's hours, not
+  from anyone's trading habits.** *The surface handles either: a report with
+  an update is two published reports for one slot, and the line shows the
+  newer one.*
+
 ## 4. What this needs from the contract, and nothing more
 
 For each report Design reads: `kind`, `tradingDate` / `targetTradingDate`,
-`scheduledFor`, `relevantUntil`, `dataAsOf`, `publishedAt`, `band` (min/max),
+`scheduledFor`, `relevantUntil`, `dataAsOf[]` (checkpoint times, one per
+checkpoint read), `publishedAt`, `band` (min/max),
 `liveCoverageCount`, `headline`, and `sections[]` of
 `{ heading, lines[] of { ticker | null, text } }`. **Checked text only.** A
 missing report is an **absent row plus the schedule entry**, never a row with
