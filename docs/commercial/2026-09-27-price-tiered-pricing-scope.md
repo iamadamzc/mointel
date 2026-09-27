@@ -52,10 +52,16 @@ corrected on itself in the session-reports work two hours ago.** The mechanism t
 actually governs data richness, `applyHighResSelection()` (`lib/market/engine.ts:2121`):
 
 - **A name gets trades/quotes/10-second-grain capture (`highRes = true`) through a
-  priority queue, not a hard top-50 cutoff.** Pinned symbols fill first; then names
-  ranked `<= internalRank` (default **50**, `lib/market/config.ts:78`,
-  `RVOL_INTERNAL_RANK`) fill next, in rank order; then any other "latched and alive"
-  name fills remaining room.
+  priority queue, not a hard top-50 cutoff — four admission paths, not one.**
+  **CORRECTED 2026-09-27, Integration's precision, verified:** pinned symbols fill
+  first; then names ranked `<= internalRank` (default **50**, `lib/market/
+  config.ts:78`, `RVOL_INTERNAL_RANK`) **and alive** (`engine.ts:2153`); then, only
+  after the bell (`rthClosed`), the daytime top-`discoveryRank` names regardless of
+  aliveness — deliberately, so a Focus name or a daytime leader does not go dark
+  just because it is quiet after hours (`engine.ts:2160-2170`); then any other
+  "latched and alive" name fills remaining room. **None of the four paths are
+  scoped by price band**, which is the fact this document's argument actually rests
+  on and none of the correction changes it.
 - **The whole set is capped at `highResMax`, hardcoded to 250** (`lib/market/
   engine.ts:2185`, `this.options.highResMax ?? 250` — verified nowhere in the codebase
   is this ever set to anything else, so production always runs at 250).
