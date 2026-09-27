@@ -20,6 +20,52 @@ built.**
 
 ---
 
+## ✅ HIS RULINGS, 2026-09-27 — BUILD APPROVED, AND THE SHAPE CHANGED
+
+> ***"1 set ranges, 2 yes, 3 yes."***
+
+**1 — SET RANGES, NOT PER-USER RANGES.** *A few fixed ranges (the example put to him: under \$1, \$1–\$20, \$20–\$50), **one written-and-checked report per range per checkpoint.** A user reads the report for their chosen set range; the board stays freely adjustable.* **2 — Commercial scopes price-based pricing tiers, document only. 3 — BUILD APPROVED**: Research builds the writer and checker, Design the panel, Ops the process.
+
+**⚠️ THIS MULTIPLIES EVERYTHING BY N AND THE DESIGN ABOVE WAS WRITTEN FOR N=1.** *Every cost, latency and failure figure below predates the ruling; where they disagree with this section, this section is right.*
+
+| | per session | per year | against today's \$6.99 |
+| --- | ---: | ---: | ---: |
+| N=1, writer+checker on `terra` | \$0.22 | \$55 | +3.1% |
+| **N=3, `terra`** | **\$0.66** | **\$166** | **+9.4%** |
+| **N=3, `luna`** | **\$0.066** | **\$17** | **+0.9%** |
+| N=5, `terra` | \$1.10 | \$277 | +15.7% |
+
+**⚠️ THE RANGE LIST IS CONFIGURATION, NOT CONSTANTS. Commercial's tier scope may redraw the boundaries**, so the set is a list read at runtime. **Build and test against `\$1–\$20` first — his own range, and the default.**
+
+**⚠️ TIMING IS NOW N WRITER+CHECKER PAIRS AGAINST THE SAME 5 MINUTES.** Into-RTH has 09:25→09:30. *The ranges are INDEPENDENT — no report reads another's rows — so they can run concurrently and the wall clock need not scale with N.* **But that is a claim about a thing not yet built: MEASURE IT, and if they cannot all finish, say WHICH GIVES rather than letting the last one arrive late unannounced.**
+
+**Each range's report RANKS INSIDE ITS OWN RANGE** — the reason he chose set ranges over filtering one wide report. **Stored ordinals computed over another band are OMITTED** (`4766ea2`).
+
+---
+
+## 🔒 PRE-REGISTERED — WHAT THE CHECKER MUST DO TO PASS, WRITTEN BEFORE THE TEST RUNS
+
+*Required by Integration's constraint and by §4 of this document. **Recorded BEFORE building the checker so the bar cannot move to meet the result.** A criterion written after seeing the number is not a criterion.*
+
+**THE TEST.** Take real checked reports. Corrupt each with ONE seeded defect. Run the checker. **It passes only if it strikes the corrupted sentence.**
+
+**THE SIX DEFECT CLASSES, each drawn from a real error made during this design rather than invented:**
+
+| # | seeded defect | the real instance it comes from |
+| --- | --- | --- |
+| 1 | a number changed to one not in any stored field | — |
+| 2 | a number taken from a DIFFERENT checkpoint's row | Marketing's `TCRT "+38.8% premarket"`, correct number, wrong row |
+| 3 | a percent stated against the wrong basis | the 22:00 recap is `CURRENT_SESSION`, the other three `PRIOR_SESSION` |
+| 4 | an absence claim the data cannot support | *"dropped off the board"* — unwritable under a 25-row cutoff |
+| 5 | a rank asserted that is true of another checkpoint | my own *"IMCC #1 at every checkpoint"* — it is #4 at the recap |
+| 6 | an unobservable cause given for a missing report | *"the market was quiet"* rather than *"the 09:25 assessment did not complete"* |
+
+**PASS = 6/6 STRUCK, and a FALSE-PASS RATE OF 0 ON THE SEEDED SET.** *Anything less does not ship. A checker that catches five of six is not 83% safe — it is a checker with one blind class, and class 5 is the one I personally produced.*
+
+**AND THE CONTROL, WITHOUT WHICH THE ABOVE IS WORTHLESS: run the checker on the UNCORRUPTED reports too. It must strike NOTHING.** *A checker that strikes everything scores 6/6 on the corrupted set and is useless. **This desk shipped a guard that refused everyone once already** — test that it ADMITS before believing that it refuses.*
+
+---
+
 ## 1. WHAT THIS LAYER IS, AND THE ONE THING IT MAY NEVER DO
 
 **It is PROSE OVER FACTS THAT ALREADY EXIST.** `worker/desk-assessments.ts`
