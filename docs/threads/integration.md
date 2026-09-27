@@ -977,6 +977,16 @@ band, and the 10-second capture is gated on that same `highRes` set.*** *So a na
 range but outside the global top 50 gets a row, **no live feed, and no 10-second buckets.*** **Research's and
 Ops's, sized by a load test nobody has run. Nothing should widen on the assumption it is solved.**
 
+> **❌ CORRECTED 2026-09-27 ~23:40Z. "Only the top 50 get a live feed" is INCOMPLETE, and this seat repeated it
+> to him, Research, Design and Commercial.** *Found by Commercial, verified here by opening
+> `applyHighResSelection` (now `engine.ts:2121`, the line had moved from `:2088`):* **the set is pinned names +
+> top `internalRank` (50) ALIVE by rank + after the bell, daytime top `discoveryRank` + EVERY LATCHED name still
+> alive (any name that qualified today), all capped at `highResMax ?? 250` (`:2185`).** *So a name outside the
+> global top 50 that qualified earlier and is not DEAD DOES get a feed. **"Has a live feed" must be read from the
+> engine's actual capped set, never inferred from rank ≤ 50.** The crowding risk stands, but the numbers in it
+> are 50-by-rank inside a 250 cap, not 50 flat.* Correction sent to all four; the three session-report files
+> carried the old line.
+
 ## ARCHIVE — LIVE STATE AS IT STOOD 2026-09-25/26, KEPT FOR MECHANISMS NOT FACTS
 
 *Superseded by the snapshot above. Retained rather than deleted because several entries are the only record of
