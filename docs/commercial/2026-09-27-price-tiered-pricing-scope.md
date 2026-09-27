@@ -1,5 +1,13 @@
 # Should trading the bigger-dollar names cost more? — tier options, document only
 
+**FOLLOWED UP 2026-09-27 — see
+[`2026-09-27-day-pass-addendum.md`](2026-09-27-day-pass-addendum.md) §4.** He has since
+stated a day-pass plan and, thinking out loud, doubted price as the tier measure
+himself. Not superseded — the §2 finding (most $20–$50 names are minute-bar-only by
+construction) still holds; the addendum reframes it as an honesty-in-labelling
+question rather than a pricing-fairness one, since "one price for everything" makes
+the tier question moot for now.
+
 **Written by Commercial, 2026-09-27 (checks run against `3740d61`).** His question,
 verbatim, via Integration: *"im wondering if this is where the tiered pricing comes in.
 if you're trading the bigger dollar stocks should you be charged more?"* Offered a
@@ -103,14 +111,31 @@ names can out-rank $1–$20 names for a shared pool, but **what fraction of the 
 report's own population is even eligible to be ranked at all**, and Integration's
 own framing of this is the right one: *"the load test only sizes the crossers."*
 
-**And the fix is already named, elsewhere, as a pending build decision — this
-document does not propose a new one.** Widening the qualify ceiling
-(`DISCOVERY_PRICE_MAX` past 20) is exactly the change *"STILL NOT AUTHORISED... until
-the split lands"* per his own ruling on the record/qualify band split. **A genuinely
-rich $20–$50 tier is not blocked by an unmeasured risk; it is blocked by a specific,
-already-identified, not-yet-authorised config change.** Selling the tier before that
-lands would be selling access to a report this codebase cannot currently fill for
-most of its own named population.
+**CORRECTED AGAIN, 2026-09-27, Integration's third catch: widening
+`DISCOVERY_PRICE_MAX` is not the fix — it is the specific thing already ruled
+against, for exactly the reason this section describes from the other side.**
+`docs/threads/README.md`, *"WIDENING WHAT QUALIFIES SILENTLY EVICTS THE NAMES YOU
+WIDENED IT FOR"*: qualification and the trades/quotes selection cap share one ranked
+pool, so **widening qualify to admit $20–$50 names would put them into the identical
+250-slot competition this document already established $1–$20 names currently have
+uncontested** — a name pushed past the cap by the new competition "never reaches the
+payload and loses its trade-level subscription," silently, with no symptom the board
+shows. **His own ruling (2026-09-26) is explicit about the shape this forces: RECORD
+widens to $0.25–$50, QUALIFY stays at his narrow band, and a user's WINDOW narrows
+inside the qualified band — three knobs, not one, and widening qualify collapses two
+of them back into one.** Raising `DISCOVERY_PRICE_MAX` would not add a $20–$50 tier;
+it would risk degrading the $1–$20 tier to build one.
+
+**So there is no config change that fixes this cheaply, and this document does not
+propose one.** The only fix consistent with the ruling above is **allocating a
+portion of the existing 250-slot live-data budget to a report range directly**,
+independent of global qualification — a $20–$50 report gets its own reserved share of
+high-resolution slots for its own crossers-and-otherwise-eligible names, rather than
+widening who competes for the shared pool. **That is a design question for Research
+and Ops, sized by the same load test this section already calls for (how many slots a
+$20–$50 range would actually need), and it is something for him to fund once he
+decides whether a tier is worth building at all — not something this document
+resolves.**
 
 **Two facts that still hold from the uncorrected version, because the correction
 narrows the claim rather than reversing it entirely:** the 250-slot cap

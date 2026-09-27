@@ -1,5 +1,13 @@
 # Billing, onboarding and support — SCOPE, not a build
 
+**PARTIALLY SUPERSEDED 2026-09-27 — see
+[`2026-09-27-day-pass-addendum.md`](2026-09-27-day-pass-addendum.md).** Gate 1 ("what
+is sold") was open when this was written; he has since stated a plan (a day pass,
+charged at login) that changes §1's billing-rail recommendation from a *recurring
+monthly* subscription to a *repeating one-time charge per usage day*. §§2–7 are not
+struck — packaging, support and the terms-of-sale trigger all still apply under a day
+pass. Kept in full below, not deleted, so the record shows what was assumed and why.
+
 **Written by Commercial, 2026-09-26 (checks run 15:40–19:10 UTC), against `4857c7a`.**
 His ruling that opened this: **"scope it."** — one word, answering Integration's report
 that billing, onboarding and support are the only launch blocker on this desk with
