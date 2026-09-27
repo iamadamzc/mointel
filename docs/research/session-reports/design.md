@@ -167,8 +167,19 @@ be inventing a strategy he does not trade.*
 
 ## SEAT FILES
 
-- `docs/research/session-reports/design-seat.md` — Design
-- `docs/research/session-reports/marketing.md` — Marketing
-- `docs/research/session-reports/commercial.md` — Commercial
+- **`design-seat.md` — Design. LANDED (`5da8d47`).** *One briefing line between Focus and Discovery; six worded arrival states; an unchecked draft never renders and a missed report is never filled with yesterday's; fresh-vs-stale is a predicate, not an age threshold.*
+- `marketing.md` — Marketing. *Voice framework in progress; specimens pending the facts file below.*
+- `commercial.md` — Commercial. *Pending.*
+- **`facts-2026-09-18.md` — real stored facts for the specimens, pulled by this seat.** *A production SNAPSHOT on this disk, not production.*
 
-*Linked here when each lands. Research assembles; nothing goes to him piecemeal.*
+*Research assembles; nothing goes to him piecemeal.*
+
+---
+
+## 7. THE PAYLOAD CONTRACT — Design asked for it, and one field it requested cannot be honest
+
+**Design's ask (its §4):** per report — `kind`, `tradingDate`/`targetTradingDate`, `scheduledFor`, `relevantUntil`, `dataAsOf`, `publishedAt`, `band`, `liveCoverageCount`, `headline`, and `sections[]` of `{heading, lines[] of {ticker|null, text}}`. **Checked text only; a missing report is an absent row plus its schedule entry, never a row with empty text.** *Agreed in full, and the last clause is the one that matters most — an empty-text row is a report that exists and says nothing, which is exactly the shape a reader cannot distinguish from a quiet session.*
+
+**⚠️ `liveCoverageCount` NEEDS A DEFINITION OR IT WILL BE READ AS COVERAGE OF THE MARKET.** It can only mean *"how many named tickers in THIS report had a live trades/quotes feed"* — the top-50 `internalRank` set (`engine.ts:2088`). **It is a property of the desk's observation, not of the session**, and a number with no frame beside prose is the defect this layer is most likely to produce. *Proposed: emit it as `{ named: n, withLiveFeed: m }` so the denominator travels with it and no surface has to reconstruct it.*
+
+**AND ONE FIELD I WOULD ADD: `checkpointId` and `checkpointType`.** *Design's `dataAsOf` says WHEN; it does not say WHICH checkpoint, and my §5 forbids silently falling back to an older one. With the id on the payload, "this report was built from the 09:25 open-spike assessment" is verifiable by a reader rather than asserted by us.*
