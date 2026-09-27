@@ -13271,6 +13271,37 @@ records over and over: a state that looks identical whether or not the mechanism
 *And the cost is not symmetrical with the effort: a defaulted path inside a release directory is two lines of
 convenience that destroys the data it was written to keep.*
 
+## HE HAS NEVER SHORTED A SMALL CAP — and the board's own labels invite the opposite inference
+
+**His correction, 2026-09-26, verbatim: *"no ti doesnt. ive never shorted small cap."*** *Integration had written
+that his method "includes backside shorts" while flagging a product-fit consequence of the India research.*
+
+**WHERE THE FALSE CLAIM CAME FROM, because both sources are still sitting there for the next seat:**
+
+```
+the style label     "Ross Cameron-style momentum" -- Cameron teaches shorting, so the LABEL carries it
+the board's labels  BACKSIDE and OFF HIGH exist on the cycle frame, and they read like SHORT-ENTRY signals
+```
+
+> **FOR A LONG-ONLY TRADER, `BACKSIDE` AND `OFF HIGH` ARE EXIT AND AVOID SIGNALS. They are indistinguishable, on
+> the surface, from short-entry signals — and a seat reading the board could build a short feature for a strategy
+> he does not trade.** *That is the durable risk here, larger than the sentence that produced it.*
+
+**AND IT BROKE A RULE THIS FILE ALREADY CARRIES: justify a finding by a published claim or a measurement, NEVER by
+his trading habits.** *Integration invoked his habits **and got them wrong** — which is the argument for the rule
+rather than an exception to it. **A seat that reasons from what it believes he does will occasionally be wrong
+about him, and he is the one source that cannot be grepped.***
+
+**THE CONSEQUENCE CORRECTED, AND IT RUNS THE OTHER WAY: the no-margin finding costs the Indian population
+NOTHING on the short side.** *India's LRS forbids funding a margin account abroad, so that population trades cash
+only. **Integration read that as a fit problem partly because it believed shorting was part of the method. It is
+not, so the constraint is narrower than reported** — what remains is leverage and settled-cash turnover, neither
+of which is a strategy mismatch.*
+
+*Checked before correcting: the claim reached his channel only and appears in no charter, so no wider retraction
+was owed. **That check is now the reflex the retraction rule asks for**, and this is the first time it came back
+clean.*
+
 ## WHEN CONVERSION IS IMPOSSIBLE, OMIT — LABELLING ADDS A SECOND FRAME TO THE SAME ROW
 
 **Research, 2026-09-26, and it is a deliberate exception to this desk's own "convert AND label" rule.**
