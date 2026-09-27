@@ -187,7 +187,7 @@ And two more the voice states plainly rather than smoothing over:
 
 ## Specimens — written against the real 2026-09-18 rows
 
-Two of the four reports, written from the stored rows I read first-hand out of
+Three of the four reports, written from the stored rows I read first-hand out of
 `data/assessments-prod-2026-09-23.db` (a production snapshot on disk, **not the
 live desk** — nothing here is a claim about the market now). Every figure is exact
 and one-decimal; the table after each report traces each clause to a stored field
@@ -202,11 +202,19 @@ in that report's OWN checkpoint, which is what the checker produces in reverse.
   write the close report yet: `OBA`'s "new HOD" is in the 14:30 row and its close
   row is empty, so a close specimen would have leaked a fact from another
   checkpoint — the exact defect the design exists to prevent.*
-- **The basis is stored and it DIFFERS by report** (`reference_basis`, read
-  directly). The intraday reports (09:25, 14:30, close) are `PRIOR_SESSION` —
-  "from the prior close". The **premarket report is built from the 22:00 recap,
-  which is `CURRENT_SESSION`** — "on the session that just closed". The voice must
-  say the basis each report actually carries; they are not the same sentence.
+- **The basis is stored and it DIFFERS by report** (`reference_basis`, confirmed
+  on every row by Research, `7e8161c`). The intraday reports (09:25, 14:30, close)
+  are `PRIOR_SESSION` — **"from the prior close"**. The **premarket report is built
+  from the 22:00 recap, which is `CURRENT_SESSION`** — and there the headline
+  percent *is the after-hours move* (at the recap `IMCC` carries
+  `percent_change = −25.1%` identical to its `ah_percent_change`, against
+  `reference_close = $4.23`, that day's own close). So the premarket report says
+  **"since today's close" / "in after-hours", NEVER "from the prior close"**. A
+  writer applying one basis rule to all four reports would be wrong by a whole
+  session on the report that opens the day — `IMCC` closed +155.9% from the prior
+  close and was −25.1% after hours the same evening. **The basis also confirms the
+  mapping:** his premarket report is "based on AH activity", and the 22:00
+  checkpoint is the only one of the four whose percent measures exactly that.
 
 **"Entered the board" is deliberately absent.** `ENTERED_TOP_N` lives in
 `desk_events`, not the assessment rows, and `OBA` was simply absent from the
@@ -282,6 +290,40 @@ That happens by power hour, below.)*
 **No halt is narrated in either specimen.** At 14:30 IMCC's `halt_state` is
 `TRADING` and the others are `UNKNOWN`; the voice is silent on halts in both cases
 (`language.ts`: halt is silent when trading, and `UNKNOWN` is not an event).
+
+### Specimen 3 — Into the premarket (built from the 22:00 recap, id 437)
+
+*One name, to pin the report whose basis is the exception: its percent is the
+after-hours move, not a move from the prior close.*
+
+> **Into the premarket — from last night's recap.**
+>
+> **IMCC** gave its move back after hours: down 25.1% from yesterday's own close of
+> $4.23, slipping from #1 to #4 on the board as it lost $4.20 support. The float is
+> dirty — the displayed float understates the shares that can reach the market —
+> and the catalyst our sources found grades weak and dilutive.
+
+| Clause | Stored field, 22:00 recap row (id 437) |
+|---|---|
+| "down 25.1% … after hours" | `percent_change = −25.06`, identical to `ah_percent_change` — the headline IS the AH move |
+| "from yesterday's own close of $4.23" | `reference_basis = CURRENT_SESSION`; `reference_close = 4.23` |
+| "slipping from #1 to #4 … lost $4.20 support" | `change_summary`: "rank #1 → #4; … lost $4.20 support" |
+| "the float is dirty … reach the market" | `structure = DIRTY_FLOAT` → `risk.ts:154` |
+| "catalyst … grades weak and dilutive" | `catalyst = WEAK_NEGATIVE_DILUTIVE` |
+
+**Two deliberate omissions here, both instructive:**
+
+- The recap's `change_summary` ends "`TRADING → UNKNOWN`". The voice does **not**
+  narrate this as a halt — it is the desk *losing halt observability*, not a halt
+  event, and reporting it as one would be the "absence of observation as an event"
+  defect. Silence is correct.
+- **`TCRT` does not appear in this report at all** — it is absent from the 22:00
+  recap (it closed −24.4% and dropped off the board). A report built from one
+  checkpoint cannot say "it fell off", because that is a fact about the *gap*
+  between the close and the recap, not in either row. It is a real and vivid beat
+  (the round-trip name doesn't just fade, it stops being ranked) but it needs a
+  cross-checkpoint read the current one-checkpoint design does not do — flagged
+  for Research as a design choice, not written as a sentence.
 
 ---
 
