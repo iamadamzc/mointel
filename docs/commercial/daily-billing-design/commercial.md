@@ -5,6 +5,17 @@ warning, Web the save-card flow — into this same folder, one file each.** Writ
 2026-09-27/28, against `e41da7b`. **DESIGN ONLY: no build, no provider account, no
 customer or vendor contacted.**
 
+> **HEADLINE, PER WEB'S FINDING (§8) — READ THIS FIRST: "A DAY" IS CURRENTLY THREE
+> DIFFERENT INSTANTS IN THIS REPO, AND NO TWO OF THEM AGREE.** The session expires at
+> **20:00 ET** (`lib/auth/expiry.ts`, unchanged, measured directly). The trading date
+> rolls forward at **22:00 ET** (`lib/market/session.ts`). His stated paid day opens on
+> a fresh after-hours report at **~20:30 ET**, which exists nowhere in code today. **A
+> buyer who pays at Monday 20:30 loses the last 30 minutes of Tuesday under the
+> current code, measured, not reasoned about (§8).** This is the single open question
+> that gates §3 below and needs his answer before anything here ships.
+
+---
+
 **His ruling, verified at his own turn (`list_events`, not the relay alone):**
 
 > *"start with daily. if we have their card on file, let them in immediately, the
@@ -108,19 +119,23 @@ every few minutes. **Two consequences worth naming rather than assuming:**
 
 ---
 
-## 3. THE DAY BOUNDARY THE CHARGE RUNS AGAINST
+## 3. THE DAY BOUNDARY THE CHARGE RUNS AGAINST — CORRECTED, THIS WAS NOT SETTLED
 
-**Already established across the two prior addenda, restated here because Ops's
-infra section needs the same number this section assumes.** The paid day currently
-maps to the session's own `expiresAt`, computed by `sessionExpiry` (`lib/auth/
-expiry.ts:51`) from his 2026-09-10 ruling and moving, per his newer ruling relayed
-2026-09-27/28, to a ~20:30 ET start rather than the current 20:00 close — **the exact
-new time is Research's to land (the 20:05 checkpoint being designed), not this
-document's to fix.** The charge fires at the same moment a session is issued
-(`lib/auth/callback.ts:145-146`), so **the charge and the boundary it pays for are
-computed from the identical event — there is no separate "billing day" clock to keep
-in sync with the "access day" clock**, which is the thing most likely to drift if
-they were built as two.
+**This section originally treated the boundary as already moving to ~20:30. It was
+not settled, and Web's independent measurement (§8) caught the same premise-stated-
+as-fact this seat has corrected in itself before.** `sessionExpiry` (`lib/auth/
+expiry.ts:51`) still computes the session boundary at **20:00 ET, unchanged, at
+`21d4534`** — the ~20:30 figure is his stated intent for when the paid day OPENS
+(the fresh after-hours report), not a boundary anything in the code yet uses. **§8
+carries the actual open question and this section defers to it rather than
+restating a guess as fact a second time.**
+
+**What still holds regardless of how §8 resolves:** the charge fires at the same
+moment a session is issued (`lib/auth/callback.ts:145-146`), so **the charge and
+whatever boundary IS chosen are computed from the identical event** — there is no
+separate "billing day" clock to keep in sync with the "access day" clock, which
+remains the thing most likely to drift if they were ever built as two, whichever
+single boundary he picks.
 
 ---
 
@@ -271,6 +286,104 @@ the app, with no commercial or licence question attached either way.**
 
 ---
 
+## 8. WEB'S SECTION — LANDED (`../../web/2026-09-27-paid-day-signup-scope.md`), READ IN FULL, ITS HEADLINE PROMOTED TO THE TOP
+
+**The most important finding in this whole design came from Web, not this section,
+and Integration is right that it belongs at the top of the document — done, above.**
+Measured directly against `sessionExpiry`, not reasoned about:
+
+```
+sign-in Mon 19:50 ET  ->  expires Mon 20:00 ET   (10 minutes)
+sign-in Mon 20:30 ET  ->  expires Tue 20:00 ET
+```
+
+**A buyer taking a day the moment it opens (Mon 20:30, on Monday's fresh report) has
+their session expire Tue 20:00 — thirty minutes before Tuesday's ~20:30 report even
+opens, and a Tuesday 20:10 sign-in belongs to WEDNESDAY's paid day under the same
+roll-forward.** The buyer loses those thirty minutes every single day and cannot get
+them back by signing in again. **This is not a rounding error; it is two different
+definitions of "a day" that will disagree on every cycle, forever, until one of them
+is picked.**
+
+**Web's recommendation, which this seat endorses rather than merely repeats: define
+the paid day by the CLOCK (20:00, unchanged) and treat "opens on a fresh report" as a
+promise about WHAT IS WAITING when the day opens, not about WHEN it opens.** The
+reasoning is the same discipline `lib/auth/expiry.ts` already states about itself —
+*"NO SECOND DEFINITION OF 20:00 ET... a second calculation here would be a second
+source of truth for the one number this desk has repeatedly got wrong."* **A paid-day
+boundary that floats with a report re-introduces exactly the failure that file was
+built to close off, and it does something worse than a stale clock: it moves the
+CHARGE, not just a label, whenever a report runs late.** Kept as the recommendation;
+his to rule, per Web's own §7.
+
+**Two things this section corrects in ITSELF as a result, named rather than quietly
+fixed:**
+
+- **§3 above previously asserted the boundary was already moving to ~20:30. It was
+  not, and has been corrected in place** rather than left standing next to this
+  section's disagreement with it.
+- **§4's "an unreachable processor" and Ops's fold-in already assumed a MIN-style
+  boundary was resolved. Web's §3 independently derived the identical requirement
+  from a different angle** — measuring `sessionExpiry` directly rather than reading
+  Ops's schema — **and it is already satisfied by Ops's own design**: *"grace_until =
+  failed_at + 1h, and... expires_at = MIN(expires_at, grace_until)... a failure at
+  19:30 ET must not EXTEND a session that ends at 20:00."* Design's band reads that
+  resulting `expires_at`/`endsAt` value and prints the absolute time (*"ends at 07:43
+  ET"*), never a bare "1 hour" — so **Web's requirement that the warning "cannot
+  promise sixty minutes at 19:50" is not a new gap, it is confirmation, arrived at
+  independently, that the mechanism already built is the right one.** Worth stating
+  plainly so three seats converging on one answer reads as convergence, not as one of
+  them catching the other two out.
+
+**Two more things from Web's section that belong in this assembled document rather
+than only in its own file:**
+
+- **Self-serve vs. invite-by-hand for the first paying users is still his, not
+  settled by the day-pass ruling.** Web's own words: *"his card-on-file model
+  describes what happens once somebody is paying; it does not say the first paying
+  users arrive self-serve."* If hand-invite still holds (Web's 2026-09-26
+  recommendation, never withdrawn), most of the page work in Web's §5 waits, and the
+  live public sentence at `app/page.tsx:432` (*"There are no public sign-ups"*) stays
+  true for longer — **but the day-boundary question above still needs an answer
+  either way**, because the paid day is defined the same way regardless of how the
+  first users reach it.
+- **Admission never required a payment-aware gate.** Web confirmed `lib/auth/
+  gate.ts`'s existing constraint survives unchanged: the allowlist stays the single
+  authority on admission; the payment fact only decides who gets written to it and
+  when. Consistent with this document's own read throughout — worth having Web's
+  independent confirmation on file rather than only this seat's.
+
+---
+
+## 9. EVERY OPEN DECISION ACROSS ALL FOUR SECTIONS, GATHERED IN ONE PLACE
+
+**For Integration's assembly. Nothing below is new — each is stated in its own
+section above, collected here so the ask to him is one list rather than four
+documents.**
+
+1. **Does a paid day end at 20:00 ET with the session, or at ~20:30 with the next
+   report?** §8. The one that gates everything else; Web's recommendation is 20:00,
+   unchanged, with the report as the day's first content rather than its start.
+2. **Is a non-trading day (Saturday) a charged day?** §6. This seat's recommendation:
+   no — nothing is sold that day.
+3. **After the hour lapses, is the account revoked, or only that day's session
+   ended?** §6. This seat's recommendation: only that day.
+4. **Automatic retry, or only on card fix?** §6. This seat's position: event-driven,
+   on card update.
+5. **The OS notification: on or off?** §7, Design's. The one piece that leaves the
+   app.
+6. **Do the first paying users arrive self-serve, or still invited and invoiced by
+   hand?** §8, Web's. Not settled by anything in this design; his 2026-09-26
+   recommendation (hand-invite) stands until he says otherwise.
+
+**Not a decision — already closed by his own words and recorded so it isn't
+re-asked:** whether a retry resets the one-hour clock (no, confirmed §7); whether
+the gate needs to learn about payment (no, confirmed independently by this seat and
+Web, §8); whether the OS notification reopens the session-reports investment-advice
+question (no, §7).
+
+---
+
 ## SOURCES
 
 `docs.stripe.com/payments/save-and-reuse`; `docs.stripe.com/api/idempotent_requests`;
@@ -279,7 +392,7 @@ the app, with no commercial or licence question attached either way.**
 terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
 `2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
-all read in full. His rulings verified via `list_events` on the Integration session,
-not taken from the relay alone. A search
-for a day-pass-specific refund comparable returned nothing on point; recorded as
-absence in §4 rather than assumed resolved.
+Web's `web/2026-09-27-paid-day-signup-scope.md`; all read in full. His rulings
+verified via `list_events` on the Integration session, not taken from the relay
+alone. A search for a day-pass-specific refund comparable returned nothing on
+point; recorded as absence in §4 rather than assumed resolved.
