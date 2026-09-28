@@ -142,7 +142,10 @@ nothing renders**, because a reviewer has no billing.
 
 - **The OS notification (§3)**: on or off. It's the only piece that leaves
   the app, so it's his.
-- **Does a declined retry keep the original `endsAt`?** Commercial's to confirm
-  against the ruling. Design assumes yes.
+- ~~**Does a declined retry keep the original `endsAt`?**~~ **CONFIRMED by
+  Commercial (`3886a63`): one fixed hour from the first failure, never
+  re-issued.** It holds only if `failed_at` is written ONCE, not rewritten on
+  each failed retry. Commercial has sent that to Ops as a build requirement.
+  **`endsAt` in §6 must be derived from the first failure.**
 - **Where `Update card` goes**: embedded form beside the board, or a new tab.
   Web's, against the provider's embedding rules.
