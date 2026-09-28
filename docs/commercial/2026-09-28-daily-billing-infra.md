@@ -95,7 +95,17 @@ not exist on the box.
 8  HIS WORD: live keys
 ```
 
-## Decisions that are his, not settled here
-- Is a non-trading day (Saturday) a charged day? (`expiry.ts` already flags it.)
-- After the hour lapses, is the account revoked, or only that day's session ended?
-- Does a retry happen automatically, or only when they fix the card?
+## HIS RULINGS (2026-09-28 ~01:20Z, relayed by Integration, verbatim where quoted)
+
+- **"days run from 8pm to 8pm ... end of ah to end of ah."** The paid day is 20:00 -> 20:00 ET,
+  the SAME instant `sessionExpiry()` already uses. The charge key is `(user_id, et_date)` exactly as
+  the session row carries it: a sign-in at Mon 21:00 is Tuesday's paid day. No second boundary.
+- **No charge on weekends or holidays.** mointel-billing skips a row whose `et_date` is not a trading
+  day. Holidays mean it needs the **trading calendar** (the Alpaca calendar the market worker caches),
+  not a weekday test. That is the same mistake preflight's checkpoint arm made on 2026-09-26.
+- **A lapsed hour ends that day's session only**, never `revokeEmail` on the account.
+- **Retry only on card update** (the portal webhook in step 6), never on a timer.
+- **One OS notification** for the warning; the surface is Design's.
+- **First paying users are invited and billed BY HAND; self-serve later.**
+- **Build APPROVED, but only after the sign-in cut-over is live and proven to refuse a non-invited
+  account (steps 1-5), and nothing charges anyone until he approves the first real run.**
