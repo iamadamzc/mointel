@@ -368,12 +368,17 @@ Tue 20:30  the report publishes and opens the NEXT paid day
 
 **So the checkpoint that closes out a paid day runs five minutes after that day's
 buyer has already been signed out of it — meaning each paid day, by construction,
-opens with the PREVIOUS session's report, never its own.** *"I paid for Tuesday and
-cannot see what Tuesday's after-hours did"* is a sentence a customer can write, and
-it is internally consistent rather than a bug — the model may be exactly right, but
-it is a product fact he should see named rather than discover from a support email.
-**Named here as a live question for him, not resolved by this document.** The
-residual mismatch (a sign-in between 20:00 and 20:30 gets the next paid day up to
+opens with the PREVIOUS session's report, never its own.** **The right question,
+Web's own framing, kept because it is sharper than this section's first pass: not
+"is thirty minutes of access missing" — it is "should the closing assessment of a
+day you paid for be visible to you at all."** Under his model the answer is
+defensibly no, and it is the same answer for every subscriber, symmetrically —
+**this is a product choice, not a shortfall, and only becomes a defect if a page
+ever implies the report belongs to the day it opens rather than the one it
+closes.** No such page exists yet, so today it is a constraint on copy Web has not
+yet written, not a bug anyone has shipped. **Named here as a live question for him,
+routed through this document rather than separately by Web, so it reaches him once.**
+The residual mismatch (a sign-in between 20:00 and 20:30 gets the next paid day up to
 thirty minutes early) still runs in the buyer's favour, unchanged in direction from
 earlier drafts, only shrunk from two hours to thirty minutes.
 
@@ -409,10 +414,15 @@ documents.**
    push the boundary back?** Integration recommends scheduled-time-governs, not yet
    answered. **Do not re-ask whether the report or the clock governs — that part is
    closed.**
-2. **Does a buyer of paid day N get to see the checkpoint that closes day N's own
-   after-hours, or only the previous day's?** §8 (Web's `9d7cc30`). Under the model
-   as designed, the answer is no by construction — worth him knowing as a named
-   consequence, not assumed acceptable.
+2. **Not "is thirty minutes of access missing" — should the closing assessment of a
+   day you paid for be visible to you?** §8 (Web's `9d7cc30`; framing Web's own).
+   Under his model the answer is defensibly no, and it is symmetrical for every
+   subscriber — **this is a product choice, not a shortfall, unless a page ever
+   implies the report belongs to the day it opens rather than the one it closes.**
+   No such page exists yet, so today it is a copy constraint on whatever page Web
+   eventually writes, not a defect anyone has shipped. Routed to him through this
+   document only — **Web is not separately raising it, so it must not be dropped
+   here.**
 3. **Is a non-trading day (Saturday) a charged day?** §6. This seat's recommendation:
    no — nothing is sold that day.
 4. **After the hour lapses, is the account revoked, or only that day's session
