@@ -487,6 +487,8 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 | Item | Owner | Waiting on |
 | --- | --- | --- |
 | **Read the EVENING board** after `8fd7887` | **Design — FIRST TASK** | Monday 2026-09-28 after 16:00 ET. Day arm verified, evening arm never seen |
+| **Session briefings: line + reading panel** (`307e42d`, on main, NOT shipped) | Design built; Research builds `/api/reports` | Nothing renders until the route answers 200. Viewed only against a local fixture (1280, 1024). **Read it on the live board after the route ships.** Contract: `lib/desk/reports/contract.ts`, Research's now. At 1024 with the panel open the researched table compresses; acceptable, noted |
+| Payment-failed warning (design only) | Design wrote `docs/commercial/daily-billing-design/design-seat.md` | Commercial assembles; his call on the OS notification; Commercial to confirm a second decline keeps the original end time |
 | The price range: any-range server-side ranking | Research, then Design | The engine split. Design builds the control and the header AFTER it lands |
 | Sub-minute capture -> a near-live `Now` | Research, then Design | **ON, his word.** The counter is shared with capture; mind the `ingestTrade` guard |
 | Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
