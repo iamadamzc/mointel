@@ -1025,6 +1025,12 @@ day       paid day opens ~20:30 ET with a fresh AH report built from a NEW ~20:0
           same slot. Do not move the internal roll without lines.
 late      same price, and that day's earlier reports included.
 billing   DAILY or ANNUAL. MONTHLY REFUSED ("i will not do monthly"). Commercial: annual follow-up.
+schedule  Research 8f52b73 ADOPTED the proposal: new ~20:05 checkpoint, report ~20:30, 22:00 checkpoint + roll unchanged,
+          22:00 filings UPDATE in the slot. ❌ THIS SEAT'S "EDGAR accepts until 22:00" IS UNSOURCED (Research
+          searched four SEC pages and found no hours) and it reached him as "my understanding". What IS sourced:
+          17 CFR 232.13(a)(2): filings after 5:30 p.m. ET are DEEMED FILED the next business day. So 20:00-22:00
+          is a VISIBILITY window, and the update serves it fully. Corrected to him. Ops is asked when the last
+          after-hours bar correction lands, which is what decides whether 20:05 is late enough.
 ```
 
 ### THE RESIDUAL NOBODY HAS CLOSED
