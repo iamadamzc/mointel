@@ -1031,6 +1031,9 @@ schedule  Research 8f52b73 ADOPTED the proposal: new ~20:05 checkpoint, report ~
           17 CFR 232.13(a)(2): filings after 5:30 p.m. ET are DEEMED FILED the next business day. So 20:00-22:00
           is a VISIBILITY window, and the update serves it fully. Corrected to him. Ops is asked when the last
           after-hours bar correction lands, which is what decides whether 20:05 is late enough.
+          ANSWERED by Ops from production (received_at = last write, historical excluded, 09-22..25): last write
+          to any 19:xx bar at 20:00:00.04-.18 ET, 0 after 20:05, and a positive control (the guard tests bar ts,
+          not arrival). 20:05 STANDS with ~5 min margin. Limits: 4 ordinary weekdays, no half day.
 ```
 
 ### THE RESIDUAL NOBODY HAS CLOSED
