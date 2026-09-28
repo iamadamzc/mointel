@@ -1053,6 +1053,10 @@ annual     second, after daily.
 status     DESIGN ONLY. No build until he approves one. Needs the terms of sale first (a stored card).
 routed     Commercial (lead: card setup, background charge, retries, terms), Ops (processor webhooks,
            secrets, the charge job, the expires_at move), Design (the warning), Web (the save-card page).
+whole      docs/commercial/daily-billing-design/commercial.md at 8ed45a3 (all four sections; opened here, §8-§9
+           read). Six decisions put to him: day boundary (20:00 clock vs 20:30), Saturday, day vs account,
+           retry, OS notification, self-serve vs hand-invite. Also flagged: an outage stays PENDING (no clock),
+           which is Commercial's reading of his words, and the $15 dispute fee.
 ```
 
 ### THE RESIDUAL NOBODY HAS CLOSED
