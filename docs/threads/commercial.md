@@ -121,6 +121,12 @@ designed, not a near-miss — but the density of catches in this tenure,
 against a session running for days with heavy cross-thread traffic, is itself
 the signal that closed this tenure rather than a single incident.
 
+### Error ledger — this tenure (from 2026-09-28T15:41Z), per session-hygiene §2
+
+| # | error (asserted → true) | type | already logged this session? | caught by |
+| --- | --- | --- | --- | --- |
+| 1 | Told Integration `monetization-gates.md:226` ("after Gate 1 closed", 09-07) contradicted the 09-27 day pass → it didn't; Gate 1 was ruled 09-07 (*"the unit sold is everything together"*), in `which-price.md:4`. Also wrote "answered 2026-09-27" into this charter's own open-items row (`15b609b`) on the same premise | **source-not-opened** (the prompt's mechanism 1: where a claim is discussed ≠ what establishes it) | no — first in this tenure; the class was the prior tenure's | peer (Integration) |
+
 ### What this seat has delivered — dated documents, unchanged since landing
 
 | document | what it settles | date |
