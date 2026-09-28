@@ -1063,6 +1063,25 @@ boundary   HE RULED 00:47:31Z (Web's session, verified at his turn): "the after 
            yet. Correction sent. Put to him: the boundary is the report's SCHEDULED time, not its publish time.
 ```
 
+### ✅ RULED ~01:20Z 2026-09-28 — THE PAID DAY IS 20:00 TO 20:00, AND THE REST OF THE BILLING BLOCK AGREED
+
+*His words, this session, verbatim:* **"1 yes, 2 - depends on what time he bought. days run from 8pm to 8pm. you are
+right, ah report is the first report of the new trading day. think of it this way - i look at my plan for premarket
+the night before, so my trading day starts in the evening the day before and ends after hours the next day. end of
+ah to end of ah. rest agreed"**
+
+```
+day        20:00 ET -> 20:00 ET, "end of ah to end of ah". The day for Tuesday runs Mon 20:00 -> Tue 20:00, and the
+           ~20:30 after-hours report is its FIRST content. MATCHES sessionExpiry's existing 20:00: no boundary code.
+           Supersedes this seat's "day starts ~20:30" framing (the report time, not the day boundary).
+late rpt   "1 yes": a late report never moves a charge. Moot under a clock boundary; kept as ruled.
+agreed     weekends/holidays not charged | a lapsed hour ends that day only | retries only on card update |
+           ONE OS notification on failure, only if permission was already granted, no stock text |
+           FIRST PAYING USERS INVITED AND BILLED BY HAND, self-serve later | BUILD APPROVED for daily billing,
+           strictly AFTER the sign-in cut-over is proven to refuse; nothing charges anyone until he approves the
+           first real run.
+```
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
