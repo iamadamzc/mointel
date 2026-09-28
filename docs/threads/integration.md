@@ -1036,6 +1036,24 @@ schedule  Research 8f52b73 ADOPTED the proposal: new ~20:05 checkpoint, report ~
           not arrival). 20:05 STANDS with ~5 min margin. Limits: 4 ordinary weekdays, no half day.
 ```
 
+### ✅ RULED 2026-09-28 ~00:50Z — DAILY BILLING FIRST, ADMIT THEN CHARGE, ONE HOUR TO FIX, REGARDLESS OF TIME
+
+*His words, this session, verbatim:* **"start with daily. if we have their card on file, let them in immediately, the
+charge happens in the background. if it was unsuccessful, we'll send a warning of some kind. maybe a popup saying
+hey, you have 1 hour to fix this or your session is over. can we do that?"** *Then, asked whether a cut-off inside
+07:00–10:00 should hold to 10:00:* **"1 hour. regardless of time."**
+
+```
+shape      card on file -> sign-in admits at once -> charge in background -> on failure, warning + 1 hour ->
+           session ends (its expires_at moved to now+1h) unless the card is fixed and the retry succeeds.
+           Applies INSIDE his 07:00-10:00 window too, by his explicit choice. Record it as HIS ruling;
+           it supersedes this seat's earlier "not immediate for non-payment" recommendation.
+annual     second, after daily.
+status     DESIGN ONLY. No build until he approves one. Needs the terms of sale first (a stored card).
+routed     Commercial (lead: card setup, background charge, retries, terms), Ops (processor webhooks,
+           secrets, the charge job, the expires_at move), Design (the warning), Web (the save-card page).
+```
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
