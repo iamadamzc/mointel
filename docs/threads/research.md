@@ -172,7 +172,9 @@ record. He has it from this seat directly as well.
   **SOURCES ARE COMMERCIAL'S: no new source enters code until Commercial clears its terms; nothing contracted or paid for without him.**
   **COVERAGE IS MEASURED, WITH FIXED CONTROLS: `AIFF` 2026-09-25 (GlobeNewswire, PRESENT 07:47:17) and `MEDS` 2026-09-28 (ACCESS, ABSENT from Alpaca), reported split by price band.**
   **Band chain piece 4's date MOVED to 2026-10-05 by his re-check ruling; its path changes: the writer will not land by then, so piece 4 is built STANDALONE straight after the collector's first adapter.** Design's control is blocked on it.
-  **Session reports are PAUSED, not re-scoped; the pass bar (`43c1b7c`) is unchanged.**
+  **~~Session reports are PAUSED~~ RESUMED 2026-09-28T23:34:24Z by his ruling; the pass bar (`43c1b7c`) is unchanged.**
+
+- **▶ ORDER FROM 2026-09-28T23:34:24Z, his "resume the session reports build" (verified at his turn): (1) band piece 4 — the server ranks inside a requested range — FIRST, because every set-range report must rank inside its own range, so the writer needs the same function; built once, it serves Design's control AND the reports. (2) the two contract changes (`MissedCause`, per-report `{min,max}`). (3) the writer. (4) the checker's semantic half, then the pre-registered pass-bar test (`43c1b7c`). (5) `GET /api/reports` and the range config. 20:05 checkpoint is Ops's. Piece 4 due 2026-10-05 and first in line, so not at risk.**
 
 - **🟢 SESSION REPORTS — HIS BIGGEST COMMISSION, DESIGN COMPLETE AND APPROVED, BUILD STARTED.** *"a report to start each session... in a voice of an assistant... something that makes people feel like they have assistants working for them."* **His rulings: `"1 set ranges, 2 yes, 3 yes"` (build approved) and `"why is the run at 10pm if the ah closes at 8? the run should be at 805, then the day starts at 830 pm"`.**
   **THE ASSEMBLED DESIGN IS `docs/research/session-reports/design.md` — THIS SEAT LEADS IT** and links three seat files (`design-seat.md`, `marketing.md`, `commercial.md`) plus `facts-2026-09-18.md`, the real rows the specimens were written against. **Read that document, not this summary.**
