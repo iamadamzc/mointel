@@ -1006,6 +1006,10 @@ after 5 new-code jobs or 16:00 ET, whichever first. AIFF re-research only if org
 2 rows. **⚠️ QUALITY DEFECT raised to Research:** 2 of KNRX's 4 are Benzinga automated halt/price notices ("Shares
 Halted On Circuit Breaker... Up 302.63%") — they describe the move, not its cause, and pass symbols.length===1. Asked:
 KNRX's actual WHY NOW, a measured count of that class, the fix. Kill switch not requested.
+**Research agrees (`0757596`):** move notices to be COUNTED as a third class, not stored; classifier held for Ops's raw
+field dump; fix rides with the RE-CHECK, which **he ruled "build the re-check next" at 13:10:39Z in Research
+(verified at his turn)**. Reads sent to Ops ~10:40 ET: KNRX/FUSE stored WHY NOW + citations; raw items. Kill-switch
+rule: off iff a halt row is CITED — but the flag needs a research RESTART, so it goes to him, not flipped on a seat's call.
 
 **✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
 symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
