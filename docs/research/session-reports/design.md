@@ -272,7 +272,23 @@ engine.ts:2185        capped at highResMax ?? 250, pinned first
 
 ⇒ **This makes C stronger, not weaker: if the window is about SEEING filings early rather than DATING them, an update into the same slot serves it exactly as well as moving the roll would — and at a fraction of the risk.**
 
-**A — IS 5 MINUTES ENOUGH FOR THE FINAL AH BARS? I CANNOT CONFIRM IT FROM THIS DISK AND WILL NOT GUESS.** *The local store holds two sessions and its last-bar timestamps are contaminated by the roll itself — `2026-08-18`'s latest bar is stamped `08:23 ET the next morning`, a premarket bar filed under the prior trading date.* **That is a production measurement and it is Ops's.**
+**✅ A — ANSWERED BY OPS FROM PRODUCTION: 20:05 STANDS, WITH ~5 MINUTES OF MARGIN.** *And the measurement is built the right way round, which is why it is quotable.*
+
+```
+population   bars ts 19:00-19:59 ET, tracked symbols, ~9-11k rows/day, 09-22..09-25
+method       received_at is overwritten on every upsert, so it is the LAST-WRITE time
+             historical-source rows EXCLUDED (a restart backfill would fake late corrections;
+             there were 0 in window anyway)
+result       p99 last-write lag 0.3-0.4s, max ~30s
+             last write to ANY 19:xx bar: 20:00:00.04-.18 ET
+             0 written after 20:05 on all four days
+limits       four ordinary weekdays, no half day, last write only
+```
+
+  **THE POSITIVE CONTROL IS WHAT MAKES THE ZERO MEAN SOMETHING, and I verified its load-bearing claim rather than accepting it.** *Ops's control: the session guard tests the BAR's timestamp, not its arrival, so a 20:03 correction to a 19:59 bar WOULD have been written — it could have appeared and did not.* **Confirmed at `engine.ts:1013-1018`: `inSessionWindow(ts)` parses the OBSERVATION's `ts` and compares it to the session bounds. Arrival time is never consulted.** *Had the guard tested arrival, a late correction would have been rejected BY THE GUARD and its absence would have proved nothing — the check would have been blind to exactly the case it was run for.*
+  **This seat asked the right question and Ops asked a better one.** *I said "ask how late the last correction lands, not whether the bars arrived." Ops did that AND built a control for the answer being an artefact of the instrument — which is the half I did not specify.*
+
+**⚠️ WHAT THIS SEAT COULD NOT ANSWER, KEPT BECAUSE IT EXPLAINS WHY IT WENT TO OPS:** *The local store holds two sessions and its last-bar timestamps are contaminated by the roll itself — `2026-08-18`'s latest bar is stamped `08:23 ET the next morning`, a premarket bar filed under the prior trading date.* **That is a production measurement and it is Ops's.**
   **What I can name is the actual risk, which is not initial delivery: a minute bar for 19:59 closes at 20:00 and arrives within seconds. The exposure is LATE `updatedBar` CORRECTIONS**, which the desk already absorbs because `upsertMinuteBars` is an upsert. *So the question for Ops is not "have the bars arrived" but **"how late does the last correction land"** — and if it is routinely past 20:05, the fix is to move the checkpoint, not to weaken the report.*
 
 **D — MATCHES HIS ORIGINAL REQUEST.** *"Then one for going into Power Hour an don for AH"* → premarket ~20:30 (from 20:05, + the 22:00 filings update), into RTH from 09:25, power hour from 14:30, into AH from 16:00. **The 16:00 report goes INTO after-hours; the 20:30 report says what after-hours DID and opens the paid day. They are different reports about the same window and neither duplicates the other.**
