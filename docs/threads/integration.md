@@ -990,6 +990,11 @@ only, RESEARCH_NEWS=off kill switch). **Research enumerated onto STALE base 240f
 (merge-tree clean, 162 files). Outside the grant (spend ~$3.5 day one then ~$0.052/new item; changes WHY NOW;
 research restart): sent to Ops CONDITIONAL on his direct yes, not before 10:00 ET; put to him. Gaps he is told:
 no re-look after a NONE_FOUND job (queue.ts:235), and no coverage beyond Benzinga (MEDS stays absent).
+**RE-LOOK: Research put it to him DIRECTLY in its session** ("look again at no-catalyst names on a schedule, build
+before the range work?"; recommends yes, range ranking 10-02 → ~10-05). Scope: poll top-12 every few min, one
+multi-symbol Alpaca request, no model; a new single-symbol item on a NONE_FOUND name re-queues it. Cost BOUND ~$0.40
+typical / ~$3.4 ceiling per session vs $6.99 today. **Not re-asked by this seat.** Base-corrected enumeration
+confirmed by Research (`c2a0a09`).
 
 ### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
 
