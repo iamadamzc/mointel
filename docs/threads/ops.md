@@ -12137,3 +12137,28 @@ It did not.
 **Owed:** preflight re-check after the gate; weekend-blind checkpoint arm; the "-2m away" wording;
 the pre-deploy backup route for schema bumps (before desk_assessment_tickers.high_res); the
 first-flush gap.
+
+### QUEUE — Ops items with triggers (2026-09-28)
+
+```
+bootstrap band = record band, no multiplier   runtime.ts:862-863 + worker/anchor-loss-cohort.ts:188
+    TRIGGER  cea5ed2 confirmed in production by /proc (not merged to main -- LIVE)
+    FIRST    measure replay cost of seeding [recordMin, recordMax] vs today's [MIN*0.4, MAX*2]
+    FALLBACK when no record band is configured: today's arithmetic, so it lands inert
+    SHIPS    after cea5ed2, never before; own enumeration
+Monday capture proof                           mointel-monday-capture-check, one-time 08:30Z 09-28
+    TRIGGER  its completion notice; relay numbers to Integration
+pre-deploy backup for schema bumps             before desk_assessment_tickers.high_res
+    TRIGGER  scope this week; nothing needs the column until the session reports ship
+high_res frozen column                         after the backup route; nullable, no default
+    FIRST    verify ticker_session.high_res is written from applyHighResSelection's capped output
+deploy-path debts                              preflight re-check after the gate; weekend-blind
+                                               checkpoint arm; "-2m away" wording
+    TRIGGER  a daylight weekend window, suite green first, not in the hours around a ship
+first-flush gap (~51s backfill->SIP)           measure before designing
+billing build                                   AFTER the sign-in cut-over is proven to refuse
+```
+
+**Box read 2026-09-28 ~01:3xZ:** env file has DISCOVERY_PRICE_MIN=0.25 and NO _MAX line; the
+running worker (pid 1347535) carries DISCOVERY_PRICE_MIN=0.25 and no _MAX (MARKET_DB_PATH
+present in the same read = control). So the live band is $0.25-$20 (MAX = config default).
