@@ -1023,6 +1023,10 @@ every row SECONDARY). FUSE: crowded out by the 28-source bundle cap (non-canonic
 canonical clusters. Two canonical NEWS_FEED rows stored before interpretation never reached a 7-source bundle —
 unexplained; KNRX's did reach its bundle. Research asked to answer from code BEFORE the re-check ships (a re-queued job
 must see the row that triggered it).** This seat relayed the cap reading to him as the likely cause; corrected.
+**❌❌ AND THAT WAS WRONG TOO: source_ids (7) is the CITED set, not the bundle.** Log: "[interpret] FUSE started
+evidence=27 sources" = all 27 active, news rows included. **The rows reached the model and weren't cited. NO defect.**
+Withdrawn to Research. (Ops's read 1 had labelled source_ids "the evidence bundle the model saw"; this seat took the
+label without opening the field.)
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
@@ -1047,7 +1051,11 @@ error                                              TYPE                         
 "set up... answer waiting before 07:00 ET"         verified the CONTENT, not that it     no       Ops (the
   -- read the task prompt read-only; never asked   could EXECUTE unattended (a check                failed run)
   whether it could run with nobody to approve      never shown to run)
+"FUSE's news rows never reached the bundle"        asserted-without-opening (took a     YES      Ops
+  -- to him as unexplained, to Research as a       peer's label "source_ids = bundle";   (repeat of
+  blocker; the bundle was 27, rows included        never opened what the field holds)    06:40 class)
 ```
+**REPEAT OF A CORRECTED CLASS ~11:15 ET 2026-09-28 → warned him, hand-off proposed (session-hygiene §2).**
 
 ### OPEN WITH HIM
 
