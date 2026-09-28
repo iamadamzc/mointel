@@ -105,7 +105,9 @@ not exist on the box.
   not a weekday test. That is the same mistake preflight's checkpoint arm made on 2026-09-26.
 - **A lapsed hour ends that day's session only**, never `revokeEmail` on the account.
 - **Retry only on card update** (the portal webhook in step 6), never on a timer.
-- **One OS notification** for the warning; the surface is Design's.
+- **Two OS notifications**: at the failure and at 10 minutes left (Design §3, his direct approval;
+  an earlier relay said "one"). The second is computed from `grace_until`, the same value the band
+  reads, never from a separate timer. The surface is Design's.
 - **First paying users are invited and billed BY HAND; self-serve later.**
 - **Build APPROVED, but only after the sign-in cut-over is live and proven to refuse a non-invited
   account (steps 1-5), and nothing charges anyone until he approves the first real run.**
