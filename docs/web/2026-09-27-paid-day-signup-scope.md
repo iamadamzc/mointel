@@ -138,6 +138,21 @@ session boundary — and never a duration it computed without checking the
 boundary.** *Wording is mine to draft once the boundary in §2 is settled, because
 the sentence changes depending on the answer.*
 
+> **ALREADY SATISFIED BY OPS AND DESIGN — THIS SECTION IS CONFIRMATION, NOT A
+> GAP.** *Read in `docs/commercial/daily-billing-design/commercial.md` rather than
+> taken from the message that told me:* **Ops's schema sets `grace_until =
+> failed_at + 1h` and then `expires_at = MIN(expires_at, grace_until)`, with its
+> own note that "a failure at 19:30 ET must not EXTEND a session that ends at
+> 20:00"; Design's band prints that resulting absolute time ("ends at 07:43 ET")
+> and never a bare "1 hour".** *Which is the property above, built before this
+> seat derived it.*
+>
+> **THREE SEATS REACHED THE SAME REQUIREMENT FROM THREE DIRECTIONS** — Ops from
+> the schema, Design from the band, this seat by measuring `sessionExpiry`. *Kept
+> here because the convergence is the evidence: a requirement three independent
+> routes arrive at is stronger than any one of them, and this section would
+> otherwise read as an open item that is in fact closed.*
+
 **AND THE END OF THE HOUR HAS ITS MECHANISM ALREADY, correctly.** *`revokeEmail`
 ends live sessions in the same transaction — his "immediate", 2026-09-24.*
 **Yesterday that looked like a conflict with non-payment; his ruling resolves
