@@ -84,6 +84,22 @@ about ticks.
 
 ## GATE 1 — WHAT IS THE UNIT SOLD?
 
+> **✅ ANSWERED — TWICE, AND THE SECOND ADDS THE BILLING SHAPE. Both verified at his own turn in the
+> transcripts, 2026-09-28, by Integration.**
+>
+> - **2026-09-07 12:45Z:** *"the unit sold is everything together."* — the board, the Why Not Report
+>   and the brief as one product, not three. (`2026-09-07-which-price.md:4` recorded it; this map did
+>   not, which is why `2026-09-26-billing-onboarding-support-scope.md:269` later called it "never ruled
+>   in writing". That line was wrong.)
+> - **2026-09-27 23:47Z:** *"my plan was a subscriber pays for a days usage of everything. beginning with
+>   the first report to the end of that day's after hours is one full day."* — a DAY PASS.
+> - **The billing rulings that followed** (paid day 8pm–8pm ET, charge at sign-in, decline handling) are
+>   recorded verbatim in `threads/commercial.md` "rulings", NOT restated here. Build approved, sequenced
+>   after the sign-in cut-over proves it refuses. **Tiering by price was left open in his own words ("i
+>   dont know").**
+>
+> *The three options below are kept as the map that was answered, not as open choices.*
+
 Not answerable by engineering. **Everything downstream depends on it:**
 
 - **The board** — a live surface. Highest licensing exposure, highest reliability
@@ -141,8 +157,9 @@ desk has never been operated to a standard where an outsider depended on it.
 
 - **Auth.** Currently none worth the name. **His decision by standing rule.**
 - **Tenancy.** Nothing is keyed by user. Everything is keyed by trading date.
-- **Billing, onboarding, support, terms.**
-- **A commercial seat.** No thread owns any of the above.
+- ~~**Billing, onboarding, support, terms.**~~ **OWNED since 2026-09-26:** Commercial leads (pricing, terms
+  of sale, support), Ops the infra section, Web the stranger-facing flow; Design the payment-failed warning.
+- ~~**A commercial seat.** No thread owns any of the above.~~ **Commercial exists** (`threads/commercial.md`).
 
 ### GATE 2 — ANSWERED 2026-09-07: SAME BOARD
 
