@@ -982,6 +982,9 @@ second adapter until its terms are cleared; asked whether the band piece-4 date 
 the source landscape (every small-cap wire incl. ACCESS; what Warrior Trading/TradingView/Benzinga Pro publish as
 their sources; terms, cost, coverage per dollar vs the ~44% union), to him as options; no vendor contact/spend.
 Coverage stays a MEASURED number with MEDS 09-28 and AIFF 09-25 as fixed controls.
+**Research accepted (`3e69b96`, verified his turn 10:24:41Z):** piece 4 date HOLDS at 2026-10-02, now built ALONE right
+after the collector's first adapter (Design is blocked on it). >1-symbol items kept as aggregator mentions, not dropped.
+(The Warrior Trading lead Research flags as "elided" went to Commercial in full.)
 
 ### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
 
