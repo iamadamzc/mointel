@@ -407,11 +407,14 @@ late report cannot move a boundary that was never tied to it, and his own separa
 "1, yes" (a late report never moves a charge) is recorded for completeness though
 the clock boundary already made it true by construction.
 
-**And stage 4's product question is answered, not left open — his own words
-confirm it was the intended shape all along:** *"I look at my plan for premarket
-the night before"* is exactly *"a paid day opens with the previous session's
-report,"* said from the other direction. **This was never a shortfall; it is how he
-already uses the product, described before this document ever asked about it.**
+**And stage 4's product question DISSOLVES rather than merely gets answered — Web's
+own sharpening of its own finding (`debe4d4`), confirmed against the boundary
+above.** The question presupposed that a paid day owns the report closing its own
+session; under his 20:00-to-20:00 definition it does not — that report is the next
+day's first content, by construction, for every subscriber alike. *"I look at my
+plan for premarket the night before"* is the same fact from his own side. **Nothing
+is withheld, because "this day's own closing report" was never part of what this
+day's access was ever going to include** — see §9 item 2 for the full form.
 
 **Two more things from Web's section, still true after the final ruling:**
 
@@ -437,10 +440,20 @@ any of it.**
    No boundary code change. The ~20:30 report is the day's first content, not its
    start; the scheduled-vs-actual-publish-time question is moot under a clock
    boundary.
-2. **RULED, in his own words, though never asked as a direct question — a paid day
-   opening with the previous session's report is the intended model.** §8. *"I look
-   at my plan for premarket the night before"* describes exactly this, from his own
-   side of the product.
+2. **DISSOLVED, not merely answered — Web's own correction to this item (`debe4d4`),
+   confirmed.** §8. The question as posed ("should the closing assessment of the day
+   you paid for be visible to you") presupposed that Tuesday's paid day owns
+   Tuesday's closing report. **It does not, by his own definition: Tuesday's paid
+   day is Mon 20:00 → Tue 20:00, and the report describing Tuesday's own
+   after-hours publishes Tue ~20:30 — the first content of WEDNESDAY's paid day.**
+   Access and the paid day are the identical 24.0-hour interval (measured against
+   `sessionExpiry`: a sign-in at Mon 20:00 expires exactly Tue 20:00); nothing is
+   withheld, because "day N's own closing report" was never a thing day N's paid
+   access was ever going to include. **The late-report question also changes
+   category rather than staying open**: it is no longer a billing question (the
+   20:00 boundary can't be moved by a late report), only a question of when a day's
+   first content happens to appear — lower stakes, and not this document's to
+   carry further.
 3. **RULED — a non-trading day is not charged.** Matches this seat's recommendation
    (§6).
 4. **RULED — a lapsed hour ends only that day's session, not the account.** Matches
@@ -476,7 +489,8 @@ terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
 `2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
 Web's `web/2026-09-27-paid-day-signup-scope.md` at `21d4534` (stage 1), `b01b06e`
-(stage 2), and `9d7cc30` (stage 4, the retraction); Research's `8f52b73` and
+(stage 2), `9d7cc30` (stage 4, the retraction), and `debe4d4` (the dissolve
+correction to item 2, after his final ruling); Research's `8f52b73` and
 `9de7324` (the 20:05/20:30 design and its measurement); all read in full. His
 rulings verified via `list_events` on the Integration and Web sessions directly
 (including his final boundary ruling, ~01:20Z 2026-09-28), not taken from the relay
