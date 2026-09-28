@@ -182,13 +182,60 @@ be built on an assumption.**
 
 ---
 
+## 6. OPS'S INFRA SECTION — LANDED (at `../2026-09-28-daily-billing-infra.md`), READ IN FULL
+
+**Landed outside this folder, not inside it — noted so a future reader isn't confused
+by the path; linked here rather than moved, since Integration's register (`commercial.md`)
+is what makes it discoverable regardless of directory.** Read directly, not taken from
+the relay. **It resolves §5's open question by construction, and it does so more
+precisely than this section anticipated:**
+
+**§5's decline/outage question, settled by Ops's own state model.** Ops's `charges`
+row has three states — `PENDING`, `SUCCEEDED`, `FAILED` — and `grace_until` (the
+one-hour clock) is set only "On FAILED." **A network timeout or an unreachable
+processor is neither a decline nor a success; it should leave the row `PENDING`
+rather than writing `FAILED`, so `mointel-billing` simply retries it on its next
+pass and the one-hour clock never starts.** `FAILED` is reserved for a definite
+decline response from the processor. **This is a refinement to Ops's design, not a
+disagreement with it** — the state machine already has the right shape; the
+recommendation is which of the three states an indeterminate result should land in,
+and it should not be treated as new work since `PENDING` is already the row's
+starting state before any attempt succeeds or is declined.
+
+**Commercial's read on the three decisions Ops left for him, offered as
+recommendations, not rulings — his to make, same as everything else in this
+document:**
+
+- **Is Saturday (or any non-trading day) a charged day?** This seat's read: **no.**
+  The unit sold, per his own words, is *"a days usage of everything"* — a non-trading
+  day has no premarket report, no regular session, no after-hours; there is nothing
+  to sell that day. Charging for a day with no reports would be charging for access
+  to an empty board, which is a different product than the one he described.
+- **After the hour lapses, is the account revoked, or only that day's session
+  ended?** This seat's read: **only that day's session.** The entire appeal of a day
+  pass, by his own reasoning against monthly commitment, is that a bad day costs
+  nothing beyond itself. Revoking the account over one failed payment reintroduces
+  exactly the commitment friction a day pass is meant to avoid — tomorrow's sign-in
+  attempts payment fresh, and either succeeds (the card issue was transient) or fails
+  again (and refuses at the door, the ordinary case, not a special revocation).
+  `revokeEmail`'s "immediate" mechanism stays reserved for what it was built for —
+  fraud, a ban — not repurposed as the everyday consequence of a declined card.
+- **Automatic retry, or only on card fix?** This seat's position, §2 above, unchanged
+  by Ops's section: **event-driven, on card update, not polled.** Ops's design is
+  compatible with either — `mointel-billing` "claims PENDING rows" however it's
+  scheduled — so this is a product choice layered on infrastructure that supports
+  both, not a constraint the infra forces either way.
+
+---
+
 ## SOURCES
 
 `docs.stripe.com/payments/save-and-reuse`; `docs.stripe.com/api/idempotent_requests`;
 `stripe.com/pricing` (dispute fee, already quoted in the billing scope);
 `lib/auth/expiry.ts:51`; `lib/auth/callback.ts:145-146`; `about.seekingalpha.com/
 terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
-`2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`. His
-rulings verified via `list_events` on the Integration session, not taken from the
-relay alone. A search for a day-pass-specific refund comparable returned nothing on
-point; recorded as absence in §4 rather than assumed resolved.
+`2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
+`2026-09-28-daily-billing-infra.md`, read in full. His rulings verified via
+`list_events` on the Integration session, not taken from the relay alone. A search
+for a day-pass-specific refund comparable returned nothing on point; recorded as
+absence in §4 rather than assumed resolved.
