@@ -228,6 +228,49 @@ document:**
 
 ---
 
+## 7. DESIGN'S SECTION — LANDED (`daily-billing-design/design-seat.md`), READ IN FULL, ONE CONFIRMATION GIVEN
+
+**Design asked this seat to confirm one reading against his ruling: does a second
+decline (a failed retry) keep the ORIGINAL end time, or does the hour restart?**
+**Confirmed: the original end time stands. A retry does not reset the clock, only a
+SUCCESSFUL retry clears it.** His words support this directly — *"you have 1 hour to
+fix this or your session is over"* describes one hour, from the failure, full stop;
+*"1 hour. regardless of time"* is about WHEN the hour can land, not a licence to
+re-issue it. **Design's own reasoning is the decisive part, not just this seat's
+agreement with it: a retry that reset the clock would let a bad card buy unlimited
+hours by failing repeatedly right as the deadline approaches** — the opposite of what
+a one-hour deadline is for.
+
+**This sharpens a precise requirement for whoever builds Ops's `charges` row that
+neither prior section stated explicitly, and it belongs here because it's exactly the
+kind of ambiguity this desk has been burned by before: Ops's design sets `grace_until
+= failed_at + 1h` "On FAILED," and does not say whether `failed_at` is written once,
+at the FIRST failure in a paid day, or rewritten on every subsequent failed retry.**
+**It must be the former.** `failed_at` (and therefore `grace_until`) should be set
+once, on the transition into `FAILED` from `PENDING`, and a retry that fails again
+should record the attempt without touching either field. **Flagged to Ops as a
+build-time requirement, not assumed satisfied by the design as written** — the
+document doesn't get this wrong, it simply doesn't say, and this is exactly the kind
+of unstated assumption that reads correctly on a first pass and fails on a second
+decline nobody tested for.
+
+**The second thing Design flagged — that the OS notification carries no report text,
+so it doesn't reopen §4's session-reports investment-advice analysis — confirmed,
+and worth stating precisely rather than just agreeing.** §4's analysis (in
+`docs/research/session-reports/commercial.md`) turns on whether content is
+market commentary about specific securities; a billing notification ("your payment
+failed, 9 minutes left") names no ticker, no price, no market fact of any kind — it
+is an account-status notice, categorically outside that analysis, not a borderline
+case inside it. **Design is right to write this down rather than let a later seat
+point at "the desk already pushes OS notifications" as precedent for pushing report
+content without re-running §4's test.**
+
+**The OS-notification permission question itself (Design's §3/§7) is his, not this
+seat's or Ops's — a product preference about how intrusive a warning may be outside
+the app, with no commercial or licence question attached either way.**
+
+---
+
 ## SOURCES
 
 `docs.stripe.com/payments/save-and-reuse`; `docs.stripe.com/api/idempotent_requests`;
@@ -235,7 +278,8 @@ document:**
 `lib/auth/expiry.ts:51`; `lib/auth/callback.ts:145-146`; `about.seekingalpha.com/
 terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
-`2026-09-28-daily-billing-infra.md`, read in full. His rulings verified via
-`list_events` on the Integration session, not taken from the relay alone. A search
+`2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
+all read in full. His rulings verified via `list_events` on the Integration session,
+not taken from the relay alone. A search
 for a day-pass-specific refund comparable returned nothing on point; recorded as
 absence in §4 rather than assumed resolved.
