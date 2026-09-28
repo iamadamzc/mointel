@@ -961,8 +961,11 @@ SIGN-IN              built on main, zero in production; his cut-over (OAuth cred
 
 - **KNRX halt rows 106001/106002** are cited by v2375's CYCLE call (not the catalyst). Trip: either in ANY
   catalyst.evidenceSourceIds → Ops tells this seat + Research → retiring them is HIS. Ops watches on box reads.
-- **Post-ship of dca4a04:** first re-queue with trigger NEWS_ITEM, and a "halt/move notices" count > 0. Until
-  then "configured, unproven".
+- **Post-ship of dca4a04:** re-queue PROVEN (job 5397 ARAY). Halt filter still unproven, and **the poll line
+  (`recheck.ts:120-122`) can NEVER show it** — it has no halt field. Watch `research_jobs.collector_report`
+  newsFetchDetail for ", H halt/move notices" (`collect.ts:158`, printed only when H > 0; opened at dca4a04)
+  PLUS no new NEWS_FEED row with that headline. Needs a research job on a halted name; the two KNRX rows
+  predate the filter and do not count. Ops watches on box reads.
 - **`source_ids` on a research version is the CITED set** (`lib/research/interpret/pipeline.ts:384`), not the
   bundle; the bundle size is the "[interpret] X started evidence=N sources" log line. Three seats confused them today.
 
