@@ -968,8 +968,20 @@ tiers             OPEN. Flat price is the only measure the desk can observe. A $
 **MEDS: today's ACCESS Newswire release (Tollo Health / "Health Lives Here") is NOT in Alpaca News as of 06:19 ET.**
 Ops, read-only from the box: symbols=MEDS since 09-26 = 1 item (09-26 Benzinga GLP-1 piece, LLY/MEDS/NVO); control =
 all symbols since 09-28 00:00 ET, 90 items, 100% benzinga, 0 hits. **Desk's WHY NOW showed the 09-16 8-K (Helomics).**
-Second primary-wire miss after AIFF (GlobeNewswire 09-25); n=2 and SELECTED as misses, so not a rate. Routed to
-Research (research.md:301/303). The collector ("nothing blocks it but time") may not close this case class.
+~~Second primary-wire miss after AIFF~~ **❌ CORRECTED ~06:40 ET by Research (verified, research.md:252): AIFF was a
+HIT** — Benzinga carried its GlobeNewswire release at 07:47:17 ET on 09-25, 44s before the desk's job; the desk missed
+it because it never queries this feed. **Named cases: 1 hit (AIFF), 1 miss (MEDS).** A rate exists: Ops's five-session
+top-12 query (09-18..09-25) ~23% primary, ~47% any, ~44% union with the issuer feed. MEDS adds a named wire: ACCESS
+Newswire items reach it only via a Benzinga rewrite. Unmeasured: whether the desk's issuer feed carried MEDS's release.
+
+### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
+
+```
+error                                              TYPE                                 repeat?  caught by
+"AIFF was a second miss" -- to him and Research    asserted-without-opening (read the   no       Research
+  (the AIFF probe was a HIT at 07:47:17 ET)        pre-probe research.md:301 as current;
+                                                   :183 on screen said coverage answered)
+```
 
 ### OPEN WITH HIM
 
