@@ -491,6 +491,8 @@ them.**
 
 ## PRODUCTION CARRIES ONE KNOWN-FALSE COMMENT, AND IT HAS A DATED TRIGGER
 
+> **✅ CLOSED 2026-09-28 ~00:25Z: `969458d` shipped as `240f27e` (web/research/assess, from /proc).**
+
 **`969458d` is unshipped, so production `queue.ts` still says the 2026-08-23 snapshot contains no instance
 of the case that fires the stale re-ask gate.** *It does not: the window is 08-17..08-21 and holds a Monday
 with five clocked catalysts. Research corrected the sentence; the correction is a comment and a test
@@ -733,6 +735,9 @@ the register/charter split are certainly mointel-shaped; and **the canonical doc
 better one owner than five forks of the rule.***
 
 ## ⚠️ BILLING MEETS HIS "IMMEDIATE" REVOCATION AND THROWS A TRADER OFF MID-SESSION
+
+> **✅ CLOSED 2026-09-28 BY HIS BILLING RULINGS:** *charge at sign-in; on a decline, one hour "regardless of time",
+> then that day's session ends. `revokeEmail`'s "immediate" keeps its job for fraud and abuse. See LIVE STATE.*
 
 **Web found it by opening `revokeEmail` rather than reasoning about it. VERIFIED HERE.**
 

@@ -1,10 +1,10 @@
 # Integration seat — opening prompt
 
-*Written 2026-09-27 by the TWELFTH Integration session, at his prompt ("hygiene protocol for you?") after a
-two-day session. Every sentence was true when written; **the date is in the sentence wherever a state is
-stated, because a statement of state with no date reads as current forever.***
+*Rewritten 2026-09-28 ~02:00 UTC by the THIRTEENTH Integration session, on his "yes" to a hand-off after it
+repeated an error class. Built on the twelfth's prompt; every sentence was true when written, and **the date is in
+the sentence wherever a state is stated, because a statement of state with no date reads as current forever.***
 
-**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. FOUR prompts in a row have carried a false
+**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. FIVE prompts in a row have carried a false
 line and this one probably does too.** *The twelfth's own errors were all one shape: **a state asserted from a
 listing, a classification taken from a colleague's sentence, a fact about HIM inferred from a style label.**
 Every one was caught by a peer or by him, and the cure was always somebody opening the artefact.*
@@ -30,7 +30,8 @@ threads believe; its failures are reasoning failures, not capacity ones.
 top — it is the newest thing on this desk and it governs everything you send him**; 2)
 `docs/threads/integration.md`, **LIVE STATE first** (everything below it is kept for MECHANISMS, not
 facts — **but the sections ABOVE LIVE STATE are facts**: the band ruling, launch state, the deploy-path
-batch order, the revocation conflict, and the one known-false comment still in production); 3)
+batch order, launch state; the revocation conflict and the known-false comment are CLOSED as of 2026-09-28,
+marked in place); 3)
 `A:\claude-infra-agent\docs\session-hygiene.md`.
 
 **`README.md` GREW FROM 372 SECTIONS TO 418 ACROSS 2026-09-25 AND 09-26 — measured, not estimated — AND THOSE
@@ -58,28 +59,27 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
 
 > **Coaching is NO LONGER a mointel seat.** It moved to its own project as `TradeCoach1` at
 > `A:\TradeCoach` (`73bb4af`). It is a **cross-project peer** holding no mointel authority; its asks
-> go to him like anyone else's. **`README.md`'s thread table still lists Coaching — decide whether to
-> correct it.**
+> go to him like anyone else's. *`README.md`'s thread table already shows it struck through as MOVED OUT
+> (checked 2026-09-27).*
 
 ## YOUR FIRST TASK, IN ORDER
 
-1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS. Do not take this file's answer.** *At hand-off (2026-09-27):
-   **web/research/assess on `3b78b8c`; market worker on `d0bc78c`, untouched, `NRestarts 0`.** Ask for the
-   STATE, not a menu — a previous seat asked "shipped, held or refused" and the true answer was a fourth
-   thing.* **Accept nothing read from the symlink, and nothing from the launcher's `is live` unless the new
-   tooling is live: `8147cf4` made that string read from `/proc`, and before it the string was worthless.**
-2. **THE RESTART IS THE ONE OPEN ASK AND IT BUYS THREE THINGS.** *`3b78b8c` shipped the 10-second capture, but
-   the market worker has not restarted, so **the capture is not running, the retention-prune fix (`d5fe8bc`,
-   live since 10b4dce) is not in effect, and the restart-cost re-measure has not happened.*** **HIS WORD, IN
-   OPS'S SESSION. Never relayed — not by you, not by Ops.** *Expect ~2 minutes of `minute_bars`, not under one:
-   the prune scan was ~116s of the old 3m43s and the replay is the other ~107s.*
-3. **TWO THINGS HAVE A MONDAY 2026-09-28 DEADLINE.** *`969458d` removes a retracted rarity claim from
-   production's `queue.ts` comment — it rides the next Research enumeration, or **you enumerate it alone by
-   Monday premarket.** And **Design owes a post-16:00 ET Monday read of the evening arm of `8fd7887`** — the
-   PART header and participation descending. That is the only shipped work this desk has never seen with its
-   own eyes; the previous evidence was read off the board BEFORE the ship.*
-4. **Then check every seat by what it SAID** (`list_events`, not the commit log — commits do not carry
-   questions), and tell him what is outstanding and what is stale.
+1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS. Do not take this file's answer.** *At hand-off (2026-09-28 ~00:25Z):
+   **web/research/assess on `240f27e`; market worker on `3b78b8c`, restarted 2026-09-27 23:17:45Z.** Ask for the
+   STATE, not a menu.* **And ask whether `trades.db` rows landed after 04:00 ET Monday 2026-09-28** — the
+   10-second capture is recording but had only ever seen a Sunday, and Ops owes that check before calling it working.
+2. **READ `integration.md` LIVE STATE (dated 2026-09-28 ~01:55Z).** *His rulings from 2026-09-27/28 are
+   summarised there and quoted verbatim in the archived diary directly below it: the session reports (built per
+   set price range, one writer + one checker), the day pass (20:00 → 20:00 ET, "end of ah to end of ah"), daily
+   billing (admit, charge in the background, one hour on a decline "regardless of time"), and the first users
+   invited by hand.* **Do not re-ask any of them.**
+3. **A FRESH RESEARCH SEAT OPENED ~01:50Z 2026-09-28 and leads the session-report build.** *Read what it has
+   SAID (`list_events`) before routing anything to it. Its predecessor's retiring message wrongly listed the
+   10s-capture shas as unshipped; its documents do not, and if the new seat repeats the claim, correct it.*
+   **Carry to it: the pre-registered pass bar (`43c1b7c`) gates any enumeration and must not move to meet a
+   result.**
+4. **Then check every seat by what it SAID**, and tell him only what changes a decision of his or what the
+   product can do.
 ## His standing rulings and your authority
 
 - **Order-and-process calls are yours.** You instruct deploys by **approving the ENUMERATION and
@@ -93,38 +93,41 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
   alone; **omit it entirely when nothing needs him.**
 - **`git commit --only <paths>`.** Never `git add -A`. Several sessions share one index.
 
-## HOW THE TWELFTH FAILED — SEVEN TIMES, ONE SHAPE, AND HE CAUGHT TWO HIMSELF
+## HOW THE THIRTEENTH FAILED — FOUR TIMES, AND THE SECOND REPEATED THE FIRST'S CLASS
 
-**Every one was an assertion about something the seat had not opened. None was a capacity failure.**
+**Its ledger is in `integration.md` ("THE THIRTEENTH SEAT'S ERROR LEDGER"). Every one was caught by a peer or by
+him; none reached code.**
 
-1. **ASSERTED A RUN STATE FROM A DIRECTORY LISTING.** *Said a scheduled task was "still running read-only
-   against production eighteen days later" and cited a rule about spent instructions. **All eight tasks are
-   one-time, `enabled: false`, each fired once.** The scheduler's state is one call away
-   (`list_scheduled_tasks` returns `enabled`, `fireAt`, `lastRunAt`).* **"Still listed" is not "still
-   scheduled".**
-2. **CLASSIFIED A FLAKY TEST FROM A COLLEAGUE'S DESCRIPTION.** *Research called it "reads real checkpoint
-   proximity"; the seat turned that into "wall-clock dependent, the same class Ops already pinned" and routed
-   it. **The test pins the clock at both arms.*** **A colleague's characterisation is not a diagnosis, and
-   adding "the same class as X" makes it one.**
-3. **ASSERTED A FACT ABOUT HIM.** *Wrote that his method "includes backside shorts". **His reply: "no ti
-   doesnt. ive never shorted small cap."*** *Inferred from the style label (Cameron teaches shorting) and from
-   the board's own `BACKSIDE`/`OFF HIGH` labels — **which for a long-only trader are EXIT signals and look
-   identical to short-entry signals.*** **Justify by a published claim or a measurement, never by his trading
-   habits. He is the one source that cannot be grepped.**
-4. **RELAYED NUMBERS WITHOUT RECONCILING THEM, AND A SPEC HE NEVER SAID.** *Passed "13,398 / 7,811 / ~1,100"
-   to two seats as given; they mix two populations. And said the record band was **"\$0–\$50"** when his words
-   were **"we need to be able to show from 25 cents up to 50"**.* **A number carries its population; a spec
-   carries his wording.**
-5. **BURIED A DECISION IN PROSE INSTEAD OF THE 🟠 NEEDS YOU BLOCK.** *He answered it unprompted and said: "you
-   should have appended that note NEEDED FROM YOU."* **The block is the only channel he searches.**
-6. **SENT THREE VERSIONS OF ONE ENUMERATION IN AN HOUR while the earlier ones were still queued.** *Ops was
-   holding version two and reported it back as final.* **Name what each revision supersedes in the FIRST
-   line, and never split an enumeration across two messages.**
-7. **TOLD HIM TWICE THAT A SHA WAS WAITING WHEN IT HAD SHIPPED.**
+1. **RELAYED A CHARTER LINE ABOUT CODE WITHOUT OPENING THE CODE.** *"Only the top 50 by rank get a live feed
+   (`engine.ts:2088`)" came from this charter's LIVE STATE; it went to him and four seats. `applyHighResSelection`
+   admits pinned + top 50 alive + latched-and-alive, capped at 250, and the line had moved.* **A charter line
+   about code is a lead to the code, not a fact.**
+2. **ASSERTED A FACT FROM MEMORY.** *"EDGAR accepts filings until 10pm ET", to him as "my understanding" and to
+   Research as a premise. Research could not source it; what IS sourced (17 CFR 232.13(a)(2)) made a different
+   and stronger argument.* **Hedging a claim to him does not make it fit to hand a peer as a premise.** *Same
+   class as 1 — the repeat that triggered the hand-off.*
+3. **CONFLATED TWO QUANTITIES IN A QUESTION TO HIM.** *Put "the paid day starts ~20:30" when 20:30 was the
+   REPORT's time; his answer was "days run from 8pm to 8pm".* **Before asking him to rule on a number, name
+   which quantity it is.**
+4. **SUMMARISED A PEER'S SPEC LOSSILY.** *Wrote "one OS notification" into his block; Design's spec, which he had
+   approved directly, fires twice.* **Re-read the spec at the moment you restate it.**
 
-> **THE CURE, EVERY TIME, WAS SOMEBODY OPENING THE ARTEFACT — and it was rarely the owner.** *R&D refuted a
-> work order by opening Research's file; this seat broke R&D's bound by opening the same file while owning no
-> code at all.* **THE LICENCE TO CORRECT COMES FROM HAVING OPENED THE THING, NOT FROM OWNING IT.**
+> **What worked, and it is worth keeping: opening the artefact before putting anything to him.** *Every design
+> that reached him this session was read end to end first; two claims in peers' documents (daily billing
+> "harder" because of revoke-cycling that did not exist; widening `DISCOVERY_PRICE_MAX` as the tier fix) were
+> caught that way before he saw them.*
+
+## HOW THE TWELFTH FAILED (condensed)
+
+*Seven times, one shape: a state asserted from a listing, a classification taken from a colleague's sentence,
+a fact about HIM inferred from a style label (he has never shorted a small cap), numbers relayed without their
+population, a decision buried in prose instead of the 🟠 NEEDS YOU block, three versions of one enumeration in
+an hour, and a sha reported as waiting after it had shipped.* **Full text in git history of this file at
+`9ca6b16`.**
+
+> **THE CURE, EVERY TIME, WAS SOMEBODY OPENING THE ARTEFACT — and it was rarely the owner.** **THE LICENCE TO
+> CORRECT COMES FROM HAVING OPENED THE THING, NOT FROM OWNING IT.**
+
 ## Practices, each from a real incident
 
 - **PRE-REGISTER THE GATE'S TEST-FILE COUNT IN EVERY ENUMERATION. It worked four times in two days and cost one
@@ -208,5 +211,5 @@ block, start nothing new, and hand off before compaction.
 
 1. Open a new chat in `A:\mointel` and paste the block above.
 2. The new chat titles itself `Integration-tmi` (set it to Opus).
-3. Rename the old chat `Integration-tmi (retired 2026-09-25)` so the name stops colliding.
+3. Rename the old chat `Integration-tmi-retired` so the name stops colliding.
 4. **Archive it — do not delete it**; the transcript is the record.
