@@ -997,7 +997,14 @@ typical / ~$3.4 ceiling per session vs $6.99 today. **Not re-asked by this seat.
 **BUILT + GATED: `7820810`** (ops/news-collector) = 7046465 alone on 1eaa938, content re-diffed here; gate 162/162,
 2488 green, 10:50Z. Ops read its two files (researchRepo.ts, worker/research.ts — the latter this seat did not flag
 as Ops's) and checked failure isolation. Ships on his direct yes, after 10:00 ET. AIFF 09-25 row is the positive
-control; MEDS "nothing" only proves it ran. Base-corrected enumeration
+control; MEDS "nothing" only proves it ran. **His yes at his own turn in Ops: 13:56:42Z "ship the news collector"**
+(verified in jsonl). Launcher armed 10:03 ET, full gate.
+
+**✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
+symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
+minute_bars 158,308; market 3b78b8c NRestarts 0. **❌ The scheduled check DID NOT DELIVER:** app closed at 08:30Z,
+fired 10:02Z and 10:17Z, both stalled on Bash permission prompts. Now disabled. Lesson in ops.md: pre-approve with
+"Run now" or it is not a check. Base-corrected enumeration
 confirmed by Research (`c2a0a09`).
 
 ### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
@@ -1007,6 +1014,12 @@ error                                              TYPE                         
 "AIFF was a second miss" -- to him and Research    asserted-without-opening (read the   no       Research
   (the AIFF probe was a HIT at 07:47:17 ET)        pre-probe research.md:301 as current;
                                                    :183 on screen said coverage answered)
+"everything you've approved to ship is live"       answered a 3-state question in 2      no       HIM
+  -- the approved Alpaca collector was unbuilt     (diffed code; approvals are unbuilt
+                                                   so a diff cannot see them)
+"set up... answer waiting before 07:00 ET"         verified the CONTENT, not that it     no       Ops (the
+  -- read the task prompt read-only; never asked   could EXECUTE unattended (a check                failed run)
+  whether it could run with nobody to approve      never shown to run)
 ```
 
 ### OPEN WITH HIM
