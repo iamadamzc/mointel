@@ -26,7 +26,8 @@ customer or vendor contacted.**
 > supersedes the 'day starts ~20:30' framing, which was mine: it conflated the
 > report time with the boundary."* **Web's original stage-1 number (20:00) was
 > right all along; its reasoning (avoid a floating clock) was not the reason he
-> gave, but the number matches.** The scheduled-vs-actual-publish-time question
+> gave, but the number matches — a live warning for whoever revisits this number
+> later, spelled out in full in §8.** The scheduled-vs-actual-publish-time question
 > (§8, formerly open) is now **moot** — a late report cannot move a charge or a
 > boundary that was never tied to it. **The previous-day's-report product question
 > (§9, formerly open) is now CONFIRMED intentional, in his own words** — see §9.
@@ -401,8 +402,23 @@ premarket plan "the night before." **Stage 3's ~20:30-start framing is supersede
 and Integration owns that correction rather than this seat relaying it as someone
 else's**: *"it supersedes the 'day starts ~20:30' framing, which was mine: it
 conflated the report time with the boundary."* **Stage 1's number was right; its
-reasoning was not the reason he gave, and the number is what matters.** The
-scheduled-vs-actual-publish-time question stage 3 left open is now **moot** — a
+reasoning was not the reason he gave.**
+
+> **WARNING FOR WHOEVER NEXT ARGUES TO MOVE THIS NUMBER, per Web's own sharpening
+> of this point (`7591a8d`) — the agreement on today's answer hides a disagreement
+> about every future one, and it must be recorded so nobody trades on the wrong
+> half of it.** Web's original argument was structural: a boundary must not float,
+> and ANY fixed clock — 19:00, 22:00, midnight — satisfies that equally. **His own
+> reason is narrower and does not transfer: the boundary must sit where his evening
+> review sits, because that is specifically what he is buying** (*"I look at my
+> plan for premarket the night before"*). **The two reasons agree only on today's
+> number.** A future proposal to move the boundary to some other fixed time would
+> satisfy Web's structural objection while failing his actual reason — so *"Web
+> recommended 20:00 and he agreed"* is the sentence to never write, because a later
+> reader takes exactly that shortcut and credits an argument he never adopted.
+> **Whoever revisits this number must satisfy his reason, not this document's.**
+
+The scheduled-vs-actual-publish-time question stage 3 left open is now **moot** — a
 late report cannot move a boundary that was never tied to it, and his own separate
 "1, yes" (a late report never moves a charge) is recorded for completeness though
 the clock boundary already made it true by construction.
@@ -489,8 +505,9 @@ terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
 `2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
 Web's `web/2026-09-27-paid-day-signup-scope.md` at `21d4534` (stage 1), `b01b06e`
-(stage 2), `9d7cc30` (stage 4, the retraction), and `debe4d4` (the dissolve
-correction to item 2, after his final ruling); Research's `8f52b73` and
+(stage 2), `9d7cc30` (stage 4, the retraction), `debe4d4` (the dissolve
+correction to item 2, after his final ruling), and `7591a8d` (the reasons-versus-
+number warning); Research's `8f52b73` and
 `9de7324` (the 20:05/20:30 design and its measurement); all read in full. His
 rulings verified via `list_events` on the Integration and Web sessions directly
 (including his final boundary ruling, ~01:20Z 2026-09-28), not taken from the relay
