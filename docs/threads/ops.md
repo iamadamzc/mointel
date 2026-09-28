@@ -12194,3 +12194,6 @@ on his "ship the news collector". Full gate 162/162 at launch; down 3s; research
 "news: alpaca". **Unproven:** the two post-ship jobs (KNRX, FUSE) ran on the OLD research pid
 before cutover, so newsFetchDetail is correctly absent; 0 NEWS_FEED rows exist yet. Re-read after
 jobs run on the new pid before anyone quotes coverage.
+**PROVEN 10:26 ET:** first new-code job KNRX: newsFetchDetail "alpaca: read 10 items (4 single-symbol,
+6 multi-symbol)" and exactly 4 NEWS_FEED rows for KNRX (halts, NYSE notice, going-concern).
+FUSE followed with 2 rows. Read -> classify -> store end to end.
