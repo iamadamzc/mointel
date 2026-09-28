@@ -998,7 +998,10 @@ typical / ~$3.4 ceiling per session vs $6.99 today. **Not re-asked by this seat.
 2488 green, 10:50Z. Ops read its two files (researchRepo.ts, worker/research.ts — the latter this seat did not flag
 as Ops's) and checked failure isolation. Ships on his direct yes, after 10:00 ET. AIFF 09-25 row is the positive
 control; MEDS "nothing" only proves it ran. **His yes at his own turn in Ops: 13:56:42Z "ship the news collector"**
-(verified in jsonl). Launcher armed 10:03 ET, full gate.
+(verified in jsonl). **✅ LIVE 10:07:07 ET: web/research/assess on `7820810`**, full gate 162/162, down 3s; research
+logged "news: alpaca" 14:19:26Z; market still 3b78b8c. **CONFIGURED, UNPROVEN:** the 2 post-ship jobs ran on the
+old pid. Positive control set with Ops: a new-code job with s>0 single-symbol AND a matching NEWS_FEED row; re-read
+after 5 new-code jobs or 16:00 ET, whichever first. AIFF re-research only if organic fails, and it's his.
 
 **✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
 symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
