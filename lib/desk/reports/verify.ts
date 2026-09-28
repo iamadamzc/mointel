@@ -125,12 +125,42 @@ export function supportedValues(row: ReportFactRow): number[] {
  * making the judgement this function exists to avoid making.
  */
 export function numbersIn(text: string): number[] {
+  /*
+   * TIMESTAMPS ARE EXCISED BEFORE ANY NUMBER IS READ, AND THE DEFECT CUT BOTH WAYS.
+   *
+   * Design raised the strict direction as a lead: a report line naturally reads
+   * "at 3.10 at 09-25-style clock time", and a clock time yielded three numbers
+   * instead of one, so EVERY TIMED SENTENCE WOULD HAVE BEEN STRUCK -- on a
+   * design that requires every price to carry its time.
+   *
+   * MEASURING IT FOUND THE PERMISSIVE DIRECTION TOO, WHICH IS WORSE. An ISO date
+   * yielded a year and two NEGATIVE numbers, because the hyphens parse as minus
+   * signs -- so a date could match a stored percent change and VALIDATE a
+   * sentence nobody checked.
+   *
+   * A timestamp is not a claim about a row's values, so neither reading reaches
+   * the allowlist.
+   *
+   * NOT SOLVED HERE, AND WORTH ITS OWN CHECK: a stated time IS a claim -- it
+   * should be the CHECKPOINT's time, and a report quoting one checkpoint's clock
+   * over another's rows is the wrong-row defect wearing a clock. That needs the
+   * checkpoint passed in, so it is a second pass rather than a silent widening
+   * of this one.
+   */
+  const scrubbed = stripTimestamps(text);
   const out: number[] = [];
-  for (const match of text.matchAll(/-?\d+(?:,\d{3})*(?:\.\d+)?/g)) {
+  for (const match of scrubbed.matchAll(/-?\d+(?:,\d{3})*(?:\.\d+)?/g)) {
     const value = Number(match[0].replace(/,/g, ''));
     if (Number.isFinite(value)) out.push(value);
   }
   return out;
+}
+
+/** ISO dates and clock times, replaced with a space. Exported so it is testable alone. */
+export function stripTimestamps(text: string): string {
+  return text
+    .replace(/\d{4}-\d{2}-\d{2}/g, ' ')
+    .replace(/\d{1,2}:\d{2}(?::\d{2})?/g, ' ');
 }
 
 /**
