@@ -5,28 +5,31 @@ warning, Web the save-card flow — into this same folder, one file each.** Writ
 2026-09-27/28, against `e41da7b`. **DESIGN ONLY: no build, no provider account, no
 customer or vendor contacted.**
 
-> **HEADLINE, CORRECTED TWICE MORE SINCE THIS WAS FIRST WRITTEN — READ THIS FIRST,
-> AND READ THE CORRECTION, NOT THE ORIGINAL CLAIM BELOW IT.** **HE HAS RULED THIS
-> DIRECTLY, to Web, 2026-09-27: "the after hours report is the start of the day."**
-> That overrules the clock-based recommendation this document endorsed below (struck
-> in §3, kept rather than deleted so the record shows what was considered and
-> refused) — **the paid day starts with the report, not with the 20:00 session
-> boundary.** **And the report's time is real: ~20:30 ET, from a NEW ~20:05
-> after-hours-complete checkpoint — designed and approved (Research, `8f52b73`;
-> measured safe by Ops, `9de7324`) but not yet built**, which is why a grep of the
-> current tree finds nothing there and a first pass (this seat's, then
-> independently Web's) read that absence as "there is no 20:30." **There is; it
-> just isn't shipped.** The existing 22:00 recap (`NEXT_DAY_RECAP`) becomes an
-> *update* into the same paid day under this composition, not the day's start.
-> **One sub-question remains genuinely open, Integration's to put to him and not
-> yet answered as of this document's last edit: if the 20:30 report runs late one
-> evening, does the paid day still start at its SCHEDULED time, or does lateness
-> push the start back?** Integration and Web both favour scheduled-time-governs —
-> Web's reason, the 20:05 checkpoint has ~25 minutes of headroom before 20:30, so a
-> scheduled boundary is comfortably servable — but this document does not assume an
-> answer. **A second, separate product question surfaced independently by Web (§8,
-> §9 item 2): under this boundary, each paid day opens with the PREVIOUS session's
-> report, never its own — named, not resolved.**
+> **HEADLINE, FINAL — RULED DIRECTLY BY HIM ~01:20Z 2026-09-28, CLOSING THE WHOLE
+> BOUNDARY QUESTION. READ THIS, NOT THE HISTORY BELOW IT, FOR THE CURRENT ANSWER —
+> the history stays in §8 because this document has been wrong twice on the way
+> here and a vanished record would hide that.** His words, verified at his own turn:
+>
+> > *"days run from 8pm to 8pm... you are right, ah report is the first report of
+> > the new trading day. think of it this way - i look at my plan for premarket the
+> > night before, so my trading day starts in the evening the day before and ends
+> > after hours the next day. end of ah to end of ah."*
+>
+> **THE PAID DAY IS 20:00 ET TO 20:00 ET — a clock boundary, identical to
+> `sessionExpiry`'s existing one. NO BOUNDARY CODE CHANGES.** The ~20:30
+> after-hours report is the new day's FIRST CONTENT, not its start time — a
+> distinction his own words draw precisely ("I look at my plan... the night
+> before," i.e. the new day opens with him reviewing what the day that just ended
+> produced). **This supersedes every intermediate stage in §8**, including this
+> seat's own recent endorsement of a ~20:30 START and Integration's own framing
+> that produced it — Integration's words, owned rather than relayed: *"it
+> supersedes the 'day starts ~20:30' framing, which was mine: it conflated the
+> report time with the boundary."* **Web's original stage-1 number (20:00) was
+> right all along; its reasoning (avoid a floating clock) was not the reason he
+> gave, but the number matches.** The scheduled-vs-actual-publish-time question
+> (§8, formerly open) is now **moot** — a late report cannot move a charge or a
+> boundary that was never tied to it. **The previous-day's-report product question
+> (§9, formerly open) is now CONFIRMED intentional, in his own words** — see §9.
 
 ---
 
@@ -300,7 +303,7 @@ the app, with no commercial or licence question attached either way.**
 
 ---
 
-## 8. WEB'S SECTION — LANDED, THEN HE RULED THE OPPOSITE OF ITS RECOMMENDATION, THEN WEB'S OWN CORRECTION HAD A SECOND ERROR — ALL THREE STAGES KEPT, NOT JUST THE LAST
+## 8. THE DAY-BOUNDARY HISTORY, FIVE STAGES, CLOSED BY HIS OWN FINAL RULING — ALL FIVE KEPT, NOT JUST THE LAST
 
 **Three stages, each superseding the last, each worth keeping visible rather than
 silently replaced with the final answer — this is exactly the shape the desk's own
@@ -382,68 +385,85 @@ The residual mismatch (a sign-in between 20:00 and 20:30 gets the next paid day 
 thirty minutes early) still runs in the buyer's favour, unchanged in direction from
 earlier drafts, only shrunk from two hours to thirty minutes.
 
-**Two more things from Web's section that belong in this assembled document rather
-than only in its own file:**
+**Stage 5 — HIS FINAL RULING, direct, verified at his own turn, ~01:20Z 2026-09-28,
+closing all four prior stages at once:**
 
-- **Self-serve vs. invite-by-hand for the first paying users is still his, not
-  settled by the day-pass ruling.** Web's own words: *"his card-on-file model
-  describes what happens once somebody is paying; it does not say the first paying
-  users arrive self-serve."* If hand-invite still holds (Web's 2026-09-26
-  recommendation, never withdrawn), most of the page work in Web's §5 waits, and the
-  live public sentence at `app/page.tsx:432` (*"There are no public sign-ups"*) stays
-  true for longer — **but the day-boundary question above still needs an answer
-  either way**, because the paid day is defined the same way regardless of how the
-  first users reach it.
+> *"days run from 8pm to 8pm... you are right, ah report is the first report of the
+> new trading day. think of it this way - i look at my plan for premarket the night
+> before, so my trading day starts in the evening the day before and ends after
+> hours the next day. end of ah to end of ah."*
+
+**The paid day is 20:00 ET to 20:00 ET — the same clock `sessionExpiry` already
+uses. No boundary code changes.** The ~20:30 report is the new day's first content,
+not its start — his own reasoning draws that line precisely: the new day opens with
+him reviewing what the day that just ended produced, the way anyone reviews a
+premarket plan "the night before." **Stage 3's ~20:30-start framing is superseded,
+and Integration owns that correction rather than this seat relaying it as someone
+else's**: *"it supersedes the 'day starts ~20:30' framing, which was mine: it
+conflated the report time with the boundary."* **Stage 1's number was right; its
+reasoning was not the reason he gave, and the number is what matters.** The
+scheduled-vs-actual-publish-time question stage 3 left open is now **moot** — a
+late report cannot move a boundary that was never tied to it, and his own separate
+"1, yes" (a late report never moves a charge) is recorded for completeness though
+the clock boundary already made it true by construction.
+
+**And stage 4's product question is answered, not left open — his own words
+confirm it was the intended shape all along:** *"I look at my plan for premarket
+the night before"* is exactly *"a paid day opens with the previous session's
+report,"* said from the other direction. **This was never a shortfall; it is how he
+already uses the product, described before this document ever asked about it.**
+
+**Two more things from Web's section, still true after the final ruling:**
+
+- **First paying users: RULED — invited and billed by hand, self-serve later.**
+  Web's 2026-09-26 recommendation was never withdrawn and is now his direct word
+  via Integration's summary. Web's public save-card page and the `app/page.tsx:432`
+  change (*"There are no public sign-ups"*) wait for self-serve; nothing about the
+  hand-invite path needs either.
 - **Admission never required a payment-aware gate.** Web confirmed `lib/auth/
   gate.ts`'s existing constraint survives unchanged: the allowlist stays the single
   authority on admission; the payment fact only decides who gets written to it and
-  when. Consistent with this document's own read throughout — worth having Web's
-  independent confirmation on file rather than only this seat's.
+  when. Unaffected by the boundary ruling above.
 
 ---
 
-## 9. EVERY OPEN DECISION ACROSS ALL FOUR SECTIONS, GATHERED IN ONE PLACE
+## 9. EVERY DECISION ACROSS ALL FOUR SECTIONS — CLOSED, PER HIS RULING ~01:20Z 2026-09-28
 
-**For Integration's assembly. Nothing below is new — each is stated in its own
-section above, collected here so the ask to him is one list rather than four
-documents.**
+**Every item on the list this document has carried is now closed. Nothing below is
+new — each ruling is quoted where it was made, collected here so nobody re-asks
+any of it.**
 
-1. **RULED — the paid day starts with the after-hours report, at his own word to
-   Web, not the 20:00 session clock.** §8. **One narrower question remains, live:
-   does a late report still start the day at its scheduled ~20:30, or does lateness
-   push the boundary back?** Integration recommends scheduled-time-governs, not yet
-   answered. **Do not re-ask whether the report or the clock governs — that part is
-   closed.**
-2. **Not "is thirty minutes of access missing" — should the closing assessment of a
-   day you paid for be visible to you?** §8 (Web's `9d7cc30`; framing Web's own).
-   Under his model the answer is defensibly no, and it is symmetrical for every
-   subscriber — **this is a product choice, not a shortfall, unless a page ever
-   implies the report belongs to the day it opens rather than the one it closes.**
-   No such page exists yet, so today it is a copy constraint on whatever page Web
-   eventually writes, not a defect anyone has shipped. Routed to him through this
-   document only — **Web is not separately raising it, so it must not be dropped
-   here.**
-3. **Is a non-trading day (Saturday) a charged day?** §6. This seat's recommendation:
-   no — nothing is sold that day.
-4. **After the hour lapses, is the account revoked, or only that day's session
-   ended?** §6. This seat's recommendation: only that day.
-5. **Automatic retry, or only on card fix?** §6. This seat's position: event-driven,
-   on card update.
-6. **Do the first paying users arrive self-serve, or still invited and invoiced by
-   hand?** §8, Web's. Not settled by anything in this design; his 2026-09-26
-   recommendation (hand-invite) stands until he says otherwise.
+1. **RULED — the paid day is 20:00 ET to 20:00 ET, "end of ah to end of ah."** §8.
+   No boundary code change. The ~20:30 report is the day's first content, not its
+   start; the scheduled-vs-actual-publish-time question is moot under a clock
+   boundary.
+2. **RULED, in his own words, though never asked as a direct question — a paid day
+   opening with the previous session's report is the intended model.** §8. *"I look
+   at my plan for premarket the night before"* describes exactly this, from his own
+   side of the product.
+3. **RULED — a non-trading day is not charged.** Matches this seat's recommendation
+   (§6).
+4. **RULED — a lapsed hour ends only that day's session, not the account.** Matches
+   this seat's recommendation (§6).
+5. **RULED — retries happen only on card update, not automatically.** Matches this
+   seat's position (§6).
+6. **RULED — first paying users are invited and billed by hand; self-serve later.**
+   Web's public save-card page and the `app/page.tsx:432` change wait for
+   self-serve and are not part of this build.
+7. **RULED — the OS notification ships, exactly as Design's §3 scoped it**
+   (once at failure, once at 10 minutes left, permission already granted only, no
+   sound) — his words to Design, *"yes, send the notification,"* verified against
+   Design's own committed file.
+8. **RULED — daily billing is BUILD APPROVED, sequenced strictly after the sign-in
+   cut-over is proven to refuse a non-invited account, and nothing charges anyone
+   until he separately approves the first real run.** The build owners are each
+   section's owner: Ops the infra, Design the warning, Web the pages (hand-invite
+   path only, for now), this seat the terms-of-sale requirements (§1).
 
-**Not a decision — already closed by his own words and recorded so it isn't
-re-asked:** whether a retry resets the one-hour clock (no, confirmed §7); whether
-the gate needs to learn about payment (no, confirmed independently by this seat and
-Web, §8); whether the OS notification reopens the session-reports investment-advice
-question (no, §7); **the OS notification itself — RULED, his words to Design,
-2026-09-28: *"yes, send the notification"*.** Scope exactly as Design's §3 already
-specified: once at failure, once at 10 minutes left, only where browser permission
-already exists, never prompted by the failure itself, no sound, same end time as
-the band. Verified against Design's own committed file
-(`daily-billing-design/design-seat.md:141-147`), not taken from the relay alone.
-**Do not put this back to him** — it is answered.
+**Already closed earlier and re-confirmed rather than re-asked:** a retry does not
+reset the one-hour clock (§7); the gate never needed to learn about payment (§8);
+the OS notification does not reopen the session-reports investment-advice question
+(§7).
 
 ---
 
@@ -457,8 +477,8 @@ terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
 Web's `web/2026-09-27-paid-day-signup-scope.md` at `21d4534` (stage 1), `b01b06e`
 (stage 2), and `9d7cc30` (stage 4, the retraction); Research's `8f52b73` and
-`9de7324` (the 20:05/20:30 design and
-its measurement); all read in full. His rulings verified via `list_events` on the
-Integration and Web sessions directly, not taken from the relay alone. A search for
-a day-pass-specific refund comparable returned nothing on point; recorded as absence
-in §4 rather than assumed resolved.
+`9de7324` (the 20:05/20:30 design and its measurement); all read in full. His
+rulings verified via `list_events` on the Integration and Web sessions directly
+(including his final boundary ruling, ~01:20Z 2026-09-28), not taken from the relay
+alone. A search for a day-pass-specific refund comparable returned nothing on
+point; recorded as absence in §4 rather than assumed resolved.
