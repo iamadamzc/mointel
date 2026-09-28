@@ -286,6 +286,32 @@ a sign-in Tue 20:15  =  buying WEDNESDAY
 > Wednesday.** *A real question, answered by a definition rather than by a
 > mechanism — which is why it needed him and not a design.*
 
+> ## ⚠ THE NUMBER AGREED. THE REASONING DID NOT. DO NOT READ THIS AS RATIFICATION.
+>
+> **This seat's argument for 20:00 was structural: a boundary must not float,
+> because a report is an event and a clock is a constant.** *His reason is not
+> that.* **It is how he uses the product — he reviews the prior close the evening
+> before, so the day he is buying starts when that review starts.** *Relayed by
+> Commercial 2026-09-27.*
+>
+> **THE TWO REASONS PREDICT DIFFERENT THINGS, AND THE DIFFERENCE IS DORMANT ONLY
+> WHILE THE ANSWER IS THE SAME.** *My argument is satisfied by ANY fixed clock
+> time — 19:00, 22:00, midnight — so a future proposal to move the boundary to
+> another constant would pass it.* **His reason is not: it requires the boundary to
+> sit where his evening review sits.** *So whoever next proposes moving this number
+> must satisfy HIS reason, not this file's.*
+>
+> **Recorded because "Web recommended 20:00 and he agreed" is the sentence a later
+> reader will take away, and it would credit an argument he never adopted.** *The
+> desk's own rule: record the ruling, not the reason you happen to like.*
+
+**AND THE PREVIOUS-DAY'S-REPORT SHAPE IS CONFIRMED INTENTIONAL, NOT MERELY
+TOLERATED.** *He described it unprompted and in his own words — "ah report is the
+first report of the new trading day".* **So a paid day opening with the prior
+session's report is DESIGN, and a future page that implies otherwise is the
+defect.** *That is a stronger footing than "defensible and symmetrical", which is
+where this file left it an hour ago.*
+
 **THE RESIDUAL MISMATCH THIS FILE CARRIED THROUGH THREE STAGES IS ALSO GONE.**
 *Session day and paid day were 2 hours apart at 22:00 and 30 minutes apart at
 20:30. At 20:00 they are the same instant.* **There is now ONE definition of the
