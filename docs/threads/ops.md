@@ -12113,3 +12113,27 @@ available -- wait for the gate.**
 **The checkpoint arm is weekend-blind.** Assess logged nothing Saturday: the schedule resolves
 against the market calendar, so no checkpoint fires. Preflight refused Saturday deploys to
 protect jobs that do not exist. The trading arm knows the weekday; this one must too. Owed.
+
+### Sunday 2026-09-27 — the restart, and the comment ship
+
+**Market restart on his word: ExecMainStart 2026-09-27 23:17:45Z**, pid 1347535, on 3b78b8c.
+Start->SIP 54s, 0 lock errors, 0 research restarts. **A Sunday number: 0 bars replayed**, so it is
+the floor, not the weekday cost. The prune's date scans now take ~0.9s each through the index, with
+no write lock. **~51s remains between "backfill complete" and SIP, most likely the first flush
+(recompute + ticker_session upsert of ~9,170 symbols). Unmeasured; the next process-shape item.**
+tradeCapture = RECORDING; trades.db v1, 0 rows (Sunday). **Rows must be seen landing after
+04:00 ET Monday before capture is called working.**
+
+**240f27e (969458d, comment only) CONFIRMED**: web/research/assess on 240f27e, down 2s, sweep clean.
+Two earlier gates refused on this PC's memory: ESLint then vitest died "Fatal process out of
+memory" with Windows COMMIT at 2.3/36.2 GB free while 11 GB of RAM showed free. **Free RAM is
+not free commit: read FreeVirtualMemory.** The gate refusing an unrunnable check was correct.
+
+**AH correction lateness (for the 20:05 checkpoint):** received_at is overwritten per write, so it
+is the last correction. 09-22..09-25: last write to any 19:xx bar <= 20:00:00.2 ET, 0 after 20:05,
+max lag 30s. The session guard tests bar ts, not arrival, so a late correction could have landed.
+It did not.
+
+**Owed:** preflight re-check after the gate; weekend-blind checkpoint arm; the "-2m away" wording;
+the pre-deploy backup route for schema bumps (before desk_assessment_tickers.high_res); the
+first-flush gap.
