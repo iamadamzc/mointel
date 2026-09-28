@@ -863,6 +863,19 @@ this seat's ledger         the "HOW THE TWELFTH FAILED" section of docs/integrat
                            all seven typed and attributed -- which is what §3d is written from.
 ```
 
+## THE THIRTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
+
+```
+error                                                      TYPE                                repeat?  caught by
+"only the top 50 get a live feed (engine.ts:2088)"        asserted-without-opening (inherited  no       Commercial
+  -- relayed from this charter to him + 4 seats            charter line, never opened the fn)
+"EDGAR accepts filings until 10pm ET"                      asserted-without-opening (memory,    YES      Research
+  -- to him as "my understanding", to Research as premise  no source)
+"the paid day starts ~20:30"                               conflated two quantities (report     no       him ("8pm to 8pm")
+  -- the report time put to him as the day boundary        time vs boundary)
+```
+**The repeat of the class is the trigger. Warned him and proposed a hand-off, which is his permission to give.**
+
 ## LIVE STATE — AS OF 2026-09-27, AT THE TWELFTH SEAT'S HAND-OFF
 
 *A SNAPSHOT. Everything dated above this section is a FACT and is not repeated here; everything below it is the
