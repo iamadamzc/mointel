@@ -42,7 +42,12 @@ idempotency key. The one-hour clock must never start because the processor was d
 (Commercial's refinement, `e6bc1ee`.) Process shape is Ops's call. It's one more unit, like migrate.
 
 **4. A failed charge ends the session one hour later, regardless of time.**
-On FAILED: `grace_until = failed_at + 1h`, and in the SAME transaction every live session for
+On the FIRST PENDING->FAILED transition for that paid day, and only then: `failed_at` is written
+ONCE and `grace_until = failed_at + 1h`. **A retry that fails again never rewrites either.**
+Otherwise a card that keeps declining would buy a fresh hour on every attempt, the opposite of
+"1 hour, regardless of time". Only a SUCCESSFUL retry clears them (the write is guarded
+`WHERE failed_at IS NULL`, so it cannot move the clock). And in the SAME transaction as that
+first failure, every live session for
 that user and `et_date` gets `expires_at = MIN(expires_at, grace_until)`. MIN matters: a failure
 at 19:30 ET must not EXTEND a session that ends at 20:00. If the card is fixed within the hour,
 the charge is retried; on success, `expires_at` is restored to the day boundary, recomputed by
