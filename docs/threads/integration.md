@@ -896,6 +896,11 @@ archived below, marked. **Re-verify production before acting: ask Ops for `/proc
 
 ### PRODUCTION (Ops, from /proc, 2026-09-28 ~00:25Z)
 
+**✅ RE-CONFIRMED by Ops's own ssh + clock 2026-09-28 01:08:44Z:** web/research/assess `240f27e` (pids 1355803/868/925,
+started 00:32:42-43Z, NRestarts 0); market `3b78b8c` pid 1347535 since 23:17:45Z, NRestarts 0; no deploy unit
+running. **Monday trades.db check: NO trigger set** — Ops answers it the first time it is active after 08:00Z; a
+scheduled read is his to approve.
+
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
 market worker             3b78b8c   RESTARTED 2026-09-27 23:17:45Z on his word. pid 1347535, NRestarts 0.
