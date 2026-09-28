@@ -1019,6 +1019,10 @@ them. Whether stale rows are correct history or noise is Research's to rule, wit
 **~10:55 ET: re-check BUILT (`bb5d351`) + halt filter (`4d8cd79`).** Field fingerprint FAILED (same shape carries
 SCYX/SOAR/MTEK/BEAG catalysts), so the filter reads headlines. NEWSWIRE authority is INERT on this feed (empty content;
 every row SECONDARY). FUSE: crowded out by the 28-source bundle cap (non-canonical old rows), confirm read with Ops.
+~~crowded out by the cap~~ **❌ FALSIFIED by Ops's read: v2376 has 7 source_ids; 106029/106030/106031 are distinct
+canonical clusters. Two canonical NEWS_FEED rows stored before interpretation never reached a 7-source bundle —
+unexplained; KNRX's did reach its bundle. Research asked to answer from code BEFORE the re-check ships (a re-queued job
+must see the row that triggered it).** This seat relayed the cap reading to him as the likely cause; corrected.
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
