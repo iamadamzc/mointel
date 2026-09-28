@@ -165,6 +165,19 @@ record. He has it from this seat directly as well.
   **🔒 THE CHECKER'S PASS BAR IS PRE-REGISTERED (`43c1b7c`) AND GATES ANY ENUMERATION: six seeded defect classes, 6/6 struck, zero false passes, AND a control that it strikes NOTHING on uncorrupted reports.** *Model spend authorised for sizing and that test ONLY.*
   **TWO CONTRACT CHANGES I OWE: the `MissedCause` union (so an unobservable cause is unrepresentable rather than merely forbidden) and per-report `{min,max}` (so a redrawn range cannot silently mislabel a stored report).**
 
+- **🔗 HIS BAND RULING (2026-09-26) IS NOT LIVE — THE CHAIN, ITS ORDER, AND A TRIGGER ON EACH PIECE.** *Put back by Integration 2026-09-28 ~01:30Z; the hand-off prompt dropped it. Written 2026-09-28T01:40Z.* Ruling and site table: the `cea5ed2` item further down.
+  **VERIFIED BY THIS SEAT, NOT RELAYED:** the `lib/market/engine.ts` difference between `240f27e` and `origin/main` is **line-for-line the content of `cea5ed2`** (the log also names `af998eb`/`5e16676`, whose content `240f27e` already carries as picks, `3b78b8c` among them). **Nothing constructs the engine with `capturePriceMin`/`capturePriceMax`** (`engine.ts:1676-1677` fall back to the qualify pair), so it lands inert. *That `240f27e` is what production runs is Integration's and Ops's reading, not this seat's.*
+
+| # | piece | owner | trigger |
+| --- | --- | --- | --- |
+| 1 | **Enumerate `cea5ed2` for production** — inert, built, tested | **Research** | **NOW, 2026-09-28, ahead of the report writer** — it is an enumeration, not a build, and pieces 2 and 4 are blocked on it. ⚠️ it is `lib/market/engine.ts`, so it only takes effect on a **market-worker restart**, which is Ops's to take from him directly; it rides the next restart he approves rather than asking for its own. |
+| 2 | Bootstrap band = record band, **no multiplier** (`runtime.ts:862-863`, `worker/anchor-loss-cohort.ts:188`), replay cost measured first | Ops | after 1 is on the market worker |
+| 3 | Box env ceiling `DISCOVERY_PRICE_MAX`/capture ceiling 20→50 | Ops | after 2, and it needs a restart (~3.5 min of lost capture, larger with the band) |
+| 4 | **Server ranks inside a REQUESTED range** (Design's spec `4b7fca4`: range in the request, caption echoes the payload's range, stored ordinals omitted server-side when the range ≠ the band they were computed in) | **Research** | **built as part of the session-report writer**, not after it: *each set-range report must rank inside its own range* (`design.md` §rulings), which is the same function. So it lands with the writer; the API parameter follows the same week. **Fallback: if the writer slips past 2026-10-02, it is built on its own.** Design's control is blocked on it. |
+| 5 | Per-range live-feed allocation (`engine.ts:2088` still grants over the qualify band) | Research + Ops | **HELD** until 3 lands and a load test is sized; not before. *Do not widen anything assuming it is solved.* |
+
+  **Why 1 goes ahead of the writer rather than after it (Integration proposed after):** it costs one enumeration message, and everything downstream waits on it being in production. The writer is unaffected either way.
+
 - **⚠️ NOT STARTED, ASSIGNED 2026-09-25: A HEARTBEAT WRITE MUST NOT BE ABLE TO KILL THE WORKER.** `researchRepo.ts:901`, `writeResearchHealth`. Research died three times on `SQLITE_BUSY`; `busy_timeout` 5000ms against a 110s startup gap. **Ops owns the long startup write; this half is mine, and it is the third site of that lock-crash class.**
 
 - **⚠️ NOT BUILT: THE ALPACA NEWS (BENZINGA) COLLECTOR.** His ruling *"yep, build the alpaca."* **Every question is answered and recorded** — licence (Commercial), coverage (~47% any / ~23% primary, Ops), the union (~44% of top-12, +3 names/session), latency (44s on the one sample), the filter (`symbols.length === 1`), and the source attribution (`benzinga`, never `globenewswire`). **Nothing blocks it but time.**
