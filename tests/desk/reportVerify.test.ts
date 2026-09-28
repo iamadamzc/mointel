@@ -152,3 +152,40 @@ describe('the allowlist refuses by default', () => {
     expect(numbersIn('down -21.6% on the session')).toEqual([-21.6]);
   });
 });
+
+/**
+ * Timestamps are not numeric claims, and the defect cut both ways.
+ *
+ * Design raised the strict direction: a line reads "at $3.10 at 09:25", and a
+ * clock time yielded [3.1, 9, 25] — so every timed sentence would have been
+ * struck, on a design that requires every price to carry its time.
+ *
+ * Measuring it found the permissive direction, which is worse: an ISO date
+ * yielded [2026, -9, -18], because the hyphens parse as MINUS SIGNS. A date
+ * could therefore match a stored percentChange of -18.0 and VALIDATE a sentence
+ * nobody had checked.
+ */
+describe('timestamps are excised, not verified', () => {
+  it('does not read a clock time as two numbers', () => {
+    expect(numbersIn('at $3.10 at 09:25')).toEqual([3.1]);
+  });
+
+  it('does not read an ISO date as a year and two NEGATIVE numbers', () => {
+    // The permissive half: -18 would have matched a -18.0 percent change.
+    expect(numbersIn('since Fri close on 2026-09-18')).toEqual([]);
+  });
+
+  it('still reads a real percent and a real price', () => {
+    expect(numbersIn('up 149.4% at $4.34')).toEqual([149.4, 4.34]);
+  });
+
+  it('accepts a timed line about a real row, which is the case that was broken', () => {
+    expect(
+      verifyLine({ ticker: 'IMCC', text: 'IMCC was $4.34 at 14:30, up 149.4%.' }, ROWS),
+    ).toEqual([]);
+  });
+
+  it('a seconds-precision time is excised too', () => {
+    expect(numbersIn('the last write landed at 20:00:00')).toEqual([]);
+  });
+});
