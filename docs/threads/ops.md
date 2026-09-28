@@ -12177,3 +12177,14 @@ collection count matching the pre-registered one, and nothing changed between th
 launch. Every use is named in that ship's ops.md line with the gate's time and counts.** Anything
 short of that waits for the gate. (It supersedes the 2026-09-26 one-relaunch wording, whose last
 clause was a standing refusal, not a grant.)
+
+### 2026-09-28 Mon — 10-SECOND CAPTURE PROVEN; the scheduled check failed to deliver
+
+Read by hand ~10:0x ET: trade_buckets 2026-09-28 = 43,629 rows, 353 symbols, 04:00:00 -> 09:58:10 ET,
+3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; minute_bars today 158,308
+(control). Market worker unchanged since 23:17:45Z.
+
+**mointel-monday-capture-check did NOT deliver.** It fired late (app closed at 08:30Z) at 10:02Z and
+10:17Z, and both runs stalled on Bash permission prompts with no one to approve them. The creation
+notice said to "Run now" first to pre-approve; I did not. **A scheduled read that needs tool
+approvals is not a check until it has been run once by hand.**
