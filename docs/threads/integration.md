@@ -930,6 +930,11 @@ MORE NEWS SOURCES    Commercial scoping the landscape (ACCESS Newswire, what War
                      Benzinga Pro use, terms, cost, coverage per dollar vs the ~44% union). To HIM as options; no
                      vendor contact or spend. Research adds no second adapter until Commercial clears its terms.
                      Controls in every coverage number: AIFF 09-25 (present in Alpaca), MEDS 09-28 (absent).
+                     2026-09-28 ~15:25Z: DELIVERED as e43b3c0 (docs/commercial/2026-09-28-newswire-coverage-
+                     landscape.md). Read end to end by the fifteenth seat, HELD from him pending four fixes sent to
+                     Commercial: (1) "Warrior Trading is built on TradingView" is unsourced, and the headline
+                     ("its edge is a licence you cannot get") depends on it; (2) the AIFF control is absent;
+                     (3) 23%/47%/44% are three different columns shown as one; (4) the §4 table overstates §5.
 PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the market worker; (2) Ops bootstrap band
                      = record band, trigger cea5ed2 on the MARKET WORKER (his next direct restart); (3) ceiling
                      20->50 + restart; (4) server ranks inside a requested range -- Research, STANDALONE, due 2026-10-05
