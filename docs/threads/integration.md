@@ -1030,6 +1030,10 @@ label without opening the field.)
 **~11:25 ET: filter narrowed (`43f4094`)** to /circuit breaker/ + /stock now up|down N/ only; 6 recall cases pinned.
 Enumeration bb5d351 → 4d8cd79 → 43f4094 onto 7820810 replayed HERE in a temp worktree: clean, 163 files. Sent to Ops
 CONDITIONAL on his direct yes.
+**FUSE CLOSED from code (opened here: `lib/research/interpret/pipeline.ts:384`):** source_ids = union of catalyst,
+structure, cycle and supply-ledger evidenceSourceIds = the CITED set. **Corollary: KNRX's halt rows 106001/2 WERE cited
+— in structure or cycle, not the catalyst.** The two stored rows remain; retiring them is a production-data deletion
+and his, not asked.
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
