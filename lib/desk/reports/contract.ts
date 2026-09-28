@@ -37,8 +37,13 @@ export interface ReportCheckpointRef {
 
 export interface ReportLine {
   ticker: string | null;
-  /** Whether this ticker had a live trades/quotes feed. False means minute data only. */
-  liveFeed: boolean;
+  /**
+   * Whether this ticker had a live trades/quotes feed. False means minute data
+   * only. NULL MEANS NOT RECORDED -- a catch-up report cannot establish feed
+   * state, because `high_res` lives on the live row, not the frozen checkpoint.
+   * A null is never a false.
+   */
+  liveFeed: boolean | null;
   text: string;
 }
 
@@ -67,8 +72,6 @@ export interface SessionReport {
   publishedAt: string;
   /** Published past its tolerance, by the same rule as a checkpoint's `generatedLate`. */
   late: boolean;
-  /** Over the names IN THIS REPORT — never the desk's subscription size. */
-  coverage: { named: number; withLiveFeed: number };
   /** Null when the checker struck it. Never replaced by anything else. */
   headline: string | null;
   sections: ReportSection[];

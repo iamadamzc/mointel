@@ -402,9 +402,14 @@ function ReportBody({
                     </button>
                   ) : null}
                   {line.text}
-                  {line.ticker && !line.liveFeed ? (
+                  {line.ticker && line.liveFeed === false ? (
                     <Qualifier title="This name had no live trade feed, so the report used minute bars for it. A quiet sentence about it may mean we did not see its trades, not that there were none.">
                       minute data
+                    </Qualifier>
+                  ) : null}
+                  {line.ticker && line.liveFeed === null ? (
+                    <Qualifier title="This report could not record whether this name had a live trade feed. It does not mean the name had none.">
+                      feed not recorded
                     </Qualifier>
                   ) : null}
                   {line.ticker && outsideBoardRange(priceOf(line.ticker), board, range) ? (
