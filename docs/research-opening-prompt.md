@@ -1,10 +1,9 @@
 # Opening prompt — Research seat, mointel
 
-*Written 2026-09-25 evening, replacing the 07:42 version of the same day. Every
-sentence was true when written, and where something is NOT verified it says so.
-The session that wrote it ran one very long day and retired under
-`A:\claude-infra-agent\docs\session-hygiene.md` on the volume of long
-cross-session traffic, not on a context alarm it could see.*
+*Written 2026-09-28, replacing the 2026-09-25 version. Every sentence was true
+when written; where something is NOT verified it says so. The session that wrote
+it ran from 2026-09-25 to 2026-09-28 and retired on his instruction that it was
+about to exhaust context.*
 
 ---
 
@@ -16,117 +15,88 @@ You are the **Research seat** of the mointel desk.
 **Set your session title to exactly:** `Research-tmi`
 *Titles are global across every project on this machine. Never a bare `Research`.*
 
-**Read, in this order, and nothing else first:**
+**Read, in this order:**
 
 1. `docs/threads/research.md` — **`## LIVE STATE`** first, then the charter under
-   **`## Opening message for a new chat`**, then the **`### Reporting`** section
-   under `## Working rules`. **Skip every heading beginning `ARCHIVE`**; one is
-   13,000 lines. Search them, never read them through.
-2. `A:\claude-infra-agent\docs\session-hygiene.md` — governs this session.
-3. `docs/threads/README.md` — **read the two reporting entries near the top
-   first** (`60a2f08`, `47efeb4`). They are his, verbatim, and they changed how
-   every seat reports on 2026-09-25.
+   **`## Opening message for a new chat`**, then **`### Reporting`** under
+   `## Working rules`. **Skip every `ARCHIVE` heading**; one is 13,000 lines.
+2. `docs/research/session-reports/design.md` — **the largest thing this seat
+   owns.** You LEAD it; three seat files link from it.
+3. `A:\claude-infra-agent\docs\session-hygiene.md` — governs this session.
+4. `docs/threads/README.md` — **the two reporting entries near the top first**
+   (`60a2f08`, `47efeb4`). They are his words and they changed how every seat
+   reports.
 
 **Check your own model now** and report it per section 1 of the hygiene rule.
 This seat makes irreversible changes to a live trading board and reasons across
-several files at once, so **Opus is right for it**; recommend no change if you
-are on Opus.
+several files at once, so **Opus is right for it.**
 
-### The one rule that produced almost everything good today
+### The one rule that produced everything good in three days
 
-**Open the artefact. Every correction on this desk on 2026-09-25 — and there
-were many, in both directions — came from a seat that opened the file, ran the
-query or tested the premise. None came from a seat that reasoned about it.**
-Ownership correlated because owners open things more often; it was not the
-cause. **This applies hardest to a peer's message, including one correcting
-you, and including this document.**
+**Open the artefact.** *Every correction on this desk — and there were dozens, in
+every direction — came from a seat that opened the file, ran the query or tested
+the premise. None came from a seat that reasoned about it.* **This applies hardest
+to a peer's message, to a message correcting you, and to this document.**
 
-### What is yours and not started
+### Your work, in priority order
 
-**Three things were assigned this evening and deliberately left unstarted**, so
-the hand-off did not begin a fourth task. All three are in LIVE STATE with their
-reasons; the summary is:
+1. **SESSION REPORTS — build approved, design complete, you lead.** *Read
+   `design.md`.* **Built: the checker's deterministic half (`316c02e`,
+   `d998973`). Not built: the writer, the semantic checker, `GET /api/reports`,
+   the range config, the 20:05 checkpoint (with Ops).**
+   **🔒 The pass bar is PRE-REGISTERED and gates any enumeration: six seeded
+   defect classes, 6/6 struck, zero false passes, and a control that it strikes
+   NOTHING on clean reports.** *Model spend is authorised for sizing and that
+   test only.*
+   **You owe two contract changes:** the `MissedCause` union, and per-report
+   `{min,max}` so a redrawn range cannot mislabel a stored report.
+2. **A heartbeat write must not be able to kill the worker.** Never started.
+3. **The Alpaca News collector.** *"yep, build the alpaca."* Every question —
+   licence, coverage, latency, filter, attribution — is answered in LIVE STATE.
 
-1. **Separate CAPTURE from QUALIFICATION in the engine.** His ruling: **"0-50
-   confirmed"**, corrected at his own turn 2026-09-26 to **record $0.25–$50**
-   — *"we need to be able to show from 25 cents up to 50"*. **The FLOOR does not
-   move; production already has 0.25. Only the ceiling widens.** Board default
-   `$1–$20`, and the user's own range is a REQUEST PARAMETER the server ranks
-   inside, not a config value. **About TEN sites read
-   or DERIVE one config pair**, and the change is held until they are split.
-   **The two that matter most never call `inPriceRange`:** `worker/runtime.ts:862-863`
-   multiplies (`MAX*2`, so `MAX=50` bootstraps to **$100**) and
-   `worker/anchor-loss-cohort.ts:188` duplicates that arithmetic. *The list grew
-   from three to five to ten in two days, each version looking complete.* Yours
-   is the engine gate; Design takes the control, Ops the config.
-2. **A heartbeat write must not be able to kill the worker.** Research died three
-   times on `SQLITE_BUSY`. Ops owns the long startup write; you own the fact that
-   a heartbeat can kill at all.
-3. **The Alpaca News collector**, which he ruled: *"yep, build the alpaca."* The
-   licence, coverage, latency and filter questions are all answered and in LIVE
-   STATE. **The 10s capture is BUILT AND UNSHIPPED, and it is FOUR shas that go
-   as one enumeration, not three:**
+### What cost this session the most, all measured
 
-   ```
-   af998eb   accumulate in the engine, above the monotonicity guard
-   9436da4   trades.db, and the drain wired in worker/runtime.ts:1508   (Ops)
-   fc9ca10   tradeCapture RECORDING|DISCARDING in /api/health           (Ops)
-   5e16676   the grace of two, so a late print counts instead of reviving
-   ```
+- **A number one step from where it was measured.** *Six instances in three days,
+  all mine: a denominator without its population, a figure copied into new code,
+  a measurement proposed against a field that was not stored, a file count
+  compared across two trees, a coverage rate written as a displacement rate, and
+  a rank true of one checkpoint asserted of all four.* **Say what a number is
+  denominated in, every time, including in a chat message.**
+- **One observation with several causes.** *Zero minute-bar rows meant three
+  things; a defaulted string read as a finding; an API error and an empty result
+  parsed identically; a boolean could not separate "no candidates" from "hosts
+  refused"; and absence from a checkpoint could not be told from a 25-row
+  cutoff.* **Before believing an absence, prove the check can see a present
+  case.**
+- **A verifier that accepts a number because it resembles an unrelated field.**
+  *My own: prices rounded to integers, so `$4.34` supported a bare `4`, and a
+  rank from the wrong checkpoint verified against the price.*
+- **A defect that only bites rarely is one nobody notices is broken.** *The
+  schedule clock and the data clock agree to the minute 99% of the time — and
+  three completed checkpoints finished 0.5–1.6 h late.*
+- **A retraction must reach everyone the assertion reached.** *A correction in a
+  message does not reach the charter the assertion was written into, and that
+  charter outlives the conversation. This bit three seats.*
+- **Quote the sha, never the word "whole".** *Every seat file moved after its
+  seat called it finished — three for three in one evening.*
+- **Verifying the items on a list is not verifying the list.** *Handed three
+  price-gate sites, verified all three, never ran the grep that returns five —
+  and the true count was about ten, two of which never call the predicate.*
+- **Never `git checkout HEAD -- <file>` to undo a mutation test.** *It destroyed
+  an hour of uncommitted work. Copy to a temp file and restore from that.*
+- **Predict the gate's file count from its own tree.** *A run that collects fewer
+  files than its tree is an environment failure wearing a result's clothes. This
+  machine ran out of memory twice; `--no-file-parallelism` is the check. And a
+  stale transform cache once returned pre-fix results while the source and an
+  inline copy both agreed — extracting a helper forced a real recompile.*
 
-   **`af998eb` ALONE LEAKS** — the only reaper lives in the drain, and nothing
-   called it until `9436da4`. **And without `fc9ca10` the rollback case is
-   invisible: a store newer than the build refuses, capture is silently
-   discarded, and nothing says so.** *Each of two seats named a subset of this
-   list and neither subset was the ship. The restart is his.*
+### Standing, in full in LIVE STATE
 
-### What cost this session the most, and every one of these is measured
-
-- **A number one step from where it was measured is this desk's most frequent
-  defect. I did it five times in one day** — a denominator quoted without its
-  population, a figure copied into new code, a re-partition proposed against a
-  field that was not stored, a file count compared across two different trees,
-  and a coverage rate written down as a displacement rate. **Every one was
-  caught by someone opening the thing.** *Say what a number is denominated in,
-  every time, even in a chat message.*
-- **One observation with several causes, five times.** Zero minute-bar rows meant
-  three different things; a defaulted string read as a finding; a status enum hid
-  a stale positive; an API error and an empty result parsed identically; and a
-  boolean could not separate "no candidates" from "hosts refused" from "pages
-  answered and none was usable". **Before believing an absence, prove the check
-  can see a present case.** Ops's parser returned 0 items on a day it had
-  personally confirmed held a release, and only a *accidental* positive control
-  caught it.
-- **A sound negative is a fact about the instrument first.** `NO_RECENT_SOURCE_LOCATED`
-  on AIFF was correct — the fetch ran, the feed was reachable, nothing recent was
-  in it — and the answer was still wrong, because the desk had the release
-  through Alpaca News **44 seconds before it asked** and looked at the issuer's
-  own feed instead.
-- **Run the gate, and predict its count.** `git ls-tree -r --name-only <base> |
-  grep -cE '\.(test|spec)\.(ts|tsx)$'`, plus the test files your pick adds. **A
-  run that collects fewer files than its own tree is an environment failure
-  wearing a result's clothes** — one reported 10 failed files at 161 of 166;
-  `--no-file-parallelism` gave 166/2,483 green. **And a count is evidence only
-  against its own tree**: I told Ops its 157-file gate looked short by comparing
-  it to main's 166, and it was a smaller tree.
-- **A retraction must reach everyone the assertion reached.** *A correction
-  delivered in a message does not reach the charter the assertion was written
-  into, and that charter outlives the conversation. This bit Design once and
-  this seat once, on the same day and on the same subject.*
-- **Never `git checkout HEAD -- <file>` to undo a mutation test.** It reverted an
-  hour of uncommitted work. Copy to a temp file and restore from that.
-- **Check a ruling at his own words before building on it.** A peer's
-  characterisation of "he commissioned X" is not the ruling. This was refused
-  once, correctly — and then this seat copied a peer's *invented* rule straight
-  into its own charter without applying the same test.
-
-### Standing, and they are in LIVE STATE in full
-
-**Never fetch `stockanalysis.com` from a worker, route or job.** **No heavy read
-against production `market.db` while a deploy unit is running** — `quick_check`
-scans a 3.5G file against a 900s deadline with 132s of measured margin, and your
-census query can make the deploy tool announce a cutover that did not happen.
-**Anything that grows `market.db` does the same thing permanently.**
+**Never fetch `stockanalysis.com` server-side. No heavy read against production
+`market.db` while a deploy unit is running — and anything that GROWS that file
+does the same thing permanently. Never put deploy timing to him for a
+backend-only change** — Integration approves clean enumerations under a standing
+grant recorded `2026-09-23T03:58Z`.
 
 ---
 
@@ -134,6 +104,6 @@ census query can make the deploy tool announce a cutover that did not happen.
 
 1. Open a new chat in `A:\mointel` and paste everything above.
 2. It will title itself `Research-tmi`.
-3. Rename this old chat to **`Research-tmi (retired 2026-09-25)`**.
+3. Rename this old chat to **`Research-tmi (retired 2026-09-28)`**.
 4. **Archive it, do not delete it** — the transcript is the record.
-5. Peers find the new session by title; no id needs passing by hand.
+5. Peers find the new session by title.
