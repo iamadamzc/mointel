@@ -974,6 +974,15 @@ it because it never queries this feed. **Named cases: 1 hit (AIFF), 1 miss (MEDS
 top-12 query (09-18..09-25) ~23% primary, ~47% any, ~44% union with the issuer feed. MEDS adds a named wire: ACCESS
 Newswire items reach it only via a Benzinga rewrite. Unmeasured: whether the desk's issuer feed carried MEDS's release.
 
+**✅ HIS RULING ~06:45 ET 2026-09-28, verbatim:** *"collector first, and let's make sure we don't limit it to alpaca,
+we need as much coverage as possible... we need to know we have the right sources to get the most covereage. this
+can't happen."* (answering "should Research build the news collector before it finishes the session reports?").
+**Routed:** RESEARCH builds the collector NOW, ahead of the report writer, multi-source by design, Alpaca first, no
+second adapter until its terms are cleared; asked whether the band piece-4 date (2026-10-02) moves. COMMERCIAL scopes
+the source landscape (every small-cap wire incl. ACCESS; what Warrior Trading/TradingView/Benzinga Pro publish as
+their sources; terms, cost, coverage per dollar vs the ~44% union), to him as options; no vendor contact/spend.
+Coverage stays a MEASURED number with MEDS 09-28 and AIFF 09-25 as fixed controls.
+
 ### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
 
 ```
