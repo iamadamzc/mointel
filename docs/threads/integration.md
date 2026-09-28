@@ -917,7 +917,11 @@ MARKET WORKER) → 3 env ceiling 20→50 + restart → 4 server ranks inside a r
 WRITER, fallback: built alone if the writer slips past 2026-10-02 → 5 per-range feed allocation, HELD for 3 + a load test.
 **cea5ed2 ENUMERATION APPROVED ~01:45Z under the standing grant:** pick of cea5ed2 ALONE onto 240f27e, merge-tree
 clean (re-run here), gate count 161, inert. Market-worker restart NOT authorised; it rides his next direct restart.
-Ops asked to prove retention cannot prune the market worker's cwd (3b78b8c) first. Shipped sha pending.
+Ops asked to prove retention cannot prune the market worker's cwd (3b78b8c) first. **BUILT + GATED, NOT SHIPPED
+(~01:55Z):** `1eaa938` (ops/capture-band), one commit over 240f27e, content == cea5ed2 (re-diffed here), gate 161/161
+files, 2463 tests green. Retention proven ON THE BOX (prune.sh in-use rule reads each unit's /proc cwd; last log kept
+3b78b8c as in use). **Ops declines the relayed standing grant for deploys** (its practice since the 09-25 permission
+refusal) and asked HIM directly. Waits on his word + a window outside 04:00–10:00 ET.
 
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
