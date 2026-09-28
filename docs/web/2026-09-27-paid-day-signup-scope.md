@@ -305,12 +305,30 @@ a sign-in Tue 20:15  =  buying WEDNESDAY
 > reader will take away, and it would credit an argument he never adopted.** *The
 > desk's own rule: record the ruling, not the reason you happen to like.*
 
-**AND THE PREVIOUS-DAY'S-REPORT SHAPE IS CONFIRMED INTENTIONAL, NOT MERELY
-TOLERATED.** *He described it unprompted and in his own words — "ah report is the
-first report of the new trading day".* **So a paid day opening with the prior
-session's report is DESIGN, and a future page that implies otherwise is the
-defect.** *That is a stronger footing than "defensible and symmetrical", which is
-where this file left it an hour ago.*
+**AND THE PREVIOUS-DAY'S-REPORT SHAPE IS DESIGN — HE DESCRIBED IT UNPROMPTED, IN
+HIS OWN WORDS:** *"ah report is the first report of the new trading day".* **So a
+future page implying otherwise is the defect.**
+
+> **BUT "HE CONFIRMED IT INTENTIONAL" IS THE WRONG WAY TO SAY IT, AND THIS FILE
+> SAID IT THAT WAY FOR AN HOUR.** *Commercial's refinement, and it is right:
+> "confirmed intentional" implies the question was well-formed and he weighed a
+> tradeoff.* **There was no tradeoff. The question — "should a buyer see the
+> assessment that closes the day they paid for" — presupposed that a paid day owns
+> the report closing its own session, and under his definition NO paid day ever
+> does.** *Every day opens with the prior session's report; there is no withheld
+> content and never was.*
+>
+> **SO IT DISSOLVES RATHER THAN BEING ACCEPTED, AND THE DISTINCTION IS NOT
+> PEDANTIC:** *a tradeoff he accepted would invite a page that explains or softens
+> it, and would reopen the moment someone thought the tradeoff was avoidable.* **A
+> malformed question invites neither.** *The copy can state plainly how the product
+> works.*
+>
+> **THE GENERAL SHAPE, which is this desk's "a query answers only the population it
+> was asked over", one level up:** *my question was answerable and its PREMISE was
+> a mapping I had invented — that a paid day and the session it reports on are the
+> same day.* **A well-formed question built on a wrong mapping produces a real
+> answer to nothing.*
 
 **THE RESIDUAL MISMATCH THIS FILE CARRIED THROUGH THREE STAGES IS ALSO GONE.**
 *Session day and paid day were 2 hours apart at 22:00 and 30 minutes apart at
