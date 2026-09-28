@@ -12162,3 +12162,8 @@ billing build                                   AFTER the sign-in cut-over is pr
 **Box read 2026-09-28 ~01:3xZ:** env file has DISCOVERY_PRICE_MIN=0.25 and NO _MAX line; the
 running worker (pid 1347535) carries DISCOVERY_PRICE_MIN=0.25 and no _MAX (MARKET_DB_PATH
 present in the same read = control). So the live band is $0.25-$20 (MAX = config default).
+
+**2026-09-28 02:04Z (Sun 22:04 ET): 1eaa938 = cea5ed2 on 240f27e, LIVE on web/research/assess**, on his
+"yes" in this session. Down 3s. Market worker still 3b78b8c (untouched). This deploy's prune logged
+"in use 3b78b8c" and removed 8147cf4: **the in-use rule protected the market worker's release in
+production.** The bootstrap-band trigger needs cea5ed2 ON THE MARKET WORKER, i.e. the next restart.
