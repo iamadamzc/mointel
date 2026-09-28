@@ -79,12 +79,17 @@ export type NewsAdmission = 'STORE' | 'MULTI_SYMBOL' | 'MOVE_NOTICE' | 'NOT_TAGG
  * do SCYX's $214M BARDA contract, SOAR's $1.17B orders, MTEK's $10M order and
  * BEAG's merger. A field filter would have dropped the catalysts with the halts.
  * The patterns match both halts in that sample and none of the other 15.
+ *
+ * ONLY SHAPES SEEN LIVE, BECAUSE THE FILTER'S ERROR IS ASYMMETRIC. A missed
+ * halt costs a stored row and one paid interpretation; a dropped catalyst is
+ * the failure this collector exists to stop ("this can't happen"). "Trading
+ * halt", "shares halted" and "resumes trading" were left out on purpose: each
+ * also heads real disclosures -- a news-pending halt, a delisting halt, "XYZ
+ * Resumes Trading After Announcing FDA Approval". Add a shape only when a live
+ * example turns up as a stored row, with that headline in the tests.
  */
 const MOVE_NOTICE_PATTERNS: readonly RegExp[] = [
-  /\bshares (?:are )?halted\b/i,
-  /\btrading halt(?:ed)?\b/i,
   /\bcircuit breaker\b/i,
-  /\bresumes? trad(?:e|ing)\b/i,
   /\bstock now (?:up|down) \d/i,
 ];
 
