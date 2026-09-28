@@ -937,6 +937,10 @@ MORE NEWS SOURCES    Commercial scoping the landscape (ACCESS Newswire, what War
                      (3) 23%/47%/44% are three different columns shown as one; (4) the §4 table overstates §5.
                      ~15:40Z: all four fixed at 585de5d; two new AIFF timing lines ("four seconds") didn't match
                      research.md:268-274 and were sent back. Cleared for Commercial to send to him directly once fixed.
+                     ~16:00Z: timing fixed (416e187); sent to him directly (b25cc8a); 62365f2 added his question
+                     "why a direct licence if Alpaca has Benzinga" -> Alpaca T&Cs bar commercial use of News (quote
+                     verified at 977e0d2's doc :184-189). Commercial RETIRED (hand-off 6785f80); successor not yet open.
+                     OPEN, HIS: a Benzinga direct-licence enquiry; a Warrior Trading source enquiry.
 PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the market worker; (2) Ops bootstrap band
                      = record band, trigger cea5ed2 on the MARKET WORKER (his next direct restart); (3) ceiling
                      20->50 + restart; (4) server ranks inside a requested range -- Research, STANDALONE, due 2026-10-05
