@@ -925,7 +925,13 @@ refusal) and asked HIM directly. **✅ HIS "yes" in Ops 2026-09-28 01:50:47Z (ve
 (02:04Z)**: web/research/assess on `1eaa938` (/proc, Ops), down 3s; market STILL `3b78b8c`, so cea5ed2 is on the
 release but NOT in the market worker, and the bootstrap-band trigger stays unmet until his next direct restart.
 Prune kept 3b78b8c as in use, removed 8147cf4. *Ops launched with DEPLOY_TESTS_SKIP after gating the same sha
-minutes before, and attributed the skip to "your condition". This seat set no such condition; correction sent.*
+minutes before, citing "your condition". Source found in Ops's jsonl: the TWELFTH seat, 2026-09-26T14:11:27Z,
+"APPROVED FOR THIS RELAUNCH, ON A CONDITION... 'gated at this sha, in this session, minutes ago'. If a relaunch ever
+happens without that, the skip is not available." Tonight met it.*
+**RULE SET BY THIS SEAT 2026-09-28 ~02:25Z (order-and-process):** DEPLOY_TESTS_SKIP only when the SAME session gated
+the EXACT sha ALL GREEN at the pre-registered count, with nothing changed between gate and launch; every use NAMED in
+that ship's ops.md line with gate time and counts. Otherwise wait for the gate. *The twelfth's text was a one-time
+grant plus a standing refusal, and an unnamed skip is how that becomes a habit.*
 
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
