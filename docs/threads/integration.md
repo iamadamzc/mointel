@@ -873,6 +873,8 @@ error                                                      TYPE                 
   -- to him as "my understanding", to Research as premise  no source)
 "the paid day starts ~20:30"                               conflated two quantities (report     no       him ("8pm to 8pm")
   -- the report time put to him as the day boundary        time vs boundary)
+"one OS notification"                                      summary dropped a clause of a spec   no       Design
+  -- relayed to him and 4 seats; the spec has two firings  (restated without re-reading)
 ```
 **The repeat of the class is the trigger. Warned him and proposed a hand-off, which is his permission to give.**
 
@@ -1089,7 +1091,8 @@ day        20:00 ET -> 20:00 ET, "end of ah to end of ah". The day for Tuesday r
            Supersedes this seat's "day starts ~20:30" framing (the report time, not the day boundary).
 late rpt   "1 yes": a late report never moves a charge. Moot under a clock boundary; kept as ruled.
 agreed     weekends/holidays not charged | a lapsed hour ends that day only | retries only on card update |
-           ONE OS notification on failure, only if permission was already granted, no stock text |
+           OS notifications per Design §3: AT FAILURE AND AT 10 MINUTES LEFT (he approved that spec directly in
+           Design's session, 00:49Z; this seat's block wrongly summarised it as "one"), permission pre-granted only |
            FIRST PAYING USERS INVITED AND BILLED BY HAND, self-serve later | BUILD APPROVED for daily billing,
            strictly AFTER the sign-in cut-over is proven to refuse; nothing charges anyone until he approves the
            first real run.
