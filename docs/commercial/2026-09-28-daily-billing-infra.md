@@ -36,7 +36,10 @@ every deploy restarts web and a charge must not share the fate of a deploy. Not 
 assess: their failure modes (lock contention, model outages) have nothing to do with money.
 Its only job: claim PENDING rows, make one off-session charge per row against the saved card with
 the row id as the processor's **idempotency key** (a restart mid-charge cannot double-bill), and
-record the result. Process shape is Ops's call. It's one more unit, like migrate.
+record the result. **Only an actual DECLINE writes FAILED.** A timeout, a processor outage or any
+indeterminate answer leaves the row PENDING, to be retried on the next pass under the same
+idempotency key. The one-hour clock must never start because the processor was down.
+(Commercial's refinement, `e6bc1ee`.) Process shape is Ops's call. It's one more unit, like migrate.
 
 **4. A failed charge ends the session one hour later, regardless of time.**
 On FAILED: `grace_until = failed_at + 1h`, and in the SAME transaction every live session for
