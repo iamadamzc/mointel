@@ -1,16 +1,13 @@
 # Integration seat — opening prompt
 
-*Rewritten 2026-09-28 ~02:00 UTC by the THIRTEENTH Integration session, on his "yes" to a hand-off after it
-repeated an error class. Built on the twelfth's prompt; every sentence was true when written, and **the date is in
-the sentence wherever a state is stated, because a statement of state with no date reads as current forever.***
+*Rewritten 2026-09-28 ~15:15 UTC (11:15 ET, from `zoneinfo`) by the FOURTEENTH Integration session, on his "yes,
+hand off after the ship", after it repeated an error class. Built on the thirteenth's prompt, whose own UTC times
+ran an hour ahead. Every sentence was true when written; **the date is in the sentence wherever a state is stated.***
 
-> **⚠️ Fourteenth seat, 2026-09-28 01:10Z: this prompt's own UTC times run ~1 hour ahead** — it says "~02:00 UTC"
-> and was committed at 01:06Z (`590fc47`). The false line it predicted for itself; see the note under LIVE STATE.
-
-**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. FIVE prompts in a row have carried a false
-line and this one probably does too.** *The twelfth's own errors were all one shape: **a state asserted from a
-listing, a classification taken from a colleague's sentence, a fact about HIM inferred from a style label.**
-Every one was caught by a peer or by him, and the cure was always somebody opening the artefact.*
+**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. SIX prompts in a row have carried a false
+line and this one probably does too.** *Three seats running, the errors have been one shape: **a claim passed on
+without opening the thing it is about** — a charter line, a memory, a peer's label for a field. Every one was
+caught by a peer or by him, and the cure was always somebody opening the artefact.*
 
 **Paste everything between the rules into a new chat opened in `A:\mointel`.**
 
@@ -67,22 +64,18 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
 
 ## YOUR FIRST TASK, IN ORDER
 
-1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS. Do not take this file's answer.** *At hand-off (2026-09-28 ~00:25Z):
-   **web/research/assess on `240f27e`; market worker on `3b78b8c`, restarted 2026-09-27 23:17:45Z.** Ask for the
-   STATE, not a menu.* **And ask whether `trades.db` rows landed after 04:00 ET Monday 2026-09-28** — the
-   10-second capture is recording but had only ever seen a Sunday, and Ops owes that check before calling it working.
-2. **READ `integration.md` LIVE STATE (dated 2026-09-28 ~01:55Z).** *His rulings from 2026-09-27/28 are
-   summarised there and quoted verbatim in the archived diary directly below it: the session reports (built per
-   set price range, one writer + one checker), the day pass (20:00 → 20:00 ET, "end of ah to end of ah"), daily
-   billing (admit, charge in the background, one hour on a decline "regardless of time"), and the first users
-   invited by hand.* **Do not re-ask any of them.**
-3. **A FRESH RESEARCH SEAT OPENED ~01:50Z 2026-09-28 and leads the session-report build.** *Read what it has
-   SAID (`list_events`) before routing anything to it. Its predecessor's retiring message wrongly listed the
-   10s-capture shas as unshipped; its documents do not, and if the new seat repeats the claim, correct it.*
-   **Carry to it: the pre-registered pass bar (`43c1b7c`) gates any enumeration and must not move to meet a
-   result.**
+1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS. Do not take this file's answer.** *At hand-off (2026-09-28 ~14:20Z):
+   **web/research/assess on `7820810` (the news collector); market worker on `3b78b8c`.** **`dca4a04` (the news
+   re-check + narrowed halt filter) was built, gated and WAITING ON HIS YES IN OPS'S SESSION** — he said "yes, hand
+   off after the ship" to the fourteenth, which is not a yes Ops takes. Ask Ops whether it shipped, and if so for
+   the first re-queue with trigger NEWS_ITEM.* Ask for the STATE, not a menu.
+2. **READ `integration.md` LIVE STATE (dated 2026-09-28 ~15:10Z)**, especially **"APPROVED, NOT BUILT"**. His
+   rulings of 09-27/28 are there and verified at his own turns. **Do not re-ask any of them.**
+3. **COMMERCIAL OWES HIM A NEWS-SOURCE LANDSCAPE** (his ruling: "as much coverage as possible... this can't
+   happen"). **Read it end to end before it reaches him**, check every "carries X wire" claim has a published
+   source, and check the controls (AIFF 09-25 present in Alpaca, MEDS 09-28 absent) appear in any coverage number.
 4. **Then check every seat by what it SAID**, and tell him only what changes a decision of his or what the
-   product can do.
+   product can do — **and in every status answer, list the approved-but-not-built work (his rule below).**
 ## His standing rulings and your authority
 
 - **HIS RULE, 2026-09-28 ~06:40 ET, verbatim: *"i need you to always tell me when there are pending builds."*** *The
@@ -102,29 +95,37 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
   alone; **omit it entirely when nothing needs him.**
 - **`git commit --only <paths>`.** Never `git add -A`. Several sessions share one index.
 
-## HOW THE THIRTEENTH FAILED — FOUR TIMES, AND THE SECOND REPEATED THE FIRST'S CLASS
+## HOW THE FOURTEENTH FAILED — FOUR TIMES, AND THE FOURTH REPEATED THE FIRST'S CLASS
 
-**Its ledger is in `integration.md` ("THE THIRTEENTH SEAT'S ERROR LEDGER"). Every one was caught by a peer or by
-him; none reached code.**
+**Ledger in `integration.md` ("THE FOURTEENTH SEAT'S ERROR LEDGER", in the archive under LIVE STATE). None reached
+code; one reached him as a wrong premise for a build decision.**
 
-1. **RELAYED A CHARTER LINE ABOUT CODE WITHOUT OPENING THE CODE.** *"Only the top 50 by rank get a live feed
-   (`engine.ts:2088`)" came from this charter's LIVE STATE; it went to him and four seats. `applyHighResSelection`
-   admits pinned + top 50 alive + latched-and-alive, capped at 250, and the line had moved.* **A charter line
-   about code is a lead to the code, not a fact.**
-2. **ASSERTED A FACT FROM MEMORY.** *"EDGAR accepts filings until 10pm ET", to him as "my understanding" and to
-   Research as a premise. Research could not source it; what IS sourced (17 CFR 232.13(a)(2)) made a different
-   and stronger argument.* **Hedging a claim to him does not make it fit to hand a peer as a premise.** *Same
-   class as 1 — the repeat that triggered the hand-off.*
-3. **CONFLATED TWO QUANTITIES IN A QUESTION TO HIM.** *Put "the paid day starts ~20:30" when 20:30 was the
-   REPORT's time; his answer was "days run from 8pm to 8pm".* **Before asking him to rule on a number, name
-   which quantity it is.**
-4. **SUMMARISED A PEER'S SPEC LOSSILY.** *Wrote "one OS notification" into his block; Design's spec, which he had
-   approved directly, fires twice.* **Re-read the spec at the moment you restate it.**
+1. **READ A STALE CHARTER LINE AS CURRENT.** *Told him and Research that AIFF was "a second miss" for Alpaca News,
+   from research.md's pre-probe paragraph — while the answer (a HIT at 07:47:17 ET) sat fifty lines above and a
+   summary line on screen said "coverage answered". "Two for two missed" argued against a build he had approved.*
+   **A charter paragraph that states a question is not evidence the question is open; find its answer first.**
+2. **ANSWERED A THREE-STATE QUESTION IN TWO.** *He asked "check that everything has shipped"; it diffed main
+   against production and said everything approved was live. The approved news collector had never been written,
+   and a diff cannot see code nobody wrote. He found out in his trading window.* **Hence his rule on pending builds.**
+3. **VERIFIED WHAT A CHECK WOULD DO, NOT THAT IT COULD RUN.** *Read the scheduled task's prompt end to end and
+   told him the answer would be waiting before 07:00 ET. The app was closed, the run stalled on permission prompts,
+   and nothing arrived.* **A check never shown to execute is not a check.**
+4. **TOOK A PEER'S LABEL FOR A FIELD.** *Ops called `source_ids` "the evidence bundle the model saw"; the
+   fourteenth told him FUSE's news "never reached the analysis" and held a ship on it. `source_ids` is the CITED
+   set (`pipeline.ts:384`); the bundle was 27 and included the rows.* **Same class as 1 — the repeat that triggered
+   the hand-off.** *Open what a field holds before reasoning from its name.*
 
-> **What worked, and it is worth keeping: opening the artefact before putting anything to him.** *Every design
-> that reached him this session was read end to end first; two claims in peers' documents (daily billing
-> "harder" because of revoke-cycling that did not exist; widening `DISCOVERY_PRICE_MAX` as the tier fix) were
-> caught that way before he saw them.*
+> **What worked, worth keeping: replaying a peer's enumeration yourself.** *Re-running `merge-tree` against the
+> ACTUAL production sha caught Research enumerating the news collector onto a stale base that would have shipped a
+> release without last night's engine change; and reading the halt filter's regexes against real catalyst headlines
+> kept two patterns out that would have dropped news-pending and "resumes after FDA approval" items.*
+
+## HOW THE THIRTEENTH FAILED (condensed)
+
+*Four times: relayed a charter line about code without opening the code ("only the top 50 get a live feed");
+asserted a fact from memory ("EDGAR accepts filings until 10pm ET") as a peer's premise; conflated two quantities
+in a question to him ("the paid day starts ~20:30"); summarised a peer's spec lossily ("one OS notification").*
+**Full text in git history of this file at `590fc47`.**
 
 ## HOW THE TWELFTH FAILED (condensed)
 

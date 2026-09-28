@@ -883,7 +883,80 @@ error                                                      TYPE                 
 ```
 **The repeat of the class is the trigger. Warned him and proposed a hand-off, which is his permission to give.**
 
-## LIVE STATE — AS OF 2026-09-28 ~01:55 UTC, AT THE THIRTEENTH SEAT'S HAND-OFF
+## LIVE STATE — AS OF 2026-09-28 ~15:10 UTC (11:10 ET), AT THE FOURTEENTH SEAT'S HAND-OFF
+
+*A SNAPSHOT. Times are from `zoneinfo` at the moment of writing. The fourteenth's running notes, with every
+verification and ruling behind these lines, are in the archive section directly below (it begins with the
+thirteenth's snapshot). **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
+
+### PRODUCTION (Ops, /proc, 2026-09-28 ~14:20Z)
+
+```
+web / research / assess   7820810 = 1eaa938 + the NEWS COLLECTOR (7046465). Live 10:07:07 ET on his direct yes.
+                          1eaa938 = 240f27e + cea5ed2 (engine RECORD/QUALIFY split, inert). Live 22:04 ET 09-27.
+market worker             3b78b8c, pid 1347535, since 2026-09-27 23:17:45Z, NRestarts 0. cea5ed2 NOT in it.
+10-second capture         PROVEN on a weekday: 09-28 04:00-09:58 ET, 353 symbols, 0 discarded (Ops manual read).
+live price band           $0.25-$20 (DISCOVERY_PRICE_MIN=0.25 in the process env; no _MAX, default 20).
+news collector            PROVEN end to end (KNRX: 4 single-symbol items -> 4 NEWS_FEED rows). Alpaca/Benzinga only,
+                          headline-only, every row SECONDARY. Kill switch RESEARCH_NEWS=off (needs a research restart).
+```
+
+### WAITING ON HIS WORD, IN OPS'S SESSION
+
+**`dca4a04` = the NEWS RE-CHECK (bb5d351) + halt filter (4d8cd79, narrowed by 43f4094) on 7820810.** Gated 163/163,
+2505 green, 11:04 ET; this seat replayed the picks itself. Poll every 180s for the top 12, no model; re-queues a
+name when a release lands after its last job. Filter = /circuit breaker/ + /stock now up|down N/ ONLY (the two
+shapes seen live; "trading halt" / "resumes trading" deliberately OUT because they match real catalysts — six recall
+headlines pinned in tests). Spend bound given to him: ~$0.40/session typical, ~$3.4 ceiling. **He said "yes, hand
+off after the ship" to THIS seat at ~11:05 ET; Ops takes his yes only in its own session — check Ops's transcript.**
+
+### HIS RULINGS 2026-09-28 (each verified at his own turn)
+
+```
+"yes, set it up"                   one-off 04:30 ET capture check (it FAILED to deliver: app closed, permission
+                                   prompts; Ops's lesson: pre-approve scheduled runs with "Run now")
+"i need you to always tell me when there are pending builds"   -> every status answer lists live /
+                                   built-not-live / APPROVED-NOT-BUILT. Standing. In the opening prompt.
+"collector first... don't limit it to alpaca, we need as much coverage as possible... this can't happen"
+"ship the news collector"          (Ops, 13:56:42Z)
+"build the re-check next"          (Research, 13:10:39Z) -- re-check ahead of the range work
+"yes, hand off after the ship"     (this seat)
+```
+
+### APPROVED, NOT BUILT — THE LIST HE ASKED TO ALWAYS SEE
+
+```
+MORE NEWS SOURCES    Commercial scoping the landscape (ACCESS Newswire, what Warrior Trading / TradingView /
+                     Benzinga Pro use, terms, cost, coverage per dollar vs the ~44% union). To HIM as options; no
+                     vendor contact or spend. Research adds no second adapter until Commercial clears its terms.
+                     Controls in every coverage number: AIFF 09-25 (present in Alpaca), MEDS 09-28 (absent).
+PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the market worker; (2) Ops bootstrap band
+                     = record band, trigger cea5ed2 on the MARKET WORKER (his next direct restart); (3) ceiling
+                     20->50 + restart; (4) server ranks inside a requested range -- Research, STANDALONE, due 2026-10-05
+                     (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
+SESSION REPORTS      PAUSED behind the news work. Checker's deterministic half built. Pass bar 43c1b7c unchanged.
+DAILY BILLING        + Design's payment-failed warning: after his sign-in cut-over proves it refuses.
+RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
+SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, window).
+```
+
+### OPEN WATCHES
+
+- **KNRX halt rows 106001/106002** are cited by v2375's CYCLE call (not the catalyst). Trip: either in ANY
+  catalyst.evidenceSourceIds → Ops tells this seat + Research → retiring them is HIS. Ops watches on box reads.
+- **Post-ship of dca4a04:** first re-queue with trigger NEWS_ITEM, and a "halt/move notices" count > 0. Until
+  then "configured, unproven".
+- **`source_ids` on a research version is the CITED set** (`lib/research/interpret/pipeline.ts:384`), not the
+  bundle; the bundle size is the "[interpret] X started evidence=N sources" log line. Three seats confused them today.
+
+### RULES THIS SEAT SET TODAY (order-and-process)
+
+- **DEPLOY_TESTS_SKIP** only when the same session gated the exact sha ALL GREEN at the pre-registered count with
+  nothing changed since; every use named in the ship's ops.md line. (ops.md "DEPLOY_TESTS_SKIP RULE".)
+- **Relayed standing grants:** Ops takes deploy approvals from HIM directly (its practice since 09-25), so a
+  seat's enumeration goes to Ops CONDITIONAL on his yes, and he is told to say it in Ops's session.
+
+## ARCHIVE — THE THIRTEENTH'S SNAPSHOT (01:05Z) AND THE FOURTEENTH SEAT'S RUNNING NOTES, 2026-09-28
 
 > **⚠️ CLOCK CORRECTION, fourteenth seat, 2026-09-28 01:10Z (from `zoneinfo` and `git log %cI`): this snapshot's
 > UTC times written by the thirteenth run ~1 HOUR AHEAD.** *This section was committed at `01b2a2f` 01:05:25Z, so
