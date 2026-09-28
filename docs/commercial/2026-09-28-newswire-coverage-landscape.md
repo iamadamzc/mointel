@@ -37,9 +37,13 @@ hits on MEDS. The desk's own why-now for MEDS was a 12-day-old 8-K.
 
 **AIFF, 2026-09-25 — the present control, added here per Integration's catch.**
 `docs/threads/research.md:271-291`. A GlobeNewswire release Benzinga *did* carry —
-at 07:47:17, four seconds before Ops's own query window opens and well ahead of the
-07:53 read on a competing scanner. **Carried inside Ops's five-session union query
-as a known-present control and returned `primary=YES`, in the `benzONLY` column.**
+at 07:47:17, **44 seconds before the desk's own research job (job 5000) queued and
+started** at 07:48:01, and well ahead of the 07:53 read on a competing scanner.
+**CORRECTED, Integration's second catch: this is a desk-internal gap — Benzinga-time
+to the desk's own job-queue-time — never a measurement against Ops's coverage query
+window (07:00–10:00 ET, unrelated), which the earlier draft wrongly named.**
+**Carried inside Ops's five-session union query as a known-present control and
+returned `primary=YES`, in the `benzONLY` column.**
 One filter-trap fact worth carrying alongside it: the item's own `source` field
 reads `"benzinga"`, never `"globenewswire"` — **the originating wire leaves no trace
 downstream, so a collector filtering by wire name would return nothing and look
@@ -202,7 +206,12 @@ desk through Alpaca's own free/bundled News API, not a direct Benzinga licence.
 **And this is not pure inference — §1's AIFF control is direct, measured evidence
 that the bundle already carries at least some third-party wire content: a
 GlobeNewswire release, present in the desk's own Benzinga feed, tagged
-`primary=YES`, four seconds after the wire published it.** What remains inference,
+`primary=YES`.** **CORRECTED, Integration's catch: this document originally claimed
+a specific Benzinga-vs-wire latency here. Nothing in the source measures the wire's
+own publish time — `research.md:293` states latency is explicitly NOT measured, one
+sample, and even that sample is the desk's own internal gap (§1), not a wire-to-
+Benzinga one. Dropped rather than stated on a number that was never taken.** What
+remains inference,
 named as such rather than blurred into the measured part: **whether the FULL scope
 Benzinga Pro's own marketing claims — "1,000+ sources" — extends to a *direct*
 licence at a scale beyond what Alpaca's bundle already carries, and whether that
