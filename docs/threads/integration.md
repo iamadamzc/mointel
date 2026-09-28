@@ -1040,6 +1040,8 @@ and his, not asked.
 are cited by the CYCLE call, not the catalyst. **This seat's call: no kill switch.** A halt notice is a factual record
 of the price action a cycle call describes; the claim-risk was a halt posing as the CAUSE, which the catalyst does not
 do. dca4a04 stops new ones; the two stored rows stay (deletion is his, not asked).
+Research concurs (via Ops). TRIP CONDITION now: 106001/106002 in ANY version's catalyst.evidenceSourceIds → Ops tells
+this seat + Research → retiring the rows goes to HIM. Ops checks it on its box reads until the rows age out.
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
