@@ -20,13 +20,17 @@ export class AlpacaNewsAdapter implements NewsAdapter {
     private readonly maxPages = 2,
   ) {}
 
-  async fetchForTicker(
-    ticker: string,
+  fetchForTicker(ticker: string, window: { start: Date; end: Date }): Promise<NewsFetchResult> {
+    return this.fetchForTickers([ticker], window);
+  }
+
+  async fetchForTickers(
+    tickers: readonly string[],
     window: { start: Date; end: Date },
   ): Promise<NewsFetchResult> {
     try {
       const response = await this.client.getNews({
-        symbols: [ticker],
+        symbols: [...tickers],
         start: window.start.toISOString(),
         end: window.end.toISOString(),
         includeContent: true,

@@ -23,6 +23,7 @@ import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collecto
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
 import { AlpacaNewsAdapter } from '../lib/research/news/alpaca';
 import type { NewsAdapter } from '../lib/research/news/types';
+import { queueNewsRecheck } from '../lib/research/news/recheck';
 import { AlpacaRestClient } from '../lib/market/alpaca/rest';
 import { findAlpacaCredentials } from '../lib/market/credentials';
 import type { MaterialDemandEvent } from '../lib/research/catalyst/collector';
@@ -68,6 +69,8 @@ import {
 import type { ResearchHealth } from '../lib/research/types';
 
 const POLL_MS = Number(process.env.RESEARCH_POLL_MS ?? 5000);
+/** News re-check cadence. One data request per poll, no model. */
+const NEWS_RECHECK_MS = Number(process.env.RESEARCH_NEWS_RECHECK_SECONDS ?? 180) * 1000;
 const MAX_CYCLES = Number(process.env.RESEARCH_MAX_CYCLES ?? 0); // 0 = run forever
 
 function log(message: string): void {
@@ -311,6 +314,7 @@ async function main(): Promise<void> {
 
   log(`[research] worker started, polling every ${POLL_MS}ms\n`);
 
+  let lastNewsRecheck = 0;
   for (;;) {
     cycles += 1;
     const tradingDate = (
@@ -374,6 +378,29 @@ async function main(): Promise<void> {
     });
     for (const decision of decisions.filter((item) => item.queued)) {
       log(`[research] ${decision.ticker} queued priority=${decision.priority}`);
+    }
+
+    /*
+     * The news re-check (his ruling 2026-09-28): a poll, not a per-cycle call.
+     * The board loop runs every few seconds; the poll runs every
+     * NEWS_RECHECK_MS and costs one data request, no model.
+     */
+    if (newsAdapters.length > 0 && Date.now() - lastNewsRecheck >= NEWS_RECHECK_MS) {
+      lastNewsRecheck = Date.now();
+      try {
+        const recheck = await queueNewsRecheck(db, candidates, newsAdapters, {
+          tradingDate,
+          autoRank: config.autoRank,
+          now: new Date(),
+        });
+        log(`[news-recheck] ${recheck.detail}; queued ${recheck.queued.length}`);
+        for (const hit of recheck.queued) {
+          log(`[news-recheck] ${hit.ticker} queued on "${hit.headline.slice(0, 100)}"`);
+        }
+      } catch (error) {
+        // A poll must never take the research loop down with it.
+        log(`[news-recheck] failed: ${error instanceof Error ? error.message : String(error)}`);
+      }
     }
 
     /*

@@ -55,6 +55,24 @@ function dedupeKey(item: NewsItem): string {
   return `${etDateString(new Date(item.publishedAt))}|${normaliseHeadline(item.headline)}`;
 }
 
+/** The stored row's identity. The re-check reads it to ask "do we hold this already?". */
+export function newsDocumentFingerprint(item: NewsItem): string {
+  return hashContent(`news|${dedupeKey(item)}`);
+}
+
+/**
+ * What the collector does with one item for one ticker. ONE definition, read
+ * by the job-time collector AND the re-check poll: a poll admitting an item
+ * the collector would refuse re-queues a job that stores nothing, forever.
+ */
+export type NewsAdmission = 'STORE' | 'MULTI_SYMBOL' | 'NOT_TAGGED';
+
+export function admitNewsItem(item: NewsItem, symbol: string): NewsAdmission {
+  if (!item.symbols.includes(symbol)) return 'NOT_TAGGED';
+  if (item.symbols.length > 1) return 'MULTI_SYMBOL';
+  return 'STORE';
+}
+
 /** Prefer the copy that names its wire, then the earliest. */
 function better(a: NewsItem, b: NewsItem): NewsItem {
   if ((a.originatingWire === null) !== (b.originatingWire === null)) {
@@ -85,11 +103,12 @@ export async function collectNews(
     let multi = 0;
     let untagged = 0;
     for (const item of result.items) {
-      if (!item.symbols.includes(symbol)) {
+      const admission = admitNewsItem(item, symbol);
+      if (admission === 'NOT_TAGGED') {
         untagged += 1;
         continue;
       }
-      if (item.symbols.length > 1) {
+      if (admission === 'MULTI_SYMBOL') {
         multi += 1;
         continue;
       }
@@ -108,7 +127,7 @@ export async function collectNews(
     .sort(([, a], [, b]) => b.publishedAt.localeCompare(a.publishedAt))
     .slice(0, MAX_NEWS_ROWS_PER_RUN);
 
-  const rows: NewResearchSource[] = chosen.map(([key, item]) => {
+  const rows: NewResearchSource[] = chosen.map(([, item]) => {
     const body = item.summary ?? item.bodyText ?? item.headline;
     return {
       ticker: symbol,
@@ -122,7 +141,7 @@ export async function collectNews(
       secForm: null,
       authority: item.originatingWire ? 'NEWSWIRE' : 'SECONDARY',
       contentHash: hashContent(`${normaliseHeadline(item.headline)}\n${item.summary ?? ''}`),
-      documentFingerprint: hashContent(`news|${key}`),
+      documentFingerprint: newsDocumentFingerprint(item),
       excerpt: body.slice(0, NEWS_EXCERPT_CHARS),
       metadata: {
         discoveredVia: item.adapter,

@@ -52,4 +52,12 @@ export type NewsFetchResult =
 export interface NewsAdapter {
   readonly id: string;
   fetchForTicker(ticker: string, window: { start: Date; end: Date }): Promise<NewsFetchResult>;
+  /**
+   * One request for many names, for the re-check poll. Optional: an adapter
+   * without it is simply not polled, and the poll's detail says so.
+   */
+  fetchForTickers?(
+    tickers: readonly string[],
+    window: { start: Date; end: Date },
+  ): Promise<NewsFetchResult>;
 }
