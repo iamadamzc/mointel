@@ -993,7 +993,11 @@ no re-look after a NONE_FOUND job (queue.ts:235), and no coverage beyond Benzing
 **RE-LOOK: Research put it to him DIRECTLY in its session** ("look again at no-catalyst names on a schedule, build
 before the range work?"; recommends yes, range ranking 10-02 → ~10-05). Scope: poll top-12 every few min, one
 multi-symbol Alpaca request, no model; a new single-symbol item on a NONE_FOUND name re-queues it. Cost BOUND ~$0.40
-typical / ~$3.4 ceiling per session vs $6.99 today. **Not re-asked by this seat.** Base-corrected enumeration
+typical / ~$3.4 ceiling per session vs $6.99 today. **Not re-asked by this seat.**
+**BUILT + GATED: `7820810`** (ops/news-collector) = 7046465 alone on 1eaa938, content re-diffed here; gate 162/162,
+2488 green, 10:50Z. Ops read its two files (researchRepo.ts, worker/research.ts — the latter this seat did not flag
+as Ops's) and checked failure isolation. Ships on his direct yes, after 10:00 ET. AIFF 09-25 row is the positive
+control; MEDS "nothing" only proves it ran. Base-corrected enumeration
 confirmed by Research (`c2a0a09`).
 
 ### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
