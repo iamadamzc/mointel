@@ -295,6 +295,31 @@ limits       four ordinary weekdays, no half day, last write only
 
 **AND ONE CONSEQUENCE WORTH HAVING FOR THE N-RANGES TIMING PROBLEM: the premarket report now has ~25 MINUTES of head-room (20:05 → 20:30), against the 5 minutes into-RTH has at 09:25.** *So N writer+checker pairs are far less risky on the report that opens the paid day than on the one before the open — which is the report the latency measurement should target first.*
 
+## ✅ THE WRITER'S CLOCK IS `completedAt`, NEVER `scheduledFor` — and the measurement says why that matters
+
+**Design's point, and it is right: the panel prints `checkpoint.completedAt` as the data time, so a writer saying *"at 09:25"* from the SCHEDULE clock puts a different time in the prose than the one printed beside it.** *Measured on 474 completed checkpoints in the production snapshot:*
+
+```
+lag scheduled -> completed    median 10.5s   p90 18.1s   p99 20.0s
+over 60s: 4 of 474
+```
+
+**⚠️ SO IN THE ORDINARY CASE THE TWO CLOCKS AGREE TO THE MINUTE — AND THAT IS EXACTLY WHAT MAKES IT DANGEROUS.** *A ten-second lag never changes a minute-resolution time, so a writer taking the schedule clock would be right on ~99% of reports and nobody would ever see the rule was broken.*
+
+**THE CASE WHERE IT BITES IS REAL AND IS IN THE DATA — three COMPLETE checkpoints, all flagged `generated_late`, none a catch-up:**
+
+| checkpoint | session | finished after its schedule |
+| --- | --- | --- |
+| `RTH_CLOSE` | 2026-08-17 | **1.59 h** |
+| `STRUCTURAL_REFRESH` | 2026-08-19 | **1.36 h** |
+| `PREMARKET_0700` | 2026-08-19 | **0.53 h** |
+
+*(A fourth, a 10.75 h `NEXT_DAY_RECAP`, is `MISSED_SUPERSEDED` and would produce no report at all.)*
+
+⇒ **A report from that `RTH_CLOSE` saying "at 16:00" would be describing data captured at 17:35.** **And `late: boolean` does not save it** — the flag would be true, the reader would know the report was late, **and the TIME IN THE PROSE would still be wrong by an hour and a half.** *A stale report is the one where the time is the only thing that would tell you so.*
+
+**RULE: the writer takes every stated time from `checkpoint.completedAt`. The schedule clock names the SLOT, never the data.** *And the second-pass time check — recorded in `verify.ts` — verifies a stated time against `completedAt`, which is what makes "at 09:25 over 14:30 rows" catchable rather than merely forbidden.*
+
 ## 5. FAILURE MODES
 
 **⚠️ CORRECTED 2026-09-27 — "ONLY THE TOP 50 GET A LIVE FEED" IS WRONG, AND IT REACHED THIS DOCUMENT AND THE PAYLOAD CONTRACT.** *Integration's brief said it, this seat repeated it twice, Commercial found it, and I verified `applyHighResSelection` (`engine.ts:2121`) myself.* **The set is:**
