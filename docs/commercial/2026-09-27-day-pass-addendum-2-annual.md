@@ -27,32 +27,51 @@ stops mattering.**
 **Not a payments problem — Stripe charges a saved card the same way whether it's a
 $9 daily charge or a $99 annual one, and one customer object can hold both kinds of
 charge history with no conflict (`docs.stripe.com/payments/save-and-reuse`, already
-quoted).** **The real question is what the desk's OWN access state means when a
-person is on one plan or the other, and today's code has an answer for neither,
-because it has no concept of a paid-through date at all.**
+quoted).**
 
-Verified directly, `lib/auth/store.ts`: `invited_emails` carries exactly `invited_at`
-and `revoked_at` — a person is admitted (`revoked_at IS NULL`) or not. **There is no
-expiry, no duration, no "paid through" field anywhere in the schema.** The only
-`expires_at` in the file (`:162`) belongs to a login *session* (a security timeout on
-the browser cookie), not to billing — verified so as not to conflate the two the way
-this seat's own earlier reading of a different file conflated capture with ranking.
+**CORRECTED 2026-09-27, Integration's catch, verified — this document first said
+daily billing needs a new admit-then-revoke cycle built from scratch. Wrong: the
+day boundary already exists, built for a different reason, well before any billing
+question was asked.** `lib/auth/store.ts:348-360`, `createSession`: *"TAKES AN
+ABSOLUTE EXPIRY, NOT A DURATION, and that is his ruling rather than a
+preference... 'a session should persist all day until the close of after hours' is
+a boundary, not a length."* `lib/auth/expiry.ts:51`, `sessionExpiry`, computes that
+boundary from his 2026-09-10 ruling; `lib/auth/callback.ts:145-146` calls it on
+every sign-in and hands the result straight to `createSession`. **A session already
+dies on its own at the day's close, for every user, today — nothing has to be
+revoked or cycled, because nothing has to be told to stop.** (The same file
+already flags the exact edge this seat separately raised in the first addendum,
+unprompted: *"signing in at 21:00 on Monday and working until 20:00 Tuesday is one
+session — is it one charged day or two?"* — his own code already names this as an
+open billing question, not something this seat discovered.)
 
-**What this means for each shape, concretely:**
+**So the real question is narrower than this document first made it: not whether a
+session ends on time — it already does — but whether anyone checks payment BEFORE
+one is issued at all, which nothing in the codebase does yet.** Both shapes need a
+new check inserted at the identical point, `callback.ts`, between confirming
+someone is invited and calling `createSession` — **but the checks are not the same
+kind of check, and that is where the real difference lives:**
 
-- **Daily, under his "every single day" ruling, needs something built that does not
-  exist today: an automatic admit-then-revoke cycle running once per subscriber per
-  day** — invite at the moment of charge, revoke at the day's own boundary (§1 of the
-  first addendum; now his 20:30–20:30 shape). **This uses `revokeEmail`'s existing
-  "immediate" mechanism, but as the ordinary daily off-boarding path for every paying
-  subscriber, not the exceptional case (fraud, a ban) it was built for** — the same
-  mechanism, a very different volume and pattern of use.
-- **Annual needs almost nothing new.** Invite once at the moment of the charge, and
-  leave the person invited — **exactly how the model already treats everyone today.**
-  The only new work is a *separate* record of when the year is up, read by whatever
-  process would prompt the renewal charge or the eventual revoke — **and that record
-  does not have to be `invited_emails` itself; a paid-through date can live beside it
-  without changing the admission check at all.**
+- **Daily needs a LIVE payment-processor call inside the login path.** Either charge
+  the stored card at the moment of sign-in, or confirm an earlier charge already
+  succeeded for today — either way, a synchronous or near-synchronous dependency on
+  Stripe sits between "wants to log in" and "is logged in," for every user, every
+  day. **That is a new failure mode this desk does not have today: a slow or down
+  payment processor at 20:30 ET blocks logins, not just billing.** A declined card
+  refuses entry cleanly (§3 of the first addendum still holds); a *slow* one is the
+  case that document didn't name and this correction surfaces.
+- **Annual needs a local database lookup, not a live call.** Compare today's date to
+  a stored paid-through date — no external dependency in the login path at all. The
+  charge itself happens once, in whatever checkout flow signs someone up or renews,
+  entirely separate from the daily sign-in path.
+
+**The corrected comparison: both shapes touch the same one call site in `callback.ts`
+and neither needs new revocation machinery — the difference is that daily puts a live
+external dependency into every single login, and annual does not.** That is still an
+asymmetry, and it still argues the same direction as this document's earlier
+(wrong) framing, but for the accurate reason: **not "daily needs new admit/revoke
+cycling," but "daily needs a payment gateway in the critical path of every day's
+first login, and annual doesn't."**
 
 **So a person on daily and a person on annual are not the same case with a different
 number attached — one requires new, recurring, per-subscriber automation on the
@@ -98,23 +117,27 @@ its year, and "cancelling" it is really "declining to renew."
 
 ## 4. IS AN ANNUAL BUYER "INVITED" THE SAME WAY A DAILY ONE IS?
 
-**Yes, today, because the auth model does not distinguish them at all — and that is
-worth him knowing plainly rather than assuming a distinction exists.** Per §2: the
-admission check is one boolean, with no notion of which plan admitted someone or for
-how long. **An annual buyer and a daily buyer, once invited, are indistinguishable to
-`isUserInvited` — both simply "invited," full stop, until revoked.** The difference
-between them lives entirely in bookkeeping the desk does not yet have: which plan a
-person is on, and when the next charge or the next lapse is due. **Building daily
-billing (§2) forces that bookkeeping to exist regardless of whether annual ships at
-all** — the two are not independent features to choose between building; daily
-billing is the one that requires the harder piece of infrastructure either way.
+**Yes, today, because the auth model's INVITE layer does not distinguish them at
+all — and that is worth him knowing plainly rather than assuming a distinction
+exists.** `invited_emails` is one boolean, with no notion of which plan admitted
+someone or for how long. **An annual buyer and a daily buyer, once invited, are
+indistinguishable to `isUserInvited` — both simply "invited," full stop, until
+revoked.** That layer does not need to change for either shape (§2, corrected):
+the per-day session boundary already exists and applies to both alike, regardless
+of billing plan. **The only new bookkeeping either shape needs is which plan a
+person is on and, for annual, when it lapses — a small addition either way, unlike
+this document's earlier claim.** What is NOT symmetric, per §2's correction, is
+where the payment check itself sits: daily's lives in the login path as a live
+dependency; annual's is a one-time checkout and a subsequent local date check.
 
 ---
 
 ## SOURCES
 
 `stripe.com/pricing`; `docs.stripe.com/payments/save-and-reuse`; `lib/auth/
-store.ts` (`invited_emails` schema, `:162` session `expires_at`, `revokeEmail`);
-`about.seekingalpha.com/terms`; this seat's own `2026-09-27-day-pass-addendum.md`.
+store.ts` (`invited_emails` schema, `:162` session `expires_at`, `revokeEmail`,
+`:348-360` `createSession`); `lib/auth/expiry.ts:51` (`sessionExpiry`);
+`lib/auth/callback.ts:145-146`; `about.seekingalpha.com/terms`; this seat's own
+`2026-09-27-day-pass-addendum.md`.
 His rulings verified via `list_events` on the Integration session, not taken from the
 relay alone.
