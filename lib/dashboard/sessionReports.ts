@@ -189,6 +189,13 @@ export function outsideBoardRange(
   return price < board.min || price > board.max;
 }
 
+export interface ReportCoverage {
+  named: number;
+  withLiveFeed: number;
+  /** Names whose feed state the report could not establish. Never counted as without. */
+  unknown: number;
+}
+
 /**
  * The report's live-data coverage, DERIVED FROM ITS OWN LINES.
  *
@@ -199,24 +206,43 @@ export function outsideBoardRange(
  * keep in step. A ticker named twice counts once, and counts as live if any
  * of its lines had the feed.
  */
-export function reportCoverage(report: Pick<SessionReport, 'sections'>): SessionReport['coverage'] {
-  const live = new Map<string, boolean>();
+export function reportCoverage(report: Pick<SessionReport, 'sections'>): ReportCoverage {
+  // Per name: live if ANY line says so; otherwise unknown if any line could
+  // not say; otherwise without. A null is an absence of OBSERVATION and must
+  // never be folded into "no live data", which is an observation.
+  const state = new Map<string, boolean | null>();
   for (const section of report.sections) {
     for (const line of section.lines) {
       if (!line.ticker) continue;
-      live.set(line.ticker, (live.get(line.ticker) ?? false) || line.liveFeed);
+      const prior = state.get(line.ticker);
+      if (prior === true || line.liveFeed === true) state.set(line.ticker, true);
+      else if (prior === null || line.liveFeed === null) state.set(line.ticker, null);
+      else state.set(line.ticker, false);
     }
   }
   let withLiveFeed = 0;
-  for (const value of live.values()) if (value) withLiveFeed += 1;
-  return { named: live.size, withLiveFeed };
+  let unknown = 0;
+  for (const value of state.values()) {
+    if (value === true) withLiveFeed += 1;
+    else if (value === null) unknown += 1;
+  }
+  return { named: state.size, withLiveFeed, unknown };
 }
 
-/** "5 of 7 names had live trade data" — over the report's own names. Null when it names none. */
-export function coverageText(coverage: SessionReport['coverage']): string | null {
+/**
+ * "5 of 7 names had live trade data" — over the report's own names.
+ *
+ * THREE OUTCOMES, NOT TWO: a count, a count with the unrecorded names said
+ * aloud, and "not recorded" when the report could establish none of it. Null
+ * when the report names no ticker.
+ */
+export function coverageText(coverage: ReportCoverage): string | null {
   if (coverage.named <= 0) return null;
-  const noun = coverage.named === 1 ? 'name' : 'names';
-  return `${coverage.withLiveFeed} of ${coverage.named} ${noun} had live trade data`;
+  if (coverage.unknown === coverage.named) return 'live-data coverage not recorded for this report';
+  const known = coverage.named - coverage.unknown;
+  const noun = known === 1 ? 'name' : 'names';
+  const base = `${coverage.withLiveFeed} of ${known} ${noun} had live trade data`;
+  return coverage.unknown > 0 ? `${base}; not recorded for ${coverage.unknown} more` : base;
 }
 
 /**
