@@ -1057,6 +1057,10 @@ whole      docs/commercial/daily-billing-design/commercial.md at 8ed45a3 (all fo
            read). Six decisions put to him: day boundary (20:00 clock vs 20:30), Saturday, day vs account,
            retry, OS notification, self-serve vs hand-invite. Also flagged: an outage stays PENDING (no clock),
            which is Commercial's reading of his words, and the $15 dispute fee.
+boundary   HE RULED 00:47:31Z (Web's session, verified at his turn): "the after hours report is the start of the
+           day." That composes with his ~00:20Z ruling (20:05 checkpoint, report at ~20:30), so the DAY STARTS ~20:30.
+           ❌ Web's b01b06e read it as 22:00 ("no 20:30 in this system"), from HEAD, where the design is not built
+           yet. Correction sent. Put to him: the boundary is the report's SCHEDULED time, not its publish time.
 ```
 
 ### THE RESIDUAL NOBODY HAS CLOSED
