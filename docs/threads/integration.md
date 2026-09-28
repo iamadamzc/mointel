@@ -1034,6 +1034,8 @@ CONDITIONAL on his direct yes.
 structure, cycle and supply-ledger evidenceSourceIds = the CITED set. **Corollary: KNRX's halt rows 106001/2 WERE cited
 — in structure or cycle, not the catalyst.** The two stored rows remain; retiring them is a production-data deletion
 and his, not asked.
+**BUILT + GATED `dca4a04`** (ops/news-recheck, 3 picks on 7820810, +610/−8, verified here), 163/163, 2505 green at
+11:04 ET. Poll wrapped in try/catch, disabled with RESEARCH_NEWS=off. Waits on his direct yes in Ops.
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
