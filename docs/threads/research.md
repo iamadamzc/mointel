@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-25T20:44Z
+## LIVE STATE — 2026-09-28T02:10Z
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -158,6 +158,17 @@ record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
+- **🟢 SESSION REPORTS — HIS BIGGEST COMMISSION, DESIGN COMPLETE AND APPROVED, BUILD STARTED.** *"a report to start each session... in a voice of an assistant... something that makes people feel like they have assistants working for them."* **His rulings: `"1 set ranges, 2 yes, 3 yes"` (build approved) and `"why is the run at 10pm if the ah closes at 8? the run should be at 805, then the day starts at 830 pm"`.**
+  **THE ASSEMBLED DESIGN IS `docs/research/session-reports/design.md` — THIS SEAT LEADS IT** and links three seat files (`design-seat.md`, `marketing.md`, `commercial.md`) plus `facts-2026-09-18.md`, the real rows the specimens were written against. **Read that document, not this summary.**
+  **BUILT SO FAR: `316c02e` + `d998973` — `lib/desk/reports/verify.ts`, the checker's DETERMINISTIC half.** Every number a report prints must trace to the stored row it is about; an allowlist, not a heuristic; timestamps excised before any number is read. **`lib/desk/reports/contract.ts` is Design's (`307e42d`) and is now MINE to change.**
+  **NOT BUILT: the writer, the semantic half of the checker, `GET /api/reports`, the range config, the 20:05 checkpoint (Ops, touches the scheduler).**
+  **🔒 THE CHECKER'S PASS BAR IS PRE-REGISTERED (`43c1b7c`) AND GATES ANY ENUMERATION: six seeded defect classes, 6/6 struck, zero false passes, AND a control that it strikes NOTHING on uncorrupted reports.** *Model spend authorised for sizing and that test ONLY.*
+  **TWO CONTRACT CHANGES I OWE: the `MissedCause` union (so an unobservable cause is unrepresentable rather than merely forbidden) and per-report `{min,max}` (so a redrawn range cannot silently mislabel a stored report).**
+
+- **⚠️ NOT STARTED, ASSIGNED 2026-09-25: A HEARTBEAT WRITE MUST NOT BE ABLE TO KILL THE WORKER.** `researchRepo.ts:901`, `writeResearchHealth`. Research died three times on `SQLITE_BUSY`; `busy_timeout` 5000ms against a 110s startup gap. **Ops owns the long startup write; this half is mine, and it is the third site of that lock-crash class.**
+
+- **⚠️ NOT BUILT: THE ALPACA NEWS (BENZINGA) COLLECTOR.** His ruling *"yep, build the alpaca."* **Every question is answered and recorded** — licence (Commercial), coverage (~47% any / ~23% primary, Ops), the union (~44% of top-12, +3 names/session), latency (44s on the one sample), the filter (`symbols.length === 1`), and the source attribution (`benzinga`, never `globenewswire`). **Nothing blocks it but time.**
+
 - **✅ DECIDED 2026-09-26 — STORED ORDINALS ARE OMITTED AT THE SERVER, NOT LABELLED, AND THE CONDITION IS NOT "NON-DEFAULT".** Design's §4 (`design.md`, `4b7fca4`) asked Research to choose between returning in-range ordinals and omitting them. **Omit, and omit server-side.**
   **WHY NOT IN-RANGE: neither field can be recomputed for an arbitrary range.** `rankChange` needs a PREVIOUS ranking in that same range, and previous ranks exist only for the qualify band — holding one per viewer range is unbounded. `deadAtRank` is a historical fact about a name that is gone; producing it for a new range needs a re-rank of a past moment against a membership that was never recorded. **Mixing them is worse than either: an in-range rank minus a global previous rank is a delta between two different lists.**
   **WHY NOT LABEL IT: this desk's usual cure is "convert AND label", and here conversion is impossible, so labelling would put a SECOND denominator on a row that §2 has just given one** — *"top 25 of 312"* beside *"held rank 7 of \$1–\$20"*. **Two frames on one row is the defect the caption rule exists to remove.**
@@ -167,7 +178,7 @@ record. He has it from this seat directly as well.
 
 - **⚠️ HELD, NOT SOLVED — THE TRADE FEED RESIDUAL. Ranking in-range fixes the ROW and not the SUBSCRIPTION.** `engine.ts:2088` still grants trades/quotes by `internalRank` over the **qualify band**, so **a name ranked 8th inside a viewer's range but outside the global top 50 gets a row and no live feed** — and therefore no 10s buckets either, since the capture is gated on the same `highRes` set. **The crowding finding is HALF fixed: the board by construction, the feed not at all.** *The policy — the union of viewed ranges, bounded by the box — is mine and Ops's and is sized by a load test nobody has run. Do not widen anything on the assumption it is solved.*
 
-- **🟢 RULED 2026-09-26 AND IN BUILD — SEPARATE CAPTURE FROM QUALIFICATION IN THE ENGINE. His words, two turns, and they CORRECT the band everyone was carrying:**
+- **✅ DONE `cea5ed2` (unshipped) — SEPARATE CAPTURE FROM QUALIFICATION IN THE ENGINE. His words, two turns, and they CORRECT the band everyone was carrying:**
 
   > *"we need to be able to show from 25 cents up to 50, if that's what people want to see"*
   > *"The one to 20 is the default setting for the board... this is not the default setting for the system. The user will be able to identify their own range overall."*
