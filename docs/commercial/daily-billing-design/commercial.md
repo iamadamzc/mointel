@@ -5,14 +5,24 @@ warning, Web the save-card flow — into this same folder, one file each.** Writ
 2026-09-27/28, against `e41da7b`. **DESIGN ONLY: no build, no provider account, no
 customer or vendor contacted.**
 
-> **HEADLINE, PER WEB'S FINDING (§8) — READ THIS FIRST: "A DAY" IS CURRENTLY THREE
-> DIFFERENT INSTANTS IN THIS REPO, AND NO TWO OF THEM AGREE.** The session expires at
-> **20:00 ET** (`lib/auth/expiry.ts`, unchanged, measured directly). The trading date
-> rolls forward at **22:00 ET** (`lib/market/session.ts`). His stated paid day opens on
-> a fresh after-hours report at **~20:30 ET**, which exists nowhere in code today. **A
-> buyer who pays at Monday 20:30 loses the last 30 minutes of Tuesday under the
-> current code, measured, not reasoned about (§8).** This is the single open question
-> that gates §3 below and needs his answer before anything here ships.
+> **HEADLINE, CORRECTED TWICE MORE SINCE THIS WAS FIRST WRITTEN — READ THIS FIRST,
+> AND READ THE CORRECTION, NOT THE ORIGINAL CLAIM BELOW IT.** **HE HAS RULED THIS
+> DIRECTLY, to Web, 2026-09-27: "the after hours report is the start of the day."**
+> That overrules the clock-based recommendation this document endorsed below (struck
+> in §3, kept rather than deleted so the record shows what was considered and
+> refused) — **the paid day starts with the report, not with the 20:00 session
+> boundary.** **And the report's time is real: ~20:30 ET, from a NEW ~20:05
+> after-hours-complete checkpoint — designed and approved (Research, `8f52b73`;
+> measured safe by Ops, `9de7324`) but not yet built**, which is why a grep of the
+> current tree finds nothing there and a first pass (this seat's, then
+> independently Web's) read that absence as "there is no 20:30." **There is; it
+> just isn't shipped.** The existing 22:00 recap (`NEXT_DAY_RECAP`) becomes an
+> *update* into the same paid day under this composition, not the day's start.
+> **One sub-question remains genuinely open, Integration's to put to him and not
+> yet answered as of this document's last edit: if the 20:30 report runs late one
+> evening, does the paid day still start at its SCHEDULED time, or does lateness
+> push the start back?** Integration recommends scheduled-time-governs; this
+> document does not assume an answer.
 
 ---
 
@@ -119,23 +129,23 @@ every few minutes. **Two consequences worth naming rather than assuming:**
 
 ---
 
-## 3. THE DAY BOUNDARY THE CHARGE RUNS AGAINST — CORRECTED, THIS WAS NOT SETTLED
+## 3. THE DAY BOUNDARY THE CHARGE RUNS AGAINST — RULED, 2026-09-27, §8 CARRIES THE HISTORY
 
-**This section originally treated the boundary as already moving to ~20:30. It was
-not settled, and Web's independent measurement (§8) caught the same premise-stated-
-as-fact this seat has corrected in itself before.** `sessionExpiry` (`lib/auth/
-expiry.ts:51`) still computes the session boundary at **20:00 ET, unchanged, at
-`21d4534`** — the ~20:30 figure is his stated intent for when the paid day OPENS
-(the fresh after-hours report), not a boundary anything in the code yet uses. **§8
-carries the actual open question and this section defers to it rather than
-restating a guess as fact a second time.**
+**This section has been wrong twice on its way to right, and both corrections are
+kept in §8 rather than erased, because a receipt that vanishes reads as if the
+question were always easy.** First pass: asserted the boundary had already moved to
+~20:30 (it hadn't). Second pass: endorsed defining the paid day by the 20:00 session
+clock, on Web's own recommendation (§8) — **he ruled the opposite, directly, to
+Web: "the after hours report is the start of the day."** `sessionExpiry` (`lib/auth/
+expiry.ts:51`) itself is untouched at 20:00 — that ruling governs the *session*, not
+the *paid day*, and this document previously conflated the two.
 
-**What still holds regardless of how §8 resolves:** the charge fires at the same
-moment a session is issued (`lib/auth/callback.ts:145-146`), so **the charge and
-whatever boundary IS chosen are computed from the identical event** — there is no
-separate "billing day" clock to keep in sync with the "access day" clock, which
-remains the thing most likely to drift if they were ever built as two, whichever
-single boundary he picks.
+**The paid day starts with the after-hours report, and that report is real, at
+~20:30 ET, built from a new checkpoint approved but not yet shipped (§8).** The
+charge still fires at the moment a session is issued (`lib/auth/callback.ts:
+145-146`), so **the charge and the paid-day boundary remain computed from the
+identical event** — that structural point survives every correction to which
+instant the event actually is.
 
 ---
 
@@ -286,54 +296,58 @@ the app, with no commercial or licence question attached either way.**
 
 ---
 
-## 8. WEB'S SECTION — LANDED (`../../web/2026-09-27-paid-day-signup-scope.md`), READ IN FULL, ITS HEADLINE PROMOTED TO THE TOP
+## 8. WEB'S SECTION — LANDED, THEN HE RULED THE OPPOSITE OF ITS RECOMMENDATION, THEN WEB'S OWN CORRECTION HAD A SECOND ERROR — ALL THREE STAGES KEPT, NOT JUST THE LAST
 
-**The most important finding in this whole design came from Web, not this section,
-and Integration is right that it belongs at the top of the document — done, above.**
-Measured directly against `sessionExpiry`, not reasoned about:
+**Three stages, each superseding the last, each worth keeping visible rather than
+silently replaced with the final answer — this is exactly the shape the desk's own
+rule about corrections asks for.**
 
-```
-sign-in Mon 19:50 ET  ->  expires Mon 20:00 ET   (10 minutes)
-sign-in Mon 20:30 ET  ->  expires Tue 20:00 ET
-```
+**Stage 1 — Web's original section (`daily-billing-design/... paid-day-signup-scope.md`
+as first written), read in full.** Measured directly against `sessionExpiry`, not
+reasoned about: a buyer paying at Mon 20:30 (the moment the after-hours report was
+believed to open the day) had their session expire Tue 20:00 — thirty minutes before
+Tuesday's report, losing that window every day. **Web's recommendation from this
+measurement: define the paid day by the 20:00 clock, treat the report as content
+rather than the boundary.** This section originally endorsed that recommendation.
+**He ruled the opposite, directly, to Web: "the after hours report is the start of
+the day."** The endorsement above was wrong the moment it was written; struck here
+rather than pretending it never happened.
 
-**A buyer taking a day the moment it opens (Mon 20:30, on Monday's fresh report) has
-their session expire Tue 20:00 — thirty minutes before Tuesday's ~20:30 report even
-opens, and a Tuesday 20:10 sign-in belongs to WEDNESDAY's paid day under the same
-roll-forward.** The buyer loses those thirty minutes every single day and cannot get
-them back by signing in again. **This is not a rounding error; it is two different
-definitions of "a day" that will disagree on every cycle, forever, until one of them
-is picked.**
+**Stage 2 — Web's own correction (`b01b06e`), read in full, and it swung too far.**
+On learning his ruling, Web searched the current tree for a 20:30 boundary, found
+none, and concluded **"THERE IS NO 20:30 IN THIS SYSTEM"** — that the report Adam
+meant is `NEXT_DAY_RECAP` at the existing 22:00 constant, and rebuilt its whole
+arithmetic (22-hour access, a "gift" of two frozen hours) around 22:00. **This was
+also wrong, and Integration caught it before it reached a customer-facing page:**
+the ~20:30 figure is not a relay error — it is his own words, from earlier the same
+session (*"the run should be at 805, then the day starts at 830 pm with a fresh
+report on ah"*), and Research had **already designed and gotten his approval** for
+exactly that: a new ~20:05 after-hours-complete checkpoint (`8f52b73`), measured safe
+by Ops (`9de7324`), publishing the report at ~20:30 — **approved, not yet built,
+which is why a grep of HEAD found nothing and both Web and, earlier, this section
+mistook absence in the tree for absence in the plan.**
 
-**Web's recommendation, which this seat endorses rather than merely repeats: define
-the paid day by the CLOCK (20:00, unchanged) and treat "opens on a fresh report" as a
-promise about WHAT IS WAITING when the day opens, not about WHEN it opens.** The
-reasoning is the same discipline `lib/auth/expiry.ts` already states about itself —
-*"NO SECOND DEFINITION OF 20:00 ET... a second calculation here would be a second
-source of truth for the one number this desk has repeatedly got wrong."* **A paid-day
-boundary that floats with a report re-introduces exactly the failure that file was
-built to close off, and it does something worse than a stale clock: it moves the
-CHARGE, not just a label, whenever a report runs late.** Kept as the recommendation;
-his to rule, per Web's own §7.
+**Stage 3 — the composed, current answer, per Integration directly:** **the paid day
+starts with the after-hours report (his ruling), and that report is real, scheduled
+at ~20:30 (his design, approved, unbuilt) — not the 20:00 session clock (stage 1's
+now-refused recommendation) and not 22:00 (stage 2's now-corrected substitution).**
+The existing 22:00 `NEXT_DAY_RECAP` becomes an *update* into the same paid day, not
+its start. **One question remains genuinely open, Integration's, not yet answered as
+of this document's last edit: does a late report still start the day at its
+scheduled 20:30, or does lateness push the boundary back?** Integration recommends
+scheduled-time-governs, for the same reason `lib/auth/expiry.ts` gives against a
+second, event-driven definition of a clock number — but this is recorded as a live
+question, not assumed answered.
 
-**Two things this section corrects in ITSELF as a result, named rather than quietly
-fixed:**
-
-- **§3 above previously asserted the boundary was already moving to ~20:30. It was
-  not, and has been corrected in place** rather than left standing next to this
-  section's disagreement with it.
-- **§4's "an unreachable processor" and Ops's fold-in already assumed a MIN-style
-  boundary was resolved. Web's §3 independently derived the identical requirement
-  from a different angle** — measuring `sessionExpiry` directly rather than reading
-  Ops's schema — **and it is already satisfied by Ops's own design**: *"grace_until =
-  failed_at + 1h, and... expires_at = MIN(expires_at, grace_until)... a failure at
-  19:30 ET must not EXTEND a session that ends at 20:00."* Design's band reads that
-  resulting `expires_at`/`endsAt` value and prints the absolute time (*"ends at 07:43
-  ET"*), never a bare "1 hour" — so **Web's requirement that the warning "cannot
-  promise sixty minutes at 19:50" is not a new gap, it is confirmation, arrived at
-  independently, that the mechanism already built is the right one.** Worth stating
-  plainly so three seats converging on one answer reads as convergence, not as one of
-  them catching the other two out.
+**One thing survives all three stages unchanged, and it is worth naming because it
+is the part that was never wrong:** **Web's convergence finding on §3's "unreachable
+processor" / warning-duration question holds regardless of which instant the paid
+day turns out to be.** Ops's `grace_until = failed_at + 1h` with `expires_at =
+MIN(expires_at, grace_until)`, and Design's absolute-time band, already satisfy the
+requirement Web derived independently — that a warning cannot promise a full hour
+this close to whatever the boundary is. **Three seats arrived at the same
+requirement from three different angles; that convergence is real and does not
+depend on today's boundary being 20:00, 20:30, or 22:00.**
 
 **Two more things from Web's section that belong in this assembled document rather
 than only in its own file:**
@@ -361,9 +375,12 @@ than only in its own file:**
 section above, collected here so the ask to him is one list rather than four
 documents.**
 
-1. **Does a paid day end at 20:00 ET with the session, or at ~20:30 with the next
-   report?** §8. The one that gates everything else; Web's recommendation is 20:00,
-   unchanged, with the report as the day's first content rather than its start.
+1. **RULED — the paid day starts with the after-hours report, at his own word to
+   Web, not the 20:00 session clock.** §8. **One narrower question remains, live:
+   does a late report still start the day at its scheduled ~20:30, or does lateness
+   push the boundary back?** Integration recommends scheduled-time-governs, not yet
+   answered. **Do not re-ask whether the report or the clock governs — that part is
+   closed.**
 2. **Is a non-trading day (Saturday) a charged day?** §6. This seat's recommendation:
    no — nothing is sold that day.
 3. **After the hour lapses, is the account revoked, or only that day's session
@@ -396,7 +413,9 @@ the band. Verified against Design's own committed file
 terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
 `2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
-Web's `web/2026-09-27-paid-day-signup-scope.md`; all read in full. His rulings
-verified via `list_events` on the Integration session, not taken from the relay
-alone. A search for a day-pass-specific refund comparable returned nothing on
-point; recorded as absence in §4 rather than assumed resolved.
+Web's `web/2026-09-27-paid-day-signup-scope.md` at both `21d4534` (stage 1) and
+`b01b06e` (stage 2); Research's `8f52b73` and `9de7324` (the 20:05/20:30 design and
+its measurement); all read in full. His rulings verified via `list_events` on the
+Integration and Web sessions directly, not taken from the relay alone. A search for
+a day-pass-specific refund comparable returned nothing on point; recorded as absence
+in §4 rather than assumed resolved.
