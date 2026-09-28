@@ -370,9 +370,7 @@ documents.**
    ended?** §6. This seat's recommendation: only that day.
 4. **Automatic retry, or only on card fix?** §6. This seat's position: event-driven,
    on card update.
-5. **The OS notification: on or off?** §7, Design's. The one piece that leaves the
-   app.
-6. **Do the first paying users arrive self-serve, or still invited and invoiced by
+5. **Do the first paying users arrive self-serve, or still invited and invoiced by
    hand?** §8, Web's. Not settled by anything in this design; his 2026-09-26
    recommendation (hand-invite) stands until he says otherwise.
 
@@ -380,7 +378,13 @@ documents.**
 re-asked:** whether a retry resets the one-hour clock (no, confirmed §7); whether
 the gate needs to learn about payment (no, confirmed independently by this seat and
 Web, §8); whether the OS notification reopens the session-reports investment-advice
-question (no, §7).
+question (no, §7); **the OS notification itself — RULED, his words to Design,
+2026-09-28: *"yes, send the notification"*.** Scope exactly as Design's §3 already
+specified: once at failure, once at 10 minutes left, only where browser permission
+already exists, never prompted by the failure itself, no sound, same end time as
+the band. Verified against Design's own committed file
+(`daily-billing-design/design-seat.md:141-147`), not taken from the relay alone.
+**Do not put this back to him** — it is answered.
 
 ---
 
