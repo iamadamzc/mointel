@@ -935,6 +935,8 @@ MORE NEWS SOURCES    Commercial scoping the landscape (ACCESS Newswire, what War
                      Commercial: (1) "Warrior Trading is built on TradingView" is unsourced, and the headline
                      ("its edge is a licence you cannot get") depends on it; (2) the AIFF control is absent;
                      (3) 23%/47%/44% are three different columns shown as one; (4) the §4 table overstates §5.
+                     ~15:40Z: all four fixed at 585de5d; two new AIFF timing lines ("four seconds") didn't match
+                     research.md:268-274 and were sent back. Cleared for Commercial to send to him directly once fixed.
 PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the market worker; (2) Ops bootstrap band
                      = record band, trigger cea5ed2 on the MARKET WORKER (his next direct restart); (3) ceiling
                      20->50 + restart; (4) server ranks inside a requested range -- Research, STANDALONE, due 2026-10-05
