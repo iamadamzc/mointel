@@ -900,6 +900,10 @@ archived below, marked. **Re-verify production before acting: ask Ops for `/proc
 started 00:32:42-43Z, NRestarts 0); market `3b78b8c` pid 1347535 since 23:17:45Z, NRestarts 0; no deploy unit
 running. **Monday trades.db check: NO trigger set** — Ops answers it the first time it is active after 08:00Z; a
 scheduled read is his to approve.
+**✅ HE APPROVED IT ~01:15Z 2026-09-28, verbatim "yes, set it up",** after asking "is this a one time thing or
+ongoing?" and being told ONE-TIME. Scope: one READ-ONLY run at 04:30 ET Mon 09-28 (08:30Z) — row count, first/last
+bucket_ts, tradeCapture written vs discarded — result to him before 07:00 ET; no fixes on a bad result; the task is
+removed after it fires. Relayed to Ops ~01:16Z; task id pending from Ops.
 
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
