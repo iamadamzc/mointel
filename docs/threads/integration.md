@@ -1027,6 +1027,9 @@ must see the row that triggered it).** This seat relayed the cap reading to him 
 evidence=27 sources" = all 27 active, news rows included. **The rows reached the model and weren't cited. NO defect.**
 Withdrawn to Research. (Ops's read 1 had labelled source_ids "the evidence bundle the model saw"; this seat took the
 label without opening the field.)
+**~11:25 ET: filter narrowed (`43f4094`)** to /circuit breaker/ + /stock now up|down N/ only; 6 recall cases pinned.
+Enumeration bb5d351 → 4d8cd79 → 43f4094 onto 7820810 replayed HERE in a temp worktree: clean, 163 files. Sent to Ops
+CONDITIONAL on his direct yes.
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
