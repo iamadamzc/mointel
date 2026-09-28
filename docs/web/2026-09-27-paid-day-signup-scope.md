@@ -235,71 +235,85 @@ way.** *Which of the two it is, is his.*
 §2 boundary against this seat's recommendation, and it is the better answer —
 because the report is not at ~20:30.*
 
-### THE RELAYED TIME WAS WRONG, AND THE REAL ONE IS ALREADY A CONSTANT
+### ~~THE RELAYED TIME WAS WRONG, AND THE REAL ONE IS ALREADY A CONSTANT~~ — **STRUCK 2026-09-27, THIS SECTION WAS WRONG**
 
-**The relay said the paid day opens "~20:30 ET on a fresh after-hours report".
-There is no 20:30 in this system.** *The after-hours report is
-`NEXT_DAY_RECAP`, and the desk's own schedule describes it in the words his
-ruling uses:*
+> ## ⚠ STRUCK, NOT DELETED. THE ~20:30 IS HIS, AND THIS SEAT CALLED IT A RELAY ARTEFACT.
+>
+> **Everything struck below rested on one claim — "there is no 20:30 in this
+> system" — which this seat established by grepping `HEAD`.** *It is the exact
+> error this desk has already written down: **a grep at `HEAD` answers only the
+> present.*** **The 20:30 is DESIGNED AND APPROVED, NOT BUILT, so the tree looks
+> identical to one where it was never his idea.**
+>
+> **HIS WORDS, `8f52b73`, 2026-09-27 — read in the commit, not relayed:**
+> ***"why is the run at 10pm if the ah closes at 8? the run should be at 805, then
+> the day starts at 830 pm with a fresh report on ah."***
+>
+> **The design at `8f52b73` / `9de7324`:** a new **~20:05 "after-hours complete"**
+> checkpoint; the after-hours report published from it at **~20:30**; the **22:00
+> checkpoint kept as a FILINGS UPDATE** into the same slot, and the **22:00
+> trading-date roll unchanged.** *Ops measured 20:05 as safe — last after-hours
+> bar correction by 20:00:00.2 on four days.* **And the design says the thing that
+> makes it coherent: "the paid day's boundary is a billing concept and does not
+> require the internal roll to move."**
+>
+> ~~`RECAP_MIN` is the paid-day boundary~~ — **it is not. `NEXT_DAY_RECAP` at
+> 22:00 is the UPDATE; the ~20:30 report is the START.** *His two rulings compose:
+> the paid day starts with the after-hours report, and the after-hours report moves
+> to ~20:30.*
+
+**WHAT THE STRUCK SECTION GOT RIGHT AND IS WORTH KEEPING:** *`RECAP_MIN` is
+`NEXT_DAY_PREP_MIN` is 22:00, and `lib/desk/schedule.ts:8` does describe the
+22:00 recap in the words of his ruling.* **Those facts are true and they are why
+the wrong conclusion was so easy to reach** — the 22:00 recap really was the
+after-hours report, until he moved it.
+
+---
+
+## 7b. THE BOUNDARY AS RULED: ~20:30, AND WHAT IT COSTS
+
+**Paid day opens at the ~20:30 after-hours report. Session expiry is unchanged at
+20:00 ET.** *Measured with the probe in §2:*
 
 ```
-lib/desk/schedule.ts:8    22:00  NEXT_DAY_RECAP   "the completed after-hours session plus
-                                 everything published since, and what it means for the
-                                 next trading day"
-lib/desk/schedule.ts:76   export const RECAP_MIN = NEXT_DAY_PREP_MIN;   // 22:00
-lib/market/session.ts:32  export const NEXT_DAY_PREP_MIN = 22 * 60;     // 22:00
+buyer signs in Mon 20:30 (the report publishes, the paid day opens)
+  -> session etDate Tue, expires TUE 20:00
+  -> 23.5 hours of access inside a 24-hour paid day
+Tue 20:00  signed out
+Tue 20:05  the after-hours-complete checkpoint runs -- about the day they paid for
+Tue 20:30  the report publishes and opens the NEXT paid day
 ```
 
-> **SO HIS RULING PUTS THE PAID-DAY BOUNDARY ON A CONSTANT THAT ALREADY EXISTS
-> AND ALREADY MEANS "THE NEXT DAY STARTS HERE".** *`RECAP_MIN` IS
-> `NEXT_DAY_PREP_MIN` — the same instant that rolls the trading date, for the
-> same reason: the recap closes one session and opens the next.* **The paid day
-> and the trading date become one boundary rather than two, and the floating-vs-clock
-> problem in §2 disappears: 22:00 is a clock, and the report is what is ready at
-> it.**
+> **SO THE THIRTY MINUTES A BUYER LOSES ARE NOT EMPTY ANY MORE, AND THAT IS THE
+> DIFFERENCE THE STRUCK SECTION MISSED.** *Under 22:00 the gap was `POST_MARKET`
+> with nothing in it — the "two frozen hours are a gift" framing, now withdrawn.*
+> **Under ~20:30 the gap contains the 20:05 checkpoint: the desk's closing
+> assessment of the after-hours session the buyer paid for, published five minutes
+> after they are locked out.**
 
-**Had "~20:30" been taken at face value, the billing boundary would have been set
-ninety minutes before the artefact that defines it.** *A number that arrived in a
-relay and exists nowhere in the tree — checked rather than adopted.*
+**THE QUESTION THAT RAISES, AND IT IS A PRODUCT QUESTION RATHER THAN A CLOCK ONE:
+does a buyer of day N get to see the assessment that closes day N?** *Under his
+model the 20:30 report opens day N+1, so the answer today is no — each paid day
+opens with the previous session's report.* **That is internally consistent and may
+be exactly what he wants. It is worth him knowing it is the consequence**, because
+"I paid for Tuesday and cannot see what Tuesday's after-hours did" is the sentence
+a customer will write.
 
-### WHAT IT COSTS: NOTHING IN CODE. MEASURED.
+**AND THE RESIDUAL MISMATCH SHRINKS FROM TWO HOURS TO THIRTY MINUTES, same
+direction:** *between 20:00 and 20:30 the session day has rolled while the paid
+day has not, so a sign-in there gets the next paid day up to half an hour early.*
+**Still in the customer's favour; no longer in an empty window.**
 
-**Probe against the real `sessionExpiry`, run and removed:**
+### The clock-versus-event concern is now the live one, and Integration has it
 
-```
-Mon 19:59 ET -> day Mon,  expires Mon 20:00   0.0h
-Mon 20:00 ET -> day Tue,  expires Tue 20:00  24.0h
-Mon 22:00 ET -> day Tue,  expires Tue 20:00  22.0h   <- the buyer at the recap
-Mon 22:05 ET -> day Tue,  expires Tue 20:00  21.9h
-```
+**A report published at ~20:30 is an event; `20:30` is a clock.** *This seat
+raised that against the boundary and then mis-aimed it at 22:00.* **It applies
+squarely here: if the boundary is the report's ACTUAL publish time, a late report
+moves a charge and moves somebody's access.** **Integration is putting to him that
+the boundary is the SCHEDULED 20:30 rather than the actual publish, and this seat
+supports that** — *the report can be late without the day being late, which is the
+only version where billing does not inherit a pipeline's luck.*
 
-**A buyer who takes a day when the recap publishes gets access from 22:00 to
-20:00 the next evening.** *The paid day is 22:00→22:00; access is 22 of those 24
-hours.* **The two hours they cannot sign in — 20:00 to 22:00 — are `POST_MARKET`,
-which `lib/market/session.ts:8` defines as "SIP extended trading over, AH state
-frozen".** *Nothing new appears in them, and the one thing that happens at their
-end is the next recap, which under his ruling belongs to the next paid day.*
-
-> **SO NO CODE CHANGES AND NOTHING IS LOST.** *The earlier draft of this file
-> recommended defining the day by the 20:00 clock with the report as its first
-> content. **His answer is better: the report IS the boundary, and because the
-> report is at 22:00 rather than 20:30, the boundary is a constant the desk
-> already keeps.*** **His 2026-09-10 session ruling — "a session should persist
-> all day until the close of after hours" — stands untouched at 20:00.**
-
-### THE ONE RESIDUAL MISMATCH, AND IT ERRS IN THE CUSTOMER'S FAVOUR
-
-**Between 20:00 and 22:00 the session day and the paid day disagree by design:
-`sessionExpiry` has already rolled to tomorrow, while the paid day is still
-today's.** *Measured above — a sign-in at Mon 21:59 is assigned Tuesday.*
-
-**So somebody signing in during that window gets the next paid day's access up to
-two hours early.** *In a frozen window, so it is two hours of nothing — and it is
-a small gift rather than a shortfall.* **Recorded because it is the kind of
-two-hour disagreement that reads as a bug to whoever finds it later without this
-paragraph**, and because the honest direction of an error is worth writing down
-next to the error.
-
-*Nothing in this file needs him. The §2 question is answered, the grace-period
-question is answered by "1 hour, regardless of time", and `lib/auth/expiry.ts`'s
-"one charged day or two" flag can be retired.*
+*Nothing in this file needs him beyond that scheduled-versus-actual question,
+which Integration holds. The grace-period question is answered by "1 hour,
+regardless of time" and is satisfied by Ops's `MIN(expires_at, grace_until)`.*
