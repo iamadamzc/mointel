@@ -921,7 +921,11 @@ Ops asked to prove retention cannot prune the market worker's cwd (3b78b8c) firs
 (~01:55Z):** `1eaa938` (ops/capture-band), one commit over 240f27e, content == cea5ed2 (re-diffed here), gate 161/161
 files, 2463 tests green. Retention proven ON THE BOX (prune.sh in-use rule reads each unit's /proc cwd; last log kept
 3b78b8c as in use). **Ops declines the relayed standing grant for deploys** (its practice since the 09-25 permission
-refusal) and asked HIM directly. Waits on his word + a window outside 04:00–10:00 ET.
+refusal) and asked HIM directly. **✅ HIS "yes" in Ops 2026-09-28 01:50:47Z (verified at his turn in the jsonl). SHIPPED 22:04:34 ET
+(02:04Z)**: web/research/assess on `1eaa938` (/proc, Ops), down 3s; market STILL `3b78b8c`, so cea5ed2 is on the
+release but NOT in the market worker, and the bootstrap-band trigger stays unmet until his next direct restart.
+Prune kept 3b78b8c as in use, removed 8147cf4. *Ops launched with DEPLOY_TESTS_SKIP after gating the same sha
+minutes before, and attributed the skip to "your condition". This seat set no such condition; correction sent.*
 
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
