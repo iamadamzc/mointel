@@ -12197,3 +12197,9 @@ jobs run on the new pid before anyone quotes coverage.
 **PROVEN 10:26 ET:** first new-code job KNRX: newsFetchDetail "alpaca: read 10 items (4 single-symbol,
 6 multi-symbol)" and exactly 4 NEWS_FEED rows for KNRX (halts, NYSE notice, going-concern).
 FUSE followed with 2 rows. Read -> classify -> store end to end.
+
+**2026-09-28 11:34 ET: dca4a04 = news re-check + halt filter (bb5d351, 4d8cd79, 43f4094 on 7820810),
+LIVE on web/research/assess**, on his "ship the re-check". DEPLOY_TESTS_SKIP; gated dca4a04 at
+11:04 ET, 163/163, 2505 green, same session, nothing changed. Down 3s; prune kept 3b78b8c (in use).
+**Re-queue PROVEN on the first poll:** ARAY re-queued on a Benzinga item, job 5397 trigger NEWS_ITEM,
+COMPLETE 15:47:46Z. Halt-count half unproven until a runner halts.
