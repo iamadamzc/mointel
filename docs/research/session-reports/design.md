@@ -252,6 +252,33 @@ engine.ts:2185        capped at highResMax ?? 250, pinned first
 
 **⚠️ ONE THING I CHECKED THAT COULD HAVE MADE IT WORSE, AND DID NOT: arm 2 compares `rvolRank <= discoveryRank`, and `null <= 12` is TRUE in JavaScript.** *If that arm iterated every ticker, an after-hours-only name with a null daytime rank would be admitted by coercion.* **It does not — `engine.ts:2166-2167` filters `rvolRank !== null` before sorting.** *The `as number` casts are safe because both arms iterate pre-filtered arrays. Verified rather than assumed, because a silent null-coercion into a capped set is exactly the defect that would never show up as an error.*
 
+## 🕑 HIS 20:05 / 20:30 RULING — DESIGN, NOT BUILT. Answers to A–D, and B does not hold as stated
+
+> ***"why is the run at 10pm if the ah closes at 8? the run should be at 805, then the day starts at 830 pm with a fresh report on ah."***
+
+**C — ADOPT INTEGRATION'S PROPOSAL: keep the 22:00 checkpoint AND the 22:00 trading-date roll unchanged; add a ~20:05 "after-hours complete" checkpoint, publish the premarket report from it at ~20:30, and publish a 22:00 FILINGS UPDATE into the same slot.** *Design's surface already supports an update in a slot and shows the newer one.* **The paid day's boundary is a billing concept and does not require the internal roll to move.**
+
+**⚠️ B — THE PREMISE IS NOT CONFIRMED, AND WHAT IS CONFIRMED STRENGTHENS C RATHER THAN WEAKENING IT.** *Integration's understanding was that EDGAR accepts filings until 22:00 ET, so a 20:05 report would structurally miss 20:00–22:00 filings.*
+
+**What the code says** (`session.ts:301-307`, quoted not paraphrased): the two hours exist because *"the desk is still watching filings against it"*.
+
+**What I could confirm, from eCFR 17 CFR 232.13(a)(2):**
+
+> *"all filings submitted by direct transmission commencing after 5:30 p.m. Eastern ... shall be deemed filed as of the next business day."*
+
+⇒ **A filing transmitted between 20:00 and 22:00 is NOT a filing against the session that just ended. Its official date is the NEXT business day.** *So the 22:00 window is a **visibility** window, not a same-day-filing window — the desk sees those documents early, it does not capture them for that session.*
+
+**What I could NOT confirm: the 22:00 operating-hours figure itself.** *Tried the EDGAR filer FAQ, technical specifications, search-filings and filer-information pages; the hours are not stated on any of them, and I am not asserting a number I could not source.* **It belongs in the EDGAR Filer Manual, which I did not reach.**
+
+⇒ **This makes C stronger, not weaker: if the window is about SEEING filings early rather than DATING them, an update into the same slot serves it exactly as well as moving the roll would — and at a fraction of the risk.**
+
+**A — IS 5 MINUTES ENOUGH FOR THE FINAL AH BARS? I CANNOT CONFIRM IT FROM THIS DISK AND WILL NOT GUESS.** *The local store holds two sessions and its last-bar timestamps are contaminated by the roll itself — `2026-08-18`'s latest bar is stamped `08:23 ET the next morning`, a premarket bar filed under the prior trading date.* **That is a production measurement and it is Ops's.**
+  **What I can name is the actual risk, which is not initial delivery: a minute bar for 19:59 closes at 20:00 and arrives within seconds. The exposure is LATE `updatedBar` CORRECTIONS**, which the desk already absorbs because `upsertMinuteBars` is an upsert. *So the question for Ops is not "have the bars arrived" but **"how late does the last correction land"** — and if it is routinely past 20:05, the fix is to move the checkpoint, not to weaken the report.*
+
+**D — MATCHES HIS ORIGINAL REQUEST.** *"Then one for going into Power Hour an don for AH"* → premarket ~20:30 (from 20:05, + the 22:00 filings update), into RTH from 09:25, power hour from 14:30, into AH from 16:00. **The 16:00 report goes INTO after-hours; the 20:30 report says what after-hours DID and opens the paid day. They are different reports about the same window and neither duplicates the other.**
+
+**AND ONE CONSEQUENCE WORTH HAVING FOR THE N-RANGES TIMING PROBLEM: the premarket report now has ~25 MINUTES of head-room (20:05 → 20:30), against the 5 minutes into-RTH has at 09:25.** *So N writer+checker pairs are far less risky on the report that opens the paid day than on the one before the open — which is the report the latency measurement should target first.*
+
 ## 5. FAILURE MODES
 
 **⚠️ CORRECTED 2026-09-27 — "ONLY THE TOP 50 GET A LIVE FEED" IS WRONG, AND IT REACHED THIS DOCUMENT AND THE PAYLOAD CONTRACT.** *Integration's brief said it, this seat repeated it twice, Commercial found it, and I verified `applyHighResSelection` (`engine.ts:2121`) myself.* **The set is:**
