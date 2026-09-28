@@ -48,6 +48,23 @@ export interface AlpacaSnapshot {
   prevDailyBar?: AlpacaDailyBar;
 }
 
+/** Published maximum `limit` for `/v1beta1/news`. */
+export const ALPACA_NEWS_MAX_LIMIT = 50;
+
+/** One item from `/v1beta1/news`, as published. `content` only with include_content. */
+export interface AlpacaNewsItem {
+  id?: number;
+  headline?: string;
+  author?: string;
+  created_at?: string;
+  updated_at?: string;
+  summary?: string;
+  content?: string;
+  symbols?: string[];
+  source?: string;
+  url?: string;
+}
+
 export class AlpacaHttpError extends Error {
   readonly status: number;
   readonly body: string;
@@ -256,6 +273,56 @@ export class AlpacaRestClient {
     });
 
     return results;
+  }
+
+  /**
+   * News items (Benzinga) for a symbol set over a window, newest first.
+   *
+   * `limit` is capped at the endpoint's published maximum of 50: a larger value
+   * is an error response, and a parser reading `.news` off that error object
+   * reports zero items, which is indistinguishable from no coverage. That
+   * exact failure produced a 0% coverage reading on five days that contained a
+   * known item. So a payload without a `news` array THROWS rather than
+   * returning empty.
+   */
+  async getNews(params: {
+    symbols: string[];
+    start: string;
+    end: string;
+    maxPages?: number;
+    includeContent?: boolean;
+  }): Promise<{ items: AlpacaNewsItem[]; truncated: boolean; pages: number }> {
+    const items: AlpacaNewsItem[] = [];
+    const maxPages = params.maxPages ?? 2;
+    let pageToken: string | null = null;
+
+    for (let page = 0; page < maxPages; page += 1) {
+      const query = new URLSearchParams({
+        symbols: params.symbols.join(','),
+        start: params.start,
+        end: params.end,
+        sort: 'desc',
+        limit: String(ALPACA_NEWS_MAX_LIMIT),
+      });
+      if (params.includeContent) query.set('include_content', 'true');
+      if (pageToken) query.set('page_token', pageToken);
+
+      const payload = await this.request<unknown>(
+        `${ALPACA_ENDPOINTS.dataRest}/v1beta1/news?${query.toString()}`,
+      );
+      const news = (payload as { news?: unknown } | null)?.news;
+      if (!Array.isArray(news)) {
+        throw new Error('Alpaca news payload carried no news array');
+      }
+      for (const item of news) {
+        if (item && typeof item === 'object') items.push(item as AlpacaNewsItem);
+      }
+      const next = (payload as { next_page_token?: unknown }).next_page_token;
+      pageToken = typeof next === 'string' && next !== '' ? next : null;
+      if (!pageToken) return { items, truncated: false, pages: page + 1 };
+    }
+
+    return { items, truncated: true, pages: maxPages };
   }
 
   /** Cheap authenticated call used to verify credentials and data entitlement. */

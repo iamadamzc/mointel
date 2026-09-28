@@ -27,6 +27,7 @@ import type {
   DiscoveryResult,
 } from '@/lib/research/catalyst/discovery';
 import type { CatalystConfig, SecConfig } from '@/lib/research/config';
+import type { NewsAdapter, NewsFetchResult } from '@/lib/research/news/types';
 
 const temporaryFiles: string[] = [];
 
@@ -1411,5 +1412,116 @@ describe('recovery for issuers poisoned by the old resolver', () => {
 
     expect(report.companySourceDetail).not.toContain('urgent');
     expect(discovery.calls).toBe(0);
+  });
+});
+
+describe('news adapters inside collection', () => {
+  const release = {
+    adapter: 'test',
+    provider: 'benzinga',
+    providerItemId: '1',
+    headline: 'Acme Announces Pivotal Trial Result',
+    summary: 'Acme announced a pivotal result.',
+    bodyText: 'TORONTO, Aug. 17, 2026 (GLOBE NEWSWIRE) -- Acme announced...',
+    url: 'https://www.benzinga.com/pressreleases/acme',
+    publishedAt: '2026-08-17T11:50:00.000Z',
+    symbols: ['ACME'],
+    originatingWire: 'GLOBENEWSWIRE' as const,
+  };
+  const adapter = (result: NewsFetchResult): NewsAdapter => ({
+    id: 'test',
+    fetchForTicker: async () => result,
+  });
+
+  it('a wire release from a news adapter answers the ticker and spares the paid pass', async () => {
+    const db = temporaryDb();
+    // No feed on file: without the adapter, discovery is the only option.
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        fakeSecClient({}),
+        discovery,
+        resolver,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW },
+        [adapter({ ok: true, items: [release], truncated: false, requests: 1 })],
+      ),
+    );
+
+    expect(report.newsItems).toHaveLength(1);
+    expect(report.newsItems[0].authority).toBe('NEWSWIRE');
+    expect(report.newsFetchDetail).toBe('test: read 1 items (1 single-symbol, 0 multi-symbol)');
+    expect(report.state).toBe('RECENT_SOURCE_LOCATED');
+    expect(paidLookups(discovery, resolver)).toBe(0);
+    expect(readSources(db, 'ACME').filter((s) => s.sourceType === 'NEWS_FEED')).toHaveLength(1);
+  });
+
+  it('an adapter ERROR leaves the paid fallback open and says ERROR', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+
+    const report = await withCompanyFetch({}, () =>
+      collectCatalystEvidence(
+        db,
+        fakeSecClient({}),
+        discovery,
+        resolver,
+        { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+        { ticker: 'ACME', now: NOW },
+        [adapter({ ok: false, error: 'HTTP 503', requests: 1 })],
+      ),
+    );
+
+    expect(report.newsFetchDetail).toBe('test: ERROR HTTP 503');
+    expect(paidLookups(discovery, resolver)).toBeGreaterThan(0);
+  });
+
+  it('a second pass over the same release stores nothing new and moves no fingerprint', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, null);
+    const discovery = new CountingDiscovery();
+    const run = () =>
+      withCompanyFetch({}, () =>
+        collectCatalystEvidence(
+          db,
+          fakeSecClient({}),
+          discovery,
+          resolver,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          { ticker: 'ACME', now: NOW },
+          [adapter({ ok: true, items: [release], truncated: false, requests: 1 })],
+        ),
+      );
+    const first = await run();
+    const second = await run();
+    expect(first.fingerprintChanged).toBe(true);
+    // Unchanged evidence is what keeps a re-poll from buying a re-interpretation.
+    expect(second.fingerprintChanged).toBe(false);
+    expect(second.newSourceCount).toBe(0);
+  });
+
+  it('with no adapters the report says so rather than reading zero', async () => {
+    const db = temporaryDb();
+    seedIssuer(db, 'https://acme.example.net/rss');
+    const report = await withCompanyFetch(
+      {
+        'https://acme.example.net/rss': RSS_BODY,
+        'https://acme.example.net/news/contract': '<html><body><p>Acme won.</p></body></html>',
+      },
+      () =>
+        collectCatalystEvidence(
+          db,
+          fakeSecClient({}),
+          new CountingDiscovery(),
+          resolver,
+          { sec: SEC_CONFIG, catalyst: CATALYST_CONFIG },
+          { ticker: 'ACME', now: NOW },
+        ),
+    );
+    expect(report.newsFetchDetail).toBe('no news adapters configured');
   });
 });
