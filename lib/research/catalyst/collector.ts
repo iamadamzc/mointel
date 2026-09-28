@@ -81,6 +81,8 @@ import {
   selectReleaseExhibits,
 } from './exhibits';
 import { extractEvidence, htmlToText } from '../sec/documents';
+import { collectNews } from '../news/collect';
+import type { NewsAdapter } from '../news/types';
 
 /** Current-report forms whose exhibits carry announcements. */
 const CURRENT_REPORT_FORMS = new Set(['8-K', '8-K/A', '6-K', '6-K/A']);
@@ -178,6 +180,8 @@ export interface CatalystCollectionReport {
   exhibitsFound: CatalystSourceSummary[];
   companyReleases: CatalystSourceSummary[];
   discoveredSources: CatalystSourceSummary[];
+  /** Items stored from news adapters (lib/research/news). */
+  newsItems: CatalystSourceSummary[];
   clusters: SourceCluster[];
   /** Most recent publication time across all catalyst sources. */
   latestSourceAt: NormalisedTime | null;
@@ -200,6 +204,12 @@ export interface CatalystCollectionReport {
    * fetch ran.
    */
   companyFetchDetail: string;
+  /**
+   * What each news adapter returned this pass, as item counts, or ERROR.
+   * `'no news adapters configured'` when the worker passed none -- which is a
+   * different fact from an adapter that ran and read nothing.
+   */
+  newsFetchDetail: string;
   /**
    * Why RESOLUTION found nothing, as counts rather than a label.
    *
@@ -294,6 +304,7 @@ const CATALYST_TYPES = new Set<SourceType>([
   'COMPANY_RELEASE',
   'NEWSWIRE',
   'SECONDARY_DISCOVERY',
+  'NEWS_FEED',
 ]);
 
 export function catalystSourcesOf(sources: readonly ResearchSource[]): ResearchSource[] {
@@ -319,6 +330,7 @@ export async function collectCatalystEvidence(
   resolver: CompanySourceResolverProvider | null,
   config: { sec: SecConfig; catalyst: CatalystConfig },
   input: CatalystCollectionInput,
+  news: readonly NewsAdapter[] = [],
 ): Promise<CatalystCollectionReport> {
   const startedAt = Date.now();
   const now = input.now ?? new Date();
@@ -381,6 +393,7 @@ export async function collectCatalystEvidence(
     exhibitsFound: [],
     companyReleases: [],
     discoveredSources: [],
+    newsItems: [],
     clusters: [],
     latestSourceAt: null,
     fingerprintBefore,
@@ -391,6 +404,7 @@ export async function collectCatalystEvidence(
     discoveryMode: null,
     companySourceDetail: 'not attempted',
     companyFetchDetail: 'not attempted',
+    newsFetchDetail: 'no news adapters configured',
     resolutionProbes: { candidatesReturned: 0, candidatesProbed: 0, candidatesFetched: 0 },
     discoveryTrigger: null,
     discoveryIntervalMinutes: 0,
@@ -719,6 +733,19 @@ export async function collectCatalystEvidence(
     }
   } else {
     warnings.push('no company IR or newsroom source on file');
+  }
+
+  // ------------------------------------------------- 2c. news adapters
+  // Deterministic, no model. Run before the discovery gate so a fresh wire
+  // item can stand as the recent canonical source and spare a paid pass.
+  if (news.length > 0) {
+    const lookbackStart = new Date(
+      now.getTime() - config.catalyst.contextLookbackDays * 86_400_000,
+    );
+    const newsRun = await collectNews(news, ticker, { start: lookbackStart, end: now }, now);
+    report.newsFetchDetail = newsRun.detail;
+    report.networkRequests += newsRun.requests;
+    collected.push(...newsRun.rows);
   }
 
   // Persist what deterministic collection found before deciding on discovery,
@@ -1069,6 +1096,10 @@ export async function collectCatalystEvidence(
 
   report.fingerprint = computeCatalystFingerprint(persisted);
   report.fingerprintChanged = report.fingerprint !== fingerprintBefore;
+
+  report.newsItems = persisted
+    .filter((source) => source.sourceType === 'NEWS_FEED')
+    .map(toSummary);
 
   const knownBefore = new Set(catalystSourcesOf(existing).map((source) => source.url));
   const newSources = persisted.filter((source) => !knownBefore.has(source.url));

@@ -1059,6 +1059,12 @@ export interface CollectorReportRecord {
    */
   companyFetchDetail: string | null;
   /**
+   * What each news adapter returned this pass: item counts per adapter, or
+   * ERROR. Optional because rows written before the news collector lack it --
+   * ABSENT on those means "predates the collector", not "read nothing".
+   */
+  newsFetchDetail?: string | null;
+  /**
    * Network requests this pass. The counter behind the readable field above,
    * kept beside it because a string can drift and a count cannot.
    */

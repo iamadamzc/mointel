@@ -228,6 +228,8 @@ export type SourceType =
   | 'COMPANY_RELEASE'
   | 'NEWSWIRE'
   | 'SECONDARY_DISCOVERY'
+  /** An item from a news adapter (lib/research/news); authority says whether its wire was recovered. */
+  | 'NEWS_FEED'
   | 'WEB_SEARCH'
   | 'MARKET_HISTORY';
 

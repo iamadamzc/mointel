@@ -21,6 +21,10 @@ import { modelAvailability, readResearchConfig, secAvailability } from '../lib/r
 import { SecClient, describeReachability } from '../lib/research/sec/client';
 import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collector';
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
+import { AlpacaNewsAdapter } from '../lib/research/news/alpaca';
+import type { NewsAdapter } from '../lib/research/news/types';
+import { AlpacaRestClient } from '../lib/market/alpaca/rest';
+import { findAlpacaCredentials } from '../lib/market/credentials';
 import type { MaterialDemandEvent } from '../lib/research/catalyst/collector';
 
 import { NoopDiscoveryProvider } from '../lib/research/catalyst/discovery';
@@ -132,6 +136,26 @@ async function main(): Promise<void> {
   const escalation = config.model.apiKey
     ? new OpenAiInterpreter({ config: config.model, tier: 'ESCALATION', timeoutMs: 300_000 })
     : null;
+  /*
+   * News adapters. Alpaca's credentials are the market account's, which this
+   * process already reads for history (lib/research/historyFetch.ts). None
+   * found means none configured, and every job records exactly that rather
+   * than a silent zero. RESEARCH_NEWS=off disables them without a deploy.
+   */
+  const newsCredentials =
+    process.env.RESEARCH_NEWS === 'off' ? null : findAlpacaCredentials().credentials;
+  const newsAdapters: NewsAdapter[] = newsCredentials
+    ? [new AlpacaNewsAdapter(new AlpacaRestClient(newsCredentials))]
+    : [];
+  log(
+    `[research] news: ${
+      newsAdapters.length > 0
+        ? newsAdapters.map((adapter) => adapter.id).join(', ')
+        : process.env.RESEARCH_NEWS === 'off'
+          ? 'disabled (RESEARCH_NEWS=off)'
+          : 'none (no Alpaca credentials)'
+    }`,
+  );
 
   // A restart must not leave a ticker showing COLLECTING forever.
   const bootDate = (
@@ -522,6 +546,7 @@ async function main(): Promise<void> {
                   }
                 : null,
             },
+            newsAdapters,
           );
 
           // Stop discarding what the collector worked out. One line, and it is
@@ -546,6 +571,7 @@ async function main(): Promise<void> {
             discoveryMode: catalystReport.discoveryMode,
             companySourceDetail: catalystReport.companySourceDetail,
             companyFetchDetail: catalystReport.companyFetchDetail,
+            newsFetchDetail: catalystReport.newsFetchDetail,
             networkRequests: catalystReport.networkRequests,
             resolutionProbes: catalystReport.resolutionProbes,
             companySourceUrl:
