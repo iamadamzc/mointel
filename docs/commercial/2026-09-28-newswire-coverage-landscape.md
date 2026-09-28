@@ -9,27 +9,58 @@ coverage. this can't happen."* **Scope only. No vendor contacted, no account cre
 no trial, nothing signed or paid — all of that is his.** Terms quoted, not
 characterised.
 
-**The short answer: the desk cannot get to Warrior Trading's coverage by copying
-Warrior Trading, because the platform underneath it explicitly, contractually bars
-building a product from its content — Warrior Trading's own edge is a *licence*, not
-a *technique*.** What the desk *can* do is close the gap a different way: a direct
-licence with the aggregator whose data Alpaca News already reaches in an unknown
-fraction. That option, priced by enquiry, is named below as the one with the most
-promise per dollar — not chosen, not contacted.
+**CORRECTED 2026-09-28, Integration's catch, before this reached him — the first
+draft's headline overclaimed, and the fix changes what he is told about the specific
+question he asked.** The short answer is narrower than "Warrior Trading is closed":
+**TradingView itself is closed to this desk as a source, at any price — that part is
+established and unchanged below.** What is *not* established is whether Warrior
+Trading's Scanner (the feature that surfaced the MEDS alert) actually runs on
+TradingView's news. Warrior Trading's own operative disclaimer names no vendor for
+its Scanner at all (§3a). **So his own question — "im not sure if htey get their news
+form somewhere else" — is not answered here; it remains open, correctly, rather than
+answered on an assumption this document did not check.** What the desk *can* do
+regardless of that answer: pursue a direct licence with the aggregator whose data
+Alpaca News already reaches in an unknown fraction, and which is confirmed — not
+merely inferred — to already carry at least some third-party wire content (§1, the
+AIFF control). That option, priced by enquiry, is named below as the one with the
+most promise per dollar — not chosen, not contacted.
 
 ---
 
 ## 1. THE CASE, RE-STATED FROM WHAT WAS GIVEN
 
-**MEDS, 2026-09-28.** ACCESS Newswire release, *"DataMeds AI and Tollo Health
-Announce Launch of 'Health Lives Here' Mobile Application,"* dated today. He read it
-in Warrior Trading's scanner before 06:18 ET. **Not in Alpaca News** — Ops's
-read-only query found 90 items since 00:00 ET, all Benzinga, zero hits on MEDS. The
-desk's own why-now for MEDS was a 12-day-old 8-K. **Ops's measured baseline, cited as
-Ops's own figure, not re-derived here:** across five sessions of the top-12 names,
-Benzinga carries roughly 23% of catalysts as the primary source, roughly 47% any
-mention, and the union with the issuer-feed path is roughly 44%. **This document maps
-what would close that gap, not whether it will.**
+**MEDS, 2026-09-28 — the absent case.** ACCESS Newswire release, *"DataMeds AI and
+Tollo Health Announce Launch of 'Health Lives Here' Mobile Application,"* dated
+today. He read it in Warrior Trading's scanner before 06:18 ET. **Not in Alpaca
+News** — Ops's read-only query found 90 items since 00:00 ET, all Benzinga, zero
+hits on MEDS. The desk's own why-now for MEDS was a 12-day-old 8-K.
+
+**AIFF, 2026-09-25 — the present control, added here per Integration's catch.**
+`docs/threads/research.md:271-291`. A GlobeNewswire release Benzinga *did* carry —
+at 07:47:17, four seconds before Ops's own query window opens and well ahead of the
+07:53 read on a competing scanner. **Carried inside Ops's five-session union query
+as a known-present control and returned `primary=YES`, in the `benzONLY` column.**
+One filter-trap fact worth carrying alongside it: the item's own `source` field
+reads `"benzinga"`, never `"globenewswire"` — **the originating wire leaves no trace
+downstream, so a collector filtering by wire name would return nothing and look
+exactly like no coverage**, the same failure shape MEDS produced from the other
+direction.
+
+**Ops's measured baseline, cited as Ops's own figure and re-labelled here by column,
+because the three numbers as first written implied an impossible relationship
+(CORRECTED, Integration's catch) — a union cannot be smaller than one of its own
+parts, and the way this document first stated them read that way.** Precisely, per
+`research.md:280-306`:
+
+| figure | population | what it counts |
+| --- | --- | --- |
+| **~23% primary** | Benzinga alone, top-12, 5 sessions | single-symbol Benzinga items only (excludes roundups) |
+| **~47% any mention** | Benzinga alone, same population | includes roundup/listicle mentions — **never unioned with anything; a Benzinga-only figure both times** |
+| **~34%** | issuer feed alone, same population | the desk's existing wire-scraping path |
+| **~44% union** | issuer feed **primary** ∪ Benzinga **primary** | **excludes the 47% any-mention column entirely** — the union is of the two PRIMARY columns only |
+
+**This document maps what would close the gap between the 44% union and full
+coverage, not whether it will.**
 
 ---
 
@@ -91,23 +122,26 @@ source; not reached this session. See §6.
 
 ## 3. WHAT COMPETING SCANNERS ACTUALLY USE — FROM WHAT THEY PUBLISH
 
-### 3a. TradingView / Warrior Trading — the proximate case, and the answer is structural, not technical
+### 3a. TradingView is closed; whether Warrior Trading's SCANNER runs on it is not established — CORRECTED, two claims separated
 
-**His own framing is confirmed: Warrior Trading is built on TradingView.** A search
-of TradingView's own news pages turns up direct wire attribution across many
-sources — Reuters, PR Newswire, Dow Jones Newswires, and, in results surfaced this
-session, **ACCESS Newswire and Newsfile Corp by name**, e.g. a TradingView news page
-crediting *"Actualités par ACCESS Newswire sur TradingView"* and another citing
-*"Newsfile Corp"* directly in a company disclosure notice. **TradingView's own "Top
-providers" listing on `tradingview.com/news` names, among others: Reuters,
-MarketWatch, Dow Jones Newswires, Trading Economics, ShareCast, dpa-AFX, Mace News,
-Business Wire, TradingView (own), Seeking Alpha.** Several of these (Dow Jones
-Newswires items) are gated behind *"Start a free trial to read this news"* —
-evidence of a paid licensing relationship, not scraped content.
+**The first draft of this section conflated two different things: what TradingView
+itself publishes, and what Warrior Trading has said about where its own Scanner gets
+its news. Only the first was actually checked. Corrected — the two are kept
+separate below, because his own question was specifically about the second.**
 
-**And TradingView's own Terms of Use bar exactly the thing this task would need to
-do with it, in the broadest language found in this entire research effort — read in
-full, `tradingview.com/policies`:**
+**What TradingView publishes about itself, confirmed:** a search of TradingView's
+own news pages turns up direct wire attribution across many sources — Reuters, PR
+Newswire, Dow Jones Newswires, and, in results surfaced this session, **ACCESS
+Newswire and Newsfile Corp by name**, e.g. a TradingView news page crediting
+*"Actualités par ACCESS Newswire sur TradingView"* and another citing *"Newsfile
+Corp"* directly. **TradingView's own "Top providers" listing on `tradingview.com/
+news` names, among others: Reuters, MarketWatch, Dow Jones Newswires, Trading
+Economics, ShareCast, dpa-AFX, Mace News, Business Wire, TradingView (own), Seeking
+Alpha.** Several (Dow Jones Newswires items) are gated behind *"Start a free trial
+to read this news"* — evidence of a paid licensing relationship, not scraped
+content. **And TradingView's own Terms of Use bar exactly the thing this task would
+need to do with it, in the broadest language found in this entire research
+effort** (`tradingview.com/policies`):
 
 > *"...charts, alerts, webhooks, and any other forms of information, are licensed for
 > exclusive display-only use. This license is strictly limited to personal or
@@ -118,15 +152,31 @@ full, `tradingview.com/policies`:**
 > and any forms of information provided by TradingView... Such prohibited cases also
 > include creating products or services based on TradingView content."*
 
-**This settles the question the assignment opened with. TradingView is not a
-buyable coverage source at any price this seat could find — it is contractually
-closed to exactly the use this desk would make of it.** Warrior Trading's coverage
-is not a technique the desk can copy; it is downstream of a licensing relationship
-between Warrior Trading and TradingView that a third party (this desk) cannot
-independently obtain by reading TradingView's own published terms. **No public
-TradingView news-API product for third parties was found either** — searched
-directly; what exists publicly is a charting/Datafeed API for price data, not a
-licensable news feed.
+**This part is fully settled: TradingView is not a buyable coverage source at any
+price this seat could find, regardless of anything else in this section.** No
+public TradingView news-API product for third parties exists either — what's public
+is a charting/Datafeed API for price data, not a licensable news feed.
+
+**What is NOT established, and this document first asserted it anyway: whether
+Warrior Trading's Scanner — the feature that actually surfaced the MEDS alert to
+him — runs on TradingView's news at all.** Checked directly, Warrior Trading's own
+operative Disclaimer page (`warriortrading.com/disclaimer`, not a blog post),
+verbatim:
+
+> *"Data, content and information presented or available within the Scanner,
+> Charts, and Simulator is provided to us by third-party providers."*
+
+**No vendor is named — "third-party providers," plural, unidentified, for the
+Scanner specifically.** Separately, Warrior Trading's founder has confirmed
+TradingView by name, repeatedly, in his own blog posts (*"my platform TradingView,"*
+*"courtesy of TradingView"*) — but every instance found is about **charts**, never
+the **Scanner's news feed** specifically, and the Disclaimer groups "Scanner,
+Charts, and Simulator" as three items that may draw from different providers, not
+one. **So his own question — "im not sure if htey get their news form somewhere
+else" — is answered correctly by leaving it open: TradingView is confirmed for
+charts and confirmed closed as a licence; what actually powers the Scanner's news is
+not established by anything published.** An enquiry to Warrior Trading itself would
+be the only way past this, and an enquiry is his, not this document's.
 
 ### 3b. Benzinga Pro — a terminal, not a feed, and a clue about what the desk is already under-buying
 
@@ -147,13 +197,19 @@ offered (not used; not this seat's to start).
 evidence about Benzinga's own underlying data, which DOES have an API product this
 desk already partially uses.** The desk's Alpaca News (already documented,
 `2026-09-25-newswire-licence-landscape.md`) is 100% Benzinga-sourced but reaches the
-desk through Alpaca's own free/bundled News API, not a direct Benzinga licence. **If
-Benzinga Pro's retail terminal claims 1,000+ real-time sources, it is a reasonable
-inference — not confirmed, and named as inference — that a direct Benzinga API
-licence would carry materially more than whatever slice currently arrives bundled
-through Alpaca.** Benzinga's own API product page (`benzinga.com/apis`, already read
-in the prior landscape) lists **"Press Releases"** as a named product line and gives
-no public price — `licensing@benzinga.com`, an enquiry, his.
+desk through Alpaca's own free/bundled News API, not a direct Benzinga licence.
+
+**And this is not pure inference — §1's AIFF control is direct, measured evidence
+that the bundle already carries at least some third-party wire content: a
+GlobeNewswire release, present in the desk's own Benzinga feed, tagged
+`primary=YES`, four seconds after the wire published it.** What remains inference,
+named as such rather than blurred into the measured part: **whether the FULL scope
+Benzinga Pro's own marketing claims — "1,000+ sources" — extends to a *direct*
+licence at a scale beyond what Alpaca's bundle already carries, and whether that
+scope specifically includes ACCESS Newswire or Newsfile.** Neither is confirmed;
+Benzinga's own API product page (`benzinga.com/apis`, already read in the prior
+landscape) lists **"Press Releases"** as a named product line and gives no public
+price or source list — `licensing@benzinga.com`, an enquiry, his.
 
 ---
 
@@ -165,18 +221,20 @@ would add — with cost named as unknown-pending-enquiry rather than guessed.**
 
 | option | adds coverage of | cost | access today |
 | --- | --- | --- | --- |
-| **Direct Benzinga API licence** (beyond the Alpaca bundle) | Unknown exact source list, but Benzinga Pro's own claim of 1,000+ sources and a named "Press Releases" product line suggest it likely already includes ACCESS Newswire, Newsfile and others the desk currently misses — **one relationship, many wires** | Unpublished; enquiry only | Already partially in hand (Alpaca bundles a slice); a direct licence is the upgrade |
+| **Direct Benzinga API licence** (beyond the Alpaca bundle) | **Confirmed** to already carry at least some third-party wire content (§1, the AIFF/GlobeNewswire control, measured, not inferred) — full source list and whether it extends to ACCESS Newswire or Newsfile specifically, unpublished, unconfirmed | Unpublished; enquiry only | Already partially in hand (Alpaca bundles a slice); a direct licence is the upgrade |
 | **Direct ACCESS Newswire relationship** | The one wire confirmed to have caused today's miss | No published terms or price found at all | None — not even terms exist to read |
 | **Direct Newsfile relationship** | Canadian/junior-issuer coverage, a plausible top-12 contributor | Standard non-commercial personal-use terms found; no commercial product found | None |
-| **TradingView (directly, or by replicating Warrior Trading's approach)** | Nothing — **closed by its own terms, at any price** | N/A | Not obtainable this way |
+| **TradingView, directly** | Nothing — **closed by its own terms, at any price** | N/A | Not obtainable this way |
+| **Warrior Trading's actual Scanner source** | **Unknown** — not established as TradingView or anything else; only an enquiry to Warrior Trading itself would settle it, and that enquiry is his | Unknown | Unknown |
 | **PR Newswire / Business Wire / GlobeNewswire, direct** | Already mapped (`977e0d2`); same personal-use bar as ACCESS/Newsfile | PR Newswire names a contact (Content Distribution Group); the other two, none found | None |
 
 **The single highest-value next step this document can point at, without picking it:
-find out what Benzinga's direct licence actually costs and actually covers, because
-it is the one option where "one relationship, many wires" is plausible rather than
-"one relationship, one wire."** Everything else on this list is either legally closed
-(TradingView) or requires a separate enquiry per wire with no volume discount in
-sight.
+find out what Benzinga's direct licence actually costs and how far it actually
+extends, because it is the one option with a MEASURED reason to expect "one
+relationship, many wires" rather than "one relationship, one wire" — not a marketing
+number alone.** Everything else on this list is either legally closed (TradingView),
+unestablished (Warrior Trading's actual source), or requires a separate enquiry per
+wire with no volume discount in sight.
 
 ---
 
@@ -185,6 +243,11 @@ sight.
 - **Whether a direct Benzinga licence's source list actually includes ACCESS Newswire,
   Newsfile, or any other specific wire.** Not published anywhere found. Only an
   enquiry answers it, and an enquiry is his.
+- **Whether Warrior Trading's Scanner specifically runs on TradingView's news, or on
+  a different, unnamed third-party provider.** Warrior Trading's own operative
+  disclaimer names none. His own original question — where does Warrior Trading
+  actually get its news — is not answered by this document; only an enquiry to
+  Warrior Trading would settle it, and that enquiry is his.
 - **What either a Benzinga direct licence or an ACCESS Newswire relationship would
   cost.** Both enquiry-gated, both his to start if he wants a number.
 - **Whether Research's collector, built source-agnostic per Integration's brief, can
@@ -206,12 +269,17 @@ sight.
 ## 7. SOURCES
 
 `docs/commercial/2026-09-25-newswire-licence-landscape.md` (`977e0d2`, PRN/BW/
-GlobeNewswire/Alpaca, not re-quoted here); `accessnewswire.com/terms-of-service`
+GlobeNewswire/Alpaca, not re-quoted here); `docs/threads/research.md:271-306` (the
+AIFF control, the union figures, the filter-trap finding — Ops's and Research's own
+measurements, cited not re-derived); `accessnewswire.com/terms-of-service`
 (re-read); `accessnewswire.com/robots.txt`; `newsfilecorp.com/TermsOfUse.php`;
 `newsfilecorp.com` (blog, AI-crawler-activity posts, read for context not as a
 grant); `tradingview.com/news`, `tradingview.com/news-flow`,
 `tradingview.com/policies` (Terms of Use, the display-only/no-product-building
-clause); `benzinga.com/pro/pricing`; `benzinga.com/apis` (already read in the prior
-landscape). His words verified via `list_events` on the Integration session, not
-taken from the relay alone. All read directly in this session; public sources only,
-nothing signed up for, no vendor contacted.
+clause); `warriortrading.com/disclaimer` (the Scanner/Charts/Simulator
+third-party-providers clause, its own operative page, not a blog post); Warrior
+Trading blog posts naming TradingView for charts specifically (found via
+site-search, not the disclaimer); `benzinga.com/pro/pricing`; `benzinga.com/apis`
+(already read in the prior landscape). His words verified via `list_events` on the
+Integration session, not taken from the relay alone. All read directly in this
+session; public sources only, nothing signed up for, no vendor contacted.
