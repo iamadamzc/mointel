@@ -907,6 +907,13 @@ removed after it fires. Relayed to Ops ~01:16Z. **SET: `mointel-monday-capture-c
 seat 01:20Z (prompt is read-only; minute_bars count as positive control).** Auto-disables after firing. Runs only
 while the desktop app is open (else on next launch). Ops relays the numbers here on completion.
 
+**LIVE BAND, from the running worker's /proc environ (Ops, 2026-09-28 ~01:35Z): $0.25–$20.** `DISCOVERY_PRICE_MIN=0.25`
+on the box and in the process; NO `_MAX` line, so the default 20 (`config.ts:80`, opened by this seat). The floor has
+been live since the 2026-09-25 22:19:45Z restart. **His $0.25–$50 ruling is NOT live:** `cea5ed2` is main-only (prod
+vs main `engine.ts` diff = exactly that commit). **Chain now has triggers:** Ops `ops.md` "QUEUE — Ops items with
+triggers" (`e0a519c`) — bootstrap band = record band, TRIGGER cea5ed2 live by /proc, replay cost measured first.
+Research asked ~01:30Z for its order + triggers (reports first, then the cea5ed2 enumeration); reply pending.
+
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
 market worker             3b78b8c   RESTARTED 2026-09-27 23:17:45Z on his word. pid 1347535, NRestarts 0.
