@@ -387,10 +387,23 @@ describe('halt and price-move notices', () => {
     for (const headline of NOT_HALTS) expect(isMoveNotice(headline), headline).toBe(false);
   });
 
-  it('flags the other halt shapes (synthetic -- not yet seen in a dump)', () => {
-    expect(isMoveNotice('ACME Shares Resume Trade')).toBe(true);
-    expect(isMoveNotice('ACME Shares Are Halted, News Pending')).toBe(true);
+  it('flags the downside form of the observed shape', () => {
     expect(isMoveNotice('ACME Shares Halted On Circuit Breaker To The Downside, Stock Now Down 12%')).toBe(true);
+  });
+
+  it('RECALL: never flags a halt or resumption headline that carries a disclosure', () => {
+    // Integration's cases. A filter drops, and a dropped catalyst is the
+    // failure this collector exists to stop, so these are pinned.
+    for (const headline of [
+      'XYZ Announces Trading Halt Pending Material News',
+      'Nasdaq Halts Trading In XYZ Pending Additional Information',
+      'XYZ Trading Halted Pending Delisting',
+      'XYZ Resumes Trading After Announcing FDA Approval',
+      'XYZ Resumes Trading Following Merger Announcement',
+      'XYZ Shares Halted, News Pending',
+    ]) {
+      expect(isMoveNotice(headline), headline).toBe(false);
+    }
   });
 
   it('counts a halt notice and does not store it', async () => {
