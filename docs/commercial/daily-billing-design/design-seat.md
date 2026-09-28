@@ -138,6 +138,16 @@ object and the clock.** Every tab derives the same countdown from the same
 its own. `OK` renders nothing. **In a review session the object is absent and
 nothing renders**, because a reviewer has no billing.
 
+**`endsAt` IS THE EARLIER OF (first failure + 1 h) AND THE PAID DAY'S END AT
+20:00 ET.** His ruling, relayed by Integration ~01:20Z 2026-09-28: *"days run
+from 8pm to 8pm ... end of ah to end of ah."* A failure at 19:30 ends at 20:00,
+not 20:30. **The server computes it; the band never adds an hour itself**, or
+it would print a time the session will not reach. The words don't change:
+the band always prints the REAL end, whichever limit it is.
+
+**BUILD TRIGGER: when Ops's billing work starts, which is sequenced AFTER the
+sign-in cut-over.** Not before. (Integration, same relay.)
+
 ## 7. Open, for the assembled document
 
 - ~~**The OS notification (§3)**: on or off.~~ **RULED ON, his words to
