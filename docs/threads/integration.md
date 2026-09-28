@@ -878,57 +878,96 @@ error                                                      TYPE                 
 ```
 **The repeat of the class is the trigger. Warned him and proposed a hand-off, which is his permission to give.**
 
-## LIVE STATE — AS OF 2026-09-27, AT THE TWELFTH SEAT'S HAND-OFF
+## LIVE STATE — AS OF 2026-09-28 ~01:55 UTC, AT THE THIRTEENTH SEAT'S HAND-OFF
 
-*A SNAPSHOT. Everything dated above this section is a FACT and is not repeated here; everything below it is the
-MECHANISM ARCHIVE. **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
+*A SNAPSHOT, not a diary. Everything dated above this section is a FACT; the thirteenth seat's evening diary is
+archived below, marked. **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
 
-### PRODUCTION
+### PRODUCTION (Ops, from /proc, 2026-09-28 ~00:25Z)
 
 ```
-web / research / assess   3b78b8c   confirmed from /proc 2026-09-26. Carries the 10s capture CODE.
-market worker             d0bc78c   UNTOUCHED, NRestarts 0. Deliberate, not drift.
-the day's lineage         8fd7887 -> 10b4dce (prune fix) -> 8147cf4 (deploy tooling) -> 3b78b8c (capture)
+web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
+market worker             3b78b8c   RESTARTED 2026-09-27 23:17:45Z on his word. pid 1347535, NRestarts 0.
+                                    10s capture RECORDING (trades.db v1, 0 rows on a Sunday -- Ops confirms rows
+                                    after 04:00 ET MON 09-28 before calling it working). Prune fix d5fe8bc LIVE.
+                                    Restart cost 54s but replayed 0 bars: NOT a weekday number; re-measure owed.
 stranger sees             / /privacy /terms 200 | /desk /signin /api/* 401 | /privacy-x control FIRES
 ```
 
-> **⚠️ THREE THINGS ARE SHIPPED AND NOT RUNNING, ALL WAITING ON ONE RESTART: the 10-second capture, the
-> retention-prune fix, and the restart-cost re-measure.** *The worker has not restarted since 2026-09-24, so it
-> is executing `d0bc78c`'s code.* **HIS WORD, IN OPS'S SESSION, NEVER RELAYED. Expect ~2 minutes of
-> `minute_bars`, not under one.**
+### HIS RULINGS THIS SESSION (verbatim text in the archived diary below; each verified at his turn)
 
-### OPEN WITH HIM — nothing below is blocked on a seat
+```
+session reports   four reports, ONE writer + ONE checker; BUILD APPROVED; written per SET price range
+                  (config, $1-$20 first), never per exact user range. Schedule: after-hours report ~20:30 from a
+                  NEW 20:05 checkpoint (Ops measured it safe), 22:00 checkpoint/roll UNCHANGED as a filings
+                  update; into-RTH 09:25; power hour 14:30; into-AH 16:00. Design: docs/research/session-reports/.
+what is sold      A DAY PASS TO EVERYTHING. Paid day = 20:00 ET -> 20:00 ET ("end of ah to end of ah"); the
+                  ~20:30 AH report is the day's FIRST CONTENT. Matches sessionExpiry, no boundary code.
+billing           DAILY first, annual later, MONTHLY REFUSED. Card on file -> admitted at once -> charge in the
+                  background -> on DECLINE a band + 1 hour, "regardless of time" (inside 07-10 too) -> that day's
+                  session ends. An unreachable processor stays PENDING (no clock). No weekend/holiday charge;
+                  retry only on card update; OS notification x2 (at failure, at 10 min); FIRST USERS INVITED
+                  AND BILLED BY HAND. BUILD APPROVED strictly AFTER the sign-in cut-over proves it refuses;
+                  nothing charges anyone until he approves the first real run.
+                  Design: docs/commercial/daily-billing-design/commercial.md (4b3bc2c, CLOSED).
+tiers             OPEN. Flat price is the only measure the desk can observe. A $20-$50-only name gets NO live
+                  feed and NO 10s data by construction (qualify-band gating, Research 72f195b); the fix is a
+                  per-range feed allocation sized by a load test, NEVER widening DISCOVERY_PRICE_MAX.
+```
 
-1. **THE MARKET-WORKER RESTART.** *One ask, three payoffs, above.*
-2. **IS NON-PAYMENT REVOCATION IMMEDIATE?** *`revokeEmail` ends live sessions in the same transaction, by design.
-   Applied to a lapsed card that is a trader removed from the board mid-move, in the 07:00–10:00 window. **His
-   own ruling meeting a context it was not given for.** Recommendation: not immediate for non-payment.*
-3. **WHAT IS LAUNCH, AND WHAT IS SOLD.** *Commercial's scope (`9d49118`) surfaced "what is the unit sold" as
-   never ruled, and it is the lead item in its own report. **"A stranger can pay" and "a stranger can use it" are
-   different products with different blockers.***
-4. **THE AUTH CUT-OVER.** *He said **"will do"** on the Google OAuth client (redirect
-   `https://tmitrader.com/auth/callback/google`) — **a commitment to create a credential, NOT clearance to cut
-   over.** Still his: the credentials themselves, seeding his address, and a window outside trading hours.*
-5. **THE INDIA RESEARCH'S TWO PATHS.** *Commercial (`7e2a5ef`) established that access is no longer the barrier
-   and that the momentum/small-cap population is **unevidenceable from public sources.** Past that lies a paid
-   report or a direct question to Vested/INDmoney — **both enquiries, both his.***
+### OPEN WITH HIM
+
+1. **The sign-in cut-over:** his Google OAuth credentials, seeding his address, and a window outside trading
+   hours. Billing is sequenced behind it.
+2. **India research enquiries** (a paid report, or asking Vested/INDmoney): his, unasked since `7e2a5ef`.
+3. **Tiers:** parked by his own "i dont know"; revisit with usage data.
 
 ### ASSIGNED AND IN FLIGHT
 
 ```
-RESEARCH   the engine RECORD/QUALIFY split is BUILT (cea5ed2, unshipped, lands inert).
-           Owed next: in-range ordinals OMITTED server-side (4766ea2 decided), and the trade-feed
-           subscription policy with Ops -- sized by a load test NOBODY HAS RUN.
-OPS        bootstrap band = the record band, NO multiplier ("seed exactly what you record") -- ruled,
-           unbuilt, sequenced AFTER cea5ed2, and it must be measured for replay cost first.
-           Also owed: pin the flaky releaseRetention test (cause NOT wall-clock -- fork exhaustion is
-           the suspect), and the preflight aiming fix (re-check AFTER the gate, not announce).
-DESIGN     the range control's shape is specified (4b7fca4). Blocked on Research's split.
-           MONDAY: the post-16:00 read of 8fd7887's evening arm -- never yet seen working.
-COMMERCIAL idle. Billing/onboarding/support scope complete; India research complete.
-WEB        idle, holding on the cut-over. Its signup-flow scope is folded into Commercial's.
-MARKETING  idle.
+RESEARCH   A FRESH SEAT (he opened it ~01:50Z; its first-turn state unverified by this seat). Leads session
+           reports: writer, semantic checker, GET /api/reports, range config, 20:05 checkpoint (with Ops).
+           43c1b7c's PRE-REGISTERED PASS BAR gates any enumeration and must not move to meet a result.
+           liveFeed is boolean | null until Ops's frozen column exists. Also: cea5ed2 (engine split, unshipped),
+           the heartbeat defect (researchRepo.ts:901), and the Alpaca News collector.
+OPS        frozen high_res column on desk_assessment_tickers (schema 27->28 = a MULTI-MINUTE PUBLIC OUTAGE via
+           VACUUM INTO) -> first scope a PRE-DEPLOY BACKUP route so migrations skip their own. Also: trades.db
+           rows Monday, the weekday restart re-measure, the ~51s backfill-to-SIP gap, the bootstrap band = record
+           band, the flaky releaseRetention test, preflight aiming. Billing infra AFTER the cut-over.
+DESIGN     session-briefings panel (307e42d, in progress); billing warning band after the cut-over.
+           MONDAY after 16:00 ET: first live read of 8fd7887's evening ranking arm.
+COMMERCIAL billing design closed (4b3bc2c); terms-of-sale requirements are what the card flow waits on.
+WEB        a hand-invited payer's card save, after the cut-over. Public pages + app/page.tsx:432 WAIT for self-serve.
+MARKETING  idle; marketing.md (33256f9) is the writer's voice reference.
 ```
+
+> **⚠️ THE DEV MACHINE RAN OUT OF WINDOWS COMMIT MEMORY 2026-09-27 (2.3G of 36.2G free, OOM in lint and in
+> tests, 160 of 161 files collected).** *It cleared once memory was freed. Any seat's gate that UNDER-collects is
+> the environment first; read the collection count before the failures.*
+
+### THE RESIDUAL NOBODY HAS CLOSED
+
+**The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
+requested range fixes the BOARD by construction. **`applyHighResSelection` (`engine.ts:2121-2185`) still grants
+trades/quotes from ranks and latches computed over the QUALIFY band, and the 10-second capture is gated on that same
+`highRes` set.*** *So a name ranked well inside a viewer's range, outside the top 50 by rank and never latched, gets a
+row, **no live feed, and no 10-second buckets**, and a $20-$50-only name never gets one at all.* **Research's and
+Ops's, sized by a load test nobody has run. Nothing should widen on the assumption it is solved.**
+
+> **❌ CORRECTED 2026-09-27 ~23:40Z. "Only the top 50 get a live feed" is INCOMPLETE, and this seat repeated it
+> to him, Research, Design and Commercial.** *Found by Commercial, verified here by opening
+> `applyHighResSelection` (now `engine.ts:2121`, the line had moved from `:2088`):* **the set is pinned names +
+> top `internalRank` (50) ALIVE by rank + after the bell, daytime top `discoveryRank` + EVERY LATCHED name still
+> alive (any name that qualified today), all capped at `highResMax ?? 250` (`:2185`).** *So a name outside the
+> global top 50 that qualified earlier and is not DEAD DOES get a feed. **"Has a live feed" must be read from the
+> engine's actual capped set, never inferred from rank ≤ 50.** The crowding risk stands, but the numbers in it
+> are 50-by-rank inside a 250 cap, not 50 flat.* Correction sent to all four; the three session-report files
+> carried the old line.
+
+
+## ARCHIVE — THE THIRTEENTH SEAT'S DIARY, 2026-09-27/28, KEPT FOR MECHANISMS AND VERBATIM RULINGS
+
+*Superseded by the snapshot above. The twelfth's snapshot it replaced is kept after it.*
 
 ### 2026-09-27 ~11:20 UTC — THE THIRTEENTH SEAT OPENED (`local_03437663…`)
 
@@ -1108,23 +1147,58 @@ FALSE: they are in production as a315de5/ff5deae/7ff5fb6/3b78b8c, and the restar
 prompt do not carry that line, so no document retraction is owed. Tell the fresh seat if it repeats it.* **Carry
 to it: the pass bar must not move to meet a result, and Design's two-line edit to Research's contract file was right.**
 
-### THE RESIDUAL NOBODY HAS CLOSED
 
-**The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
-requested range fixes the BOARD by construction. **`engine.ts:2088` still grants trades/quotes over the QUALIFY
-band, and the 10-second capture is gated on that same `highRes` set.*** *So a name ranked 8th inside a viewer's
-range but outside the global top 50 gets a row, **no live feed, and no 10-second buckets.*** **Research's and
-Ops's, sized by a load test nobody has run. Nothing should widen on the assumption it is solved.**
+### (archived) LIVE STATE AS OF 2026-09-27, AT THE TWELFTH SEAT'S HAND-OFF
 
-> **❌ CORRECTED 2026-09-27 ~23:40Z. "Only the top 50 get a live feed" is INCOMPLETE, and this seat repeated it
-> to him, Research, Design and Commercial.** *Found by Commercial, verified here by opening
-> `applyHighResSelection` (now `engine.ts:2121`, the line had moved from `:2088`):* **the set is pinned names +
-> top `internalRank` (50) ALIVE by rank + after the bell, daytime top `discoveryRank` + EVERY LATCHED name still
-> alive (any name that qualified today), all capped at `highResMax ?? 250` (`:2185`).** *So a name outside the
-> global top 50 that qualified earlier and is not DEAD DOES get a feed. **"Has a live feed" must be read from the
-> engine's actual capped set, never inferred from rank ≤ 50.** The crowding risk stands, but the numbers in it
-> are 50-by-rank inside a 250 cap, not 50 flat.* Correction sent to all four; the three session-report files
-> carried the old line.
+*A SNAPSHOT. Everything dated above this section is a FACT and is not repeated here; everything below it is the
+MECHANISM ARCHIVE. **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
+
+### PRODUCTION
+
+```
+web / research / assess   3b78b8c   confirmed from /proc 2026-09-26. Carries the 10s capture CODE.
+market worker             d0bc78c   UNTOUCHED, NRestarts 0. Deliberate, not drift.
+the day's lineage         8fd7887 -> 10b4dce (prune fix) -> 8147cf4 (deploy tooling) -> 3b78b8c (capture)
+stranger sees             / /privacy /terms 200 | /desk /signin /api/* 401 | /privacy-x control FIRES
+```
+
+> **⚠️ THREE THINGS ARE SHIPPED AND NOT RUNNING, ALL WAITING ON ONE RESTART: the 10-second capture, the
+> retention-prune fix, and the restart-cost re-measure.** *The worker has not restarted since 2026-09-24, so it
+> is executing `d0bc78c`'s code.* **HIS WORD, IN OPS'S SESSION, NEVER RELAYED. Expect ~2 minutes of
+> `minute_bars`, not under one.**
+
+### OPEN WITH HIM — nothing below is blocked on a seat
+
+1. **THE MARKET-WORKER RESTART.** *One ask, three payoffs, above.*
+2. **IS NON-PAYMENT REVOCATION IMMEDIATE?** *`revokeEmail` ends live sessions in the same transaction, by design.
+   Applied to a lapsed card that is a trader removed from the board mid-move, in the 07:00–10:00 window. **His
+   own ruling meeting a context it was not given for.** Recommendation: not immediate for non-payment.*
+3. **WHAT IS LAUNCH, AND WHAT IS SOLD.** *Commercial's scope (`9d49118`) surfaced "what is the unit sold" as
+   never ruled, and it is the lead item in its own report. **"A stranger can pay" and "a stranger can use it" are
+   different products with different blockers.***
+4. **THE AUTH CUT-OVER.** *He said **"will do"** on the Google OAuth client (redirect
+   `https://tmitrader.com/auth/callback/google`) — **a commitment to create a credential, NOT clearance to cut
+   over.** Still his: the credentials themselves, seeding his address, and a window outside trading hours.*
+5. **THE INDIA RESEARCH'S TWO PATHS.** *Commercial (`7e2a5ef`) established that access is no longer the barrier
+   and that the momentum/small-cap population is **unevidenceable from public sources.** Past that lies a paid
+   report or a direct question to Vested/INDmoney — **both enquiries, both his.***
+
+### ASSIGNED AND IN FLIGHT
+
+```
+RESEARCH   the engine RECORD/QUALIFY split is BUILT (cea5ed2, unshipped, lands inert).
+           Owed next: in-range ordinals OMITTED server-side (4766ea2 decided), and the trade-feed
+           subscription policy with Ops -- sized by a load test NOBODY HAS RUN.
+OPS        bootstrap band = the record band, NO multiplier ("seed exactly what you record") -- ruled,
+           unbuilt, sequenced AFTER cea5ed2, and it must be measured for replay cost first.
+           Also owed: pin the flaky releaseRetention test (cause NOT wall-clock -- fork exhaustion is
+           the suspect), and the preflight aiming fix (re-check AFTER the gate, not announce).
+DESIGN     the range control's shape is specified (4b7fca4). Blocked on Research's split.
+           MONDAY: the post-16:00 read of 8fd7887's evening arm -- never yet seen working.
+COMMERCIAL idle. Billing/onboarding/support scope complete; India research complete.
+WEB        idle, holding on the cut-over. Its signup-flow scope is folded into Commercial's.
+MARKETING  idle.
+```
 
 ## ARCHIVE — LIVE STATE AS IT STOOD 2026-09-25/26, KEPT FOR MECHANISMS NOT FACTS
 
