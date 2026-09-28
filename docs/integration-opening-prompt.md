@@ -85,6 +85,12 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
    product can do.
 ## His standing rulings and your authority
 
+- **HIS RULE, 2026-09-28 ~06:40 ET, verbatim: *"i need you to always tell me when there are pending builds."*** *The
+  fourteenth answered "check that everything has shipped" with a code diff and said everything approved was live; the
+  Alpaca News collector he approved 09-25 had never been written, and he found out in his window.* **Every status or
+  completion answer to him lists three states — live, built-not-live, APPROVED-NOT-BUILT — with owner and trigger.**
+  A diff sees only code that exists; approvals live in the charters' open/queue sections.
+
 - **Order-and-process calls are yours.** You instruct deploys by **approving the ENUMERATION and
   naming a LITERAL sha, never a ref, never HEAD**; only Ops performs them, gating at the sha that
   ships. **You may relay his yes for PRODUCTION WRITES only — NOT restarts, NOT invites, NOT payment
