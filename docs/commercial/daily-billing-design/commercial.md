@@ -21,8 +21,12 @@ customer or vendor contacted.**
 > **One sub-question remains genuinely open, Integration's to put to him and not
 > yet answered as of this document's last edit: if the 20:30 report runs late one
 > evening, does the paid day still start at its SCHEDULED time, or does lateness
-> push the start back?** Integration recommends scheduled-time-governs; this
-> document does not assume an answer.
+> push the start back?** Integration and Web both favour scheduled-time-governs —
+> Web's reason, the 20:05 checkpoint has ~25 minutes of headroom before 20:30, so a
+> scheduled boundary is comfortably servable — but this document does not assume an
+> answer. **A second, separate product question surfaced independently by Web (§8,
+> §9 item 2): under this boundary, each paid day opens with the PREVIOUS session's
+> report, never its own — named, not resolved.**
 
 ---
 
