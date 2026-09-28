@@ -903,7 +903,9 @@ scheduled read is his to approve.
 **✅ HE APPROVED IT ~01:15Z 2026-09-28, verbatim "yes, set it up",** after asking "is this a one time thing or
 ongoing?" and being told ONE-TIME. Scope: one READ-ONLY run at 04:30 ET Mon 09-28 (08:30Z) — row count, first/last
 bucket_ts, tradeCapture written vs discarded — result to him before 07:00 ET; no fixes on a bad result; the task is
-removed after it fires. Relayed to Ops ~01:16Z; task id pending from Ops.
+removed after it fires. Relayed to Ops ~01:16Z. **SET: `mointel-monday-capture-check`, fireAt 08:30Z, enabled — opened and read by this
+seat 01:20Z (prompt is read-only; minute_bars count as positive control).** Auto-disables after firing. Runs only
+while the desktop app is open (else on next launch). Ops relays the numbers here on completion.
 
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
