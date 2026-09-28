@@ -12188,3 +12188,9 @@ Read by hand ~10:0x ET: trade_buckets 2026-09-28 = 43,629 rows, 353 symbols, 04:
 10:17Z, and both runs stalled on Bash permission prompts with no one to approve them. The creation
 notice said to "Run now" first to pre-approve; I did not. **A scheduled read that needs tool
 approvals is not a check until it has been run once by hand.**
+
+**2026-09-28 10:07 ET: 7820810 = 7046465 (news collector) on 1eaa938, LIVE on web/research/assess**,
+on his "ship the news collector". Full gate 162/162 at launch; down 3s; research logged
+"news: alpaca". **Unproven:** the two post-ship jobs (KNRX, FUSE) ran on the OLD research pid
+before cutover, so newsFetchDetail is correctly absent; 0 NEWS_FEED rows exist yet. Re-read after
+jobs run on the new pid before anyone quotes coverage.
