@@ -963,6 +963,14 @@ tiers             OPEN. Flat price is the only measure the desk can observe. A $
                   per-range feed allocation sized by a load test, NEVER widening DISCOVERY_PRICE_MAX.
 ```
 
+### NEWS COVERAGE — A LIVE CASE, 2026-09-28 06:18 ET (his question)
+
+**MEDS: today's ACCESS Newswire release (Tollo Health / "Health Lives Here") is NOT in Alpaca News as of 06:19 ET.**
+Ops, read-only from the box: symbols=MEDS since 09-26 = 1 item (09-26 Benzinga GLP-1 piece, LLY/MEDS/NVO); control =
+all symbols since 09-28 00:00 ET, 90 items, 100% benzinga, 0 hits. **Desk's WHY NOW showed the 09-16 8-K (Helomics).**
+Second primary-wire miss after AIFF (GlobeNewswire 09-25); n=2 and SELECTED as misses, so not a rate. Routed to
+Research (research.md:301/303). The collector ("nothing blocks it but time") may not close this case class.
+
 ### OPEN WITH HIM
 
 1. **The sign-in cut-over:** his Google OAuth credentials, seeding his address, and a window outside trading
