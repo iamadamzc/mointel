@@ -349,6 +349,30 @@ this close to whatever the boundary is. **Three seats arrived at the same
 requirement from three different angles; that convergence is real and does not
 depend on today's boundary being 20:00, 20:30, or 22:00.**
 
+**Stage 4 — Web's own retraction of part of stage 2 (`9d7cc30`), read directly, and
+it surfaces a genuine product question this document did not have.** The "thirty
+minutes" figure in this document's headline was right all along (Web's original
+number, wrongly walked back to "ninety" in stage 2, now restored); what changes is
+what those thirty minutes CONTAIN. Under the corrected ~20:30 boundary:
+
+```
+buyer signs in Mon 20:30 (report publishes, paid day opens)  -> expires Tue 20:00
+Tue 20:00  signed out
+Tue 20:05  the after-hours-complete checkpoint runs -- closing out the day just paid for
+Tue 20:30  the report publishes and opens the NEXT paid day
+```
+
+**So the checkpoint that closes out a paid day runs five minutes after that day's
+buyer has already been signed out of it — meaning each paid day, by construction,
+opens with the PREVIOUS session's report, never its own.** *"I paid for Tuesday and
+cannot see what Tuesday's after-hours did"* is a sentence a customer can write, and
+it is internally consistent rather than a bug — the model may be exactly right, but
+it is a product fact he should see named rather than discover from a support email.
+**Named here as a live question for him, not resolved by this document.** The
+residual mismatch (a sign-in between 20:00 and 20:30 gets the next paid day up to
+thirty minutes early) still runs in the buyer's favour, unchanged in direction from
+earlier drafts, only shrunk from two hours to thirty minutes.
+
 **Two more things from Web's section that belong in this assembled document rather
 than only in its own file:**
 
@@ -381,13 +405,17 @@ documents.**
    push the boundary back?** Integration recommends scheduled-time-governs, not yet
    answered. **Do not re-ask whether the report or the clock governs — that part is
    closed.**
-2. **Is a non-trading day (Saturday) a charged day?** §6. This seat's recommendation:
+2. **Does a buyer of paid day N get to see the checkpoint that closes day N's own
+   after-hours, or only the previous day's?** §8 (Web's `9d7cc30`). Under the model
+   as designed, the answer is no by construction — worth him knowing as a named
+   consequence, not assumed acceptable.
+3. **Is a non-trading day (Saturday) a charged day?** §6. This seat's recommendation:
    no — nothing is sold that day.
-3. **After the hour lapses, is the account revoked, or only that day's session
+4. **After the hour lapses, is the account revoked, or only that day's session
    ended?** §6. This seat's recommendation: only that day.
-4. **Automatic retry, or only on card fix?** §6. This seat's position: event-driven,
+5. **Automatic retry, or only on card fix?** §6. This seat's position: event-driven,
    on card update.
-5. **Do the first paying users arrive self-serve, or still invited and invoiced by
+6. **Do the first paying users arrive self-serve, or still invited and invoiced by
    hand?** §8, Web's. Not settled by anything in this design; his 2026-09-26
    recommendation (hand-invite) stands until he says otherwise.
 
@@ -413,8 +441,9 @@ the band. Verified against Design's own committed file
 terms`; this seat's own `2026-09-26-billing-onboarding-support-scope.md`,
 `2026-09-27-day-pass-addendum.md`, `2026-09-27-day-pass-addendum-2-annual.md`; Ops's
 `2026-09-28-daily-billing-infra.md`; Design's `daily-billing-design/design-seat.md`;
-Web's `web/2026-09-27-paid-day-signup-scope.md` at both `21d4534` (stage 1) and
-`b01b06e` (stage 2); Research's `8f52b73` and `9de7324` (the 20:05/20:30 design and
+Web's `web/2026-09-27-paid-day-signup-scope.md` at `21d4534` (stage 1), `b01b06e`
+(stage 2), and `9d7cc30` (stage 4, the retraction); Research's `8f52b73` and
+`9de7324` (the 20:05/20:30 design and
 its measurement); all read in full. His rulings verified via `list_events` on the
 Integration and Web sessions directly, not taken from the relay alone. A search for
 a day-pass-specific refund comparable returned nothing on point; recorded as absence
