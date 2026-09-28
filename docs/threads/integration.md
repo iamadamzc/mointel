@@ -1036,6 +1036,10 @@ structure, cycle and supply-ledger evidenceSourceIds = the CITED set. **Corollar
 and his, not asked.
 **BUILT + GATED `dca4a04`** (ops/news-recheck, 3 picks on 7820810, +610/−8, verified here), 163/163, 2505 green at
 11:04 ET. Poll wrapped in try/catch, disabled with RESEARCH_NEWS=off. Waits on his direct yes in Ops.
+**Ops's KNRX correction:** v2375 dossier.cycle.evidenceSourceIds = [106001, 106002, 105677, 105680] — the halt notices
+are cited by the CYCLE call, not the catalyst. **This seat's call: no kill switch.** A halt notice is a factual record
+of the price action a cycle call describes; the claim-risk was a halt posing as the CAUSE, which the catalyst does not
+do. dca4a04 stops new ones; the two stored rows stay (deletion is his, not asked).
 Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
 untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
 the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
