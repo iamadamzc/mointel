@@ -54,7 +54,6 @@ function report(s: ReportSlot, publishedAt: string, extra: Partial<SessionReport
     checkpoints: [{ id: 7, type: 'OPEN_SPIKE_ASSESSMENT', completedAt: s.scheduledFor }],
     publishedAt,
     late: false,
-    coverage: { named: 3, withLiveFeed: 2 },
     headline: 'Three names moved.',
     sections: [],
     ...extra,
@@ -220,9 +219,9 @@ describe('outsideBoardRange: "not in your range"', () => {
 
 describe('the words', () => {
   it('coverage is m of n over the report’s own names', () => {
-    expect(coverageText({ named: 7, withLiveFeed: 5 })).toBe('5 of 7 names had live trade data');
-    expect(coverageText({ named: 1, withLiveFeed: 0 })).toBe('0 of 1 name had live trade data');
-    expect(coverageText({ named: 0, withLiveFeed: 0 })).toBeNull();
+    expect(coverageText({ named: 7, withLiveFeed: 5, unknown: 0 })).toBe('5 of 7 names had live trade data');
+    expect(coverageText({ named: 1, withLiveFeed: 0, unknown: 0 })).toBe('0 of 1 name had live trade data');
+    expect(coverageText({ named: 0, withLiveFeed: 0, unknown: 0 })).toBeNull();
   });
 
   it('coverage is counted from the lines, so it cannot disagree with their marks', () => {
@@ -240,7 +239,26 @@ describe('the words', () => {
         ] },
       ],
     });
-    expect(coverage).toEqual({ named: 3, withLiveFeed: 3 });
+    expect(coverage).toEqual({ named: 3, withLiveFeed: 3, unknown: 0 });
+  });
+
+  it('A NULL FEED IS NOT A FALSE: unrecorded names are never counted as without', () => {
+    const coverage = reportCoverage({
+      sections: [{ heading: 'a', lines: [
+        { ticker: 'INLF', liveFeed: true, text: 'x' },
+        { ticker: 'MGLD', liveFeed: false, text: 'x' },
+        { ticker: 'JAB', liveFeed: null, text: 'x' },
+        // A later line that could not say does not erase an earlier false,
+        // and a later true beats an earlier null.
+        { ticker: 'KITT', liveFeed: null, text: 'x' },
+        { ticker: 'KITT', liveFeed: true, text: 'x' },
+      ] }],
+    });
+    expect(coverage).toEqual({ named: 4, withLiveFeed: 2, unknown: 1 });
+    expect(coverageText(coverage)).toBe('2 of 3 names had live trade data; not recorded for 1 more');
+    expect(coverageText({ named: 2, withLiveFeed: 0, unknown: 2 })).toBe(
+      'live-data coverage not recorded for this report',
+    );
   });
 
   it('a checkpoint is named by its completed ET minute and label, never its id', () => {
