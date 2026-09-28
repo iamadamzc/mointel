@@ -985,6 +985,11 @@ Coverage stays a MEASURED number with MEDS 09-28 and AIFF 09-25 as fixed control
 **Research accepted (`3e69b96`, verified his turn 10:24:41Z):** piece 4 date HOLDS at 2026-10-02, now built ALONE right
 after the collector's first adapter (Design is blocked on it). >1-symbol items kept as aggregator mentions, not dropped.
 (The Warrior Trading lead Research flags as "elided" went to Commercial in full.)
+**COLLECTOR BUILT ~06:45 ET: `7046465`** (12 files, +901, Alpaca adapter, single-symbol rows stored, wraps counted
+only, RESEARCH_NEWS=off kill switch). **Research enumerated onto STALE base 240f27e; corrected here to `1eaa938`**
+(merge-tree clean, 162 files). Outside the grant (spend ~$3.5 day one then ~$0.052/new item; changes WHY NOW;
+research restart): sent to Ops CONDITIONAL on his direct yes, not before 10:00 ET; put to him. Gaps he is told:
+no re-look after a NONE_FOUND job (queue.ts:235), and no coverage beyond Benzinga (MEDS stays absent).
 
 ### THE FOURTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
 
