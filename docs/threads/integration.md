@@ -1015,6 +1015,18 @@ for fraud/abuse), so that item leaves his open list. Flat pricing is the only me
 notional traded lives in the subscriber's brokerage. A Stripe saved-card flow requires the terms of sale
 already owed.**
 
+**✅ HIS RULINGS 2026-09-28 ~00:20Z (this session, verbatim):** *"1, i think this brings something up. why is the run
+at 10pm if the ah closes at 8? the run should be at 805, then the day starts at 830 pm with a fresh report on ah.
+2, yes 3, every single day. i will not do monthly. we can do daily, or annual."*
+```
+day       paid day opens ~20:30 ET with a fresh AH report built from a NEW ~20:05 checkpoint. Research designs it
+          (consulting Ops) BEFORE building. Proposal put to it: keep the 22:00 checkpoint and roll (session.ts:301-307:
+          "still watching filings", EDGAR's evening window, which Research is to confirm) as a filings UPDATE in the
+          same slot. Do not move the internal roll without lines.
+late      same price, and that day's earlier reports included.
+billing   DAILY or ANNUAL. MONTHLY REFUSED ("i will not do monthly"). Commercial: annual follow-up.
+```
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
