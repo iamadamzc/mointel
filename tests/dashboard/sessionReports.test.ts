@@ -1,0 +1,260 @@
+import { describe, expect, it } from 'vitest';
+
+import type {
+  ReportRange,
+  ReportSlot,
+  SessionReport,
+  SessionReportsPayload,
+} from '@/lib/desk/reports/contract';
+import {
+  briefingLineText,
+  checkpointText,
+  chooseReportRange,
+  coverageText,
+  outsideBoardRange,
+  reportCoverage,
+  reportTimeline,
+  sessionText,
+} from '@/lib/dashboard/sessionReports';
+
+/*
+ * Written from the design (design-seat.md), not from the implementation:
+ * every expectation below is a sentence of that file.
+ */
+
+const RANGES: ReportRange[] = [
+  { id: 'sub1', label: 'under $1', min: 0.25, max: 1 },
+  { id: 'core', label: '$1–$20', min: 1, max: 20 },
+  { id: 'upper', label: '$20–$50', min: 20, max: 50 },
+];
+
+// Monday 2026-09-28, EDT (UTC-4).
+const AH_PRIOR = '2026-09-25T20:05:00Z'; // Fri 16:05 ET
+const PREMARKET = '2026-09-26T02:05:00Z'; // Fri 22:05 ET, for Monday
+const INTO_RTH = '2026-09-28T13:27:00Z'; // Mon 09:27 ET
+const POWER = '2026-09-28T18:32:00Z'; // Mon 14:32 ET
+
+function slot(kind: ReportSlot['kind'], scheduledFor: string, tradingDate = '2026-09-28'): ReportSlot {
+  return {
+    kind,
+    rangeId: 'core',
+    tradingDate,
+    targetTradingDate: null,
+    scheduledFor,
+    relevantUntil: new Date(Date.parse(scheduledFor) + 30 * 60_000).toISOString(),
+  };
+}
+
+function report(s: ReportSlot, publishedAt: string, extra: Partial<SessionReport> = {}): SessionReport {
+  return {
+    kind: s.kind,
+    rangeId: s.rangeId,
+    tradingDate: s.tradingDate,
+    targetTradingDate: s.targetTradingDate,
+    checkpoints: [{ id: 7, type: 'OPEN_SPIKE_ASSESSMENT', completedAt: s.scheduledFor }],
+    publishedAt,
+    late: false,
+    coverage: { named: 3, withLiveFeed: 2 },
+    headline: 'Three names moved.',
+    sections: [],
+    ...extra,
+  };
+}
+
+const SLOTS = [
+  slot('AFTER_HOURS', AH_PRIOR, '2026-09-25'),
+  slot('PREMARKET', PREMARKET, '2026-09-28'),
+  slot('INTO_RTH', INTO_RTH),
+  slot('INTO_POWER_HOUR', POWER),
+];
+
+function payload(reports: SessionReport[], missedReasons: Record<string, string> = {}): SessionReportsPayload {
+  return { ranges: RANGES, defaultRangeId: 'core', slots: SLOTS, reports, missedReasons };
+}
+
+const at = (iso: string, plusMinutes = 0) => Date.parse(iso) + plusMinutes * 60_000;
+
+describe('reportTimeline: the six states', () => {
+  it('before its time a slot is DUE and says when', () => {
+    const t = reportTimeline(payload([]), 'core', at(PREMARKET, -60));
+    expect(t.current?.slot.kind).toBe('AFTER_HOURS');
+    // Friday's after-hours slot is long past its window with nothing written.
+    expect(t.current?.state).toBe('MISSED');
+
+    const before = reportTimeline(
+      { ...payload([]), slots: SLOTS.slice(1) },
+      'core',
+      at(PREMARKET, -60),
+    );
+    expect(before.current?.state).toBe('DUE');
+    expect(briefingLineText(before.current!)).toMatch(/due 22:05 ET/);
+  });
+
+  it('due with no checked report is BEING CHECKED — never draft text', () => {
+    const t = reportTimeline(payload([]), 'core', at(INTO_RTH, 2));
+    expect(t.current?.slot.kind).toBe('INTO_RTH');
+    expect(t.current?.state).toBe('CHECKING');
+    expect(briefingLineText(t.current!)).toBe('Into-the-open briefing · being checked');
+  });
+
+  it('a checked report is PUBLISHED, and a late one stays published with the flag', () => {
+    const s = SLOTS[2];
+    const late = report(s, new Date(at(INTO_RTH, 9)).toISOString(), { late: true });
+    const t = reportTimeline(payload([late]), 'core', at(INTO_RTH, 10));
+    expect(t.current?.state).toBe('PUBLISHED');
+    expect(t.current?.report?.late).toBe(true);
+  });
+
+  it('past relevantUntil with nothing written is MISSED, with only the stored reason', () => {
+    const key = 'INTO_RTH:core:2026-09-28';
+    const t = reportTimeline(
+      payload([], { [key]: 'The 09:25 assessment did not complete.' }),
+      'core',
+      at(INTO_RTH, 45),
+    );
+    expect(t.current?.state).toBe('MISSED');
+    expect(t.current?.missedReason).toBe('The 09:25 assessment did not complete.');
+    expect(briefingLineText(t.current!)).toMatch(/^No into-the-open briefing/);
+  });
+
+  it('MISSED IS NEVER FILLED FROM THE PREVIOUS SLOT', () => {
+    const premarket = report(SLOTS[1], PREMARKET);
+    const t = reportTimeline(payload([premarket]), 'core', at(INTO_RTH, 45));
+    expect(t.current?.slot.kind).toBe('INTO_RTH');
+    expect(t.current?.report).toBeNull();
+    expect(t.current?.state).toBe('MISSED');
+  });
+
+  it('a slot is OVER once a later slot is due — supersession, not age', () => {
+    const premarket = report(SLOTS[1], PREMARKET);
+    // 90 minutes into premarket on Monday it is current, though ~58h old.
+    const morning = reportTimeline(payload([premarket]), 'core', at(INTO_RTH, -90));
+    expect(morning.current?.slot.kind).toBe('PREMARKET');
+    expect(morning.current?.state).toBe('PUBLISHED');
+
+    const later = reportTimeline(payload([premarket]), 'core', at(INTO_RTH, 1));
+    expect(later.earlier.map((v) => v.slot.kind)).toEqual(['PREMARKET', 'AFTER_HOURS']);
+    expect(later.earlier[0].state).toBe('OVER');
+    expect(later.earlier[0].report).toBe(premarket);
+  });
+
+  it('an update is a second report for one slot: newest shown, older kept', () => {
+    const original = report(SLOTS[1], PREMARKET);
+    const update = report(SLOTS[1], '2026-09-28T11:03:00Z');
+    const t = reportTimeline(payload([original, update]), 'core', at(INTO_RTH, -60));
+    expect(t.current?.report).toBe(update);
+    expect(t.current?.superseded).toEqual([original]);
+  });
+
+  it('reads only its own range', () => {
+    const other = { ...report(SLOTS[2], INTO_RTH), rangeId: 'upper' };
+    const t = reportTimeline(payload([other]), 'core', at(INTO_RTH, 5));
+    expect(t.current?.report).toBeNull();
+  });
+
+  it('no slots at all is no line, not a missed one', () => {
+    expect(reportTimeline({ ...payload([]), slots: [] }, 'core', at(INTO_RTH)).current).toBeNull();
+  });
+});
+
+describe('chooseReportRange', () => {
+  const base = { ranges: RANGES, defaultRangeId: 'core', stored: null };
+
+  it('a board inside one range opens on it', () => {
+    expect(chooseReportRange({ ...base, board: { min: 1, max: 20 } })).toEqual({
+      kind: 'CHOSEN',
+      range: RANGES[1],
+      source: 'board',
+    });
+    expect(chooseReportRange({ ...base, board: { min: 25, max: 40 } })).toMatchObject({
+      kind: 'CHOSEN',
+      range: RANGES[2],
+    });
+  });
+
+  it('a board spanning two ranges SAYS SO rather than guessing', () => {
+    expect(chooseReportRange({ ...base, board: { min: 0.5, max: 10 } })).toEqual({
+      kind: 'STRADDLE',
+      candidates: [RANGES[0], RANGES[1]],
+    });
+  });
+
+  it('meeting at a shared boundary is not overlap', () => {
+    // $0.50-$20 spans under-$1 and $1-$20, and only TOUCHES $20-$50 at 20.
+    expect(chooseReportRange({ ...base, board: { min: 0.5, max: 20 } })).toEqual({
+      kind: 'STRADDLE',
+      candidates: [RANGES[0], RANGES[1]],
+    });
+  });
+
+  it("the viewer's own choice wins, and a stale stored id is ignored", () => {
+    expect(
+      chooseReportRange({ ...base, stored: 'upper', board: { min: 0.5, max: 10 } }),
+    ).toMatchObject({ kind: 'CHOSEN', range: RANGES[2], source: 'viewer' });
+    expect(
+      chooseReportRange({ ...base, stored: 'gone', board: { min: 0.5, max: 10 } })?.kind,
+    ).toBe('STRADDLE');
+  });
+
+  it('no board yet falls to the configured default; no ranges is nothing', () => {
+    expect(chooseReportRange({ ...base, board: null })).toMatchObject({
+      range: RANGES[1],
+      source: 'default',
+    });
+    expect(chooseReportRange({ ...base, ranges: [], board: null })).toBeNull();
+  });
+});
+
+describe('outsideBoardRange: "not in your range"', () => {
+  it('only where the board and the report range differ', () => {
+    expect(outsideBoardRange(0.6, { min: 1, max: 20 }, RANGES[1])).toBe(false);
+    expect(outsideBoardRange(12, { min: 0.5, max: 10 }, RANGES[1])).toBe(true);
+    expect(outsideBoardRange(8, { min: 0.5, max: 10 }, RANGES[1])).toBe(false);
+  });
+
+  it('never on an unknown price', () => {
+    expect(outsideBoardRange(null, { min: 0.5, max: 10 }, RANGES[1])).toBe(false);
+    expect(outsideBoardRange(Number.NaN, { min: 0.5, max: 10 }, RANGES[1])).toBe(false);
+  });
+});
+
+describe('the words', () => {
+  it('coverage is m of n over the report’s own names', () => {
+    expect(coverageText({ named: 7, withLiveFeed: 5 })).toBe('5 of 7 names had live trade data');
+    expect(coverageText({ named: 1, withLiveFeed: 0 })).toBe('0 of 1 name had live trade data');
+    expect(coverageText({ named: 0, withLiveFeed: 0 })).toBeNull();
+  });
+
+  it('coverage is counted from the lines, so it cannot disagree with their marks', () => {
+    const coverage = reportCoverage({
+      sections: [
+        { heading: 'a', lines: [
+          { ticker: 'INLF', liveFeed: true, text: 'x' },
+          { ticker: 'MGLD', liveFeed: false, text: 'x' },
+          { ticker: null, liveFeed: false, text: 'a sentence about no name' },
+        ] },
+        { heading: 'b', lines: [
+          // Named twice, counted once, and live because one of its lines was.
+          { ticker: 'MGLD', liveFeed: true, text: 'named twice' },
+          { ticker: 'KITT', liveFeed: true, text: 'x' },
+        ] },
+      ],
+    });
+    expect(coverage).toEqual({ named: 3, withLiveFeed: 3 });
+  });
+
+  it('a checkpoint is named by its completed ET minute and label, never its id', () => {
+    expect(
+      checkpointText({ type: 'OPEN_SPIKE_ASSESSMENT', completedAt: '2026-09-28T13:26:00Z' }),
+    ).toBe('09:26 ET open spike assessment');
+    // The label's own clock is dropped so two times cannot disagree.
+    expect(checkpointText({ type: 'NEXT_DAY_RECAP', completedAt: '2026-09-26T02:03:00Z' })).toBe(
+      '22:03 ET recap',
+    );
+  });
+
+  it('a session is a calendar day, not an instant', () => {
+    expect(sessionText('2026-09-28')).toBe('Mon, Sep 28');
+    expect(sessionText('garbage')).toBeNull();
+  });
+});

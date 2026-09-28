@@ -198,3 +198,22 @@ body {
 .legal-prose .legal-table { overflow-x: auto; margin: 0 0 1.5rem; -webkit-overflow-scrolling: touch; }
 .legal-prose table { border-collapse: collapse; margin: 0; width: 100%; min-width: 20rem; }
 .legal-prose th, .legal-prose td { border-bottom: 1px solid var(--color-line); padding: 0.5rem 0.75rem 0.5rem 0; text-align: left; font-size: 0.9375rem; line-height: 1.5; color: var(--color-ink-1); vertical-align: top; }
+
+/*
+ * Printing a session briefing prints the briefing alone.
+ *
+ * Only while the reading panel is open: printing the desk otherwise is
+ * unchanged. The shell is a fixed-height, overflow-hidden column, so it is
+ * released here too, or the page would print one screen of the report.
+ */
+@media print {
+  [data-report-printing] {
+    height: auto;
+    overflow: visible;
+    background: white;
+  }
+  [data-report-printing] > :not([data-report-area]),
+  [data-report-printing] [data-report-area] > main {
+    display: none;
+  }
+}

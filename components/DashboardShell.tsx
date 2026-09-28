@@ -1,7 +1,7 @@
 'use client';
 
 import { feedFailureLine } from '@/lib/dashboard/feedFailure';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -13,6 +13,7 @@ import { countCyclePhases, cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { Graveyard } from '@/components/Graveyard';
 import { MomentumTable } from '@/components/MomentumTable';
 import { FocusStrip } from '@/components/FocusStrip';
+import { BriefingLine, ReportPanel } from '@/components/SessionReports';
 import { TickerDrawer } from '@/components/TickerDrawer';
 import { dedupeSheetRows, mergeDesk } from '@/lib/dashboard/merge';
 import {
@@ -33,10 +34,33 @@ import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
 import type { ResearchHealthView } from '@/lib/research/health';
 import type { MarketFeedHealth } from '@/lib/market/types';
 import { universeWarning } from '@/lib/dashboard/universe';
+import { chooseReportRange, reportTimeline } from '@/lib/dashboard/sessionReports';
+import { reportKey } from '@/lib/desk/reports/contract';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
 import { useMarket } from '@/lib/hooks/useMarket';
+import { useSessionReports } from '@/lib/hooks/useSessionReports';
+
+/** Per-viewer conveniences only: which briefing range, which briefings were read. */
+const REPORT_RANGE_KEY = 'mointel.reportRange';
+const REPORT_READ_KEY = 'mointel.reportsRead';
+
+function readStored(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Storage blocked: the choice lasts for this page, which is still correct.
+  }
+}
 
 /** Numeric columns are most useful largest-first on the first click. */
 const DEFAULT_DIRECTIONS: Record<SortKey, 'asc' | 'desc'> = {
@@ -202,6 +226,23 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
    * the default — the history is for review, not for trading from.
    */
   const [selectedAssessment, setSelectedAssessment] = useState<number | null>(null);
+  const reports = useSessionReports();
+  const [reportOpen, setReportOpen] = useState(false);
+  const closeReport = useCallback(() => setReportOpen(false), []);
+  const [storedReportRange, setStoredReportRange] = useState<string | null>(null);
+  const [readReports, setReadReports] = useState<string[]>([]);
+  // Browser storage is read after mount so the server render and the first
+  // client render agree.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setStoredReportRange(readStored(REPORT_RANGE_KEY));
+    try {
+      const parsed: unknown = JSON.parse(readStored(REPORT_READ_KEY) ?? '[]');
+      if (Array.isArray(parsed)) setReadReports(parsed.filter((item) => typeof item === 'string'));
+    } catch {
+      // Unreadable: nothing marked read, which only means the headline shows again.
+    }
+  }, []);
   const { now, mounted } = useClock();
 
   /*
@@ -378,8 +419,46 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const discovery = market.snapshot?.discovery ?? null;
   const assessments = market.snapshot?.assessments ?? OFFLINE_ASSESSMENTS;
 
+  /*
+   * Session briefings. Nothing mounts until the payload exists: "the route is
+   * not there" must never render as "today's briefing was missed".
+   */
+  const board = discovery ? { min: discovery.priceMin, max: discovery.priceMax } : null;
+  const reportChoice = reports
+    ? chooseReportRange({
+        ranges: reports.ranges,
+        defaultRangeId: reports.defaultRangeId,
+        stored: storedReportRange,
+        board,
+      })
+    : null;
+  const timeline =
+    reports && mounted && reportChoice?.kind === 'CHOSEN'
+      ? reportTimeline(reports, reportChoice.range.id, now)
+      : null;
+  const currentReport = timeline?.current?.report ?? null;
+  const currentReadKey = currentReport
+    ? `${reportKey(currentReport)}@${currentReport.publishedAt}`
+    : null;
+  const chooseReportRangeId = (rangeId: string) => {
+    setStoredReportRange(rangeId);
+    writeStored(REPORT_RANGE_KEY, rangeId);
+  };
+  const openReport = () => {
+    setReportOpen(true);
+    if (currentReadKey && !readReports.includes(currentReadKey)) {
+      const next = [...readReports, currentReadKey].slice(-20);
+      setReadReports(next);
+      writeStored(REPORT_READ_KEY, JSON.stringify(next));
+    }
+  };
+  const reportPanelOpen = reportOpen && timeline !== null && reportChoice?.kind === 'CHOSEN';
+
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-desk">
+    <div
+      className="flex h-screen flex-col overflow-hidden bg-desk"
+      data-report-printing={reportPanelOpen ? '' : undefined}
+    >
       <DashboardHeader
         meta={data.meta}
         marketHealth={health}
@@ -422,7 +501,8 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         * that scrollport without ever scrolling vertically, so the header sat
         * inert and scrolled away with the rows.
         */}
-      <main className="flex min-h-0 flex-1 flex-col overflow-x-auto overflow-y-auto">
+      <div className="flex min-h-0 flex-1" data-report-area>
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-x-auto overflow-y-auto">
         <FocusStrip
           rows={focusRows}
           changedTickers={feed.changedTickers}
@@ -433,12 +513,46 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           onDismissMessage={focus.dismissMessage}
         />
 
+        {/* One line between Focus and Discovery: the session's briefing. */}
+        {reportChoice?.kind === 'STRADDLE' ? (
+          <BriefingLine
+            timeline={{ current: null, earlier: [] }}
+            choice={reportChoice}
+            onChooseRange={chooseReportRangeId}
+            onOpen={openReport}
+            read={false}
+          />
+        ) : timeline && reportChoice ? (
+          <BriefingLine
+            timeline={timeline}
+            choice={reportChoice}
+            onChooseRange={chooseReportRangeId}
+            onOpen={openReport}
+            read={currentReadKey !== null && readReports.includes(currentReadKey)}
+          />
+        ) : null}
+
         {/* The checkpoint selector sits with Discovery because that is what it
             replaces: choosing a past assessment swaps the live board for the
             frozen one, rather than showing both and inviting a comparison
             between numbers captured hours apart. */}
-        {assessments.today.length > 0 ? (
-          <div className="flex items-center justify-end border-b border-line bg-desk px-4 py-1">
+        {assessments.today.length > 0 || selectedAssessment !== null ? (
+          <div className="flex items-center justify-end gap-3 border-b border-line bg-desk px-4 py-1">
+            {/*
+              * A briefing can open a checkpoint the selector does not list --
+              * last night's 22:00 recap belongs to the previous session -- and
+              * the selector renders nothing when today has no checkpoints. So
+              * whenever a frozen board is showing, the way back is too.
+              */}
+            {selectedAssessment !== null ? (
+              <button
+                type="button"
+                onClick={() => setSelectedAssessment(null)}
+                className="min-h-6 rounded-sm border border-accent/40 bg-accent/10 px-2 text-[11px] font-semibold tracking-wide text-accent uppercase"
+              >
+                Back to live
+              </button>
+            ) : null}
             <AssessmentSelector
               panel={assessments}
               selectedId={selectedAssessment}
@@ -528,6 +642,22 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           </footer>
         ) : null}
       </main>
+
+      {reportPanelOpen && timeline && reports && reportChoice?.kind === 'CHOSEN' ? (
+        <ReportPanel
+          timeline={timeline}
+          ranges={reports.ranges}
+          range={reportChoice.range}
+          onChooseRange={chooseReportRangeId}
+          board={board}
+          priceOf={(ticker) => market.snapshot?.demand[ticker]?.price ?? null}
+          nowMs={now}
+          onClose={closeReport}
+          onSelectTicker={setSelectedTicker}
+          onOpenCheckpoint={setSelectedAssessment}
+        />
+      ) : null}
+      </div>
 
       <TickerDrawer
         row={selectedRow}
