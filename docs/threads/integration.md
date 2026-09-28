@@ -1010,6 +1010,9 @@ KNRX's actual WHY NOW, a measured count of that class, the fix. Kill switch not 
 field dump; fix rides with the RE-CHECK, which **he ruled "build the re-check next" at 13:10:39Z in Research
 (verified at his turn)**. Reads sent to Ops ~10:40 ET: KNRX/FUSE stored WHY NOW + citations; raw items. Kill-switch
 rule: off iff a halt row is CITED — but the flag needs a research RESTART, so it goes to him, not flipped on a seat's call.
+**READ 1 (Ops ~10:45 ET): NOT triggered, collector stays ON.** KNRX v2375 cites F-1 + EFFECT; halt rows 106001/2 in its
+bundle (source_ids) but uncited. FUSE v2376 cites a SECONDARY_DISCOVERY row; **its 2 NEWS_FEED rows are NOT in
+source_ids at all — asked Research whether stored rows can miss the bundle (collector inert while reading as working).**
 
 **✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
 symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
