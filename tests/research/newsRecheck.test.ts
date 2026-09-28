@@ -243,3 +243,19 @@ describe('the news re-check', () => {
     expect(result.detail).toBe('no pollable news adapters configured');
   });
 });
+
+describe('the re-check and halt notices', () => {
+  it('a circuit-breaker halt on a runner re-queues nothing', async () => {
+    const db = temporaryDb();
+    finishedJob(db, 'ACME');
+    const halt = item({
+      headline: 'ACME Shares Halted On Circuit Breaker To The Upside, Stock Now Up 190.79%',
+    });
+    const result = await queueNewsRecheck(db, [candidate('ACME', 3)], [new PollAdapter(ok([halt]))], {
+      tradingDate: DATE,
+      autoRank: 12,
+      now: NOW,
+    });
+    expect(result.queued).toHaveLength(0);
+  });
+});

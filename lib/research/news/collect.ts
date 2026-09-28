@@ -65,11 +65,37 @@ export function newsDocumentFingerprint(item: NewsItem): string {
  * by the job-time collector AND the re-check poll: a poll admitting an item
  * the collector would refuse re-queues a job that stores nothing, forever.
  */
-export type NewsAdmission = 'STORE' | 'MULTI_SYMBOL' | 'NOT_TAGGED';
+export type NewsAdmission = 'STORE' | 'MULTI_SYMBOL' | 'MOVE_NOTICE' | 'NOT_TAGGED';
+
+/**
+ * Benzinga's automated halt and price-move notices: "KNOREX Shares Halted On
+ * Circuit Breaker To The Upside, Stock Now Up 302.63%". They describe the MOVE,
+ * not its cause, so as a catalyst they are circular, and as stored evidence
+ * each one buys a paid re-interpretation on a runner that halts all morning.
+ *
+ * MATCHED ON THE HEADLINE BECAUSE NO FIELD SEPARATES THEM. Ops's raw dump of
+ * the 2026-09-28 top 12 (17 items, 04:00-10:30 ET): the halts carry author
+ * "Benzinga Newsdesk", a /quote/ url, empty summary and empty content -- and so
+ * do SCYX's $214M BARDA contract, SOAR's $1.17B orders, MTEK's $10M order and
+ * BEAG's merger. A field filter would have dropped the catalysts with the halts.
+ * The patterns match both halts in that sample and none of the other 15.
+ */
+const MOVE_NOTICE_PATTERNS: readonly RegExp[] = [
+  /\bshares (?:are )?halted\b/i,
+  /\btrading halt(?:ed)?\b/i,
+  /\bcircuit breaker\b/i,
+  /\bresumes? trad(?:e|ing)\b/i,
+  /\bstock now (?:up|down) \d/i,
+];
+
+export function isMoveNotice(headline: string): boolean {
+  return MOVE_NOTICE_PATTERNS.some((pattern) => pattern.test(headline));
+}
 
 export function admitNewsItem(item: NewsItem, symbol: string): NewsAdmission {
   if (!item.symbols.includes(symbol)) return 'NOT_TAGGED';
   if (item.symbols.length > 1) return 'MULTI_SYMBOL';
+  if (isMoveNotice(item.headline)) return 'MOVE_NOTICE';
   return 'STORE';
 }
 
@@ -101,6 +127,7 @@ export async function collectNews(
     }
     let single = 0;
     let multi = 0;
+    let moves = 0;
     let untagged = 0;
     for (const item of result.items) {
       const admission = admitNewsItem(item, symbol);
@@ -112,6 +139,10 @@ export async function collectNews(
         multi += 1;
         continue;
       }
+      if (admission === 'MOVE_NOTICE') {
+        moves += 1;
+        continue;
+      }
       single += 1;
       const key = dedupeKey(item);
       const held = byKey.get(key);
@@ -119,6 +150,7 @@ export async function collectNews(
     }
     parts.push(
       `${adapter.id}: read ${result.items.length} items (${single} single-symbol, ${multi} multi-symbol` +
+        `${moves > 0 ? `, ${moves} halt/move notices` : ''}` +
         `${untagged > 0 ? `, ${untagged} not tagged ${symbol}` : ''})${result.truncated ? ' TRUNCATED' : ''}`,
     );
   }

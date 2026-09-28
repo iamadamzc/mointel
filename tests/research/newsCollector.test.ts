@@ -2,7 +2,13 @@ import { describe, expect, it } from 'vitest';
 
 import { AlpacaRestClient, type AlpacaNewsItem } from '@/lib/market/alpaca/rest';
 import { AlpacaNewsAdapter, toNewsItem } from '@/lib/research/news/alpaca';
-import { collectNews, MAX_NEWS_ROWS_PER_RUN, normaliseHeadline } from '@/lib/research/news/collect';
+import {
+  admitNewsItem,
+  collectNews,
+  isMoveNotice,
+  MAX_NEWS_ROWS_PER_RUN,
+  normaliseHeadline,
+} from '@/lib/research/news/collect';
 import type { NewsAdapter, NewsFetchResult, NewsItem } from '@/lib/research/news/types';
 import { recoverOriginatingWire } from '@/lib/research/news/wire';
 
@@ -337,5 +343,77 @@ describe('many sources, one row per release', () => {
 
   it('normalises headlines for dedupe only by case and punctuation', () => {
     expect(normaliseHeadline('ACME: Announces -- Contract!')).toBe('acme announces contract');
+  });
+});
+
+describe('halt and price-move notices', () => {
+  /*
+   * Every headline in Ops's raw dump of the 2026-09-28 top 12 (Alpaca news,
+   * 04:00-10:30 ET, 17 items). Exactly the two KNRX circuit-breaker notices
+   * are move notices. The rest -- including four catalysts that share the
+   * halts' author, /quote/ url and empty body -- are not.
+   */
+  const HALTS = [
+    'KNOREX Shares Halted On Circuit Breaker To The Upside, Stock Now Up 302.63%',
+    'KNOREX Shares Halted On Circuit Breaker To The Upside, Stock Now Up 190.79%',
+  ];
+  const NOT_HALTS = [
+    'Transcript: Kandi Technologies Group H1 2026 Earnings Conference Call',
+    'Bold Eagle Acquisition Announces Deal To Take Cyber Intelligence Firm REDLattice Public At',
+    'Why Is Accuray Stock Gaining Monday?',
+    'Lakewood-Amedex Biotherapeutics Announces Minimum Inhibitory Concentration Data From Recen',
+    "Volato's Alignment Engine Announces $1.17B In Four-Year Take-Or-Pay AI GPU Orders From Unn",
+    "12 Health Care Stocks Moving In Monday's Pre-Market Session",
+    "12 Industrials Stocks Moving In Monday's Pre-Market Session",
+    "12 Information Technology Stocks Moving In Monday's Pre-Market Session",
+    'Maris-Tech Announces $10M Order For Airborne Defense Video Systems Under Project With Maga',
+    'Fusemachines Announces Access To IBM Fusion Infrastructure Through ModulAlre',
+    'SCYNEXIS Announces $214M BARDA Contract For Antifungal SCY-247, With About $18.5M In Initi',
+    'Earnings Scheduled For September 28, 2026',
+    "Kandi Technologies Announces Second Order For Heavy-Truck Battery Swap Stations From CATL'",
+    'Kandi Technologies Gr H1 EPS $0.10 Up From $0.02 YoY, Sales $57.117M Up From $36.291M YoY',
+    'Why Webuy Global Shares Are Trading Higher By Around 15%; Here Are 20 Stocks Moving Premar',
+  ];
+
+  it('the instrument: the sample is the 17 headlines Ops dumped', () => {
+    expect(HALTS.length + NOT_HALTS.length).toBe(17);
+  });
+
+  it('flags both halts in the real sample', () => {
+    for (const headline of HALTS) expect(isMoveNotice(headline), headline).toBe(true);
+  });
+
+  it('flags none of the 15 others, including catalysts in the same field shape', () => {
+    for (const headline of NOT_HALTS) expect(isMoveNotice(headline), headline).toBe(false);
+  });
+
+  it('flags the other halt shapes (synthetic -- not yet seen in a dump)', () => {
+    expect(isMoveNotice('ACME Shares Resume Trade')).toBe(true);
+    expect(isMoveNotice('ACME Shares Are Halted, News Pending')).toBe(true);
+    expect(isMoveNotice('ACME Shares Halted On Circuit Breaker To The Downside, Stock Now Down 12%')).toBe(true);
+  });
+
+  it('counts a halt notice and does not store it', async () => {
+    const collection = await collectNews(
+      [
+        new StaticAdapter('a', {
+          ok: true,
+          items: [item({ headline: HALTS[0] }), item({ providerItemId: '2' })],
+          truncated: false,
+          requests: 1,
+        }),
+      ],
+      'ACME',
+      WINDOW,
+      NOW,
+    );
+    expect(collection.rows.map((row) => row.title)).toEqual(['Acme Announces Contract']);
+    expect(collection.detail).toBe(
+      'a: read 2 items (1 single-symbol, 0 multi-symbol, 1 halt/move notices)',
+    );
+  });
+
+  it('a halt notice is ADMITTED to nothing, so the re-check cannot queue on it', () => {
+    expect(admitNewsItem(item({ headline: HALTS[1] }), 'ACME')).toBe('MOVE_NOTICE');
   });
 });
