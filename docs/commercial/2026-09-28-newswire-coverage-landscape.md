@@ -197,9 +197,25 @@ Pricing tiers, annual-discounted monthly equivalents shown on the page: **Basic
 $30.58/mo, Streamlined $124.75/mo, Essential $166.42/mo** — a 14-day free trial
 offered (not used; not this seat's to start).
 
-**Why this matters even though Pro itself isn't buyable-as-infrastructure: it is
-evidence about Benzinga's own underlying data, which DOES have an API product this
-desk already partially uses.** The desk's Alpaca News (already documented,
+**ADDED 2026-09-28, HIS OWN QUESTION — "if alpaca includes benzinga, what's the use
+of a direct license if all our market data comes from alpaca?" — and this belongs
+first, above the coverage argument, because it is the confirmed reason, not the
+inferred one.** **The licence, not the content, is what's broken today.** Alpaca's
+own Terms & Conditions (`2026-09-25-newswire-licence-landscape.md`, quoted in full
+there) do not carve News out as a separate product from the market data — it sits
+on the identical clause: *"Content is provided exclusively for personal and
+noncommercial access and use... No part of the Service or Content may be copied,
+reproduced, republished... for any commercial enterprise, without Alpaca's express
+prior written consent."* **So even if the Benzinga content arriving through Alpaca
+were the complete Benzinga feed, byte for byte, it could not legally be built into a
+paid feature — it is licensed to this desk personally, the same restriction that
+already blocks the SIP tape.** A direct Benzinga licence would matter for this
+reason alone, regardless of whether it adds a single new wire: Benzinga sells this
+commercially (its own API contact form asks "Business" or "Personal" up front),
+where Alpaca's bundle does not.
+
+**The coverage question below is separate and unconfirmed — a possible second
+reason, not the load-bearing one.** The desk's Alpaca News (already documented,
 `2026-09-25-newswire-licence-landscape.md`) is 100% Benzinga-sourced but reaches the
 desk through Alpaca's own free/bundled News API, not a direct Benzinga licence.
 
@@ -230,7 +246,7 @@ would add — with cost named as unknown-pending-enquiry rather than guessed.**
 
 | option | adds coverage of | cost | access today |
 | --- | --- | --- | --- |
-| **Direct Benzinga API licence** (beyond the Alpaca bundle) | **Confirmed** to already carry at least some third-party wire content (§1, the AIFF/GlobeNewswire control, measured, not inferred) — full source list and whether it extends to ACCESS Newswire or Newsfile specifically, unpublished, unconfirmed | Unpublished; enquiry only | Already partially in hand (Alpaca bundles a slice); a direct licence is the upgrade |
+| **Direct Benzinga API licence** (vs. the Alpaca bundle) | **The licence, confirmed, is the primary reason, not coverage:** Alpaca's own T&Cs restrict News to personal/non-commercial use, identically to the SIP tape — a direct licence is the only path to using ANY of this content in a paid feature, before coverage is even asked. Coverage itself: **confirmed** to already carry at least some third-party wire content (§1, the AIFF/GlobeNewswire control, measured) — full source list and whether it extends to ACCESS Newswire or Newsfile specifically, unpublished, unconfirmed | Unpublished; enquiry only | Already partially in hand, but not usable in a paid product under its current terms |
 | **Direct ACCESS Newswire relationship** | The one wire confirmed to have caused today's miss | No published terms or price found at all | None — not even terms exist to read |
 | **Direct Newsfile relationship** | Canadian/junior-issuer coverage, a plausible top-12 contributor | Standard non-commercial personal-use terms found; no commercial product found | None |
 | **TradingView, directly** | Nothing — **closed by its own terms, at any price** | N/A | Not obtainable this way |
