@@ -140,8 +140,11 @@ nothing renders**, because a reviewer has no billing.
 
 ## 7. Open, for the assembled document
 
-- **The OS notification (§3)**: on or off. It's the only piece that leaves
-  the app, so it's his.
+- ~~**The OS notification (§3)**: on or off.~~ **RULED ON, his words to
+  Design, 2026-09-28: *"yes, send the notification"*.** As §3 specifies:
+  once at failure and once at 10 minutes, only where browser permission
+  already exists, never prompted by the failure, no sound, and the same end
+  time as the band.
 - ~~**Does a declined retry keep the original `endsAt`?**~~ **CONFIRMED by
   Commercial (`3886a63`): one fixed hour from the first failure, never
   re-issued.** It holds only if `failed_at` is written ONCE, not rewritten on
