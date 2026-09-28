@@ -1002,6 +1002,10 @@ control; MEDS "nothing" only proves it ran. **His yes at his own turn in Ops: 13
 logged "news: alpaca" 14:19:26Z; market still 3b78b8c. **CONFIGURED, UNPROVEN:** the 2 post-ship jobs ran on the
 old pid. Positive control set with Ops: a new-code job with s>0 single-symbol AND a matching NEWS_FEED row; re-read
 after 5 new-code jobs or 16:00 ET, whichever first. AIFF re-research only if organic fails, and it's his.
+**✅ PROVEN 14:26:39Z (Ops):** KNRX "alpaca: read 10 items (4 single-symbol, 6 multi-symbol)" = 4 NEWS_FEED rows; FUSE
+2 rows. **⚠️ QUALITY DEFECT raised to Research:** 2 of KNRX's 4 are Benzinga automated halt/price notices ("Shares
+Halted On Circuit Breaker... Up 302.63%") — they describe the move, not its cause, and pass symbols.length===1. Asked:
+KNRX's actual WHY NOW, a measured count of that class, the fix. Kill switch not requested.
 
 **✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
 symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
