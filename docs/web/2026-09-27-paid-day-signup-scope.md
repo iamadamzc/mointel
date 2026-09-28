@@ -105,13 +105,20 @@ source of truth for the one number this desk has repeatedly got wrong — four
 clock failures in four days."* **A floating paid-day boundary re-introduces
 exactly what that file refused.**
 
-> **ANSWERED BY HIM, 2026-09-27 — SEE §7. THE REPORT IS THE START OF THE DAY,
-> AND THE REPORT IS AT 22:00, NOT THE ~20:30 THIS SECTION WAS WRITTEN AGAINST.**
-> *This seat recommended the opposite — the 20:00 clock, with the report as the
-> day's first content — and it was wrong for a reason worth keeping: it treated
-> the relayed "~20:30" as the report's time instead of looking the report up.*
-> **The boundary he ruled for is `RECAP_MIN`, a constant this repo already keeps,
-> so the two-definitions problem this section warns about does not arise.**
+> **ANSWERED BY HIM, 2026-09-27 — SEE §7b. THE REPORT IS THE START OF THE DAY,
+> AND THE REPORT IS AT ~20:30**, moving there from 22:00 under his `8f52b73`
+> ruling. *This seat recommended the opposite — the 20:00 clock — and he overruled
+> it.*
+>
+> **AND THE CONCERN THIS SECTION RAISES IS NOT DISPOSED OF BY THAT RULING. IT IS
+> THE LIVE QUESTION.** *A report published at ~20:30 is an event; `20:30` is a
+> clock.* **The boundary must be the SCHEDULED time, or a late report moves a
+> charge and somebody's access** — with Integration, unanswered as of `9d7cc30`.
+>
+> ~~The boundary he ruled for is `RECAP_MIN`~~ — **struck; that was this seat's
+> second wrong answer and §7 carries the correction.** *Left visible because a
+> pointer that silently changed its answer twice is worse than one that shows it
+> did.*
 
 ---
 
