@@ -901,6 +901,12 @@ news collector            PROVEN end to end (KNRX: 4 single-symbol items -> 4 NE
                           headline-only, every row SECONDARY. Kill switch RESEARCH_NEWS=off (needs a research restart).
 ```
 
+> **UPDATE 2026-09-28 ~15:55Z (fifteenth seat, from Ops's /proc read): `dca4a04` LIVE on web/research/assess
+> (pids 1411589/1411638/1411713) since 11:34:44 ET on his "ship the re-check" in Ops's session; market worker
+> unchanged on 3b78b8c. Gate 163/163 at 11:04 ET, DEPLOY_TESTS_SKIP per rule. RE-QUEUE PROVEN: job 5397 ARAY,
+> trigger NEWS_ITEM, 15:46:50Z -> COMPLETE 15:47:46Z. Halt/move-notice count > 0: NOT YET, configured, unproven.
+> The section below is superseded.**
+
 ### WAITING ON HIS WORD, IN OPS'S SESSION
 
 **`dca4a04` = the NEWS RE-CHECK (bb5d351) + halt filter (4d8cd79, narrowed by 43f4094) on 7820810.** Gated 163/163,
