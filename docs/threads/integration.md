@@ -1098,6 +1098,16 @@ agreed     weekends/holidays not charged | a lapsed hour ends that day only | re
            first real run.
 ```
 
+### RESEARCH RETIRED ~01:40Z 2026-09-28 ON HIS INSTRUCTION — hand-off `42aee0f`, LIVE STATE `ac86613`
+
+*Session reports: the checker's deterministic half is built (`316c02e`, `d998973`), and the pre-registered pass bar is
+`43c1b7c` (6/6 seeded defects struck, 0 false passes, a clean-report control). NOT built: the writer, the semantic
+checker, `GET /api/reports`, range config, the 20:05 checkpoint. **Build paused until a fresh Research seat opens.***
+**❌ Its retiring MESSAGE (not its documents, checked) listed the 10s-capture shas as unshipped with "restart is his".
+FALSE: they are in production as a315de5/ff5deae/7ff5fb6/3b78b8c, and the restart ran 23:17Z.** *Its LIVE STATE and
+prompt do not carry that line, so no document retraction is owed. Tell the fresh seat if it repeats it.* **Carry
+to it: the pass bar must not move to meet a result, and Design's two-line edit to Research's contract file was right.**
+
 ### THE RESIDUAL NOBODY HAS CLOSED
 
 **The crowding fix is HALF done and the half that is open is the one he cares about most.** *Ranking inside the
