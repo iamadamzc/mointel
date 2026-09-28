@@ -183,10 +183,16 @@ different cut.
 
 ## 5. CAN THIS BE DECIDED BEFORE GATE 1 ("WHAT IS SOLD")? — NO, NOT THE SHAPE; YES, THE FACTS
 
-**Gate 1 remains unruled** (`docs/commercial/2026-09-26-billing-onboarding-support-
+~~**Gate 1 remains unruled** (`docs/commercial/2026-09-26-billing-onboarding-support-
 scope.md`, this seat's own document, sha `9d49118`): whether the paid unit is
 signed-in access to the board, the Why Not Report, or a daily brief has never been put
-to him. **Tiering is a packaging decision, and Gate 1 is the packaging decision** —
+to him.~~ **[Struck 2026-09-28 — false when written, copied from a scope document that
+was itself wrong. Gate 1 was ruled 2026-09-07, *"the unit sold is everything
+together"* (his turn, 12:45Z); the day pass followed 2026-09-27
+(`2026-09-27-day-pass-addendum.md`). What stays open is the tier MEASURE, on his own
+word the same day — *"maybe stock price isn't the correct tier measure. i dont know."*
+Read "Gate 1" in the rest of this section as that question: the tier decision waits on
+him choosing a measure, not on what is sold.]** **Tiering is a packaging decision, and Gate 1 is the packaging decision** —
 choosing shape B or C before Gate 1 answers would be deciding packaging from the wrong
 end, the same shape of error a definitional change made without measuring its
 population first produces elsewhere on this desk.
@@ -217,5 +223,6 @@ production); `lib/market/config.ts:78-80` (`internalRank`, `discoveryPriceMin`,
 `capturePriceMin`/`capturePriceMax` are exercised, confirming the split exists in code
 and not in production wiring); `docs/research/session-reports/design.md` (the
 set-ranges ruling and the configuration note); this seat's own
-`2026-09-26-billing-onboarding-support-scope.md` (Gate 1, unruled). All read directly
+`2026-09-26-billing-onboarding-support-scope.md` (~~Gate 1, unruled~~ — struck
+2026-09-28; ruled 2026-09-07, see §5). All read directly
 in this session; none characterised from a relay without opening the file first.

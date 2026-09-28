@@ -1,8 +1,11 @@
 # Billing, onboarding and support — SCOPE, not a build
 
 **PARTIALLY SUPERSEDED 2026-09-27 — see
-[`2026-09-27-day-pass-addendum.md`](2026-09-27-day-pass-addendum.md).** Gate 1 ("what
-is sold") was open when this was written; he has since stated a plan (a day pass,
+[`2026-09-27-day-pass-addendum.md`](2026-09-27-day-pass-addendum.md).** ~~Gate 1 ("what
+is sold") was open when this was written~~ **[struck 2026-09-28: Gate 1 was already
+answered when this was written — his words 2026-09-07 12:45Z, verified at his own turn,
+*"the unit sold is everything together"*, recorded in `2026-09-07-which-price.md:4`];**
+he has since stated a plan (a day pass,
 charged at login) that changes §1's billing-rail recommendation from a *recurring
 monthly* subscription to a *repeating one-time charge per usage day*. §§2–7 are not
 struck — packaging, support and the terms-of-sale trigger all still apply under a day
@@ -119,11 +122,15 @@ building.
 
 **Gate 2 (`monetization-gates.md`), his words, 2026-09-07: *"same board to start. we're
 serving this same market for now."*** One bundle, no tenancy split, no per-tier feature
-gate. **Nothing in this scope proposes changing that.** The only packaging question this
+gate. **Nothing in this scope proposes changing that.** ~~The only packaging question this
 document surfaces is one Gate 1 left open and nobody has asked since: **whether the unit
 sold is the board, the Why Not Report, or the daily brief** — still unranked, per the
 gates map's own unresolved list, and still waiting on him asking rather than a
-default being picked here.
+default being picked here.~~ **[Struck 2026-09-28 — false when written. Gate 1 was
+answered 2026-09-07: *"the unit sold is everything together"* (verified at his turn,
+12:45Z) — not one of the three, all of them. The gates map had never recorded it, which
+is where this sentence came from; Integration recorded it at `d43d18f`. The billing
+shape on top of it is the day pass, `2026-09-27-day-pass-addendum.md`.]**
 
 ---
 
@@ -266,11 +273,16 @@ building self-serve is met.
   lapse). **This is Web's flow to build and this seat's support scope (§5) to carry as
   the first line of the one runbook** the single inbox actually needs.
 - **A sharper form of a question §7 already asked**, and Ops calls it a precondition
-  rather than an open item: **Gate 1, "what is sold," has never been ruled in writing.**
+  rather than an open item: ~~**Gate 1, "what is sold," has never been ruled in writing.**
   Ops's working assumption — one subscription equals one invited Google address — is the
   only shape that fits signed-in access to one shared board (Gate 2), but it has not been
   put to him as a decision, only assumed by two threads independently. Folded into §7
-  below rather than left as a separate open item each document names differently.
+  below rather than left as a separate open item each document names differently.~~
+  **[Struck 2026-09-28 — false when written: Gate 1 was ruled 2026-09-07, *"the unit
+  sold is everything together"* (his turn, 12:45Z), and the day pass followed
+  2026-09-27. Ops's per-address assumption is now carried by the closed daily-billing
+  design (`daily-billing-design/commercial.md` §8: the allowlist stays the single
+  authority on admission; first users invited and billed by hand, ruled).]**
 
 ---
 
@@ -280,10 +292,14 @@ building self-serve is met.
 first is Ops's precondition and belongs ahead of the rest — the other six follow more
 easily once it's answered.**
 
-1. **What is sold (Gate 1) — is it signed-in access to the one shared board, one
+1. ~~**What is sold (Gate 1) — is it signed-in access to the one shared board, one
    subscription per invited Google address?** Two threads have independently assumed
    this and neither has heard him rule it. If the answer is anything else — a report,
-   a brief — the shape of everything below changes.
+   a brief — the shape of everything below changes.~~ **[ANSWERED — and was before
+   this was asked: *"the unit sold is everything together"* (2026-09-07), a day pass
+   charged at login (2026-09-27), admission by the allowlist with first users
+   invited and billed by hand (2026-09-28, `daily-billing-design/commercial.md` §8–§9).
+   Not to be put to him. Struck 2026-09-28.]**
 2. **Does the payment-terms trigger fire now (scoping a paid tier) or at the first
    actual charge?** His 2026-09-18 ruling deferred to the second reading; this scope
    may or may not be that moment — his call, not this seat's to decide by proceeding.
@@ -293,7 +309,9 @@ easily once it's answered.**
 4. **Does he want the invite-by-hand model Web and Ops both point toward, at least to
    start** — meaning a Stripe Payment Link sent by email and `scripts/allowlist.ts` run
    by hand, rather than a public checkout — or does he want self-serve scoped and built
-   now?
+   now? **[ANSWERED 2026-09-28: first users invited and billed by hand, self-serve
+   later — `daily-billing-design/commercial.md` §8. Items 2, 3, 5, 6, 7 not yet
+   re-checked against the later rulings as of 2026-09-28.]**
 5. **Refund policy shape**, if he wants one drafted: no refunds, pro-rated, or a short
    unconditional window before it — a judgement about the first handful of people, not
    a market fact this seat can supply.

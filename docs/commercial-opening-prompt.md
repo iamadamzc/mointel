@@ -44,7 +44,9 @@ new seat by title.
 > **Where things stand, in one paragraph.** The product is named, positioned,
 > and its claims rules are settled. Gate 0 (accept the exposure until
 > "something moving") and Gates 1–2 (a day pass, "same board") are all ruled,
-> directly, in his own words — Gate 1 specifically closed this tenure: **he
+> directly, in his own words — ~~Gate 1 specifically closed this tenure~~
+> **[struck 2026-09-28: Gate 1 was ruled 2026-09-07, "the unit sold is
+> everything together"; what this tenure added is the billing shape:]** **he
 > ruled a day pass, charged at login, paid day 20:00 ET to 20:00 ET, matching
 > the session boundary exactly.** A full four-seat daily-billing design
 > (this seat led; Ops, Design and Web each held their own section) is **built
