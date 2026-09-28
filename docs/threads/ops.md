@@ -12106,7 +12106,8 @@ health   /api/health market.tradeCapture = null (old worker), which proves the f
 3. 11:02 -- new preflight, correctly: stop span 11:04-11:14 within 5m of 11:00. Its message said
    "-2m away" for a checkpoint 2m past; fix the wording.
 
-**DEPLOY_TESTS_SKIP was used twice, each under ONE condition: the same sha was gated ALL GREEN in
+**DEPLOY_TESTS_SKIP was used twice, each under ONE condition (now the standing rule; see
+"DEPLOY_TESTS_SKIP RULE" below): the same sha was gated ALL GREEN in
 this session minutes earlier (8147cf4 twice; 3b78b8c at 11:02). Without that, the skip is not
 available -- wait for the gate.**
 
@@ -12164,6 +12165,15 @@ running worker (pid 1347535) carries DISCOVERY_PRICE_MIN=0.25 and no _MAX (MARKE
 present in the same read = control). So the live band is $0.25-$20 (MAX = config default).
 
 **2026-09-28 02:04Z (Sun 22:04 ET): 1eaa938 = cea5ed2 on 240f27e, LIVE on web/research/assess**, on his
-"yes" in this session. Down 3s. Market worker still 3b78b8c (untouched). This deploy's prune logged
+"yes" in this session. DEPLOY_TESTS_SKIP; gated 1eaa938 161/161, 2463 green, same session,
+minutes before launch. Down 3s. Market worker still 3b78b8c (untouched). This deploy's prune logged
 "in use 3b78b8c" and removed 8147cf4: **the in-use rule protected the market worker's release in
 production.** The bootstrap-band trigger needs cea5ed2 ON THE MARKET WORKER, i.e. the next restart.
+
+### DEPLOY_TESTS_SKIP RULE (Integration, order-and-process, 2026-09-28)
+
+**Permitted ONLY when the same session gated the exact sha being launched ALL GREEN, with the
+collection count matching the pre-registered one, and nothing changed between the gate and the
+launch. Every use is named in that ship's ops.md line with the gate's time and counts.** Anything
+short of that waits for the gate. (It supersedes the 2026-09-26 one-relaunch wording, whose last
+clause was a standing refusal, not a grant.)
