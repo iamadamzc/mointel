@@ -1013,6 +1013,9 @@ rule: off iff a halt row is CITED — but the flag needs a research RESTART, so 
 **READ 1 (Ops ~10:45 ET): NOT triggered, collector stays ON.** KNRX v2375 cites F-1 + EFFECT; halt rows 106001/2 in its
 bundle (source_ids) but uncited. FUSE v2376 cites a SECONDARY_DISCOVERY row; **its 2 NEWS_FEED rows are NOT in
 source_ids at all — asked Research whether stored rows can miss the bundle (collector inert while reading as working).**
+**READ 2 delivered to Research (Ops):** all 6 stored items headline-only (empty summary/content); halt notices' url =
+Benzinga QUOTE page (field-level filter candidate); 4 of 6 rows weeks old (Aug 21–Sep 17) — the 45-day lookback admits
+them. Whether stale rows are correct history or noise is Research's to rule, with the freshness logic in view.
 
 **✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
 symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
