@@ -912,7 +912,12 @@ on the box and in the process; NO `_MAX` line, so the default 20 (`config.ts:80`
 been live since the 2026-09-25 22:19:45Z restart. **His $0.25–$50 ruling is NOT live:** `cea5ed2` is main-only (prod
 vs main `engine.ts` diff = exactly that commit). **Chain now has triggers:** Ops `ops.md` "QUEUE — Ops items with
 triggers" (`e0a519c`) — bootstrap band = record band, TRIGGER cea5ed2 live by /proc, replay cost measured first.
-Research asked ~01:30Z for its order + triggers (reports first, then the cea5ed2 enumeration); reply pending.
+Research's order (`5ac6bcc`, accepted): 1 cea5ed2 enumeration NOW → 2 Ops bootstrap band (after cea5ed2 is on the
+MARKET WORKER) → 3 env ceiling 20→50 + restart → 4 server ranks inside a requested range, BUILT WITH THE REPORT
+WRITER, fallback: built alone if the writer slips past 2026-10-02 → 5 per-range feed allocation, HELD for 3 + a load test.
+**cea5ed2 ENUMERATION APPROVED ~01:45Z under the standing grant:** pick of cea5ed2 ALONE onto 240f27e, merge-tree
+clean (re-run here), gate count 161, inert. Market-worker restart NOT authorised; it rides his next direct restart.
+Ops asked to prove retention cannot prune the market worker's cwd (3b78b8c) first. Shipped sha pending.
 
 ```
 web / research / assess   240f27e   = 969458d (comment fix) cherry-picked on 3b78b8c. Deadline met.
