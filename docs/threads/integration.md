@@ -1016,6 +1016,12 @@ source_ids at all — asked Research whether stored rows can miss the bundle (co
 **READ 2 delivered to Research (Ops):** all 6 stored items headline-only (empty summary/content); halt notices' url =
 Benzinga QUOTE page (field-level filter candidate); 4 of 6 rows weeks old (Aug 21–Sep 17) — the 45-day lookback admits
 them. Whether stale rows are correct history or noise is Research's to rule, with the freshness logic in view.
+**~10:55 ET: re-check BUILT (`bb5d351`) + halt filter (`4d8cd79`).** Field fingerprint FAILED (same shape carries
+SCYX/SOAR/MTEK/BEAG catalysts), so the filter reads headlines. NEWSWIRE authority is INERT on this feed (empty content;
+every row SECONDARY). FUSE: crowded out by the 28-source bundle cap (non-canonical old rows), confirm read with Ops.
+Old rows are by design, banded STALE. **HELD by this seat:** 2 of 5 patterns ("trading halt", "resumes trading") are
+untested and match real catalysts (news-pending, delisting, "resumes after FDA approval"); asked Research to ship only
+the observed circuit-breaker / "stock now up|down" shapes, pin recall cases, re-gate at 163. Then to him via Ops.
 
 **✅ 10-SECOND CAPTURE PROVEN ON A TRADING DAY (Ops manual read ~14:0xZ):** 09-28 trade_buckets 43,629 rows, 353
 symbols, 04:00:00–09:58:10 ET, 3,422,781 trades; tradeCapture RECORDING, 1,260,210 written, 0 discarded; control
