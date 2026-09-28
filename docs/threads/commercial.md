@@ -68,26 +68,58 @@ his, and it is an open question rather than a lean.
 
 ---
 
-## LIVE STATE — as of 2026-09-25T11:38Z (re-verified; last substantive update 2026-09-21T09:38Z)
+## LIVE STATE — as of 2026-09-28T15:35Z
 
 **If anything above disagrees with this section, this section is right and the
 section above is stale.** This is a snapshot of now, not a diary; the diary is
 in the archive at the foot of this file.
 
-**This seat's tenure, 2026-09-21 to 2026-09-25.** A naming collision on
-2026-09-21 briefly put two sessions on the `Marketing-tmi` title and handed
-this session a conflicting Commercial/Marketing instruction; resolved the same
-day by direct exchange with the peer sessions — this session took the
-Commercial-tmi title, the prior Commercial session (`dd4f492`) retired clean
-with nothing pending on it. **No new commercial research or rulings were
-produced in this tenure.** `git log` since `dd4f492` shows no commit touching
-`docs/threads/commercial.md`, `docs/commercial/` or
-`docs/monetization-gates.md` — everything below is re-verified unchanged, not
-re-derived. Retiring now per the owner's session-hygiene rule
-(`A:\claude-infra-agent\docs\session-hygiene.md`, his rule of 2026-09-21), on
-Integration's prompt to judge context saturation, after a multi-day session
-carrying heavy cross-session traffic. Hand-off prompt:
-[`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md).
+**This seat's tenure, 2026-09-25 to 2026-09-28.** Onboarded from
+`docs/commercial-opening-prompt.md`, the prior tenure's hand-off (that prompt
+is now stale and superseded by this one). **A genuinely heavy tenure, by
+volume and by density of cross-session coordination** — ten dated documents
+delivered or corrected, a five-stage day-boundary correction chain resolved by
+his own direct final ruling, and a full four-seat design (this seat, Ops,
+Design, Web) assembled, corrected twice, and closed. Retiring now on the
+owner's own word, confirming this seat's judgement that it had reached
+saturation — session-hygiene rule
+(`A:\claude-infra-agent\docs\session-hygiene.md`). Hand-off prompt for the
+successor: [`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md)
+(overwritten with this tenure's hand-off; the prior one is in git history).
+
+**What this tenure actually got wrong, named as mechanisms because a
+successor who knows the shape catches it faster than one who doesn't:**
+
+- **Endorsed a peer's recommendation without checking its premise twice** —
+  twice. Once on the day-pass boundary (endorsed Web's "define by the clock"
+  recommendation without registering that his own later ruling overruled it),
+  and once on the newswire case (asserted "Warrior Trading is built on
+  TradingView, therefore closed" from TradingView's own pages alone, without
+  ever checking Warrior Trading's own published statement about its Scanner
+  specifically — Integration caught both). **The shape both times: citing
+  where a peer's or my own earlier claim CAME FROM is not the same as
+  verifying what it actually ESTABLISHES.**
+- **Stated an unmeasured number as a specific measurement, twice, in the same
+  document** (the newswire coverage landscape): a 44-second desk-internal gap
+  described as a distance from "Ops's query window" that was never involved,
+  and a Benzinga-vs-wire latency claimed with no source anywhere establishing
+  it — `research.md` itself says explicitly that latency was never measured.
+  **Both were caught on a second, later re-read, not the first — a real gap
+  between when a number reads clean and when it's actually checked against
+  its cited source line-by-line.**
+- **Wrote a ranking table cell that said more than the prose above it
+  supported**, crediting a marketing claim ("1,000+ sources") as if it were
+  closer to confirmed than it was. **The generalisable lesson across all of
+  these: a document's summary artefacts — a headline, a table cell, a
+  register line — decay independently of the prose that was actually
+  corrected, and need their own explicit pass, every time, not an assumption
+  that fixing the prose fixed everything reading from it.**
+
+**None of these reached him wrong.** Integration's review caught all of them
+before anything was sent, in every case. That is the process working as
+designed, not a near-miss — but the density of catches in this tenure,
+against a session running for days with heavy cross-thread traffic, is itself
+the signal that closed this tenure rather than a single incident.
 
 ### What this seat has delivered — dated documents, unchanged since landing
 
