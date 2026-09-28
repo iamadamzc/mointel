@@ -147,7 +147,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 
 ### His rulings this seat holds (verbatim in the documents; one line each here)
 
-- **Name:** TMI Trader · True Move Intelligence · tmitrader.com (registered by Ops 2026-09-08, $16/yr, Route 53) · *"Intelligence on what's moving."* Trademark search waived (*"2, waive."*). **"do not want warrior mentioned"** (2026-09-16) — no competitor named in public copy.
+- **Name:** **TMI · The Momentum Intelligence Trading Desk** since 2026-09-18 (*"shifting so TMI stands for The Momentum Intelligence and trading desk is part"*, naming doc top; on the site in `app/page.tsx`, `layout.tsx`, the legal pages and sign-in — re-checked 2026-09-28); it superseded ~~TMI Trader · True Move Intelligence~~ · tmitrader.com (registered by Ops 2026-09-08, $16/yr, Route 53) · *"Intelligence on what's moving."* Trademark search waived (*"2, waive."*). **"do not want warrior mentioned"** (2026-09-16) — no competitor named in public copy.
 - **Feed licence:** *"accept exposure … my call. the moment we have something moving, i'll sign up."* (2026-09-08). Trigger undefined; no seat invents one. Risk conversation deferred, Integration's to reopen before the page goes live.
 - **Alpaca plan:** Algo Trader Plus, his word (2026-09-07).
 - **Session report:** *"the report is for monetization, coaching is just for me."* Apple sign-in: *"phase 2."* Google consent screen: he meant OAuth consent verification.
@@ -173,7 +173,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 
 | item | owner | waits on |
 | --- | --- | --- |
-| Billing, onboarding, terms of sale and support — scoped 2026-09-26, complete (`2026-09-26-billing-onboarding-support-scope.md`), with Web's flow and Ops's infra both landed and linked | him | seven items in that document's NEEDS YOU block, led by Gate 1 ("what is sold") — unruled and assumed by two threads independently |
+| Billing, onboarding, terms of sale and support — scoped 2026-09-26, complete (`2026-09-26-billing-onboarding-support-scope.md`), with Web's flow and Ops's infra both landed and linked | him | that document's NEEDS YOU block, **re-read against later rulings before any of it is put to him again** — its lead item, Gate 1 ("what is sold"), was answered 2026-09-27 (day pass) and billing cadence/shape/boundary 2026-09-27/28 (rulings below); which of the seven remain open is unverified as of 2026-09-28 (Commercial-tmi successor) |
 | The vendor decision (Massive Business $2,499 no spread vs Databento Plus $1,500 unstated-delay volume) | him | the undefined "something moving" trigger |
 | The pre-launch exposure conversation | Integration | the page going live (`c7ada4f` trigger) |
 | Session-report pricing and packaging | this seat | him; the report cannot narrate structure honestly until Phase C (filing-derived float) replaces the Sheet float |
