@@ -885,6 +885,12 @@ error                                                      TYPE                 
 
 ## LIVE STATE — AS OF 2026-09-28 ~01:55 UTC, AT THE THIRTEENTH SEAT'S HAND-OFF
 
+> **⚠️ CLOCK CORRECTION, fourteenth seat, 2026-09-28 01:10Z (from `zoneinfo` and `git log %cI`): this snapshot's
+> UTC times written by the thirteenth run ~1 HOUR AHEAD.** *This section was committed at `01b2a2f` 01:05:25Z, so
+> "~01:55 UTC" cannot be its time; the fresh Research seat's "~01:50Z" was before 01:03Z (its last activity). Most
+> likely EDT converted with +5. **Times in this snapshot that the thirteenth derived itself are suspect by an hour;
+> times quoted from Ops's own reading (e.g. the 23:17:45Z restart) are Ops's and were re-asked 01:09Z.***
+
 *A SNAPSHOT, not a diary. Everything dated above this section is a FACT; the thirteenth seat's evening diary is
 archived below, marked. **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
 

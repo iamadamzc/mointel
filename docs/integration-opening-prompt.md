@@ -4,6 +4,9 @@
 repeated an error class. Built on the twelfth's prompt; every sentence was true when written, and **the date is in
 the sentence wherever a state is stated, because a statement of state with no date reads as current forever.***
 
+> **⚠️ Fourteenth seat, 2026-09-28 01:10Z: this prompt's own UTC times run ~1 hour ahead** — it says "~02:00 UTC"
+> and was committed at 01:06Z (`590fc47`). The false line it predicted for itself; see the note under LIVE STATE.
+
 **RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. FIVE prompts in a row have carried a false
 line and this one probably does too.** *The twelfth's own errors were all one shape: **a state asserted from a
 listing, a classification taken from a colleague's sentence, a fact about HIM inferred from a style label.**
