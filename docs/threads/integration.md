@@ -951,7 +951,8 @@ MORE NEWS SOURCES    Commercial scoping the landscape (ACCESS Newswire, what War
                      Research adds no second adapter. Alpaca/Benzinga stays the only source, personal-use terms.
 PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the market worker; (2) Ops bootstrap band
                      = record band, trigger cea5ed2 on the MARKET WORKER (his next direct restart); (3) ceiling
-                     20->50 + restart; (4) server ranks inside a requested range -- Research, STANDALONE, due 2026-10-05
+                     20->50 + restart; (4) server ranks inside a requested range -- BUILT af15a13 2026-09-29 ~01:10Z; enumerated to Ops onto dca4a04
+                     (replayed: merge-tree clean, 164 files), web tier only, CONDITIONAL ON HIS YES; was due 2026-10-05
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
