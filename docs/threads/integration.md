@@ -947,7 +947,13 @@ ask Ops for `/proc/<pid>/cwd`.*
 
 ### PRODUCTION
 ```
-last CONFIRMED   web/research/assess 2256c63; market worker 3b78b8c pid 1347535; NR 0 (Ops /proc, its stated 03:44Z read)
+✅ CONFIRMED     121f97c LIVE on web/research/assess at 2026-09-29T04:13:56Z (Ops /proc: pids 1458225/1458274/1458350,
+                 NR 0; down 3 s over SSM; prune removed 7820810, kept 3b78b8c in use; schema 27/27; health ok).
+                 Market worker UNTOUCHED: 3b78b8c pid 1347535. Snapshot (b) on the v1 file: cold 11.7, warm median
+                 6.8 / max 11.8 ms vs (a) 6.8 max -> +5.0 ms, inside the 20 ms budget. Received AFTER the hand-off
+                 prompt was written; the prompt's first task is therefore already answered -- re-read /proc anyway.
+                 Design was sent 121f97c for the columns re-pick by the retiring seat.
+superseded       web/research/assess 2256c63; market worker 3b78b8c pid 1347535; NR 0 (Ops /proc, its stated 03:44Z read)
 IN FLIGHT        121f97c (tag research/restart-set-on-2256c63) LAUNCHED over Session Manager (host mointel-ssm),
                  RESTART_MARKET=no, his yes + "deploy over Session Manager" given in OPS'S session (per Ops; NOT read at
                  his turn by this seat). Gated by Ops 168/168 files, 2,558 tests. At hand-off: "building on the box,
