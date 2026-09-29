@@ -945,7 +945,10 @@ halt filter               configured, UNPROVEN. Proof lives in research_jobs.col
 **THE RANGE SET: tag `design/range-set-on-2256c63` → `520142c`, cut from production by Design.** Replayed by this
 seat: 10 commits over 2256c63 with `-x` provenance (8d8e50c d2c2582 5e8b13c[re-cut] 28a8cb1 dd6019e 56b6fd4 7ed88ed
 da1e06b bae9c43 e17fc36), patch-ids match 9/10, 22 files, no worker/engine change, **167 test files pre-registered.**
-Enumerated to Ops. **Approvable only when (1) Ops's LOADED range-read measurement passes — warm max < 20 ms for EVERY
+Enumerated to Ops. **⚠️ 16th seat, 2026-09-29: the $50 capture widening grows the rows `readRangeBoard` SCANS for
+every range (no price/rvol index; repo.ts:1081, db.ts:255/:896 at 520142c) -- so a PRE-restart pass gates NO case,
+a pre-restart fail is conclusive, and the yes waits for a POST-restart reading of all three (ops.md end, `d0e4595`),
+unless EXPLAIN QUERY PLAN shows a range-bounded scan.** Approvable only when (1) Ops's LOADED range-read measurement passes — warm max < 20 ms for EVERY
 range ($0.25–$50, $1–$20, a narrow one), both boards, at ~08:30 and ~11:05 ET 09-29 — and (2) he says yes in Ops's
 session.** Idle read failed: $1–$20 day max 25.7 ms. Fail → index `ticker_session(trading_date, rvol DESC)` + AH, a
 schema bump behind the backup route, and the enumeration is void. Visible effect: board opens $1–$20 with a range
