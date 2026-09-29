@@ -64,7 +64,11 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
    the pre-registered pass bar (`43c1b7c`): six seeded defect classes struck 6/6,
    zero false passes, AND a control that strikes nothing on uncorrupted reports.
    Still unbuilt after that: `GET /api/reports` and the range config (yours), and
-   the 20:05 checkpoint (Ops's). Set-range reports also depend on Ops storing
+   the 20:05 checkpoint (Ops's). **Presentation, his ruling (`8cd59d1e`,
+   2026-09-29T23:51:49Z), Design's to build:** *"it can/should be its own page …
+   im fine with the location of the link, but it needs to open up a larger window
+   like when you click on a specific ticker"*: the briefing line stays as the
+   link, and the side reading panel (`307e42d`) is rejected. Set-range reports also depend on Ops storing
    each range's own top N ("(a)" in LIVE STATE). **SPEND AUTHORITY, read at his
    turn by this seat:** transcript `907420a6`, 2026-09-27T23:13:38Z, *"1 set
    ranges, 2 yes, 3 yes"*. The "3" answered *"Approve the build? Yes: Research
