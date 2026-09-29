@@ -15,6 +15,7 @@ import {
   knownSupplyShares,
   resolveRisk,
 } from '@/lib/dashboard/risk';
+import { rankChangeReading } from '@/lib/dashboard/view';
 import { etTimestamp, relativeAge, resolveWhy } from '@/lib/dashboard/why';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -518,47 +519,24 @@ describe('resolveWhy', () => {
  * making a claim.
  */
 describe('the drawer does not print a rank change it cannot measure', () => {
-  const read = () =>
-    import('node:fs').then((fs) => fs.promises.readFile('components/TickerDrawer.tsx', 'utf8'));
-
-  it('renders an absence for zero rather than the number', async () => {
-    const source = await read();
-    const at = source.indexOf('label="Rank Change"');
-    expect(at).toBeGreaterThan(-1);
-    const block = source.slice(at, at + 3400);
-
-    /*
-     * Sliced to the VALUE expression, not the whole field.
-     *
-     * The first version asserted `rvolRankChange === 0` appeared anywhere in
-     * the block -- and it appears TWICE, once in the value ternary and once in
-     * the title. Deleting the value branch left the title's copy and the test
-     * passed. A mutation test caught it; the assertion could not.
-     */
-    const vStart = block.indexOf('value={');
-    const vEnd = block.indexOf('title=', vStart);
-    expect(vStart).toBeGreaterThan(-1);
-    expect(vEnd).toBeGreaterThan(vStart);
-    const value = block.slice(vStart, vEnd);
-
-    expect(value).toContain('demand.rvolRankChange === null');
-    expect(value).toContain('demand.rvolRankChange === 0');
-    expect(value).toContain("'—'");
+  /*
+   * BEHAVIOUR, NOT SOURCE. These three read the drawer's inline ternary until
+   * the reading moved into `rankChangeReading` (the custom-range fix: a null
+   * there is an OMITTED ordinal, not a new name). A source match would have kept
+   * passing on a comment that still says "previous engine tick" after the logic
+   * left the file. The custom-range half is in `rankChange.test.ts`.
+   */
+  it('renders an absence for zero rather than the number', () => {
+    expect(rankChangeReading(0, false).value).toBe('—');
   });
 
   /*
    * `New` is a REAL state -- the name was not in the previous ranking at all --
    * and must not be collapsed into the artifact case.
    */
-  it('keeps New distinct from the suppressed zero', async () => {
-    const source = await read();
-    const at = source.indexOf('label="Rank Change"');
-    const block = source.slice(at, at + 3400);
-    const nullBranch = block.indexOf('demand.rvolRankChange === null');
-    const zeroBranch = block.indexOf('demand.rvolRankChange === 0');
-    expect(nullBranch).toBeGreaterThan(-1);
-    expect(zeroBranch).toBeGreaterThan(nullBranch);
-    expect(block).toContain("'New'");
+  it('keeps New distinct from the suppressed zero', () => {
+    expect(rankChangeReading(null, false).value).toBe('New');
+    expect(rankChangeReading(0, false).value).not.toBe('New');
   });
 
   /*
@@ -566,11 +544,8 @@ describe('the drawer does not print a rank change it cannot measure', () => {
    * this says the interval is the reason and that it is NOT a reading of no
    * movement.
    */
-  it('says why it is absent rather than only that it is', async () => {
-    const source = await read();
-    const at = source.indexOf('label="Rank Change"');
-    const block = source.slice(at, at + 3400);
-    expect(block).toMatch(/title=/);
-    expect(block).toMatch(/previous engine tick/i);
+  it('says why it is absent rather than only that it is', () => {
+    expect(rankChangeReading(0, false).title).toMatch(/previous engine tick/i);
+    expect(rankChangeReading(0, false).title).toMatch(/not a reading that this name has not moved/i);
   });
 });

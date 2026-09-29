@@ -31,6 +31,7 @@ import {
   footnoteCloseSentence,
 } from '@/lib/dashboard/sessionsView';
 import type { DemandState } from '@/lib/market/types';
+import { rankChangeReading } from '@/lib/dashboard/view';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import {
@@ -48,6 +49,12 @@ interface TickerDrawerProps {
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;
+  /**
+   * The board was re-ranked inside the viewer's price range
+   * (`DiscoveryState.ordinalsOmitted`), so stored rank movement is omitted and a
+   * null is not "new". See `rankChangeReading`.
+   */
+  ranksOmitted: boolean;
 }
 
 export function TickerDrawer({
@@ -56,6 +63,7 @@ export function TickerDrawer({
   focused,
   onToggleFocus,
   onClose,
+  ranksOmitted,
 }: TickerDrawerProps) {
   const feedBanner = useFeedBanner();
   const panelRef = useRef<HTMLElement | null>(null);
@@ -222,7 +230,7 @@ export function TickerDrawer({
           ) : null}
 
           <Collapsible title={telemetryTitle(feedBanner)}>
-            <Demand row={row} />
+            <Demand row={row} ranksOmitted={ranksOmitted} />
           </Collapsible>
         </div>
       </aside>
@@ -405,7 +413,7 @@ function DrawerHeader({
  * Live market telemetry from Alpaca. Deliberately separate from the research
  * sections below: demand detected is not structural analysis.
  */
-function Demand({ row }: { row: DeskRow | null }) {
+function Demand({ row, ranksOmitted }: { row: DeskRow | null; ranksOmitted: boolean }) {
   const demand = row?.demand ?? null;
 
   if (!demand) {
@@ -418,6 +426,8 @@ function Demand({ row }: { row: DeskRow | null }) {
       </Section>
     );
   }
+
+  const rankChange = rankChangeReading(demand.rvolRankChange, ranksOmitted);
 
   return (
     <Section title={`Demand · Alpaca ${demand.feed.toUpperCase()}`}>
@@ -505,20 +515,8 @@ function Demand({ row }: { row: DeskRow | null }) {
            * TOGETHER** — this suppression AND the board's falsiness gate, which
            * would also swallow a legitimate 0.
            */
-          value={
-            demand.rvolRankChange === null
-              ? 'New'
-              : demand.rvolRankChange === 0
-                ? '—'
-                : demand.rvolRankChange > 0
-                  ? `+${demand.rvolRankChange}`
-                  : String(demand.rvolRankChange)
-          }
-          title={
-            demand.rvolRankChange === 0
-              ? 'Not shown: rank change is measured since the previous engine tick, an interval over which it is always zero. Not a reading that this name has not moved.'
-              : undefined
-          }
+          value={rankChange.value}
+          title={rankChange.title}
           numeric
         />
         <Field
