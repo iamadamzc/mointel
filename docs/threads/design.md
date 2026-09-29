@@ -67,6 +67,15 @@ Integration, awaiting Ops's post-landing /proc read.
 > Integration was blocked by the app's cross-session limit (22:24 ET). Integration:
 > this paragraph is the handover.**
 
+**Report contract `13975c9` (Research), REVIEWED AND APPROVED by Design.** The
+six missed-cause sentences match Design's words, keyed on `kind`. The one
+deviation is right: the time is the CAUSE's checkpoint time (`09:25 ET`), not
+the slot's (`09:27`). **Keep "ET"**, since every printed time carries its zone
+(§10). No component test is needed for `covers` / `not in your range`: with
+`ReportBody`'s `range` prop removed, reading the config range instead of
+`report.range` no longer compiles, so the type system is the second defence.
+*Reply to Research pending the app's cross-session pause.*
+
 **COMMITTED, NOT SHIPPED — on `main`, inert until something else lands:**
 
     307e42d, 6eb1362   session briefings: the line + reading panel
