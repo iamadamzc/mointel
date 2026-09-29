@@ -12255,3 +12255,11 @@ as if it were a constraint; nothing was blocking. Built tonight, all inert until
 9508fb9 trades.db v2; 731179b CAPTURE_PRICE_* + captureBand + bootstrapBand. $50 replay projection
 (live store): seed 9,378 -> 10,230; replay +~10% rows; restart +~10s on a weekday. One restart stands.
 Remaining for it: Research's engine change (prices + intervals + web read), then ship, then his time.
+
+## HAND-OFF 2026-09-29 ~03:40Z (his "time to handoff?")
+
+Production re-read at 03:35Z and written into docs/ops-opening-prompt.md, which is the successor's
+entry point and supersedes the 2026-09-25 version. Last commit of this seat: 61e2f77 (preflight
+weekend fix, NOT yet shipped -- it rides the next tooling ship). Nothing is in flight on the box:
+no deploy unit, no pending cancel, no background measurement. Open items and their triggers are in
+the prompt, in the order they bite.
