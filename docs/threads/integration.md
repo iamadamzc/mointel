@@ -1016,6 +1016,12 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      ~02:15Z: Design's 7ed88ed ("—" instead of "New") CROSSED the ruling -> superseded; removal requested.
                      Review route follows the board (Design) -> Research one-liner, pending. da1e06b (F-12 shell-command copy,
                      audit authority) RIDES the release. No board rank-change arrow exists (Design, confirmed).
+                     e17fc36 = drawer REMOVED (reverts 7ed88ed inside; enumerate both or e17fc36's cone, never 7ed88ed alone).
+                     bae9c43 = review route follows the board. ~02:30Z REPLAY onto 2256c63 (scratch worktree, removed):
+                     8d8e50c, d2c2582 clean; 5e8b13c CONFLICTS in DashboardShell.tsx -- the control was built ON the
+                     briefings (307e42d, 6eb1362), not in prod. Design to choose: carry briefings (only if invisible
+                     without /api/reports, and they read a contract Research is about to change) or a production-based
+                     variant of the control (Integration leans this way). No enumeration until it re-replays clean.
                      [+ review-route one-liner if Design says so]. Gates: Ops < 20 ms under load; his deploy yes.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
