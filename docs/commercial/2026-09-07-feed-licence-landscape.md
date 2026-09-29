@@ -975,6 +975,65 @@ Ordered the way the gates map is ordered — by what each answer would waste.
 
 ---
 
+## 9b. ADDENDUM 2026-09-29 — HISTORICAL BARS FOR THE "MARK YOUR CHART" RESISTANCE FEATURE
+
+*Integration's costing question (19th session), against Research's measured volumes
+(695e9e6, `docs/threads/research.md`): ~34–73 new board names/day needing a 30-day
+15-minute split-adjusted bar fetch, ~17% of names also needing a multi-symbol daily
+fetch 6–12+ months back, and basis re-fetches for the ~47% of rows with an
+unestablished split basis. Re-read at the source, not carried from §1/§3 above,
+because those are 22 days old.*
+
+**1. Depth — covered, on either plan, no restriction on Algo Trader Plus.**
+`docs.alpaca.markets/us/docs/about-market-data-api`, re-read 2026-09-29 ("Updated 3
+months ago" per the page itself): **"Historical data timeframe: Since 2016"** on both
+Basic and Algo Trader Plus; **"Historical data limitation: no restriction"** on Algo
+Trader Plus (Basic excludes only the latest 15 minutes). 30 days of 15-minute bars
+and 6–12 months of daily bars are both trivially inside "since 2016." **No
+per-request or overage line exists anywhere on the plan pages or in the Terms — the
+$99/mo is flat.**
+
+**2. Rate limits — the daily volumes named are trivially inside either published
+number, and the two-number discrepancy this seat flagged 2026-09-07 still stands
+22 days later, unresolved.** Same page: **"Historical API calls: 10,000/min"** on
+Algo Trader Plus (200/min on Basic). The marketing page (`alpaca.markets/data`,
+re-read 2026-09-29) still says **"Unlimited API calls"** for the same plan, and
+still says **"7+ years"** historical where the docs page says "Since 2016" (10
+years) — the same pair of unreconciled numbers as §1's original finding, from a
+different page pair, now confirmed still open. **Either number clears Research's
+volumes by two to three orders of magnitude** (tens of requests a day against
+10,000 a minute), so which number is correct does not change the answer to this
+question, though it remains unresolved as a fact about the account.
+
+**3. Terms — historical bars are the same "Content," the same clause, no
+additional or different exposure. Confirmed by reading the governing PDF directly,
+not inferring from the plan pages.** `files.alpaca.markets/disclosures/library/
+TermsAndConditions.pdf`, downloaded and read in full 2026-09-29 (22,325 characters
+extracted; the word "historical" does not appear anywhere in the document — the
+restriction is written with no carve-out for it to attach to). **"Content" is
+defined once, broadly, and market data is one item in that single definition:**
+*"market data such as quotations for securities transactions and/or last sale
+information for completed securities transactions reported in accordance with
+federal securities regulations"* — "last sale information for completed
+transactions" is historical bar data by its own wording, not a separate category.
+The personal/non-commercial clause (§1 above, *"Content is provided exclusively for
+personal and noncommercial access and use"*) governs "Content" as defined, with no
+second clause anywhere for a historical or delayed subset. The only real-time/delay
+language in the whole document is a liability disclaimer (*"any price quotes may be
+delayed 20 minutes or longer"*), not a licensing distinction. **So a historical bar
+fetch for the resistance-levels feature sits on the identical clause already ruled
+on for the live tape and the SIP redistribution question — not a new or lesser
+exposure, and not one this document previously priced separately.**
+
+**What this does not answer.** Whether "mark your chart" is itself a redistribution
+event under Gate 0 is the same question §1 already maps for every other board
+feature — a historical price rendered to a second viewer is still Content shown to
+someone other than the subscriber. Nothing here changes that line or reopens it;
+this addendum answers only whether historical bars cost anything extra or carry
+different terms than what is already ruled. They do not.
+
+---
+
 ## 10. SOURCES
 
 Alpaca: alpaca.markets/data · docs.alpaca.markets/us/docs/about-market-data-api
