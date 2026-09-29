@@ -1031,6 +1031,8 @@ ROUTED (after    (2)(a) FIRST: Ops copies ONE consistent post-close market.db (n
 the memo)        07-10 ET, no deploy unit, not inside the 20:15 motion; Research profiles LOCALLY, ratios only. THEN
                  coalesce may be BUILT; its SHIP goes to HIM as a freshness trade (<= 0.5 s), stated honestly: no
                  queueing shown at rest (the 2.4-8.9 s was during probes; one viewer + poll fix cannot self-queue).
+                 Ops: the consistent copy WRITES a multi-GB file on the box and moves data to this PC = a production write
+                 + data move -> Ops put it to HIM in its session (after 16:05 ET, before 20:15 if yes). Correct call.
 FOLLOW-UPS       Design's "board not updating" state and useDashboard's same abort pattern: recorded by Design, NOT put
 (not approved)   to him yet.
 RULE             No heavy /api/market probes 07:00-10:00 ET (Ops + Design adopted).
