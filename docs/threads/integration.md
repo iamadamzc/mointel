@@ -960,6 +960,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      = deadAtRank present; ordinalsOmitted removes it -> empty graveyard on any viewer range). RANGE SET SHIPS
                      ONCE: af15a13 + 8d8e50c + graveyard fix (Research+Design) + 5e8b13c (control) + SQL-bounded read
                      + no-param default -> $1-$20. Enumerated by this seat when all land.
+                     ~01:20Z: the withdrawal CROSSED his "ship the range ranking"; Ops launched 2256c63 at 21:18:56 ET, cancel
+                     (systemctl stop) refused by Ops's permission control, put to him. Integration's view: let it land (inert).
+                     If it lands, 2256c63 is the base for the range set and af15a13 drops out of it. Await Ops's /proc.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
