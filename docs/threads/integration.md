@@ -959,8 +959,26 @@ RESIZABLE COLUMNS    scoped (docs/Design/resizable-columns-scope.md); his three 
 DAILY BILLING        + payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
 SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, a window).
-CLOSED               more news sources (his "no to both"); drawer rank change (removed); Rank held engine work (not wanted).
+BENZINGA COST        ⚠️ CORRECTS the CLOSED line below (16th seat, 2026-09-29 ~02:55Z, read at his turns in Research's
+                     session): 02:12:22Z "do the benzinga research in the meantime"; 02:13:46Z "the benizinga search
+                     is licensing cost foruse"; 02:20:59Z "yes draft the email". Draft in
+                     docs/research/benzinga-licence-cost-2026-09-29.md §4 (a16a318). SENDING IT IS HIS. No seat sends.
+CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA COST: he reopened the cost question after
+                     "no to both"; Warrior Trading stays closed. Drawer rank change (removed); Rank held engine work
+                     (not wanted).
 ```
+
+**16th seat, 2026-09-29 ~02:55Z — two reconciliations on arrival:**
+- **Research reported the Now column as "counts-only interim accepted (3377607)".** *Superseded 17 min later by his
+  02:32:20Z refusal (Design `1752b74`: price per bucket = last trade price, plus intervals, one restart, nothing of
+  the cell ships before it). research.md:166 still ends "Waiting on Design".* Sent to Research with the turn and the
+  spec pointer; asked it to strike the line in place and check its opening prompt.
+- **Ops's gate at `520142c` went RED on one test (~02:40Z)**, collection 167 = the pre-registered count, so not
+  under-collection. Design had reported 167/2544 green. Cause not yet known to this seat; the enumeration stands
+  conditional as before and is NOT approvable while red.
+- *The opening prompt's header says "Rewritten ~02:45 UTC"; its commit `5f4fbde` is 02:36:22Z.* A time estimated
+  instead of read, the fifteenth's own error 2, in the prompt that names it. Harmless; recorded because the prompt
+  predicts it carries a false line.
 
 ### OPEN WATCHES
 
