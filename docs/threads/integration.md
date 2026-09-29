@@ -1303,6 +1303,45 @@ caught all three is the 17th's: open the artefact (git grep, the journal, list_s
 The seat that knew the rule still broke it on a cheap, low-stakes fact -- low stakes is exactly when the check is
 skipped.*
 
+## THE NINETEENTH SEAT'S RUNNING NOTES (opened 2026-09-29T22:08:50Z, `local_962d5920`, Opus 5.5)
+
+*Newer than LIVE STATE above where they disagree.*
+```
+OLD CHAT         local_92208da3 renamed Integration-tmi-retired + archived (get_session 22:1xZ, after a first list at
+                 22:09Z still showed it live). Nothing to ask him.
+STORE COPY       LANDED 18:06 ET (Ops 7418e75): data/market-prod-2026-09-29.db, 4,023,296,000 B (ls read here), sha256
+                 885fd7fd...3aa7 = box, box copy deleted. Ops's notice is in Research's transcript at 22:08:12Z. Nothing
+                 to relay.
+GZIP BUILT       7f607a2 on main; stacked 1b5ead6 (tag ops/gzip-on-803008b -> tag obj c45a373 -> ^{commit} 1b5ead6).
+                 REPLAYED here: parent 803008b; rev-list 803008b..1b5ead6 = 1; patch-id c102667c == 7f607a2; diff =
+                 deploy/aws/nginx-tls.conf +14 only; test files 175 at both; fa61410 not in cone; $TEMP/gate-1b5ead6.log
+                 ALL GREEN 175/175 incl. lint, exit 0.
+                 HIS TURNS (Ops a36b4a67, read): 15:37:19Z "yes to all" answered Ops's 15:23:54Z block, item 3 "Compress
+                 the board's data? ... a web-server reload, with no restarts"; 21:11:25Z "edit approved" answered "approve
+                 the edit when I retry it".
+                 THE PATH IS NOT A RELOAD: 1b5ead6:deploy/aws/deploy.sh:171 stops and :221 starts every runtime unit
+                 (web/research/assess, ~2 s), :228 reloads nginx. His yes was given on "no restarts"; restarts are outside
+                 this seat's standing approval -> HELD (Ops told 22:1xZ, retracting a window sent minutes earlier) and put
+                 to him: a normal release at an idle hour, after tonight's 22:08 ET check.
+                 (c) SNAPSHOT UNAFFECTED either way: scripts/ops/snapshot-latency.sh:9 hits 127.0.0.1:3000, behind nginx.
+                 CONE RULE once live: every later ship has 1b5ead6 (or its patch) as ancestor (deploy.sh re-renders
+                 nginx-tls.conf each release).
+LEFT-AND-UP      Research 5da9aad (read): v1 cluster rule FAILS as registered on 4 charts; recovers ~13/14 of his lines
+                 where data exists, draws ~2x as many; cluster width not constant (3c collapses SLXN; MSGY wants ~2%).
+                 Minute store = 15 sessions (09-09..09-29), not 20. BIYA: daily_bars locate works; 2 of his 4 lines need
+                 historical 15m (Alpaca adjustment=split) = uncosted fetch. Open for him (Research): do today's own run
+                 tops count on BIYA?
+```
+**THE NINETEENTH SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+1 sent Ops a ship WINDOW for gzip on "his yes" whose   a ruling's scope read from a       no       self, next
+  question I had not opened ("gzip was item 3, as the  summary (the 17th's class; the              message
+  18th read it"). Opened it next: the yes was for "a   prompt's own "READING HIS
+  reload, with no restarts"; deploy.sh restarts the    RULING'S QUESTION")
+  runtime units. Retracted to Ops before any action.
+```
+
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
 *A SNAPSHOT. **This seat estimated clock times FIVE times (ledger above), so every time below is a transcript
