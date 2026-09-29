@@ -1143,6 +1143,12 @@ ABANDONED BUILDS Ops scoped; VERIFIED here at 0342e7d: app/api/market/route.ts c
                  (2) COALESCE (<=500 ms memo on extraSymbols+range) -> Research, propose only. (1) ENTRY CHECK -> Design,
                  only after Ops's test (after 10:00 ET) shows request.signal.aborted true for a queued request. Client fix
                  ships ALONE (already put to him); coalesce = a later separate decision; gzip separately.
+TRANSPORT HALF  Ops, from repo nginx conf + Next 16.3.1 source (not behaviour): proxy_ignore_client_abort unset (off),
+                 keepalive 16, http 1.1 -> nginx should close upstream on 499; Next next-request.js:56 wires request.signal
+                 to response close (pre-aborted if already closed). CATCH: sync build blocks the loop, so an entry check
+                 catches SOME queued-abandoned requests, not all. Coalesce ranks first. Behaviour test after 10:00 ET:
+                 nginx half (499 + ss) by Ops, no code; the build-completion half needs a route counter = code, DEFERRED
+                 until coalesce is proposed.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
