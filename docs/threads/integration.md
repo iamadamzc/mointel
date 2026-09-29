@@ -961,7 +961,14 @@ result: moving a gate after reading it is the one thing a gate exists to prevent
 on (trading_date, rvol DESC, symbol) removes the sort but not the time (6.1 -> 7.4 ms median in memory); the tail is
 file reads. **Route: Research (owns the query) proposes a fix measured against the SAME gate — candidates: a covering
 index, or a short web-tier cache of the range result — pre-registered as `max < 20 ms over 1 cold + 20 warm, every
-range incl. $0.25-$50, both boards, on the post-restart store`.** Design re-cuts only onto that fix. The 08:30/11:05
+range incl. $0.25-$50, both boards, on the post-restart store`.** Design re-cuts only onto that fix.
+**RESEARCH'S FIX (2026-09-29, sent to Ops): a COVERING PARTIAL INDEX per board** -- day (trading_date, rvol DESC,
+symbol, price, latched, qualified_price) WHERE price/rvol NOT NULL; evening the same on ah_participation + AH latch
+columns. Plan becomes COVERING INDEX, no temp B-tree. Scratch-copy ratio: day ~3x, evening ~2x; NOT a gate reading
+(Research said so). **SECOND CONDITION, pre-registered by this seat before any reading: the WRITE side.** rvol and
+ah_participation move on nearly every worker upsert -> B-tree relocation on the flush hot path. Ships only if (1) the
+read gate passes on the box AND (2) added flush cost <= 10% of median flush and max flush < the 1 s interval. A
+market.db bump: ONE migration with the latch/high_res columns, behind the backup route. The 08:30/11:05
 reads STILL RUN (N = 1 cold + 20 warm, pre-registered now) as the loaded baseline for the fix; they cannot un-void.
 *If a seat thinks the BUDGET itself is wrong, that is an argument with its own measurement (viewer refresh rate x
 cost on the box), made openly — never a quiet re-threshold.* ⚠️ 16th seat, 2026-09-29: the $50 capture widening grows the rows `readRangeBoard` SCANS for
