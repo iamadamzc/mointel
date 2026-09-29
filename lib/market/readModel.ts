@@ -46,12 +46,13 @@ import {
   readDeskEvents,
   loadMinuteBars,
   readDemandStates,
-  readRangeCandidates,
+  readIneligibleSymbols,
+  readRangeBoard,
   readFeedHealth,
   readTopMovers,
 } from './store/repo';
-import { addBoardMovers, moversLogGate, moversLogLine, selectMovers } from './boardMovers';
-import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
+import { addBoardMovers, moversLogGate, moversLogLine } from './boardMovers';
+import { rankLists, resolveRequestedRange, sameRange, scrubBandOrdinals } from './rangeRank';
 import { attachNowBuckets } from './nowBuckets';
 import {
   loadFeedIntervals,
@@ -121,6 +122,24 @@ function resetConnection(): void {
     /* already gone */
   }
   globalStore.__momentumMarketDb = null;
+}
+
+/**
+ * The universe's ineligible symbols, held for a minute. The range read needs
+ * them on every poll; the universe changes about daily; re-reading per request
+ * cost ~3 ms of Ops's 20 ms budget (measured on the local store copy).
+ */
+const INELIGIBLE_TTL_MS = 60_000;
+let ineligibleCache: { db: MarketDatabase; at: number; set: Set<string> } | null = null;
+
+function ineligibleSymbols(db: MarketDatabase): Set<string> {
+  const now = Date.now();
+  if (ineligibleCache && ineligibleCache.db === db && now - ineligibleCache.at < INELIGIBLE_TTL_MS) {
+    return ineligibleCache.set;
+  }
+  const set = readIneligibleSymbols(db);
+  ineligibleCache = { db, at: now, set };
+  return set;
 }
 
 function offlineHealth(reason: string): MarketFeedHealth {
@@ -618,9 +637,17 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       : band;
     const inRange = !sameRange(served, band);
 
-    const rangeRanking = inRange
-      ? rankInRange(
-          readRangeCandidates(db, tradingDate, served),
+    const rangeBoard = inRange
+      ? readRangeBoard(db, tradingDate, served, {
+          limit: config.internalRank,
+          afterHours: board === 'AFTER_HOURS',
+          ineligible: ineligibleSymbols(db),
+        })
+      : null;
+    const rangeRanking = rangeBoard
+      ? rankLists(
+          rangeBoard.day,
+          rangeBoard.evening,
           readDemandStates(db, tradingDate, {
             limit: 0,
             extraSymbols: options.extraSymbols,
@@ -628,7 +655,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
           }),
           board,
           config.internalRank,
-          served,
+          rangeBoard,
         )
       : null;
 
@@ -650,25 +677,26 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
      * capture never comes through here.
      */
     const moverLimit = config.internalRank + config.boardMoversK;
-    const movers =
+    /*
+     * One read on both paths: `readTopMovers` over the SERVED range (the SQL twin of selectMovers, the same filter
+     * and order). On a viewer range the engine's band ordinals are wrong for that range, so each mover is scrubbed and
+     * carries its IN-RANGE daily rank from the range read's full order, as `rankInRange(...).all` gave it before the
+     * SQL order. Only the daily board takes movers, and its rank column reads rvolRank alone (view.ts:366-368).
+     */
+    const storedMovers =
       board !== 'DAILY_RVOL' || config.boardMoversK <= 0
         ? []
-        : rangeRanking
-          ? selectMovers(
-              rangeRanking.all,
-              served,
-              config.boardMoversMinPct,
-              config.boardMoversMinVolume,
-              moverLimit,
-            )
-          : readTopMovers(
-              db,
-              tradingDate,
-              served,
-              config.boardMoversMinPct,
-              config.boardMoversMinVolume,
-              moverLimit,
-            );
+        : readTopMovers(
+            db,
+            tradingDate,
+            served,
+            config.boardMoversMinPct,
+            config.boardMoversMinVolume,
+            moverLimit,
+          );
+    const movers = rangeBoard
+      ? storedMovers.map((state) => ({ ...scrubBandOrdinals(state), rvolRank: rangeBoard.dayRanks.get(state.ticker) ?? null }))
+      : storedMovers;
     const states = addBoardMovers(boardStates, movers, config.boardMoversK);
     // The server's mover decisions, once a minute at most (Integration 32nd, option b; see moversLogLine).
     if (board === 'DAILY_RVOL' && moversLogDue(Date.now())) console.log(moversLogLine(states));

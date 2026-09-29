@@ -486,6 +486,14 @@ export interface DemandState {
    * Both are therefore captured at the transition and then left alone.
    */
   deadAtRank?: number | null;
+  /**
+   * Whether the name held ANY rank when it died -- the graveyard's "could he
+   * have been looking at this?" (`graveyard.ts`), which it used to read off
+   * `deadAtRank` being present. A fact, not an ordinal, so it survives a viewer
+   * range where `deadAtRank` is omitted (`lib/market/rangeRank.ts`); without it
+   * the graveyard would read "nothing died" on every re-ranked board.
+   */
+  diedWhileRanked?: boolean;
   deadAtPeakTrades?: number | null;
   /**
    * Price at the death, and the field that lets the graveyard show a MISS.

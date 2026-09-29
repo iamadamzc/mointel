@@ -4,8 +4,13 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { openDatabase, setMeta } from '@/lib/market/store/db';
-import { readRangeCandidates, upsertTickerSessions } from '@/lib/market/store/repo';
-import { rankInRange, resolveRequestedRange, scrubBandOrdinals } from '@/lib/market/rangeRank';
+import {
+  readIneligibleSymbols,
+  readRangeBoard,
+  readRangeCandidates,
+  upsertTickerSessions,
+} from '@/lib/market/store/repo';
+import { rankInRange, rankLists, resolveRequestedRange, scrubBandOrdinals } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 import { openTradesStore, setLastFlushMs, upsertFeedIntervals } from '@/lib/market/store/trades';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -366,5 +371,102 @@ describe('the store and the snapshot', () => {
     const snapshot = getMarketSnapshot({ range: { min: '0.25', max: '20' } });
     expect(snapshot.discovery.ordinalsOmitted).toBe(false);
     expect(changeOf(snapshot.discovery.board, snapshot.discovery.ranked[0])).toBe(3);
+  });
+});
+
+describe('the SQL path is the reference board', () => {
+  /*
+   * Production reads through readRangeBoard (ordered and capped in SQL, Ops's
+   * <20 ms gate); rankInRange ranks everything in memory. Same board, or the
+   * fast path is a different product.
+   */
+  function populate(file: string) {
+    const db = openDatabase(file);
+    const rows: DemandState[] = [];
+    for (let i = 0; i < 90; i += 1) {
+      const price = 0.3 + ((i * 37) % 300) / 10; // $0.30 .. $30.20
+      const rvol = i % 11 === 0 ? null : ((i * 53) % 97) / 7;
+      const row = state(`S${String(i).padStart(3, '0')}`, price, rvol, i + 1);
+      // Some runners latched at a price inside $1-$20 and now above it.
+      if (i % 9 === 0) row.qualified = { at: '2026-09-28T13:40:00.000Z', price: 5, rvol, rank: 3 };
+      else row.latched = false;
+      row.afterHours = {
+        ...row.afterHours,
+        participation: i % 7 === 0 ? 0 : ((i * 29) % 83) / 50,
+        percentChange: ((i * 17) % 41) - 20,
+        volume: (i * 1000) % 7000,
+        latched: i % 13 === 0,
+        qualificationPrice: i % 13 === 0 ? 8 : null,
+      };
+      rows.push(row);
+    }
+    // An exact RVOL tie across the cut, broken by symbol.
+    rows.push(state('TIEA', 4, 13.5, null), state('TIEB', 4, 13.5, null));
+    upsertTickerSessions(db, rows.map(toRow));
+    // A high-RVOL warrant inside the range: must be excluded by both paths.
+    db.prepare(
+      `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
+       VALUES ('TIEA', 'test', '2026-09-28T00:00:00Z', 'WARRANT', 0)`,
+    ).run();
+    return db;
+  }
+
+  for (const board of ['DAILY_RVOL', 'AFTER_HOURS'] as const) {
+    it(`${board}: same tickers, same ranks, same counts, at a cap that cuts the list`, () => {
+      const db = populate(temporaryPath());
+      const range = { min: 1, max: 20 };
+      const limit = 25;
+      const reference = rankInRange(readRangeCandidates(db, DATE, range), [], board, limit, range);
+      const sql = readRangeBoard(db, DATE, range, {
+        limit,
+        afterHours: board === 'AFTER_HOURS',
+        ineligible: readIneligibleSymbols(db),
+      });
+      const fast = rankLists(sql.day, sql.evening, [], board, limit, sql);
+      db.close();
+
+      const view = (r: typeof reference) =>
+        r.ranked.map((s) => [s.ticker, s.rvolRank, s.afterHours.rank]);
+      expect(reference.ranked.length).toBe(limit);
+      expect(fast.ranked.some((s) => s.ticker === 'TIEA')).toBe(false);
+      expect(view(fast)).toEqual(view(reference));
+      expect(fast.rankedCount).toBe(reference.rankedCount);
+      expect(fast.states.map((s) => s.ticker).sort()).toEqual(
+        reference.states.map((s) => s.ticker).sort(),
+      );
+    });
+  }
+});
+
+describe('the SQL cut honours the engine tie-breaks', () => {
+  it('after hours: equal participation is cut by |AH %|, then AH volume, exactly as the engine ranks', () => {
+    const db = openDatabase(temporaryPath());
+    const tied = (ticker: string, percentChange: number, volume: number) => {
+      const row = state(ticker, 5, 1, null);
+      row.afterHours = { ...row.afterHours, participation: 0.5, percentChange, volume };
+      return row;
+    };
+    // Engine order: PTB (|9|), PTC (|3|, vol 900), PTA (|3|, vol 100).
+    upsertTickerSessions(db, [tied('PTA', 3, 100), tied('PTB', -9, 100), tied('PTC', 3, 900)].map(toRow));
+    const range = { min: 1, max: 20 };
+    const sql = readRangeBoard(db, DATE, range, { limit: 2, afterHours: true, ineligible: new Set() });
+    const reference = rankInRange(readRangeCandidates(db, DATE, range), [], 'AFTER_HOURS', 2, range);
+    db.close();
+    expect(sql.evening.map((s) => s.ticker)).toEqual(['PTB', 'PTC']);
+    expect(reference.ranked.map((s) => s.ticker)).toEqual(['PTB', 'PTC']);
+  });
+});
+
+describe('the graveyard fact survives the scrub', () => {
+  it('diedWhileRanked stays when deadAtRank goes', () => {
+    const file = temporaryPath();
+    const db = openDatabase(file);
+    upsertTickerSessions(db, [toRow({ ...state('DEAD', 4, 3, 6), activity: 'DEAD', deadSince: '2026-09-28T15:00:00.000Z' })]);
+    const [row] = readRangeCandidates(db, DATE, { min: 1, max: 20 });
+    db.close();
+    expect(row.diedWhileRanked).toBe(true);
+    const scrubbed = scrubBandOrdinals(row);
+    expect('deadAtRank' in scrubbed).toBe(false);
+    expect(scrubbed.diedWhileRanked).toBe(true);
   });
 });

@@ -113,14 +113,15 @@ export interface RangeRanking {
   rankedCount: number;
   /** How many tracked, rank-eligible names are priced inside the range. */
   eligibleCount: number;
-  /**
-   * Every in-range candidate with its IN-RANGE ranks set, so the live board
-   * can pick big movers from it with their band rank (`boardMovers.ts`).
-   * Additive: the checkpoint capture does not read it.
-   */
-  all: DemandState[];
+  // `all` (every in-range candidate, for the big movers) went with the SQL order: the range path reads its movers with
+  // `readTopMovers` over the served range and gives each its in-range day rank (`readRangeBoard`'s dayRanks; readModel).
 }
 
+/**
+ * THE REFERENCE: ranks an unbounded candidate set in memory. Production reads
+ * through `readRangeBoard` (ordered and capped in SQL, Ops's <20 ms gate) and
+ * `rankLists`; a test holds the two to the same board.
+ */
 export function rankInRange(
   candidates: readonly DemandState[],
   extras: readonly DemandState[],
@@ -128,67 +129,95 @@ export function rankInRange(
   limit: number,
   range: PriceRange,
 ): RangeRanking {
-  const scrubbed = candidates.map(scrubBandOrdinals);
   const inside = (price: number | null | undefined) =>
     price !== null && price !== undefined && price >= range.min && price <= range.max;
 
   // The engine's eligibility, with its latch scoped to the viewer's range.
-  const dayEligible = scrubbed.filter(
-    (state) => inside(state.price) || (state.latched && inside(state.qualified?.price)),
-  );
-  const eveningEligible = scrubbed.filter(
+  const dayEligible = candidates.filter(
     (state) =>
-      inside(state.price) || (state.afterHours.latched && inside(state.afterHours.qualificationPrice)),
+      state.rvol !== null &&
+      Number.isFinite(state.rvol) &&
+      (inside(state.price) || (state.latched && inside(state.qualified?.price))),
   );
+  // Evening ranks only on the after-hours board, as `readRangeBoard` does:
+  // before 16:00 the session's after-hours figures do not exist yet.
+  const eveningEligible = candidates.filter(
+    (state) =>
+      board === 'AFTER_HOURS' &&
+      // The engine's rule: a name that has not traded since the bell is not on
+      // the after-hours board.
+      (state.afterHours.participation ?? 0) > 0 &&
+      (inside(state.price) ||
+        (state.afterHours.latched && inside(state.afterHours.qualificationPrice))),
+  );
+
+  return rankLists(dayEligible, eveningEligible, extras, board, limit, {
+    dayCount: dayEligible.length,
+    eveningCount: eveningEligible.length,
+  });
+}
+
+/**
+ * Ranks two already-eligible lists with the engine's functions and assembles
+ * the payload. The lists may be capped (SQL) or whole (the reference); the
+ * counts are supplied because only the caller knows the uncapped totals.
+ */
+export function rankLists(
+  dayEligible: readonly DemandState[],
+  eveningEligible: readonly DemandState[],
+  extras: readonly DemandState[],
+  board: 'DAILY_RVOL' | 'AFTER_HOURS',
+  limit: number,
+  counts: { dayCount: number; eveningCount: number },
+): RangeRanking {
+  const byTicker = new Map<string, DemandState>();
+  const scrubbedOf = (state: DemandState) => {
+    const held = byTicker.get(state.ticker);
+    if (held) return held;
+    const copy = scrubBandOrdinals(state);
+    byTicker.set(state.ticker, copy);
+    return copy;
+  };
 
   const day = rankByRvol(dayEligible.map((state) => ({ symbol: state.ticker, rvol: state.rvol })));
   const evening = rankByAfterHours(
-    eveningEligible
-      // The engine's rule: a name that has not traded since the bell is not on
-      // the after-hours board.
-      .filter((state) => (state.afterHours.participation ?? 0) > 0)
-      .map((state) => ({
-        symbol: state.ticker,
-        participation: state.afterHours.participation,
-        percentChange: state.afterHours.percentChange,
-        volume: state.afterHours.volume,
-      })),
+    eveningEligible.map((state) => ({
+      symbol: state.ticker,
+      participation: state.afterHours.participation,
+      percentChange: state.afterHours.percentChange,
+      volume: state.afterHours.volume,
+    })),
   );
 
-  for (const state of scrubbed) {
-    state.rvolRank = day.get(state.ticker)?.rank ?? null;
-    state.afterHours.rank = evening.get(state.ticker)?.rank ?? null;
-  }
+  const byDay = dayEligible
+    .map(scrubbedOf)
+    .filter((state) => day.has(state.ticker))
+    .sort((a, b) => day.get(a.ticker)!.rank - day.get(b.ticker)!.rank)
+    .slice(0, limit);
+  const byEvening = eveningEligible
+    .map(scrubbedOf)
+    .filter((state) => evening.has(state.ticker))
+    .sort((a, b) => evening.get(a.ticker)!.rank - evening.get(b.ticker)!.rank)
+    .slice(0, limit);
+  for (const state of byDay) state.rvolRank = day.get(state.ticker)!.rank;
+  for (const state of byEvening) state.afterHours.rank = evening.get(state.ticker)!.rank;
 
-  const byDay = scrubbed
-    .filter((state) => state.rvolRank !== null)
-    .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
-  const byEvening = scrubbed
-    .filter((state) => state.afterHours.rank !== null)
-    .sort((a, b) => (a.afterHours.rank as number) - (b.afterHours.rank as number));
-
-  const active = board === 'AFTER_HOURS' ? byEvening : byDay;
-  const ranked = active.slice(0, limit);
+  const ranked = board === 'AFTER_HOURS' ? byEvening : byDay;
 
   // As the store does after the bell: the day's leaders ride along as context.
   const selected = new Map(ranked.map((state) => [state.ticker, state]));
   if (board === 'AFTER_HOURS') {
-    for (const state of byDay.slice(0, limit)) {
-      if (!selected.has(state.ticker)) selected.set(state.ticker, state);
-    }
+    for (const state of byDay) if (!selected.has(state.ticker)) selected.set(state.ticker, state);
   }
   for (const extra of extras) {
-    if (!selected.has(extra.ticker)) {
-      const inRange = scrubbed.find((state) => state.ticker === extra.ticker);
-      selected.set(extra.ticker, inRange ?? scrubBandOrdinals(extra));
-    }
+    if (!selected.has(extra.ticker)) selected.set(extra.ticker, scrubbedOf(extra));
   }
 
+  const eligible = new Set([...dayEligible, ...eveningEligible].map((state) => state.ticker));
   return {
     states: [...selected.values()],
     ranked,
-    rankedCount: active.length,
-    eligibleCount: scrubbed.length,
-    all: scrubbed,
+    rankedCount: board === 'AFTER_HOURS' ? counts.eveningCount : counts.dayCount,
+    eligibleCount: Math.max(eligible.size, counts.dayCount, counts.eveningCount),
   };
 }

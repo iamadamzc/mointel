@@ -752,6 +752,7 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
       : undefined,
     deadSince: row.dead_since,
     deadAtRank: row.dead_at_rank,
+    diedWhileRanked: row.dead_at_rank !== null && row.dead_at_rank !== undefined,
     deadAtPeakTrades: row.dead_at_peak_trades,
     deadAtPrice: row.dead_at_price,
     deathCount: row.death_count ?? undefined,
@@ -1175,6 +1176,104 @@ export function readTopMovers(
     )
     .all({ date: tradingDate, min: band.min, max: band.max, minPct, minVolume, limit }) as TickerSessionRow[];
   return rows.map((row) => rowToDemandState(row, nowMs));
+}
+
+/**
+ * Symbols the universe marks ineligible for the ranked board (warrants, units,
+ * preferreds...). Read once and held by the caller: joining `universe` per row
+ * was most of the range read's cost.
+ */
+export function readIneligibleSymbols(db: MarketDatabase): Set<string> {
+  return new Set(
+    db.prepare('SELECT symbol FROM universe WHERE discovery_eligible = 0').pluck().all() as string[],
+  );
+}
+
+/**
+ * The viewer-range board, ORDERED IN SQL, with only the top rows materialised.
+ *
+ * Ops's gate (integration.md, 2026-09-29): < 20 ms at $0.25-$50 on the live
+ * store. Materialising every in-range row and ranking in JS measured
+ * 233-362 ms (reproduced locally: ~300 ms). Joining `universe` per row cost
+ * most of the rest: on 2026-08-18, 4,543 of 8,617 tracked rows were
+ * ineligible, so over-fetching and filtering afterwards is not an option.
+ *
+ * So: one narrow key scan per board -- symbol only, in the engine's order
+ * (`rankByRvol`: RVOL desc, symbol; `rankByAfterHours`: participation desc,
+ * |AH %| desc, AH volume desc, symbol) -- ineligible symbols dropped against
+ * the caller's set, then full rows fetched for the top `limit` alone. Measured
+ * on the local 2026-09-25 store copy: ~6.5 ms per board with the set held.
+ * The count is the eligible total, the caption's denominator.
+ */
+export function readRangeBoard(
+  db: MarketDatabase,
+  tradingDate: string,
+  range: { min: number; max: number },
+  options: { limit: number; afterHours: boolean; ineligible: ReadonlySet<string> },
+): {
+  day: DemandState[];
+  evening: DemandState[];
+  dayCount: number;
+  eveningCount: number;
+  /**
+   * Every eligible name's IN-RANGE daily rank (1-based, the day order above), not only the top `limit`: the range
+   * path's big movers carry it, as `rankInRange(...).all` gave them before the SQL order (readModel.ts, movers).
+   */
+  dayRanks: ReadonlyMap<string, number>;
+} {
+  const nowMs = Date.now();
+  const params = { date: tradingDate, min: range.min, max: range.max };
+  const common = `FROM ticker_session ts
+     WHERE ts.trading_date = @date
+       AND ts.price IS NOT NULL`;
+
+  const pick = (sql: string) => {
+    const eligible = (db.prepare(sql).pluck().all(params) as string[]).filter(
+      (symbol) => !options.ineligible.has(symbol),
+    );
+    const top = eligible.slice(0, options.limit);
+    if (top.length === 0) return { rows: [] as DemandState[], count: eligible.length, order: eligible };
+    const bySymbol = new Map(
+      (
+        db
+          .prepare(
+            `SELECT * FROM ticker_session
+              WHERE trading_date = ? AND symbol IN (${top.map(() => '?').join(',')})`,
+          )
+          .all(tradingDate, ...top) as TickerSessionRow[]
+      ).map((row) => [row.symbol, row]),
+    );
+    const rows = top
+      .map((symbol) => bySymbol.get(symbol))
+      .filter((row): row is TickerSessionRow => row !== undefined)
+      .map((row) => rowToDemandState(row, nowMs));
+    return { rows, count: eligible.length, order: eligible };
+  };
+
+  const day = pick(
+    `SELECT ts.symbol ${common}
+       AND ts.rvol IS NOT NULL
+       AND ((ts.price >= @min AND ts.price <= @max)
+         OR (ts.latched = 1 AND ts.qualified_price >= @min AND ts.qualified_price <= @max))
+     ORDER BY ts.rvol DESC, ts.symbol ASC`,
+  );
+  const dayRanks = new Map(day.order.map((symbol, i) => [symbol, i + 1]));
+  if (!options.afterHours) {
+    return { day: day.rows, evening: [], dayCount: day.count, eveningCount: 0, dayRanks };
+  }
+
+  const evening = pick(
+    `SELECT ts.symbol ${common}
+       AND ts.ah_participation > 0
+       AND ((ts.price >= @min AND ts.price <= @max)
+         OR (ts.ah_latched = 1
+             AND ts.ah_qualification_price >= @min AND ts.ah_qualification_price <= @max))
+     ORDER BY ts.ah_participation DESC,
+              ABS(COALESCE(ts.ah_percent_change, 0)) DESC,
+              COALESCE(ts.ah_volume, 0) DESC,
+              ts.symbol ASC`,
+  );
+  return { day: day.rows, evening: evening.rows, dayCount: day.count, eveningCount: evening.count, dayRanks };
 }
 
 export function countTrackedSymbols(db: MarketDatabase, tradingDate: string): number {
