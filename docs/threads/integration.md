@@ -965,6 +965,10 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      If it lands, 2256c63 is the base for the range set and af15a13 drops out of it. Await Ops's /proc.
                      ~01:30Z: DESIGN RETIRED (hand-off 08e3f3e); successor not yet open. Its open items are in design.md.
                      Design verified 21:22 ET: evening arm of 8fd7887 live, the Now header fits (the width fix IS live).
+                     He told Ops "let it finish" -> 2256c63 landing; /proc not yet confirmed. d2c2582 (Research, 21:26 ET,
+                     local main, unpushed): SQL-bounded readRangeBoard (local 7.0/9.6 ms day, 11.7/14.3 AH) + diedWhileRanked
+                     graveyard fact. Remaining for the range set: Ops's LIVE measurement < 20 ms (asked), Design's
+                     graveyard.ts switch (new Design local_cad132e4 told).
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
