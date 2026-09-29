@@ -973,6 +973,12 @@ ingestion): added cost <= 10% of median upsertTickerSessions AND <= 10% of media
 < 250 ms in RTH with the index; baseline measured without. Baseline max > 250 ms = a finding to him first.** No
 flush-duration instrument exists (runtime.ts:1595 flushedAt is a clock; verified) -- Ops replays offline for the
 decision; an in-worker timer rides a restart (re-cut into the restart set only if ready before his time). A
+**RESEARCH'S WRITE-SIDE PRIOR (scratch 08-23 copy, real upsertTickerSessions, 60 interleaved flushes/size): upsert
++12% to +36% WITH the index at 200/1,000/3,000/8,688 dirty rows -> ruled (a) PROBABLY FAILS. Baseline WITHOUT the
+index: 244 ms median / 293 max at 8,688 rows (this disk).** The box run is still the verdict. **The bigger signal: the
+live desk may ALREADY exceed 250 ms flushes at the open (SIP stall), index or not** -- Ops reads the production
+baseline (dirty rows/flush, whole-flush in RTH) FIRST; over 250 ms = to him before the index. Research's next idea
+(decouple the header COUNT from the rows) is a DESIGN/his question about "top 25 of N", held. A
 market.db bump: ONE migration with the latch/high_res columns, behind the backup route. The 08:30/11:05
 reads STILL RUN (N = 1 cold + 20 warm, pre-registered now) as the loaded baseline for the fix; they cannot un-void.
 *If a seat thinks the BUDGET itself is wrong, that is an argument with its own measurement (viewer refresh rate x
