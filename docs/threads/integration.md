@@ -997,6 +997,10 @@ SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resu
                      step), contract changes, writer, semantic checker + pass-bar test, /api/reports + range config. 10-05 not at risk.
 DAILY BILLING        + Design's payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
+NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build the near-live now column". Now column
+                     reads the 10s trade buckets (capture live since 09-28; column still "last settled minute",
+                     DiscoveryBoard.tsx:192-199, opened). Design leads spec, Research the data side. His choices only
+                     (what "Now" means) come back to him. After the range release. Rolling 60s is REJECTED (his).
 RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
                      to being able toadjust the column sizes?"; no prior record found anywhere). Design scopes, back to him
                      as options; build after the range release, and only on his approval.
