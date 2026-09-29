@@ -12361,3 +12361,15 @@ c103267 start, single runs read max 42.1 and 161.8 ms (post-start effect, not st
 medians 6.4 / 5.9 / 5.7 / 5.7 / 7.1 ms.** (c) is taken the same way after the restart.
 **11:05 ET range read:** its scheduled task was REFUSED by the permission control; the 08:30 ET one is armed and was
 hand-run once to pre-approve.
+
+**2026-09-29 12:0xZ, SLND "red catalyst" (his report 11:58Z): NOT a board defect.** Store: 2456 (11:05Z) red on the
+Sept 25 NYSE noncompliance notice (the $71M award, IR published 11:00Z, was not yet on the IR feed at the 11:04 read);
+2458 (11:17:42Z) and 2461 (11:33Z) LEGITIMATE_POSITIVE. **nginx mointel-tls.access.log settled the screen question:**
+his client (108.28.204.67) sent NO /api/market requests 11:17-11:55Z (the poll skips while the document is hidden);
+polling resumed 11:56 and brought the positive grade. The access log IS the instrument for "what did his screen
+receive": it has per-request status and bytes, but NO request_time, so server durations are not logged.
+**/api/market has no margin:** ~839-859 KB per response, uncompressed; the client polls every 1 s and aborts in flight
+(useMarket.ts:39). Steady state 11:00-11:05Z: 54-59 of ~60 polls/min completed. 12:06-12:07Z: 20/40 and 1/16
+ok/aborted, with the server at 0.6-8.9 s per response, during THREE concurrent loads (his poll, my full-payload curls
+on the box, Design's 31 review-route requests). **Rule for this seat: no full-payload /api/market probing 07:00-10:00
+ET.** Design is building a client fix; it ships on his yes.
