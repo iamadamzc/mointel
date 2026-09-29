@@ -1219,6 +1219,8 @@ STACK APPROVED  his "yes to all three" (Ops's session, per Ops). Replayed: memo 
 RANGE READS     08:30 ET NOT MEASURED (scheduled task stuck on an unapproved Bash prompt since its 04:18Z hand run; a task
                  with a run in progress refuses its fire). 11:05 task stuck the same way; Ops takes 11:05 BY HAND with the
                  2-min-after-start discard rule. Heartbeat c49bb3a launched 10:04 ET (base 0342e7d x3, market 3b78b8c).
+PRODUCTION      = c49bb3a (heartbeat LIVE), Ops /proc 14:19:16Z (stated): web 1508576 (start 14:18:21Z) / research 1508632 /
+                 assess 1508700, NR 0; market 3b78b8c pid 1347535 NR 0. Memo next 10:34-10:42 ET.
 NOW CELL        Design: 20:15 ET is after the 20:00 close, so tonight's post-restart read is PLUMBING only (tradeCapture.asOf
                  fresh vs fetchedAt; nowBuckets present). Real-10 s read earliest 04:00 ET 09-30 (one page load, no loops);
                  fa61410 cannot be asked for before then.
