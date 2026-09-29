@@ -12235,3 +12235,17 @@ engine/auth/schema; 167 test files. Gate run 1 RED (1 of 2544), gate run 2 and t
 **An unnamed intermittent failure exists at this sha** -- run 1's output was filtered to summaries and
 the name was lost. Rule: capture full gate output to a file (`> $TEMP/gate-<sha>.log`), never grep
 the live stream. Name the flake before shipping.
+
+### ONE MARKET-WORKER RESTART PLAN (2026-09-29, proposed; time to be his)
+
+Carries: (a) cea5ed2 (already in the release); (b) the Now column -- Research's engine + trades.db v2
+(last_price/last_ts, feed_intervals, meta last_flush_ms; its own file, so NO backup-route dependency);
+(c) bootstrap = record band; (d) ceiling 20->50 (config wiring + box env, same motion as sync-env).
+**Before asking his time:** all code shipped to the release (RESTART_MARKET=no) and confirmed from
+/proc; the $50 replay-cost projection measured; a no-session window (weekday after 20:00 ET, weekend).
+**Split only if** the $50 replay makes the restart gap unacceptable -- then (d) alone, later.
+Earliest: Thu 10-02 after 20:00 ET. market.db schema work (latch columns, high_res) is an ASSESS change,
+not in this plan.
+
+**520142c's red:** name unrecoverable (unsaved filtered output). Likely my releaseRetention weekday
+test: 19.9s alone vs a 30s timeout. Fixed f869ee0 (9.5s). SAVE FULL GATE OUTPUT TO A FILE, ALWAYS.
