@@ -1002,6 +1002,13 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
 - **Ops's gate at `520142c` went RED on one test (~02:40Z)**, collection 167 = the pre-registered count, so not
   under-collection. Design had reported 167/2544 green. Cause not yet known to this seat; the enumeration stands
   conditional as before and is NOT approvable while red.
+  **Ops, later: run 1 RED 2543/2544 (167 files); two direct runs + gate run 2 GREEN 167/2544. INTERMITTENT, and
+  UNNAMED because run 1's output was filtered to summaries (Ops's own account).** Ops will run the gate 3x with
+  full output before shipping. **Acceptance rule set by this seat:** named in releaseRetention/releaseBootstrap
+  (the known Git-Bash-under-load family) → not a ship blocker, recorded; named anywhere in the 22 shipped files'
+  tests (tests/dashboard, tests/market, route tests) → Design investigates or re-cuts, ship held; still UNNAMED
+  after 3 full-output runs → not approvable on green alone; it goes to him as a known-unknown with the odds (1 in N
+  runs), because a flake in a shipped surface looks identical to a green that never meets it.
 - *The opening prompt's header says "Rewritten ~02:45 UTC"; its commit `5f4fbde` is 02:36:22Z.* A time estimated
   instead of read, the fifteenth's own error 2, in the prompt that names it. Harmless; recorded because the prompt
   predicts it carries a false line.
