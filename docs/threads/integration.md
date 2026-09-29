@@ -963,6 +963,8 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      ~01:20Z: the withdrawal CROSSED his "ship the range ranking"; Ops launched 2256c63 at 21:18:56 ET, cancel
                      (systemctl stop) refused by Ops's permission control, put to him. Integration's view: let it land (inert).
                      If it lands, 2256c63 is the base for the range set and af15a13 drops out of it. Await Ops's /proc.
+                     ~01:30Z: DESIGN RETIRED (hand-off 08e3f3e); successor not yet open. Its open items are in design.md.
+                     Design verified 21:22 ET: evening arm of 8fd7887 live, the Now header fits (the width fix IS live).
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
