@@ -10,7 +10,7 @@
  */
 
 import type { MarketDatabase } from './db';
-import { withBusyRetry } from './busy';
+import { isBusy, withBusyRetry } from './busy';
 
 // Re-exported so existing importers keep working after the move. The helper
 // now lives in ./busy because the market worker needs it too.
@@ -899,6 +899,41 @@ export function writeResearchHealth(db: MarketDatabase, health: ResearchHealth):
     `INSERT INTO research_health (id, payload) VALUES (1, ?)
      ON CONFLICT(id) DO UPDATE SET payload = excluded.payload`,
   ).run(JSON.stringify(health));
+}
+
+/**
+ * The worker's status write — the one write on this store that may fail
+ * without anything else failing.
+ *
+ * On 2026-09-25 the research process died three times in 52 seconds
+ * (22:22:03 / :22 / :55, `NRestarts=3`) with SQLITE_BUSY thrown from
+ * `writeResearchHealth`, while the market worker's post-restart persistence
+ * held the write lock for ~110s against a 5s `busy_timeout`. The timed
+ * heartbeat already caught its own failures; the main loop's status writes did
+ * not, so a busy there rejected `main()` and the unit restarted into the same
+ * lock.
+ *
+ * SKIPPED, NOT RETRIED, and that is the opposite of `withBusyRetry`'s rule on
+ * purpose. That rule exists because a lost JOB write leaves a job the store
+ * thinks ran and the desk thinks did not. A lost status write leaves a row
+ * that is a few seconds older than it would have been — and the row's age is
+ * exactly how the dashboard tells a stopped worker from a quiet one, so a stale
+ * row during a lock is the correct reading, not a false one. The next cycle
+ * republishes.
+ *
+ * Only a busy is skipped. Anything else — a missing table, a malformed payload
+ * — is a defect and still throws.
+ *
+ * Returns whether the row was written.
+ */
+export function publishResearchHealth(db: MarketDatabase, health: ResearchHealth): boolean {
+  try {
+    writeResearchHealth(db, health);
+    return true;
+  } catch (error) {
+    if (isBusy(error)) return false;
+    throw error;
+  }
 }
 
 export function readResearchHealth(db: MarketDatabase): ResearchHealth | null {

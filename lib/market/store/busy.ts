@@ -41,7 +41,7 @@
 const BUSY_CODES = new Set(['SQLITE_BUSY', 'SQLITE_BUSY_SNAPSHOT', 'SQLITE_BUSY_TIMEOUT']);
 const BUSY_BACKOFF_MS = [200, 500, 1000, 2000];
 
-function isBusy(error: unknown): boolean {
+export function isBusy(error: unknown): boolean {
   const code = (error as { code?: unknown } | null)?.code;
   return typeof code === 'string' && BUSY_CODES.has(code);
 }

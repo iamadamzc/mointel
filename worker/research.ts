@@ -64,7 +64,7 @@ import {
   readSources,
   recordResearchFailure,
   requeueJobForRetry,
-  writeResearchHealth,
+  publishResearchHealth,
 } from '../lib/market/store/researchRepo';
 import type { ResearchHealth } from '../lib/research/types';
 
@@ -205,6 +205,9 @@ async function main(): Promise<void> {
   // while a long collection is in flight.
   let currentState: ResearchHealth['state'] = 'IDLE';
   let currentActive: string[] = [];
+  // Logged on the edge, not per skip: a lock held for minutes would otherwise
+  // write one line per poll.
+  let healthSkipping = false;
 
   const publishHealth = () => {
     const tradingDate =
@@ -244,7 +247,7 @@ async function main(): Promise<void> {
         )
         .get(tradingDate) as { n: number }
     ).n;
-    writeResearchHealth(db, {
+    const written = publishResearchHealth(db, {
       state: currentState,
       queuedJobs: jobs.filter((job) => job.status === 'QUEUED').length,
       stalledJobs: stalled,
@@ -259,6 +262,14 @@ async function main(): Promise<void> {
       modelDetail: model.detail,
       updatedAt: new Date().toISOString(),
     });
+    if (written === healthSkipping) {
+      healthSkipping = !written;
+      log(
+        written
+          ? '[research] health write resumed'
+          : '[research] health write skipped: store busy (another writer holds the lock)',
+      );
+    }
   };
 
   const health = (state: ResearchHealth['state'], active: string[]) => {
