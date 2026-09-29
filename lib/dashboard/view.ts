@@ -4,7 +4,7 @@
  */
 
 import { resolveRisk } from '@/lib/dashboard/risk';
-import { tradesLastMinute } from '@/lib/dashboard/sparkline';
+import { nowReadingOf, nowSortTier, nowSortValue } from '@/lib/dashboard/nowReading';
 import { resolveWhy } from '@/lib/dashboard/why';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CyclePhase } from '@/lib/market/cycle';
@@ -398,8 +398,15 @@ export function discoveryValueFor(
        * ACTIVE on the last `reviveMinutes`, so a number taken from the tail
        * cannot drift away from the badge beside it -- structurally, rather
        * than by two computations agreeing until one changes.
+       *
+       * NEAR-LIVE SINCE 2026-09-29 (his "yes build the near-live now column"):
+       * the value is the ROW'S READING, resolved once in `mergeDesk` and read
+       * by the cell too, so the order and the number cannot disagree. Before
+       * the 10 s capture answers, the reading IS the settled minute above.
+       * The tier that keeps 10 s and minute counts apart is in
+       * `sortDiscoveryRows`.
        */
-      return tradesLastMinute(row.demand);
+      return nowSortValue(nowReadingOf(row));
     case 'price':
       return row.telemetry.price;
     case 'float':
@@ -455,6 +462,17 @@ export function sortDiscoveryRows(
   const sorted = [...rows];
 
   sorted.sort((a, b) => {
+    /*
+     * `Now` IS TIERED, IN BOTH DIRECTIONS: live 10 s rows, then minute-grain
+     * rows, then rows with no number. The two counts differ ~6x for the same
+     * activity, so interleaving them would rank every minute-grain row above
+     * every live one on grain alone. Rows without a number are tier 1 and
+     * null, so `compareNumeric` still puts them last.
+     */
+    if (sort.key === 'now') {
+      const tier = nowSortTier(nowReadingOf(a)) - nowSortTier(nowReadingOf(b));
+      if (tier !== 0) return tier;
+    }
     const primary = compareNumeric(
       discoveryValueFor(a, sort.key, board),
       discoveryValueFor(b, sort.key, board),
