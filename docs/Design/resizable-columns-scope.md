@@ -86,6 +86,11 @@ tool.
   first-rank defect (fields off the right edge, the ticker lost on scroll).
 - **Why and Risk stay the flexible columns.** If he sizes both, Risk takes the
   remainder.
+  *As built (2026-09-29): sizing one of the two RELEASES the other, so the one
+  sized last keeps its width and the other takes the remainder. Read literally,
+  the line above would leave a drag on Risk inert once Why had been sized. Same
+  guardrail, no change to what he approved; storage holding both still keeps
+  Why, as written.*
 - **On a narrower window, stored widths shrink proportionally** to fit. They are
   never discarded, so they return when the window grows.
 - The Float column keeps its own stored width and takes its space from Why/Risk
@@ -109,6 +114,25 @@ server change, so no deploy risk to capture.**
   column. A range change does not touch widths.
 - Anything printed in a cell. Width only decides how much of it shows before the
   ellipsis.
+
+## As built, and what the build found
+
+**Built 2026-09-29 on `main`; not shipped.** Observed locally against a
+read-only copy of the store at 1,024, 1,280 and 1,920:
+
+- **The sorted-header minimum is MEASURED at runtime** from an invisible copy of
+  the header with its caret, so it follows the session's labels (`RVOL`/`PART`,
+  `Gap`/`Move`). Measured at 1,280: Ticker 78, Price 153, RVOL 67, Now 48,
+  Cycle 73; Why and Risk sit on the 120 floor.
+- **`Now`'s minimum is 48, not the 61 the old width comment implies**, because
+  the sorted head actually renders the caret on its own third line. Filed as its
+  own open item in `design.md`.
+- **At the 120 floor Why and Risk WRAP rather than ellipsize** (their chips go
+  to two lines), so rows grow taller when he widens other columns that far. Not
+  a guardrail breach; worth his eye on the live board.
+- The measurement takes one synchronous read when the table mounts, as well as
+  the observer, because a board opened in a background tab would otherwise
+  ignore its stored widths until looked at.
 
 ## Size, files, seats
 

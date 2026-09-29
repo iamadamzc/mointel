@@ -44,7 +44,23 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-29 02:42 UTC / 2026-09-28 22:42 ET
+## Live state — 2026-09-29 03:12 UTC / 2026-09-28 23:12 ET (successor seat)
+
+**THIS SEAT'S FIRST HOUR, 02:47–03:12Z:**
+- **The `520142c` red is NAMED on Design's side:** 4 full-output runs at the
+  tag in the design worktree, 3 green (167/2544), 1 red:
+  `tests/desk/releaseRetention.test.ts > deployment preflight > refuses every
+  weekday start that would run inside 07:00-10:00 ET`, a 30 s timeout under
+  load (import phase 108 s vs 48 s green). lint 0 errors / build 0 /
+  typecheck 0 at the tag. Under Integration's acceptance rule (`da1c748`) that
+  family is not a ship blocker. **Not proven to be Ops's run-1 failure**, whose
+  output was filtered; Ops runs 3 full-output passes before shipping. Nothing
+  in tests/dashboard or tests/market failed in 4×2544, so **no re-cut.**
+- **Resizable columns, Discovery only: BUILT, gated, on `main`** at `1d59b00`. Viewed at 1,024 / 1,280 / 1,920 against a read-only copy
+  of the local store; see the open-items row. Not deployed; ships after the
+  range release.
+- Now spec: four lines that predated his 02:30/02:32Z answers struck
+  (`75ef60e`).
 
 **MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
 ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
@@ -570,7 +586,8 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 | Payment-failed warning — build APPROVED, not started | Design | **Trigger: Ops starts the billing work, which comes after the sign-in cut-over.** Spec: `docs/commercial/daily-billing-design/design-seat.md`. OS notification ruled on; hour never restarts; `endsAt` = earlier of failure+1h and 20:00 ET |
 | The price range: the CONTROL (`5e8b13c`, on main, NOT shipped) | Design built; Research owns the server half | Viewed locally against a read-only store copy. **Latch: fixed by Research at `8d8e50c`.** ~~Still blocking: the graveyard~~ **CLOSED 2026-09-29 at `dd6019e`** on Research's `diedWhileRanked` (`d2c2582`). ~~Row mark `above your range` waits on a flag from Research~~ **needs no build**: Discovery rows are ranked-only, and `retentionNote` already reads the served range (live state above). No-param request flips to `rangeDefault` only in the release that carries the control. **SECOND SHIP GATE (Ops, via Integration, 2026-09-29): a range read costs 233–362 ms against 4.8 ms today, per viewer per poll; not approvable until Ops measures it under 20 ms at $0.25–$50 on the live store (Research + Ops fix).** The control takes its bounds from the payload's `rangeBounds` and never widens them itself; `BOARD_RANGE_MAX` stays unset until the capture band widens |
 | Near-live `Now` column — BUILD APPROVED (*"yes build the near-live now column"*, 2026-09-29T01:38:17Z, verified at his turn) | Design spec + board; Research the field | Spec: `docs/Design/near-live-now-spec.md`. **SHAPE RULED 2026-09-29T02:30:43Z, to Design:** *"same exact pattern as the previous minute format, except now it will show the last minute in 10 sec increments instead of 5 min in 1 min increments."* Number = newest completed 10 s bucket, counted; bars = the last six 10 s buckets. ~~Price points and direction colour wait~~ **He refused a bars-only version, 02:32:20Z: *"i want the trade counts, dots and direction color."*** So price per 10 s bucket + membership intervals (Research) → **a market-worker restart (his yes)** → then Design builds. Research: `nowBuckets` (six, oldest first, `{bucketEnd, trades, price}`) + `tradeCapture.asOf`. Ops: `bucketsWritten` rising, 09-29 04:00–07:00 ET. After the range release |
-| Resizable columns — **BUILD APPROVED, DISCOVERY ONLY** (his words to Design 2026-09-29T02:41:45Z: *"2 yes discovery only"*, answering "Build resizable columns as: drag any column edge on the Discovery board, remembered in this browser?") | Design | Spec: `docs/Design/resizable-columns-scope.md`, option (A) with every guardrail there; widths in this browser, moving to the account at sign-in. **NOT the Researched names table.** Built on `main`; ships after the range release. ~1.5 days |
+| Resizable columns — **BUILT 2026-09-29, on `main`, NOT SHIPPED** (his words to Design 2026-09-29T02:41:45Z: *"2 yes discovery only"*, answering "Build resizable columns as: drag any column edge on the Discovery board, remembered in this browser?") | Ops ships after the range release; Design reads it live after | Spec: `docs/Design/resizable-columns-scope.md` option (A). Model `lib/dashboard/columnWidths.ts` (every guardrail, 80 tests, 9 mutants all killed at or above prediction), hook `lib/hooks/useColumnWidths.ts`, handle `components/ColumnResizeHandle.tsx`. **Viewed locally** (read-only store copy, 1,024/1,280/1,920): drag, ←/→/Shift, Delete, double-click fit, Reset widths, reload persistence, proportional shrink at 1,024 (table 982 px, no scroll, every header fits) and whole return at 1,920. **Pure client, no server/payload change**, so it cherry-picks onto production without the range set unless `DiscoveryBoard.tsx` conflicts (it will if picked before the range set: same file). **Owed after deploy: read it on the live board.** Not the Researched names table |
+| **The sorted `Now` header renders on THREE lines** (found 2026-09-29 building resizable columns, local store copy; same code as production): `NOW` / `−1m` / `▼`, because the caret span follows the block sub-line. The head grows to 55 px tall whenever `Now` is the active sort. Not a clip and not new; the 68 px width comment assumed `NOW ▼` on one line | Design | A small fix (caret inline after the word). Not started; below resizable columns in order |
 | Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
 | `lastCheckpointChanges` on the payload | Research | Spec above; §9 item 12's rail blocks on it |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
@@ -594,6 +611,14 @@ this session is the trigger to warn him and propose a hand-off.*
 | Said the qualify band's floor was "Research's lever"; it is his ruled system band | RELAYED-OWNERSHIP-UNCHECKED | No | Peer (Research) |
 | He said "same exact pattern"; I recorded a bars-only first version as "Design's reading, not a question for him unless he objects". It cut the dots and colour he had just asked for, for a data reason that was mine to solve | NARROWED-HIS-RULING | No | **HIM** (02:32:20Z), the costly kind |
 | A .NET `WriteAllBytes` with a relative path wrote a temp file into the SHARED tree (`A:\mointel\components\DashboardShell.tsx.tmp`), and the edit it carried never landed in the replay | RELATIVE-PATH-IN-DOTNET | No | Self, within the minute; file removed, commit amended |
+
+**Successor seat, opened 2026-09-29 02:47 UTC.** Carried forward: the classes above are this seat's to watch for.
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Wrote the no-horizontal-scroll test as "widths sum to the table width" — true BY CONSTRUCTION, so it passed with Why/Risk negative | VACUOUS-CHECK (sum invariant) | No | Self, by predicting mutant kills before running them; fixed before commit |
+| First pass of the width hook read a ref during render and set state in an effect; the React-compiler lint refused 38 sites. Also a hook member named `…Ref` made the compiler treat the whole returned object as a ref | LINT-AS-GATE (known class: run the gate, not the habit) | Yes, as a memory rule, not this session | The gate |
+| Nearly concluded "stored widths do not load after reload" from a HIDDEN browser pane, where ResizeObserver never fires | ENVIRONMENT-READ-AS-DEFECT | No | Self, by probing a fresh observer before editing; it led to a real robustness fix (one synchronous read) |
 
 ## Where the rest of the record is
 
