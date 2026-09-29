@@ -1025,6 +1025,13 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      briefings (307e42d, 6eb1362), not in prod. Design to choose: carry briefings (only if invisible
                      without /api/reports, and they read a contract Research is about to change) or a production-based
                      variant of the control (Integration leans this way). No enumeration until it re-replays clean.
+                     ~03:10Z: DESIGN CUT design/range-set-on-2256c63 -> 520142c FROM PRODUCTION (route b). Replayed: 10
+                     commits over 2256c63, -x provenance, patch-ids match 9/10 (55555b7 = declared 5e8b13c re-cut), 22 files,
+                     0 briefing refs, no worker/engine change, 167 test files. ENUMERATED to Ops CONDITIONAL on (1) the
+                     loaded range-read measurement passing, (2) his yes in Ops's session. Void if the measurement fails.
+                     NOW COLUMN: his answer to Design 2026-09-29T02:30:43Z (Design's relay): "same exact pattern as the previous
+                     minute format, except now it will show the last minute in 10 sec increments..." -> plain 10s counts, six
+                     bars. First version lacks per-bucket price points/colour (counts only) until the market-worker restart.
                      [+ review-route one-liner if Design says so]. Gates: Ops < 20 ms under load; his deploy yes.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified desk-assessments.ts:183-194/:464): checkpoints
