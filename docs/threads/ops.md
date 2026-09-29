@@ -12384,3 +12384,9 @@ ET.** Design is building a client fix; it ships on his yes.
    slow build and are built even after their client aborted. Levers: coalesce (memoize ~500 ms on (symbols, range);
    works regardless) and an entry `signal.aborted` check (needs the abort path through nginx HTTP/2 -> 1.1 and Next
    verified by test). Owner: Integration to name.
+
+**Abort-path test, Node half, LOCAL (2026-09-29, `scripts/ops/abort-probe.cjs`): an entry `request.signal.aborted`
+check CANNOT skip a request abandoned while queued behind a synchronous build.** Next 16.3.1 signalFromNodeResponse,
+Node 22: B (aborted at 300 ms while A's 2 s sync build blocks the loop) read aborted=false at entry, after a hop,
+after 5 ms and after 25 ms, and was built; positive control (abort during an async wait on a free loop) fires at
+296 ms. So coalescing (Research) is the only server-side lever; Design told not to build the entry check for this.
