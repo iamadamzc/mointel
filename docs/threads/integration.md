@@ -1051,6 +1051,11 @@ PUT TO HIM  the chart (ticker, date, timeframe, moment drawn); whether he will h
 CHART IN    his image 21:49Z -> data/left-and-up-example-SLXN-5m.png (git-ignored). SLXN 5m, 5 blue lines, range labels
             0.4000/0.2977. Date/time NOT stated: inferred today after-hours (flagged as inference to Research, which
             checks the store). Sent to Research. STILL OPEN with him: hand-marking 10 names.
+            Research ab9bb75 (pre-registered, nothing computed): its pixel read 0.3210/0.3279/0.3328/0.3414/0.3882 agrees
+            with mine; top line between body top ~0.3856 and wick ~0.3985; he SKIPS tops a strict ladder marks (~0.342,
+            ~0.364, AH ~0.312-0.316). Prediction: strict wick staircase fails precision; his lines look like shelves /
+            swing highs. Added $0.002 tolerance before reading bars. Date confirmed today by the store. SLXN AH bars
+            asked of Ops live (copy ends ~16:06 ET). PUT TO HIM: how he picks which tops to mark.
 ```
 
 ### HAND-OFF LINE
