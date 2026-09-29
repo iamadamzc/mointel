@@ -1060,6 +1060,16 @@ HIS SHIP YES     "yes to both ships" in Ops's session (per Ops; he told this sea
                  ops/flush-timer-on-c103267 -> 0342e7d. REPLAYED: 1 over c103267, patch-id 7ae18ef5, 170 files ==
                  pre-registered, +/- lines identical to 7135930, fa61410 not in cone. APPROVED. 7135930 SUPERSEDED.
                  Ships after /proc shows c103267. His chat Integration-tmi-retired: ARCHIVED (his word here).
+COLUMNS LIVE     c103267 on web/research/assess, Ops /proc 2026-09-29T04:38:01Z (stated): pids 1466412/1466470/1466538,
+                 NR 0; gate 169/169, 2,638; market untouched 3b78b8c pid 1347535. Passed to Design for live-board read.
+                 Timer 0342e7d deploying behind it.
+SNAPSHOT (c)     RULED (pre-registered before (c) exists; budget unchanged). Ops's reading: first runs after a web start
+                 max 42.1 then 161.8 ms; next three median 5.8-6.0 / max 6.7-12.3. METHOD: 5 x (1 cold + 20 warm), first
+                 run >= 2 min after the latest web start; report all maxima + medians. BASELINE (b') same method on
+                 0342e7d pre-restart ((a),(b) kept as recorded). GATE: median-of-5-maxima (c) - (b') <= 20 ms, else fix
+                 the Now field. Secondary, non-gating: any (c) max > 100 ms with no (b') max > 100 -> named to Integration.
+RANGE GATE       UNCHANGED (N, threshold, statistic). Added before any post-restart reading: no run < 2 min after a web
+                 or worker start; such a run is discarded and re-taken, never kept.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
