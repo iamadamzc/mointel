@@ -76,8 +76,11 @@ MCP and diagnostics keep the band): $1–$20 is not the engine band ($0.25–$20
 ordinals-omitted. `Rank held` is omitted by his ruling, *"dead rank not
 important"* (2026-09-29T01:53:21Z, to Integration). ~~The drawer's rank-change
 line is "lost"~~: **it LIED, printing `New` on every row** (Research's catch);
-fixed at `7ed88ed`, a ship condition of the set. **Review route: Design's answer
-is to follow the board, taking min/max exactly as `/api/market` does.**
+~~fixed at `7ed88ed` ("—")~~ **REMOVED at `e17fc36`, his ruling
+2026-09-29T02:06:46Z: *"yes remove it"*** (7ed88ed reverted in the same commit),
+a ship condition of the set. **Review route follows the board:** Research's
+`bae9c43`, on Design's answer. *His view, NOT a ruling, recorded by Integration:
+"rank in general is not important imo". Nothing is removed on it.*
 
 **Also landed: `da1e06b`** removes the three surviving shell commands from
 trader-facing copy (audit F-12: market-light tooltip, assessments-light tooltip,
