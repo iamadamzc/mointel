@@ -79,7 +79,7 @@ function input(extra: Partial<ReportFactsInput> = {}): ReportFactsInput {
     stored: stored(),
     tickers: [row('PENNY', 1, 0.5), row('AAA', 2, 4), row('BBB', 3, 12), row('HIGH', 4, 25)],
     range: CORE,
-    qualifiedPrice: new Map(),
+    latch: new Map(),
     limit: 12,
     ...extra,
   };
@@ -135,12 +135,27 @@ describe('reportFacts: in-range, in-range ranks, the latch', () => {
   });
 
   it('THE LATCH: qualified at $4 inside the range, now $25 -> in the report, as the board has it', () => {
-    const result = reportFacts(input({ qualifiedPrice: new Map([['HIGH', 4]]) }));
+    const latch = new Map([['HIGH', { price: 4, at: '2026-09-28T12:40:00Z' }]]);
+    const result = reportFacts(input({ latch }));
     expect(result.ok && result.facts.map((f) => f.ticker)).toEqual(['AAA', 'BBB', 'HIGH']);
   });
 
   it('a latch earned OUTSIDE the range does not carry', () => {
-    const result = reportFacts(input({ qualifiedPrice: new Map([['HIGH', 0.6]]) }));
+    const latch = new Map([['HIGH', { price: 0.6, at: '2026-09-28T12:40:00Z' }]]);
+    const result = reportFacts(input({ latch }));
+    expect(result.ok && result.facts.map((f) => f.ticker)).toEqual(['AAA', 'BBB']);
+  });
+
+  it('NO LOOK-AHEAD: a latch set at 10:00 is not in a report on the 09:25 checkpoint', () => {
+    // completedAt is 09:25:11 ET; the live row says it qualified at 10:00 ET.
+    const latch = new Map([['HIGH', { price: 4, at: '2026-09-28T14:00:00Z' }]]);
+    const result = reportFacts(input({ latch }));
+    expect(result.ok && result.facts.map((f) => f.ticker)).toEqual(['AAA', 'BBB']);
+  });
+
+  it('a latch with no recorded time does not carry -- unknown is not yes', () => {
+    const latch = new Map([['HIGH', { price: 4, at: null }]]);
+    const result = reportFacts(input({ latch }));
     expect(result.ok && result.facts.map((f) => f.ticker)).toEqual(['AAA', 'BBB']);
   });
 

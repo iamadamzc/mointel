@@ -62,8 +62,19 @@ export interface ReportFactsInput {
   stored: AssessmentRecord | null;
   tickers: readonly AssessmentTickerRecord[];
   range: { min: number; max: number };
-  /** Same-day qualification price per ticker (`ticker_session.qualified_price`). */
-  qualifiedPrice: ReadonlyMap<string, number | null>;
+  /**
+   * The latch per ticker, for the checkpoint's own board: `qualified_at` /
+   * `qualified_price` on the day board, `ah_qualified_at` /
+   * `ah_qualification_price` after the bell -- the pair `rangeRank.ts` uses.
+   *
+   * `at` IS LOAD-BEARING. These are read off the live `ticker_session` row,
+   * which has moved on since the checkpoint: a name that qualified at 10:00
+   * carries a price when a catch-up 09:25 report is built. A latch counts only
+   * if it existed by the checkpoint's data time -- otherwise the report admits
+   * a name the 09:25 board did not have. Interim: the assessment capture will
+   * freeze these on its own row (Ops, 2026-09-29), and this input goes away.
+   */
+  latch: ReadonlyMap<string, { price: number | null; at: string | null }>;
   /** Feed state per ticker, only when the report is written AT its checkpoint. */
   liveFeed?: ReadonlyMap<string, boolean>;
   /** How many names the report may carry. */
@@ -80,7 +91,7 @@ export interface ReportFactsInput {
 export const REPORT_NAME_CAP = 12;
 
 export function reportFacts(input: ReportFactsInput): ReportFacts {
-  const { source, stored, tickers, range, qualifiedPrice, liveFeed } = input;
+  const { source, stored, tickers, range, latch, liveFeed } = input;
   const limit = Math.min(input.limit, REPORT_NAME_CAP);
   const slot: CheckpointSlotRef = { type: source.type, scheduledFor: source.scheduledFor };
 
@@ -108,10 +119,17 @@ export function reportFacts(input: ReportFactsInput): ReportFacts {
 
   const inside = (price: number | null | undefined) =>
     price !== null && price !== undefined && price >= range.min && price <= range.max;
+  const dataTime = Date.parse(stored.completedAt);
+  const latchedInside = (ticker: string) => {
+    const held = latch.get(ticker);
+    if (!held || held.at === null) return false;
+    const at = Date.parse(held.at);
+    return Number.isFinite(at) && at <= dataTime && inside(held.price);
+  };
 
   const facts = tickers
     .filter((row) => row.assessmentRank !== null)
-    .filter((row) => inside(row.price) || inside(qualifiedPrice.get(row.ticker)))
+    .filter((row) => inside(row.price) || latchedInside(row.ticker))
     .sort((a, b) => (a.assessmentRank as number) - (b.assessmentRank as number))
     .slice(0, limit)
     .map(
