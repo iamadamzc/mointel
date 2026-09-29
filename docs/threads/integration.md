@@ -898,7 +898,79 @@ four of his ruling times written as "~HH:MMZ" guesses  a time stated without rea
   09-25 22:19:45Z restart (pid 1184182)
 ```
 
-## LIVE STATE — AS OF 2026-09-28 ~15:10 UTC (11:10 ET), AT THE FOURTEENTH SEAT'S HAND-OFF
+## LIVE STATE — AS OF 2026-09-29 ~02:40 UTC (22:40 ET 09-28), AT THE FIFTEENTH SEAT'S HAND-OFF
+
+*A SNAPSHOT, times from `zoneinfo` or read from his turns in the transcripts. The fifteenth seat's running notes, with
+every verification behind these lines, are in the archive section directly below (under the fourteenth's snapshot,
+whose APPROVED list carries the dated notes). **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
+
+### PRODUCTION (Ops, /proc, 2026-09-29 ~01:40Z)
+
+```
+web / research / assess   2256c63 = dca4a04 + af15a13 (server ranks inside a requested range; inert without min/max).
+                          dca4a04 = the news re-check + narrowed halt filter; re-queue PROVEN (job 5397 ARAY, NEWS_ITEM).
+market worker             3b78b8c, pid 1347535, since 2026-09-27 23:17:45Z. $0.25 floor live since 09-25 22:19:45Z.
+halt filter               configured, UNPROVEN. Proof lives in research_jobs.collector_report newsFetchDetail
+                          ", H halt/move notices" (collect.ts:158), NOT the poll line (recheck.ts:120, no halt field).
+```
+
+### READY, GATED ON A MEASUREMENT AND HIS YES
+
+**THE RANGE SET: tag `design/range-set-on-2256c63` → `520142c`, cut from production by Design.** Replayed by this
+seat: 10 commits over 2256c63 with `-x` provenance (8d8e50c d2c2582 5e8b13c[re-cut] 28a8cb1 dd6019e 56b6fd4 7ed88ed
+da1e06b bae9c43 e17fc36), patch-ids match 9/10, 22 files, no worker/engine change, **167 test files pre-registered.**
+Enumerated to Ops. **Approvable only when (1) Ops's LOADED range-read measurement passes — warm max < 20 ms for EVERY
+range ($0.25–$50, $1–$20, a narrow one), both boards, at ~08:30 and ~11:05 ET 09-29 — and (2) he says yes in Ops's
+session.** Idle read failed: $1–$20 day max 25.7 ms. Fail → index `ticker_session(trading_date, rvol DESC)` + AH, a
+schema bump behind the backup route, and the enumeration is void. Visible effect: board opens $1–$20 with a range
+control; drawer Rank Change removed; Rank held hidden off-band; review board follows; F-12 outage copy fixed.
+
+### HIS RULINGS SINCE THE FOURTEENTH'S HAND-OFF (each read at his own turn)
+
+```
+09-28T23:32:53Z  "no to both"                          no Benzinga direct-licence enquiry, no Warrior Trading enquiry.
+                                                       Alpaca/Benzinga is the ONLY news source (personal-use terms).
+09-28T23:34:24Z  "resume the session reports build"
+09-29T01:26:07Z  "yes scope resizable columns"         scope only; Design's choices are in DESIGN's block
+09-29T01:38:17Z  "yes build the near-live now column"
+09-29T01:53:21Z  "dead rank not important"             graveyard Rank held omitted on non-band ranges; no engine work
+   ~02:0xZ       "frankly - rank in general is not important imo."   A VIEW, NOT A RULING. Nothing removed on it.
+09-29T02:06:46Z  "yes remove it"                       the drawer's Rank Change line (in 520142c)
+to Design 02:30:43Z / 02:32:20Z (Design's relay): Now column = the last minute as six 10s bars, "same exact pattern"
+                 -- "i want the trade counts, dots and direction color." Counts-only first version REFUSED.
+09-29 ~02:35Z    "yes hand off"
+```
+
+### APPROVED, NOT BUILT — THE LIST HE ASKED TO ALWAYS SEE
+
+```
+RANGE SET            built, see above. Target 2026-10-05.
+NOW COLUMN           needs per-bucket PRICE + membership intervals (true 0s): Research engine + Ops trades.db v2 ->
+                     MARKET-WORKER RESTART (his yes, in principle via Design's block, timing via Ops) -> Design builds.
+                     Ops asked to fold ALL pending market-worker restarts into one plan to him: this, band piece 1's
+                     cea5ed2 on the worker, piece 2 (bootstrap = record band), piece 3 (ceiling 20 -> 50).
+SESSION REPORTS      Research: contract landed (13975c9); writer building on frame (b), dev cap 12. GATE ON EVERY
+                     set-range report: Ops's checkpoint change -- 4 nullable latch columns on desk_assessment_tickers so
+                     a report reproduces readRangeBoard's latch arm (schema bump). Ops order: range-read measurement ->
+                     PRE-DEPLOY BACKUP ROUTE -> this (+ high_res column, one bump) -> rvol index if needed.
+                     Count condition too: top-N complete iff out-of-range <= 25-N; 09-28 max 12 (recap).
+                     Design's briefing panel (307e42d, 6eb1362) on main, waits for /api/reports.
+RESIZABLE COLUMNS    scoped (docs/Design/resizable-columns-scope.md); his three choices in Design's block; ~1.5-2 days.
+DAILY BILLING        + payment-failed warning: after his sign-in cut-over proves it refuses.
+RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
+SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, a window).
+CLOSED               more news sources (his "no to both"); drawer rank change (removed); Rank held engine work (not wanted).
+```
+
+### OPEN WATCHES
+
+- **Halt filter proof** (above). **KNRX halt rows 106001/106002**: trip only if either appears in a
+  catalyst.evidenceSourceIds; retiring them is HIS (production data).
+- **Now-column data path**: Ops's rising `bucketsWritten` read, due 09-29 04:00–07:00 ET.
+- **Seats this session**: Commercial, Design and Research each retired and were replaced (new ids — look up by
+  title). trades.db is 0644 vs market.db 0640 (Ops, "align later").
+
+## ARCHIVE — THE FOURTEENTH'S LIVE STATE (2026-09-28 ~15:10Z) AND THE FIFTEENTH SEAT'S RUNNING NOTES
 
 *A SNAPSHOT. Times are from `zoneinfo` at the moment of writing. The fourteenth's running notes, with every
 verification and ruling behind these lines, are in the archive section directly below (it begins with the
