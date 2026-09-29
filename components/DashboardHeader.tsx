@@ -1,5 +1,6 @@
 'use client';
 
+import { BrandMark } from '@/components/BrandMark';
 import { feedFailureLine, type FeedFailure } from '@/lib/dashboard/feedFailure';
 import { DataFreshness } from '@/components/DataFreshness';
 import { DeskAssessmentStatus } from '@/components/DeskAssessmentStatus';
@@ -54,13 +55,21 @@ export function DashboardHeader({
        * by chrome, leaving 352px for the board itself.
        */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-1.5">
-        <div className="flex items-baseline gap-2.5">
-          <h1 className="text-[13px] leading-none font-semibold tracking-[0.14em] text-ink uppercase">
-            Momentum Intelligence
+        {/*
+          * THE COMPACT LOCKUP, his choice 2026-09-29 ("the compact lockup"):
+          * the site header's composition (`app/page.tsx`) -- the mark, a
+          * diminutive "The", the name, "Trading Desk" in the accent -- at this
+          * header's own 13px, so the row keeps its height. The brand was made
+          * 2026-09-18 for the site and sign-in and never reached the desk.
+          * The mark's geometry has one source, `BrandMark`.
+          */}
+        <div className="flex items-center gap-2">
+          <BrandMark size={18} className="text-accent" />
+          <h1 className="flex items-baseline gap-2 text-[13px] leading-none uppercase">
+            <span className="text-[9px] font-semibold tracking-[0.34em] text-ink-3">The</span>
+            <span className="font-semibold tracking-[0.14em] text-ink">Momentum Intelligence</span>
+            <span className="font-medium tracking-[0.14em] text-accent">Trading Desk</span>
           </h1>
-          <span className="text-[13px] leading-none font-medium tracking-[0.14em] text-accent uppercase">
-            Trading Desk
-          </span>
         </div>
 
         <div className="flex items-baseline gap-2 border-l border-line pl-4">
