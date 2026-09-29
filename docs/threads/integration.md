@@ -929,6 +929,13 @@ fourth instance goes back to him.*
 **HIS RULING 2026-09-29T03:51:42Z (this session, mid-turn message, read from the queue-operation): "yes to columsn and
 keep this chat for now".** *Keep: no hand-off. Standing cure now: no clock time written anywhere except one read in
 the same step or taken from a record (commit %cI, a transcript timestamp).*
+```
+"~04:1xZ" written into the retraction note; clock    same                               YES, 5th --     self (zoneinfo
+  read 03:58:59Z right after -- AFTER his "keep" and                                   after the cure  read after)
+  after the stated cure
+```
+*The stated cure did not hold. New rule for this seat: NO clock times in prose at all; cite a commit sha or a
+transcript timestamp instead, or say "at the time of this commit".*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
@@ -979,7 +986,7 @@ index: 244 ms median / 293 max at 8,688 rows (this disk).** The box run is still
 live desk may ALREADY exceed 250 ms flushes at the open (SIP stall), index or not**~~ **CORRECTED (Research's guard):
 244/293 ms is an ABSOLUTE from a scratch copy on THIS Windows disk, with an every-row sweep surely above the real
 dirty count; it is NOT evidence about the box, only a reason to look. It reached him as "may already take about a
-quarter of a second" at ~04:1xZ and was retracted to him in the next message.** Ops reads the production baseline
+quarter of a second" shortly before 03:58:59Z (clock read after; the draft said "~04:1xZ") and was retracted to him in the next message.** Ops reads the production baseline
 (dirty rows/flush at the open, whole-flush in RTH) FIRST, and separates DELAY from LOSS (better-sqlite3 blocks the
 event loop: are SIP messages queued-late or dropped? unverified, and very different claims); over 250 ms = to him
 before the index. Research's next idea
