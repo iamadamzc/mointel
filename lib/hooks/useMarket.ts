@@ -8,6 +8,7 @@ import {
   type FeedFailure,
 } from '@/lib/dashboard/feedFailure';
 
+import { rangeQuery, type PriceRange } from '@/lib/dashboard/boardRange';
 import { pollDecision } from '@/lib/dashboard/pollGate';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
@@ -25,13 +26,18 @@ export interface MarketFeedState {
   loading: boolean;
 }
 
-export function useMarket(extraSymbols: string[]): MarketFeedState {
+export function useMarket(
+  extraSymbols: string[],
+  /** The viewer's board range. Null asks for the server's default. */
+  range: PriceRange | null = null,
+): MarketFeedState {
   const { apiBase } = useDeskMode();
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
   const [failure, setFailure] = useState<FeedFailure | null>(null);
   const [loading, setLoading] = useState(true);
 
   const symbolsKey = extraSymbols.join(',');
+  const rangeKey = rangeQuery(range);
 
   const mountedRef = useRef(true);
   const inflightRef = useRef<{ controller: AbortController; startedAt: number } | null>(null);
@@ -41,9 +47,9 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
    * to abort the in-flight request on every tick, so a response slower than the
    * interval never landed (under concurrent load, almost none did) and the
    * board kept its last payload while its header still said LIVE. `force` is a
-   * change of query.
+   * change of query: the symbols or the viewer's range.
    */
-  const load = useCallback(async (symbols: string, force: boolean) => {
+  const load = useCallback(async (symbols: string, rangeParams: string, force: boolean) => {
     const current = inflightRef.current;
     const decision = pollDecision(current?.startedAt ?? null, Date.now(), force);
     if (decision === 'SKIP') return;
@@ -53,7 +59,8 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
     inflightRef.current = flight;
 
     try {
-      const query = symbols ? `?symbols=${encodeURIComponent(symbols)}` : '';
+      const parts = [symbols ? `symbols=${encodeURIComponent(symbols)}` : '', rangeParams].filter(Boolean);
+      const query = parts.length > 0 ? `?${parts.join('&')}` : '';
       const response = await fetch(`${apiBase}/market${query}`, {
         signal: controller.signal,
         cache: 'no-store',
@@ -90,16 +97,17 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
     mountedRef.current = true;
     // load() is async: every setState it performs happens after the fetch
     // settles, never synchronously during this effect.
+    // The effect re-runs on a new symbol set or range, so its first load is a change of query.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void load(symbolsKey, true);
+    void load(symbolsKey, rangeKey, true);
 
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
-      void load(symbolsKey, false);
+      void load(symbolsKey, rangeKey, false);
     }, MARKET_POLL_INTERVAL_MS);
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible') void load(symbolsKey, false);
+      if (document.visibilityState === 'visible') void load(symbolsKey, rangeKey, false);
     };
     document.addEventListener('visibilitychange', onVisible);
 
@@ -110,7 +118,7 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
       inflightRef.current?.controller.abort();
       inflightRef.current = null;
     };
-  }, [load, symbolsKey]);
+  }, [load, symbolsKey, rangeKey]);
 
   return { snapshot, failure, loading };
 }
