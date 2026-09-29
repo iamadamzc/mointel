@@ -44,13 +44,25 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-29 02:24 UTC / 2026-09-28 22:24 ET
+## Live state — 2026-09-29 02:42 UTC / 2026-09-28 22:42 ET
 
 **MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
 ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
 2026-09-28 21:22 ET** (see "What is verified ON THE LIVE BOARD").
 Production web is `2256c63` (af15a13's server range ranking alone, inert) per
 Integration, awaiting Ops's post-landing /proc read.
+
+**HIS RULINGS TO DESIGN, 2026-09-29T02:41:45Z, verbatim: *"1 yes, 2 yes discovery
+only"*.** (1) A market-worker restart for the `Now` column, **approved IN
+PRINCIPLE**: Ops proposes the time and he approves that time directly. (2)
+Resizable columns: **build, Discovery only** (open items).
+
+**IN FLIGHT, OWNER NAMED: Ops's gate at the range tag `520142c` went RED on one
+test (~02:40Z, per Integration `ef8d585`).** Design's gate at the same sha was
+167/2544 green. Design asked Ops for the test by name (22:42 ET). If it's
+`releaseRetention`'s bash-driven 30 s timeout (seen under load tonight, passes
+alone), it's load. If it's in `tests/dashboard` or `tests/market`, **Design
+re-cuts the tag.** Not approvable while red.
 
 > **THE RANGE SET, RE-CUT FOR SHIPPING — HAND OPS THE TAG
 > `design/range-set-on-2256c63` → `520142c` (on origin).** Integration's replay
@@ -558,7 +570,7 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 | Payment-failed warning — build APPROVED, not started | Design | **Trigger: Ops starts the billing work, which comes after the sign-in cut-over.** Spec: `docs/commercial/daily-billing-design/design-seat.md`. OS notification ruled on; hour never restarts; `endsAt` = earlier of failure+1h and 20:00 ET |
 | The price range: the CONTROL (`5e8b13c`, on main, NOT shipped) | Design built; Research owns the server half | Viewed locally against a read-only store copy. **Latch: fixed by Research at `8d8e50c`.** ~~Still blocking: the graveyard~~ **CLOSED 2026-09-29 at `dd6019e`** on Research's `diedWhileRanked` (`d2c2582`). ~~Row mark `above your range` waits on a flag from Research~~ **needs no build**: Discovery rows are ranked-only, and `retentionNote` already reads the served range (live state above). No-param request flips to `rangeDefault` only in the release that carries the control. **SECOND SHIP GATE (Ops, via Integration, 2026-09-29): a range read costs 233–362 ms against 4.8 ms today, per viewer per poll; not approvable until Ops measures it under 20 ms at $0.25–$50 on the live store (Research + Ops fix).** The control takes its bounds from the payload's `rangeBounds` and never widens them itself; `BOARD_RANGE_MAX` stays unset until the capture band widens |
 | Near-live `Now` column — BUILD APPROVED (*"yes build the near-live now column"*, 2026-09-29T01:38:17Z, verified at his turn) | Design spec + board; Research the field | Spec: `docs/Design/near-live-now-spec.md`. **SHAPE RULED 2026-09-29T02:30:43Z, to Design:** *"same exact pattern as the previous minute format, except now it will show the last minute in 10 sec increments instead of 5 min in 1 min increments."* Number = newest completed 10 s bucket, counted; bars = the last six 10 s buckets. ~~Price points and direction colour wait~~ **He refused a bars-only version, 02:32:20Z: *"i want the trade counts, dots and direction color."*** So price per 10 s bucket + membership intervals (Research) → **a market-worker restart (his yes)** → then Design builds. Research: `nowBuckets` (six, oldest first, `{bucketEnd, trades, price}`) + `tradeCapture.asOf`. Ops: `bucketsWritten` rising, 09-29 04:00–07:00 ET. After the range release |
-| Resizable columns — SCOPE ONLY (*"yes scope resizable columns"*, 01:26:07Z) | Design | Scope: `docs/Design/resizable-columns-scope.md`. **His three choices outstanding**: drag vs presets, which tables, browser vs account. No build without his yes; after the range release |
+| Resizable columns — **BUILD APPROVED, DISCOVERY ONLY** (his words to Design 2026-09-29T02:41:45Z: *"2 yes discovery only"*, answering "Build resizable columns as: drag any column edge on the Discovery board, remembered in this browser?") | Design | Spec: `docs/Design/resizable-columns-scope.md`, option (A) with every guardrail there; widths in this browser, moving to the account at sign-in. **NOT the Researched names table.** Built on `main`; ships after the range release. ~1.5 days |
 | Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
 | `lastCheckpointChanges` on the payload | Research | Spec above; §9 item 12's rail blocks on it |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
@@ -581,6 +593,7 @@ this session is the trigger to warn him and propose a hand-off.*
 | Told Integration AND HIM the drawer's rank-change line would be "lost" after the flip; it would have printed `New` on every row. I read the field's grep line, not its render | NAMED-THE-FIELD-NOT-THE-RENDER | No | **Peer (Research)**; it reached his channel as an understatement |
 | Said the qualify band's floor was "Research's lever"; it is his ruled system band | RELAYED-OWNERSHIP-UNCHECKED | No | Peer (Research) |
 | He said "same exact pattern"; I recorded a bars-only first version as "Design's reading, not a question for him unless he objects". It cut the dots and colour he had just asked for, for a data reason that was mine to solve | NARROWED-HIS-RULING | No | **HIM** (02:32:20Z), the costly kind |
+| A .NET `WriteAllBytes` with a relative path wrote a temp file into the SHARED tree (`A:\mointel\components\DashboardShell.tsx.tmp`), and the edit it carried never landed in the replay | RELATIVE-PATH-IN-DOTNET | No | Self, within the minute; file removed, commit amended |
 
 ## Where the rest of the record is
 
