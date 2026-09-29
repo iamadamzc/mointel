@@ -967,7 +967,12 @@ symbol, price, latched, qualified_price) WHERE price/rvol NOT NULL; evening the 
 columns. Plan becomes COVERING INDEX, no temp B-tree. Scratch-copy ratio: day ~3x, evening ~2x; NOT a gate reading
 (Research said so). **SECOND CONDITION, pre-registered by this seat before any reading: the WRITE side.** rvol and
 ah_participation move on nearly every worker upsert -> B-tree relocation on the flush hot path. Ships only if (1) the
-read gate passes on the box AND (2) added flush cost <= 10% of median flush and max flush < the 1 s interval. A
+read gate passes on the box AND (2) ~~added flush cost <= 10% of median flush and max flush < the 1 s interval~~
+**RULED, replacing that on Ops's argument (the flush shares the SIP socket's thread, so a 900 ms flush stalls
+ingestion): added cost <= 10% of median upsertTickerSessions AND <= 10% of median whole flush AND max whole flush
+< 250 ms in RTH with the index; baseline measured without. Baseline max > 250 ms = a finding to him first.** No
+flush-duration instrument exists (runtime.ts:1595 flushedAt is a clock; verified) -- Ops replays offline for the
+decision; an in-worker timer rides a restart (re-cut into the restart set only if ready before his time). A
 market.db bump: ONE migration with the latch/high_res columns, behind the backup route. The 08:30/11:05
 reads STILL RUN (N = 1 cold + 20 warm, pre-registered now) as the loaded baseline for the fix; they cannot un-void.
 *If a seat thinks the BUDGET itself is wrong, that is an argument with its own measurement (viewer refresh rate x
@@ -1037,6 +1042,8 @@ RESTART SET REPLAY   16th seat, 2026-09-29, scratch worktree at 2256c63, main's 
                      ENUMERATED TO OPS (standing approval: no visible board change before the restart) conditional on
                      Ops's owner review of the worker wiring. Pre-registered: gate 168; snapshot-route latency (1 cold
                      + 20 warm) before ship / after ship / after restart -- nowBuckets may add <= 20 ms to warm max.
+                     SNAPSHOT (a) on 2256c63 (Ops): cold 5.9, warm median 4.9 / max 6.8 ms over 20. Ops's gate on
+                     121f97c in progress; THE SHIP WAITS FOR HIS WORD IN OPS'S SESSION (Ops's choice).
                      OPS OWNER REVIEW of ae02f7c's worker half: APPROVED; covers 121f97c (worker hunks identical,
                      verified). Precondition (1) MET. Ops gates the tag sha itself before shipping. Box: trades.db
                      still schema v1 (Ops read). Ops's 04:15 ET capture task: negative control (flat, market closed)
