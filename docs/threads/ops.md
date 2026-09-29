@@ -12489,3 +12489,4 @@ it off the flush writer's WAL, with its own retention. daily_bars stays in marke
 (split-adjusted, split_factor stamp, re-fetch when the basis moves) + the 15m rollup from minute_bars.
 TRIGGER: after the 10:12 ET 09-30 grades read + the disk re-read. OWNER: Ops (successor). Integration enumerates by
 literal sha; the 1b5ead6 cone rule applies.
+**History store KEY (Research owns the spec; checked at 1b5ead6 worker/runtime.ts:1088, ts = new Date(bar.t) = Alpaca bucket START):** key every stored candle by BUCKET START, UTC, as minute_bars does. Fetched 15Min bars are start-keyed; the 15m rolled up from our own 1m MUST use the same key. His platform labels candles by END (MSGY: his "15:00" = our 14:45 row), so end = start + 15m is DISPLAY ONLY. Mixed keys would put the fetched/rolled seam off by one candle, silently.
