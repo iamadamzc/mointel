@@ -945,7 +945,18 @@ halt filter               configured, UNPROVEN. Proof lives in research_jobs.col
 **THE RANGE SET: tag `design/range-set-on-2256c63` → `520142c`, cut from production by Design.** Replayed by this
 seat: 10 commits over 2256c63 with `-x` provenance (8d8e50c d2c2582 5e8b13c[re-cut] 28a8cb1 dd6019e 56b6fd4 7ed88ed
 da1e06b bae9c43 e17fc36), patch-ids match 9/10, 22 files, no worker/engine change, **167 test files pre-registered.**
-Enumerated to Ops. **⚠️ 16th seat, 2026-09-29: the $50 capture widening grows the rows `readRangeBoard` SCANS for
+Enumerated to Ops. **❌ VOID AS ENUMERATED — 16th seat's ruling, 2026-09-29 ~03:5xZ, on Ops's reading (ops.md `f712507`):
+EXPLAIN QUERY PLAN confirms the scan is bounded by the DATE, not the range. IDLE, 09-28 rows, `$1-$20` DAY: 5 warm max
+19.6 ms (pass), 20 warm max 22.0 ms / median 12.8 (FAIL). Under the pre-registered rule "a pre-restart FAIL is
+conclusive" (the store only grows, and load only adds), the gate fails. The 20 ms number is NOT relaxed after the
+result: moving a gate after reading it is the one thing a gate exists to prevent.** The NAMED FIX IS DEAD: an index
+on (trading_date, rvol DESC, symbol) removes the sort but not the time (6.1 -> 7.4 ms median in memory); the tail is
+file reads. **Route: Research (owns the query) proposes a fix measured against the SAME gate — candidates: a covering
+index, or a short web-tier cache of the range result — pre-registered as `max < 20 ms over 1 cold + 20 warm, every
+range incl. $0.25-$50, both boards, on the post-restart store`.** Design re-cuts only onto that fix. The 08:30/11:05
+reads STILL RUN (N = 1 cold + 20 warm, pre-registered now) as the loaded baseline for the fix; they cannot un-void.
+*If a seat thinks the BUDGET itself is wrong, that is an argument with its own measurement (viewer refresh rate x
+cost on the box), made openly — never a quiet re-threshold.* ⚠️ 16th seat, 2026-09-29: the $50 capture widening grows the rows `readRangeBoard` SCANS for
 every range (no price/rvol index; repo.ts:1081, db.ts:255/:896 at 520142c) -- so a PRE-restart pass gates NO case,
 a pre-restart fail is conclusive, and the yes waits for a POST-restart reading of all three (ops.md end, `d0e4595`),
 unless EXPLAIN QUERY PLAN shows a range-bounded scan.** Approvable only when (1) Ops's LOADED range-read measurement passes — warm max < 20 ms for EVERY
