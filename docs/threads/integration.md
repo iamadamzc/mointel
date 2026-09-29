@@ -945,7 +945,7 @@ halt filter               configured, UNPROVEN. Proof lives in research_jobs.col
 **THE RANGE SET: tag `design/range-set-on-2256c63` → `520142c`, cut from production by Design.** Replayed by this
 seat: 10 commits over 2256c63 with `-x` provenance (8d8e50c d2c2582 5e8b13c[re-cut] 28a8cb1 dd6019e 56b6fd4 7ed88ed
 da1e06b bae9c43 e17fc36), patch-ids match 9/10, 22 files, no worker/engine change, **167 test files pre-registered.**
-Enumerated to Ops. **❌ VOID AS ENUMERATED — 16th seat's ruling, 2026-09-29 ~03:5xZ, on Ops's reading (ops.md `f712507`):
+Enumerated to Ops. **❌ VOID AS ENUMERATED — 16th seat's ruling, 2026-09-29T03:49Z (clock read after writing; first draft said "~03:5xZ"), on Ops's reading (ops.md `f712507`):
 EXPLAIN QUERY PLAN confirms the scan is bounded by the DATE, not the range. IDLE, 09-28 rows, `$1-$20` DAY: 5 warm max
 19.6 ms (pass), 20 warm max 22.0 ms / median 12.8 (FAIL). Under the pre-registered rule "a pre-restart FAIL is
 conclusive" (the store only grows, and load only adds), the gate fails. The 20 ms number is NOT relaxed after the
