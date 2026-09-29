@@ -1034,6 +1034,32 @@ Commercial / Web / Marketing / R&D: idle, nothing open with this seat.
 04:15 ET capture-rise read: Ops's scheduled task (negative control proven); both values owed to Integration.
 ```
 
+## THE SEVENTEENTH SEAT — RUNNING NOTES (opened 2026-09-29T04:16:33Z, `local_70f001d0`, Opus 5.5)
+
+*Every time below is a transcript timestamp, a peer's stated reading, or a `date -u` read in the same step.*
+```
+PRODUCTION       RE-READ by Ops from the box at 2026-09-29T04:17:37Z (its stated reading): web 1458225 / research
+                 1458274 / assess 1458350 on 121f97c3ce47, NR 0; market 1347535 on 3b78b8cf4c9e, NR 0. No deploy unit
+                 running. CAPTURE_PRICE_* in /etc/mointel/mointel.env: 0 lines. CONFIRMED.
+FLUSH TIMER      7135930 REPLAYED by this seat: rev-list 121f97c..7135930 = 1, 121f97c is an ancestor, patch-id
+                 7ae18ef5 --stable == 56dfb15, 169 test files at the sha (168 at 121f97c). Enumeration APPROVED;
+                 condition (121f97c live) met. Ship = HIS yes, asked and pending in Ops's session.
+COLUMNS BASE     Design told: confirmed production 121f97c; cut on 7135930 if he says yes to the timer AND Ops confirms
+                 it live, else on 121f97c; hold the cut until Integration says "cut on X". Files DISJOINT (checked:
+                 timer = lib/market/flushTiming.ts, tests/market/flushTiming.test.ts, worker/runtime.ts; columns =
+                 5 files in components/, lib/dashboard, lib/hooks, tests/dashboard). PRE-REGISTERED test-file count
+                 for the columns tag: 170 on 7135930, 169 on 121f97c.
+OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
+                 CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
+```
+**THE SEVENTEENTH SEAT'S LEDGER (session-hygiene §2):**
+```
+error                                                  TYPE                               repeat?  caught by
+"7135930 touches 3 files, disjoint from your 5" sent   asserted what was not opened       no       self (git show
+  to Design BEFORE opening either diff; it held on       (memory: never-assert-what-you-            --stat after)
+  opening                                                have-not-opened)
+```
+
 ## ARCHIVE — THE FIFTEENTH'S LIVE STATE (2026-09-29 ~02:40Z) WITH THE SIXTEENTH SEAT'S RUNNING NOTES INLINE
 
 *Kept for MECHANISMS and the verification trail behind the snapshot above. Where it disagrees with the snapshot,
