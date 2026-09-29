@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 
+import { ColumnResizeHandle } from '@/components/ColumnResizeHandle';
+import { DEFAULT_WIDTHS, type DiscoveryColumnKey } from '@/lib/dashboard/columnWidths';
+import { useColumnWidths, type ColumnHandle } from '@/lib/hooks/useColumnWidths';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import { ActivitySparkline } from '@/components/ActivitySparkline';
 import type { UniverseWarning } from '@/lib/dashboard/universe';
@@ -324,6 +327,36 @@ export function DiscoveryBoard({
   const activeMetric = sortActive ? activeEntry?.metric : undefined;
   const activeColumn = activeEntry?.column;
 
+  /*
+   * RESIZABLE COLUMNS, DISCOVERY ONLY. His ruling, 2026-09-29T02:41:45Z:
+   * *"2 yes discovery only"* -- drag any column edge, remembered in this
+   * browser. The order here is the order of the <col>s and the headers below,
+   * and the width model (`lib/dashboard/columnWidths.ts`) holds every guardrail:
+   * never narrower than the sorted header, never a horizontal scroll, Why and
+   * Risk take the rest.
+   */
+  const columns: DiscoveryColumnKey[] = [
+    'mark',
+    'ticker',
+    'price',
+    'rvol',
+    'now',
+    ...(showFloat ? (['float'] as const) : []),
+    'why',
+    'risk',
+    'cycle',
+  ];
+  const {
+    attachBox,
+    widths: columnWidths,
+    measureHead,
+    handle: columnHandle,
+    customised: widthsCustomised,
+    resetAll: resetWidths,
+  } = useColumnWidths(columns);
+  /* The head's accessible name; the head itself reads the same entry inline. */
+  const nowLabel = nowEntry ? resolveSortEntry(nowEntry, phase, board).label : 'Now';
+
   function changeSort(key: DiscoverySortKey) {
     setSort((current) =>
       current.key === key
@@ -498,6 +531,20 @@ export function DiscoveryBoard({
               </button>
             ))}
           </div>
+          {/*
+            * Only when there is something to reset. A control that does
+            * nothing on the default board is a row of chrome for a no-op.
+            */}
+          {widthsCustomised ? (
+            <button
+              type="button"
+              onClick={resetWidths}
+              title="Put every column back to its default width"
+              className="min-h-[24px] rounded-sm border border-line-2 bg-panel-2 px-2 py-1 text-[11px] font-semibold tracking-wide text-ink-3 uppercase transition-colors hover:bg-panel-3 hover:text-ink-2"
+            >
+              Reset widths
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -522,17 +569,28 @@ export function DiscoveryBoard({
                 : 'No names currently qualify for the discovery universe.'}
         </p>
       ) : (
+        <div ref={attachBox}>
         <table className="w-full table-fixed border-collapse border-t border-line">
           <caption className="sr-only">
             {afterHours ? 'After-hours discovery' : 'Discovery'} board
             {discovery ? `, ranked by ${discovery.rankingLabel}` : ''}. Use the arrow keys to move
             between rows and Enter to open a ticker.
           </caption>
+          {/*
+            * THE WIDTHS LIVE HERE, NOT ON THE HEADERS. Until the table has been
+            * measured once, each column takes today's fixed width and Why and
+            * Risk split the rest, so the first paint is the board as it was.
+            * (After the caption: a caption must be a table's first child.)
+            */}
+          <colgroup>
+            {columns.map((key) => {
+              const width = columnWidths?.[key] ?? DEFAULT_WIDTHS[key];
+              return <col key={key} style={width === null ? undefined : { width }} />;
+            })}
+          </colgroup>
           <thead className="sticky top-0 z-10 bg-panel-2">
             <tr>
-              <Th className="w-[24px]" srOnly>
-                Changed
-              </Th>
+              <Th srOnly>Changed</Th>
               {/*
                 * THERE IS NO RANK COLUMN. HIS RULING, 2026-09-25: *"I'm making
                 * the call to remove the rank column. Allow the user to rank it
@@ -557,7 +615,9 @@ export function DiscoveryBoard({
                 * chip with the column would have left the evening board with
                 * no way back to its own ordering.
                 */}
-              <Th className="w-[112px]">Ticker</Th>
+              <Th name="Ticker" resize={columnHandle('ticker')} measureHead={measureHead('ticker')}>
+                Ticker
+              </Th>
               {/*
                  * `move.label`, NOT a typed "Move".
                  *
@@ -571,7 +631,9 @@ export function DiscoveryBoard({
                  * word, at zero width -- it is shorter than `Move`.
                  */}
               <Th
-                className="w-[172px]"
+                name={`Price, ${move.label}, VWAP`}
+                resize={columnHandle('price')}
+                measureHead={measureHead('price')}
                 sorted={activeColumn === 'price'}
                 title={priceColumnTitle(phase)}
               >
@@ -587,7 +649,9 @@ export function DiscoveryBoard({
                 * stops moving at 16:00 and still carries what the day earned.
                 */}
               <Th
-                className="w-[68px]"
+                name={rankingQuantity(board).label}
+                resize={columnHandle('rvol')}
+                measureHead={measureHead('rvol')}
                 align="right"
                 sorted={activeColumn === 'rvol'}
                 title={rankingQuantity(board).title}
@@ -625,7 +689,9 @@ export function DiscoveryBoard({
                * a head that fits in the state he looks at it in.
                */}
               <Th
-                className="w-[68px]"
+                name={`${nowLabel}, ${sparklineLagLabel()}`}
+                resize={columnHandle('now')}
+                measureHead={measureHead('now')}
                 align="right"
                 sorted={activeColumn === 'now'}
                 title={nowEntry?.title}
@@ -645,7 +711,9 @@ export function DiscoveryBoard({
               </Th>
               {showFloat ? (
                 <Th
-                  className="w-[84px]"
+                  name="Float"
+                  resize={columnHandle('float')}
+                  measureHead={measureHead('float')}
                   align="right"
                   sorted={activeColumn === 'float'}
                   title={COLUMN_TITLE.float}
@@ -653,9 +721,28 @@ export function DiscoveryBoard({
                   Float
                 </Th>
               ) : null}
-              <Th title={COLUMN_TITLE.why}>Why</Th>
-              <Th title={COLUMN_TITLE.risk}>Risk</Th>
-              <Th className="w-[152px]" title={COLUMN_TITLE.cycle}>
+              <Th
+                name="Why"
+                resize={columnHandle('why')}
+                measureHead={measureHead('why')}
+                title={COLUMN_TITLE.why}
+              >
+                Why
+              </Th>
+              <Th
+                name="Risk"
+                resize={columnHandle('risk')}
+                measureHead={measureHead('risk')}
+                title={COLUMN_TITLE.risk}
+              >
+                Risk
+              </Th>
+              <Th
+                name="Cycle"
+                resize={columnHandle('cycle')}
+                measureHead={measureHead('cycle')}
+                title={COLUMN_TITLE.cycle}
+              >
                 Cycle
               </Th>
             </tr>
@@ -681,6 +768,7 @@ export function DiscoveryBoard({
             ))}
           </tbody>
         </table>
+        </div>
       )}
 
       <p className="mt-1.5 text-[11px] text-ink-3">
@@ -710,6 +798,9 @@ function Th({
   srOnly = false,
   sorted = false,
   title,
+  name,
+  resize,
+  measureHead,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -718,11 +809,22 @@ function Th({
   /** The column the board is ordered by right now. */
   sorted?: boolean;
   title?: string;
+  /**
+   * The header's name as a reader says it. Given whenever the header carries a
+   * resize handle, so the handle's own label is not read as part of the
+   * column's name.
+   */
+  name?: string;
+  /** The drag handle, once the table has been measured. */
+  resize?: ColumnHandle | null;
+  /** Where the sorted-state width of this header is measured. */
+  measureHead?: (element: HTMLElement | null) => void;
 }) {
   return (
     <th
       scope="col"
       aria-sort={sorted ? 'descending' : undefined}
+      aria-label={name}
       title={title}
       /*
        * THE SORTED COLUMN IS MARKED IN THE TABLE, NOT ONLY ABOVE IT.
@@ -732,7 +834,7 @@ function Th({
        * eye lands on and it was showing 3, 2, 21, 8, 5. The order is in the
        * table, so the marker has to be too.
        */
-      className={`border-b px-2 py-1 text-[11px] font-semibold tracking-[0.08em] whitespace-nowrap uppercase ${
+      className={`group/head relative border-b px-2 py-1 text-[11px] font-semibold tracking-[0.08em] whitespace-nowrap uppercase ${
         sorted
           ? 'border-accent/60 bg-accent/10 text-accent'
           : 'border-line-2 bg-panel-2 text-ink-3'
@@ -740,6 +842,24 @@ function Th({
     >
       {srOnly ? <span className="sr-only">{children}</span> : children}
       {sorted && !srOnly ? <span aria-hidden="true"> ▼</span> : null}
+      {measureHead ? (
+        /*
+         * THE HEADER AS IT RENDERS WHEN SORTED, caret included, laid out off
+         * to the side at its natural width. This is what a column may never be
+         * dragged narrower than -- the `Now` head once sat 17 px short of its
+         * own word in exactly this state -- and it is measured rather than
+         * typed because the labels change with the session.
+         */
+        <span
+          ref={measureHead}
+          aria-hidden="true"
+          className="pointer-events-none invisible absolute top-0 left-0 w-max"
+        >
+          {children}
+          <span> ▼</span>
+        </span>
+      ) : null}
+      {resize ? <ColumnResizeHandle label={(name ?? '').split(',')[0]} {...resize} /> : null}
     </th>
   );
 }
