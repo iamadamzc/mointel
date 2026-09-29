@@ -6,6 +6,13 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { loadMarketConfig } from '@/lib/market/config';
 import {
+  closeAllFeedIntervals,
+  closeFeedInterval,
+  heartbeatFeedIntervals,
+  openFeedInterval,
+  openTradesStoreReadonly,
+  readFeedIntervals,
+  readTradeBuckets,
   loadFeedIntervals,
   loadRecentTradeBuckets,
   loadTradeBuckets,
@@ -290,6 +297,48 @@ describe('trades store v2: prices, coverage and the flush clock', () => {
       ['WXYZ', 3],
     ]);
     db.close();
+  });
+});
+
+describe('trades store v2: the engine-facing interval calls', () => {
+  it('opens, heartbeats forward, closes once, and closes all on disconnect', () => {
+    const db = openTradesStore(path.join(tempDir(), 'trades.db'));
+    openFeedInterval(db, { symbol: 'ABCD', tradingDate: DATE, openedMs: B0 });
+    openFeedInterval(db, { symbol: 'WXYZ', tradingDate: DATE, openedMs: B0 });
+    heartbeatFeedIntervals(db, DATE, B0 + 20_000);
+    heartbeatFeedIntervals(db, DATE, B0 + 5_000); // a late, stale beat must not move it back
+    expect(readLastFlushMs(db)).toBe(B0 + 5_000);
+    closeFeedInterval(db, { symbol: 'ABCD', tradingDate: DATE, closedMs: B0 + 30_000 });
+    heartbeatFeedIntervals(db, DATE, B0 + 40_000); // closed ABCD is not touched
+    closeAllFeedIntervals(db, DATE, B0 + 50_000);
+    expect(readFeedIntervals(db, DATE, ['ABCD', 'WXYZ'], B0, B0 + 60_000)).toEqual([
+      { symbol: 'ABCD', openedMs: B0, lastSeenMs: B0 + 30_000, closedMs: B0 + 30_000 },
+      { symbol: 'WXYZ', openedMs: B0, lastSeenMs: B0 + 50_000, closedMs: B0 + 50_000 },
+    ]);
+    db.close();
+  });
+
+  it('reads buckets inside [from, to) only', () => {
+    const db = openTradesStore(path.join(tempDir(), 'trades.db'));
+    upsertTradeBuckets(db, DATE, [
+      { symbol: 'ABCD', bucketTs: B0, trades: 1 },
+      { symbol: 'ABCD', bucketTs: B1, trades: 2 },
+    ]);
+    expect(readTradeBuckets(db, DATE, ['ABCD'], B0, B1).map((row) => row.trades)).toEqual([1]);
+    db.close();
+  });
+
+  it('opens read-only for the web tier, and refuses a store the worker has not migrated', () => {
+    const file = path.join(tempDir(), 'trades.db');
+    openTradesStore(file).close();
+    const readonly = openTradesStoreReadonly(file);
+    expect(() => readonly.prepare('DELETE FROM trade_buckets').run()).toThrow();
+    readonly.close();
+
+    const old = new Database(path.join(path.dirname(file), 'old.db'));
+    old.pragma('user_version = 1');
+    old.close();
+    expect(() => openTradesStoreReadonly(path.join(path.dirname(file), 'old.db'))).toThrow(/migrates it/);
   });
 });
 

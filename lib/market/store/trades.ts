@@ -332,6 +332,97 @@ export function loadFeedIntervals(
     .all(tradingDate, fromMs, ...symbols) as FeedIntervalRecord[];
 }
 
+/* ---- Research's call shape (2026-09-29), thin over the upserts above ---- */
+
+export function openFeedInterval(
+  db: TradesDatabase,
+  interval: { symbol: string; tradingDate: string; openedMs: number },
+): void {
+  upsertFeedIntervals(db, interval.tradingDate, [
+    { symbol: interval.symbol, openedMs: interval.openedMs, lastSeenMs: interval.openedMs, closedMs: null },
+  ]);
+}
+
+/** Every open interval's heartbeat moves to nowMs (forward only), and the flush clock with it. */
+export function heartbeatFeedIntervals(db: TradesDatabase, tradingDate: string, nowMs: number): number {
+  const changed = db
+    .prepare(
+      `UPDATE feed_intervals SET last_seen_ms = MAX(last_seen_ms, ?)
+       WHERE trading_date = ? AND closed_ms IS NULL`,
+    )
+    .run(nowMs, tradingDate).changes;
+  setLastFlushMs(db, nowMs);
+  return changed;
+}
+
+/** Closes the symbol's open interval(s) for the date; a closed interval is never touched again. */
+export function closeFeedInterval(
+  db: TradesDatabase,
+  interval: { symbol: string; tradingDate: string; closedMs: number },
+): number {
+  return db
+    .prepare(
+      `UPDATE feed_intervals SET closed_ms = ?, last_seen_ms = MAX(last_seen_ms, ?)
+       WHERE symbol = ? AND trading_date = ? AND closed_ms IS NULL`,
+    )
+    .run(interval.closedMs, interval.closedMs, interval.symbol, interval.tradingDate).changes;
+}
+
+/** Disconnect: every open interval for the date ends at closedMs. */
+export function closeAllFeedIntervals(db: TradesDatabase, tradingDate: string, closedMs: number): number {
+  return db
+    .prepare(
+      `UPDATE feed_intervals SET closed_ms = ?, last_seen_ms = MAX(last_seen_ms, ?)
+       WHERE trading_date = ? AND closed_ms IS NULL`,
+    )
+    .run(closedMs, closedMs, tradingDate).changes;
+}
+
+/** Buckets in [fromMs, toMs) for many symbols. */
+export function readTradeBuckets(
+  db: TradesDatabase,
+  tradingDate: string,
+  symbols: readonly string[],
+  fromMs: number,
+  toMs: number,
+): TradeBucketRecord[] {
+  return loadRecentTradeBuckets(db, symbols, tradingDate, fromMs).filter((row) => row.bucketTs < toMs);
+}
+
+/**
+ * Intervals overlapping [fromMs, toMs). An OPEN interval's coverage ends at its
+ * last_seen_ms, never at "now" -- the reader must bound by it, so a process
+ * that died mid-interval cannot claim minutes nobody observed.
+ */
+export function readFeedIntervals(
+  db: TradesDatabase,
+  tradingDate: string,
+  symbols: readonly string[],
+  fromMs: number,
+  toMs: number,
+): FeedIntervalRecord[] {
+  return loadFeedIntervals(db, symbols, tradingDate, fromMs).filter((row) => row.openedMs < toMs);
+}
+
+/**
+ * For the web tier: no migration, no writes. Refuses a store OLDER than this
+ * build (the columns it reads would be missing) as well as a newer one; the
+ * market worker is the only process that migrates.
+ */
+export function openTradesStoreReadonly(file: string): TradesDatabase {
+  const db = new Database(path.resolve(file), { readonly: true, fileMustExist: true });
+  db.pragma('busy_timeout = 2000');
+  const version = Number(db.pragma('user_version', { simple: true }));
+  if (version !== TRADES_SCHEMA_VERSION) {
+    db.close();
+    throw new Error(
+      `trades store is schema v${version}; this build reads v${TRADES_SCHEMA_VERSION} -- ` +
+        'the market worker migrates it on its next start',
+    );
+  }
+  return db;
+}
+
 const LAST_FLUSH_KEY = 'last_flush_ms';
 
 /** The worker's flush clock, set every flush, so a stale Now column is detectable even with no trades. */
