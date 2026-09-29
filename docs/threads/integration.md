@@ -939,6 +939,10 @@ control; drawer Rank Change removed; Rank held hidden off-band; review board fol
 to Design 02:30:43Z / 02:32:20Z (Design's relay): Now column = the last minute as six 10s bars, "same exact pattern"
                  -- "i want the trade counts, dots and direction color." Counts-only first version REFUSED.
 09-29T02:34:28Z  "yes hand off"
+09-29T02:41:45Z  "1 yes, 2 yes discovery only"         (to Design, read at his turn by the 16th seat) answering Design's
+                 block: (1) market-worker restart for the Now column YES IN PRINCIPLE -- not a restart order, Ops
+                 still puts a TIME to him and he approves it in Ops's session; (2) resizable columns = drag any column
+                 edge, remembered in this browser, DISCOVERY BOARD ONLY (not the Researched names table).
 ```
 
 ### APPROVED, NOT BUILT — THE LIST HE ASKED TO ALWAYS SEE
@@ -955,7 +959,8 @@ SESSION REPORTS      Research: contract landed (13975c9); writer building on fra
                      PRE-DEPLOY BACKUP ROUTE -> this (+ high_res column, one bump) -> rvol index if needed.
                      Count condition too: top-N complete iff out-of-range <= 25-N; 09-28 max 12 (recap).
                      Design's briefing panel (307e42d, 6eb1362) on main, waits for /api/reports.
-RESIZABLE COLUMNS    scoped (docs/Design/resizable-columns-scope.md); his three choices in Design's block; ~1.5-2 days.
+RESIZABLE COLUMNS    RULED 02:41:45Z: drag edges, per-browser, Discovery only (~1.5 days). Design builds on MAIN now; lands
+                     after the range release (the range set is a fixed tag its cone cannot enter).
 DAILY BILLING        + payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
 SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, a window).
