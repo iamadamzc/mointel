@@ -158,6 +158,12 @@ describe('reportFacts: in-range, in-range ranks, the latch', () => {
     );
   });
 
+  it('THE CAP IS HARD: asking for 25 still yields at most 12 (09-28: complete only to #13)', () => {
+    const tickers = Array.from({ length: 30 }, (_, i) => row(`T${i + 1}`, i + 1, 5));
+    const result = reportFacts(input({ tickers, limit: 25 }));
+    expect(result.ok && result.facts).toHaveLength(12);
+  });
+
   it('feed state is null unless recorded -- never false by default', () => {
     const none = reportFacts(input());
     expect(none.ok && none.facts.every((f) => f.liveFeed === null)).toBe(true);

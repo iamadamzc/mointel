@@ -12,9 +12,12 @@
  * stored row is itself stored, and the in-range rank of every stored row is
  * exact. What the prefix loses is only names BELOW the last stored one: a
  * report may name what is here, and may never claim that nothing else in the
- * range moved. Sized 2026-09-29 on a copy of production's store (474
- * checkpoints): at most 6 sub-$1 names in a stored top 25, so a $1-$20 report
- * is complete to at least #19.
+ * range moved. SIZED UNDER THE CURRENT BAND ($0.25 floor, live since the
+ * 2026-09-25 22:19:45Z restart), Ops's production read of 09-28's 14
+ * checkpoints: 7-12 of the stored 25 are sub-$1, so a $1-$20 list is complete
+ * only to #13 at worst (the 22:00 recap). An earlier "#19" came from an
+ * old-band ($1 floor) sample and is withdrawn. Hence REPORT_NAME_CAP below, a
+ * development guard until the capture stores each range's own top N.
  *
  * THE BAND RANK IS NOT CARRIED. `assessmentRank` on the output is the in-range
  * rank -- the only rank a set-range report may print. A band rank beside an
@@ -67,8 +70,18 @@ export interface ReportFactsInput {
   limit: number;
 }
 
+/**
+ * The most names a report may carry while a checkpoint stores only the band's
+ * top 25. A HARD cap, not a default: 09-28's worst checkpoint left a $1-$20
+ * list complete to #13, and 12 clears it by one. Lifts when the assessment
+ * capture stores each range's own top N (Integration's ruling, 2026-09-29) --
+ * and that capture, not this number, is what gates any report shipping.
+ */
+export const REPORT_NAME_CAP = 12;
+
 export function reportFacts(input: ReportFactsInput): ReportFacts {
-  const { source, stored, tickers, range, qualifiedPrice, liveFeed, limit } = input;
+  const { source, stored, tickers, range, qualifiedPrice, liveFeed } = input;
+  const limit = Math.min(input.limit, REPORT_NAME_CAP);
   const slot: CheckpointSlotRef = { type: source.type, scheduledFor: source.scheduledFor };
 
   if (!stored) {
