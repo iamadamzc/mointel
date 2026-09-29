@@ -1213,6 +1213,9 @@ SHIP ORDER      REVISED for the deadline, after 10:00 ET, his yes each: 1 heartb
 NOW CELL        Design: 20:15 ET is after the 20:00 close, so tonight's post-restart read is PLUMBING only (tradeCapture.asOf
                  fresh vs fetchedAt; nowBuckets present). Real-10 s read earliest 04:00 ET 09-30 (one page load, no loops);
                  fa61410 cannot be asked for before then.
+SESSION RPTS    Research: checker control fixed 31328d9 (4 of 6 correct specimen lines were being struck); WRITER built
+                 aebdf2f, no provider, no spend. Next: wire provider + size = SPEND; Research verifies the sizing authority
+                 at his turn first, else brings it to him. Set-range reports still gated on Ops's capture change.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
