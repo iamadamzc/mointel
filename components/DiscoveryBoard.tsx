@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { ColumnResizeHandle } from '@/components/ColumnResizeHandle';
 import { DEFAULT_WIDTHS, type DiscoveryColumnKey } from '@/lib/dashboard/columnWidths';
 import { useColumnWidths, type ColumnHandle } from '@/lib/hooks/useColumnWidths';
+import { PriceRangeControl } from '@/components/PriceRangeControl';
+import { rangeLabel, type PriceRange } from '@/lib/dashboard/boardRange';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import { ActivitySparkline } from '@/components/ActivitySparkline';
 import { NowSparkline } from '@/components/NowSparkline';
@@ -288,6 +290,8 @@ interface DiscoveryBoardProps {
   changedTickers: Set<string>;
   /** The `Now` column's 10 s capture state, resolved once in `mergeDesk`. */
   nowCapture: NowCapture;
+  /** The viewer's range. Null returns to the default. Absent: no control (review, older payloads). */
+  onRangeChange?: (range: PriceRange | null) => void;
 }
 
 /**
@@ -315,6 +319,7 @@ export function DiscoveryBoard({
   changedTickers,
   nowCapture,
   boardRows,
+  onRangeChange,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
@@ -438,9 +443,10 @@ export function DiscoveryBoard({
         </h2>
         <span className="text-[11px] text-ink-3">
           {discovery
-            ? afterHours
-              ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
-              : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`
+            ? `${afterHours ? 'AH participation rank' : 'Daily RVOL rank'} · ${rangeLabel({
+                min: discovery.priceMin,
+                max: discovery.priceMax,
+              })} · top ${Math.min(size, discovery.rankedCount)} of ${discovery.rankedCount.toLocaleString()}`
             : 'Ranking not loaded'}
           {movers ? (
             <span className="text-accent" title={movers.title}>
@@ -449,6 +455,21 @@ export function DiscoveryBoard({
             </span>
           ) : null}
         </span>
+
+        {/*
+          * The range control. Its label is the range SERVED, not the one it
+          * holds, and the caption beside it says how many names that range
+          * ranked, so a name past the cap is a number on screen rather than
+          * a silent absence.
+          */}
+        {discovery && onRangeChange && discovery.rangeBounds && discovery.rangeDefault ? (
+          <PriceRangeControl
+            served={{ min: discovery.priceMin, max: discovery.priceMax }}
+            bounds={discovery.rangeBounds}
+            defaultRange={discovery.rangeDefault}
+            onChange={onRangeChange}
+          />
+        ) : null}
 
         {frozen ? (
           <span
