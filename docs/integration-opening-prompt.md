@@ -53,7 +53,8 @@ Coaching is `TradeCoach1` in `A:\TradeCoach`, a cross-project peer with no moint
    to the box and reads them back, and that the floor (`9508fb9`) is recorded. Then collect, in LIVE STATE's AFTER
    list: Research's post-restart check, Ops's snapshot (c) against its pre-registered gate, Ops's research-journal
    read across the lock.
-3. **Collect what is owed to you:** Ops's ~10:55 ET range read and the memo's box read by the (b') method.
+3. **Already in LIVE STATE, not owed:** the RTH range read and the post-memo RTH snapshot read (both taken 09-29;
+   neither is a gate reading). Owed later: the flush-timer write baseline after one RTH post-restart.
 4. **Two builds on his yes from 14:46:55Z** (Design's catalyst rendering, Research's grade definitions) will come to you
    as enumerations. Send each seat the CONFIRMED production sha to cut from; pre-register production's test-file count
    + the declared new ones; replay; his ship yes is in Ops's session.

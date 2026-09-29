@@ -973,8 +973,8 @@ before acting: ask Ops for `/proc/<pid>/cwd`.*
 
 ### PRODUCTION
 ```
-CONFIRMED        c49bb3a (research heartbeat fix) on web/research/assess, Ops /proc 14:19:16Z (stated): pids 1508576 /
-                 1508632 / 1508700, NR 0. Market worker 3b78b8c pid 1347535 (start 2026-09-27 23:17:45Z), NR 0.
+CONFIRMED        8455b48 (memo, on c49bb3a heartbeat) on web/research/assess, Ops /proc 14:49:14Z (stated): pids
+                 1516975 (start 14:48:19Z) / 1517032 / 1517106, NR 0. (c49bb3a was confirmed at 14:19:16Z.) Market worker 3b78b8c pid 1347535 (start 2026-09-27 23:17:45Z), NR 0.
                  Box env: no CAPTURE_PRICE_* (Ops 04:17:37Z read). trades.db schema v1.
 IN FLIGHT        8455b48 (sessionEnd memo, re-pick of 635a9ae), then a391c61 (poll fix, re-pick of 626b3f6) in the
                  11:04-11:12 ET preflight window. Both replayed + approved; his "yes to all three" (Ops's session,
@@ -1007,9 +1007,10 @@ READ GATE        max < 20 ms over 1 cold + 20 warm, every range ($0.25-$50, $1-$
                  store. Added before any post-restart reading: no run < 2 min after a web/worker start (discard+retake).
 WRITE GATE       added cost <= 10% of median upsertTickerSessions AND <= 10% of median whole flush AND max whole flush
                  < 250 ms in RTH, with the index; baseline without. Needs the flush timer live (tonight) + one RTH.
-BASELINES        08:30 ET read NOT MEASURED (task stuck on an unapproved prompt). The RTH read moved to ~10:55 ET by
-                 Ops (after the memo, before the poll fix); memo live then -- range-read.cjs is raw better-sqlite3, so
-                 unaffected. Result owed by Ops.
+BASELINES        08:30 ET read NOT MEASURED (task stuck on an unapproved prompt). RTH read TAKEN 14:51:34Z (memo live;
+                 range-read.cjs is raw better-sqlite3), web start 14:48:19Z, 1 cold + 20 warm, 9,230 rows scanned:
+                 DAY $0.25-$50 warm max 21.3 ms FAIL (med 14.0, cold 26.3) | $1-$20 15.9 PASS | $0.50-$5 12.4 PASS |
+                 AH x3 eligible 0 in RTH = UNTESTED. Pre-restart baseline only; cannot un-void.
 ```
 
 ### /api/market UNDER LOAD -- FOUND 09-29, PARTLY FIXED
@@ -1017,8 +1018,12 @@ BASELINES        08:30 ET read NOT MEASURED (task stuck on an unapproved prompt)
 FACT             859 KB uncompressed per response; synchronous build (route.ts calls getMarketSnapshot, never reads
                  request.signal); under concurrency server-side 2.4-8.9 s (Ops, 12:05-12:07Z, during probes); at rest
                  his board lands ~90% of polls (nginx log by his IP).
-SHIPPING         memo 8455b48 (build ~3x cheaper on a scratch copy: median 189 -> 58 ms, a PRIOR) + poll fix a391c61
-                 (a tick skips while in flight; replaced past 15 s). Box read after the memo by the (b') method, owed.
+SHIPPED/NEXT     memo 8455b48 LIVE (scratch-copy prior: build median 189 -> 58 ms). Poll fix a391c61 next.
+RTH READ         Ops (b') method after the memo, IN RTH, first run 14:50:26Z: maxima 675.9/543.4/661.5/1081.4/697.0 ms
+                 (median of maxima 675.9), medians 474-512 ms. NOT comparable to (b') 8.9 ms (overnight). No pre-memo
+                 RTH reading exists, so the memo's box effect is UNMEASURED -- claim none. Establishes: one serial
+                 client ~0.48 s per /api/market in RTH, max 1.08 s -- the old 1 s abort-poll had ~0.5 s margin at best.
+                 Snapshot (c) tonight is overnight-after-restart, so it compares with (b'), not with this.
 OPEN             GZIP (Ops): nginx-tls.conf gzip for application/json; size + CPU measured on one saved payload, then to
                  HIM as its own item, stated as TRANSFER only. COALESCE (Research): DEFERRED until the memo's box read;
                  size against a 1000 ms poll. Route ENTRY CHECK: SHELVED (0/10, scripts/ops/abort-probe.cjs e6673e0).
