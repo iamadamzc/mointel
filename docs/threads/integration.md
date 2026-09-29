@@ -1001,6 +1001,12 @@ NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build 
                      reads the 10s trade buckets (capture live since 09-28; column still "last settled minute",
                      DiscoveryBoard.tsx:192-199, opened). Design leads spec, Research the data side. His choices only
                      (what "Now" means) come back to him. After the range release. Rolling 60s is REJECTED (his).
+                     Research: web-tier read of trades.db (runtime.ts:1523 persists every flush) -> NO market-worker restart;
+                     Ops to confirm bucketsWritten rising in prod. Empty state = "no live data", never 0, for names outside
+                     the high-res set -- which is pinned + ranked-AND-ALIVE <= internalRank (active board) + after-bell
+                     daytime leaders <= discoveryRank + latched-AND-ALIVE, cap 250 (engine.ts ~2119-2200, opened). NOT
+                     "top 50 + latched + pinned" -- Research's summary, corrected to it and Design. Research near
+                     saturation, proposed a hand-off to him.
 RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
                      to being able toadjust the column sizes?"; no prior record found anywhere). Design scopes, back to him
                      as options; build after the range release, and only on his approval.
