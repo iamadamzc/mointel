@@ -31,6 +31,11 @@ export interface MembershipChange {
   kind: 'OPEN' | 'CLOSE';
   /** Epoch ms. */
   at: number;
+  /**
+   * The interval's identity in `feed_intervals` (Ops's v2 keys a row by its
+   * open time). Equal to `at` on an OPEN; the original open time on a CLOSE.
+   */
+  openedMs: number;
 }
 
 export class FeedMembership {
@@ -62,10 +67,16 @@ export class FeedMembership {
    */
   rollover(at: number): { closed: MembershipChange[]; opened: MembershipChange[] } {
     const symbols = [...this.open.keys()].sort();
+    const closed = symbols.map((symbol) => ({
+      symbol,
+      kind: 'CLOSE' as const,
+      at,
+      openedMs: this.open.get(symbol) as number,
+    }));
     for (const symbol of symbols) this.open.set(symbol, at);
     return {
-      closed: symbols.map((symbol) => ({ symbol, kind: 'CLOSE' as const, at })),
-      opened: symbols.map((symbol) => ({ symbol, kind: 'OPEN' as const, at })),
+      closed,
+      opened: symbols.map((symbol) => ({ symbol, kind: 'OPEN' as const, at, openedMs: at })),
     };
   }
 
@@ -80,13 +91,14 @@ export class FeedMembership {
 
     for (const symbol of [...this.open.keys()].sort()) {
       if (live.has(symbol)) continue;
+      const openedMs = this.open.get(symbol) as number;
       this.open.delete(symbol);
-      changes.push({ symbol, kind: 'CLOSE', at });
+      changes.push({ symbol, kind: 'CLOSE', at, openedMs });
     }
     for (const symbol of [...live].sort()) {
       if (this.open.has(symbol)) continue;
       this.open.set(symbol, at);
-      changes.push({ symbol, kind: 'OPEN', at });
+      changes.push({ symbol, kind: 'OPEN', at, openedMs: at });
     }
     return changes;
   }
