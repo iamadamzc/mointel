@@ -12439,3 +12439,14 @@ Repeat of a corrected class -> warned him 2026-09-29 ~12:5x ET and proposed the 
 
 **Routing 2026-09-29 afternoon:** Research-tmi = local_d6996864-9974-431c-a8ad-034d0d9d372b (local_e18a7d74 retired; its chat may still carry the title). Integration-tmi = local_92208da3-00a6-4a88-b723-3d4d0672fbdf. Post-restart check rows and the market.db copy path go to Research by id, cc Integration.
 **Routing update:** Integration local_92208da3 RETIRED (8a4764d); send to the current Integration-tmi by title (cwd A:\mointel, not archived). Research-tmi by title now reaches local_d6996864 (old chat renamed Research-tmi-retired, archived).
+
+**2026-09-29 16:06-16:25 ET: market.db snapshot for Research (his yes), and what VACUUM INTO costs the LIVE box.**
+snapshot-db.mjs -> /var/lib/mointel/backups/manual-research-20260929.db: 4,023,296,000 B, integrity ok, schema 27,
+1,106 s total (file written by ~16:12, then the integrity check). sha256 885fd7fd...3aa7. Store at the time: 4.24 GB +
+712 MB WAL. **During it: /proc/pressure/io full avg10 51-65%; /api/health answered in 1.2 s, then NOT AT ALL within
+15-20 s on three samples (web reads stalled on disk; public pages included); market worker unaffected (heartbeat 2-4 s,
+0 discarded, 0 lock errors, events flowing).** Web recovered by 16:27 (health 0.7 s, / 10 ms). Transfer to this PC
+over Session Manager at ~0.6 MB/s (~1.75 h), box copy deleted only after a matching hash.
+**CONSEQUENCE FOR THE PRE-DEPLOY BACKUP ROUTE (open item): a VACUUM INTO of the live store stalls the WEB tier for
+tens of seconds on this 4 GB-RAM box. It must not run inside a trading session, and the design must budget ~20 min
+of I/O.**
