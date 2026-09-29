@@ -939,7 +939,139 @@ transcript timestamp instead, or say "at the time of this commit".*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
-## LIVE STATE — AT THE SIXTEENTH SEAT'S HAND-OFF (his "handoff", 2026-09-29T04:11:46Z, read at his turn)
+**THE SEVENTEENTH SEAT'S LEDGER (session-hygiene §2), in order:**
+```
+error                                                  TYPE                               repeat?        caught by
+1 "7135930 touches 3 files, disjoint from your 5" to   asserted what was not opened       no             self (git show
+  Design BEFORE opening either diff; it held                                                             --stat after)
+2 "His yes already exists" (columns SHIP) to Ops and   a ruling's SCOPE relayed without   no             Ops (read the
+  to him; 03:51:42Z answered a question whose Yes      reading the question it answered                  question text)
+  said "Ops asks you for the ship yes" -- a yes to
+  PREPARE. Retracted to Ops and him next message.
+3 "your board is very likely frozen right now" to HIM, a probe measurement relayed as a   YES (1, 2:     Ops's nginx log
+  on Design's 12:06Z probe from this PC; his traffic   claim about HIS screen             value passed   of his IP
+  landed ~90% at rest, the freeze coincided with the   (the 16th's disk-local class)      on unread)
+  probes. Retracted to him next message.
+4 "12:34Z-ish" to the new Research seat; the record    a clock time written without       YES            self, re-reading
+  is commit 63b6225 (%cI 08:34:54-04:00). Corrected.   reading it (THE 16th's CLASS)                     the send
+5 "not happened and not scheduled" (the restart) to    a claim of ABSENCE from a check    YES            self, on Ops's
+  the new Research seat; his 11:04:49Z "tonight at     that could not see it (read only                  "20:15" mention
+  20:15" existed. Corrected to Research next message.  Ops's last 8 messages)
+```
+*ONE CLASS, FIVE TIMES: a value passed on without READING the thing it describes -- a diff, the question a ruling
+answered, his own traffic, the clock, a whole transcript. None reached code, a ship, or a decision of his; the owner
+caught none. Put to him as a hand-off after the fifth; HIS RULING 2026-09-29T14:46:55Z: "1, handoff once confirmed".
+Cures that are PROCEDURES, not intentions: print the question a ruling answered before relaying its scope; scan HIS
+turns across ALL transcripts (not a peer's last N messages) before any claim of absence; a probe from this PC is never
+his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
+step.*
+
+## LIVE STATE — AT THE SEVENTEENTH SEAT'S HAND-OFF (his "1, handoff once confirmed", 2026-09-29T14:46:55Z, read at his turn)
+
+*A SNAPSHOT. Every time is a commit time, a transcript timestamp, or a peer's stated reading. Re-read production
+before acting: ask Ops for `/proc/<pid>/cwd`.*
+
+### PRODUCTION
+```
+CONFIRMED        c49bb3a (research heartbeat fix) on web/research/assess, Ops /proc 14:19:16Z (stated): pids 1508576 /
+                 1508632 / 1508700, NR 0. Market worker 3b78b8c pid 1347535 (start 2026-09-27 23:17:45Z), NR 0.
+                 Box env: no CAPTURE_PRICE_* (Ops 04:17:37Z read). trades.db schema v1.
+IN FLIGHT        8455b48 (sessionEnd memo, re-pick of 635a9ae), then a391c61 (poll fix, re-pick of 626b3f6) in the
+                 11:04-11:12 ET preflight window. Both replayed + approved; his "yes to all three" (Ops's session,
+                 13:24:20Z, read at his turn). See the HAND-OFF LINE at the end of this section for what was confirmed.
+```
+Cone in production after the stack: 0342e7d -> c49bb3a -> 8455b48 -> a391c61 (173 test files). fa61410 NOT in it.
+
+### TONIGHT -- THE MARKET-WORKER RESTART, 20:15 ET (HIS TIME)
+```
+RULING           "tonight at 20:15, and allow it" -- Ops's session (a36b4a67-*.jsonl), 2026-09-29T11:04:49Z, read at
+                 his turn. "allow it" = the 11:05 range-read task.
+MOTION           CAPTURE_PRICE_MIN=0.25 AND CAPTURE_PRICE_MAX=50: sync-env.sh at 206c687 lines 142-143 (verified) AND
+                 onto the box, read back, THEN restart. Floor: no worker below 9508fb9 (= 3810b9e) once v2 opens
+                 trades.db. Ops acked both. RESTART_MARKET=yes this time; ~1 min no live feed.
+TURNS ON         Now-column data (nowBuckets), the $0.25-$50 capture band, the flush timer's per-minute summary.
+AFTER            (1) Research's POST-RESTART CHECK, docs/research/post-restart-check-2026-09-29.md (b8387a4): items
+                 1 and 6 tonight, 2-5 premarket 09-30; item 6 UNTESTED (not passed) if no interval opens before the
+                 roll. Research sends queries; Ops runs them. (2) Ops snapshot (c): 5 x (1 cold + 20 warm), first run
+                 >= 2 min after the web start; GATE median of five maxima <= 28.9 ms ((b') = 8.9 + 20); secondary: any
+                 (c) max > 100 ms with none in (b') -> named to Integration. (3) Design: tonight is PLUMBING only (after
+                 the 20:00 close); the real-10 s read is premarket 09-30 from 04:00 ET, one page load. (4) Ops: research
+                 journal + NRestarts across the lock (claimQueuedJobs half is NOT fixed).
+HAZARD           fa61410 (the Now CELL) rides NO deploy until Design's real-10 s read; any cone reaching it needs
+                 Design's yes.
+```
+
+### THE PRICE-RANGE CONTROL -- VOID (520142c), FIX GATED TWICE, NOTHING MOVES BEFORE THE RESTART
+```
+READ GATE        max < 20 ms over 1 cold + 20 warm, every range ($0.25-$50, $1-$20, $0.50-$5), DAY and AH, POST-restart
+                 store. Added before any post-restart reading: no run < 2 min after a web/worker start (discard+retake).
+WRITE GATE       added cost <= 10% of median upsertTickerSessions AND <= 10% of median whole flush AND max whole flush
+                 < 250 ms in RTH, with the index; baseline without. Needs the flush timer live (tonight) + one RTH.
+BASELINES        08:30 ET read NOT MEASURED (task stuck on an unapproved prompt). The RTH read moved to ~10:55 ET by
+                 Ops (after the memo, before the poll fix); memo live then -- range-read.cjs is raw better-sqlite3, so
+                 unaffected. Result owed by Ops.
+```
+
+### /api/market UNDER LOAD -- FOUND 09-29, PARTLY FIXED
+```
+FACT             859 KB uncompressed per response; synchronous build (route.ts calls getMarketSnapshot, never reads
+                 request.signal); under concurrency server-side 2.4-8.9 s (Ops, 12:05-12:07Z, during probes); at rest
+                 his board lands ~90% of polls (nginx log by his IP).
+SHIPPING         memo 8455b48 (build ~3x cheaper on a scratch copy: median 189 -> 58 ms, a PRIOR) + poll fix a391c61
+                 (a tick skips while in flight; replaced past 15 s). Box read after the memo by the (b') method, owed.
+OPEN             GZIP (Ops): nginx-tls.conf gzip for application/json; size + CPU measured on one saved payload, then to
+                 HIM as its own item, stated as TRANSFER only. COALESCE (Research): DEFERRED until the memo's box read;
+                 size against a 1000 ms poll. Route ENTRY CHECK: SHELVED (0/10, scripts/ops/abort-probe.cjs e6673e0).
+FOLLOW-UPS       Design's "board not updating" state and useDashboard's same abort pattern: recorded by Design, NOT put
+(not approved)   to him yet.
+RULE             No heavy /api/market probes 07:00-10:00 ET (Ops + Design adopted).
+```
+
+### HIS RULINGS THIS SEAT (each read at his own turn)
+```
+04:21:47Z (here)     "archived. yes to both in ops"   | 04:21:55Z (Ops) "yes to both ships" (columns + timer)
+11:04:49Z (Ops)      "tonight at 20:15, and allow it / whats up withthe session reports?"
+11:58:01Z (here)     SLND report; 12:33:36Z "on the board... i did not reload. it did it on its own." -> CLOSED: his tab
+                     sent no polls 11:17-11:55Z (hidden); the first poll back carried v2461. Board and desk correct.
+13:24:20Z (Ops)      "yes to all three" (heartbeat, memo, poll fix)
+14:44:57Z (here)     "board not in use so we can get to work" -- relayed to Ops as a fact, no preflight override
+14:46:55Z (here)     "1, handoff once confirmed. 2, your recs. 3, got it. 4, done." --
+                     2 = the five catalyst recommendations (bundle recorded at 63b6225): OLD_CATALYST row dimmed + "No
+                     fresh catalyst · latest: <date> — <summary>"; MARK Sheet/auto disagreement on the Discovery row;
+                     ADOPT Research's grade definitions; reverse splits BY CONTEXT (negative with a listing deficiency or
+                     financing in the window, else MODERATE_MIXED_SECONDARY); do NOT split WEAK_NEGATIVE_DILUTIVE now.
+                     3 = Benzinga reply is his. 4 = old Research chat renamed/archived.
+```
+
+### APPROVED, NOT BUILT -- THE LIST HE ASKED TO ALWAYS SEE
+```
+CATALYST RENDERING  Design: dimmed OLD_CATALYST row + Sheet/auto marker. Cut from CONFIRMED production; ship = his yes.
+GRADE DEFINITIONS   Research: prompt + schema text + reverse-split-by-context. Same path. Paid validation = spend.
+PRICE-RANGE FIX     Research + Ops, gated as above. After the restart + one RTH.
+SESSION REPORTS     Research: checker fixed (31328d9), writer built (aebdf2f), NO provider, NO spend. Next = wire a
+                    model and size it = SPEND; Research verifies the authority at his turn or asks him. Set-range
+                    reports gated on Ops's capture change (the one market.db bump with latch columns).
+CLAIMQUEUEDJOBS     Ops: throws after ~33 s retry during a long lock. Not built.
+SIGN-IN             built on main, zero in production; his cut-over (Ops: waits on his Google OAuth client).
+DAILY BILLING       + payment-failed warning: after sign-in proves it refuses.
+BENZINGA            they replied; answer draft docs/research/benzinga-licence-cost-2026-09-29.md s4b; HIS to send.
+```
+
+### SEATS (look up by title; ids change)
+```
+Ops-tmi local_37a1741e     Design-tmi local_8568daaf     Research-tmi local_e18a7d74 (opened 09-29; the old one
+renamed/archived per his "4, done")     Commercial / Web / Marketing / R&D: nothing open with this seat.
+Stuck one-shot tasks: "Mointel: Tue 08:30 ET range-read" and "...11:05 ET range-read" sessions sit on unapproved
+Bash prompts; harmless, his to close.
+```
+
+### HAND-OFF LINE
+```
+PENDING at this commit: Ops's /proc for 8455b48 and a391c61. Filled in by the next commit; if this line
+still says PENDING, ask Ops.
+```
+
+## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
 *A SNAPSHOT. **This seat estimated clock times FIVE times (ledger above), so every time below is a transcript
 timestamp, a commit time, or a peer's stated reading — never a clock estimate.** Re-verify production before acting:
@@ -1034,7 +1166,9 @@ Commercial / Web / Marketing / R&D: idle, nothing open with this seat.
 04:15 ET capture-rise read: Ops's scheduled task (negative control proven); both values owed to Integration.
 ```
 
-## THE SEVENTEENTH SEAT — RUNNING NOTES (opened 2026-09-29T04:16:33Z, `local_70f001d0`, Opus 5.5)
+## ARCHIVE — THE SEVENTEENTH SEAT'S RUNNING NOTES (opened 2026-09-29T04:16:33Z, `local_70f001d0`, Opus 5.5)
+
+*Kept for MECHANISMS and the verification trail. Where it disagrees with LIVE STATE above, LIVE STATE wins.*
 
 *Every time below is a transcript timestamp, a peer's stated reading, or a `date -u` read in the same step.*
 ```
@@ -1246,31 +1380,6 @@ CAPTURE RISE     PASS (Ops scheduled task): 08:15:51.945Z 9,410,578 -> 08:16:57.
 OWED BY OPS      (04:15 pair: DELIVERED above); 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
-**THE SEVENTEENTH SEAT'S LEDGER (session-hygiene §2):**
-```
-error                                                  TYPE                               repeat?  caught by
-"7135930 touches 3 files, disjoint from your 5" sent   asserted what was not opened       no       self (git show
-  to Design BEFORE opening either diff; it held on       (memory: never-assert-what-you-            --stat after)
-  opening                                                have-not-opened)
-"your board is very likely frozen right now" to HIM,   a probe measurement relayed as a   no (in this  self, on Ops's
-  on Design's 12:06Z probe from this PC; his own        claim about HIS screen (the 16th's seat; the     nginx log
-  traffic landed ~90% at rest, the freeze coincided     disk-local-absolute class, in     16th's 2nd
-  with the probes. Retracted to him next message.       its prompt)                       class)
-"12:34Z-ish" to the new Research seat for when the     A CLOCK TIME WRITTEN WITHOUT       no (1st in   self, on
-  catalyst questions went to him; record = commit       READING IT (the 16th's class,     this seat)   re-reading
-  63b6225 %cI 08:34:54-04:00. Corrected next message.   named in this seat's prompt)                   the send
-"not happened and not scheduled" (restart) to the new  a claim of ABSENCE from a check     YES -- the   self, on
-  Research seat; his 11:04:49Z "tonight at 20:15"      that could not see it (read only   'value not   Ops's
-  existed. I read only Ops's last 8 messages.          Ops's last 8 messages)             read' class  '20:15'
-  Corrected to Research next message.                                                   again        mention
-"His yes already exists" (columns ship) to Ops and    a ruling's SCOPE relayed without    no       Ops (read the
-  to him; his 03:51:42Z answered a question whose       reading the question it answered            question text)
-  Yes said "Ops asks you for the ship yes in its
-  session" -- a yes to PREPARE, not to SHIP. Retracted
-  to Ops and to him in the next message.
-```
-*Both slips: a value passed on without READING it -- the prompt's named class. Cure, procedural: before relaying
-what a ruling authorises, print the question it answered, not only his reply.*
 
 ## ARCHIVE — THE FIFTEENTH'S LIVE STATE (2026-09-29 ~02:40Z) WITH THE SIXTEENTH SEAT'S RUNNING NOTES INLINE
 
