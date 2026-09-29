@@ -1048,6 +1048,9 @@ INTERIM     Research (pre-registered f103ba4): feasible in principle; 5m/15m exa
             Fork A (range contains price) vs B (high >= price) left open until his chart. Warrior Trading's article
             = daily chart, not a 5m/15m spec.
 PUT TO HIM  the chart (ticker, date, timeframe, moment drawn); whether he will hand-mark 10 names for the full test.
+CHART IN    his image 21:49Z -> data/left-and-up-example-SLXN-5m.png (git-ignored). SLXN 5m, 5 blue lines, range labels
+            0.4000/0.2977. Date/time NOT stated: inferred today after-hours (flagged as inference to Research, which
+            checks the store). Sent to Research. STILL OPEN with him: hand-marking 10 names.
 ```
 
 ### HAND-OFF LINE
