@@ -188,6 +188,8 @@ record. He has it from this seat directly as well.
 
 - **ERROR LEDGER, this session** — | error | TYPE | already logged? | caught by |
   | `\'` in a test name lost writing through a Python heredoc; file failed to parse | generated-code-loses-escapes | **yes — predecessor's hand-off, not this session** | self (suite collected 0 tests) |
+  | "for small-cap momentum a reverse split is not obviously bad news", sent to Integration as a basis for a grade | record-the-ruling-not-the-reason (a trading-style justification) | no — first in this session | self, before it reached him |
+  | `git commit` chained after a `grep` of test output, so a run with 1 failure still committed and pushed (3 clean re-runs after) | gate-not-habit | no — first in this session | self |
   | "the board polls every 2–5 s", asserted to Integration in a sizing answer; it is 1,000 ms (`useMarket.ts:20`) | never-assert-what-you-have-not-opened | no — first in this session | **peer (Integration)** |
   | "$1–$20 complete to #19" from an old-band ($1 floor) sample, sent to Integration, to HIM, and into a code comment | audited-the-instrument-not-the-experiment (proved the query sees sub-$1 rows, never checked the sample's band) | **no — first in this session** | **peer (Integration)** |
 
