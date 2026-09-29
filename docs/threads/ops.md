@@ -12280,3 +12280,14 @@ same message IS in the prompt (item 4). These two are not:*
    they do and the restart comes after the measurement, a pass at 08:30 says nothing about $0.25-$50 afterwards:
    re-measure after the restart, and the range set's yes waits for that reading. If they don't grow, say so with
    the plan, and the order does not matter.
+3. **CORRECTION TO THE RETIRING SEAT'S LAST READING (point 2 above), 2026-09-29, after opening the SQL.** The
+   retiring seat confirmed the candidate set grows with the capture band and wrote that the pre-restart reading
+   "still gates $1-$20 and the narrow case, whose populations the ceiling doesn't change". **The IN-RANGE
+   population doesn't change; the SCANNED rows do.** `readRangeBoard` (`lib/market/store/repo.ts:1081` at
+   `520142c`) filters `WHERE trading_date = @date AND price...` and `ORDER BY rvol DESC`; the only ticker_session
+   indexes are `(trading_date, rvol_rank)` and `(trading_date, ah_rank)` (`db.ts:255`, `:896`) -- neither covers
+   price or rvol. So each call reads EVERY tracked row for the date, for EVERY range, and ~9,378 -> ~10,230 seeded
+   (+ live admission) raises the cost of `$1-$20` too. *Read from the SQL and the index list, NOT from EXPLAIN
+   QUERY PLAN -- run it before relying on either reading.* **Consequence: a pre-restart FAIL is conclusive (the
+   store only grows); a pre-restart PASS is conclusive for NO case. The range set's yes waits for a post-restart
+   reading of all three cases, unless the plan shows the scan is bounded by the range.**
