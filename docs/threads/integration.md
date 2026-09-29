@@ -1005,7 +1005,9 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
   catalyst.evidenceSourceIds; retiring them is HIS (production data).
 - **Now-column data path**: Ops's rising `bucketsWritten` read, due 09-29 04:00–07:00 ET.
 - **Seats this session**: Commercial, Design and Research each retired and were replaced (new ids — look up by
-  title). trades.db is 0644 vs market.db 0640 (Ops, "align later").
+  title). **Design retired AGAIN 2026-09-29 on his yes** (old chat "Design-tmi (retired 2026-09-29)"; hand-off
+  `8359414`, spec follow-up `4ee55a3`). Its successor titles itself `Design-tmi`; it owns the 520142c red-test
+  re-cut decision, resizable columns (Discovery, on main) and the Now cell. Nothing queued to the old id is read. trades.db is 0644 vs market.db 0640 (Ops, "align later").
 
 ## ARCHIVE — THE FOURTEENTH'S LIVE STATE (2026-09-28 ~15:10Z) AND THE FIFTEENTH SEAT'S RUNNING NOTES
 
