@@ -1107,6 +1107,25 @@ to this PC for Research's profiling (after 16:05 ET, before 20:15); gzip for /ap
 ships is re-picked at 175 -- replay it.
 ```
 
+## THE EIGHTEENTH SEAT'S RUNNING NOTES (opened 2026-09-29T15:37:45Z, `local_92208da3`, Opus 5.5)
+
+*Where these disagree with LIVE STATE above, these are newer.*
+```
+15:37:19Z (Ops)  HIS "yes to all" -- answers Ops's four-item block (question printed and read): deploy grades
+                 9d554e0; deploy catalyst rows; gzip for /api/market; copy the post-close market.db to this PC.
+PRODUCTION       a391c61 (Ops /proc 15:18:33Z, restated by Ops to this seat). Market worker 3b78b8c pid 1347535.
+SHIP ORDER       (Ops) grades 9d554e0 at the 12:04 ET window; rows 803008b at 12:34 ET ONLY after 9d554e0 confirmed.
+ROWS RE-PICK     803008b13d78 (annotated tag ops/catalyst-rows-on-9d554e0 -> tag obj cf74653), parent 9d554e0.
+                 REPLAYED + APPROVED: rev-list a391c61..803008b = 2; patch-id becf06cb == 65cf1f5 == d3dc32d; 3 files
+                 byte-identical to 65cf1f5; no overlap with 9d554e0's 5; test files 173 -> 174 -> 175 = pre-registered;
+                 fa61410 not in cone.
+GZIP             his yes, NOT BUILT: Ops's edit to deploy/aws/nginx-tls.conf refused by the permission control. Ops put
+                 it back to him. Built-not-live list: move to approved-not-built until a route exists.
+STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
+                 Route Research on landing.
+TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
+```
+
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
 *A SNAPSHOT. **This seat estimated clock times FIVE times (ledger above), so every time below is a transcript
