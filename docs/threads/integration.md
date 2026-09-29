@@ -1028,6 +1028,9 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
   accepted because the mechanism is now MEASURED (the test exceeds its timeout under suite load), which is the
   condition this seat set. Ops's ship-time full-output runs still classify any new red by file name.* Fix for later
   ships: f869ee0 (on main, not in 520142c).
+  *Ops's full-output verbose run at 520142c: GREEN 167/2544, the same test 20,807 ms inside the suite on a quieter
+  host. ~20 s baseline vs 30 s timeout; load consumes the headroom. Closed. The range set waits ONLY on the two
+  range-read measurements (~08:30 / ~11:05 ET 09-29) and his yes in Ops's session.*
 - *The opening prompt's header says "Rewritten ~02:45 UTC"; its commit `5f4fbde` is 02:36:22Z.* A time estimated
   instead of read, the fifteenth's own error 2, in the prompt that names it. Harmless; recorded because the prompt
   predicts it carries a false line.
