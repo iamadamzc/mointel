@@ -230,11 +230,26 @@ Benzinga one. Dropped rather than stated on a number that was never taken.** Wha
 remains inference,
 named as such rather than blurred into the measured part: **whether the FULL scope
 Benzinga Pro's own marketing claims — "1,000+ sources" — extends to a *direct*
-licence at a scale beyond what Alpaca's bundle already carries, and whether that
-scope specifically includes ACCESS Newswire or Newsfile.** Neither is confirmed;
-Benzinga's own API product page (`benzinga.com/apis`, already read in the prior
-landscape) lists **"Press Releases"** as a named product line and gives no public
-price or source list — `licensing@benzinga.com`, an enquiry, his.
+licence at a scale beyond what Alpaca's bundle already carries.** Not confirmed;
+still an enquiry question. ~~Whether that scope specifically includes ACCESS
+Newswire or Newsfile — unpublished, unconfirmed.~~ **CORRECTED 2026-09-29, Research's
+catch, verified by this seat directly at the source (`benzinga.com/apis/cloud-
+product/press-releases/`, re-read 2026-09-29): the source list IS published, on
+Benzinga's own Press Releases product page — *"Partners include ACCESSWIRE, Business
+Wire, Globe Newswire, PRNewswire & Newsfile. This data can be consumed – and/or
+displayed."* ACCESSWIRE is ACCESS Newswire (Issuer Direct's 2025-01-27 rename), the
+wire behind the `MEDS` 2026-09-28 miss — so the Press Releases product names the very
+wire this document exists to explain the absence of. Newsfile is also named.
+Caveat, and it is the reason this is still not a measured rate: the page's own
+`article:modified_time` is 2023-09-15 and its footer copyright reads © 2023, both
+predating the rebrand — a vendor's claim of its partners at that date, not a current
+or measured one. Whether a direct feed today still carries `MEDS`-class releases
+stays an enquiry question, not this document's to answer. Full note:
+`docs/research/benzinga-licence-cost-2026-09-29.md`.** Benzinga's own API product
+page (`benzinga.com/apis`, already read in the prior landscape) lists **"Press
+Releases"** as a named product line; price remains unpublished —
+`licensing@benzinga.com`, an enquiry, his, and already declined (*"no to both,"*
+2026-09-28, verified at his own turn).
 
 ---
 
@@ -246,7 +261,7 @@ would add — with cost named as unknown-pending-enquiry rather than guessed.**
 
 | option | adds coverage of | cost | access today |
 | --- | --- | --- | --- |
-| **Direct Benzinga API licence** (vs. the Alpaca bundle) | **The licence, confirmed, is the primary reason, not coverage:** Alpaca's own T&Cs restrict News to personal/non-commercial use, identically to the SIP tape — a direct licence is the only path to using ANY of this content in a paid feature, before coverage is even asked. Coverage itself: **confirmed** to already carry at least some third-party wire content (§1, the AIFF/GlobeNewswire control, measured) — full source list and whether it extends to ACCESS Newswire or Newsfile specifically, unpublished, unconfirmed | Unpublished; enquiry only | Already partially in hand, but not usable in a paid product under its current terms |
+| **Direct Benzinga API licence** (vs. the Alpaca bundle) | **The licence, confirmed, is the primary reason, not coverage:** Alpaca's own T&Cs restrict News to personal/non-commercial use, identically to the SIP tape — a direct licence is the only path to using ANY of this content in a paid feature, before coverage is even asked. Coverage itself: **confirmed** to already carry at least some third-party wire content (§1, the AIFF/GlobeNewswire control, measured). Source list ~~unpublished, unconfirmed~~ **corrected 2026-09-29 — Benzinga's own Press Releases page names ACCESS Newswire and Newsfile as partners (§3), a 2023-dated vendor claim, not a measured current rate.** | Unpublished; enquiry only — and already declined (*"no to both,"* 2026-09-28) | Already partially in hand, but not usable in a paid product under its current terms |
 | **Direct ACCESS Newswire relationship** | The one wire confirmed to have caused today's miss | No published terms or price found at all | None — not even terms exist to read |
 | **Direct Newsfile relationship** | Canadian/junior-issuer coverage, a plausible top-12 contributor | Standard non-commercial personal-use terms found; no commercial product found | None |
 | **TradingView, directly** | Nothing — **closed by its own terms, at any price** | N/A | Not obtainable this way |
@@ -265,9 +280,13 @@ wire with no volume discount in sight.
 
 ## 5. WHAT THIS DOES NOT SETTLE, AND WHO DOES
 
-- **Whether a direct Benzinga licence's source list actually includes ACCESS Newswire,
-  Newsfile, or any other specific wire.** Not published anywhere found. Only an
-  enquiry answers it, and an enquiry is his.
+- ~~**Whether a direct Benzinga licence's source list actually includes ACCESS
+  Newswire, Newsfile, or any other specific wire.** Not published anywhere found.
+  Only an enquiry answers it, and an enquiry is his.~~ **CORRECTED 2026-09-29,
+  Research's catch, verified by this seat at the source: it IS published — Benzinga's
+  own Press Releases page names ACCESSWIRE (= ACCESS Newswire) and Newsfile as
+  partners (§3). What is not settled is whether that 2023-dated claim is still
+  current, and no enquiry is to be sent — declined 2026-09-28, *"no to both."***
 - **Whether Warrior Trading's Scanner specifically runs on TradingView's news, or on
   a different, unnamed third-party provider.** Warrior Trading's own operative
   disclaimer names none. His own original question — where does Warrior Trading
