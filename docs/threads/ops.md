@@ -12390,3 +12390,5 @@ check CANNOT skip a request abandoned while queued behind a synchronous build.**
 Node 22: B (aborted at 300 ms while A's 2 s sync build blocks the loop) read aborted=false at entry, after a hop,
 after 5 ms and after 25 ms, and was built; positive control (abort during an async wait on a free loop) fires at
 296 ms. So coalescing (Research) is the only server-side lever; Design told not to build the entry check for this.
+Pre-registered N=10 on the committed probe: **B pre-aborted at entry 0/10, all built** (plus 7 exploratory runs, all 0).
+Integration's status: Node half 0/10, composition unverified, nginx half skipped; entry check SHELVED for this purpose.
