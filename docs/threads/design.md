@@ -44,20 +44,42 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-29 01:23 UTC / 2026-09-28 21:23 ET
+## Live state — 2026-09-29 01:50 UTC / 2026-09-28 21:50 ET
 
 **MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
 ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
 2026-09-28 21:22 ET** (see "What is verified ON THE LIVE BOARD").
+Production web is `2256c63` (af15a13's server range ranking alone, inert) per
+Integration, awaiting Ops's post-landing /proc read.
 
-**COMMITTED, NOT SHIPPED — three pieces, all on `main`, all inert until
-something else lands:**
+**COMMITTED, NOT SHIPPED — on `main`, inert until something else lands:**
 
     307e42d, 6eb1362   session briefings: the line + reading panel
                        inert until Research's GET /api/reports exists (404 renders nothing)
-    5e8b13c            the board's price-range control, on Research's af15a13 + 8d8e50c
-                       inert until a viewer uses it (no choice = no params = today's board)
-                       BLOCKED FROM SHIPPING on the graveyard (open items)
+    5e8b13c            the board's price-range control
+    dd6019e            the graveyard reads diedWhileRanked (Research d2c2582) and drops
+                       "Rank held" on a re-ranked board -- THE GRAVEYARD BLOCKER IS CLOSED.
+                       Design owes the range set nothing further. It waits on Ops's
+                       live timing (< 20 ms), the no-param default flip (server-side,
+                       owner asked of Integration), and his deploy yes.
+
+**`above your range` needs no Design build.** Discovery rows come only from
+`discovery.ranked` (`merge.ts:521`), so a pinned-unranked name is never a
+Discovery row, and the existing `retentionNote` (`view.ts:262`) already prints
+`retained > $max` from the latch against the SERVED range. Research's
+`aboveRangeLatched` (`28a8cb1`) is correct (`rankLists` restores in-range ranks
+after the scrub, so it fires) and is kept for a surface that shows pinned names.
+
+**The default flip's cost, told to Integration:** $1–$20 is not the engine band
+($0.25–$20), so after the flip EVERY viewer's default board is ordinals-omitted
+and loses the graveyard's `Rank held` and the drawer's rank-change line. Sort is
+unaffected.
+
+**SPEC'D, WAITING ON HIM (via Integration):**
+[`../Design/near-live-now-spec.md`](../Design/near-live-now-spec.md) (build
+approved; his choice is the unit) and
+[`../Design/resizable-columns-scope.md`](../Design/resizable-columns-scope.md)
+(scope only; three choices). Both come after the range release.
 
 **DESIGNED, BUILD APPROVED, NOT STARTED:** the payment-failed warning,
 `docs/commercial/daily-billing-design/design-seat.md`. Trigger: Ops starts
@@ -499,8 +521,9 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 | --- | --- | --- |
 | **Session briefings: line + reading panel** (`307e42d`, on main, NOT shipped) | Design built; Research builds `/api/reports` | Nothing renders until the route answers 200. Viewed only against a local fixture (1280, 1024). **Read it on the live board after the route ships.** Contract: `lib/desk/reports/contract.ts`, Research's now. At 1024 with the panel open the researched table compresses; acceptable, noted |
 | Payment-failed warning — build APPROVED, not started | Design | **Trigger: Ops starts the billing work, which comes after the sign-in cut-over.** Spec: `docs/commercial/daily-billing-design/design-seat.md`. OS notification ruled on; hour never restarts; `endsAt` = earlier of failure+1h and 20:00 ET |
-| The price range: the CONTROL (`5e8b13c`, on main, NOT shipped) | Design built; Research owns the server half | Viewed locally against a read-only store copy. **Latch: fixed by Research at `8d8e50c`** (a name that qualified at a price inside the viewer's range and then ran stays). **Still blocking: the graveyard** — membership is `deadAtRank` presence (`graveyard.ts:60`) and `ordinalsOmitted` removes it, so any non-engine range reads "nothing died". Research to keep the membership fact; Design switches `graveyard.ts` in the same commit. Row mark `above your range` waits on a flag from Research (not inferred from price, since pinned names are above too). No-param request flips to `rangeDefault` only in the release that carries the control. **SECOND SHIP GATE (Ops, via Integration, 2026-09-29): a range read costs 233–362 ms against 4.8 ms today, per viewer per poll; not approvable until Ops measures it under 20 ms at $0.25–$50 on the live store (Research + Ops fix).** The control takes its bounds from the payload's `rangeBounds` and never widens them itself; `BOARD_RANGE_MAX` stays unset until the capture band widens |
-| Sub-minute capture -> a near-live `Now` | Research, then Design | **ON, his word.** The counter is shared with capture; mind the `ingestTrade` guard |
+| The price range: the CONTROL (`5e8b13c`, on main, NOT shipped) | Design built; Research owns the server half | Viewed locally against a read-only store copy. **Latch: fixed by Research at `8d8e50c`.** ~~Still blocking: the graveyard~~ **CLOSED 2026-09-29 at `dd6019e`** on Research's `diedWhileRanked` (`d2c2582`). ~~Row mark `above your range` waits on a flag from Research~~ **needs no build**: Discovery rows are ranked-only, and `retentionNote` already reads the served range (live state above). No-param request flips to `rangeDefault` only in the release that carries the control. **SECOND SHIP GATE (Ops, via Integration, 2026-09-29): a range read costs 233–362 ms against 4.8 ms today, per viewer per poll; not approvable until Ops measures it under 20 ms at $0.25–$50 on the live store (Research + Ops fix).** The control takes its bounds from the payload's `rangeBounds` and never widens them itself; `BOARD_RANGE_MAX` stays unset until the capture band widens |
+| Near-live `Now` column — BUILD APPROVED (*"yes build the near-live now column"*, 2026-09-29T01:38:17Z, verified at his turn) | Design spec + board; Research the field | Spec: `docs/Design/near-live-now-spec.md`. **His choice outstanding: the unit (last-10s count vs ×6 per-minute pace).** Research: `nowTrades` + `tradeCapture.asOf`. Ops: `bucketsWritten` rising, 09-29 04:00–07:00 ET. After the range release |
+| Resizable columns — SCOPE ONLY (*"yes scope resizable columns"*, 01:26:07Z) | Design | Scope: `docs/Design/resizable-columns-scope.md`. **His three choices outstanding**: drag vs presets, which tables, browser vs account. No build without his yes; after the range release |
 | Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
 | `lastCheckpointChanges` on the payload | Research | Spec above; §9 item 12's rail blocks on it |
 | A fourth freshness band past 21 days | His call | Research left 21 unimplemented: it currently divides nothing |
@@ -510,6 +533,16 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 | The mark on a real handset | Design | His phone; nobody has looked |
 | Manual spine — the dozen things a user would misread | Design | His yes; drafted from the log |
 | `anchorLateScope` render (row mark + board statement) | Research builds the field | The field; ships with the render, never half |
+
+## Error ledger — this session (opened 2026-09-29 ~01:25 UTC)
+
+*Per `session-hygiene.md` §2: the first REPEAT of a class already corrected in
+this session is the trigger to warn him and propose a hand-off.*
+
+| Error (asserted vs true) | Type | Already logged this session? | Caught by |
+| --- | --- | --- | --- |
+| Stamped two new docs "~02:05" / "~02:10 UTC"; the clock said 01:50 | TIME-BEFORE-CLOCK (the retiring seat's class) | No — first this session | Self, on the next clock read |
+| Began from the 09-26 opening prompt the shared tree carried; origin held a 09-28 rewrite | STALE-LEAD-AS-SOURCE | No | Self, before acting on it |
 
 ## Where the rest of the record is
 
