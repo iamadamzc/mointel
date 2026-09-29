@@ -12275,7 +12275,7 @@ same message IS in the prompt (item 4). These two are not:*
    **Send Integration the new production sha; Design-tmi re-cuts the range set onto it, Integration replays and
    re-registers the count.** The range set touches no worker/, config.ts or trades.ts.
 2. **THE RANGE-READ MUST MEASURE THE STORE THE PRODUCT WILL RUN ON.** Activating the $50 ceiling adds ~1,060 names
-   at $40-$50 (this seat's projection). **Before the 08:30 read, check whether `readRangeBoard`'s candidate rows
+   at $40-$50 (the retiring Ops seat's projection, d9bae77). **Before the 08:30 read, check whether `readRangeBoard`'s candidate rows
    grow with the capture band** (EXPLAIN QUERY PLAN + a row count by price bucket for today's trading_date). If
    they do and the restart comes after the measurement, a pass at 08:30 says nothing about $0.25-$50 afterwards:
    re-measure after the restart, and the range set's yes waits for that reading. If they don't grow, say so with
