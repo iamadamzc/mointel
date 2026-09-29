@@ -12477,3 +12477,15 @@ still returned, which kills "bound too tight" (predict 1). No index, no write co
 query alone probably can't hold 20 ms p95 with several viewers; fewer reads can. Not built.
 
 **2026-09-29 18:25 ET: 1b5ead6 (nginx gzip for proxied JSON) LIVE**, on his "yes to all" + "edit approved"; Integration (19th) replayed and approved, then briefly HELD and withdrew the hold (my 15:37 line had told him it ships as a deploy). Down 3s, nginx -t ok, prune -a391c61. Proxied /privacy now Content-Encoding: gzip. /api/market JSON compression NOT YET OBSERVED (Basic Auth; no board polled since); confirm from the access log bytes column (~20% of raw). **CONE RULE: every later ship must carry 1b5ead6.** Production = 1b5ead6.
+
+**QUEUED (Ops, design + build): THE HISTORY STORE -- his ruling "yes, build the history store" (first-hand, Integration's
+session, 2026-09-29; Research 2339708, Commercial 6c160bb: no extra cost, no new exposure).** Download all ~8,050
+band names once (~620 requests, ~1 GB), keep them on the server, build 15m going forward from our own 1m capture,
+re-download a name only when it splits. Sizes (Research): rolling 30d 15m all names ~0.69 GB; 12 months daily ~0.35 GB.
+OPS CALLS: (1) disk: 61 GB free of 77 GB on 2026-09-29 18:06 ET (df, first-hand); re-read after the 22:08 check. (2)
+WHERE: a SEPARATE file beside market.db, like trades.db. The 16:06 finding decides it: anything in market.db rides
+every VACUUM INTO / schema backup / migration copy, and a VACUUM INTO of the live store stalls the web tier. Also keeps
+it off the flush writer's WAL, with its own retention. daily_bars stays in market.db. (3) the fetch worker
+(split-adjusted, split_factor stamp, re-fetch when the basis moves) + the 15m rollup from minute_bars.
+TRIGGER: after the 10:12 ET 09-30 grades read + the disk re-read. OWNER: Ops (successor). Integration enumerates by
+literal sha; the 1b5ead6 cone rule applies.
