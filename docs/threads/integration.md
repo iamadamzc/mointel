@@ -966,7 +966,78 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE — AT THE SEVENTEENTH SEAT'S HAND-OFF (his "1, handoff once confirmed", 2026-09-29T14:46:55Z, read at his turn)
+## LIVE STATE — AT THE EIGHTEENTH SEAT'S HAND-OFF (2026-09-29, after his 17:28:33Z; the commit that lands this is its time)
+
+*A SNAPSHOT. Every time is a commit time, a transcript timestamp, or a peer's stated reading. Re-read production
+before acting: ask Ops for `/proc/<pid>/cwd`. The seventeenth's LIVE STATE below is now ARCHIVE; where they disagree,
+this wins. The eighteenth's running notes (further down) carry the verification trail.*
+
+### PRODUCTION
+```
+CONFIRMED   803008b (catalyst rows) on 9d554e0 (catalyst grades) on a391c61. Ops /proc 16:48:16Z: web 1544789 (start
+            16:47:30Z) / research 1544840 / assess 1544915, NR 0. Tests 175. Market worker 3b78b8c pid 1347535 until
+            tonight. fa61410 NOT in cone. 31328d9 / aebdf2f (session reports) main-only.
+VERIFIED    Grades: live 16:18:16Z (Ops). Rows: Design live read -- 14/50 OLD rows grey with "No fresh catalyst", control
+            0, marks YMT/MSGY/ONFO live; CLOSED.
+```
+
+### TONIGHT -- MARKET-WORKER RESTART 20:15 ET (his, Ops's session a36b4a67-*.jsonl 2026-09-29T11:04:49Z)
+```
+RUNS        803008b's worker. worker/ + lib/market/ identical a391c61..803008b (read). Floor 9508fb9: not an ancestor, but
+            patch-id ffb64846 == 3810b9e which IS -> met by content. CAPTURE_PRICE_MIN/MAX read at
+            lib/market/config.ts:105-106 (NULL when unset).
+CHECK AT    Ops writes BOTH CAPTURE_PRICE_MIN=0.25 AND CAPTURE_PRICE_MAX=50 to the box, reads them back, THEN restarts.
+EXECUTION   Never relay a restart yes -- his is in Ops's session.
+OPS HOLDS   Seven reminders IN ITS SESSION ONLY (Ops 16:37:10Z): store copy (after 16:06 ET), 19:50 prep, 20:15 restart,
+            21:50, 22:08, 04:33 ET 09-30, 10:12 ET 09-30. Ops keeps its seat through tonight (his 16:49:25Z), hands
+            off 09-30 ~10:25 ET (ops.md df39e34).
+AFTER       (1) Research's post-restart check docs/research/post-restart-check-2026-09-29.md (b8387a4): items 1 + 6
+            tonight, 2-5 premarket 09-30; item 6 UNTESTED if no interval opens before the roll. Ops runs, raw rows to
+            Research. (2) Ops snapshot (c): 5 x (1 cold + 20 warm), first run >= 2 min after web start; GATE median of
+            maxima <= 28.9 ms. (3) Design: tonight plumbing only; Now cell real-10s read premarket 09-30 from 04:00 ET.
+            (4) Ops: research journal + NRestarts across the lock.
+```
+
+### 09-30
+```
+GRADES READ scripts/ops/grades-v2-read.sql at 77d1e66 (read): C (pre-deploy 2026-09-22T16:18:16Z..2026-09-29T16:17:16Z,
+            PASS = any MTNB row; Ops read MTNB id 2445 first-hand, afe6109) FIRST, then A, then amended B (b1c53c8:
+            '%reverse%split%' / '%consolidat%' / '%ratio change%'); boundary 16:17:16Z = research ExecMainStart.
+            Ops 10:12 ET, raw to Research. Research grades by reading.
+STORE COPY  Ops, after 16:06 ET 09-29 -> A:\mointel\data\market-prod-2026-09-29.db. Tell Research when it lands (NOT
+            yet reported to this seat at hand-off). Research profiles LOCALLY, ratios only; then coalesce may be built.
+DESIGN      Now cell (fa61410) real-10s read premarket; fa61410 rides nothing until then.
+OPS HANDOFF ~10:25 ET after the grades read.
+```
+
+### APPROVED, NOT BUILT -- THE LIST HE ASKED TO ALWAYS SEE
+```
+COMPRESSION     his yes 15:37:19Z; Ops's edit to deploy/aws/nginx-tls.conf REFUSED by the permission control; no sha.
+                Back with him in Ops's session (allow / do it himself / drop). CONE HAZARD once live: deploy.sh
+                re-installs nginx files every deploy, so every later ship must have it as an ancestor.
+PRICE-RANGE FIX Research + Ops, after tonight's restart + one RTH (read gate + write gate in the 17th's LIVE STATE).
+SESSION REPORTS Research: wire a model = SPEND, his yes first.
+CLAIMQUEUEDJOBS Ops: throws after ~33 s retry during a long lock.
+SIGN-IN         built on main; cut-over waits on his Google OAuth client.
+DAILY BILLING   after sign-in proves it refuses.
+BENZINGA        reply draft docs/research/benzinga-licence-cost-2026-09-29.md s4b; HIS to send.
+FOLLOW-UPS      Design's "board not updating" state; useDashboard's abort pattern -- recorded, not put to him.
+```
+
+### SEATS (look up by title; CHECK list_sessions BEFORE saying anything about a title)
+```
+Ops-tmi local_37a1741e (through tonight)   Design-tmi local_8568daaf   Research-tmi local_d6996864 (opened 17:09:57Z)
+Retired + archived (his doing, verified in list_sessions): Integration-tmi-retired x2, Research-tmi-retired x2.
+Commercial / Web / Marketing / R&D: nothing open with this seat.
+```
+
+### HAND-OFF LINE
+```
+Nothing in flight at hand-off. First: ask Ops for /proc and whether the store copy has landed (tell Research if so).
+Then carry tonight's 20:15 ET motion check and the AFTER list, then 09-30's grades read.
+```
+
+## ARCHIVE — THE SEVENTEENTH'S LIVE STATE (his "1, handoff once confirmed", 2026-09-29T14:46:55Z) — SUPERSEDED BY THE EIGHTEENTH'S
 
 *A SNAPSHOT. Every time is a commit time, a transcript timestamp, or a peer's stated reading. Re-read production
 before acting: ask Ops for `/proc/<pid>/cwd`.*
@@ -1178,7 +1249,19 @@ error                                                  TYPE                     
   inferred from "down 2s", never read. Corrected to    2s" stated as a read)
   Research next message; the recommendation did not
   depend on it. REPEAT -> put to him per hygiene s2.
+4 "the old Research chat still carries the title" to   asserted what was not opened       YES (3)  HIM
+  HIM, twice, in NEEDS YOU; relayed from Research's    (a peer's premise put to him;
+  message; list_sessions showed both retired chats     list_sessions was one call)
+  renamed + archived. HIS WORDS: "you should check
+  these kinds of things before wasting tokens on it."
+  Third repeat, owner caught it -> hand-off WITHOUT
+  asking, on my stated terms (his 17:28:33Z "keep it
+  through tonight" was given with those terms stated).
 ```
+*ONE CLASS, THREE TIMES (2, 3, 4): a peer's premise or my own inference passed on as read. The cure that would have
+caught all three is the 17th's: open the artefact (git grep, the journal, list_sessions) BEFORE the sentence is sent.
+The seat that knew the rule still broke it on a cheap, low-stakes fact -- low stakes is exactly when the check is
+skipped.*
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
