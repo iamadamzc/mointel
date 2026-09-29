@@ -926,6 +926,9 @@ fourth instance goes back to him.*
   the clock read 03:49:56Z immediately after                                                             read after)
 ```
 *FOURTH INSTANCE, 2026-09-29T03:49:56Z. Goes back to him, as committed.*
+**HIS RULING 2026-09-29T03:51:42Z (this session, mid-turn message, read from the queue-operation): "yes to columsn and
+keep this chat for now".** *Keep: no hand-off. Standing cure now: no clock time written anywhere except one read in
+the same step or taken from a record (commit %cI, a transcript timestamp).*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
@@ -1039,7 +1042,11 @@ SESSION REPORTS      Research: contract landed (13975c9); writer building on fra
                      PRE-DEPLOY BACKUP ROUTE -> this (+ high_res column, one bump) -> rvol index if needed.
                      Count condition too: top-N complete iff out-of-range <= 25-N; 09-28 max 12 (recap).
                      Design's briefing panel (307e42d, 6eb1362) on main, waits for /api/reports.
-RESIZABLE COLUMNS    RULED 02:41:45Z: drag edges, per-browser, Discovery only. BUILT on main at 1d59b00 (verified: 5 files,
+RESIZABLE COLUMNS    ⭐ 03:51:42Z HE SAID SHIP THEM ALONE ("yes to columsn"), not behind the range set. Design cuts 1d59b00
+                     FROM PRODUCTION 2256c63 as a design/ tag now; whichever of it and the restart set (121f97c, also on
+                     2256c63) ships second is re-picked onto the new production (disjoint files) and re-replayed. It is
+                     a BOARD-BEHAVIOUR change: his ship yes in Ops's session. Earlier text below is superseded.
+                     RULED 02:41:45Z: drag edges, per-browser, Discovery only. BUILT on main at 1d59b00 (verified: 5 files,
                      client only -- components/DiscoveryBoard.tsx + ColumnResizeHandle.tsx, lib/dashboard/columnWidths.ts,
                      lib/hooks/useColumnWidths.ts, one test file; 178 test files at 1d59b00 = main's count, NOT a ship
                      count). BUILT-NOT-LIVE. Conflicts with the range set in DiscoveryBoard.tsx. CUT RULE: NOT re-cut onto
