@@ -1069,6 +1069,10 @@ CATALYST RENDERING  Design: BUILT on main d3dc32d (why.ts, DecisionCells.tsx, +1
                     'sheet C · desk A' mark from the merge's own comparison. CUT on a391c61 once confirmed: PRE-REGISTERED
                     174. Pairs with grades 9d554e0 (also on a391c61): first his-yes ships first, other re-picked at 175;
                     yes to both at once -> grades first. Ship = his yes in Ops's session.
+                    CUT: design/catalyst-rows-on-a391c61 -> 65cf1f5 REPLAYED + APPROVED: 1 over a391c61, patch-id
+                    becf06cb == d3dc32d, 3 files, 174 == declared, fa61410 not in cone, no overlap with 9d554e0. Sent to
+                    Ops; his ship yes pending. Design live read on a391c61: resizable columns VERIFIED live; poll fix in
+                    the bundle, behaviour not observed live (pane hidden).
 GRADE DEFINITIONS   Research: BUILT on main a794e20 (lib/research/interpret/catalystGrades.ts, read by prompt AND schema;
                     reverse split/ratio change by context over the evidence bundle; red grade not split; prompt v1->v2;
                     189 files as predicted; no paid run). DROPPED the draft's 'fresh' wording -- his 09-24 ruling
@@ -1098,8 +1102,9 @@ Bash prompts; harmless, his to close.
 ### HAND-OFF LINE
 ```
 The stack is CONFIRMED: a391c61 live per Ops /proc 15:18:33Z. His "handoff once confirmed" is therefore
-met. Open with him at hand-off (in Ops's session): ship catalyst grades 9d554e0; the post-close market.db copy
-to this PC for Research's profiling (after 16:05 ET, before 20:15). Design's rendering tag: owed to you.
+met. Open with him at hand-off (in Ops's session): ship catalyst grades 9d554e0 AND catalyst rows 65cf1f5 (both approved); the post-close market.db copy
+to this PC for Research's profiling (after 16:05 ET, before 20:15); gzip for /api/market. Second of the two catalyst
+ships is re-picked at 175 -- replay it.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S

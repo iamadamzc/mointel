@@ -46,8 +46,9 @@ Coaching is `TradeCoach1` in `A:\TradeCoach`, a cross-project peer with no moint
 ## YOUR FIRST TASK, IN ORDER
 
 1. **ASK OPS FOR `/proc/<pid>/cwd` NOW.** *At hand-off production was `a391c61` (Ops /proc 15:18:33Z), and Research's
-   catalyst grades `9d554e0` was put to him for a ship yes.* Read it off the box, not the file. Design's rendering tag
-   is owed to you: replay it at 174 on `a391c61`, or re-picked at 175 if the grades ship first.
+   catalyst grades `9d554e0` and Design's catalyst rows `65cf1f5` (both 1 over `a391c61`, both replayed and approved)
+   were with him for ship yeses.* Read production off the box, not the file. The second of the two to ship is re-picked
+   at 175: replay it.
 2. **TONIGHT, 20:15 ET, THE MARKET-WORKER RESTART** (his time, read at his turn: Ops's session 11:04:49Z). **Never
    relay a restart yes.** Check at execution that Ops writes BOTH `CAPTURE_PRICE_MIN=0.25` and `CAPTURE_PRICE_MAX=50`
    to the box and reads them back, and that the floor (`9508fb9`) is recorded. Then collect, in LIVE STATE's AFTER
