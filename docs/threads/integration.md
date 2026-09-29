@@ -1396,7 +1396,12 @@ HIS RULING       Research's session 22:44:18Z (read): "a, show all 7." answering
 REACTION TEST    approved here (order call; local, no spend), after tonight's 22:08 ET check. His Q2 in Research's
                  session answered by that.
 COST ROUTED      Commercial-tmi local_2ce868d2 (title + cwd checked): plan coverage (Algo Trader Plus, commercial.md
-                 l.159), rate limits, terms for historical 15m + daily. Public docs only. Owed to this seat.
+                 l.159), rate limits, terms for historical 15m + daily. Public docs only.
+COST ANSWERED    Commercial 6c160bb (§9b of docs/commercial/2026-09-07-feed-licence-landscape.md, read): history "Since
+                 2016", "no restriction" on Algo Trader Plus; flat $99/mo, no per-request line -> NO EXTRA COST. Rate
+                 limit 10,000/min (docs) vs "Unlimited" (marketing), either clears tens/day. Terms: historical bars are
+                 the same "Content", same personal/non-commercial clause -> NO NEW EXPOSURE; Gate 0 redistribution
+                 question unchanged. Sent to Research.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
