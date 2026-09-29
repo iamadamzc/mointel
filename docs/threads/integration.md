@@ -1207,6 +1207,7 @@ RESTART RULED   HIS TURN, Ops's session (a36b4a67-*.jsonl), 2026-09-29T11:04:49Z
                  answering Ops's 04:56:26Z ask (which evening; no-rollback consequence; $50 setting in env script + box
                  together). Precisions sent to Ops: BOTH MIN=0.25 and MAX=50; floor 9508fb9/3810b9e. "allow it" = the
                  11:05 ET range read. Ops: heartbeat must be LIVE BEFORE 20:15 (restart recreates the 09-25 lock).
+                 VERIFIED: sync-env.sh at 206c687 lines 142-143 carry MIN=0.25 and MAX=50; Ops acked floor 9508fb9 in ops.md.
 SHIP ORDER      REVISED for the deadline, after 10:00 ET, his yes each: 1 heartbeat c49bb3a (171, owner-approved by
                  Ops) -> 2 memo re-picked (172) -> 3 poll fix re-picked (173). Partial yes keeps relative order.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
