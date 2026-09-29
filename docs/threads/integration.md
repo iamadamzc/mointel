@@ -1338,6 +1338,10 @@ SESSION REPORTS  HIS WORDS (this session 23:39:14Z): "what about the session rep
                  the 13:09 ET Research re-seat. My status lists carried it as "needs his spend yes" -- WRONG framing:
                  nobody was building it. PUT TO HIM: reports vs levels first (recommended reports). Research told to
                  name it a first-day item in its hand-off prompt with the spend authority read at his turn.
+                 DONE d626f1c (read: research-opening-prompt.md item 3). SPEND: his "1 set ranges, 2 yes, 3 yes"
+                 (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
+                 are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
+                 waits for HIS order answer (reports vs levels) from this seat.
 ```
 **THE NINETEENTH SEAT'S LEDGER:**
 ```
