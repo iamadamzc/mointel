@@ -975,9 +975,14 @@ flush-duration instrument exists (runtime.ts:1595 flushedAt is a clock; verified
 decision; an in-worker timer rides a restart (re-cut into the restart set only if ready before his time). A
 **RESEARCH'S WRITE-SIDE PRIOR (scratch 08-23 copy, real upsertTickerSessions, 60 interleaved flushes/size): upsert
 +12% to +36% WITH the index at 200/1,000/3,000/8,688 dirty rows -> ruled (a) PROBABLY FAILS. Baseline WITHOUT the
-index: 244 ms median / 293 max at 8,688 rows (this disk).** The box run is still the verdict. **The bigger signal: the
-live desk may ALREADY exceed 250 ms flushes at the open (SIP stall), index or not** -- Ops reads the production
-baseline (dirty rows/flush, whole-flush in RTH) FIRST; over 250 ms = to him before the index. Research's next idea
+index: 244 ms median / 293 max at 8,688 rows (this disk).** The box run is still the verdict. ~~**The bigger signal: the
+live desk may ALREADY exceed 250 ms flushes at the open (SIP stall), index or not**~~ **CORRECTED (Research's guard):
+244/293 ms is an ABSOLUTE from a scratch copy on THIS Windows disk, with an every-row sweep surely above the real
+dirty count; it is NOT evidence about the box, only a reason to look. It reached him as "may already take about a
+quarter of a second" at ~04:1xZ and was retracted to him in the next message.** Ops reads the production baseline
+(dirty rows/flush at the open, whole-flush in RTH) FIRST, and separates DELAY from LOSS (better-sqlite3 blocks the
+event loop: are SIP messages queued-late or dropped? unverified, and very different claims); over 250 ms = to him
+before the index. Research's next idea
 (decouple the header COUNT from the rows) is a DESIGN/his question about "top 25 of N", held. A
 market.db bump: ONE migration with the latch/high_res columns, behind the backup route. The 08:30/11:05
 reads STILL RUN (N = 1 cold + 20 warm, pre-registered now) as the loaded baseline for the fix; they cannot un-void.
