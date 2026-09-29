@@ -12464,3 +12464,14 @@ readers overlap, that event only. Research runs 1-vs-2 interleaved on the local 
 175 test files; gate running. NOT shipped: no Integration seat exists to replay it (18th retired, no successor yet).
 
 **Copy landed 18:06 ET:** A:\mointel\data\market-prod-2026-09-29.db, 4,023,296,000 B, sha256 885fd7fd...3aa7 = box; box copy deleted after a re-verified match. The first scp died at 2.35 GB (Session Manager timeout at 17:23, box healthy); resumed with `ssh tail -c +N >>`. Path sent to Research by id.
+
+**QUEUED (Ops, store): bound loadMinuteBars (lib/market/store/repo.ts:216) by ts.** Research's profile on the 09-29 copy:
+loadMinuteBars = 83% of an /api/market build (via overlayLiveCycle); "AND ts >= (D-1)T00:00Z" gives identical rows at
+0.35x (629 -> 222 ms, 50 names); the same-day bound gives 0.25x but is safe only if no bar filed under D carries a D-1
+ts. DEFAULT: the D-1 bound; open the 22:00 roll path (runtime.ts / upsertMinuteBars) before taking the tighter one.
+TESTS (Research): (1) an EXPLAIN QUERY PLAN assertion that the statement uses "symbol=? AND ts>?", the ONLY test
+that can kill "bound removed" (rows are identical by design; predict 1 kill); (2) a D-1-ts bar filed under D is
+still returned, which kills "bound too tight" (predict 1). No index, no write cost.
+**ROUTING (for Integration): reuse a range read's result until the next flush, keyed (range, flush seq).** Research's
+1-vs-2 reader run on the copy, pinned to the box's shape: median 1.45-1.61x, p95 4.1-5.8x, max 6.5-8.1x. A cheaper
+query alone probably can't hold 20 ms p95 with several viewers; fewer reads can. Not built.
