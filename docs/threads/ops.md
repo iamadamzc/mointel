@@ -12413,3 +12413,14 @@ permission prompt approved by him in the task session; a hand run started by thi
 188,179 (23%) 21 ms; **-4 153,602 (19%) 22 ms (proposed level)**; -6 137,925 (17%) 32 ms. ~22 ms CPU per response = ~2% of
 one vCPU per open board at 1 poll/s. Body carries no secret values (only inputTokens/outputTokens/cachedInputTokens
 counters), so BREACH risk is low. TRANSFER ONLY. Put to him 2026-09-29 ~11:2x ET; pending.
+
+**2026-09-29 midday, his "yes to all" (15:37:19Z), each base-checked, DEPLOY_TESTS_SKIP on this session's green gate, 2s:**
+```
+9d554e0  catalyst grade definitions (Research)            live 16:17:15Z  174/174  prune -c49bb3a
+803008b  catalyst rows (Design, -x 65cf1f5 onto 9d554e0)  live 16:47:30Z  175/175  prune -8455b48
+```
+**gzip: his yes, but my edit to deploy/aws/nginx-tls.conf was REFUSED by the permission control (shared resource). NOT
+BUILT. Back with him.** deploy.sh re-renders nginx-tls.conf from EVERY release (while tls-domain + cert exist), so once
+a gzip commit is live, every later ship must carry it or the deploy removes it.
+Grades v2 live read for Research: scripts/ops/grades-v2-read.sql, boundary 16:17:16Z (research ExecMainStart), run
+after 10:00 ET 09-30.
