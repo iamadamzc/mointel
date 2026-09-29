@@ -12450,3 +12450,11 @@ over Session Manager at ~0.6 MB/s (~1.75 h), box copy deleted only after a match
 **CONSEQUENCE FOR THE PRE-DEPLOY BACKUP ROUTE (open item): a VACUUM INTO of the live store stalls the WEB tier for
 tens of seconds on this 4 GB-RAM box. It must not run inside a trading session, and the design must budget ~20 min
 of I/O.**
+
+**The two stuck range-read tasks FIRED LATE, simultaneously, at 15:43:48Z (11:43 ET, web started 15:17:45Z, no deploy
+unit).** Each ran 1+20 per case; they overlapped, so each measured the other's load: NOT a clean baseline. Readings
+(08:30 task / 11:05 task), DAY warm max: $0.25-$50 60.9 / 49.9; $1-$20 23.5 / 21.4; $0.5-$5 38.5 / 38.9 ms; all FAIL.
+AH x3: 0 eligible -> untested. Contrast: my single-reader read at 14:51:34Z: 21.3 / 15.9 / 12.4. **Reading: under two
+concurrent readers in RTH the range query's tail goes 2-3x; it has no concurrency margin either.**
+**gzip:** edit approved by him, committed 7f607a2; stacked onto production as 1b5ead6 (tag ops/gzip-on-803008b), 1 file,
+175 test files; gate running. NOT shipped: no Integration seat exists to replay it (18th retired, no successor yet).
