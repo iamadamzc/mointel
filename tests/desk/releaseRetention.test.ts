@@ -223,9 +223,11 @@ describe('deployment preflight', () => {
   it('proceeds with an override and records the reason', () => {
     const out = sh(PREFLIGHT_SH, [], {
       PROTECTED_MINUTES: '2000',
-      // Saturday: the checkpoint override must not depend on the real weekday,
-      // because it deliberately does not cover his trading window.
-      PREFLIGHT_NOW_DOW: '6',
+      // Tuesday 12:00: a weekday (checkpoints are guarded) outside his trading
+      // window (which this override deliberately does not cover), pinned so the
+      // result never depends on when the suite runs.
+      PREFLIGHT_NOW_DOW: '2',
+      PREFLIGHT_NOW_MINUTES: '720',
       DEPLOY_WINDOW_OVERRIDE: 'production incident: symbol loop',
     });
 
@@ -298,6 +300,19 @@ describe('deployment preflight', () => {
     const at1022 = preflightAt(622, 2);
     expect(at1022.status).toBe(3);
     expect(at1022.out).toContain('RTH_INTERVAL is 8m away');
+  });
+
+  it('does not guard checkpoints on a weekend, when none fire', () => {
+    // 10:22 on a Tuesday is refused (above); on a Saturday nothing runs at 10:30.
+    const saturday = preflightAt(622, 6);
+    expect(saturday.status).toBe(0);
+    expect(saturday.out).toContain('clear of every checkpoint');
+  });
+
+  it('says "ago" for a checkpoint that has just passed, not a negative distance', () => {
+    const at1102 = preflightAt(662, 1); // 11:00 was 2 minutes ago
+    expect(at1102.status).toBe(3);
+    expect(at1102.out).toContain('RTH_INTERVAL is 2m ago');
   });
 
   it('admits a start at the front of a gap, where the stop clears both neighbours', () => {

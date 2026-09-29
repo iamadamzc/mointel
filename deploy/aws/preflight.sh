@@ -105,7 +105,11 @@ main() {
     # in [now+STOP_MIN, now+STOP_MAX]; it collides when that span comes within
     # PROTECTED_MINUTES of the checkpoint.
     local ahead=$(( -diff ))
-    if [ -z "$stop_hit_name" ] && (( ahead >= STOP_MIN - PROTECTED_MINUTES )) \
+    # No checkpoint fires on a Saturday or Sunday: the schedule resolves against
+    # the market calendar, and the week's last one is Friday's 22:00 recap
+    # (read from desk_assessments, 2026-09-29). Holidays are NOT known here, so
+    # they stay protected -- the cautious direction.
+    if (( dow <= 5 )) && [ -z "$stop_hit_name" ] && (( ahead >= STOP_MIN - PROTECTED_MINUTES )) \
         && (( ahead <= STOP_MAX + PROTECTED_MINUTES )); then
       stop_hit_name="$name"; stop_hit_ahead=$ahead
     fi
@@ -143,7 +147,9 @@ main() {
       log "note: persistent catch-up remains active; this does not disable it"
       return 0
     fi
-    echo "[preflight] BLOCKED: ${stop_hit_name} is ${stop_hit_ahead}m away, and the services stop ${STOP_MIN}-${STOP_MAX}m after a start -- inside its ${PROTECTED_MINUTES}m protected window." >&2
+    local when="${stop_hit_ahead}m away"
+    (( stop_hit_ahead < 0 )) && when="$(( -stop_hit_ahead ))m ago"
+    echo "[preflight] BLOCKED: ${stop_hit_name} is ${when}, and the services stop ${STOP_MIN}-${STOP_MAX}m after a start -- inside its ${PROTECTED_MINUTES}m protected window." >&2
     echo "[preflight] Wait, or re-run with DEPLOY_WINDOW_OVERRIDE=\"why this cannot wait\"." >&2
     exit 3
   fi
