@@ -1040,6 +1040,14 @@ ROUTED      Research local_d6996864, FEASIBILITY ONLY (no build, no spend, local
             sessions, lib/market/config.ts:128; which tickers have bars), 5m/15m from 1m, PRE-REGISTERED validation,
             cost vs the RTH poll, owner split (Research compute / Design section). Report to Integration-tmi by title.
             Successor: put the finding to him; ask him for the chart if Research needs it.
+INTERIM     Research (pre-registered f103ba4): feasible in principle; 5m/15m exact from 1m. GAPS: prior days' bars RAW
+            (not re-adjusted after a split -- read here: stream bars persisted as-is runtime.ts:1562-1568; blueSky.ts:173
+            already names mixed bases); prior-day bars only for names inside the capture band then ($20 ceiling until
+            tonight); restart gaps. Compute at candle close in the worker, not per poll. Owners: Research compute, Ops
+            worker/table, Design section. Alt: fetch split-adjusted 5m/15m from Alpaca at board-join = data cost (his).
+            Fork A (range contains price) vs B (high >= price) left open until his chart. Warrior Trading's article
+            = daily chart, not a 5m/15m spec.
+PUT TO HIM  the chart (ticker, date, timeframe, moment drawn); whether he will hand-mark 10 names for the full test.
 ```
 
 ### HAND-OFF LINE
