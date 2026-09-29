@@ -67,7 +67,54 @@ catalysts are wire press releases, which Benzinga sells as a separate product.**
   Alpaca's feed demonstrably lacked `MEDS`; whether that is because Alpaca
   receives a narrower product or because Benzinga never had it is unknown.
 
-## 4. What it would take to get a number
+## 3b. Forums and secondary sources, searched on his ask
+
+Searched for any quoted price: trader/developer forums and review sites. **No
+Benzinga API price found anywhere.** What came back, and why none of it counts:
+Benzinga Pro consumer prices (a terminal, not the API); several SEO pages titled
+"Benzinga API pricing" that state no number; one Hacker News comment (2014,
+`news.ycombinator.com/item?id=7432018`) quoting "$15,000-50,000 per month" that
+is about aggregating Bloomberg-class feeds generally and never mentions
+Benzinga — discarded. **Reddit could not be searched: blocked to both the
+search tool and the in-app browser.**
+
+## 4. What it would take to get a number — HE SAID YES TO DRAFTING, 2026-09-29
+
+Draft for him to send from his own address (not sent by any seat):
+
+> **To:** licensing@benzinga.com
+> **Subject:** Press Releases feed — commercial display licence, pricing enquiry
+>
+> Hello,
+>
+> I run [COMPANY], a web application for active traders in US small-cap
+> stocks. We'd like to license Benzinga's **Press Releases** feed (and possibly
+> Stock News) for **display to paying subscribers**, alongside our own analysis
+> of why a stock is moving.
+>
+> Could you tell me:
+>
+> 1. **Pricing** for commercial display to subscribers, and whether there is
+>    early-stage or usage-based pricing. We'd pull by ticker for a few dozen
+>    active names a day, US equities only, real time, via REST.
+> 2. **Your current wire partners.** Your product page lists ACCESSWIRE,
+>    Business Wire, GlobeNewswire, PR Newswire and Newsfile. Is ACCESS Newswire
+>    still included, and are there others?
+> 3. **Latency** from wire publication to availability in the feed.
+> 4. **Derived content:** may we display our own summaries and analysis
+>    derived from the releases, and what attribution do you require?
+> 5. **A trial or sample** we could test against two specific releases:
+>    DataMeds AI / Tollo Health, "Health Lives Here" (MEDS, 2026-09-28, ACCESS
+>    Newswire) and Firefly Neuroscience (AIFF, 2026-09-25, GlobeNewswire).
+>
+> Thank you,
+> [NAME]
+
+*Why question 5 names those two: they are the desk's fixed controls — MEDS is
+known ABSENT from Alpaca's Benzinga feed, AIFF known PRESENT. A trial that
+carries MEDS answers the coverage question with a measurement, not a claim.*
+
+## 4a. (original) What it would take to get a number
 
 One enquiry to `licensing@benzinga.com`, usage "Business", products **Press
 Releases** (and Stock News only if wanted), stating: display to paying
