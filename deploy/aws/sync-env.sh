@@ -132,6 +132,16 @@ $ALPACA
 # back with nothing reporting it.
 DISCOVERY_PRICE_MIN=0.25
 
+# HIS RULING 2026-09-26: RECORD \$0.25-\$50, qualify the board inside it
+# (DISCOVERY_PRICE_MIN/MAX stay the board's band). captureBand() admits this only
+# because it CONTAINS the discovery band; a refused band is logged as an ERROR
+# on every engine build. The bootstrap seeds exactly this band at every restart
+# and 22:00 roll (bootstrapBand). Activated with the market-worker restart of
+# 2026-09-29 20:15 ET, his time; same reason as above for living HERE: a value
+# typed only onto the box is erased by the next sync.
+CAPTURE_PRICE_MIN=0.25
+CAPTURE_PRICE_MAX=50
+
 # --- carried over from .env.local ----------------------------------------
 $LOCAL_ENV
 EOF
