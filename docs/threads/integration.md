@@ -1195,6 +1195,9 @@ RESEARCH HANDOFF Research-tmi retiring on his yes; prompt docs/research-opening-
                  production 0342e7d); only the MARKET-WORKER RESTART is pending. Benzinga replied (5 routing questions);
                  answer draft in docs/research/benzinga-licence-cost-2026-09-29.md s4b, HIS to send (country of
                  incorporation + MAU are his facts).
+NEW RESEARCH    local_e18a7d74 (bare title shared with the retired seat until he renames it: address BY ID). Answered its
+                 7 questions; heartbeat write approved to build (cut from 0342e7d, 170 + declared n). 08:30 ET range read
+                 STUCK on a Bash permission prompt awaiting his approval (its transcript).
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
@@ -1221,6 +1224,9 @@ error                                                  TYPE                     
   on Design's 12:06Z probe from this PC; his own        claim about HIS screen (the 16th's seat; the     nginx log
   traffic landed ~90% at rest, the freeze coincided     disk-local-absolute class, in     16th's 2nd
   with the probes. Retracted to him next message.       its prompt)                       class)
+"12:34Z-ish" to the new Research seat for when the     A CLOCK TIME WRITTEN WITHOUT       no (1st in   self, on
+  catalyst questions went to him; record = commit       READING IT (the 16th's class,     this seat)   re-reading
+  63b6225 %cI 08:34:54-04:00. Corrected next message.   named in this seat's prompt)                   the send
 "His yes already exists" (columns ship) to Ops and    a ruling's SCOPE relayed without    no       Ops (read the
   to him; his 03:51:42Z answered a question whose       reading the question it answered            question text)
   Yes said "Ops asks you for the ship yes in its
