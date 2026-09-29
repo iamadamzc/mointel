@@ -1137,7 +1137,7 @@ GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Che
                  (pre-deploy 7 days; PASS = any MTNB row, id reported) FIRST, then A, then B; after 10:00 ET 09-30; raw to Research.
                  BOUNDARY (Ops): 16:18:16Z is the /proc read; research worker ExecMainStart 16:17:16Z. Put to Research:
                  move all three to 16:17:16Z (A/B would otherwise miss a v2 row in that minute). RESEARCH: YES; sent to Ops
-                 as one instruction (A >=, B >=, C upper <).
+                 as one instruction (A >=, B >=, C upper <). APPLIED 77d1e66, read: all three bounds + amended LIKEs in C and B.
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
