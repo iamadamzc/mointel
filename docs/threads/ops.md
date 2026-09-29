@@ -12424,3 +12424,13 @@ BUILT. Back with him.** deploy.sh re-renders nginx-tls.conf from EVERY release (
 a gzip commit is live, every later ship must carry it or the deploy removes it.
 Grades v2 live read for Research: scripts/ops/grades-v2-read.sql, boundary 16:17:16Z (research ExecMainStart), run
 after 10:00 ET 09-30.
+
+### THIS SEAT'S ERROR LEDGER (session-hygiene §2), session opened 2026-09-29 03:39Z
+```
+error (asserted vs true)                                          TYPE                              repeat?  caught by
+"SLND is a display defect, the board lagged 40 min" vs his tab    asserted-before-opening-artefact  no       Integration
+  sent NO polls 11:17-11:55Z (hidden); the access log settled it
+"A's GROUP BY pv would show a 16:17-16:18 v2 row" vs A's WHERE    asserted-before-opening-artefact  YES      Integration
+  drops that minute before the GROUP BY
+```
+Repeat of a corrected class -> warned him 2026-09-29 ~12:5x ET and proposed the hand-off timing.
