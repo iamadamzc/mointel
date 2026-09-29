@@ -10,7 +10,13 @@ import {
   readRangeCandidates,
   upsertTickerSessions,
 } from '@/lib/market/store/repo';
-import { rankInRange, rankLists, resolveRequestedRange, scrubBandOrdinals } from '@/lib/market/rangeRank';
+import {
+  markAboveRange,
+  rankInRange,
+  rankLists,
+  resolveRequestedRange,
+  scrubBandOrdinals,
+} from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 import { openTradesStore, setLastFlushMs, upsertFeedIntervals } from '@/lib/market/store/trades';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -468,5 +474,20 @@ describe('the graveyard fact survives the scrub', () => {
     const scrubbed = scrubBandOrdinals(row);
     expect('deadAtRank' in scrubbed).toBe(false);
     expect(scrubbed.diedWhileRanked).toBe(true);
+  });
+});
+
+describe('above your range', () => {
+  it('marks a ranked runner above the range, never a pinned name above it', () => {
+    const runner = state('RUNNER', 25, 9, 1);
+    runner.qualified = { at: '2026-09-28T13:40:00.000Z', price: 4, rvol: 3, rank: 5 };
+    const pinned = state('PIN', 35, 9, 2);
+    const inside = state('IN', 5, 2, 3);
+    const result = rankInRange([runner, inside], [pinned], 'DAILY_RVOL', 50, R);
+    markAboveRange(result.states, R);
+    const flag = (t: string) => result.states.find((s) => s.ticker === t)?.aboveRangeLatched;
+    expect(flag('RUNNER')).toBe(true);
+    expect(flag('PIN')).toBe(false);
+    expect(flag('IN')).toBe(false);
   });
 });

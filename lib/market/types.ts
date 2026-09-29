@@ -494,6 +494,13 @@ export interface DemandState {
    * the graveyard would read "nothing died" on every re-ranked board.
    */
   diedWhileRanked?: boolean;
+  /**
+   * RANKED while priced above the range the board was drawn from -- held there
+   * by the latch (it qualified inside the range, then ran). Design renders
+   * "above your range". Set by the server because a PINNED name can sit above
+   * the range too, unranked, and price alone cannot tell the two apart.
+   */
+  aboveRangeLatched?: boolean;
   deadAtPeakTrades?: number | null;
   /**
    * Price at the death, and the field that lets the graveyard show a MISS.

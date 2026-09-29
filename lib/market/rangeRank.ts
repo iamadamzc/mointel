@@ -221,3 +221,15 @@ export function rankLists(
     eligibleCount: Math.max(eligible.size, counts.dayCount, counts.eveningCount),
   };
 }
+
+/**
+ * Marks the ranked rows priced above the served range: the latch holding a
+ * runner. Pinned rows are unranked, so they are never marked, whatever their
+ * price. Applied on both paths -- the engine's band latches the same way.
+ */
+export function markAboveRange(states: readonly DemandState[], range: PriceRange): void {
+  for (const state of states) {
+    const ranked = state.rvolRank !== null || state.afterHours.rank !== null;
+    state.aboveRangeLatched = ranked && state.price !== null && state.price > range.max;
+  }
+}

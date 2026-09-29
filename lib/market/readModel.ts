@@ -52,7 +52,7 @@ import {
   readTopMovers,
 } from './store/repo';
 import { addBoardMovers, moversLogGate, moversLogLine } from './boardMovers';
-import { rankLists, resolveRequestedRange, sameRange, scrubBandOrdinals } from './rangeRank';
+import { markAboveRange, rankLists, resolveRequestedRange, sameRange, scrubBandOrdinals } from './rangeRank';
 import { attachNowBuckets } from './nowBuckets';
 import {
   loadFeedIntervals,
@@ -700,6 +700,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
     const states = addBoardMovers(boardStates, movers, config.boardMoversK);
     // The server's mover decisions, once a minute at most (Integration 32nd, option b; see moversLogLine).
     if (board === 'DAILY_RVOL' && moversLogDue(Date.now())) console.log(moversLogLine(states));
+
+    markAboveRange(states, served);
 
     // Ticker freshness is judged per ticker, never from the connection alone.
     const nowMs = Date.now();
