@@ -8,6 +8,7 @@ import {
   type FeedFailure,
 } from '@/lib/dashboard/feedFailure';
 
+import { pollDecision } from '@/lib/dashboard/pollGate';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
 
@@ -33,12 +34,22 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
   const symbolsKey = extraSymbols.join(',');
 
   const mountedRef = useRef(true);
-  const inflightRef = useRef<AbortController | null>(null);
+  const inflightRef = useRef<{ controller: AbortController; startedAt: number } | null>(null);
 
-  const load = useCallback(async (symbols: string) => {
-    inflightRef.current?.abort();
+  /*
+   * A TICK NEVER CANCELS A REQUEST INSIDE ITS BUDGET (`pollGate.ts`). This used
+   * to abort the in-flight request on every tick, and with the snapshot taking
+   * ~1.2 s to arrive, no response ever landed: the board froze on its first
+   * payload while its header still said LIVE. `force` is a change of query.
+   */
+  const load = useCallback(async (symbols: string, force: boolean) => {
+    const current = inflightRef.current;
+    const decision = pollDecision(current?.startedAt ?? null, Date.now(), force);
+    if (decision === 'SKIP') return;
+    if (decision === 'REPLACE') current?.controller.abort();
     const controller = new AbortController();
-    inflightRef.current = controller;
+    const flight = { controller, startedAt: Date.now() };
+    inflightRef.current = flight;
 
     try {
       const query = symbols ? `?symbols=${encodeURIComponent(symbols)}` : '';
@@ -67,6 +78,9 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
       if (!mountedRef.current) return;
       setFailure(classifyThrown(error));
     } finally {
+      // Free the slot only if it is still ours; a replaced request must not
+      // clear its replacement.
+      if (inflightRef.current === flight) inflightRef.current = null;
       if (mountedRef.current) setLoading(false);
     }
   }, [apiBase]);
@@ -76,15 +90,15 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
     // load() is async: every setState it performs happens after the fetch
     // settles, never synchronously during this effect.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void load(symbolsKey);
+    void load(symbolsKey, true);
 
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
-      void load(symbolsKey);
+      void load(symbolsKey, false);
     }, MARKET_POLL_INTERVAL_MS);
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible') void load(symbolsKey);
+      if (document.visibilityState === 'visible') void load(symbolsKey, false);
     };
     document.addEventListener('visibilitychange', onVisible);
 
@@ -92,7 +106,8 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
       mountedRef.current = false;
       clearInterval(interval);
       document.removeEventListener('visibilitychange', onVisible);
-      inflightRef.current?.abort();
+      inflightRef.current?.controller.abort();
+      inflightRef.current = null;
     };
   }, [load, symbolsKey]);
 
