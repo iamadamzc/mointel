@@ -12326,3 +12326,12 @@ denominator), so SQL time does not fall. And the same $1-$20 read is ~10 ms max 
 **the tail is in reading the file (page reads / contention on a 4 GB box with ~200 MB free), not in the sort.**
 Relative comparison only; memory is not file pages. **Untested alternatives, not built:** a COVERING index (no table
 page reads), or a short web-tier cache of the range result. A schema bump should not be spent on the rvol index.
+
+**Worker review, ae02f7c (Research's Now-column wiring), as worker/ owner: APPROVED for the restart set.** Drain
+untouched and first; roll closes under the old date then opens under the new, with no await between the date
+assignment and the rollover; heartbeat after the membership changes; DISCONNECTED/CONNECTING/ERROR close all, and a clean
+SIGTERM closes them while trades.db is still open; crash orphans are closed at the next open (trades.ts:312). Added to
+Research's POST-RESTART CHECK: the first date roll (old-date open rows 0; closes = opens at the roll instant). Note:
+trades.db now takes a commit every 1 s around the clock (heartbeat + last_flush_ms); look at it after the restart.
+**Box, ~03:5xZ: trades.db is schema v1 (trade_buckets only)**, so nowBuckets is absent until the restart. After the
+restart there is no worker rollback below 9508fb9 (a v1 worker refuses the v2 file): this goes into the restart ask.
