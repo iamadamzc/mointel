@@ -1357,8 +1357,10 @@ GZIP LIVE        PRODUCTION = 1b5ead6 (Ops /proc 22:26:01Z: web 1567784 start 22
                  used) -> OWED: Ops reads the access log bytes on the first board poll (expect ~20% of raw; last raw
                  200 was 1,172,059 B at 22:24:50Z). CONE RULE IN FORCE: every later ship has 1b5ead6 as ancestor.
 HIS RULINGS      THIS SESSION (first-hand, after 22:26Z), LEFT-AND-UP:
-                 (1) "1, yes" to "show every candidate first, labelled as candidates; selectivity later if he marks
-                     charts" (the question had two options; yes read as the recommendation). 10-chart marking NOT committed.
+                 (1) ~~"1, yes" to "show every candidate first ..."~~ NOT A RULING: at 22:35:29Z, in Research's session
+                     (8cd59d1e, queued turn, read), he wrote "1, i dont understand the question." to the SAME question,
+                     which Research had also put to him at 22:15:12Z. UNRESOLVED; Research owns it and re-asks in plain
+                     words (d26049d). This seat does not ask it again. SEAM DEFECT: two seats asked him one question.
                  (2) "todays run tops count as resistance yes. but for premarket there will typically not be todays tops".
                  (3) SPEC, "a practical starting point, not a validated cutoff": 6-12 months daily; last 30 days 15m;
                      daily also covering the 30 days. No fixed expiry ("two years back and just above today's price, I'd
@@ -1369,6 +1371,15 @@ HIS RULINGS      THIS SESSION (first-hand, after 22:26Z), LEFT-AND-UP:
                      for this repeat; the seat continues. The ledger stands; a THIRD entry of the class is the next trigger.
                  ROUTED to Research local_d6996864 (title + cwd checked): feasibility only -- daily_bars depth +
                  adjustment, 30d 15m fetch count (cost -> Commercial + him), pre-registered weighted-level scoring.
+V2 FEASIBILITY   Research 695e9e6 (prod copy, 515 board names 09-16..09-29): daily bars >=12 mo for 71%, >=6 mo 76%,
+                 NONE for 17%; 47% have rows of unestablished split basis; 15m: 15 sessions stored, his 30 days = ~6
+                 older sessions to fetch; ~34-73 new names/day -> ~6-40 requests/day, uncosted. Weighting pre-registered
+                 (drawdown after, rejection count, age, daily-vs-15m; fixed composite); validated by the MARKET (10
+                 sessions, top- vs bottom-weighted rejection rate, >=10 pp, CI excl. 0, >=100 events else UNTESTED),
+                 not his charts. OUTCOME TEST: approved here (order call; local, no spend), after tonight's grading,
+                 the /api/market profile and the 1-vs-2 run.
+COST ROUTED      Commercial-tmi local_2ce868d2 (title + cwd checked): plan coverage (Algo Trader Plus, commercial.md
+                 l.159), rate limits, terms for historical 15m + daily. Public docs only. Owed to this seat.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
