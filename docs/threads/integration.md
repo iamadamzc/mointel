@@ -988,8 +988,13 @@ SESSION REPORTS      Research: contract landed (13975c9); writer building on fra
                      PRE-DEPLOY BACKUP ROUTE -> this (+ high_res column, one bump) -> rvol index if needed.
                      Count condition too: top-N complete iff out-of-range <= 25-N; 09-28 max 12 (recap).
                      Design's briefing panel (307e42d, 6eb1362) on main, waits for /api/reports.
-RESIZABLE COLUMNS    RULED 02:41:45Z: drag edges, per-browser, Discovery only (~1.5 days). Design builds on MAIN now; lands
-                     after the range release (the range set is a fixed tag its cone cannot enter).
+RESIZABLE COLUMNS    RULED 02:41:45Z: drag edges, per-browser, Discovery only. BUILT on main at 1d59b00 (verified: 5 files,
+                     client only -- components/DiscoveryBoard.tsx + ColumnResizeHandle.tsx, lib/dashboard/columnWidths.ts,
+                     lib/hooks/useColumnWidths.ts, one test file; 178 test files at 1d59b00 = main's count, NOT a ship
+                     count). BUILT-NOT-LIVE. Conflicts with the range set in DiscoveryBoard.tsx. CUT RULE: NOT re-cut onto
+                     520142c now (void if the range-read fails). Once the range set is confirmed live from /proc, Design
+                     cuts it FROM PRODUCTION, this seat replays + pre-registers, and it goes to him as its own ship yes in
+                     Ops's session. If the range set is voided instead, it is cut from 2256c63 and the conflict is Design's.
 DAILY BILLING        + payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
 SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, a window).
