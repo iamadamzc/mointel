@@ -973,12 +973,13 @@ before acting: ask Ops for `/proc/<pid>/cwd`.*
 
 ### PRODUCTION
 ```
-CONFIRMED        8455b48 (memo, on c49bb3a heartbeat) on web/research/assess, Ops /proc 14:49:14Z (stated): pids
-                 1516975 (start 14:48:19Z) / 1517032 / 1517106, NR 0. (c49bb3a was confirmed at 14:19:16Z.) Market worker 3b78b8c pid 1347535 (start 2026-09-27 23:17:45Z), NR 0.
+CONFIRMED        a391c61 (poll fix, on 8455b48 memo, on c49bb3a heartbeat) on web/research/assess, Ops /proc
+                 15:18:33Z (stated): pids 1525925 (start 15:17:45Z) / 1525974 / 1526049, NR 0. Tests 173.
+                 (c49bb3a confirmed 14:19:16Z; 8455b48 confirmed 14:49:14Z.) Prune kept 3b78b8c (in use) + 372f5eb (pinned). Market worker 3b78b8c pid 1347535 (start 2026-09-27 23:17:45Z), NR 0.
                  Box env: no CAPTURE_PRICE_* (Ops 04:17:37Z read). trades.db schema v1.
-IN FLIGHT        8455b48 (sessionEnd memo, re-pick of 635a9ae), then a391c61 (poll fix, re-pick of 626b3f6) in the
-                 11:04-11:12 ET preflight window. Both replayed + approved; his "yes to all three" (Ops's session,
-                 13:24:20Z, read at his turn). See the HAND-OFF LINE at the end of this section for what was confirmed.
+NEXT SHIPS       Research's catalyst grades 9d554e0 (1 over a391c61, APPROVED, 174) -- his ship yes put to him in Ops's
+                 session; Design's catalyst rendering, told "cut on a391c61" (pre-registered 174). First his-yes ships
+                 first, the other is re-picked (175). Tonight's restart runs a391c61's WORKER.
 ```
 Cone in production after the stack: 0342e7d -> c49bb3a -> 8455b48 -> a391c61 (173 test files). fa61410 NOT in it.
 
@@ -1095,8 +1096,9 @@ Bash prompts; harmless, his to close.
 
 ### HAND-OFF LINE
 ```
-PENDING at this commit: Ops's /proc for 8455b48 and a391c61. Filled in by the next commit; if this line
-still says PENDING, ask Ops.
+The stack is CONFIRMED: a391c61 live per Ops /proc 15:18:33Z. His "handoff once confirmed" is therefore
+met. Open with him at hand-off (in Ops's session): ship catalyst grades 9d554e0; the post-close market.db copy
+to this PC for Research's profiling (after 16:05 ET, before 20:15). Design's rendering tag: owed to you.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
