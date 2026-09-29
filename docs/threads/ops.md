@@ -12203,3 +12203,15 @@ LIVE on web/research/assess**, on his "ship the re-check". DEPLOY_TESTS_SKIP; ga
 11:04 ET, 163/163, 2505 green, same session, nothing changed. Down 3s; prune kept 3b78b8c (in use).
 **Re-queue PROVEN on the first poll:** ARAY re-queued on a Benzinga item, job 5397 trigger NEWS_ITEM,
 COMPLETE 15:47:46Z. Halt-count half unproven until a runner halts.
+
+**2026-09-28 21:18 ET: 2256c63 = af15a13 (server-side range rank) on dca4a04, LIVE** on his "ship the
+range ranking" then "let it finish". Integration WITHDREW the enumeration mid-deploy (graveyard defect
+under viewer ranges); my `systemctl stop` cancel inside the pre-stop window was REFUSED by the
+permission control; he chose to let it land. Inert: no request sends min/max. DEPLOY_TESTS_SKIP; gated
+2256c63 at 21:14 ET, 164/164, 2520 green, same session. Down 4s; prune kept 3b78b8c.
+
+**Range read cost (the store's gate on Design's control):** readRangeCandidates (af15a13, live)
+113-362 ms vs today's board read 4.8 ms. Research's d2c2582 readRangeBoard, same live store, idle
+after hours: $0.25-$50 day 15.7 median / 17.9 max -- PASS; but $1-$20 (the default) day 18.5 / 25.7.
+Temp B-tree sort per call. **Re-measure in RTH before the range set ships; if $1-$20 max > 20 ms, add
+ticker_session(trading_date, rvol DESC) -- a schema bump, after the pre-deploy backup route.**
