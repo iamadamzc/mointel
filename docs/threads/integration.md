@@ -1152,6 +1152,10 @@ TRANSPORT HALF  Ops, from repo nginx conf + Next 16.3.1 source (not behaviour): 
                  TEST RULED: (a) nginx half on box after 10:00 ET: 499 + upstream closed (ss). (b) Node half LOCAL, throwaway
                  worktree at 0342e7d, 2 s sync probe route, B aborted at 0.3 s behind A. PRE-REGISTERED N=10, report k/10
                  pre-aborted at entry, no threshold. Both passing = 'halves pass, composition unverified'.
+                 (b) RESULT (Ops, local, Node 22.13 + Next's signalFromNodeResponse): 0/3 pre-aborted; B built; aborted
+                 false at entry, +setImmediate, +5 ms, +25 ms. POSITIVE CONTROL passed (abort seen at 296 ms on a free
+                 loop). N=3 vs pre-registered 10 -> remaining 7 asked. PROVISIONAL: entry check NOT built. nginx half
+                 skipped (moot). Order unchanged: sessionEnd memo -> box re-read -> coalesce only if still queuing.
 BUILD COST      Research priors (08-23 scratch copy, 08-21 full: 50 ranked/35 dossiers, 0.68 MB): sequential build median
                  155-230 ms, one 1.5 s spike; stringify 11 ms. 60% of build = etWallClockToUtc via history.ts:113
                  isFinished -> sessionEndUtc per daily bar (~5,000 conversions/build). VERIFIED pure here (session.ts:147,
