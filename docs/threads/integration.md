@@ -883,6 +883,15 @@ error                                                      TYPE                 
 ```
 **The repeat of the class is the trigger. Warned him and proposed a hand-off, which is his permission to give.**
 
+## THE FIFTEENTH SEAT'S ERROR LEDGER (session-hygiene §2)
+
+```
+error                                                   TYPE                               repeat?  caught by
+range gate written as "< 20 ms at $0.25-$50" -- one     trigger named the case, not the    no       Ops (measured
+  case; the requirement was EVERY range. The default    requirement (README: "a trigger             $1-$20 over it)
+  $1-$20 measured 25.7 ms max and passed the letter     must name the requirement")
+```
+
 ## LIVE STATE — AS OF 2026-09-28 ~15:10 UTC (11:10 ET), AT THE FOURTEENTH SEAT'S HAND-OFF
 
 *A SNAPSHOT. Times are from `zoneinfo` at the moment of writing. The fourteenth's running notes, with every
