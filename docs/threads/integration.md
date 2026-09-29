@@ -999,6 +999,14 @@ MARKET-WORKER RESTART  OPS'S SINGLE PLAN (received 16th seat, 2026-09-29 02:54Z,
                      halves rule); shipping the code moves production off 2256c63 -> 520142c VOID on base -> Design
                      re-cuts on the new sha; the range-read must be taken on the store AFTER (d) if the read's
                      candidates grow with the capture band.
+RESTART SET REPLAY   16th seat, 2026-09-29, scratch worktree at 2256c63, main's topo order: 6ef32fd 9508fb9 4044dc7
+                     9b4533a 731179b ca8eed9 c657830 572ed08 ae02f7c. FIRST 8 CLEAN, patch-ids 8/8. ae02f7c CONFLICTS
+                     (readModel.ts, rangeRank.test.ts): its context is the RANGE SET's code, on main not production.
+                     Since the range set's yes waits on a POST-restart read, the restart ships FIRST, cut from
+                     production -> Research asked to re-cut ae02f7c and tag the set from 2256c63. cea5ed2 IS in
+                     production as 1eaa938 (patch-id aae9035a match) -- "already in the release" verified.
+                     ROLLBACK HAZARD (Research, from Ops): once v2 opens trades.db, a worker below 9508fb9 refuses it
+                     (DISCARDING) -- no worker rollback below that line after the restart. Must be in the restart ask.
 NOW COLUMN           needs per-bucket PRICE + membership intervals (true 0s): Research engine + Ops trades.db v2 ->
                      MARKET-WORKER RESTART (his yes, in principle via Design's block, timing via Ops) -> Design builds.
                      Ops asked to fold ALL pending market-worker restarts into one plan to him: this, band piece 1's
