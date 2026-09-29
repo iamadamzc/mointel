@@ -1156,6 +1156,8 @@ TRANSPORT HALF  Ops, from repo nginx conf + Next 16.3.1 source (not behaviour): 
                  false at entry, +setImmediate, +5 ms, +25 ms. POSITIVE CONTROL passed (abort seen at 296 ms on a free
                  loop). N=3 vs pre-registered 10 -> remaining 7 asked. PROVISIONAL: entry check NOT built. nginx half
                  skipped (moot). Order unchanged: sessionEnd memo -> box re-read -> coalesce only if still queuing.
+                 FINAL: N=10 on scripts/ops/abort-probe.cjs (e6673e0): 0/10 pre-aborted, 10/10 built. ENTRY CHECK SHELVED
+                 for this purpose (mechanism in ops.md). Design told to hold.
 BUILD COST      Research priors (08-23 scratch copy, 08-21 full: 50 ranked/35 dossiers, 0.68 MB): sequential build median
                  155-230 ms, one 1.5 s spike; stringify 11 ms. 60% of build = etWallClockToUtc via history.ts:113
                  isFinished -> sessionEndUtc per daily bar (~5,000 conversions/build). VERIFIED pure here (session.ts:147,
