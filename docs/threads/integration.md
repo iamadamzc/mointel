@@ -1189,6 +1189,12 @@ RENDER FACTS    Design at 0342e7d: Discovery row grade+headline SHEET FIRST (why
 BUNDLE TO HIM   (this seat read the grade-definitions draft end to end first) stale-row rendering; Sheet/auto
                  disagreement mark; adopt grade definitions; reverse-split option; split the red grade. Sent in his
                  channel with recommendations. Builds: Research (prompt/schema), Design (rendering), on his yes.
+RESEARCH HANDOFF Research-tmi retiring on his yes; prompt docs/research-opening-prompt.md (4a2b6dd) carries every open
+                 item (memo, coalesce deferred, grade defs, Benzinga, heartbeat, session reports, range read). ONE STALE
+                 LINE to correct when the new seat asks: it lists 121f97c 'waiting on his yes' -- 121f97c is LIVE (inside
+                 production 0342e7d); only the MARKET-WORKER RESTART is pending. Benzinga replied (5 routing questions);
+                 answer draft in docs/research/benzinga-licence-cost-2026-09-29.md s4b, HIS to send (country of
+                 incorporation + MAU are his facts).
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
