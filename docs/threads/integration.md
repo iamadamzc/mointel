@@ -1021,6 +1021,12 @@ RESTART SET REPLAY   16th seat, 2026-09-29, scratch worktree at 2256c63, main's 
                      Since the range set's yes waits on a POST-restart read, the restart ships FIRST, cut from
                      production -> Research asked to re-cut ae02f7c and tag the set from 2256c63. cea5ed2 IS in
                      production as 1eaa938 (patch-id aae9035a match) -- "already in the release" verified.
+                     TAG CUT: research/restart-set-on-2256c63 -> 121f97c (obj 5289bae). VERIFIED by this seat: 9 over
+                     2256c63, patch-ids 8/8 + declared re-cut 121f97c<-ae02f7c (worker hunks identical), 16 files in
+                     lib/market, worker, tests/market; no app/components, no range-set symbols; 168 test files.
+                     ENUMERATED TO OPS (standing approval: no visible board change before the restart) conditional on
+                     Ops's owner review of the worker wiring. Pre-registered: gate 168; snapshot-route latency (1 cold
+                     + 20 warm) before ship / after ship / after restart -- nowBuckets may add <= 20 ms to warm max.
                      ROLLBACK HAZARD (Research, from Ops): once v2 opens trades.db, a worker below 9508fb9 refuses it
                      (DISCARDING) -- no worker rollback below that line after the restart. Must be in the restart ask.
 NOW COLUMN           needs per-bucket PRICE + membership intervals (true 0s): Research engine + Ops trades.db v2 ->
