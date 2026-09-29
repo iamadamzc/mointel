@@ -1142,7 +1142,7 @@ ABANDONED BUILDS Ops scoped; VERIFIED here at 0342e7d: app/api/market/route.ts c
                  never reads request.signal. Requests queue behind a sync build and are built after their client left.
                  (2) COALESCE (<=500 ms memo on extraSymbols+range) -> Research, propose only. (1) ENTRY CHECK -> Design,
                  only after Ops's test (after 10:00 ET) shows request.signal.aborted true for a queued request. Client fix
-                 + coalesce go to him as ONE 'board under load' decision; gzip separately.
+                 ships ALONE (already put to him); coalesce = a later separate decision; gzip separately.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
