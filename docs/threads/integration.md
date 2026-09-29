@@ -1103,6 +1103,14 @@ SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just be
                  NEW OPEN: his turns 11:58:01Z (red) and 12:00:20Z ("just updated in the last 2 minutes") vs store green
                  since 11:17:03Z -> his screen ~40 min behind the store. Routed to Design (dossier delivery / caching /
                  other red elements); asked him what was red and whether he reloaded.
+                 Research: board polls every few s + reloads on tab-visible (useMarket.ts); no server intelligence cache
+                 found. Candidates: (i) the Sheet TODAY row / sheetAuto CONFLICT, (ii) he saw red 07:05-07:17 and noticed
+                 late, (iii) unseen lag defect. Ops asked for Sheet value + merge provenance. NOBODY tells him "the board
+                 was right" until the surface is known.
+STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
+                 Board behaviour -> him, TOGETHER with grade definitions.
+GRADE DEFS       Undefined to the model; reverse splits graded red (MTNB today; PFSA x2, SCNI on 08-23). Research to DRAFT
+                 definitions + reverse-split OPTIONS justified by source/measurement, not his habits. His claim decision.
 CAPTURE RISE     PASS (Ops scheduled task): 08:15:51.945Z 9,410,578 -> 08:16:57.337Z 9,413,474 (+2,896 / 65 s),
                  discarded 0, pid 1347535 NR 0. Side obs: first /api/health ~17 s, market DEGRADED (18 s msg age) then
                  LIVE. Ops HYPOTHESIS (unmeasured): Lightsail auto-snapshot 08:00Z. Journal read owed. To him only if
