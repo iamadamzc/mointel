@@ -939,7 +939,101 @@ transcript timestamp instead, or say "at the time of this commit".*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
-## LIVE STATE — AS OF 2026-09-29 ~02:40 UTC (22:40 ET 09-28), AT THE FIFTEENTH SEAT'S HAND-OFF
+## LIVE STATE — AT THE SIXTEENTH SEAT'S HAND-OFF (his "handoff", 2026-09-29T04:11:46Z, read at his turn)
+
+*A SNAPSHOT. **This seat estimated clock times FIVE times (ledger above), so every time below is a transcript
+timestamp, a commit time, or a peer's stated reading — never a clock estimate.** Re-verify production before acting:
+ask Ops for `/proc/<pid>/cwd`.*
+
+### PRODUCTION
+```
+last CONFIRMED   web/research/assess 2256c63; market worker 3b78b8c pid 1347535; NR 0 (Ops /proc, its stated 03:44Z read)
+IN FLIGHT        121f97c (tag research/restart-set-on-2256c63) LAUNCHED over Session Manager (host mointel-ssm),
+                 RESTART_MARKET=no, his yes + "deploy over Session Manager" given in OPS'S session (per Ops; NOT read at
+                 his turn by this seat). Gated by Ops 168/168 files, 2,558 tests. At hand-off: "building on the box,
+                 waiting for it to cut over" (Ops's last line). NOT CONFIRMED. FIRST TASK: /proc.
+box env          no CAPTURE_PRICE_* yet; trades.db still schema v1 (Ops read)
+```
+
+### ENUMERATED / READY — in ship order
+```
+1 RESTART SET    121f97c, see above. 9 over 2256c63: 8 -x picks patch-id 8/8 + declared re-cut 121f97c<-ae02f7c
+                 (worker hunks identical; range-set context dropped). 16 files, lib/market + worker + tests/market.
+                 No visible change until the worker restarts. Ops's owner review of the worker wiring: APPROVED.
+2 FLUSH TIMER    7135930 (tag ops/flush-timer-on-121f97c), 1 over 121f97c, -x 56dfb15, patch-id equal (7ae18ef5
+                 --stable), 3 files. PRE-REGISTERED 169 test files; Ops gated 169/169, 2,563 tests: MATCH.
+                 Ships only once 121f97c is CONFIRMED live; his yes in Ops's session. Inert until the restart.
+3 COLUMNS        f4063ca (tag design/columns-on-2256c63), HIS YES TO SHIP ALONE 03:51:42Z ("yes to columsn", this
+                 seat's transcript). 1 over 2256c63, +/- lines identical to 1d59b00 (patch-id differs on import
+                 context only). VOID ON BASE once 121f97c is live: Integration sends Design the CONFIRMED production
+                 sha, Design re-picks onto it (5 files, disjoint from 121f97c and 7135930), Integration replays and
+                 pre-registers (production's count + 1). His ship yes in Ops's session. Board-behaviour change.
+4 THE RESTART    his TIME, in Ops's session (yes in principle 02:41:45Z, to Design). Carries: Now data (price per 10 s
+                 bucket + feed intervals), cea5ed2 (in prod as 1eaa938), bootstrap = record band, $50 ceiling.
+                 ACTIVATION: CAPTURE_PRICE_MIN=0.25 / MAX=50 in sync-env.sh AND on the box, SAME MOTION. One restart,
+                 no split (+~10 s replay, Ops). ROLLBACK FLOOR: no worker below 9508fb9 (=3810b9e in the tag) once v2
+                 opens trades.db, or capture goes DISCARDING. Must be in Ops's ask to him.
+5 AFTER RESTART  Research's pre-registered post-restart check (research.md). Snapshot-route latency (b) after ship,
+                 (c) after restart vs (a) 2256c63 cold 5.9 / warm med 4.9 / max 6.8 ms: nowBuckets may add <= 20 ms
+                 to the warm max, else the Now field is fixed, not the budget. Design reads nowBuckets live, THEN asks
+                 for a cut of the Now CELL fa61410 -- which must ride NO deploy before that read (refuse any cone
+                 reaching it without Design's yes).
+```
+
+### THE PRICE-RANGE CONTROL — VOID, WITH A FIX UNDER TEST
+```
+520142c          VOID. Ops's EXPLAIN QUERY PLAN: scan bounded by DATE not range (USE TEMP B-TREE). Idle 09-28,
+                 $1-$20 DAY 20 warm max 22.0 ms (median 12.8) FAILS; the $50 capture only grows the scan. The 20 ms
+                 budget was NOT relaxed. The (trading_date, rvol DESC) index does not help (Ops A/B).
+fix candidate    Research: COVERING PARTIAL INDEX per board (reads ~3x/2x faster on a scratch copy -- a ratio, not a
+                 gate reading). A market.db bump: ONE migration with the latch/high_res columns, behind the backup route.
+READ GATE        max < 20 ms over 1 cold + 20 warm, every range ($0.25-$50, $1-$20, $0.50-$5), DAY and AH, on the
+                 POST-restart store. Pre-registered.
+WRITE GATE       RULED on Ops's argument (flush shares the SIP socket thread): added cost <= 10% of median
+                 upsertTickerSessions AND <= 10% of median whole flush AND max whole flush < 250 ms in RTH, with the
+                 index; baseline measured without. Research's scratch prior: upsert +12% to +36% -> (a) PROBABLY FAILS.
+                 NEEDS the flush timer live and one RTH after the restart. BASELINE max > 250 ms = a live-desk finding
+                 to HIM before the index is judged; separate DELAY from LOSS (unverified). Research's 244/293 ms is a
+                 THIS-DISK absolute, never a live number.
+08:30 / 11:05    Ops's range reads still run (1 cold + 20 warm) as the loaded baseline; they cannot un-void.
+next idea        decouple the header count from the rows -- changes "top 25 of N": DESIGN's and possibly HIS. Held.
+```
+
+### HIS RULINGS THIS SEAT (read at his turns unless marked)
+```
+02:12:22Z-02:20:59Z  (Research) Benzinga licensing-cost research + "yes draft the email" -- reopened after "no to both";
+                     the draft (docs/research/benzinga-licence-cost-2026-09-29.md s4) is HIS TO SEND.
+02:41:45Z (Design)   "1 yes, 2 yes discovery only" -- restart yes IN PRINCIPLE; resizable columns Discovery only.
+03:17:09Z (here)     "keep this session"
+03:17:38Z-03:21:51Z (Ops)  "why thurs" / "why  not now" / "...let complete the work now..." / "work continues nonstop"
+03:51:42Z (here)     "yes to columsn and keep this chat for now" -- columns ship ALONE
+(Ops, not read here) yes to ship 121f97c; "deploy over Session Manager"
+04:11:46Z (here)     "handoff"
+```
+
+### APPROVED, NOT BUILT — THE LIST HE ASKED TO ALWAYS SEE
+```
+PRICE-RANGE FIX      Research + Ops, gated as above. No date.
+SESSION REPORTS      Research (writer on contract 13975c9); gated on Ops's checkpoint latch columns (the same one bump).
+DAILY BILLING        + payment-failed warning: after his sign-in cut-over proves it refuses.
+RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
+SIGN-IN              built on main, zero in production; his cut-over.
+BENZINGA ENQUIRY     drafted; HIS to send.
+```
+
+### SEATS (look up by title; ids change)
+```
+Ops-tmi local_37a1741e      Design-tmi local_8568daaf (third Design of 09-29)      Research-tmi local_98432118
+Commercial / Web / Marketing / R&D: idle, nothing open with this seat.
+04:15 ET capture-rise read: Ops's scheduled task (negative control proven); both values owed to Integration.
+```
+
+## ARCHIVE — THE FIFTEENTH'S LIVE STATE (2026-09-29 ~02:40Z) WITH THE SIXTEENTH SEAT'S RUNNING NOTES INLINE
+
+*Kept for MECHANISMS and the verification trail behind the snapshot above. Where it disagrees with the snapshot,
+the snapshot wins.*
+
+### (archived heading) LIVE STATE — AS OF 2026-09-29 ~02:40 UTC (22:40 ET 09-28), AT THE FIFTEENTH SEAT'S HAND-OFF
 
 *A SNAPSHOT, times from `zoneinfo` or read from his turns in the transcripts. The fifteenth seat's running notes, with
 every verification behind these lines, are in the archive section directly below (under the fourteenth's snapshot,
