@@ -24,22 +24,32 @@ scaled:** "the same pattern" means the number is the last slot of the bars, as
 today's is the last settled minute of its bars. That settles the unit question
 below as (A), and settles more than it asked: the SPARKLINE changes grain too.
 
-**What cannot match "same exact" yet, stated rather than silently dropped:**
-today's cell also draws PRICE POINTS per minute and colours the bars by
-direction (`pricePointsView`, `directionTone`). `trades.db` holds COUNTS only,
-so the first version draws the six bars neutral, with no price points. Price
-per 10 s bucket is an engine change that rides the same market-worker restart
-as the measured zeros (Research's (2)). Design's reading, recorded as
-Design's: not a question for him unless he objects.
+~~**What cannot match "same exact" yet:** … the first version draws the six
+bars neutral, with no price points … Design's reading, not a question for him
+unless he objects.~~ **HE OBJECTED, 2026-09-29T02:32:20Z, to Design, verbatim:
+*"that's not what i want. i want the trade counts, dots and direction
+color."*** A bars-only interim is REFUSED. The first version carries all three:
+the count, the price points and the direction colour, at 10 s.
 
-**Research's field changes shape accordingly:** the last SIX completed buckets,
-not one: `nowBuckets: Array<{ bucketEnd: string; trades: number | null }>`, oldest
-first, `null` = not measured. Under the counts-only interim, a name with no
-bucket rows in the minute is no-live-data (the whole cell falls back). A name
-with some rows has its missing buckets read as 0: it was subscribed for some
-of the minute, and a silent 10 s inside a watched minute is the common case.
-**The residue: a name that joined mid-minute shows its pre-join buckets as 0
-rather than unmeasured, until the intervals land.**
+**What that requires, and it reorders the work.** `trades.db` holds COUNTS
+only, so the capture must also record a PRICE per 10 s bucket (the last trade
+price in the bucket; the dots are those prices, and direction and the flat band
+are judged on them against the spread, as today). That is an engine change in
+the MARKET WORKER, so it takes effect only on a **market-worker restart**, which
+is his to approve. **The same restart carries the membership intervals**
+(Research's (2)), so the measured `0` arrives with it and the counts-only
+interim is no longer needed for this column. **Order: Research builds price per
+bucket + intervals → he approves the restart → Ops restarts outside his window
+→ Design builds the cell on real 10 s prices. Nothing of the cell ships before
+the restart.**
+
+**Research's field, final shape:** the last SIX completed buckets, oldest
+first: `nowBuckets: Array<{ bucketEnd: string; trades: number | null; price:
+number | null }> | null`. `trades: null` = not measured (no interval covers the
+bucket whole); `0` = measured, silent; `price: null` = no trade in the bucket
+(the dot is simply absent, as a minute with no trade is today). Whole field
+`null` = no live feed → the settled-minute fallback, muted. Plus
+`tradeCapture.asOf` as before.
 
 ## What exists today, opened, not recalled
 
