@@ -1183,6 +1183,12 @@ POLL FIX v2     design/poll-fix-v2-on-0342e7d -> 626b3f6 REPLAYED + APPROVED: 1 
                  d288d2e SUPERSEDED. Design retracted its own 'may be frozen right now' to him in its session.
 ORDER (ruled)   memo A and poll fix B both 1 over 0342e7d: first his-yes ships first; second RE-PICKED onto confirmed
                  production, PRE-REGISTERED 172. Yes to both at once -> A first. Both after 10:00 ET. Sent to Ops.
+RENDER FACTS    Design at 0342e7d: Discovery row grade+headline SHEET FIRST (why.ts:193-202), no conflict mark on the row
+                 (only drawer DeskRead.tsx / watchlist MomentumTable.tsx). OLD_CATALYST row (why.ts:352): amber C, age,
+                 NOT THE MOVE, OLD, then the old item's summary as headline. Poll fix v2 on main as 27ce1e3.
+BUNDLE TO HIM   (this seat read the grade-definitions draft end to end first) stale-row rendering; Sheet/auto
+                 disagreement mark; adopt grade definitions; reverse-split option; split the red grade. Sent in his
+                 channel with recommendations. Builds: Research (prompt/schema), Design (rendering), on his yes.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
