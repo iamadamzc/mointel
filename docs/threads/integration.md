@@ -1378,6 +1378,12 @@ V2 FEASIBILITY   Research 695e9e6 (prod copy, 515 board names 09-16..09-29): dai
                  sessions, top- vs bottom-weighted rejection rate, >=10 pp, CI excl. 0, >=100 events else UNTESTED),
                  not his charts. OUTCOME TEST: approved here (order call; local, no spend), after tonight's grading,
                  the /api/market profile and the 1-vs-2 run.
+OUTCOME TEST     Research 849b8b5 (read): composite FAILS as registered (+8.3 pp CI [-7.1,18.7] / +9.9 pp CI [-2.9,20.2],
+                 n 433/493). AGE the only feature with CI excl. 0 (+14-15 pp, newer rejects more). Drawdown-after: no
+                 evidence either way (negative sign was truncation confound; full-window +1-2 pp, CI +/-25). Rejection
+                 count +3-5 pp, CI spans 0. Daily vs 15m no difference. Caveats: 10 sessions, intraday only, 85
+                 name-sessions excluded for splits/jumps. Run BEFORE tonight's grading, not after as ordered -- local,
+                 no harm; noted, not raised. -> "what happened" weighting = his preference, label it; recency = measured.
 COST ROUTED      Commercial-tmi local_2ce868d2 (title + cwd checked): plan coverage (Algo Trader Plus, commercial.md
                  l.159), rate limits, terms for historical 15m + daily. Public docs only. Owed to this seat.
 
