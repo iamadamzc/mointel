@@ -200,8 +200,10 @@ the intervals.
 **Contract reviewed and accepted, no changes asked:** `DemandState.nowBuckets`
 (six consecutive wall-clock slots, oldest first; `trades: null` = not measured,
 `0` = measured silence, a slot's price is its last print even when its count is
-null; the whole field null when no slot is measured, or for every name when
-there is no reader or no flush clock), `health.tradeCapture.asOf`, and
+null; the whole field null when THIS NAME had no measured slot while capture
+was live; **ABSENT on every name when capture cannot answer** -- no reader, a
+refused schema, no flush clock, i.e. a v1 worker before the restart -- Research's
+fix `c657830` after Design's review, 2026-09-29), `health.tradeCapture.asOf`, and
 `NOW_STALE_MS` = 30 s (`lib/market/nowBuckets.ts`, Research's number).
 
 **THE CAPTURE STATE, resolved from two SERVER timestamps, never the client
