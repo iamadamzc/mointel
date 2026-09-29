@@ -934,11 +934,11 @@ control; drawer Rank Change removed; Rank held hidden off-band; review board fol
 09-29T01:26:07Z  "yes scope resizable columns"         scope only; Design's choices are in DESIGN's block
 09-29T01:38:17Z  "yes build the near-live now column"
 09-29T01:53:21Z  "dead rank not important"             graveyard Rank held omitted on non-band ranges; no engine work
-   ~02:0xZ       "frankly - rank in general is not important imo."   A VIEW, NOT A RULING. Nothing removed on it.
+09-29T01:53:48Z  "frankly - rank in general is not important imo."   A VIEW, NOT A RULING. Nothing removed on it.
 09-29T02:06:46Z  "yes remove it"                       the drawer's Rank Change line (in 520142c)
 to Design 02:30:43Z / 02:32:20Z (Design's relay): Now column = the last minute as six 10s bars, "same exact pattern"
                  -- "i want the trade counts, dots and direction color." Counts-only first version REFUSED.
-09-29 ~02:35Z    "yes hand off"
+09-29T02:34:28Z  "yes hand off"
 ```
 
 ### APPROVED, NOT BUILT — THE LIST HE ASKED TO ALWAYS SEE
@@ -1082,7 +1082,7 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      RULED (a) 2026-09-29T01:53:21Z, his words to this seat: "dead rank not important" -> OPTION 1, "Rank held" omitted on the
                      default board; no engine rank-at-death. Remaining for the set: Design's drawer fix + review-route answer,
                      Research's route flip, Ops's loaded measurement.
-                     HIS VIEW, received mid-turn, logged at 2026-09-29T01:54Z (turn time not yet in the transcript; re-check): "frankly - rank in general is not
+                     HIS VIEW, received mid-turn, sent 2026-09-29T01:53:48Z (queued mid-turn; read from the transcript): "frankly - rank in general is not
                      important imo." RECORDED AS A VIEW, NOT A RULING -- nothing removed on it. Put to him: remove the
                      drawer's Rank Change line instead of fixing its "New" label.
                      56b6fd4 (Research, the route flip) ON origin/main -- MUST NOT ship without the drawer fix. SET NOW:
