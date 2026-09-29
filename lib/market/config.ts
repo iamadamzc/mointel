@@ -28,6 +28,21 @@ export interface MarketConfig {
   internalRank: number;
   discoveryPriceMin: number;
   discoveryPriceMax: number;
+  /**
+   * The price range a VIEWER may ask the board for (Design's range control,
+   * `4b7fca4`). NULL means the band the engine ranked in, read from the
+   * worker's stored summary -- NOT this process's DISCOVERY_PRICE_* env, which
+   * the web tier need not carry (production's worker runs $0.25; a web process
+   * without the variable would read the $1 default and refuse the floor he set).
+   * A range outside what the engine captures would rank a partial population
+   * and print "top 25 of N" over it, so set these only when the capture band
+   * widens (Ops) -- to his $0.25-$50.
+   */
+  boardRangeMin: number | null;
+  boardRangeMax: number | null;
+  /** The range the board opens on. His ruling: $1-$20. Clamped into the bounds above. */
+  boardDefaultMin: number;
+  boardDefaultMax: number;
   /** Target number of eligible full sessions in an RVOL baseline. */
   baselineSessions: number;
   /** Symbols per multi-symbol REST request. */
@@ -78,6 +93,10 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
     internalRank: num(env.RVOL_INTERNAL_RANK, 50),
     discoveryPriceMin: num(env.DISCOVERY_PRICE_MIN, 1),
     discoveryPriceMax: num(env.DISCOVERY_PRICE_MAX, 20),
+    boardRangeMin: env.BOARD_RANGE_MIN ? num(env.BOARD_RANGE_MIN, 0) : null,
+    boardRangeMax: env.BOARD_RANGE_MAX ? num(env.BOARD_RANGE_MAX, 0) : null,
+    boardDefaultMin: num(env.BOARD_DEFAULT_MIN, 1),
+    boardDefaultMax: num(env.BOARD_DEFAULT_MAX, 20),
     baselineSessions: num(env.RVOL_BASELINE_SESSIONS, 20),
     restBatchSize: num(env.ALPACA_REST_BATCH_SIZE, 200),
     restConcurrency: num(env.ALPACA_REST_CONCURRENCY, 4),

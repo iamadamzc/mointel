@@ -8,7 +8,13 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
-  const symbols = new URL(request.url).searchParams.get('symbols');
+  const params = new URL(request.url).searchParams;
+  const symbols = params.get('symbols');
+  // The viewer's price range (Design, 4b7fca4). Absent = the engine's own band.
+  const range =
+    params.has('min') || params.has('max')
+      ? { min: params.get('min'), max: params.get('max') }
+      : null;
   const extraSymbols = symbols
     ? symbols
         .split(',')
@@ -17,7 +23,7 @@ export async function GET(request: Request) {
         .slice(0, 200)
     : [];
 
-  const snapshot = getMarketSnapshot({ extraSymbols });
+  const snapshot = getMarketSnapshot({ extraSymbols, range });
 
   return NextResponse.json(snapshot, {
     headers: { 'Cache-Control': 'no-store, max-age=0' },

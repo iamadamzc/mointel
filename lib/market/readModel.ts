@@ -44,8 +44,10 @@ import {
   readDeskEvents,
   loadMinuteBars,
   readDemandStates,
+  readRangeCandidates,
   readFeedHealth,
 } from './store/repo';
+import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
 import {
   readCurrentAnalyses,
   readLatestJobForTicker,
@@ -156,6 +158,12 @@ function emptyDiscovery(config: ReturnType<typeof loadMarketConfig>): DiscoveryS
     internalRank: config.internalRank,
     priceMin: config.discoveryPriceMin,
     priceMax: config.discoveryPriceMax,
+    rangeBounds: {
+      min: config.boardRangeMin ?? config.discoveryPriceMin,
+      max: config.boardRangeMax ?? config.discoveryPriceMax,
+    },
+    rangeDefault: { min: config.boardDefaultMin, max: config.boardDefaultMax },
+    ordinalsOmitted: false,
     ranked: [],
     calculatedAt: null,
   };
@@ -177,6 +185,12 @@ type StoredSummary = Partial<DiscoveryState> & {
 export interface MarketSnapshotOptions {
   /** Extra symbols to include even when unranked (TODAY-sheet tickers). */
   extraSymbols?: string[];
+  /**
+   * The viewer's price range, raw from the request. ABSENT means the engine's
+   * own band and today's board, unchanged -- so a deploy cannot narrow anyone's
+   * board before the control that lets them widen it exists.
+   */
+  range?: { min?: string | null; max?: string | null } | null;
 }
 
 function toAssessmentSummary(record: AssessmentRecord): AssessmentSummary {
@@ -468,11 +482,40 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       },
     });
 
-    const states = readDemandStates(db, tradingDate, {
-      limit: config.internalRank,
-      extraSymbols: options.extraSymbols,
-      board,
-    });
+    const band = {
+      min: summary.priceMin ?? config.discoveryPriceMin,
+      max: summary.priceMax ?? config.discoveryPriceMax,
+    };
+    const rangeBounds = {
+      min: config.boardRangeMin ?? band.min,
+      max: config.boardRangeMax ?? band.max,
+    };
+    const rangeDefault = { min: config.boardDefaultMin, max: config.boardDefaultMax };
+    const served = options.range
+      ? resolveRequestedRange(options.range, rangeBounds, rangeDefault)
+      : band;
+    const inRange = !sameRange(served, band);
+
+    const rangeRanking = inRange
+      ? rankInRange(
+          readRangeCandidates(db, tradingDate, served),
+          readDemandStates(db, tradingDate, {
+            limit: 0,
+            extraSymbols: options.extraSymbols,
+            board,
+          }),
+          board,
+          config.internalRank,
+        )
+      : null;
+
+    const states =
+      rangeRanking?.states ??
+      readDemandStates(db, tradingDate, {
+        limit: config.internalRank,
+        extraSymbols: options.extraSymbols,
+        board,
+      });
 
     // Ticker freshness is judged per ticker, never from the connection alone.
     const nowMs = Date.now();
@@ -496,8 +539,9 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
      * evening by a full-day cumulative metric is what made the desk answer
      * "what was busy today" long after anybody stopped asking it.
      */
-    const ranked =
-      board === 'AFTER_HOURS'
+    const ranked = rangeRanking
+      ? rangeRanking.ranked
+      : board === 'AFTER_HOURS'
         ? states
             .filter((state) => state.afterHours.rank !== null)
             .sort((a, b) => (a.afterHours.rank as number) - (b.afterHours.rank as number))
@@ -518,17 +562,23 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       rthClose: summary.rthClose ?? '16:00',
       earlyClose: isEarlyClose(closeMinutes),
       universeMode: summary.universeMode ?? health.universeMode,
-      eligibleCount:
-        (board === 'AFTER_HOURS' ? summary.ahEligibleCount : summary.eligibleCount) ??
-        ranked.length,
-      rankedCount:
-        (board === 'AFTER_HOURS' ? summary.ahRankedCount : summary.rankedCount) ?? ranked.length,
+      eligibleCount: rangeRanking
+        ? rangeRanking.eligibleCount
+        : ((board === 'AFTER_HOURS' ? summary.ahEligibleCount : summary.eligibleCount) ??
+          ranked.length),
+      rankedCount: rangeRanking
+        ? rangeRanking.rankedCount
+        : ((board === 'AFTER_HOURS' ? summary.ahRankedCount : summary.rankedCount) ??
+          ranked.length),
       baselineCount: summary.baselineCount ?? countBaselines(db, tradingDate),
       trackedCount: summary.trackedCount ?? countTrackedSymbols(db, tradingDate),
       discoveryRank: summary.discoveryRank ?? config.discoveryRank,
       internalRank: summary.internalRank ?? config.internalRank,
-      priceMin: summary.priceMin ?? config.discoveryPriceMin,
-      priceMax: summary.priceMax ?? config.discoveryPriceMax,
+      priceMin: served.min,
+      priceMax: served.max,
+      rangeBounds,
+      rangeDefault,
+      ordinalsOmitted: inRange,
       ranked,
       calculatedAt: summary.calculatedAt ?? null,
     };

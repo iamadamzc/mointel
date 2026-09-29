@@ -553,8 +553,23 @@ export interface DiscoveryState {
   trackedCount: number;
   discoveryRank: number;
   internalRank: number;
+  /**
+   * The price range `ranked` was drawn from -- the range SERVED, which a
+   * caption must print, never the range a control holds (Design, `4b7fca4`).
+   * Without a requested range this is the engine's own band, unchanged.
+   */
   priceMin: number;
   priceMax: number;
+  /** What a viewer may ask for, and what the board opens on. Config, not literals. */
+  rangeBounds: { min: number; max: number };
+  rangeDefault: { min: number; max: number };
+  /**
+   * True when the served range differs from the band the engine ranked in, so
+   * every stored ordinal (previous rank, rank change, entered rank, rank at
+   * qualification, the rank a dead name held) was removed and `rvolRank` /
+   * `afterHours.rank` are IN-RANGE ranks. See `lib/market/rangeRank.ts`.
+   */
+  ordinalsOmitted: boolean;
   ranked: DemandState[];
   calculatedAt: string | null;
 }
