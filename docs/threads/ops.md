@@ -12220,3 +12220,12 @@ ticker_session(trading_date, rvol DESC) -- a schema bump, after the pre-deploy b
 to start here, so tests/desk/releaseBootstrap and releaseRetention fail 36 tests from the environment
 alone. **Run test-gate.sh and push-release.sh from Git Bash.** A red on only those two files from a
 PowerShell run is not a code result.
+
+### Checkpoint range fidelity (2026-09-28): a schema change, behind the backup route
+
+Measured on 09-28's 14 checkpoints: 7-12 of every stored band top 25 are under $1 (12 at the 22:00
+recap), 0 above $20. A $1-$20 report from stored rows gets 13-18 names; $20-$50 gets none. Fix: store
+the top N inside each report range at capture (readRangeBoard). **Exact re-ranking needs the latch
+fields** (latched, qualified_price, ah_latched, ah_qualification_price), which desk_assessment_tickers
+lacks, so it is a SCHEMA BUMP. Queue: range-read measurement -> pre-deploy backup route -> this plus
+the high_res column in ONE migration -> the rvol index if RTH fails.
