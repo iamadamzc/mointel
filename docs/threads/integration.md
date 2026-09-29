@@ -1134,7 +1134,7 @@ GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Che
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
                  read; 08-23 snapshot 9 -> 18 rows, 5 genuine splits the old pattern missed). ROUTED to Ops: control C
-                 (pre-deploy 7 days; PASS = any MTNB row, id reported; 2445 was relay-only) FIRST, then A, then B; after 10:00 ET 09-30; raw to Research.
+                 (pre-deploy 7 days; PASS = any MTNB row, id reported) FIRST, then A, then B; after 10:00 ET 09-30; raw to Research.
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
@@ -1145,6 +1145,12 @@ error                                                  TYPE                     
 1 told Ops gzip "built-not-live" when Ops's own        a three-state answered in two      no       Ops
   message said the edit was refused (no commit, no     (the 14th's class): wrote the
   sha); my note and HIS message had it right.          label, not what the message said
+2 passed Research's "MTNB 2445 reached the record by   asserted what was not opened       no       Ops
+  relay" to Ops unchecked; Ops READ it first-hand      (a peer's premise relayed as
+  (Q5, scripts/ops/slnd-catalyst.cjs afe6109): id      fact; `git grep 2445` was free)
+  2445, 2026-09-29T10:24:45.353Z, summary "...1-for-15
+  reverse stock split..." -- which the ORIGINAL
+  '%reverse split%' would itself have missed.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
