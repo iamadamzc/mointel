@@ -29,6 +29,15 @@ export interface MarketConfig {
   discoveryPriceMin: number;
   discoveryPriceMax: number;
   /**
+   * The CAPTURE (record) band, his ruling 2026-09-26: record $0.25-$50, qualify
+   * the board inside it. CAPTURE_PRICE_MIN/MAX; NULL when unset, which keeps
+   * the engine's capture equal to the qualify band -- today's behaviour. Read it
+   * through captureBand(), which refuses a band that does not contain the
+   * qualify band.
+   */
+  capturePriceMin: number | null;
+  capturePriceMax: number | null;
+  /**
    * The price range a VIEWER may ask the board for (Design's range control,
    * `4b7fca4`). NULL means the band the engine ranked in, read from the
    * worker's stored summary -- NOT this process's DISCOVERY_PRICE_* env, which
@@ -93,6 +102,8 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
     internalRank: num(env.RVOL_INTERNAL_RANK, 50),
     discoveryPriceMin: num(env.DISCOVERY_PRICE_MIN, 1),
     discoveryPriceMax: num(env.DISCOVERY_PRICE_MAX, 20),
+    capturePriceMin: env.CAPTURE_PRICE_MIN ? num(env.CAPTURE_PRICE_MIN, 0) : null,
+    capturePriceMax: env.CAPTURE_PRICE_MAX ? num(env.CAPTURE_PRICE_MAX, 0) : null,
     boardRangeMin: env.BOARD_RANGE_MIN ? num(env.BOARD_RANGE_MIN, 0) : null,
     boardRangeMax: env.BOARD_RANGE_MAX ? num(env.BOARD_RANGE_MAX, 0) : null,
     boardDefaultMin: num(env.BOARD_DEFAULT_MIN, 1),
@@ -189,4 +200,46 @@ export function resolveTestStorePath(options: {
   }
 
   return { path: resolved };
+}
+
+type BandConfig = Pick<
+  MarketConfig,
+  'discoveryPriceMin' | 'discoveryPriceMax' | 'capturePriceMin' | 'capturePriceMax'
+>;
+
+/**
+ * The capture (record) band, or null when none is configured or it is unusable.
+ *
+ * It must CONTAIN the qualify band: a name that could qualify but not be
+ * recorded would reach the board with no bars behind it. A band that fails
+ * that, or is inverted, is refused rather than silently narrowed -- the
+ * worker logs it and runs on the qualify band, today's behaviour.
+ */
+export function captureBand(config: BandConfig): { min: number; max: number } | null {
+  const { capturePriceMin: min, capturePriceMax: max } = config;
+  if (min === null || max === null) return null;
+  if (!(min <= max)) return null;
+  if (min > config.discoveryPriceMin || max < config.discoveryPriceMax) return null;
+  return { min, max };
+}
+
+/**
+ * The prior-close band a restart or roll seeds as candidates.
+ *
+ * WITH a capture band: exactly that band. The desk seeds what it is permitted
+ * to record -- no more (a x2 on a $50 ceiling would track $100 names only to
+ * lengthen the replay), and no less (seeding qualify x2 = $40 would leave
+ * $40-$50 absent after every restart while live admission tracks it, so the
+ * store's contents would depend on whether a restart happened).
+ * WITHOUT one: the old widening, x0.4 below and x2 above the qualify band, so
+ * a gapper into the board band is still seeded. His ruling 2026-09-26; Ops's
+ * ruling on the multiplier, recorded in ops.md.
+ */
+export function bootstrapBand(config: BandConfig): { min: number; max: number } {
+  return (
+    captureBand(config) ?? {
+      min: config.discoveryPriceMin * 0.4,
+      max: config.discoveryPriceMax * 2,
+    }
+  );
 }
