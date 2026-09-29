@@ -88,7 +88,17 @@ for this: a mangled filename still looks like a filename.*
 
 ## What is verified ON THE LIVE BOARD
 
-*Nothing here is inferred from tests.* Sessions of 2026-09-22 and 2026-09-25.
+*Nothing here is inferred from tests.* Sessions of 2026-09-22, 2026-09-25 and 2026-09-28.
+
+- **The evening arm of `8fd7887` works** (2026-09-28 21:22 ET, review link
+  id 49, revoked after; page 1.18 MB with `RVOL` present). `AFTER-HOURS
+  DISCOVERY`, `AH participation rank`, `FROZEN 20:00`; the ranking column
+  header reads `PART`; **Top 50: 50 values, zero nulls, zero out-of-order
+  pairs, 552x down to 0.5x**; `Now` header 68 px, not clipped. *A check that
+  could fail: the pre-fix board showed RVOL in no order at all.* **Read at
+  21:22, 38 minutes before the 22:00 roll would have emptied it, and only
+  because a clock reading taken for another reason showed the time.** The
+  owed read had no trigger of its own in this session.
 
 - **The FRESH prior-close boundary works and DISCRIMINATES** (2026-09-25
   12:18). `catalystFreshFrom` absent at 12:05 and
@@ -486,7 +496,6 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 
 | Item | Owner | Waiting on |
 | --- | --- | --- |
-| **Read the EVENING board** after `8fd7887` | **Design — FIRST TASK** | Monday 2026-09-28 after 16:00 ET. Day arm verified, evening arm never seen |
 | **Session briefings: line + reading panel** (`307e42d`, on main, NOT shipped) | Design built; Research builds `/api/reports` | Nothing renders until the route answers 200. Viewed only against a local fixture (1280, 1024). **Read it on the live board after the route ships.** Contract: `lib/desk/reports/contract.ts`, Research's now. At 1024 with the panel open the researched table compresses; acceptable, noted |
 | Payment-failed warning — build APPROVED, not started | Design | **Trigger: Ops starts the billing work, which comes after the sign-in cut-over.** Spec: `docs/commercial/daily-billing-design/design-seat.md`. OS notification ruled on; hour never restarts; `endsAt` = earlier of failure+1h and 20:00 ET |
 | The price range: the CONTROL (`5e8b13c`, on main, NOT shipped) | Design built; Research owns the server half | Viewed locally against a read-only store copy. **Latch: fixed by Research at `8d8e50c`** (a name that qualified at a price inside the viewer's range and then ran stays). **Still blocking: the graveyard** — membership is `deadAtRank` presence (`graveyard.ts:60`) and `ordinalsOmitted` removes it, so any non-engine range reads "nothing died". Research to keep the membership fact; Design switches `graveyard.ts` in the same commit. Row mark `above your range` waits on a flag from Research (not inferred from price, since pinned names are above too). No-param request flips to `rangeDefault` only in the release that carries the control |
