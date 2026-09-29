@@ -143,9 +143,31 @@ export function sessionStartUtc(tradingDate: string): Date {
   return etWallClockToUtc(tradingDate, 4, 0);
 }
 
+/**
+ * 20:00 ET per trading date, in epoch ms. A PURE function of the date string
+ * and the tz database, so the memo cannot go stale.
+ *
+ * Why it exists: `lib/research/history.ts` asks it once per stored daily bar,
+ * and `overlayLiveCycle` reads every stored session for every board name --
+ * ~5,000 calls a snapshot over ~100 distinct dates, each two Intl
+ * `formatToParts` passes. Profiled 2026-09-29 at ~60% of the whole build.
+ *
+ * The CACHE HOLDS MS, NOT THE DATE: a Date is mutable, and a shared instance
+ * would let one caller's `setHours` move every later caller's session end.
+ * Bounded so a long-lived process cannot grow it without limit.
+ */
+const sessionEndMsByDate = new Map<string, number>();
+const SESSION_END_MEMO_MAX = 4096;
+
 /** End of the product session window (20:00 ET) for a trading date. */
 export function sessionEndUtc(tradingDate: string): Date {
-  return etWallClockToUtc(tradingDate, 20, 0);
+  let ms = sessionEndMsByDate.get(tradingDate);
+  if (ms === undefined) {
+    ms = etWallClockToUtc(tradingDate, 20, 0).getTime();
+    if (sessionEndMsByDate.size >= SESSION_END_MEMO_MAX) sessionEndMsByDate.clear();
+    sessionEndMsByDate.set(tradingDate, ms);
+  }
+  return new Date(ms);
 }
 
 /**
