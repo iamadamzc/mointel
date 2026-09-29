@@ -12475,3 +12475,5 @@ still returned, which kills "bound too tight" (predict 1). No index, no write co
 **ROUTING (for Integration): reuse a range read's result until the next flush, keyed (range, flush seq).** Research's
 1-vs-2 reader run on the copy, pinned to the box's shape: median 1.45-1.61x, p95 4.1-5.8x, max 6.5-8.1x. A cheaper
 query alone probably can't hold 20 ms p95 with several viewers; fewer reads can. Not built.
+
+**2026-09-29 18:25 ET: 1b5ead6 (nginx gzip for proxied JSON) LIVE**, on his "yes to all" + "edit approved"; Integration (19th) replayed and approved, then briefly HELD and withdrew the hold (my 15:37 line had told him it ships as a deploy). Down 3s, nginx -t ok, prune -a391c61. Proxied /privacy now Content-Encoding: gzip. /api/market JSON compression NOT YET OBSERVED (Basic Auth; no board polled since); confirm from the access log bytes column (~20% of raw). **CONE RULE: every later ship must carry 1b5ead6.** Production = 1b5ead6.
