@@ -1032,6 +1032,10 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      NOW COLUMN: his answer to Design 2026-09-29T02:30:43Z (Design's relay): "same exact pattern as the previous
                      minute format, except now it will show the last minute in 10 sec increments..." -> plain 10s counts, six
                      bars. First version lacks per-bucket price points/colour (counts only) until the market-worker restart.
+                     ❌ HE REFUSED counts-only, to Design 2026-09-29T02:32:20Z (Design's relay): "that's not what i want. i want
+                     the trade counts, dots and direction color." -> Now column WAITS for per-bucket price: Research engine +
+                     Ops trades.db v2 (+ membership intervals) -> his restart yes (Design asking in principle; not relayable)
+                     -> Ops restarts outside his window -> Design builds.
                      [+ review-route one-liner if Design says so]. Gates: Ops < 20 ms under load; his deploy yes.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified desk-assessments.ts:183-194/:464): checkpoints
