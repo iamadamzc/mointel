@@ -3,7 +3,7 @@
 --   ssh mointel-ssm 'sqlite3 -readonly -header -column /var/lib/mointel/market.db' < scripts/ops/grades-v2-read.sql
 -- 9d554e0 went live 2026-09-29T16:18:16Z (the boundary below).
 
-.print '== C (positive control; must include MTNB 2445, else B is invalid)'
+.print '== C (positive control; PASSES if any pre-deploy row has ticker MTNB -- report its id; FAILS only if MTNB is absent)'
 SELECT id, ticker, json_extract(metadata,'$.promptVersion') pv,
        json_extract(dossier,'$.catalyst.catalystGrade') grade,
        json_extract(dossier,'$.catalyst.summary') summary
