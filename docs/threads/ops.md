@@ -12249,3 +12249,9 @@ not in this plan.
 
 **520142c's red:** name unrecoverable (unsaved filtered output). Likely my releaseRetention weekday
 test: 19.9s alone vs a 30s timeout. Fixed f869ee0 (9.5s). SAVE FULL GATE OUTPUT TO A FILE, ALWAYS.
+
+**2026-09-29 ~00:xx ET -- his "let's complete the work now".** Wednesday was Research's estimate, relayed
+as if it were a constraint; nothing was blocking. Built tonight, all inert until the restart:
+9508fb9 trades.db v2; 731179b CAPTURE_PRICE_* + captureBand + bootstrapBand. $50 replay projection
+(live store): seed 9,378 -> 10,230; replay +~10% rows; restart +~10s on a weekday. One restart stands.
+Remaining for it: Research's engine change (prices + intervals + web read), then ship, then his time.
