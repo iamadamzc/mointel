@@ -1013,6 +1013,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      56b6fd4 (Research, the route flip) ON origin/main -- MUST NOT ship without the drawer fix. SET NOW:
                      8d8e50c + d2c2582 + 28a8cb1 + 56b6fd4 + 5e8b13c + dd6019e + drawer fix = REMOVE the Rank Change line
                      (RULED 2026-09-29T02:06:46Z, his words: "yes remove it")
+                     ~02:15Z: Design's 7ed88ed ("—" instead of "New") CROSSED the ruling -> superseded; removal requested.
+                     Review route follows the board (Design) -> Research one-liner, pending. da1e06b (F-12 shell-command copy,
+                     audit authority) RIDES the release. No board rank-change arrow exists (Design, confirmed).
                      [+ review-route one-liner if Design says so]. Gates: Ops < 20 ms under load; his deploy yes.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
