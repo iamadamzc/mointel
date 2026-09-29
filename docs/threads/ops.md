@@ -12291,3 +12291,38 @@ same message IS in the prompt (item 4). These two are not:*
    QUERY PLAN -- run it before relying on either reading.* **Consequence: a pre-restart FAIL is conclusive (the
    store only grows); a pre-restart PASS is conclusive for NO case. The range set's yes waits for a post-restart
    reading of all three cases, unless the plan shows the scan is bounded by the range.**
+
+## SUCCESSOR OPS SEAT OPENS — 2026-09-29 03:39Z; production re-read, and the range-read fix is not the index
+
+**Box read 03:44Z (his "yes, read the box"), matches the prompt:** web/research/assess 2256c63 (pids 1443928/
+1443994/1444063, NR 0); market 3b78b8c pid 1347535 since 2026-09-27 23:17:45Z, NR 0; releases 2256c63 dca4a04 7820810
+3b78b8c 372f5eb + rollback-baseline.pin; env DISCOVERY_PRICE_MIN=0.25, TRADES_DB_PATH present, no DISCOVERY_PRICE_MAX,
+no CAPTURE_PRICE_*; health ok, schema 27/27, tradeCapture RECORDING bucketsWritten 9,323,740 discarded 0; no deploy unit.
+
+**Capture-rise check:** scheduled task `mointel-tuesday-capture-rise`, one-time 04:15 ET (08:15Z), READ-ONLY. Run by
+hand once at 03:45Z to pre-approve its tools: completed unattended in 90s, reported FAIL delta 0 at NEXT_DAY_PREP --
+the negative control (the check CAN fail; a flat counter when closed is correct). Runs only if the app is open.
+
+**Range read, idle, 2026-09-28's rows (9,222 = the scan), `scripts/ops/range-read.cjs` (the retired seat's 01:31Z
+harness, saved):**
+```
+5 warm   worst 19.6 ms  ($1-$20 DAY)  ALL PASS
+20 warm  $1-$20 DAY median 12.8 / max 22.0 FAIL; every other case < 20 (0.25-50 DAY max 19.9)
+PLAN     DAY and AH: SEARCH ts USING INDEX idx_ticker_session_ah_rank (trading_date=?) | USE TEMP B-TREE FOR ORDER BY
+```
+Integration's reading is confirmed by the plan: the scan is bounded by the DATE, not the range. **The max depends on
+the sample count** (5 vs 20 gave pass vs fail on the same store minutes apart): the gate is a TAIL statistic, and
+the instrument's N must be pre-registered with it.
+
+**The named fix (index on (trading_date, rvol DESC)) is NOT supported.** `scripts/ops/range-index-ab.cjs` copies one
+date's rows into an in-memory DB with the live DDL and times with/without the index (read-only on prod):
+```
+                    no index (whole / SQL alone, median)   + (trading_date, rvol DESC, symbol)
+$1-$20              9.4 max 10.3  /  6.1                   11.9 max 13.1  /  7.4
+$0.25-$50          19.1 max 21.2  /  8.7                   13.4 max 19.6  /  8.5
+```
+The index removes the sort but the query must still return EVERY in-range row (the count is the caption's
+denominator), so SQL time does not fall. And the same $1-$20 read is ~10 ms max in memory vs 22 ms on the live file:
+**the tail is in reading the file (page reads / contention on a 4 GB box with ~200 MB free), not in the sort.**
+Relative comparison only; memory is not file pages. **Untested alternatives, not built:** a COVERING index (no table
+page reads), or a short web-tier cache of the range result. A schema bump should not be spent on the rvol index.
