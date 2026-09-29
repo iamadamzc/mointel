@@ -1060,6 +1060,11 @@ RESTART SET REPLAY   16th seat, 2026-09-29, scratch worktree at 2256c63, main's 
                      ENUMERATED TO OPS (standing approval: no visible board change before the restart) conditional on
                      Ops's owner review of the worker wiring. Pre-registered: gate 168; snapshot-route latency (1 cold
                      + 20 warm) before ship / after ship / after restart -- nowBuckets may add <= 20 ms to warm max.
+                     SHIP ATTEMPT: his YES given in Ops's session; Ops gate on 121f97c 168/168 files, 2,558 tests GREEN;
+                     push-release REFUSED at preflight -- ssh port 22 timed out, this PC's public IP not on the port-22
+                     allowlist. NOTHING SHIPPED; production still 2256c63 / 3b78b8c. Route (Session Manager vs firewall)
+                     put to HIM by Ops. FLUSH TIMER: no instrument on the box today; Ops builds it as its own code-only
+                     release, stacked ON 121f97c (this seat's instruction), shipped before the restart evening.
                      SNAPSHOT (a) on 2256c63 (Ops): cold 5.9, warm median 4.9 / max 6.8 ms over 20. Ops's gate on
                      121f97c in progress; THE SHIP WAITS FOR HIS WORD IN OPS'S SESSION (Ops's choice).
                      OPS OWNER REVIEW of ae02f7c's worker half: APPROVED; covers 121f97c (worker hunks identical,
