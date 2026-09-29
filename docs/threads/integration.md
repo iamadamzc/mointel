@@ -1031,9 +1031,20 @@ Retired + archived (his doing, verified in list_sessions): Integration-tmi-retir
 Commercial / Web / Marketing / R&D: nothing open with this seat.
 ```
 
+### NEW ASK FROM HIM (this session, after the hand-off was written) -- "LEFT AND UP" RESISTANCE LEVELS
+```
+ASK         Current levels (whole/half $, session H/L, VWAP) "very basic and largely unhelpful". Traders mark LEFT AND UP:
+            from current price, the last candle at price -> its top; go left, next candle's top; etc. 5m and 15m; a
+            "mark your chart" section. Q: can we extrapolate it from our data? (His example chart did NOT arrive here.)
+ROUTED      Research local_d6996864, FEASIBILITY ONLY (no build, no spend, local store): data horizon (minute_bars 20
+            sessions, lib/market/config.ts:128; which tickers have bars), 5m/15m from 1m, PRE-REGISTERED validation,
+            cost vs the RTH poll, owner split (Research compute / Design section). Report to Integration-tmi by title.
+            Successor: put the finding to him; ask him for the chart if Research needs it.
+```
+
 ### HAND-OFF LINE
 ```
-Nothing in flight at hand-off. First: ask Ops for /proc and whether the store copy has landed (tell Research if so).
+Nothing in flight at hand-off except Research's left-and-up feasibility study (above). First: ask Ops for /proc and whether the store copy has landed (tell Research if so).
 Then carry tonight's 20:15 ET motion check and the AFTER list, then 09-30's grades read.
 ```
 
