@@ -65,6 +65,17 @@ export interface DeskWhy {
    * where the two could drift apart.
    */
   title: string;
+  /**
+   * The Sheet and the desk's own research disagree on this catalyst: the
+   * letter each gives. Null when they agree, or when either has no grade.
+   *
+   * HIS RULING, 2026-09-29T14:46:55Z ("2, your recs": mark it). The row's
+   * letter and headline come from the Sheet first, so a disagreement was
+   * invisible on the board and visible only in the drawer. READ FROM THE
+   * MERGE'S `comparison`, never judged here, so the row and the drawer cannot
+   * disagree about whether the two disagree.
+   */
+  disagreement: { sheet: string; desk: string } | null;
 }
 
 const MINUTE = 60_000;
@@ -134,6 +145,18 @@ export function priorCloseLabel(freshFrom: string | null | undefined): string | 
   return `since ${weekday} close`;
 }
 
+/** The ET calendar day of an instant, `Sep 25`, or null. */
+export function etDay(at: string | null | undefined): string | null {
+  if (!at) return null;
+  const ms = Date.parse(at);
+  if (!Number.isFinite(ms)) return null;
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(ms));
+}
+
 /** ET wall clock for the tooltip and the drawer. Never a UTC ISO string. */
 export function etTimestamp(at: string | null | undefined): string | null {
   if (!at) return null;
@@ -171,6 +194,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       freshness: null,
       tone: 'dim',
       title: 'Not researched yet, so there is no catalyst grade and no freshness to colour.',
+      disagreement: null,
     };
   }
 
@@ -186,6 +210,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       freshness: null,
       tone: 'dim',
       title: 'The desk is looking for the catalyst now. Nothing here is a grade yet.',
+      disagreement: null,
     };
   }
 
@@ -216,6 +241,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       freshness: null,
       tone: 'dim',
       title: 'No catalyst established for this name, from either the outside research or the desk.',
+      disagreement: null,
     };
   }
 
@@ -351,6 +377,36 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
   const nothingFound = unexplained && catalyst.catalystStatus === 'NONE_FOUND';
   const onlyOld = unexplained && !nothingFound && freshness === 'STALE';
 
+  /*
+   * AN OLD CATALYST IS NOT THE MOVER'S REASON, AND THE ROW STOPS SAYING IT IS.
+   * His ruling, 2026-09-29T14:46:55Z ("2, your recs"): the letter DIMS, and
+   * the headline reads "No fresh catalyst · latest: <date> — <summary>".
+   * `OLD` stays; NONE_FOUND rows are unchanged. The date and the summary are
+   * the SAME item's -- the desk's catalyst, whose time made it OLD -- never
+   * the Sheet's line under the desk's date. SLND showed a four-day-old
+   * listing notice as an amber C headline this way.
+   */
+  const day = onlyOld ? etDay(eventAt) : null;
+  const summary = catalyst?.summary?.trim() || null;
+  const oldHeadline = onlyOld
+    ? `No fresh catalyst · latest: ${[day, summary].filter(Boolean).join(' — ') || 'no summary'}`
+    : null;
+
+  const catalystComparison =
+    row.comparison?.comparisons.find((c) => c.field === 'catalyst' && c.agreement === 'DISAGREE') ?? null;
+  const sheetLetter = sheetGrade && sheetGrade !== 'UNCLASSIFIED' ? sheetGrade : null;
+  // `gradeLetter` folds NONE into C; the comparison does not, so a desk
+  // "none" printed as C would mark a disagreement between two C's.
+  const deskLetter = catalyst
+    ? catalyst.catalystGrade === 'NONE'
+      ? 'none'
+      : gradeLetter(catalyst.catalystGrade)
+    : null;
+  const disagreement =
+    catalystComparison && sheetLetter && deskLetter && deskLetter !== '—'
+      ? { sheet: sheetLetter, desk: deskLetter }
+      : null;
+
   return {
     code: nothingFound ? 'NO_FRESH_CATALYST' : onlyOld ? 'OLD_CATALYST' : 'GRADED',
     grade,
@@ -362,12 +418,20 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
     age: priorClose ?? age,
     ageIsPriorClose: priorClose !== null,
     eventAt: etTimestamp(eventAt),
-    headline,
+    headline: oldHeadline ?? headline,
     explainsMove: catalyst?.plausiblyExplainsMove ?? null,
     freshness,
-    tone,
-    title: whyTitle(grade, freshness, priorClose),
+    tone: onlyOld ? 'dim' : tone,
+    title: onlyOld ? oldTitle(grade) : whyTitle(grade, freshness, priorClose),
+    disagreement,
   };
+}
+
+/** The letter's hover on an OLD row, where the colour no longer carries freshness. */
+function oldTitle(grade: string): string {
+  const meaning = GRADE_MEANING[grade];
+  const letter = meaning ? `Catalyst grade ${grade} — ${meaning}.` : 'No catalyst grade established.';
+  return `${letter} Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.`;
 }
 
 const GRADE_MEANING: Record<string, string> = {

@@ -405,7 +405,13 @@ const WHY_TONE: Record<DeskWhy['tone'], string> = {
 export function WhyCell({ why }: { why: DeskWhy }) {
   return (
     <div className="flex flex-col gap-px leading-tight">
-      <span className="flex items-baseline gap-1.5">
+      {/*
+        * WRAPS rather than overflowing: the rare row carrying NOT THE MOVE,
+        * OLD and the disagreement mark at once is wider than Why at the
+        * 1,024 floor, and a fixed cell does not clip -- it would lean into
+        * Risk.
+        */}
+      <span className="flex flex-wrap items-baseline gap-x-1.5">
         {/*
           * THE LETTER EXPLAINS ITSELF NOW.
           *
@@ -470,6 +476,21 @@ export function WhyCell({ why }: { why: DeskWhy }) {
             title="A catalyst exists but it is older than yesterday, and the desk does not think it explains today's move."
           >
             old
+          </span>
+        ) : null}
+        {/*
+          * THE SHEET AND THE DESK DISAGREE (his ruling 2026-09-29T14:46:55Z:
+          * mark it). The letter beside this is the Sheet's; this says what the
+          * desk's own research gives. Outlined and neutral, not warn: it is a
+          * fact about the two sources, not a verdict on the stock, and the
+          * row already spends its one saturated colour elsewhere.
+          */}
+        {why.disagreement ? (
+          <span
+            className="rounded-sm border border-line-2 px-1 text-[9px] font-semibold tracking-wide text-ink uppercase"
+            title={`The outside research sheet grades this catalyst ${why.disagreement.sheet}; the desk's own research grades it ${why.disagreement.desk}. The row shows the sheet's grade and headline; the drawer shows both sides.`}
+          >
+            sheet {why.disagreement.sheet} · desk {why.disagreement.desk}
           </span>
         ) : null}
       </span>
