@@ -1340,7 +1340,17 @@ error                                                  TYPE                     
   18th read it"). Opened it next: the yes was for "a   prompt's own "READING HIS
   reload, with no restarts"; deploy.sh restarts the    RULING'S QUESTION")
   runtime units. Retracted to Ops before any action.
+2 the HOLD itself, sent to Ops and put to HIM as a     a ruling's scope read from part    YES      Ops
+  question, rested on the 15:23:54Z block alone. Ops   of the exchange (same class as 1:
+  had told him at 15:37:31Z "ships as a normal         I opened one turn, not the turns
+  deploy, not as a hand edit on the box" and again in  that followed it)
+  the edit ask he approved 21:11:25Z. Ops had already
+  launched on my approval (18:12:29 ET, inside my
+  window). Hold withdrawn; his question 1 retracted.
+  REPEAT -> warned him per hygiene s2.
 ```
+GZIP SHIPPING    deploy unit mointel-deploy-1b5ead6-221229 started 18:12:29 ET (Ops; pre-launch /proc 18:12:00 ET on
+                 803008b, NR 0; market 1347535). Post-ship set owed by Ops to this seat.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
