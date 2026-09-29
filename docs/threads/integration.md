@@ -1216,6 +1216,9 @@ STACK APPROVED  his "yes to all three" (Ops's session, per Ops). Replayed: memo 
                  Ops gates 171/172/173 ALL GREEN (= pre-registered). Windows (preflight C+4..C+12): c49bb3a 10:04-10:12 ET,
                  8455b48 10:34-10:42 + (b') read, a391c61 11:34-11:42 (clear of the 11:05 range read). range-read.cjs uses raw
                  better-sqlite3 only (checked), so the memo cannot move the 11:05 read.
+RANGE READS     08:30 ET NOT MEASURED (scheduled task stuck on an unapproved Bash prompt since its 04:18Z hand run; a task
+                 with a run in progress refuses its fire). 11:05 task stuck the same way; Ops takes 11:05 BY HAND with the
+                 2-min-after-start discard rule. Heartbeat c49bb3a launched 10:04 ET (base 0342e7d x3, market 3b78b8c).
 NOW CELL        Design: 20:15 ET is after the 20:00 close, so tonight's post-restart read is PLUMBING only (tradeCapture.asOf
                  fresh vs fetchedAt; nowBuckets present). Real-10 s read earliest 04:00 ET 09-30 (one page load, no loops);
                  fa61410 cannot be asked for before then.
