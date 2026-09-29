@@ -1210,6 +1210,9 @@ RESTART RULED   HIS TURN, Ops's session (a36b4a67-*.jsonl), 2026-09-29T11:04:49Z
                  VERIFIED: sync-env.sh at 206c687 lines 142-143 carry MIN=0.25 and MAX=50; Ops acked floor 9508fb9 in ops.md.
 SHIP ORDER      REVISED for the deadline, after 10:00 ET, his yes each: 1 heartbeat c49bb3a (171, owner-approved by
                  Ops) -> 2 memo re-picked (172) -> 3 poll fix re-picked (173). Partial yes keeps relative order.
+NOW CELL        Design: 20:15 ET is after the 20:00 close, so tonight's post-restart read is PLUMBING only (tradeCapture.asOf
+                 fresh vs fetchedAt; nowBuckets present). Real-10 s read earliest 04:00 ET 09-30 (one page load, no loops);
+                 fa61410 cannot be asked for before then.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
