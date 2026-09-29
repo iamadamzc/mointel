@@ -91,23 +91,24 @@ describe('nowBuckets over the real trades.db v2', () => {
     expect(states[0].nowBuckets?.map((s) => s.trades)).toEqual([0, 0, null, null, null, null]);
   });
 
-  it('no flush clock -> nothing is known: every name null, asOf null', () => {
+  it('BEFORE THE RESTART: a v1 worker writes buckets but no clock -> the field is ABSENT, not null', () => {
+    /*
+     * Null would say "this name has no live feed" on every row at once and mute
+     * the whole board. Absent says "this payload cannot answer" and the board
+     * keeps today's minute column (Design, 2026-09-29).
+     */
     const db = store();
-    upsertFeedIntervals(db, DATE, [
-      { symbol: 'AAA', openedMs: T0 - 600_000, lastSeenMs: AS_OF, closedMs: null },
-    ]);
-    const states: State[] = [{ ticker: 'AAA' }];
+    upsertTradeBuckets(db, DATE, [{ symbol: 'AAA', bucketTs: T0, trades: 3 }]);
+    const states: State[] = [{ ticker: 'AAA', nowBuckets: null }];
     const { asOf } = attachNowBuckets(states, DATE, reader(db));
     db.close();
     expect(asOf).toBeNull();
-    expect(states[0].nowBuckets).toBeNull();
+    expect('nowBuckets' in states[0]).toBe(false);
   });
 
-  it('no reader at all (no store, a refused schema) -> null, never six zeros', () => {
-    const states: State[] = [{ ticker: 'AAA' }];
-    expect(attachNowBuckets(states, DATE, null)).toEqual({
-      asOf: null,
-    });
-    expect(states[0].nowBuckets).toBeNull();
+  it('no reader at all (no store, a refused schema) -> ABSENT, never null and never six zeros', () => {
+    const states: State[] = [{ ticker: 'AAA', nowBuckets: null }];
+    expect(attachNowBuckets(states, DATE, null)).toEqual({ asOf: null });
+    expect('nowBuckets' in states[0]).toBe(false);
   });
 });
