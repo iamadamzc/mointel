@@ -1135,6 +1135,8 @@ GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Che
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
                  read; 08-23 snapshot 9 -> 18 rows, 5 genuine splits the old pattern missed). ROUTED to Ops: control C
                  (pre-deploy 7 days; PASS = any MTNB row, id reported) FIRST, then A, then B; after 10:00 ET 09-30; raw to Research.
+                 BOUNDARY (Ops): 16:18:16Z is the /proc read; research worker ExecMainStart 16:17:16Z. Put to Research:
+                 move all three to 16:17:16Z (A/B would otherwise miss a v2 row in that minute). Awaiting its word.
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
@@ -1151,6 +1153,11 @@ error                                                  TYPE                     
   2445, 2026-09-29T10:24:45.353Z, summary "...1-for-15
   reverse stock split..." -- which the ORIGINAL
   '%reverse split%' would itself have missed.
+3 "the old worker was stopped before the new one       asserted what was not opened       YES (2)  self, next
+  started" to Research (boundary 16:17:16Z question);  (an inference from Ops's "down               message
+  inferred from "down 2s", never read. Corrected to    2s" stated as a read)
+  Research next message; the recommendation did not
+  depend on it. REPEAT -> put to him per hygiene s2.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
