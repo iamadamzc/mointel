@@ -1175,6 +1175,9 @@ FREEZE FIX      design/poll-fix-on-0342e7d -> d288d2e REPLAYED: 1 over 0342e7d, 
 MEMO READY      research/sessionend-memo-on-0342e7d -> 635a9ae REPLAYED + APPROVED: 1 over 0342e7d, fa61410 not in cone,
                  patch-id 1a8d90d0 == a73703e (main), 2 files, 171 == 170+1 declared. Code read: ms per date, bounded 4096,
                  fresh Date per call. Prior (as registered): median 189 -> 58 ms (p90 727 -> 69; base block 1 cold, kept).
+POLL FIX v2     design/poll-fix-v2-on-0342e7d -> 626b3f6 REPLAYED + APPROVED: 1 over 0342e7d, fa61410 not in cone, 171;
+                 diff vs d288d2e COMMENT-ONLY (every changed line filtered), retracted claims gone from code + message.
+                 d288d2e SUPERSEDED. Design retracted its own 'may be frozen right now' to him in its session.
 ORDER (ruled)   memo A and poll fix B both 1 over 0342e7d: first his-yes ships first; second RE-PICKED onto confirmed
                  production, PRE-REGISTERED 172. Yes to both at once -> A first. Both after 10:00 ET. Sent to Ops.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
