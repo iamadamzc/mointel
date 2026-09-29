@@ -417,6 +417,14 @@ export interface DemandState {
 
   highRes: boolean;
   /**
+   * The Now column: the last six COMPLETED ten-second slots of wall-clock
+   * time, oldest first (`lib/market/nowBuckets.ts`). `trades: null` = not
+   * measured; `0` = measured and silent; the whole field null = no live feed.
+   * ABSENT = a payload from before this field; the board keeps its minute
+   * column. Set by the read model, never by the engine.
+   */
+  nowBuckets?: Array<{ bucketEnd: string; trades: number | null; price: number | null }> | null;
+  /**
    * First crossing into the DAYTIME discovery rank threshold this session.
    *
    * Separate from `qualified`, which marks entry to the tracked population at
@@ -613,6 +621,12 @@ export interface TradeCaptureHealth {
   /** Bucket rows written / thrown away since this worker started. */
   bucketsWritten: number;
   bucketsDiscarded: number;
+  /**
+   * The newest flush the WEB TIER read from `trades.db` (`last_flush_ms`), so
+   * the board can show `not live` past `NOW_STALE_MS`. Set by the read model;
+   * absent from the worker's own health write.
+   */
+  asOf?: string | null;
 }
 
 export interface MarketFeedHealth {
