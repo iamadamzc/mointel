@@ -195,6 +195,44 @@ Known residue, stated rather than hidden: **a name's first bucket after it gains
 feed can read low**, for one bucket. The `0` row in the table above arrives with
 the intervals.
 
+## The build plan, fixed 2026-09-29 ~03:45 UTC against Research's `ca8eed9`
+
+**Contract reviewed and accepted, no changes asked:** `DemandState.nowBuckets`
+(six consecutive wall-clock slots, oldest first; `trades: null` = not measured,
+`0` = measured silence, a slot's price is its last print even when its count is
+null; the whole field null when no slot is measured, or for every name when
+there is no reader or no flush clock), `health.tradeCapture.asOf`, and
+`NOW_STALE_MS` = 30 s (`lib/market/nowBuckets.ts`, Research's number).
+
+**THE CAPTURE STATE, resolved from two SERVER timestamps, never the client
+clock** (the codebase's rule: freshness is resolved on the server's clock):
+
+| `tradeCapture.asOf` | Board |
+| --- | --- |
+| absent or null (capture not wired, or before the restart) | **today's minute cell, unchanged**, never muted. If the web tier's wiring lands before the restart, every row reads null and this state keeps the board as it is |
+| `fetchedAt − asOf > NOW_STALE_MS` | `—` on every row, header sub-line `not live`, the `Now` sort places nothing (all rows unmeasured, counted by the existing missing-count) |
+| fresh | per row, below |
+
+**PER ROW, while fresh:** field absent → today's minute cell; field null, or
+the NEWEST slot's `trades` null → the muted settled-minute fallback with `/min`
+(the number always means "the last 10 s" or says it is not); otherwise the live
+cell: the newest slot's count above six 10 s bars.
+
+**THE CELL, "same exact pattern" as `ActivitySparkline`:** bars scaled to the
+minute active line ÷ 6, derived from `DEFAULT_ACTIVITY_CONFIG`; a measured `0`
+keeps its 1 px floor; a `null` slot draws NO bar and NO floor (a gap); price
+dots on the same slots, row-local scale, drawn whenever the price is non-null;
+one direction colour from `directionTone` over the six prices against
+`spreadPct`, `warn` inside the spread, neutral when there is no price or band.
+
+**ONE RESOLUTION, TWO READERS.** The reading (`live` / `fallback` / `minute` /
+`notLive`) is resolved once per row in `mergeDesk`, where the snapshot's
+`health` and `fetchedAt` are in hand, and both the cell and
+`discoveryValueFor('now')` read it, so the order and the number cannot
+disagree (the `sessionMove` precedent). **The sort is TIERED in both
+directions:** live rows by count, then fallback rows by their minute figure,
+then unmeasured; never interleaved, because 10 s and 60 s counts differ ~6×.
+
 ## Scope, sequencing, size
 
 - **Design:** `DiscoveryBoard.tsx` (the `now` sort entry, cell — number above six
