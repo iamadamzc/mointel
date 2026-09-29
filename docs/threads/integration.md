@@ -1331,6 +1331,13 @@ LEFT-AND-UP      Research 5da9aad (read): v1 cluster rule FAILS as registered on
                  Minute store = 15 sessions (09-09..09-29), not 20. BIYA: daily_bars locate works; 2 of his 4 lines need
                  historical 15m (Alpaca adjustment=split) = uncosted fetch. Open for him (Research): do today's own run
                  tops count on BIYA?
+SESSION REPORTS  HIS WORDS (this session 23:39:14Z): "what about the session report? ive asked about this twice and it
+                 keeps getting left out" (1st ask: Ops's session 11:04:49Z). STATE (read): last report commit aebdf2f
+                 09:16 ET; built on main = contract, facts, writer, verify (lib/desk/reports/); NOT BUILT = model wiring,
+                 semantic checker + 43c1b7c pass bar, /api/reports + range config, Ops's 20:05 checkpoint. DROPPED at
+                 the 13:09 ET Research re-seat. My status lists carried it as "needs his spend yes" -- WRONG framing:
+                 nobody was building it. PUT TO HIM: reports vs levels first (recommended reports). Research told to
+                 name it a first-day item in its hand-off prompt with the spend authority read at his turn.
 ```
 **THE NINETEENTH SEAT'S LEDGER:**
 ```
@@ -1355,6 +1362,11 @@ error                                                  TYPE                     
   His 22:56:28Z (Research's session): "what we look
   for is it breaking those levels ... its a volume
   thing". Highlighting question withdrawn to him.
+4 status lists to HIM carried "Session reports:        a hand-off line relayed unread     no       HIM
+  Research, needs your yes on spend" (copied from the  (the 12th-14th / 18th class: a
+  18th's LIVE STATE) and my evening overview omitted   stale charter line read as
+  them; research.md said otherwise and no seat was     current)
+  building them since 09:16 ET. His 2nd ask 23:39:14Z.
 ```
 GZIP SHIPPING    deploy unit mointel-deploy-1b5ead6-221229 started 18:12:29 ET (Ops; pre-launch /proc 18:12:00 ET on
                  803008b, NR 0; market 1347535). Post-ship set owed by Ops to this seat.
