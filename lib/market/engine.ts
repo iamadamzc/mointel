@@ -146,6 +146,20 @@ export interface TradeBucketRow {
   /** Bucket start, epoch ms, floored to `TRADE_BUCKET_MS`. */
   bucketTs: number;
   trades: number;
+  /**
+   * The price of the LATEST print in the bucket by event time, and that time.
+   * Never null here: a bucket exists only because a print with a usable price
+   * landed in it. His Now column draws its dots and direction from these
+   * ("i want the trade counts, dots and direction color", 2026-09-29).
+   */
+  lastPrice: number;
+  lastTs: number;
+}
+
+interface TradeBucket {
+  trades: number;
+  lastPrice: number;
+  lastTs: number;
 }
 
 const HOD_COOLDOWN_MS = 60_000;
@@ -331,7 +345,7 @@ interface TickerRuntime {
    * an empty map here and a genuinely quiet name are the same object -- which is
    * why the drain reports nothing for it rather than a row of zeroes.
    */
-  tradeBuckets: Map<number, number>;
+  tradeBuckets: Map<number, TradeBucket>;
   /**
    * First moment this session that rank crossed into the discovery threshold.
    *
@@ -1501,7 +1515,23 @@ export class DemandEngine {
       const at = Date.parse(observation.ts);
       if (Number.isFinite(at)) {
         const bucket = Math.floor(at / TRADE_BUCKET_MS) * TRADE_BUCKET_MS;
-        runtime.tradeBuckets.set(bucket, (runtime.tradeBuckets.get(bucket) ?? 0) + 1);
+        const held = runtime.tradeBuckets.get(bucket);
+        if (!held) {
+          runtime.tradeBuckets.set(bucket, { trades: 1, lastPrice: price, lastTs: at });
+        } else {
+          held.trades += 1;
+          /*
+           * THE PRICE TAKES THE LATEST EVENT TIME, NOT THE LATEST ARRIVAL. The
+           * count above deliberately sees out-of-order prints; the price must
+           * not be moved BACKWARDS by one. `>=` so a same-millisecond print
+           * that arrives later wins, as `isNewerObservation` does for the
+           * headline price.
+           */
+          if (at >= held.lastTs) {
+            held.lastPrice = price;
+            held.lastTs = at;
+          }
+        }
       }
     }
 
@@ -2255,10 +2285,16 @@ export class DemandEngine {
 
     for (const runtime of this.tickers.values()) {
       if (runtime.tradeBuckets.size === 0) continue;
-      for (const [bucketTs, trades] of [...runtime.tradeBuckets.entries()].sort(
+      for (const [bucketTs, bucket] of [...runtime.tradeBuckets.entries()].sort(
         (a, b) => a[0] - b[0],
       )) {
-        rows.push({ symbol: runtime.symbol, bucketTs, trades });
+        rows.push({
+          symbol: runtime.symbol,
+          bucketTs,
+          trades: bucket.trades,
+          lastPrice: bucket.lastPrice,
+          lastTs: bucket.lastTs,
+        });
         // Keep the filling bucket AND a grace of settled ones, so a late print
         // adds to its bucket instead of resurrecting it at 1.
         if (bucketTs < current - TRADE_BUCKET_GRACE * TRADE_BUCKET_MS) {

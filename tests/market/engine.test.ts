@@ -814,6 +814,37 @@ describe('ten-second trade capture', () => {
     expect(engine.getDemandState('AAA')?.price).toBe(6);
   });
 
+  it('carries the LATEST print\'s price and time per bucket -- the dots his Now column draws', () => {
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 1), 5));
+    engine.ingest(trade('AAA', ts(2, 4), 5.2));
+    engine.ingest(trade('AAA', ts(2, 11), 5.4));
+
+    const rows = engine.drainTradeBuckets(Date.parse(ts(3)));
+    expect(rows.map((r) => [r.trades, r.lastPrice, r.lastTs])).toEqual([
+      [2, 5.2, Date.parse(ts(2, 4))],
+      [1, 5.4, Date.parse(ts(2, 11))],
+    ]);
+  });
+
+  it('AN OUT-OF-ORDER PRINT IS COUNTED BUT CANNOT MOVE THE PRICE BACKWARDS', () => {
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 5), 6));
+    engine.ingest(trade('AAA', ts(2, 3), 5.5));
+
+    const [row] = engine.drainTradeBuckets(Date.parse(ts(3)));
+    expect(row.trades).toBe(2);
+    expect([row.lastPrice, row.lastTs]).toEqual([6, Date.parse(ts(2, 5))]);
+  });
+
+  it('a same-millisecond print that arrives later takes the price', () => {
+    const engine = highResEngine();
+    engine.ingest(trade('AAA', ts(2, 5), 6));
+    engine.ingest(trade('AAA', ts(2, 5), 6.1));
+    const [row] = engine.drainTradeBuckets(Date.parse(ts(3)));
+    expect(row.lastPrice).toBe(6.1);
+  });
+
   it('does not count a print with no usable price', () => {
     // A trade with no price is a mapping failure on our side, not activity.
     const engine = highResEngine();
