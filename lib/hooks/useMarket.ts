@@ -9,6 +9,7 @@ import {
 } from '@/lib/dashboard/feedFailure';
 
 import { rangeQuery, type PriceRange } from '@/lib/dashboard/boardRange';
+import { pollDecision } from '@/lib/dashboard/pollGate';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
 
@@ -39,12 +40,23 @@ export function useMarket(
   const rangeKey = rangeQuery(range);
 
   const mountedRef = useRef(true);
-  const inflightRef = useRef<AbortController | null>(null);
+  const inflightRef = useRef<{ controller: AbortController; startedAt: number } | null>(null);
 
-  const load = useCallback(async (symbols: string, rangeParams: string) => {
-    inflightRef.current?.abort();
+  /*
+   * A TICK NEVER CANCELS A REQUEST INSIDE ITS BUDGET (`pollGate.ts`). This used
+   * to abort the in-flight request on every tick, so a response slower than the
+   * interval never landed (under concurrent load, almost none did) and the
+   * board kept its last payload while its header still said LIVE. `force` is a
+   * change of query.
+   */
+  const load = useCallback(async (symbols: string, rangeParams: string, force: boolean) => {
+    const current = inflightRef.current;
+    const decision = pollDecision(current?.startedAt ?? null, Date.now(), force);
+    if (decision === 'SKIP') return;
+    if (decision === 'REPLACE') current?.controller.abort();
     const controller = new AbortController();
-    inflightRef.current = controller;
+    const flight = { controller, startedAt: Date.now() };
+    inflightRef.current = flight;
 
     try {
       const parts = [symbols ? `symbols=${encodeURIComponent(symbols)}` : '', rangeParams].filter(Boolean);
@@ -74,6 +86,9 @@ export function useMarket(
       if (!mountedRef.current) return;
       setFailure(classifyThrown(error));
     } finally {
+      // Free the slot only if it is still ours; a replaced request must not
+      // clear its replacement.
+      if (inflightRef.current === flight) inflightRef.current = null;
       if (mountedRef.current) setLoading(false);
     }
   }, [apiBase]);
@@ -83,15 +98,15 @@ export function useMarket(
     // load() is async: every setState it performs happens after the fetch
     // settles, never synchronously during this effect.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void load(symbolsKey, rangeKey);
+    void load(symbolsKey, rangeKey, true);
 
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
-      void load(symbolsKey, rangeKey);
+      void load(symbolsKey, rangeKey, false);
     }, MARKET_POLL_INTERVAL_MS);
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible') void load(symbolsKey, rangeKey);
+      if (document.visibilityState === 'visible') void load(symbolsKey, rangeKey, false);
     };
     document.addEventListener('visibilitychange', onVisible);
 
@@ -99,7 +114,8 @@ export function useMarket(
       mountedRef.current = false;
       clearInterval(interval);
       document.removeEventListener('visibilitychange', onVisible);
-      inflightRef.current?.abort();
+      inflightRef.current?.controller.abort();
+      inflightRef.current = null;
     };
   }, [load, symbolsKey, rangeKey]);
 
