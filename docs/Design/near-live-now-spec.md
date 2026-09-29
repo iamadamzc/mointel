@@ -113,10 +113,13 @@ is the 10–20 s he was offered.
 
 **The header stays `Now`** (his ruling, 2026-09-25). Its sub-line changes from the
 minute lag to the new grain: `last 10s` under (A), `10s pace` under (B). The
-tooltip and the sort caption (`metric`) change with it. **The minute sparkline
+tooltip and the sort caption (`metric`) change with it. ~~**The minute sparkline
 under the number stays as it is.** It shows the shape of the last half hour in
 minutes, which is a different question from "busiest now", and the unit label
-keeps the two from reading as one quantity.
+keeps the two from reading as one quantity.~~ **SUPERSEDED by his 02:30:43Z
+answer above: the bars under the number become the last minute as six 10 s
+buckets, with price dots and direction colour.** *(Struck 2026-09-29 by the
+successor Design seat; this line predated his answer and contradicted it.)*
 
 ## Rows that have no live count
 
@@ -140,6 +143,15 @@ has no symptom: the board would sort confidently on numbers from whenever captur
 stopped. Blanking is the visible state.
 
 ## What Research is asked for (the data side)
+
+> **SUPERSEDED — the field is `nowBuckets` (six buckets with trades and price),
+> stated in "HIS ANSWER" at the top. The single-bucket `nowTrades` shape below and
+> the counts-only interim after it were written before his 02:30:43Z and
+> 02:32:20Z answers; he refused an interim, and Research struck it (`58dd735`,
+> `cf3dbc2`). Kept below, not deleted, as the record of what was considered.**
+> What still holds from this section: the board never infers zero from absence,
+> and the `not live` threshold on `tradeCapture.asOf` is Research's to set and
+> state.
 
 **Ask the producer for the answer, not the rows.** The board should not open
 `trades.db` or work out which absences are zeros. Per `DemandState`:
@@ -185,21 +197,28 @@ the intervals.
 
 ## Scope, sequencing, size
 
-- **Design:** `DiscoveryBoard.tsx` (the `now` sort entry, cell, header sub-line,
-  tooltip), `lib/dashboard/view.ts` (the sort value: live rows first, then
-  no-feed rows by their minute figure, then unmeasured), `MISSING_NOUN.now`, and
-  tests. The Focus cards, if they print the minute figure, follow the same field.
-  **About a day**, after Research's field exists.
-- **Research:** the field and `tradeCapture.asOf` above, read from `trades.db`
-  in the web tier. No market-worker change and no restart (Research, `c9cf9b1`).
-- **Ops:** confirm `bucketsWritten` is rising in production. Due 09-29 between
-  04:00 and 07:00 ET, already scheduled.
+- **Design:** `DiscoveryBoard.tsx` (the `now` sort entry, cell — number above six
+  10 s bars with dots and direction colour — header sub-line, tooltip),
+  `lib/dashboard/view.ts` (the sort value: live rows first, then no-feed rows by
+  their minute figure, then unmeasured), the 10 s sparkline model beside
+  `sparkline.ts`, `MISSING_NOUN.now`, and tests. The Focus cards, if they print
+  the minute figure, follow the same field. **About a day and a half**, after
+  Research's field exists on real post-restart data.
+- **Research:** `nowBuckets` and `tradeCapture.asOf`, from per-bucket last price
+  and membership intervals the ENGINE records. ~~No market-worker change and no
+  restart (Research, `c9cf9b1`).~~ **A market-worker change, so a restart**
+  (`58dd735`); Research's target Wed 10-01 ET.
+- **Ops:** `trades.db` schema v2; propose the restart time, which he approves.
+  ~~Confirm `bucketsWritten` is rising in production. Due 09-29 between 04:00 and
+  07:00 ET, already scheduled.~~ *(Still due as a capture check; no longer the
+  gate for the cell.)*
 - **Order:** after the price-range release (his ruling). Research's field can be
   built first and ships inert, since the board ignores a field it does not read.
+  **Design does not start the cell until the field carries real 10 s prices.**
 
 ## Not in this spec, on purpose
 
-- A 10-second sparkline. It could be built from the same buckets later; nobody
-  has asked for it.
+- ~~A 10-second sparkline. It could be built from the same buckets later; nobody
+  has asked for it.~~ **He asked for it (02:30:43Z); it is the bars. Struck.**
 - Changing what RVOL means. `Now` stays the correction beside RVOL, not a
   replacement for it.
