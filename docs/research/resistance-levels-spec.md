@@ -12,8 +12,9 @@ the board is his yes, enumerated by literal sha.*
 | "left, up, mark the top. if there are multople tops within the same 2-3c, mark it near the middle … these become areas of resistance" | Integration 19th's transcript `ffac4a37`, 2026-09-29T22:05:23Z |
 | "a, show all 7": show every candidate level, his lines always among them | Research's transcript `8cd59d1e`, 2026-09-29T22:44:18Z |
 | "i just want these levels drawn … you can confirm … that these are indeed resistance levels": they are **labelled resistance levels** | `8cd59d1e`, the turn after 22:56:28Z |
-| "6–12 months of daily candles. last 30days 15m"; "If the nearest major historical peak is two years back and just above today's price, I'd still mark it"; "You don't need to mark every candle back to the stock's listing"; today's run tops count; premarket uses prior sessions | `845dd4cb`, 2026-09-29T22:33:08Z |
+| ~~"6–12 months of daily candles. last 30days 15m"~~ (windows SUPERSEDED by the row below); still standing: "If the nearest major historical peak is two years back and just above today's price, I'd still mark it"; "You don't need to mark every candle back to the stock's listing"; today's run tops count; premarket uses prior sessions | `845dd4cb`, 2026-09-29T22:33:08Z |
 | "yes, build the history store" (all band names, downloaded once, kept, 15m forward from our own capture, re-fetched on a split) | `845dd4cb`, 2026-09-29T23:00:48Z |
+| **"5m candles for today only. 15m for anything older. up to 39 days. and dailys beyond."**: the windows | `8cd59d1e`, after this spec's first version (`e543a75`) |
 
 **The label is his ruling, not a measurement.** No test here showed that these
 levels turn price back more than other prices (`research.md`, 009edef). The one
@@ -27,21 +28,28 @@ highlighting field.** That question was withdrawn; the only tag is timeframe.
 1m close at or before `t`. Completed candles only, meaning a candle whose end is
 ≤ `t`.
 
-**Three ladders, one per timeframe.** For each, walk the candles backwards from
-the newest completed one. The **first** candle whose high ≥ `L` starts the
-ladder, and its high is the first mark. Each earlier candle whose high is
-**greater than the last mark** is the next mark. Keep only marks > `L`. Marks
-are **wick highs**, not bodies (his "top of it"; bodies recovered 3/5 of his
-SLXN lines, wicks 5/5).
+**One continuous walk left, through three windows that do not overlap.** His
+ruling (`8cd59d1e`, after the spec's first version): *"5m candles for today only.
+15m for anything older. up to 39 days. and dailys beyond."*
 
-| ladder | candles | horizon |
+| window | candles | covers |
 | --- | --- | --- |
-| 5m | 5m, rolled up from 1m | the current session and the previous one |
-| 15m | 15m from the history store | the last 30 calendar days |
-| daily | daily from the history store, split-adjusted | the last 12 months |
+| today | 5m, rolled up from 1m | the current session only |
+| older | 15m from the history store | the previous session back **39 calendar days** (read as calendar days; his words say "39 days") |
+| beyond | daily from the history store, split-adjusted | older than 39 days, out to 12 months |
 
-**Far back, the one extension:** if the daily ladder over 12 months yields no
-mark (price is above every daily high for a year), continue the daily walk
+Walk the candles backwards in time, newest first: today's 5m, then the 15m
+candles, then the daily candles. The **first** candle whose high ≥ `L` starts
+the ladder, and its high is the first mark. **Each earlier candle, in whichever
+window it sits,** whose high is **greater than the last mark** is the next mark.
+Keep only marks > `L`. This is one ladder, not three pooled: a 15m or daily top
+counts only if it is above every mark found nearer to now, which is what his
+eye does walking left across the chart. Marks are **wick highs**, not bodies
+(his "top of it"; bodies recovered 3/5 of his SLXN lines, wicks 5/5). Each mark
+remembers its window, which becomes the level's timeframe tag.
+
+**Far back, the one extension:** if the walk reaches the end of the 12-month
+daily window with no mark (price is above every high for a year), continue
 further back through the stored daily history, and take **only the first daily
 high > `L`**. That is "the nearest major historical peak … just above today's
 price". Stop there, so it never walks to the listing. If no stored high exists
@@ -49,20 +57,22 @@ above `L`, the row says so (`aboveAllStored: true`). It is never called an
 all-time high, because the store does not reach the listing (same rule as
 `blueSky.ts`).
 
-**Merge and cluster.** Pool the marks of all three ladders, sort them, and chain
+**Cluster.** Sort the marks, and chain
 neighbours whose **gap to each other** is ≤ `W`. **`W = 0.5% × L`** (his "2–3c"
 at the $4–6 prices he trades most; a literal 3¢ would collapse sub-$1 names,
 e.g. SLXN's four lines at $0.31 into one). Each chain is one level at
 **(lowest top + highest top) / 2** ("mark it near the middle").
 
-**Premarket:** nothing special is needed. Before the open, today's 5m ladder is
-short and the previous session's 5m, 15m and daily tops carry the levels (his
+**Premarket:** nothing special is needed. Before the open, today's 5m window is
+short, and the walk reaches the previous sessions' 15m and daily tops, which carry the levels (his
 "others trade on other sessions").
 
 **Split basis:** every price in one computation must be on one basis. The 5m
-ladder reads raw 1m bars, so if a split takes effect inside the 5m horizon, the
-pre-split candles are **excluded** and the row carries `basisBreak`. The 15m and
-daily ladders read the history store, which is split-adjusted and re-fetched on
+window is today only, from raw 1m bars; if a split took effect TODAY, the 15m and
+daily windows (split-adjusted) are already on today's basis, so there is no mix.
+If the store's basis stamp is older than a split it has not yet re-fetched, the
+row carries `basisBreak` and the older windows are not walked. The 15m and
+daily windows read the history store, which is split-adjusted and re-fetched on
 a split (§3).
 
 ## 2. Row contract (for Design to build against now)
@@ -103,7 +113,7 @@ interface ResistanceLevels {
   aboveAllStored?: true;
   /** Oldest data each ladder could see, so the section can say how far back it looked. */
   horizon: { fiveMinFrom: string | null; fifteenMinFrom: string | null; dailyFrom: string | null };
-  /** A split inside the 5m horizon excluded the pre-split candles. */
+  /** The store's basis is behind a split not yet re-fetched: only today's 5m window was walked. */
   basisBreak?: true;
 }
 ```
@@ -128,9 +138,9 @@ vwaps. Sessions 04:00–20:00 ET. **Completed buckets only**, meaning bucket end
 ≤ now. A bucket missing minutes (a restart gap, ~3.5 min per restart) is
 written with `partial = 1`, since its high is a lower bound.
 
-**Backfill:** Alpaca `15Min` for 30 days and `1Day` for 12 months,
+**Backfill:** Alpaca `15Min` for **39 days** and `1Day` for 12 months,
 `adjustment=split`, for all band names once, then on arrival for new names
-(~620 requests for everything, measured sizes in `research.md`; no extra cost,
+(~740 requests for everything at 39 days (was ~620 at 30); ~0.9 GB of 15m for all band names (was ~0.69 GB); no extra cost,
 Commercial §9b). Forward 15m comes from the rollup, not a fetch.
 
 **The split re-fetch trigger (new; today's code has none).** The daily path
