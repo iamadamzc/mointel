@@ -1459,6 +1459,10 @@ SPEC AMENDED     c9f9835 (diff read): ONE LADDER PER WINDOW, merged + clustered 
                  §4.2: all four BIYA lines from the 15m window after backfill. Citation fixed. No located-date step
                  (his "dailys beyond"; an earlier-method revival would be his question). §2 fields unchanged; §3 as
                  sent to Ops. Open with him (Research's): 39 calendar vs trading days.
+                 CURRENT SPEC = c9f9835 (§3 byte-identical to f6c41e4, diffed; Ops told).
+RESEARCH SEAT    told HIM it is near saturation (a repeated class, research.md); proposes: grade tonight's items 1 + 6,
+                 then hand off; successor takes 04:33 ET items, the 09-30 grades read, the levels code. HIS decision,
+                 asked in Research's session -- not re-asked here. If he says yes: new Research id by title before routing.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
