@@ -953,6 +953,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      = record band, trigger cea5ed2 on the MARKET WORKER (his next direct restart); (3) ceiling
                      20->50 + restart; (4) server ranks inside a requested range -- BUILT af15a13 2026-09-29 ~01:10Z; enumerated to Ops onto dca4a04
                      (replayed: merge-tree clean, 164 files), web tier only, CONDITIONAL ON HIS YES; was due 2026-10-05
+                     Ops built+gated 2256c63 (164/164). GATE ON DESIGN'S CONTROL (Ops, store owner, 09-29): range read
+                     measured 233-362 ms vs 4.8 ms today (full in-range fetch + JS rank). Control does NOT ship until the
+                     read is bounded in SQL, < 20 ms at $0.25-$50 on the live store, measured the same way. Research+Ops own it.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
