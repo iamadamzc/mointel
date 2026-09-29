@@ -1165,6 +1165,13 @@ BUILD COST      Research priors (08-23 scratch copy, 08-21 full: 50 ranked/35 do
                  fresh ms per hit + no date collision; measure 1 warm + 50 builds x2 shas alternating blocks of 10, median/
                  p90/max, prior only, no pass threshold; box read after ship by (b') method outside 07-10 ET. Ship = his
                  yes in Ops's session. (2) short memo DEFERRED until (1) is live; board polls 1000 ms, not 2-5 s.
+FREEZE FIX      design/poll-fix-on-0342e7d -> d288d2e REPLAYED: 1 over 0342e7d, fa61410 not in cone, 3 files, 1 new test
+                 file -> 171 (not declared before gate; diff fixes it). CODE APPROVED (skip in flight, replace on query
+                 change / past 15 s, slot freed by own flight). COMMENTS REJECTED: pollGate.ts header, useMarket.ts
+                 comment and commit message carry the RETRACTED claims (frozen at rest; caused SLND; 'his machine').
+                 Re-cut asked (code identical; diff must be comment-only). NOT IN IT: the 'not updating' state -- told
+                 him it would be; correct him when the ship goes to him. Timing: recommend after 10:00 ET (preflight
+                 refuses 07-10 ET). His answer: none typed since 12:05Z (transcript scan).
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
