@@ -78,11 +78,15 @@ import {
 import { redact, type AlpacaCredentials } from '../lib/market/credentials';
 import { bootstrapBand, captureBand, type MarketConfig } from '../lib/market/config';
 import {
+  closeFeedInterval,
+  heartbeatFeedIntervals,
+  openFeedInterval,
   openTradesStoreOrNull,
   persistTradeBuckets,
   pruneTradeBuckets,
   type TradesDatabase,
 } from '../lib/market/store/trades';
+import { FeedMembership, type MembershipChange } from '../lib/market/feedMembership';
 import type {
   BackfillSummary,
   ConnectionState,
@@ -203,6 +207,13 @@ export class MarketRuntime {
    * bound in memory) and discards them, loudly.
    */
   private trades: TradesDatabase | null = null;
+  /**
+   * When each name's trades were being counted: stream ACK ∩ engine highRes
+   * (`lib/market/feedMembership.ts`). What makes a Now-column zero a
+   * measurement. Tracked even with no store, so a store that opens later is
+   * not handed a membership history that skipped the start.
+   */
+  private readonly membership = new FeedMembership();
   readonly config: MarketConfig;
   readonly logger: RuntimeLogger;
   readonly mode: MarketMode;
@@ -491,6 +502,13 @@ export class MarketRuntime {
 
     try {
       await this.resolveSession(now);
+      if (this.tradingDate !== from) {
+        // Intervals are per trading date: close every open one under the OLD
+        // date, re-open under the new, at one instant.
+        const { closed, opened } = this.membership.rollover(now.getTime());
+        this.persistMembership(closed, from);
+        this.persistMembership(opened, this.tradingDate);
+      }
       if (this.onSessionRoll) await this.onSessionRoll(now);
       setMeta(this.db, TRADING_DATE_ROLLED_AT_KEY, rolledAt);
       // The date the stamp belongs to, so a later restart can tell that this
@@ -1572,6 +1590,12 @@ export class MarketRuntime {
       this.logger.info(`[alpaca] high-res interest set: ${highRes.length} symbols`);
     }
 
+    // Membership first, then the heartbeat for what is still open -- so an
+    // interval closed this flush is not also advanced by it.
+    const flushedAt = Date.now();
+    this.persistMembership(this.membership.setHighRes(highRes, flushedAt), this.tradingDate);
+    this.heartbeatMembership(flushedAt);
+
     setMeta(this.db, 'trading_date', this.tradingDate);
     setMeta(this.db, 'session_phase', this.sessionPhase);
     setMeta(this.db, 'discovery_summary', JSON.stringify({
@@ -1632,7 +1656,50 @@ export class MarketRuntime {
 
   /* --------------------------------------------------------------- health */
 
+  /**
+   * The stream acknowledged its trades subscription -- the set prints can
+   * actually arrive for (`alpaca/stream.ts`, the `subscription` message).
+   */
+  onTradesAcked(symbols: readonly string[], at: number = Date.now()): void {
+    this.persistMembership(this.membership.setAcked(symbols, at), this.tradingDate);
+  }
+
+  /**
+   * Writes membership changes. NEVER THROWS: a failed trades.db write must not
+   * take the market worker down with it (the lock-crash class this desk has
+   * hit at three sites). A lost write costs coverage -- the reader then
+   * returns null for those slots -- which is the safe direction.
+   */
+  private persistMembership(changes: readonly MembershipChange[], tradingDate: string): void {
+    if (!this.trades || changes.length === 0) return;
+    try {
+      for (const change of changes) {
+        if (change.kind === 'OPEN') {
+          openFeedInterval(this.trades, { symbol: change.symbol, tradingDate, openedMs: change.openedMs });
+        } else {
+          closeFeedInterval(this.trades, { symbol: change.symbol, tradingDate, closedMs: change.at });
+        }
+      }
+    } catch (error) {
+      this.logger.error(`[trades] feed interval write failed: ${this.redactError(error)}`);
+    }
+  }
+
+  private heartbeatMembership(at: number): void {
+    if (!this.trades) return;
+    try {
+      heartbeatFeedIntervals(this.trades, this.tradingDate, at);
+    } catch (error) {
+      this.logger.error(`[trades] feed interval heartbeat failed: ${this.redactError(error)}`);
+    }
+  }
+
   setConnectionState(state: ConnectionState, detail?: string): void {
+    // The socket is gone or being replaced: nothing is being received, so every
+    // interval closes now. Only the reconnect's own acknowledgement re-opens.
+    if (state === 'DISCONNECTED' || state === 'ERROR' || state === 'CONNECTING') {
+      this.persistMembership(this.membership.disconnect(Date.now()), this.tradingDate);
+    }
     this.health.connectionState = state;
     if (state === 'AUTHENTICATED' || state === 'STREAMING') {
       this.health.sipEntitlement = this.feed === 'sip' ? 'VERIFIED' : this.health.sipEntitlement;

@@ -48,6 +48,14 @@ import {
   readFeedHealth,
 } from './store/repo';
 import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
+import { attachNowBuckets } from './nowBuckets';
+import {
+  loadFeedIntervals,
+  loadRecentTradeBuckets,
+  openTradesStoreReadonly,
+  readLastFlushMs,
+  type TradesDatabase,
+} from './store/trades';
 import {
   readCurrentAnalyses,
   readLatestJobForTicker,
@@ -74,7 +82,7 @@ import {
   toEvidenceLink,
   type AutoIntelligence,
 } from '../research/view';
-import type { DiscoveryState, MarketFeedHealth, MarketSnapshot } from './types';
+import type { DemandState, DiscoveryState, MarketFeedHealth, MarketSnapshot } from './types';
 import { catalystFreshFromUtc } from '../research/freshFrom';
 
 const globalStore = globalThis as typeof globalThis & {
@@ -406,6 +414,32 @@ function blueSkyThreshold(
   return threshold;
 }
 
+/**
+ * Attaches `nowBuckets` from `trades.db`, returning the capture's `asOf`.
+ * Any failure to open or read -- no file yet, a v1 file before the restart,
+ * a lock -- is "the capture cannot answer", never an error on the board.
+ */
+function readNowBuckets(
+  states: DemandState[],
+  tradingDate: string,
+  file: string,
+): string | null {
+  let trades: TradesDatabase | null = null;
+  try {
+    trades = openTradesStoreReadonly(file);
+    const db = trades;
+    return attachNowBuckets(states, tradingDate, {
+      loadBuckets: (symbols, date, fromMs) => loadRecentTradeBuckets(db, symbols, date, fromMs),
+      loadIntervals: (symbols, date, fromMs) => loadFeedIntervals(db, symbols, date, fromMs),
+      lastFlushMs: () => readLastFlushMs(db),
+    }).asOf;
+  } catch {
+    return attachNowBuckets(states, tradingDate, null).asOf;
+  } finally {
+    trades?.close();
+  }
+}
+
 export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSnapshot {
   const config = loadMarketConfig();
   const fetchedAt = new Date().toISOString();
@@ -531,6 +565,13 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         ? age === null || age > config.tickerStaleSeconds
         : false;
     }
+
+    // The Now column (his ruling 2026-09-29: "trade counts, dots and direction
+    // color"). Read-only, per request, never migrating the worker's file; a
+    // missing or refused store leaves the field ABSENT and the board keeps
+    // its minute column.
+    const nowAsOf = readNowBuckets(states, tradingDate, config.tradesDbPath);
+    if (health.tradeCapture) health.tradeCapture.asOf = nowAsOf;
 
     /*
      * Ordered by the ACTIVE board, not by Daily RVOL.
