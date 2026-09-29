@@ -1149,6 +1149,9 @@ TRANSPORT HALF  Ops, from repo nginx conf + Next 16.3.1 source (not behaviour): 
                  catches SOME queued-abandoned requests, not all. Coalesce ranks first. Behaviour test after 10:00 ET:
                  nginx half (499 + ss) by Ops, no code; the build-completion half needs a route counter = code, DEFERRED
                  until coalesce is proposed.
+                 TEST RULED: (a) nginx half on box after 10:00 ET: 499 + upstream closed (ss). (b) Node half LOCAL, throwaway
+                 worktree at 0342e7d, 2 s sync probe route, B aborted at 0.3 s behind A. PRE-REGISTERED N=10, report k/10
+                 pre-aborted at entry, no threshold. Both passing = 'halves pass, composition unverified'.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
