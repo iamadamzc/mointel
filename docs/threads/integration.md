@@ -918,6 +918,9 @@ mechanical: no clock time goes into any message or file without a `zoneinfo`/`%c
   the gap to the 11:05 ET read; clock 23:16 ET -> ~12h   computing it from a clock read)                  read after)
 ```
 *THIRD INSTANCE, 2026-09-29T03:16Z. Per the line above, put to him as a hand-off decision. Corrected to Design.*
+**HIS RULING 2026-09-29T03:17:09Z (this session, read at his turn): "keep this session".** *No hand-off. The standing
+cure: no clock time or duration goes into any message or file without a `zoneinfo`/`%cI` read in the same step. A
+fourth instance goes back to him.*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
