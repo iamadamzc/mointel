@@ -1018,6 +1018,31 @@ export function readDemandStates(
   return rows.map((row) => rowToDemandState(row, nowMs));
 }
 
+/**
+ * Every tracked row priced inside [min, max] that may compete for a rank, for
+ * ranking INSIDE a viewer's range (`lib/market/rangeRank.ts`). A security the
+ * universe marks ineligible is excluded here exactly as the engine excludes it;
+ * a symbol with no universe row is kept, as the engine keeps it when it has no
+ * classification evidence.
+ */
+export function readRangeCandidates(
+  db: MarketDatabase,
+  tradingDate: string,
+  range: { min: number; max: number },
+): DemandState[] {
+  const nowMs = Date.now();
+  const rows = db
+    .prepare(
+      `SELECT ts.* FROM ticker_session ts
+         LEFT JOIN universe u ON u.symbol = ts.symbol
+        WHERE ts.trading_date = ?
+          AND ts.price IS NOT NULL AND ts.price >= ? AND ts.price <= ?
+          AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
+    )
+    .all(tradingDate, range.min, range.max) as TickerSessionRow[];
+  return rows.map((row) => rowToDemandState(row, nowMs));
+}
+
 export function countTrackedSymbols(db: MarketDatabase, tradingDate: string): number {
   const row = db
     .prepare('SELECT COUNT(*) AS count FROM ticker_session WHERE trading_date = ?')
