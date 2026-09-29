@@ -13,7 +13,9 @@ describe('FeedMembership', () => {
     // The engine flags it first: nothing is subscribed yet, so nothing opens.
     expect(m.setHighRes(['AAA'], 1_000)).toEqual([]);
     // The stream acknowledges it: now prints can arrive AND be counted.
-    expect(m.setAcked(['AAA'], 1_400)).toEqual([{ symbol: 'AAA', kind: 'OPEN', at: 1_400 }]);
+    expect(m.setAcked(['AAA'], 1_400)).toEqual([
+      { symbol: 'AAA', kind: 'OPEN', at: 1_400, openedMs: 1_400 },
+    ]);
     expect(m.openSince().get('AAA')).toBe(1_400);
   });
 
@@ -26,14 +28,19 @@ describe('FeedMembership', () => {
     const m = new FeedMembership();
     m.setHighRes(['AAA', 'BBB'], 0);
     m.setAcked(['AAA', 'BBB'], 100);
-    expect(m.setHighRes(['BBB'], 5_000)).toEqual([{ symbol: 'AAA', kind: 'CLOSE', at: 5_000 }]);
+    // The close names the interval by its ORIGINAL open time -- the v2 row key.
+    expect(m.setHighRes(['BBB'], 5_000)).toEqual([
+      { symbol: 'AAA', kind: 'CLOSE', at: 5_000, openedMs: 100 },
+    ]);
   });
 
   it('closes when the stream drops it, even while still flagged', () => {
     const m = new FeedMembership();
     m.setHighRes(['AAA'], 0);
     m.setAcked(['AAA'], 100);
-    expect(m.setAcked([], 7_000)).toEqual([{ symbol: 'AAA', kind: 'CLOSE', at: 7_000 }]);
+    expect(m.setAcked([], 7_000)).toEqual([
+      { symbol: 'AAA', kind: 'CLOSE', at: 7_000, openedMs: 100 },
+    ]);
   });
 
   it('A DISCONNECT CLOSES EVERYTHING, and only the reconnect ack re-opens', () => {
@@ -46,7 +53,9 @@ describe('FeedMembership', () => {
     ]);
     // The flag alone does not re-open after a disconnect.
     expect(m.setHighRes(['AAA', 'BBB'], 9_500)).toEqual([]);
-    expect(m.setAcked(['AAA'], 12_000)).toEqual([{ symbol: 'AAA', kind: 'OPEN', at: 12_000 }]);
+    expect(m.setAcked(['AAA'], 12_000)).toEqual([
+      { symbol: 'AAA', kind: 'OPEN', at: 12_000, openedMs: 12_000 },
+    ]);
   });
 
   it('an unchanged set produces no churn', () => {
@@ -63,9 +72,9 @@ describe('FeedMembership', () => {
     m.setHighRes(['AAA', 'BBB'], 0);
     m.setAcked(['AAA', 'BBB'], 100);
     const { closed, opened } = m.rollover(50_000);
-    expect(closed.map((c) => [c.symbol, c.kind, c.at])).toEqual([
-      ['AAA', 'CLOSE', 50_000],
-      ['BBB', 'CLOSE', 50_000],
+    expect(closed.map((c) => [c.symbol, c.kind, c.at, c.openedMs])).toEqual([
+      ['AAA', 'CLOSE', 50_000, 100],
+      ['BBB', 'CLOSE', 50_000, 100],
     ]);
     expect(opened.map((c) => [c.symbol, c.kind, c.at])).toEqual([
       ['AAA', 'OPEN', 50_000],
