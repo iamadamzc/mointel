@@ -15,6 +15,7 @@ import type { ModelConfig } from '../config';
 import { describeFailure, readProviderFailure } from '../providerError';
 import type { ResearchDossier } from '../types';
 import type { ResearchEvidenceBundle } from './bundle';
+import { catalystGradePromptBlock } from './catalystGrades';
 import {
   AUTOMATIC_DOSSIER_SCHEMA,
   AUTOMATIC_DOSSIER_SCHEMA_VERSION,
@@ -103,6 +104,8 @@ Distinctions that matter and are checked in software afterwards:
 - Only state "NO FRESH CATALYST FOUND" when coverage was adequate and the
   evidence supports that conclusion. If coverage is incomplete, say so instead.
 - Unknown is never zero. Leave unknown values null.
+
+${catalystGradePromptBlock()}
 
 If the bundle includes PRIOR_MODEL_ANALYSIS, treat it as a prior opinion to
 compare against, NOT as evidence. Do not adopt its conclusions without support

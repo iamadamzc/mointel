@@ -11,8 +11,11 @@
  * INTERPRETER_PROMPT_VERSION when the instructions change.
  */
 
+import { catalystGradeSchemaDescription } from './catalystGrades';
+
 export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 1;
-export const INTERPRETER_PROMPT_VERSION = 1;
+// 2: catalyst grades defined (his ruling 2026-09-29T14:46:55Z, `catalystGrades.ts`).
+export const INTERPRETER_PROMPT_VERSION = 2;
 
 const CONFIDENCE = ['HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'] as const;
 
@@ -77,6 +80,9 @@ const CATALYST = required({
   },
   catalystGrade: {
     type: 'string',
+    // The same text the prompt carries (`catalystGrades.ts`), so the model is
+    // told what each grade means in both places it looks, and they agree.
+    description: catalystGradeSchemaDescription(),
     enum: [
       'STRONG',
       'LEGITIMATE_POSITIVE',
