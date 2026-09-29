@@ -1408,6 +1408,14 @@ HIS QUESTION     (this session, after 22:5xZ) "is it worth just downloading them
                  minute_bars pruned to 20 trading dates (config.ts:121-128, his 09-12 number, "buffer, not an archive").
                  SIZING routed to Research (all-band vs board-only vs derive-15m-forward; rows/bytes; backfill request
                  count; hot store vs separate file). Disk free on the box: ask Ops AFTER tonight's checks.
+SIZED            Research 2339708 (read): ALL band ~8,050 names (4,070 board-eligible); 684 distinct top-25 names in 14
+                 sessions. (a) all: 30d 15m + 12mo daily ~1.0 GB (eligible ~0.53); (b) board names on arrival ~0.1 GB;
+                 (c) 15m forward derived from own 1m capture, only backfill fetched; rolling 30d 15m all ~0.69 GB vs
+                 +2.9 GB to stretch minute_bars to 30 sessions -> keep 15m, not 1m. One-time all backfill ~620 requests
+                 (~6% of one minute of the limit), no extra cost. Re-pull only on SPLIT basis change (split_factor
+                 stamp; 47% unestablished today -> one-time re-fetch). WHERE: Research leans separate file for 15m
+                 history, daily_bars stays -- OPS'S CALL. OPEN, owner Ops (or its 09-30 successor), trigger: after
+                 tonight's 22:08 ET check: send Ops the WHERE facts + ask box disk free. Put the build to HIM now.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
