@@ -995,6 +995,12 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      BEFORE ENUMERATION: after the flip every default viewer gets ordinalsOmitted, so the default board loses
                      the graveyard "Rank held" column and the drawer rank-change line (TickerDrawer.tsx:476). Research to give
                      options; the choice goes to HIM (the band-minimum lever is his $0.25 ruling). + Ops's loaded measurement.
+                     Research's answer ~02:15Z: (b) drawer rank-change is NOT a choice -- after the flip it would read "New"
+                     on every row (rangeRank.ts:90 null; TickerDrawer null->"New", opened). DESIGN FIX = SHIP CONDITION.
+                     (a) "Rank held": 1 accept omission (rec. now) / 2 engine records a $1-$20 rank-at-death (Research ~1
+                     day + Ops column + market-worker restart; can follow the set) / 3 band floor -> $1 (his lever, not rec.)
+                     / 4 keep band ordinals (not rec., two frames). TO HIM. Flip = in the /api/market ROUTE only (health/
+                     MCP/diagnostics keep the band); review route's default = Design's answer, pending.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
