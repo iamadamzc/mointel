@@ -893,6 +893,9 @@ range gate written as "< 20 ms at $0.25-$50" -- one     trigger named the case, 
 four of his ruling times written as "~HH:MMZ" guesses  a time stated without reading it     no       Design
   (up to 17 min off) into LIVE STATE and to peers;      (the source was one grep away)              (01:55 vs 01:38:17)
   corrected from this session's transcript
+"0.25 live only since pid 1347535 (09-27)" -- told    inferred "first" from a read that  no       Ops
+  to Research and Ops; it has been live since the       said only "carries" (ops.md:12163)
+  09-25 22:19:45Z restart (pid 1184182)
 ```
 
 ## LIVE STATE — AS OF 2026-09-28 ~15:10 UTC (11:10 ET), AT THE FOURTEENTH SEAT'S HAND-OFF
@@ -1031,7 +1034,8 @@ SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified
                      market restart). No NON-DEFAULT range report ships before (a); $1-$20 gated too if sub-$1 names take
                      several of the top 25 (Research local + Ops production reads asked).
                      Research sized it on a 08-17..09-22 prod copy: max 6 sub-$1 per top 25 -> "complete to #19". BUT that
-                     sample is from the OLD $1 FLOOR (0.25 live only since pid 1347535, 09-27 23:17Z) -> understates. Writer
+                     sample is from the OLD $1 FLOOR (0.25 live since the 09-25 22:19:45Z restart, pid 1184182 -- NOT "only since
+                     pid 1347535" as first written here; Ops's correction) -> understates. 09-28 is the first full current-band day. Writer
                      builds on (b) with a HARD <=19 cap; $1-$20 SHIP waits on Ops's read of 09-28+ checkpoints.
                      Ops's 09-28 read (14 checkpoints, current band): $1-$20 in stored top 25 = 13-18 (recap worst, 13); >$20 = 0.
                      -> (a) GATES EVERY set-range report incl. $1-$20. Writer dev cap 12. Ops queue: range-read measurement,
