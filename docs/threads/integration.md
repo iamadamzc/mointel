@@ -1119,6 +1119,11 @@ FREEZE PATH      Design, VERIFIED by this seat at 0342e7d: useMarket.ts polls 10
                  SHEET FIRST (why.ts:193-202); drawer badge shows the red label (AutomaticIntelligence.tsx:363).
                  Ops asked: /api/market times 11:00-12:05Z, payload size, Sheet value. Design asked for the smallest
                  guard (no abort of slow poll + visible STALE after N s), no build. PUT TO HIM as a decision now.
+FREEZE MEASURED Design, review link 51 from this PC, 12:06Z (its stated reading, premarket, 50 ranked): 8 fetches 838 KB
+                 726/1172/1131/1118/1148/1266/1202/1188 ms (7/8 > 1 s); board poll logic reproduced: 31 started in 30 s,
+                 1 landed, 30 aborted. => board freezes after load, says LIVE. Fix: skip tick while in flight + client-age
+                 stale state; web-only restart. Design building on 0342e7d; PRE-REGISTERED 170 + declared new test files.
+                 PUT TO HIM with reload advice. Ship = his yes in Ops's session.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
