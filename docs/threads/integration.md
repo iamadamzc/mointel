@@ -1172,6 +1172,11 @@ FREEZE FIX      design/poll-fix-on-0342e7d -> d288d2e REPLAYED: 1 over 0342e7d, 
                  Re-cut asked (code identical; diff must be comment-only). NOT IN IT: the 'not updating' state -- told
                  him it would be; correct him when the ship goes to him. Timing: recommend after 10:00 ET (preflight
                  refuses 07-10 ET). His answer: none typed since 12:05Z (transcript scan).
+MEMO READY      research/sessionend-memo-on-0342e7d -> 635a9ae REPLAYED + APPROVED: 1 over 0342e7d, fa61410 not in cone,
+                 patch-id 1a8d90d0 == a73703e (main), 2 files, 171 == 170+1 declared. Code read: ms per date, bounded 4096,
+                 fresh Date per call. Prior (as registered): median 189 -> 58 ms (p90 727 -> 69; base block 1 cold, kept).
+ORDER (ruled)   memo A and poll fix B both 1 over 0342e7d: first his-yes ships first; second RE-PICKED onto confirmed
+                 production, PRE-REGISTERED 172. Yes to both at once -> A first. Both after 10:00 ET. Sent to Ops.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
