@@ -1020,6 +1020,14 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
   tests (tests/dashboard, tests/market, route tests) → Design investigates or re-cuts, ship held; still UNNAMED
   after 3 full-output runs → not approvable on green alone; it goes to him as a known-unknown with the odds (1 in N
   runs), because a flake in a shipped surface looks identical to a green that never meets it.
+  **NAMED by the new Design seat, 4 full-output runs at 520142c in a clean detached worktree:** run 4 RED 1/2544 =
+  `tests/desk/releaseRetention.test.ts > deployment preflight > refuses every weekday start that would run inside
+  07:00-10:00 ET`, "Test timed out in 30000ms" (50.6 s; import phase 108 s vs 48 s green = loaded host). Runs 1-3
+  green; lint/typecheck/build clean; nothing in tests/dashboard or tests/market failed in 4x2544. **Classified:
+  the load family → NOT a ship blocker.** *Caveat kept: this names Design's red, not Ops's filtered run 1. It is
+  accepted because the mechanism is now MEASURED (the test exceeds its timeout under suite load), which is the
+  condition this seat set. Ops's ship-time full-output runs still classify any new red by file name.* Fix for later
+  ships: f869ee0 (on main, not in 520142c).
 - *The opening prompt's header says "Rewritten ~02:45 UTC"; its commit `5f4fbde` is 02:36:22Z.* A time estimated
   instead of read, the fifteenth's own error 2, in the prompt that names it. Harmless; recorded because the prompt
   predicts it carries a false line.
