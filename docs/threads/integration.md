@@ -1010,6 +1010,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      HIS VIEW, received mid-turn, logged at 2026-09-29T01:54Z (turn time not yet in the transcript; re-check): "frankly - rank in general is not
                      important imo." RECORDED AS A VIEW, NOT A RULING -- nothing removed on it. Put to him: remove the
                      drawer's Rank Change line instead of fixing its "New" label.
+                     56b6fd4 (Research, the route flip) ON origin/main -- MUST NOT ship without the drawer fix. SET NOW:
+                     8d8e50c + d2c2582 + 28a8cb1 + 56b6fd4 + 5e8b13c + dd6019e + drawer fix (pending his remove-vs-"—" answer)
+                     [+ review-route one-liner if Design says so]. Gates: Ops < 20 ms under load; his deploy yes.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
