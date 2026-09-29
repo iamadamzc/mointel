@@ -1213,6 +1213,9 @@ SHIP ORDER      REVISED for the deadline, after 10:00 ET, his yes each: 1 heartb
 STACK APPROVED  his "yes to all three" (Ops's session, per Ops). Replayed: memo 8455b48 (1 over c49bb3a, patch-id 1a8d90d0,
                  lines identical, 172); poll a391c61 (1 over 8455b48, patch-id 0b466022, lines identical, 173). Cone
                  0342e7d..a391c61 = 3, fa61410 not in it. Ships from 10:00 ET one by one, /proc between.
+                 Ops gates 171/172/173 ALL GREEN (= pre-registered). Windows (preflight C+4..C+12): c49bb3a 10:04-10:12 ET,
+                 8455b48 10:34-10:42 + (b') read, a391c61 11:34-11:42 (clear of the 11:05 range read). range-read.cjs uses raw
+                 better-sqlite3 only (checked), so the memo cannot move the 11:05 read.
 NOW CELL        Design: 20:15 ET is after the 20:00 close, so tonight's post-restart read is PLUMBING only (tradeCapture.asOf
                  fresh vs fetchedAt; nowBuckets present). Real-10 s read earliest 04:00 ET 09-30 (one page load, no loops);
                  fa61410 cannot be asked for before then.
