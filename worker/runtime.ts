@@ -87,6 +87,7 @@ import {
   type TradesDatabase,
 } from '../lib/market/store/trades';
 import { FeedMembership, type MembershipChange } from '../lib/market/feedMembership';
+import { FlushTiming, formatFlushWindow } from '../lib/market/flushTiming';
 import type {
   BackfillSummary,
   ConnectionState,
@@ -214,6 +215,11 @@ export class MarketRuntime {
    * not handed a membership history that skipped the start.
    */
   private readonly membership = new FeedMembership();
+  /** Flush duration, summarised once a minute (`lib/market/flushTiming.ts`). */
+  private readonly flushTiming = new FlushTiming();
+  private flushTimingLoggedAt = Date.now();
+  /** Set by flush(), read by the loop that times it. */
+  private lastUpsert = { ms: 0, rows: 0 };
   readonly config: MarketConfig;
   readonly logger: RuntimeLogger;
   readonly mode: MarketMode;
@@ -1399,11 +1405,13 @@ export class MarketRuntime {
       // Before flushing: a flush writes bars against this.tradingDate, so the
       // date has to be current before any of them land.
       void this.rollTradingDateIfNeeded();
+      const started = performance.now();
       try {
         this.flush();
       } catch (error) {
         this.logger.error(`[demand] flush failed: ${this.redactError(error)}`);
       }
+      this.recordFlushTiming(performance.now() - started);
       void this.drainPromotions();
       void this.captureTodayRthClose();
     }, this.config.flushIntervalMs);
@@ -1577,8 +1585,11 @@ export class MarketRuntime {
     this.recordEvents(result.events);
 
     const dirty = this.engine.drainDirty();
+    this.lastUpsert = { ms: 0, rows: dirty.length };
     if (dirty.length) {
+      const upsertStarted = performance.now();
       upsertTickerSessions(this.db, dirty.map((state) => toRow(state)));
+      this.lastUpsert.ms = performance.now() - upsertStarted;
     }
 
     const highRes = this.engine.highResSymbols();
@@ -1652,6 +1663,24 @@ export class MarketRuntime {
     this.health.rejectedSymbols = this.rejectedSymbols;
     this.health.rthCloseCapture = this.rthClose.status;
     writeFeedHealth(this.db, this.health);
+  }
+
+  /**
+   * One sample per timed flush; one log line a minute. Never throws: timing
+   * is an instrument, and an instrument must not cost the flush it measures.
+   */
+  private recordFlushTiming(wholeMs: number): void {
+    try {
+      this.flushTiming.record({ wholeMs, upsertMs: this.lastUpsert.ms, dirtyRows: this.lastUpsert.rows });
+      this.lastUpsert = { ms: 0, rows: 0 };
+      const now = Date.now();
+      if (now - this.flushTimingLoggedAt < 60_000) return;
+      this.flushTimingLoggedAt = now;
+      const window = this.flushTiming.drain();
+      if (window) this.logger.info(formatFlushWindow(window, this.sessionPhase));
+    } catch {
+      /* the instrument is optional; the flush is not */
+    }
   }
 
   /* --------------------------------------------------------------- health */
