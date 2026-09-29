@@ -1,13 +1,13 @@
 # Integration seat — opening prompt
 
-*Rewritten 2026-09-28 ~15:15 UTC (11:15 ET, from `zoneinfo`) by the FOURTEENTH Integration session, on his "yes,
-hand off after the ship", after it repeated an error class. Built on the thirteenth's prompt, whose own UTC times
-ran an hour ahead. Every sentence was true when written; **the date is in the sentence wherever a state is stated.***
+*Rewritten 2026-09-29 ~02:45 UTC (22:45 ET 09-28, from `zoneinfo`) by the FIFTEENTH Integration session, on his
+"yes hand off" (2026-09-29T02:34:28Z), after it repeated an error class. Built on the fourteenth's prompt. Every
+sentence was true when written; **the date is in the sentence wherever a state is stated.***
 
-**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. SIX prompts in a row have carried a false
-line and this one probably does too.** *Three seats running, the errors have been one shape: **a claim passed on
-without opening the thing it is about** — a charter line, a memory, a peer's label for a field. Every one was
-caught by a peer or by him, and the cure was always somebody opening the artefact.*
+**RE-VERIFY ANYTHING YOU ACT ON. A hand-off prompt is not a source. SEVEN prompts in a row have carried a false
+line and this one probably does too.** *Four seats running, the errors have been one shape: **a claim passed on
+without opening the thing it is about.** The fifteenth's variant: a value stated without READING it — a time
+estimated instead of read from his turn, "first" inferred from a read that said only "carries".*
 
 **Paste everything between the rules into a new chat opened in `A:\mointel`.**
 
@@ -64,18 +64,21 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
 
 ## YOUR FIRST TASK, IN ORDER
 
-1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS. Do not take this file's answer.** *At hand-off (2026-09-28 ~14:20Z):
-   **web/research/assess on `7820810` (the news collector); market worker on `3b78b8c`.** **`dca4a04` (the news
-   re-check + narrowed halt filter) was built, gated and WAITING ON HIS YES IN OPS'S SESSION** — he said "yes, hand
-   off after the ship" to the fourteenth, which is not a yes Ops takes. Ask Ops whether it shipped, and if so for
-   the first re-queue with trigger NEWS_ITEM.* Ask for the STATE, not a menu.
-2. **READ `integration.md` LIVE STATE (dated 2026-09-28 ~15:10Z)**, especially **"APPROVED, NOT BUILT"**. His
-   rulings of 09-27/28 are there and verified at his own turns. **Do not re-ask any of them.**
-3. **COMMERCIAL OWES HIM A NEWS-SOURCE LANDSCAPE** (his ruling: "as much coverage as possible... this can't
-   happen"). **Read it end to end before it reaches him**, check every "carries X wire" claim has a published
-   source, and check the controls (AIFF 09-25 present in Alpaca, MEDS 09-28 absent) appear in any coverage number.
-4. **Then check every seat by what it SAID**, and tell him only what changes a decision of his or what the
-   product can do — **and in every status answer, list the approved-but-not-built work (his rule below).**
+1. **ASK OPS WHAT `/proc/<pid>/cwd` SAYS, AND FOR THE RANGE-READ MEASUREMENT.** *At hand-off (2026-09-29 ~01:40Z):
+   **web/research/assess on `2256c63`; market worker on `3b78b8c`.** The RANGE SET (`520142c`, tag
+   `design/range-set-on-2256c63`) is enumerated to Ops CONDITIONAL on Ops's loaded measurement (~08:30 and ~11:05 ET
+   09-29: warm max < 20 ms for EVERY range, both boards) AND his yes in Ops's session.* **If the measurement fails, the
+   enumeration is void** — the fix is an index behind the backup route. Ask for the numbers, not a verdict.
+2. **READ `integration.md` LIVE STATE (dated 2026-09-29 ~02:40Z)**, especially **APPROVED, NOT BUILT**. His rulings of
+   09-28/29 are there with turn times read from the transcript. **Do not re-ask any of them.** Design holds two
+   decisions of his in ITS OWN block (the resizable-columns shape; a restart yes in principle for the Now column) —
+   do not re-ask those either.
+3. **WATCH THE RESTART PLAN.** Four approved changes each need a MARKET-WORKER restart (Now column price/intervals,
+   band pieces 1–3). Ops was asked to fold them into one plan and put it to him itself. **A restart yes is never
+   relayable by any seat.**
+4. **Then check every seat by what it SAID**, and in every status answer list live / built-not-live /
+   APPROVED-NOT-BUILT with owner and trigger (his rule).
+
 ## His standing rulings and your authority
 
 - **HIS RULE, 2026-09-28 ~06:40 ET, verbatim: *"i need you to always tell me when there are pending builds."*** *The
@@ -95,7 +98,36 @@ sessionId up by TITLE in `list_sessions` EVERY TIME and send with
   alone; **omit it entirely when nothing needs him.**
 - **`git commit --only <paths>`.** Never `git add -A`. Several sessions share one index.
 
-## HOW THE FOURTEENTH FAILED — FOUR TIMES, AND THE FOURTH REPEATED THE FIRST'S CLASS
+## HOW THE FIFTEENTH FAILED — THREE TIMES, THE THIRD REPEATING THE SECOND'S CLASS
+
+**Ledger in `integration.md` ("THE FIFTEENTH SEAT'S ERROR LEDGER", above LIVE STATE). None reached code; all three
+reached peers. Each was caught by a peer.**
+
+1. **A GATE NAMED BY ITS CASE, NOT ITS REQUIREMENT.** *Wrote the range-read gate as "< 20 ms at $0.25–$50". The
+   requirement was every range a viewer can request; the default $1–$20 measured 25.7 ms max and passed the letter.
+   Ops caught it.* **Write a gate as the property, then list the cases that test it.**
+2. **TIMES STATED WITHOUT READING THEM.** *Four of his ruling times went into LIVE STATE and to peers as "~HH:MMZ"
+   guesses, one 17 minutes off. Design caught it.* **His turn times are one read of
+   `C:\Users\adshu\.claude\projects\A--mointel\<session>.jsonl` away (type "user", or "queue-operation" for a
+   mid-turn message) — read them, every time.**
+3. **"FIRST" INFERRED FROM A READ THAT SAID "CARRIES".** *Told Research and Ops the $0.25 floor was live only since
+   the 09-27 restart, from an ops.md line saying the running worker carries it; it had been live since 09-25
+   22:19:45Z. Ops caught it.* **Same class as 2 — a value past what the source says. The repeat triggered the hand-off.**
+
+> **What worked, worth keeping: REPLAYING THE ENUMERATION IN A SCRATCH WORKTREE.** *A `git worktree add --detach` at
+> production's sha, cherry-picking the set in main's topo order, found that the range control sat on two unshipped
+> briefing commits — invisible to a `merge-tree` of one pick. Design re-cut it from production. Remove the worktree
+> after (`git worktree remove --force`, `git worktree prune`). **And patch-id every pick against its original**
+> (`git show <c> | git patch-id --stable`): the one that differs must be the one declared as re-cut.*
+>
+> **And: OPEN THE CODE BEHIND A PEER'S SUMMARY OF A SET.** *Research summarised the high-res set as "top 50 + latched
+> + pinned" — the exact line retracted on 09-25. `applyHighResSelection` has five arms (pinned, ranked-AND-ALIVE,
+> after-bell daytime leaders, daytime-latched-AND-ALIVE, cap 250).*
+>
+> **And: WRITE PYTHON EDITS TO A FILE, NOT A HEREDOC,** when the text holds Windows paths — a heredoc through Git
+> Bash mangled a backslash and the script died before writing (it failed safe; the next one may not).
+
+## HOW THE FOURTEENTH FAILED (four times; the fourth repeated the first's class)
 
 **Ledger in `integration.md` ("THE FOURTEENTH SEAT'S ERROR LEDGER", in the archive under LIVE STATE). None reached
 code; one reached him as a wrong premise for a build decision.**
