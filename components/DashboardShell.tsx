@@ -583,7 +583,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         focused={selectedTicker ? focus.isFocused(selectedTicker) : false}
         onToggleFocus={focus.toggle}
         onClose={() => setSelectedTicker(null)}
-        ranksOmitted={discovery?.ordinalsOmitted ?? false}
       />
     </div>
   );
