@@ -1,16 +1,21 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { loadMarketConfig } from '@/lib/market/config';
 import {
+  loadFeedIntervals,
+  loadRecentTradeBuckets,
   loadTradeBuckets,
   openTradesStore,
   openTradesStoreOrNull,
   persistTradeBuckets,
   pruneTradeBuckets,
+  readLastFlushMs,
   TRADES_SCHEMA_VERSION,
+  upsertFeedIntervals,
   upsertTradeBuckets,
 } from '@/lib/market/store/trades';
 
@@ -89,7 +94,7 @@ describe('trades store: writing drained buckets', () => {
     upsertTradeBuckets(db, DATE, [{ symbol: 'ABCD', bucketTs: B0, trades: 3 }]);
     upsertTradeBuckets(db, DATE, [{ symbol: 'ABCD', bucketTs: B0, trades: 7 }]);
     expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([
-      { symbol: 'ABCD', bucketTs: B0, trades: 7 },
+      { symbol: 'ABCD', bucketTs: B0, trades: 7, lastPrice: null, lastTs: null },
     ]);
     db.close();
   });
@@ -108,8 +113,8 @@ describe('trades store: writing drained buckets', () => {
       { symbol: 'ABCD', bucketTs: B1, trades: 12 },
     ]);
     expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([
-      { symbol: 'ABCD', bucketTs: B0, trades: 40 },
-      { symbol: 'ABCD', bucketTs: B1, trades: 12 },
+      { symbol: 'ABCD', bucketTs: B0, trades: 40, lastPrice: null, lastTs: null },
+      { symbol: 'ABCD', bucketTs: B1, trades: 12, lastPrice: null, lastTs: null },
     ]);
     db.close();
   });
@@ -133,7 +138,7 @@ describe('trades store: the market worker seam', () => {
       written: 1,
       discarded: 0,
     });
-    expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([bucket]);
+    expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([{ ...bucket, lastPrice: null, lastTs: null }]);
     db.close();
   });
 
@@ -181,6 +186,110 @@ describe('trades store: the market worker seam', () => {
     const doomed = path.join(tempDir(), 'releases', 'abc', 'trades.db');
     expect(openTradesStoreOrNull(doomed, bad)).toBeNull();
     expect(bad.lines.error.join('\n')).toContain('ten-second counts are being DISCARDED');
+  });
+});
+
+describe('trades store v2: prices, coverage and the flush clock', () => {
+  function logger() {
+    const lines = { info: [] as string[], error: [] as string[] };
+    return {
+      lines,
+      info: (m: string) => lines.info.push(m),
+      error: (m: string) => lines.error.push(m),
+    };
+  }
+
+  it('migrates a v1 file in place, keeping every row, with NULL prices', () => {
+    const file = path.join(tempDir(), 'trades.db');
+    const v1 = new Database(file);
+    v1.exec(`CREATE TABLE trade_buckets (symbol TEXT NOT NULL, trading_date TEXT NOT NULL,
+      bucket_ts INTEGER NOT NULL, trades INTEGER NOT NULL,
+      PRIMARY KEY (symbol, trading_date, bucket_ts)) WITHOUT ROWID;`);
+    v1.prepare('INSERT INTO trade_buckets VALUES (?, ?, ?, ?)').run('ABCD', DATE, B0, 9);
+    v1.pragma('user_version = 1');
+    v1.close();
+
+    const db = openTradesStore(file);
+    expect(Number(db.pragma('user_version', { simple: true }))).toBe(2);
+    expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([
+      { symbol: 'ABCD', bucketTs: B0, trades: 9, lastPrice: null, lastTs: null },
+    ]);
+    // And the migrated file takes v2 writes.
+    upsertTradeBuckets(db, DATE, [{ symbol: 'ABCD', bucketTs: B0, trades: 10, lastPrice: 2.5, lastTs: B0 + 7_000 }]);
+    expect(loadTradeBuckets(db, 'ABCD', DATE)[0]).toMatchObject({ trades: 10, lastPrice: 2.5 });
+    db.close();
+  });
+
+  it('keeps the price of the LATER trade, whatever order the writes arrive in', () => {
+    const db = openTradesStore(path.join(tempDir(), 'trades.db'));
+    upsertTradeBuckets(db, DATE, [{ symbol: 'ABCD', bucketTs: B0, trades: 5, lastPrice: 3.1, lastTs: B0 + 8_000 }]);
+    // A revived bucket: an earlier trade, written later.
+    upsertTradeBuckets(db, DATE, [{ symbol: 'ABCD', bucketTs: B0, trades: 1, lastPrice: 2.9, lastTs: B0 + 2_000 }]);
+    // A v1-shaped producer row carries no price and must not erase one.
+    upsertTradeBuckets(db, DATE, [{ symbol: 'ABCD', bucketTs: B0, trades: 6 }]);
+    expect(loadTradeBuckets(db, 'ABCD', DATE)).toEqual([
+      { symbol: 'ABCD', bucketTs: B0, trades: 6, lastPrice: 3.1, lastTs: B0 + 8_000 },
+    ]);
+    db.close();
+  });
+
+  it('moves an interval heartbeat forward only, and closes it once', () => {
+    const db = openTradesStore(path.join(tempDir(), 'trades.db'));
+    const base = { symbol: 'ABCD', openedMs: B0 };
+    upsertFeedIntervals(db, DATE, [{ ...base, lastSeenMs: B0 + 5_000, closedMs: null }]);
+    upsertFeedIntervals(db, DATE, [{ ...base, lastSeenMs: B0 + 3_000, closedMs: null }]); // stale beat
+    // Read it HERE: later writes would overwrite a regression and hide it.
+    expect(loadFeedIntervals(db, ['ABCD'], DATE, B0)[0].lastSeenMs).toBe(B0 + 5_000);
+    upsertFeedIntervals(db, DATE, [{ ...base, lastSeenMs: B0 + 9_000, closedMs: B0 + 9_000 }]);
+    upsertFeedIntervals(db, DATE, [{ ...base, lastSeenMs: B0 + 12_000, closedMs: null }]); // cannot reopen
+    expect(loadFeedIntervals(db, ['ABCD'], DATE, B0)).toEqual([
+      { symbol: 'ABCD', openedMs: B0, lastSeenMs: B0 + 12_000, closedMs: B0 + 9_000 },
+    ]);
+    db.close();
+  });
+
+  it('closes a crashed run\'s open intervals at their last heartbeat, never later', () => {
+    const file = path.join(tempDir(), 'trades.db');
+    const first = openTradesStore(file);
+    upsertFeedIntervals(first, DATE, [
+      { symbol: 'ABCD', openedMs: B0, lastSeenMs: B0 + 40_000, closedMs: null },
+      { symbol: 'WXYZ', openedMs: B0, lastSeenMs: B0 + 20_000, closedMs: B0 + 20_000 },
+    ]);
+    first.close();
+
+    const log = logger();
+    const db = openTradesStoreOrNull(file, log);
+    expect(log.lines.info.join('\n')).toContain('closed 1 feed interval(s)');
+    expect(loadFeedIntervals(db!, ['ABCD', 'WXYZ'], DATE, B0)).toEqual([
+      { symbol: 'ABCD', openedMs: B0, lastSeenMs: B0 + 40_000, closedMs: B0 + 40_000 },
+      { symbol: 'WXYZ', openedMs: B0, lastSeenMs: B0 + 20_000, closedMs: B0 + 20_000 },
+    ]);
+    db!.close();
+  });
+
+  it('sets the flush clock on every flush, including one with no trades', () => {
+    const db = openTradesStore(path.join(tempDir(), 'trades.db'));
+    expect(readLastFlushMs(db)).toBeNull();
+    persistTradeBuckets(() => [], db, DATE, logger(), String, B0 + 60_000);
+    expect(readLastFlushMs(db)).toBe(B0 + 60_000);
+    db.close();
+  });
+
+  it('reads the last minute of many symbols in one call', () => {
+    const db = openTradesStore(path.join(tempDir(), 'trades.db'));
+    upsertTradeBuckets(db, DATE, [
+      { symbol: 'ABCD', bucketTs: B0, trades: 1, lastPrice: 1, lastTs: B0 },
+      { symbol: 'ABCD', bucketTs: B1, trades: 2, lastPrice: 2, lastTs: B1 },
+      { symbol: 'WXYZ', bucketTs: B1, trades: 3, lastPrice: 3, lastTs: B1 },
+      { symbol: 'NOPE', bucketTs: B1, trades: 4, lastPrice: 4, lastTs: B1 },
+    ]);
+    expect(
+      loadRecentTradeBuckets(db, ['ABCD', 'WXYZ'], DATE, B1).map((row) => [row.symbol, row.trades]),
+    ).toEqual([
+      ['ABCD', 2],
+      ['WXYZ', 3],
+    ]);
+    db.close();
   });
 });
 
