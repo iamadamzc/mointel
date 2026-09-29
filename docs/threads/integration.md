@@ -1127,6 +1127,9 @@ FREEZE MEASURED Design, review link 51 from this PC, 12:06Z (its stated reading,
 SLND CLOSED     Ops nginx log (his IP only): ok/aborted per min 11:00 54/6 ... 11:16 1/0, NOTHING 11:17-11:55 (tab
                  hidden, polls skipped), 11:56 21/9, 12:00 50/10. First polls from 11:56 carried v2461 (provenance AUTO).
                  He saw the pre-11:17 load. Explanation (ii). Not a board defect, not the Sheet.
+                 HIS ANSWER (typed here): "on the board. i dont look at the sheet. i did not reload. it did it on its own."
+                 Consistent with the log: no polls 11:17-11:55Z = document hidden; visibilitychange reload at 11:56 needs
+                 no reload by him. Sheet ruled out by him. CLOSED.
 FREEZE REVISED  At rest his board lands ~90% of polls. 12:06 20/40, 12:07 1/16 COINCIDED with Ops's + Design's probes
                  (server 3.83/8.86/6.40/2.38/0.65/0.61 s; aborted requests still computed to completion). So: freezes
                  UNDER CONCURRENCY, not at rest. Fix still right (robustness), not an emergency. /api/market 859 KB
