@@ -149,8 +149,16 @@ describe('the trades column head states what, not when', () => {
   });
 
   it('keeps the lag on the head, which is the part hover may not carry', () => {
-    /* §10 rules out hover-only content; the offset changes how the bars read. */
-    expect(head()).toContain('sparklineLagLabel()');
+    /*
+     * §10 rules out hover-only content; the offset changes how the bars read.
+     *
+     * The sub-line follows the 10 s capture since the column went near-live
+     * (2026-09-29): `last 10s`, `not live`, or -- before the capture answers
+     * -- the minute lag this asserted literally. The head reads it off
+     * `nowColumnCopy`, and `nowReading.test.ts` pins the `UNWIRED` sub-line
+     * to `sparklineLagLabel()`, so the lag has not left the head.
+     */
+    expect(head()).toContain('{nowCopy.sub}');
   });
 });
 

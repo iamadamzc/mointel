@@ -44,7 +44,53 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-29 03:12 UTC / 2026-09-28 23:12 ET (successor seat)
+## Live state — 2026-09-29 04:09 UTC / 00:09 ET (third seat of 09-29, opened 03:43Z, clock read via zoneinfo)
+
+**This seat: `Design-tmi`, `local_8568daaf`, Opus 5.5.** What it did, and what is open:
+
+- **The `Now` cell is BUILT and on `main` at `fa61410`** (gate at the rebased
+  head: 184 files / 2,822, lint 0 errors, build 0, typecheck 0). Built to the
+  spec's "The build plan". **Inert today:** no payload carries
+  `tradeCapture.asOf`, so the board reads `UNWIRED` and keeps its minute cell.
+  **IT MUST NOT RIDE A DEPLOY before a live read on real 10 s data** (the
+  spec's own condition). Production is cut as tags from `2256c63`, so `main`'s
+  tip is not what ships; Integration is told so, and any tag whose cone
+  reaches `fa61410` needs this seat's yes first.
+  - Viewed locally (store copy + a SYNTHETIC v2 `trades.db` in the scratchpad,
+    never `data/`) at 1,280 and 1,024: LIVE, FALLBACK and NOT_LIVE all render
+    as specified, every cell inside its 68 px column (`2,979/min` included),
+    tier order correct. **Not viewed on real 10 s data: that is the ship
+    condition, not a gap in this check.**
+  - **Design's own call, recorded so it is not read as a defect:** a FALLBACK
+    row (live capture, this name unmeasured now) keeps TODAY's minute bars
+    under its muted `/min` number. The spec named only the number; dropping
+    the bars would have removed something he has without being asked.
+  - Mutants, 13, all killed. Two counts off prediction, both explained: the
+    browser-clock mutant killed 4 not 5 (the undatable-timestamp test meets
+    the NaN guard first, a second defence, not a vacuous check); the gap
+    mutant killed 2 not 1 (the scale test also pins the gap).
+  - A gap the view found and the tests had missed: the `Now` SORT BUTTON kept
+    the settled-minute hover while live. Fixed and asserted both ways.
+- **Resizable columns CUT for shipping ALONE, his ruling verified at his own
+  turn** (Integration's session, human origin, 2026-09-29T03:51:42Z: *"yes to
+  columsn and keep this chat for now"*, answering Integration's *"Ship
+  resizable columns on their own now, instead of waiting for the price-range
+  control?"*). **Tag `design/columns-on-2256c63` → `f4063ca`**, one pick `-x`
+  of `1d59b00` onto production `2256c63`. Conflict in the `DiscoveryBoard.tsx`
+  import block only: kept the pick's three imports, dropped the range set's
+  two context lines. **+/− lines identical to `1d59b00`; patch-id differs on
+  context only.** Gated at the tag: 165 files / 2,600, lint 0 errors, build 0,
+  typecheck 0. **Not viewed rendered on this base.** Waits on Integration's
+  replay and his ship yes in Ops's session; then Design reads it live (drag,
+  reload, width persists).
+- **The range set (`520142c`) is VOID** (Integration `99a02e4`): `$1–$20`
+  failed idle at 22.0 ms max over 20 warm runs, the index fix does not help,
+  and Research owns the fix. Design re-cuts only onto that fix. Nothing owed
+  tonight.
+- **The restart set** (`research/restart-set-on-2256c63`, Research) is Ops's,
+  launching per Integration `dfacbbc`. Disjoint from both of Design's pieces.
+
+## Live state — 2026-09-29 03:12 UTC / 2026-09-28 23:12 ET (successor seat) — SUPERSEDED by the block above where they differ
 
 **SEAT RETIRED AT A CLEAN BOUNDARY, 2026-09-29 03:42 UTC, on his "yes, fresh
 session for the Now build".** Nothing uncommitted, nothing in flight. The
@@ -595,8 +641,8 @@ read on the board, in "What is verified ON THE LIVE BOARD" above.*
 | **Session briefings: line + reading panel** (`307e42d`, on main, NOT shipped) | Design built; Research builds `/api/reports` | Nothing renders until the route answers 200. Viewed only against a local fixture (1280, 1024). **Read it on the live board after the route ships.** Contract: `lib/desk/reports/contract.ts`, Research's now. At 1024 with the panel open the researched table compresses; acceptable, noted |
 | Payment-failed warning — build APPROVED, not started | Design | **Trigger: Ops starts the billing work, which comes after the sign-in cut-over.** Spec: `docs/commercial/daily-billing-design/design-seat.md`. OS notification ruled on; hour never restarts; `endsAt` = earlier of failure+1h and 20:00 ET |
 | The price range: the CONTROL (`5e8b13c`, on main, NOT shipped) | Design built; Research owns the server half | Viewed locally against a read-only store copy. **Latch: fixed by Research at `8d8e50c`.** ~~Still blocking: the graveyard~~ **CLOSED 2026-09-29 at `dd6019e`** on Research's `diedWhileRanked` (`d2c2582`). ~~Row mark `above your range` waits on a flag from Research~~ **needs no build**: Discovery rows are ranked-only, and `retentionNote` already reads the served range (live state above). No-param request flips to `rangeDefault` only in the release that carries the control. **SECOND SHIP GATE (Ops, via Integration, 2026-09-29): a range read costs 233–362 ms against 4.8 ms today, per viewer per poll; not approvable until Ops measures it under 20 ms at $0.25–$50 on the live store (Research + Ops fix).** ~~under 20 ms at $0.25–$50~~ **CORRECTED 2026-09-29 (Integration): the gate is a PROPERTY: warm max < 20 ms for EVERY range a viewer can request, on both the live and review boards; the test cases are $0.25–$50, the $1–$20 default (idle already 25.7 ms, the likeliest to fail) and a narrow range. Ops measures loaded ~08:30 and ~11:05 ET 09-29. Any case failing voids `520142c` for the rvol-index route, and any Design re-cut then sits on a different base.** **His deploy yes for the range set is NOT GIVEN** (his 01:18:13Z "ship the range ranking" was the server ranking, `2256c63`); it comes in Ops's session after the measurements The control takes its bounds from the payload's `rangeBounds` and never widens them itself; `BOARD_RANGE_MAX` stays unset until the capture band widens |
-| Near-live `Now` column — BUILD APPROVED (*"yes build the near-live now column"*, 2026-09-29T01:38:17Z, verified at his turn) | Design spec + board; Research the field | Spec: `docs/Design/near-live-now-spec.md`. **SHAPE RULED 2026-09-29T02:30:43Z, to Design:** *"same exact pattern as the previous minute format, except now it will show the last minute in 10 sec increments instead of 5 min in 1 min increments."* Number = newest completed 10 s bucket, counted; bars = the last six 10 s buckets. ~~Price points and direction colour wait~~ **He refused a bars-only version, 02:32:20Z: *"i want the trade counts, dots and direction color."*** So price per 10 s bucket + membership intervals (Research) → **a market-worker restart (his yes)** → then Design builds. Research: `nowBuckets` (six, oldest first, `{bucketEnd, trades, price}`) + `tradeCapture.asOf`. **FIELD ON MAIN at `ca8eed9` (types + `attachNowBuckets`); contract reviewed and accepted by Design 2026-09-29; the web-tier wiring waits on Ops's read-only trades.db opener.** **NEXT DESIGN BUILD, plan fixed in the spec ("The build plan"): capture state from `asOf` vs `fetchedAt`, per-row reading resolved once in `mergeDesk`, tiered sort, gap for a null slot.** Build on main against the contract (inert until the field is served); nothing ships before the restart and a live read on real 10 s data. Ops: `bucketsWritten` rising, 09-29 04:00–07:00 ET. After the range release |
-| Resizable columns — **BUILT 2026-09-29, on `main`, NOT SHIPPED** (his words to Design 2026-09-29T02:41:45Z: *"2 yes discovery only"*, answering "Build resizable columns as: drag any column edge on the Discovery board, remembered in this browser?") | Ops ships after the range release; Design reads it live after | Spec: `docs/Design/resizable-columns-scope.md` option (A). Model `lib/dashboard/columnWidths.ts` (every guardrail, 80 tests, 9 mutants all killed at or above prediction), hook `lib/hooks/useColumnWidths.ts`, handle `components/ColumnResizeHandle.tsx`. **Viewed locally** (read-only store copy, 1,024/1,280/1,920): drag, ←/→/Shift, Delete, double-click fit, Reset widths, reload persistence, proportional shrink at 1,024 (table 982 px, no scroll, every header fits) and whole return at 1,920. **Pure client, no server/payload change**, so it cherry-picks onto production without the range set unless `DiscoveryBoard.tsx` conflicts (it will if picked before the range set: same file). **CUT RULE (Integration, 2026-09-29 ~03:25Z): do NOT cut it onto `520142c`.** TRIGGER 1: the range set ships and /proc confirms it → Design cuts resizable columns FROM PRODUCTION'S SHA as a `design/` tag, tells Integration; Integration replays, pre-registers the count, and it goes to him as its OWN ship yes in Ops's session. TRIGGER 2 (fallback): a range-read measurement fails (~08:30 / ~11:05 ET 09-29) and `520142c` is void → cut it from `2256c63`, resolving the `DiscoveryBoard.tsx` conflict here. Owner: Design, on Ops's deploy ping or Integration's void notice. **Owed after deploy: read it on the live board.** Not the Researched names table |
+| Near-live `Now` column — **CELL BUILT on `main` at `fa61410` (2026-09-29, third seat); INERT; must NOT ride a deploy before a live read on real 10 s data** — BUILD APPROVED (*"yes build the near-live now column"*, 2026-09-29T01:38:17Z, verified at his turn) | Design spec + board; Research the field. **Trigger for Design's next step: the restart ships and `health.tradeCapture.asOf` appears on the live payload → read `nowBuckets` off the review link, then ask Integration for a cut carrying `fa61410`** | Spec: `docs/Design/near-live-now-spec.md`. **SHAPE RULED 2026-09-29T02:30:43Z, to Design:** *"same exact pattern as the previous minute format, except now it will show the last minute in 10 sec increments instead of 5 min in 1 min increments."* Number = newest completed 10 s bucket, counted; bars = the last six 10 s buckets. ~~Price points and direction colour wait~~ **He refused a bars-only version, 02:32:20Z: *"i want the trade counts, dots and direction color."*** So price per 10 s bucket + membership intervals (Research) → **a market-worker restart (his yes)** → then Design builds. Research: `nowBuckets` (six, oldest first, `{bucketEnd, trades, price}`) + `tradeCapture.asOf`. **FIELD ON MAIN at `ca8eed9` (types + `attachNowBuckets`); contract reviewed and accepted by Design 2026-09-29; the web-tier wiring waits on Ops's read-only trades.db opener.** **NEXT DESIGN BUILD, plan fixed in the spec ("The build plan"): capture state from `asOf` vs `fetchedAt`, per-row reading resolved once in `mergeDesk`, tiered sort, gap for a null slot.** Build on main against the contract (inert until the field is served); nothing ships before the restart and a live read on real 10 s data. Ops: `bucketsWritten` rising, 09-29 04:00–07:00 ET. After the range release |
+| Resizable columns — **CUT 2026-09-29 04:09:13Z (tagger date) as tag `design/columns-on-2256c63` → `f4063ca`, to ship ALONE (his 03:51:42Z "yes to columsn"); waits on Integration's replay and his yes in Ops's session. The cut rule later in this row is SUPERSEDED.** BUILT 2026-09-29, on `main`, NOT SHIPPED (his words to Design 2026-09-29T02:41:45Z: *"2 yes discovery only"*, answering "Build resizable columns as: drag any column edge on the Discovery board, remembered in this browser?") | Ops ships after the range release; Design reads it live after | Spec: `docs/Design/resizable-columns-scope.md` option (A). Model `lib/dashboard/columnWidths.ts` (every guardrail, 80 tests, 9 mutants all killed at or above prediction), hook `lib/hooks/useColumnWidths.ts`, handle `components/ColumnResizeHandle.tsx`. **Viewed locally** (read-only store copy, 1,024/1,280/1,920): drag, ←/→/Shift, Delete, double-click fit, Reset widths, reload persistence, proportional shrink at 1,024 (table 982 px, no scroll, every header fits) and whole return at 1,920. **Pure client, no server/payload change**, so it cherry-picks onto production without the range set unless `DiscoveryBoard.tsx` conflicts (it will if picked before the range set: same file). **CUT RULE (Integration, 2026-09-29 ~03:25Z): do NOT cut it onto `520142c`.** TRIGGER 1: the range set ships and /proc confirms it → Design cuts resizable columns FROM PRODUCTION'S SHA as a `design/` tag, tells Integration; Integration replays, pre-registers the count, and it goes to him as its OWN ship yes in Ops's session. TRIGGER 2 (fallback): a range-read measurement fails (~08:30 / ~11:05 ET 09-29) and `520142c` is void → cut it from `2256c63`, resolving the `DiscoveryBoard.tsx` conflict here. Owner: Design, on Ops's deploy ping or Integration's void notice. **Owed after deploy: read it on the live board.** Not the Researched names table |
 | **The sorted `Now` header renders on THREE lines** (found 2026-09-29 building resizable columns, local store copy; same code as production): `NOW` / `−1m` / `▼`, because the caret span follows the block sub-line. The head grows to 55 px tall whenever `Now` is the active sort. Not a clip and not new; the 68 px width comment assumed `NOW ▼` on one line | Design | A small fix (caret inline after the word). Not started; below resizable columns in order |
 | Subscription load test (250 / 500 symbols) | Ops | Nobody has run the worker above ~6. It is the number that sizes the product |
 | `lastCheckpointChanges` on the payload | Research | Spec above; §9 item 12's rail blocks on it |
@@ -629,6 +675,12 @@ this session is the trigger to warn him and propose a hand-off.*
 | Wrote the no-horizontal-scroll test as "widths sum to the table width" — true BY CONSTRUCTION, so it passed with Why/Risk negative | VACUOUS-CHECK (sum invariant) | No | Self, by predicting mutant kills before running them; fixed before commit |
 | First pass of the width hook read a ref during render and set state in an effect; the React-compiler lint refused 38 sites. Also a hook member named `…Ref` made the compiler treat the whole returned object as a ref | LINT-AS-GATE (known class: run the gate, not the habit) | Yes, as a memory rule, not this session | The gate |
 | Nearly concluded "stored widths do not load after reload" from a HIDDEN browser pane, where ResizeObserver never fires | ENVIRONMENT-READ-AS-DEFECT | No | Self, by probing a fresh observer before editing; it led to a real robustness fix (one synchronous read) |
+
+**Third seat, opened 2026-09-29 03:43 UTC.** One error, caught by self before commit: wrote the cut time as `04:0xZ`, an estimate, into the open-items row; replaced with the tag's recorded time. TIME-BEFORE-CLOCK, the first seat's class; first this seat. One near-miss, logged
+because it is the class above: at 1,024 the table measured 1,238 px in a 982 px box (a horizontal
+scroll), right after a viewport resize. A fresh ResizeObserver never fired, not even its initial
+callback, so the pane was not delivering resize events; after a reload the table was 982 = 982. **The
+probe came before any edit, as the ledger says it must.**
 
 ## Where the rest of the record is
 

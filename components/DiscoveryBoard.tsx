@@ -9,6 +9,7 @@ import { useColumnWidths, type ColumnHandle } from '@/lib/hooks/useColumnWidths'
 import { rangeLabel, type PriceRange } from '@/lib/dashboard/boardRange';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import { ActivitySparkline } from '@/components/ActivitySparkline';
+import { NowSparkline } from '@/components/NowSparkline';
 import type { UniverseWarning } from '@/lib/dashboard/universe';
 import {
   ChangeMarker,
@@ -20,7 +21,7 @@ import {
   WhyCell,
 } from '@/components/DecisionCells';
 import { sessionMoveSortLabel } from '@/lib/dashboard/sessionMove';
-import { tradesLastMinute } from '@/lib/dashboard/sparkline';
+import { nowCellTitle, nowColumnCopy, nowReadingOf, type NowCapture } from '@/lib/dashboard/nowReading';
 /*
  * ALIASED because this file EXPORTS a component called `DiscoveryBoard`, and
  * the type of the same name is a different thing. Without the alias `tsc`
@@ -37,7 +38,6 @@ import {
   highReading,
   startedLabel,
 } from '@/lib/dashboard/cycle';
-import { sparklineLagLabel } from '@/lib/dashboard/sparkline';
 import { COLUMN_TITLE, priceColumnTitle, rankingQuantity } from '@/lib/dashboard/columnTitles';
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy } from '@/lib/dashboard/why';
@@ -257,6 +257,8 @@ interface DiscoveryBoardProps {
   changedTickers: Set<string>;
   /** The viewer's range. Null returns to the default. Absent: no control (review, older payloads). */
   onRangeChange?: (range: PriceRange | null) => void;
+  /** The `Now` column's 10 s capture state, resolved once in `mergeDesk`. */
+  nowCapture: NowCapture;
 }
 
 /**
@@ -283,6 +285,7 @@ export function DiscoveryBoard({
   onToggleFocus,
   changedTickers,
   onRangeChange,
+  nowCapture,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
@@ -329,7 +332,14 @@ export function DiscoveryBoard({
    * name here. Same single-source rule the labels already obey.
    */
   const lead = activeEntry?.leads ?? 'GAP';
-  const activeMetric = sortActive ? activeEntry?.metric : undefined;
+  /*
+   * The `Now` head, hover and caption follow the capture state: `last 10s`,
+   * `not live`, or the settled minute's own copy before the capture answers.
+   */
+  const nowCopy = nowColumnCopy(nowCapture);
+  const activeMetric = sortActive
+    ? ((activeEntry?.key === 'now' ? nowCopy.metric : undefined) ?? activeEntry?.metric)
+    : undefined;
   const activeColumn = activeEntry?.column;
 
   /*
@@ -505,7 +515,8 @@ export function DiscoveryBoard({
                     key={entry.key}
                     type="button"
                     aria-pressed={active}
-                    title={resolved.title}
+                    // The `Now` hover follows the capture, as its head does.
+                    title={(entry.key === 'now' ? nowCopy.title : undefined) ?? resolved.title}
                     onClick={() => changeSort(entry.key)}
                     className={`min-h-[24px] border-r border-line-2 px-2 py-1 text-[11px] font-semibold tracking-wide uppercase transition-colors last:border-r-0 ${
                       active
@@ -710,12 +721,12 @@ export function DiscoveryBoard({
                * a head that fits in the state he looks at it in.
                */}
               <Th
-                name={`${nowLabel}, ${sparklineLagLabel()}`}
+                name={`${nowLabel}, ${nowCopy.sub}`}
                 resize={columnHandle('now')}
                 measureHead={measureHead('now')}
                 align="right"
                 sorted={activeColumn === 'now'}
-                title={nowEntry?.title}
+                title={nowCopy.title ?? nowEntry?.title}
               >
                 {nowEntry ? resolveSortEntry(nowEntry, phase, board).label : 'Now'}
                 {/*
@@ -727,7 +738,7 @@ export function DiscoveryBoard({
                   * which is the part that changes how the bars are read.
                   */}
                 <span className="block text-[9px] font-normal tracking-normal normal-case text-ink-3">
-                  {sparklineLagLabel()}
+                  {nowCopy.sub}
                 </span>
               </Th>
               {showFloat ? (
@@ -967,7 +978,14 @@ function DiscoveryRow({
   );
   const risk = resolveRisk(row);
   const why = resolveWhy(row);
-  const tradesNow = tradesLastMinute(row.demand);
+  /*
+   * THE ROW'S READING, the same object the sort reads (`mergeDesk` resolves it
+   * once). `MINUTE` and `FALLBACK` both print the settled minute; the
+   * difference is that under a live capture it is muted and says `/min`, so
+   * the number always means "the last 10 s" or says that it does not.
+   */
+  const nowReading = nowReadingOf(row);
+  const tradesNow = nowReading.kind === 'NOT_LIVE' ? null : nowReading.count;
   const ah = demand?.afterHours ?? null;
   const retention = retentionNote({
     latched: (afterHours ? ah?.latched : demand?.latched) ?? false,
@@ -1079,12 +1097,10 @@ function DiscoveryRow({
             * measurement this row does not have.
             */}
           <span
-            className="num text-[11px] leading-none tabular-nums text-ink-2"
-            title={
-              tradesNow === null
-                ? 'No minute has been counted for this name yet, which is not the same as no trading.'
-                : `${tradesNow.toLocaleString()} trades in the most recent settled minute. The minute in progress is never counted — it has not finished.`
-            }
+            className={`num text-[11px] leading-none tabular-nums ${
+              nowReading.kind === 'FALLBACK' ? 'text-ink-3' : 'text-ink-2'
+            }`}
+            title={nowCellTitle(nowReading)}
           >
             {/*
               * THE INTEGER, NOT A COMPACTED ONE. `formatCount` renders 2,979
@@ -1093,12 +1109,25 @@ function DiscoveryRow({
               * thousand, so the full number costs one character.
               */}
             {tradesNow === null ? '—' : tradesNow.toLocaleString()}
+            {/*
+              * THE UNIT, ON THE ROW, only where the grain differs from the
+              * head's. A minute figure under `last 10s` is ~6x a 10 s figure
+              * for the same activity; printed bare it would read as the
+              * busiest name on the board.
+              */}
+            {nowReading.kind === 'FALLBACK' && tradesNow !== null ? (
+              <span className="text-[9px]">/min</span>
+            ) : null}
           </span>
-          <ActivitySparkline
-            window={row.demand?.activityWindow}
-            price={row.demand?.priceWindow}
-            spreadPct={t.spreadPct}
-          />
+          {nowReading.kind === 'LIVE' ? (
+            <NowSparkline buckets={nowReading.buckets} spreadPct={t.spreadPct} />
+          ) : nowReading.kind === 'NOT_LIVE' ? null : (
+            <ActivitySparkline
+              window={row.demand?.activityWindow}
+              price={row.demand?.priceWindow}
+              spreadPct={t.spreadPct}
+            />
+          )}
         </span>
       </td>
 

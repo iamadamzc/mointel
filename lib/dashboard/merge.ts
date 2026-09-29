@@ -18,6 +18,12 @@ import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
 import { buildTelemetry, type MarketTelemetry } from '@/lib/dashboard/telemetry';
 import {
+  resolveNowCapture,
+  resolveNowReading,
+  type NowCapture,
+  type NowReading,
+} from '@/lib/dashboard/nowReading';
+import {
   resolveIntelligenceState,
   type IntelligenceState,
 } from '@/lib/dashboard/intelligence';
@@ -84,6 +90,11 @@ export interface DeskRow {
    * ticker at one moment.
    */
   telemetry: MarketTelemetry;
+  /**
+   * The `Now` cell's reading, resolved once so the cell and the sort read one
+   * object (`lib/dashboard/nowReading.ts`).
+   */
+  now: NowReading;
   /** The market feed is currently tracking this ticker. */
   demandDetected: boolean;
   /** The research layer has something to say about this ticker. */
@@ -202,6 +213,12 @@ export interface DeskRowContext {
    * behaviour it had before the refinement existed.
    */
   catalystFreshFrom?: string | null;
+  /**
+   * The snapshot's 10 s capture state, resolved once in `mergeDesk` from two
+   * server timestamps. Absent is `UNWIRED`: today's minute cell, which is what
+   * every caller outside the merge had before the column went near-live.
+   */
+  nowCapture?: NowCapture;
 }
 
 /**
@@ -356,6 +373,7 @@ export function buildDeskRow(
     researchRecord,
     demand,
     telemetry,
+    now: resolveNowReading(demand, context.nowCapture ?? 'UNWIRED'),
     demandDetected: demand !== null,
     // Automatic intelligence counts as analysis too: a Discovery name with an
     // accepted dossier is analyzed even though it has never reached the sheet.
@@ -457,6 +475,8 @@ export interface MergedDesk {
   discovery: DeskRow[];
   /** Every ticker present on the TODAY sheet, sheet order preserved. */
   watchlist: DeskRow[];
+  /** The `Now` column's capture state for the whole board. */
+  nowCapture: NowCapture;
 }
 
 export function mergeDesk(
@@ -486,6 +506,13 @@ export function mergeDesk(
    * control is `market?.events`, a field known to be present beside it.
    */
   const catalystFreshFrom = market?.catalystFreshFrom ?? null;
+  /*
+   * One capture state for the whole merge, from the SERVER's two clocks. On
+   * `health`, not on `discovery`: the read model writes `asOf` onto the
+   * worker's `tradeCapture` block, and a worker older than the trades store
+   * has no block at all, which reads as UNWIRED.
+   */
+  const nowCapture = resolveNowCapture(market?.health?.tradeCapture?.asOf, market?.fetchedAt);
 
   for (const ticker of sheetTickers) {
     rows.set(
@@ -497,7 +524,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, blueSky: blueSkyByTicker[ticker.ticker] },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker] },
       ),
     );
   }
@@ -513,7 +540,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, blueSky: blueSkyByTicker[symbol] },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol] },
       ),
     );
   }
@@ -526,7 +553,7 @@ export function mergeDesk(
     .map((ticker) => rows.get(ticker.ticker))
     .filter((row): row is DeskRow => row !== undefined);
 
-  return { rows, discovery, watchlist };
+  return { rows, discovery, watchlist, nowCapture };
 }
 
 /**
