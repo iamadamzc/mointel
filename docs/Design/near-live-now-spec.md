@@ -12,6 +12,45 @@ reintroduces it.**
 This file is the spec. The choices that are his are in "What he decides" and are
 marked as his. Everything else is Design's or Research's and does not go to him.
 
+## HIS ANSWER, 2026-09-29T02:30:43Z, to Design directly, verbatim
+
+> *"same exact pattern as the previous minute format, except now it will show
+> the last minute in 10 sec increments instead of 5 min in 1 min increments."*
+
+**Binding content:** the cell keeps its shape, a number above bars. **The bars
+become the last minute as six 10-second buckets**, replacing five 1-minute
+slots. **The number is the newest completed 10 s bucket, counted, not
+scaled:** "the same pattern" means the number is the last slot of the bars, as
+today's is the last settled minute of its bars. That settles the unit question
+below as (A), and settles more than it asked: the SPARKLINE changes grain too.
+
+~~**What cannot match "same exact" yet:** … the first version draws the six
+bars neutral, with no price points … Design's reading, not a question for him
+unless he objects.~~ **HE OBJECTED, 2026-09-29T02:32:20Z, to Design, verbatim:
+*"that's not what i want. i want the trade counts, dots and direction
+color."*** A bars-only interim is REFUSED. The first version carries all three:
+the count, the price points and the direction colour, at 10 s.
+
+**What that requires, and it reorders the work.** `trades.db` holds COUNTS
+only, so the capture must also record a PRICE per 10 s bucket (the last trade
+price in the bucket; the dots are those prices, and direction and the flat band
+are judged on them against the spread, as today). That is an engine change in
+the MARKET WORKER, so it takes effect only on a **market-worker restart**, which
+is his to approve. **The same restart carries the membership intervals**
+(Research's (2)), so the measured `0` arrives with it and the counts-only
+interim is no longer needed for this column. **Order: Research builds price per
+bucket + intervals → he approves the restart → Ops restarts outside his window
+→ Design builds the cell on real 10 s prices. Nothing of the cell ships before
+the restart.**
+
+**Research's field, final shape:** the last SIX completed buckets, oldest
+first: `nowBuckets: Array<{ bucketEnd: string; trades: number | null; price:
+number | null }> | null`. `trades: null` = not measured (no interval covers the
+bucket whole); `0` = measured, silent; `price: null` = no trade in the bucket
+(the dot is simply absent, as a minute with no trade is today). Whole field
+`null` = no live feed → the settled-minute fallback, muted. Plus
+`tradeCapture.asOf` as before.
+
 ## What exists today, opened, not recalled
 
 - The column prints `tradesLastMinute(row.demand)`, the last SETTLED slot of
@@ -52,6 +91,8 @@ is the 10–20 s he was offered.
 > **Recommendation: (A).** It never claims a measurement the desk did not take.
 > The sort order is identical either way, so this is only about how the number
 > reads.
+>
+> **SETTLED (A) by his 02:30:43Z answer above.**
 
 **The header stays `Now`** (his ruling, 2026-09-25). Its sub-line changes from the
 minute lag to the new grain: `last 10s` under (A), `10s pace` under (B). The
