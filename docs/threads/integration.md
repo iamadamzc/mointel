@@ -922,7 +922,7 @@ at the moment of writing.*
 every verification behind these lines, are in the archive section directly below (under the fourteenth's snapshot,
 whose APPROVED list carries the dated notes). **Re-verify production before acting: ask Ops for `/proc/<pid>/cwd`.***
 
-### PRODUCTION (Ops, /proc, 2026-09-29 ~01:40Z)
+### PRODUCTION (Ops, /proc, 2026-09-29 ~01:40Z; RE-READ by Ops for the 16th seat, received by 02:54Z: web 1443928 / research 1443994 / assess 1444063 on 2256c63 since 01:31:04-05Z; market 1347535 on 3b78b8c; NRestarts 0 all -- CONFIRMED)
 
 ```
 web / research / assess   2256c63 = dca4a04 + af15a13 (server ranks inside a requested range; inert without min/max).
@@ -967,6 +967,17 @@ to Design 02:30:43Z / 02:32:20Z (Design's relay): Now column = the last minute a
 
 ```
 RANGE SET            built, see above. Target 2026-10-05.
+MARKET-WORKER RESTART  OPS'S SINGLE PLAN (received 16th seat, 2026-09-29 02:54Z, clock read): ONE restart carries
+                     (a) cea5ed2 band piece 1 (already in release, inert until d's config); (b) Now column = Research
+                     engine (last price/bucket + feed_intervals, target Wed 10-01) + Ops trades.db v2 (own file, NO
+                     market.db backup route, migration in openTradesStore, refuse-newer kept); (c) piece 2 bootstrap =
+                     record band (lands inert); (d) piece 3 ceiling 20->50 = NEW config wiring (verified: no record-band
+                     key in lib/market/config.ts or worker/ at HEAD) + box env + sync-env SAME MOTION. Pre-conditions:
+                     all code shipped with RESTART_MARKET=no and confirmed from /proc; $50 replay-cost measured; a
+                     no-session window (weekday after 20:00 ET or weekend). Split (d) off ONLY if the replay cost says
+                     so. Earliest: Thu 10-02 after 20:00 ET. Ops puts the PLAN to him; the TIME is a separate ask, his,
+                     in Ops's session. His Now-column yes-in-principle: 02:41:45Z. market.db latch/high_res columns are
+                     an ASSESS change behind the backup route, NOT in this restart.
 NOW COLUMN           needs per-bucket PRICE + membership intervals (true 0s): Research engine + Ops trades.db v2 ->
                      MARKET-WORKER RESTART (his yes, in principle via Design's block, timing via Ops) -> Design builds.
                      Ops asked to fold ALL pending market-worker restarts into one plan to him: this, band piece 1's
