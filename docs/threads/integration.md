@@ -1198,6 +1198,11 @@ RESEARCH HANDOFF Research-tmi retiring on his yes; prompt docs/research-opening-
 NEW RESEARCH    local_e18a7d74 (bare title shared with the retired seat until he renames it: address BY ID). Answered its
                  7 questions; heartbeat write approved to build (cut from 0342e7d, 170 + declared n). 08:30 ET range read
                  STUCK on a Bash permission prompt awaiting his approval (its transcript).
+HEARTBEAT FIX   research/heartbeat-on-0342e7d -> c49bb3a (main 380773a) REPLAYED: 1 over 0342e7d, fa61410 not in cone,
+                 patch-id 8b430848 equal, 171 = 170 + healthBusy.test.ts (declared). publishResearchHealth skips only
+                 isBusy. APPROVED conditional on OPS OWNER REVIEW (worker/research.ts, lib/market/store). claimQueuedJobs
+                 ~33 s half = Ops's. QUEUE from 0342e7d: memo 635a9ae, poll fix 626b3f6, heartbeat c49bb3a (disjoint);
+                 first yes ships first, rest re-picked: PRE-REGISTERED 172 then 173. All after 10:00 ET, his yes each.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
