@@ -1130,6 +1130,11 @@ GZIP             his yes, NOT BUILT (no commit, no sha): Ops's edit to deploy/aw
 /proc 16:18:16Z  (Ops) GRADES 9d554e0 LIVE: web 1536304 (start 16:17:15Z) / research 1536360 / assess 1536434, NR 0;
                  market 3b78b8c 1347535 NR 0. Gated 174/174 in Ops's session. Prune removed c49bb3a. 803008b's
                  condition MET; ships 12:34 ET window.
+/proc 16:48:16Z  (Ops) ROWS 803008b LIVE: web 1544789 (start 16:47:30Z) / research 1544840 / assess 1544915, NR 0;
+                 market 3b78b8c 1347535 NR 0. Gated 175/175. Prune removed 8455b48. PRODUCTION = 803008b.
+                 READ HERE: worker/ + lib/market/ identical a391c61..803008b; floor 9508fb9 NOT an ancestor but its
+                 patch-id ffb64846 == 3810b9e, which IS -> floor met by content; fa61410 not in; CAPTURE_PRICE_MIN/MAX
+                 read at lib/market/config.ts:105-106 (NULL when unset). Tonight's restart runs 803008b's worker.
 GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Checked at 9d554e0: promptVersion is
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
