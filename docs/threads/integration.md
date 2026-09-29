@@ -1065,6 +1065,10 @@ RESTART SET REPLAY   16th seat, 2026-09-29, scratch worktree at 2256c63, main's 
                      allowlist. NOTHING SHIPPED; production still 2256c63 / 3b78b8c. Route (Session Manager vs firewall)
                      put to HIM by Ops. FLUSH TIMER: no instrument on the box today; Ops builds it as its own code-only
                      release, stacked ON 121f97c (this seat's instruction), shipped before the restart evening.
+                     ROUTE: he said "deploy over Session Manager" (in Ops's session); 121f97c LAUNCHED via mointel-ssm,
+                     RESTART_MARKET=no. /proc confirmation PENDING. FLUSH TIMER TAG ops/flush-timer-on-121f97c ->
+                     7135930, VERIFIED: 1 over 121f97c, -x 56dfb15, patch-id equal (7ae18ef5 --stable), 3 files, 169
+                     test files PRE-REGISTERED. Enumerated to Ops, base = 121f97c confirmed live; his yes separate.
                      SNAPSHOT (a) on 2256c63 (Ops): cold 5.9, warm median 4.9 / max 6.8 ms over 20. Ops's gate on
                      121f97c in progress; THE SHIP WAITS FOR HIS WORD IN OPS'S SESSION (Ops's choice).
                      OPS OWNER REVIEW of ae02f7c's worker half: APPROVED; covers 121f97c (worker hunks identical,
