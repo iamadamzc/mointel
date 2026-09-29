@@ -898,6 +898,17 @@ four of his ruling times written as "~HH:MMZ" guesses  a time stated without rea
   09-25 22:19:45Z restart (pid 1184182)
 ```
 
+**THE SIXTEENTH SEAT'S LEDGER (session-hygiene §2):**
+```
+error                                                  TYPE                               repeat?        caught by
+"~02:55Z" written into this file for a commit made at  a time stated without reading it   the 15th's     self (commit
+  02:41:30Z -- in the SAME edit that flagged the         (the 15th's error 2)             class; first   time vs text)
+  prompt header for exactly this; also "~02:50Z" to                                        in this seat
+  Design for Research's message
+```
+*Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
+at the moment of writing.*
+
 ## LIVE STATE — AS OF 2026-09-29 ~02:40 UTC (22:40 ET 09-28), AT THE FIFTEENTH SEAT'S HAND-OFF
 
 *A SNAPSHOT, times from `zoneinfo` or read from his turns in the transcripts. The fifteenth seat's running notes, with
@@ -964,7 +975,7 @@ RESIZABLE COLUMNS    RULED 02:41:45Z: drag edges, per-browser, Discovery only (~
 DAILY BILLING        + payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
 SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, a window).
-BENZINGA COST        ⚠️ CORRECTS the CLOSED line below (16th seat, 2026-09-29 ~02:55Z, read at his turns in Research's
+BENZINGA COST        ⚠️ CORRECTS the CLOSED line below (16th seat, committed 2026-09-29T02:41:30Z, read at his turns in Research's
                      session): 02:12:22Z "do the benzinga research in the meantime"; 02:13:46Z "the benizinga search
                      is licensing cost foruse"; 02:20:59Z "yes draft the email". Draft in
                      docs/research/benzinga-licence-cost-2026-09-29.md §4 (a16a318). SENDING IT IS HIS. No seat sends.
@@ -973,8 +984,11 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
                      (not wanted).
 ```
 
-**16th seat, 2026-09-29 ~02:55Z — two reconciliations on arrival:**
-- **Research reported the Now column as "counts-only interim accepted (3377607)".** *Superseded 17 min later by his
+**16th seat, committed 2026-09-29T02:41:30Z (`ef8d585`) — two reconciliations on arrival:**
+- **Research reported the Now column as "counts-only interim accepted (3377607)".** *CROSSED, NOT STALE IN ITS
+  FILES: Research struck the line itself at `58dd735`/`cf3dbc2` (02:45:11Z/02:45:44Z), four minutes after this
+  seat read research.md:166; its message predated its own fix. My correction was right when read and redundant
+  when delivered.* *Superseded 17 min later by his
   02:32:20Z refusal (Design `1752b74`: price per bucket = last trade price, plus intervals, one restart, nothing of
   the cell ships before it). research.md:166 still ends "Waiting on Design".* Sent to Research with the turn and the
   spec pointer; asked it to strike the line in place and check its opening prompt.
