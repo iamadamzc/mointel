@@ -1070,6 +1070,9 @@ SNAPSHOT (c)     RULED (pre-registered before (c) exists; budget unchanged). Ops
                  the Now field. Secondary, non-gating: any (c) max > 100 ms with no (b') max > 100 -> named to Integration.
 RANGE GATE       UNCHANGED (N, threshold, statistic). Added before any post-restart reading: no run < 2 min after a web
                  or worker start; such a run is discarded and re-taken, never kept.
+COLUMNS READ     Design, partial: served bundle carries the columns code (width storage key), page is the live desk.
+                 BEHAVIOUR NOT READ: next-day prep, Discovery has no rows. OWED by Design, trigger = live Discovery
+                 table has rows (from 04:00 ET): resize, reload persistence, reset, 1,024 floor. Held in design.md.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
