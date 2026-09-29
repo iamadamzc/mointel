@@ -1144,7 +1144,8 @@ DESIGN LIVE READ (rows, 803008b): top 50 Discovery -- 14 OLD rows, all grey + "N
 16:56:01Z (Res.) HIS "yes, hand off" (f95ac7bd, read at his turn). Research local_e18a7d74 RETIRED; hand-off be1e82a +
                  2fbcfbf; docs/research-opening-prompt.md carries tonight's check (l.28), the grades read with the
                  16:17:16Z boundary (l.59-61), the profile. HOLD everything for Research until the successor sends its id.
-                 Tonight's results need a Research seat OPEN before 20:15 ET -- put to him.
+                 NEW Research seat local_d6996864 (created 17:09:57Z, cwd A:\mointel checked; old chat still carries the
+                 title -- route BY ID until he renames it). Live state sent with artefacts. 31328d9/aebdf2f main-only.
 THIS SEAT        his answer on the hand-off question: NONE yet (no turn in this session since it was asked).
 GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Checked at 9d554e0: promptVersion is
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
