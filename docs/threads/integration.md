@@ -1135,6 +1135,9 @@ GZIP             his yes, NOT BUILT (no commit, no sha): Ops's edit to deploy/aw
                  READ HERE: worker/ + lib/market/ identical a391c61..803008b; floor 9508fb9 NOT an ancestor but its
                  patch-id ffb64846 == 3810b9e, which IS -> floor met by content; fa61410 not in; CAPTURE_PRICE_MIN/MAX
                  read at lib/market/config.ts:105-106 (NULL when unset). Tonight's restart runs 803008b's worker.
+DESIGN LIVE READ (rows, 803008b): top 50 Discovery -- 14 OLD rows, all grey + "No fresh catalyst · latest: …";
+                 control (OLD without the new headline) = 0; marks live: YMT sheet C·desk B, MSGY sheet B·desk C, ONFO
+                 sheet C·desk B; 1,024 px no overflow. Review link 53 revoked. CLOSED.
 GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Checked at 9d554e0: promptVersion is
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
