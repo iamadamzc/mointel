@@ -80,7 +80,7 @@ for design documents.
   import block only: kept the pick's three imports, dropped the range set's
   two context lines. **+/− lines identical to `1d59b00`; patch-id differs on
   context only.** Gated at the tag: 165 files / 2,600, lint 0 errors, build 0,
-  typecheck 0. **Not viewed rendered on this base.** Waits on Integration's
+  typecheck 0. **Viewed rendered AT THE TAG** (local, unseeded store copy): seven handles, Shift+→ ×2 on RVOL 68 → 132 px with Why/Risk giving 32 each and the table still exactly its box; the width survives a reload; Reset widths restores 68/321/321 and clears storage; at 1,024 after a reload the table is 982 in a 982 box, no header clipped. Waits on Integration's
   replay and his ship yes in Ops's session; then Design reads it live (drag,
   reload, width persists).
 - **The range set (`520142c`) is VOID** (Integration `99a02e4`): `$1–$20`
