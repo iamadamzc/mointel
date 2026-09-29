@@ -4,7 +4,7 @@
  *
  * A name dead for five consecutive minutes leaves the active board. The engine
  * determines that and emits `activity`, `deadSince`, `deadAtRank`,
- * `deadAtPeakTrades` and `deathCount`; this module decides what a surface may
+ * `diedWhileRanked`, `deadAtPeakTrades` and `deathCount`; this module decides what a surface may
  * say about them.
  *
  * The whole point of the section is that it is **the drop rule's own
@@ -56,8 +56,19 @@ export const RAN_THRESHOLD_PCT = 25;
  * So an active-line filter hid nearly half the board — names he WAS watching
  * that simply did not trade much. The board already records the answer directly;
  * trade count was standing in for it badly.
+ *
+ * **Read the FACT, not the ordinal.** On a board re-ranked inside the viewer's
+ * price range the server omits `deadAtRank` (`scrubBandOrdinals`,
+ * `lib/market/rangeRank.ts`), because a rank in the engine's band is not a rank
+ * in his. Keyed on the ordinal, every custom range emptied this section and it
+ * read "nothing died". `diedWhileRanked` carries the same answer and survives
+ * the scrub. The fallback is that flag's own definition (`rowToDemandState`,
+ * `store/repo.ts`), for a row built before the flag existed, so it cannot
+ * disagree with it.
  */
 function wasOnTheBoard(row: DeskRow): boolean {
+  const flag = row.demand?.diedWhileRanked;
+  if (flag !== undefined) return flag;
   const rank = row.demand?.deadAtRank;
   return rank !== null && rank !== undefined;
 }

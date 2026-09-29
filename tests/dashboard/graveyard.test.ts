@@ -6,6 +6,8 @@ import {
   graveyardSummary,
 } from '@/lib/dashboard/graveyard';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { scrubBandOrdinals } from '@/lib/market/rangeRank';
+import type { DemandState } from '@/lib/market/types';
 
 const NOW = Date.parse('2026-09-03T14:00:00.000Z');
 
@@ -283,6 +285,44 @@ describe('the board-presence filter', () => {
     );
     expect(summary.dead).toBe(1);
     expect(summary.neverActive).toBe(2);
+  });
+
+  /*
+   * A board re-ranked inside the viewer's price range. The server omits every
+   * stored ordinal there (a rank in the engine's band is not a rank in his), so
+   * a filter keyed on `deadAtRank` would empty this section on every custom
+   * range and read "nothing died". Run through the REAL scrub, so a scrub that
+   * starts removing the fact as well fails here, not only in its own suite.
+   */
+  const scrubbed = (t: string, diedWhileRanked: boolean) =>
+    row(
+      t,
+      scrubBandOrdinals({
+        ticker: t,
+        activity: 'DEAD',
+        deadSince: new Date(NOW - 10 * 60_000).toISOString(),
+        deadAtRank: diedWhileRanked ? 4 : null,
+        diedWhileRanked,
+        deadAtPeakTrades: 310,
+        deathCount: 1,
+        afterHours: {},
+      } as unknown as DemandState) as unknown as Record<string, unknown>,
+    );
+
+  it('lists a name that died ranked after the range scrub removed its rank', () => {
+    const input = scrubbed('RANGED', true);
+    // The control: the ordinal really is gone, so only the fact can list it.
+    expect(input.demand).not.toHaveProperty('deadAtRank');
+    const entries = graveyardRows([input], NOW);
+    expect(entries.map((e) => e.ticker)).toEqual(['RANGED']);
+    expect(entries[0].deadAtRank).toBeNull();
+    expect(graveyardSummary([input], NOW).dead).toBe(1);
+  });
+
+  it('still withholds a never-ranked name after the scrub', () => {
+    const summary = graveyardSummary([scrubbed('OFF', false), scrubbed('ON', true)], NOW);
+    expect(summary.dead).toBe(1);
+    expect(summary.neverActive).toBe(1);
   });
 
   it('keeps the counts on the shown population, not the withheld one', () => {
