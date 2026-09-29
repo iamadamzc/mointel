@@ -12229,3 +12229,9 @@ the top N inside each report range at capture (readRangeBoard). **Exact re-ranki
 fields** (latched, qualified_price, ah_latched, ah_qualification_price), which desk_assessment_tickers
 lacks, so it is a SCHEMA BUMP. Queue: range-read measurement -> pre-deploy backup route -> this plus
 the high_res column in ONE migration -> the rvol index if RTH fails.
+
+**Range set 520142c (Integration's enumeration, not yet approvable):** cone 10, 22 files, no worker/
+engine/auth/schema; 167 test files. Gate run 1 RED (1 of 2544), gate run 2 and two direct runs GREEN.
+**An unnamed intermittent failure exists at this sha** -- run 1's output was filtered to summaries and
+the name was lost. Rule: capture full gate output to a file (`> $TEMP/gate-<sha>.log`), never grep
+the live stream. Name the flake before shipping.
