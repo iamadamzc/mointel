@@ -11,14 +11,19 @@
  * THE RANKING IS THE ENGINE'S OWN. `rankByRvol` and `rankByAfterHours` are the
  * functions the engine ranks with; this module feeds them a different
  * population and nothing else, so a range equal to the engine's band would
- * reproduce its order rather than approximate it. Two differences are stated,
- * not hidden:
- *   - NO LATCH. The engine keeps a name that qualified in ITS band and ran
- *     through the top. That latch was earned in a different band; carrying it
- *     here would rank a name outside the viewer's range. In a viewer's range a
- *     name that runs through the top leaves it.
- *   - The population is what the store holds: tracked names. Hence the bounds
- *     in `config.ts` stay inside the band the engine captures.
+ * reproduce its order rather than approximate it.
+ *
+ * THE LATCH, SCOPED TO THE VIEWER'S RANGE. The engine keeps a name that
+ * qualified in its band and then ran through the top ("a $4 stock that rips to
+ * $25 does not vanish at the moment it starts" -- Design). Here a name stays
+ * when it is latched AND its qualification price lies inside the viewer's
+ * range: it qualified at a price the viewer asked for, then ran. A latch earned
+ * at a price outside the viewer's range does not carry. Qualification only
+ * happens inside the engine's band, so for a range reaching past that band
+ * the latch covers only its overlap -- stated, not hidden.
+ *
+ * The population is what the store holds: tracked names. Hence the bounds in
+ * `config.ts` stay inside the band the engine captures.
  *
  * STORED ORDINALS ARE OMITTED, NOT RE-LABELLED (research.md, decided
  * 2026-09-26). previous ranks, rank changes, entered ranks, the rank at
@@ -121,12 +126,24 @@ export function rankInRange(
   extras: readonly DemandState[],
   board: 'DAILY_RVOL' | 'AFTER_HOURS',
   limit: number,
+  range: PriceRange,
 ): RangeRanking {
   const scrubbed = candidates.map(scrubBandOrdinals);
+  const inside = (price: number | null | undefined) =>
+    price !== null && price !== undefined && price >= range.min && price <= range.max;
 
-  const day = rankByRvol(scrubbed.map((state) => ({ symbol: state.ticker, rvol: state.rvol })));
+  // The engine's eligibility, with its latch scoped to the viewer's range.
+  const dayEligible = scrubbed.filter(
+    (state) => inside(state.price) || (state.latched && inside(state.qualified?.price)),
+  );
+  const eveningEligible = scrubbed.filter(
+    (state) =>
+      inside(state.price) || (state.afterHours.latched && inside(state.afterHours.qualificationPrice)),
+  );
+
+  const day = rankByRvol(dayEligible.map((state) => ({ symbol: state.ticker, rvol: state.rvol })));
   const evening = rankByAfterHours(
-    scrubbed
+    eveningEligible
       // The engine's rule: a name that has not traded since the bell is not on
       // the after-hours board.
       .filter((state) => (state.afterHours.participation ?? 0) > 0)

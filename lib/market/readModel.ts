@@ -628,6 +628,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
           }),
           board,
           config.internalRank,
+          served,
         )
       : null;
 

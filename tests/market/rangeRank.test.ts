@@ -18,6 +18,8 @@ import { toRow } from '@/worker/runtime';
  */
 
 const DATE = '2026-09-28';
+/** The viewer's range in the unit tests: his default. */
+const R = { min: 1, max: 20 };
 const files: string[] = [];
 const savedDbPath = process.env.MARKET_DB_PATH;
 
@@ -135,6 +137,7 @@ describe('ranking inside the range', () => {
       [],
       'DAILY_RVOL',
       50,
+      R,
     );
     expect(result.ranked.map((s) => [s.ticker, s.rvolRank])).toEqual([
       ['HIGH', 1],
@@ -157,21 +160,21 @@ describe('ranking inside the range', () => {
 
   it('does not mutate the rows it was given', () => {
     const original = state('X', 3, 2, 7);
-    rankInRange([original], [], 'DAILY_RVOL', 50);
+    rankInRange([original], [], 'DAILY_RVOL', 50, R);
     expect(original.rvolRankChange).toBe(3);
     expect(original.deadAtRank).toBe(7);
   });
 
   it('caps the rows at the limit and counts the whole range', () => {
     const many = Array.from({ length: 8 }, (_, i) => state(`T${i}`, 3, 10 - i, i + 1));
-    const result = rankInRange(many, [], 'DAILY_RVOL', 5);
+    const result = rankInRange(many, [], 'DAILY_RVOL', 5, R);
     expect(result.ranked).toHaveLength(5);
     expect(result.rankedCount).toBe(8);
     expect(result.eligibleCount).toBe(8);
   });
 
   it('an unknown RVOL is not ranked, never ranked last', () => {
-    const result = rankInRange([state('A', 3, null, 1), state('B', 3, 2, 2)], [], 'DAILY_RVOL', 50);
+    const result = rankInRange([state('A', 3, null, 1), state('B', 3, 2, 2)], [], 'DAILY_RVOL', 50, R);
     expect(result.ranked.map((s) => s.ticker)).toEqual(['B']);
     expect(result.rankedCount).toBe(1);
   });
@@ -181,16 +184,49 @@ describe('ranking inside the range', () => {
     const busy = state('BUSY', 3, 1, 2);
     quiet.afterHours = { ...emptyAfterHours(), participation: 0, rank: 1 };
     busy.afterHours = { ...emptyAfterHours(), participation: 0.4, rank: 7, previousRank: 9, rankChange: 2 };
-    const result = rankInRange([quiet, busy], [], 'AFTER_HOURS', 50);
+    const result = rankInRange([quiet, busy], [], 'AFTER_HOURS', 50, R);
     expect(result.ranked.map((s) => [s.ticker, s.afterHours.rank])).toEqual([['BUSY', 1]]);
     expect(result.ranked[0].afterHours.rankChange).toBeNull();
     // The day's leaders ride along as context, with in-range day ranks.
     expect(result.states.find((s) => s.ticker === 'QUIET')?.rvolRank).toBe(1);
   });
 
+  it('THE LATCH, SCOPED: a name that qualified at $4 and ran to $25 stays on a $1-$20 board', () => {
+    const runner = state('RUNNER', 25, 9, 1);
+    runner.qualified = { at: '2026-09-28T13:40:00.000Z', price: 4, rvol: 3, rank: 5 };
+    const result = rankInRange([runner, state('A', 3, 2, 2)], [], 'DAILY_RVOL', 50, R);
+    expect(result.ranked.map((s) => [s.ticker, s.rvolRank])).toEqual([
+      ['RUNNER', 1],
+      ['A', 2],
+    ]);
+  });
+
+  it('a latch earned at a price OUTSIDE the viewer range does not carry', () => {
+    const penny = state('PENNY', 25, 9, 1);
+    penny.qualified = { at: '2026-09-28T13:40:00.000Z', price: 0.5, rvol: 3, rank: 5 };
+    const result = rankInRange([penny], [], 'DAILY_RVOL', 50, R);
+    expect(result.ranked).toHaveLength(0);
+  });
+
+  it('an unlatched name above the range is not ranked', () => {
+    const above = state('ABOVE', 25, 9, 1);
+    above.latched = false;
+    above.qualified = { at: '2026-09-28T13:40:00.000Z', price: 4, rvol: 3, rank: 5 };
+    expect(rankInRange([above], [], 'DAILY_RVOL', 50, R).ranked).toHaveLength(0);
+  });
+
+  it('after hours: the AH latch, scoped the same way', () => {
+    const runner = state('AHRUN', 25, 1, 1);
+    runner.afterHours = { ...runner.afterHours, participation: 0.5, latched: true, qualificationPrice: 6 };
+    const stray = state('STRAY', 25, 1, 2);
+    stray.afterHours = { ...stray.afterHours, participation: 0.9, latched: true, qualificationPrice: 30 };
+    const result = rankInRange([runner, stray], [], 'AFTER_HOURS', 50, R);
+    expect(result.ranked.map((s) => s.ticker)).toEqual(['AHRUN']);
+  });
+
   it('a pinned name outside the range is returned scrubbed and unranked', () => {
     const pinned = state('PIN', 35, 9, 2);
-    const result = rankInRange([state('A', 3, 2, 1)], [pinned], 'DAILY_RVOL', 50);
+    const result = rankInRange([state('A', 3, 2, 1)], [pinned], 'DAILY_RVOL', 50, R);
     const out = result.states.find((s) => s.ticker === 'PIN')!;
     expect(out.rvolRank).toBeNull();
     expect('deadAtRank' in out).toBe(false);
@@ -226,6 +262,18 @@ describe('the store and the snapshot', () => {
     const tickers = readRangeCandidates(db, DATE, { min: 1, max: 20 }).map((s) => s.ticker).sort();
     db.close();
     expect(tickers).toEqual(['AAA', 'BBB']);
+  });
+
+  it('the store also returns a runner latched at a price inside the range', () => {
+    const file = temporaryPath();
+    seed(file);
+    const db = openDatabase(file);
+    const runner = state('RUNNER', 25, 9, 4);
+    runner.qualified = { at: '2026-09-28T13:40:00.000Z', price: 4, rvol: 3, rank: 4 };
+    upsertTickerSessions(db, [toRow(runner)]);
+    const tickers = readRangeCandidates(db, DATE, { min: 1, max: 20 }).map((s) => s.ticker).sort();
+    db.close();
+    expect(tickers).toEqual(['AAA', 'BBB', 'RUNNER']);
   });
 
   it('WITHOUT a range the board is exactly today\'s: band ranks, band ordinals kept', () => {

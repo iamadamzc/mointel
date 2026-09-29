@@ -1100,7 +1100,8 @@ export function readDemandStates(
 }
 
 /**
- * Every tracked row priced inside [min, max] that may compete for a rank, for
+ * Every tracked row priced inside [min, max] -- or LATCHED at a qualification
+ * price inside it -- that may compete for a rank, for
  * ranking INSIDE a viewer's range (`lib/market/rangeRank.ts`). A security the
  * universe marks ineligible is excluded here exactly as the engine excludes it;
  * a symbol with no universe row is kept, as the engine keeps it when it has no
@@ -1116,11 +1117,17 @@ export function readRangeCandidates(
     .prepare(
       `SELECT ts.* FROM ticker_session ts
          LEFT JOIN universe u ON u.symbol = ts.symbol
-        WHERE ts.trading_date = ?
-          AND ts.price IS NOT NULL AND ts.price >= ? AND ts.price <= ?
+        WHERE ts.trading_date = @date
+          AND ts.price IS NOT NULL
+          AND (
+                (ts.price >= @min AND ts.price <= @max)
+             OR (ts.latched = 1 AND ts.qualified_price >= @min AND ts.qualified_price <= @max)
+             OR (ts.ah_latched = 1
+                 AND ts.ah_qualification_price >= @min AND ts.ah_qualification_price <= @max)
+          )
           AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
     )
-    .all(tradingDate, range.min, range.max) as TickerSessionRow[];
+    .all({ date: tradingDate, min: range.min, max: range.max }) as TickerSessionRow[];
   return rows.map((row) => rowToDemandState(row, nowMs));
 }
 
