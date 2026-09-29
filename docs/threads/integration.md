@@ -1052,6 +1052,8 @@ SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified
                      latch arm; PK (assessment_id, ticker) bars per-range rows. Ops's pick: dedupe + 4 nullable latch
                      columns. ORDER NOW: range-read measurement -> PRE-DEPLOY BACKUP ROUTE -> (a) sharing one bump with the
                      high_res column -> rvol index if needed. Session reports wait behind the backup route.
+                     Per-day prod read (Ops/Research): sub-$1 in top 25 min/med/max 09-23 0/0/3, 09-24 0/2/6, 09-25 0/2/5,
+                     09-28 4/8/12 -- the step is the 25c floor. $1-$20 complete depth 09-28: 13-21, median 17.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
                      band piece 4 (due 10-05) NOT ruled by him. Research's order (60a23fa): piece 4 FIRST (the writer's first
