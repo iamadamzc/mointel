@@ -1090,6 +1090,11 @@ SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just be
                  text). Rivals: award absent from evidence; prior grade anchoring. Store reads Q0-Q5 sent to Ops.
                  HIS UPDATE: "the catalyst was just updated in the last 2 minutes" -> reads now = red version vs new
                  version + article->fetch->job->version latency chain. Rendering change = board behaviour -> him.
+                 RESEARCH CORRECTED ITS LEAD: on the 2026-08-23 snapshot (NOT today) all 32/325 WEAK_NEGATIVE_DILUTIVE
+                 rows are genuinely negative (offerings, failed trials, reverse splits, delisting, late 10-Q...); none
+                 is a weak positive painted red. Enum undescribed = latent, NOT shown as SLND's cause. Weight -> (b)
+                 SELECTION: an older negative item chosen as WHY NOW while a newer positive existed. Correction sent
+                 to him (the lead had reached him hedged). Q5 on TODAY's store still stands.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
