@@ -12392,3 +12392,19 @@ after 5 ms and after 25 ms, and was built; positive control (abort during an asy
 296 ms. So coalescing (Research) is the only server-side lever; Design told not to build the entry check for this.
 Pre-registered N=10 on the committed probe: **B pre-aborted at entry 0/10, all built** (plus 7 exploratory runs, all 0).
 Integration's status: Node half 0/10, composition unverified, nginx half skipped; entry check SHELVED for this purpose.
+
+**2026-09-29 RTH: the three-ship stack on his "yes to all three", each DEPLOY_TESTS_SKIP (gated this session ALL GREEN
+at the pre-registered count), each base confirmed from /proc before launch, each down 2s:**
+```
+c49bb3a  research heartbeat fix (skip status write on SQLITE_BUSY)  live 14:18:21Z  171/171  prune -121f97c
+8455b48  sessionEnd memo (-x 635a9ae onto c49bb3a)                  live 14:48:19Z  172/172  prune -c103267
+a391c61  board poll fix (-x 626b3f6 onto 8455b48)                   live 15:17:45Z  173/173  prune -0342e7d
+```
+Market 3b78b8c pid 1347535 untouched throughout. Tonight's 20:15 restart runs a391c61's worker.
+**After the memo, RTH, /api/market, (b') method (5 x 1+20, >=2 min after start):** maxima 675.9/543.4/661.5/1081.4/697.0
+ms, medians 474-512 ms. NOT comparable to overnight (b') 8.9 ms; no pre-memo RTH reading exists, so the memo's box
+effect is UNMEASURED. A single serial client gets ~0.48 s per build in RTH.
+**RTH range read 14:51:34Z (memo live; raw SQL, so irrelevant):** DAY $0.25-$50 max 21.3 FAIL, $1-$20 15.9 PASS,
+$0.5-$5 12.4 PASS; AH x3 eligible 0 -> UNTESTED. The 08:30 read was NOT TAKEN (scheduled task stuck on an unapproved
+permission prompt; a task with a run in progress refuses its scheduled fire). **Scheduled read-only tasks need their
+permission prompt approved by him in the task session; a hand run started by this seat does not pre-approve.**
