@@ -1444,6 +1444,11 @@ STORE DESIGN     Ops 5811a56 (read): queued, separate file beside market.db, dai
                  (df 18:06 ET, Ops first-hand; re-read at 22:08). KEY RULE (Research, sent to Ops): store candles by
                  bucket START UTC like minute_bars (ts = Alpaca bar.t, runtime.ts:1088); his platform's END labels are
                  display only (end = start + 15m).
+SPEC             Research e543a75 docs/research/resistance-levels-spec.md (read end to end). §2 ROW CONTRACT -> Design
+                 (sent). §3 HELD: §4.2's BIYA control expects 2.462/2.490 "from the 15m ladder", but §1/§3 15m horizon
+                 = last 30 calendar days (from 08-30 at 09-29); his lines are 08-24/25 -> cannot pass. His method
+                 (18th's session 22:05Z) switches to 15m ON THE LOCATED DATE; the spec lacks that step. Sent back to
+                 Research + a citation fix (ffac4a37 is the 18th's transcript). §3 -> Ops on the amended sha.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
