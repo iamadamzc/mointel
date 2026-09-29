@@ -12347,3 +12347,17 @@ NR 0; schema 27/27; health ok, tradeCapture RECORDING; public 401 x4 then 200 x5
 (a) 2256c63 5.9 / med 4.9 / max 6.8 ms; (b) 121f97c on the v1 file 11.7 / 6.8 / 11.8 ms.** (c) after the restart.
 **Flush timer** `ops/flush-timer-on-121f97c` -> 7135930 (one pick of 56dfb15): gated ALL GREEN 169/169 (pre-registered
 169), 2,563 tests. Enumerated by Integration; NOT shipped, waits on his yes.
+
+**2026-09-29 ~04:38Z: c103267 (Design's resizable columns, Discovery only) LIVE**, on his "yes to both ships" (his
+03:51:42Z "yes to columsn" was to PREPARING them alone; the ship yes was asked here). Full gate in push-release 169/169,
+2,638 tests. Down 2s; prune removed dca4a04. /proc 04:38:01Z: web 1466412 / research 1466470 / assess 1466538, NR 0.
+**2026-09-29 04:53:52Z: 0342e7d (flush timer, one -x pick of 56dfb15 onto c103267; supersedes 7135930) LIVE**, same
+yes. Full gate 170/170, 2,643 tests. Down 2s; prune removed 2256c63. /proc: web 1474623 / research 1474680 / assess
+1474748 on 0342e7d, NR 0. Market 3b78b8c pid 1347535 untouched throughout. Public 401 x4 / 200 x5 after each.
+**Snapshot method, Integration's ruling (pre-registered before (c)):** 5 runs of 1+20, first run >= 2 min after the
+web start, report all five; gate = median of the five maxima at (c) minus that at (b') <= 20 ms. Straight after the
+c103267 start, single runs read max 42.1 and 161.8 ms (post-start effect, not steady state).
+**(b') on 0342e7d, from 04:55:57Z (web started 04:53:52Z): maxima 9.5 / 8.5 / 7.2 / 8.9 / 16.6 ms (median 8.9);
+medians 6.4 / 5.9 / 5.7 / 5.7 / 7.1 ms.** (c) is taken the same way after the restart.
+**11:05 ET range read:** its scheduled task was REFUSED by the permission control; the 08:30 ET one is armed and was
+hand-run once to pre-approve.
