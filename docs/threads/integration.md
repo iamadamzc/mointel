@@ -1033,6 +1033,9 @@ SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified
                      Research sized it on a 08-17..09-22 prod copy: max 6 sub-$1 per top 25 -> "complete to #19". BUT that
                      sample is from the OLD $1 FLOOR (0.25 live only since pid 1347535, 09-27 23:17Z) -> understates. Writer
                      builds on (b) with a HARD <=19 cap; $1-$20 SHIP waits on Ops's read of 09-28+ checkpoints.
+                     Ops's 09-28 read (14 checkpoints, current band): $1-$20 in stored top 25 = 13-18 (recap worst, 13); >$20 = 0.
+                     -> (a) GATES EVERY set-range report incl. $1-$20. Writer dev cap 12. Ops queue: range-read measurement,
+                     then (a) (rows, no schema), then backup route / high_res / rvol index. Shape to Research + Integration first.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
                      band piece 4 (due 10-05) NOT ruled by him. Research's order (60a23fa): piece 4 FIRST (the writer's first
