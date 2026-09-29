@@ -62,9 +62,63 @@ export interface ReportSlot {
   relevantUntil: string;
 }
 
+/**
+ * The checkpoint a report needed, by its SCHEDULE. There may be no row to
+ * give an id for -- that is the point of naming it by slot.
+ */
+export interface CheckpointSlotRef {
+  type: AssessmentType;
+  scheduledFor: string;
+}
+
+/**
+ * Why a slot past `relevantUntil` has no report.
+ *
+ * A UNION, NOT A STRING, so an unobservable cause is unrepresentable rather
+ * than merely forbidden: there is no variant for "the market was quiet". Every
+ * member is a state the store records. The trader's words are the panel's,
+ * rendered from `kind`; nothing here is shown verbatim.
+ */
+export type MissedCause =
+  | {
+      kind: 'CHECKPOINT_NOT_RUN';
+      checkpoint: CheckpointSlotRef;
+      /**
+       * RECORDED_MISSED = an assessment row with status MISSED_SUPERSEDED;
+       * NO_ROW = no row at all. Two diagnoses, one trader sentence --
+       * kept apart for diagnostics, never printed.
+       */
+      evidence: 'RECORDED_MISSED' | 'NO_ROW';
+    }
+  | {
+      kind: 'CHECKPOINT_INCOMPLETE';
+      checkpoint: CheckpointSlotRef & { id: number };
+      /**
+       * No report is written from a PARTIAL checkpoint: missing rows would make
+       * a "nothing in our sources" line false.
+       */
+      status: 'RUNNING' | 'PARTIAL' | 'FAILED';
+    }
+  | { kind: 'WRITER_FAILED'; at: string }
+  /** Unchecked text never renders, so a checker failure is a miss. */
+  | { kind: 'CHECKER_FAILED'; at: string }
+  /** The checker struck the headline and every line; an empty report is the forbidden shape. */
+  | { kind: 'ALL_STRUCK'; at: string }
+  /** No writer attempt is recorded for the slot. */
+  | { kind: 'NOT_ATTEMPTED' };
+
 export interface SessionReport {
   kind: ReportKind;
   rangeId: string;
+  /**
+   * The bounds this report was RANKED inside, frozen when it was written.
+   *
+   * Not looked up from `ranges` by `rangeId`: the range list is config, and
+   * Commercial's tier scope may redraw it. A stored $1-$20 report must go on
+   * saying $1-$20 after the config says $1-$15. No label is stored -- a label
+   * is config text; the panel formats one from these.
+   */
+  range: { min: number; max: number };
   tradingDate: string;
   targetTradingDate: string | null;
   /** One per checkpoint read, oldest first. */
@@ -85,10 +139,10 @@ export interface SessionReportsPayload {
   reports: SessionReport[];
   /**
    * Why a slot past `relevantUntil` has no report, keyed by `reportKey`.
-   * An OBSERVABLE cause only ("the 09:25 assessment did not complete") — never
-   * a guess about the market.
+   * ABSENT KEY = no cause established (e.g. a writer still in flight past its
+   * window); the panel then says "missed" and nothing more.
    */
-  missedReasons: Record<string, string>;
+  missedCauses: Record<string, MissedCause>;
 }
 
 export function reportKey(item: Pick<ReportSlot, 'kind' | 'rangeId' | 'tradingDate'>): string {
