@@ -1107,6 +1107,11 @@ SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just be
                  found. Candidates: (i) the Sheet TODAY row / sheetAuto CONFLICT, (ii) he saw red 07:05-07:17 and noticed
                  late, (iii) unseen lag defect. Ops asked for Sheet value + merge provenance. NOBODY tells him "the board
                  was right" until the surface is known.
+OPS RE-READ      12:03:40Z: NO version after 2461 (current since 11:33:03Z); 2458 at 11:17:42Z. So his "just updated"
+                 was not a store change. Latency: IR 11:00:00Z -> fetched 11:17:04Z (bounded by job re-run) -> v2458
+                 11:17:42Z; Benzinga 11:29:47Z -> v2461 11:33:03Z. 247marketnews piece never ingested (not a source).
+                 Ops called it a display defect -- CORRECTED by this seat: unexplained until Sheet read + his answer
+                 (surface / reload / drawer open). useDashboard polls 4 s, skips hidden, reloads on visibilitychange.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       Undefined to the model; reverse splits graded red (MTNB today; PFSA x2, SCNI on 08-23). Research to DRAFT
