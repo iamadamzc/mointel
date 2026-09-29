@@ -1384,6 +1384,17 @@ OUTCOME TEST     Research 849b8b5 (read): composite FAILS as registered (+8.3 pp
                  count +3-5 pp, CI spans 0. Daily vs 15m no difference. Caveats: 10 sessions, intraday only, 85
                  name-sessions excluded for splits/jumps. Run BEFORE tonight's grading, not after as ordered -- local,
                  no harm; noted, not raised. -> "what happened" weighting = his preference, label it; recency = measured.
+PLACEBO TESTS    Research 009edef (pre-reg 1928179, amended 0544670 before computing; read): levels NO BETTER than
+                 non-level prices at the same height. Daily 1,189 run days / 99 names: -1.2 pp CI [-2.6,0.2]; 1-4 sessions
+                 -6.2 pp [-8.9,-3.4] (recent tops broken MORE); 3-12 mo +4.0 n.s. Intraday -2.3 / -1.3 pp. FAIL.
+                 -> SUPERSEDES the outcome test's "recency is measured": that test had no control. I told HIM recency is
+                 supported -> RETRACTED to him next message.
+HIS RULING       Research's session 22:44:18Z (read): "a, show all 7." answering "(a) Show all 7. Yours are always
+                 included. The newest are highlighted, since recency is what the data supports." SHOW ALL stands;
+                 NEWEST HIGHLIGHTED rests on the withdrawn premise -> put to him by THIS seat (Research told not to).
+                 Research owns: naming ("prior highs" vs "resistance"), asked 22:47:17Z.
+REACTION TEST    approved here (order call; local, no spend), after tonight's 22:08 ET check. His Q2 in Research's
+                 session answered by that.
 COST ROUTED      Commercial-tmi local_2ce868d2 (title + cwd checked): plan coverage (Algo Trader Plus, commercial.md
                  l.159), rate limits, terms for historical 15m + daily. Public docs only. Owed to this seat.
 
