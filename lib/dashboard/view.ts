@@ -157,43 +157,6 @@ export function selectFocusRows(
 }
 
 /**
- * The drawer's `Rank Change` reading, and the three things a null or a zero can
- * mean.
- *
- * - **null on the engine's own board** is a name with no previous rank: it just
- *   entered. `New` is a claim, and a true one.
- * - **null on a board re-ranked inside the viewer's price range** is an OMITTED
- *   ordinal: the server nulls every stored movement there (`scrubBandOrdinals`),
- *   because movement in the engine's band is not movement in his. Printing `New`
- *   would tell him every name on the board just arrived. After the default flip
- *   that is every drawer on his default board, so it is keyed on the payload's
- *   `ordinalsOmitted`, never on the value.
- * - **0** is an interval artifact (movement since the previous engine tick),
- *   not a reading that the rank held; see the drawer's comment.
- */
-export function rankChangeReading(
-  change: number | null,
-  ranksOmitted: boolean,
-): { value: string; title?: string } {
-  if (ranksOmitted) {
-    return {
-      value: '—',
-      title:
-        'Not shown on a custom price range: rank movement is measured in the desk’s own ranking, not in the range you chose.',
-    };
-  }
-  if (change === null) return { value: 'New' };
-  if (change === 0) {
-    return {
-      value: '—',
-      title:
-        'Not shown: rank change is measured since the previous engine tick, an interval over which it is always zero. Not a reading that this name has not moved.',
-    };
-  }
-  return { value: change > 0 ? `+${change}` : String(change) };
-}
-
-/**
  * Why a ticker is still on the board when it no longer fits the discovery band.
  *
  * The engine "latches" a symbol that qualified inside the price range so it

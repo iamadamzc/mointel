@@ -15,7 +15,6 @@ import {
   knownSupplyShares,
   resolveRisk,
 } from '@/lib/dashboard/risk';
-import { rankChangeReading } from '@/lib/dashboard/view';
 import { etTimestamp, relativeAge, resolveWhy } from '@/lib/dashboard/why';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -506,46 +505,24 @@ describe('resolveWhy', () => {
 });
 
 /*
- * ZERO IS A MEASUREMENT, AND THIS ONE IS AN ARTIFACT.
+ * THE DRAWER PRINTS NO RANK MOVEMENT. His ruling, 2026-09-29T02:06:46Z: "yes
+ * remove it" (the drawer's Rank Change line).
  *
- * `rankChange` is movement since the PREVIOUS ENGINE TICK, and the engine
- * re-ranks continuously -- so between two consecutive ticks a rank almost never
- * differs and the flush stores 0. Measured on production: 45,249 non-null rows
- * and not one non-zero, while ranks demonstrably move.
- *
- * The drawer printed "0" on every name, asserting that a rank had not moved
- * about names whose rank is moving. The BOARD was already correct -- its arrow
- * is gated on falsiness, so it rendered nothing -- and the drawer was the one
- * making a claim.
+ * It could only say nothing or say something false: `rvolRankChange` is
+ * movement since the previous engine tick (always 0 in 45,249 stored rows), and
+ * on a board ranked inside the viewer's range the server nulls it, which the
+ * field printed as `New` -- every stock on his $1-$20 default claiming it had
+ * just arrived. Asserted on the READ, not only the label, so the field cannot
+ * come back under another name.
  */
-describe('the drawer does not print a rank change it cannot measure', () => {
-  /*
-   * BEHAVIOUR, NOT SOURCE. These three read the drawer's inline ternary until
-   * the reading moved into `rankChangeReading` (the custom-range fix: a null
-   * there is an OMITTED ordinal, not a new name). A source match would have kept
-   * passing on a comment that still says "previous engine tick" after the logic
-   * left the file. The custom-range half is in `rankChange.test.ts`.
-   */
-  it('renders an absence for zero rather than the number', () => {
-    expect(rankChangeReading(0, false).value).toBe('—');
-  });
-
-  /*
-   * `New` is a REAL state -- the name was not in the previous ranking at all --
-   * and must not be collapsed into the artifact case.
-   */
-  it('keeps New distinct from the suppressed zero', () => {
-    expect(rankChangeReading(null, false).value).toBe('New');
-    expect(rankChangeReading(0, false).value).not.toBe('New');
-  });
-
-  /*
-   * The absence carries what it would be wrong about. A bare dash says nothing;
-   * this says the interval is the reason and that it is NOT a reading of no
-   * movement.
-   */
-  it('says why it is absent rather than only that it is', () => {
-    expect(rankChangeReading(0, false).title).toMatch(/previous engine tick/i);
-    expect(rankChangeReading(0, false).title).toMatch(/not a reading that this name has not moved/i);
+describe('the drawer prints no rank movement', () => {
+  it('has no Rank Change field and reads no rank movement', async () => {
+    const { promises: fs } = await import('node:fs');
+    const source = await fs.readFile('components/TickerDrawer.tsx', 'utf8');
+    // The control: the neighbouring field is read the same way, so an empty or
+    // renamed file cannot pass this vacuously.
+    expect(source).toContain('label="RVOL Rank"');
+    expect(source).not.toContain('label="Rank Change"');
+    expect(source).not.toMatch(/demand\.rvolRankChange|t\.rvolRankChange/);
   });
 });
