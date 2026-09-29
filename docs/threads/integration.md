@@ -1085,6 +1085,11 @@ SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just be
                  Civil segment) -- a positive. ROUTED to Research-tmi: store read of every SLND version (catalyst
                  grade/direction/evidence), whether the article existed at answer time, mechanism, one case or a class.
                  Any stored-row correction = production write -> him. OPEN.
+                 Research LEAD (code, verified by this seat at 0342e7d): only red grade WEAK_NEGATIVE_DILUTIVE renders
+                 "WEAK / NEGATIVE / DILUTIVE" (view.ts:51); grades undefined to the model (schema.ts enum, no prompt
+                 text). Rivals: award absent from evidence; prior grade anchoring. Store reads Q0-Q5 sent to Ops.
+                 HIS UPDATE: "the catalyst was just updated in the last 2 minutes" -> reads now = red version vs new
+                 version + article->fetch->job->version latency chain. Rendering change = board behaviour -> him.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
