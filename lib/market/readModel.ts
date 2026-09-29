@@ -44,10 +44,11 @@ import {
   readDeskEvents,
   loadMinuteBars,
   readDemandStates,
-  readRangeCandidates,
+  readIneligibleSymbols,
+  readRangeBoard,
   readFeedHealth,
 } from './store/repo';
-import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
+import { rankLists, resolveRequestedRange, sameRange } from './rangeRank';
 import {
   readCurrentAnalyses,
   readLatestJobForTicker,
@@ -104,6 +105,24 @@ function resetConnection(): void {
     /* already gone */
   }
   globalStore.__momentumMarketDb = null;
+}
+
+/**
+ * The universe's ineligible symbols, held for a minute. The range read needs
+ * them on every poll; the universe changes about daily; re-reading per request
+ * cost ~3 ms of Ops's 20 ms budget (measured on the local store copy).
+ */
+const INELIGIBLE_TTL_MS = 60_000;
+let ineligibleCache: { db: MarketDatabase; at: number; set: Set<string> } | null = null;
+
+function ineligibleSymbols(db: MarketDatabase): Set<string> {
+  const now = Date.now();
+  if (ineligibleCache && ineligibleCache.db === db && now - ineligibleCache.at < INELIGIBLE_TTL_MS) {
+    return ineligibleCache.set;
+  }
+  const set = readIneligibleSymbols(db);
+  ineligibleCache = { db, at: now, set };
+  return set;
 }
 
 function offlineHealth(reason: string): MarketFeedHealth {
@@ -496,9 +515,17 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       : band;
     const inRange = !sameRange(served, band);
 
-    const rangeRanking = inRange
-      ? rankInRange(
-          readRangeCandidates(db, tradingDate, served),
+    const rangeBoard = inRange
+      ? readRangeBoard(db, tradingDate, served, {
+          limit: config.internalRank,
+          afterHours: board === 'AFTER_HOURS',
+          ineligible: ineligibleSymbols(db),
+        })
+      : null;
+    const rangeRanking = rangeBoard
+      ? rankLists(
+          rangeBoard.day,
+          rangeBoard.evening,
           readDemandStates(db, tradingDate, {
             limit: 0,
             extraSymbols: options.extraSymbols,
@@ -506,7 +533,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
           }),
           board,
           config.internalRank,
-          served,
+          rangeBoard,
         )
       : null;
 
