@@ -1472,6 +1472,9 @@ BRAND HEADER     Design: his "the compact lockup" (Design's session 983e1ccf 23:
                  = build yes; SHIP yes his in Ops's session. c01a5b4 on main; cut 1b66f5c on 803008b: patch-id a0da3aea
                  == c01a5b4, 2 files, fa61410 out -- but 1b5ead6 (gzip) NOT in cone -> REJECTED, re-pick onto 1b5ead6
                  asked (pre-registered 176 test files). Window: not 19:30 ET-22:08 check; not 04:00-10:15 ET 09-30.
+                 RE-CUT 74ac35c (tag design/brand-header-on-1b5ead6) REPLAYED + APPROVED: parent 1b5ead6; rev-list 1;
+                 diff md5 == c01a5b4's; patch-id a0da3aea; gzip in; fa61410 out; 176. Design's gate log not on this
+                 machine -> Ops gates before ship. Sent to Ops: ask him AFTER 22:08 ET; window as above.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
