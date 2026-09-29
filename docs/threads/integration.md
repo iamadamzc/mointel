@@ -921,6 +921,11 @@ mechanical: no clock time goes into any message or file without a `zoneinfo`/`%c
 **HIS RULING 2026-09-29T03:17:09Z (this session, read at his turn): "keep this session".** *No hand-off. The standing
 cure: no clock time or duration goes into any message or file without a `zoneinfo`/`%cI` read in the same step. A
 fourth instance goes back to him.*
+```
+"~03:5xZ" written into the range-set VOID ruling;     same                               YES, 4th       self (zoneinfo
+  the clock read 03:49:56Z immediately after                                                             read after)
+```
+*FOURTH INSTANCE, 2026-09-29T03:49:56Z. Goes back to him, as committed.*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
