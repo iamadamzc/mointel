@@ -1,5 +1,7 @@
 # Catalyst grade definitions — DRAFT for his decision
 
+> **✅ ADOPTED — his ruling 2026-09-29T14:46:55Z ("2, your recs"): these definitions, reverse splits by context (option C), and the red grade NOT split. Built at `a794e20` as `lib/research/interpret/catalystGrades.ts`, which is now the source of truth; this draft is the record of the reasoning. One clause was not adopted: "fresh" / "outside the fresh window", because age is computed from dates (his 2026-09-24 ruling).**
+
 *Research seat, 2026-09-29, on Integration's routing after the SLND report.
 **DRAFT, NO BUILD.** A claim decision is his; this sets out what the grades
 would mean and the options where it is not obvious. Every basis below is a
