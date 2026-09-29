@@ -1055,6 +1055,11 @@ COLUMNS CUT      Design cut design/columns-on-121f97c -> c103267 before the hold
                  retired seat's transcript (306ac51c-*.jsonl). f4063ca SUPERSEDED.
 ORDER (ruled)    Columns c103267 FIRST (on HIS SHIP YES, asked by Ops -- 03:51:42Z was a yes to PREPARE); timer, on his yes, re-picked by Ops onto confirmed c103267 (pre-registered
                  170 files, 1 over, patch-id 7ae18ef5). If the timer goes first instead, Design re-picks onto 7135930 (170).
+HIS SHIP YES     "yes to both ships" in Ops's session (per Ops; he told this seat "yes to both in ops" directly).
+                 Columns c103267 DEPLOYING (Ops, full gate, RESTART_MARKET=no). Timer re-picked by Ops: tag
+                 ops/flush-timer-on-c103267 -> 0342e7d. REPLAYED: 1 over c103267, patch-id 7ae18ef5, 170 files ==
+                 pre-registered, +/- lines identical to 7135930, fa61410 not in cone. APPROVED. 7135930 SUPERSEDED.
+                 Ships after /proc shows c103267. His chat Integration-tmi-retired: ARCHIVED (his word here).
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
