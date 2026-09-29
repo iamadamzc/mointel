@@ -59,10 +59,13 @@ everything inside the quote.
 >    under 20 ms in every case. Measured idle on 09-28: `$1–$20` DAY max was 25.7 ms (FAIL).
 >    If any case fails, the range set `520142c` is void and the fix is an index
 >    on `ticker_session(trading_date, rvol DESC)`: a schema bump, behind item 5.
->    **The $0.25–$50 case must ALSO be measured AFTER the restart** (item 4): the
->    capture band grows ticker_session by ~850 names and that range by ~25%, so
->    a pre-restart pass there does not carry over. `$1–$20` and the narrow case
->    are unaffected by the ceiling.
+>    **ALL THREE cases must be measured again AFTER the restart** (item 4). The
+>    plan (measured 09-28) is `SEARCH ts USING INDEX (trading_date=?) | USE TEMP
+>    B-TREE FOR ORDER BY`: every call reads EVERY tracked row for the date,
+>    whatever the range, and the capture band adds ~850 tracked names. So a
+>    pre-restart FAIL is conclusive, but a pre-restart PASS gates nothing, and
+>    the range set's yes waits for the post-restart reading. (Integration's
+>    correction, end of ops.md.)
 > 3. **The range set `520142c`** (tag `design/range-set-on-2256c63`, cut FROM
 >    production, 10 commits, 167 test files, web-only). It ships only on item 2
 >    passing plus **his yes in your session**. Tell Design-tmi when it is live.
