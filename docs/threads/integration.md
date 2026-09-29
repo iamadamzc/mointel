@@ -1119,11 +1119,24 @@ ROWS RE-PICK     803008b13d78 (annotated tag ops/catalyst-rows-on-9d554e0 -> tag
                  REPLAYED + APPROVED: rev-list a391c61..803008b = 2; patch-id becf06cb == 65cf1f5 == d3dc32d; 3 files
                  byte-identical to 65cf1f5; no overlap with 9d554e0's 5; test files 173 -> 174 -> 175 = pre-registered;
                  fa61410 not in cone.
-GZIP             his yes, NOT BUILT: Ops's edit to deploy/aws/nginx-tls.conf refused by the permission control. Ops put
-                 it back to him. Built-not-live list: move to approved-not-built until a route exists.
+GZIP             his yes, NOT BUILT (no commit, no sha): Ops's edit to deploy/aws/nginx-tls.conf refused by the
+                 permission control before any commit. Ops put it back to him. APPROVED-NOT-BUILT.
+                 CONE HAZARD (read at a391c61 deploy/aws/deploy.sh:108-137): nginx-locations.conf + nginx.conf install on
+                 EVERY deploy; nginx-tls.conf re-rendered on EVERY deploy while /etc/mointel/tls-domain + cert exist. So a
+                 gzip commit ships with its sha, and ANY later cone without it REMOVES it: once live, it must be an
+                 ancestor of every following ship (git merge-base --is-ancestor <gzip> <sha>).
+/proc 15:39:10Z  (Ops) web 1525925 / research 1525974 / assess 1526049 on a391c61, NR 0; market 1347535 on 3b78b8c, NR 0.
+                 9d554e0 did NOT go at 11:34 ET (gate still running).
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
+```
+**THE EIGHTEENTH SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+1 told Ops gzip "built-not-live" when Ops's own        a three-state answered in two      no       Ops
+  message said the edit was refused (no commit, no     (the 14th's class): wrote the
+  sha); my note and HIS message had it right.          label, not what the message said
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
