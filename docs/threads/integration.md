@@ -1203,6 +1203,12 @@ HEARTBEAT FIX   research/heartbeat-on-0342e7d -> c49bb3a (main 380773a) REPLAYED
                  isBusy. APPROVED conditional on OPS OWNER REVIEW (worker/research.ts, lib/market/store). claimQueuedJobs
                  ~33 s half = Ops's. QUEUE from 0342e7d: memo 635a9ae, poll fix 626b3f6, heartbeat c49bb3a (disjoint);
                  first yes ships first, rest re-picked: PRE-REGISTERED 172 then 173. All after 10:00 ET, his yes each.
+RESTART RULED   HIS TURN, Ops's session (a36b4a67-*.jsonl), 2026-09-29T11:04:49Z: "tonight at 20:15, and allow it" --
+                 answering Ops's 04:56:26Z ask (which evening; no-rollback consequence; $50 setting in env script + box
+                 together). Precisions sent to Ops: BOTH MIN=0.25 and MAX=50; floor 9508fb9/3810b9e. "allow it" = the
+                 11:05 ET range read. Ops: heartbeat must be LIVE BEFORE 20:15 (restart recreates the 09-25 lock).
+SHIP ORDER      REVISED for the deadline, after 10:00 ET, his yes each: 1 heartbeat c49bb3a (171, owner-approved by
+                 Ops) -> 2 memo re-picked (172) -> 3 poll fix re-picked (173). Partial yes keeps relative order.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
@@ -1232,6 +1238,10 @@ error                                                  TYPE                     
 "12:34Z-ish" to the new Research seat for when the     A CLOCK TIME WRITTEN WITHOUT       no (1st in   self, on
   catalyst questions went to him; record = commit       READING IT (the 16th's class,     this seat)   re-reading
   63b6225 %cI 08:34:54-04:00. Corrected next message.   named in this seat's prompt)                   the send
+"not happened and not scheduled" (restart) to the new  a claim of ABSENCE from a check     YES -- the   self, on
+  Research seat; his 11:04:49Z "tonight at 20:15"      that could not see it (read only   'value not   Ops's
+  existed. I read only Ops's last 8 messages.          Ops's last 8 messages)             read' class  '20:15'
+  Corrected to Research next message.                                                   again        mention
 "His yes already exists" (columns ship) to Ops and    a ruling's SCOPE relayed without    no       Ops (read the
   to him; his 03:51:42Z answered a question whose       reading the question it answered            question text)
   Yes said "Ops asks you for the ship yes in its
