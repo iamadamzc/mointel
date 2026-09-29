@@ -969,6 +969,12 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      local main, unpushed): SQL-bounded readRangeBoard (local 7.0/9.6 ms day, 11.7/14.3 AH) + diedWhileRanked
                      graveyard fact. Remaining for the range set: Ops's LIVE measurement < 20 ms (asked), Design's
                      graveyard.ts switch (new Design local_cad132e4 told).
+                     ~01:45Z: 2256c63 LIVE (web 1443928/research 1443994/assess 1444063, Ops /proc); market 3b78b8c. af15a13
+                     out of the set. LIVE idle measurement of d2c2582 (Ops, 21:31 ET): $0.25-$50 day 15.7 med/17.9 max, but
+                     $1-$20 (THE DEFAULT) day max 25.7 ms. GATE RESTATED BY THIS SEAT: warm max < 20 ms for EVERY range
+                     ($0.25-$50, $1-$20, a narrow one), both boards, under load -- the first wording named one case. Ops
+                     re-measures in RTH 09-29; fails -> index on ticker_session(trading_date, rvol DESC) + AH one, after
+                     the backup route. Remaining set: d2c2582 + 8d8e50c + 5e8b13c + Design's graveyard switch + $1-$20 flip.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
