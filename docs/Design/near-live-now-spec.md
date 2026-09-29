@@ -12,6 +12,35 @@ reintroduces it.**
 This file is the spec. The choices that are his are in "What he decides" and are
 marked as his. Everything else is Design's or Research's and does not go to him.
 
+## HIS ANSWER, 2026-09-29T02:30:43Z, to Design directly, verbatim
+
+> *"same exact pattern as the previous minute format, except now it will show
+> the last minute in 10 sec increments instead of 5 min in 1 min increments."*
+
+**Binding content:** the cell keeps its shape, a number above bars. **The bars
+become the last minute as six 10-second buckets**, replacing five 1-minute
+slots. **The number is the newest completed 10 s bucket, counted, not
+scaled:** "the same pattern" means the number is the last slot of the bars, as
+today's is the last settled minute of its bars. That settles the unit question
+below as (A), and settles more than it asked: the SPARKLINE changes grain too.
+
+**What cannot match "same exact" yet, stated rather than silently dropped:**
+today's cell also draws PRICE POINTS per minute and colours the bars by
+direction (`pricePointsView`, `directionTone`). `trades.db` holds COUNTS only,
+so the first version draws the six bars neutral, with no price points. Price
+per 10 s bucket is an engine change that rides the same market-worker restart
+as the measured zeros (Research's (2)). Design's reading, recorded as
+Design's: not a question for him unless he objects.
+
+**Research's field changes shape accordingly:** the last SIX completed buckets,
+not one: `nowBuckets: Array<{ bucketEnd: string; trades: number | null }>`, oldest
+first, `null` = not measured. Under the counts-only interim, a name with no
+bucket rows in the minute is no-live-data (the whole cell falls back). A name
+with some rows has its missing buckets read as 0: it was subscribed for some
+of the minute, and a silent 10 s inside a watched minute is the common case.
+**The residue: a name that joined mid-minute shows its pre-join buckets as 0
+rather than unmeasured, until the intervals land.**
+
 ## What exists today, opened, not recalled
 
 - The column prints `tradesLastMinute(row.demand)`, the last SETTLED slot of
@@ -52,6 +81,8 @@ is the 10–20 s he was offered.
 > **Recommendation: (A).** It never claims a measurement the desk did not take.
 > The sort order is identical either way, so this is only about how the number
 > reads.
+>
+> **SETTLED (A) by his 02:30:43Z answer above.**
 
 **The header stays `Now`** (his ruling, 2026-09-25). Its sub-line changes from the
 minute lag to the new grain: `last 10s` under (A), `10s pace` under (B). The
