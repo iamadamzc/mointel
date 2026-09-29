@@ -1033,6 +1033,12 @@ the memo)        07-10 ET, no deploy unit, not inside the 20:15 motion; Research
                  queueing shown at rest (the 2.4-8.9 s was during probes; one viewer + poll fix cannot self-queue).
                  Ops: the consistent copy WRITES a multi-GB file on the box and moves data to this PC = a production write
                  + data move -> Ops put it to HIM in its session (after 16:05 ET, before 20:15 if yes). Correct call.
+LEAD (local)    Research, LOCAL store only (ratios): with the memo, 56% of build = loadMinuteBars per board name
+                 (overlayLiveCycle); `WHERE symbol=? AND trading_date=? ORDER BY ts` uses the (symbol, ts) PK on symbol
+                 alone and walks EVERY retained session. Adding `AND ts >= (D-1)T00:00Z` -> identical rows on 50 names,
+                 per-name read 119 -> 59 ms per pass. UNKNOWN: box retained-session count (default 20) and share. Fix
+                 would be OPS's (lib/market/store/repo.ts); no write cost. Invariant to check on the copy first:
+                 COUNT(*) minute_bars WHERE ts < date(trading_date,'-1 day') = 0. Waits on the snapshot copy (his yes).
 FOLLOW-UPS       Design's "board not updating" state and useDashboard's same abort pattern: recorded by Design, NOT put
 (not approved)   to him yet.
 RULE             No heavy /api/market probes 07:00-10:00 ET (Ops + Design adopted).
