@@ -1356,6 +1356,19 @@ GZIP LIVE        PRODUCTION = 1b5ead6 (Ops /proc 22:26:01Z: web 1567784 start 22
                  Proxied gzip OBSERVED on /privacy only. /api/market JSON NOT OBSERVED (Basic Auth; no test credential
                  used) -> OWED: Ops reads the access log bytes on the first board poll (expect ~20% of raw; last raw
                  200 was 1,172,059 B at 22:24:50Z). CONE RULE IN FORCE: every later ship has 1b5ead6 as ancestor.
+HIS RULINGS      THIS SESSION (first-hand, after 22:26Z), LEFT-AND-UP:
+                 (1) "1, yes" to "show every candidate first, labelled as candidates; selectivity later if he marks
+                     charts" (the question had two options; yes read as the recommendation). 10-chart marking NOT committed.
+                 (2) "todays run tops count as resistance yes. but for premarket there will typically not be todays tops".
+                 (3) SPEC, "a practical starting point, not a validated cutoff": 6-12 months daily; last 30 days 15m;
+                     daily also covering the 30 days. No fixed expiry ("two years back and just above today's price, I'd
+                     still mark it"). Weight by what happened at the level (major peak + sharp selloff; repeated
+                     rejection) over an ordinary high; age reduces confidence, does not erase. Example $4.20 / $4.60.
+                     Cited: Fidelity (strength), Warrior Trading small-cap article, an unnamed intraday decay study.
+                 (4) The hand-off question (my ledger repeat) went UNANSWERED -> this seat continues on the recommendation
+                     given (through tonight, hand off after the 09-30 grades read). Not his ruling; my default.
+                 ROUTED to Research local_d6996864 (title + cwd checked): feasibility only -- daily_bars depth +
+                 adjustment, 30d 15m fetch count (cost -> Commercial + him), pre-registered weighted-level scoring.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
