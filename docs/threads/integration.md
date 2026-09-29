@@ -1463,6 +1463,11 @@ SPEC AMENDED     c9f9835 (diff read): ONE LADDER PER WINDOW, merged + clustered 
 RESEARCH SEAT    told HIM it is near saturation (a repeated class, research.md); proposes: grade tonight's items 1 + 6,
                  then hand off; successor takes 04:33 ET items, the 09-30 grades read, the levels code. HIS decision,
                  asked in Research's session -- not re-asked here. If he says yes: new Research id by title before routing.
+                 HIS RULING 23:07:41Z (Research's session, read): "a, hand off after tonight's checks" (75debd7).
+                 local_d6996864 grades items 1 + 6 tonight, then retires. Successor: 04:33 ET items 2-5, the 10:12 ET
+                 grades read, the levels compute (c9f9835). OPS TOLD: after 22:08 ET route Research BY TITLE (not
+                 archived, not d6996864); if none exists at fire time, raw rows -> committed file + path to Integration.
+                 HAZARD: he must open the new Research chat; until then Research-bound results sit in files.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
