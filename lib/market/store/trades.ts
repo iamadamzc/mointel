@@ -21,13 +21,36 @@ import Database from 'better-sqlite3';
 
 export type TradesDatabase = Database.Database;
 
-export const TRADES_SCHEMA_VERSION = 1;
+/**
+ * v1: counts per 10s bucket. v2 (2026-09-29, his Now column -- "trade counts,
+ * dots and direction color"): the last trade price in each bucket, the feed
+ * coverage intervals that turn an absent bucket into a measured zero, and the
+ * worker's last-flush clock. v2 is purely additive; v1 rows read NULL prices.
+ */
+export const TRADES_SCHEMA_VERSION = 2;
 
 export interface TradeBucketRecord {
   symbol: string;
   /** Bucket start, epoch ms. */
   bucketTs: number;
   trades: number;
+  /** Price of the latest trade in the bucket by trade time; absent from v1 producers. */
+  lastPrice?: number | null;
+  /** Trade time (epoch ms) of that latest trade. */
+  lastTs?: number | null;
+}
+
+/**
+ * A span during which the stream was delivering trades for a symbol AND the
+ * engine was counting them. A bucket with no row inside an interval is a
+ * measured zero; outside every interval it is unknown.
+ */
+export interface FeedIntervalRecord {
+  symbol: string;
+  openedMs: number;
+  /** Heartbeat, advanced every flush while open: the honest end of an interval a crash left open. */
+  lastSeenMs: number;
+  closedMs: number | null;
 }
 
 const SCHEMA = `
@@ -36,10 +59,40 @@ CREATE TABLE IF NOT EXISTS trade_buckets (
   trading_date TEXT    NOT NULL,
   bucket_ts    INTEGER NOT NULL,
   trades       INTEGER NOT NULL,
+  last_price   REAL,
+  last_ts      INTEGER,
   PRIMARY KEY (symbol, trading_date, bucket_ts)
 ) WITHOUT ROWID;
 CREATE INDEX IF NOT EXISTS idx_trade_buckets_date ON trade_buckets (trading_date);
+CREATE TABLE IF NOT EXISTS feed_intervals (
+  symbol       TEXT    NOT NULL,
+  trading_date TEXT    NOT NULL,
+  opened_ms    INTEGER NOT NULL,
+  last_seen_ms INTEGER NOT NULL,
+  closed_ms    INTEGER,
+  PRIMARY KEY (symbol, trading_date, opened_ms)
+) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS idx_feed_intervals_date ON feed_intervals (trading_date);
+CREATE TABLE IF NOT EXISTS trades_meta (
+  key   TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
 `;
+
+/**
+ * v1 -> v2 on an existing store: add the two price columns in place. CREATE
+ * TABLE IF NOT EXISTS cannot add columns to a table that already exists, so
+ * without this a v1 file would be stamped v2 and still lack them.
+ */
+function migrateToV2(db: TradesDatabase): void {
+  const columns = new Set(
+    (db.prepare('PRAGMA table_info(trade_buckets)').all() as Array<{ name: string }>).map(
+      (column) => column.name,
+    ),
+  );
+  if (!columns.has('last_price')) db.exec('ALTER TABLE trade_buckets ADD COLUMN last_price REAL');
+  if (!columns.has('last_ts')) db.exec('ALTER TABLE trade_buckets ADD COLUMN last_ts INTEGER');
+}
 
 export function openTradesStore(file: string): TradesDatabase {
   const resolved = path.resolve(file);
@@ -71,8 +124,11 @@ export function openTradesStore(file: string): TradesDatabase {
         `v${TRADES_SCHEMA_VERSION} -- refusing to open`,
     );
   }
-  db.exec(SCHEMA);
-  if (current < TRADES_SCHEMA_VERSION) db.pragma(`user_version = ${TRADES_SCHEMA_VERSION}`);
+  db.transaction(() => {
+    db.exec(SCHEMA);
+    if (current < 2) migrateToV2(db);
+    if (current < TRADES_SCHEMA_VERSION) db.pragma(`user_version = ${TRADES_SCHEMA_VERSION}`);
+  })();
   return db;
 }
 
@@ -94,14 +150,33 @@ export function upsertTradeBuckets(
   rows: TradeBucketRecord[],
 ): number {
   if (rows.length === 0) return 0;
+  // The price follows the LATER trade time, never the later write: a revived or
+  // out-of-order emission carries an earlier last_ts and must not overwrite a
+  // later price -- the same failure MAX guards against for the count.
   const statement = db.prepare(
-    `INSERT INTO trade_buckets (symbol, trading_date, bucket_ts, trades)
-     VALUES (?, ?, ?, ?)
+    `INSERT INTO trade_buckets (symbol, trading_date, bucket_ts, trades, last_price, last_ts)
+     VALUES (?, ?, ?, ?, ?, ?)
      ON CONFLICT (symbol, trading_date, bucket_ts)
-     DO UPDATE SET trades = MAX(trades, excluded.trades)`,
+     DO UPDATE SET
+       trades = MAX(trades, excluded.trades),
+       last_price = CASE WHEN excluded.last_ts IS NOT NULL
+                          AND (last_ts IS NULL OR excluded.last_ts > last_ts)
+                         THEN excluded.last_price ELSE last_price END,
+       last_ts = CASE WHEN excluded.last_ts IS NOT NULL
+                       AND (last_ts IS NULL OR excluded.last_ts > last_ts)
+                      THEN excluded.last_ts ELSE last_ts END`,
   );
   const write = db.transaction((batch: TradeBucketRecord[]) => {
-    for (const row of batch) statement.run(row.symbol, tradingDate, row.bucketTs, row.trades);
+    for (const row of batch) {
+      statement.run(
+        row.symbol,
+        tradingDate,
+        row.bucketTs,
+        row.trades,
+        row.lastPrice ?? null,
+        row.lastTs ?? null,
+      );
+    }
   });
   write(rows);
   return rows.length;
@@ -125,7 +200,11 @@ export function openTradesStoreOrNull(
 ): TradesDatabase | null {
   try {
     const db = openTradesStore(file);
-    logger.info(`[trades] ten-second store: ${file}`);
+    const closed = closeAbandonedFeedIntervals(db);
+    logger.info(
+      `[trades] ten-second store: ${file}` +
+        (closed > 0 ? ` (closed ${closed} feed interval(s) a previous run left open)` : ''),
+    );
     return db;
   } catch (error) {
     logger.error(
@@ -148,12 +227,16 @@ export function persistTradeBuckets(
   tradingDate: string,
   logger: TradesLogger,
   redactError: (error: unknown) => string = String,
+  nowMs: number = Date.now(),
 ): { written: number; discarded: number } {
   const buckets = drain();
-  if (buckets.length === 0) return { written: 0, discarded: 0 };
   if (!store) return { written: 0, discarded: buckets.length };
   try {
-    return { written: upsertTradeBuckets(store, tradingDate, buckets), discarded: 0 };
+    const written = buckets.length > 0 ? upsertTradeBuckets(store, tradingDate, buckets) : 0;
+    // Every flush, trades or not: a quiet minute must read as quiet, not as a
+    // worker that stopped. The Now column's staleness is measured from this.
+    setLastFlushMs(store, nowMs);
+    return { written, discarded: 0 };
   } catch (error) {
     logger.error(`[trades] write failed: ${redactError(error)}`);
     return { written: 0, discarded: buckets.length };
@@ -168,11 +251,103 @@ export function loadTradeBuckets(
   return (
     db
       .prepare(
-        `SELECT symbol, bucket_ts AS bucketTs, trades FROM trade_buckets
-         WHERE symbol = ? AND trading_date = ? ORDER BY bucket_ts`,
+        `SELECT symbol, bucket_ts AS bucketTs, trades, last_price AS lastPrice, last_ts AS lastTs
+         FROM trade_buckets WHERE symbol = ? AND trading_date = ? ORDER BY bucket_ts`,
       )
       .all(symbol, tradingDate) as TradeBucketRecord[]
   );
+}
+
+/** Buckets for many symbols from `fromMs`, in one read: the Now column asks for every board name at once. */
+export function loadRecentTradeBuckets(
+  db: TradesDatabase,
+  symbols: readonly string[],
+  tradingDate: string,
+  fromMs: number,
+): TradeBucketRecord[] {
+  if (symbols.length === 0) return [];
+  return db
+    .prepare(
+      `SELECT symbol, bucket_ts AS bucketTs, trades, last_price AS lastPrice, last_ts AS lastTs
+       FROM trade_buckets
+       WHERE trading_date = ? AND bucket_ts >= ? AND symbol IN (${symbols.map(() => '?').join(',')})
+       ORDER BY symbol, bucket_ts`,
+    )
+    .all(tradingDate, fromMs, ...symbols) as TradeBucketRecord[];
+}
+
+/**
+ * Writes interval state from the engine. Opening inserts; a heartbeat only ever
+ * moves last_seen_ms FORWARD; closing sets closed_ms once and never reopens.
+ */
+export function upsertFeedIntervals(
+  db: TradesDatabase,
+  tradingDate: string,
+  intervals: FeedIntervalRecord[],
+): number {
+  if (intervals.length === 0) return 0;
+  const statement = db.prepare(
+    `INSERT INTO feed_intervals (symbol, trading_date, opened_ms, last_seen_ms, closed_ms)
+     VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT (symbol, trading_date, opened_ms)
+     DO UPDATE SET last_seen_ms = MAX(last_seen_ms, excluded.last_seen_ms),
+                   closed_ms = COALESCE(closed_ms, excluded.closed_ms)`,
+  );
+  db.transaction((batch: FeedIntervalRecord[]) => {
+    for (const row of batch) {
+      statement.run(row.symbol, tradingDate, row.openedMs, row.lastSeenMs, row.closedMs);
+    }
+  })(intervals);
+  return intervals.length;
+}
+
+/**
+ * Closes every interval a previous run left open, at its OWN last heartbeat --
+ * never at "now". A worker that crashed stopped observing at its last flush;
+ * closing later would claim measured zeros for minutes nobody watched. Called
+ * once when the worker opens the store. Returns how many it closed.
+ */
+export function closeAbandonedFeedIntervals(db: TradesDatabase): number {
+  return db
+    .prepare('UPDATE feed_intervals SET closed_ms = last_seen_ms WHERE closed_ms IS NULL')
+    .run().changes;
+}
+
+/** Intervals overlapping [fromMs, now): still open, or ended at or after fromMs. */
+export function loadFeedIntervals(
+  db: TradesDatabase,
+  symbols: readonly string[],
+  tradingDate: string,
+  fromMs: number,
+): FeedIntervalRecord[] {
+  if (symbols.length === 0) return [];
+  return db
+    .prepare(
+      `SELECT symbol, opened_ms AS openedMs, last_seen_ms AS lastSeenMs, closed_ms AS closedMs
+       FROM feed_intervals
+       WHERE trading_date = ? AND COALESCE(closed_ms, last_seen_ms) >= ?
+         AND symbol IN (${symbols.map(() => '?').join(',')})
+       ORDER BY symbol, opened_ms`,
+    )
+    .all(tradingDate, fromMs, ...symbols) as FeedIntervalRecord[];
+}
+
+const LAST_FLUSH_KEY = 'last_flush_ms';
+
+/** The worker's flush clock, set every flush, so a stale Now column is detectable even with no trades. */
+export function setLastFlushMs(db: TradesDatabase, ms: number): void {
+  db.prepare(
+    `INSERT INTO trades_meta (key, value) VALUES (?, ?)
+     ON CONFLICT (key) DO UPDATE SET value = excluded.value`,
+  ).run(LAST_FLUSH_KEY, String(ms));
+}
+
+export function readLastFlushMs(db: TradesDatabase): number | null {
+  const row = db.prepare('SELECT value FROM trades_meta WHERE key = ?').get(LAST_FLUSH_KEY) as
+    | { value: string }
+    | undefined;
+  const ms = row ? Number(row.value) : NaN;
+  return Number.isFinite(ms) ? ms : null;
 }
 
 /**
@@ -199,7 +374,11 @@ export function pruneTradeBuckets(
   if (stale.length === 0) return 0;
 
   const remove = db.prepare('DELETE FROM trade_buckets WHERE trading_date = ?');
+  const removeIntervals = db.prepare('DELETE FROM feed_intervals WHERE trading_date = ?');
   let removed = 0;
-  for (const date of stale) removed += remove.run(date).changes;
+  for (const date of stale) {
+    removed += remove.run(date).changes;
+    removeIntervals.run(date);
+  }
   return removed;
 }
