@@ -11,6 +11,7 @@
 
 import {
   reportKey,
+  type MissedCause,
   type ReportKind,
   type ReportRange,
   type ReportSlot,
@@ -102,10 +103,11 @@ export function reportTimeline(
     else if (nowMs > Date.parse(slot.relevantUntil)) state = 'MISSED';
     else state = 'CHECKING';
 
-    const missedReason =
+    const cause =
       state === 'MISSED' || (state === 'OVER' && !report)
-        ? (payload.missedReasons[reportKey(slot)] ?? null)
-        : null;
+        ? payload.missedCauses[reportKey(slot)]
+        : undefined;
+    const missedReason = cause ? missedCauseText(cause) : null;
 
     return { slot, state, report, superseded, missedReason };
   });
@@ -114,6 +116,30 @@ export function reportTimeline(
   const earlier = views.filter((view) => view.state === 'OVER').reverse();
 
   return { current, earlier };
+}
+
+/**
+ * The trader's words for a missed report (Design, 2026-09-29). Keyed on `kind`
+ * only: status and evidence are diagnostics and are never printed.
+ *
+ * The time is the CHECKPOINT's scheduled time, carried on the cause -- "no
+ * 09:25 assessment ran" names the assessment that did not run, not the slot.
+ */
+export function missedCauseText(cause: MissedCause): string {
+  switch (cause.kind) {
+    case 'CHECKPOINT_NOT_RUN':
+      return `No ${formatEtMinute(cause.checkpoint.scheduledFor) ?? assessmentLabel(cause.checkpoint.type)} assessment ran.`;
+    case 'CHECKPOINT_INCOMPLETE':
+      return `The ${formatEtMinute(cause.checkpoint.scheduledFor) ?? assessmentLabel(cause.checkpoint.type)} assessment did not finish.`;
+    case 'WRITER_FAILED':
+      return 'The report could not be written.';
+    case 'CHECKER_FAILED':
+      return 'The report could not be checked, so it is not shown.';
+    case 'ALL_STRUCK':
+      return 'Every line failed its check, so nothing is shown.';
+    case 'NOT_ATTEMPTED':
+      return 'No report was attempted.';
+  }
 }
 
 export type RangeChoice =
@@ -181,7 +207,8 @@ export function chooseReportRange(options: {
 export function outsideBoardRange(
   price: number | null | undefined,
   board: BoardRange | null,
-  range: ReportRange,
+  /** The REPORT's own frozen range (`SessionReport.range`), never the config entry. */
+  range: { min: number; max: number },
 ): boolean {
   if (!board) return false;
   if (board.min === range.min && board.max === range.max) return false;

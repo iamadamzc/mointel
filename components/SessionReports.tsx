@@ -20,6 +20,7 @@ import {
   type ReportTimeline,
   type SlotView,
 } from '@/lib/dashboard/sessionReports';
+import { rangeLabel } from '@/lib/dashboard/boardRange';
 import { formatEtMinute } from '@/lib/format';
 
 /**
@@ -243,7 +244,6 @@ export function ReportPanel({
           <ReportBody
             view={shown}
             report={shown.report}
-            range={range}
             board={board}
             priceOf={priceOf}
             nowMs={nowMs}
@@ -294,7 +294,6 @@ function sameSlot(a: SlotView, b: SlotView): boolean {
 function ReportBody({
   view,
   report,
-  range,
   board,
   priceOf,
   nowMs,
@@ -304,7 +303,6 @@ function ReportBody({
 }: {
   view: SlotView;
   report: SessionReport;
-  range: ReportRange;
   board: BoardRange | null;
   priceOf: (ticker: string) => number | null;
   nowMs: number;
@@ -369,7 +367,7 @@ function ReportBody({
         <div>
           <dt className="inline">covers </dt>
           <dd className="inline">
-            {range.label}
+            {rangeLabel(report.range)}
             {coverage ? ` · ${coverage}` : ''}
           </dd>
         </div>
@@ -412,7 +410,7 @@ function ReportBody({
                       feed not recorded
                     </Qualifier>
                   ) : null}
-                  {line.ticker && outsideBoardRange(priceOf(line.ticker), board, range) ? (
+                  {line.ticker && outsideBoardRange(priceOf(line.ticker), board, report.range) ? (
                     <Qualifier title="This name is in the briefing's range but outside the range your board is showing.">
                       not in your range
                     </Qualifier>

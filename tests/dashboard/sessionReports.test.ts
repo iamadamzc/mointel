@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type {
+  MissedCause,
   ReportRange,
   ReportSlot,
   SessionReport,
@@ -11,6 +12,7 @@ import {
   checkpointText,
   chooseReportRange,
   coverageText,
+  missedCauseText,
   outsideBoardRange,
   reportCoverage,
   reportTimeline,
@@ -49,6 +51,7 @@ function report(s: ReportSlot, publishedAt: string, extra: Partial<SessionReport
   return {
     kind: s.kind,
     rangeId: s.rangeId,
+    range: { min: 1, max: 20 },
     tradingDate: s.tradingDate,
     targetTradingDate: s.targetTradingDate,
     checkpoints: [{ id: 7, type: 'OPEN_SPIKE_ASSESSMENT', completedAt: s.scheduledFor }],
@@ -67,8 +70,8 @@ const SLOTS = [
   slot('INTO_POWER_HOUR', POWER),
 ];
 
-function payload(reports: SessionReport[], missedReasons: Record<string, string> = {}): SessionReportsPayload {
-  return { ranges: RANGES, defaultRangeId: 'core', slots: SLOTS, reports, missedReasons };
+function payload(reports: SessionReport[], missedCauses: Record<string, MissedCause> = {}): SessionReportsPayload {
+  return { ranges: RANGES, defaultRangeId: 'core', slots: SLOTS, reports, missedCauses };
 }
 
 const at = (iso: string, plusMinutes = 0) => Date.parse(iso) + plusMinutes * 60_000;
@@ -104,16 +107,28 @@ describe('reportTimeline: the six states', () => {
     expect(t.current?.report?.late).toBe(true);
   });
 
-  it('past relevantUntil with nothing written is MISSED, with only the stored reason', () => {
+  it('past relevantUntil with nothing written is MISSED, with only the stored cause', () => {
     const key = 'INTO_RTH:core:2026-09-28';
     const t = reportTimeline(
-      payload([], { [key]: 'The 09:25 assessment did not complete.' }),
+      payload([], {
+        [key]: {
+          kind: 'CHECKPOINT_INCOMPLETE',
+          checkpoint: { id: 41, type: 'OPEN_SPIKE_ASSESSMENT', scheduledFor: '2026-09-28T13:25:00Z' },
+          status: 'FAILED',
+        },
+      }),
       'core',
       at(INTO_RTH, 45),
     );
     expect(t.current?.state).toBe('MISSED');
-    expect(t.current?.missedReason).toBe('The 09:25 assessment did not complete.');
+    expect(t.current?.missedReason).toBe('The 09:25 ET assessment did not finish.');
     expect(briefingLineText(t.current!)).toMatch(/^No into-the-open briefing/);
+  });
+
+  it('no stored cause is no reason — "missed" and nothing guessed', () => {
+    const t = reportTimeline(payload([]), 'core', at(INTO_RTH, 45));
+    expect(t.current?.state).toBe('MISSED');
+    expect(t.current?.missedReason).toBeNull();
   });
 
   it('MISSED IS NEVER FILLED FROM THE PREVIOUS SLOT', () => {
@@ -274,5 +289,42 @@ describe('the words', () => {
   it('a session is a calendar day, not an instant', () => {
     expect(sessionText('2026-09-28')).toBe('Mon, Sep 28');
     expect(sessionText('garbage')).toBeNull();
+  });
+});
+
+describe('missedCauseText: the trader words, keyed on kind only', () => {
+  const checkpoint = { type: 'OPEN_SPIKE_ASSESSMENT' as const, scheduledFor: '2026-09-28T13:25:00Z' };
+  const at = '2026-09-28T13:31:00Z';
+  const causes: MissedCause[] = [
+    { kind: 'CHECKPOINT_NOT_RUN', checkpoint, evidence: 'RECORDED_MISSED' },
+    { kind: 'CHECKPOINT_NOT_RUN', checkpoint, evidence: 'NO_ROW' },
+    { kind: 'CHECKPOINT_INCOMPLETE', checkpoint: { ...checkpoint, id: 9 }, status: 'PARTIAL' },
+    { kind: 'WRITER_FAILED', at },
+    { kind: 'CHECKER_FAILED', at },
+    { kind: 'ALL_STRUCK', at },
+    { kind: 'NOT_ATTEMPTED' },
+  ];
+
+  it("each cause reads as Design worded it, with the CHECKPOINT's time", () => {
+    expect(causes.map(missedCauseText)).toEqual([
+      'No 09:25 ET assessment ran.',
+      'No 09:25 ET assessment ran.',
+      'The 09:25 ET assessment did not finish.',
+      'The report could not be written.',
+      'The report could not be checked, so it is not shown.',
+      'Every line failed its check, so nothing is shown.',
+      'No report was attempted.',
+    ]);
+  });
+
+  it('two diagnoses of a checkpoint that did not run read as ONE sentence', () => {
+    expect(missedCauseText(causes[0])).toBe(missedCauseText(causes[1]));
+  });
+
+  it('never prints a kind, a status or an evidence code', () => {
+    for (const text of causes.map(missedCauseText)) {
+      expect(text).not.toMatch(/[A-Z]{2,}_[A-Z]/);
+      expect(text).not.toMatch(/PARTIAL|FAILED|RUNNING|NO_ROW|RECORDED/);
+    }
   });
 });
