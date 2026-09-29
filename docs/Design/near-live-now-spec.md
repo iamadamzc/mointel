@@ -106,6 +106,25 @@ server can answer. `DemandState.highRes` is current membership, not membership
 during the bucket; a name that joined mid-bucket should read `null`, not a low
 count.
 
+### The interim Research proposed, ACCEPTED by Design (2026-09-29)
+
+**Research, opened in code:** a bucket row exists only when a trade arrives
+(`engine.ts:1500-1505`), and high-res membership is a boolean with no join time
+(`engine.ts:2202`). So from `trades.db` today a silent WATCHED name and an
+unwatched one are both "no row", and a name's first bucket after joining is a
+partial count. **A measured zero needs membership intervals** (engine to
+`trades.db`, Ops's schema v2), which need a **market-worker restart** that rides
+the next one he approves.
+
+**Interim, no restart: counts only.** A row with a bucket shows its count. **Every
+"no row" reads as no live data**, i.e. the muted settled-minute fallback, sorted
+after live rows. That includes a watched name that was silent for ten seconds.
+**It is wrong only toward absence, never toward a fake 0**, and a silent name sorts
+at the bottom of the live rows either way, so the order he sees barely moves.
+Known residue, stated rather than hidden: **a name's first bucket after it gains a
+feed can read low**, for one bucket. The `0` row in the table above arrives with
+the intervals.
+
 ## Scope, sequencing, size
 
 - **Design:** `DiscoveryBoard.tsx` (the `now` sort entry, cell, header sub-line,
