@@ -1152,6 +1152,13 @@ TRANSPORT HALF  Ops, from repo nginx conf + Next 16.3.1 source (not behaviour): 
                  TEST RULED: (a) nginx half on box after 10:00 ET: 499 + upstream closed (ss). (b) Node half LOCAL, throwaway
                  worktree at 0342e7d, 2 s sync probe route, B aborted at 0.3 s behind A. PRE-REGISTERED N=10, report k/10
                  pre-aborted at entry, no threshold. Both passing = 'halves pass, composition unverified'.
+BUILD COST      Research priors (08-23 scratch copy, 08-21 full: 50 ranked/35 dossiers, 0.68 MB): sequential build median
+                 155-230 ms, one 1.5 s spike; stringify 11 ms. 60% of build = etWallClockToUtc via history.ts:113
+                 isFinished -> sessionEndUtc per daily bar (~5,000 conversions/build). VERIFIED pure here (session.ts:147,
+                 :129). (1) MEMO APPROVED TO BUILD: cut from 0342e7d, PRE-REGISTERED 170 + declared new test files; test
+                 fresh ms per hit + no date collision; measure 1 warm + 50 builds x2 shas alternating blocks of 10, median/
+                 p90/max, prior only, no pass threshold; box read after ship by (b') method outside 07-10 ET. Ship = his
+                 yes in Ops's session. (2) short memo DEFERRED until (1) is live; board polls 1000 ms, not 2-5 s.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
