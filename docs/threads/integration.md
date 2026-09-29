@@ -1049,6 +1049,12 @@ COLUMNS BASE     Design told: confirmed production 121f97c; cut on 7135930 if he
                  timer = lib/market/flushTiming.ts, tests/market/flushTiming.test.ts, worker/runtime.ts; columns =
                  5 files in components/, lib/dashboard, lib/hooks, tests/dashboard). PRE-REGISTERED test-file count
                  for the columns tag: 170 on 7135930, 169 on 121f97c.
+COLUMNS CUT      Design cut design/columns-on-121f97c -> c103267 before the hold reached it (right base). REPLAYED:
+                 1 over 121f97c, patch-id c334e6ba == f4063ca, 169 test files == pre-registered, fa61410 NOT in cone.
+                 APPROVED. His "yes to columsn" re-read at his turn: queue-operation 2026-09-29T03:51:42.989Z in the
+                 retired seat's transcript (306ac51c-*.jsonl). f4063ca SUPERSEDED.
+ORDER (ruled)    Columns c103267 FIRST; flush timer, on his yes, re-picked by Ops onto confirmed c103267 (pre-registered
+                 170 files, 1 over, patch-id 7ae18ef5). If the timer goes first instead, Design re-picks onto 7135930 (170).
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
