@@ -11,6 +11,7 @@ import {
   upsertTickerSessions,
 } from '@/lib/market/store/repo';
 import {
+  boardRangeRequest,
   markAboveRange,
   rankInRange,
   rankLists,
@@ -368,6 +369,22 @@ describe('the store and the snapshot', () => {
       if (savedTrades === undefined) delete process.env.TRADES_DB_PATH;
       else process.env.TRADES_DB_PATH = savedTrades;
     }
+  });
+
+  it('THE BOARD ROUTE WITH NO PARAMS SERVES HIS $1-$20 DEFAULT, not the band (his ruling 2026-09-26)', () => {
+    const file = temporaryPath();
+    seed(file);
+    process.env.MARKET_DB_PATH = file;
+    const snapshot = getMarketSnapshot({ range: boardRangeRequest(new URLSearchParams('')) });
+    const discovery = snapshot.discovery;
+    expect([discovery.priceMin, discovery.priceMax]).toEqual([1, 20]);
+    expect(discovery.ordinalsOmitted).toBe(true);
+    expect(discovery.ranked.map((s) => [s.ticker, rankOf(discovery.board, s)])).toEqual([
+      ['AAA', 1],
+      ['BBB', 2],
+    ]);
+    // A request that names its range still gets exactly that range.
+    expect(boardRangeRequest(new URLSearchParams('min=0.25&max=20'))).toEqual({ min: '0.25', max: '20' });
   });
 
   it('a range equal to the engine\'s band is the engine\'s board, ordinals kept', () => {
