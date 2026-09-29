@@ -1004,7 +1004,7 @@ NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build 
                      Research: web-tier read of trades.db (runtime.ts:1523 persists every flush) -> NO market-worker restart;
                      Ops to confirm bucketsWritten rising in prod. Empty state = "no live data", never 0, for names outside
                      the high-res set -- which is pinned + ranked-AND-ALIVE <= internalRank (active board) + after-bell
-                     daytime leaders <= discoveryRank + latched-AND-ALIVE, cap 250 (engine.ts ~2119-2200, opened). NOT
+                     daytime leaders <= discoveryRank + DAYTIME-latched (runtime.latched, not ahLatched) AND ALIVE, cap 250 (engine.ts ~2119-2200, opened). NOT
                      "top 50 + latched + pinned" -- Research's summary, corrected to it and Design. Research near
                      saturation, proposed a hand-off to him.
 RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
