@@ -1136,7 +1136,8 @@ GZIP            Ops sized from config: box nginx.conf gzip on but gzip_proxied/t
                  any, types application/json, level 4, min 1024, vary. nginx -t + reload, no service restart. Size/CPU
                  UNMEASURED: one copy after 10:00 ET, offline gzip, + no-secret-in-body check. Then to him, stated as a
                  TRANSFER fix only (server build 3.8-8.9 s under concurrency is untouched). Server-side abandoned-request
-                 building: UNOWNED -> raising with Design/Research.
+                 building: ROUTED -- build cost + shared build per interval -> Research (lib/market compute, README);
+                 abort propagation in app/api/market -> Design (read only). Sizing, no build, not urgent.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
