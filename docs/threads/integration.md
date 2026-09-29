@@ -905,7 +905,14 @@ error                                                  TYPE                     
   02:41:30Z -- in the SAME edit that flagged the         (the 15th's error 2)             class; first   time vs text)
   prompt header for exactly this; also "~02:50Z" to                                        in this seat
   Design for Research's message
+"as of now (~02:50Z)" to the new Design seat; the      same                               YES, 2nd in    self (zoneinfo
+  clock read 02:48:27Z right after sending                                                 this session   read after)
 ```
+*The repeat is the §2 trigger, but his addition (2026-09-27) initiates the protocol "when the breaches are
+attributed to SATURATION". This seat was ~12 minutes old with a light context, so the cause is habit, not
+saturation, and a successor would inherit the habit through the same prompt. No hand-off proposed. The cure is
+mechanical: no clock time goes into any message or file without a `zoneinfo`/`%cI` read in the same step.
+**If a third instance occurs, this reasoning is void and the hand-off goes to him.***
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
