@@ -76,7 +76,7 @@ import {
   type AlpacaSnapshot,
 } from '../lib/market/alpaca/rest';
 import { redact, type AlpacaCredentials } from '../lib/market/credentials';
-import type { MarketConfig } from '../lib/market/config';
+import { bootstrapBand, captureBand, type MarketConfig } from '../lib/market/config';
 import {
   openTradesStoreOrNull,
   persistTradeBuckets,
@@ -527,6 +527,25 @@ export class MarketRuntime {
       this.sessionPending = resolution.pending;
     }
 
+    const capture = captureBand(this.config);
+    if (
+      !capture &&
+      (this.config.capturePriceMin !== null || this.config.capturePriceMax !== null)
+    ) {
+      // Configured but refused: say so every time the engine is built, rather
+      // than run silently on the narrow band while the env claims a wide one.
+      this.logger.error(
+        `[demand] CAPTURE_PRICE_MIN/MAX ${this.config.capturePriceMin}/${this.config.capturePriceMax} ` +
+          `REFUSED: must be set together and contain DISCOVERY ${this.config.discoveryPriceMin}/` +
+          `${this.config.discoveryPriceMax}; recording the discovery band only`,
+      );
+    } else if (capture) {
+      this.logger.info(
+        `[demand] recording $${capture.min}-$${capture.max}, qualifying ` +
+          `$${this.config.discoveryPriceMin}-$${this.config.discoveryPriceMax}`,
+      );
+    }
+
     this.engine = new DemandEngine({
       tradingDate: this.tradingDate,
       feed: this.feed,
@@ -534,6 +553,9 @@ export class MarketRuntime {
       internalRank: this.config.internalRank,
       priceMin: this.config.discoveryPriceMin,
       priceMax: this.config.discoveryPriceMax,
+      // Absent unless a valid capture band is configured: the engine then
+      // records inside it and qualifies inside the discovery band.
+      ...(capture ? { capturePriceMin: capture.min, capturePriceMax: capture.max } : {}),
       baselineSessions: this.config.baselineSessions,
       rthCloseMinutes: this.closeMinutesFor(this.tradingDate),
       enforceSessionWindow: this.enforceSessionWindow,
@@ -894,8 +916,8 @@ export class MarketRuntime {
 
     // Candidate band: prior close anywhere near the discovery range, widened so
     // a gapping name is not missed just because it closed below the floor.
-    const bandMin = this.config.discoveryPriceMin * 0.4;
-    const bandMax = this.config.discoveryPriceMax * 2;
+    // Seed exactly the record band when one is configured; see bootstrapBand.
+    const { min: bandMin, max: bandMax } = bootstrapBand(this.config);
     const candidates = new Set<string>(pinned);
 
     for (const [symbol, baseline] of baselines) {
