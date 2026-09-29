@@ -1,9 +1,10 @@
 # Design — opening prompt for a new chat
 
-**Written 2026-09-29 02:45 UTC (2026-09-28 22:45 ET), clock read via zoneinfo,
-by the retiring Design seat. Every sentence was true then, and is a lead, not a
-source, by the time you read it. If this prompt and `design.md`'s live state
-disagree, the live state is right.**
+**Written 2026-09-29 03:42 UTC (2026-09-28 23:42 ET), clock read via zoneinfo,
+by the retiring Design seat at a clean task boundary (his "yes, fresh session
+for the Now build"). Every sentence was true then, and is a lead, not a source,
+by the time you read it. If this prompt and `design.md`'s live state disagree,
+the live state is right.**
 
 Paste the block between the rules into a new chat opened in `A:\mointel`.
 
@@ -23,31 +24,39 @@ hand-off, and the 🟠 NEEDS YOU block.
 error ledger, and the working rules at the bottom. Then `docs/threads/README.md`
 from the top through "FIVE SEATS, ONE `.git`". Then
 `docs/Design/design-audit-report.md` completely; it is the design authority.
-Then the two specs you will build from: `docs/Design/resizable-columns-scope.md`
-and `docs/Design/near-live-now-spec.md`.
+Then the spec you will build from, `docs/Design/near-live-now-spec.md`,
+especially "HIS ANSWER" and "The build plan".
 
 **FIRST TASK: ask Integration-tmi and Ops-tmi for the live state, and read it
 off the artefacts.** Look each seat up in `list_sessions` every time and send by
-`sessionId`: Integration and Research were both replaced tonight. Two things to
-settle first:
-- **The range tag's gate.** The range set ships as the tag
-  `design/range-set-on-2256c63` → `520142c`, cut onto production without the
-  briefings. Ops reported its gate RED on one test (~02:40Z); this seat's gate
-  at the same sha was green. Get the failing test's NAME and error from Ops. A
-  bash-driven `releaseRetention` timeout is load on this host (it passes
-  alone). Anything in `tests/dashboard` or `tests/market` is yours: re-cut the
-  tag on `2256c63` and gate it.
-- **After the range set deploys, read the live board** (review link below): a
-  custom range in the control, the graveyard on that range (no `Rank held`
-  column, names still listed), the drawer with no Rank Change line, and the
-  review link serving the same range. **Reload first.**
+`sessionId`; Ops was replaced tonight too. Settle:
+- **Has the range set shipped, or been voided?** It waited on Ops's two
+  range-read measurements (~08:30 and ~11:05 ET 09-29: warm max < 20 ms for
+  EVERY viewer range on both boards) and his yes in Ops's session. **This
+  triggers your first owed cut:** resizable columns (`1d59b00`, on main, built
+  and viewed locally, not shipped) is cut as a `design/` TAG from PRODUCTION's
+  sha if the range set shipped, or from `2256c63` if it was voided (then the
+  `DiscoveryBoard.tsx` conflict is yours). Tell Integration when cut. The rule
+  is in `design.md`'s open-items row.
+- **If the range set is live: read the live board** (review link below): a
+  custom range in the control, the graveyard on that range, the drawer with no
+  Rank Change line. **Reload first.**
+- **Where Research's `Now` wiring stands:** the field is on main (`ca8eed9`,
+  `c657830`: ABSENT when capture cannot answer); `getMarketSnapshot` wiring
+  waits on Ops's read-only trades.db opener; the market-worker restart time is
+  Ops's to propose and his to approve.
 
-**THEN THE BUILD HE APPROVED: resizable columns, Discovery only**
-(*"2 yes discovery only"*, 02:41:45Z). Build exactly
-`resizable-columns-scope.md` option (A) and its guardrails on `main`. It ships
-after the range release. The near-live `Now` column is also approved but
-**waits on Research's engine change and a market-worker restart** (spec, "HIS
-ANSWER"); do not start its cell before that data exists.
+**THEN THE BUILD: the near-live `Now` cell, on `main`, against the contract.**
+Approved (*"yes build the near-live now column"*, 01:38:17Z) with his shape
+(*"same exact pattern ... the last minute in 10 sec increments"*, 02:30:43Z)
+and *"i want the trade counts, dots and direction color"* (02:32:20Z).
+**The plan is fixed in the spec's "The build plan"**: capture state from
+`tradeCapture.asOf` vs the snapshot's `fetchedAt` (server timestamps, never the
+client clock); one per-row reading resolved in `mergeDesk` and read by both the
+cell and the sort; a tiered sort (live, then minute fallback, then
+unmeasured); a null slot is a gap. It is inert until the field is served, and
+**nothing of it ships before the restart and a live read on real 10 s data.**
+Also open, smaller: the sorted `Now` header renders on three lines (open items).
 
 **How you see production:** `scripts\aws-create-review.ps1 -ServerHost
 mointel-ssm -Hours 2 -Label design`. The URL prints once. Revoke it with
@@ -55,41 +64,47 @@ mointel-ssm -Hours 2 -Label design`. The URL prints once. Revoke it with
 status**: the live desk is ~1.2 MB with `RVOL` present; a dead token is ~11 KB
 behind a 200.
 
-**You do not deploy.** Commit and push. Integration enumerates, Ops ships, and
-**a pick that conflicts in a board component comes back to you to re-cut on the
-production base.** Build and gate in the detached worktree `A:\mointel-design`
-(check out `origin/main`), commit there with `git commit --only <paths>`, rebase
-onto `origin/main`, **gate the rebased head again if the rebase brought code**,
+**How you see a build locally:** a copy of `data/market.db` (+ `-wal`) in your
+scratchpad, `next dev -p 3100` from the worktree with `MARKET_DB_PATH` pointing
+at the copy (no `.env.local` in the worktree, so no credential loads), via a
+temporary `.claude/launch.json` entry you revert afterwards. The route is
+`/desk`. Close the tab and stop the server when done.
+
+**You do not deploy.** Commit and push. Integration enumerates, Ops ships.
+Build and gate in the detached worktree `A:\mointel-design` (check out
+`origin/main`), commit there with `git commit --only <paths>`, rebase onto
+`origin/main`, **gate the rebased head again if the rebase brought code**,
 then `git push origin HEAD:main`, and verify with `git branch -r --contains`.
-**Gate from the Bash tool (Git Bash), not PowerShell:** PowerShell's `bash` is
-WSL here and fails the deploy-script tests. Gate order: `npm test`,
+**Gate from the Bash tool (Git Bash), not PowerShell.** Gate order: `npm test`,
 `npm run lint`, `npm run build`, THEN `npm run typecheck`, each exit code read
-separately.
+separately. Docs can be committed from the shared tree with `--only`, after
+`git merge --ff-only origin/main`; never touch a peer's uncommitted files there.
 
 ## This seat's own failures from the retiring session, as mechanisms
 
-- **Narrowed his ruling on my own reading, and he had to catch it.** He said
-  the new `Now` cell should be the *"same exact pattern"*. I recorded a
-  bars-only first version as "Design's reading, not a question for him unless he
-  objects", because the price data did not exist yet. He objected. **A missing
-  input is a sequencing problem to solve, never licence to trim what he asked
-  for.** If his words cannot be met yet, say what it takes and ask; never
-  pre-decide the cut.
-- **Named the field, not its render.** I told Integration, and him, that a
-  drawer line would be "lost" after the $1–$20 default. It would have printed
-  `New` on every stock. I had read the field in a grep, not the component that
-  renders a null. **Before saying what a surface will show, open the render
-  path for the exact value it will get.**
-- **Stamped times before reading the clock** (twice in the first hour; the
-  retiring seat before me made the same error). Read zoneinfo, then write.
-- **Relative paths in .NET calls from PowerShell resolve against the process
-  directory, not `Set-Location`.** `[IO.File]::WriteAllBytes('components/…')`
-  wrote a temp file into the SHARED tree. Found and removed within the minute.
-  **Always pass absolute paths to .NET file calls.**
-- **What worked:** enumerating producers and readers before switching a field
-  (the graveyard); mutation-testing with a predicted count (every prediction
-  matched tonight); opening the peer's changed field (it caught nothing wrong
-  in `aboveRangeLatched`, and showed the board already had the mark).
+- **A test that holds by construction.** "Widths sum to the table width" passed
+  with Why/Risk negative, because the remainder column makes the sum true
+  whatever happens. Caught only because I predicted each mutant's kill count
+  before running it and one prediction had no test able to meet it. **Predict
+  the count first; a check the model satisfies by arithmetic is not a check.**
+- **The React-compiler lint is part of the gate and it is strict.** A ref read
+  during render, a synchronous setState in an effect, and — non-obviously — any
+  hook member NAMED `…Ref`, or any object whose member is passed as a `ref`,
+  taints the whole object and flags every access to it. Destructure hook
+  results; name callbacks `attach…` / `measure…`.
+- **A hidden browser pane is not a browser.** With the pane hidden,
+  `document.hidden` is true and ResizeObserver never fires, so a working build
+  looked broken after a reload. Probe the instrument (a fresh observer) before
+  editing on a "defect" — it turned into a real fix (one synchronous read), but
+  only because the probe came first.
+- **Multi-paragraph `~~strike~~` and CRLF.** Markdown strike does not cross a
+  code block, and the working tree here is CRLF: a Python `str.replace` on an
+  LF pattern matches nothing and a following `git commit --only` then commits
+  nothing. Normalise, assert the count, and read `git log` after.
+- **What worked:** reading the producer's code against the spec before the
+  expensive step (it found a real contract defect Research fixed in minutes);
+  running the peer's gate myself (it named the flake nobody had named);
+  writing every relay into the charter before sending it.
 
 ---
 
@@ -98,19 +113,15 @@ separately.
 All quoted verbatim in `design.md` or the specs, with his turn's timestamp.
 
 - **Price range:** board default $1–$20; users set their own; recording stays
-  $0.25–$50. *"dead rank not important"*: `Rank held` is omitted on the default
-  board.
-- **Drawer:** the Rank Change line is removed (*"yes remove it"*).
-- **Now column:** build it (*"yes build the near-live now column"*), with the
-  last minute as six 10 s bars and the newest bucket as the number, **with
-  counts, price dots and direction colour** (*"i want the trade counts, dots and
-  direction color"*). A market-worker restart is approved IN PRINCIPLE; Ops
-  proposes the time and he approves that time.
-- **Resizable columns:** build, Discovery only, widths in this browser.
+  $0.25–$50. `Rank held` omitted on the default board; the drawer's Rank Change
+  line removed.
+- **Now column:** build it; last minute as six 10 s bars, newest bucket as the
+  number, **with counts, price dots and direction colour**; no bars-only
+  interim. Market-worker restart approved IN PRINCIPLE; Ops proposes the time
+  and he approves that time.
+- **Resizable columns:** Discovery only, widths in this browser. Built.
+- **Fresh session for the Now build** (2026-09-29 ~03:40Z, this seat).
 - **His view, NOT a ruling:** *"rank in general is not important imo."*
-  Nothing is removed on it.
-- **Earlier and binding:** no rank column (the `Rank` sort stays); `Now` stays
-  as the header; `since Fri close` on promoted rows.
 
 ## How he wants to be told things
 
@@ -122,8 +133,8 @@ exception is an error that reached, or could have reached, the app.**
 ## What he does with the old chat
 
 1. Open the new chat in `A:\mointel` and paste the block above.
-2. The new chat titles itself `Design-tmi`.
-3. Rename the old chat `Design-tmi (retired 2026-09-29)`.
-4. Archive it; do not delete it.
-5. Peers find the new seat by title. **A message queued to the old seat is not
+2. The new chat titles itself `Design-tmi`. (The retiring seat has already
+   renamed itself `Design-tmi (retired 2026-09-29b)`.)
+3. Archive the old chat; do not delete it.
+4. Peers find the new seat by title. **A message queued to the old seat is not
    delivered**; everything open is in `design.md`.

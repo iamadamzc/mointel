@@ -46,7 +46,13 @@ for design documents.
 
 ## Live state — 2026-09-29 03:12 UTC / 2026-09-28 23:12 ET (successor seat)
 
-**THIS SEAT'S FIRST HOUR, 02:47–03:12Z:**
+**SEAT RETIRED AT A CLEAN BOUNDARY, 2026-09-29 03:42 UTC, on his "yes, fresh
+session for the Now build".** Nothing uncommitted, nothing in flight. The
+successor's prompt is `docs/design-opening-prompt.md`; its first owed actions
+are the resizable-columns cut (trigger: the range set ships or is voided) and
+the `Now` cell per the spec's "The build plan".
+
+**THE RETIRED SEAT'S FIRST HOUR, 02:47–03:12Z:**
 - **The `520142c` red is NAMED on Design's side:** 4 full-output runs at the
   tag in the design worktree, 3 green (167/2544), 1 red:
   `tests/desk/releaseRetention.test.ts > deployment preflight > refuses every
