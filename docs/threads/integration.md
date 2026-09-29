@@ -1124,6 +1124,13 @@ FREEZE MEASURED Design, review link 51 from this PC, 12:06Z (its stated reading,
                  1 landed, 30 aborted. => board freezes after load, says LIVE. Fix: skip tick while in flight + client-age
                  stale state; web-only restart. Design building on 0342e7d; PRE-REGISTERED 170 + declared new test files.
                  PUT TO HIM with reload advice. Ship = his yes in Ops's session.
+SLND CLOSED     Ops nginx log (his IP only): ok/aborted per min 11:00 54/6 ... 11:16 1/0, NOTHING 11:17-11:55 (tab
+                 hidden, polls skipped), 11:56 21/9, 12:00 50/10. First polls from 11:56 carried v2461 (provenance AUTO).
+                 He saw the pre-11:17 load. Explanation (ii). Not a board defect, not the Sheet.
+FREEZE REVISED  At rest his board lands ~90% of polls. 12:06 20/40, 12:07 1/16 COINCIDED with Ops's + Design's probes
+                 (server 3.83/8.86/6.40/2.38/0.65/0.61 s; aborted requests still computed to completion). So: freezes
+                 UNDER CONCURRENCY, not at rest. Fix still right (robustness), not an emergency. /api/market 859 KB
+                 UNCOMPRESSED -> Ops to size gzip. No heavy /api/market probes 07:00-10:00 ET (Ops + Design).
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
@@ -1146,6 +1153,10 @@ error                                                  TYPE                     
 "7135930 touches 3 files, disjoint from your 5" sent   asserted what was not opened       no       self (git show
   to Design BEFORE opening either diff; it held on       (memory: never-assert-what-you-            --stat after)
   opening                                                have-not-opened)
+"your board is very likely frozen right now" to HIM,   a probe measurement relayed as a   no (in this  self, on Ops's
+  on Design's 12:06Z probe from this PC; his own        claim about HIS screen (the 16th's seat; the     nginx log
+  traffic landed ~90% at rest, the freeze coincided     disk-local-absolute class, in     16th's 2nd
+  with the probes. Retracted to him next message.       its prompt)                       class)
 "His yes already exists" (columns ship) to Ops and    a ruling's SCOPE relayed without    no       Ops (read the
   to him; his 03:51:42Z answered a question whose       reading the question it answered            question text)
   Yes said "Ops asks you for the ship yes in its
