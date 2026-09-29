@@ -1062,6 +1062,9 @@ GRADE DEFINITIONS   Research: BUILT on main a794e20 (lib/research/interpret/cata
                     189 files as predicted; no paid run). DROPPED the draft's 'fresh' wording -- his 09-24 ruling
                     (a12bfd6) took age from the model; Integration agreed, told him in one line. CUT from confirmed
                     production: at a391c61 the pre-registered count is 173 + 1 = 174. Ship = his yes in Ops's session.
+                    CUT: research/catalyst-grades-on-a391c61 -> 9d554e0 REPLAYED + APPROVED conditional on a391c61 live:
+                    1 over a391c61, patch-id 81b517f8 == a794e20, 5 files, 174 == pre-registered, fa61410 not in cone,
+                    text read against his ruling. Sent to Ops; his ship yes pending.
 PRICE-RANGE FIX     Research + Ops, gated as above. After the restart + one RTH.
 SESSION REPORTS     Research: checker fixed (31328d9), writer built (aebdf2f), NO provider, NO spend. Next = wire a
                     model and size it = SPEND; Research verifies the authority at his turn or asks him. Set-range
