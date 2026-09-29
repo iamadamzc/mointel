@@ -1066,7 +1066,11 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
 - **Seats this session**: Commercial, Design and Research each retired and were replaced (new ids — look up by
   title). **Design retired AGAIN 2026-09-29 on his yes** (old chat "Design-tmi (retired 2026-09-29)"; hand-off
   `8359414`, spec follow-up `4ee55a3`). Its successor titles itself `Design-tmi`; it owns the 520142c red-test
-  re-cut decision, resizable columns (Discovery, on main) and the Now cell. Nothing queued to the old id is read. trades.db is 0644 vs market.db 0640 (Ops, "align later").
+  re-cut decision, resizable columns (Discovery, on main) and the Now cell. Nothing queued to the old id is read.
+  **Ops retired 2026-09-29 on his "time to handoff?"** (prompt `c62a4b8`, box read 03:35Z; production unchanged).
+  Successor NOT open at 03:37Z. The prompt carries the sync-env half of this seat's seams; the other two (range
+  set base voided if restart code ships first; range-read must bracket the widened store) were appended to the END
+  of ops.md at `c912600`. **When the new Ops-tmi opens: send it both, and ask for the 04:00 ET bucketsWritten pair.** trades.db is 0644 vs market.db 0640 (Ops, "align later").
 
 ## ARCHIVE — THE FOURTEENTH'S LIVE STATE (2026-09-28 ~15:10Z) AND THE FIFTEENTH SEAT'S RUNNING NOTES
 
