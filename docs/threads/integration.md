@@ -1073,6 +1073,13 @@ RANGE GATE       UNCHANGED (N, threshold, statistic). Added before any post-rest
 COLUMNS READ     Design, partial: served bundle carries the columns code (width storage key), page is the live desk.
                  BEHAVIOUR NOT READ: next-day prep, Discovery has no rows. OWED by Design, trigger = live Discovery
                  table has rows (from 04:00 ET): resize, reload persistence, reset, 1,024 floor. Held in design.md.
+TIMER LIVE       PRODUCTION = 0342e7d on web/research/assess, Ops /proc 2026-09-29T04:54:20Z (stated): pids 1474623/
+                 1474680/1474748, NR 0, web start 04:53:52Z; gate 170/170 (== pre-registered), 2,643. Market untouched
+                 3b78b8c pid 1347535. Timer inert until the worker restarts. Sent to Design.
+(b') TAKEN      first run 04:55:57Z (2m05s after the web start: meets >= 2 min). Maxima 9.5/8.5/7.2/8.9/16.6 ms ->
+                 median of maxima 8.9; medians 6.4/5.9/5.7/5.7/7.1. (c) GATE therefore: median of maxima <= 28.9 ms.
+NEXT            THE RESTART -- his time, in Ops's session. Ask must carry rollback floor 9508fb9/3810b9e and
+                 CAPTURE_PRICE_MIN=0.25/MAX=50 in sync-env.sh AND on the box, same motion. Integration checks the ask.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
