@@ -1348,6 +1348,13 @@ error                                                  TYPE                     
   launched on my approval (18:12:29 ET, inside my
   window). Hold withdrawn; his question 1 retracted.
   REPEAT -> warned him per hygiene s2.
+3 told HIM the placebo tests showed levels "no better  a finding relayed without its       no       HIM (via
+  than ordinary prices" and put a highlighting         stated boundary (009edef itself              Research)
+  question on that premise; 009edef says it does NOT   says what it does not test)
+  test pauses, reactions, or use as a decision point.
+  His 22:56:28Z (Research's session): "what we look
+  for is it breaking those levels ... its a volume
+  thing". Highlighting question withdrawn to him.
 ```
 GZIP SHIPPING    deploy unit mointel-deploy-1b5ead6-221229 started 18:12:29 ET (Ops; pre-launch /proc 18:12:00 ET on
                  803008b, NR 0; market 1347535). Post-ship set owed by Ops to this seat.
@@ -1416,6 +1423,12 @@ SIZED            Research 2339708 (read): ALL band ~8,050 names (4,070 board-eli
                  stamp; 47% unestablished today -> one-time re-fetch). WHERE: Research leans separate file for 15m
                  history, daily_bars stays -- OPS'S CALL. OPEN, owner Ops (or its 09-30 successor), trigger: after
                  tonight's 22:08 ET check: send Ops the WHERE facts + ask box disk free. Put the build to HIM now.
+HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
+                 what we look for is it breaking those levels, that is when we get in for the next level ... its a
+                 volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
+                 not his use. BREAKOUT FOLLOW-THROUGH test (level break -> reaches NEXT level before failing, vs
+                 height-matched non-level crossings, split by volume) APPROVED here, runs FIRST after tonight's grading,
+                 then the pull-back test. Highlighting question WITHDRAWN until it reports. Naming stays Research's.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
