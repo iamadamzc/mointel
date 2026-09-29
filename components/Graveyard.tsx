@@ -15,6 +15,14 @@ import { formatCount } from '@/lib/format';
 interface GraveyardProps {
   rows: DeskRow[];
   onSelect: (ticker: string) => void;
+  /**
+   * The board was re-ranked inside the viewer's price range, so the server
+   * omitted every stored ordinal (`DiscoveryState.ordinalsOmitted`). `Rank held`
+   * is a rank in the engine's band, not in his, so the column goes rather than
+   * printing a dash on every row: a column of dashes reads "rank unknown", and
+   * the rank is known, it just belongs to a list he is not looking at.
+   */
+  ranksOmitted: boolean;
 }
 
 /**
@@ -37,7 +45,7 @@ interface GraveyardProps {
  * Deliberately not the Changes rail: the rail is for events — things that
  * happened — and this is a population — things that are.
  */
-export function Graveyard({ rows, onSelect }: GraveyardProps) {
+export function Graveyard({ rows, onSelect, ranksOmitted }: GraveyardProps) {
   const [open, setOpen] = useState(false);
 
   const entries = graveyardRows(rows);
@@ -136,32 +144,7 @@ export function Graveyard({ rows, onSelect }: GraveyardProps) {
 
       {open ? (
         summary.wired && entries.length > 0 ? (
-          <table className="mt-1.5 w-full table-fixed border-collapse border-t border-line">
-            <caption className="sr-only">
-              Names dropped from the active board, most recently dead first. Rows that have revived
-              stay listed and are marked.
-            </caption>
-            <thead>
-              <tr>
-                <Th className="w-[96px]">Ticker</Th>
-                <Th className="w-[92px]" align="right">
-                  Dead for
-                </Th>
-                <Th className="w-[80px]" align="right">
-                  Rank held
-                </Th>
-                <Th className="w-[104px]" align="right">
-                  Peak trades
-                </Th>
-                <Th>State</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.map((entry) => (
-                <GraveyardRow key={entry.ticker} entry={entry} onSelect={onSelect} />
-              ))}
-            </tbody>
-          </table>
+          <GraveyardTable entries={entries} onSelect={onSelect} ranksOmitted={ranksOmitted} />
         ) : (
           <p className="mt-1.5 rounded-sm border border-dashed border-line-2 bg-panel px-3 py-3 text-[12px] text-ink-2">
             {summary.wired
@@ -174,17 +157,71 @@ export function Graveyard({ rows, onSelect }: GraveyardProps) {
   );
 }
 
+/**
+ * Exported so a test can render it: the section above only mounts the table
+ * once opened, which a static render cannot do. The header and every row read
+ * one `ranksOmitted`, so a column cannot go from one and stay in the other.
+ */
+export function GraveyardTable({
+  entries,
+  onSelect,
+  ranksOmitted,
+}: {
+  entries: GraveyardEntry[];
+  onSelect: (ticker: string) => void;
+  ranksOmitted: boolean;
+}) {
+  return (
+    <table className="mt-1.5 w-full table-fixed border-collapse border-t border-line">
+      <caption className="sr-only">
+        Names dropped from the active board, most recently dead first. Rows that have revived
+        stay listed and are marked.
+      </caption>
+      <thead>
+        <tr>
+          <Th className="w-[96px]">Ticker</Th>
+          <Th className="w-[92px]" align="right">
+            Dead for
+          </Th>
+          {ranksOmitted ? null : (
+            <Th className="w-[80px]" align="right">
+              Rank held
+            </Th>
+          )}
+          <Th className="w-[104px]" align="right">
+            Peak trades
+          </Th>
+          <Th>State</Th>
+        </tr>
+      </thead>
+      <tbody>
+        {entries.map((entry) => (
+          <GraveyardRow
+            key={entry.ticker}
+            entry={entry}
+            onSelect={onSelect}
+            ranksOmitted={ranksOmitted}
+          />
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 function GraveyardRow({
   entry,
   onSelect,
+  ranksOmitted,
 }: {
   entry: GraveyardEntry;
   onSelect: (ticker: string) => void;
+  ranksOmitted: boolean;
 }) {
+  const heldRank = ranksOmitted ? '' : `, held rank ${entry.deadAtRank ?? 'unknown'}`;
   return (
     <tr
       {...rowKeyboardProps(
-        `${entry.ticker}, dead ${entry.deadForLabel}, held rank ${entry.deadAtRank ?? 'unknown'}. Open dossier.`,
+        `${entry.ticker}, dead ${entry.deadForLabel}${heldRank}. Open dossier.`,
         () => onSelect(entry.ticker),
       )}
       onClick={() => onSelect(entry.ticker)}
@@ -210,9 +247,11 @@ function GraveyardRow({
        * while living names keep accumulating, so a dead name's rank decays and
        * it re-enters lower the longer it lay here.
        */}
-      <td className="num px-2 py-1 text-right align-middle text-[12px] text-ink-2">
-        {entry.deadAtRank ?? '—'}
-      </td>
+      {ranksOmitted ? null : (
+        <td className="num px-2 py-1 text-right align-middle text-[12px] text-ink-2">
+          {entry.deadAtRank ?? '—'}
+        </td>
+      )}
 
       <td className="num px-2 py-1 text-right align-middle text-[12px] text-ink-2">
         {entry.deadAtPeakTrades !== null ? `${formatCount(entry.deadAtPeakTrades)}/min` : '—'}
