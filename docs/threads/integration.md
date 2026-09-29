@@ -1095,6 +1095,14 @@ SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just be
                  is a weak positive painted red. Enum undescribed = latent, NOT shown as SLND's cause. Weight -> (b)
                  SELECTION: an older negative item chosen as WHY NOW while a newer positive existed. Correction sent
                  to him (the lead had reached him hedged). Q5 on TODAY's store still stands.
+                 OPS READS (production): award on IR 11:00:00Z; job 5561 11:04 did not see it -> v2456 RED at 11:05:08Z
+                 on the 09-25 NYSE American noncompliance notice (a real negative, SECONDARY_STALE); v2458 GREEN 11:17:03Z
+                 (IR feed caught up); v2461 GREEN 11:32:14Z (+Benzinga 11:29:47Z), current. RIVAL (b) CONFIRMED: award
+                 absent at answer time. Not the enum, not anchoring. Today's red class: NCPL, NIVF, JLHL, MSGY real;
+                 MTNB (1:15 reverse split) arguably mis-graded -> Research, not him.
+                 NEW OPEN: his turns 11:58:01Z (red) and 12:00:20Z ("just updated in the last 2 minutes") vs store green
+                 since 11:17:03Z -> his screen ~40 min behind the store. Routed to Design (dossier delivery / caching /
+                 other red elements); asked him what was red and whether he reloaded.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
