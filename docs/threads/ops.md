@@ -12493,3 +12493,14 @@ literal sha; the 1b5ead6 cone rule applies.
 **History store SPEC = docs/research/resistance-levels-spec.md section 3 at c9f9835 (Research; section 3 identical to f6c41e4).** His ruling 23:03:53Z (Research session): "5m candles for today only. 15m for anything older. up to 39 days. and dailys beyond." -> 15m backfill of 39 CALENDAR days (Research's reading; he may say trading days), ~740 requests, ~0.9 GB; 12 months daily unchanged. Also in section 3: bucket-START keys; rollup partial=1 on restart-gap buckets; NEW split trigger: each daily append re-requests one stored session and re-fetches the name if its adjusted close moved >0.5% (historyFetch.ts:403 does not re-fetch after a later split today).
 
 **Routing (supersedes the earlier line):** tonight's 21:50/22:08 rows -> Research local_d6996864 (his ruling 23:07:41Z: it grades them, then retires). FROM 09-30: Research-tmi BY TITLE (cwd A:\mointel, not archived, not d6996864/e18a7d74); if none exists, write the raw rows to a file under docs/research/, commit --only, and tell Integration-tmi the path. Never queue to a retired seat.
+
+**2026-09-29 19:5x ET restart prep -- env drift check (key names + sha256 of values, no value printed):** box 21 keys;
+the full sync would ADD exactly CAPTURE_PRICE_MIN, CAPTURE_PRICE_MAX, IDENTITY_DB_PATH, OAUTH_REDIRECT_URI; all 21
+existing values hash-equal (Alpaca included). Put to him; on his "why not do the full sync?" I opened production:
+at 1b5ead6 nothing calls lib/auth/store.ts (only a comment in feedFailure.ts), nothing reads OAUTH_REDIRECT_URI, no auth
+routes, no identity.db on the box. So the two sign-in keys are INERT until the auth surface ships, and the cut-over's
+step 2 is this same sync. FULL SYNC at 20:15, as approved.
+**DEFECT (not tonight): sync-env.sh's DOCUMENT heredoc is unquoted, so backticked words in its COMMENTS execute** (seen
+at the dry run: `rm -rf` with no args -- a no-op -- plus five not-found words; the substitutions also delete those words
+from the comments). Harmless today, but it runs whatever a comment puts in backticks, one line from the prod env. Fix:
+escape the backticks (the heredoc must still expand $ALPACA / $LOCAL_ENV). Owner Ops.
