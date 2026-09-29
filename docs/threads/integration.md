@@ -1454,6 +1454,11 @@ HIS RULING       Research's session 23:03:53Z (read): "5m candles for today only
                  -- Research's reading, asked of him / daily to 12 mo + one far-back peak). Located-date step MOOT
                  (39 d from 09-29 = 08-21 covers BIYA). Backfill ~740 requests, ~0.9 GB 15m. §3 SENT to Ops at f6c41e4.
                  Stale in spec (Research to fix): §4.1 "pools", §4.2 BIYA daily/15m split, l.12 citation.
+SPEC AMENDED     c9f9835 (diff read): ONE LADDER PER WINDOW, merged + clustered -- f6c41e4's "one continuous walk" was
+                 Research's unruled addition and would hide BIYA's August 2.42-2.50 tops behind today's 2.53-2.74.
+                 §4.2: all four BIYA lines from the 15m window after backfill. Citation fixed. No located-date step
+                 (his "dailys beyond"; an earlier-method revival would be his question). §2 fields unchanged; §3 as
+                 sent to Ops. Open with him (Research's): 39 calendar vs trading days.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
