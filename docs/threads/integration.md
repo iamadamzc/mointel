@@ -1051,7 +1051,11 @@ RULE             No heavy /api/market probes 07:00-10:00 ET (Ops + Design adopte
 ### APPROVED, NOT BUILT -- THE LIST HE ASKED TO ALWAYS SEE
 ```
 CATALYST RENDERING  Design: dimmed OLD_CATALYST row + Sheet/auto marker. Cut from CONFIRMED production; ship = his yes.
-GRADE DEFINITIONS   Research: prompt + schema text + reverse-split-by-context. Same path. Paid validation = spend.
+GRADE DEFINITIONS   Research: BUILT on main a794e20 (lib/research/interpret/catalystGrades.ts, read by prompt AND schema;
+                    reverse split/ratio change by context over the evidence bundle; red grade not split; prompt v1->v2;
+                    189 files as predicted; no paid run). DROPPED the draft's 'fresh' wording -- his 09-24 ruling
+                    (a12bfd6) took age from the model; Integration agreed, told him in one line. CUT from confirmed
+                    production: at a391c61 the pre-registered count is 173 + 1 = 174. Ship = his yes in Ops's session.
 PRICE-RANGE FIX     Research + Ops, gated as above. After the restart + one RTH.
 SESSION REPORTS     Research: checker fixed (31328d9), writer built (aebdf2f), NO provider, NO spend. Next = wire a
                     model and size it = SPEND; Research verifies the authority at his turn or asks him. Set-range
