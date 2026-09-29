@@ -1053,7 +1053,7 @@ COLUMNS CUT      Design cut design/columns-on-121f97c -> c103267 before the hold
                  1 over 121f97c, patch-id c334e6ba == f4063ca, 169 test files == pre-registered, fa61410 NOT in cone.
                  APPROVED. His "yes to columsn" re-read at his turn: queue-operation 2026-09-29T03:51:42.989Z in the
                  retired seat's transcript (306ac51c-*.jsonl). f4063ca SUPERSEDED.
-ORDER (ruled)    Columns c103267 FIRST; flush timer, on his yes, re-picked by Ops onto confirmed c103267 (pre-registered
+ORDER (ruled)    Columns c103267 FIRST (on HIS SHIP YES, asked by Ops -- 03:51:42Z was a yes to PREPARE); timer, on his yes, re-picked by Ops onto confirmed c103267 (pre-registered
                  170 files, 1 over, patch-id 7ae18ef5). If the timer goes first instead, Design re-picks onto 7135930 (170).
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
@@ -1064,7 +1064,14 @@ error                                                  TYPE                     
 "7135930 touches 3 files, disjoint from your 5" sent   asserted what was not opened       no       self (git show
   to Design BEFORE opening either diff; it held on       (memory: never-assert-what-you-            --stat after)
   opening                                                have-not-opened)
+"His yes already exists" (columns ship) to Ops and    a ruling's SCOPE relayed without    no       Ops (read the
+  to him; his 03:51:42Z answered a question whose       reading the question it answered            question text)
+  Yes said "Ops asks you for the ship yes in its
+  session" -- a yes to PREPARE, not to SHIP. Retracted
+  to Ops and to him in the next message.
 ```
+*Both slips: a value passed on without READING it -- the prompt's named class. Cure, procedural: before relaying
+what a ruling authorises, print the question it answered, not only his reply.*
 
 ## ARCHIVE — THE FIFTEENTH'S LIVE STATE (2026-09-29 ~02:40Z) WITH THE SIXTEENTH SEAT'S RUNNING NOTES INLINE
 
