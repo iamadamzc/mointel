@@ -1024,6 +1024,12 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      variant of the control (Integration leans this way). No enumeration until it re-replays clean.
                      [+ review-route one-liner if Design says so]. Gates: Ops < 20 ms under load; his deploy yes.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
+SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified desk-assessments.ts:183-194/:464): checkpoints
+                     store BAND rank <= max(2*discoveryRank,25) only, so set-range reports re-rank the band top 25, not
+                     their own range. Routed (not to him -- his ruling already requires in-range): Research (b) writer
+                     states its frame now; Ops (a) checkpoint also stores top-N per report range (assess unit, no
+                     market restart). No NON-DEFAULT range report ships before (a); $1-$20 gated too if sub-$1 names take
+                     several of the top 25 (Research local + Ops production reads asked).
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
                      band piece 4 (due 10-05) NOT ruled by him. Research's order (60a23fa): piece 4 FIRST (the writer's first
