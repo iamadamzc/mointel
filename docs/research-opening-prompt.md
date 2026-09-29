@@ -77,6 +77,11 @@ source, and it goes stale between being written and being pasted.
    rolling 60 s window. Only high-res names have buckets; the set is in LIVE
    STATE (`applyHighResSelection`) — a name without a feed reads "no live data",
    never 0.
+   **⚠️ SUPERSEDED 2026-09-29 by the session this prompt started: "no
+   market-worker restart" is FALSE.** A measured 0 needs membership intervals,
+   and his 02:32:20Z ruling ("i want the trade counts, dots and direction
+   color") needs a price per bucket — one engine change, one restart. See
+   research.md LIVE STATE, the ~02:45Z Now-column item.
 3. **A heartbeat write must not be able to kill the worker** — never started.
 
 ### How this session failed, as mechanisms
