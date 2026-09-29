@@ -1112,6 +1112,13 @@ OPS RE-READ      12:03:40Z: NO version after 2461 (current since 11:33:03Z); 245
                  11:17:42Z; Benzinga 11:29:47Z -> v2461 11:33:03Z. 247marketnews piece never ingested (not a source).
                  Ops called it a display defect -- CORRECTED by this seat: unexplained until Sheet read + his answer
                  (surface / reload / drawer open). useDashboard polls 4 s, skips hidden, reloads on visibilitychange.
+FREEZE PATH      Design, VERIFIED by this seat at 0342e7d: useMarket.ts polls 1000 ms (:19), aborts the in-flight request
+                 every tick (:39), swallows AbortError (:64), no client snapshot-age check. Any poll > ~1 s end to end
+                 freezes the WHOLE board (prices too) while the header says LIVE. design.md:267 (89a4c56, 09-22): 802 KB,
+                 1.29 s per poll, conditions unstated. NOT shown to have happened today. Why cell grade/headline read
+                 SHEET FIRST (why.ts:193-202); drawer badge shows the red label (AutomaticIntelligence.tsx:363).
+                 Ops asked: /api/market times 11:00-12:05Z, payload size, Sheet value. Design asked for the smallest
+                 guard (no abort of slow poll + visible STALE after N s), no build. PUT TO HIM as a decision now.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       Undefined to the model; reverse splits graded red (MTNB today; PFSA x2, SCNI on 08-23). Research to DRAFT
