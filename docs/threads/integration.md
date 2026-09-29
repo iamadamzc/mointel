@@ -1061,6 +1061,14 @@ SCORED      Research 643c534 (read here): store matches his chart to the cent (0
             body tops 3/5 -> wicks. Day high 0.5098 premarket was off his visible chart. NEXT = his: mark ~10 names on
             5m, or state his selection rule, or let Research guess a rule (labelled unvalidated). History-horizon +
             split measurements still owed from the prod copy.
+HIS RULE    (this session, before 22:05:37Z) "left, up, mark the top. if there are multiple tops within the same 2-3c,
+            mark it near the middle ... these become areas of resistance" = "horizontal resistance mapping using
+            historical price levels". Says he MISSED a couple of bars on SLXN. 5m recent; 15m when far back: day chart
+            -> last time price was there (could be weeks) -> 15m on that date. + 3 charts (data/, axis labels read):
+            NCI 5m 09/29 2.353/2.201/2.021/1.930; MSGY 15m 09/25-29 12.75/10.29/9.52/8.91/7.08; BIYA 15m Aug 19-Sep 08
+            2.501/2.490/2.462/2.421 (levels from AUGUST -> beyond 20-session bars -> likely needs a historical 15m
+            fetch = possible data cost, his). Sent to Research to pre-register + score. His answer covers "your rule";
+            the 10-name test is not answered (4 charts now).
 ```
 
 ### HAND-OFF LINE
