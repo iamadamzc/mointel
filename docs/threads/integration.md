@@ -1130,6 +1130,10 @@ GZIP             his yes, NOT BUILT (no commit, no sha): Ops's edit to deploy/aw
 /proc 16:18:16Z  (Ops) GRADES 9d554e0 LIVE: web 1536304 (start 16:17:15Z) / research 1536360 / assess 1536434, NR 0;
                  market 3b78b8c 1347535 NR 0. Gated 174/174 in Ops's session. Prune removed c49bb3a. 803008b's
                  condition MET; ships 12:34 ET window.
+GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Checked at 9d554e0: promptVersion is
+                 the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
+                 "reverse stock split" / "consolidation" -> a false UNTESTED. Awaiting Research's amendment sha; then
+                 route A+B to Ops for after 10:00 ET 09-30, raw output to Research.
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
