@@ -1134,7 +1134,7 @@ GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Che
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
                  read; 08-23 snapshot 9 -> 18 rows, 5 genuine splits the old pattern missed). ROUTED to Ops: control C
-                 (pre-deploy 7 days, must return MTNB 2445) FIRST, then A, then B; after 10:00 ET 09-30; raw to Research.
+                 (pre-deploy 7 days; PASS = any MTNB row, id reported; 2445 was relay-only) FIRST, then A, then B; after 10:00 ET 09-30; raw to Research.
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
