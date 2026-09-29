@@ -1138,6 +1138,14 @@ GZIP             his yes, NOT BUILT (no commit, no sha): Ops's edit to deploy/aw
 DESIGN LIVE READ (rows, 803008b): top 50 Discovery -- 14 OLD rows, all grey + "No fresh catalyst · latest: …";
                  control (OLD without the new headline) = 0; marks live: YMT sheet C·desk B, MSGY sheet B·desk C, ONFO
                  sheet C·desk B; 1,024 px no overflow. Review link 53 revoked. CLOSED.
+16:49:25Z (Ops)  HIS "keep it through tonight, hand off tomorrow" -- answers OPS'S OWN hand-off question (Ops 16:48:51Z
+                 block item 1), NOT this seat's. Ops hands off 09-30 ~10:25 ET after the 10:12 grades read. Ops's seven
+                 reminders (store copy, 19:50 prep, 20:15 restart, 21:50, 22:08, 04:33, 10:12) live ONLY in its session.
+16:56:01Z (Res.) HIS "yes, hand off" (f95ac7bd, read at his turn). Research local_e18a7d74 RETIRED; hand-off be1e82a +
+                 2fbcfbf; docs/research-opening-prompt.md carries tonight's check (l.28), the grades read with the
+                 16:17:16Z boundary (l.59-61), the profile. HOLD everything for Research until the successor sends its id.
+                 Tonight's results need a Research seat OPEN before 20:15 ET -- put to him.
+THIS SEAT        his answer on the hand-off question: NONE yet (no turn in this session since it was asked).
 GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Checked at 9d554e0: promptVersion is
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
