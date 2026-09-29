@@ -1007,6 +1007,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      RULED (a) 2026-09-29T01:53:21Z, his words to this seat: "dead rank not important" -> OPTION 1, "Rank held" omitted on the
                      default board; no engine rank-at-death. Remaining for the set: Design's drawer fix + review-route answer,
                      Research's route flip, Ops's loaded measurement.
+                     HIS VIEW, received mid-turn, logged at 2026-09-29T01:54Z (turn time not yet in the transcript; re-check): "frankly - rank in general is not
+                     important imo." RECORDED AS A VIEW, NOT A RULING -- nothing removed on it. Put to him: remove the
+                     drawer's Rank Change line instead of fixing its "New" label.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
