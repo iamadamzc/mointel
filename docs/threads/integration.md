@@ -1121,7 +1121,12 @@ FREEZE PATH      Design, VERIFIED by this seat at 0342e7d: useMarket.ts polls 10
                  guard (no abort of slow poll + visible STALE after N s), no build. PUT TO HIM as a decision now.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
-GRADE DEFS       Undefined to the model; reverse splits graded red (MTNB today; PFSA x2, SCNI on 08-23). Research to DRAFT
+GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
+                 (NOT prod): 15 reverse-split analyses / 12 tickers graded 6 red / 6 mixed / 2 unknown / 1 none, SCNI
+                 both ways. 3 options, no pick; FINRA + Kim/Klein/Rosenfeld 2008 with HORIZON MISMATCH stated.
+                 Research's "not obviously bad news" line WITHDRAWN (never reached him). HELD: goes to him with the
+                 stale-why-now proposal, after this seat reads the draft end to end.
+                 (orig) Undefined to the model; reverse splits graded red (MTNB today; PFSA x2, SCNI on 08-23). Research to DRAFT
                  definitions + reverse-split OPTIONS justified by source/measurement, not his habits. His claim decision.
 CAPTURE RISE     PASS (Ops scheduled task): 08:15:51.945Z 9,410,578 -> 08:16:57.337Z 9,413,474 (+2,896 / 65 s),
                  discarded 0, pid 1347535 NR 0. Side obs: first /api/health ~17 s, market DEGRADED (18 s msg age) then
