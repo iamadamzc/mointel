@@ -1103,7 +1103,11 @@ SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just be
                  NEW OPEN: his turns 11:58:01Z (red) and 12:00:20Z ("just updated in the last 2 minutes") vs store green
                  since 11:17:03Z -> his screen ~40 min behind the store. Routed to Design (dossier delivery / caching /
                  other red elements); asked him what was red and whether he reloaded.
-OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
+CAPTURE RISE     PASS (Ops scheduled task): 08:15:51.945Z 9,410,578 -> 08:16:57.337Z 9,413,474 (+2,896 / 65 s),
+                 discarded 0, pid 1347535 NR 0. Side obs: first /api/health ~17 s, market DEGRADED (18 s msg age) then
+                 LIVE. Ops HYPOTHESIS (unmeasured): Lightsail auto-snapshot 08:00Z. Journal read owed. To him only if
+                 it can recur in 7-10 ET. Also asked Ops for web journal 11:17-12:00Z (SLND screen lag, server side).
+OWED BY OPS      (04:15 pair: DELIVERED above); 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
 **THE SEVENTEENTH SEAT'S LEDGER (session-hygiene §2):**
