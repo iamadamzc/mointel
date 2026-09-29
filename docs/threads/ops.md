@@ -12434,3 +12434,5 @@ error (asserted vs true)                                          TYPE          
   drops that minute before the GROUP BY
 ```
 Repeat of a corrected class -> warned him 2026-09-29 ~12:5x ET and proposed the hand-off timing.
+
+**His ruling 2026-09-29 ~12:5x ET: "keep it through tonight, hand off tomorrow."** This seat runs the store copy, the 20:15 restart and the post-restart checks, then hands off after the 10:12 ET 09-30 grades read. Until then: open the artefact before stating a mechanism.
