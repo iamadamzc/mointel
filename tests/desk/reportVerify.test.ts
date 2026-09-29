@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { numbersIn, supportedValues, verifyLine, type ReportFactRow } from '@/lib/desk/reports/verify';
+import {
+  numbersIn,
+  roundTo,
+  supportedValues,
+  verifyLine,
+  type ReportFactRow,
+} from '@/lib/desk/reports/verify';
 
 /**
  * The half of the checker that cannot rubber-stamp.
@@ -150,6 +156,151 @@ describe('the allowlist refuses by default', () => {
 
   it('reads a negative percent with its sign', () => {
     expect(numbersIn('down -21.6% on the session')).toEqual([-21.6]);
+  });
+});
+
+/**
+ * THE CONTROL: correct sentences must pass.
+ *
+ * The pre-registered bar (`design.md`, `43c1b7c`) requires the checker to
+ * strike NOTHING on uncorrupted reports. Measured 2026-09-29 on Marketing's
+ * specimens (`marketing.md`), which trace every clause to a stored field: this
+ * checker struck 4 of 6 correct lines -- a fall said "down", a typographic
+ * minus, a binary-rounded $1.255, and the row's own change notes. Rows below
+ * are the specimens' stored values (`facts-2026-09-18.md`); the recap's
+ * `changeSummary` is quoted there with its middle elided, and is elided here.
+ */
+describe('Marketing\'s specimens are the control, and correct lines pass', () => {
+  const at0925 = {
+    IMCC: {
+      ...IMCC,
+      price: 3.31,
+      percentChange: 90.23,
+      sessionHigh: 5.06,
+      changeSummary: 'IMCC: -30.2% since prior assessment; -34.6% off session high.',
+    },
+    TCRT: {
+      ...TCRT,
+      assessmentRank: 4,
+      price: 1.5,
+      percentChange: -6.25,
+      sessionHigh: 3.14,
+      changeSummary: 'TCRT: -32.4% since prior assessment; lost $1.84 support.',
+    },
+  };
+
+  it('a fall said "down", and the row\'s own change notes', () => {
+    expect(
+      verifyLine(
+        {
+          ticker: 'IMCC',
+          text:
+            'IMCC held #1 into the open at $3.31, up 90.2% from the prior close — but it is down 30.2% since the last read and sitting 34.6% under its session high of $5.06.',
+        },
+        [at0925.IMCC],
+      ),
+    ).toEqual([]);
+  });
+
+  it('a typographic minus, and a support level from the change notes', () => {
+    expect(
+      verifyLine(
+        {
+          ticker: 'TCRT',
+          text:
+            'TCRT ran to a high of $3.14 and round-tripped — it’s $1.50 now, −6.3% from the prior close and 52.2% below that high, and it lost $1.84 support since the last read.',
+        },
+        [at0925.TCRT],
+      ),
+    ).toEqual([]);
+  });
+
+  it('$1.255 prints as $1.26, as a person rounds it', () => {
+    expect(
+      verifyLine(
+        { ticker: 'TCRT', text: 'TCRT has broken down: #7 now at $1.26, −21.6% from the prior close and 60% off its high.' },
+        ROWS,
+      ),
+    ).toEqual([]);
+  });
+
+  it('the after-hours fall, against the day\'s own close', () => {
+    const recap = {
+      ...IMCC,
+      assessmentRank: null,
+      price: null,
+      percentChange: -25.06,
+      ahPercentChange: -25.06,
+      referenceClose: 4.23,
+      changeSummary: 'IMCC: rank #1 → #4; lost $4.20 support; TRADING → UNKNOWN.',
+    };
+    expect(
+      verifyLine(
+        { ticker: 'IMCC', text: 'IMCC gave its move back after hours: down 25.1% from yesterday’s own close of $4.23, as it lost $4.20 support.' },
+        [recap],
+      ),
+    ).toEqual([]);
+  });
+});
+
+describe('what the control fix must NOT let through', () => {
+  it('STRIKES a band rank quoted from the change notes', () => {
+    /*
+     * "rank #1 -> #4" is in the recap's own changeSummary, and it is a BAND
+     * ordinal. A set-range report prints in-range ranks only, so harvesting
+     * the notes must not admit it -- the specimen's "slipping from #1 to #4"
+     * predates the set-range ruling and is correctly struck.
+     */
+    const recap = {
+      ...IMCC,
+      assessmentRank: null,
+      changeSummary: 'IMCC: rank #1 → #4; lost $4.20 support.',
+    };
+    const findings = verifyLine({ ticker: 'IMCC', text: 'IMCC slipped from #1 to #4.' }, [recap]);
+    expect(findings.map((f) => f.value)).toEqual([1, 4]);
+  });
+
+  it('STRIKES "left Top 12" -- a band count, not a value', () => {
+    const row = { ...IMCC, changeSummary: 'IMCC: left Top 12.' };
+    expect(verifyLine({ ticker: 'IMCC', text: 'IMCC fell out of the top 12.' }, [row])).toEqual([
+      { reason: 'NUMBER_NOT_IN_ROW', value: 12 },
+    ]);
+  });
+
+  it('STRIKES a fall written as a rise', () => {
+    // Unsigned "21.6%" for a stored -21.56 reads as up. The sign is the claim.
+    expect(verifyLine({ ticker: 'TCRT', text: 'TCRT is 21.6% from the prior close.' }, ROWS)).toEqual([
+      { reason: 'NUMBER_NOT_IN_ROW', value: 21.6 },
+    ]);
+  });
+
+  it('STRIKES "up" on a fall and "down" on a rise', () => {
+    expect(verifyLine({ ticker: 'TCRT', text: 'TCRT is up 21.6%.' }, ROWS)).toHaveLength(1);
+    expect(verifyLine({ ticker: 'IMCC', text: 'IMCC is down 149.4%.' }, ROWS)).toHaveLength(1);
+  });
+
+  it('STRIKES a change note from another checkpoint\'s row', () => {
+    // 09:25's "-30.2% since prior assessment" in a line checked against 14:30.
+    expect(
+      verifyLine({ ticker: 'IMCC', text: 'IMCC is down 30.2% since the last read.' }, ROWS),
+    ).toEqual([{ reason: 'NUMBER_NOT_IN_ROW', value: -30.2 }]);
+  });
+
+  it('a hyphen joined to a word is not a minus', () => {
+    expect(numbersIn('a top-12 name at $4.34')).toEqual([12, 4.34]);
+  });
+});
+
+describe('rounding is half away from zero, on the decimal a person reads', () => {
+  it.each([
+    [1.255, 2, 1.26],
+    [-6.25, 1, -6.3],
+    [149.4252873563218, 1, 149.4],
+    [-21.5625, 1, -21.6],
+    [0.005, 2, 0.01],
+    [4, 2, 4],
+  ])('%s to %s dp is %s', (value, dp, expected) => {
+    expect(roundTo(value, dp)).toBe(expected);
   });
 });
 

@@ -37,6 +37,11 @@ export interface ReportFactRow {
   ahPercentChange: number | null;
   ahVolume: number | null;
   volume: number | null;
+  /**
+   * The row's own deterministic change prose (`assessment.ts`). Optional so a
+   * row without one is simply a row with nothing to harvest from it.
+   */
+  changeSummary?: string | null;
 }
 
 export type UnsupportedReason =
@@ -62,9 +67,47 @@ export interface VerifyFinding {
 const PERCENT_DP = 1;
 const PRICE_DP = 2;
 
-function roundTo(value: number, dp: number): number {
-  const f = 10 ** dp;
-  return Math.round(value * f) / f;
+/**
+ * Half away from zero, on the value's DECIMAL form. Exported because the
+ * writer must round with this function and no other.
+ *
+ * `Math.round(1.255 * 100)` is 125, not 126: 1.255 is stored in binary as
+ * 1.25499999..., so the arithmetic rounds a value nobody wrote. TCRT's real
+ * 14:30 price is 1.255 and Marketing's specimen prints "$1.26" -- correctly --
+ * and this checker struck it. Shifting the exponent in the string reads 1.255
+ * as the 125.5 a person means.
+ *
+ * AWAY FROM ZERO, so a fall rounds the way a rise does: -6.25 is "-6.3", as
+ * the specimen writes it. `Math.round` alone gives -6.2.
+ */
+export function roundTo(value: number, dp: number): number {
+  const magnitude = Math.abs(value);
+  const text = String(magnitude);
+  const scaled = text.includes('e') ? magnitude * 10 ** dp : Number(`${text}e${dp}`);
+  const rounded = Math.round(scaled) / 10 ** dp;
+  return value < 0 ? -rounded : rounded;
+}
+
+/**
+ * The three `changeSummary` notes that carry a VALUE, by their exact shapes
+ * in `assessment.ts`. Everything else in it -- "rank #1 → #4", "left Top 12"
+ * -- is a BAND-frame ordinal, and a set-range report must never print one: a
+ * band rank beside an in-range list is two frames on one row. An allowlist of
+ * shapes, so a note added there later is refused until it is named here.
+ */
+const CHANGE_NOTE_VALUES = [
+  /([+-]?\d+(?:\.\d+)?)% since prior assessment/g,
+  /([+-]?\d+(?:\.\d+)?)% off session high/g,
+  /lost \$(\d+(?:\.\d+)?) support/g,
+];
+
+function changeNoteValues(summary: string | null | undefined): number[] {
+  if (!summary) return [];
+  const out: number[] = [];
+  for (const shape of CHANGE_NOTE_VALUES) {
+    for (const match of summary.matchAll(shape)) out.push(Number(match[1]));
+  }
+  return out.filter(Number.isFinite);
 }
 
 /**
@@ -114,6 +157,15 @@ export function supportedValues(row: ReportFactRow): number[] {
     push(giveback, PERCENT_DP);
   }
 
+  /*
+   * The row's own change notes, AS PRINTED. "down 30.2% since the last read"
+   * and "lost $1.84 support" are facts this checkpoint's row stores in
+   * `changeSummary`, not in a numeric field -- and without them every such
+   * sentence in Marketing's specimens was struck. Taken as written, not
+   * re-rounded: the note already carries its one decimal.
+   */
+  out.push(...changeNoteValues(row.changeSummary));
+
   return out;
 }
 
@@ -149,11 +201,40 @@ export function numbersIn(text: string): number[] {
    */
   const scrubbed = stripTimestamps(text);
   const out: number[] = [];
-  for (const match of scrubbed.matchAll(/-?\d+(?:,\d{3})*(?:\.\d+)?/g)) {
-    const value = Number(match[0].replace(/,/g, ''));
-    if (Number.isFinite(value)) out.push(value);
+  for (const match of scrubbed.matchAll(/([+\-−])?(\d+(?:,\d{3})*(?:\.\d+)?)/g)) {
+    const magnitude = Number(match[2]!.replace(/,/g, ''));
+    if (!Number.isFinite(magnitude)) continue;
+    out.push(signOf(scrubbed, match.index!, match[1]) * magnitude);
   }
   return out;
+}
+
+/**
+ * A number's sign, AS A READER HEARS IT, and the stored value is signed.
+ *
+ * "down 25.1%" is -25.1 to a reader and was +25.1 to this function, so a
+ * correct sentence about a fall was struck against the stored -25.06 -- and
+ * "−6.3%" (the typographic minus a writer uses) read as +6.3. Both were
+ * measured on Marketing's own specimens, 2026-09-29.
+ *
+ * - An explicit sign counts only where a sign can stand: at the start or after
+ *   a space or bracket. "top-12" is a hyphen, not a minus.
+ * - Else `up` / `down` IMMEDIATELY before the number. Not before a "$": "down
+ *   $1.84" names a level, and a level has no direction.
+ * - Else positive. An unsigned "6.3%" for a stored -6.25 is STRUCK, which is
+ *   right: a reader takes it as a rise. Any other verb ("fell 6.3%") is
+ *   unsigned too, so the strike errs toward refusing -- the allowlist's side.
+ */
+function signOf(text: string, index: number, sign: string | undefined): number {
+  const before = text.slice(0, index);
+  if (sign && (index === 0 || /[\s(]$/.test(before))) return sign === '+' ? 1 : -1;
+  if (sign === '-' || sign === '−') {
+    // A hyphen joined to a word: the number itself is unsigned, and the word
+    // before it cannot give it a direction either.
+    return 1;
+  }
+  if (/\bdown\s+$/i.test(before)) return -1;
+  return 1;
 }
 
 /** ISO dates and clock times, replaced with a space. Exported so it is testable alone. */
