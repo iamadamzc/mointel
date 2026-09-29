@@ -1210,6 +1210,9 @@ RESTART RULED   HIS TURN, Ops's session (a36b4a67-*.jsonl), 2026-09-29T11:04:49Z
                  VERIFIED: sync-env.sh at 206c687 lines 142-143 carry MIN=0.25 and MAX=50; Ops acked floor 9508fb9 in ops.md.
 SHIP ORDER      REVISED for the deadline, after 10:00 ET, his yes each: 1 heartbeat c49bb3a (171, owner-approved by
                  Ops) -> 2 memo re-picked (172) -> 3 poll fix re-picked (173). Partial yes keeps relative order.
+STACK APPROVED  his "yes to all three" (Ops's session, per Ops). Replayed: memo 8455b48 (1 over c49bb3a, patch-id 1a8d90d0,
+                 lines identical, 172); poll a391c61 (1 over 8455b48, patch-id 0b466022, lines identical, 173). Cone
+                 0342e7d..a391c61 = 3, fa61410 not in it. Ships from 10:00 ET one by one, /proc between.
 NOW CELL        Design: 20:15 ET is after the 20:00 close, so tonight's post-restart read is PLUMBING only (tradeCapture.asOf
                  fresh vs fetchedAt; nowBuckets present). Real-10 s read earliest 04:00 ET 09-30 (one page load, no loops);
                  fa61410 cannot be asked for before then.
