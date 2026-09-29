@@ -1056,7 +1056,11 @@ RULE             No heavy /api/market probes 07:00-10:00 ET (Ops + Design adopte
 
 ### APPROVED, NOT BUILT -- THE LIST HE ASKED TO ALWAYS SEE
 ```
-CATALYST RENDERING  Design: dimmed OLD_CATALYST row + Sheet/auto marker. Cut from CONFIRMED production; ship = his yes.
+CATALYST RENDERING  Design: BUILT on main d3dc32d (why.ts, DecisionCells.tsx, +1 test; client only): dimmed letter +
+                    'No fresh catalyst · latest: <ET date> — <desk summary>' (undated when no usable event time);
+                    'sheet C · desk A' mark from the merge's own comparison. CUT on a391c61 once confirmed: PRE-REGISTERED
+                    174. Pairs with grades 9d554e0 (also on a391c61): first his-yes ships first, other re-picked at 175;
+                    yes to both at once -> grades first. Ship = his yes in Ops's session.
 GRADE DEFINITIONS   Research: BUILT on main a794e20 (lib/research/interpret/catalystGrades.ts, read by prompt AND schema;
                     reverse split/ratio change by context over the evidence bundle; red grade not split; prompt v1->v2;
                     189 files as predicted; no paid run). DROPPED the draft's 'fresh' wording -- his 09-24 ruling
