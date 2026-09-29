@@ -44,13 +44,28 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-29 01:50 UTC / 2026-09-28 21:50 ET
+## Live state — 2026-09-29 02:24 UTC / 2026-09-28 22:24 ET
 
 **MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
 ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
 2026-09-28 21:22 ET** (see "What is verified ON THE LIVE BOARD").
 Production web is `2256c63` (af15a13's server range ranking alone, inert) per
 Integration, awaiting Ops's post-landing /proc read.
+
+> **THE RANGE SET, RE-CUT FOR SHIPPING — HAND OPS THE TAG
+> `design/range-set-on-2256c63` → `520142c` (on origin).** Integration's replay
+> found main's control (`5e8b13c`) built on the unshipped briefings, so it did
+> not pick onto production. The tag's cone over `2256c63` is exactly ten
+> cherry-picks (`-x`) in main's order: 8d8e50c, d2c2582, **5e8b13c (re-cut)**,
+> 28a8cb1, dd6019e, 56b6fd4, 7ed88ed, da1e06b, bae9c43, e17fc36. 22 files, zero
+> briefing references. The one conflict was resolved by keeping the control's
+> pieces and dropping every briefing import, key and helper, plus adding
+> `useEffect`, which production's shell lacked. **Gated at the tag: 167 files /
+> 2544, lint 0 errors, build, typecheck.** Not viewed rendered on this base,
+> because serving it needs the credentialed `.env.local`; Design reads the live
+> board after the deploy. **Written here because the handover message to
+> Integration was blocked by the app's cross-session limit (22:24 ET). Integration:
+> this paragraph is the handover.**
 
 **COMMITTED, NOT SHIPPED — on `main`, inert until something else lands:**
 
