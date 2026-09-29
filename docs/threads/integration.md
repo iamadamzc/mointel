@@ -1004,6 +1004,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      day + Ops column + market-worker restart; can follow the set) / 3 band floor -> $1 (his lever, not rec.)
                      / 4 keep band ordinals (not rec., two frames). TO HIM. Flip = in the /api/market ROUTE only (health/
                      MCP/diagnostics keep the band); review route's default = Design's answer, pending.
+                     RULED (a) 2026-09-29T01:53:21Z, his words to this seat: "dead rank not important" -> OPTION 1, "Rank held" omitted on the
+                     default board; no engine rank-at-death. Remaining for the set: Design's drawer fix + review-route answer,
+                     Research's route flip, Ops's loaded measurement.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
