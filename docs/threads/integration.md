@@ -986,6 +986,16 @@ MARKET-WORKER RESTART  OPS'S SINGLE PLAN (received 16th seat, 2026-09-29 02:54Z,
                      so. Earliest: Thu 10-02 after 20:00 ET. Ops puts the PLAN to him; the TIME is a separate ask, his,
                      in Ops's session. His Now-column yes-in-principle: 02:41:45Z. market.db latch/high_res columns are
                      an ASSESS change behind the backup route, NOT in this restart.
+                     HIS TURNS TO OPS 2026-09-29 (read at his turns): 03:17:38Z "why thurs"; 03:19:39Z "why  not now";
+                     03:20:41Z "i dont understnad why wednesday, let complete the work now. what's not being
+                     communicated about these delays"; 03:21:51Z "work continues nonstop". Addressed to OPS about the
+                     restart work; NOT relayed as a desk-wide ruling by this seat. Ops built tonight: 9508fb9 trades.db
+                     v2 (origin), 731179b CAPTURE_PRICE_MIN/MAX + bootstrap = record band (LOCAL main, unpushed at
+                     03:2xZ), f869ee0. $50 replay: +~10 s per weekday restart, so NO SPLIT, one restart. Research's web
+                     half 4044dc7 + 9b4533a on origin. SEAMS SENT TO OPS: sync-env.sh has NO CAPTURE_PRICE line (both
+                     halves rule); shipping the code moves production off 2256c63 -> 520142c VOID on base -> Design
+                     re-cuts on the new sha; the range-read must be taken on the store AFTER (d) if the read's
+                     candidates grow with the capture band.
 NOW COLUMN           needs per-bucket PRICE + membership intervals (true 0s): Research engine + Ops trades.db v2 ->
                      MARKET-WORKER RESTART (his yes, in principle via Design's block, timing via Ops) -> Design builds.
                      Ops asked to fold ALL pending market-worker restarts into one plan to him: this, band piece 1's
