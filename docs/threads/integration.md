@@ -1025,8 +1025,9 @@ RTH READ         Ops (b') method after the memo, IN RTH, first run 14:50:26Z: ma
                  RTH reading exists, so the memo's box effect is UNMEASURED -- claim none. Establishes: one serial
                  client ~0.48 s per /api/market in RTH, max 1.08 s -- the old 1 s abort-poll had ~0.5 s margin at best.
                  Snapshot (c) tonight is overnight-after-restart, so it compares with (b'), not with this.
-OPEN             GZIP (Ops): nginx-tls.conf gzip for application/json; size + CPU measured on one saved payload, then to
-                 HIM as its own item, stated as TRANSFER only. COALESCE (Research): DEFERRED until the memo's box read;
+OPEN             GZIP (Ops) MEASURED 15:19:23Z, one fetch: raw 803,397 B; level 4 -> 153,602 B (19%), 22 ms CPU (~2% of
+                 one of 2 vCPUs per open board at 1 poll/s); BREACH: no secret values in the body. PUT TO HIM by Ops as
+                 its own item, TRANSFER only; nginx -t + reload, rollback = revert + reload. COALESCE (Research): DEFERRED until the memo's box read;
                  size against a 1000 ms poll. Route ENTRY CHECK: SHELVED (0/10, scripts/ops/abort-probe.cjs e6673e0).
 ROUTED (after    (2)(a) FIRST: Ops copies ONE consistent post-close market.db (not raw cp of a live WAL) to scratch, outside
 the memo)        07-10 ET, no deploy unit, not inside the 20:15 motion; Research profiles LOCALLY, ratios only. THEN
