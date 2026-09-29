@@ -1080,6 +1080,11 @@ TIMER LIVE       PRODUCTION = 0342e7d on web/research/assess, Ops /proc 2026-09-
                  median of maxima 8.9; medians 6.4/5.9/5.7/5.7/7.1. (c) GATE therefore: median of maxima <= 28.9 ms.
 NEXT            THE RESTART -- his time, in Ops's session. Ask must carry rollback floor 9508fb9/3810b9e and
                  CAPTURE_PRICE_MIN=0.25/MAX=50 in sync-env.sh AND on the box, same motion. Integration checks the ask.
+SLND CATALYST    HIS REPORT (typed here; clock read 2026-09-29T11:58:12Z just before routing): "SLND is on the board
+                 with a bad news catalyst" + pasted 247marketnews 07:50:25 ET: $71M water pipeline award (Oscar Renda,
+                 Civil segment) -- a positive. ROUTED to Research-tmi: store read of every SLND version (catalyst
+                 grade/direction/evidence), whether the article existed at answer time, mechanism, one case or a class.
+                 Any stored-row correction = production write -> him. OPEN.
 OWED BY OPS      04:15 ET capture-rise pair; 08:30 and 11:05 ET range reads; restart ask naming the rollback floor +
                  CAPTURE_PRICE_* in sync-env.sh and on the box in one motion.
 ```
