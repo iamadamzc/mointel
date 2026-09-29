@@ -12215,3 +12215,8 @@ permission control; he chose to let it land. Inert: no request sends min/max. DE
 after hours: $0.25-$50 day 15.7 median / 17.9 max -- PASS; but $1-$20 (the default) day 18.5 / 25.7.
 Temp B-tree sort per call. **Re-measure in RTH before the range set ships; if $1-$20 max > 20 ms, add
 ticker_session(trading_date, rvol DESC) -- a schema bump, after the pre-deploy backup route.**
+
+**Gate environment trap (Design, 2026-09-28):** under PowerShell, `bash` resolves to WSL, which fails
+to start here, so tests/desk/releaseBootstrap and releaseRetention fail 36 tests from the environment
+alone. **Run test-gate.sh and push-release.sh from Git Bash.** A red on only those two files from a
+PowerShell run is not a code result.
