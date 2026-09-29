@@ -9,7 +9,7 @@ the board is his yes, enumerated by literal sha.*
 
 | ruling | where |
 | --- | --- |
-| "left, up, mark the top. if there are multople tops within the same 2-3c, mark it near the middle … these become areas of resistance" | Integration 19th's transcript `ffac4a37`, 2026-09-29T22:05:23Z |
+| "left, up, mark the top. if there are multople tops within the same 2-3c, mark it near the middle … these become areas of resistance" | the 18th Integration seat's transcript `ffac4a37` (`local_92208da3`), 2026-09-29T22:05:23Z |
 | "a, show all 7": show every candidate level, his lines always among them | Research's transcript `8cd59d1e`, 2026-09-29T22:44:18Z |
 | "i just want these levels drawn … you can confirm … that these are indeed resistance levels": they are **labelled resistance levels** | `8cd59d1e`, the turn after 22:56:28Z |
 | ~~"6–12 months of daily candles. last 30days 15m"~~ (windows SUPERSEDED by the row below); still standing: "If the nearest major historical peak is two years back and just above today's price, I'd still mark it"; "You don't need to mark every candle back to the stock's listing"; today's run tops count; premarket uses prior sessions | `845dd4cb`, 2026-09-29T22:33:08Z |
@@ -28,9 +28,9 @@ highlighting field.** That question was withdrawn; the only tag is timeframe.
 1m close at or before `t`. Completed candles only, meaning a candle whose end is
 ≤ `t`.
 
-**One continuous walk left, through three windows that do not overlap.** His
-ruling (`8cd59d1e`, after the spec's first version): *"5m candles for today only.
-15m for anything older. up to 39 days. and dailys beyond."*
+**Three windows that do not overlap, one ladder per window, merged.** His ruling
+(`8cd59d1e`, after the spec's first version): *"5m candles for today only. 15m for
+anything older. up to 39 days. and dailys beyond."*
 
 | window | candles | covers |
 | --- | --- | --- |
@@ -38,18 +38,23 @@ ruling (`8cd59d1e`, after the spec's first version): *"5m candles for today only
 | older | 15m from the history store | the previous session back **39 calendar days** (read as calendar days; his words say "39 days") |
 | beyond | daily from the history store, split-adjusted | older than 39 days, out to 12 months |
 
-Walk the candles backwards in time, newest first: today's 5m, then the 15m
-candles, then the daily candles. The **first** candle whose high ≥ `L` starts
-the ladder, and its high is the first mark. **Each earlier candle, in whichever
-window it sits,** whose high is **greater than the last mark** is the next mark.
-Keep only marks > `L`. This is one ladder, not three pooled: a 15m or daily top
-counts only if it is above every mark found nearer to now, which is what his
-eye does walking left across the chart. Marks are **wick highs**, not bodies
+**In each window separately,** walk its candles backwards from the newest. The
+**first** candle whose high ≥ `L` starts that window's ladder, and its high is the
+first mark. Each earlier candle in the SAME window whose high is **greater than
+the last mark** is the next mark. Keep only marks > `L`. Then **merge the three
+windows' marks** and cluster them (below). Marks are **wick highs**, not bodies
 (his "top of it"; bodies recovered 3/5 of his SLXN lines, wicks 5/5). Each mark
-remembers its window, which becomes the level's timeframe tag.
+keeps its window, which becomes the level's timeframe tag.
 
-**Far back, the one extension:** if the walk reaches the end of the 12-month
-daily window with no mark (price is above every high for a year), continue
+**Why per-window and not one continuous walk (f6c41e4 said continuous, which was
+this seat's addition, not his words):** on one continuous walk, a higher top
+nearer to now hides every lower top further left. **His own BIYA chart marks
+August tops at 2.42–2.50 although today's run printed 2.53–2.74 above them.** So
+a higher recent top must not erase an older lower one across windows. Within a
+window, the ladder is his "left and up".
+
+**Far back, the one extension:** if the DAILY window's own ladder has no mark
+(price is above every daily high from 39 days back to 12 months), continue
 further back through the stored daily history, and take **only the first daily
 high > `L`**. That is "the nearest major historical peak … just above today's
 price". Stop there, so it never walks to the listing. If no stored high exists
@@ -59,12 +64,12 @@ all-time high, because the store does not reach the listing (same rule as
 
 **Cluster.** Sort the marks, and chain
 neighbours whose **gap to each other** is ≤ `W`. **`W = 0.5% × L`** (his "2–3c"
-at the $4–6 prices he trades most; a literal 3¢ would collapse sub-$1 names,
-e.g. SLXN's four lines at $0.31 into one). Each chain is one level at
+is ~0.5% at $4–6; a literal 3¢ collapses sub-$1 names, e.g. SLXN's four lines
+at $0.31 into one). Each chain is one level at
 **(lowest top + highest top) / 2** ("mark it near the middle").
 
 **Premarket:** nothing special is needed. Before the open, today's 5m window is
-short, and the walk reaches the previous sessions' 15m and daily tops, which carry the levels (his
+short, and the 15m and daily windows carry the levels (his
 "others trade on other sessions").
 
 **Split basis:** every price in one computation must be on one basis. The 5m
@@ -164,14 +169,19 @@ can refuse a mixed window. That is the same rule `daily_bars` already follows.
    max($0.002, 0.5% of L). **Pass = recall ≥ 13 of his 14 lines on SLXN, NCI and
    MSGY** (the pre-build scorer's 13/14 at 0.5% clusters, as a regression floor).
    Extra levels are expected under "show all" and are not a failure. *The floor
-   was scored one timeframe per chart. The spec pools 5m + 15m + daily, and
-   pooling can move a cluster's middle. A miss is therefore investigated per line
+   was scored one timeframe per chart. The spec merges today's 5m, the 15m and the
+   daily windows, and merging can move a cluster's middle. A miss is therefore investigated per line
    (which tops merged) before it is called a defect.*
 2. **BIYA is the store's positive control:** its lines (2.501 / 2.490 / 2.462 /
-   2.421) come from August, which only the backfill holds. **Before the
-   backfill: "no level near 2.42–2.50 from August". After: 2.421 and 2.501 from
-   the daily ladder (08-25, 08-24 highs), and 2.462 / 2.490 from the 15m ladder.**
-   A store that cannot reproduce BIYA has not backfilled.
+   2.421) come from 08-24 / 08-25, which only the backfill holds. **At the 09-29
+   chart moment the 15m window reaches back 39 calendar days, to 08-21, so ALL
+   FOUR come from the 15m window** (2.421 and 2.501 are also the 08-25 / 08-24
+   daily highs, but the daily window starts before 08-21). **Before the
+   backfill: no level near 2.42–2.50 from August. After: all four within
+   tolerance, and today's 5m window adds today's run tops (2.42–2.74) as separate
+   levels.** A store that cannot reproduce BIYA has not backfilled. **No
+   located-date 15m fetch is needed or specified:** his "dailys beyond" ruling
+   puts daily candles, not 15m, past 39 days.
 3. **Rollup vs Alpaca:** for 20 names × 1 session, our 15m rollup vs Alpaca's
    `15Min` for the same buckets: the high must match to the cent wherever the
    bucket has no restart gap. Any mismatch is reported with the bucket.
