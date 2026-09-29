@@ -1365,8 +1365,8 @@ HIS RULINGS      THIS SESSION (first-hand, after 22:26Z), LEFT-AND-UP:
                      still mark it"). Weight by what happened at the level (major peak + sharp selloff; repeated
                      rejection) over an ordinary high; age reduces confidence, does not erase. Example $4.20 / $4.60.
                      Cited: Fidelity (strength), Warrior Trading small-cap article, an unnamed intraday decay study.
-                 (4) The hand-off question (my ledger repeat) went UNANSWERED -> this seat continues on the recommendation
-                     given (through tonight, hand off after the 09-30 grades read). Not his ruling; my default.
+                 (4) The hand-off question (my ledger repeat): HIS ANSWER "you did restart. you are new." -> no hand-off
+                     for this repeat; the seat continues. The ledger stands; a THIRD entry of the class is the next trigger.
                  ROUTED to Research local_d6996864 (title + cwd checked): feasibility only -- daily_bars depth +
                  adjustment, 30d 15m fetch count (cost -> Commercial + him), pre-registered weighted-level scoring.
 
