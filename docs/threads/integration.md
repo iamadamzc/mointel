@@ -1138,6 +1138,11 @@ GZIP            Ops sized from config: box nginx.conf gzip on but gzip_proxied/t
                  TRANSFER fix only (server build 3.8-8.9 s under concurrency is untouched). Server-side abandoned-request
                  building: ROUTED -- build cost + shared build per interval -> Research (lib/market compute, README);
                  abort propagation in app/api/market -> Design (read only). Sizing, no build, not urgent.
+ABANDONED BUILDS Ops scoped; VERIFIED here at 0342e7d: app/api/market/route.ts calls getMarketSnapshot synchronously,
+                 never reads request.signal. Requests queue behind a sync build and are built after their client left.
+                 (2) COALESCE (<=500 ms memo on extraSymbols+range) -> Research, propose only. (1) ENTRY CHECK -> Design,
+                 only after Ops's test (after 10:00 ET) shows request.signal.aborted true for a queued request. Client fix
+                 + coalesce go to him as ONE 'board under load' decision; gzip separately.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
