@@ -990,6 +990,11 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      RANGE SET NOW: 8d8e50c + d2c2582 + 28a8cb1 (aboveRangeLatched; in-memory pass only, no SQL change,
                      opened -- so the d2c2582 measurement still applies) + 5e8b13c + Design's graveyard switch + the $1-$20
                      no-param flip (Design's, with the caller list from Research). af15a13 already live in 2256c63.
+                     ~02:00Z: dd6019e (Design's graveyard switch) ON origin/main. The $1-$20 FLIP ASSIGNED TO RESEARCH (server
+                     side, readModel.ts; lib/market "computes -> Research") -- both seats had pointed at the other. OPEN
+                     BEFORE ENUMERATION: after the flip every default viewer gets ordinalsOmitted, so the default board loses
+                     the graveyard "Rank held" column and the drawer rank-change line (TickerDrawer.tsx:476). Research to give
+                     options; the choice goes to HIM (the band-minimum lever is his $0.25 ruling). + Ops's loaded measurement.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
