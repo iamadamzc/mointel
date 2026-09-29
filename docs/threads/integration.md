@@ -1127,6 +1127,9 @@ GZIP             his yes, NOT BUILT (no commit, no sha): Ops's edit to deploy/aw
                  ancestor of every following ship (git merge-base --is-ancestor <gzip> <sha>).
 /proc 15:39:10Z  (Ops) web 1525925 / research 1525974 / assess 1526049 on a391c61, NR 0; market 1347535 on 3b78b8c, NR 0.
                  9d554e0 did NOT go at 11:34 ET (gate still running).
+/proc 16:18:16Z  (Ops) GRADES 9d554e0 LIVE: web 1536304 (start 16:17:15Z) / research 1536360 / assess 1536434, NR 0;
+                 market 3b78b8c 1347535 NR 0. Gated 174/174 in Ops's session. Prune removed c49bb3a. 803008b's
+                 condition MET; ships 12:34 ET window.
 STORE COPY       after 16:06 ET (Ops): snapshot-db.mjs -> pulled to data/market-prod-2026-09-29.db, box copy deleted.
                  Route Research on landing.
 TOLD HIM         the old 11:34/12:04/12:34 schedule (Ops's stated plan at 15:37Z) -- superseded; corrected next message.
