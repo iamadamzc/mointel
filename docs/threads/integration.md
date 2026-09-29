@@ -1351,6 +1351,11 @@ error                                                  TYPE                     
 ```
 GZIP SHIPPING    deploy unit mointel-deploy-1b5ead6-221229 started 18:12:29 ET (Ops; pre-launch /proc 18:12:00 ET on
                  803008b, NR 0; market 1347535). Post-ship set owed by Ops to this seat.
+GZIP LIVE        PRODUCTION = 1b5ead6 (Ops /proc 22:26:01Z: web 1567784 start 22:25:15Z / research 1567847 / assess
+                 1567927, NR 0; market 1347535 on 3b78b8c NR 0). Down 3s. nginx -t ok; gzip_proxied in sites-enabled.
+                 Proxied gzip OBSERVED on /privacy only. /api/market JSON NOT OBSERVED (Basic Auth; no test credential
+                 used) -> OWED: Ops reads the access log bytes on the first board poll (expect ~20% of raw; last raw
+                 200 was 1,172,059 B at 22:24:50Z). CONE RULE IN FORCE: every later ship has 1b5ead6 as ancestor.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
