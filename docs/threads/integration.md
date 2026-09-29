@@ -1449,6 +1449,11 @@ SPEC             Research e543a75 docs/research/resistance-levels-spec.md (read 
                  = last 30 calendar days (from 08-30 at 09-29); his lines are 08-24/25 -> cannot pass. His method
                  (18th's session 22:05Z) switches to 15m ON THE LOCATED DATE; the spec lacks that step. Sent back to
                  Research + a citation fix (ffac4a37 is the 18th's transcript). §3 -> Ops on the amended sha.
+HIS RULING       Research's session 23:03:53Z (read): "5m candles for today only. 15m for anything older. up to 39
+                 days. and dailys beyond." -> spec f6c41e4: one continuous walk (5m today / 15m back 39 CALENDAR days
+                 -- Research's reading, asked of him / daily to 12 mo + one far-back peak). Located-date step MOOT
+                 (39 d from 09-29 = 08-21 covers BIYA). Backfill ~740 requests, ~0.9 GB 15m. §3 SENT to Ops at f6c41e4.
+                 Stale in spec (Research to fix): §4.1 "pools", §4.2 BIYA daily/15m split, l.12 citation.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
