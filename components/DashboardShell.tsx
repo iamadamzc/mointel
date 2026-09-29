@@ -458,6 +458,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             isFocused={focus.isFocused}
             onToggleFocus={focus.toggle}
             changedTickers={feed.changedTickers}
+            nowCapture={merged.nowCapture}
           />
         ) : (
           <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />
