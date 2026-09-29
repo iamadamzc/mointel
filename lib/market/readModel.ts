@@ -48,7 +48,7 @@ import {
   readRangeBoard,
   readFeedHealth,
 } from './store/repo';
-import { rankLists, resolveRequestedRange, sameRange } from './rangeRank';
+import { markAboveRange, rankLists, resolveRequestedRange, sameRange } from './rangeRank';
 import {
   readCurrentAnalyses,
   readLatestJobForTicker,
@@ -544,6 +544,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         extraSymbols: options.extraSymbols,
         board,
       });
+
+    markAboveRange(states, served);
 
     // Ticker freshness is judged per ticker, never from the connection alone.
     const nowMs = Date.now();
