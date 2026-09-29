@@ -227,6 +227,11 @@ dots on the same slots, row-local scale, drawn whenever the price is non-null;
 one direction colour from `directionTone` over the six prices against
 `spreadPct`, `warn` inside the spread, neutral when there is no price or band.
 
+**BUILT at `fa61410` (2026-09-29).** One call of Design's, recorded so it is
+not read as a defect: a FALLBACK row keeps today's MINUTE bars under its muted
+`/min` number (the plan named only the number; the bars are what he has today).
+The `not live` state also replaces the `Now` sort button's hover.
+
 **ONE RESOLUTION, TWO READERS.** The reading (`live` / `fallback` / `minute` /
 `notLive`) is resolved once per row in `mergeDesk`, where the snapshot's
 `health` and `fetchedAt` are in hand, and both the cell and
@@ -254,7 +259,10 @@ then unmeasured; never interleaved, because 10 s and 60 s counts differ ~6×.
   gate for the cell.)*
 - **Order:** after the price-range release (his ruling). Research's field can be
   built first and ships inert, since the board ignores a field it does not read.
-  **Design does not start the cell until the field carries real 10 s prices.**
+  ~~**Design does not start the cell until the field carries real 10 s prices.**~~
+  **Superseded by "The build plan" above (built on `main` against the contract,
+  inert until served); what survives is that nothing ships before a live read on
+  real 10 s data.** *(Struck 2026-09-29 by the third Design seat.)*
 
 ## Not in this spec, on purpose
 
