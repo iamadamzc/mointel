@@ -31,7 +31,6 @@ import {
   footnoteCloseSentence,
 } from '@/lib/dashboard/sessionsView';
 import type { DemandState } from '@/lib/market/types';
-import { rankChangeReading } from '@/lib/dashboard/view';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import {
@@ -49,12 +48,6 @@ interface TickerDrawerProps {
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;
-  /**
-   * The board was re-ranked inside the viewer's price range
-   * (`DiscoveryState.ordinalsOmitted`), so stored rank movement is omitted and a
-   * null is not "new". See `rankChangeReading`.
-   */
-  ranksOmitted: boolean;
 }
 
 export function TickerDrawer({
@@ -63,7 +56,6 @@ export function TickerDrawer({
   focused,
   onToggleFocus,
   onClose,
-  ranksOmitted,
 }: TickerDrawerProps) {
   const feedBanner = useFeedBanner();
   const panelRef = useRef<HTMLElement | null>(null);
@@ -230,7 +222,7 @@ export function TickerDrawer({
           ) : null}
 
           <Collapsible title={telemetryTitle(feedBanner)}>
-            <Demand row={row} ranksOmitted={ranksOmitted} />
+            <Demand row={row} />
           </Collapsible>
         </div>
       </aside>
@@ -413,7 +405,7 @@ function DrawerHeader({
  * Live market telemetry from Alpaca. Deliberately separate from the research
  * sections below: demand detected is not structural analysis.
  */
-function Demand({ row, ranksOmitted }: { row: DeskRow | null; ranksOmitted: boolean }) {
+function Demand({ row }: { row: DeskRow | null }) {
   const demand = row?.demand ?? null;
 
   if (!demand) {
@@ -430,8 +422,6 @@ function Demand({ row, ranksOmitted }: { row: DeskRow | null; ranksOmitted: bool
       </Section>
     );
   }
-
-  const rankChange = rankChangeReading(demand.rvolRankChange, ranksOmitted);
 
   return (
     <Section title={`Demand · Alpaca ${demand.feed.toUpperCase()}`}>
@@ -487,42 +477,20 @@ function Demand({ row, ranksOmitted }: { row: DeskRow | null; ranksOmitted: bool
           value={demand.rvolRank !== null ? `#${demand.rvolRank}` : 'Unranked'}
           numeric
         />
-        <Field
-          label="Rank Change"
-          /*
-           * ZERO IS NOT RENDERED AS A MEASUREMENT, because here it is not one.
-           *
-           * `rankChange` is movement since the PREVIOUS ENGINE TICK
-           * (`rvol.ts:154`, `engine.ts:1265`), and the engine re-ranks
-           * continuously — so between two consecutive ticks a name's rank
-           * almost never differs and the flush stores 0. Measured: **45,249
-           * non-null rows and not one non-zero**, while ranks demonstrably
-           * move.
-           *
-           * This printed "0" on every name, every time — asserting *this name's
-           * rank has not moved* about names whose rank is moving. **Zero is a
-           * measurement and this one was an artifact of the interval.**
-           *
-           * The board already renders nothing here (its arrow is gated on
-           * falsiness), so THE BOARD WAS CORRECT AND THE DRAWER WAS THE ONE
-           * MAKING A CLAIM. This brings the two into agreement that nothing is
-           * known — which is a different act from hiding a writer defect behind
-           * a reader.
-           *
-           * **Not waiting for the writer**, because "repair it" is not a bug
-           * fix: making the field mean rank movement requires deciding over what
-           * interval — since session start, since board entry, since last flush
-           * — and that is an unmade design decision. Waiting means printing a
-           * false measurement indefinitely.
-           *
-           * **WHEN THE INTERVAL IS SETTLED, BOTH SURFACES NEED REVISITING
-           * TOGETHER** — this suppression AND the board's falsiness gate, which
-           * would also swallow a legitimate 0.
-           */
-          value={rankChange.value}
-          title={rankChange.title}
-          numeric
-        />
+        {/*
+          * NO RANK CHANGE LINE. HIS RULING, 2026-09-29T02:06:46Z: "yes remove it",
+          * answering "Remove the 'Rank Change' line from the stock detail drawer?"
+          *
+          * It never showed a real change: `rvolRankChange` is movement since the
+          * previous engine tick, always 0 in 45,249 stored rows, so it rendered a
+          * dash or `New`. And on a board ranked inside the viewer's price range
+          * the server nulls it, so after the $1-$20 default every drawer would
+          * have read `New` -- every stock claiming it had just arrived. A field
+          * that can only say nothing or say something false is removed, not
+          * reworded. If rank movement is ever wanted, it needs an interval
+          * decided first (since open? since entry?), and then a field that
+          * measures it.
+          */}
         <Field
           label="Displayed Float Turnover"
           value={formatMultiple(row?.displayedFloatTurnover)}
