@@ -972,6 +972,9 @@ SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resu
                      step), contract changes, writer, semantic checker + pass-bar test, /api/reports + range config. 10-05 not at risk.
 DAILY BILLING        + Design's payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
+RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
+                     to being able toadjust the column sizes?"; no prior record found anywhere). Design scopes, back to him
+                     as options; build after the range release, and only on his approval.
 SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, window).
 ```
 
