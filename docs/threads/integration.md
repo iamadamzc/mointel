@@ -984,6 +984,9 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      ($0.25-$50, $1-$20, a narrow one), both boards, under load -- the first wording named one case. Ops
                      re-measures in RTH 09-29; fails -> index on ticker_session(trading_date, rvol DESC) + AH one, after
                      the backup route. Remaining set: d2c2582 + 8d8e50c + 5e8b13c + Design's graveyard switch + $1-$20 flip.
+                     Ops's plan 09-29: capped read-only measurement (~36 calls, ~1 s CPU) at ~08:30 ET INSIDE his window and
+                     ~11:05 ET RTH, each with load context. Ops's judgement: the no-07-10 rule guards deploys/builds, not
+                     reads of this size. He is told.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
