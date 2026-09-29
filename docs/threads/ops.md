@@ -12436,3 +12436,5 @@ error (asserted vs true)                                          TYPE          
 Repeat of a corrected class -> warned him 2026-09-29 ~12:5x ET and proposed the hand-off timing.
 
 **His ruling 2026-09-29 ~12:5x ET: "keep it through tonight, hand off tomorrow."** This seat runs the store copy, the 20:15 restart and the post-restart checks, then hands off after the 10:12 ET 09-30 grades read. Until then: open the artefact before stating a mechanism.
+
+**Routing 2026-09-29 afternoon:** Research-tmi = local_d6996864-9974-431c-a8ad-034d0d9d372b (local_e18a7d74 retired; its chat may still carry the title). Integration-tmi = local_92208da3-00a6-4a88-b723-3d4d0672fbdf. Post-restart check rows and the market.db copy path go to Research by id, cc Integration.
