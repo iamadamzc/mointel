@@ -1402,6 +1402,12 @@ COST ANSWERED    Commercial 6c160bb (§9b of docs/commercial/2026-09-07-feed-lic
                  limit 10,000/min (docs) vs "Unlimited" (marketing), either clears tens/day. Terms: historical bars are
                  the same "Content", same personal/non-commercial clause -> NO NEW EXPOSURE; Gate 0 redistribution
                  question unchanged. Sent to Research.
+HIS QUESTION     (this session, after 22:5xZ) "is it worth just downloading them all and having them on the server
+                 instead of pulling them ... we should keep it on the server once downloaded and pull from there instead
+                 or will we always pull from alpaca?" Read here: daily_bars already fetch-once-keep (historyFetch.ts);
+                 minute_bars pruned to 20 trading dates (config.ts:121-128, his 09-12 number, "buffer, not an archive").
+                 SIZING routed to Research (all-band vs board-only vs derive-15m-forward; rows/bytes; backfill request
+                 count; hot store vs separate file). Disk free on the box: ask Ops AFTER tonight's checks.
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
