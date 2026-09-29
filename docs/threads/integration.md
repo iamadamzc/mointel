@@ -913,6 +913,11 @@ attributed to SATURATION". This seat was ~12 minutes old with a light context, s
 saturation, and a successor would inherit the habit through the same prompt. No hand-off proposed. The cure is
 mechanical: no clock time goes into any message or file without a `zoneinfo`/`%cI` read in the same step.
 **If a third instance occurs, this reasoning is void and the hand-off goes to him.***
+```
+"nothing is lost by waiting ~8 hours" to Design, for   same (a duration stated without    YES, 3rd       self (zoneinfo
+  the gap to the 11:05 ET read; clock 23:16 ET -> ~12h   computing it from a clock read)                  read after)
+```
+*THIRD INSTANCE, 2026-09-29T03:16Z. Per the line above, put to him as a hand-off decision. Corrected to Design.*
 *Cure, in the tool rather than in care: every time written here comes from `git log --format=%cI` or `zoneinfo`
 at the moment of writing.*
 
