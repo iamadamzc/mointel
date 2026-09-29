@@ -1056,6 +1056,11 @@ CHART IN    his image 21:49Z -> data/left-and-up-example-SLXN-5m.png (git-ignore
             ~0.364, AH ~0.312-0.316). Prediction: strict wick staircase fails precision; his lines look like shelves /
             swing highs. Added $0.002 tolerance before reading bars. Date confirmed today by the store. SLXN AH bars
             asked of Ops live (copy ends ~16:06 ET). PUT TO HIM: how he picks which tops to mark.
+SCORED      Research 643c534 (read here): store matches his chart to the cent (09:50 high 0.4000, 09:30 low 0.2977);
+            wick ladder RECALL 5/5 at $0.002; PRECISION 9/19 FAIL (extras: 10 AH steps 0.3064-0.3179, 0.3425, 0.3649);
+            body tops 3/5 -> wicks. Day high 0.5098 premarket was off his visible chart. NEXT = his: mark ~10 names on
+            5m, or state his selection rule, or let Research guess a rule (labelled unvalidated). History-horizon +
+            split measurements still owed from the prod copy.
 ```
 
 ### HAND-OFF LINE
