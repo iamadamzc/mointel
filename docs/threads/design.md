@@ -70,10 +70,18 @@ Discovery row, and the existing `retentionNote` (`view.ts:262`) already prints
 `aboveRangeLatched` (`28a8cb1`) is correct (`rankLists` restores in-range ranks
 after the scrub, so it fires) and is kept for a surface that shows pinned names.
 
-**The default flip's cost, told to Integration:** $1–$20 is not the engine band
-($0.25–$20), so after the flip EVERY viewer's default board is ordinals-omitted
-and loses the graveyard's `Rank held` and the drawer's rank-change line. Sort is
-unaffected.
+**The default flip** (Research `56b6fd4`, in the `/api/market` ROUTE only; health,
+MCP and diagnostics keep the band): $1–$20 is not the engine band ($0.25–$20,
+**his ruled system band, not a lever**), so EVERY viewer's default board is
+ordinals-omitted. `Rank held` is omitted by his ruling, *"dead rank not
+important"* (2026-09-29T01:53:21Z, to Integration). ~~The drawer's rank-change
+line is "lost"~~: **it LIED, printing `New` on every row** (Research's catch);
+fixed at `7ed88ed`, a ship condition of the set. **Review route: Design's answer
+is to follow the board, taking min/max exactly as `/api/market` does.**
+
+**Also landed: `da1e06b`** removes the three surviving shell commands from
+trader-facing copy (audit F-12: market-light tooltip, assessments-light tooltip,
+the drawer's no-market-state line), with §10's automated scan.
 
 **SPEC'D, WAITING ON HIM (via Integration):**
 [`../Design/near-live-now-spec.md`](../Design/near-live-now-spec.md) (build
@@ -543,6 +551,8 @@ this session is the trigger to warn him and propose a hand-off.*
 | --- | --- | --- | --- |
 | Stamped two new docs "~02:05" / "~02:10 UTC"; the clock said 01:50 | TIME-BEFORE-CLOCK (the retiring seat's class) | No — first this session | Self, on the next clock read |
 | Began from the 09-26 opening prompt the shared tree carried; origin held a 09-28 rewrite | STALE-LEAD-AS-SOURCE | No | Self, before acting on it |
+| Told Integration AND HIM the drawer's rank-change line would be "lost" after the flip; it would have printed `New` on every row. I read the field's grep line, not its render | NAMED-THE-FIELD-NOT-THE-RENDER | No | **Peer (Research)**; it reached his channel as an understatement |
+| Said the qualify band's floor was "Research's lever"; it is his ruled system band | RELAYED-OWNERSHIP-UNCHECKED | No | Peer (Research) |
 
 ## Where the rest of the record is
 

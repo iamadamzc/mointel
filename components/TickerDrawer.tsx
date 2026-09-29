@@ -19,6 +19,7 @@ import { FocusToggle } from '@/components/FocusToggle';
 import { LevelLadder } from '@/components/LevelLadder';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { rankChangeReading } from '@/lib/dashboard/view';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import {
@@ -36,6 +37,12 @@ interface TickerDrawerProps {
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;
+  /**
+   * The board was re-ranked inside the viewer's price range
+   * (`DiscoveryState.ordinalsOmitted`), so stored rank movement is omitted and a
+   * null is not "new". See `rankChangeReading`.
+   */
+  ranksOmitted: boolean;
 }
 
 export function TickerDrawer({
@@ -44,6 +51,7 @@ export function TickerDrawer({
   focused,
   onToggleFocus,
   onClose,
+  ranksOmitted,
 }: TickerDrawerProps) {
   const panelRef = useRef<HTMLElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
@@ -197,7 +205,7 @@ export function TickerDrawer({
           ) : null}
 
           <Collapsible title="Live Market Telemetry">
-            <Demand row={row} />
+            <Demand row={row} ranksOmitted={ranksOmitted} />
           </Collapsible>
         </div>
       </aside>
@@ -372,19 +380,25 @@ function DrawerHeader({
  * Live market telemetry from Alpaca. Deliberately separate from the research
  * sections below: demand detected is not structural analysis.
  */
-function Demand({ row }: { row: DeskRow | null }) {
+function Demand({ row, ranksOmitted }: { row: DeskRow | null; ranksOmitted: boolean }) {
   const demand = row?.demand ?? null;
 
   if (!demand) {
     return (
       <Section title="Demand — Alpaca">
-        <p className="text-[12px] text-ink-3">
-          No live market state for this ticker. Start the market worker with{' '}
-          <code className="text-ink-2">npm run market:alpaca</code> to populate demand telemetry.
-        </p>
+        {/*
+          * No command. The board lost its worker-start command to audit F-12 --
+          * a second market worker silently displaces production's only SIP
+          * connection -- and this copy of it survived here. It also blamed the
+          * worker for a name the feed simply is not tracking, which is the
+          * common case.
+          */}
+        <p className="text-[12px] text-ink-3">No live market data for this ticker.</p>
       </Section>
     );
   }
+
+  const rankChange = rankChangeReading(demand.rvolRankChange, ranksOmitted);
 
   return (
     <Section title={`Demand — Alpaca ${demand.feed.toUpperCase()}`}>
@@ -472,20 +486,8 @@ function Demand({ row }: { row: DeskRow | null }) {
            * TOGETHER** — this suppression AND the board's falsiness gate, which
            * would also swallow a legitimate 0.
            */
-          value={
-            demand.rvolRankChange === null
-              ? 'New'
-              : demand.rvolRankChange === 0
-                ? '—'
-                : demand.rvolRankChange > 0
-                  ? `+${demand.rvolRankChange}`
-                  : String(demand.rvolRankChange)
-          }
-          title={
-            demand.rvolRankChange === 0
-              ? 'Not shown: rank change is measured since the previous engine tick, an interval over which it is always zero. Not a reading that this name has not moved.'
-              : undefined
-          }
+          value={rankChange.value}
+          title={rankChange.title}
           numeric
         />
         <Field
