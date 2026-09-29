@@ -890,6 +890,9 @@ error                                                   TYPE                    
 range gate written as "< 20 ms at $0.25-$50" -- one     trigger named the case, not the    no       Ops (measured
   case; the requirement was EVERY range. The default    requirement (README: "a trigger             $1-$20 over it)
   $1-$20 measured 25.7 ms max and passed the letter     must name the requirement")
+four of his ruling times written as "~HH:MMZ" guesses  a time stated without reading it     no       Design
+  (up to 17 min off) into LIVE STATE and to peers;      (the source was one grep away)              (01:55 vs 01:38:17)
+  corrected from this session's transcript
 ```
 
 ## LIVE STATE — AS OF 2026-09-28 ~15:10 UTC (11:10 ET), AT THE FOURTEENTH SEAT'S HAND-OFF
@@ -955,7 +958,7 @@ MORE NEWS SOURCES    Commercial scoping the landscape (ACCESS Newswire, what War
                      ~16:00Z: timing fixed (416e187); sent to him directly (b25cc8a); 62365f2 added his question
                      "why a direct licence if Alpaca has Benzinga" -> Alpaca T&Cs bar commercial use of News (quote
                      verified at 977e0d2's doc :184-189). Commercial RETIRED (hand-off 6785f80); successor not yet open.
-                     RULED 2026-09-28 ~23:33Z, to this seat, verbatim: "no to both" -- NO Benzinga direct-licence
+                     RULED 2026-09-28T23:32:53Z, to this seat, verbatim: "no to both" -- NO Benzinga direct-licence
                      enquiry, NO Warrior Trading source enquiry. No second news source has a licensable path;
                      Research adds no second adapter. Alpaca/Benzinga stays the only source, personal-use terms.
 PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the market worker; (2) Ops bootstrap band
@@ -1002,13 +1005,13 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      / 4 keep band ordinals (not rec., two frames). TO HIM. Flip = in the /api/market ROUTE only (health/
                      MCP/diagnostics keep the band); review route's default = Design's answer, pending.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
-SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
+SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
                      band piece 4 (due 10-05) NOT ruled by him. Research's order (60a23fa): piece 4 FIRST (the writer's first
                      step), contract changes, writer, semantic checker + pass-bar test, /api/reports + range config. 10-05 not at risk.
 DAILY BILLING        + Design's payment-failed warning: after his sign-in cut-over proves it refuses.
 RESEARCH CRASH FIX   heartbeat write (researchRepo.ts:901), assigned 09-25, NOT STARTED.
-NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build the near-live now column". Now column
+NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29T01:38:17Z: "yes build the near-live now column". Now column
                      reads the 10s trade buckets (capture live since 09-28; column still "last settled minute",
                      DiscoveryBoard.tsx:192-199, opened). Design leads spec, Research the data side. His choices only
                      (what "Now" means) come back to him. After the range release. Rolling 60s is REJECTED (his).
@@ -1022,7 +1025,7 @@ NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build 
                      RECORDING, 0 discarded, written through 20:00 ET. Rising-count read due 09-29 >= 04:00 ET, before 07:00.
                      ~02:00Z: RESEARCH RETIRED on his instruction (hand-off 454cdb3; prompt carries the range set, the Now
                      data side, the heartbeat, the corrected high-res set -- opened). Successor not yet open.
-RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
+RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29T01:26:07Z: "yes scope resizable columns" (after "whatever happened
                      to being able toadjust the column sizes?"; no prior record found anywhere). Design scopes, back to him
                      as options; build after the range release, and only on his approval.
 SIGN-IN              built on main, zero in production; his cut-over (OAuth credentials, seed his address, window).
