@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { boardRangeRequest } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 import { guardReviewApi, REVIEW_HEADERS } from '@/lib/review/access';
 
@@ -21,7 +22,8 @@ export async function GET(
   const guard = guardReviewApi((await params).token);
   if (!guard.ok) return guard.response;
 
-  const symbols = new URL(request.url).searchParams.get('symbols');
+  const searchParams = new URL(request.url).searchParams;
+  const symbols = searchParams.get('symbols');
   const extraSymbols = symbols
     ? symbols
         .split(',')
@@ -30,5 +32,10 @@ export async function GET(
         .slice(0, 200)
     : [];
 
-  return NextResponse.json(getMarketSnapshot({ extraSymbols }), { headers: REVIEW_HEADERS });
+  // The review page runs the owner's hook, so it sends the same min/max and must
+  // be served the same range: a review board on another default would verify a
+  // board he does not have (Design, 2026-09-29).
+  const range = boardRangeRequest(searchParams);
+
+  return NextResponse.json(getMarketSnapshot({ extraSymbols, range }), { headers: REVIEW_HEADERS });
 }
