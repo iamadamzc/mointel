@@ -1086,7 +1086,11 @@ CLOSED               ~~more news sources (his "no to both")~~ -- see BENZINGA CO
   chat "Design-tmi (retired 2026-09-29b)"). Its prompt's first task is to ask this seat for live state. **Owed to
   the new Design-tmi when it asks:** the range set's yes now waits on a POST-restart range read (`d0e4595`), and
   if the restart code ships first the range set is VOID ON BASE and Design re-cuts it onto the new production sha
-  -- a THIRD branch its prompt does not name (it names only shipped / voided). Resizable columns then cut after. trades.db is 0644 vs market.db 0640 (Ops, "align later").
+  -- a THIRD branch its prompt does not name (it names only shipped / voided). Resizable columns then cut after.
+  **03:46Z (clock read): new Ops-tmi = local_37a1741e, new Design-tmi = local_8568daaf.** Both SENT what they were
+  owed (the scan correction + EXPLAIN QUERY PLAN ask to Ops; the expected branch, "don't cut yet", the cut ORDER
+  restart set -> range set -> resizable columns, and the Now cell buildable on main to Design). No restart time
+  proposed or approved (his turns scanned through 03:46Z). trades.db is 0644 vs market.db 0640 (Ops, "align later").
 
 ## ARCHIVE — THE FOURTEENTH'S LIVE STATE (2026-09-28 ~15:10Z) AND THE FIFTEENTH SEAT'S RUNNING NOTES
 
