@@ -1018,6 +1018,11 @@ NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29T01:38:17Z: "yes buil
                      reads the 10s trade buckets (capture live since 09-28; column still "last settled minute",
                      DiscoveryBoard.tsx:192-199, opened). Design leads spec, Research the data side. His choices only
                      (what "Now" means) come back to him. After the range release. Rolling 60s is REJECTED (his).
+                     ❌ CORRECTED ~02:05Z (Research, engine.ts:2202 opened: highRes is a boolean with no join time): "no
+                     restart" holds for COUNTS only. The web tier cannot tell a silent WATCHED name (true 0) from an unwatched
+                     one, and a name's first bucket after joining is partial. So: counts-only first (no restart; errs toward
+                     "no live data", never a fake 0), then membership intervals (Research + an Ops trades.db table + a
+                     MARKET-WORKER RESTART, riding the next restart he approves). He was told "no restart"; corrected to him.
                      Research: web-tier read of trades.db (runtime.ts:1523 persists every flush) -> NO market-worker restart;
                      Ops to confirm bucketsWritten rising in prod. Empty state = "no live data", never 0, for names outside
                      the high-res set -- which is pinned + ranked-AND-ALIVE <= internalRank (active board) + after-bell
