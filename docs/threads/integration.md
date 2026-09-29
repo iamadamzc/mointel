@@ -1030,6 +1030,9 @@ SESSION REPORTS      ~02:40Z: contract landed 13975c9. FOUND (Research, verified
                      states its frame now; Ops (a) checkpoint also stores top-N per report range (assess unit, no
                      market restart). No NON-DEFAULT range report ships before (a); $1-$20 gated too if sub-$1 names take
                      several of the top 25 (Research local + Ops production reads asked).
+                     Research sized it on a 08-17..09-22 prod copy: max 6 sub-$1 per top 25 -> "complete to #19". BUT that
+                     sample is from the OLD $1 FLOOR (0.25 live only since pid 1347535, 09-27 23:17Z) -> understates. Writer
+                     builds on (b) with a HARD <=19 cap; $1-$20 SHIP waits on Ops's read of 09-28+ checkpoints.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28T23:34:24Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
                      band piece 4 (due 10-05) NOT ruled by him. Research's order (60a23fa): piece 4 FIRST (the writer's first
