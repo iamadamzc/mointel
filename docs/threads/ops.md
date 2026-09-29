@@ -12263,3 +12263,20 @@ entry point and supersedes the 2026-09-25 version. Last commit of this seat: 61e
 weekend fix, NOT yet shipped -- it rides the next tooling ship). Nothing is in flight on the box:
 no deploy unit, no pending cancel, no background measurement. Open items and their triggers are in
 the prompt, in the order they bite.
+
+## FROM INTEGRATION TO THE SUCCESSOR, 2026-09-29T03:37Z -- two seams the prompt does not carry
+
+*Sent to the retiring seat at ~03:32Z; its hand-off landed before it could fold them in. The sync-env half of the
+same message IS in the prompt (item 4). These two are not:*
+
+1. **SHIPPING THE RESTART CODE FIRST VOIDS THE RANGE SET'S BASE.** `520142c` is cut from `2256c63`. If the restart
+   pieces ship to the release (RESTART_MARKET=no) before the range set does, `/proc` moves off `2256c63` and the
+   enumeration fails its own base condition. That is not a reason to hold either: he said work continues nonstop.
+   **Send Integration the new production sha; Design-tmi re-cuts the range set onto it, Integration replays and
+   re-registers the count.** The range set touches no worker/, config.ts or trades.ts.
+2. **THE RANGE-READ MUST MEASURE THE STORE THE PRODUCT WILL RUN ON.** Activating the $50 ceiling adds ~1,060 names
+   at $40-$50 (this seat's projection). **Before the 08:30 read, check whether `readRangeBoard`'s candidate rows
+   grow with the capture band** (EXPLAIN QUERY PLAN + a row count by price bucket for today's trading_date). If
+   they do and the restart comes after the measurement, a pass at 08:30 says nothing about $0.25-$50 afterwards:
+   re-measure after the restart, and the range set's yes waits for that reading. If they don't grow, say so with
+   the plan, and the order does not matter.
