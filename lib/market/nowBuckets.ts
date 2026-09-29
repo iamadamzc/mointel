@@ -45,6 +45,76 @@ export interface NowBucket {
   price: number | null;
 }
 
+/**
+ * How old `tradeCapture.asOf` may be before the board shows `not live`.
+ * RESEARCH'S NUMBER, stated (Design's spec asks for it): three buckets. The
+ * worker flushes every second, so a 30 s gap is a stalled capture, not a
+ * slow one; any tighter and a single slow flush under load would blank the
+ * column.
+ */
+export const NOW_STALE_MS = 30_000;
+
+/** What the web tier reads from `trades.db` (Ops's v2 readers, injected). */
+export interface NowReader {
+  loadBuckets(
+    symbols: readonly string[],
+    tradingDate: string,
+    fromMs: number,
+  ): ReadonlyArray<{ symbol: string; bucketTs: number; trades: number; lastPrice?: number | null }>;
+  loadIntervals(
+    symbols: readonly string[],
+    tradingDate: string,
+    fromMs: number,
+  ): ReadonlyArray<{ symbol: string } & FeedInterval>;
+  lastFlushMs(): number | null;
+}
+
+/**
+ * Sets `nowBuckets` on every state, and returns the snapshot's `asOf`.
+ *
+ * No reader (no store, a refused schema) or no flush clock means nothing is
+ * known: every name gets null -- the board's settled-minute fallback -- never
+ * six zeros. Two queries for the whole board, not one per name.
+ */
+export function attachNowBuckets(
+  states: Array<{ ticker: string; nowBuckets?: NowBucket[] | null }>,
+  tradingDate: string,
+  reader: NowReader | null,
+): { asOf: string | null } {
+  const asOfMs = reader?.lastFlushMs() ?? null;
+  if (!reader || asOfMs === null || !tradingDate) {
+    for (const state of states) state.nowBuckets = null;
+    return { asOf: null };
+  }
+
+  const fromMs = newestBoundary(asOfMs) - NOW_BUCKET_COUNT * NOW_BUCKET_MS;
+  const symbols = states.map((state) => state.ticker);
+  const rows = reader.loadBuckets(symbols, tradingDate, fromMs);
+  const intervals = reader.loadIntervals(symbols, tradingDate, fromMs);
+
+  const rowsBy = new Map<string, NowBucketRow[]>();
+  for (const row of rows) {
+    const list = rowsBy.get(row.symbol) ?? [];
+    list.push({ bucketTs: row.bucketTs, trades: row.trades, lastPrice: row.lastPrice ?? null });
+    rowsBy.set(row.symbol, list);
+  }
+  const intervalsBy = new Map<string, FeedInterval[]>();
+  for (const interval of intervals) {
+    const list = intervalsBy.get(interval.symbol) ?? [];
+    list.push(interval);
+    intervalsBy.set(interval.symbol, list);
+  }
+
+  for (const state of states) {
+    state.nowBuckets = nowBuckets(
+      rowsBy.get(state.ticker) ?? [],
+      intervalsBy.get(state.ticker) ?? [],
+      asOfMs,
+    );
+  }
+  return { asOf: new Date(asOfMs).toISOString() };
+}
+
 /** The newest completed slot boundary at or before `asOfMs`. */
 export function newestBoundary(asOfMs: number): number {
   return Math.floor(asOfMs / NOW_BUCKET_MS) * NOW_BUCKET_MS;
