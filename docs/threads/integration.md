@@ -1009,6 +1009,8 @@ NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build 
                      saturation, proposed a hand-off to him.
                      Ops ~01:50Z: web tier CAN read trades.db (User=mointel, ReadWritePaths=/var/lib/mointel, owns -shm);
                      RECORDING, 0 discarded, written through 20:00 ET. Rising-count read due 09-29 >= 04:00 ET, before 07:00.
+                     ~02:00Z: RESEARCH RETIRED on his instruction (hand-off 454cdb3; prompt carries the range set, the Now
+                     data side, the heartbeat, the corrected high-res set -- opened). Successor not yet open.
 RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
                      to being able toadjust the column sizes?"; no prior record found anywhere). Design scopes, back to him
                      as options; build after the range release, and only on his approval.
