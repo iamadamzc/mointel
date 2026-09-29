@@ -12373,3 +12373,14 @@ receive": it has per-request status and bytes, but NO request_time, so server du
 ok/aborted, with the server at 0.6-8.9 s per response, during THREE concurrent loads (his poll, my full-payload curls
 on the box, Design's 31 review-route requests). **Rule for this seat: no full-payload /api/market probing 07:00-10:00
 ET.** Design is building a client fix; it ships on his yes.
+
+**/api/market under concurrency, three halves (scoped 2026-09-29, nothing built or changed):**
+1. TRANSFER: nginx has `gzip on` but Ubuntu defaults (gzip_proxied off, gzip_types text/html), so proxied JSON goes
+   raw (~859 KB). Fix: gzip_proxied any + gzip_types application/json (+ comp_level 4, min_length 1024, vary) in
+   deploy/aws/nginx-tls.conf (installed by deploy.sh:133); nginx -t + reload, no service restart; rollback = revert +
+   reload. Ratio and CPU measured on ONE saved payload after 10:00 ET, then to him. Transfer only.
+2. CLIENT: useMarket's 1 s abort-in-flight poll has no margin. Design's fix, on his yes.
+3. SERVER: route.ts builds the snapshot SYNCHRONOUSLY and never reads request.signal, so requests queue behind a
+   slow build and are built even after their client aborted. Levers: coalesce (memoize ~500 ms on (symbols, range);
+   works regardless) and an entry `signal.aborted` check (needs the abort path through nginx HTTP/2 -> 1.1 and Next
+   verified by test). Owner: Integration to name.
