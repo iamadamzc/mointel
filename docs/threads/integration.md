@@ -1423,6 +1423,13 @@ SIZED            Research 2339708 (read): ALL band ~8,050 names (4,070 board-eli
                  stamp; 47% unestablished today -> one-time re-fetch). WHERE: Research leans separate file for 15m
                  history, daily_bars stays -- OPS'S CALL. OPEN, owner Ops (or its 09-30 successor), trigger: after
                  tonight's 22:08 ET check: send Ops the WHERE facts + ask box disk free. Put the build to HIM now.
+HIS RULING       THIS SESSION (first-hand, after 23:0xZ): "yes, build the history store" -- answering "Download all
+                 ~8,050 stocks once (about 1 GB, no cost) and keep it on the server. Build 15-minute bars going forward
+                 from our own data, and re-download a stock only when it splits ... after tomorrow's grades read, once
+                 Ops confirms the disk space." APPROVED, NOT BUILT. Owners: Ops (or its 09-30 successor) = storage
+                 location (separate file lean), fetch worker, 15m rollup; Research = spec, split re-fetch rule,
+                 verification. Trigger: after the 09-30 10:12 ET grades read AND Ops's disk-free read. Integration
+                 enumerates the ship by literal sha; the 1b5ead6 cone rule applies.
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
