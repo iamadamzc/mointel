@@ -1,7 +1,12 @@
 # Resizable columns: scope
 
-**Design seat, written 2026-09-29 01:50 UTC (2026-09-28 21:50 ET), clock read via zoneinfo. SCOPE ONLY.
-Nothing is built until he approves an option.**
+**Design seat, written 2026-09-29 01:50 UTC (2026-09-28 21:50 ET), clock read via zoneinfo.**
+
+> **BUILD APPROVED, DISCOVERY ONLY. His words to Design, 2026-09-29T02:41:45Z:
+> *"2 yes discovery only"*,** answering "Build resizable columns as: drag any
+> column edge on the Discovery board, remembered in this browser?" So it is
+> option (A), with every guardrail below, widths in this browser, and **not the
+> Researched names table.** It ships after the range release.
 
 **His words, verified at his own turns** (Integration's session):
 *"whatever happened to being able toadjust the column sizes?"* (01:20:52Z), then
