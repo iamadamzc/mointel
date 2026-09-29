@@ -1,7 +1,7 @@
 'use client';
 
 import { feedFailureLine } from '@/lib/dashboard/feedFailure';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -33,10 +33,22 @@ import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
 import type { ResearchHealthView } from '@/lib/research/health';
 import type { MarketFeedHealth } from '@/lib/market/types';
 import { universeWarning } from '@/lib/dashboard/universe';
+import type { PriceRange } from '@/lib/dashboard/boardRange';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
 import { useMarket } from '@/lib/hooks/useMarket';
+
+/** A per-viewer convenience only: the board range this browser last chose. */
+const BOARD_RANGE_KEY = 'mointel.boardRange';
+
+function readStored(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
 
 /** Numeric columns are most useful largest-first on the first click. */
 const DEFAULT_DIRECTIONS: Record<SortKey, 'asc' | 'desc'> = {
@@ -193,7 +205,39 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     ],
     [data, focus.tickers],
   );
-  const market = useMarket(sheetSymbols);
+  /*
+   * The viewer's board range, remembered in this browser only (a per-viewer
+   * convenience; nothing breaks when storage is blocked). Null asks the server
+   * for its default, so a viewer who never touches the control follows
+   * whatever the default becomes rather than a copy of it frozen in storage.
+   */
+  const [boardRange, setBoardRange] = useState<PriceRange | null>(null);
+  useEffect(() => {
+    try {
+      const parsed: unknown = JSON.parse(readStored(BOARD_RANGE_KEY) ?? 'null');
+      if (
+        parsed &&
+        typeof parsed === 'object' &&
+        typeof (parsed as PriceRange).min === 'number' &&
+        typeof (parsed as PriceRange).max === 'number'
+      ) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setBoardRange({ min: (parsed as PriceRange).min, max: (parsed as PriceRange).max });
+      }
+    } catch {
+      // Unreadable: the default range, which is the correct fallback.
+    }
+  }, []);
+  const changeBoardRange = useCallback((range: PriceRange | null) => {
+    setBoardRange(range);
+    try {
+      if (range) window.localStorage.setItem(BOARD_RANGE_KEY, JSON.stringify(range));
+      else window.localStorage.removeItem(BOARD_RANGE_KEY);
+    } catch {
+      // Storage blocked: the range lasts for this page.
+    }
+  }, []);
+  const market = useMarket(sheetSymbols, boardRange);
 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
@@ -458,6 +502,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             isFocused={focus.isFocused}
             onToggleFocus={focus.toggle}
             changedTickers={feed.changedTickers}
+            onRangeChange={changeBoardRange}
           />
         ) : (
           <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />

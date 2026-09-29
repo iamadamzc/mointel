@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { PriceRangeControl } from '@/components/PriceRangeControl';
+import { rangeLabel, type PriceRange } from '@/lib/dashboard/boardRange';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import { ActivitySparkline } from '@/components/ActivitySparkline';
 import type { UniverseWarning } from '@/lib/dashboard/universe';
@@ -250,6 +252,8 @@ interface DiscoveryBoardProps {
   isFocused: (ticker: string) => boolean;
   onToggleFocus: (ticker: string) => void;
   changedTickers: Set<string>;
+  /** The viewer's range. Null returns to the default. Absent: no control (review, older payloads). */
+  onRangeChange?: (range: PriceRange | null) => void;
 }
 
 /**
@@ -275,6 +279,7 @@ export function DiscoveryBoard({
   isFocused,
   onToggleFocus,
   changedTickers,
+  onRangeChange,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
@@ -352,11 +357,27 @@ export function DiscoveryBoard({
         </h2>
         <span className="text-[11px] text-ink-3">
           {discovery
-            ? afterHours
-              ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
-              : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`
+            ? `${afterHours ? 'AH participation rank' : 'Daily RVOL rank'} · ${rangeLabel({
+                min: discovery.priceMin,
+                max: discovery.priceMax,
+              })} · top ${Math.min(size, discovery.rankedCount)} of ${discovery.rankedCount.toLocaleString()}`
             : 'Ranking not loaded'}
         </span>
+
+        {/*
+          * The range control. Its label is the range SERVED, not the one it
+          * holds, and the caption beside it says how many names that range
+          * ranked, so a name past the cap is a number on screen rather than
+          * a silent absence.
+          */}
+        {discovery && onRangeChange && discovery.rangeBounds && discovery.rangeDefault ? (
+          <PriceRangeControl
+            served={{ min: discovery.priceMin, max: discovery.priceMax }}
+            bounds={discovery.rangeBounds}
+            defaultRange={discovery.rangeDefault}
+            onChange={onRangeChange}
+          />
+        ) : null}
 
         {frozen ? (
           <span
