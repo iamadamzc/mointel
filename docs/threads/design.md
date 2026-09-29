@@ -44,26 +44,27 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-26 13:36 UTC / 09:36 ET
+## Live state — 2026-09-29 01:23 UTC / 2026-09-28 21:23 ET
 
-**MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** Everything this
-seat had committed and approved went out on 2026-09-25 in two ships, and
-**both were read on the live board afterwards.**
+**MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
+ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
+2026-09-28 21:22 ET** (see "What is verified ON THE LIVE BOARD").
 
-    5254bca   Monday `since Fri close` fix, column tooltips + the cut copy,
-              the rank column REMOVED
-    8fd7887   evening ranking column shows PARTICIPATION, `Now` header 44->68px
+**COMMITTED, NOT SHIPPED — three pieces, all on `main`, all inert until
+something else lands:**
 
-**NOTHING OF MINE IS COMMITTED-AND-UNSHIPPED.** *`363f40d` (the `Now` ->
-`TRADES` rename) is SUPERSEDED — he ruled `Now` stays — and its tag should be
-retired rather than shipped.*
+    307e42d, 6eb1362   session briefings: the line + reading panel
+                       inert until Research's GET /api/reports exists (404 renders nothing)
+    5e8b13c            the board's price-range control, on Research's af15a13 + 8d8e50c
+                       inert until a viewer uses it (no choice = no params = today's board)
+                       BLOCKED FROM SHIPPING on the graveyard (open items)
 
-**THE ONE THING OWED: the EVENING board after 16:00 ET, Monday 2026-09-28.**
-See "Deploys of 2026-09-25" below. *It is the first task of the next session.*
+**DESIGNED, BUILD APPROVED, NOT STARTED:** the payment-failed warning,
+`docs/commercial/daily-billing-design/design-seat.md`. Trigger: Ops starts
+the billing work, which comes after the sign-in cut-over.
 
-**THE BIG OPEN PIECE OF WORK is the price range** — design settled with him
-2026-09-26, engine not built. See "THE PRICE RANGE" below; **nothing of it is
-Design's to build until Research lands the engine split.**
+*`363f40d` (the `Now` -> `TRADES` rename) is SUPERSEDED — he ruled `Now`
+stays — and its tag should be retired rather than shipped.*
 
 **HOW THIS SEAT SEES PRODUCTION — the biggest standing limit on it, and it is
 gone:**
