@@ -51,6 +51,23 @@ bucket whole); `0` = measured, silent; `price: null` = no trade in the bucket
 `null` = no live feed → the settled-minute fallback, muted. Plus
 `tradeCapture.asOf` as before.
 
+**"The last six" means SIX CONSECUTIVE WALL-CLOCK SLOTS,** `[E−60s, E)` in
+10 s steps, where `E` is the newest completed 10 s boundary ≤ `asOf`. It never
+means the six newest rows: rows exist only when a trade prints, so a quiet
+name's six newest rows can span minutes and would draw as adjacent bars. The
+spacing is time, not sequence, as `sparkline.ts` says for minutes. Every name
+on one snapshot shares the same six `bucketEnd`s, which is what lets the
+column sort fairly.
+
+**Research's scope, received 2026-09-29 (Research-tmi), approved for Design's
+side:** per bucket, trades + last price + last ts, where "last" is the greatest
+trade ts, after the engine's price-validity guard. Membership intervals are
+opened and closed on (stream ACK ∩ highRes), closed on disconnect, and
+heartbeated each flush. Ops adds trades.db schema v2 (`last_price`, `last_ts`,
+`feed_intervals`, meta `last_flush_ms` = `asOf`). Research's part is estimated
+ready by Wed 10-01; the restart could be Thu/Fri, at Ops's proposed time with
+his approval of that time.
+
 ## What exists today, opened, not recalled
 
 - The column prints `tradesLastMinute(row.demand)`, the last SETTLED slot of
