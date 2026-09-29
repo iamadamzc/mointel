@@ -72,9 +72,14 @@ export interface NowReader {
 /**
  * Sets `nowBuckets` on every state, and returns the snapshot's `asOf`.
  *
- * No reader (no store, a refused schema) or no flush clock means nothing is
- * known: every name gets null -- the board's settled-minute fallback -- never
- * six zeros. Two queries for the whole board, not one per name.
+ * TWO DIFFERENT ABSENCES, AND THE FIELD SAYS WHICH. No reader (no store, a
+ * refused schema) or no flush clock means the CAPTURE cannot answer -- a v1
+ * worker before the restart writes neither clock nor intervals. That leaves
+ * the field ABSENT, which the board reads as "older payload, keep today's
+ * minute column". It must not be null: null says "this NAME has no live
+ * feed", and on every row at once it would mute the whole board for a reason
+ * that is about the desk, not the names (Design, 2026-09-29). Never six zeros
+ * either. Two queries for the whole board, not one per name.
  */
 export function attachNowBuckets(
   states: Array<{ ticker: string; nowBuckets?: NowBucket[] | null }>,
@@ -83,7 +88,7 @@ export function attachNowBuckets(
 ): { asOf: string | null } {
   const asOfMs = reader?.lastFlushMs() ?? null;
   if (!reader || asOfMs === null || !tradingDate) {
-    for (const state of states) state.nowBuckets = null;
+    for (const state of states) delete state.nowBuckets;
     return { asOf: null };
   }
 
