@@ -12432,6 +12432,8 @@ error (asserted vs true)                                          TYPE          
   sent NO polls 11:17-11:55Z (hidden); the access log settled it
 "A's GROUP BY pv would show a 16:17-16:18 v2 row" vs A's WHERE    asserted-before-opening-artefact  YES      Integration
   drops that minute before the GROUP BY
+"two readers make the tail 2-3x" vs two rows 52 min apart in RTH   asserted-cause-without-control   YES(3rd) Research
+  (time of day not held fixed); also told to him
 ```
 Repeat of a corrected class -> warned him 2026-09-29 ~12:5x ET and proposed the hand-off timing.
 
@@ -12454,7 +12456,9 @@ of I/O.**
 **The two stuck range-read tasks FIRED LATE, simultaneously, at 15:43:48Z (11:43 ET, web started 15:17:45Z, no deploy
 unit).** Each ran 1+20 per case; they overlapped, so each measured the other's load: NOT a clean baseline. Readings
 (08:30 task / 11:05 task), DAY warm max: $0.25-$50 60.9 / 49.9; $1-$20 23.5 / 21.4; $0.5-$5 38.5 / 38.9 ms; all FAIL.
-AH x3: 0 eligible -> untested. Contrast: my single-reader read at 14:51:34Z: 21.3 / 15.9 / 12.4. **Reading: under two
-concurrent readers in RTH the range query's tail goes 2-3x; it has no concurrency margin either.**
+AH x3: 0 eligible -> untested. Contrast: my single-reader read at 14:51:34Z: 21.3 / 15.9 / 12.4. ~~**Reading: under two
+concurrent readers in RTH the range query's tail goes 2-3x; it has no concurrency margin either.**~~ **WITHDRAWN
+(Research): confounded with time of day (52 min later in RTH, different load). Shown: the query FAILS 20 ms when two
+readers overlap, that event only. Research runs 1-vs-2 interleaved on the local copy for the ratio.**
 **gzip:** edit approved by him, committed 7f607a2; stacked onto production as 1b5ead6 (tag ops/gzip-on-803008b), 1 file,
 175 test files; gate running. NOT shipped: no Integration seat exists to replay it (18th retired, no successor yet).
