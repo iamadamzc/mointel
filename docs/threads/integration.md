@@ -1091,6 +1091,11 @@ RESIZABLE COLUMNS    ⭐ 03:51:42Z HE SAID SHIP THEM ALONE ("yes to columsn"), n
                      FROM PRODUCTION 2256c63 as a design/ tag now; whichever of it and the restart set (121f97c, also on
                      2256c63) ships second is re-picked onto the new production (disjoint files) and re-replayed. It is
                      a BOARD-BEHAVIOUR change: his ship yes in Ops's session. Earlier text below is superseded.
+                     CUT: design/columns-on-2256c63 -> f4063ca, VERIFIED (1 over 2256c63; +/- lines identical to 1d59b00,
+                     patch-id differs on import-block context only; 165 test files; 5 files disjoint from 121f97c and
+                     7135930). VOID ON BASE once 121f97c is live -> Design re-picks onto the CONFIRMED production sha
+                     when this seat sends it, at ship time. NOW CELL fa61410 on main, INERT: must NOT ride any deploy
+                     before a live read on real 10 s data; any cone reaching fa61410 needs Design's yes.
                      RULED 02:41:45Z: drag edges, per-browser, Discovery only. BUILT on main at 1d59b00 (verified: 5 files,
                      client only -- components/DiscoveryBoard.tsx + ColumnResizeHandle.tsx, lib/dashboard/columnWidths.ts,
                      lib/hooks/useColumnWidths.ts, one test file; 178 test files at 1d59b00 = main's count, NOT a ship
