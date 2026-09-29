@@ -114,6 +114,58 @@ Draft for him to send from his own address (not sent by any seat):
 known ABSENT from Alpaca's Benzinga feed, AIFF known PRESENT. A trial that
 carries MEDS answers the coverage question with a measurement, not a claim.*
 
+## 4b. Benzinga replied, 2026-09-29 — and the answer draft
+
+Jae Hur (Head of Asia) replied with links to `benzinga.com/apis/` and the Press
+Releases page, an attached APIs guidebook (not seen by this seat), and five
+questions before routing to a team member: country of incorporation, company
+description, website/platform name, estimated monthly active users, use case.
+**No price yet.** Draft answer, for him to send; the bracketed fields are facts
+only he has and are deliberately not filled:
+
+> Hi Jae,
+>
+> Thanks for the quick reply. Answers below.
+>
+> - **Country of incorporation:** [COUNTRY]
+> - **Company description:** TMI Trader ("True Move Intelligence") is a web
+>   application for active traders in US small-cap stocks. It surfaces the
+>   names moving on unusual volume and explains why each is moving, with the
+>   evidence — company releases, SEC filings and news — linked beside it.
+> - **Website / platform:** tmitrader.com
+> - **Estimated monthly active users:** [MAU — e.g. "pre-launch; we expect
+>   under N in the first year"]
+> - **Use case:** For each stock on our board (a few dozen US-listed names a
+>   day), we would pull press releases and news by ticker via REST, in real
+>   time, and:
+>   1. display the headline with a link to the full release, beside our own
+>      analysis of whether it explains the move;
+>   2. use the release text as input to that analysis (a summary in our own
+>      words, attributed to the source).
+>   Access is for paying subscribers inside the app only — no redistribution,
+>   no push or email alerts.
+>
+> What we most need to know before choosing a tier:
+>
+> 1. Pricing for this use (headline + link display, and whether full-text
+>    display changes the price).
+> 2. Your current press-release wire partners — in particular whether ACCESS
+>    Newswire (formerly ACCESSWIRE) and Newsfile are included.
+> 3. Typical latency from wire publication to availability via the API.
+> 4. Whether a short trial is available. We would test it against two
+>    releases we already know about: DataMeds AI / Tollo Health (MEDS,
+>    2026-09-28, ACCESS Newswire) and Firefly Neuroscience (AIFF,
+>    2026-09-25, GlobeNewswire).
+>
+> Thanks,
+> Adam
+
+*Every statement in it is true of the product as built: "no push or email
+alerts" matches Design's in-app-only ruling for reports (`design-seat.md`), and
+Commercial's coupling note says any excerpting or push would reopen its §4.
+The guidebook may carry tiers or prices — if he saves the PDF, this seat can
+read it.*
+
 ## 4a. (original) What it would take to get a number
 
 One enquiry to `licensing@benzinga.com`, usage "Business", products **Press
