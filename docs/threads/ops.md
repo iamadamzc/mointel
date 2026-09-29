@@ -12335,3 +12335,15 @@ Research's POST-RESTART CHECK: the first date roll (old-date open rows 0; closes
 trades.db now takes a commit every 1 s around the clock (heartbeat + last_flush_ms); look at it after the restart.
 **Box, ~03:5xZ: trades.db is schema v1 (trade_buckets only)**, so nowBuckets is absent until the restart. After the
 restart there is no worker rollback below 9508fb9 (a v1 worker refuses the v2 file): this goes into the restart ask.
+
+**2026-09-29 04:13:56Z (00:13 ET): 121f97c = the restart set's CODE (Now column + band pieces 2/3), LIVE on
+web/research/assess**, on his "yes, deploy it" then "deploy over Session Manager". **First deploy over Session Manager
+(`push-release.sh mointel-ssm ...`):** port 22 refused because this PC's IP (108.28.204.67) is not on the allowlist
+(70.17.101.27, 95.17.58.175); the first attempt refused at preflight, nothing shipped. DEPLOY_TESTS_SKIP: gated 121f97c
+this session ~03:5xZ ALL GREEN, 168/168 files (pre-registered 168), 2,558 tests; nothing changed. Down 3s. Prune
+removed 7820810, kept 3b78b8c (IN USE). Market 3b78b8c pid 1347535 untouched. Verified from the box: /proc 121f97c x3,
+NR 0; schema 27/27; health ok, tradeCapture RECORDING; public 401 x4 then 200 x5.
+**Snapshot latency (Integration's Now-field budget, +20 ms on warm max), /api/market direct to :3000, 1 cold + 20 warm:
+(a) 2256c63 5.9 / med 4.9 / max 6.8 ms; (b) 121f97c on the v1 file 11.7 / 6.8 / 11.8 ms.** (c) after the restart.
+**Flush timer** `ops/flush-timer-on-121f97c` -> 7135930 (one pick of 56dfb15): gated ALL GREEN 169/169 (pre-registered
+169), 2,563 tests. Enumerated by Integration; NOT shipped, waits on his yes.
