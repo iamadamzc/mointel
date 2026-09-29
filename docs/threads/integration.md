@@ -956,6 +956,10 @@ PRICE RANGE          chain in research.md: (1) cea5ed2 on the release, NOT the m
                      Ops built+gated 2256c63 (164/164). GATE ON DESIGN'S CONTROL (Ops, store owner, 09-29): range read
                      measured 233-362 ms vs 4.8 ms today (full in-range fetch + JS rank). Control does NOT ship until the
                      read is bounded in SQL, < 20 ms at $0.25-$50 on the live store, measured the same way. Research+Ops own it.
+                     ~01:30Z: af15a13-alone enumeration WITHDRAWN (Design's catch, verified graveyard.ts:60-62: membership
+                     = deadAtRank present; ordinalsOmitted removes it -> empty graveyard on any viewer range). RANGE SET SHIPS
+                     ONCE: af15a13 + 8d8e50c + graveyard fix (Research+Design) + 5e8b13c (control) + SQL-bounded read
+                     + no-param default -> $1-$20. Enumerated by this seat when all land.
                      (moved from 10-02 by the re-check ruling; research.md:164/191, opened); (5) per-range feed allocation HELD.
 SESSION REPORTS      RESUMED -- his words to this seat 2026-09-28 ~23:40Z: "resume the session reports build".
                      Research owns; relayed. Checker's deterministic half built. Pass bar 43c1b7c unchanged. Order vs
