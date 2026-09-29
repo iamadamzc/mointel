@@ -661,7 +661,11 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
          * surface. The counts live in the collapsed header so the drop rule can
          * be judged without opening anything.
          */}
-        <Graveyard rows={[...merged.rows.values()]} onSelect={setSelectedTicker} />
+        <Graveyard
+          rows={[...merged.rows.values()]}
+          onSelect={setSelectedTicker}
+          ranksOmitted={discovery?.ordinalsOmitted ?? false}
+        />
 
         {data.meta.warnings.length > 0 ? (
           <footer className="border-t border-line bg-panel px-4 py-2">
