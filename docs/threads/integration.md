@@ -1030,6 +1030,10 @@ RESTART SET REPLAY   16th seat, 2026-09-29, scratch worktree at 2256c63, main's 
                      ENUMERATED TO OPS (standing approval: no visible board change before the restart) conditional on
                      Ops's owner review of the worker wiring. Pre-registered: gate 168; snapshot-route latency (1 cold
                      + 20 warm) before ship / after ship / after restart -- nowBuckets may add <= 20 ms to warm max.
+                     OPS OWNER REVIEW of ae02f7c's worker half: APPROVED; covers 121f97c (worker hunks identical,
+                     verified). Precondition (1) MET. Ops gates the tag sha itself before shipping. Box: trades.db
+                     still schema v1 (Ops read). Ops's 04:15 ET capture task: negative control (flat, market closed)
+                     proven by a hand run at 03:45Z.
                      ROLLBACK HAZARD (Research, from Ops): once v2 opens trades.db, a worker below 9508fb9 refuses it
                      (DISCARDING) -- no worker rollback below that line after the restart. Must be in the restart ask.
 NOW COLUMN           needs per-bucket PRICE + membership intervals (true 0s): Research engine + Ops trades.db v2 ->
