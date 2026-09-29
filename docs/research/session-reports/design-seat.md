@@ -19,6 +19,22 @@ the surface the prose appears on.
 
 ## 1. Where it lives
 
+> **HIS RULING, 2026-09-29T23:51:49Z, in Research's session (`8cd59d1e`), read
+> at his own turn, verbatim:** *"i dont like it. it can/should be its own page.
+> it will be too much to review/read/ingest in that one small space. im fine
+> with the location of the link, but it needs to open up a larger window like
+> when you click on a specific ticker."*
+>
+> **So:** the BRIEFING LINE between Focus and Discovery STAYS, as the link.
+> The READING PANEL in the drawer slot is REJECTED (`307e42d`, never in
+> production). **Read opens the report in the ticker-overlay pattern**
+> (`TickerDrawer.tsx:123-136`: full height, `fixed inset-0` over a dimmed
+> backdrop, panel from the right) at REPORT READING WIDTH, wider than the
+> ticker's 860 px. "Its own page" may also mean its own URL: that is asked
+> in one line when the build goes to him for review, and the build does not
+> wait on it. *(Recorded by the Design seat; the struck text below is kept as
+> the record of what was proposed and refused.)*
+
 **A REPORT IS PROSE READ ONCE PER SESSION, NOT A TABLE WATCHED ALL SESSION.**
 That rules out both neighbours as its home:
 
@@ -30,7 +46,10 @@ That rules out both neighbours as its home:
   is the moment the reader is busiest. Anything that covers the board then,
   even for a second, costs more than it gives.
 
-**THE DESIGN: ONE LINE ON THE BOARD, AND A READING PANEL BESIDE IT.**
+~~**THE DESIGN: ONE LINE ON THE BOARD, AND A READING PANEL BESIDE IT.**~~
+**THE DESIGN: ONE LINE ON THE BOARD, AND A LARGER READING WINDOW ON CLICK** (his
+ruling above). *The diagram below shows the REJECTED side panel; only its
+BRIEFING row survives.*
 
 ```
 ┌ HEADER ──────────────────────────────────────── Next 07:00 premarket ┐
@@ -50,10 +69,13 @@ That rules out both neighbours as its home:
   **one headline sentence written by the writer and passed by the checker.**
   It is not a summary Design generates. A line at the top of the board is
   what the reader sees without looking for it.
-- **Read** opens the report in **the same right-hand slot the ticker drawer
-  uses.** Every ticker named in the report is a link that opens that name's
-  dossier in the same place, so reading a report and checking a name are one
-  motion. The board stays visible and live throughout.
+- ~~**Read** opens the report in **the same right-hand slot the ticker drawer
+  uses.**~~ **Read opens the report in the ticker-overlay pattern, at reading
+  width** (his ruling). Every ticker named in the report is a link that opens
+  that name's dossier, so reading a report and checking a name are one
+  motion. ~~The board stays visible and live throughout.~~ *The board is dimmed
+  behind the window while it is open, as it is behind a ticker; that is the
+  trade his ruling makes for reading room.*
 - **Once the report has been read, the line collapses** to kind + time, which
   is a per-viewer convenience kept in browser storage. It never disappears
   while the report is current, because a line that is missing reads the same
@@ -65,7 +87,7 @@ That rules out both neighbours as its home:
   section is **stated, never hidden**: "Nothing in our sources for this
   section." (constraint 2's wording).
 - **Printing.** A report is the one thing on this desk someone would print.
-  `@media print` renders the reading panel on its own, with the metadata
+  `@media print` renders the ~~reading panel~~ report window on its own, with the metadata
   header in section 3. Cheap, and it follows his standing preference.
 
 **THE BAND A REPORT COVERS IS NOT THE BAND THE READER IS VIEWING, AND THE
