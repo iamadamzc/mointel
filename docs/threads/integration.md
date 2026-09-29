@@ -1131,6 +1131,12 @@ FREEZE REVISED  At rest his board lands ~90% of polls. 12:06 20/40, 12:07 1/16 C
                  (server 3.83/8.86/6.40/2.38/0.65/0.61 s; aborted requests still computed to completion). So: freezes
                  UNDER CONCURRENCY, not at rest. Fix still right (robustness), not an emergency. /api/market 859 KB
                  UNCOMPRESSED -> Ops to size gzip. No heavy /api/market probes 07:00-10:00 ET (Ops + Design).
+GZIP            Ops sized from config: box nginx.conf gzip on but gzip_proxied/types commented -> proxied JSON raw.
+                 Change in OUR deploy/aws/nginx-tls.conf (verified: no gzip lines; deploy.sh:133 installs it): proxied
+                 any, types application/json, level 4, min 1024, vary. nginx -t + reload, no service restart. Size/CPU
+                 UNMEASURED: one copy after 10:00 ET, offline gzip, + no-secret-in-body check. Then to him, stated as a
+                 TRANSFER fix only (server build 3.8-8.9 s under concurrency is untouched). Server-side abandoned-request
+                 building: UNOWNED -> raising with Design/Research.
 STALE WHY-NOW    v2456 was SECONDARY_STALE yet led red with a 4-day-old notice. Design asked what renders + proposal.
                  Board behaviour -> him, TOGETHER with grade definitions.
 GRADE DEFS       DRAFT on main: docs/research/catalyst-grade-definitions-draft.md (Research; no build). 08-23 snapshot
