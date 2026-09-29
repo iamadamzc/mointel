@@ -1007,6 +1007,8 @@ NEAR-LIVE NOW COLUMN BUILD APPROVED -- his words 2026-09-29 ~01:55Z: "yes build 
                      daytime leaders <= discoveryRank + DAYTIME-latched (runtime.latched, not ahLatched) AND ALIVE, cap 250 (engine.ts ~2119-2200, opened). NOT
                      "top 50 + latched + pinned" -- Research's summary, corrected to it and Design. Research near
                      saturation, proposed a hand-off to him.
+                     Ops ~01:50Z: web tier CAN read trades.db (User=mointel, ReadWritePaths=/var/lib/mointel, owns -shm);
+                     RECORDING, 0 discarded, written through 20:00 ET. Rising-count read due 09-29 >= 04:00 ET, before 07:00.
 RESIZABLE COLUMNS    SCOPE ONLY -- his words 2026-09-29 ~01:35Z: "yes scope resizable columns" (after "whatever happened
                      to being able toadjust the column sizes?"; no prior record found anywhere). Design scopes, back to him
                      as options; build after the range release, and only on his approval.
