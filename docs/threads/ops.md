@@ -12462,3 +12462,5 @@ concurrent readers in RTH the range query's tail goes 2-3x; it has no concurrenc
 readers overlap, that event only. Research runs 1-vs-2 interleaved on the local copy for the ratio.**
 **gzip:** edit approved by him, committed 7f607a2; stacked onto production as 1b5ead6 (tag ops/gzip-on-803008b), 1 file,
 175 test files; gate running. NOT shipped: no Integration seat exists to replay it (18th retired, no successor yet).
+
+**Copy landed 18:06 ET:** A:\mointel\data\market-prod-2026-09-29.db, 4,023,296,000 B, sha256 885fd7fd...3aa7 = box; box copy deleted after a re-verified match. The first scp died at 2.35 GB (Session Manager timeout at 17:23, box healthy); resumed with `ssh tail -c +N >>`. Path sent to Research by id.
