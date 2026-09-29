@@ -8,6 +8,7 @@ import {
   type FeedFailure,
 } from '@/lib/dashboard/feedFailure';
 
+import { rangeQuery, type PriceRange } from '@/lib/dashboard/boardRange';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
 
@@ -24,24 +25,30 @@ export interface MarketFeedState {
   loading: boolean;
 }
 
-export function useMarket(extraSymbols: string[]): MarketFeedState {
+export function useMarket(
+  extraSymbols: string[],
+  /** The viewer's board range. Null asks for the server's default. */
+  range: PriceRange | null = null,
+): MarketFeedState {
   const { apiBase } = useDeskMode();
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
   const [failure, setFailure] = useState<FeedFailure | null>(null);
   const [loading, setLoading] = useState(true);
 
   const symbolsKey = extraSymbols.join(',');
+  const rangeKey = rangeQuery(range);
 
   const mountedRef = useRef(true);
   const inflightRef = useRef<AbortController | null>(null);
 
-  const load = useCallback(async (symbols: string) => {
+  const load = useCallback(async (symbols: string, rangeParams: string) => {
     inflightRef.current?.abort();
     const controller = new AbortController();
     inflightRef.current = controller;
 
     try {
-      const query = symbols ? `?symbols=${encodeURIComponent(symbols)}` : '';
+      const parts = [symbols ? `symbols=${encodeURIComponent(symbols)}` : '', rangeParams].filter(Boolean);
+      const query = parts.length > 0 ? `?${parts.join('&')}` : '';
       const response = await fetch(`${apiBase}/market${query}`, {
         signal: controller.signal,
         cache: 'no-store',
@@ -76,15 +83,15 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
     // load() is async: every setState it performs happens after the fetch
     // settles, never synchronously during this effect.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void load(symbolsKey);
+    void load(symbolsKey, rangeKey);
 
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
-      void load(symbolsKey);
+      void load(symbolsKey, rangeKey);
     }, MARKET_POLL_INTERVAL_MS);
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible') void load(symbolsKey);
+      if (document.visibilityState === 'visible') void load(symbolsKey, rangeKey);
     };
     document.addEventListener('visibilitychange', onVisible);
 
@@ -94,7 +101,7 @@ export function useMarket(extraSymbols: string[]): MarketFeedState {
       document.removeEventListener('visibilitychange', onVisible);
       inflightRef.current?.abort();
     };
-  }, [load, symbolsKey]);
+  }, [load, symbolsKey, rangeKey]);
 
   return { snapshot, failure, loading };
 }
