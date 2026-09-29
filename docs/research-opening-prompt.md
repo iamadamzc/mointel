@@ -51,7 +51,29 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
    (`scripts/ops/grades-v2-read.sql`, Ops's reminder 10:12 ET): C (the MTNB
    control) first, then A, then the amended B, boundary 16:17:16Z. Grade it by
    reading, and report to Integration.
-3. **THE BUILD: resistance levels ("mark your chart").** Routed by Integration
+3. **SESSION REPORTS: A NAMED FIRST-DAY ITEM. It fell out between seats, and he
+   has asked about it twice:** *"what about the session report? ive asked about
+   this twice and it keeps getting left out"* (Integration 19th's session,
+   2026-09-29T23:39:14Z). **Its order against the levels compute is his call,
+   asked by Integration, which recommended reports first. Get his answer from
+   Integration before you pick either up.** State: the writer (`aebdf2f`, no model
+   provider) and the checker's deterministic half (`316c02e`, `d998973`, control
+   fixed `31328d9`) are built, on main, not shipped. **Next steps, in order:**
+   (a) wire the writer's model provider (per `docs/research/session-reports/
+   design.md` §4) and SIZE it; (b) build the checker's semantic half; (c) run
+   the pre-registered pass bar (`43c1b7c`): six seeded defect classes struck 6/6,
+   zero false passes, AND a control that strikes nothing on uncorrupted reports.
+   Still unbuilt after that: `GET /api/reports` and the range config (yours), and
+   the 20:05 checkpoint (Ops's). Set-range reports also depend on Ops storing
+   each range's own top N ("(a)" in LIVE STATE). **SPEND AUTHORITY, read at his
+   turn by this seat:** transcript `907420a6`, 2026-09-27T23:13:38Z, *"1 set
+   ranges, 2 yes, 3 yes"*. The "3" answered *"Approve the build? Yes: Research
+   builds the writer and the checker … The checker test has to pass before
+   anything goes live."* So model calls for building, sizing and the pass-bar
+   test are inside that approval. "Sizing and the pass-bar test ONLY" in
+   `research.md` is a seat's narrowing, not his words. It binds as the narrower
+   reading, so anything past it goes back to him. Ship is his yes.
+4. **THE BUILD: resistance levels ("mark your chart").** Routed by Integration
    19th. Spec `docs/research/resistance-levels-spec.md` (`c9f9835`). His rulings:
    show ALL levels; LABEL "resistance levels" (**his ruling, NOT a measurement**);
    windows *"5m candles for today only. 15m for anything older. up to 39 days. and
@@ -60,7 +82,7 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
    on stored 1m bars**, since the 15m/daily windows wait on Ops's history store
    (built after the 09-30 grades read). Publish nothing new to Design: the row
    contract (§2) is already with it. **The ship is his yes, by literal sha.**
-4. **Ops owns:** the `loadMinuteBars` bound (D−1, not tonight), the history store
+5. **Ops owns:** the `loadMinuteBars` bound (D−1, not tonight), the history store
    (§3 of the spec: store by START, display by END; 39-day 15m backfill; the
    OVERLAP-CHECK split re-fetch), and the range-read decision.
 
