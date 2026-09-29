@@ -1342,6 +1342,11 @@ SESSION REPORTS  HIS WORDS (this session 23:39:14Z): "what about the session rep
                  (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
                  are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
                  waits for HIS order answer (reports vs levels) from this seat.
+REPORT DISPLAY   HIS RULING (Research's session 23:51:49Z, read): "i dont like it. it can/should be its own page ...
+                 im fine with the location of the link, but it needs to open up a larger window like when you click on
+                 a specific ticker." -> briefing line KEPT as the link; drawer-slot reading panel REJECTED. Ticker click
+                 today = TickerDrawer overlay (fixed inset-0, max-w 860px; TickerDrawer.tsx:123-136), not a route.
+                 Routed to Design: build to that pattern; ask him in one line at review whether he also wants a URL.
 ```
 **THE NINETEENTH SEAT'S LEDGER:**
 ```
