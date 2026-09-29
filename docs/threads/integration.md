@@ -1440,6 +1440,10 @@ LEVELS BUILD     ROUTED 23:0xZ: Research = compute (worker, per 5m close, cached
                  between tops; far-back nearest peak past 12 mo; build on stored 5m/1m first). Design = section, AFTER
                  its 09-30 Now-cell read. Ops/successor = history store (above). SHIP = board-behaviour change -> HIS
                  yes at ship; Integration enumerates; cone carries 1b5ead6; fa61410 rides nothing until Design's read.
+STORE DESIGN     Ops 5811a56 (read): queued, separate file beside market.db, daily_bars stays; disk 61/77 GB free
+                 (df 18:06 ET, Ops first-hand; re-read at 22:08). KEY RULE (Research, sent to Ops): store candles by
+                 bucket START UTC like minute_bars (ts = Alpaca bar.t, runtime.ts:1088); his platform's END labels are
+                 display only (end = start + 15m).
 HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show resistance once or twice and its valid.
                  what we look for is it breaking those levels, that is when we get in for the next level ... its a
                  volume thing." Scalping, 08:00-11:00 SLXN example. Both placebo tests measured touch-then-close-below,
