@@ -81,6 +81,26 @@ export function resolveRequestedRange(
   return range.min < range.max ? range : safeDefault;
 }
 
+/**
+ * The board's request, from its query string. ALWAYS a request -- never null.
+ *
+ * His ruling, 2026-09-26: "The one to 20 is the default setting for the
+ * board." So a board request with no `min`/`max` is a request for the board
+ * default, which `resolveRequestedRange` serves; it is not a request for the
+ * engine's band.
+ *
+ * THIS IS THE BOARD ROUTE'S RULE, NOT `getMarketSnapshot`'s. The no-argument
+ * callers -- health, the MCP tools, diagnostics -- describe the ENGINE, and the
+ * band is the engine's truth; flipping the read model's own default would
+ * silently change what those report.
+ */
+export function boardRangeRequest(params: URLSearchParams): {
+  min: string | null;
+  max: string | null;
+} {
+  return { min: params.get('min'), max: params.get('max') };
+}
+
 /** A copy with every band ordinal removed. */
 export function scrubBandOrdinals(state: DemandState): DemandState {
   const copy: DemandState = {
