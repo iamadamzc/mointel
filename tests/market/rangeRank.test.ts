@@ -19,6 +19,7 @@ import {
   scrubBandOrdinals,
 } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
+import { openTradesStore, setLastFlushMs, upsertFeedIntervals } from '@/lib/market/store/trades';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import type { DemandState } from '@/lib/market/types';
@@ -340,6 +341,50 @@ describe('the store and the snapshot', () => {
     ]);
     // A request that names its range still gets exactly that range.
     expect(boardRangeRequest(new URLSearchParams('min=0.25&max=20'))).toEqual({ min: '0.25', max: '20' });
+  });
+
+  it('THE NOW COLUMN, end to end: a trades.db beside the store puts six slots on every board name', () => {
+    const file = temporaryPath();
+    seed(file);
+    process.env.MARKET_DB_PATH = file;
+    const savedTrades = process.env.TRADES_DB_PATH;
+    delete process.env.TRADES_DB_PATH;
+    try {
+      const asOf = Date.now();
+      const trades = openTradesStore(path.join(path.dirname(file), 'trades.db'));
+      upsertFeedIntervals(trades, DATE, [
+        { symbol: 'AAA', openedMs: asOf - 600_000, lastSeenMs: asOf, closedMs: null },
+      ]);
+      setLastFlushMs(trades, asOf);
+      trades.close();
+
+      const snapshot = getMarketSnapshot({});
+      // Watched and silent: six MEASURED zeros. Unwatched: null, not zeros.
+      expect(snapshot.demand.AAA.nowBuckets?.map((s) => s.trades)).toEqual([0, 0, 0, 0, 0, 0]);
+      expect(snapshot.demand.BBB.nowBuckets).toBeNull();
+      // asOf is asserted in nowBucketsStore.test.ts: this seeded store writes no
+      // feed health, so there is no tradeCapture here to carry it.
+    } finally {
+      if (savedTrades === undefined) delete process.env.TRADES_DB_PATH;
+      else process.env.TRADES_DB_PATH = savedTrades;
+    }
+  });
+
+  it('NO trades.db (before the restart ships v2) -> the field is ABSENT and the board keeps its minute column', () => {
+    const file = temporaryPath();
+    seed(file);
+    process.env.MARKET_DB_PATH = file;
+    const savedTrades = process.env.TRADES_DB_PATH;
+    delete process.env.TRADES_DB_PATH;
+    try {
+      const snapshot = getMarketSnapshot({});
+      expect('nowBuckets' in snapshot.demand.AAA).toBe(false);
+      // READ-ONLY: the web tier must never create or migrate the worker's file.
+      expect(fs.existsSync(path.join(path.dirname(file), 'trades.db'))).toBe(false);
+    } finally {
+      if (savedTrades === undefined) delete process.env.TRADES_DB_PATH;
+      else process.env.TRADES_DB_PATH = savedTrades;
+    }
   });
 
   it('a range equal to the engine\'s band is the engine\'s board, ordinals kept', () => {

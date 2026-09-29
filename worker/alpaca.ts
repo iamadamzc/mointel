@@ -115,6 +115,9 @@ async function main(): Promise<void> {
         runtime.recordReconnect(stream.reconnectCount);
       },
       onSubscription: (channels) => {
+        // The set trades can actually arrive for: opens and closes feed
+        // membership intervals (the Now column's measured zeros).
+        runtime.onTradesAcked(channels.trades ?? []);
         runtime.setSubscriptions({
           bars: describeChannel(channels.bars),
           updatedBars: describeChannel(channels.updatedBars),
