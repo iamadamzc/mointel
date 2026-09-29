@@ -12408,3 +12408,8 @@ effect is UNMEASURED. A single serial client gets ~0.48 s per build in RTH.
 $0.5-$5 12.4 PASS; AH x3 eligible 0 -> UNTESTED. The 08:30 read was NOT TAKEN (scheduled task stuck on an unapproved
 permission prompt; a task with a run in progress refuses its scheduled fire). **Scheduled read-only tasks need their
 permission prompt approved by him in the task session; a hand run started by this seat does not pre-approve.**
+
+**gzip sizing for /api/market, measured on the box 15:19:23Z (one fetch, temp file deleted):** raw 803,397 B; gzip -1
+188,179 (23%) 21 ms; **-4 153,602 (19%) 22 ms (proposed level)**; -6 137,925 (17%) 32 ms. ~22 ms CPU per response = ~2% of
+one vCPU per open board at 1 poll/s. Body carries no secret values (only inputTokens/outputTokens/cachedInputTokens
+counters), so BREACH risk is low. TRANSFER ONLY. Put to him 2026-09-29 ~11:2x ET; pending.
