@@ -1146,7 +1146,9 @@ DESIGN LIVE READ (rows, 803008b): top 50 Discovery -- 14 OLD rows, all grey + "N
                  16:17:16Z boundary (l.59-61), the profile. HOLD everything for Research until the successor sends its id.
                  NEW Research seat local_d6996864 (created 17:09:57Z, cwd A:\mointel checked; old chat still carries the
                  title -- route BY ID until he renames it). Live state sent with artefacts. 31328d9/aebdf2f main-only.
-THIS SEAT        his answer on the hand-off question: NONE yet (no turn in this session since it was asked).
+THIS SEAT        HIS RULING (this session, read at his turn): "keep it through tonight, hand off tomorrow". This seat carries
+                 tonight's 20:15 ET restart checks and the post-restart collection, then hands off 09-30. Third repeat of
+                 "asserted what was not opened" before then -> hand off without asking (my stated terms).
 GRADES LIVE READ Research pre-registered 9c7a5d9 (16:19:07Z; merge 880f106). Checked at 9d554e0: promptVersion is
                  the number 2, generated_at is ISO-Z -- both OK. SENT BACK: query B's LIKE '%reverse split%' misses
                  "reverse stock split" / "consolidation" -> a false UNTESTED. AMENDED b1c53c8 (16:20:39Z, before any v2
