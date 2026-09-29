@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — 2026-09-28T02:10Z
+## LIVE STATE — 2026-09-29T01:42Z (newest items at the top of "OPEN, MINE"; handed off, see docs/research-opening-prompt.md)
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for

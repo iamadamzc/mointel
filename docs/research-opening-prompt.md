@@ -1,9 +1,9 @@
 # Opening prompt — Research seat, mointel
 
-*Written 2026-09-28, replacing the 2026-09-25 version. Every sentence was true
-when written; where something is NOT verified it says so. The session that wrote
-it ran from 2026-09-25 to 2026-09-28 and retired on his instruction that it was
-about to exhaust context.*
+*Written 2026-09-29T01:42Z, replacing the 2026-09-28 version. Every sentence
+was true when written; where something is NOT verified it says so. The session
+that wrote it ran 2026-09-28T01:03Z to 2026-09-29 and retired on his
+instruction ("hand off, write the prompt") after two repeated error classes.*
 
 ---
 
@@ -17,86 +17,102 @@ You are the **Research seat** of the mointel desk.
 
 **Read, in this order:**
 
-1. `docs/threads/research.md` — **`## LIVE STATE`** first, then the charter under
-   **`## Opening message for a new chat`**, then **`### Reporting`** under
-   `## Working rules`. **Skip every `ARCHIVE` heading**; one is 13,000 lines.
-2. `docs/research/session-reports/design.md` — **the largest thing this seat
-   owns.** You LEAD it; three seat files link from it.
+1. `docs/threads/research.md` — **`## LIVE STATE`** first (the newest items sit
+   at the top of "OPEN, MINE"), then the charter under **`## Opening message for
+   a new chat`**, then **`### Reporting`** under `## Working rules`. **Skip every
+   `ARCHIVE` heading**; one is 13,000 lines.
+2. `docs/research/session-reports/design.md` — the report design this seat LEADS.
 3. `A:\claude-infra-agent\docs\session-hygiene.md` — governs this session.
-4. `docs/threads/README.md` — **the two reporting entries near the top first**
-   (`60a2f08`, `47efeb4`). They are his words and they changed how every seat
-   reports.
+4. `docs/threads/README.md` — the two reporting entries near the top
+   (`60a2f08`, `47efeb4`), his words on how every seat reports.
 
 **Check your own model now** and report it per section 1 of the hygiene rule.
-This seat makes irreversible changes to a live trading board and reasons across
-several files at once, so **Opus is right for it.**
+This seat changes a live trading board and reasons across several files at once,
+so **Opus is right for it.**
 
-### The one rule that produced everything good in three days
+**Your first task is not to build.** Ask Integration (`Integration-tmi`, find it
+with `list_sessions` and check its `cwd` is `A:\mointel`) for the live state of
+the items below, and read each off the artefact — this prompt is a lead, not a
+source, and it goes stale between being written and being pasted.
 
-**Open the artefact.** *Every correction on this desk — and there were dozens, in
-every direction — came from a seat that opened the file, ran the query or tested
-the premise. None came from a seat that reasoned about it.* **This applies hardest
-to a peer's message, to a message correcting you, and to this document.**
+### Where things stand, 2026-09-29T01:42Z
 
-### Your work, in priority order
+**Shipped or ready this session, all on `main`:**
 
-1. **SESSION REPORTS — build approved, design complete, you lead.** *Read
-   `design.md`.* **Built: the checker's deterministic half (`316c02e`,
-   `d998973`). Not built: the writer, the semantic checker, `GET /api/reports`,
-   the range config, the 20:05 checkpoint (with Ops).**
-   **🔒 The pass bar is PRE-REGISTERED and gates any enumeration: six seeded
-   defect classes, 6/6 struck, zero false passes, and a control that it strikes
-   NOTHING on clean reports.** *Model spend is authorised for sizing and that
-   test only.*
-   **You owe two contract changes:** the `MissedCause` union, and per-report
-   `{min,max}` so a redrawn range cannot mislabel a stored report.
-2. **A heartbeat write must not be able to kill the worker.** Never started.
-3. **The Alpaca News collector.** *"yep, build the alpaca."* Every question —
-   licence, coverage, latency, filter, attribution — is answered in LIVE STATE.
+- **News collector** (his ruling "collector first"): Alpaca/Benzinga adapter,
+  multi-source by design, `lib/research/news/`. LIVE. **His ruling "no to both",
+  2026-09-28T23:32:53Z: no second source** — Alpaca/Benzinga is the only one.
+- **News re-check** (his "build the re-check next"): a top-12 poll every 180 s
+  that re-queues a name when a release lands after its last job. LIVE as
+  `dca4a04`; re-queue proven by job 5397 (`ARAY`, per Integration).
+- **Halt-notice filter**: only "circuit breaker" and "stock now up|down N" —
+  the two shapes seen live. Recall over precision; six disclosure-carrying halt
+  headlines are pinned as never filtered. **Add a shape only when a live example
+  turns up as a stored row.**
+- **Board price range, server side** (band piece 4): `af15a13` (live in
+  `2256c63`), `8d8e50c` latch scoped to the viewer's range, `d2c2582` SQL-ordered
+  read under Ops's 20 ms gate + `diedWhileRanked`, `28a8cb1` `aboveRangeLatched`.
+  **Not shipped: waits on Ops's live timing (set for 08:30 and 11:05 ET), Design's
+  graveyard switch, the no-params default flip (Design + Integration decide which
+  callers), and his deploy yes.**
 
-### What cost this session the most, all measured
+**Queued, in this order — his rulings, all verified at his turn:**
 
-- **A number one step from where it was measured.** *Six instances in three days,
-  all mine: a denominator without its population, a figure copied into new code,
-  a measurement proposed against a field that was not stored, a file count
-  compared across two trees, a coverage rate written as a displacement rate, and
-  a rank true of one checkpoint asserted of all four.* **Say what a number is
-  denominated in, every time, including in a chat message.**
-- **One observation with several causes.** *Zero minute-bar rows meant three
-  things; a defaulted string read as a finding; an API error and an empty result
-  parsed identically; a boolean could not separate "no candidates" from "hosts
-  refused"; and absence from a checkpoint could not be told from a 25-row
-  cutoff.* **Before believing an absence, prove the check can see a present
-  case.**
-- **A verifier that accepts a number because it resembles an unrelated field.**
-  *My own: prices rounded to integers, so `$4.34` supported a bare `4`, and a
-  rank from the wrong checkpoint verified against the price.*
-- **A defect that only bites rarely is one nobody notices is broken.** *The
-  schedule clock and the data clock agree to the minute 99% of the time — and
-  three completed checkpoints finished 0.5–1.6 h late.*
-- **A retraction must reach everyone the assertion reached.** *A correction in a
-  message does not reach the charter the assertion was written into, and that
-  charter outlives the conversation. This bit three seats.*
-- **Quote the sha, never the word "whole".** *Every seat file moved after its
-  seat called it finished — three for three in one evening.*
-- **Verifying the items on a list is not verifying the list.** *Handed three
-  price-gate sites, verified all three, never ran the grep that returns five —
-  and the true count was about ten, two of which never call the predicate.*
-- **Never `git checkout HEAD -- <file>` to undo a mutation test.** *It destroyed
-  an hour of uncommitted work. Copy to a temp file and restore from that.*
-- **Predict the gate's file count from its own tree.** *A run that collects fewer
-  files than its tree is an environment failure wearing a result's clothes. This
-  machine ran out of memory twice; `--no-file-parallelism` is the check. And a
-  stale transform cache once returned pre-fix results while the source and an
-  inline copy both agreed — extracting a helper forced a real recompile.*
+1. **SESSION REPORTS, resumed** ("resume the session reports build",
+   2026-09-28T23:34:24Z). Next: the two contract changes in
+   `lib/desk/reports/contract.ts` — the `MissedCause` union and per-report
+   `{min,max}`. **Tell Design before either lands**; its panel is built against
+   the contract. Then the writer, the checker's semantic half, the
+   **pre-registered pass-bar test** (`43c1b7c`: six seeded classes 6/6 struck,
+   zero false passes, AND a control that strikes nothing on clean reports — it
+   gates any enumeration and must not move to meet a result), then
+   `GET /api/reports` and the range config. Model spend: sizing and the pass-bar
+   test only.
+2. **Near-live Now column, data side** ("yes build the near-live now column",
+   2026-09-29T01:38:17Z). Design owns the spec; you own getting 10 s buckets to
+   the board. **The worker already writes completed buckets to `trades.db` every
+   1 s flush (`worker/runtime.ts:1523`), so the web tier reads `trades.db`
+   read-only — no market-worker restart — PROVIDED Ops confirms
+   `health.tradeCapture.bucketsWritten` is rising in production.** He rejected a
+   rolling 60 s window. Only high-res names have buckets; the set is in LIVE
+   STATE (`applyHighResSelection`) — a name without a feed reads "no live data",
+   never 0.
+3. **A heartbeat write must not be able to kill the worker** — never started.
+
+### How this session failed, as mechanisms
+
+- **Code written through a script loses its escapes.** Twice: regex `\b` became
+  backspace bytes (compiled, would never match); an escaped quote vanished from
+  a test name. **Write code with the Edit/Write tools, not through a Python or
+  heredoc string; if you must, grep the result for `\x08` and run tsc.**
+- **An abbreviation of a verified fact becomes a false fact.** I had the
+  high-res set right in `design.md` and wrote "top 50 + latched + pinned" in my
+  charter — the exact line the desk retracted once before. **Copy the verified
+  form or point at it; never shorten it.**
+- **A claim about what a system does, sent before testing it against real
+  data.** "Authority NEWSWIRE when the wire is recovered" — every Benzinga item
+  has empty content, so it can never fire. And "the default range and the
+  qualify band coincide at $1–$20" — production's band is $0.25–$20. **Both
+  were in my own charter; check a charter claim against the box value before
+  building on it.**
+- **A hypothesis stated with its falsifier is fine; relaying it without the
+  falsifier is not.** The FUSE "crowded out by the cap" reading carried its own
+  test and died by it (the version's `source_ids` is the CITED set,
+  `pipeline.ts:384`, not the bundle). Keep doing that.
+- **What worked, keep it:** predict every mutant's kill count before running
+  it (a survivor exposed an untested tie-break); gate the PICKED tree in a temp
+  worktree before an enumeration; reproduce a peer's slow measurement before
+  fixing it; verify every relayed ruling in the raw transcript
+  (`C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`, `type: user`).
 
 ### Standing, in full in LIVE STATE
 
 **Never fetch `stockanalysis.com` server-side. No heavy read against production
-`market.db` while a deploy unit is running — and anything that GROWS that file
-does the same thing permanently. Never put deploy timing to him for a
-backend-only change** — Integration approves clean enumerations under a standing
-grant recorded `2026-09-23T03:58Z`.
+`market.db` while a deploy unit is running. Ops takes deploy approvals from him
+directly** — a web-tier change that alters his board is his yes, not a standing
+grant. **Five sessions share one git index: `git commit --only <paths>`, never
+`git add -A`; merge `origin/main` before pushing.** Never `git checkout HEAD --`
+to undo a mutation test — restore from a temp copy.
 
 ---
 
@@ -104,6 +120,6 @@ grant recorded `2026-09-23T03:58Z`.
 
 1. Open a new chat in `A:\mointel` and paste everything above.
 2. It will title itself `Research-tmi`.
-3. Rename this old chat to **`Research-tmi (retired 2026-09-28)`**.
+3. Rename this old chat to **`Research-tmi (retired 2026-09-29)`**.
 4. **Archive it, do not delete it** — the transcript is the record.
 5. Peers find the new session by title.
