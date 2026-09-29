@@ -59,6 +59,10 @@ everything inside the quote.
 >    under 20 ms in every case. Measured idle on 09-28: `$1–$20` DAY max was 25.7 ms (FAIL).
 >    If any case fails, the range set `520142c` is void and the fix is an index
 >    on `ticker_session(trading_date, rvol DESC)`: a schema bump, behind item 5.
+>    **The $0.25–$50 case must ALSO be measured AFTER the restart** (item 4): the
+>    capture band grows ticker_session by ~850 names and that range by ~25%, so
+>    a pre-restart pass there does not carry over. `$1–$20` and the narrow case
+>    are unaffected by the ceiling.
 > 3. **The range set `520142c`** (tag `design/range-set-on-2256c63`, cut FROM
 >    production, 10 commits, 167 test files, web-only). It ships only on item 2
 >    passing plus **his yes in your session**. Tell Design-tmi when it is live.
@@ -70,8 +74,9 @@ everything inside the quote.
 >    box, in the same motion as the restart.** Projection: +~10 s per weekday
 >    restart, no reason to split. **He has approved it in principle; the TIME is
 >    his, in your session.** Still to do: wire the runtime to the engine's
->    interval API once Research defines it (`upsertFeedIntervals`, heartbeat
->    every flush, close all on disconnect), ship everything to the release with
+>    **Research is doing the runtime wiring** (FeedMembership -> the store calls
+>    in `572ed08`); you REVIEW it as `worker/` owner (drain every flush; rollover
+>    closes under the old date first; heartbeat after changes). Then ship everything to the release with
 >    `RESTART_MARKET=no`, then ask him for an evening after 20:00 ET.
 >    **He asked why it waits: nothing blocks it but Research's build. Do not
 >    relay an estimate as if it were a constraint.**
