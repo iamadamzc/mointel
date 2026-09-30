@@ -12587,6 +12587,10 @@ a gap-check loop (sqlite3 per missing minute) ran >3 min on the LIVE  probe-load
   matched its own ssh shell. Killed by pid ~16:2xZ, health 0.49 s.
 c817ef86's message says "ledger" but the scripted insert failed    commit-message-ahead-of-content    YES      self
   again: a REPEAT of the class corrected at e273e31 -> warn him
+`tasklist | find /c "node.exe"` in Git Bash ran GNU find over /c:     shell-semantics-assumed            no      self
+  a recursive listing of every file NAME on his C: drive into a local
+  tool-result file (~64 MB, names only, nothing sent anywhere); task
+  stopped, both output files deleted/emptied ~16:3xZ. Use grep -c.
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
