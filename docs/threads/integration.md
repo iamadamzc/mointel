@@ -2213,6 +2213,12 @@ HIS RULING       THIS SESSION (4689366c, typed user turn 2026-09-30T17:29:40Z, f
                  (A first grep returned 15:43:09Z: a tool_result quoting Research's 09-29 "a, hand off after tonight's
                  checks". Same trap as ledger 1; caught before use by reading typed text only. Not ledgered as a relay:
                  nothing left this seat.)
+PASS BAR v5      RUNNING: set cd8052b9 verified on 11863526; harness 82493db before any call; frozen files = 1ab48be; N=3 x 23
+                 drafts, ~$2. RESEARCH'S PREDICTION (in the harness, before calls): FAIL on regression controls (IFBD
+                 "We found no catalyst in our sources" vs a rule admitting only "no catalyst found in our sources"/"on
+                 file"). OUTCOME RULES FIXED BEFORE THE RESULT (order call): PASS -> Commercial's sample review last;
+                 FAIL on false strikes only -> fix named rule + test, re-freeze, FRESH blind set from a different day
+                 (format first, hash last), run 2 tonight; ANY missed defect -> no reports tonight, he hears the class.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
