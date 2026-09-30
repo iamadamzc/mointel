@@ -1,0 +1,2294 @@
+{
+  "sha": "ab6d6a84e558fbe30d49a74c6264bb542813ef9add08f5f1848f6d7a9d20baeb",
+  "results": [
+    {
+      "name": "518-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 229,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 151,
+        "durationMs": 4691
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that a displayed float understates marketable shares is not supported; additionally, the registered-resale and warrant capacities are quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 280,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 183,
+        "durationMs": 4517
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that a displayed float understates shares that can reach market is unsupported; the research supports only that no float is independently verified. It also incorrectly says the registered-resale and warrant capacity is unquantified, though share amounts are provided."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 258,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 167,
+        "durationMs": 7341
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported structure claim that a displayed float understates shares reaching the market; no float can be independently verified. It also says the registered-resale and warrant capacity is unquantified, though the research quantifies both."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14512,
+        "outputTokens": 315,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 230,
+        "durationMs": 5080
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the move “looks flow-dominant”; the research expressly says the evidence does not establish flow-dominant conditions."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14512,
+        "outputTokens": 254,
+        "cachedInputTokens": 14509,
+        "reasoningTokens": 156,
+        "durationMs": 4548
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: that the move looks flow-dominant; the research expressly says the evidence does not establish the strong live-demand conditions needed for that characterization."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14512,
+        "outputTokens": 240,
+        "cachedInputTokens": 14509,
+        "reasoningTokens": 138,
+        "durationMs": 4099
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that ELPW's move looks flow-dominant is unsupported; the research expressly says the evidence does not establish the strong live-demand conditions needed for that characterization."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "531-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14617,
+        "outputTokens": 238,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 189,
+        "durationMs": 4759
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "531-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14617,
+        "outputTokens": 222,
+        "cachedInputTokens": 14614,
+        "reasoningTokens": 173,
+        "durationMs": 3751
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "531-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14617,
+        "outputTokens": 253,
+        "cachedInputTokens": 14614,
+        "reasoningTokens": 204,
+        "durationMs": 4089
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 259,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 198,
+        "durationMs": 3945
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 248,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 187,
+        "durationMs": 4476
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 356,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 295,
+        "durationMs": 6521
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-01",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 177,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 82,
+        "durationMs": 4476
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "8,120,400"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding count: KITT has 7,471,960 shares outstanding as of August 12, 2026, not 8,120,400."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-01",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 279,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 186,
+        "durationMs": 4252
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "8,120,400"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding count: stored research gives 7,471,960 as of August 12, 2026, not 8,120,400."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-01",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 213,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 119,
+        "durationMs": 3906
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "8,120,400"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "KITT shares outstanding is unsupported: stored research lists 7,471,960 as of August 12, 2026, not 8,120,400."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "531-02",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14617,
+        "outputTokens": 275,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 196,
+        "durationMs": 4725
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "267.0"
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: MSGY is up 267.0% since the previous checkpoint; the stored note supports +13.6% since the prior assessment."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "531-02",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14617,
+        "outputTokens": 246,
+        "cachedInputTokens": 14614,
+        "reasoningTokens": 157,
+        "durationMs": 4359
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "267.0"
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: MSGY is up 267.0% since the previous checkpoint; the stored note says +13.6% since the prior assessment."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "531-02",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14617,
+        "outputTokens": 218,
+        "cachedInputTokens": 14614,
+        "reasoningTokens": 143,
+        "durationMs": 4159
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "267.0"
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: MSGY is up 267.0% since the previous checkpoint; the stored note says +13.6%."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-03",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16146,
+        "outputTokens": 396,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 306,
+        "durationMs": 6679
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "MSGY’s -27.4% change is an after-hours move from that day’s regular-session close, not a move from the prior close."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-03",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16146,
+        "outputTokens": 386,
+        "cachedInputTokens": 16143,
+        "reasoningTokens": 296,
+        "durationMs": 5668
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "MSGY’s 27.4% change is an after-hours move from that day’s regular-session close, not a move from the prior close."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-03",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16146,
+        "outputTokens": 206,
+        "cachedInputTokens": 16143,
+        "reasoningTokens": 118,
+        "durationMs": 3964
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "MSGY’s -27.4% change is an after-hours move from that day’s regular-session close, not from the prior close."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "528-04",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14520,
+        "outputTokens": 334,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 220,
+        "durationMs": 5580
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: that the move looks flow-dominant, that ELPW has dropped off the board, and the float wording; the research says strong live demand/flow-dominant classification is not established and supports only “no float the desk can independently verify.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-04",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14520,
+        "outputTokens": 396,
+        "cachedInputTokens": 14517,
+        "reasoningTokens": 296,
+        "durationMs": 5924
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“the move looks flow-dominant” is unsupported; the research expressly does not establish flow-dominant conditions. “it has dropped off the board” is also unsupported."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-04",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14520,
+        "outputTokens": 314,
+        "cachedInputTokens": 14517,
+        "reasoningTokens": 206,
+        "durationMs": 5089
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claims that ELPW “looks flow-dominant” and “has dropped off the board” are unsupported; research does not establish flow-dominant conditions, and board membership requires another checkpoint."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-05",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16167,
+        "outputTokens": 174,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 101,
+        "durationMs": 3247
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "KITT is ranked #9 in range, not fifth-ranked."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-05",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16167,
+        "outputTokens": 233,
+        "cachedInputTokens": 16164,
+        "reasoningTokens": 162,
+        "durationMs": 4143
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "KITT is ranked #9, not fifth-ranked."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-05",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16167,
+        "outputTokens": 421,
+        "cachedInputTokens": 16164,
+        "reasoningTokens": 348,
+        "durationMs": 6411
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "KITT is ranked #9 in range, not fifth-ranked."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-06",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16147,
+        "outputTokens": 292,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 212,
+        "durationMs": 4647
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that MSGY was halted late in the session is unsupported; its haltState is UNKNOWN."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-06",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16147,
+        "outputTokens": 236,
+        "cachedInputTokens": 16144,
+        "reasoningTokens": 156,
+        "durationMs": 4142
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that MSGY was halted late in the session is unsupported; its halt state is UNKNOWN."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-06",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16147,
+        "outputTokens": 276,
+        "cachedInputTokens": 16144,
+        "reasoningTokens": 196,
+        "durationMs": 3916
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that MSGY was halted late in the session is unsupported; its halt state is UNKNOWN."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "518-07",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 272,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 191,
+        "durationMs": 4385
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: that a displayed float understates marketable shares; additionally, the cited registered-resale and warrant capacities are quantified in the research, not “not quantified.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-07",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 219,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 139,
+        "durationMs": 4172
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: that a displayed float understates shares reaching market; the resale and warrant capacities are also quantified in the research, not merely noted but unquantified."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-07",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 312,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 223,
+        "durationMs": 6280
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the displayed float understates shares reaching market is unsupported; float is not independently verified. It also says registered-resale and warrant capacity are unquantified, but the research quantifies both."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-08",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 275,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 191,
+        "durationMs": 4225
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the displayed float understates market-reachable shares is not supported, and the registered-resale and warrant capacity are quantified in the stored research rather than “not quantified.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-08",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 256,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 167,
+        "durationMs": 3859
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed meaning of the dirty-float label (“displayed float understates the shares that can reach the market”) is not supported, and the registered-resale and warrant capacities are quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-08",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 278,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 205,
+        "durationMs": 4384
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The registered-resale and warrant capacities are quantified in the stored research, and the claim about a displayed float is not supported."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-09",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14522,
+        "outputTokens": 313,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 213,
+        "durationMs": 5417
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"two names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: ELPW is not established as one of two names with no catalyst, and the research expressly does not establish that its move is flow-dominant."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-09",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14522,
+        "outputTokens": 391,
+        "cachedInputTokens": 14519,
+        "reasoningTokens": 294,
+        "durationMs": 6357
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"two names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: ELPW is not one of two names with no catalyst, and the research expressly does not establish the move as flow-dominant."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-09",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14522,
+        "outputTokens": 322,
+        "cachedInputTokens": 14519,
+        "reasoningTokens": 223,
+        "durationMs": 5825
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"two names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: ELPW is not established as one of two names with no catalyst, and the research explicitly does not establish the move as flow-dominant."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-10",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16153,
+        "outputTokens": 309,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 226,
+        "durationMs": 5528
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 7,471,960 shares of float as of August 12, "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: 7,471,960 is shares outstanding, not verified float; the research permits no float number."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-10",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16153,
+        "outputTokens": 324,
+        "cachedInputTokens": 16150,
+        "reasoningTokens": 232,
+        "durationMs": 5639
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 7,471,960 shares of float as of August 12, "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "It incorrectly calls 7,471,960 shares “float”; the research supports that figure only as shares outstanding as of August 12, 2026."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-10",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16153,
+        "outputTokens": 368,
+        "cachedInputTokens": 16150,
+        "reasoningTokens": 244,
+        "durationMs": 6797
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 7,471,960 shares of float as of August 12, "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: 7,471,960 is stated as shares of float; research identifies it only as shares outstanding as of August 12, 2026."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-11",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16151,
+        "outputTokens": 266,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 205,
+        "durationMs": 4501
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "7471960"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-11",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16151,
+        "outputTokens": 372,
+        "cachedInputTokens": 16148,
+        "reasoningTokens": 285,
+        "durationMs": 5661
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "7471960"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 7,471,960 shares-outstanding figure is stated without its required as-of date (2026-08-12)."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-11",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16151,
+        "outputTokens": 302,
+        "cachedInputTokens": 16148,
+        "reasoningTokens": 215,
+        "durationMs": 5333
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "7471960"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 7,471,960 shares-outstanding figure is stated without its required as-of date (2026-08-12)."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "518-12",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15024,
+        "outputTokens": 200,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 106,
+        "durationMs": 3546
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should push\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the sale should push the stock higher through the open; expected price effects are not supported."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: that a displayed float understates the shares that can reach the market; no displayed float or such comparison is supported."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-12",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15024,
+        "outputTokens": 213,
+        "cachedInputTokens": 15021,
+        "reasoningTokens": 124,
+        "durationMs": 3476
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should push\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported forecast: the sale “should push the stock higher through the open.”"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported float claim that the displayed float understates marketable shares; the registered-resale and warrant amounts are also quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-12",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15024,
+        "outputTokens": 265,
+        "cachedInputTokens": 15021,
+        "reasoningTokens": 174,
+        "durationMs": 4256
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should push\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported forecast: the sale “should push the stock higher through the open.”"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported structure claim that a displayed float understates market-reachable shares; moreover, the registered-resale and warrant amounts are quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-13",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16167,
+        "outputTokens": 248,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 149,
+        "durationMs": 4451
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 22:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed 09:15 ET filing time is unsupported; the cited 8-K is timestamped 04:41 ET, while the EX-99.1 source has no clock time."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-13",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16167,
+        "outputTokens": 276,
+        "cachedInputTokens": 16164,
+        "reasoningTokens": 178,
+        "durationMs": 4914
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 22:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed 09:15 ET filing time is unsupported; the 8-K is recorded at 04:41 ET, while the EX-99.1 source has only a date."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-13",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16167,
+        "outputTokens": 327,
+        "cachedInputTokens": 16164,
+        "reasoningTokens": 228,
+        "durationMs": 5060
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 22:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed 09:15 ET filing time is unsupported; the cited 8-K is recorded at 04:41 ET, while the EX-99.1 source has only a date."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "518-14",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15021,
+        "outputTokens": 292,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 215,
+        "durationMs": 5007
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "14:00"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the claim that a displayed float understates marketable shares; moreover, the registered-resale and warrant capacities are quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-14",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15021,
+        "outputTokens": 376,
+        "cachedInputTokens": 15018,
+        "reasoningTokens": 286,
+        "durationMs": 5234
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "14:00"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the registered-resale and warrant capacity is “not quantified” is unsupported: the research quantifies 1,213,175 registered-resale shares and 5,620,158 warrant shares."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-14",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15021,
+        "outputTokens": 264,
+        "cachedInputTokens": 15018,
+        "reasoningTokens": 184,
+        "durationMs": 4938
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "14:00"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that a displayed float understates marketable shares is unsupported; the registered-resale and warrant capacity is quantified in the research, not “not quantified.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-15",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 244,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 163,
+        "durationMs": 4242
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "75 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The KITT LOI contemplated a private placement of up to $50 million, not $75 million."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-15",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 230,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 149,
+        "durationMs": 3439
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "75 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The KITT LOI contemplated a private placement of up to $50 million, not $75 million."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-15",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 227,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 149,
+        "durationMs": 3989
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "75 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The contemplated KITT private placement was up to $50 million, not $75 million."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "518-16",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 234,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 141,
+        "durationMs": 4274
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "September 19"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The catalyst was announced September 24, not September 19."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that a displayed float understates market-reachable shares is unsupported; no float is independently verified, and the resale and warrant capacities are quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-16",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 243,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 142,
+        "durationMs": 4373
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "September 19"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The cited MGLD definitive-agreement disclosure is dated September 24, not September 19."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that a displayed float understates shares that can reach the market is unsupported; the stored research supports only the dirty-float label and no independently verifiable float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "518-16",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15013,
+        "outputTokens": 176,
+        "cachedInputTokens": 15010,
+        "reasoningTokens": 86,
+        "durationMs": 3252
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "September 19"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The MGLD filing/event was September 24, not September 19."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that a displayed float understates market-reachable shares is unsupported; the resale and warrant capacities are also quantified in the research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-17",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16165,
+        "outputTokens": 273,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 197,
+        "durationMs": 4475
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "KITT is researched as a United States company, not a German robotics company."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-17",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16165,
+        "outputTokens": 301,
+        "cachedInputTokens": 16162,
+        "reasoningTokens": 215,
+        "durationMs": 4696
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: KITT is a German robotics company; stored research identifies Nauticus Robotics, Inc. as a United States company."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-17",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16165,
+        "outputTokens": 243,
+        "cachedInputTokens": 16162,
+        "reasoningTokens": 162,
+        "durationMs": 4621
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: KITT is described in the research as a United States company, not a German robotics company."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "528-18",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14524,
+        "outputTokens": 216,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 116,
+        "durationMs": 3934
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the move “looks flow-dominant” (the research expressly does not establish that), and the prediction that it runs out of buyers by the open."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-18",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14524,
+        "outputTokens": 305,
+        "cachedInputTokens": 14521,
+        "reasoningTokens": 201,
+        "durationMs": 5072
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“the move looks flow-dominant” is unsupported; the research specifically does not establish the strong demand required for that reading. The prediction that it “runs out of buyers by the open” is also unsupported."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "528-18",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14524,
+        "outputTokens": 253,
+        "cachedInputTokens": 14521,
+        "reasoningTokens": 161,
+        "durationMs": 4285
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "buy/sell: \"sell\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: it says the move looks flow-dominant and predicts it will run out of buyers by the open. Research expressly does not establish flow-dominant conditions."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "532-19",
+      "run": 1,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 318,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 234,
+        "durationMs": 5403
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "2640"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The traded-after-hours count is unsupported: stored total is 2,463, not 2,640."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-19",
+      "run": 2,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 418,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 305,
+        "durationMs": 6403
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "2640"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The traded-after-hours count is unsupported: stored total is 2,463, not 2,640."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "532-19",
+      "run": 3,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16160,
+        "outputTokens": 240,
+        "cachedInputTokens": 16157,
+        "reasoningTokens": 152,
+        "durationMs": 3984
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "2640"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported traded total: stored after-hours total is 2,463, not 2,640."
+          }
+        ],
+        "lines": 3
+      }
+    }
+  ]
+}
