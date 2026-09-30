@@ -12541,3 +12541,5 @@ Prune removed 9d554e0 and 3b78b8c.
 (it carries neither 9508fb9 nor 3810b9e). NEVER roll the MARKET WORKER to it: a v1 worker refuses the v2 file and
 capture goes DISCARDING.** The pin was right for web/research/assess; for the market worker, the lowest safe release
 is now 1b5ead6 (its own). Owner Ops: re-pin a release at or above the floor, or document per-unit rollback targets.
+
+**RE-PINNED on his "yes, pin it" (2026-09-30 02:36:09Z):** pins.sh pin 1b5ead6 market-floor (schema v27, backup none: same schema as the live store, so a rollback to it needs no restore). pins.sh check: all satisfiable. The hazard above is CLOSED for the market worker; rollback-baseline 372f5eb stays for web/research/assess history only.
