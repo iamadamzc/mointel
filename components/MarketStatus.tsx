@@ -112,7 +112,7 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
        * every hour and are unaffected.
        */}
       <span
-        title={marketHealth.label + ' — ' + marketHealth.detail}
+        title={marketHealth.label + ' · ' + marketHealth.detail}
         className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
           TONE_CLASS[marketHealth.tone]
         }`}
