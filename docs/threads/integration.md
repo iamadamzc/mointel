@@ -2285,6 +2285,7 @@ COMMERCIAL PASS  v5b sample PASS, commercial.md §11 6388b4a1 (13:17:54 ET, afte
                  non-blocking notes. 2e8450f Buy/Sell instruction CONFIRMED ("ships with the PASS standing"). Content
                  gates for reports: Commercial DONE; Design shim/render DONE; remaining = run 2 PASS + re-freeze pick +
                  Ops gate + my blob re-verify + his yes.
+EM-DASH GATED    89d39053 ALL GREEN 182/182, 2,768 (new Ops). Ready: replayed + gated; needs 46d9f9d live + his yes.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
