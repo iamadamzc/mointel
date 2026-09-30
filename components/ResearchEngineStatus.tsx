@@ -45,7 +45,7 @@ export function ResearchEngineStatus({
        * one is something he would act on.
        */}
       <span
-        title={health.label + ' — ' + health.detail}
+        title={health.label + ' · ' + health.detail}
         className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
           TONE_CLASS[health.tone]
         }`}
