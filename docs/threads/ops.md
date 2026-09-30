@@ -12574,7 +12574,11 @@ its first work (the history store) triggers after it.
 ### THIS SEAT'S ERROR LEDGER (session-hygiene §2), session opened 2026-09-30 03:38Z
 ```
 error (asserted vs true)                                          TYPE                              repeat?  caught by
-(none yet)
+de7f181 put a bare require() in scripts/ops/minute-bars-bound-ab.cjs:  gate-not-run-on-own-commit        no       Design
+  main's lint RED (1 error) for every seat until e273e31; I gated the
+  shipping sha, never main after my own commit
+e273e31's message says "ledger entry" but the ledger edit had failed   commit-message-ahead-of-content   no       self
+  (a scripted replace missed; committed without checking the diff)
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
