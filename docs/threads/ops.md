@@ -12612,3 +12612,6 @@ after 20:00); this covers the other three. **Opened: desk_assessments (db.ts:572
 row per checkpoint, band-wide.** So "for the checkpoint's range" cannot be columns on that row once reports come in
 several ranges: it needs a child table keyed (assessment_id, range_key[, window]) -- the same shape per-range top-N
 storage needs. Research specifies columns and window boundaries BEFORE any migration is written; asked 2026-09-30.
+**Integration APPROVED the shape (~04:4xZ):** ONE child table keyed (assessment_id, range_key) in the same bump, carrying
+BOTH per-range top-N and the per-range window counts; the AH close/high/low freeze stays on desk_assessment_tickers.
+Next: Research's column/window spec (asked), then Ops proposes the table to Research, THEN the migration.
