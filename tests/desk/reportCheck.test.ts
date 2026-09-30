@@ -308,7 +308,32 @@ describe('applyStrikes', () => {
         { heading: 'Gave back', lines: [{ ticker: 'IMCC', text: 'IMCC gave back.' }] },
         { heading: 'Halts', lines: [{ ticker: null, text: NOTHING_LINE }] },
       ],
+      overall: null,
       watchCount: 1,
+    });
+  });
+
+  describe('v5: no headline, an overall sentence, ALL_STRUCK on the body only (Design 6fb68956)', () => {
+    const v5: ReportDraft = {
+      headline: '',
+      overall: 'Across the $1–$20 range, 2,454 traded after hours, 749 up, 569 down.',
+      sections: [{ heading: 'Moved', lines: [{ ticker: 'SANG', text: 'Ran and gave back part of it.' }] }],
+    };
+
+    it('checks no headline line, and returns headline null with the overall kept', () => {
+      const out = applyStrikes(v5, [], at);
+      expect(out).toMatchObject({ ok: true, headline: null, overall: v5.overall, watchCount: 1 });
+    });
+
+    it('a struck overall is dropped, never replaced; the report stands on its lines', () => {
+      expect(applyStrikes(v5, [strike('O')], at)).toMatchObject({ ok: true, overall: null, watchCount: 1 });
+    });
+
+    it('every BODY line struck is ALL_STRUCK, even with the overall standing', () => {
+      expect(applyStrikes(v5, [strike('S1L1')], at)).toEqual({
+        ok: false,
+        cause: { kind: 'ALL_STRUCK', at: '2026-09-29T13:26:00.000Z' },
+      });
     });
   });
 

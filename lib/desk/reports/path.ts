@@ -25,10 +25,17 @@
  * market did not take).
  */
 
+import { etMinutesOfDay } from '../../market/session';
 import type { PathBasis, ReportKind, ReportPath } from './contract';
 
 export interface PathRow {
   price: number | null;
+  /**
+   * When `price` was printed. The premarket path's last point is labelled
+   * "AH close" (Design 6fb68956), which is true only if this falls in the
+   * after-hours session, 16:00-20:00 ET. Required for the premarket path.
+   */
+  priceAt?: string | null;
   sessionHigh: number | null;
   referenceClose: number | null;
   referenceBasis: string | null;
@@ -54,6 +61,11 @@ export function reportPath(kind: ReportKind, row: PathRow, afterHours: AfterHour
         : [null, null, 'PRIOR_CLOSE'];
 
   if (!finite(from) || !finite(high) || !finite(now)) return null;
+  if (kind === 'PREMARKET') {
+    const at = row.priceAt ? new Date(row.priceAt) : null;
+    const minutes = at && !Number.isNaN(at.getTime()) ? etMinutesOfDay(at) : null;
+    if (minutes === null || minutes < 16 * 60 || minutes > 20 * 60) return null;
+  }
   if (high < now) return null;
   return { from, high, now, fromBasis };
 }

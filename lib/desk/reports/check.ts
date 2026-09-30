@@ -32,8 +32,8 @@ import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
 
 /* ------------------------------------------------------------------ types */
 
-/** Where a line sits in the draft. `'H'` is the headline. */
-export type LineId = 'H' | `S${number}L${number}`;
+/** Where a line sits in the draft. `'H'` is the headline, `'O'` the v5 overall sentence. */
+export type LineId = 'H' | 'O' | `S${number}L${number}`;
 
 export type StrikeReason =
   /* deterministic */
@@ -76,6 +76,12 @@ export interface CheckInput {
    * unchanged, so the frozen v4 harnesses still run.
    */
   research?: ReadonlyMap<string, ReportResearch>;
+  /**
+   * v5, premarket: the board-eligible after-hours totals for the date, the
+   * checker's OWN read of `ticker_session`. The 'O' line's numbers must each be
+   * one of these (or the range's bounds). Absent = every number in 'O' is struck.
+   */
+  afterHoursTotals?: { eligible: number; traded: number; up: number; down: number } | null;
 }
 
 /** The checker's model: same seam as the writer's, a different reply shape. */
@@ -97,7 +103,9 @@ interface DraftLine {
 }
 
 export function draftLines(draft: ReportDraft): DraftLine[] {
-  const out: DraftLine[] = [{ id: 'H', ticker: null, text: draft.headline, headline: true }];
+  // v5 writes no headline (''), so there is no 'H' line to check or strike.
+  const out: DraftLine[] = draft.headline === '' ? [] : [{ id: 'H', ticker: null, text: draft.headline, headline: true }];
+  if (typeof draft.overall === 'string') out.push({ id: 'O', ticker: null, text: draft.overall, headline: false });
   draft.sections.forEach((section, s) => {
     section.lines.forEach((line, l) => {
       out.push({ id: `S${s + 1}L${l + 1}`, ticker: line.ticker, text: line.text, headline: false });
@@ -195,6 +203,18 @@ export function ruleStrikes(input: CheckInput): Strike[] {
       }
     }
 
+    if (line.id === 'O') {
+      // The overall sentence: every number is a stored after-hours total or a range bound.
+      const totals = input.afterHoursTotals;
+      const allowed = new Set([input.range.min, input.range.max]);
+      if (totals) for (const value of [totals.eligible, totals.traded, totals.up, totals.down]) allowed.add(value);
+      for (const value of numbersIn(stripTimestamps(line.text))) {
+        if (!allowed.has(Math.abs(value))) hit('NUMBER_WITHOUT_ROW', String(value));
+      }
+      const named = tickers.filter((t) => tickerRe(t).test(line.text));
+      if (named.length > 0) hit('NOT_SELF_CONTAINED', `names ${named.join(', ')} in the overall sentence`);
+      continue;
+    }
     if (line.ticker === null) {
       // No row to trace a number to: any number is unsupported by default.
       for (const value of numbersIn(stripTimestamps(line.text))) hit('NUMBER_WITHOUT_ROW', String(value));
@@ -410,6 +430,8 @@ export type CheckedReport =
       ok: true;
       /** Null when struck: a struck headline is NOT replaced (`design-seat.md` §3a rule 3). */
       headline: string | null;
+      /** v5 premarket: the overall sentence, null when struck or not written. */
+      overall: string | null;
       sections: ReportDraft['sections'];
       /**
        * DISTINCT tickers across the SURVIVING lines: a name in two sections
@@ -431,6 +453,8 @@ export type CheckedReport =
  * they held the struck name, and never a dropped section (supersedes cdc77af).
  * This includes a section whose own NOTHING_LINE was struck. Every line and
  * the headline struck is `ALL_STRUCK`: an empty report is the forbidden shape.
+ * v5 has no headline, and Design ruled (6fb68956) that ALL_STRUCK means every
+ * BODY line struck: a surviving overall sentence alone is not a report.
  */
 export function applyStrikes(
   draft: ReportDraft,
@@ -438,8 +462,8 @@ export function applyStrikes(
   now: () => Date = () => new Date(),
 ): CheckedReport {
   const struck = new Set<string>(strikes.map((strike) => strike.id));
-  const lines = draftLines(draft);
-  if (lines.every((line) => struck.has(line.id))) {
+  const body = draftLines(draft).filter((line) => line.id !== 'O');
+  if (body.every((line) => struck.has(line.id))) {
     return { ok: false, cause: { kind: 'ALL_STRUCK', at: now().toISOString() } };
   }
   const sections = draft.sections.map((section, s) => ({
@@ -449,5 +473,11 @@ export function applyStrikes(
   const watched = new Set(
     sections.flatMap((section) => section.lines.map((line) => line.ticker)).filter((ticker) => ticker !== null),
   );
-  return { ok: true, headline: struck.has('H') ? null : draft.headline, sections, watchCount: watched.size };
+  return {
+    ok: true,
+    headline: struck.has('H') || draft.headline === '' ? null : draft.headline,
+    overall: typeof draft.overall === 'string' && !struck.has('O') ? draft.overall : null,
+    sections,
+    watchCount: watched.size,
+  };
 }
