@@ -107,6 +107,11 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
   candidates, never his lines and never his use (break → next level). **Before
   any sentence of the form "the data supports/doesn't support X", name what the
   test measured, its control, and the claim it can NOT reach.**
+  **A THIRD instance, in the last grade it made:** it graded post-restart item 6
+  "PASS on the registered condition" by choosing the looser of two written rules
+  AFTER seeing the rows. The rule it had itself restated to Ops failed on two
+  clauses. **Grade against the rule you handed out; any other reading is post hoc
+  and labelled so.**
 - **A clause he never said, written into a spec:** "one continuous walk" across
   his windows. It would have hidden his own BIYA lines. **Build exactly what he
   said; flag every addition as yours.**
