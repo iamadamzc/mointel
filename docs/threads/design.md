@@ -51,7 +51,7 @@ Marketing; the fourth seat was already archived (by him) as `Design-tmi-retired`
 **Item 6a DONE, on main `7aa2aa7c`** (details in its row). **Asked Ops (15:38Z, queued) for its own /proc read of the web
 sha.** From the artefacts, NOT yet from Ops's answer: c3d0f06 live since 14:51:49Z; the speed fix 84b0099 now ships
 TONIGHT after 20:00 ET inside ONE release `46d9f9d` (with Ops's deploy-window guard); the em-dash cut waits until that
-lands and cuts onto /proc's sha, and Research's `f6915c4` rides it too (integration.md, 9e8977b2). **Report v5 questions
+lands and cuts onto /proc's sha, and Research's `f6915c4` rides it too (integration.md, 9e8977b2). **TWELVE picks, count pre-registered; Research's `95b734e` (prompt v3) must be ABSENT from the cut's cone** (it waits for Ops's v28 bump): check with `git log <base>..<tag>` before sending the tag. **Report v5 questions
 (1)-(3) ANSWERED, row 3a.**
 
 *The fourth seat's snapshot, kept until Ops's /proc answer supersedes it:*
