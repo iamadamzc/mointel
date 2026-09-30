@@ -50,7 +50,7 @@ last_changed: 2026-09-18
 
 # Privacy policy
 
-The Momentum Intelligence Trading Desk — TMI — is an information service for
+The Momentum Intelligence Trading Desk (TMI) is an information service for
 people who trade US small-cap equities. This policy says what we learn about
 you, why we hold it, who else sees it, and how to make us delete it. It is
 written to be read, not to be survived.
@@ -86,8 +86,8 @@ We ask Google for the scopes `openid`, `email` and `profile`. Those three are
 the smallest set that lets someone sign in at all, and we request nothing
 beyond them.
 
-**When you use the desk.** We record which account you are and what you did —
-signing in, signing out, and the requests your browser makes — so that the
+**When you use the desk.** We record which account you are and what you did
+(signing in, signing out, and the requests your browser makes) so that the
 service works and so that we can tell a fault from an attack.
 
 **In server logs.** Like every website, our servers write an access log. It
@@ -96,14 +96,14 @@ user-agent string, and the time.
 
 **Cookies.** Two, and neither of them follows you anywhere else.
 
-- `mointel_session` — set when you sign in, and how the desk recognises you on
+- `mointel_session`: set when you sign in, and how the desk recognises you on
   your next request. **It ends at 20:00 New York time, the close of after-hours
   trading, rather than lasting a fixed number of days.** Sign in at 04:00 and it
   covers the whole session; sign in at 19:00 and it covers an hour. A sign-in
   after 20:00 runs until 20:00 the following day, because a session that has
   already expired is not a session. It follows the calendar day rather than the
   trading day, so a Saturday sign-in ends at 20:00 that Saturday.
-- `[FLOW COOKIE NAME]` — set when sign-in *starts*, before you have approved
+- `[FLOW COOKIE NAME]`: set when sign-in *starts*, before you have approved
   anything at Google. It holds two single-use random values that let us check
   that the reply coming back from Google belongs to the request you actually
   made. It lasts at most ten minutes, and it is discarded when the sign-in
@@ -120,11 +120,11 @@ which is why you were not asked to dismiss a banner.
 - We do not ask Google for access to your Gmail, Drive, Calendar, Contacts,
   photos or any other Google service, and we could not read them if we tried.
 - We have no connection to your brokerage. We do not see your account, your
-  positions, your orders or your balance, and the desk cannot place a trade —
+  positions, your orders or your balance, and the desk cannot place a trade:
   it has no code that could.
 - We do not ask for permission to post, send or publish anything as you.
 - We do not run advertising trackers, analytics scripts or third-party tag
-  managers on this site. The pages load nothing from anyone else's servers —
+  managers on this site. The pages load nothing from anyone else's servers:
   no fonts, no scripts, no images.
 - We do not ask for your date of birth, your address, your phone number, or
   any government identifier.
@@ -152,7 +152,7 @@ handled by us and by the companies that run the machinery underneath:
 | Amazon Web Services, Inc. | The server and its logs | It is where the service runs, in us-east-1 |
 | Google LLC | Email we exchange with you | Our mailbox runs on Google Workspace |
 
-We will hand over data if we are legally required to — a court order, a
+We will hand over data if we are legally required to: a court order, a
 lawful demand from an authority with the power to make one. If that happens
 and we are permitted to tell you, we will.
 
@@ -161,16 +161,16 @@ will tell you before it does.
 
 ## 6. How long we keep it
 
-- **Your account** — for as long as you have one. After you ask us to close
+- **Your account**: for as long as you have one. After you ask us to close
   it, we have not set a period; ask and we will tell you what we hold.
-- **Server logs** — 14 days, then deleted.
-- **Email we exchanged with you** — we have not set a period; ask and we will
+- **Server logs**: 14 days, then deleted.
+- **Email we exchanged with you**: we have not set a period; ask and we will
   tell you what we hold.
 
 Backups are the honest exception. A full-server snapshot is kept for 7 days,
 so deleted data can survive that long in one. Server-log entries live 14 days,
-and a snapshot taken on a log's last day carries it up to 7 days further —
-about three weeks at the outside. We do not restore a backup to bring deleted
+and a snapshot taken on a log's last day carries it up to 7 days further
+(about three weeks at the outside). We do not restore a backup to bring deleted
 data back.
 
 ## 7. Your rights
@@ -189,7 +189,7 @@ Write to info@andromedagenius.com. We answer promptly, and within 30 days at
 the latest, and we do not charge for it.
 
 **We do not sell your personal information, and we do not share it for
-cross-context behavioural advertising** — including as California defines
+cross-context behavioural advertising**, including as California defines
 those terms. Nobody is refused access, charged differently, or given a worse
 service for exercising any right on this list.
 
@@ -211,7 +211,7 @@ than argue about which law applies.
 
 Traffic to this site is encrypted in transit. Access to the server is limited
 to the people who run it. We do not store passwords, because there are none to
-store — sign-in is handled entirely by Google.
+store: sign-in is handled entirely by Google.
 
 No service is immune. If a breach affects your data we will tell you what
 happened, what was exposed and what to do, as quickly as we can establish the
@@ -221,7 +221,7 @@ facts, and we will not wait until the story is comfortable.
 
 If we change something that matters, we will change the date at the top of
 this page and tell signed-in users by email before it takes effect. Minor
-corrections — a typo, a clearer sentence — are made without notice, and the
+corrections (a typo, a clearer sentence) are made without notice, and the
 history of this file is kept.
 
 ## 11. Contact
