@@ -12636,3 +12636,10 @@ transferred). **Open: its first request took 15,465 ms (resource timing), a GET 
 record exists: /review/ is access_log off by design (token in path), and no nginx log has request_time. Box fact in
 that minute: [flush] 08:06:12Z whole max 1,331.6 / upsert max 546.2 ms, worst of 08:04-08:07Z; research mid-dossier.
 Co-occurrence, not cause. Asked Design for the TTFB split from the same entry before anyone names a cause.
+
+**2026-09-30 04:15 ET: GATED c3d0f06 (Now cell, board half; Integration enumerated by literal sha) ALL GREEN in this
+session:** test-gate.sh at the sha in a worktree -- lockfile, types, typecheck, lint (0 errors, 5 unused-var warnings),
+suite **177/177 files (pre-registered 177), 2,723 tests.** The "[pins] FAILED deadbee" / "[preflight] BLOCKED" lines in
+the output are test fixtures (tests/desk/releaseRetention.test.ts), not the gate. Cone 74c1818..c3d0f06 = 1 commit, 8
+files; 1b5ead6 ancestor. Board-behaviour change: HIS yes in this session, asked after 10:15 ET (reminder 10:27 ET);
+RESTART_MARKET=no; DEPLOY_TESTS_SKIP is valid for this sha only while nothing changes.
