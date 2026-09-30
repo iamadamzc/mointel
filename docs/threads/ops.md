@@ -12532,3 +12532,12 @@ high-res set went to 0) + 7 opened at +3.075 s (high-res set 7), inside the SQL'
 **Research graded (22:1x ET): ITEM 1 PASS.** ~~ITEM 6 PASS on the registered condition~~ **ITEM 6 CORRECTED BY RESEARCH: FAIL AS REGISTERED** (opened_at_roll 123 vs 116; 2 open instants vs 1). The PASS-shaped reading below is POST HOC and labelled so. ~~Original line:~~ (116 closed and 116 opened at roll instant 1790733600178, expected 116, drift 0/0). The 123 / 2 instants were Research's own +/-5 s window catching the 02:00:03Z high-res rebuild (logged as its instrument error). Research local_d6996864 has handed off; items 2-5 (04:33 ET) go to its successor by title.
 Open for the successor + Design: the roll opened 116 one-second 09-30 intervals that closed +1.02 s later at the new day's 0-symbol recompute.
 Item 6 label (Integration + Research agreed): "AS REGISTERED: FAIL on two clauses (opened_at_roll 123 vs 116; 2 open instants). POST-HOC, labelled: excluding the 7 rows at +3.075 s, the roll opened 116 at the close instant = PASS-shaped." The 116 one-second stubs cannot reach the Now cell (whole-slot coverage, nowBuckets.ts:137-141, per Design); other consumers are the Research successor's to check.
+
+**2026-09-29 22:33 ET: 74c1818 (Design's compact brand header + the clock-test fix, v2) LIVE** on his "deploy now".
+Base 1b5ead6 confirmed first; DEPLOY_TESTS_SKIP (gated this session ALL GREEN 176/176); nginx -t ok; down 2s;
+gzip survived (proxied Content-Encoding: gzip); public 401x4 / 200x5. Market untouched (1574400 on 1b5ead6).
+Prune removed 9d554e0 and 3b78b8c.
+**HAZARD, recorded now: the only pinned release, 372f5eb (rollback-baseline), is BELOW the trades.db v2 floor
+(it carries neither 9508fb9 nor 3810b9e). NEVER roll the MARKET WORKER to it: a v1 worker refuses the v2 file and
+capture goes DISCARDING.** The pin was right for web/research/assess; for the market worker, the lowest safe release
+is now 1b5ead6 (its own). Owner Ops: re-pin a release at or above the floor, or document per-unit rollback targets.
