@@ -2450,6 +2450,10 @@ NOW "/min" CODE  Research (new) dc854c90: "/min" = FALLBACK (LIVE head, every ro
                  never one. -> asked Design whether its samples covered 15:06:52-15:07:22 ET; if not, Ops greps the 3
                  logged lines 19:06:40-19:07:30Z. Proposed logging (batch closing >= 2 intervals; rate-limited warn in
                  readNowBuckets catch): TOMORROW after the sic write.
+NOW "/min" v2    Design: samples did NOT cover the window (live 19:06:47.288Z; all-row per-row FALLBACK "/min" with minute
+                 bars ~19:07:02Z; live 19:07:12.149Z). Hypothesis (Design): one slow flush leaves every row's newest slot
+                 unmeasured for one poll (RTH flushes up to 11 s). Ops asked for journal 19:06:40-19:07:30Z: reconnect,
+                 high-res set, interval-write failures, [flush] whole ms. Research to check the late-flush path in code.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
