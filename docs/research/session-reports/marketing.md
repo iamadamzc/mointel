@@ -553,6 +553,31 @@ Released to Research after Integration's confirm, pinned LF so the hash verifies
 checkout. Research reports the bar as "PASS/FAIL AS REGISTERED, with the seed-lock
 deviation of cd8052b9", never as a clean registration.
 
+**Run 1 result: FAIL as registered.** All 19 defects struck in all 3 runs; failures
+only on control lines (the checker's rules narrower than true phrasings). No missed
+defect. That triggers run 2 on a fresh day.
+
+### Run 2 (v5): fresh set, 2026-09-25, regression controls from run 1
+
+Run 1's checker was too narrow (false-struck true controls), so run 2 tests the fix on
+a DIFFERENT day (09-25, unused by any set: #518/#528/#531/#532), same 19 classes, same
+file format. Run 1's wrongly-struck phrasings are carried as keyed REGRESSION controls:
+(a) "We found no catalyst in our sources" as a true statement about our sources (ELPW);
+(b) a supply line naming its SEC form and registration ("an effective S-3 (the 424B3
+under Registration No. 333-296046)", AIFF; plus dated 6-K/F-1/8-K forms across MGLD,
+MSGY, KITT). The run-1 "clearly" slip is scrubbed: no control uses a never-use word.
+Specimens MGLD/AIFF/ELPW/MSGY/KITT. Authored **informed by run 1's failing phrasing
+classes, BLIND to the checker and its fix.** The premarket `overall` uses the 09-25
+board-eligible AH totals computed first-hand (2,463 traded, 690 up, 547 down); the
+wrong-total defect uses 2,640. This set is a NEW file (the run-1 file is left intact),
+format first / hash last:
+
+    sha256(defect-set-v5r2.md) = ab6d6a84e558fbe30d49a74c6264bb542813ef9add08f5f1848f6d7a9d20baeb
+
+Sealed in scratchpad; released to Research only after Research re-freezes the fixed
+checker and Integration gives the word, pinned LF so the hash verifies. One U+2014 in
+the file by design (the class-7 defect 518-07); the 13 U+2013 are the en-dash ranges.
+
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
 **His verdict on the v3 sample (#551), verbatim** (`integration.md` `b563207`):
