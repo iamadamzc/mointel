@@ -12746,3 +12746,8 @@ maxima and median of the five medians. Also recorded per reading: time, payload 
 Confounds named now: the day's content keeps growing through the afternoon (R2 is last, which works AGAINST the fix);
 research worker activity is uncontrolled. Expectation from the local ratio 0.196 on loadMinuteBars alone, which is
 ~83% of a build (Research): R2/R1 median-of-medians roughly 0.3-0.4. Not a pass line.
+
+**HIS YES, first-hand in THIS session (~14:08Z, 10:08 ET): "yes to both"** = c3d0f06 (Now cell) then 84b0099 (loadMinuteBars
+bound), two separate releases, RESTART_MARKET=no, DEPLOY_TESTS_SKIP on this session's gates (177/177, 178/178).
+Plan: grades read 10:17 (not restarted mid-read) -> R0 -> c3d0f06 in the 10:34-10:42 slot -> R1 -> 84b0099 in the
+11:04-11:12 slot -> R2. Each ship base-checked from /proc in the same command.
