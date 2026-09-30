@@ -1,0 +1,716 @@
+{
+  "sha": "a8fdab73de652c76721369a49f79783fbe77185e6029333fb5a6af7b69784dba",
+  "results": [
+    {
+      "name": "437-C",
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored note supports that IMCC lost $4.20 support, but does not state that this occurred since the last check."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3151,
+        "outputTokens": 539,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 446,
+        "durationMs": 6364
+      }
+    },
+    {
+      "name": "423-C",
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The row notes that TCRT lost $1.84 support, but do not state that this occurred since the last check."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3145,
+        "outputTokens": 699,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 561,
+        "durationMs": 10486
+      }
+    },
+    {
+      "name": "433-C",
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The 14:30 ET checkpoint does not support describing this as the last hour."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“An exit-and-avoid read rather than a setup” is unsupported advice/interpretation beyond the stored red—backside cycle label."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3068,
+        "outputTokens": 457,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 302,
+        "durationMs": 5568
+      }
+    },
+    {
+      "name": "437-1",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "4.05"
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "Unsupported close: IMCC's stored regular-session reference close is $4.23, not $4.05."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3151,
+        "outputTokens": 257,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 171,
+        "durationMs": 3774
+      }
+    },
+    {
+      "name": "437-2",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "-90.2"
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The claim that IMCC is down 90.2% after hours is unsupported; the stored after-hours change from its $4.23 regular-session close is -25.1%."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3151,
+        "outputTokens": 247,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 146,
+        "durationMs": 3323
+      }
+    },
+    {
+      "name": "437-3",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "BASIS_CONTRADICTED",
+          "by": "rule",
+          "detail": "basis CURRENT_SESSION"
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC's -25.1% change is from its regular-session close, not from the prior close."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3144,
+        "outputTokens": 323,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 236,
+        "durationMs": 4537
+      }
+    },
+    {
+      "name": "437-4",
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "NO_ROW_FOR_TICKER",
+          "by": "rule",
+          "detail": "TCRT"
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows support the price, after-hours decline, high-distance, structure, catalyst label, and lost $4.20 support, but do not state that the support was lost specifically since the last check."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "TCRT is not present, but the rows do not support that it dropped off the board or that nothing remains of it."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3175,
+        "outputTokens": 633,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 485,
+        "durationMs": 7591
+      }
+    },
+    {
+      "name": "437-5",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "1"
+        },
+        {
+          "id": "S1L1",
+          "reason": "RANK_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "#1 vs #4"
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "Unsupported: IMCC is not #1 at this checkpoint; its in-range rank is #4, and “still” also requires another checkpoint."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3156,
+        "outputTokens": 288,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 196,
+        "durationMs": 3935
+      }
+    },
+    {
+      "name": "437-6",
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "\"quiet\": \"quiet\""
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not support that the market was quiet or that there was little else to report."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3171,
+        "outputTokens": 339,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 218,
+        "durationMs": 3844
+      }
+    },
+    {
+      "name": "423-1",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "3.58"
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not establish that the names led the premarket."
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC's stored price is $3.31, not $3.58."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The note says TCRT lost $1.84 support, but does not say this occurred since the last check."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3145,
+        "outputTokens": 299,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 188,
+        "durationMs": 4533
+      }
+    },
+    {
+      "name": "423-2",
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "38.8"
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Led the premarket” is not supported by the stored fields."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "TCRT was down 6.25% from the prior close, not up 38.8%."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3145,
+        "outputTokens": 284,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 163,
+        "durationMs": 3620
+      }
+    },
+    {
+      "name": "423-3",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Led the premarket” is not supported by the stored checkpoint ranks or fields."
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC’s 90.2% change is from the prior session’s close, not today’s close."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored note supports that TCRT lost $1.84 support, but does not state that it occurred since the last check."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3144,
+        "outputTokens": 368,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 245,
+        "durationMs": 4390
+      }
+    },
+    {
+      "name": "423-4",
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not establish that two names led the premarket."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“TCRT has dropped off the board” is unsupported."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3150,
+        "outputTokens": 386,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 290,
+        "durationMs": 4474
+      }
+    },
+    {
+      "name": "423-5",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "4"
+        },
+        {
+          "id": "S1L1",
+          "reason": "RANK_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "#4 vs #1"
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not establish that two names led the premarket or that this occurred into the open."
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC is ranked #1 in range, not #4."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The note supports that TCRT lost $1.84 support, but does not state that this occurred since the last check."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3150,
+        "outputTokens": 320,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 204,
+        "durationMs": 3832
+      }
+    },
+    {
+      "name": "423-6",
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "completeness: \"Nothing else\""
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "\"quiet\": \"quiet\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not establish that two names led the premarket or make claims about the open."
+        },
+        {
+          "id": "S1L3",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not support that nothing else made the open or that the tape was quiet."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3161,
+        "outputTokens": 351,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 195,
+        "durationMs": 4016
+      }
+    },
+    {
+      "name": "433-1",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "162"
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Going into the last hour” is not supported by the stored checkpoint time."
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC is up 149.4% from the prior close, not 162.0%."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“An exit-and-avoid read rather than a setup” is unsupported advice/interpretation beyond the stored cycle label."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3068,
+        "outputTokens": 447,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 297,
+        "durationMs": 5222
+      }
+    },
+    {
+      "name": "433-2",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "90.2"
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Going into the last hour” is not supported by the 14:30 ET checkpoint."
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC is up 149.4% from the prior close, not 90.2%."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Exit-and-avoid read rather than a setup” is an unsupported action/interpretation beyond the stored cycle label."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3068,
+        "outputTokens": 511,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 358,
+        "durationMs": 5906
+      }
+    },
+    {
+      "name": "433-3",
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored checkpoint is 14:30 ET; it does not support describing the rows as going into the last hour."
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "IMCC's 149.4% change is from the prior-session close, not from today's close."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Exit-and-avoid” is unsupported advice/action beyond the stored cycle label."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3067,
+        "outputTokens": 704,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 555,
+        "durationMs": 7782
+      }
+    },
+    {
+      "name": "433-4",
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows establish the 14:30 ET checkpoint, not that it is the last hour."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“Exit-and-avoid read rather than a setup” is unsupported advice/interpretation beyond the stored cycle label."
+        },
+        {
+          "id": "S1L3",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The claim that OBA dropped off the board and went dark is unsupported; the row instead places OBA at rank 4."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3048,
+        "outputTokens": 383,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 218,
+        "durationMs": 4495
+      }
+    },
+    {
+      "name": "433-5",
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "4"
+        },
+        {
+          "id": "S1L2",
+          "reason": "RANK_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "#4 vs #5"
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows establish a 14:30 ET checkpoint, but do not support characterizing it as going into the last hour."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "TCRT is ranked #5, not #4; “exit-and-avoid” is also not supported by the cycle label."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3073,
+        "outputTokens": 451,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 288,
+        "durationMs": 5406
+      }
+    },
+    {
+      "name": "433-6",
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "H",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The checkpoint is 14:30 ET; the rows do not establish that this is the last hour."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“An exit-and-avoid read rather than a setup” is not supported by the stored cycle label."
+        },
+        {
+          "id": "S1L4",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The rows do not support that the rest of the board is absent or that trading dried up into the afternoon."
+        }
+      ],
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3088,
+        "outputTokens": 501,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 310,
+        "durationMs": 5396
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+437-C: control, 1 strike(s) on S1L1
+423-C: control, 1 strike(s) on S1L2
+433-C: control, 3 strike(s) on S1L3,H,S1L2
+437-1: keyed S1L1 STRUCK; extra struck lines: none
+437-2: keyed S1L1 STRUCK; extra struck lines: none
+437-3: keyed S1L1 STRUCK; extra struck lines: none
+437-4: keyed S1L2 STRUCK; extra struck lines: S1L1
+437-5: keyed S1L1 STRUCK; extra struck lines: none
+437-6: keyed S1L2 STRUCK; extra struck lines: none
+423-1: keyed S1L1 STRUCK; extra struck lines: H,S1L2
+423-2: keyed S1L2 STRUCK; extra struck lines: H
+423-3: keyed S1L1 STRUCK; extra struck lines: H,S1L2
+423-4: keyed S1L2 STRUCK; extra struck lines: H
+423-5: keyed S1L1 STRUCK; extra struck lines: H,S1L2
+423-6: keyed S1L3 STRUCK; extra struck lines: H
+433-1: keyed S1L1 STRUCK; extra struck lines: S1L3,H,S1L2
+433-2: keyed S1L1 STRUCK; extra struck lines: S1L3,H,S1L2
+433-3: keyed S1L1 STRUCK; extra struck lines: S1L3,H,S1L2
+433-4: keyed S1L3 STRUCK; extra struck lines: H,S1L2
+433-5: keyed S1L2 STRUCK; extra struck lines: S1L3,H
+433-6: keyed S1L4 STRUCK; extra struck lines: S1L3,H,S1L2
+KEYED STRUCK 18/18; CONTROL STRIKES 5; AS REGISTERED: FAIL
+spend $0.2367 (terra at $2.00 in / $12.00 out per Mtok)
