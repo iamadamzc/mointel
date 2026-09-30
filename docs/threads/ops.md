@@ -12860,3 +12860,12 @@ p50 of per-minute MAX whole 2,501 ms; max 11,353.5 ms; over250 845.** The coveri
 ("max flush < 250 ms in RTH") FAILS AT BASELINE: to him, via Integration. Also: a schema bump's migration writes a
 full VACUUM INTO backup AFTER the stop and reads it back (db.ts:905-940), so v28 = web tier down ~10-18 min.
 Sequence + restart answer sent to Integration (20th).
+**v28 BUILT (~16:5xZ):** release-lineage 0d4d43933913578c49afa7ebafbcec11507a0ff4 on 46d9f9d (branch ops/v28-on-46d9f9d):
+SCHEMA 28, desk_assessment_ranges (counts + top 25 via rankInRange), ah_reference_close/ah_high/ah_low frozen per ticker
+row, issuer_registry.sic_description, AFTER_HOURS_CLOSE 20:05 (AH board; catchable to 22:00; tonight it runs late once
+v28 is live), preflight checkpoint 1205, readModel label. Range-only names captured, never queued for reassessment.
+lib/desk/rangeCapture.ts (moved out of the worker for tests). Tests: v27-shaped store upgrades; counts both windows;
+range ranking; round trip; schedule. Mutants: eligibility dropped 3 kills (predicted 3), up-not-traded 1 (1), AH high
+not written 1 (1). UNTESTED: the worker's range-only union + no-reassess guard. MAIN version db5d142 (main's 5-arg
+rankInRange; Research's two sic tests flipped: column present, reads null until written) gating. v28 must stack on the
+em-dash cut (95b734e needs f6915c44 etc.). History store: separate worktree A:\mointel-hist, in progress.
