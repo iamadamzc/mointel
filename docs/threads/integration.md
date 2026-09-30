@@ -2058,6 +2058,12 @@ OPS 16:1xZ       ADDITIVE ONLY (Ops's grep): market worker writes market.db tick
                  13:30-16:07Z (158 min): CNTB/NIVF/VBIO 158, LIQT 157, BIYA 155, TGE 154, LGHL 153, CMCT 130, ANTA 98,
                  AURE 78 (first 14:45Z). Missing minutes NOT yet classified no-trade vs lost; Ops's per-minute check ran
                  long on the live box and was killed; redo set-based after 16:00 ET. -> finding to him after that.
+RESEARCH 16:3xZ  6a42209 = Design's §8 answers built (no headline, overall 'O' traced to AH totals, ALL_STRUCK on body,
+                 premarket path only when the last print is AH). Report-table DDL SENT to Ops. #513 numbers to Marketing
+                 (d4bb430: 2,974 / 2,419 / 697 up / 559 down; = Ops's computeRangeCounts). CORRECTION that reached HIM:
+                 SANG example opening "2,454 / 749 / 569" (09-28) -> 2,456 / 751 / 568 on the ruled population -> told
+                 him in my next message (one line). ORDER CALL: levels setup FIRST, bounded (pre-registration commit,
+                 response shape to Design, subagent launch), then writer v5.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
