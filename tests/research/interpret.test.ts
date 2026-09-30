@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { openDatabase } from '@/lib/market/store/db';
 import {
@@ -1834,7 +1834,28 @@ describe('the supply overhang verdict on the dossier', () => {
     ));
   }
 
-  async function run(db: ReturnType<typeof temporaryDb>, ledger: SupplyBlock[]) {
+  /*
+   * THE RUN IS DATED, OR THE VERDICT IS A FUNCTION OF THE WALL CLOCK.
+   *
+   * With no `asOf`, `pipeline.ts` judges the share count's freshness against
+   * `generatedAt`, i.e. now. The fixture's count is as of 2026-08-15 and
+   * `FILED_SHARES_CURRENT_DAYS` is 45: 08-15 + 45 days = 09-29, and the
+   * pipeline slices the date from a UTC ISO string, so this suite went red at
+   * 2026-09-30T00:00Z (20:00 ET 09-29) and would have stayed red for ever.
+   *
+   * The cutoff is the sibling test's, and it cannot be `DATE`: `asOf` also
+   * bounds the evidence by `fetched_at <= asOf`, a string comparison, and every
+   * source here is fetched at 2026-08-17T12:00:00Z -- after the bare string
+   * '2026-08-17'. At `asOf: DATE` no source survives, nothing is saved, and the
+   * POSSIBLY_ACTIVE case below passes on `undefined`.
+   */
+  const AS_OF = '2026-08-18T00:00:00Z';
+
+  async function run(
+    db: ReturnType<typeof temporaryDb>,
+    ledger: SupplyBlock[],
+    asOf: string | null = AS_OF,
+  ) {
     const ids = seed(db);
     seedFactors(db);
     seedFacts(db, {
@@ -1874,7 +1895,7 @@ describe('the supply overhang verdict on the dossier', () => {
       evidenceSourceIds: [soldId],
     }));
     await interpretPipeline(db, new ScriptedInterpreter([good]), null, {
-      ticker: 'ACME', tradingDate: DATE,
+      ticker: 'ACME', tradingDate: DATE, asOf,
     });
     return readCurrentAnalysis(db, 'ACME')?.dossier.structure.supplyOverhang;
   }
@@ -1919,6 +1940,25 @@ describe('the supply overhang verdict on the dossier', () => {
      * over-count that would turn the bound from a guarantee into an estimate.
      */
     const verdict = await run(temporaryDb(), [block({ status: 'POSSIBLY_ACTIVE' })]);
+    expect(verdict).toBeDefined();
     expect(verdict?.verdict).not.toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+  });
+
+  it('judges the share count at the run\'s own date, whatever the wall clock says', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      // Just past the flip, and far past it.
+      for (const now of ['2026-09-30T00:00:01Z', '2027-06-01T00:00:00Z']) {
+        vi.setSystemTime(new Date(now));
+        const dated = await run(temporaryDb(), [block()]);
+        expect(dated?.verdict).toBe('PROVEN_AT_OR_ABOVE_FLOAT');
+        // The control: the same fixture, undated, at the same fake clock. If
+        // the clock were not faked, this could not tell the two apart.
+        const undated = await run(temporaryDb(), [block()], null);
+        expect(undated?.verdict).toBe('BASIS_STALE');
+      }
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
