@@ -2047,6 +2047,17 @@ DESIGN TONIGHT   Report v5 surface on main vs ec45711 (inert until /api/reports;
                  to §2, inert until Research's /api/levels; corrected: history store NOT required for rows. Research asked
                  to send Design the response shape. Now-cell live read NOT done (Design's permission classifier refused
                  reading the review-link token; Design is telling him).
+OPS 16:1xZ       ADDITIVE ONLY (Ops's grep): market worker writes market.db ticker_session, minute_bars, universe,
+                 rvol_baseline, feed_health, desk_events, meta; trades.db trade_buckets, feed_intervals, trades_meta. v28
+                 touches none: adds desk_assessment_ranges, 3 cols on desk_assessment_tickers, 1 on issuer_registry,
+                 session_reports. FKs not enforced. New tables added to the db.ts:1463 mode-switch clear.
+                 REPORT TABLE session_reports IN v28 (Research's spec). RUNNER in the RESEARCH worker via a job assess
+                 enqueues per checkpoint (assess stays model-free); web-tier restart only; late run = same job by
+                 assessment_id. v28's question to him names the ~10-18 min board + site outage.
+                 DELAY vs LOSS: bucketsDiscarded 0; 0 discard/BUSY/locked lines since 08:00Z; top-10 minute_bars
+                 13:30-16:07Z (158 min): CNTB/NIVF/VBIO 158, LIQT 157, BIYA 155, TGE 154, LGHL 153, CMCT 130, ANTA 98,
+                 AURE 78 (first 14:45Z). Missing minutes NOT yet classified no-trade vs lost; Ops's per-minute check ran
+                 long on the live box and was killed; redo set-based after 16:00 ET. -> finding to him after that.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
