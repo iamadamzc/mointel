@@ -2130,6 +2130,11 @@ LEVELS SEAM      Research's backup wrote a JSON file per symbol; Ops had committ
                  symbol+trading_date PK, payload §2 JSON, on ops/history-store-on-46d9f9d, read). ORDER CALL: ONE storage =
                  Ops's table; host = research worker, 5-min timer (rank <= 90 + requested names); Ops confirms stores open.
                  Box test: Research sends Ops the registration sha + command.
+RENDERED         Design viewed both surfaces locally (temporary fixture routes, not committed, deleted): reports at 1,280
+                 (v5 lead, company line, labelled paths incl. sub-dollar, null path = no line, emptied section neutral
+                 line, zero-watch line); levels (several / aboveAllStored / basisBreak / JSON null / 404 not mounted;
+                 1,024 no overflow). OWED before the levels cut: his 2 b cap (nearest 10 + show all) built, tested, and a
+                 140-level fixture rendered.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
