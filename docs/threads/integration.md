@@ -1775,6 +1775,8 @@ BUSINESS LINE   Research (read in its message; code cites bundle.ts:534, submiss
 REPORTS v5 §8  design.md §8 966e579: path + company lines COMPUTED; watchCount; premarket-only overall; headline
   retired. (3) COUNTRY ONLY ruled. (1) sections[] vs flat and (2) retired-headline state = DESIGN, PENDING the
   successor Design seat (route §8 on its id). Marketing asked for the computed lines' wording.
+  Marketing d35e1bba: company line "{name}. {country}. {business}." ACCEPTED; path LABELS ("prior close -> high -> now")
+  = proposal, Design's call -> 3rd question for the successor Design; Research builds labels as a render choice.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
