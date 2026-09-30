@@ -78,11 +78,11 @@ MARKET_DB_PATH=/var/lib/mointel/market.db
 
 # The identity store, for the same reason and with a sharper edge.
 #
-# Unset, it defaults to `process.cwd()/data/identity.db` -- and the services run
+# Unset, it defaults to \`process.cwd()/data/identity.db\` -- and the services run
 # with WorkingDirectory=/opt/mointel/current, so accounts would be written INSIDE
-# the release directory that prune.sh removes (prune.sh:102, `rm -rf`). The first
+# the release directory that prune.sh removes (prune.sh:102, \`rm -rf\`). The first
 # user's account would survive one deploy and be deleted by the second, silently:
-# `openIdentityStore` mkdirs that path without erroring, so nothing would report
+# \`openIdentityStore\` mkdirs that path without erroring, so nothing would report
 # it at any point.
 #
 # Set here rather than in .env.local, and stripped from the local file above, so
@@ -113,8 +113,8 @@ $ALPACA
 
 # HIS RULING 2026-09-25: lower the capture floor to 25c.
 #
-# `minute_bars` is not a tape. The SIP stream is subscribed whole-market by
-# wildcard, but `runtime.ts` persists only TRACKED symbols, and `engine.ts`
+# \`minute_bars\` is not a tape. The SIP stream is subscribed whole-market by
+# wildcard, but \`runtime.ts\` persists only TRACKED symbols, and \`engine.ts\`
 # adopts a symbol only inside this band -- so a bar outside it is discarded on
 # arrival and leaves no trace anywhere. At the \$1 default, 517 symbols he can
 # and does trade had NEVER produced a single row, and a sub-\$1 runner was
@@ -126,7 +126,7 @@ $ALPACA
 # carry rvol baselines. Research volume is bounded by BOARD SLOTS, not by
 # capture, so model spend is flat: the same 12 slots, different names in them.
 #
-# SET HERE AND NOT ONLY ON THE BOX. `sync-env.sh` rewrites
+# SET HERE AND NOT ONLY ON THE BOX. \`sync-env.sh\` rewrites
 # /etc/mointel/mointel.env wholesale, so a value typed onto the server survives
 # deploys and is silently erased by the next sync -- and capture would narrow
 # back with nothing reporting it.
