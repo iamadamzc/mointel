@@ -667,13 +667,17 @@ appear there.
 **The voice second sentence — the overall picture — is READY for the PREMARKET report
 ONLY.** Research verified one reproducible source: `ticker_session`'s after-hours
 totals for the day, final after 20:00, so the writer and checker read identical
-numbers. For #551 (premarket, 09-28 $1–$20):
+numbers. For #551 (premarket, 09-28 $1–$20), **board-eligible only**
+(`discovery_eligible = 1` — the board's own filter, so it excludes the ETFs,
+preferreds, funds, units and warrants the board never lists):
 
-> Across the $1–$20 range, 3,245 traded after hours — 967 up, 748 down.
+> Across the $1–$20 range, 2,454 traded after hours — 749 up, 569 down.
 
 So #551's opening reads: **"We're watching 12 names into the premarket. Across the
-$1–$20 range, 3,245 traded after hours — 967 up, 748 down."** — first sentence from
-the surface's `watchCount` (12, after cap and strikes), second sentence voice.
+$1–$20 range, 2,454 traded after hours — 749 up, 569 down."** — first sentence from
+the surface's `watchCount` (12, after cap and strikes), second sentence voice. *(The
+count must use the board's `discovery_eligible = 1` filter; an all-instruments count
+would name names the board never shows.)*
 
 **The other three kinds have NO overall sentence yet — PENDING.** Into-RTH
 ("premarket overall"), power hour ("day so far") and after-hours ("regular session")
