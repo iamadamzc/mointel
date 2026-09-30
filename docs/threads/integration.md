@@ -1362,6 +1362,10 @@ RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run()
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
                  Ops told: no header ask until the replayed v2.
+DESIGN RE-SEAT   on his "fresh session" (Design's session): local_8568daaf RETIRING; fix NOT started. Hand-off 5f891ad;
+                 docs/design-opening-prompt.md (read l.48-62): 0 red test (08-15 / 00:00Z correction in), 1 header v2
+                 (depends on 0), 2 Now-cell real-10s read from 04:00 ET 09-30, 3 report window 0f15521, 4 levels.
+                 New id arrives by message; route by TITLE Design-tmi, not archived, not 8568daaf.
 ```
 **THE NINETEENTH SEAT'S LEDGER:**
 ```
