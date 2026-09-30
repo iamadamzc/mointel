@@ -569,8 +569,55 @@ $3.59 → $6.01 → $5.10
 **Rule added to the voice:** never a pronoun referent for a number ("under it",
 "off it") — name what the number is measured against, or move it into the path line.
 
-### The SANG example — PENDING Research's data map
+### The SANG example — written from confirmed facts (report #551, premarket/recap)
 
-Held until Research confirms which of the above fields exist and are readable by the
-report layer for SANG. I will write the block by hand, from confirmed facts only,
-and annotate each sentence to its field — as with the run specimens.
+Research's data map (`data-map-2026-09-30.md`) confirmed the fields; SANG read
+first-hand from `data/market-prod-2026-09-29.db` (assessment 551 + dossier 2407 +
+`ticker_session` 2026-09-28). Written to Commercial §8: catalyst as characteristics
+never expected effect; float verdict never the number; shares outstanding dated and
+never called float; company name and country only (business and city are not stored
+yet — Ops's fix is pending). The premarket path is the after-hours arc.
+
+> **SANG — Sangoma Technologies Corp** (Canada; what it does and its city aren't in
+> our data yet).
+> **$3.59 → $6.01 → $5.10**
+>
+> The catalyst is a same-day fiscal-Q4 earnings headline (~17:26 ET): adjusted EPS
+> of $(0.18) against a $(0.06) estimate and sales of $46.8M against $51.5M — fresh
+> and timely enough to explain today's move, but a miss that conflicts with the run,
+> so the desk grades it moderate / mixed / secondary and does not read it as a
+> positive catalyst; confidence is medium, and the full release and guidance aren't
+> in what we have.
+> On structure the desk is at caution: 33,338,932 shares outstanding as of June 30,
+> 2026 — that is the outstanding count, not a float, and no float is sourced, so the
+> tradable supply is unknown; an effective 2023 F-3 leaves registered-resale
+> capacity the desk cannot quantify — capacity, not proof of selling.
+> Where it sits: yellow — frontside warning.
+
+| Clause | Field (assessment 551 / dossier 2407) |
+|---|---|
+| "Sangoma Technologies Corp … Canada" | `dossier.companyName`; `dossier.country` |
+| "business and city … aren't in our data yet" | not stored; Ops fix pending (data map) |
+| "$3.59 → $6.01 → $5.10" | after-hours arc: `reference_close` 3.59 (CURRENT_SESSION) → `session_high` 6.0071 (AH high, coincides) → `price` 5.10 |
+| "same-day fiscal-Q4 earnings … ~17:26 ET" | `catalyst.catalystType` NEWS_DRIVEN; `catalyst.eventTimestamp` 2026-09-28T21:26:40Z (17:26 ET) |
+| "EPS $(0.18) vs $(0.06); sales $46.8M vs $51.5M … miss that conflicts … full release/guidance aren't in what we have" | `catalyst.summary` verbatim facts |
+| "fresh" | `catalyst.freshness` FRESH |
+| "timely enough to explain today's move" | `catalyst.plausiblyExplainsMove` true (about the observed move, not a forecast) |
+| "grades it moderate / mixed / secondary" | `catalyst.catalystGrade` MODERATE_MIXED_SECONDARY |
+| "does not read it as a positive catalyst" | `catalyst.whyTradersMayCare` (headline negative → no positive catalyst); `catalystStatus` CONFLICTING |
+| "confidence is medium" | `catalyst.confidence` MEDIUM |
+| "caution" | `structure.structureClassification` CAUTION |
+| "33,338,932 shares outstanding as of June 30, 2026 … not a float" | `structure.sharesOutstanding` + `sharesOutstandingDate` (§8: dated, never called float) |
+| "no float is sourced, so the tradable supply is unknown" | `structure.displayedFloat` null; `floatConfidence` UNKNOWN (§8: verdict, never a number) |
+| "an effective 2023 F-3 leaves registered-resale capacity … capacity, not proof of selling" | `structure.supplyLedger[0]` REGISTERED_RESALE, effective 2023-04-12, amount null, POSSIBLY_ACTIVE |
+| "yellow — frontside warning" | `cycle` YELLOW_FRONTSIDE_WARNING |
+
+**What I did NOT write, and why:** no float number (none sourced; §8 bars it); no
+business line or city (not stored; pending Ops); no "our view" of where the price
+goes (§8 rule 1 — characteristics only). The percent (+42.1% after hours) is left to
+the path line rather than repeated in prose, per "uncomplicate it".
+
+**Opening narrative (report-level, for #551's day):** the after-hours totals are
+available (`ticker_session`, 09-28 $1–$20: 3,245 with AH activity, 967 up / 748
+down), but "how many names are on the premarket watch" is undefined until he answers
+Integration's question, so the opening's count line waits on that.
