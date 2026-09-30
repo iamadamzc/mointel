@@ -12679,3 +12679,17 @@ the build cost the queued loadMinuteBars bound targets (Research: 83% of a build
 table + AH freeze (one bump).** Conditions: the two pre-planned tests (EXPLAIN-plan; D-1-ts bar filed under D still
 returned), a PRE-REGISTERED before/after on the LOCAL copy (ratio, not box absolutes), and an identical-output check
 (bounded read returns the same bars the builder uses). Enumeration by literal sha to Integration; ship yes is HIS.
+
+**PRE-REGISTERED 2026-09-30 ~09:1xZ, BEFORE any timing: loadMinuteBars ts bound (repo.ts:210-217).**
+Change: `... WHERE symbol = ? AND trading_date = ? AND ts >= ? ORDER BY ts`, bound = (D-1)T00:00:00.000Z.
+Why it helps (opened): the PK is (symbol, ts) and trading_date has only its own index, so today's plan is
+`SEARCH USING INDEX sqlite_autoindex_minute_bars_1 (symbol=?)`: every retained date of the symbol (15 on the copy).
+With the bound: `(symbol=? AND ts>?)`, about two dates. Premise on the copy (16.4 M rows): 0 bars below the D-1 bound,
+0 below D 00:00Z, 0 ts not in ISO-ms-Z shape.
+Instrument: scripts/ops/minute-bars-bound-ab.cjs on data/market-prod-2026-09-29.db (read-only), D = 2026-09-29.
+(1) IDENTICAL OUTPUT: old vs new rows for EVERY symbol with bars on D, compared as JSON. Predict 0 mismatches.
+    Positive control: the same compare against a deliberately wrong bound (D+1 00:00Z) on 20 symbols must mismatch 20.
+(2) RATIO: the 50 symbols with the most bars on D; 1 cold + 20 warm rounds, each round times the 50-name loop old
+    and new, order alternating per round. Report every round. Statistic: median of per-round new/old ratios.
+PASS = 0 mismatches AND median ratio <= 0.50. Prediction 0.35 (Research's 629 -> 222 ms on 50 names).
+A local-copy ratio only; no box absolutes are claimed from it.
