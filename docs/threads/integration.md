@@ -2323,6 +2323,8 @@ PASS BAR RUN 2   FAIL AS REGISTERED: raw a3e7229 before read; harness 24b3552; c
                  RUN 3 = LAST tonight: checker STAYS 925c9dc (no re-freeze), cut 4b55a049 stays candidate; FRESH set
                  09-26, every control clause FIELD-TRACED, no banned words; PRE-FIXED: PASS -> approve + his yes; ANY FAIL
                  (missed defect OR control strike, whatever the cause) -> no reports tonight, no run 4, he hears why.
+RUN 3 DAY        2026-09-23 (#480/#490/#493/#494; overall 2,431 / 787 / 564), never used by a bar. NOT 09-26 (a Saturday;
+                 Research's unopened claim, relayed by me: ledger 4). Pre-fixed outcomes recorded in design.md (Research).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
@@ -2350,6 +2352,9 @@ error                                                  TYPE                     
   history.db reader. The reader is a code change      the thing it describes)
   with/after the history store. Retracted to him;
   hand-off warning given per hygiene §2.
+4 relayed "09-26" to Marketing as run 3's day (from   a value relayed unopened (the      YES      peer
+  Research); 2026-09-26 is a Saturday, no session.    family again; hand-off already     (family) (Research)
+  Corrected to 09-23; did not reach him.              ruled for after tonight)
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
