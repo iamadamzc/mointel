@@ -1,0 +1,96 @@
+{
+  "written": {
+    "ok": true,
+    "draft": {
+      "headline": "Into the last hour, the names split between sharp pullbacks and a smaller group sitting close to its session highs, with catalyst strength ranging from strong to unresolved.",
+      "sections": [
+        {
+          "heading": "Near the highs",
+          "lines": [
+            {
+              "ticker": "SANG",
+              "text": "Sits at $4.94, up 37.6% from the prior close and 4.4% under its $5.17 session high, with a strong catalyst our sources found, #5 in this range."
+            },
+            {
+              "ticker": "SSTI",
+              "text": "Runs at $8.24, up 50.6% from the prior close and 3.1% under its $8.50 session high, with a strong catalyst our sources found and a caution structure, #7 in this range."
+            },
+            {
+              "ticker": "NAUT",
+              "text": "Comes in at $1.46, up 31.1% from the prior close and 9.1% under its $1.60 session high, with a moderate / mixed / secondary catalyst our sources found, #12 in this range."
+            },
+            {
+              "ticker": "QLEP",
+              "text": "Sits at $10.05, up 0.0% from the prior close and 0.1% under its $10.06 session high, with no research on file at this checkpoint, #9 in this range."
+            }
+          ]
+        },
+        {
+          "heading": "Off the highs",
+          "lines": [
+            {
+              "ticker": "SDEV",
+              "text": "Runs at $3.35, up 113.3% from the prior close but 14.8% under its $3.93 session high, on 159,982,168 shares with a moderate / mixed / secondary catalyst our sources found, #6 in this range."
+            },
+            {
+              "ticker": "HTLM",
+              "text": "Comes in at $1.91, up 8.9% from the prior close and 15.3% under its $2.25 session high, with a moderate / mixed / secondary catalyst our sources found, #11 in this range."
+            },
+            {
+              "ticker": "KMRK",
+              "text": "Sits at $1.08, up 16.0% from the prior close and 25.0% under its $1.44 session high, with catalyst analysis reached no conclusion and a caution structure, #4 in this range."
+            },
+            {
+              "ticker": "WFCF",
+              "text": "Has given back its move to $10.55, down 8.9% from the prior close and 24.6% under its $14.00 session high, with a weak / negative / dilutive catalyst our sources found, #8 in this range."
+            }
+          ]
+        },
+        {
+          "heading": "Deep pullbacks",
+          "lines": [
+            {
+              "ticker": "BKYI",
+              "text": "Trades at $3.20, up 90.5% from the prior close but 31.3% under its $4.66 session high, with 2403.9x relative volume and a moderate / mixed / secondary catalyst our sources found, #1 in this range."
+            },
+            {
+              "ticker": "BGIN",
+              "text": "Comes in at $2.23, up 16.9% from the prior close and 34.2% under its $3.39 session high, with a moderate / mixed / secondary catalyst our sources found, #2 in this range."
+            },
+            {
+              "ticker": "YMT",
+              "text": "Sits at $1.80, up 1.4% from the prior close and 42.3% under its $3.11 session high, with a moderate / mixed / secondary catalyst our sources found and a caution structure, #10 in this range."
+            },
+            {
+              "ticker": "DXST",
+              "text": "Has given back a large part of its move at $2.90, up 48.7% from the prior close but 49.1% under its $5.70 session high, with a legitimate positive catalyst our sources found and a caution structure, #3 in this range."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "checked": {
+    "ok": true,
+    "strikes": [],
+    "lines": 13
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 2652,
+      "outputTokens": 1230,
+      "cachedInputTokens": 1094,
+      "reasoningTokens": 412,
+      "durationMs": 11502
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 3896,
+      "outputTokens": 737,
+      "cachedInputTokens": 0,
+      "reasoningTokens": 486,
+      "durationMs": 7614
+    }
+  ]
+}

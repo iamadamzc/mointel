@@ -1,0 +1,96 @@
+{
+  "written": {
+    "ok": true,
+    "draft": {
+      "headline": "Premarket leadership is split between sharp runs near their highs and names that have given back much of the move.",
+      "sections": [
+        {
+          "heading": "Ran and came back",
+          "lines": [
+            {
+              "ticker": "BKYI",
+              "text": "Ran to $3.61 and came back to $3.28, up 95.2% from the prior close and 9.1% under its high on 940.7x relative volume; our sources found a legitimate positive catalyst, with a dirty float and a yellow — frontside warning cycle, #1 in this range."
+            },
+            {
+              "ticker": "YMT",
+              "text": "Ran to $3.11 and came back to $2.19, up 23.7% from the prior close and 29.6% under its high, down 13.1% since the previous checkpoint; our sources found a moderate / mixed / secondary catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #4 in this range."
+            },
+            {
+              "ticker": "EGG",
+              "text": "Ran to $13.11 and came back to $4.00, down 5.9% from the prior close and 69.5% under its high despite being up 14.0% since the previous checkpoint; our sources found a weak / negative / dilutive catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #6 in this range."
+            },
+            {
+              "ticker": "MSGY",
+              "text": "Ran to $5.20 and came back to $4.09, up 30.7% from the prior close and 21.3% under its high; our sources found a weak / negative / dilutive catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #8 in this range."
+            }
+          ]
+        },
+        {
+          "heading": "Near the high",
+          "lines": [
+            {
+              "ticker": "SANG",
+              "text": "Came in at $4.97, up 38.5% from the prior close and 3.8% under its $5.17 high on 24.1x relative volume; our sources found a strong catalyst, analysis reached no conclusion on the structure, and the cycle is green — fresh / frontside, #2 in this range."
+            },
+            {
+              "ticker": "SSTI",
+              "text": "Trades at $8.30, up 51.7% from the prior close and 2.4% under its $8.50 high on 21.7x relative volume; our sources found a strong catalyst, the structure is caution, and the cycle is green — fresh / frontside, #3 in this range."
+            },
+            {
+              "ticker": "PN",
+              "text": "Sits at $2.78, up 6.1% from the prior close and 8.0% under its $3.02 high; our sources found a moderate / mixed / secondary catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #7 in this range."
+            }
+          ]
+        },
+        {
+          "heading": "Off the high",
+          "lines": [
+            {
+              "ticker": "POLA",
+              "text": "Came in at $1.23, down 2.4% from the prior close and 19.1% under its $1.52 high; our sources found a legitimate positive catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #5 in this range."
+            },
+            {
+              "ticker": "FFAI",
+              "text": "Trades at $1.56, up 10.6% from the prior close and 15.7% under its $1.85 high; our sources found a moderate / mixed / secondary catalyst, and analysis reached no conclusion on both the structure and cycle, #9 in this range."
+            },
+            {
+              "ticker": "NAUT",
+              "text": "Came in at $1.17, up 5.4% from the prior close and 14.6% under its $1.37 high; our sources found a moderate / mixed / secondary catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #10 in this range."
+            },
+            {
+              "ticker": "HTLM",
+              "text": "Trades at $1.64, down 6.3% from the prior close and 22.3% under its $2.11 high; our sources found a moderate / mixed / secondary catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #11 in this range."
+            },
+            {
+              "ticker": "ONFO",
+              "text": "Came in at $1.03, down 2.9% from the prior close and 14.2% under its $1.20 high; our sources found a moderate / mixed / secondary catalyst, the structure is caution, and analysis reached no conclusion on the cycle, #12 in this range."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "checked": {
+    "ok": true,
+    "strikes": [],
+    "lines": 13
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 2663,
+      "outputTokens": 1909,
+      "cachedInputTokens": 1094,
+      "reasoningTokens": 933,
+      "durationMs": 16664
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 4182,
+      "outputTokens": 1262,
+      "cachedInputTokens": 0,
+      "reasoningTokens": 978,
+      "durationMs": 15883
+    }
+  ]
+}

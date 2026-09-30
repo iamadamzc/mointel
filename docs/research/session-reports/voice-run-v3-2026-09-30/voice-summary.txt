@@ -1,0 +1,8 @@
+#551 PREMARKET: 1 of 13 lines struck
+  H [-] The checkpoint shows several sharp after-hours gainers, two decliners, and research gaps across the names.
+    -> model:UNSUPPORTED: The rows show three decliners (CLRO, BNKK, and SCYX), not two.
+#556 INTO_RTH: 0 of 13 lines struck
+#566 INTO_POWER_HOUR: 0 of 13 lines struck
+#569 AFTER_HOURS: 0 of 13 lines struck
+TOTAL 1 of 52 lines struck
+spend $0.0897

@@ -1,0 +1,96 @@
+{
+  "written": {
+    "ok": true,
+    "draft": {
+      "headline": "The session ended with a few names near their highs, while several outsized runs gave back substantial ground.",
+      "sections": [
+        {
+          "heading": "Gave back ground",
+          "lines": [
+            {
+              "ticker": "BKYI",
+              "text": "BKYI finished at $3.13, up 86.3% from the prior close but 32.8% under its $4.66 session high on 2485.1x relative volume, with a moderate / mixed / secondary catalyst, analysis reached no conclusion on structure, and a yellow — frontside warning cycle, #1 among these names."
+            },
+            {
+              "ticker": "DXST",
+              "text": "DXST ran to $5.70 and finished at $3.04, up 55.6% from the prior close but 46.8% under its high, with a legitimate positive catalyst, caution on structure, and a yellow — frontside warning cycle, #3 among these names."
+            },
+            {
+              "ticker": "BGIN",
+              "text": "BGIN finished at $2.53, up 32.7% from the prior close and 25.4% under its $3.39 session high on 1749.2x relative volume, with a moderate / mixed / secondary catalyst and analysis reached no conclusion on structure and cycle, #2 among these names."
+            },
+            {
+              "ticker": "YMT",
+              "text": "YMT gave back much of a move to $3.11 and finished at $1.80, up 1.7% from the prior close and 42.1% under its high on 31.4x relative volume, with a moderate / mixed / secondary catalyst, caution on structure, and analysis reached no conclusion on cycle, #11 among these names."
+            },
+            {
+              "ticker": "WFCF",
+              "text": "WFCF finished at $10.90, down 5.9% from the prior close and 22.1% under its $14.00 session high, with a weak / negative / dilutive catalyst, caution on structure, and analysis reached no conclusion on cycle, #8 among these names."
+            },
+            {
+              "ticker": "EJH",
+              "text": "EJH finished at $1.51, up 24.9% from the prior close and 12.7% under its $1.73 session high, with no catalyst found in our sources, caution on structure, and analysis reached no conclusion on cycle, #10 among these names."
+            }
+          ]
+        },
+        {
+          "heading": "Near the high",
+          "lines": [
+            {
+              "ticker": "SANG",
+              "text": "SANG finished at $4.92, up 36.9% from the prior close and 4.9% under its $5.17 session high on 84.8x relative volume, with a strong catalyst, analysis reached no conclusion on structure, and a green — fresh / frontside cycle, #5 among these names."
+            },
+            {
+              "ticker": "SSTI",
+              "text": "SSTI came in at $8.21, up 50.1% from the prior close and 3.4% under its $8.50 session high, with a strong catalyst, caution on structure, and a green — fresh / frontside cycle, #7 among these names."
+            },
+            {
+              "ticker": "YDKG",
+              "text": "YDKG finished at $1.02, up 10.7% from the prior close and 2.4% under its $1.04 session high, with a moderate / mixed / secondary catalyst, caution on structure, and analysis reached no conclusion on cycle, #12 among these names."
+            },
+            {
+              "ticker": "QLEP",
+              "text": "QLEP sat at $10.05, up 0.0% from the prior close and 0.1% under its $10.06 session high, with no research on file at this checkpoint for catalyst, structure, or cycle, #9 among these names."
+            }
+          ]
+        },
+        {
+          "heading": "Other closes",
+          "lines": [
+            {
+              "ticker": "SDEV",
+              "text": "SDEV finished at $3.28, up 108.9% from the prior close and 16.5% under its $3.93 session high after 179,634,141 shares traded, with no catalyst found in our sources, caution on structure, and a green — fresh / frontside cycle, #6 among these names."
+            },
+            {
+              "ticker": "KMRK",
+              "text": "KMRK finished at $1.10, up 18.2% from the prior close and 23.6% under its $1.44 session high on 292.1x relative volume, with analysis reached no conclusion on the catalyst and cycle and caution on structure, #4 among these names."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "checked": {
+    "ok": true,
+    "strikes": [],
+    "lines": 13
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 2642,
+      "outputTokens": 1396,
+      "cachedInputTokens": 1094,
+      "reasoningTokens": 436,
+      "durationMs": 11971
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 4004,
+      "outputTokens": 846,
+      "cachedInputTokens": 0,
+      "reasoningTokens": 325,
+      "durationMs": 7755
+    }
+  ]
+}
