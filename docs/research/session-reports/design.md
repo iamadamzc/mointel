@@ -64,6 +64,13 @@ built.**
 
 **AND THE CONTROL, WITHOUT WHICH THE ABOVE IS WORTHLESS: run the checker on the UNCORRUPTED reports too. It must strike NOTHING.** *A checker that strikes everything scores 6/6 on the corrupted set and is useless. **This desk shipped a guard that refused everyone once already** — test that it ADMITS before believing that it refuses.*
 
+**🔒 REGISTRATION AMENDED 2026-09-30, BEFORE ANY CHECKER CHANGE AND BEFORE RUN 2 (Integration's order call after run 1; this commit precedes the fix):**
+- **N = 3 checker runs per draft**, the full checker (rules + model) each time, same model, same prompt, same rows.
+- **SYMMETRIC:** a keyed defect line counts as STRUCK only if **all 3** runs strike it; a control line counts as ADMITTED only if **all 3** runs admit it. **An unstable verdict fails either way.** A run that returns `CHECKER_FAILED` counts as not striking a keyed line AND as striking every control line.
+- **PASS = 18/18 keyed lines struck in all 3 runs AND 0 control lines struck in any run.** Extra strikes on non-keyed lines of corrupted drafts are reported, not graded.
+- **Run 2 uses a FRESH blind set** (new controls, the same six classes, a different day's checkpoints), hash-locked by Marketing before it sees the frozen checker's sha, and released only after the freeze. Run 1's set is spent: its controls have been read.
+- Everything else is as registered: one checkpoint per report, the rows re-read from the store, $1–$20, the harness committed before any call, and the raw output committed before it is read.
+
 **❌ RUN 1, 2026-09-30: FAIL AS REGISTERED.** *Set: Marketing's blind `defect-set.md` (sha verified; `67406d5`). Checker `cdc77af`. Harness and predictions `82b07ae`, committed before any call. Raw output `dbb2889`, committed before it was read. $1–$20, terra, one run per draft, $0.24.*
 - **Defects: 18/18 keyed lines STRUCK**, every class 3/3. The model struck all 18; the rules alone struck 13.
 - **Controls: 5 false strikes on 3 controls, so FAIL.** (i) "lost $X support since the last check" ×2 (model): the checker's prompt never says every stored note is a change since the previous checkpoint. (ii) "no catalyst, structure or cycle on file" (rule, **PREDICTED in `82b07ae`**): the bare-"no catalyst" rule also matches Marketing's approved "no catalyst on file". (iii) 433-C headline "going into the last hour" at 14:30 (model): the prompt never says the report's own kind is a supported frame. (iv) "an exit-and-avoid read rather than a setup" (model, struck as advice): the ruled long-only definition of red-backside (`commercial.md` §6) is not in the prompt.
