@@ -11,7 +11,6 @@ import {
   type CheckerModel,
   type Strike,
 } from '@/lib/desk/reports/check';
-import { EMPTIED_SECTION_LINE } from '@/lib/desk/reports/contract';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import { NOTHING_LINE, factSheet, type ReportDraft } from '@/lib/desk/reports/writer';
 
@@ -258,13 +257,13 @@ describe('applyStrikes', () => {
     ],
   };
 
-  it('a section emptied by strikes keeps its heading and reads the neutral line, never NOTHING_LINE', () => {
+  it('a section emptied by strikes keeps its heading with no lines (the surface prints the neutral line), never NOTHING_LINE', () => {
     const out = applyStrikes(d, [strike('S1L1'), strike('S2L1')], at);
     expect(out).toEqual({
       ok: true,
       headline: 'Headline.',
       sections: [
-        { heading: 'Held', lines: [{ ticker: null, text: EMPTIED_SECTION_LINE }] },
+        { heading: 'Held', lines: [] },
         { heading: 'Gave back', lines: [{ ticker: 'IMCC', text: 'IMCC gave back.' }] },
         { heading: 'Halts', lines: [{ ticker: null, text: NOTHING_LINE }] },
       ],
@@ -276,9 +275,9 @@ describe('applyStrikes', () => {
     expect(out.ok && out.headline).toBeNull();
   });
 
-  it('a struck NOTHING_LINE is never re-published: its section reads the neutral line', () => {
+  it('a struck NOTHING_LINE is never re-published: its section keeps its heading with no lines', () => {
     const out = applyStrikes(d, [strike('S3L1')], at);
-    expect(out.ok && out.sections[2]).toEqual({ heading: 'Halts', lines: [{ ticker: null, text: EMPTIED_SECTION_LINE }] });
+    expect(out.ok && out.sections[2]).toEqual({ heading: 'Halts', lines: [] });
   });
 
   it('everything struck is ALL_STRUCK', () => {
