@@ -17,7 +17,12 @@
 import { loadWorkerEnv } from './env';
 loadWorkerEnv();
 
-import { modelAvailability, readResearchConfig, secAvailability } from '../lib/research/config';
+import {
+  modelAvailability,
+  readReportModelConfig,
+  readResearchConfig,
+  secAvailability,
+} from '../lib/research/config';
 import { SecClient, describeReachability } from '../lib/research/sec/client';
 import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collector';
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
@@ -67,6 +72,11 @@ import {
   publishResearchHealth,
 } from '../lib/market/store/researchRepo';
 import type { ResearchHealth } from '../lib/research/types';
+import { startReportLoop } from '../lib/desk/reports/job';
+import { reportRanges } from '../lib/desk/reports/ranges';
+import { createReportModelsV5 } from '../lib/desk/reports/runner';
+import { REPORT_WRITER_PROMPT_VERSION_V5 } from '../lib/desk/reports/writerV5';
+import { REPORT_CHECKER_PROMPT_VERSION_V5 } from '../lib/desk/reports/check';
 
 const POLL_MS = Number(process.env.RESEARCH_POLL_MS ?? 5000);
 /** News re-check cadence. One data request per poll, no model. */
@@ -298,6 +308,31 @@ async function main(): Promise<void> {
   heartbeat.unref?.();
 
   /*
+   * Session reports (lib/desk/reports/job.ts): its own loop, because the
+   * research loop below parks inside a collection for minutes and a report is
+   * due minutes after its checkpoint. Here because this worker holds the model
+   * key; the assess worker stays model-free.
+   */
+  const reportModelConfig = readReportModelConfig();
+  const reportLoop = startReportLoop({
+    db,
+    ranges: reportRanges().ranges,
+    createModels: reportModelConfig.apiKey
+      ? (onUsage) => createReportModelsV5(reportModelConfig, onUsage)
+      : null,
+    versions: {
+      writerPrompt: REPORT_WRITER_PROMPT_VERSION_V5,
+      checkerPrompt: REPORT_CHECKER_PROMPT_VERSION_V5,
+      writerModel: reportModelConfig.writerModel,
+      checkerModel: reportModelConfig.checkerModel,
+    },
+    log,
+  });
+  log(
+    `[reports] runner started: writer ${reportModelConfig.writerModel}, checker ${reportModelConfig.checkerModel}`,
+  );
+
+  /*
    * Installing a signal listener REPLACES Node's default action, which is to
    * terminate. So a handler added only to tidy up is what removes the exit.
    *
@@ -318,6 +353,7 @@ async function main(): Promise<void> {
   const shutdown = (signal: string) => {
     log(`[research] ${signal} received, shutting down`);
     clearInterval(heartbeat);
+    reportLoop.stop();
     process.exit(0);
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
