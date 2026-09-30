@@ -2401,6 +2401,9 @@ RUN 4 NAMED      240e2f3a59a9ae79832b46a3b16f3c5cacf26c713d313b1c0b6cbfd5490caba
                  any call; a violation = stop and report.
 RUN 4 SET IN     lock note ce7fe5a3 (16:11:56 ET) before file c0ddb99f (16:12:23 ET), both on origin; v5r4b blob sha256 =
                  240e2f3a (computed here). Research runs after its coverage pre-check.
+RUN 4 RUNNING    on 240e2f3a (verified on c0ddb99f); harness 1b78581 before calls with the COVERAGE PRE-CHECK (passed on
+                 240e2f3a; positive control: stops on every AUUD line of void 0ff12a28). Checker cb6d030. PREDICTION
+                 (before calls): rules half admits all controls; risk = model half's 1-in-3 strikes on true lines.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
