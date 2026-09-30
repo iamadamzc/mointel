@@ -2037,6 +2037,9 @@ V28 PROGRESS     Ops: 0d4d439 on 46d9f9d (ops/v28-on-46d9f9d, A:\mointel-ops): S
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
+SEEDS v5         Marketing: 19 classes seeded on real 09-24 rows (APUS, SPHL, IFBD) + true-line controls; blind, key
+                 header states it; NOT yet hashed. Waiting on Research for #513's board-eligible AH totals (overall control
+                 + class-19 defect). Then sha256 -> commit -> held for my word after the v5 checker freeze.
 MARKETING        Seeds for v5: pre-staging, final on Research's class list/checkpoints/format, release on my word.
                  Its "6 em dashes on app/page.tsx incl. :321" is PRODUCTION (c3d0f06); origin/main has only the 3
                  placeholders (171/194/399, kept). Web's fixes are on main and ride the em-dash cut. Told.
