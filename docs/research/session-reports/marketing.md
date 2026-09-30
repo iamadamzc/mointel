@@ -120,11 +120,12 @@ Each line is a prohibition with its source. The checker enforces them.
 | **completeness**, "every name", "all the movers", "nothing else matters" | Charter prohibition; `commentary()` caps the list and drops quiet names rather than claiming coverage. | "The names that moved enough to mention" / name the top few and say so. |
 | **"the real catalyst" / "the real move"** (his phrase "the real catalysts") | "Real" asserts the desk knows the *true cause* of a move. It does not, it holds a graded catalyst and coverage that misses wire-only releases (`AIFF`; Research's ruling, this is ours not Commercial's). | **"the catalyst our sources found"**, and its grade. |
 | **narrate a halt**, "halted", "not halted", "trading normally" | `halt_state` is `UNKNOWN` on 10,408 of 13,825 rows; `UNKNOWN` read as "not halted" is absence of observation reported as absence of event (`facts-2026-09-18.md`). `language.ts`: halt is silent when trading. | Say nothing about halts unless the field is `HALTED`/`RESUMING`. Silence is correct. |
-| **the em dash (U+2014), "—"** | HIS HARD RULE, 2026-09-30, verbatim: *"no em dashes in any writing. hard rule. nobody uses em dashes as much as llms."* It is the loudest AI tell in the copy. The checker strikes any line containing U+2014. | A comma, colon, full stop or parentheses, whichever the sentence wants. **Never a spaced hyphen** (" - "): that is the same tic wearing a different mark. |
+| **the em dash (U+2014)** | HIS HARD RULE, 2026-09-30, verbatim: *"no em dashes in any writing. hard rule. nobody uses em dashes as much as llms."* It is the loudest AI tell in the copy. The checker strikes any line containing U+2014. | A comma, colon, full stop or parentheses, whichever the sentence wants. **Never a spaced hyphen** (" - "): that is the same tic wearing a different mark. |
 
 **⚠️ The em-dash ban collides with the desk's own vocabulary, and this is not
 Marketing's to fix.** `lib/dashboard/language.ts` renders the cycle labels WITH em
-dashes: `red — backside`, `yellow — frontside warning`, `green — fresh / frontside`.
+dashes (`red` U+2014 `backside`, `yellow` U+2014 `frontside warning`, `green` U+2014
+`fresh / frontside`).
 Those strings reach the reports and the board. If the reports must be em-dash-free,
 the canonical label needs an em-dash-free form (for example `red, backside` or
 `red backside`), and the checker must expect that form, or every cycle line the
@@ -549,7 +550,7 @@ moved in premarket AND held, and counts once). The AH traded/up/down totals from
 **2. Per-ticker blocks, a path line, then two or three sentences.**
 
 ```
-TICKER, Company Name, what it does, based in City, ST.
+TICKER: Company Name, Country. What it does.
 $3.59 → $6.01 → $5.10
 <two or three sentences: the catalyst named and what the desk makes of it;
  the float / structure story; where it sits or that we have not looked.>
@@ -570,10 +571,10 @@ $3.59 → $6.01 → $5.10
 - **Float / structure**, in the desk's words, "dirty float", "supply overhead",
   "capacity, not proof of selling". *Needs: `structure` (have) and, for a named number,
   the supply figures (confirm).*
-- **The company: name, what it does, where based.** *Needs: company name
-  (`tickerMap`), business description and location (SEC company facts or the dossier,
-  confirm the report layer can read them). Where absent, the block omits it rather than
-  guessing.*
+- **The company: name, country, and what it does.** *Have: company name and country
+  (dossier). Pending: the sector ("what it does"), which becomes a research-model
+  field and fills its slot once built. CITY is dropped (his ruling 2026-09-30). Where
+  a field is absent, the block omits it rather than guessing.*
 
 ### Plain words, replacing the phrases he flagged
 
@@ -592,13 +593,12 @@ Research's data map (`data-map-2026-09-30.md`) confirmed the fields; SANG read
 first-hand from `data/market-prod-2026-09-29.db` (assessment 551 + dossier 2407 +
 `ticker_session` 2026-09-28). Written to Commercial §8: catalyst as characteristics
 never expected effect; float verdict never the number; shares outstanding dated and
-never called float; company name and country only (business and city are not stored
-yet, a Research code change is pending, to persist `sicDescription` + city from the
-EDGAR submissions response already fetched). The premarket path is the after-hours
-arc.
+never called float; company name and country only (the sector, "what it does", is not
+stored yet, and becomes a research-model field that fills the `[pending field]` slot
+once built; CITY is dropped, his ruling 2026-09-30). The premarket path is the
+after-hours arc.
 
-> **SANG: Sangoma Technologies Corp.** Canada. [pending field] sector, [pending field]
-> HQ city.
+> **SANG: Sangoma Technologies Corp.** Canada. [pending field] sector.
 > **$3.59 → $6.01 → $5.10**
 >
 > The catalyst is a same-day fiscal-Q4 earnings headline (17:26 ET): adjusted EPS
@@ -616,7 +616,7 @@ arc.
 | Clause | Field (assessment 551 / dossier 2407) |
 |---|---|
 | "Sangoma Technologies Corp … Canada" | `dossier.companyName`; `dossier.country` |
-| "[pending field] sector · [pending field] HQ city" | not stored yet: both via a Research code change (persist `sicDescription` + city from the EDGAR submissions response); live report omits until present |
+| "[pending field] sector" | sector ("what it does") becomes a research-model field, fills the slot once built; live report omits until present. CITY dropped (his ruling 2026-09-30) |
 | "$3.59 → $6.01 → $5.10" | after-hours arc: `reference_close` 3.59 (CURRENT_SESSION) → `session_high` 6.0071 (AH high, coincides) → `price` 5.10 |
 | "same-day fiscal-Q4 earnings … 17:26 ET" | `catalyst.catalystType` NEWS_DRIVEN; `catalyst.eventTimestamp` 2026-09-28T21:26:40Z = 17:26:40 ET, source precision EXACT (no "~"; v5 strikes an approximate time on an exact one) |
 | "EPS $(0.18) vs $(0.06); sales $46.8M vs $51.5M … miss that conflicts … full release/guidance aren't in what we have" | `catalyst.summary` verbatim facts |
@@ -632,7 +632,8 @@ arc.
 | "yellow, frontside warning" | `cycle` YELLOW_FRONTSIDE_WARNING |
 
 **What I did NOT write, and why:** no float number (none sourced; §8 bars it); no
-business line or city (not stored; pending a Research code change); no "our view" of
+business line (not stored; pending the research-model sector field), no city (his
+ruling drops it); no "our view" of
 where the price goes (§8 rule 1, characteristics only). The percent (+42.1% after
 hours) is left to the path line rather than repeated in prose, per "uncomplicate it".
 
