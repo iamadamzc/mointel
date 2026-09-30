@@ -23,3 +23,6 @@ docs/research/session-reports/defect-set-2.md text eol=lf
 
 # v5 pre-registered defect set: pinned to LF so its committed sha256 verifies.
 docs/research/session-reports/defect-set-v5.md text eol=lf
+
+# v5 run-2 pre-registered defect set: pinned to LF so its committed sha256 verifies.
+docs/research/session-reports/defect-set-v5r2.md text eol=lf
