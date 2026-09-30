@@ -12693,3 +12693,9 @@ Instrument: scripts/ops/minute-bars-bound-ab.cjs on data/market-prod-2026-09-29.
     and new, order alternating per round. Report every round. Statistic: median of per-round new/old ratios.
 PASS = 0 mismatches AND median ratio <= 0.50. Prediction 0.35 (Research's 629 -> 222 ms on 50 names).
 A local-copy ratio only; no box absolutes are claimed from it.
+**RESULT (bea99f0's registration, run ~09:2xZ, scripts/ops/minute-bars-bound-ab.cjs): PASS AS REGISTERED.**
+identical output: 8,174 symbols, 1,100,376 rows, **0 mismatches**; positive control (wrong bound D+1) 20/20 mismatch.
+Plans: old `(symbol=?)`, new `(symbol=? AND ts>?)`. Ratio, 50 heaviest names on D, 20 warm rounds alternating:
+per-round 0.187-0.209, **median 0.196** (old 2,185.9 / new 431.7 ms median); cold old 2,267 / new 456 ms. Better than
+the 0.35 prediction; the sample differs from Research's (heaviest names on D here vs board names there). Local-copy
+ratio only.
