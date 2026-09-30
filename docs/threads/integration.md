@@ -2235,6 +2235,15 @@ DESIGN PICKS     Nearest-10 on main 52241465 (208 / 3,131, clean). Research conf
                  404 no route / 400 bad symbol; types re-exported from Design's resistance.ts). PICKS: reports cut =
                  80e0bcc0 (+ window 0f15521); levels cut = ad6eb0f1 + 064e15e1 + 52241465 (with Research's 8dfacf4
                  branch, only if the box test passes).
+REPORTS CUT      Ops trial (A:\mointel-reportscut, not for release): v28 2bcf1cf has NONE of the report feature; it lives on
+                 main, 1,301 non-merge commits ahead of the 09-24 fork (757cf6a2). 37 report-path picks + 2fe8d750 +
+                 4771363 + runner (4f428748, 523ef484) = 40 apply (7 docs-only conflicts taken from main); tsc FAILS:
+                 SessionReports.tsx imports rangeLabel + board prop from 5e8b13c3 (the VOIDED price range control).
+                 RULING (order call): (b) cut-only display shim (local rangeLabel, board = null -> default range); NOT
+                 (a); (c) tomorrow as fallback. Conditions: full cone enumeration with patch-ids + every file vs
+                 production, non-report files named or dropped; the 8 frozen checker blobs byte-equal (1ab48be or the
+                 run-2 freeze); shim test (null board -> default range); Design reviews shim + renders the CUT TREE;
+                 Research confirms the default range = the runner's and code completeness; full gate, count declared.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
