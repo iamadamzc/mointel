@@ -1,0 +1,23 @@
+475-C: control; struck in any run -- regression none; ordinary none; per run [- | - | -]
+461-C: control; struck in any run -- regression none; ordinary none; per run [- | - | -]
+471-C: control; struck in any run -- regression none; ordinary none; per run [- | - | -]
+475-1: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+475-2: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+475-3: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+475-4: keyed S1L3 struck in 3/3 runs -> STRUCK; extra struck lines: none
+475-5: keyed S1L3 struck in 3/3 runs -> STRUCK; extra struck lines: none
+475-6: keyed S1L4 struck in 3/3 runs -> STRUCK; extra struck lines: none
+461-1: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+461-2: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+461-3: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+461-4: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+461-5: keyed S1L3 struck in 3/3 runs -> STRUCK; extra struck lines: none
+461-6: keyed S1L4 struck in 3/3 runs -> STRUCK; extra struck lines: none
+471-1: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+471-2: keyed S1L3 struck in 3/3 runs -> STRUCK; extra struck lines: none
+471-3: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+471-4: keyed S1L3 struck in 3/3 runs -> STRUCK; extra struck lines: none
+471-5: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+471-6: keyed S1L4 struck in 3/3 runs -> STRUCK; extra struck lines: none
+KEYED STRUCK (all 3 runs) 18/18; REGRESSION-CONTROL STRIKES 0; ORDINARY-CONTROL STRIKES 0; AS REGISTERED: PASS
+spend $0.6193 (terra at $2.00 in / $12.00 out per Mtok)

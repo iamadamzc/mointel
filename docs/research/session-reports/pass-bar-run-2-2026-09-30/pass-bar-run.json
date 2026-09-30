@@ -1,0 +1,1886 @@
+{
+  "sha": "6fa70904834004fb86dba848dd0af94c3d4caeb9a989fc0f860b36d04fbde18a",
+  "results": [
+    {
+      "name": "475-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 187,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 111,
+        "durationMs": 3344
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 241,
+        "cachedInputTokens": 3510,
+        "reasoningTokens": 105,
+        "durationMs": 3600
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 182,
+        "cachedInputTokens": 3510,
+        "reasoningTokens": 106,
+        "durationMs": 2260
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 158,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 82,
+        "durationMs": 2256
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 233,
+        "cachedInputTokens": 3421,
+        "reasoningTokens": 157,
+        "durationMs": 3095
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 200,
+        "cachedInputTokens": 3421,
+        "reasoningTokens": 124,
+        "durationMs": 2462
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 170,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 94,
+        "durationMs": 2067
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 281,
+        "cachedInputTokens": 3427,
+        "reasoningTokens": 138,
+        "durationMs": 2980
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 297,
+        "cachedInputTokens": 3427,
+        "reasoningTokens": 221,
+        "durationMs": 3818
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-1",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 264,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 144,
+        "durationMs": 3757
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3.61"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported regular-session close: DCOY's stored reference close is $3.10, not $3.61."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-1",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 259,
+        "cachedInputTokens": 3510,
+        "reasoningTokens": 135,
+        "durationMs": 3301
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3.61"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported regular-session close: DCOY's stored reference close is $3.10, not $3.61."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-1",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 230,
+        "cachedInputTokens": 3510,
+        "reasoningTokens": 102,
+        "durationMs": 2851
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3.61"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stated regular-session close of $3.61 is unsupported; the stored reference close is $3.10."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-2",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 174,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 79,
+        "durationMs": 2267
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "104.3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY's after-hours move was +20.6%, not +104.3%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-2",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 241,
+        "cachedInputTokens": 3510,
+        "reasoningTokens": 138,
+        "durationMs": 3127
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "104.3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported after-hours move: DCOY is up 20.6% from its regular-session close, not 104.3%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-2",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3513,
+        "outputTokens": 167,
+        "cachedInputTokens": 3510,
+        "reasoningTokens": 64,
+        "durationMs": 2246
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "104.3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported after-hours move: DCOY is up 20.6% from its regular-session close, not 104.3%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-3",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3504,
+        "outputTokens": 192,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 92,
+        "durationMs": 2443
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 20.6% change is an after-hours move from that day's regular-session close, not from the prior close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-3",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3504,
+        "outputTokens": 212,
+        "cachedInputTokens": 3501,
+        "reasoningTokens": 105,
+        "durationMs": 3213
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Up 20.6% from the prior close” uses an unsupported frame; the stored change is an after-hours move from that day's regular-session close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-3",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3504,
+        "outputTokens": 237,
+        "cachedInputTokens": 3501,
+        "reasoningTokens": 135,
+        "durationMs": 2816
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY’s 20.6% change is an after-hours move from its regular-session close, not from the prior close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-4",
+      "run": 1,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3481,
+        "outputTokens": 172,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 78,
+        "durationMs": 2166
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NO_ROW_FOR_TICKER",
+            "by": "rule",
+            "detail": "STI"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The rows do not support that STI dropped off the board or any claim about its current status."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-4",
+      "run": 2,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3481,
+        "outputTokens": 228,
+        "cachedInputTokens": 3478,
+        "reasoningTokens": 87,
+        "durationMs": 2722
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NO_ROW_FOR_TICKER",
+            "by": "rule",
+            "detail": "STI"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "STI dropping off the board, or any claim about its absence, cannot be supported by these rows."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-4",
+      "run": 3,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3481,
+        "outputTokens": 218,
+        "cachedInputTokens": 3478,
+        "reasoningTokens": 80,
+        "durationMs": 2695
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NO_ROW_FOR_TICKER",
+            "by": "rule",
+            "detail": "STI"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Claim that STI dropped off the board is unsupported; rows do not support board entries or departures."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-5",
+      "run": 1,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3518,
+        "outputTokens": 201,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 112,
+        "durationMs": 2278
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "2"
+          },
+          {
+            "id": "S1L3",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#2 vs #6"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "EPSM is ranked #6 at this checkpoint, not #2."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-5",
+      "run": 2,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3518,
+        "outputTokens": 192,
+        "cachedInputTokens": 3515,
+        "reasoningTokens": 103,
+        "durationMs": 2742
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "2"
+          },
+          {
+            "id": "S1L3",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#2 vs #6"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "EPSM is ranked #6 at this checkpoint, not #2."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-5",
+      "run": 3,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3518,
+        "outputTokens": 184,
+        "cachedInputTokens": 3515,
+        "reasoningTokens": 94,
+        "durationMs": 2245
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "2"
+          },
+          {
+            "id": "S1L3",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#2 vs #6"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "EPSM’s stored in-range rank is #6, not #2."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "475-6",
+      "run": 1,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3531,
+        "outputTokens": 206,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 101,
+        "durationMs": 2552
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "\"quiet\": \"quiet\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the market was quiet is not supported by any stored field."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "475-6",
+      "run": 2,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3531,
+        "outputTokens": 283,
+        "cachedInputTokens": 3528,
+        "reasoningTokens": 111,
+        "durationMs": 3595
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "\"quiet\": \"quiet\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that there was little else because the market was quiet is not supported by any stored field."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "475-6",
+      "run": 3,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3531,
+        "outputTokens": 215,
+        "cachedInputTokens": 3528,
+        "reasoningTokens": 99,
+        "durationMs": 2685
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "\"quiet\": \"quiet\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the market was quiet, and that this caused little else after the close, is not supported by any stored field."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "461-1",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 225,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 133,
+        "durationMs": 2508
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "1.14"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "FLNA's stored price is $1.01, not $1.14."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-1",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 255,
+        "cachedInputTokens": 3421,
+        "reasoningTokens": 163,
+        "durationMs": 3085
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "1.14"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "FLNA's stored price is $1.01, not $1.14."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-1",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 203,
+        "cachedInputTokens": 3421,
+        "reasoningTokens": 111,
+        "durationMs": 2482
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "1.14"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "FLNA's stored price is $1.01, not $1.14."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-2",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 212,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 115,
+        "durationMs": 2830
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "28.5"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY is up 104.3% from the prior close, not 28.5%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-2",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 208,
+        "cachedInputTokens": 3421,
+        "reasoningTokens": 111,
+        "durationMs": 2742
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "28.5"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY is up 104.3% from the prior close, not 28.5%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-2",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3424,
+        "outputTokens": 222,
+        "cachedInputTokens": 3421,
+        "reasoningTokens": 126,
+        "durationMs": 4793
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "28.5"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY is up 104.3%, not 28.5%, from the prior close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-3",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3423,
+        "outputTokens": 230,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 134,
+        "durationMs": 2821
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 104.3% change is from the prior session’s close, not from today’s close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-3",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3423,
+        "outputTokens": 272,
+        "cachedInputTokens": 3420,
+        "reasoningTokens": 168,
+        "durationMs": 3377
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Up 104.3% from today’s close” uses an unsupported reference frame; the stored change is from the prior session’s close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-3",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3423,
+        "outputTokens": 216,
+        "cachedInputTokens": 3420,
+        "reasoningTokens": 122,
+        "durationMs": 2888
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 104.3% change is from the prior-session close, not from today's close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-4",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 267,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 121,
+        "durationMs": 3221
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“FLNA has dropped off the board” is unsupported; it is ranked #3 in this checkpoint, and board-entry/exit claims require another checkpoint."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-4",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 228,
+        "cachedInputTokens": 3426,
+        "reasoningTokens": 138,
+        "durationMs": 3056
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that FLNA “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-4",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 189,
+        "cachedInputTokens": 3426,
+        "reasoningTokens": 104,
+        "durationMs": 2235
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-5",
+      "run": 1,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 195,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 106,
+        "durationMs": 3857
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "7"
+          },
+          {
+            "id": "S1L3",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#7 vs #4"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "STI is ranked #4 at this checkpoint, not #7."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-5",
+      "run": 2,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 252,
+        "cachedInputTokens": 3426,
+        "reasoningTokens": 163,
+        "durationMs": 3113
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "7"
+          },
+          {
+            "id": "S1L3",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#7 vs #4"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "STI is ranked #4 at this checkpoint, not #7."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-5",
+      "run": 3,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 181,
+        "cachedInputTokens": 3426,
+        "reasoningTokens": 89,
+        "durationMs": 2932
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "7"
+          },
+          {
+            "id": "S1L3",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#7 vs #4"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported rank claim: STI is ranked #4 at this checkpoint, not #7."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "461-6",
+      "run": 1,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3440,
+        "outputTokens": 300,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 126,
+        "durationMs": 3368
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "completeness: \"Nothing else\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "\"quiet\": \"quiet\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that nothing else made the open and that the tape was quiet is not supported by any stored field."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "461-6",
+      "run": 2,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3440,
+        "outputTokens": 236,
+        "cachedInputTokens": 3437,
+        "reasoningTokens": 126,
+        "durationMs": 2983
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "completeness: \"Nothing else\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "\"quiet\": \"quiet\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Claims that nothing else made the open and that the tape was quiet are not supported by the rows."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "461-6",
+      "run": 3,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3440,
+        "outputTokens": 338,
+        "cachedInputTokens": 3437,
+        "reasoningTokens": 160,
+        "durationMs": 4067
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "completeness: \"Nothing else\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "\"quiet\": \"quiet\""
+          },
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that nothing else made the open, and the stated cause that the tape was quiet, are not supported by stored fields."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "471-1",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 206,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 111,
+        "durationMs": 2849
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3.52"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported price: DCOY is stored at $3.29, not $3.52."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-1",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 258,
+        "cachedInputTokens": 3427,
+        "reasoningTokens": 165,
+        "durationMs": 3531
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3.52"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY's stored price is $3.29, not $3.52."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-1",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 340,
+        "cachedInputTokens": 3427,
+        "reasoningTokens": 247,
+        "durationMs": 4429
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3.52"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "DCOY's stored price is $3.29, not $3.52."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-2",
+      "run": 1,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 343,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 198,
+        "durationMs": 4022
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "54.3"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported prior-close change: RAIN is up 96.7% from the prior close, not 54.3%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-2",
+      "run": 2,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 339,
+        "cachedInputTokens": 3427,
+        "reasoningTokens": 219,
+        "durationMs": 3937
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "54.3"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "RAIN is up 96.7% from the prior close, not 54.3%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-2",
+      "run": 3,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3430,
+        "outputTokens": 209,
+        "cachedInputTokens": 3427,
+        "reasoningTokens": 114,
+        "durationMs": 2560
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "54.3"
+          },
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "RAIN is up 96.7% from the prior close, not 54.3%."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-3",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 405,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 301,
+        "durationMs": 5305
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“up 28.5% from today’s close” uses an unsupported reference frame; the stored change is from the prior session’s close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-3",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 254,
+        "cachedInputTokens": 3426,
+        "reasoningTokens": 119,
+        "durationMs": 2942
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 28.5% change is from the prior-session close, not from today's close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-3",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3429,
+        "outputTokens": 400,
+        "cachedInputTokens": 3426,
+        "reasoningTokens": 244,
+        "durationMs": 4565
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Up 28.5% from today’s close” is unsupported: DCOY’s stored change is from the prior session close."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-4",
+      "run": 1,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3365,
+        "outputTokens": 265,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 118,
+        "durationMs": 3675
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "RAIN dropping off the board and going dark are unsupported; it is present in the stored rows and marked HALTED."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-4",
+      "run": 2,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3365,
+        "outputTokens": 212,
+        "cachedInputTokens": 3362,
+        "reasoningTokens": 109,
+        "durationMs": 2597
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The row supports that RAIN is rank 6 and halted at this checkpoint, not that it dropped off the board or “gone dark.”"
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-4",
+      "run": 3,
+      "keyed": "S1L3",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3365,
+        "outputTokens": 190,
+        "cachedInputTokens": 3362,
+        "reasoningTokens": 91,
+        "durationMs": 2710
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L3",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "RAIN dropping off the board and going dark are unsupported; it is stored at rank 6 and halted at this checkpoint."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-5",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3435,
+        "outputTokens": 240,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 151,
+        "durationMs": 2908
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3"
+          },
+          {
+            "id": "S1L2",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#3 vs #4"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "FLNA is rank #4 at this checkpoint, not #3."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-5",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3435,
+        "outputTokens": 275,
+        "cachedInputTokens": 3432,
+        "reasoningTokens": 189,
+        "durationMs": 3199
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3"
+          },
+          {
+            "id": "S1L2",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#3 vs #4"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "FLNA is ranked #4, not #3."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-5",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3435,
+        "outputTokens": 325,
+        "cachedInputTokens": 3432,
+        "reasoningTokens": 196,
+        "durationMs": 4463
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "3"
+          },
+          {
+            "id": "S1L2",
+            "reason": "RANK_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "#3 vs #4"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported rank claim: FLNA is ranked #4, not #3."
+          }
+        ],
+        "lines": 4
+      }
+    },
+    {
+      "name": "471-6",
+      "run": 1,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3450,
+        "outputTokens": 365,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 173,
+        "durationMs": 4078
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The rows do not support that other names are absent or that trading dried up into the afternoon."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "471-6",
+      "run": 2,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3450,
+        "outputTokens": 299,
+        "cachedInputTokens": 3447,
+        "reasoningTokens": 185,
+        "durationMs": 3951
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed absence of the rest of the board and the cause that trading dried up are not supported by the stored rows."
+          }
+        ],
+        "lines": 5
+      }
+    },
+    {
+      "name": "471-6",
+      "run": 3,
+      "keyed": "S1L4",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 3450,
+        "outputTokens": 363,
+        "cachedInputTokens": 3447,
+        "reasoningTokens": 182,
+        "durationMs": 4085
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L4",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The rows do not support that other names are absent or that trading dried up into the afternoon."
+          }
+        ],
+        "lines": 5
+      }
+    }
+  ]
+}
