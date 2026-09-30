@@ -12733,3 +12733,16 @@ label (health.ts:207) may ride a web ship. The A/B script is in no ship cone (ls
 **Integration ~11:2xZ: the em-dash web fixes are the THIRD ship, one cut** (Design 1dacc16 / 9a1d8e7 / c76e98f / 9e0a3a0 +
 Web's), cut by Design onto /proc's sha AFTER c3d0f06 and 84b0099 land, replayed by Integration, put to him separately.
 At 10:27 ask ONLY the two this seat holds. None of those commits is in 74c1818 / c3d0f06 / 84b0099 (merge-base checked).
+
+**PRE-REGISTERED 2026-09-30 14:0xZ, before any reading: matched on-box before/after of the speed fix (OBSERVATION, not a
+gate; Integration's ask on his "im done trading for the day. board is free." 14:06:49Z, relayed, 845dd4cb).**
+Method = (b'): 5 runs x (1 cold + 20 warm) of `ssh mointel-ssm 'bash -s -- 20' < scripts/ops/snapshot-latency.sh`
+(bare 127.0.0.1:3000/api/market), first run >= 2 min after any web start, none overlapping a deploy or the grades read.
+Can the instrument see the change? Yes, opened: the bare build calls readIntelligence for every demand state
+(readModel.ts:663-667) -> overlayLiveCycle -> loadMinuteBars (readModel.ts:894, :942).
+Readings: (R0) BASELINE on 74c1818 after the 10:17 grades read completes; (R1) after c3d0f06 (client-only: a CONTROL,
+expect no server change); (R2) after 84b0099 (the bound). Report all five runs each; statistic = median of the five
+maxima and median of the five medians. Also recorded per reading: time, payload bytes, demand-state count, box load.
+Confounds named now: the day's content keeps growing through the afternoon (R2 is last, which works AGAINST the fix);
+research worker activity is uncontrolled. Expectation from the local ratio 0.196 on loadMinuteBars alone, which is
+~83% of a build (Research): R2/R1 median-of-medians roughly 0.3-0.4. Not a pass line.
