@@ -2099,6 +2099,14 @@ LEVELS BUILT     Research subagent, branch worktree-agent-acfba7ff0c32d6e90 (ad6
                  worker, written OUTSIDE market.db (Ops picks the file), served from the row. Count (100+) -> HIM.
 REPORTS          2d93de4 pipeline end to end on 09-24 rows, all four kinds publish (scripted models); runner factory
                  f47080b. Next: first real-model v5 run on 09-29 checkpoints -> Commercial's sample (~$0.15, his "3 yes").
+V28 REPLAYED     2bcf1cf (ops/v28-on-89d39053) APPROVED by literal sha: rev-list 89d39053..2bcf1cf = 4; b0de76e1 patch-id
+                 2e2253fa == 0d4d439; b8002fa5 session_reports + range-only guard extracted/tested + mode clear covers new
+                 tables (conditions MET); 63dd67f7 vs 95b734e differs ONLY by scripts/ops/grades-v2-read.sql dropped (B
+                 re-run must use main's >= 2 query); 2bcf1cfe tests. 183 test files = Ops gate (2,782). No market-worker
+                 runtime file. NOT IN IT: Research's upsertIssuer sic_description WRITE -> rides /api/reports release;
+                 business line empty for researched names until then. SHIP: after 89d39053 live + /proc; HIS yes naming
+                 the outage; ops.md records the v27 mode-clear hazard + floor pin to v28.
+                 Levels storage: history.db table resistance_levels (Ops c443b58), rides the history-store release empty.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
