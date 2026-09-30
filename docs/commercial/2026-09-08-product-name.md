@@ -413,6 +413,21 @@ Integration. Answers, each a sentence, with the reason.*
    is a Web judgement on a word of his, recorded here so he can restore it
    with one word if he wants it.
 
+   **PUNCTUATION FIX 2026-09-30, his hard rule (verified at his own turn,
+   Integration's session, 10:43:39Z): "no em dashes in any writing."** The live
+   page (`app/page.tsx:321`) renders the mid-sentence em dash before the list —
+   *"...on a single shared board — why it is moving, where it sits in the
+   cycle, what the share structure is, and what supply stands behind it"* — as
+   an actual em dash via `&mdash;`. **Ruled: replace with a colon.** *"...on a
+   single shared board: why it is moving, where it sits in the cycle, what the
+   share structure is, and what supply stands behind it."* A colon introducing
+   an enumerated list is the standard construction for exactly this shape —
+   the em dash was never doing parenthetical or dramatic work here, only
+   introducing four items — so nothing is lost. **Touches neither dependency
+   above nor anything else this statement is relied on for**: both rest on the
+   wording, not the punctuation, and the position ruling later in this section
+   is unaffected. Given to Web to apply; not this seat's file to edit.
+
    **Verified by Design, 2026-09-10 (`ba13d79`), by reading the code rather
    than the live board — a live read proves the board was right this
    morning; a total return type proves it cannot be otherwise.** The first
