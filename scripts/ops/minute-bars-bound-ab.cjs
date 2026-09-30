@@ -2,6 +2,7 @@
 // Pre-registered in docs/threads/ops.md (2026-09-30, "PRE-REGISTERED ... loadMinuteBars ts bound").
 //   node scripts/ops/minute-bars-bound-ab.cjs [db] [tradingDate]
 'use strict';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const Database = require('better-sqlite3');
 
 const dbPath = process.argv[2] || 'data/market-prod-2026-09-29.db';
