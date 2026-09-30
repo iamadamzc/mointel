@@ -1765,6 +1765,10 @@ RESEARCH f6915c4 (em-dash text fixes, 3 routed + 8 found, parser test) -> RIDES 
   Design confirms (design.md item 6a): why.ts:392, MarketStatus.tsx:115, ResearchEngineStatus.tsx:48; successor's
   first code task, its sha after 9e0a3a0. CUT TOTAL = 12 picks: Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0, <6a fix>;
   Web 5f3a272, f272bec, 1703390, 32a9a84, e68137c, 69bafba; Research f6915c4.
+BUSINESS LINE   Research (read in its message; code cites bundle.ts:534, submissions.ts:30): source-metadata route fails
+  (INSERT OR IGNORE on a constant fingerprint) -> issuer_registry.sic_description TEXT NULL in Ops's ONE bump (with
+  the child table + AH freeze). Research half built now, ships after the migration. Grade risks: grades-v2-read.sql
+  promptVersion filter -> >= 2 in the v3 enumeration; post-bump grades = new population.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
