@@ -2082,6 +2082,13 @@ OPS CORRECTION   "FKs not enforced" WRONG (Ops, own catch via its v28 test): bet
                  desk_assessments/issuer_registry (assessmentRepo.ts:190 plain INSERT, :305 DO NOTHING; researchRepo.ts:444
                  DO UPDATE). v27 worker safe on v28 except the mode-switch clear (never runs in LIVE). Conditions: the
                  enumeration says so + the floor pin enforces it; runner FK test (real id inserts, missing id fails loud).
+DESIGN 16:4xZ    Report v5 surface 80e0bcc0 (SessionReports.tsx, sessionReports.ts, test; gated 203). Resistance section
+                 ad6eb0f1 (ResistanceLevels.tsx, TickerDrawer.tsx +3, lib/dashboard/resistance.ts, lib/market/resistance.ts
+                 = §2 contract declared by Design, Research owns; gated 206). Empty copy read: "No level above the price in
+                 the candles read" / "above every high we have stored, back to X" -> meets Commercial's check. "No row"
+                 must be 200 + JSON null (Design -> Research). Both ride the SAME cuts as Research's routes. ORDER CALL:
+                 both rendered locally with fixtures before those cuts (neither viewed rendered yet). Now-cell live read:
+                 Design's classifier refused the review token; Design asks HIM; no other seat routes around a refusal.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
