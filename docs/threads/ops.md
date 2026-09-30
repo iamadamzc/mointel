@@ -12675,3 +12675,7 @@ duration 1,949 ms = queue 33 (connection reused) + **server TTFB 1,892** + trans
 04:06 15,465 ms case has no split and stays UNEXPLAINED; Design's post-ship read takes the next attempt.
 **What it does show: ~1.9 s of server time per board request AT REST in premarket, vs a 1 s poll.** One reading. It is
 the build cost the queued loadMinuteBars bound targets (Research: 83% of a build, D-1 bound 0.35x on the copy).
+**ORDER RULED (Integration, ~09:0xZ): loadMinuteBars ts bound FIRST, then the history store, then the per-range child
+table + AH freeze (one bump).** Conditions: the two pre-planned tests (EXPLAIN-plan; D-1-ts bar filed under D still
+returned), a PRE-REGISTERED before/after on the LOCAL copy (ratio, not box absolutes), and an identical-output check
+(bounded read returns the same bars the builder uses). Enumeration by literal sha to Integration; ship yes is HIS.
