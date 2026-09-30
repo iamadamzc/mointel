@@ -44,7 +44,23 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-29 04:09 UTC / 00:09 ET (third seat of 09-29, opened 03:43Z, clock read via zoneinfo)
+## Live state — 2026-09-30 00:06 UTC / 2026-09-29 20:06 ET (third seat of 09-29, RETIRING on his "fresh session"; clock read via zoneinfo)
+
+**Nothing uncommitted. Nothing in flight.** Production web/research/assess = **1b5ead6** (gzip) per Integration's
+last /proc relay; the market worker's restart is his ruled 20:15 ET 09-29. Every open item with its trigger:
+
+| # | Item | State | Trigger / next step |
+| --- | --- | --- | --- |
+| 0 | **Red test** `tests/research/interpret.test.ts` › "proves the overhang when established supply exceeds the share count" | ROUTED TO DESIGN by Integration (19th). Clock-dependent: `run()` (~l.1876) calls `interpretPipeline` with no `asOf`, so `pipeline.ts:494-497` judges the fixture's share count (as of **2026-08-15**, Research's correction `e998b21`) against the wall clock with a 45-day window (`float.ts:92`); flipped at 00:00Z 09-30. Test-only fix | Pass `asOf: DATE` in `run()`; prove it passes at wall clock AND under `vi.setSystemTime` far ahead (2027); grep `tests/research/` for other no-`asOf` pipeline calls asserting a freshness verdict; pre-register the file's pass count before/after (today 93/94). `--only` commit on main; send Integration the sha + full suite |
+| 1 | **Brand header** (his "the compact lockup") | `design/brand-header-on-1b5ead6` → `74ac35c` approved, but its gate is now red (item 0) | Re-cut **`design/brand-header-on-1b5ead6-v2`** = 1b5ead6 + `-x` header pick (c01a5b4) + `-x` item-0 fix. Pre-registered **176** test files. Gate, send to Integration; Ops asks him; NOT during 04:00–10:15 ET 09-30. Then read it live |
+| 2 | **Now cell** `fa61410` (main) | Built, inert, rides NO deploy | After tonight's restart: plumbing read (`tradeCapture.asOf` fresh, `nowBuckets` present). **From 04:00 ET 09-30: the real-10 s read** on a fresh review link, one page load, no timing loops; then ask Integration for a cut on confirmed production (cone must carry 1b5ead6) |
+| 3 | **Session report window** `0f15521` (main) + briefing line `307e42d` | Built, inert until Research's `GET /api/reports` | When the route ships, the surface goes to him as one ship; ask him in one line if he also wants a direct URL |
+| 4 | **Resistance levels** section | Routed; spec `docs/research/resistance-levels-spec.md` §2 at **c9f9835** | After item 2. Re-read his rulings at his turns first (row in Open items) |
+| 5 | Follow-ups, not built | — | Poll: a visible 'not updating' state; the same abort pattern in `useDashboard` at 4 s. Sorted `Now` header renders on three lines |
+
+**Verified LIVE today:** resizable columns (a391c61), the poll fix's code (a391c61), old-catalyst rows + disagreement mark (803008b: 14 dimmed, 0 missed, 3 marks).
+
+## Live state — 2026-09-29 04:09 UTC / 00:09 ET (third seat of 09-29, opened 03:43Z) — SUPERSEDED by the block above
 
 **This seat: `Design-tmi`, `local_8568daaf`, Opus 5.5.** What it did, and what is open:
 
