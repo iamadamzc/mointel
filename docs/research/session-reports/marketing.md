@@ -425,3 +425,21 @@ because "real" is a claim about the market our coverage cannot support):
 
 **Not for him piecemeal — this returns to Research**, who assembles the four-seat
 design and takes it to him as one thing.
+
+## Seeded defect set — pre-registration lock (blind)
+
+For the checker's pre-registered pass bar (`design.md` l.46-63, `43c1b7c`): I wrote
+the seeded defect set as an author independent of Research (who builds the
+checker), so a 6/6 shows the checker catches defects rather than agreeing with
+itself. Authored BLIND — Research's checker and its prompt unread.
+
+The set (18 corrupted drafts, one per class 1-6 across specimens 437/423/433, plus
+three uncorrupted controls that must strike nothing) is sealed until Research's
+checker is committed. **Its sha256 is committed here first so it cannot be tuned to
+the checker afterward:**
+
+    sha256(defect-set.md) = a8fdab73de652c76721369a49f79783fbe77185e6029333fb5a6af7b69784dba
+
+**Protocol:** the file goes to Research only after Research reports its checker
+committed; Research commits the run before reading any result. On reveal the file
+is committed to the repo and this hash verifies it unchanged.
