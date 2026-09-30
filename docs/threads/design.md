@@ -44,16 +44,16 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-30 02:36 UTC / 2026-09-29 22:36 ET (fourth seat, `Design-tmi` `local_72b49119`, Opus 5.5, opened 00:09Z; clock read via zoneinfo)
+## Live state: 2026-09-30 14:23 UTC / 10:23 ET (fourth seat `local_72b49119`, RETIRING on his "yes" to a fresh session; clock read via zoneinfo)
 
-**Nothing uncommitted. Nothing in flight on Design's side.** **PRODUCTION WEB = `74c1818`** (the brand header v2 on 1b5ead6;
-Ops, web start 02:33:33Z 09-30). **Base for any new Design cut: 74c1818.** Market worker: 1b5ead66 from 00:15:40Z (the ruled restart, v2
-capture recording). Every open item with its trigger:
+**Nothing uncommitted. Nothing of Design's in flight.** Production web = **74c1818** (brand header v2 on 1b5ead6).
+**His "yes to both", ~14:08Z in Ops's session: the Now cell `design/now-cell-on-74c1818` (c3d0f06) ships in Ops's
+10:34-10:42 ET slot, then Ops's speed fix 84b0099 (re-picked onto it).** Ops owns both launches and the /proc reads.
+The next Design cut sits on whatever /proc confirms after both. Every open item with its trigger:
 
 | # | Item | State | Trigger / next step |
 | --- | --- | --- | --- |
-| 0 | **Red test** `tests/research/interpret.test.ts` › "proves the overhang when established supply exceeds the share count" | **DONE: main `7a62d62`** (test-only). `run()` now passes `asOf: '2026-08-18T00:00:00Z'`, the sibling asOf test's cutoff. ~~`asOf: DATE`~~ **was wrong:** `asOf` also bounds sources by `fetched_at <= asOf` as a string, the fixture's sources are fetched 08-17T12:00Z, and at `'2026-08-17'` none survives (measured 92/94, the POSSIBLY_ACTIVE case passing on `undefined`; it now asserts a defined verdict). New test fakes Date at 00:00:01Z 09-30 and 2027-06-01 with an undated BASIS_STALE control. File 93/94 → 95/95 pre-registered; mutants at prediction (null kills 2, DATE kills 4); `tests/research` under a 2027 fake clock 52/847 green, the instrument proven to discriminate (HEAD's file green at 2026-08-20, red at 2027). Gate 192 / 2,919, lint 0 errors, build 0, typecheck 0 | Sent to Integration; nothing owed |
-| 1 | **Brand header** (his "the compact lockup") | **LIVE AND READ, DONE.** Production web 74c1818 (Ops, 02:33:33Z). Review link 54, revoked and confirmed dead (200, 11,766 B, 0 RVOL). Live desk 1.18 MB, RVOL present; old plain-text title absent. At 1,280: lockup 393.5 × 18 px on row 1 (mark 18 px, `text-accent` rgb(77,147,255)), header 61.5 px, no horizontal scroll. At 1,024 after a reload: lockup 393.5 on row 1 with the clock beside it at x 425.5, header 62.5 px, no horizontal scroll. (The 63 px at build was a LOCAL old-vs-new comparison; the live figure is a different baseline, not a regression.) | — |
+| 0-1 | Red test (7a62d62) and brand header (74c1818) | **DONE and read live**; details in `git log` and the "Verified LIVE" line below | none |
 | 2 | **Now cell** `fa61410` (main) | **REAL-10 s READ PASSED, 04:06 ET 09-30** (fetchedAt 08:06:17.949Z, production 74c1818, review link 55 revoked + dead by content). URL: the board's `/api/market?symbols=VNDA,…,LIQT`. Load: one page + ONE extra GET of the same URL (the pane would not return the captured body). (1) `tradeCapture.asOf` 547 ms behind `fetchedAt`, RECORDING, 46,834 written / 0 discarded. (2) WETO six slots oldest first, 10,000 ms apart, newest end = newest boundary before asOf; counts 241/490/213/351/374/323; all 23 measured names share one bucketEnd set. (3) 51 rows, 0 absent; every highRes name (21) measured; all 28 nulls are off-feed (`sip-bar`); FUFU/HUBC left the feed inside the last slot (newest null), which fa61410 reads as FALLBACK. Share for Ops: nowBuckets 9,295 B of 778,264 (1.19%), 23 non-empty rows. **Observed, unexplained, sent to Ops: the page's first /api/market took 15.5 s; the GET after, 1.19 s.** **Re-try for Ops at 04:53 ET (link 56, one page, zero extra fetches): NOT REPRODUCED at 08:53:27Z: 1,949 ms = 33 client queue + 1,892 server TTFB + 24 transfer (h2, connection reused); decoded 862,753 B. The 04:06 case stays unexplained; the post-ship read is the next attempt.** | **CUT (Integration approved on 74c1818): tag `design/now-cell-on-74c1818` → `c3d0f06`** (tagger 2026-09-30T04:13:10-04:00), one `-x` of fa61410; +/- lines identical, patch-id f20e9ac0 vs 74d202b8 on context only (conflicts were main-only `onRangeChange` context, dropped). Declared 177, met 177 / 2,723, lint 0 errors, build 0, typecheck 0. **Next: Integration replays; his yes in Ops's session, outside 04:00–10:15 ET; then Design reads the live cell AND takes the first /api/market's timing split (startTime→requestStart→responseStart→responseEnd) for Ops.** |
 | 3 | **Session report window** `0f15521` (main) + briefing line `307e42d` | Built, inert until Research's `GET /api/reports` | **Two surface calls, 2026-09-30, sent to Research + Marketing:** (1) the surface KEEPS the ticker lead (dossier link, the three qualifiers, one left edge to scan), and the writer starts with what the name did, never repeating its own ticker (was rendering "SANG SANG"); (2) a section emptied by strikes keeps its heading and gets a NEUTRAL line (Marketing's words, placeholder "No line for this section in this report."). ~~refilled with NOTHING_LINE~~ was false after a strike (our sources DO hold the name); NOTHING_LINE is reserved for the writer's checked absence. Research changes `applyStrikes`; ~~Design owes the surface's empty state~~ **DONE, main `ceb25cb`: Marketing's final words (8c76fe0); the window prints it for `lines.length === 0`. Mutants 1/2/1 at prediction; gate 194 / 2,965. **ONE COPY: `EMPTY_SECTION_LINE` in `lib/dashboard/sessionReports.ts`, on the surface. `applyStrikes` emits `lines: []` (Research c6d1c39) and the surface prints the line.** ~~Research's contract copy~~: Design removed its own copy in favour of the contract's (5f5df76) while Research removed the contract's in favour of Design's (c6d1c39); main had NEITHER and `tsc` was red (TS2305) until the restore commit after 44ba3dc. Then when the route ships, the surface goes to him as one ship; ask him in one line if he also wants a direct URL |
 | 3a | **Report v2 surface: opening narrative + per-ticker PRICE PATH** | **HIS VERDICT on the #551 sample, first-hand, verbatim at integration.md `b563207`:** *"the voice and tone is right, uncomplicate it"*; *"it should have an opening narrative describing AH overall and how many tickers are on watch for premarket"*; *"structure is good for the ticker readouts"*; *"just write it out 3.5 --> 5.00 --> 4.25 ... that removes half of the report"*; and the complaint behind the labels: *"now 15% underwhat?"*. Keep the ticker lead + scan edge. Design owns: the narrative block's place above the sections, and the path line's POINT LABELS so no point needs asking "under what?". **The labels "close / AH high / last" are Integration's example, not his; his example is unlabelled. Labelling is Design's call, shown to him at review, not attributed to him.** Research: data + contract; Marketing: words; Commercial: the advice boundary. **HIS FURTHER RULING, "1 a, 2 a"** (ordinal; the option texts as integration.md `28a9de0` records them, READ AT HIS TURN BEFORE BUILDING): FLOAT is a VERDICT only (e.g. "small float, not independently verified"), never a number; the opening narrative leads with *"we're watching N names into premarket"*, N = the report's own list, then the AH overall picture. **Data map (Research `data-map-2026-09-30.md`, via integration.md):** intraday path 48/48, company name 45, catalyst 45, structure 45; sector + HQ city approved to Research; AH close/high/low frozen onto the checkpoint row by Ops (`fc77734`, forward only), so a path point CAN be absent on older rows and the label design must say so **OPENER, Design's calls to Research 2026-09-30:** payload carries `watchCount` (DISTINCT tickers across SURVIVING lines, so it cannot disagree with the names shown), not a sentence; the surface words it (Marketing: singular, zero line, and whether "into the premarket" varies by report kind). **Zero names splits two ways:** pre-strike list non-empty and none survive → ALL_STRUCK, no report; rows held 0 names (a quiet session) → the report PUBLISHES with the zero line (placeholder "Nothing on watch into the premarket."), because "missed" there would falsely say the system failed. Never "watching 0 names". **BUILT: `watchLine(kind, count)` on main `a496207`** (Marketing's per-kind words, 809e4c4: premarket / the open / the last hour / after-hours; "1 name"; zero line), inert until the contract carries `watchCount`; mutants 1/1/2/1 at prediction; gate 194 / 2,973. **Next: wire it into the window when Research's sha lands.** | **Trigger: after the 04:05 ET Now-cell read.** Build on Research's contract change, never ahead of it |
@@ -61,191 +61,12 @@ capture recording). Every open item with its trigger:
 | 6 | **No em dashes (HIS HARD RULE)**, verified at his turn, session 845dd4cb, 2026-09-30T10:43:39Z: *"no em dashes in any writing. hard rule. nobody uses em dashes as much as llms."* | **Design's half ON MAIN: `1dacc16`** (64 strings, 24 files; label pairs take the board's " · ", prose by sense) **+ `9a1d8e7`** (guard `tests/dashboard/noEmDash.test.ts`: the TS parser over Design's surfaces, RENDERED text so `—` escapes and `&mdash;` entities count; it must SEE the allowed glyphs; mutants 1/1/2 and 1/1/1). Gate 195 / 2,975. ~~Held for his ruling~~ **Empty-cell "—" glyphs: HE RULED KEEP**, verified at his turn, session 845dd4cb, 2026-09-30T10:48:04Z: *"keep it. fine for that, not writing."* The guard already allows exactly that (a bare dash with nothing either side). **Must never change:** input parsing (normalize.ts:42 sheet "—", documents.ts:56 `&mdash;` decode). Web's half: 5f3a272, f272bec, 1703390; canvas after his ship (Web). Worker text (engine.ts, activity.ts) sent to Ops; stored events keep the dash unless normalised at render (Design, on request). **`c76e98f`: render-time `withoutEmDash` (lib/dashboard/prose.ts) for text the desk shows but did not write: model dossier text once in mergeDesk (`readableIntelligence`: dossier strings, status label, source titles, never URLs) and the Desk events feed (covers stored rows; no worker restart). Cycle labels take Marketing's COMMA ("red, backside", drawer "RED, BACKSIDE"), because reports quote them in prose; other board pairs keep " · ". Final strings sent to Research + Marketing.** Mutants 1/1/3/1/1; gate 197 / 3,003 | **CUT ORDER RULED (Integration): 1) Now cell c3d0f06, 2) Ops's speed fix 84b0099, both to him at 10:27 ET; 3) THEN one em-dash cut: -x 1dacc16, 9a1d8e7, c76e98f, **9e0a3a0** (six misses + the guard's placeholder rule fixed; Ops found health.ts:207) + Web's FINAL six, in order: 5f3a272, f272bec, 1703390, 32a9a84, e68137c, 69bafba (his rulings via Web: *"not material, keep adopted. pipe is fine."*, so the full cut; e68137c and 69bafba are docs/comment only and ride, Design's call, 69bafba after f272bec; 32a9a84 never without 1-3). Run `npx vitest run tests/web/ tests/auth/` on the cut: green = complete 5f3a272, f272bec, 1703390, 32a9a84 (e68137c asked) onto /proc's sha, count pre-registered. Not before 1)-2) resolve.** **Also: from now on every word I write, including messages and these docs, carries no em dash.** |
 | 5 | Follow-ups, not built | — | Poll: a visible 'not updating' state; the same abort pattern in `useDashboard` at 4 s. Sorted `Now` header renders on three lines |
 
-**Verified LIVE today:** resizable columns (a391c61), the poll fix's code (a391c61), old-catalyst rows + disagreement mark (803008b: 14 dimmed, 0 missed, 3 marks).
+**Verified LIVE:** the compact-lockup header (74c1818, 2026-09-30 02:3x UTC read, link 54: lockup on row 1 at 1,280 and 1,024, no scroll); the Now field's DATA on real 10 s capture (04:06 ET 09-30, item 2; the cell itself is not yet live); resizable columns (a391c61), the poll fix's code (a391c61), old-catalyst rows + disagreement mark (803008b: 14 dimmed, 0 missed, 3 marks).
 
-## Live state — 2026-09-29 04:09 UTC / 00:09 ET (third seat of 09-29, opened 03:43Z) — SUPERSEDED by the block above
-
-**This seat: `Design-tmi`, `local_8568daaf`, Opus 5.5.** What it did, and what is open:
-
-- **The `Now` cell is BUILT and on `main` at `fa61410`** (gate at the rebased
-  head: 184 files / 2,822, lint 0 errors, build 0, typecheck 0). Built to the
-  spec's "The build plan". **Inert today:** no payload carries
-  `tradeCapture.asOf`, so the board reads `UNWIRED` and keeps its minute cell.
-  **IT MUST NOT RIDE A DEPLOY before a live read on real 10 s data** (the
-  spec's own condition). Production is cut as tags from `2256c63`, so `main`'s
-  tip is not what ships; Integration is told so, and any tag whose cone
-  reaches `fa61410` needs this seat's yes first.
-  - Viewed locally (store copy + a SYNTHETIC v2 `trades.db` in the scratchpad,
-    never `data/`) at 1,280 and 1,024: LIVE, FALLBACK and NOT_LIVE all render
-    as specified, every cell inside its 68 px column (`2,979/min` included),
-    tier order correct. **Not viewed on real 10 s data: that is the ship
-    condition, not a gap in this check.**
-  - **Design's own call, recorded so it is not read as a defect:** a FALLBACK
-    row (live capture, this name unmeasured now) keeps TODAY's minute bars
-    under its muted `/min` number. The spec named only the number; dropping
-    the bars would have removed something he has without being asked.
-  - Mutants, 13, all killed. Two counts off prediction, both explained: the
-    browser-clock mutant killed 4 not 5 (the undatable-timestamp test meets
-    the NaN guard first, a second defence, not a vacuous check); the gap
-    mutant killed 2 not 1 (the scale test also pins the gap).
-  - A gap the view found and the tests had missed: the `Now` SORT BUTTON kept
-    the settled-minute hover while live. Fixed and asserted both ways.
-- **Resizable columns CUT for shipping ALONE, his ruling verified at his own
-  turn** (Integration's session, human origin, 2026-09-29T03:51:42Z: *"yes to
-  columsn and keep this chat for now"*, answering Integration's *"Ship
-  resizable columns on their own now, instead of waiting for the price-range
-  control?"*). **Tag `design/columns-on-2256c63` → `f4063ca`**, one pick `-x`
-  of `1d59b00` onto production `2256c63`. Conflict in the `DiscoveryBoard.tsx`
-  import block only: kept the pick's three imports, dropped the range set's
-  two context lines. **+/− lines identical to `1d59b00`; patch-id differs on
-  context only.** Gated at the tag: 165 files / 2,600, lint 0 errors, build 0,
-  typecheck 0. **Viewed rendered AT THE TAG** (local, unseeded store copy): seven handles, Shift+→ ×2 on RVOL 68 → 132 px with Why/Risk giving 32 each and the table still exactly its box; the width survives a reload; Reset widths restores 68/321/321 and clears storage; at 1,024 after a reload the table is 982 in a 982 box, no header clipped. Waits on Integration's
-  replay and his ship yes in Ops's session; then Design reads it live (drag,
-  reload, width persists).
-- **The range set (`520142c`) is VOID** (Integration `99a02e4`): `$1–$20`
-  failed idle at 22.0 ms max over 20 warm runs, the index fix does not help,
-  and Research owns the fix. Design re-cuts only onto that fix. Nothing owed
-  tonight.
-- **The restart set** (`research/restart-set-on-2256c63`, Research) is Ops's,
-  launching per Integration `dfacbbc`. Disjoint from both of Design's pieces.
-
-## Live state — 2026-09-29 03:12 UTC / 2026-09-28 23:12 ET (successor seat) — SUPERSEDED by the block above where they differ
-
-**SEAT RETIRED AT A CLEAN BOUNDARY, 2026-09-29 03:42 UTC, on his "yes, fresh
-session for the Now build".** Nothing uncommitted, nothing in flight. The
-successor's prompt is `docs/design-opening-prompt.md`; its first owed actions
-are the resizable-columns cut (trigger: the range set ships or is voided) and
-the `Now` cell per the spec's "The build plan".
-
-**THE RETIRED SEAT'S FIRST HOUR, 02:47–03:12Z:**
-- **The `520142c` red is NAMED on Design's side:** 4 full-output runs at the
-  tag in the design worktree, 3 green (167/2544), 1 red:
-  `tests/desk/releaseRetention.test.ts > deployment preflight > refuses every
-  weekday start that would run inside 07:00-10:00 ET`, a 30 s timeout under
-  load (import phase 108 s vs 48 s green). lint 0 errors / build 0 /
-  typecheck 0 at the tag. Under Integration's acceptance rule (`da1c748`) that
-  family is not a ship blocker. Ops's run-1 name is unrecoverable (filtered
-  output); Ops's own timing (19.9 s alone vs 30 s timeout) and a green
-  full-output run closed it (`a663a0e`); Ops sped the test up on main (`f869ee0`),
-  and 520142c still carries the slow version, so its ship gate can flake again.
-  **Production (Ops /proc ~03:05Z): web/research/assess `2256c63`, market
-  `3b78b8c`; the range set is NOT deployed.** Nothing
-  in tests/dashboard or tests/market failed in 4×2544, so **no re-cut.**
-- **Resizable columns, Discovery only: BUILT, gated, on `main`** at `1d59b00`. Viewed at 1,024 / 1,280 / 1,920 against a read-only copy
-  of the local store; see the open-items row. Not deployed; ships after the
-  range release.
-- Now spec: four lines that predated his 02:30/02:32Z answers struck
-  (`75ef60e`).
-
-**MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
-ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
-2026-09-28 21:22 ET** (see "What is verified ON THE LIVE BOARD").
-Production web is `2256c63` (af15a13's server range ranking alone, inert) per
-Integration, awaiting Ops's post-landing /proc read.
-
-**HIS RULINGS TO DESIGN, 2026-09-29T02:41:45Z, verbatim: *"1 yes, 2 yes discovery
-only"*.** (1) A market-worker restart for the `Now` column, **approved IN
-PRINCIPLE**: Ops proposes the time and he approves that time directly. (2)
-Resizable columns: **build, Discovery only** (open items).
-
-**IN FLIGHT, OWNER NAMED: Ops's gate at the range tag `520142c` went RED on one
-test (~02:40Z, per Integration `ef8d585`).** Design's gate at the same sha was
-167/2544 green. Design asked Ops for the test by name (22:42 ET). If it's
-`releaseRetention`'s bash-driven 30 s timeout (seen under load tonight, passes
-alone), it's load. If it's in `tests/dashboard` or `tests/market`, **Design
-re-cuts the tag.** Not approvable while red.
-
-> **THE RANGE SET, RE-CUT FOR SHIPPING — HAND OPS THE TAG
-> `design/range-set-on-2256c63` → `520142c` (on origin).** Integration's replay
-> found main's control (`5e8b13c`) built on the unshipped briefings, so it did
-> not pick onto production. The tag's cone over `2256c63` is exactly ten
-> cherry-picks (`-x`) in main's order: 8d8e50c, d2c2582, **5e8b13c (re-cut)**,
-> 28a8cb1, dd6019e, 56b6fd4, 7ed88ed, da1e06b, bae9c43, e17fc36. 22 files, zero
-> briefing references. The one conflict was resolved by keeping the control's
-> pieces and dropping every briefing import, key and helper, plus adding
-> `useEffect`, which production's shell lacked. **Gated at the tag: 167 files /
-> 2544, lint 0 errors, build, typecheck.** Not viewed rendered on this base,
-> because serving it needs the credentialed `.env.local`; Design reads the live
-> board after the deploy. **Written here because the handover message to
-> Integration was blocked by the app's cross-session limit (22:24 ET). Integration:
-> this paragraph is the handover.**
-
-**Report contract `13975c9` (Research), REVIEWED AND APPROVED by Design.** The
-six missed-cause sentences match Design's words, keyed on `kind`. The one
-deviation is right: the time is the CAUSE's checkpoint time (`09:25 ET`), not
-the slot's (`09:27`). **Keep "ET"**, since every printed time carries its zone
-(§10). No component test is needed for `covers` / `not in your range`: with
-`ReportBody`'s `range` prop removed, reading the config range instead of
-`report.range` no longer compiles, so the type system is the second defence.
-*Reply to Research pending the app's cross-session pause.*
-
-**COMMITTED, NOT SHIPPED — on `main`, inert until something else lands:**
-
-    307e42d, 6eb1362   session briefings: the line + reading panel
-                       inert until Research's GET /api/reports exists (404 renders nothing)
-    5e8b13c            the board's price-range control
-    dd6019e            the graveyard reads diedWhileRanked (Research d2c2582) and drops
-                       "Rank held" on a re-ranked board -- THE GRAVEYARD BLOCKER IS CLOSED.
-                       Design owes the range set nothing further. It waits on Ops's
-                       live timing (warm max < 20 ms for EVERY viewer range, both boards -- a property, not one range), the no-param default flip (server-side,
-                       owner asked of Integration), and his deploy yes.
-
-**`above your range` needs no Design build.** Discovery rows come only from
-`discovery.ranked` (`merge.ts:521`), so a pinned-unranked name is never a
-Discovery row, and the existing `retentionNote` (`view.ts:262`) already prints
-`retained > $max` from the latch against the SERVED range. Research's
-`aboveRangeLatched` (`28a8cb1`) is correct (`rankLists` restores in-range ranks
-after the scrub, so it fires) and is kept for a surface that shows pinned names.
-
-**The default flip** (Research `56b6fd4`, in the `/api/market` ROUTE only; health,
-MCP and diagnostics keep the band): $1–$20 is not the engine band ($0.25–$20,
-**his ruled system band, not a lever**), so EVERY viewer's default board is
-ordinals-omitted. `Rank held` is omitted by his ruling, *"dead rank not
-important"* (2026-09-29T01:53:21Z, to Integration). ~~The drawer's rank-change
-line is "lost"~~: **it LIED, printing `New` on every row** (Research's catch);
-~~fixed at `7ed88ed` ("—")~~ **REMOVED at `e17fc36`, his ruling
-2026-09-29T02:06:46Z: *"yes remove it"*** (7ed88ed reverted in the same commit),
-a ship condition of the set. **Review route follows the board:** Research's
-`bae9c43`, on Design's answer. *His view, NOT a ruling, recorded by Integration:
-"rank in general is not important imo". Nothing is removed on it.*
-
-**Also landed: `da1e06b`** removes the three surviving shell commands from
-trader-facing copy (audit F-12: market-light tooltip, assessments-light tooltip,
-the drawer's no-market-state line), with §10's automated scan.
-
-**SPEC'D, WAITING ON HIM (via Integration):**
-[`../Design/near-live-now-spec.md`](../Design/near-live-now-spec.md) (build
-approved; his choice is the unit) and
-[`../Design/resizable-columns-scope.md`](../Design/resizable-columns-scope.md)
-(scope only; three choices). Both come after the range release.
-
-**DESIGNED, BUILD APPROVED, NOT STARTED:** the payment-failed warning,
-`docs/commercial/daily-billing-design/design-seat.md`. Trigger: Ops starts
-the billing work, which comes after the sign-in cut-over.
-
-*`363f40d` (the `Now` -> `TRADES` rename) is SUPERSEDED — he ruled `Now`
-stays — and its tag should be retired rather than shipped.*
-
-**HOW THIS SEAT SEES PRODUCTION — the biggest standing limit on it, and it is
-gone:**
-
-    scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
-
-*SSH on port 22 times out from this host — his egress IP moved off the
-allowlist and nobody retired SSH — but Session Manager goes straight through.*
-**The URL prints ONCE. Capture it or the token is orphaned** (revoke with
-`-Action revoke -Id N`; revoke when finished rather than leaving it to expire).
-Read-only and time-limited: the desk is otherwise behind one shared password
-this seat must never type.
-
-**READ A REVIEW LINK BY CONTENT, NEVER BY STATUS.** A dead or expired token
-answers **HTTP 200** with ~11 KB. The live desk is ~1.1 MB with `RVOL` present.
-
-*That command line held a literal **BEL byte** where its backslash belongs
-until 2026-09-25 — `\a` interpreted once on the way in, rendering as
-`scriptsws-create-review.ps1`. **Three repair attempts failed and reported
-success**; only a byte-mode read/replace/write took. A path is the worst place
-for this: a mangled filename still looks like a filename.*
+*The superseded live-state blocks of 2026-09-29 (third and second seats) moved to
+[`design-archive-2026-09.md`](design-archive-2026-09.md) at the fourth seat's hand-off, 2026-09-30.
+The standing parts of them (how this seat sees production; reading a review link by content) are in
+`docs/design-opening-prompt.md` and the working rules below.*
 
 ## What is verified ON THE LIVE BOARD
 

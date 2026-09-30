@@ -6710,3 +6710,188 @@ WHEN I look, and pre-registering it now stops me deciding at the board:
 **A silent marker and a fired-but-expected marker are both consistent with a
 working feature; only the payload separates them from the failure.**
 
+## Live-state blocks of 2026-09-29, moved from design.md at the 2026-09-30 hand-off
+
+## Live state — 2026-09-29 04:09 UTC / 00:09 ET (third seat of 09-29, opened 03:43Z) — SUPERSEDED by the block above
+
+**This seat: `Design-tmi`, `local_8568daaf`, Opus 5.5.** What it did, and what is open:
+
+- **The `Now` cell is BUILT and on `main` at `fa61410`** (gate at the rebased
+  head: 184 files / 2,822, lint 0 errors, build 0, typecheck 0). Built to the
+  spec's "The build plan". **Inert today:** no payload carries
+  `tradeCapture.asOf`, so the board reads `UNWIRED` and keeps its minute cell.
+  **IT MUST NOT RIDE A DEPLOY before a live read on real 10 s data** (the
+  spec's own condition). Production is cut as tags from `2256c63`, so `main`'s
+  tip is not what ships; Integration is told so, and any tag whose cone
+  reaches `fa61410` needs this seat's yes first.
+  - Viewed locally (store copy + a SYNTHETIC v2 `trades.db` in the scratchpad,
+    never `data/`) at 1,280 and 1,024: LIVE, FALLBACK and NOT_LIVE all render
+    as specified, every cell inside its 68 px column (`2,979/min` included),
+    tier order correct. **Not viewed on real 10 s data: that is the ship
+    condition, not a gap in this check.**
+  - **Design's own call, recorded so it is not read as a defect:** a FALLBACK
+    row (live capture, this name unmeasured now) keeps TODAY's minute bars
+    under its muted `/min` number. The spec named only the number; dropping
+    the bars would have removed something he has without being asked.
+  - Mutants, 13, all killed. Two counts off prediction, both explained: the
+    browser-clock mutant killed 4 not 5 (the undatable-timestamp test meets
+    the NaN guard first, a second defence, not a vacuous check); the gap
+    mutant killed 2 not 1 (the scale test also pins the gap).
+  - A gap the view found and the tests had missed: the `Now` SORT BUTTON kept
+    the settled-minute hover while live. Fixed and asserted both ways.
+- **Resizable columns CUT for shipping ALONE, his ruling verified at his own
+  turn** (Integration's session, human origin, 2026-09-29T03:51:42Z: *"yes to
+  columsn and keep this chat for now"*, answering Integration's *"Ship
+  resizable columns on their own now, instead of waiting for the price-range
+  control?"*). **Tag `design/columns-on-2256c63` → `f4063ca`**, one pick `-x`
+  of `1d59b00` onto production `2256c63`. Conflict in the `DiscoveryBoard.tsx`
+  import block only: kept the pick's three imports, dropped the range set's
+  two context lines. **+/− lines identical to `1d59b00`; patch-id differs on
+  context only.** Gated at the tag: 165 files / 2,600, lint 0 errors, build 0,
+  typecheck 0. **Viewed rendered AT THE TAG** (local, unseeded store copy): seven handles, Shift+→ ×2 on RVOL 68 → 132 px with Why/Risk giving 32 each and the table still exactly its box; the width survives a reload; Reset widths restores 68/321/321 and clears storage; at 1,024 after a reload the table is 982 in a 982 box, no header clipped. Waits on Integration's
+  replay and his ship yes in Ops's session; then Design reads it live (drag,
+  reload, width persists).
+- **The range set (`520142c`) is VOID** (Integration `99a02e4`): `$1–$20`
+  failed idle at 22.0 ms max over 20 warm runs, the index fix does not help,
+  and Research owns the fix. Design re-cuts only onto that fix. Nothing owed
+  tonight.
+- **The restart set** (`research/restart-set-on-2256c63`, Research) is Ops's,
+  launching per Integration `dfacbbc`. Disjoint from both of Design's pieces.
+
+## Live state — 2026-09-29 03:12 UTC / 2026-09-28 23:12 ET (successor seat) — SUPERSEDED by the block above where they differ
+
+**SEAT RETIRED AT A CLEAN BOUNDARY, 2026-09-29 03:42 UTC, on his "yes, fresh
+session for the Now build".** Nothing uncommitted, nothing in flight. The
+successor's prompt is `docs/design-opening-prompt.md`; its first owed actions
+are the resizable-columns cut (trigger: the range set ships or is voided) and
+the `Now` cell per the spec's "The build plan".
+
+**THE RETIRED SEAT'S FIRST HOUR, 02:47–03:12Z:**
+- **The `520142c` red is NAMED on Design's side:** 4 full-output runs at the
+  tag in the design worktree, 3 green (167/2544), 1 red:
+  `tests/desk/releaseRetention.test.ts > deployment preflight > refuses every
+  weekday start that would run inside 07:00-10:00 ET`, a 30 s timeout under
+  load (import phase 108 s vs 48 s green). lint 0 errors / build 0 /
+  typecheck 0 at the tag. Under Integration's acceptance rule (`da1c748`) that
+  family is not a ship blocker. Ops's run-1 name is unrecoverable (filtered
+  output); Ops's own timing (19.9 s alone vs 30 s timeout) and a green
+  full-output run closed it (`a663a0e`); Ops sped the test up on main (`f869ee0`),
+  and 520142c still carries the slow version, so its ship gate can flake again.
+  **Production (Ops /proc ~03:05Z): web/research/assess `2256c63`, market
+  `3b78b8c`; the range set is NOT deployed.** Nothing
+  in tests/dashboard or tests/market failed in 4×2544, so **no re-cut.**
+- **Resizable columns, Discovery only: BUILT, gated, on `main`** at `1d59b00`. Viewed at 1,024 / 1,280 / 1,920 against a read-only copy
+  of the local store; see the open-items row. Not deployed; ships after the
+  range release.
+- Now spec: four lines that predated his 02:30/02:32Z answers struck
+  (`75ef60e`).
+
+**MY HEAD IS ON `main`; what is DEPLOYED is Ops's to say.** The 2026-09-25
+ships (`5254bca`, `8fd7887`) are both verified live, **the evening arm on
+2026-09-28 21:22 ET** (see "What is verified ON THE LIVE BOARD").
+Production web is `2256c63` (af15a13's server range ranking alone, inert) per
+Integration, awaiting Ops's post-landing /proc read.
+
+**HIS RULINGS TO DESIGN, 2026-09-29T02:41:45Z, verbatim: *"1 yes, 2 yes discovery
+only"*.** (1) A market-worker restart for the `Now` column, **approved IN
+PRINCIPLE**: Ops proposes the time and he approves that time directly. (2)
+Resizable columns: **build, Discovery only** (open items).
+
+**IN FLIGHT, OWNER NAMED: Ops's gate at the range tag `520142c` went RED on one
+test (~02:40Z, per Integration `ef8d585`).** Design's gate at the same sha was
+167/2544 green. Design asked Ops for the test by name (22:42 ET). If it's
+`releaseRetention`'s bash-driven 30 s timeout (seen under load tonight, passes
+alone), it's load. If it's in `tests/dashboard` or `tests/market`, **Design
+re-cuts the tag.** Not approvable while red.
+
+> **THE RANGE SET, RE-CUT FOR SHIPPING — HAND OPS THE TAG
+> `design/range-set-on-2256c63` → `520142c` (on origin).** Integration's replay
+> found main's control (`5e8b13c`) built on the unshipped briefings, so it did
+> not pick onto production. The tag's cone over `2256c63` is exactly ten
+> cherry-picks (`-x`) in main's order: 8d8e50c, d2c2582, **5e8b13c (re-cut)**,
+> 28a8cb1, dd6019e, 56b6fd4, 7ed88ed, da1e06b, bae9c43, e17fc36. 22 files, zero
+> briefing references. The one conflict was resolved by keeping the control's
+> pieces and dropping every briefing import, key and helper, plus adding
+> `useEffect`, which production's shell lacked. **Gated at the tag: 167 files /
+> 2544, lint 0 errors, build, typecheck.** Not viewed rendered on this base,
+> because serving it needs the credentialed `.env.local`; Design reads the live
+> board after the deploy. **Written here because the handover message to
+> Integration was blocked by the app's cross-session limit (22:24 ET). Integration:
+> this paragraph is the handover.**
+
+**Report contract `13975c9` (Research), REVIEWED AND APPROVED by Design.** The
+six missed-cause sentences match Design's words, keyed on `kind`. The one
+deviation is right: the time is the CAUSE's checkpoint time (`09:25 ET`), not
+the slot's (`09:27`). **Keep "ET"**, since every printed time carries its zone
+(§10). No component test is needed for `covers` / `not in your range`: with
+`ReportBody`'s `range` prop removed, reading the config range instead of
+`report.range` no longer compiles, so the type system is the second defence.
+*Reply to Research pending the app's cross-session pause.*
+
+**COMMITTED, NOT SHIPPED — on `main`, inert until something else lands:**
+
+    307e42d, 6eb1362   session briefings: the line + reading panel
+                       inert until Research's GET /api/reports exists (404 renders nothing)
+    5e8b13c            the board's price-range control
+    dd6019e            the graveyard reads diedWhileRanked (Research d2c2582) and drops
+                       "Rank held" on a re-ranked board -- THE GRAVEYARD BLOCKER IS CLOSED.
+                       Design owes the range set nothing further. It waits on Ops's
+                       live timing (warm max < 20 ms for EVERY viewer range, both boards -- a property, not one range), the no-param default flip (server-side,
+                       owner asked of Integration), and his deploy yes.
+
+**`above your range` needs no Design build.** Discovery rows come only from
+`discovery.ranked` (`merge.ts:521`), so a pinned-unranked name is never a
+Discovery row, and the existing `retentionNote` (`view.ts:262`) already prints
+`retained > $max` from the latch against the SERVED range. Research's
+`aboveRangeLatched` (`28a8cb1`) is correct (`rankLists` restores in-range ranks
+after the scrub, so it fires) and is kept for a surface that shows pinned names.
+
+**The default flip** (Research `56b6fd4`, in the `/api/market` ROUTE only; health,
+MCP and diagnostics keep the band): $1–$20 is not the engine band ($0.25–$20,
+**his ruled system band, not a lever**), so EVERY viewer's default board is
+ordinals-omitted. `Rank held` is omitted by his ruling, *"dead rank not
+important"* (2026-09-29T01:53:21Z, to Integration). ~~The drawer's rank-change
+line is "lost"~~: **it LIED, printing `New` on every row** (Research's catch);
+~~fixed at `7ed88ed` ("—")~~ **REMOVED at `e17fc36`, his ruling
+2026-09-29T02:06:46Z: *"yes remove it"*** (7ed88ed reverted in the same commit),
+a ship condition of the set. **Review route follows the board:** Research's
+`bae9c43`, on Design's answer. *His view, NOT a ruling, recorded by Integration:
+"rank in general is not important imo". Nothing is removed on it.*
+
+**Also landed: `da1e06b`** removes the three surviving shell commands from
+trader-facing copy (audit F-12: market-light tooltip, assessments-light tooltip,
+the drawer's no-market-state line), with §10's automated scan.
+
+**SPEC'D, WAITING ON HIM (via Integration):**
+[`../Design/near-live-now-spec.md`](../Design/near-live-now-spec.md) (build
+approved; his choice is the unit) and
+[`../Design/resizable-columns-scope.md`](../Design/resizable-columns-scope.md)
+(scope only; three choices). Both come after the range release.
+
+**DESIGNED, BUILD APPROVED, NOT STARTED:** the payment-failed warning,
+`docs/commercial/daily-billing-design/design-seat.md`. Trigger: Ops starts
+the billing work, which comes after the sign-in cut-over.
+
+*`363f40d` (the `Now` -> `TRADES` rename) is SUPERSEDED — he ruled `Now`
+stays — and its tag should be retired rather than shipped.*
+
+**HOW THIS SEAT SEES PRODUCTION — the biggest standing limit on it, and it is
+gone:**
+
+    scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 6 -Label design
+
+*SSH on port 22 times out from this host — his egress IP moved off the
+allowlist and nobody retired SSH — but Session Manager goes straight through.*
+**The URL prints ONCE. Capture it or the token is orphaned** (revoke with
+`-Action revoke -Id N`; revoke when finished rather than leaving it to expire).
+Read-only and time-limited: the desk is otherwise behind one shared password
+this seat must never type.
+
+**READ A REVIEW LINK BY CONTENT, NEVER BY STATUS.** A dead or expired token
+answers **HTTP 200** with ~11 KB. The live desk is ~1.1 MB with `RVOL` present.
+
+*That command line held a literal **BEL byte** where its backslash belongs
+until 2026-09-25 — `\a` interpreted once on the way in, rendering as
+`scriptsws-create-review.ps1`. **Three repair attempts failed and reported
+success**; only a byte-mode read/replace/write took. A path is the worst place
+for this: a mangled filename still looks like a filename.*
