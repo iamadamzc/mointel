@@ -12887,3 +12887,11 @@ BIYA 155, TGE 154, LGHL 153, CMCT 130, ANTA 98, AURE 78 (first bar 14:45Z). Miss
 no-trade vs lost: my trade_buckets cross-check loop ran too long in RTH and was killed (below).
 Box note: pid 146984, a `bash -c until ! pgrep deploy.sh ...` loop from 2026-09-11, still running (sleep loop, harmless);
 leave or kill on his word.
+**~17:0xZ Integration:** hold on 89d39053 RELEASED (both failing tests pre-exist at c3d0f06:120/:316; only timeouts/spawn
+failures). 89d39053 still needs THIS seat's gate (pre-registered 182) + his separate yes. v28 enumeration conditions:
+(1) state that a v27 process must never run the market_mode clear on a v28 store (FKs from desk_assessment_ranges /
+session_reports would fail it) and that re-pinning market-floor to the v28 release is what enforces it; (2) the report
+runner's release carries a test: a late run for a real checkpoint inserts, a run for a missing assessment_id FAILS LOUDLY.
+v28 release stack 2bcf1cfe (on 89d39053: b0de76e, b8002fa, 63dd67f = 95b734e picked minus its grades SQL, 2bcf1cf test
+flip), 183 test files pre-registered, gating. Tooling item for tomorrow (Ops): bash-spawning preflight/release tests need
+more time or fewer spawns; free node processes before gating.
