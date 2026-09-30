@@ -2490,6 +2490,8 @@ TRADE-RESEARCHER HIS ASK (this session, ~23:2xZ): brief @trade-researcher (local
                  10:07 ET, top-12, single-symbol; SEC exact times only after 09-07), what to fetch (Alpaca news + bars REST,
                  EDGAR), licensing (personal/non-commercial; his Benzinga $1,000/mo quote; Alpaca feed missed MEDS), prior
                  work. HIS BENZINGA QUOTE -> Commercial (register fact, no action).
+BENZINGA QUOTE   Commercial verified his turn (23:28:15Z), registered ac5e5abd as a fact; open: which product (Stock News vs
+                 Press Releases) and terms. No action unless he raises it. Trade-researcher licensing posture: no gap.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
