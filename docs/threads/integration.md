@@ -974,7 +974,7 @@ nineteenth's running notes (further down) carry the verification trail. NO EM DA
 
 ### PRODUCTION (Ops /proc 03:39:03Z and after; re-read before acting)
 ```
-WEB         74c1818 (brand header v2 on 1b5ead6 gzip on 803008b rows). web/research/assess, NR 0.
+WEB         c3d0f06 since 14:51:49Z 09-30 (Now cell on 74c1818 brand header on 1b5ead6 gzip). web/research/assess, NR 0.
 MARKET      1b5ead6's worker, pid 1574400, ExecMainStart 2026-09-30T00:15:40Z. Recording $0.25-$50, qualifying $0.25-$20.
             trades.db v2 -> ROLLBACK FLOOR: no market worker below 9508fb9 / 3810b9e.
 PINS        market-floor -> 1b5ead6 (safe rollback); rollback-baseline -> 372f5eb is BELOW the floor, never a market target.
@@ -1777,6 +1777,11 @@ REPORTS v5 §8  design.md §8 966e579: path + company lines COMPUTED; watchCount
   successor Design seat (route §8 on its id). Marketing asked for the computed lines' wording.
   Marketing d35e1bba: company line "{name}. {country}. {business}." ACCEPTED; path LABELS ("prior close -> high -> now")
   = proposal, Design's call -> 3rd question for the successor Design; Research builds labels as a render choice.
+NOW CELL LIVE  c3d0f06 14:51:49Z (Ops /proc x3, NR 0, market untouched, discarded 0, gzip on). PRODUCTION WEB = c3d0f06.
+  FINDING: deploy.sh PRE-STOP quick_check on the live store ran 804 s IN RTH (14:38:21-14:51:48Z), stalled the box
+  (/api/health silent 20 s) and hit the MARKET worker (flush max 6-10 s, 49-54/min, over250 every flush; discarded 0).
+  RULED: 84b0099 HELD to after 20:00 ET (Ops tells him); preflight REFUSES deploys 04:00-20:00 ET on trading days
+  until the check moves; every ship incl. em-dash after 20:00. R1 control 501.6 vs R0 473.6 ms (confounded).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
