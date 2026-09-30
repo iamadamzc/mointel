@@ -2281,6 +2281,10 @@ SHIM REVIEWED    Design: condition MET on 1fde525b (e01b836f differs by docs onl
                  not an ancestor, boardRange.ts absent; package-lock = main. Cut tree RENDERED in Design's own worktree
                  (fixture route restored byte-identical, cmp): two-range fixture picks default; v5 lead, company lines,
                  labelled paths (sub-dollar), null path = no line, struck section neutral line, zero-watch; 1,024 no clip.
+COMMERCIAL PASS  v5b sample PASS, commercial.md §11 6388b4a1 (13:17:54 ET, after 1cb4ed6 13:12:16; read), eleven names, two
+                 non-blocking notes. 2e8450f Buy/Sell instruction CONFIRMED ("ships with the PASS standing"). Content
+                 gates for reports: Commercial DONE; Design shim/render DONE; remaining = run 2 PASS + re-freeze pick +
+                 Ops gate + my blob re-verify + his yes.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
