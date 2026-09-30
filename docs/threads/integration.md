@@ -2266,6 +2266,12 @@ REPORTS CUT      1fde525b (ops/reports-cut-on-2bcf1cf, A:\mointel-reportscut) RE
                  Docs (4 files) dropped by a cut-only commit (order call). Owed: 201-file gate; Design shim review +
                  cut-tree render; Research range answer.
 REPORTS CUT      -> e01b836f (42; docs dropped, 0 docs files vs 2bcf1cfe, read). Gate runs AFTER the run-2 re-freeze pick.
+RUN 2 FIX        Research 3c9b291: check.ts (cause 1), research.ts (sourceFiling + registrationStatus). Beyond my wording:
+                 traced.ts harvests dates/numbers from filing text -> KEEP (checker, tested by run 2); writerV5.ts shows
+                 the filing to the writer -> STRIP before re-freeze (changes shipped output; Commercial passed the
+                 pre-fix sample) -> TOMORROW item: writer change + fresh Commercial sample. "Unheld form is struck" is the
+                 model's judgement, not deterministic (accepted). Runner and API share reportRanges() (range question
+                 closed). Run 2 day 09-25, #532 overall 2,463 / 690 / 547.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
