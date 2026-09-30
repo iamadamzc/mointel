@@ -1518,6 +1518,10 @@ the same family before then -> say so to him in the next message.
 OPS PREP (read): d9df1c4 sync-env backticks escaped (read at l.81-83); b6d1635 docs/ops-opening-prompt.md carries
 production 74c1818/1b5ead6, pins, the history store (after 10:12), reports' 20:05 checkpoint + per-range top-N
 (order proposed to Integration). Both were unpushed from the shared tree; pushed here.
+NEW OPS = local_bb3d4059 (created 03:38:11Z; title/cwd/not-archived checked); box read 03:39:03Z (efe255b).
+HAZARD: retiring Ops local_37a1741e is ARCHIVED (read) and holds the ONLY 00:57/04:33/10:12 session reminders --
+firing in an archived session NOT verified. New Ops told to set guarded duplicates at 01:05 / 04:40 / 10:17 ET
+(each checks ops.md for the retiring seat's result first; (c') must never run twice).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
