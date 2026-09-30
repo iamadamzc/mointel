@@ -15,6 +15,8 @@
  *   09:25  OPEN_SPIKE_ASSESSMENT   final pre-open state (EXPERIMENTAL ordering)
  *   10:00–15:30 every 30 minutes   RTH_INTERVAL
  *   close  RTH_CLOSE               freeze the regular session, start AH
+ *   20:05  AFTER_HOURS_CLOSE       the completed after-hours session, final;
+ *                                  the evening report runs from it (v28)
  *
  * Everything is expressed in ET wall-clock minutes and resolved to instants
  * against the market calendar, so an early close moves the last interval and
@@ -43,7 +45,8 @@ export type AssessmentType =
   | 'PREMARKET_0700'
   | 'OPEN_SPIKE_ASSESSMENT'
   | 'RTH_INTERVAL'
-  | 'RTH_CLOSE';
+  | 'RTH_CLOSE'
+  | 'AFTER_HOURS_CLOSE';
 
 export interface ScheduledAssessment {
   type: AssessmentType;
@@ -79,6 +82,8 @@ export const PREMARKET_SCAN_MINS = [6 * 60 + 25, 6 * 60 + 45, 7 * 60] as const;
 export const OPEN_SPIKE_MIN = 9 * 60 + 25;
 export const RTH_INTERVAL_START_MIN = 10 * 60;
 export const RTH_INTERVAL_STEP_MIN = 30;
+/** 20:05 ET: five minutes after extended trading ends, so its figures are final. */
+export const AFTER_HOURS_CLOSE_MIN = 20 * 60 + 5;
 
 /**
  * How long after its scheduled time each checkpoint may still be caught up.
@@ -102,6 +107,8 @@ const CATCH_UP_WINDOW_MINUTES: Record<AssessmentType, number> = {
   RTH_INTERVAL: RTH_INTERVAL_STEP_MIN,
   // Until extended trading ends and the recap takes over.
   RTH_CLOSE: 4 * 60,
+  // Until the 22:00 recap, which carries the same completed session.
+  AFTER_HOURS_CLOSE: RECAP_MIN - AFTER_HOURS_CLOSE_MIN,
 };
 
 const LABEL: Record<AssessmentType, string> = {
@@ -113,6 +120,7 @@ const LABEL: Record<AssessmentType, string> = {
   OPEN_SPIKE_ASSESSMENT: 'Open spike assessment',
   RTH_INTERVAL: 'RTH reassessment',
   RTH_CLOSE: 'RTH close',
+  AFTER_HOURS_CLOSE: '20:05 after-hours close',
 };
 
 export function assessmentLabel(type: AssessmentType): string {
@@ -194,6 +202,7 @@ export function buildSchedule(options: BuildScheduleOptions): ScheduledAssessmen
   }
 
   schedule.push(make('RTH_CLOSE', closeMinutes));
+  schedule.push(make('AFTER_HOURS_CLOSE', AFTER_HOURS_CLOSE_MIN));
   schedule.push(make('NEXT_DAY_RECAP', RECAP_MIN, options.nextTradingDate ?? null));
 
   return schedule.sort((a, b) => a.minutes - b.minutes);

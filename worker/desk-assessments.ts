@@ -31,9 +31,12 @@ import { boardForPhase } from '../lib/market/board';
 import { closeMinutesFromClock, RTH_END_MIN } from '../lib/market/session';
 import { getMeta, openDatabase, type MarketDatabase } from '../lib/market/store/db';
 import { insertDeskEvents } from '../lib/market/store/repo';
+import type { PriceRange } from '../lib/market/rangeRank';
+import { captureRanges } from '../lib/desk/rangeCapture';
 import {
   claimAssessmentSlot,
   completeAssessment,
+  insertAssessmentRanges,
   insertAssessmentTickers,
   readAssessmentTickers,
   readClaimedSlots,
@@ -41,6 +44,7 @@ import {
   recordMissedAssessment,
   writeAssessmentHealth,
   type AssessmentHealth,
+  type AssessmentRangeRecord,
   type AssessmentTickerRecord,
 } from '../lib/market/store/assessmentRepo';
 import {
@@ -99,7 +103,7 @@ function log(message: string): void {
  * evening has technically begun by the time it runs.
  */
 function boardForAssessment(scheduled: ScheduledAssessment) {
-  if (scheduled.type === 'NEXT_DAY_RECAP') {
+  if (scheduled.type === 'NEXT_DAY_RECAP' || scheduled.type === 'AFTER_HOURS_CLOSE') {
     return boardForPhase('AFTER_HOURS');
   }
   if (scheduled.type === 'RTH_CLOSE') {
@@ -159,7 +163,15 @@ interface TickerRow {
   price_at: string | null;
   rth_final_close: number | null;
   halt_state: string | null;
+  ah_reference_close: number | null;
+  ah_high: number | null;
+  ah_low: number | null;
 }
+
+const TICKER_COLUMNS = `symbol, rvol, rvol_rank, ah_rank, ah_percent_change, ah_volume, ah_participation,
+              price, percent_change, cumulative_volume, spread_pct, session_high, session_low,
+              reference_rth_close, reference_rth_close_basis, price_at,
+              rth_final_close, halt_state, ah_reference_close, ah_high, ah_low`;
 
 /**
  * Captures one checkpoint.
@@ -175,23 +187,43 @@ function captureAssessment(
     board: ReturnType<typeof boardForPhase>;
     discoveryRank: number;
     captureCount: number;
+    ranges: readonly PriceRange[];
   },
-): { records: AssessmentTickerRecord[]; reassess: string[] } {
+): { records: AssessmentTickerRecord[]; reassess: string[]; ranges: AssessmentRangeRecord[] } {
   const { scheduled, board, discoveryRank, captureCount } = options;
   const rankColumn = board.rankColumn;
 
   const rows = db
     .prepare(
-      `SELECT symbol, rvol, rvol_rank, ah_rank, ah_percent_change, ah_volume, ah_participation,
-              price, percent_change, cumulative_volume, spread_pct, session_high, session_low,
-              reference_rth_close, reference_rth_close_basis, price_at,
-              rth_final_close, halt_state
+      `SELECT ${TICKER_COLUMNS}
          FROM ticker_session
         WHERE trading_date = @tradingDate
           AND ${rankColumn} IS NOT NULL AND ${rankColumn} <= @limit
         ORDER BY ${rankColumn} IS NULL, ${rankColumn} ASC`,
     )
     .all({ tradingDate: scheduled.tradingDate, limit: captureCount }) as TickerRow[];
+
+  /*
+   * Each range's own top names get a row too, so a report for any range can
+   * read every name it lists as the checkpoint saw it. These RANGE-ONLY names
+   * are captured, never reassessed: queuing research for them would spend
+   * money on names the band board did not carry.
+   */
+  const rangeRecords = captureRanges(db, scheduled.tradingDate, board, options.ranges);
+  const inBand = new Set(rows.map((row) => row.symbol));
+  const rangeOnly = [
+    ...new Set(rangeRecords.flatMap((range) => range.topTickers)),
+  ].filter((symbol) => !inBand.has(symbol));
+  if (rangeOnly.length > 0) {
+    const extra = db
+      .prepare(
+        `SELECT ${TICKER_COLUMNS}
+           FROM ticker_session
+          WHERE trading_date = ? AND symbol IN (${rangeOnly.map(() => '?').join(', ')})`,
+      )
+      .all(scheduled.tradingDate, ...rangeOnly) as TickerRow[];
+    rows.push(...extra);
+  }
 
   const tickers = rows.map((row) => row.symbol);
   const analyses = readCurrentAnalyses(db, tickers);
@@ -308,6 +340,9 @@ function captureAssessment(
       ].slice(0, 6),
       changedFields: [],
       changeSummary: '',
+      ahReferenceClose: row.ah_reference_close,
+      ahHigh: row.ah_high,
+      ahLow: row.ah_low,
     };
 
     const change = detectChanges({
@@ -319,14 +354,14 @@ function captureAssessment(
 
     record.changedFields = change.changedFields;
     record.changeSummary = change.summary;
-    if (change.cycleReassessmentNeeded) reassess.push(row.symbol);
+    if (change.cycleReassessmentNeeded && inBand.has(row.symbol)) reassess.push(row.symbol);
 
     // Rank order is the capture order; index keeps ties stable.
     void index;
     records.push(record);
   });
 
-  return { records, reassess };
+  return { records, reassess, ranges: rangeRecords };
 }
 
 /**
@@ -462,6 +497,8 @@ async function main(): Promise<void> {
             item,
             discoveryRank,
             captureCount: Math.max(discoveryRank * 2, 25),
+            // The configured set range(s). Today one: the board's default.
+            ranges: [{ min: config.boardDefaultMin, max: config.boardDefaultMax }],
             previousDate:
               dates.length > 1 && tradingDate === dates[dates.length - 1] ? dates[0] : null,
           });
@@ -511,6 +548,7 @@ function runAssessment(
     item: ReturnType<typeof dueAssessments>[number];
     discoveryRank: number;
     captureCount: number;
+    ranges: readonly PriceRange[];
     previousDate: string | null;
   },
 ): boolean {
@@ -573,20 +611,22 @@ function captureAndPersist(
     discoveryRank: number;
     captureCount: number;
     startMs: number;
-    options: { previousDate: string | null };
+    options: { previousDate: string | null; ranges: readonly PriceRange[] };
   },
 ): boolean {
   const { id, item, board, discoveryRank, captureCount, startMs, options } = context;
   const scheduled = item.scheduled;
 
-  const { records, reassess } = captureAssessment(db, {
+  const { records, reassess, ranges } = captureAssessment(db, {
     scheduled,
     board,
     discoveryRank,
     captureCount,
+    ranges: options.ranges,
   });
 
   insertAssessmentTickers(db, id, records);
+  insertAssessmentRanges(db, id, ranges);
 
   /*
    * Structural refresh and cycle re-looks are ENQUEUED, never performed here.

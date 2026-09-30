@@ -62,6 +62,7 @@ CHECKPOINTS=(
   "420  PREMARKET_0700"
   "565  OPEN_SPIKE_ASSESSMENT"
   "960  RTH_CLOSE"
+  "1205 AFTER_HOURS_CLOSE"
 )
 # Plus RTH_INTERVAL every 30 minutes from 10:00 to the close.
 for ((m = 600; m <= 960; m += 30)); do CHECKPOINTS+=("$m RTH_INTERVAL"); done

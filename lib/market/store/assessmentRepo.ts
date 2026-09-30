@@ -94,6 +94,14 @@ export interface AssessmentTickerRecord {
   warnings: string[];
   changedFields: string[];
   changeSummary: string;
+  /**
+   * The after-hours path at capture (v28): reference close, high, low, copied
+   * from ticker_session so a report shows the path as the checkpoint saw it.
+   * Optional because rows captured before v28 have none.
+   */
+  ahReferenceClose?: number | null;
+  ahHigh?: number | null;
+  ahLow?: number | null;
 }
 
 interface AssessmentRow {
@@ -345,7 +353,8 @@ export function insertAssessmentTickers(
       cycle, catalyst, structure, intelligence_status, intelligence_source,
       analysis_version_id, evidence_fingerprint, cycle_fingerprint,
       level_summary, halt_state, focus, warnings,
-      changed_fields, change_summary
+      changed_fields, change_summary,
+      ah_reference_close, ah_high, ah_low
     ) VALUES (
       @assessmentId, @ticker, @assessmentRank, @liveSessionRank, @price, @percentChange,
       @rvol, @rvolRank, @ahPercentChange, @ahVolume, @ahParticipation, @ahRank,
@@ -354,7 +363,8 @@ export function insertAssessmentTickers(
       @cycle, @catalyst, @structure, @intelligenceStatus, @intelligenceSource,
       @analysisVersionId, @evidenceFingerprint, @cycleFingerprint,
       @levelSummary, @haltState, @focus, @warnings,
-      @changedFields, @changeSummary
+      @changedFields, @changeSummary,
+      @ahReferenceClose, @ahHigh, @ahLow
     )
     ON CONFLICT (assessment_id, ticker) DO NOTHING
   `);
@@ -395,6 +405,9 @@ export function insertAssessmentTickers(
         warnings: JSON.stringify(row.warnings),
         changedFields: JSON.stringify(row.changedFields),
         changeSummary: row.changeSummary,
+        ahReferenceClose: row.ahReferenceClose ?? null,
+        ahHigh: row.ahHigh ?? null,
+        ahLow: row.ahLow ?? null,
       });
     }
   });
@@ -578,6 +591,9 @@ interface TickerRow {
   warnings: string;
   changed_fields: string;
   change_summary: string;
+  ah_reference_close?: number | null;
+  ah_high?: number | null;
+  ah_low?: number | null;
 }
 
 function parseList(raw: string): string[] {
@@ -634,6 +650,164 @@ export function readAssessmentTickers(
     warnings: parseList(row.warnings),
     changedFields: parseList(row.changed_fields),
     changeSummary: row.change_summary,
+    ahReferenceClose: row.ah_reference_close ?? null,
+    ahHigh: row.ah_high ?? null,
+    ahLow: row.ah_low ?? null,
+  }));
+}
+
+/* ------------------------------------------------------------------- ranges */
+
+export type RangeCountWindow = 'AFTER_HOURS' | 'SESSION_TO_DATE';
+
+export interface RangeCounts {
+  eligible: number;
+  traded: number;
+  up: number;
+  down: number;
+  volumeBaseSeeded: number;
+}
+
+export interface AssessmentRangeRecord extends RangeCounts {
+  rangeKey: string;
+  rangeMin: number;
+  rangeMax: number;
+  countWindow: RangeCountWindow;
+  countsVersion: number;
+  topN: number;
+  topTickers: string[];
+  rankingDefinition: string;
+}
+
+/** "1-20", "0.25-50": the range as its report names it. */
+export function rangeKey(range: { min: number; max: number }): string {
+  return `${range.min}-${range.max}`;
+}
+
+/**
+ * The frozen "overall" counts for one range at one checkpoint.
+ *
+ * Population: ticker_session rows for the date, eligible the way the board is
+ * (readRangeCandidates: no universe row, or discovery_eligible = 1), price
+ * inside [min, max] inclusive; a NULL price is outside. Price is price at
+ * capture, with no latch: these count the market in the range, not the board.
+ * up and down count traded names only.
+ */
+export function computeRangeCounts(
+  db: MarketDatabase,
+  tradingDate: string,
+  range: { min: number; max: number },
+  window: RangeCountWindow,
+): RangeCounts {
+  const traded =
+    window === 'AFTER_HOURS' ? 'COALESCE(ts.ah_participation, 0) > 0' : 'COALESCE(ts.cumulative_volume, 0) > 0';
+  const change = window === 'AFTER_HOURS' ? 'ts.ah_percent_change' : 'ts.percent_change';
+  const seeded = window === 'SESSION_TO_DATE' ? 'ts.volume_base_through IS NOT NULL' : '0';
+  const row = db
+    .prepare(
+      `SELECT COUNT(*) AS eligible,
+              COALESCE(SUM(CASE WHEN ${traded} THEN 1 ELSE 0 END), 0) AS traded,
+              COALESCE(SUM(CASE WHEN ${traded} AND ${change} > 0 THEN 1 ELSE 0 END), 0) AS up,
+              COALESCE(SUM(CASE WHEN ${traded} AND ${change} < 0 THEN 1 ELSE 0 END), 0) AS down,
+              COALESCE(SUM(CASE WHEN ${seeded} THEN 1 ELSE 0 END), 0) AS seeded
+         FROM ticker_session ts
+         LEFT JOIN universe u ON u.symbol = ts.symbol
+        WHERE ts.trading_date = ?
+          AND ts.price IS NOT NULL AND ts.price >= ? AND ts.price <= ?
+          AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
+    )
+    .get(tradingDate, range.min, range.max) as {
+    eligible: number;
+    traded: number;
+    up: number;
+    down: number;
+    seeded: number;
+  };
+  return {
+    eligible: row.eligible,
+    traded: row.traded,
+    up: row.up,
+    down: row.down,
+    volumeBaseSeeded: row.seeded,
+  };
+}
+
+export function insertAssessmentRanges(
+  db: MarketDatabase,
+  assessmentId: number,
+  rows: readonly AssessmentRangeRecord[],
+): void {
+  if (rows.length === 0) return;
+  const statement = db.prepare(`
+    INSERT INTO desk_assessment_ranges (
+      assessment_id, range_key, range_min, range_max, count_window,
+      eligible, traded, up, down, counts_version, volume_base_seeded,
+      top_n, top_tickers, ranking_definition
+    ) VALUES (
+      @assessmentId, @rangeKey, @rangeMin, @rangeMax, @countWindow,
+      @eligible, @traded, @up, @down, @countsVersion, @volumeBaseSeeded,
+      @topN, @topTickers, @rankingDefinition
+    )
+    ON CONFLICT (assessment_id, range_key) DO NOTHING
+  `);
+  const run = db.transaction((batch: readonly AssessmentRangeRecord[]) => {
+    for (const row of batch) {
+      statement.run({
+        assessmentId,
+        rangeKey: row.rangeKey,
+        rangeMin: row.rangeMin,
+        rangeMax: row.rangeMax,
+        countWindow: row.countWindow,
+        eligible: row.eligible,
+        traded: row.traded,
+        up: row.up,
+        down: row.down,
+        countsVersion: row.countsVersion,
+        volumeBaseSeeded: row.volumeBaseSeeded,
+        topN: row.topN,
+        topTickers: JSON.stringify(row.topTickers),
+        rankingDefinition: row.rankingDefinition,
+      });
+    }
+  });
+  run(rows);
+}
+
+export function readAssessmentRanges(
+  db: MarketDatabase,
+  assessmentId: number,
+): AssessmentRangeRecord[] {
+  const rows = db
+    .prepare('SELECT * FROM desk_assessment_ranges WHERE assessment_id = ? ORDER BY range_min, range_max')
+    .all(assessmentId) as Array<{
+    range_key: string;
+    range_min: number;
+    range_max: number;
+    count_window: RangeCountWindow;
+    eligible: number;
+    traded: number;
+    up: number;
+    down: number;
+    counts_version: number;
+    volume_base_seeded: number;
+    top_n: number;
+    top_tickers: string;
+    ranking_definition: string;
+  }>;
+  return rows.map((row) => ({
+    rangeKey: row.range_key,
+    rangeMin: row.range_min,
+    rangeMax: row.range_max,
+    countWindow: row.count_window,
+    eligible: row.eligible,
+    traded: row.traded,
+    up: row.up,
+    down: row.down,
+    countsVersion: row.counts_version,
+    volumeBaseSeeded: row.volume_base_seeded,
+    topN: row.top_n,
+    topTickers: parseList(row.top_tickers),
+    rankingDefinition: row.ranking_definition,
   }));
 }
 
