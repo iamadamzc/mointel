@@ -1741,6 +1741,11 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
 HIS WORDS (this session, 14:06:49Z): "im done trading for the day. board is free." -> Ops: ships after the 10:17 read
   completes (research worker must not restart inside it); matched box before/after of the speed fix pre-registered
   (baseline on 74c1818 after 10:17, control after c3d0f06, reading after 84b0099; observation, not a gate).
+HIS SHIP YES (Ops's session 7bacf0d6, 14:08:40Z, read): "yes to both" -- answered Ops's 14:08:19Z message naming
+  "the Now column ships" and "the faster build ships" and "I ask you about both ships" (whole exchange read; the
+  only 'both'). Ships: c3d0f06 10:34 ET, 84b0099 11:04 ET. GRADES READ done 14:17:15Z (raw to Research).
+  HIS WINDOW 07-10 ET (access log, observation): 789 polls, ALL 200, 0 x 499; full minutes 55-60/min; median 163 KB
+  per 200 (gzip ~19-20%). Confound: a391c61 changed the client after the 09-29 baseline.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
