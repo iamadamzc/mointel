@@ -1671,6 +1671,9 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   WEB FINAL (atomic, pick order): 5f3a272, f272bec, 1703390, 32a9a84, e68137c (comment; rides). COUPLING: 32a9a84's
   guard asserts on files from 1-3 -> no partial set. If he rules the legal edit MATERIAL: cut = 5f3a272 + 1703390 +
   e68137c (+ Design 3); f272bec + 32a9a84 wait for his re-adoption. His adoption answer decides 5 vs 3 Web shas.
+  DESIGN +9e0a3a0: its instrument trimmed '${a} — ${b}' / '— {field}' to a bare glyph and passed it as a placeholder;
+  rule corrected (whole string / sole element content only), 6 more fixed incl. the header light. Design picks:
+  1dacc16, 9a1d8e7, c76e98f, 9e0a3a0; then Web's five (or three). Cut after the 10:27 ships, count pre-registered.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
