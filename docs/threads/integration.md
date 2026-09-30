@@ -1940,6 +1940,17 @@ HIS YES OPEN     ops.md at bd57662d: the guard "goes to him in the same question
                  treating the older yes as covering it.
 OPS ASKED        15:4xZ (delivered): /proc now; his answer on tonight's release; /proc + R2 after launch; anything not in
                  ops.md.
+OPS /proc        15:44:49Z (Ops): web 1631221 / research 1631287 / assess 1631397 on c3d0f06 (start 14:51:49-50Z), market
+                 1574400 on 1b5ead6 (00:15:40Z), NR 0 all; no deploy unit. Releases: 1b5ead6, 372f5eb, 74c1818, c3d0f06.
+                 HIS ANSWER on tonight/guard: NONE (Ops's session; his last turn "yes to both" 14:08Z). Ops agrees it does
+                 not cover the guard or the move to tonight. Ops reminder 034bcf2f 20:07 ET (checks, reminds him only if
+                 absent). Not in ops.md: worktree A:\mointel-ops (branches for 6043db3 / 84b0099 / 46d9f9d).
+EM-DASH ORDER    ORDER CALL (this seat): Design cuts the 12 picks onto 46d9f9d NOW (ahead of it landing) -> I replay -> Ops
+                 gates. SHIPS SAME NIGHT only if he says yes to 46d9f9d, Ops's post-release /proc reads 46d9f9d NR 0, R2
+                 taken, and HIS separate yes on the em-dash release (never folded into the 46d9f9d question). If 46d9f9d
+                 does not ship, the cut is VOID; re-cut onto /proc. Sent to Ops (delivered) and Design (queued), with
+                 the §8 answers asked to come first (reports = his top priority).
+MY REMINDER      7867a2ae one-shot 21:47 ET 09-30 (session-only): checks for Ops's release result; asks only if absent.
 ```
 **THE TWENTIETH SEAT'S LEDGER:**
 ```
