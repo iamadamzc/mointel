@@ -2027,6 +2027,13 @@ RESEARCH STEP 1  080e5ec checker traced rules (check.ts + traced.ts + test; SANG
                  corrected class (escape lost via heredoc; own assert refused, no damage; 1e5f586) -> proposing its
                  hand-off to HIM in its own session (its question; I stand down). My rulings message still queued there;
                  successor's first items named to Research (report table spec to Ops, writer v5, levels in parallel).
+V28 PROGRESS     Ops: 0d4d439 on 46d9f9d (ops/v28-on-46d9f9d, A:\mointel-ops): SCHEMA 28, desk_assessment_ranges, AH
+                 close/high/low on desk_assessment_tickers, sic_description, AFTER_HOURS_CLOSE at 20:05 (tonight catches
+                 up late, generated_late=1); main twin db5d142 gating. v28 STACKS ON THE EM-DASH CUT (95b734e needs main
+                 commits in it) -> APPROVED; if no em-dash release tonight, v28 carries those picks. CONDITIONS for my
+                 replay: report table DDL in v28 (my urgent message reached Ops only after its update, transcript read);
+                 the UNTESTED worker union/no-reassess guard gets a test (extract) or a named ruling. History store in
+                 A:\mointel-hist. Still owed: additive-only; delay vs loss.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
