@@ -1619,6 +1619,10 @@ NOW-CELL CUT    c3d0f06 (tag design/now-cell-on-74c1818) REPLAYED + APPROVED: co
   GRADED (Research): item 2 PASS (13 open = 13 highRes; BIYA open), 3 PASS (4,422 rows, 0 nulls), 4 PASS (6 x 10 s,
   asOf 0.75 s), 5 UNTESTED (no reconnect; positive control saw startup auth). jq defect LABELLED. Items 1-3 all PASS
   -> nothing blocks the Now cell. POST-RESTART CHECK CLOSED (item 6: FAIL as registered / PASS-shaped post hoc).
+15 s FIRST LOAD Design repeat 04:53 ET: NOT reproduced (1,949 ms), but ~97% server TTFB (1,892 ms, box at rest) vs a 1 s
+  poll. ORDER RULED: loadMinuteBars ts bound (repo.ts:209-217, unbounded per-symbol read; 83% of a build per Research)
+  FIRST after 10:17, then history store, then the child table + AH freeze bump. Conditions: 2 tests + local ratio
+  before/after + identical-output check. Ship yes HIS.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
