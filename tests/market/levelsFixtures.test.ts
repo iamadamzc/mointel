@@ -138,6 +138,7 @@ describe.skipIf(dataDir === null)('levels: his four charts (spec section 6, item
   const toBar = (row: Record<string, string>): LevelsMinuteBar => ({
     tradingDate: etDateString(new Date(row.ts!)),
     ts: row.ts!,
+    open: num(row.open),
     high: num(row.high),
     close: num(row.close),
   });

@@ -72,6 +72,8 @@ export interface LevelsMinuteBar {
   tradingDate: string;
   /** Minute START, ISO UTC. */
   ts: string;
+  /** Read only by the today-open tripwire (basisBreak). */
+  open: number | null;
   high: number | null;
   close: number | null;
 }
@@ -112,7 +114,11 @@ export const FIVE_MIN_MS = 5 * MINUTE_MS;
 export const FIFTEEN_MIN_MS = 15 * MINUTE_MS;
 /** W = 0.5% x L (section 1: his "2-3c" at $4-6; a literal 3c collapses sub-$1 names). */
 export const CLUSTER_WIDTH_OF_PRICE = 0.005;
-/** Section 6: consecutive stored session closes at a ratio >= 3 or <= 1/3 are a basis break. */
+/**
+ * Section 6: consecutive stored session closes at a ratio >= 3 or <= 1/3 are a
+ * basis break; section 3's tripwire uses the same ratio for today's first 1m
+ * open against the most recent stored prior session's last 1m close.
+ */
 export const BASIS_BREAK_RATIO = 3;
 /**
  * Two split factors within 1% are the same basis. The same tolerance
@@ -138,6 +144,7 @@ export interface Candle {
 interface ParsedBar {
   tradingDate: string;
   ms: number;
+  open: number | null;
   high: number;
   close: number;
 }
@@ -160,7 +167,8 @@ function sessionBars(bars: readonly LevelsMinuteBar[]): ParsedBar[] {
       windows.set(bar.tradingDate, window);
     }
     if (ms < window[0] || ms >= window[1]) continue;
-    out.push({ tradingDate: bar.tradingDate, ms, high: bar.high, close: bar.close });
+    const open = bar.open !== null && Number.isFinite(bar.open) ? bar.open : null;
+    out.push({ tradingDate: bar.tradingDate, ms, open, high: bar.high, close: bar.close });
   }
   out.sort((a, b) => a.ms - b.ms);
   return out;
@@ -268,26 +276,49 @@ export function clusterMarks(marks: readonly Mark[], width: number): ResistanceL
 export interface ParsedBarLike {
   tradingDate: string;
   ms: number;
+  open: number | null;
   close: number;
 }
 
+function outsideRatio(after: number, before: number): boolean {
+  if (!(before > 0) || !(after > 0)) return false;
+  const ratio = after / before;
+  return ratio >= BASIS_BREAK_RATIO || ratio <= 1 / BASIS_BREAK_RATIO;
+}
+
 /**
- * Section 6: the stored 1m bars are RAW, so the prior sessions may be walked
- * only when nothing says a split landed inside them.
- *   (a) `daily_bars.split_factor` changes inside the 15m window (rows from the
- *       oldest stored prior session through today; null factors cannot speak);
+ * The stored 1m bars are RAW, so the prior sessions may be walked only when
+ * nothing says a split landed inside them OR TODAY. The spec's "no mix"
+ * argument for a split today assumed the split-adjusted history store; on
+ * tonight's raw minutes a split today puts post-split 5m bars beside
+ * pre-split 15m bars, so it is refused too. Any of:
+ *   (a) `daily_bars.split_factor` differs (beyond 1%) across the rows dated
+ *       from the oldest stored prior session through today, which includes
+ *       the most recent daily row; null factors cannot speak;
  *   (b) two consecutive stored prior sessions' closes (each session's last 1m
- *       close) differ by a ratio >= 3 or <= 1/3.
- * Today's session is not in (b): it has no close yet.
+ *       close) at a ratio >= 3 or <= 1/3;
+ *   (c) section 3's tripwire: today's FIRST completed 1m open over the most
+ *       recent stored prior session's last 1m close, >= 3 or <= 1/3.
+ * (c) cannot tell a split from a real gap: a +250% gap with no split (ratio
+ * 3.5) sets it as well. That false positive is accepted: it costs the older
+ * windows for that name, where a missed split would draw levels on the wrong
+ * basis.
  */
 export function detectBasisBreak(
   prior: readonly ParsedBarLike[],
+  today: readonly ParsedBarLike[],
   dailyBars: readonly LevelsDailyBar[],
   oldestPriorDate: string | null,
   tradingDate: string,
+  t: number,
 ): boolean {
   if (oldestPriorDate === null) return false;
 
+  // (a) One basis across the daily rows from the 15m window's oldest date
+  // through today. The most recent daily row is always in this range, or
+  // older than every window date, in which case no window row exists to
+  // differ from it; so this one range is also the "most recent row vs the
+  // window" check.
   let minFactor = Infinity;
   let maxFactor = -Infinity;
   for (const row of dailyBars) {
@@ -298,7 +329,7 @@ export function detectBasisBreak(
   }
   if (minFactor !== Infinity && maxFactor / minFactor > 1 + SAME_SPLIT_FACTOR) return true;
 
-  // Session closes: the last 1m close of each prior session, in date order.
+  // (b) Session closes: the last 1m close of each prior session, in date order.
   const closes = new Map<string, { ms: number; close: number }>();
   for (const bar of prior) {
     const seen = closes.get(bar.tradingDate);
@@ -306,11 +337,14 @@ export function detectBasisBreak(
   }
   const ordered = [...closes.entries()].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
   for (let i = 1; i < ordered.length; i += 1) {
-    const before = ordered[i - 1]![1].close;
-    const after = ordered[i]![1].close;
-    if (!(before > 0) || !(after > 0)) continue;
-    const ratio = after / before;
-    if (ratio >= BASIS_BREAK_RATIO || ratio <= 1 / BASIS_BREAK_RATIO) return true;
+    if (outsideRatio(ordered[i]![1].close, ordered[i - 1]![1].close)) return true;
+  }
+
+  // (c) Today's first completed 1m open against the latest prior close.
+  const latestPriorClose = ordered.length > 0 ? ordered[ordered.length - 1]![1].close : null;
+  const firstOpen = today.find((bar) => bar.ms + MINUTE_MS <= t && bar.open !== null)?.open ?? null;
+  if (latestPriorClose !== null && firstOpen !== null && outsideRatio(firstOpen, latestPriorClose)) {
+    return true;
   }
   return false;
 }
@@ -372,7 +406,7 @@ export function computeResistanceLevels(input: LevelsInput): ResistanceLevels | 
 
   const fiveMin = rollParsed(today, FIVE_MIN_MS, t);
   const oldestPriorDate = prior.length > 0 ? prior[0]!.tradingDate : null;
-  const basisBreak = detectBasisBreak(prior, input.dailyBars, oldestPriorDate, tradingDate);
+  const basisBreak = detectBasisBreak(prior, today, input.dailyBars, oldestPriorDate, tradingDate, t);
 
   const marks: Mark[] = candleMarks(fiveMin, price, '5m');
   let fifteenMinFrom: string | null = null;
