@@ -2153,6 +2153,12 @@ OPS RETIRING     local_bb3d4059 retires on his word ("time to retire?", ~17:1xZ,
 SHOW-ALL CAP     Design 3c0cd04a (local, ungated): nearest 10 + "Show all N levels"; tests 0/1/10/11/140; mutants at
                  prediction; 140 fixture rendered at 1,280 + 1,024. GATE QUEUE held by me until the new Ops opens: Ops's
                  89d39053 run 2, then Design, then Research.
+V5 FREEZE        Research 1ab48be (13:16:22 ET, on origin): pass bar pre-registered in it; frozen blobs verified here equal
+                 at 1ab48be and origin HEAD (check cdfe3896ba81, traced 963ccbedf301, verify b5d452f829c0, research
+                 52a751a778eb, path 196636232499, totals c39b9eeeb83c, pipeline 3340640182f8, stateCountry 081cab7faee2).
+                 Seeds hash-locked earlier 696fd997 (12:23:12 ET). RELEASED to Marketing on my word -> commit file LF ->
+                 Research verifies sha256, harness before calls, N=3 (~$2-3, his "3 yes"), raw before read.
+                 v5b voice run 1cb4ed6: all four kinds publish, 5/49 struck; premarket sample with Commercial (~19:30 ET).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
