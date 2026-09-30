@@ -2461,6 +2461,15 @@ NOW "/min" v4    Next summaries: 19:07:56.45Z (59 flushes, whole p50/max 346.6/2
                  19:08:57.42Z (348.2/2,457.2, 59 over 250). The period containing ~19:07:02Z had a 2.56 s flush and p50 up
                  from 208 to 347 ms vs the prior minute. NOT proof: consistent with Design's slow-flush hypothesis only if
                  the read model's "newest slot" can be ahead of the last flush. Research decides from code (tomorrow).
+NOW "/min" v5    Research (code): newest slot = floor(asOf/10 s)*10 s, never ahead of asOf (= flush clock; heartbeat writes
+                 last_seen with the same ms); a slow flush delays asOf -> "not live", NOT "/min"; trades.db WAL, no read
+                 block. SLOW-FLUSH HYPOTHESIS RULED OUT (I had told HIM it "fits"; corrected to him). Live samples
+                 19:06:47 and 19:07:12Z are 25 s apart, so a 10-20 s board-wide blank fits between them; the only
+                 UNLOGGED cause = vendor ack dropping names. OPEN; tomorrow's two logging lines (Research) catch a
+                 recurrence. Not a defect claim.
+SIC WRITE        Research a4a92a8f on research/sic-write (based on Ops's v28 main twin 9f4133b1; test + 2 mutants 1/1).
+                 CHERRY-PICK ONLY (its cone carries v28). Lands on main after v28's main twin lands; ships in a later
+                 release (tomorrow), not e8822583.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
