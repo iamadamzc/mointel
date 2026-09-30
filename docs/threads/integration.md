@@ -1343,6 +1343,7 @@ SESSION REPORTS  HIS WORDS (this session 23:39:14Z): "what about the session rep
                  successor directly on its id either way.
                  In the prompt: c19b18a (read). NEW RESEARCH = local_bed7ed93 (created 02:15:10Z; cwd/not-archived checked);
                  old d6996864 still titled Research-tmi -> route BY ID until renamed. Briefed; Ops told the id.
+                 d6996864 now Research-tmi-retired + archived (get_session read) -> title Research-tmi is unambiguous.
                  DONE d626f1c (read: research-opening-prompt.md item 3). SPEND: his "1 set ranges, 2 yes, 3 yes"
                  (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
                  are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
