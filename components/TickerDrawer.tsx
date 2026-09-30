@@ -699,7 +699,7 @@ function MomentumCycle({
           <p className="num mt-1 text-[12px] text-ink-2">
             {unverifiedRunHigh.raw}{' '}
             <span className="text-[11px] text-ink-3">
-              — {unverifiedRunHigh.field}; nothing establishes whether this belongs to the current
+              ({unverifiedRunHigh.field}); nothing establishes whether this belongs to the current
               cycle
             </span>
           </p>
