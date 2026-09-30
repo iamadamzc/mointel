@@ -12558,3 +12558,21 @@ is now 1b5ead6 (its own). Owner Ops: re-pin a release at or above the floor, or 
   config after the 10:12 grades read.
 
 **HAND-OFF PROMPT WRITTEN 2026-09-30 03:4xZ (23:4x ET):** docs/ops-opening-prompt.md, from the 03:35:35Z box read. This seat still runs 00:57 / 04:33 / 10:12 ET and appends their results below; his ruling: hand off 2026-09-30 after the 10:12 read.
+
+## SUCCESSOR OPS SEAT OPENS — 2026-09-30 03:38Z (Opus 5.5); box read matches the prompt
+
+Session local_bb3d4059-d414-40e5-83c1-7330eafe25c0, titled Ops-tmi (the retiring seat is local_37a1741e, titled
+Ops-tmi-retired, and still runs 00:57 / 04:33 / 10:12 ET per his ruling). **Box read 03:39:03Z, read-only:**
+web 1587281 / research 1587339 / assess 1587457 on 74c1818 (start 02:33:33Z), market 1574400 on 1b5ead6 (start
+00:15:40Z), NR 0 on all four; releases 1b5ead6 372f5eb 74c1818 803008b; pins market-floor -> 1b5ead6 (v27, backup
+none), rollback-baseline -> 372f5eb (v18); health 200 in 8 ms, schema 27/27, NEXT_DAY_PREP, tradeCapture RECORDING,
+bucketsWritten 0 (no trades since the 00:15Z start; expected to rise from 04:00 ET, the retiring seat's 04:33 read);
+trades.db user_version 2; env 25 keys by name (incl. CAPTURE_PRICE_MIN/MAX, IDENTITY_DB_PATH, OAUTH_REDIRECT_URI);
+62G free of 77G; 184 MB free RAM, 2.4 GB available. **This seat takes nothing before the retiring seat's 10:12 read;**
+its first work (the history store) triggers after it.
+
+### THIS SEAT'S ERROR LEDGER (session-hygiene §2), session opened 2026-09-30 03:38Z
+```
+error (asserted vs true)                                          TYPE                              repeat?  caught by
+(none yet)
+```
