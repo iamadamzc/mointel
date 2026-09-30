@@ -1507,6 +1507,10 @@ error                                                  TYPE                     
   as the fix; asOf also bounds fetched_at <= asOf      defect (README: RELAY THE DEFECT,           (Design)
   (researchRepo.ts readSources) -> no source survives  NOT THE FIX SHAPE)
   (92/94). Design used 2026-08-18T00:00:00Z (7a62d62).
+6 told Ops AND HIM "(c') has no reminder" from a      a negative from a search that      no       peer
+  grep for cron "55 0 30 9"; Ops had scheduled it at  could not see the present case             (Ops)
+  00:57 ("57 0 30 9", 7 entries). Retracted to him.   (memory: failed checks return
+                                                      plausible answers)
 ```
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
