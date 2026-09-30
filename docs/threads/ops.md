@@ -12842,3 +12842,6 @@ A:\mointel, not archived, not 962d5920). Tonight's 46d9f9d and R2 go to the succ
 Local state not otherwise recorded: worktree A:\mointel-ops (node_modules = junction to A:\mointel's) with branches
 ops/minute-bars-bound-on-74c1818 (6043db3), ops/minute-bars-bound-on-c3d0f06 (84b0099), ops/preflight-live-check-on-84b0099
 (46d9f9d); session cron 034bcf2f at 20:07 ET (dies with this session).
+**Integration (20th) order call ~15:5xZ: em-dash release SAME NIGHT, conditional:** Design cuts its 12 picks onto
+46d9f9d now; Integration replays; Ops gates; launch only after post-release /proc reads 46d9f9d x3 NR 0 AND R2 is taken;
+its own yes from him, asked only once gated, separately. If 46d9f9d does not ship tonight, that cut is void.
