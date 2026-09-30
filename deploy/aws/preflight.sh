@@ -25,15 +25,30 @@
 # may be RUNNING at any moment of 07:00-10:00 ET on a weekday, so a start is
 # refused from DEPLOY_STOP_MAX minutes before 07:00 until 10:00.
 # DEPLOY_WINDOW_OVERRIDE does not cover this; it has its own, deliberately.
+#
+# AND THE LIVE-STORE CHECK, a third concern. deploy.sh's pre-stop quick_check
+# reads the whole live store with the services up. On 2026-09-30 it took 803.8 s
+# on 4.3 GB + 0.7 GB WAL at 10:38 ET, the web tier did not answer /api/health
+# within 20 s, and the market worker's flushes ran 6-10 s (49-54 a minute
+# instead of 60). The store only grows. So until that check stops reading the
+# live store, no deploy may be RUNNING at any moment of 04:00-20:00 ET on a
+# weekday, while the market worker is writing a session. A deploy can run
+# LIVE_CHECK_RUN_MAX minutes before its stop (15 measured that day). Holidays
+# are not known here and stay refused, the cautious direction. Neither other
+# override covers it; it has its own.
 set -euo pipefail
 
 PROTECTED_MINUTES=${PROTECTED_MINUTES:-5}
 OVERRIDE=${DEPLOY_WINDOW_OVERRIDE:-}
 TRADING_OVERRIDE=${TRADING_WINDOW_OVERRIDE:-}
+LIVE_CHECK_OVERRIDE=${LIVE_STORE_CHECK_OVERRIDE:-}
 STOP_MIN=${DEPLOY_STOP_MIN:-2}
 STOP_MAX=${DEPLOY_STOP_MAX:-12}
 TRADING_START=420   # 07:00 ET
 TRADING_END=600     # 10:00 ET
+LIVE_CHECK_START=240   # 04:00 ET, premarket opens
+LIVE_CHECK_END=1200    # 20:00 ET, after-hours closes
+LIVE_CHECK_RUN_MAX=${DEPLOY_LIVE_CHECK_RUN_MAX:-20}
 
 log() { echo "[preflight] $*"; }
 
@@ -127,6 +142,19 @@ main() {
     else
       echo "[preflight] BLOCKED: his trading window. No deploy may be running 07:00-10:00 ET on a weekday, and one started now can run until +${STOP_MAX}m." >&2
       echo "[preflight] Wait until 10:00 ET clears its own checkpoints, or re-run with TRADING_WINDOW_OVERRIDE=\"his word, and why\"." >&2
+      exit 3
+    fi
+  fi
+
+  # The live-store check: a start refused if the deploy could still be running
+  # at any moment of 04:00-20:00 ET on a weekday.
+  if (( dow <= 5 )) && (( now < LIVE_CHECK_END )) && (( now + LIVE_CHECK_RUN_MAX >= LIVE_CHECK_START )); then
+    if [ -n "$LIVE_CHECK_OVERRIDE" ]; then
+      log "LIVE-STORE CHECK OVERRIDE: quick_check will read the live store inside 04:00-20:00 ET"
+      log "LIVE-STORE CHECK OVERRIDE REASON: $LIVE_CHECK_OVERRIDE"
+    else
+      echo "[preflight] BLOCKED: the live-store check. deploy.sh's pre-stop quick_check reads the whole live store (803.8 s on 2026-09-30) and stalls the web tier and the market worker's writes; no deploy may be running 04:00-20:00 ET on a weekday, and one started now can run until +${LIVE_CHECK_RUN_MAX}m." >&2
+      echo "[preflight] Start after 20:00 ET, or re-run with LIVE_STORE_CHECK_OVERRIDE=\"his word, and why\"." >&2
       exit 3
     fi
   fi
