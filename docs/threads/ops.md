@@ -12751,3 +12751,15 @@ research worker activity is uncontrolled. Expectation from the local ratio 0.196
 bound), two separate releases, RESTART_MARKET=no, DEPLOY_TESTS_SKIP on this session's gates (177/177, 178/178).
 Plan: grades read 10:17 (not restarted mid-read) -> R0 -> c3d0f06 in the 10:34-10:42 slot -> R1 -> 84b0099 in the
 11:04-11:12 slot -> R2. Each ship base-checked from /proc in the same command.
+
+## 2026-09-30 10:17 ET: GRADES V2 READ + BOARD KEEP-UP, raw (guard: retiring seat archived, not running; SQL = 77d1e66)
+**Part A, grades-v2-read.sql run ONCE at 14:17:08-14:17:15Z; full raw output: docs/research/grades-v2-read-2026-09-30.txt.**
+C (pv 1, pre-boundary, split/consolidation/ratio summaries): 22 rows; MTNB present, id 2445 (WEAK_NEGATIVE_DILUTIVE).
+A (generated_at >= 16:17:16Z 09-29), all pv 2: LEGITIMATE_POSITIVE 23, MODERATE_MIXED_SECONDARY 34, NONE 4, STRONG 8,
+UNKNOWN 6, WEAK_NEGATIVE_DILUTIVE 29 (= 104). B (amended): 1 row, id 2528 BIYA MODERATE_MIXED_SECONDARY.
+**Part B, his /api/market polls 11:00-14:00Z (07:00-10:00 ET) 09-30, access log only, OBSERVATION:** one client
+(108.28.204.67), 789 requests, **all 200, 0 x 499, 0 other.** Requests in 18 of 180 minutes; 162 zero-request minutes
+(tab hidden or closed, NOT drops). Full minutes 55-60/min (11:40-11:45, 12:59, 13:36-13:39); edges 5/18/6/49/25/19/24.
+Bytes per 200: min 154,173 / median 163,324 / max 171,717 (gzip; ~19-20% of the ~800-860 KB raw). vs 09-29 11:00-11:05Z
+54-59/60. Confounds: time of day; tab visibility; the client poll fix a391c61 (09-29 15:17Z) came AFTER that baseline
+and may change whether a slow build shows as a 499 at all; gzip since 1b5ead6; 74c1818 + Now field live.
