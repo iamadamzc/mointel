@@ -1,0 +1,159 @@
+import { readFileSync } from 'node:fs';
+
+import ts from 'typescript';
+import { describe, expect, it } from 'vitest';
+
+import { computedText, horizonText, levelLines, levelsNote } from '@/lib/dashboard/resistance';
+import type { ResistanceLevel, ResistanceLevels } from '@/lib/market/resistance';
+
+/*
+ * Written from his rulings and spec §2 (docs/research/resistance-levels-spec.md),
+ * not from the implementation:
+ * - every level is shown, nearest first ("a, show all 7"); the only tag is the
+ *   timeframe; nothing highlighted, nothing called measured or tested;
+ * - absent (not computed) and empty (computed, nothing stored above) read
+ *   differently, and empty never says "all-time high".
+ */
+
+const level = (price: number, extra: Partial<ResistanceLevel> = {}): ResistanceLevel => ({
+  price,
+  low: price,
+  high: price,
+  timeframes: ['5m'],
+  tops: 1,
+  newestTopEnd: '2026-09-29T14:00:00Z',
+  oldestTopEnd: '2026-09-29T14:00:00Z',
+  ...extra,
+});
+
+const row = (extra: Partial<ResistanceLevels> = {}): ResistanceLevels => ({
+  symbol: 'SLXN',
+  tradingDate: '2026-09-29',
+  computedAt: '2026-09-29T15:55:00Z',
+  price: 4,
+  levels: [],
+  horizon: {
+    fiveMinFrom: '2026-09-29T08:00:00Z',
+    fifteenMinFrom: '2026-09-09T08:00:00Z',
+    dailyFrom: '2025-09-29T12:00:00Z',
+  },
+  ...extra,
+});
+
+describe('every level, nearest first', () => {
+  it('draws all of them, with no cap, in ascending order whatever order they arrive in', () => {
+    const prices = [6.5, 4.1, 5.02, 4.4, 9, 4.25, 7.75, 12, 4.05];
+    const lines = levelLines(row({ levels: prices.map((p) => level(p)) }));
+    expect(lines).toHaveLength(prices.length);
+    expect(lines.map((line) => line.price)).toEqual(
+      [...prices].sort((a, b) => a - b).map((p) => `$${p.toFixed(2)}`),
+    );
+  });
+
+  it('says how far above the price each level sits', () => {
+    const [line] = levelLines(row({ price: 4, levels: [level(4.2)] }));
+    expect(line.distance).toBe('+5.0%');
+  });
+
+  it('tags each level with its timeframes, coarsest first as given, and nothing else', () => {
+    const [line] = levelLines(row({ levels: [level(5, { timeframes: ['daily', '15m', '5m'] })] }));
+    expect(line.tags).toBe('daily · 15m · 5m');
+  });
+
+  it('shows a span only when tops at different prices merged', () => {
+    const [single, merged] = levelLines(row({ levels: [level(4.5), level(5, { low: 4.98, high: 5.03, tops: 3 })] }));
+    expect(single.span).toBeNull();
+    expect(merged.span).toBe('4.98 to 5.03');
+    expect(merged.title).toMatch(/^3 candle tops/);
+  });
+
+  it('marks the one far-back daily peak', () => {
+    const [near, far] = levelLines(row({ levels: [level(4.5), level(9, { beyondHorizon: true })] }));
+    expect(near.farBack).toBe(false);
+    expect(far.farBack).toBe(true);
+  });
+
+  it('drops a level that is not a price rather than drawing it', () => {
+    expect(levelLines(row({ levels: [level(4.5), level(Number.NaN), level(0)] }))).toHaveLength(1);
+  });
+});
+
+describe('absent is not empty', () => {
+  it('a computed row with nothing stored above says so, never "all-time high"', () => {
+    const note = levelsNote(row({ levels: [], aboveAllStored: true }));
+    expect(note).toBe('Price is above every high we have stored, back to Sep 29.');
+    expect(note).not.toMatch(/all[- ]time/i);
+    // With no daily horizon the sentence loses its date, not its meaning.
+    const undated = row({ levels: [], aboveAllStored: true, horizon: { fiveMinFrom: null, fifteenMinFrom: null, dailyFrom: null } });
+    expect(levelsNote(undated)).toBe('Price is above every high we have stored.');
+  });
+
+  it('a computed row with no level and no such flag says only what was read', () => {
+    expect(levelsNote(row({ levels: [] }))).toBe('No level above the price in the candles read.');
+  });
+
+  it('a split behind the store is stated, and levels still draw', () => {
+    const r = row({ basisBreak: true, levels: [level(4.5)] });
+    expect(levelsNote(r)).toMatch(/only today’s 5-minute candles were read/);
+    expect(levelLines(r)).toHaveLength(1);
+  });
+
+  it('a row with levels and nothing unusual adds no note', () => {
+    expect(levelsNote(row({ levels: [level(4.5)] }))).toBeNull();
+  });
+});
+
+describe('how far back it looked, and from where', () => {
+  it('names each ladder that had data', () => {
+    expect(horizonText(row())).toBe('Read: today’s 5m candles, 15m from Sep 9, daily from Sep 29, 2025.');
+  });
+
+  it('drops a ladder with no data and says nothing when none had any', () => {
+    expect(
+      horizonText(row({ horizon: { fiveMinFrom: '2026-09-29T08:00:00Z', fifteenMinFrom: null, dailyFrom: null } })),
+    ).toBe('Read: today’s 5m candles.');
+    expect(horizonText(row({ horizon: { fiveMinFrom: null, fifteenMinFrom: null, dailyFrom: null } }))).toBeNull();
+  });
+
+  it('states the price and the 5-minute close it was computed from', () => {
+    expect(computedText(row({ price: 3.84 }))).toBe('From $3.84 at the 11:55 ET 5-minute close.');
+    expect(computedText(row({ computedAt: 'nope' }))).toBeNull();
+  });
+});
+
+describe('his label, not a measurement', () => {
+  const FORBIDDEN = /\b(measured|tested|strength|strong|weak|all[- ]time)\b/i;
+
+  it('no word the section prints claims strength or a test', () => {
+    const r = row({
+      levels: [level(4.5), level(5, { timeframes: ['daily', '15m'], low: 4.98, high: 5.03, tops: 2 }), level(9, { beyondHorizon: true })],
+      basisBreak: true,
+    });
+    const printed = [
+      ...levelLines(r).flatMap((line) => [line.price, line.span ?? '', line.distance, line.tags, line.title]),
+      levelsNote(r) ?? '',
+      levelsNote(row({ aboveAllStored: true })) ?? '',
+      levelsNote(row({ aboveAllStored: true, horizon: { fiveMinFrom: null, fifteenMinFrom: null, dailyFrom: null } })) ?? '',
+      horizonText(r) ?? '',
+      computedText(r) ?? '',
+    ];
+    for (const text of printed) expect(text).not.toMatch(FORBIDDEN);
+  });
+
+  it('nor does any string or JSX text in the section component or its view', () => {
+    // Comments may explain the ruling; only what can render is checked.
+    for (const file of ['components/ResistanceLevels.tsx', 'lib/dashboard/resistance.ts']) {
+      const source = readFileSync(file, 'utf8');
+      const tree = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+      const texts: string[] = [];
+      const visit = (node: ts.Node) => {
+        if (ts.isStringLiteralLike(node) || ts.isTemplateLiteralToken(node)) texts.push(node.text);
+        if (ts.isJsxText(node)) texts.push(node.getText(tree));
+        ts.forEachChild(node, visit);
+      };
+      visit(tree);
+      expect(texts.length).toBeGreaterThan(5);
+      for (const text of texts) expect(text).not.toMatch(FORBIDDEN);
+    }
+  });
+});
