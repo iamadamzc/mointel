@@ -528,7 +528,9 @@ for Research's data map to confirm before the SANG example is written.**
 "we're watching N names into the premarket" — then the after-hours overall picture:
 how many traded AH in range, up vs down. Written from stored counts, never an
 invented "quiet/wild" characterization.
-*Needs: the count of the report's in-range list; the AH traded/up/down totals from
+*Needs: N = the count of ticker lines the report actually PUBLISHES — after the
+12-name cap AND after the checker's strikes, never the ranked-row count (a reader
+must be able to count the names the report shows). The AH traded/up/down totals from
 `ticker_session` (both confirmed in the data map).*
 
 **2. Per-ticker blocks — a path line, then two or three sentences.**
@@ -630,23 +632,45 @@ the 07:00 premarket build the move has not happened yet, so the identical senten
 would read as a forecast — the 07:00 shape needs a different tense (what the catalyst
 IS, not what it will do), which is a build task there, not a change to this block.
 
-### The opening narrative — to his definition
+### The opening narrative — a fixed first sentence, then voice
 
 **His ruling (first-hand, via Integration):** the opening is the report's OWN list
-("we're watching N names into the premarket"), then the after-hours overall picture
-(how many traded AH in range, up vs down). For #551 (the 09-28 recap that prepares
-09-29): the recap board has 13 names in the $1–$20 range, but the report caps its
-list at 12 (`REPORT_NAME_CAP`, a hard cap until Ops stores each range's own top N),
-so the count the reader can see is 12; after-hours totals from `ticker_session`
-(09-28 $1–$20: 3,245 traded AH, 967 up / 748 down). Written to that:
+("we're watching N names into premarket"), then the after-hours overall picture.
 
-> **We're watching 12 names into the premarket.** Across the $1–$20 range, 3,245
-> traded after hours — 967 up, 748 down.
+**Build split (Integration/Research):** the FIRST sentence is SYSTEM TEXT, not voice
+— `applyStrikes` computes N from the ticker lines that survive the checker, so it
+always matches the published list, and the writer never states a count (the checker
+strikes any line that does). The SECOND sentence is voice: the overall picture for
+the kind's window, restating the sheet's counts.
 
-| Clause | Source |
-|---|---|
-| "watching 12 names" | the report's DISPLAYED list size (`REPORT_NAME_CAP` = 12; 551 has 13 in-range, capped to 12). N must be the count the reader can find — the checker traces it to the line count |
-| "3,245 traded after hours — 967 up, 748 down" | `ticker_session` 09-28, $1–$20 (data map) |
+**N = the count of ticker lines the report PUBLISHES — after the 12-name cap
+(`REPORT_NAME_CAP`) AND after strikes — never the ranked-row count.** A reader must be
+able to count the names the report shows. (#551 has 13 in-range, capped to 12, none
+struck → N = 12.)
+
+**The fixed first sentence, per report kind** (mine; `{N}` is the computed slot;
+"name" is singular when N is 1):
+
+| kind | N ≥ 1 | N = 0 |
+|---|---|---|
+| Premarket (from the recap) | We're watching {N} names into the premarket. | Nothing on watch into the premarket. |
+| Into RTH (09:25) | We're watching {N} names into the open. | Nothing on watch into the open. |
+| Power hour (14:30) | We're watching {N} names into the last hour. | Nothing on watch into the last hour. |
+| After-hours (the close) | We're watching {N} names into after-hours. | Nothing on watch into after-hours. |
+
+*Singular:* "We're watching 1 name into the premarket." — "name", not "names". *Zero*
+never reads "watching 0 names"; it is the "Nothing on watch …" line.
+
+**The voice second sentence — the overall picture for that kind's window** (premarket
+report: the after-hours session that just closed; into-RTH: the premarket; power
+hour: the day so far; after-hours: the regular session), restating stored counts. For
+#551 (premarket, 09-28 $1–$20 after-hours totals from `ticker_session`):
+
+> Across the $1–$20 range, 3,245 traded after hours — 967 up, 748 down.
+
+So #551's opening reads: **"We're watching 12 names into the premarket. Across the
+$1–$20 range, 3,245 traded after hours — 967 up, 748 down."** — first sentence system
+text (12 = published lines after cap and strikes), second sentence voice.
 
 *Float style, from his ruling:* verdict only, in a "not independently verified"
 register — never a number. **"Small" is NOT producible** and does not go in: no
