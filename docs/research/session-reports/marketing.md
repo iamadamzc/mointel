@@ -661,15 +661,20 @@ segment. Country is the decoded COUNTRY only (A6 to "Canada"), no state or provi
 same class as the dropped city.
 
 **Path line** (surface, from `{from, high, now, fromBasis}`). The writer no longer
-restates the path, so the basis has to live on the path line or the first number has
-no frame. Label the first point by `fromBasis`, keep the rest positional:
+restates the path, so the basis has to live on the path line or the number has no
+frame. **Design owns the label words and finalised them** (`design.md` row 3a,
+`6fb68956`), taking my "labelled, never bare" recommendation and fixing a real error
+in my draft: no label may be relative to the moment of READING (the premarket report
+is written the evening before and read the next morning, so "today's close" and "now"
+name the wrong day and the wrong time). Final forms:
 
-> intraday (`PRIOR_CLOSE`): **$3.59 prior close → $6.01 high → $5.10 now**
-> premarket (`TODAY_CLOSE`): **$3.59 today's close → $6.01 after-hours high → $5.10 now**
+> intraday: **$3.59 prior close → $6.01 high → $5.10 at 09:27 ET**
+> premarket: **$3.59 Tue close → $6.01 AH high → $5.10 AH close**
 
-If Design wants it barer, the minimum that keeps a frame is to tag the first point
-only ("$3.59 prior close → $6.01 → $5.10"); a fully bare "$3.59 → $6.01 → $5.10"
-drops the basis and should not ship. Recommend the labelled form.
+The last point is absolute (the checkpoint's ET clock intraday; the after-hours close
+on the premarket report), and the first is the weekday of the report's trading date,
+never "today". A fully bare "$3.59 → $6.01 → $5.10" still should not ship: it drops
+the basis.
 
 ### The opening narrative, a fixed first sentence, then voice
 
