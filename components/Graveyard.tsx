@@ -149,7 +149,7 @@ export function Graveyard({ rows, onSelect, ranksOmitted }: GraveyardProps) {
           <p className="mt-1.5 rounded-sm border border-dashed border-line-2 bg-panel px-3 py-3 text-[12px] text-ink-2">
             {summary.wired
               ? 'No name has gone quiet long enough to leave the board this session.'
-              : 'Activity is not being recorded yet, so nothing can be listed here. This is not an empty graveyard — the measurement is not reaching this surface.'}
+              : 'Activity is not being recorded yet, so nothing can be listed here. This is not an empty graveyard. The measurement is not reaching this surface.'}
           </p>
         )
       ) : null}

@@ -589,7 +589,7 @@ export function cycleBadge(
  * wrong" gets discounted in both directions, "can only be understated" cannot.
  */
 export const PRIOR_HIGH_ONLY_TITLE =
-  'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. The cycle frame is 04:00–20:00, but highs before today are stored over a narrower window — they exclude after-hours and may exclude premarket — so a prior high can only be understated, never overstated.';
+  'The desk cannot establish whether today started a new cycle, so it will not say which high this move is measured against. The prior high is shown because it is overhead supply either way. The cycle frame is 04:00–20:00, but highs before today are stored over a narrower window (they exclude after-hours and may exclude premarket), so a prior high can only be understated, never overstated.';
 
 export interface StartedReading {
   /** `STARTED 5AM` when the hour can be stood behind, else `STARTED TODAY`. */
@@ -639,7 +639,7 @@ export function startedLabel(input: {
     return {
       label: LIVE_START_LABEL,
       detail: minute
-        ? `First ranked at ${minute}${rvol} — but the desk was not watching from the session open, so that is when it was FIRST SEEN and not necessarily when it started.`
+        ? `First ranked at ${minute}${rvol}, but the desk was not watching from the session open, so that is when it was FIRST SEEN and not necessarily when it started.`
         : 'The desk has no first-ranked time for this name.',
     };
   }

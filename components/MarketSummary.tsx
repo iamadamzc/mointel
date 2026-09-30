@@ -123,7 +123,7 @@ export function MarketSummary({
        * matches the word — and matches the COLOUR in the Why column, which is
        * what he reads green as.
        */
-      hint: 'The desk found a catalyst and it is FRESH — the green rows in Why',
+      hint: 'The desk found a catalyst and it is FRESH: the green rows in Why',
       apply: (current) => ({ ...current, catalyst: current.catalyst === 'FRESH' ? 'ALL' : 'FRESH' }),
       active: (current) => current.catalyst === 'FRESH',
     },

@@ -172,7 +172,7 @@ function basisRefusal(reason: DailyBarBasisReason | null): string {
     case 'MIXED_LABELS':
       return 'The retained history mixes adjustment bases, so a prior high cannot be compared with today.';
     case 'UNRECONCILED_VINTAGES':
-      return 'The retained history is split-adjusted but was fetched on more than one date, and no split basis is established for it — so a split between those fetches could have restated part of it and not the rest.';
+      return 'The retained history is split-adjusted but was fetched on more than one date, and no split basis is established for it, so a split between those fetches could have restated part of it and not the rest.';
     case 'BASIS_CONFLICT':
       return 'The retained history is split-adjusted, but its split factors disagree across its fetch dates, so part of it sits on a stale basis.';
     default:
@@ -261,7 +261,7 @@ export function resolveBlueSkyThreshold(
   if (corroborating < MIN_CORROBORATING_SESSIONS) {
     return {
       ...base,
-      unverifiedReason: `The ${money(price)} high on ${ceiling.tradingDate} is an isolated spike — no other retained session came within ${Math.round((1 - NEAR_CEILING) * 100)}% of it.`,
+      unverifiedReason: `The ${money(price)} high on ${ceiling.tradingDate} is an isolated spike: no other retained session came within ${Math.round((1 - NEAR_CEILING) * 100)}% of it.`,
     };
   }
 
@@ -346,7 +346,7 @@ export function resolveBlueSky(
 
   return {
     status: 'NOT_BLUE_SKY',
-    label: `NOT BLUE SKY — OVERHEAD AT ${money(ceiling)}`,
+    label: `NOT BLUE SKY · OVERHEAD AT ${money(ceiling)}`,
     threshold,
     distancePct,
   };

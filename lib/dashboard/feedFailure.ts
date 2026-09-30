@@ -76,7 +76,7 @@ export interface FeedFailureLine {
 export function feedFailureLine(failure: FeedFailure, subject: string): FeedFailureLine {
   if (failure.kind === 'UNAUTHORIZED') {
     return {
-      text: `Signed out — ${subject} is frozen until you sign in again`,
+      text: `Signed out: ${subject} is frozen until you sign in again`,
       terminal: true,
     };
   }

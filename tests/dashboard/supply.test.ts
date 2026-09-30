@@ -83,7 +83,7 @@ describe('the settling case', () => {
   it('marks a bound at or above every share outstanding', () => {
     const read = supplyReading(pair({ floorShares: 14_000_000, floorRatio: 1.4 }))!;
     expect(read.settles).toBe(true);
-    expect(read.floor).toContain('exceeds every share outstanding');
+    expect(read.floor).toContain('exceeding every share outstanding');
   });
 
   it('does not settle just below', () => {

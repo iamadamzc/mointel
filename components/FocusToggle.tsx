@@ -37,7 +37,7 @@ export function FocusToggle({
       aria-label={focused ? `Remove ${ticker} from Focus` : `Add ${ticker} to Focus`}
       title={
         focused
-          ? `${ticker} is in Focus. Removing it changes nothing else — it stays in Discovery, stays tracked, and keeps its research.`
+          ? `${ticker} is in Focus. Removing it changes nothing else: it stays in Discovery, stays tracked, and keeps its research.`
           : `Keep ${ticker} in Focus for this session`
       }
       onClick={(event) => {

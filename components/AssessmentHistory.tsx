@@ -141,7 +141,7 @@ export function AssessmentSnapshotBoard({ id }: { id: number }) {
         </h2>
         {/* The most important label on this view. */}
         <StatusBadge
-          label="Snapshot — not live"
+          label="Snapshot · not live"
           tone="warn"
           title={`Recorded at ${assessment.completedAt ?? assessment.scheduledFor}. Nothing on this view updates.`}
         />

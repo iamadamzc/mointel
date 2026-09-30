@@ -30,7 +30,7 @@ export function ActivitySparkline({ window, price, spreadPct }: ActivitySparklin
     return (
       <span
         className="text-[10px] text-ink-3"
-        title="No minute activity recorded for this name — not measured, which is different from silent."
+        title="No minute activity recorded for this name. Not measured, which is different from silent."
       >
         —
       </span>
