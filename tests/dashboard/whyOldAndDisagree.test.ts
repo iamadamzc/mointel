@@ -3,7 +3,7 @@
  *
  * 1. An OLD catalyst row (older than yesterday, not believed to explain the
  *    move) stops leading with its grade: the letter DIMS and the headline reads
- *    "No fresh catalyst · latest: <date> — <summary>". `OLD` stays; rows where
+ *    "No fresh catalyst · latest: <date> · <summary>". `OLD` stays; rows where
  *    no catalyst was found are unchanged.
  * 2. When the Sheet and the desk's own research disagree on the catalyst, the
  *    Discovery row MARKS it. The row's letter and headline come from the Sheet
@@ -86,7 +86,7 @@ describe('an OLD catalyst row', () => {
     expect(why.code).toBe('OLD_CATALYST');
     expect(why.tone).toBe('dim');
     expect(why.headline).toBe(
-      `No fresh catalyst · latest: ${etDay(etDaysAgo(4))} — NYSE American notice of non-compliance.`,
+      `No fresh catalyst · latest: ${etDay(etDaysAgo(4))} · NYSE American notice of non-compliance.`,
     );
     // The grade itself is not hidden; it is dimmed.
     expect(why.grade).toBe('C');

@@ -389,7 +389,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
   const day = onlyOld ? etDay(eventAt) : null;
   const summary = catalyst?.summary?.trim() || null;
   const oldHeadline = onlyOld
-    ? `No fresh catalyst · latest: ${[day, summary].filter(Boolean).join(' — ') || 'no summary'}`
+    ? `No fresh catalyst · latest: ${[day, summary].filter(Boolean).join(' · ') || 'no summary'}`
     : null;
 
   const catalystComparison =

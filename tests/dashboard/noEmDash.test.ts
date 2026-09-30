@@ -39,19 +39,26 @@ const TEXT_KINDS = new Set([
 
 /*
  * A PLACEHOLDER stands where a value would be, so nothing sits beside it: a
- * whole string ('—'), or JSX text that is its element's only content
- * (<td>—</td>). A dash in a template part (`${a} — ${b}`) or in JSX text next
- * to an expression ("— {field}") always has a value beside it, so it is
- * writing. The first version of this test trimmed those to a bare dash and
- * called them placeholders, and five went through (health.ts:207 among them,
- * found by Ops). Web's property, which is the right one.
+ * string that IS the glyph, exactly ('—'), or JSX text that is its element's
+ * only content (<td>—</td>). A dash in a template part (`${a} — ${b}`) or in
+ * JSX text next to an expression ("— {field}") always has a value beside it,
+ * so it is writing. The first version of this test trimmed those to a bare
+ * dash and called them placeholders, and five went through (health.ts:207
+ * among them, found by Ops). Web's property, which is the right one.
+ *
+ * A STRING is judged UNTRIMMED: a padded ' — ' is a separator that code joins
+ * between two values (`.join(' — ')`, `label + ' — ' + detail`), so it is
+ * writing. Trimming it to a bare dash let three through (why.ts, MarketStatus,
+ * ResearchEngineStatus), found by Research, whose twin guard already judged
+ * the string whole. Only JSX text is trimmed, because JSX collapses the
+ * whitespace around an element's only content.
  */
-function isPlaceholder(node: ts.Node, bare: string): boolean {
-  if (bare !== EM_DASH) return false;
+function isPlaceholder(node: ts.Node, text: string): boolean {
   if (node.kind === ts.SyntaxKind.StringLiteral || node.kind === ts.SyntaxKind.NoSubstitutionTemplateLiteral) {
-    return true;
+    return text === EM_DASH;
   }
   if (node.kind === ts.SyntaxKind.JsxText) {
+    if (text.trim() !== EM_DASH) return false;
     const parent = node.parent;
     const siblings = ts.isJsxElement(parent) || ts.isJsxFragment(parent) ? parent.children : [];
     return siblings.every(
@@ -98,11 +105,10 @@ function classify(file: string, source: string) {
             : (node as ts.LiteralLikeNode).text
         ).replace(/&mdash;|&#8212;|&#x2014;/gi, EM_DASH);
         if (text.includes(EM_DASH)) {
-          const bare = text.trim();
-          if (isPlaceholder(node, bare)) glyphs += 1;
+          if (isPlaceholder(node, text)) glyphs += 1;
           else {
             const line = tree.getLineAndCharacterOfPosition(node.getStart(tree)).line + 1;
-            prose.push(`${file}:${line} ${bare.slice(0, 80)}`);
+            prose.push(`${file}:${line} ${text.trim().slice(0, 80)}`);
           }
         }
       }
@@ -128,6 +134,14 @@ describe('telling a placeholder from writing', () => {
     expect(kinds('const b = `${x} — ${y}`;')).toEqual({ writing: 1, placeholders: 0 });
     expect(kinds('const d = <p>— {field}</p>;')).toEqual({ writing: 1, placeholders: 0 });
     expect(kinds('const e = <p>{x} — {y}</p>;')).toEqual({ writing: 1, placeholders: 0 });
+  });
+
+  it('a padded separator string is writing, however it is joined', () => {
+    expect(kinds("const f = [a, b].join(' — ');")).toEqual({ writing: 1, placeholders: 0 });
+    expect(kinds("const g = a + ' — ' + b;")).toEqual({ writing: 1, placeholders: 0 });
+    expect(kinds("const h = '— ';")).toEqual({ writing: 1, placeholders: 0 });
+    expect(kinds('const i = <td> — </td>;')).toEqual({ writing: 0, placeholders: 1 });
+    expect(kinds('const j = <p>a — b</p>;')).toEqual({ writing: 1, placeholders: 0 });
   });
 });
 
