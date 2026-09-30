@@ -2244,6 +2244,10 @@ REPORTS CUT      Ops trial (A:\mointel-reportscut, not for release): v28 2bcf1cf
                  production, non-report files named or dropped; the 8 frozen checker blobs byte-equal (1ab48be or the
                  run-2 freeze); shim test (null board -> default range); Design reviews shim + renders the CUT TREE;
                  Research confirms the default range = the runner's and code completeness; full gate, count declared.
+DESIGN PRE-REG   Shim review criteria stated BEFORE seeing it: rangeLabel words = main's for the frozen range (header
+                 "covers $1-$20" unchanged); board = null -> chooseReportRange stored-then-default, never STRADDLE;
+                 outsideBoardRange never "not in your range"; no 5e8b13c3/range-control file in the cone; render v5
+                 struck / zero-watch / null path / sub-dollar / briefing lead / earlier-today list at 1,280 + 1,024.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
