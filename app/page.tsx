@@ -127,6 +127,17 @@ export default function LandingPage() {
         </div>
 
         {/* Example board: illustration only, no market data. */}
+        {/* THE SEPARATOR INSIDE THIS ILLUSTRATION IS THE BOARD'S, NOT THE SITE'S.
+            `&middot;` is what the real board uses between a label and its
+            qualifier (Design, 1dacc16: "Demand · Alpaca", "red · backside").
+            Elsewhere on this page a label separator is a colon ("01: IT CATCHES
+            THEM COMING INTO PLAY"), which is the site's own convention and
+            settled with Design per-surface, 2026-09-30.
+
+            So do NOT "fix" this to a colon for consistency with the rest of the
+            page. This block DEPICTS the product, and the boundary is site prose
+            versus depicted board, not site versus board. A colon here would make
+            the illustration disagree with the thing it illustrates. */}
         <div className="flex flex-col gap-2.5 md:col-span-5">
           <div className="overflow-hidden rounded border border-line bg-panel">
             <div className="flex items-center justify-between border-b border-line bg-panel-2 px-4 py-3">
