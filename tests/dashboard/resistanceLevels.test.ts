@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
-import { computedText, horizonText, levelLines, levelsNote } from '@/lib/dashboard/resistance';
+import { computedText, horizonText, levelLines, levelsNote, NEAREST_LEVELS, shownLevels } from '@/lib/dashboard/resistance';
 import type { ResistanceLevel, ResistanceLevels } from '@/lib/market/resistance';
 
 /*
@@ -75,6 +75,38 @@ describe('every level, nearest first', () => {
 
   it('drops a level that is not a price rather than drawing it', () => {
     expect(levelLines(row({ levels: [level(4.5), level(Number.NaN), level(0)] }))).toHaveLength(1);
+  });
+});
+
+describe('the nearest 10, then a link (his "2 b", 2026-09-30T17:03:54Z)', () => {
+  const many = (n: number) => levelLines(row({ levels: Array.from({ length: n }, (_, i) => level(4.01 + i * 0.05)) }));
+
+  it('11 levels show the nearest 10 and a link to the eleventh', () => {
+    const lines = many(11);
+    const view = shownLevels(lines, false);
+    expect(NEAREST_LEVELS).toBe(10);
+    expect(view.shown).toEqual(lines.slice(0, 10));
+    expect(view.hidden).toBe(1);
+    expect(view.toggle).toBe('Show all 11 levels');
+  });
+
+  it('10 or fewer show every level and no link', () => {
+    for (const n of [0, 1, 10]) {
+      const view = shownLevels(many(n), false);
+      expect(view.shown).toHaveLength(n);
+      expect(view.toggle).toBeNull();
+    }
+  });
+
+  it('140 levels collapse to the nearest 10 and expand to all 140', () => {
+    const lines = many(140);
+    const collapsed = shownLevels(lines, false);
+    expect(collapsed.shown.map((line) => line.price)).toEqual(lines.slice(0, 10).map((line) => line.price));
+    expect(collapsed.toggle).toBe('Show all 140 levels');
+    const expanded = shownLevels(lines, true);
+    expect(expanded.shown).toHaveLength(140);
+    expect(expanded.hidden).toBe(0);
+    expect(expanded.toggle).toBe('Show the nearest 10');
   });
 });
 
