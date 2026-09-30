@@ -23,7 +23,7 @@ import Link from 'next/link';
  */
 
 export const metadata: Metadata = {
-  title: 'Sign in — The Momentum Intelligence Trading Desk',
+  title: 'Sign in | The Momentum Intelligence Trading Desk',
   description:
     'Sign in to the desk with Google. One identity provider, no password to set and none for us to store.',
   robots: { index: false, follow: false },

@@ -198,7 +198,7 @@ export default function LandingPage() {
           None of this is on the chart.
         </h2>
         <div className="grid gap-4 md:grid-cols-2 md:gap-8">
-          <Card tag="01 — IT CATCHES THEM COMING INTO PLAY" tagClass="text-pos" title="As it happens, not once it tops a list">
+          <Card tag="01: IT CATCHES THEM COMING INTO PLAY" tagClass="text-pos" title="As it happens, not once it tops a list">
             <p className="text-[15px] leading-relaxed text-ink-1 md:text-base">
               Relative volume is ranked across every small cap at once, so a name shows up as it crosses into
               the day&rsquo;s runners, not after it is already third on somebody&rsquo;s list. Once it is on the
@@ -206,21 +206,21 @@ export default function LandingPage() {
               there, because the one you stopped watching is the one that runs.
             </p>
           </Card>
-          <Card tag="02 — IT READS THE FILINGS. YOU DON’T HAVE TO." tagClass="text-accent" title="Nobody is typing a ticker into EDGAR at 07:15">
+          <Card tag="02: IT READS THE FILINGS. YOU DON’T HAVE TO." tagClass="text-accent" title="Nobody is typing a ticker into EDGAR at 07:15">
             <p className="text-[15px] leading-relaxed text-ink-1 md:text-base">
               Not with half a decision already made and the name still moving. The filings were pulled and read
               when the name reached the top of the ranking.{' '}
               <strong className="font-semibold text-ink">How, and by what rules, is below.</strong>
             </p>
           </Card>
-          <Card tag="03 — IT SAYS CAPACITY." tagClass="text-accent" title="It never says selling.">
+          <Card tag="03: IT SAYS CAPACITY." tagClass="text-accent" title="It never says selling.">
             <p className="text-[15px] leading-relaxed text-ink-1 md:text-base">
               A resale registration, a warrant, a convertible: each is labelled as what it is, shares that can
               come to market. <strong className="font-semibold text-ink">Not shares that are coming.</strong> A
               filing tells you capacity and nothing else. Anything that tells you someone is selling is guessing.
             </p>
           </Card>
-          <Card tag="04 — IT TELLS YOU THE FLOAT IS WRONG" tagClass="text-warn" title="DIRTY FLOAT" warn>
+          <Card tag="04: IT TELLS YOU THE FLOAT IS WRONG" tagClass="text-warn" title="DIRTY FLOAT" warn>
             <p className="text-[15px] leading-relaxed text-ink-1 md:text-base">
               The float on your screen is a number someone published on a date. It knows nothing about the shelf
               that went effective on Tuesday, the warrants struck under the current price, or the note that
@@ -331,13 +331,13 @@ export default function LandingPage() {
           blending them into a score.
         </p>
         <div className="grid gap-4 md:grid-cols-2 md:gap-8">
-          <Card tag="DEMAND — THE TAPE" tagClass="text-pos" title="What the market is doing">
+          <Card tag="DEMAND: THE TAPE" tagClass="text-pos" title="What the market is doing">
             <p className="text-[15px] leading-relaxed text-ink-1 md:text-base">
               Volume against the name&rsquo;s own twenty-session baseline, the ranking that follows from it, and
               the moment a name crosses into the day&rsquo;s runners.
             </p>
           </Card>
-          <Card tag="STRUCTURE — THE PAPERWORK" tagClass="text-accent" title="What that move is standing on">
+          <Card tag="STRUCTURE: THE PAPERWORK" tagClass="text-accent" title="What that move is standing on">
             <p className="text-[15px] leading-relaxed text-ink-1 md:text-base">
               Float, and whether the float can be trusted. Supply waiting in the wings: warrants, convertibles,
               PIPEs, ATMs, resale shelves, reverse-split distortion. The levels that matter and the warnings

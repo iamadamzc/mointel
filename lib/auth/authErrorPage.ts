@@ -58,7 +58,7 @@ export function authErrorPage(status: number): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sign in — ${heading}</title>
+<title>Sign in | ${heading}</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
