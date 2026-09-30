@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { ruleStrikes } from '@/lib/desk/reports/check';
+import { applyStrikes, buildCheckerPrompt, checkReport, ruleStrikes } from '@/lib/desk/reports/check';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
 import { claimsIn, traceLine } from '@/lib/desk/reports/traced';
@@ -163,6 +163,49 @@ describe('the checker takes the v5 path only when handed research', () => {
       expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,455 traded after hours, 749 up, 569 down.')))).toContain('NUMBER_WITHOUT_ROW');
       expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,454 traded after hours.', null)))).toContain('NUMBER_WITHOUT_ROW');
       expect(onO(ruleStrikes(withOverall('2,454 names traded after hours.')))).toContain('FORBIDDEN_WORDING');
+    });
+  });
+
+  describe('the model half sees the research only on a v5 check', () => {
+    it('v4 gets exactly the v4 text; v5 adds the research rules, the research and the totals', () => {
+      const v4 = buildCheckerPrompt(input());
+      expect(v4.system).not.toContain('RESEARCH SUPPORTS');
+      expect(v4.user).not.toContain('Stored research');
+
+      const v5 = buildCheckerPrompt({ ...input(new Map([['SANG', RESEARCH]])), afterHoursTotals: { eligible: 1, traded: 2, up: 3, down: 4 } });
+      expect(v5.system.startsWith(v4.system)).toBe(true);
+      expect(v5.system).toContain('v5: WHAT A NAME');
+      expect(v5.user).toContain('"analysisVersionId": 2407');
+      expect(v5.user).toContain('After-hours totals for the overall line: {"eligible":1,"traded":2,"up":3,"down":4}');
+      expect(v5.system + v5.user).not.toContain('—');
+    });
+
+    it('end to end: the model is asked about O, and a model strike on O removes only the overall', async () => {
+      const draft = {
+        headline: '',
+        overall: 'Across the $1–$20 range, 2 traded after hours, 3 up, 4 down.',
+        sections: [{ heading: 'Moved', lines: [{ ticker: 'SANG', text: TRUE_CATALYST }] }],
+      };
+      let asked = '';
+      const model = {
+        complete: async (prompt: { user: string }) => {
+          asked = prompt.user;
+          return JSON.stringify({
+            verdicts: [
+              { id: 'O', supported: false, note: 'test' },
+              { id: 'S1L1', supported: true, note: '' },
+            ],
+          });
+        },
+      };
+      const checked = await checkReport(
+        { ...input(new Map([['SANG', RESEARCH]])), draft, afterHoursTotals: { eligible: 1, traded: 2, up: 3, down: 4 } },
+        model,
+      );
+      expect(asked).toContain('O: Across the');
+      expect(checked.ok && checked.strikes.map((s) => `${s.id}:${s.by}`)).toEqual(['O:model']);
+      const applied = applyStrikes(draft, checked.ok ? checked.strikes : []);
+      expect(applied).toMatchObject({ ok: true, overall: null, watchCount: 1 });
     });
   });
 
