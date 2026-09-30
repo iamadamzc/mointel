@@ -645,6 +645,12 @@ correct because av 1819 is SECONDARY_STALE, is kept. One U+2014 by design (the c
 defect 442-07); the rest are en-dash ranges. Released on Integration's named hash after the
 `cb6d030` re-freeze; pinned LF.
 
+**Run 4 result: PASS AS REGISTERED** (Research, raw `ce09e3d`). All 19 seeded defects struck
+in all 3 runs; 0 strikes on any control line. The v5 checker is validated: the field-traced
+controls admitted the correct desk phrasings, and the supply dollar / terms class that failed
+run 3 (fixed and re-frozen at `cb6d030`) now admits. Per the registration, PASS routes to Ops
+(re-pick onto the reports cut, gate), Integration (blob verify), then Ops asks Adam.
+
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
 **His verdict on the v3 sample (#551), verbatim** (`integration.md` `b563207`):
