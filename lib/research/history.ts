@@ -653,12 +653,12 @@ export function summariseDailyHistory(
      * built from different sets without knowing it.
      */
     notes.push(
-      `${last.tradingDate} is still trading — its high and low are included as bounds, its close and volume are excluded from run and drawdown figures`,
+      `${last.tradingDate} is still trading: its high and low are included as bounds, its close and volume are excluded from run and drawdown figures`,
     );
   }
   if (historicalResistance !== null) {
     notes.push(
-      `highest prior-session high ${historicalResistance} on ${historicalResistanceDate} — historical resistance, not a current-cycle high`,
+      `highest prior-session high ${historicalResistance} on ${historicalResistanceDate} (historical resistance, not a current-cycle high)`,
     );
   }
   if (runs.length === 0) {

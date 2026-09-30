@@ -452,7 +452,7 @@ export async function collectCatalystEvidence(
           collected.push({
             ticker,
             sourceType: 'SEC_EXHIBIT',
-            title: `${exhibit.type} — ${filing.secForm} ${filing.publishedAt ?? ''}`.trim(),
+            title: `${exhibit.type}: ${filing.secForm} ${filing.publishedAt ?? ''}`.trim(),
             url,
             // The exhibit inherits its parent filing's date: the exhibit file
             // itself carries no publication time of its own.
@@ -1127,7 +1127,7 @@ export async function collectCatalystEvidence(
         // Factual wording only: what appeared and from where, never a verdict.
         message: `${newSources.length} new public source${
           newSources.length === 1 ? '' : 's'
-        } — highest authority ${
+        }, highest authority ${
           newSources.slice().sort((a, b) =>
             SOURCE_AUTHORITY_RANK[a.authority] - SOURCE_AUTHORITY_RANK[b.authority],
           )[0].authority

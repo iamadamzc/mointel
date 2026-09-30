@@ -179,7 +179,7 @@ export async function collectSecEvidence(
   };
 
   if (!resolution.cik) {
-    warnings.push(`${NO_SEC_MATCH} — ${resolution.reason}`);
+    warnings.push(`${NO_SEC_MATCH}: ${resolution.reason}`);
     // Still record what we know, so the ticker is not re-resolved every cycle.
     upsertIssuer(db, {
       ticker,

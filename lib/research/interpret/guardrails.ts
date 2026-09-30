@@ -401,7 +401,7 @@ export function validateDossier(
         'The summary states NO FRESH CATALYST FOUND while coverage is incomplete. That phrase asserts an adequate search was performed; use UNKNOWN instead.',
       ),
     );
-    catalyst.summary = 'Coverage incomplete — no conclusion drawn about a catalyst.';
+    catalyst.summary = 'Coverage incomplete: no conclusion drawn about a catalyst.';
     catalyst.catalystStatus = 'UNKNOWN';
     catalyst.confidence = downgradeConfidence(catalyst.confidence);
   }

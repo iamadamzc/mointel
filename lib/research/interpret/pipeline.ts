@@ -203,7 +203,7 @@ export async function interpretTicker(
 
   // Unchanged evidence: reuse. No bundle is even built.
   if (!fingerprintChanged && existing && !options.force) {
-    log(`[interpret] ${ticker} evidence unchanged — reusing dossier v${existing.id}`);
+    log(`[interpret] ${ticker} evidence unchanged, reusing dossier v${existing.id}`);
     metrics.durationMs = Date.now() - startedAt;
     return { ...base, outcome: 'REUSED_UNCHANGED', dossier: existing.dossier };
   }

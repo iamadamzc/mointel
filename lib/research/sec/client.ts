@@ -140,7 +140,7 @@ export function describeReachability(r: SecReachability): string {
   // have taken 3 to mean 3. Say what the number counts.
   const scope = `${r.consecutiveFailures} consecutive fetch(es), each after ${MAX_ATTEMPTS} attempts`;
   const what =
-    r.status === null ? 'no response — network failure' : `SEC responded ${r.status}`;
+    r.status === null ? 'no response (network failure)' : `SEC responded ${r.status}`;
   return `${what} on ${scope}, last ${r.at}`;
 }
 
