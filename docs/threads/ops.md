@@ -12835,3 +12835,5 @@ speed fix; the deploy-window guard is new tooling, so it goes to him in the same
 confounded vs R0. CHECK RELOCATION APPROVED in direction (quick_check only on a pending migration + nightly timer
 after 20:00 ET): its own enumeration AFTER tonight. v28 still runs the check (a migration): after 20:00. Re-pick
 46d9f9d onto main after it ships.
+**Routing ~15:4xZ:** Integration local_962d5920 RETIRING (hand-off 9e8977b2). Send to Integration-tmi BY TITLE (cwd
+A:\mointel, not archived, not 962d5920). Tonight's 46d9f9d and R2 go to the successor.
