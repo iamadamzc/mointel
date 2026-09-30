@@ -12,7 +12,12 @@ import {
   readAssessmentTickers,
   type AssessmentTickerRecord,
 } from '@/lib/market/store/assessmentRepo';
-import { captureRanges, RANGE_TOP_N } from '@/lib/desk/rangeCapture';
+import {
+  captureRanges,
+  RANGE_TOP_N,
+  rangeOnlySymbols,
+  reassessmentTargets,
+} from '@/lib/desk/rangeCapture';
 
 /*
  * v28: per-range rows at each checkpoint (frozen counts + the range's own top
@@ -99,6 +104,7 @@ describe('v28 schema', () => {
     const file = temporaryPath();
     const fresh = openDatabase(file);
     fresh.exec('DROP TABLE desk_assessment_ranges');
+    fresh.exec('DROP TABLE session_reports');
     for (const column of ['ah_reference_close', 'ah_high', 'ah_low']) {
       fresh.exec(`ALTER TABLE desk_assessment_tickers DROP COLUMN ${column}`);
     }
@@ -116,7 +122,47 @@ describe('v28 schema', () => {
       expect.arrayContaining(['ah_reference_close', 'ah_high', 'ah_low']),
     );
     expect(columns('issuer_registry')).toContain('sic_description');
+    expect(columns('session_reports')).toEqual(
+      expect.arrayContaining(['kind', 'range_key', 'assessment_id', 'status', 'payload', 'missed_cause']),
+    );
     db.close();
+  });
+
+  it('holds session_reports to one row per slot, with payload iff PUBLISHED', () => {
+    const db = openDatabase(temporaryPath());
+    // better-sqlite3 enforces foreign keys by default: a report needs its checkpoint.
+    db.prepare(
+      `INSERT INTO desk_assessments (id, trading_date, assessment_type, scheduled_for, started_at,
+         session_phase, status) VALUES (1, ?, 'AFTER_HOURS_CLOSE', ?, ?, 'POST_MARKET', 'COMPLETE')`,
+    ).run(D, `${D}T00:05:00.000Z`, `${D}T00:05:00.000Z`);
+    const insert = db.prepare(
+      `INSERT INTO session_reports (kind, range_key, range_min, range_max, trading_date,
+         assessment_id, status, payload, missed_cause, versions, created_at)
+       VALUES (@kind, '1-20', 1, 20, @date, 1, @status, @payload, @missed, '{}', @date)`,
+    );
+    const row = { kind: 'AFTER_HOURS', date: D, status: 'PUBLISHED', payload: '{}', missed: null };
+    insert.run(row);
+    // One row per (kind, range, date).
+    expect(() => insert.run(row)).toThrow(/UNIQUE/);
+    // A PUBLISHED row must carry a payload; a MISSED row a cause and no payload.
+    expect(() => insert.run({ ...row, kind: 'INTO_RTH', payload: null })).toThrow(/CHECK/);
+    expect(() =>
+      insert.run({ ...row, kind: 'INTO_RTH', status: 'MISSED', payload: '{}', missed: '{}' }),
+    ).toThrow(/CHECK/);
+    insert.run({ ...row, kind: 'INTO_RTH', status: 'MISSED', payload: null, missed: '{}' });
+    db.close();
+  });
+});
+
+describe('the range-only guard', () => {
+  it('adds each range name the band did not carry, once', () => {
+    expect(
+      rangeOnlySymbols(['AAA', 'BBB'], [{ topTickers: ['BBB', 'CCC'] }, { topTickers: ['CCC', 'DDD'] }]),
+    ).toEqual(['CCC', 'DDD']);
+  });
+
+  it('never queues a reassessment for a range-only name', () => {
+    expect(reassessmentTargets(['AAA', 'CCC', 'BBB'], new Set(['AAA', 'BBB']))).toEqual(['AAA', 'BBB']);
   });
 });
 

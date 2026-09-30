@@ -19,6 +19,32 @@ import {
 /** Names stored per configured range at each checkpoint. */
 export const RANGE_TOP_N = 25;
 
+/**
+ * The names a range lists that the band board did not carry: each gets a
+ * ticker row so its report can read it as the checkpoint saw it.
+ */
+export function rangeOnlySymbols(
+  bandSymbols: readonly string[],
+  ranges: readonly Pick<AssessmentRangeRecord, 'topTickers'>[],
+): string[] {
+  const band = new Set(bandSymbols);
+  return [...new Set(ranges.flatMap((range) => range.topTickers))].filter(
+    (symbol) => !band.has(symbol),
+  );
+}
+
+/**
+ * Which of the names a checkpoint wants re-looked-at are actually queued.
+ * RANGE-ONLY names are captured, never reassessed: queuing research for them
+ * would spend money on names the band board did not carry.
+ */
+export function reassessmentTargets(
+  wanted: readonly string[],
+  bandSymbols: ReadonlySet<string>,
+): string[] {
+  return wanted.filter((symbol) => bandSymbols.has(symbol));
+}
+
 export function captureRanges(
   db: MarketDatabase,
   tradingDate: string,
