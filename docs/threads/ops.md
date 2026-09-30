@@ -12767,3 +12767,8 @@ and may change whether a slow build shows as a 499 at all; gzip since 1b5ead6; 7
 1b5ead6, no deploy unit, load 0.25, io some avg10 1.32. Runs (cold s / warm median / warm max ms):
 3.47/477.1/705.7 | 0.45/467.9/521.6 | 0.93/484.7/692.0 | 0.43/473.6/521.6 | 0.50/471.7/664.7.
 **Median of medians 473.6 ms; median of maxima 664.7 ms.** Payload 774,476 B, 50 demand states (14:19:4xZ).
+**ASKED (Research 4b09b3b2, ~14:3xZ, routed via Integration, which decides): issuer_registry.sic_description TEXT
+NULL in the same market.db bump** (his "what the company does" ruling). Opened: upsertIssuer (researchRepo.ts:442)
+upserts with COALESCE per column, so it fills forward on each SEC collection; the ALTER list (db.ts:738 has
+issuer_registry.company_sources) is the pattern. Constraint: Research's writer code must ship IN or AFTER the release
+that migrates, never before (a v27 store has no such column and the INSERT would fail). Pending Integration's yes.
