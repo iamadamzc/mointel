@@ -2307,6 +2307,8 @@ RUN2 CUT PREP    ops/reports-cut-run2 4b55a049 = e01b836f + 51321691 (<- 3c9b291
                  3c9b2911 alone ships writerV5 8f272080ec07 (unreviewed); both picks -> 12 files equal 925c9dc (read here,
                  all 12); net diff vs e01b836f = check/research/traced + 3 tests, writerV5 unchanged. 201 declared. Adopted
                  only if run 2 PASSES. Ops gating v28 2bcf1cf now (183).
+V28 GATED        2bcf1cf ALL GREEN 183/183, 2,782 (new Ops). #1-#3 all gated here + his yes 17:49:49Z. Reports cut 4b55a049
+                 gate running (201 declared).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
