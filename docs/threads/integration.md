@@ -2516,6 +2516,17 @@ error                                                  TYPE                     
   AUUD as a control; AUUD is not among #456's 12      opening the rule it would meet     (family) (Research)
   covered names, and verify.ts:262 strikes a ticker   (the family: a value passed on
   with no row. Withdrawn before any release.          without reading)
+6 HIS CHANNEL: sent him a message after nearly every  broke HIS REPORTING RULE (README    no (new  HIM
+  peer event all evening (seat progress, test-set     2026-09-25; memory reporting-      class)
+  mechanics, cross-seat corrections, my own errors    format-needs-you) + hygiene §6 "no
+  that never reached the app, gate reruns, the        live state in front of him"
+  flicker hunt); "nothing needs you until go" lines
+  and a question outside the block ("tell me if
+  you'd rather approve it separately"). His words:
+  "this is not how you are supposed to pose questions
+  to me". FIX: to him only a product change, a risk
+  to his window/data/desk, or a decision of HIS in
+  the block; asks owned by another seat stay there.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
