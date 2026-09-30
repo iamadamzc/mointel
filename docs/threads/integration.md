@@ -1378,6 +1378,10 @@ SNAPSHOT (c)     Ops, first run 00:19:45Z: maxima 811.7/1768.9/822.4/682.8/805.4
                  moves. No code switch to omit nowBuckets.
 ITEM 6 CONTROL   Ops 21:50:24 ET: open_old = 116 (all of 09-29's feed_intervals open) -> item 6 TESTABLE at the
                  22:00 roll; post-roll read 22:08 ET; raw to Research d6996864.
+ITEM 6 RAW       Ops 22:08 ET: old_open_left 0; closed_at_roll 116; opened_at_roll 123 (116 at the roll instant, all
+                 closed +1.02 s when the new day's high-res set went to 0; 7 at +3.075 s = new high-res set 7, inside the
+                 SQL's +5 s window). As written the rule reads 123 vs 116 / 2 vs 1 -> RESEARCH GRADES. Disk re-read
+                 02:08Z: 61G free of 77G.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
