@@ -12848,3 +12848,9 @@ its own yes from him, asked only once gated, separately. If 46d9f9d does not shi
 **HIS WORD, first-hand in THIS session (~16:0xZ): "yes tonight. but i want sessoin reports and ladder resistance all to
 go tonight. i want everything pending to go tonight. i'll tell integration"** -> 46d9f9d (speed fix + guard) approved
 for tonight after 20:00 ET. The rest: inventory below.
+**OPS PLAN FOR TONIGHT (his "everything pending tonight", ~16:0xZ; reports first per his earlier ruling):**
+(1) 46d9f9d 20:07 ET. (2) em-dash (Design's cut on 46d9f9d, own yes). (3) v28: desk_assessment_ranges + AH freeze +
+sic_description + capture code (per-range top-N via readRangeBoard, frozen counts) + the 20:05 checkpoint; needs a
+pre-migration backup after 20:00 (~20 min). (4) history store (separate file, fetch worker, 39-day 15m + 12-month daily
+backfill, 15m rollup): backfill completes overnight. Every release: 13-min quick_check; none may straddle the 22:00
+recap. Each ships only if gated green; Integration coordinates the other seats' halves.
