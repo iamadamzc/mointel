@@ -328,6 +328,32 @@ const KIND_MOMENT: Record<ReportKind, string> = {
 };
 
 /** The stored fields, rendered by the CHECKER -- never the writer's sheet. */
+
+/** v5's checker prompt version; v4's stays `REPORT_CHECKER_PROMPT_VERSION` (2), which its frozen harnesses ran. */
+export const REPORT_CHECKER_PROMPT_VERSION_V5 = 3;
+
+/**
+ * v5 adds what a name's RESEARCH supports, read from the same as-of block the
+ * writer was shown (`research.ts`), and the overall line. Appended to the v4
+ * system text so every v4 rule still binds; v4 checks send no research and
+ * get exactly the v4 text.
+ */
+const CHECKER_SYSTEM_V5 = [
+  CHECKER_SYSTEM,
+  '',
+  'v5: WHAT A NAME\'S RESEARCH SUPPORTS. Each line about a name may also restate that name\'s research, given below as it stood at this checkpoint. This extends the label rule above.',
+  '- the catalyst: what it is (its summary and cited source titles), how it was quantified (the numbers in them; a figure may be shortened to one decimal with a unit), its grade, type, status and confidence, the event time and cited source times to the minute, and fit ONLY as plausiblyExplainsMove says, about a move that has already happened. Never its expected effect on the stock, and never fit stated as a forecast.',
+  '- "what the desk makes of it" (whyTradersMayCare) and "what the desk does not have" (unknowns) may be RESTATED. A line that ADDS a judgement, reason or expectation that is not in them is unsupported.',
+  '- structure: its label; float ONLY as "no float the desk can independently verify", never a number or a size; shares outstanding only with its as-of date and never called float; supply blocks as capacity, not proof of selling.',
+  '- company, country and business only as the research states them; a fact contradicting them is unsupported. The surface prints the company line and the price path above each line, so a line need not repeat them.',
+  '- "not researched yet" is supported for a name with no research.',
+  'The OVERALL line (id O) restates the after-hours totals given: supported only if every count it states equals them, for the range given, and it names no ticker.',
+].join('\n');
+
+function storedResearch(research: ReadonlyMap<string, ReportResearch>): string {
+  return JSON.stringify(Object.fromEntries(research), null, 1);
+}
+
 function storedRows(rows: readonly ReportFact[]): string {
   return JSON.stringify(
     rows.map((row) => ({
@@ -364,11 +390,21 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
     `Report: ${KIND_MOMENT[input.kind]}. Range: $${input.range.min.toFixed(2)}–$${input.range.max.toFixed(2)}. Checkpoint time: ${time} ET.`,
     `Stored rows (${input.rows.length}), the highest-ranked names in this range at that checkpoint:`,
     storedRows(input.rows),
+    ...(input.research
+      ? [
+          '',
+          `Stored research per name, as of this checkpoint (${input.research.size}):`,
+          storedResearch(input.research),
+          input.afterHoursTotals
+            ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
+            : 'After-hours totals: none given, so any count in an overall line is unsupported.',
+        ]
+      : []),
     '',
     'Lines to check:',
     numbered,
   ].join('\n');
-  return { system: CHECKER_SYSTEM, user };
+  return { system: input.research ? CHECKER_SYSTEM_V5 : CHECKER_SYSTEM, user };
 }
 
 type ParsedVerdicts = { ok: true; unsupported: Array<{ id: LineId; note: string }> } | { ok: false; error: string };
