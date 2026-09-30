@@ -2457,6 +2457,10 @@ NOW "/min" v2    Design: samples did NOT cover the window (live 19:06:47.288Z; a
 NOW "/min" v3    Ops journal 19:06:40-19:07:30Z: no reconnect, no high-res set line, no interval-write failure; ONE [flush]
                  SUMMARY at 19:06:55.76Z (58 flushes, whole p50/max 207.9/3161.4 ms, 7 over 250) = the period BEFORE the
                  screenshot. My window was too narrow for a summary instrument -> asked for the NEXT summary line (~19:07:5xZ).
+NOW "/min" v4    Next summaries: 19:07:56.45Z (59 flushes, whole p50/max 346.6/2,558.6 ms, 54 of 59 over 250) and
+                 19:08:57.42Z (348.2/2,457.2, 59 over 250). The period containing ~19:07:02Z had a 2.56 s flush and p50 up
+                 from 208 to 347 ms vs the prior minute. NOT proof: consistent with Design's slow-flush hypothesis only if
+                 the read model's "newest slot" can be ahead of the last flush. Research decides from code (tomorrow).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
