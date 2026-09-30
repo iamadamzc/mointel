@@ -12629,3 +12629,10 @@ AFTER_HOURS 16:00-20:00 ET of D: traded = ah_participation > 0, up/down = sign a
 ah_reference_close). OPEN_SPIKE / RTH_INTERVAL / RTH_CLOSE = SESSION_TO_DATE 04:00 ET to capture: traded =
 cumulative_volume > 0, up/down = sign percent_change (vs prior close) -- so 16:00 says "today". Every configured range at
 each checkpoint (today $1-$20). Column name note: WINDOW is an SQLite keyword; the DDL will use count_window.
+
+**2026-09-30 04:06 ET, Design's (4) Now-field share on a real premarket payload** (board URL with symbols=, 74c1818):
+nowBuckets 9,295 B = 1.19% of a 778,264 B body; 23 of 51 demand states non-empty (tested); gzip ~5.3x (144,754 B
+transferred). **Open: its first request took 15,465 ms (resource timing), a GET ~1 min later 1,188 ms.** No server
+record exists: /review/ is access_log off by design (token in path), and no nginx log has request_time. Box fact in
+that minute: [flush] 08:06:12Z whole max 1,331.6 / upsert max 546.2 ms, worst of 08:04-08:07Z; research mid-dossier.
+Co-occurrence, not cause. Asked Design for the TTFB split from the same entry before anyone names a cause.
