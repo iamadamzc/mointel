@@ -1391,6 +1391,10 @@ PASS BAR RUN 1   FAIL AS REGISTERED (protocol held: cdc77af < 67406d5 < 82b07ae 
                  475/461/471/474); CHECKER v2 FROZEN 1c47bfb (last check.ts change on origin, read). PRECISION: e67a91b
                  (23:03:45 ET, applyStrikes rendering per Design) touched check.ts 34 s BEFORE 2f75143 -- not strike
                  logic, run validity unaffected; Research told to word it so. Marketing told the freeze sha.
+SET 2 LOCKED     764ba14 sha256 6fa70904...de18a (Marketing; informed, blind to checker). 09-22 checkpoints 475/461/471
+                 used (registration 8120a28 listed 474 too -> Research to record "474 unused" in the harness commit).
+                 Regression controls: DCOY recap since-previous; SVRE no-catalyst-on-file; power headline "Going into the
+                 last hour."; DCOY power exit-and-avoid. Classes 4/6 ADD a line (keyed). RELEASED on my word.
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
