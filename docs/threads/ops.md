@@ -12854,3 +12854,9 @@ sic_description + capture code (per-range top-N via readRangeBoard, frozen count
 pre-migration backup after 20:00 (~20 min). (4) history store (separate file, fetch worker, 39-day 15m + 12-month daily
 backfill, 15m rollup): backfill completes overnight. Every release: 13-min quick_check; none may straddle the 22:00
 recap. Each ships only if gated green; Integration coordinates the other seats' halves.
+**RTH FLUSH BASELINE 2026-09-30 (item 8 of the opening prompt; journal [flush] lines phase RTH, 13:30Z-~16:20Z,
+excluding the 14:37-14:53Z deploy stall): 122 minutes; median of per-minute median whole 190.4 ms, upsert 6.5 ms;
+p50 of per-minute MAX whole 2,501 ms; max 11,353.5 ms; over250 845.** The covering-index / price-range write gate
+("max flush < 250 ms in RTH") FAILS AT BASELINE: to him, via Integration. Also: a schema bump's migration writes a
+full VACUUM INTO backup AFTER the stop and reads it back (db.ts:905-940), so v28 = web tier down ~10-18 min.
+Sequence + restart answer sent to Integration (20th).
