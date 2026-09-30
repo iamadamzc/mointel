@@ -12500,7 +12500,7 @@ existing values hash-equal (Alpaca included). Put to him; on his "why not do the
 at 1b5ead6 nothing calls lib/auth/store.ts (only a comment in feedFailure.ts), nothing reads OAUTH_REDIRECT_URI, no auth
 routes, no identity.db on the box. So the two sign-in keys are INERT until the auth surface ships, and the cut-over's
 step 2 is this same sync. FULL SYNC at 20:15, as approved.
-**DEFECT (not tonight): sync-env.sh's DOCUMENT heredoc is unquoted, so backticked words in its COMMENTS execute** (seen
+**~~DEFECT~~ FIXED 2026-09-29 ~23:0x ET (commit above): sync-env.sh's DOCUMENT heredoc is unquoted, so backticked words in its COMMENTS execute** (seen
 at the dry run: `rm -rf` with no args -- a no-op -- plus five not-found words; the substitutions also delete those words
 from the comments). Harmless today, but it runs whatever a comment puts in backticks, one line from the prod env. Fix:
 escape the backticks (the heredoc must still expand $ALPACA / $LOCAL_ENV). Owner Ops.
