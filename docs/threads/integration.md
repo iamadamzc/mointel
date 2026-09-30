@@ -1645,6 +1645,8 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   guardrails.ts, collector.ts:455, interpreter prompt ban; model dossier text IN scope (prompt + Design render-time
   normalisation); OUT: MCP tool descriptions, logs, SQL comments, R&D scorecard, mock (unless shown). EMPTY-CELL
   GLYPH -> HIM (Design recommends keep; fallback en dash via EMPTY_DISPLAY). normalize.ts:42/documents.ts:56 untouched.
+  HIS RULING (this session): "keep it. fine for that, not writing." -> empty-cell "—" glyph KEPT. Research folds the
+  interpreter em-dash ban into the business-description prompt bump (one version, one enumeration).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
