@@ -26,7 +26,7 @@ import { etClock, etDateString } from '../../market/session';
 import type { MissedCause, ReportCheckpointRef, ReportKind } from './contract';
 import type { ReportFact } from './facts';
 import type { ReportResearch } from './research';
-import { traceLine } from './traced';
+import { etDayAndClock, traceLine } from './traced';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
 
@@ -123,7 +123,9 @@ export function draftLines(draft: ReportDraft): DraftLine[] {
  * pass bar's control as surely as a missed defect fails the seeded set.
  */
 const FORBIDDEN: Array<[RegExp, string]> = [
-  [/\b(?:buy|buys|buying|sell|sells|selling)\b/i, 'buy/sell'],
+  // "not proof of selling" is the desk's RULED phrase for registered-resale
+  // capacity (the SANG block); voice run v5 struck a whole report on it.
+  [/\b(?:buy|buys|buying|sell|sells)\b|(?<!\b(?:proof of|confirmed|not) )\bselling\b/i, 'buy/sell'],
   [/\b(?:enter|enters|entered|entering|entry)\b/i, 'enter/entry'],
   // "exit-and-avoid" is the ruled long-only phrasing (`marketing.md` specimen 2).
   [/\bexit\b(?!-and-avoid)/i, 'exit'],
@@ -348,10 +350,32 @@ const CHECKER_SYSTEM_V5 = [
   '- company, country and business only as the research states them; a fact contradicting them is unsupported. The surface prints the company line and the price path above each line, so a line need not repeat them.',
   '- "not researched yet" is supported for a name with no research.',
   'The OVERALL line (id O) restates the after-hours totals given: supported only if every count it states equals them, for the range given, and it names no ticker.',
+  'TIMES in the research: each has an "et" reading already converted to Eastern time; the raw values are UTC. Judge a stated time against the "et" reading only. A time with no zone has no clock at all.',
+  'CATALYST STATUS: NONE_FOUND supports "no catalyst found in our sources"; UNKNOWN supports only that the analysis reached no conclusion (never that nothing was found); SECONDARY_STALE supports only older or secondary news; FRESH_FOUND supports a fresh catalyst.',
 ].join('\n');
 
+/** Each time with its ET reading beside the raw UTC: voice run v5's checker read 09:40Z as 09:40 ET. */
+function etReading(raw: string | null): string | null {
+  const { date, clock } = etDayAndClock(raw);
+  if (!date) return null;
+  return clock ? `${clock} ET on ${date}` : `${date} (date only)`;
+}
+
 function storedResearch(research: ReadonlyMap<string, ReportResearch>): string {
-  return JSON.stringify(Object.fromEntries(research), null, 1);
+  const shown = Object.fromEntries(
+    [...research].map(([ticker, r]) => [
+      ticker,
+      {
+        ...r,
+        catalyst: {
+          ...r.catalyst,
+          eventTimestamp: { raw: r.catalyst.eventTimestamp, et: etReading(r.catalyst.eventTimestamp) },
+          sources: r.catalyst.sources.map((s) => ({ ...s, publishedAt: { raw: s.publishedAt, et: s.precision === 'EXACT' ? etReading(s.publishedAt) : etReading(s.publishedAt?.slice(0, 10) ?? null) } })),
+        },
+      },
+    ]),
+  );
+  return JSON.stringify(shown, null, 1);
 }
 
 function storedRows(rows: readonly ReportFact[]): string {

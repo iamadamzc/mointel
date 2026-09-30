@@ -32,7 +32,7 @@
 import { etClock } from '../../market/session';
 import { eventEtDate } from '../../research/time';
 import type { ReportResearch } from './research';
-import { roundTo, type ReportFactRow } from './verify';
+import { roundTo, supportedValues, type ReportFactRow } from './verify';
 
 export interface NumberClaim {
   /** As written, before the unit: 46.8 in "$46.8M". */
@@ -161,6 +161,11 @@ export function etDayAndClock(raw: string | null | undefined): { date: string | 
   const date = eventEtDate(trimmed);
   const wall = /^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})(?::\d{2})?\s*ET$/i.exec(trimmed);
   if (wall) return { date, clock: `${wall[2]}:${wall[3]}` };
+  // A clock with NO zone ("2026-09-11T16:00:00", stored for EGG) is a time in an
+  // unknown zone: its date is taken as written and it has no clock. Date.parse
+  // would read it as the machine's local time, which differs by host.
+  const naive = /^(\d{4}-\d{2}-\d{2})[ T]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/.exec(trimmed);
+  if (naive) return { date: naive[1]!, clock: null };
   if (!/\dT?\d{2}:\d{2}/.test(trimmed) || /^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return { date, clock: null };
   const ms = Date.parse(trimmed);
   return { date, clock: Number.isFinite(ms) ? etClock(new Date(ms)).slice(0, 5) : null };
@@ -246,6 +251,10 @@ function rowValues(row: ReportFactRow | null): number[] {
   if (row.sessionHigh !== null && row.price !== null && row.sessionHigh > 0) {
     out.push(((row.sessionHigh - row.price) / row.sessionHigh) * 100);
   }
+  // The change notes' values ("up 32.2% since the previous checkpoint"), which
+  // the sheet itself hands the writer: voice run v5 struck three true lines
+  // because this list, unlike verify.ts's, left them out.
+  out.push(...supportedValues(row));
   return out;
 }
 
