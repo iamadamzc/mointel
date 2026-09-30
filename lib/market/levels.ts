@@ -24,45 +24,17 @@
  * convention.
  */
 
+import type { LevelTimeframe, ResistanceLevel, ResistanceLevels } from './resistance';
 import { sessionEndUtc, sessionStartUtc } from './session';
 
 /* ------------------------------------------------------------ row contract */
 
-export type LevelTimeframe = '5m' | '15m' | 'daily';
-
-export interface ResistanceLevel {
-  /** The level itself: the middle of its cluster. */
-  price: number;
-  /** The cluster's span: its lowest and highest contributing tops (equal for a single top). */
-  low: number;
-  high: number;
-  /** Which ladders contributed, coarsest first. Display tag only; NOT a strength. */
-  timeframes: LevelTimeframe[];
-  /** How many candle tops merged into it. Descriptive, not a weight. */
-  tops: number;
-  /** END time (ISO, UTC) of the newest and oldest contributing candles: his platform's convention. */
-  newestTopEnd: string;
-  oldestTopEnd: string;
-  /** True only for the single far-back daily peak beyond the 12-month horizon. */
-  beyondHorizon?: true;
-}
-
-export interface ResistanceLevels {
-  symbol: string;
-  tradingDate: string;
-  /** The 5m candle close this was computed at (ISO, UTC). */
-  computedAt: string;
-  /** L: the price the ladders walked up from. */
-  price: number;
-  /** Levels above `price`, ascending. ALL of them: no cap, no filtering. */
-  levels: ResistanceLevel[];
-  /** No stored high above price at any depth. Never rendered as "all-time high". */
-  aboveAllStored?: true;
-  /** Oldest data each ladder could see, so the section can say how far back it looked. */
-  horizon: { fiveMinFrom: string | null; fifteenMinFrom: string | null; dailyFrom: string | null };
-  /** The store's basis is behind a split not yet re-fetched: only today's 5m window was walked. */
-  basisBreak?: true;
-}
+/*
+ * The section 2 types have ONE definition: `lib/market/resistance.ts`, where
+ * Design declared them verbatim for the section. Re-exported here so the
+ * computation and its callers share them.
+ */
+export type { LevelTimeframe, ResistanceLevel, ResistanceLevels };
 
 /* ------------------------------------------------------------------ inputs */
 
@@ -111,6 +83,11 @@ export interface LevelsInput {
 
 export const MINUTE_MS = 60_000;
 export const FIVE_MIN_MS = 5 * MINUTE_MS;
+
+/** The latest completed 5m candle close at or before `nowMs`: the route's compute moment. */
+export function latestFiveMinuteClose(nowMs: number): number {
+  return Math.floor(nowMs / FIVE_MIN_MS) * FIVE_MIN_MS;
+}
 export const FIFTEEN_MIN_MS = 15 * MINUTE_MS;
 /** W = 0.5% x L (section 1: his "2-3c" at $4-6; a literal 3c collapses sub-$1 names). */
 export const CLUSTER_WIDTH_OF_PRICE = 0.005;

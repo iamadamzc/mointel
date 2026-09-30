@@ -189,16 +189,27 @@ describe('/api/levels', () => {
     expect(body.levels.length).toBeGreaterThan(0);
   });
 
-  it('EMPTY is levels [] with aboveAllStored; ABSENT is a 404 with no levels field', async () => {
+  it('EMPTY is 200 + levels [] with aboveAllStored; ABSENT is 200 + a null body, never 404', async () => {
     const empty = await call('?symbol=HIGH');
     expect(empty.status).toBe(200);
     expect(empty.body.levels).toEqual([]);
     expect(empty.body.aboveAllStored).toBe(true);
 
     const absent = await call('?symbol=NOPE');
-    expect(absent.status).toBe(404);
-    expect(absent.body).toEqual({ symbol: 'NOPE', absent: true });
-    expect('levels' in absent.body).toBe(false);
+    expect(absent.status).toBe(200);
+    expect(absent.body).toBeNull();
+  });
+
+  it('a store failure is 200 + null, never a 500: no store on disk, and a file that is not a database', async () => {
+    vi.stubEnv('MARKET_DB_PATH', path.join(dir, 'missing', 'market.db'));
+    const missing = await call('?symbol=ABCD');
+    expect(missing).toEqual({ status: 200, body: null });
+
+    const broken = path.join(dir, 'broken.db');
+    fs.writeFileSync(broken, 'this is not a sqlite database, it is only long enough to be read as a header');
+    vi.stubEnv('MARKET_DB_PATH', broken);
+    const unreadable = await call('?symbol=ABCD');
+    expect(unreadable).toEqual({ status: 200, body: null });
   });
 
   it('400 without a usable symbol', async () => {

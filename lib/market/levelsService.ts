@@ -9,7 +9,7 @@
 import 'server-only';
 
 import { loadMarketConfig } from './config';
-import { FIVE_MIN_MS, type ResistanceLevels } from './levels';
+import { latestFiveMinuteClose, type ResistanceLevels } from './levels';
 import { computeLevelsFromStore } from './levelsStore';
 import { databaseExists, openDatabase, type MarketDatabase } from './store/db';
 
@@ -21,10 +21,8 @@ export type LevelsLookup =
   /** The store itself could not be read. */
   | { kind: 'unavailable'; reason: string };
 
-/** The latest completed 5m candle close at `nowMs`: the compute moment and the memo key. */
-export function latestFiveMinuteClose(nowMs: number): number {
-  return Math.floor(nowMs / FIVE_MIN_MS) * FIVE_MIN_MS;
-}
+/** The compute moment and the memo key; defined with the computation so scripts share it. */
+export { latestFiveMinuteClose };
 
 /**
  * How long after a 5m close a result is still not memoized. The close's last
