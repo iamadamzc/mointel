@@ -2355,6 +2355,10 @@ HIS LEVELS YES   Ops's session d33d893e, typed "yes" 2026-09-30T18:28:16Z (read 
                  after v28, CONDITIONAL on the box cost test PASS + Design's render. SHIP START needs HIM to send "go" in
                  Ops's chat after 20:00 ET (classifier refuses a cron-driven deploy; Ops's plan, read in its transcript).
                  My 19:41 check: confirm he knows to send "go".
+LEVELS RENDER    Design MET on e8caa77d: real route 200 + JSON null (09-25 store copy) -> "not computed yet"; fixtures 140 -> 10
+                 + "Show all 140 levels" / expanded 140; empty + split copy; 1,280 + 1,024 no overflow. NOT SEEN: a real
+                 computed row. POST-SHIP (order call): Ops curls 127.0.0.1:3000/api/levels?symbol=<top-5 name> once after
+                 /proc confirms; 200 row with levels = verified; null for a name with bars today = defect.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
