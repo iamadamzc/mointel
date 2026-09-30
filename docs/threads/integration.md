@@ -1616,6 +1616,9 @@ NOW-CELL CUT    c3d0f06 (tag design/now-cell-on-74c1818) REPLAYED + APPROVED: co
 04:40 ITEMS     Ops d29b378 -> raw to Research (grades): items 2-4 taken with data; item 5 UNTESTED (no reconnect).
   Instrument defect: check doc's jq read .symbol, field is .ticker -> item 2 re-taken on a 2nd fetch 24 s later
   (Research should label it). gzip from his own polls: 1,172,059 -> 238,927 B (20.4%).
+  GRADED (Research): item 2 PASS (13 open = 13 highRes; BIYA open), 3 PASS (4,422 rows, 0 nulls), 4 PASS (6 x 10 s,
+  asOf 0.75 s), 5 UNTESTED (no reconnect; positive control saw startup auth). jq defect LABELLED. Items 1-3 all PASS
+  -> nothing blocks the Now cell. POST-RESTART CHECK CLOSED (item 6: FAIL as registered / PASS-shaped post hoc).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
