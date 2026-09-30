@@ -260,7 +260,7 @@ export function secAvailability(config: SecConfig): Availability {
   if (!config.userAgent) {
     return {
       available: false,
-      detail: 'SEC_USER_AGENT is not set — SEC fetching disabled',
+      detail: 'SEC_USER_AGENT is not set: SEC fetching disabled',
     };
   }
 
@@ -287,7 +287,7 @@ export function modelAvailability(config: ModelConfig): Availability {
   if (!config.apiKey) {
     return {
       available: false,
-      detail: 'OPENAI_API_KEY not set — source collection continues without interpretation',
+      detail: 'OPENAI_API_KEY not set: source collection continues without interpretation',
     };
   }
   return {

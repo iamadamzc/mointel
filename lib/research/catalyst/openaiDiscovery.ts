@@ -143,7 +143,7 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
         sources: [],
         ran: false,
         modelCalls: 0,
-        detail: 'OPENAI_API_KEY not set — web discovery disabled',
+        detail: 'OPENAI_API_KEY not set: web discovery disabled',
       };
     }
 

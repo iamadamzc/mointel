@@ -179,7 +179,7 @@ export function resolveTicker(
     candidates,
   });
 
-  if (candidates.length === 0) return none('NO SEC MATCH — ticker absent from SEC mapping');
+  if (candidates.length === 0) return none('NO SEC MATCH: ticker absent from SEC mapping');
 
   if (candidates.length === 1) {
     const only = candidates[0];
