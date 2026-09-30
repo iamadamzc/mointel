@@ -48,7 +48,7 @@ for design documents.
 
 **Nothing uncommitted. Nothing of Design's in flight.** Production web = **74c1818** (brand header v2 on 1b5ead6).
 **His "yes to both", ~14:08Z in Ops's session: the Now cell `design/now-cell-on-74c1818` (c3d0f06) ships in Ops's
-10:34-10:42 ET slot, then Ops's speed fix 84b0099 (re-picked onto it).** Ops owns both launches and the /proc reads.
+10:34-10:42 ET slot, then Ops's speed fix 84b0099 (re-picked onto it).** Ops owns both launches and the /proc reads. **UPDATE from Ops (after the snapshot): c3d0f06 is LIVE since 14:51:49Z (/proc web/research/assess on c3d0f06, NR 0). 14:38-14:51Z the box was stalled by the deploy's pre-stop integrity check, so no Now-cell reading from that window is representative.** 84b0099 not yet reported.
 The next Design cut sits on whatever /proc confirms after both. Every open item with its trigger:
 
 | # | Item | State | Trigger / next step |
