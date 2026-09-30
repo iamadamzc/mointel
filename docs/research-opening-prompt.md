@@ -62,9 +62,9 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
 3. **SESSION REPORTS: A NAMED FIRST-DAY ITEM. It fell out between seats, and he
    has asked about it twice:** *"what about the session report? ive asked about
    this twice and it keeps getting left out"* (Integration 19th's session,
-   2026-09-29T23:39:14Z). **Its order against the levels compute is his call,
-   asked by Integration, which recommended reports first. Get his answer from
-   Integration before you pick either up.** State: the writer (`aebdf2f`, no model
+   2026-09-29T23:39:14Z). **ORDER RULED: *"reports first"*** (his turn in Integration
+   19th's transcript `845dd4cb`, 2026-09-30T02:11:43Z). **Session reports come
+   before the levels compute.** State: the writer (`aebdf2f`, no model
    provider) and the checker's deterministic half (`316c02e`, `d998973`, control
    fixed `31328d9`) are built, on main, not shipped. **Next steps, in order:**
    (a) wire the writer's model provider (per `docs/research/session-reports/
