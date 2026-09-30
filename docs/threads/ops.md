@@ -13017,3 +13017,10 @@ Gate slot: Research's run-2 suite. Cut gate (201 declared) runs AFTER the re-fre
 after 22:10), naming the 10-18 min board + site outage and the market-floor re-pin to v28 after. It does NOT cover the reports
 cut, the history store, HISTORY_STORE_ENABLED or levels. The auto-mode classifier refused a 20:07 cron a second time, now
 citing its own bypass rule, so the ship needs this session active after 20:00: asked him to send "go" then.
+
+**18:xxZ gates in this session (all ALL GREEN at the declared count):** v28 2bcf1cf 183/183 (2,782 tests). Reports cut
+ops/reports-cut-run2 **4b55a049** (= e01b836f + 3c9b2911 + bfa28cf8; the re-freeze is TWO commits, bfa28cf8 undoes
+3c9b2911's writerV5 lines; all 12 files = 925c9dc, verified by Integration) 201/201 (3,058 tests); `next build` exit 0 in
+A:\mointel-build (fresh npm ci; Turbopack refuses the node_modules junction, environmental). Reviewed Research's
+loadMinuteBarRange (8dfacf4): fine, two wording nits Research fixes at merge. Reports cut waits on: run 2 PASS, Integration's
+literal-sha approval, his yes. Worktrees to remove after tonight: A:\mointel-runner, A:\mointel-reportscut, A:\mointel-build.
