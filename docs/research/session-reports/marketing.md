@@ -578,13 +578,15 @@ first-hand from `data/market-prod-2026-09-29.db` (assessment 551 + dossier 2407 
 `ticker_session` 2026-09-28). Written to Commercial §8: catalyst as characteristics
 never expected effect; float verdict never the number; shares outstanding dated and
 never called float; company name and country only (business and city are not stored
-yet — Ops's fix is pending). The premarket path is the after-hours arc.
+yet — a Research code change is pending, to persist `sicDescription` + city from the
+EDGAR submissions response already fetched). The premarket path is the after-hours
+arc.
 
 > **SANG — Sangoma Technologies Corp** — Canada · [pending field] sector ·
 > [pending field] HQ city.
 > **$3.59 → $6.01 → $5.10**
 >
-> The catalyst is a same-day fiscal-Q4 earnings headline (~17:26 ET): adjusted EPS
+> The catalyst is a same-day fiscal-Q4 earnings headline (17:26 ET): adjusted EPS
 > of $(0.18) against a $(0.06) estimate and sales of $46.8M against $51.5M — fresh
 > and timely enough to explain today's move, but a miss that conflicts with the run,
 > so the desk grades it moderate / mixed / secondary and does not read it as a
@@ -600,9 +602,9 @@ yet — Ops's fix is pending). The premarket path is the after-hours arc.
 | Clause | Field (assessment 551 / dossier 2407) |
 |---|---|
 | "Sangoma Technologies Corp … Canada" | `dossier.companyName`; `dossier.country` |
-| "[pending field] sector · [pending field] HQ city" | not stored yet (data map): sector via Research's code change, HQ city via Ops's schema bump; live report omits until present |
+| "[pending field] sector · [pending field] HQ city" | not stored yet: both via a Research code change (persist `sicDescription` + city from the EDGAR submissions response); live report omits until present |
 | "$3.59 → $6.01 → $5.10" | after-hours arc: `reference_close` 3.59 (CURRENT_SESSION) → `session_high` 6.0071 (AH high, coincides) → `price` 5.10 |
-| "same-day fiscal-Q4 earnings … ~17:26 ET" | `catalyst.catalystType` NEWS_DRIVEN; `catalyst.eventTimestamp` 2026-09-28T21:26:40Z (17:26 ET) |
+| "same-day fiscal-Q4 earnings … 17:26 ET" | `catalyst.catalystType` NEWS_DRIVEN; `catalyst.eventTimestamp` 2026-09-28T21:26:40Z = 17:26:40 ET, source precision EXACT (no "~"; v5 strikes an approximate time on an exact one) |
 | "EPS $(0.18) vs $(0.06); sales $46.8M vs $51.5M … miss that conflicts … full release/guidance aren't in what we have" | `catalyst.summary` verbatim facts |
 | "fresh" | `catalyst.freshness` FRESH |
 | "timely enough to explain today's move" | `catalyst.plausiblyExplainsMove` true (about the observed move, not a forecast) |
@@ -616,27 +618,41 @@ yet — Ops's fix is pending). The premarket path is the after-hours arc.
 | "yellow — frontside warning" | `cycle` YELLOW_FRONTSIDE_WARNING |
 
 **What I did NOT write, and why:** no float number (none sourced; §8 bars it); no
-business line or city (not stored; pending Ops); no "our view" of where the price
-goes (§8 rule 1 — characteristics only). The percent (+42.1% after hours) is left to
-the path line rather than repeated in prose, per "uncomplicate it".
+business line or city (not stored; pending a Research code change); no "our view" of
+where the price goes (§8 rule 1 — characteristics only). The percent (+42.1% after
+hours) is left to the path line rather than repeated in prose, per "uncomplicate it".
+
+**Commercial reviewed this block (`commercial.md` §10, `baee3f7`): PASS on all four
+flagged clauses, no wording changes.** And a build note it carries forward, worth
+recording here: **"fresh and timely enough to explain today's move" is calibrated for
+the RECAP**, where the move has already happened by the time the report is read. At
+the 07:00 premarket build the move has not happened yet, so the identical sentence
+would read as a forecast — the 07:00 shape needs a different tense (what the catalyst
+IS, not what it will do), which is a build task there, not a change to this block.
 
 ### The opening narrative — to his definition
 
 **His ruling (first-hand, via Integration):** the opening is the report's OWN list
 ("we're watching N names into the premarket"), then the after-hours overall picture
 (how many traded AH in range, up vs down). For #551 (the 09-28 recap that prepares
-09-29): 13 names in the $1–$20 range on the recap board; after-hours totals from
-`ticker_session` (09-28 $1–$20: 3,245 traded AH, 967 up / 748 down). Written to that:
+09-29): the recap board has 13 names in the $1–$20 range, but the report caps its
+list at 12 (`REPORT_NAME_CAP`, a hard cap until Ops stores each range's own top N),
+so the count the reader can see is 12; after-hours totals from `ticker_session`
+(09-28 $1–$20: 3,245 traded AH, 967 up / 748 down). Written to that:
 
-> **We're watching 13 names into the premarket.** Across the $1–$20 range, 3,245
+> **We're watching 12 names into the premarket.** Across the $1–$20 range, 3,245
 > traded after hours — 967 up, 748 down.
 
 | Clause | Source |
 |---|---|
-| "watching 13 names" | count of $1–$20 ranked rows in assessment 551 (subject to the report's display cap) |
+| "watching 12 names" | the report's DISPLAYED list size (`REPORT_NAME_CAP` = 12; 551 has 13 in-range, capped to 12). N must be the count the reader can find — the checker traces it to the line count |
 | "3,245 traded after hours — 967 up, 748 down" | `ticker_session` 09-28, $1–$20 (data map) |
 
 *Float style, from his ruling:* verdict only, in a "not independently verified"
-register — never a number. SANG's block above renders that as "no float the desk can
-independently verify"; a name believed small-but-unconfirmed would read "small
-float, not independently verified" (his words).
+register — never a number. **"Small" is NOT producible** and does not go in: no
+stored field can say it (`floatConfidence` is UNKNOWN on all 45 researched rows, and
+`structureClassification` is only CLEAN / CAUTION / DIRTY_FLOAT / UNKNOWN). So the
+float line is only ever the SANG wording — "no float the desk can independently
+verify, so the tradable supply is unknown" — plus the structure label. His own
+"small float, not independently verified" example reads differently because it
+assumes a "small" the data does not carry; Integration is telling him why.
