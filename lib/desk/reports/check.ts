@@ -110,7 +110,11 @@ const FORBIDDEN: Array<[RegExp, string]> = [
   [/\b(?:will|pop|pops|clearly|confirmed|guaranteed)\b/i, 'prediction or certainty'],
   [/\b(?:every name|all the movers|all movers|nothing else)\b/i, 'completeness'],
   [/\breal (?:catalyst|catalysts|move)\b/i, '"real" catalyst'],
-  [/\bno catalyst\b(?! found in our sources)/i, 'bare "no catalyst"'],
+  // Bare "no catalyst" is a claim about the market; both approved forms are
+  // claims about US and are admitted: "no catalyst found in our sources" and
+  // "... on file" in the same clause (`marketing.md`, the never-use table's
+  // "Instead": "we found no catalyst on file"). Run 1 struck the second.
+  [/\bno catalyst\b(?! found in our sources)(?![^.;]*\bon file\b)/i, 'bare "no catalyst"'],
   [/\bquiet\b/i, '"quiet"'],
   [/\b[A-Z]{2,}(?:_[A-Z0-9]+)+\b/, 'engine constant'],
 ];
@@ -193,7 +197,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
 /* ------------------------------------------------------------ model reading */
 
 /** Bumped whenever `CHECKER_SYSTEM` or the verdict schema changes. */
-export const REPORT_CHECKER_PROMPT_VERSION = 1;
+export const REPORT_CHECKER_PROMPT_VERSION = 2;
 
 export const VERDICT_SCHEMA = {
   type: 'object',
@@ -224,8 +228,9 @@ const CHECKER_SYSTEM = [
   '- price, relative volume, volume, session high and low, as stored.',
   '- percentChange, ONLY with the frame its referenceBasis gives it. PRIOR_SESSION: a change from the prior or previous session\'s close ("from the prior close", "from yesterday\'s close"). CURRENT_SESSION: the after-hours move from that day\'s own regular-session close ("after hours", "from the regular-session close", "from yesterday\'s own close" when read the next morning). A percent with the other frame, or with no frame at all, is unsupported.',
   '- the distance from the session high: (high − price) / high, said as "N% under its session high" or "N% off its high". Qualitative words that follow from it for THIS row are supported ("near its high" for a small distance, "gave back" or "well off its high" for a large one).',
-  '- the notes, as written: "N% since prior assessment" (a move since the previous checkpoint), "N% off session high" (the CURRENT distance from the high, which first passed its threshold since the previous checkpoint: it is not a fall of N% since then), "lost $X support", "new HOD" (a new high of day).',
-  '- catalyst, structure and cycle ONLY as their labels, or a plain restatement of what the label means. A label null means no research on file; UNKNOWN means analysis reached no conclusion; NONE for catalyst means no catalyst found in our sources. The row does NOT hold what the news said, so naming a catalyst\'s content (an approval, a contract, an offering) is unsupported.',
+  '- the notes. EVERY note is a change between the previous checkpoint and this one (the desk writes them by comparing the two rows), so saying any of them happened "since the last check", "since the last read" or "since the previous checkpoint" is supported: "N% since prior assessment" (a move since the previous checkpoint), "N% off session high" (the CURRENT distance from the high, which first passed its threshold since the previous checkpoint: it is not a fall of N% since then), "lost $X support" (price fell below that level since the previous checkpoint), "new HOD" (a new high of day since the previous checkpoint).',
+  '- catalyst, structure and cycle ONLY as their labels, or a plain restatement of what the label means. A label null means no research on file ("not researched", "no catalyst, structure or cycle on file"); UNKNOWN means analysis reached no conclusion; NONE for catalyst means no catalyst found in our sources. The row does NOT hold what the news said, so naming a catalyst\'s content (an approval, a contract, an offering) is unsupported.',
+  '- the desk\'s RULED READINGS of a label are restatements, not advice: cycle red — backside means most of the advance has been given back, and its ruled reading is "an exit-and-avoid read, not a setup" (the desk is long-only). Saying that is supported.',
   '- halts only when haltState is HALTED or RESUMING.',
   '- the checkpoint time given, and nothing about any other time.',
   '',
@@ -236,9 +241,24 @@ const CHECKER_SYSTEM = [
   '- advice or action, predictions, promises, certainty, claims of completeness ("every name").',
   '- "' + NOTHING_LINE + '" is supported only for a section about which the rows genuinely hold nothing matching its heading.',
   '',
+  'THE REPORT\'S OWN MOMENT, given with the report below, is supported framing and not a claim about another checkpoint: a line or headline may say what moment the report is for ("into the open", "going into power hour" or "the last hour", "after the close", "after hours").',
   'The HEADLINE (id H) is about the rows together: supported only if everything it says follows from them.',
   'Return JSON only: {"verdicts": [{"id": string, "supported": boolean, "note": string}]}, one verdict per id, every id exactly once.',
 ].join('\n');
+
+/**
+ * The moment each report is for (`design.md` §3), in the checker's own words:
+ * the report's frame is supported, and run 1 struck "going into the last
+ * hour" at 14:30 for want of it.
+ */
+const KIND_MOMENT: Record<ReportKind, string> = {
+  PREMARKET:
+    'the premarket briefing, built from the 22:00 recap after the after-hours session closed, for the premarket that follows; its percent changes are the after-hours move',
+  INTO_RTH: 'the briefing into the regular-session open, built at 09:25 for the 09:30 open',
+  INTO_POWER_HOUR:
+    'the briefing into power hour, built at 14:30 for the last hour of the regular session (15:00–16:00)',
+  AFTER_HOURS: 'the briefing after the regular session closed at 16:00, into after-hours',
+};
 
 /** The stored fields, rendered by the CHECKER -- never the writer's sheet. */
 function storedRows(rows: readonly ReportFact[]): string {
@@ -274,7 +294,7 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
     .map((line) => `${line.id}${line.ticker ? ` [${line.ticker}]` : ''}: ${line.text}`)
     .join('\n');
   const user = [
-    `Report: ${input.kind}. Range: $${input.range.min.toFixed(2)}–$${input.range.max.toFixed(2)}. Checkpoint time: ${time} ET.`,
+    `Report: ${KIND_MOMENT[input.kind]}. Range: $${input.range.min.toFixed(2)}–$${input.range.max.toFixed(2)}. Checkpoint time: ${time} ET.`,
     `Stored rows (${input.rows.length}), the highest-ranked names in this range at that checkpoint:`,
     storedRows(input.rows),
     '',

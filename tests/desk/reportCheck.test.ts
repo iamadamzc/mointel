@@ -123,6 +123,16 @@ describe('ruleStrikes admits faithful lines', () => {
     expect(reasons([{ ticker: 'SANG', text: 'Up 38.5% from the prior close, at $4.97.' }])).toEqual([]);
   });
 
+  it('both approved forms of "no catalyst": "found in our sources" and "... on file" (marketing.md)', () => {
+    expect(
+      reasons([
+        { ticker: 'SANG', text: 'SANG printed a new high of day; the desk has not researched it, with no catalyst, structure or cycle on file.' },
+        { ticker: 'SANG', text: 'SANG: we found no catalyst on file.' },
+        { ticker: 'SANG', text: 'SANG has no catalyst found in our sources.' },
+      ]),
+    ).toEqual([]);
+  });
+
   it('"exit-and-avoid", the ruled long-only phrase, is not "exit"', () => {
     expect(reasons([{ ticker: 'SANG', text: 'SANG reads as an exit-and-avoid read, not a setup.' }])).toEqual([]);
   });
@@ -144,6 +154,12 @@ describe('ruleStrikes strikes', () => {
     ['a line that leans on another', 'It was $4.97, SANG says.', 'S1L1:NOT_SELF_CONTAINED'],
   ])('%s', (_, text, expected) => {
     expect(reasons([{ ticker: 'SANG', text }])).toContain(expected);
+  });
+
+  it('"on file" in ANOTHER sentence does not rescue a bare "no catalyst"', () => {
+    expect(reasons([{ ticker: 'SANG', text: 'SANG has no catalyst. Its structure is on file as caution.' }])).toContain(
+      'S1L1:FORBIDDEN_WORDING',
+    );
   });
 
   it('a line naming a second name in scope', () => {
@@ -187,6 +203,17 @@ describe('the model reading', () => {
     expect(prompt.user).toContain('H: At 09:25 ET, SANG led the range.');
     expect(prompt.user).toContain('S1L1 [FFAI]: FFAI was $1.56.');
     expect(prompt.user).toContain('Checkpoint time: 09:25 ET.');
+  });
+
+  it('carries the three run-1 admissions from their sources: note semantics, the report moment, the red-backside reading', () => {
+    const prompt = buildCheckerPrompt(input([{ ticker: 'FFAI', text: 'FFAI was $1.56.' }]));
+    expect(prompt.system).toContain('EVERY note is a change between the previous checkpoint and this one');
+    expect(prompt.system).toContain('"lost $X support" (price fell below that level since the previous checkpoint)');
+    expect(prompt.system).toContain('"an exit-and-avoid read, not a setup"');
+    expect(prompt.system).toContain("THE REPORT'S OWN MOMENT");
+    expect(prompt.user).toContain('Report: the briefing into the regular-session open, built at 09:25 for the 09:30 open.');
+    const powerHour = buildCheckerPrompt({ ...input([]), kind: 'INTO_POWER_HOUR' });
+    expect(powerHour.user).toContain('built at 14:30 for the last hour of the regular session');
   });
 
   const ids = draftLines(input([{ ticker: 'SANG', text: 'x' }, { ticker: 'FFAI', text: 'y' }]).draft).map((l) => l.id);
