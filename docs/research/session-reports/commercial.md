@@ -269,3 +269,55 @@ letting a confident-sounding memo stand in for one:
   review before this reaches paying strangers at scale is a real option, not a
   formality, and it is priced the same way the rest of this desk prices legal
   uncertainty: named, not invented around.
+
+---
+
+## 8. ADDENDUM 2026-09-30 — HIS RULING ON THE #551 SAMPLE ADDS RICHER NARRATIVE; THE BOUNDARY EXTENDED BEFORE THE WRITER IS BUILT
+
+*His ruling, first-hand, `integration.md` `b563207`, independently verified at his own
+turn (2026-09-30 ~04:06–04:07Z, three separate transcripts): the reports gain an
+opening narrative, catalyst commentary beyond classification ("what we think about the
+catalyst"), richer float/structure narrative, company facts, and a literal price path
+("3.5 --> 5.00 --> 4.25") in place of repeated prose. Integration routed the advice
+boundary here before Research builds the next sample, so the rule exists from the
+first draft rather than being found by a strike after the fact.*
+
+**§3's test still governs, unchanged, and covers every new field the same way it
+covers the ticker readout: does the sentence describe a state that already exists, or
+commit to what happens next?** Applied to what's new:
+
+1. **Catalyst commentary ("what we think about the catalyst") — describe the
+   catalyst's own characteristics, never its expected effect on the stock.** "What
+   the filing says, how quantified it is, whether it's the kind of fact this desk's
+   own taxonomy treats as material" is descriptive of the catalyst. "Why this catalyst
+   should move the stock further" or "whether the market has finished pricing it in"
+   is a prediction about future price behaviour wearing catalyst language — struck by
+   the same test as "keep an eye on X for a pop," just with more words in front of it.
+2. **Float/structure narrative — the standing default (Integration, order-and-process,
+   2026-09-17, recorded in `docs/threads/commercial.md`) applies with full force to
+   prose, not just to a labelled cell: narrate the desk's verdict on the float
+   (*refused*, *bounded*, *unverifiable*), never the float number.** "Richer" cannot
+   mean "the number, now in a sentence" — the reason for the rule (the desk's own
+   measurement that a shown float can be wrong) doesn't change because the field
+   grows from a badge to a paragraph.
+3. **Company facts (sector, location, what the company makes) — no new rule needed.**
+   Public-company description carries no more risk in prose than in a table cell;
+   §1's "general circulation, not tailored to a reader" test is unaffected by adding
+   facts of this kind.
+4. **The literal price path ("3.5 --> 5.00 --> 4.25") is not an advice question —
+   it is the licence question §2g of the naming document already ruled, now made
+   concrete rather than hypothetical, and it needs naming here so it is recorded
+   rather than discovered later.** A report that narrates prices in writing, delivered
+   to a paying subscriber, is the fee-liable single-security class — "a harder
+   evidentiary object than a live board, because it persists and forwards" (§2g,
+   verbatim). **Not prohibited — already ruled his call under the accepted-exposure
+   posture** (gates map, top), and he asked for this shape himself, which reads as
+   exercising that call rather than a fresh question. **Named so nobody on this desk
+   is surprised by it**, not to relitigate it: the field list a writer produces is
+   also the licence posture, same as the day §2g was written, and a literal price
+   sequence is squarely inside the class that ruling already priced.
+
+**Nothing above blocks Research's build.** It is the rule the writer should carry
+from the draft, per Integration's ask, so the review against this document (§3–§4)
+before it reaches him is a check against a known standard, not a first encounter with
+one.
