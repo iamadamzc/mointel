@@ -1,0 +1,143 @@
+/**
+ * `GET /api/reports`: the payload the report panel polls (`useSessionReports`).
+ *
+ * READ-ONLY, and it never runs a model: reports are written and checked in a
+ * worker after each checkpoint and STORED (`session_reports`, Ops's table);
+ * this only reads what was stored. The web tier holds no model key.
+ *
+ * NO TABLE = NO FEATURE. While `session_reports` does not exist, the builder
+ * returns null and the route answers 404, which the hook reads as "not built"
+ * so the panel does not mount. A missing table must never render as a missed
+ * report (`useSessionReports`: two different facts).
+ *
+ * THE SLOTS COME FROM THE STORE, NOT A CALENDAR. The latest 22:00 recap at or
+ * before now names the session it prepares (`target_trading_date`), which is
+ * exactly the desk's rolled trading date. From it: last night's premarket and
+ * after-hours slots, and today's into-RTH, into-power-hour and after-hours.
+ */
+
+import { etWallClockToUtc } from '../../market/session';
+import type { MissedCause, ReportKind, ReportRange, ReportSlot, SessionReport, SessionReportsPayload } from './contract';
+import { reportKey } from './contract';
+
+/** How long past its due time a slot waits for its report before it reads MISSED. */
+export const REPORT_GRACE_MS = 30 * 60_000;
+
+export interface StoredReportRow {
+  kind: string;
+  range_key: string;
+  trading_date: string;
+  status: string;
+  payload: string | null;
+  missed_cause: string | null;
+}
+
+export interface RecapRef {
+  tradingDate: string;
+  targetTradingDate: string | null;
+  scheduledFor: string;
+}
+
+const KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'];
+
+function slot(kind: ReportKind, rangeId: string, tradingDate: string, target: string | null, due: Date): ReportSlot {
+  return {
+    kind,
+    rangeId,
+    tradingDate,
+    targetTradingDate: target,
+    scheduledFor: due.toISOString(),
+    relevantUntil: new Date(due.getTime() + REPORT_GRACE_MS).toISOString(),
+  };
+}
+
+/** The slots for the session the latest recap prepares, per range. Empty without a recap. */
+export function reportSlots(recap: RecapRef | null, ranges: readonly ReportRange[]): ReportSlot[] {
+  if (!recap || !recap.targetTradingDate) return [];
+  const last = recap.tradingDate;
+  const today = recap.targetTradingDate;
+  const out: ReportSlot[] = [];
+  for (const range of ranges) {
+    out.push(slot('AFTER_HOURS', range.id, last, null, etWallClockToUtc(last, 16, 0)));
+    out.push(slot('PREMARKET', range.id, last, today, new Date(recap.scheduledFor)));
+    out.push(slot('INTO_RTH', range.id, today, null, etWallClockToUtc(today, 9, 25)));
+    out.push(slot('INTO_POWER_HOUR', range.id, today, null, etWallClockToUtc(today, 14, 30)));
+    out.push(slot('AFTER_HOURS', range.id, today, null, etWallClockToUtc(today, 16, 0)));
+  }
+  return out;
+}
+
+function parse<T>(text: string | null): T | null {
+  if (!text) return null;
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The payload, from the latest recap and the stored rows for its two dates.
+ * A PUBLISHED row becomes a report; a MISSED row becomes the cause for its
+ * slot. A row for a range or kind no longer configured is left out.
+ */
+export function buildReportsPayload(
+  recap: RecapRef | null,
+  rows: readonly StoredReportRow[],
+  ranges: readonly ReportRange[],
+  defaultRangeId: string,
+): SessionReportsPayload {
+  const slots = reportSlots(recap, ranges);
+  const wanted = new Set(slots.map((s) => reportKey(s)));
+  const reports: SessionReport[] = [];
+  const missedCauses: Record<string, MissedCause> = {};
+  for (const row of rows) {
+    if (!KINDS.includes(row.kind as ReportKind)) continue;
+    const key = reportKey({ kind: row.kind as ReportKind, rangeId: row.range_key, tradingDate: row.trading_date });
+    if (!wanted.has(key)) continue;
+    if (row.status === 'PUBLISHED') {
+      const report = parse<SessionReport>(row.payload);
+      if (report) reports.push(report);
+    } else if (row.status === 'MISSED') {
+      const cause = parse<MissedCause>(row.missed_cause);
+      if (cause) missedCauses[key] = cause;
+    }
+  }
+  return { ranges: [...ranges], defaultRangeId, slots, reports, missedCauses };
+}
+
+interface Database {
+  prepare(sql: string): { get(...params: unknown[]): unknown; all(...params: unknown[]): unknown[] };
+}
+
+/** Null while the table does not exist: the route then answers 404. */
+export function readReportsPayload(
+  db: Database,
+  now: Date,
+  ranges: readonly ReportRange[],
+  defaultRangeId: string,
+): SessionReportsPayload | null {
+  const table = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'session_reports'").get();
+  if (!table) return null;
+  const recapRow = db
+    .prepare(
+      `SELECT trading_date, target_trading_date, scheduled_for FROM desk_assessments
+        WHERE assessment_type = 'NEXT_DAY_RECAP' AND scheduled_for <= ?
+        ORDER BY scheduled_for DESC LIMIT 1`,
+    )
+    .get(now.toISOString()) as { trading_date: string; target_trading_date: string | null; scheduled_for: string } | undefined;
+  const recap: RecapRef | null = recapRow
+    ? { tradingDate: recapRow.trading_date, targetTradingDate: recapRow.target_trading_date, scheduledFor: recapRow.scheduled_for }
+    : null;
+  const dates = recap ? [recap.tradingDate, recap.targetTradingDate ?? recap.tradingDate] : [];
+  const rows =
+    dates.length === 0
+      ? []
+      : (db
+          .prepare(
+            `SELECT kind, range_key, trading_date, status, payload, missed_cause FROM session_reports
+              WHERE trading_date IN (?, ?)`,
+          )
+          .all(dates[0], dates[1]) as StoredReportRow[]);
+  return buildReportsPayload(recap, rows, ranges, defaultRangeId);
+}
