@@ -119,20 +119,16 @@ const CHANGE_NOTES: Array<[RegExp, (match: RegExpMatchArray) => string]> = [
     /^([+-]?\d+(?:\.\d+)?)% since prior assessment$/,
     (m) => `${directed(Number(m[1]))} since the previous checkpoint`,
   ],
-  [
-    /^([+-]?\d+(?:\.\d+)?)% off session high$/,
-    /*
-     * A STATE, NOT A CHANGE. `assessment.ts` writes this note when the
-     * giveback first crosses its threshold since the prior checkpoint, and
-     * its number is the CURRENT distance from the high. "down 15.7% off its
-     * session high" under "since the previous checkpoint" was written by the
-     * first live draft (FFAI, 09-29 09:25) as a 15.7% fall since the last
-     * read. "slipped to ... under" says where it went, not how far it moved.
-     * The magnitude is supported by the row's own giveback, which the note
-     * is computed from.
-     */
-    (m) => `slipped to ${percentMagnitude(Number(m[1]))} under its session high`,
-  ],
+  /*
+   * NOT "N% off session high". It is a STATE (the current distance from the
+   * high, written when it first crosses its threshold since the prior
+   * checkpoint), and every rendering of it under "since the previous
+   * checkpoint" was misread: luna wrote "down 15.7% off its session high"
+   * as a fall since the last read (FFAI, 09-29 09:25), and the checker
+   * struck the re-worded "slipped to 15.7% under" as a claim about another
+   * checkpoint. Its number is already the sheet's "now N% under it", so
+   * dropping the note loses nothing a report can say.
+   */
   [/^lost \$(\d+(?:\.\d+)?) support$/, (m) => `lost $${m[1]} support`],
   [/^new HOD$/, () => 'printed a new high of day'],
 ];
@@ -244,6 +240,15 @@ const KIND_FRAME: Record<ReportKind, string> = {
 const SYSTEM = [
   'You write a short session briefing for a momentum trader, in the voice of an assistant who did the work and is briefing plainly: specific, unhurried, candid about what the desk does not know. It is printed copy for a stranger, so it is tight.',
   '',
+  // Marketing's VOICE block, verbatim (`marketing.md`, d44dc95): the first
+  // drafts walked the sheet's fields in order and read as a table.
+  'VOICE',
+  '- You are briefing a trader sitting down at the desk, not filling a table. Lead each name with what it DID — held its gains, ran and came back, sits at its high, hasn’t been looked at yet — and let the numbers support that read. Never open a line with the rank.',
+  '- Choose what carries the name’s story. The sheet lists more than a briefing says: put in the price and the one or two numbers that matter, and you need not use every field. Leaving a fact out is fine; inventing or restating one is not.',
+  '- Write one flowing sentence per name, not "field; field; field". The rank is a detail late in the line ("…, and it’s the top name here"), never the subject.',
+  '- Vary how the lines open across names so the report is not a repeated template. The desk’s spoken words carry the voice: held, gave it back, off its high, on tape alone, still leading, hasn’t been looked at.',
+  '- The headline is one plain sentence about what this moment looks like across the names — not a label like "Premarket report".',
+  '',
   'FACTS',
   '- Use ONLY the facts in the sheet you are given. Say nothing the sheet does not say.',
   '- Copy every number and its frame EXACTLY as the sheet writes it ("up 90.2% from the prior close", "$1.26", "34.6% under it"). Never compute, round, or restate a number another way. Never write a number that is not in that name’s own sheet.',
@@ -264,7 +269,7 @@ const SYSTEM = [
   '',
   'SHAPE',
   '- A headline of one sentence, then one to three sections, each with a short heading.',
-  '- Each line about a name is ONE self-contained line naming that ticker, with no "it", "also" or "the same name" reaching into another line. Set "ticker" to that ticker. A line not about one name has "ticker": null.',
+  '- Each line about a name is ONE self-contained SENTENCE naming that ticker: it stands alone, with no "it", "also" or "the same name" pointing at another line — self-contained means it does not lean on another line, NOT that it is a row of fields. Set "ticker" to that ticker; a line about no single name has "ticker": null.',
   `- A section with nothing to say carries exactly one line: {"ticker": null, "text": "${NOTHING_LINE}"}.`,
   '- Return JSON only: {"headline": string, "sections": [{"heading": string, "lines": [{"ticker": string | null, "text": string}]}]}.',
 ].join('\n');
