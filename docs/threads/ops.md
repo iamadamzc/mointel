@@ -13006,3 +13006,8 @@ a7389325, tests 68b2a9af, shim 1fde525b). 54 files vs 2bcf1cf; out-of-feature hu
 to Integration). The 8 frozen checker blobs MATCH 1ab48be. Declared gate count: 201 test files. Box env (key names only):
 REPORT_RANGES and REPORT_DEFAULT_RANGE unset in /etc/mointel/mointel.env, so /api/reports serves only 1-20. Waiting on:
 Design review + render of the shim, Research's range confirmation, the gate slot.
+
+**18:5xZ** Integration: cut APPROVED IN STRUCTURE, NOT FOR SHIP until it carries Research's run-2 checker AND run 2 PASSES
+(if run 2 fails, no reports tonight). Docs dropped from the cut: e01b836f (branch -> e01b836f, 42 commits). Design's shim
+condition MET; Research confirmed the range (1-20 only). **89d39053 GATED IN THIS SESSION: ALL GREEN 182/182, 2,768 tests.**
+Gate slot: Research's run-2 suite. Cut gate (201 declared) runs AFTER the re-freeze pick.
