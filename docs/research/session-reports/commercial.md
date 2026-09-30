@@ -371,3 +371,46 @@ Both are solved by form, not by suppression:
    the two appear together with no distinguishing label.
 
 **v5 may print the share count under those two conditions.**
+
+---
+
+## 10. REVIEWED 2026-09-30 — THE SANG EXAMPLE BLOCK, `marketing.md` `06dfd1e` — PASS, ONE NON-BLOCKING FLAG
+
+*Integration's request, before it reaches him: four specific clauses in Marketing's
+hand-written v4 example (report #551, Sangoma/SANG, the 22:00 recap shape). Read
+the block itself, not the summary, against §3, §8 and §9.*
+
+1. **"fresh and timely enough to explain today's move" (`plausiblyExplainsMove`) —
+   PASS, descriptive, not predictive.** This is the 22:00 recap — the after-hours
+   arc it sits beside ($3.59 → $6.01 → $5.10) has already completed by the time a
+   reader sees the sentence. "Explains today's move" grades the fit between a
+   catalyst's timing and a move that already happened, the same backward-looking
+   relationship §3's table already permits ("X's setup, at this checkpoint: [state]").
+   It does not say what the stock does next.
+
+   **Non-blocking flag, for the template rather than this instance: this exact
+   phrasing does not survive unchanged into the 07:00 premarket report.** At 07:00
+   "today's move" has not happened yet — the identical sentence would either read as
+   nonsense (no move to explain) or, worse, as a forecast that a move is coming,
+   which is the class §3 exists to keep out. Whoever adapts this block for the
+   premarket shape needs a different tense for this clause, not just a different
+   timestamp. Named now so it is caught at that build, not discovered in a premarket
+   report later.
+2. **"does not read it as a positive catalyst" (`catalystStatus` CONFLICTING,
+   `whyTradersMayCare`) — PASS.** This grades the catalyst's own valence (is the
+   news good or bad), the same kind of characteristic as "moderate / mixed /
+   secondary" two clauses earlier, which is already cleared. It says nothing about
+   what the stock will do with that news — no different from a wire service
+   captioning an earnings miss as disappointing.
+3. **The dated shares-outstanding figure — PASS, and it exceeds §9's bar rather
+   than meeting it.** *"33,338,932 shares outstanding as of June 30, 2026 — that is
+   the outstanding count, not a float"* — dated, and the distinguishing label §9
+   required sits in the same sentence rather than merely nearby.
+4. **"registered-resale capacity ... capacity, not proof of selling" — PASS.**
+   Describes a structural fact (an effective shelf registration exists) and
+   explicitly declines to claim the predictive step (that shares have been or will
+   be sold under it). This is the discipline §8 asks for, applied correctly to a
+   fact type neither §8 nor §9 named directly.
+
+**Nothing here needs a wording change. Reply is PASS on all four**, with the one
+flag above carried forward for whoever builds the 07:00 shape.
