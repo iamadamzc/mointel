@@ -1544,6 +1544,19 @@ VOICE RUN v3     c705efc harness, caecad3 raw (before reading): 1/52 struck (#55
   fix APPROVED. #551 read from docs/research/session-reports/voice-run-v3-2026-09-30/report-551-as-read.txt and put
   to HIM verbatim; my read: accurate, template-shaped (same sentence frame, ~9 numbers per line). Voice work held.
   Referent fix 3d29859 (read stat: writer.ts, openaiReportModel.ts, test; check.ts untouched). No live re-run.
+HIS RULING ON THE #551 SAMPLE (this session, first-hand, 2026-09-30 ~04:0xZ), key clauses verbatim:
+ "what doe scame in at mean?" / "now 15% underwhat?" / "that wording is very confusing."
+ "the voice and tone is right, uncomplicate it."
+ "it references a moderate/mixed secondary catalyst. but doesnt mention the catalyst. and doesn't mention what we
+  think about the catalyst other than its classification."
+ "it should have an opening narrative describing AH overall and how many tickers are on watch for premarket."
+ "structure is good for the ticker readouts - but there needs to be better thinking narrative. instead of the same
+  wording of what the price did over and over and over again, just write it out 3.5 --> 5.00 --> 4.25 ... that removes
+  half of the report and you can focus on thoutful narrative around catalyst, float, structure etc. say something about
+  the company, whats the name of the company, is it a biotech or manufacturer, where is it located."
+ "right now its just a ticker runout. not helpful to traders."
+ -> ROUTED: Research (data-availability first, then sheet/writer/checker), Marketing (voice), Design (surface),
+    Commercial (advice boundary on the richer narrative).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
