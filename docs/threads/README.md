@@ -501,6 +501,18 @@ writable, global resource on this machine exactly like the index is.*
 > and dangerous ANCESTRY; `0a17601` had the needed content and no ancestry the query could follow.
 > **Ancestry and content answer different questions — name which one you are asking.***
 
+## TWO OWNERS DE-DUPLICATING TOWARD EACH OTHER DELETE BOTH
+
+*2026-09-29, found by Design.* Design (`5f5df76`) and Research (`c6d1c39`) each held a copy of the
+report's empty-section string, and within minutes each removed its own in favour of the other's.
+Neither survived, and main was red on `tsc` (TS2305) until `2955992`. Production was untouched
+because it ships from tags. But every gate any seat ran on main in that window failed on this, not
+on its own change.
+
+> **The seat that removes a duplicate names the SURVIVOR by file and line, and waits for that
+> owner's yes before deleting.** "Use the other copy", announced by both owners at once, is two
+> deletions and no survivor.
+
 ## AN ORDINAL ANSWER IS ONLY AS GOOD AS THE LIST IT POINTS AT
 
 **Ops, 2026-09-25, refusing a relayed "push" it was almost certainly owed.** *He answered a NEEDS
