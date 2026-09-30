@@ -1027,7 +1027,7 @@ SIGN-IN          built on main; waits on his Google OAuth client. DAILY BILLING 
 
 ### SEATS (look up by title; check cwd and not-archived before every send)
 ```
-Ops-tmi local_bb3d4059   Research-tmi local_4b09b3b2   Design-tmi local_72b49119   Marketing-tmi local_fdc0aa9a
+Ops-tmi local_bb3d4059   Research-tmi local_4b09b3b2   Design-tmi local_4f84a562   Marketing-tmi local_fdc0aa9a
 Web-tmi local_2c0e391a   Commercial-tmi local_2ce868d2   (retired: Ops 37a1741e, Research d6996864, Research bed7ed93)
 Reminders are SESSION-ONLY and die with the session; an archived seat's reminders are dead.
 ```
@@ -1923,6 +1923,29 @@ HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show r
                  not his use. BREAKOUT FOLLOW-THROUGH test (level break -> reaches NEXT level before failing, vs
                  height-matched non-level crossings, split by volume) APPROVED here, runs FIRST after tonight's grading,
                  then the pull-back test. Highlighting question WITHDRAWN until it reports. Naming stays Research's.
+
+## THE TWENTIETH SEAT'S RUNNING NOTES (opened 2026-09-30T15:42:36Z, `local_50b52df9`, Opus 5.5)
+
+*Newer than LIVE STATE and the nineteenth's notes where they disagree.*
+```
+OLD CHAT         local_962d5920: first list_sessions 15:4xZ showed it renamed, NOT archived; get_session minutes later
+                 read isArchived true. Nothing to ask him.
+SEATS FIX        LIVE STATE named Design-tmi local_72b49119 (retired); corrected to local_4f84a562 (list_sessions read).
+§8 QUESTIONS     DELIVERED: Design-tmi transcript ec87dec7 carries them as a user turn at 15:38:40Z (read). Prompt task 2
+                 was already done by the nineteenth; nothing to re-send. Writer v5's prompt waits on Design's answer.
+46d9f9d REPLAY   on c3d0f06 (prod per the hand-off): rev-list 2 (84b0099, 46d9f9d); 1b5ead6 ancestor; 95b734e NOT
+                 ancestor; diff preflight.sh, repo.ts, 2 tests. Matches the 19th's approval.
+HIS YES OPEN     ops.md at bd57662d: the guard "goes to him in the same question" as the held speed fix. His 14:08:40Z
+                 "yes to both" answered the Now cell + speed fix, NOT the guard. Asked Ops for his turn verbatim; not
+                 treating the older yes as covering it.
+OPS ASKED        15:4xZ (delivered): /proc now; his answer on tonight's release; /proc + R2 after launch; anything not in
+                 ops.md.
+```
+**THE TWENTIETH SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+(none yet)
+```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
