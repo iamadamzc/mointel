@@ -2034,6 +2034,19 @@ V28 PROGRESS     Ops: 0d4d439 on 46d9f9d (ops/v28-on-46d9f9d, A:\mointel-ops): S
                  replay: report table DDL in v28 (my urgent message reached Ops only after its update, transcript read);
                  the UNTESTED worker union/no-reassess guard gets a test (extract) or a named ruling. History store in
                  A:\mointel-hist. Still owed: additive-only; delay vs loss.
+EM-DASH CUT      89d39053 (tag design/emdash-on-46d9f9d, obj 85066b36) REPLAYED HERE + APPROVED ON CONTENT: rev-list
+                 46d9f9d..89d39053 = 13 linear (12 picks in order + cut-only); 1b5ead6 in; 95b734e out; patch-id SAME
+                 9/12; 1dacc16/c5bc14c5 sorted +/- identical (context only); 5f3a272/58840282 + 1703390/58440120 differ
+                 only by dropped app/signin/page.tsx + lib/auth/authErrorPage.ts hunks (not in production); 89d39053 =
+                 those two SURFACES entries out of tests/web/emDash.test.ts; nothing in deploy/ scripts/ worker/ db.ts;
+                 182 test files = declared. Design gate 182, lint/build/typecheck 0.
+                 SHIP HELD: tests/desk/releaseRetention.test.ts (46d9f9d's own preflight cases) flaky in Design's runs
+                 (1-3 failures, 30 s timeouts + ONE exit 126 from preflight.sh). Ops asked to run it 3x on the tag AND
+                 on 46d9f9d before 20:07; exit 126 on 46d9f9d = 46d9f9d's defect.
+DESIGN TONIGHT   Report v5 surface on main vs ec45711 (inert until /api/reports; ships with it + 0f15521). Levels section
+                 to §2, inert until Research's /api/levels; corrected: history store NOT required for rows. Research asked
+                 to send Design the response shape. Now-cell live read NOT done (Design's permission classifier refused
+                 reading the review-link token; Design is telling him).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
