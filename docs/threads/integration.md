@@ -2020,7 +2020,9 @@ PROBE DESIGN     Web bb4e14a8 (docs/web/2026-10-01-gate-probe-design.md, 174 lin
                  Basic Auth comes off) -> Friday's report must not say "sign-in works" beyond that. Refusal test needs a
                  throwaway Google account (HIS to create; seats never create accounts); admit test must use the SEEDED
                  address. ROUTE TO OPS after tonight's releases are clear (trigger: last release /proc read), not before.
-                 Seam rule agreed with Web: the asking seat says so; the other stands down explicitly.
+                 Seam rule agreed with Web: the asking seat says so; the other stands down explicitly. FRIDAY: I ask him;
+                 Web stood down. HAZARD (Web): the gate wiring does NOT enter the repo before Friday (on main it would
+                 ride any cut and refuse everyone at 07:00); Friday's first act writes it. Probe likewise after tonight.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
