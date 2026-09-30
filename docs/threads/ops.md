@@ -12615,3 +12615,8 @@ storage needs. Research specifies columns and window boundaries BEFORE any migra
 **Integration APPROVED the shape (~04:4xZ):** ONE child table keyed (assessment_id, range_key) in the same bump, carrying
 BOTH per-range top-N and the per-range window counts; the AH close/high/low freeze stays on desk_assessment_tickers.
 Next: Research's column/window spec (asked), then Ops proposes the table to Research, THEN the migration.
+**Research's counts spec (data map, "Spec sent to Ops") read ~05:0xZ.** Its shape (one JSON column on desk_assessments)
+predates Integration's child-table ruling; proposed the same content as columns on the (assessment_id, range_key) row.
+Its volume question, OPENED: cumulative_volume = volumeBase + minuteSum (engine.ts:1577); minuteSum = bars 04:00-20:00
+ET of the date only (engine.ts:1027-1031); volumeBase = 0 unless seeded mid-date from an Alpaca snapshot daily bar
+(worker/runtime.ts:1021/:1291), whose own window is NOT verified. traded = cumulative_volume > 0, seed flag frozen.
