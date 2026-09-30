@@ -12723,7 +12723,8 @@ rule."** Main's lint was RED from de7f181 (bare require in my A/B script); fixed
 :2024 (" — +x% AH"), :2120 ("Halted — raw"); activity.ts:410 ("— state held") are emitted by the MARKET WORKER, so they
 change only at its next restart (his word, no session). health.ts:207 ("Market: <feed> — ...") is imported by
 components (web tier), so it rides a web ship; tests/dashboard/merge.test.ts:93 and telemetry.test.ts:216 carry the
-label. health.ts:266/:279 use '—' as a no-value placeholder: a display convention, asked of Design. Worker console/log
+label. health.ts:266/:279 use '—' as a no-value placeholder: KEPT, his exception ("keep it. fine for that, not
+writing.", per docs/threads/README.md); out of the sweep. Worker console/log
 lines are not product writing and are left. Stored events keep old text; render-time fix is Design's (offered to him
 by Design). TRIGGER: after today's two ships; one commit, Integration enumerates.
 **Integration ruling:** no market restart for punctuation; the worker strings ride the NEXT market-worker restart
