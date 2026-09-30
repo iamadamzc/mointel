@@ -710,6 +710,35 @@ CREATE TABLE IF NOT EXISTS desk_assessment_ranges (
   PRIMARY KEY (assessment_id, range_key),
   FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
 );
+-- Checked session reports (v28; the contract is Research's). One row per slot
+-- (kind, range, date). A PUBLISHED row is never overwritten; a MISSED row may be
+-- replaced by a later PUBLISHED catch-up for the same slot (late = 1). No row
+-- means NOT_ATTEMPTED, which the reader derives. range_min/range_max are the
+-- bounds frozen at write time; assessment_id is the one checkpoint it was built
+-- from. diagnostics (strikes, tokens, cost, latency) is never shown to users.
+CREATE TABLE IF NOT EXISTS session_reports (
+  id                  INTEGER PRIMARY KEY,
+  kind                TEXT NOT NULL,
+  range_key           TEXT NOT NULL,
+  range_min           REAL NOT NULL,
+  range_max           REAL NOT NULL,
+  trading_date        TEXT NOT NULL,
+  target_trading_date TEXT,
+  assessment_id       INTEGER NOT NULL,
+  status              TEXT NOT NULL CHECK (status IN ('PUBLISHED', 'MISSED')),
+  payload             TEXT,
+  missed_cause        TEXT,
+  published_at        TEXT,
+  late                INTEGER NOT NULL DEFAULT 0,
+  versions            TEXT NOT NULL,
+  diagnostics         TEXT,
+  created_at          TEXT NOT NULL,
+  CHECK ((status = 'PUBLISHED') = (payload IS NOT NULL)),
+  CHECK ((status = 'MISSED') = (missed_cause IS NOT NULL)),
+  UNIQUE (kind, range_key, trading_date),
+  FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
+);
+CREATE INDEX IF NOT EXISTS idx_session_reports_date ON session_reports (trading_date);
 
 -- Single-row assessment worker health, mirroring feed_health and
 -- research_health. A green Sheet light must never imply the scheduler is alive.
@@ -1460,7 +1489,8 @@ export function claimStoreForMode(db: MarketDatabase, mode: string): { cleared: 
     // Assessments describe a market state, so a simulated one must never be
     // left behind looking like a record of a real session.
     db.exec(
-      'DELETE FROM desk_assessment_tickers; DELETE FROM desk_assessments; DELETE FROM assessment_health;',
+      'DELETE FROM session_reports; DELETE FROM desk_assessment_ranges; ' +
+        'DELETE FROM desk_assessment_tickers; DELETE FROM desk_assessments; DELETE FROM assessment_health;',
     );
 
     setMeta(db, 'market_mode', mode);

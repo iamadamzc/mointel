@@ -32,7 +32,7 @@ import { closeMinutesFromClock, RTH_END_MIN } from '../lib/market/session';
 import { getMeta, openDatabase, type MarketDatabase } from '../lib/market/store/db';
 import { insertDeskEvents } from '../lib/market/store/repo';
 import type { PriceRange } from '../lib/market/rangeRank';
-import { captureRanges } from '../lib/desk/rangeCapture';
+import { captureRanges, rangeOnlySymbols, reassessmentTargets } from '../lib/desk/rangeCapture';
 import {
   claimAssessmentSlot,
   completeAssessment,
@@ -203,17 +203,11 @@ function captureAssessment(
     )
     .all({ tradingDate: scheduled.tradingDate, limit: captureCount }) as TickerRow[];
 
-  /*
-   * Each range's own top names get a row too, so a report for any range can
-   * read every name it lists as the checkpoint saw it. These RANGE-ONLY names
-   * are captured, never reassessed: queuing research for them would spend
-   * money on names the band board did not carry.
-   */
+  // Each range's own top names get a row too (rangeOnlySymbols); they are
+  // captured, never reassessed (reassessmentTargets).
   const rangeRecords = captureRanges(db, scheduled.tradingDate, board, options.ranges);
   const inBand = new Set(rows.map((row) => row.symbol));
-  const rangeOnly = [
-    ...new Set(rangeRecords.flatMap((range) => range.topTickers)),
-  ].filter((symbol) => !inBand.has(symbol));
+  const rangeOnly = rangeOnlySymbols([...inBand], rangeRecords);
   if (rangeOnly.length > 0) {
     const extra = db
       .prepare(
@@ -238,7 +232,7 @@ function captureAssessment(
   );
 
   const records: AssessmentTickerRecord[] = [];
-  const reassess: string[] = [];
+  const wanted: string[] = [];
 
   rows.forEach((row, index) => {
     const analysis = analyses.get(row.symbol) ?? null;
@@ -354,14 +348,14 @@ function captureAssessment(
 
     record.changedFields = change.changedFields;
     record.changeSummary = change.summary;
-    if (change.cycleReassessmentNeeded && inBand.has(row.symbol)) reassess.push(row.symbol);
+    if (change.cycleReassessmentNeeded) wanted.push(row.symbol);
 
     // Rank order is the capture order; index keeps ties stable.
     void index;
     records.push(record);
   });
 
-  return { records, reassess, ranges: rangeRecords };
+  return { records, reassess: reassessmentTargets(wanted, inBand), ranges: rangeRecords };
 }
 
 /**
