@@ -2382,6 +2382,9 @@ RUN 4 RE-FREEZE  cb6d030 (15:45:18 ET, on origin) VERIFIED here: research bc57f2
                  all 6 pass alone; SECOND complete run 208/208, 3,138 (accepted; the ship cut gets Ops's own gate).
                  Research told Marketing "the checker carries the whole supply block": ruled NOT tainting (class already
                  given by me; blind to code/prompts). Marketing released conditional on hash commit before file commit.
+RUN 4 SEEDS      Marketing held (right call): ca55e42e said "Marketing released" = AUTHORIZED, nothing had landed. Set
+                 authored, sha256 b5452d59953663d99890e20f32d7122a451ae117e84668ec723a82109462a5d1 (09-21, 4 controls +
+                 19 keyed, supply dollar/terms/restriction regression controls); told: lock note first, then file.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
