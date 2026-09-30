@@ -983,14 +983,23 @@ CONE RULE   every ship carries 1b5ead6 (deploy.sh re-renders nginx-tls.conf per 
             cut by -x picks from production, never from main HEAD). The upsertIssuer write follows the column.
 ```
 
-### SHIPS WAITING ON HIS YES (Ops-tmi asks at 10:27 ET, after the 10:17 grades read)
+### SHIPS (read /proc before acting)
 ```
-1 c3d0f06   Now cell (fa61410 -x onto 74c1818). Design's live read PASSED 04:06 ET. Replayed + gated 177.
-2 84b0099   (SHIPS AS 46d9f9d TONIGHT after 20:00 ET, with the deploy-window guard) loadMinuteBars ts bound, re-picked onto c3d0f06 (== 6043db3, patch-id 54037044). Local ratio 0.196, 0 of 1.1M
-            rows differ. Gated 178. If he says yes only to the bound: ship 6043db3 on 74c1818.
-3 EM-DASH   NOT CUT YET. Design cuts after 1-2 land, onto /proc's sha: Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0 (+ the
-            padded-separator test fix FIRST); Research f6915c4 last; Web
-            5f3a272, f272bec, 1703390, 32a9a84 (needs 1-3), e68137c, 69bafba. Count pre-registered. Replay it, then his yes.
+LIVE        c3d0f06 Now cell, since 14:51:49Z 09-30 (his "yes to both", Ops's session 14:08:40Z).
+TONIGHT     46d9f9d after 20:00 ET, ONE release: carries 84b0099 (loadMinuteBars bound; his yes) + the preflight
+            live-store guard (refuses weekday deploys 04:00-20:00 ET until the pre-stop quick_check moves; its 804 s
+            run in RTH on 09-30 stalled the box). R2 reading after it; R0 473.6 / R1 501.6 ms (confounded).
+EM-DASH     NOT CUT. The NEW Design seat cuts after 46d9f9d lands, onto /proc's sha, after 20:00 ET on a weekday:
+            Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0, <6a padded-separator fix, first code task>; Web 5f3a272,
+            f272bec, 1703390, 32a9a84 (needs 1-3), e68137c, 69bafba; Research f6915c4. Count pre-registered; replay;
+            his yes. Legal texts keep 'adopted' (his ruling).
+```
+
+### OPEN, WAITING ON A SEAT
+```
+DESIGN SEAT  NOT OPEN at hand-off (old 72b49119 retiring). On its id send: design.md §8 (966e579) questions (1)
+             sections[] shape, (2) retired-headline state, (3) path-line labels (Marketing's proposal d35e1bba).
+CONE         95b734e (prompt v3) OUT of every cut until Ops's v28 bump (child table + AH freeze + sic_description).
 ```
 
 ### HIS RULINGS SINCE THE EIGHTEENTH (each read at his turn; full text in the running notes)

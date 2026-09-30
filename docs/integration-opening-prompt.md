@@ -42,13 +42,16 @@ up by TITLE every time.** Coaching is `TradeCoach1` in `A:\TradeCoach`, with no 
 
 ## YOUR FIRST TASK, IN ORDER
 
-1. **ASK OPS FOR /proc, THE 10:17 GRADES-READ RESULT, AND HIS ANSWERS TO THE 10:27 SHIP QUESTION** (the Now cell
-   c3d0f06, then the board speed fix 84b0099). Read his answer at his own turn in Ops's transcript before recording it.
-2. **REPLAY DESIGN'S EM-DASH CUT** (ten picks, listed in LIVE STATE) onto the production sha /proc confirms: rev-list,
-   patch-id of every pick, the pre-registered test count, 1b5ead6 ancestry, and that nothing outside the ten rides.
-3. **KEEP THE SESSION REPORTS MOVING. They are his top priority ("reports first"; he asked about them three times).**
+1. **ASK OPS FOR /proc AND WHETHER 46d9f9d SHIPPED AFTER 20:00 ET 09-30** (the speed fix + the deploy-window guard;
+   the Now cell c3d0f06 has been live since 14:51:49Z). Take the R2 reading from Ops.
+2. **WHEN THE NEW DESIGN SEAT SENDS ITS ID, route design.md §8's three questions** (listed in LIVE STATE "OPEN,
+   WAITING ON A SEAT"). The session reports are blocked on them.
+3. **REPLAY DESIGN'S EM-DASH CUT** (twelve picks, listed in LIVE STATE) onto the production sha /proc confirms:
+   rev-list, patch-id of every pick, the pre-registered test count, 1b5ead6 ancestry, 95b734e ABSENT, and nothing else
+   rides. It ships after 20:00 ET only (the guard refuses otherwise).
+4. **KEEP THE SESSION REPORTS MOVING. They are his top priority ("reports first"; he asked about them three times).**
    The chain is in LIVE STATE. No sample reaches him until Commercial has reviewed it against commercial.md §8.
-4. **In every status answer to him, list live / built-not-live / APPROVED-NOT-BUILT with owner and trigger.**
+5. **In every status answer to him, list live / built-not-live / APPROVED-NOT-BUILT with owner and trigger.**
 
 ## His standing rulings and your authority
 
