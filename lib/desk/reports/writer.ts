@@ -126,7 +126,7 @@ const CHANGE_NOTES: Array<[RegExp, (match: RegExpMatchArray) => string]> = [
    * checkpoint" was misread: luna wrote "down 15.7% off its session high"
    * as a fall since the last read (FFAI, 09-29 09:25), and the checker
    * struck the re-worded "slipped to 15.7% under" as a claim about another
-   * checkpoint. Its number is already the sheet's "now N% under it", so
+   * checkpoint. Its number is already the sheet's "now N% under its session high", so
    * dropping the note loses nothing a report can say.
    */
   [/^lost \$(\d+(?:\.\d+)?) support$/, (m) => `lost $${m[1]} support`],
@@ -195,7 +195,11 @@ export function factSheet(fact: ReportFact): string[] {
     let high = `session high: ${price(fact.sessionHigh)}`;
     if (fact.price !== null && fact.sessionHigh > 0 && fact.sessionHigh >= fact.price) {
       const giveback = ((fact.sessionHigh - fact.price) / fact.sessionHigh) * 100;
-      high += `; now ${percentMagnitude(giveback)} under it`;
+      // "under ITS SESSION HIGH", never "under it": the writer places this
+      // beside the reference close, and "it" then reads as the close (voice
+      // run v3, #551: "from the regular-session close of $3.59, now 15.1%
+      // under it" -- right number, wrong referent).
+      high += `; now ${percentMagnitude(giveback)} under its session high`;
     }
     lines.push(high);
   }
@@ -255,7 +259,7 @@ const SYSTEM = [
   '',
   'FACTS',
   '- Use ONLY the facts in the sheet you are given. Say nothing the sheet does not say.',
-  '- Copy every number and its frame EXACTLY as the sheet writes it ("up 90.2% from the prior close", "$1.26", "34.6% under it"). Never compute, round, or restate a number another way. Never write a number that is not in that name’s own sheet.',
+  '- Copy every number and its frame EXACTLY as the sheet writes it ("up 90.2% from the prior close", "$1.26", "34.6% under its session high"). Never compute, round, or restate a number another way. Never write a number that is not in that name’s own sheet.',
   '- The only ranks are the in-range ranks in the sheet. Never say a name entered, left, or dropped off the board, and never compare with a checkpoint the sheet does not describe except through its "since the previous checkpoint" line.',
   '- The only time you may state is the checkpoint time you are given. Never restate the price range inside a line; the reader already sees it.',
   '- Where the sheet says research reached no conclusion, or none is on file, say that plainly; that candour is part of the product. Never dress a gap as "nothing there".',
