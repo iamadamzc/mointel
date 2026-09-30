@@ -684,18 +684,19 @@ same class as the dropped city.
 **Path line** (surface, from `{from, high, now, fromBasis}`). The writer no longer
 restates the path, so the basis has to live on the path line or the number has no
 frame. **Design owns the label words and finalised them** (`design.md` row 3a,
-`6fb68956`), taking my "labelled, never bare" recommendation and fixing a real error
-in my draft: no label may be relative to the moment of READING (the premarket report
-is written the evening before and read the next morning, so "today's close" and "now"
-name the wrong day and the wrong time). Final forms:
+`6fb68956`, refined `80e0bcc0`), taking my "labelled, never bare" recommendation and
+fixing a real error in my draft: no label may be relative to the moment of READING
+(the premarket report is written the evening before and read the next morning, so
+"today's close" and "now" name the wrong day and the wrong time). Final forms:
 
 > intraday: **$3.59 prior close → $6.01 high → $5.10 at 09:27 ET**
-> premarket: **$3.59 Tue close → $6.01 AH high → $5.10 AH close**
+> premarket: **$3.59 prior close → $6.01 AH high → $5.10 AH close**
 
 The last point is absolute (the checkpoint's ET clock intraday; the after-hours close
-on the premarket report), and the first is the weekday of the report's trading date,
-never "today". A fully bare "$3.59 → $6.01 → $5.10" still should not ship: it drops
-the basis.
+on the premarket report), and the first is **"prior close"** for both kinds, the close
+before the session the report serves, so it is true without a date and never relative
+to reading. A fully bare "$3.59 → $6.01 → $5.10" still should not ship: it drops the
+basis.
 
 ### The opening narrative, a fixed first sentence, then voice
 
