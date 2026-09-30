@@ -2256,6 +2256,7 @@ PASS BAR RUN 1   v5: FAIL AS REGISTERED (seed-lock deviation cd8052b9). Raw 70da
                  CORRECT, rule stays, a SET error. Per pre-fixed rule -> RUN 2 TONIGHT: fix (1)+(2) only with tests,
                  re-freeze (sha + blobs to me before release), FRESH set from a different day with (1)/(2) phrasing as
                  regression controls, voice list obeyed; Marketing authoring now.
+RUN 2 SET DAY    09-25 (#518/#528/#531/#532) confirmed to Marketing (earlier sets: 09-24 v5, 09-22 v2 bar).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
