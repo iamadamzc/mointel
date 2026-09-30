@@ -1584,6 +1584,8 @@ SANG BLOCK      Marketing 06dfd1e (read): company header, AH path $3.59 -> $6.01
   conflicting, moderate/mixed/secondary, medium), structure caution + dated shares outstanding (not float) + F-3
   capacity, cycle yellow; every clause field-traced. -> COMMERCIAL §8 review before HIM (my commitment). Marketing
   corrected: on-watch ruled; business/city is Research's change, not Ops's.
+  COMMERCIAL PASS all four (commercial.md §10 baee3f7). Flag -> Research: catalyst-fit phrase tense-bound by report
+  kind (forecast risk in a 07:00 shape). Block shown to HIM verbatim from 06dfd1e.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
