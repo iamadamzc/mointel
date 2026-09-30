@@ -54,6 +54,7 @@ import {
   splitBasisSessions,
 } from '../lib/research/historyFetch';
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
+import { maybeStartHistoryStore } from '../lib/research/historyStoreJob';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
   claimQueuedJobs,
@@ -121,6 +122,26 @@ async function main(): Promise<void> {
   const db = openDatabase(process.env.MARKET_DB_PATH ?? 'data/market.db', {
     onSchemaBackup: (info) =>
       log(`[store] schema v${info.fromVersion}→v${info.toVersion}, backup ${info.path}`),
+  });
+
+  /*
+   * The history store job (resistance-levels spec section 3): its own serial
+   * loop, its own Alpaca client at concurrency 1, its own file, and a
+   * READ-ONLY connection to market.db. OFF unless HISTORY_STORE_ENABLED is an
+   * explicit yes, so this line changes nothing until the flag is set.
+   */
+  const marketDbPath = process.env.MARKET_DB_PATH ?? 'data/market.db';
+  const historyStore = maybeStartHistoryStore({
+    env: process.env,
+    marketDbPath,
+    log,
+    createClient: ({ onRateLimit, symbolsPerCall }) => {
+      const credentials = findAlpacaCredentials().credentials;
+      return credentials
+        ? new AlpacaRestClient(credentials, { concurrency: 1, batchSize: symbolsPerCall, onRateLimit })
+        : null;
+    },
+    openMarketReadonly: (file) => openDatabase(file, { readonly: true }),
   });
 
   const secClient = new SecClient({ config: config.sec });
@@ -354,6 +375,7 @@ async function main(): Promise<void> {
     log(`[research] ${signal} received, shutting down`);
     clearInterval(heartbeat);
     reportLoop.stop();
+    historyStore?.stop();
     process.exit(0);
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
@@ -772,6 +794,7 @@ async function main(): Promise<void> {
   }
 
   log('[research] worker stopped');
+  historyStore?.stop();
   db.close();
 }
 
