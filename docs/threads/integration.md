@@ -2135,6 +2135,12 @@ RENDERED         Design viewed both surfaces locally (temporary fixture routes, 
                  line, zero-watch line); levels (several / aboveAllStored / basisBreak / JSON null / 404 not mounted;
                  1,024 no overflow). OWED before the levels cut: his 2 b cap (nearest 10 + show all) built, tested, and a
                  140-level fixture rendered.
+LEVELS HOST      Ops: research worker CAN host; timer opens its OWN history.db handle. Ops's condition "levels meaningless
+                 until backfill" WRONG, read on Research's branch (ad6fc492/607da6ab): compute reads market.db minute_bars
+                 (repo.ts) + daily_bars (history.ts:154/213/221); history.db only stores rows. Corrected to Ops. Backfill
+                 adds 15m to 39 d later. HISTORY_STORE_ENABLED (fetch job) = in the history-store release's question to
+                 him. Box test from /tmp git archive, read-only: approved; registration commit 2f302d87 (Research
+                 confirms).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
