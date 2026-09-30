@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import { prioritizeEvents, relevantEvents, type EventUniverse } from '@/lib/dashboard/events';
 import type { DeskEvent } from '@/lib/market/types';
 import { formatEtTimestamp } from '@/lib/format';
+import { withoutEmDash } from '@/lib/dashboard/prose';
 
 const TYPE_TONE: Record<string, string> = {
   NEW_HOD: 'text-pos',
@@ -136,13 +137,15 @@ export function DeskEventFeed({
                 >
                   {TYPE_LABEL[item.event.type] ?? item.event.type}
                 </span>
+                {/* The worker wrote these, some before his em-dash rule, and a
+                    stored event is never rewritten: cleaned where it is shown. */}
                 <span
-                  title={item.event.message}
+                  title={withoutEmDash(item.event.message)}
                   className={`truncate text-[11px] ${
                     item.relevance === 'BACKGROUND' ? 'text-ink-3' : 'text-ink-2'
                   }`}
                 >
-                  {item.event.message}
+                  {withoutEmDash(item.event.message)}
                 </span>
               </button>
             </li>

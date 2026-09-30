@@ -31,6 +31,7 @@ import { UNAVAILABLE_THRESHOLD, resolveBlueSky, type BlueSkyState } from '@/lib/
 import type { DemandState, MarketSnapshot, SessionPhase } from '@/lib/market/types';
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import type { AutoIntelligence } from '@/lib/research/view';
+import { withoutEmDash, withoutEmDashDeep } from '@/lib/dashboard/prose';
 import {
   compareSheetAndAuto,
   type MergeProvenance,
@@ -299,6 +300,23 @@ function resolveDisplayedFloat(
   return { value: null, source: null, assessment: recordPair ?? researchPair };
 }
 
+/**
+ * The model's prose reaches the board through the dossier, in many fields and
+ * on many surfaces (Why, Risk, the drawer, the desk read), so it is cleaned
+ * once here, where every row takes it, rather than at each of them. Source
+ * titles too, which the collector joined with a dash before his rule. A URL is
+ * an address, not writing, and is never touched.
+ */
+export function readableIntelligence(auto: AutoIntelligence | null | undefined): AutoIntelligence | null {
+  if (!auto) return null;
+  return {
+    ...auto,
+    statusLabel: withoutEmDash(auto.statusLabel),
+    analysis: auto.analysis ? { ...auto.analysis, dossier: withoutEmDashDeep(auto.analysis.dossier) } : null,
+    evidence: auto.evidence.map((link) => ({ ...link, title: link.title === null ? null : withoutEmDash(link.title) })),
+  };
+}
+
 export function buildDeskRow(
   ticker: string,
   research: MomentumTicker | null,
@@ -488,7 +506,9 @@ export function mergeDesk(
   const sheetTickers = dedupeSheetRows(dashboard?.tickers ?? []);
   const researchByTicker = dashboard?.research ?? {};
   const demandByTicker = market?.demand ?? {};
-  const intelligenceByTicker = market?.intelligence ?? {};
+  const intelligenceByTicker = Object.fromEntries(
+    Object.entries(market?.intelligence ?? {}).map(([ticker, auto]) => [ticker, readableIntelligence(auto)]),
+  );
   const blueSkyByTicker = market?.blueSky ?? {};
   const sheetObservedAt = dashboard?.meta.fetchedAt ?? null;
   // One session for the whole merge, so two rows can never disagree about
