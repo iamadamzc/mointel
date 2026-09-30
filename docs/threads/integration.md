@@ -1370,6 +1370,10 @@ CHECKER BUILT    cdc77af lib/desk/reports/check.ts (rules + model reading of the
                  c2120ac = writer prompt v2 (Marketing's VOICE verbatim), giveback note dropped; voice run 5/52 struck.
                  ROUTED: "SANG SANG" (surface ticker lead + prose ticker) -> Design; "still leading" struck as
                  cross-checkpoint -> Marketing (revise VOICE list).
+                 DESIGN ANSWERED (to Research): (b) surface keeps the ticker lead; the writer never opens with its own
+                 ticker. ALSO: a section emptied by strikes must NOT refill "Nothing in our sources" (false after a
+                 strike): heading stays, neutral line (words from Marketing). Research: applyStrikes; Design: empty
+                 state. Inert until /api/reports.
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
