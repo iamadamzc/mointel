@@ -294,6 +294,21 @@ describe('applyStrikes', () => {
         { heading: 'Gave back', lines: [{ ticker: 'IMCC', text: 'IMCC gave back.' }] },
         { heading: 'Halts', lines: [{ ticker: null, text: NOTHING_LINE }] },
       ],
+      watchCount: 1,
+    });
+  });
+
+  it('counts the DISTINCT names on surviving lines: struck names drop out, a repeat counts once, a NOTHING_LINE counts none', () => {
+    const repeated: ReportDraft = {
+      ...d,
+      sections: [...d.sections, { heading: 'Also held', lines: [{ ticker: 'IMCC', text: 'IMCC held too.' }] }],
+    };
+    expect(applyStrikes(repeated, [], at)).toMatchObject({ ok: true, watchCount: 3 });
+    expect(applyStrikes(repeated, [strike('S2L2')], at)).toMatchObject({ ok: true, watchCount: 3 });
+    expect(applyStrikes(repeated, [strike('S2L2'), strike('S4L1')], at)).toMatchObject({ ok: true, watchCount: 2 });
+    expect(applyStrikes(repeated, [strike('S1L1'), strike('S2L1'), strike('S2L2'), strike('S4L1')], at)).toMatchObject({
+      ok: true,
+      watchCount: 0,
     });
   });
 

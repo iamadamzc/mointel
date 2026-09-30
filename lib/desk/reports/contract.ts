@@ -35,8 +35,36 @@ export interface ReportCheckpointRef {
   completedAt: string;
 }
 
+/** What a path's first point is. The surface chooses the words (Design's call). */
+export type PathBasis = 'PRIOR_CLOSE' | 'TODAY_CLOSE';
+
+/** Start, high, now: computed from the store (`path.ts`), never written by the model. */
+export interface ReportPath {
+  from: number;
+  high: number;
+  now: number;
+  fromBasis: PathBasis;
+}
+
+/**
+ * The company line, from the dossier the checkpoint saw (`research.ts`).
+ * Printed "{name}. {country}. {business}." with a null part dropped with its
+ * separator (Marketing, d35e1bba; accepted by Integration). Country only.
+ */
+export interface ReportCompany {
+  name: string | null;
+  country: string | null;
+  business: string | null;
+}
+
 export interface ReportLine {
   ticker: string | null;
+  /**
+   * v5, COMPUTED, never model text (design.md §8). Absent on v4 rows and on
+   * lines with no ticker; null when the store cannot state it.
+   */
+  company?: ReportCompany | null;
+  path?: ReportPath | null;
   /**
    * Whether this ticker had a live trades/quotes feed. False means minute data
    * only. NULL MEANS NOT RECORDED -- a catch-up report cannot establish feed
@@ -129,6 +157,19 @@ export interface SessionReport {
   /** Null when the checker struck it. Never replaced by anything else. */
   headline: string | null;
   sections: ReportSection[];
+  /**
+   * v5. DISTINCT tickers across the surviving lines, computed by
+   * `applyStrikes` after the strikes; the surface words the opening sentence
+   * from it (`watchLine`). Absent on v4 rows.
+   */
+  watchCount?: number;
+  /**
+   * v5, the opening's second sentence: the premarket report only, written by
+   * the writer from `ticker_session` after-hours totals and traced by the
+   * checker. Null for the other three kinds until Ops's frozen counts (v28),
+   * and null when struck. Absent on v4 rows.
+   */
+  overall?: string | null;
 }
 
 export interface SessionReportsPayload {
