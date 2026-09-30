@@ -302,24 +302,29 @@ after-hours move, not a move from the prior close.*
 > **Into the premarket — from last night's recap.**
 >
 > **IMCC** gave its move back after hours: down 25.1% from yesterday's own close of
-> $4.23, slipping from #1 to #4 on the board as it lost $4.20 support. The float is
-> dirty — the displayed float understates the shares that can reach the market —
-> and the catalyst our sources found grades weak and dilutive.
+> $4.23, and it lost $4.20 support. The float is dirty — the displayed float
+> understates the shares that can reach the market — and the catalyst our sources
+> found grades weak and dilutive.
 
 | Clause | Stored field, 22:00 recap row (id 437) |
 |---|---|
 | "down 25.1% … after hours" | `percent_change = −25.06`, identical to `ah_percent_change` — the headline IS the AH move |
 | "from yesterday's own close of $4.23" | `reference_basis = CURRENT_SESSION`; `reference_close = 4.23` |
-| "slipping from #1 to #4 … lost $4.20 support" | `change_summary`: "rank #1 → #4; … lost $4.20 support" |
+| "lost $4.20 support" | `change_summary`: "lost $4.20 support" |
 | "the float is dirty … reach the market" | `structure = DIRTY_FLOAT` → `risk.ts:154` |
 | "catalyst … grades weak and dilutive" | `catalyst = WEAK_NEGATIVE_DILUTIVE` |
 
-**Two deliberate omissions here, both instructive:**
+**Three deliberate omissions here, all instructive:**
 
-- The recap's `change_summary` ends "`TRADING → UNKNOWN`". The voice does **not**
-  narrate this as a halt — it is the desk *losing halt observability*, not a halt
-  event, and reporting it as one would be the "absence of observation as an event"
-  defect. Silence is correct.
+- The recap's `change_summary` also carries "`rank #1 → #4`". That is a **band
+  ordinal**, and the built writer filters it (`writer.ts` `reportableChangeNotes`):
+  a per-range report shows only the in-range rank, so a board ordinal would put two
+  frames on one row. The earlier version of this specimen printed "slipping from #1
+  to #4"; corrected — the report cannot say it.
+- The recap's `change_summary` also ends "`TRADING → UNKNOWN`". The voice does
+  **not** narrate this as a halt — it is the desk *losing halt observability*, not
+  a halt event, and reporting it as one would be the "absence of observation as an
+  event" defect. Silence is correct.
 - **`TCRT` does not appear in this report at all** — it closed #6 but is absent
   from the recap's stored rows. The tempting beat — "the round-trip name doesn't
   just fade, it drops off the board" — is **not writable**, and not only because
@@ -331,6 +336,74 @@ after-hours move, not a move from the prior close.*
   the better reason for it than the one-checkpoint rule's convenience.
 
 ---
+
+## The writer's first drafts read as a table — why, and the prompt edits that fix it
+
+**Research's 09-29 drafts were faithful (checker struck 0 of 84) but read "as a
+table in sentences" — e.g. "Ranked #5 in this range; price $1.37, …"** (`design.md`
+§4). I read the writer first-hand (`lib/desk/reports/writer.ts`), so this is the
+cause in the instrument, not a guess. It is fixable in the writer's INSTRUCTIONS
+alone; the fact sheet and every checker constraint stay exactly as they are.
+
+**Why it reads as a table.** The fact sheet is a per-name field list —
+`ranked #N` first, then `price`, `change`, `session high`, `low`, `rvol`,
+`volume`, notes, research (`factSheet`). The SYSTEM prompt tells the model to be
+"an assistant … specific, unhurried, candid" but never how to *arrange*, and it
+requires "ONE self-contained line naming that ticker". A cheap model (luna) with a
+field list and a one-line-per-name rule does the literal thing: it walks the
+fields in sheet order and joins them with semicolons. Three instructions are
+missing — selection, order, and texture — and the self-containment rule is being
+read as "a row", when it only means "no `it` reaching into another line".
+
+**The edits, as a drop-in `SYSTEM` change (keep FACTS, NEVER and the JSON shape
+verbatim).** Add a `VOICE` block after the opening line, and tighten the one SHAPE
+bullet:
+
+```
+VOICE
+- You are briefing a trader sitting down at the desk, not filling a table. Lead
+  each name with what it DID — held its gains, ran and came back, sits at its high,
+  hasn't been looked at yet — and let the numbers support that read. Never open a
+  line with the rank.
+- Choose what carries the name's story. The sheet lists more than a briefing says:
+  put in the price and the one or two numbers that matter, and you need not use
+  every field. Leaving a fact out is fine; inventing or restating one is not.
+- Write one flowing sentence per name, not "field; field; field". The rank is a
+  detail late in the line ("…, and it's the top name here"), never the subject.
+- Vary how the lines open across names so the report is not a repeated template.
+  The desk's spoken words carry the voice: held, gave it back, off its high, on
+  tape alone, still leading, hasn't been looked at.
+- The headline is one plain sentence about what this moment looks like across the
+  names — not a label like "Premarket report".
+
+SHAPE  (replace the self-contained bullet with:)
+- Each line about a name is ONE self-contained SENTENCE naming that ticker: it
+  stands alone, with no "it", "also" or "the same name" pointing at another line —
+  self-contained means it does not lean on another line, NOT that it is a row of
+  fields. Set "ticker" to that ticker; a line about no single name has "ticker": null.
+```
+
+**Before / after, on a real checked row (my 09-18 IMCC, so it teaches no
+invention):**
+
+- *Table-in-sentences:* "IMCC — ranked #1 in this range; price $3.31; change up
+  90.2% from the prior close; session high $5.06, now 34.6% under it; catalyst
+  weak/negative/dilutive; structure dirty float."
+- *Briefing:* "IMCC is still leading but coming in — $3.31, up 90.2% from the prior
+  close yet 34.6% under its $5.06 high, on a dirty float and a catalyst our sources
+  grade weak and dilutive."
+
+Both carry only sheet facts and every number survives the checker; the second
+reads as a person. **Note the constraint that bit my own example first:** the
+briefing must not restate the price range in the line (SYSTEM already bans it), so
+rank becomes "still leading" / "the top name", never "#1 in the $1–$20 names".
+
+**One lever that is Research's, not mine, offered not prescribed:** the sheet leads
+every name with `ranked #N`, and a cheap model opens where the sheet opens. If
+"never open with the rank" does not hold on luna, moving the rank line to the END
+of each name's sheet block (a facts-presentation change, no fact altered) would
+remove the pull at the source. Your call — it touches the fact sheet, which is
+yours.
 
 ## For Commercial — where I am writing near the line, and unsure
 
