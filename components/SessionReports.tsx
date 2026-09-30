@@ -2,16 +2,16 @@
 
 import { useRef, useState } from 'react';
 
-import type {
-  ReportRange,
-  SessionReport,
+import {
+  EMPTIED_SECTION_LINE,
+  type ReportRange,
+  type SessionReport,
 } from '@/lib/desk/reports/contract';
 import {
   agoText,
   briefingLineText,
   checkpointText,
   coverageText,
-  EMPTY_SECTION_LINE,
   reportCoverage,
   outsideBoardRange,
   reportTitle,
@@ -404,7 +404,7 @@ function ReportBody({
           {section.lines.length === 0 ? (
             // Empty for ANY reason reads the same, and claims nothing: "nothing
             // in our sources" exists only as the writer's checked line.
-            <p className="text-[13px] text-ink-3">{EMPTY_SECTION_LINE}</p>
+            <p className="text-[13px] text-ink-3">{EMPTIED_SECTION_LINE}</p>
           ) : (
             <ul className="space-y-1.5">
               {section.lines.map((line, index) => (
