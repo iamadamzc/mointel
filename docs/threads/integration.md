@@ -2193,6 +2193,14 @@ BOX TEST REG     Research: 2f302d87 registers the DESKTOP test (prod copy, 09-29
                  the box registration (my "2f302d87, Research confirms" to Ops superseded). The BOX test (live store, top
                  25 at run instant) gets its OWN registration commit (same bars) before Ops runs it; sha + command to me
                  and Ops before 20:00 ET.
+RUNNER DESIGN    Ops: NOT research_jobs (ticker NOT NULL + unique live index). Research worker's own 30 s loop DERIVES the
+                 queue: per kind, Research's findCheckpoint(kind, date); terminal checkpoint, within 12 h lookback, no
+                 session_reports row -> runReport, store. One attempt per slot; MISSED replaced only by a later PUBLISHED;
+                 PUBLISHED never overwritten. Late run runReportForAssessment throws on missing / non-report / mismatched
+                 id. Assess untouched. Branch ops/report-runner on main + v28 twin. APPROVED (order call). Conditions:
+                 cut from PRODUCTION post-v28 as ONE reports cut (runner + 4771363 + 80e0bcc0 + 0f15521 + sic write);
+                 tests w/ mutants: lookback boundary, restart idempotence, MISSED->PUBLISHED, late-run throws + FK,
+                 RUNNING skipped + FAILED behaviour; spend named per slot/day; non-blocking stated from code.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
