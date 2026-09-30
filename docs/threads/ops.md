@@ -12971,3 +12971,11 @@ reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
 **Error ledger (this seat):**
 | error (asserted vs true) | TYPE | already logged? | caught by |
 | - | - | - | - |
+
+**17:3xZ Report runner BUILT:** ops/report-runner 4f428748 (worktree A:\mointel-runner; main 3bb59a2f + v28 256badaf,
+b4d1f132). Research worker derives the queue from the store (research_jobs cannot carry it: ticker NOT NULL + live unique
+index); Integration's FK condition tested; 349/349 desk+security, tsc + eslint clean; full suite not run. Files for the
+replay: lib/desk/reports/job.ts, tests/desk/reportJob.test.ts, worker/research.ts.
+**Gate slot:** the orphaned 89d39053 run (pids 20200/22704/24128, parent shell dead, no log) showed 0 CPU over 20 s at
+17:4xZ: hung, not loading the PC. The classifier refused my kill (his call). Gate 46d9f9d started in this session, log in
+this seat's scratchpad (gate-46d9f9d.log). Queue after it: Design 3c0cd04a, Research's harness, Ops 89d39053.
