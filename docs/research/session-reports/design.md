@@ -64,6 +64,12 @@ built.**
 
 **AND THE CONTROL, WITHOUT WHICH THE ABOVE IS WORTHLESS: run the checker on the UNCORRUPTED reports too. It must strike NOTHING.** *A checker that strikes everything scores 6/6 on the corrupted set and is useless. **This desk shipped a guard that refused everyone once already** — test that it ADMITS before believing that it refuses.*
 
+**❌ RUN 1, 2026-09-30: FAIL AS REGISTERED.** *Set: Marketing's blind `defect-set.md` (sha verified; `67406d5`). Checker `cdc77af`. Harness and predictions `82b07ae`, committed before any call. Raw output `dbb2889`, committed before it was read. $1–$20, terra, one run per draft, $0.24.*
+- **Defects: 18/18 keyed lines STRUCK**, every class 3/3. The model struck all 18; the rules alone struck 13.
+- **Controls: 5 false strikes on 3 controls, so FAIL.** (i) "lost $X support since the last check" ×2 (model): the checker's prompt never says every stored note is a change since the previous checkpoint. (ii) "no catalyst, structure or cycle on file" (rule, **PREDICTED in `82b07ae`**): the bare-"no catalyst" rule also matches Marketing's approved "no catalyst on file". (iii) 433-C headline "going into the last hour" at 14:30 (model): the prompt never says the report's own kind is a supported frame. (iv) "an exit-and-avoid read rather than a setup" (model, struck as advice): the ruled long-only definition of red-backside (`commercial.md` §6) is not in the prompt.
+- **INSTABILITY, reported:** 423-C's headline "Two names led the premarket" passed in the control and was struck in all 6 of its variants: same line, same rows, different verdicts. **One run is not a stability claim, and this run shows why.**
+- **Post hoc, labelled:** all four admission failures trace to a ruled source the checker was never given, not to the specimens. **Nothing ships on run 1.** A run 2 on THIS set would be fitted (its controls are now read), so run 2 needs a fresh blind set.
+
 ---
 
 ## 1. WHAT THIS LAYER IS, AND THE ONE THING IT MAY NEVER DO
