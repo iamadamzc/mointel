@@ -2023,6 +2023,10 @@ PROBE DESIGN     Web bb4e14a8 (docs/web/2026-10-01-gate-probe-design.md, 174 lin
                  Seam rule agreed with Web: the asking seat says so; the other stands down explicitly. FRIDAY: I ask him;
                  Web stood down. HAZARD (Web): the gate wiring does NOT enter the repo before Friday (on main it would
                  ride any cut and refuse everyone at 07:00); Friday's first act writes it. Probe likewise after tonight.
+RESEARCH STEP 1  080e5ec checker traced rules (check.ts + traced.ts + test; SANG prose passes whole). Research REPEATED a
+                 corrected class (escape lost via heredoc; own assert refused, no damage; 1e5f586) -> proposing its
+                 hand-off to HIM in its own session (its question; I stand down). My rulings message still queued there;
+                 successor's first items named to Research (report table spec to Ops, writer v5, levels in parallel).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
