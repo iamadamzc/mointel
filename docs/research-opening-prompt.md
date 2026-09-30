@@ -40,7 +40,7 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
 
 ### Where things stand (2026-09-29, evening ET)
 
-**TONIGHT (graded by the retiring seat):** market worker restarted 00:15:40Z on `1b5ead6`. **Item 1 PASS** (flush clock +6.93 s over 7.0 s; lag 297/383 ms). Capture band took ("recording $0.25-$50, qualifying $0.25-$20"). **Item 6 (date roll): PENDING, filled in after 22:08 ET.**
+**TONIGHT (graded by the retiring seat):** market worker restarted 00:15:40Z on `1b5ead6`. **Item 1 PASS** (flush clock +6.93 s over 7.0 s; lag 297/383 ms). Capture band took ("recording $0.25-$50, qualifying $0.25-$20"). **Item 6 (date roll) PASS** on the registered condition (116 closed and 116 opened at the roll instant 02:00:00.178Z; none left open). The command's ±5 s window also caught a set rebuild 3 s later (7 rows), which is not part of the roll. **Items 2–5 at 04:33 ET are yours.** The new day's high-res set was 7 names at 02:00:03Z, so the 04:33 item-2 control (highResCount > 0) should have content.
 
 **In flight, in time order:**
 
