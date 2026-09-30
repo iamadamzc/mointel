@@ -1601,6 +1601,10 @@ SANG BLOCK      Marketing 06dfd1e (read): company header, AH path $3.59 -> $6.01
   range_key) for per-range top-N AND per-range counts, same bump. Approved.
   NUMBER RETRACTED (Research): 3,245 / 967 / 748 counted all instruments; board-eligible (discovery_eligible=1):
   2,454 / 749 / 569. I had shown him the wrong figures twice -> retracted to him; Marketing told to fix.
+NOW-CELL READ   Design 04:06 ET on 74c1818: PASS all three (asOf lag 547 ms, RECORDING, 46,834 buckets, 0 discarded;
+  10 s gaps exact; 51 rows, 23 measured = all 21 highRes + 2 edge rows falling back correctly). CUT APPROVED on
+  74c1818 (no deploy since 02:33Z per ops.md; fa61410 patch-id 74d202b8). Ship = HIS yes, outside 04:00-10:15 ET.
+  GZIP JSON CONFIRMED (144,754 B wire / 771,097 decoded). First /api/market 15.5 s (next 1.19 s) -> Ops, no probes.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
