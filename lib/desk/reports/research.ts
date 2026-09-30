@@ -20,7 +20,7 @@
  */
 
 import { withoutEmDash } from '../../dashboard/prose';
-import { edgarCountry } from '../../research/sec/stateCountry';
+import { countryName } from '../../research/sec/stateCountry';
 import type {
   CatalystGrade,
   CatalystStatus,
@@ -98,7 +98,7 @@ export function reportResearch(
     generatedAt: version.generatedAt,
     company: {
       name: clean(dossier.companyName),
-      country: edgarCountry(dossier.country),
+      country: countryName(dossier.country),
       business: clean(dossier.businessDescription),
     },
     catalyst: {
