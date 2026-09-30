@@ -2141,6 +2141,10 @@ LEVELS HOST      Ops: research worker CAN host; timer opens its OWN history.db h
                  adds 15m to 39 d later. HISTORY_STORE_ENABLED (fetch job) = in the history-store release's question to
                  him. Box test from /tmp git archive, read-only: approved; registration commit 2f302d87 (Research
                  confirms).
+OPS REPEAT       Ops ledgered a REPEAT (asserted without opening: FK default, then the backfill condition). Hygiene §2 =
+                 Ops warns him + proposes hand-off (Ops's question; I stand down). My read if asked: after tonight's last
+                 release, or now if he prefers. openHistoryStore has no flag check; openHistoryStoreReadonly fileMustExist
+                 -> /api/levels treats missing history.db as no row (Research to test).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
