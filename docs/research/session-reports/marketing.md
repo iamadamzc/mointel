@@ -122,18 +122,14 @@ Each line is a prohibition with its source. The checker enforces them.
 | **narrate a halt**, "halted", "not halted", "trading normally" | `halt_state` is `UNKNOWN` on 10,408 of 13,825 rows; `UNKNOWN` read as "not halted" is absence of observation reported as absence of event (`facts-2026-09-18.md`). `language.ts`: halt is silent when trading. | Say nothing about halts unless the field is `HALTED`/`RESUMING`. Silence is correct. |
 | **the em dash (U+2014)** | HIS HARD RULE, 2026-09-30, verbatim: *"no em dashes in any writing. hard rule. nobody uses em dashes as much as llms."* It is the loudest AI tell in the copy. The checker strikes any line containing U+2014. | A comma, colon, full stop or parentheses, whichever the sentence wants. **Never a spaced hyphen** (" - "): that is the same tic wearing a different mark. |
 
-**⚠️ The em-dash ban collides with the desk's own vocabulary, and this is not
-Marketing's to fix.** `lib/dashboard/language.ts` renders the cycle labels WITH em
-dashes (`red` U+2014 `backside`, `yellow` U+2014 `frontside warning`, `green` U+2014
-`fresh / frontside`).
-Those strings reach the reports and the board. If the reports must be em-dash-free,
-the canonical label needs an em-dash-free form (for example `red, backside` or
-`red backside`), and the checker must expect that form, or every cycle line the
-writer emits will be struck by the rule above. Flagged to Research (reports/writer),
-and it touches the whole product surface, not just reports, since those labels also
-render on the dashboard. Until it is settled, the examples below render the cycle
-without an em dash (e.g. "yellow, a frontside warning") as a placeholder for whatever
-canonical form is chosen.
+**The em-dash ban collided with the desk's own vocabulary; RESOLVED by Design.**
+`lib/dashboard/language.ts` had rendered the cycle labels with em dashes, and those
+strings reach the reports and the board, so every cycle line would have been struck.
+**Design set the canonical em-dash-free labels (`c76e98f`), taking the comma form:**
+`green, fresh / frontside`, `yellow, frontside warning`, `red, backside` (drawer
+badges uppercase: `RED, BACKSIDE`). The writer and checker follow those exact
+strings, and the examples below use them verbatim. Other board pairs that are never
+quoted in prose keep the board's middot (`Market: SIP · LIVE`).
 
 ---
 
@@ -611,7 +607,7 @@ after-hours arc.
 > 2026 (the outstanding count, not a float), and no float the desk can independently
 > verify, so the tradable supply is unknown; an effective 2023 F-3 leaves
 > registered-resale capacity the desk cannot quantify: capacity, not proof of selling.
-> Where it sits: yellow, a frontside warning.
+> Where it sits: yellow, frontside warning.
 
 | Clause | Field (assessment 551 / dossier 2407) |
 |---|---|
