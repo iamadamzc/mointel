@@ -2089,6 +2089,16 @@ DESIGN 16:4xZ    Report v5 surface 80e0bcc0 (SessionReports.tsx, sessionReports.
                  must be 200 + JSON null (Design -> Research). Both ride the SAME cuts as Research's routes. ORDER CALL:
                  both rendered locally with fixtures before those cuts (neither viewed rendered yet). Now-cell live read:
                  Design's classifier refused the review token; Design asks HIM; no other seat routes around a refusal.
+LEVELS BUILT     Research subagent, branch worktree-agent-acfba7ff0c32d6e90 (ad6fc49), NOT merged; pre-reg 2f302d8.
+                 FIXTURE PASS 13/14 at the bar (SLXN 5/5, NCI 4/4, MSGY 4/5); BIYA 2.501/2.421 present, 2.462/2.490 wait
+                 on backfill. COST FAIL AS REGISTERED: cold p95 1,175 / max 1,380 ms vs 100 / 250 (warm reruns 64-78 ms,
+                 NOT counted). Sync better-sqlite3 in web -> a cold read stalls every poll. Split-today tripwire being
+                 added. Show-all counts: NIVF 140, SLXN 101 levels.
+                 ORDER CALL: (b) BOX GATE pre-registered first, Ops runs once after 20:00 ET between releases, first pass
+                 counts, fail = no request-path ship; AND (a) in parallel: stored rows computed on a timer in the research
+                 worker, written OUTSIDE market.db (Ops picks the file), served from the row. Count (100+) -> HIM.
+REPORTS          2d93de4 pipeline end to end on 09-24 rows, all four kinds publish (scripted models); runner factory
+                 f47080b. Next: first real-model v5 run on 09-29 checkpoints -> Commercial's sample (~$0.15, his "3 yes").
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
