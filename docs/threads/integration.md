@@ -1383,6 +1383,10 @@ PASS BAR RUN 1   FAIL AS REGISTERED (protocol held: cdc77af < 67406d5 < 82b07ae 
                  admitted only if every run admits; defect struck only if every run strikes); (2) fix the four from
                  sources, freeze checker, sha to me; (3) Marketing FRESH blind set, different day, hash-locked, released
                  after the freeze; (4) run 2. 04:33 ET items take precedence on collision.
+                 SET-2 AUTHOR: Marketing disclosed it read RUN 1's causes (not the checker/fix). RULED (b): INFORMED,
+                 BLIND TO THE CHECKER; controls MUST include the four run-1-struck forms as keyed REGRESSION controls +
+                 ordinary v3 controls, no steering; key header states the authorship. Research reports regression vs
+                 ordinary separately, both 0 on every run.
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
