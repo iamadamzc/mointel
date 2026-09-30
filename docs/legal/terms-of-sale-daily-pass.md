@@ -1,14 +1,23 @@
 ---
 title: Terms of sale — daily pass
-status: DRAFT, awaiting his adoption
+status: DRAFT, held — not an active decision, see note below
 drafted: 2026-09-30
 ---
 
 <!--
-  DRAFTED 2026-09-30, under time pressure ("everything pending to go tonight",
-  his ruling, verified at his own turn, 4689366c, 2026-09-30T15:47:13Z), because
-  daily billing is BUILD APPROVED and sequenced to ship tonight after the
-  sign-in cut-over, and it has no terms-of-sale document at all today.
+  DRAFTED 2026-09-30, under what read as time pressure at the moment of
+  writing ("everything pending to go tonight", his ruling, verified at his own
+  turn, 4689366c, 2026-09-30T15:47:13Z) — daily billing is BUILD APPROVED and
+  sequenced behind the sign-in cut-over, which this seat understood to be
+  shipping that same night, and there was no terms-of-sale document at all.
+
+  CORRECTED THE SAME NIGHT: sign-in ships Friday, not that night — his own
+  ruling, verified at his own turn in Web's session, 15:51:36.984Z, "3, sign
+  in friday" — and neither sign-in nor billing was actually built yet (Web's
+  read via Integration: scope documents only). So nothing here was an active
+  decision that night after all. **HELD, not urgent, not withdrawn.** This
+  document is ready the moment billing is actually about to ship, and the
+  refund line stays his to set whenever that is.
 
   WHY A SEPARATE DOCUMENT, NOT A REDRAFT OF THE ADOPTED docs/legal/terms.md:
   that file's own banner rule says a material redraft sends `adopted` back to
