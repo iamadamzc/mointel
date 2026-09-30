@@ -516,6 +516,27 @@ with the STI line, still a single differing line and struck as class 4, so the
 result stands. The committed set is left unchanged: it is the hash-locked artifact
 the run used.*
 
+### Run 3 (v5) — a fresh set, 19 classes, informed by the contract only
+
+For the v5 pass bar (ship-tonight, 2026-09-30). v5 computes the company/path/watchCount
+lines, so the checker judges only the writer's `text` and the premarket `overall`; the
+set seeds into those alone. **Nineteen classes** (run 2's six plus thirteen v5
+additions: em dash, spaced-hyphen dash, a written name count, shares-as-float, shares
+undated, catalyst fit as a forecast, a clock time no source carries, an exact time
+hedged, a catalyst number not in the cited text, a date not held, a company/country
+contradiction, prose beyond the reasoning, a wrong AH total), seeded against real
+2026-09-24 rows (APUS/SPHL/IFBD; #499/#509/#512/#513), plus control-exercise true lines
+(real SEC forms, a rounded figure, matching dates, "the outstanding count, not a
+float", an en-dash range). Authored **informed by the v5 CONTRACT only (`design.md`
+§8), BLIND to the v5 checker.** The premarket `overall` uses the verified 09-24
+board-eligible after-hours totals (2,419 traded, 697 up, 559 down; `report-ah-totals.ts`
+= Ops v28), and its wrong-total defect uses the all-rows up-count (795).
+
+    sha256(defect-set-v5.md) = 437e30a660b67370fd66b6a9726ce09affd7159af706ec229647bd7cd2c0d0a6
+
+Sealed in scratchpad; released to Research only after Integration confirms the v5
+checker freeze, pinned LF so the hash verifies on any checkout.
+
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
 **His verdict on the v3 sample (#551), verbatim** (`integration.md` `b563207`):
@@ -711,17 +732,19 @@ appear there.
 **The voice second sentence, the overall picture, is READY for the PREMARKET report
 ONLY.** Research verified one reproducible source: `ticker_session`'s after-hours
 totals for the day, final after 20:00, so the writer and checker read identical
-numbers. For #551 (premarket, 09-28 $1–$20), **board-eligible only**
-(`discovery_eligible = 1`, the board's own filter, so it excludes the ETFs,
-preferreds, funds, units and warrants the board never lists):
+numbers. For #551 (premarket, 09-28 $1–$20), **board-eligible only** (the board's own
+filter via `lib/desk/reports/totals.ts`, = Ops's v28 frozen counts; it excludes the
+ETFs, preferreds, funds, units and warrants the board never lists), and **up/down
+count TRADED names only** (verified via `scripts/report-ah-totals.ts`):
 
-> Across the $1–$20 range, 2,454 traded after hours, 749 up, 569 down.
+> Across the $1–$20 range, 2,456 traded after hours, 751 up, 568 down.
 
 So #551's opening reads: **"We're watching 12 names into the premarket. Across the
-$1–$20 range, 2,454 traded after hours, 749 up, 569 down."**, first sentence from
+$1–$20 range, 2,456 traded after hours, 751 up, 568 down."**, first sentence from
 the surface's `watchCount` (12, after cap and strikes), second sentence voice. *(The
-count must use the board's `discovery_eligible = 1` filter; an all-instruments count
-would name names the board never shows.)*
+count must use the board's own filter; an all-instruments count would name names the
+board never shows, and an all-rows up/down count would include names that never traded
+after hours.)*
 
 **The other three kinds have NO overall sentence yet, PENDING.** Into-RTH
 ("premarket overall"), power hour ("day so far") and after-hours ("today", its
