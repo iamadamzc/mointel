@@ -44,7 +44,7 @@ import {
 } from './writer';
 
 /** Bumped whenever `SYSTEM_V5`, the sheet's wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION = 5;
+export const REPORT_WRITER_PROMPT_VERSION_V5 = 5;
 
 export interface WriterInputV5 extends WriterInput {
   /** Each name's research as of the checkpoint, by ticker. A missing name has none. */
