@@ -1654,6 +1654,9 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   positive control) on main (read; legal md now 0). My inventory to Web was grep-by-file and MISSED the legal text
   (ledger 9). Canvas sweep -> Web (order call). Release: ONE em-dash cut (Design + Web + canvas) from production AFTER
   the 10:27 ships. TO HIM: keep 'adopted: 2026-09-11' (punctuation only) vs re-adopt; the pipe in page titles.
+  MARKETING 793e0e2 + f85fe35 swept its copy (157 + 49). FOUND: app/page.tsx on main still has &mdash; ENTITIES (read)
+  at 139/190 (captions) and 321 (registered statement) -> Web (entity-aware check); 321's wording -> Commercial. 160/
+  183/388 are empty-cell glyphs: KEPT per his ruling. Tagline separator = colon ("TMI: Intelligence on what's moving.").
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
