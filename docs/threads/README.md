@@ -501,6 +501,19 @@ writable, global resource on this machine exactly like the index is.*
 > and dangerous ANCESTRY; `0a17601` had the needed content and no ancestry the query could follow.
 > **Ancestry and content answer different questions — name which one you are asking.***
 
+## HIS HARD RULE, 2026-09-30: NO EM DASHES IN ANY WRITING
+
+**His words, verbatim:** *"no em dashes in any writing. hard rule. nobody uses em dashes as much as llms."*
+
+- **Scope: everything he or a customer reads.** Reports, board and site copy, legal pages, marketing, drafts put to him,
+  and every seat's messages to him. Code comments and internal charters are not what he meant; seat-to-seat traffic
+  that may be pasted to him follows it too.
+- **The character is U+2014.** Rewrite with a comma, colon, full stop or parentheses. A spaced hyphen standing in for
+  it is the same tic.
+- **Generated text gets a deterministic check, not a prompt alone.** The report writer's prompt forbids it AND a code
+  check fails any line containing it.
+- *Not extended by this seat:* en dashes in numeric ranges ("$1–$20") are outside his words. Ask him before sweeping them.
+
 ## TWO OWNERS DE-DUPLICATING TOWARD EACH OTHER DELETE BOTH
 
 *2026-09-29, found by Design.* Design (`5f5df76`) and Research (`c6d1c39`) each held a copy of the
