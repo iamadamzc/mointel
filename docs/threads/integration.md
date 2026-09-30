@@ -2325,6 +2325,9 @@ PASS BAR RUN 2   FAIL AS REGISTERED: raw a3e7229 before read; harness 24b3552; c
                  (missed defect OR control strike, whatever the cause) -> no reports tonight, no run 4, he hears why.
 RUN 3 DAY        2026-09-23 (#480/#490/#493/#494; overall 2,431 / 787 / 564), never used by a bar. NOT 09-26 (a Saturday;
                  Research's unopened claim, relayed by me: ledger 4). Pre-fixed outcomes recorded in design.md (Research).
+RUN 3 SEEDS      sha256(defect-set-v5r3.md) 42818555d8b1231713cf439b4dc8773f744571e12a0e0d97d90505f4ba546128, registered
+                 a0afc02f (14:12:32 ET; pushed here). 09-23, 19 classes, controls field-traced; asset-sale regression
+                 control NOT exercisable on 09-23 (documented). RELEASED on my word (checker 925c9dc unchanged).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
