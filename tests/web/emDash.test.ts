@@ -24,14 +24,16 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 
 /** Everything a signed-out visitor can reach, plus the metadata search shows. */
+// CUT-ONLY (Design, the em-dash release on 46d9f9d): app/signin/page.tsx and
+// lib/auth/authErrorPage.ts are not in production, so this release cannot
+// carry them and the guard cannot read them. main's copy lists both and
+// guards them from the release that ships sign-in.
 const SURFACES = [
   'app/page.tsx',
   'app/layout.tsx',
-  'app/signin/page.tsx',
   'app/privacy/page.tsx',
   'app/terms/page.tsx',
   'components/LegalPage.tsx',
-  'lib/auth/authErrorPage.ts',
   'docs/legal/privacy-policy.md',
   'docs/legal/terms.md',
 ];
