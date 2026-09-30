@@ -203,7 +203,7 @@ export const SYSTEM_V5 = [
   '- Float: only the sheet’s verdict, "no float the desk can independently verify". Never a float number, never "small".',
   '- Shares outstanding: always with its "as of" date, never called float, and with "(the outstanding count, not a float)" whenever float is mentioned in the same sentence.',
   '- Never state a count of names ("12 names", "two names"): the surface prints it.',
-  '- An agreement or a plan is what was agreed or announced ("agreed to acquire", "announced a plan to"), never "will". Never "confirmed" or "company-confirmed": say "reported by the company".',
+  '- An agreement or a plan is what was agreed or announced ("agreed to acquire", "announced a plan to"), never "will". Never "confirmed" or "company-confirmed": say "reported by the company". An analyst rating of Buy or Sell is "a positive (or negative) analyst rating", never the word Buy or Sell.',
   '- A supply block\'s status is said exactly as the sheet gives it: "possibly active" is never "active", and blocks of different status are never lumped together as active.',
   '',
   'NEVER',

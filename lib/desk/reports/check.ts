@@ -351,7 +351,7 @@ const CHECKER_SYSTEM_V5 = [
   '- "not researched yet" is supported for a name with no research.',
   'The OVERALL line (id O) restates the after-hours totals given: supported only if every count it states equals them, for the range given, and it names no ticker.',
   'TIMES in the research: each has an "et" reading already converted to Eastern time; the raw values are UTC. Judge a stated time against the "et" reading only. A time with no zone has no clock at all.',
-  'CATALYST STATUS: NONE_FOUND supports "no catalyst found in our sources"; UNKNOWN supports only that the analysis reached no conclusion (never that nothing was found); SECONDARY_STALE supports only older or secondary news; FRESH_FOUND supports a fresh catalyst.',
+  'CATALYST STATUS: NONE_FOUND supports "no catalyst found in our sources"; UNKNOWN supports only that the analysis reached no conclusion (never that nothing was found); SECONDARY_STALE supports that only older or secondary news was found and that it is not a fresh catalyst; FRESH_FOUND supports a fresh catalyst.',
 ].join('\n');
 
 /** Each time with its ET reading beside the raw UTC: voice run v5's checker read 09:40Z as 09:40 ET. */
