@@ -3,19 +3,19 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import type {
-  MissedCause,
-  ReportRange,
-  ReportSlot,
-  SessionReport,
-  SessionReportsPayload,
+import {
+  EMPTIED_SECTION_LINE,
+  type MissedCause,
+  type ReportRange,
+  type ReportSlot,
+  type SessionReport,
+  type SessionReportsPayload,
 } from '@/lib/desk/reports/contract';
 import {
   briefingLineText,
   checkpointText,
   chooseReportRange,
   coverageText,
-  EMPTY_SECTION_LINE,
   missedCauseText,
   outsideBoardRange,
   reportCoverage,
@@ -299,17 +299,17 @@ describe('the words', () => {
 
 describe('a section with no line', () => {
   it("reads Marketing's line, which speaks about the report and not the sources", () => {
-    expect(EMPTY_SECTION_LINE).toBe('No line for this section in this report.');
+    expect(EMPTIED_SECTION_LINE).toBe('No line for this section in this report.');
   });
 
   it("is never the writer's checked absence: after a strike the sources DO hold a name", () => {
-    expect(EMPTY_SECTION_LINE).not.toBe(NOTHING_LINE);
-    expect(EMPTY_SECTION_LINE).not.toMatch(/sources|nothing|removed|struck|checked/i);
+    expect(EMPTIED_SECTION_LINE).not.toBe(NOTHING_LINE);
+    expect(EMPTIED_SECTION_LINE).not.toMatch(/sources|nothing|removed|struck|checked/i);
   });
 
   it('is what the window prints for an empty section, and the claim is nowhere in it', () => {
     const source = readFileSync(join(process.cwd(), 'components/SessionReports.tsx'), 'utf8');
-    expect(source).toMatch(/lines\.length === 0 \?[\s\S]{0,400}\{EMPTY_SECTION_LINE\}/);
+    expect(source).toMatch(/lines\.length === 0 \?[\s\S]{0,400}\{EMPTIED_SECTION_LINE\}/);
     expect(source).not.toContain(NOTHING_LINE);
     expect(source).not.toMatch(/Nothing in our sources/);
   });
