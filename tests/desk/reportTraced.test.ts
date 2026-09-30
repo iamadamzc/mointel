@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { applyStrikes, buildCheckerPrompt, checkReport, ruleStrikes } from '@/lib/desk/reports/check';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
-import { claimsIn, traceLine } from '@/lib/desk/reports/traced';
+import { claimsIn, etDayAndClock, traceLine } from '@/lib/desk/reports/traced';
 
 /*
  * SANG at the 2026-09-28 22:00 ET recap (#551, dossier 2407), as the SANG
@@ -87,6 +87,31 @@ describe('what a line claims', () => {
       { value: '17:26', hedged: true, raw: '17:26' },
       { value: '17:30', hedged: false, raw: '17:30' },
     ]);
+  });
+});
+
+describe('stored dates are model-written, so they are read tolerantly and never throw', () => {
+  it('reads a bare date, an ISO instant, an ET wall clock, and refuses free text as null', () => {
+    expect(etDayAndClock('2026-06-30')).toEqual({ date: '2026-06-30', clock: null });
+    expect(etDayAndClock('2026-09-28T21:26:40Z')).toEqual({ date: '2026-09-28', clock: '17:26' });
+    // The prod form: its date and clock are ALREADY Eastern.
+    expect(etDayAndClock('2026-08-19 20:00:00 ET')).toEqual({ date: '2026-08-19', clock: '20:00' });
+    for (const junk of ['Q3 2024', 'effective upon filing', '', null]) {
+      expect(etDayAndClock(junk)).toEqual({ date: null, clock: null });
+    }
+  });
+
+  it('a dossier with free-text and ET-wall dates is traced, not crashed on', () => {
+    const odd: ReportResearch = {
+      ...RESEARCH,
+      // No cited source, so 17:26 can ONLY trace to the ET-wall event time.
+      catalyst: { ...RESEARCH.catalyst, eventTimestamp: '2026-09-28 17:26:00 ET', sources: [] },
+      structure: {
+        ...RESEARCH.structure,
+        supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null }],
+      },
+    };
+    expect(traceLine('The headline crossed at 17:26 ET on September 28, 2026.', ROW, odd, AT)).toEqual([]);
   });
 });
 

@@ -29,7 +29,8 @@
  * model half reads. Row numbers stay SIGNED, as `verify.ts` has them.
  */
 
-import { etClock, etDateString } from '../../market/session';
+import { etClock } from '../../market/session';
+import { eventEtDate } from '../../research/time';
 import type { ReportResearch } from './research';
 import { roundTo, type ReportFactRow } from './verify';
 
@@ -145,17 +146,33 @@ export interface ResearchAllowance {
   shares: { count: number; asOf: string } | null;
 }
 
-function datesOf(iso: string | null): string[] {
-  if (!iso) return [];
-  const bare = /^\d{4}-\d{2}-\d{2}$/.test(iso);
-  const day = bare ? iso : etDateString(new Date(iso));
-  return Number.isNaN(Date.parse(day)) ? [] : [day];
+/**
+ * A stored date or instant as its ET calendar date and, when it carries one,
+ * its ET wall clock (HH:MM). Stored dossier dates are MODEL-WRITTEN: bare dates,
+ * ISO instants, ET wall clocks like "2026-08-19 20:00:00 ET" (whose date and
+ * clock are ALREADY Eastern), and free text. Anything unparseable is null, never
+ * a throw: 100 distinct unparseable values in 2,495 prod versions made the ET
+ * formatter throw, which failed two of four 09-24 reports. The date comes from
+ * `eventEtDate`, the reader catalyst freshness already uses.
+ */
+export function etDayAndClock(raw: string | null | undefined): { date: string | null; clock: string | null } {
+  if (!raw) return { date: null, clock: null };
+  const trimmed = raw.trim();
+  const date = eventEtDate(trimmed);
+  const wall = /^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})(?::\d{2})?\s*ET$/i.exec(trimmed);
+  if (wall) return { date, clock: `${wall[2]}:${wall[3]}` };
+  if (!/\dT?\d{2}:\d{2}/.test(trimmed) || /^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return { date, clock: null };
+  const ms = Date.parse(trimmed);
+  return { date, clock: Number.isFinite(ms) ? etClock(new Date(ms)).slice(0, 5) : null };
 }
 
-function clockOf(iso: string | null): string | null {
-  if (!iso || !iso.includes('T')) return null;
-  const at = new Date(iso);
-  return Number.isNaN(at.getTime()) ? null : etClock(at).slice(0, 5);
+function datesOf(raw: string | null): string[] {
+  const { date } = etDayAndClock(raw);
+  return date ? [date] : [];
+}
+
+function clockOf(raw: string | null): string | null {
+  return etDayAndClock(raw).clock;
 }
 
 export function researchAllowance(research: ReportResearch | null): ResearchAllowance {
