@@ -2276,6 +2276,11 @@ WRITER DELTA     Writer-sheet filing STRIPPED (Research). Shipping writer differ
                  writerV5 @ 9037a9c) by ONE instruction (2e8450f: analyst Buy/Sell -> "a positive (or negative) analyst
                  rating"). KEEP conditional on Commercial's confirm; asked. ALSO ASKED: Commercial's actual verdict on
                  v5b (I have not read one; "Commercial's PASS" so far is Research's word only).
+SHIM REVIEWED    Design: condition MET on 1fde525b (e01b836f differs by docs only). rangeLabel output identical to main's
+                 ("covers $1–$20"); board = null -> default range, never STRADDLE, never "not in your range"; 5e8b13c3
+                 not an ancestor, boardRange.ts absent; package-lock = main. Cut tree RENDERED in Design's own worktree
+                 (fixture route restored byte-identical, cmp): two-range fixture picks default; v5 lead, company lines,
+                 labelled paths (sub-dollar), null path = no line, struck section neutral line, zero-watch; 1,024 no clip.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
