@@ -2351,6 +2351,10 @@ LEVELS CUT       e8caa77d (ops/levels-cut-on-2bcf1cf, A:\mointel-levelscut) REPL
                  no levels tonight) -> Design renders cut tree -> HIS yes (own question) -> after v28 /proc.
 LEVELS GATED     e8caa77d ALL GREEN 187/187, 2,843 (Ops). Ops asking HIM now, conditional on box test PASS + Design
                  render (no ship on his yes alone). I do not ask it.
+HIS LEVELS YES   Ops's session d33d893e, typed "yes" 2026-09-30T18:28:16Z (read with its block): levels e8caa77d tonight
+                 after v28, CONDITIONAL on the box cost test PASS + Design's render. SHIP START needs HIM to send "go" in
+                 Ops's chat after 20:00 ET (classifier refuses a cron-driven deploy; Ops's plan, read in its transcript).
+                 My 19:41 check: confirm he knows to send "go".
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
