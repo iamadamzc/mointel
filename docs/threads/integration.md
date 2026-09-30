@@ -2385,6 +2385,10 @@ RUN 4 RE-FREEZE  cb6d030 (15:45:18 ET, on origin) VERIFIED here: research bc57f2
 RUN 4 SEEDS      Marketing held (right call): ca55e42e said "Marketing released" = AUTHORIZED, nothing had landed. Set
                  authored, sha256 b5452d59953663d99890e20f32d7122a451ae117e84668ec723a82109462a5d1 (09-21, 4 controls +
                  19 keyed, supply dollar/terms/restriction regression controls); told: lock note first, then file.
+RUN 4 SEEDS v2   Before locking, Marketing changed the set on first-hand as-of reads: VEEE (av 1819 SECONDARY_STALE, not
+                 NONE_FOUND) recast from absence to stale-catalyst phrasing; AUUD (av 51, NONE_FOUND) added as the (a)
+                 control (Research's relayed "no NONE_FOUND on 09-21" was wrong). New sha256 0ff12a28432fb84d69ce072376c3a75
+                 ae0f34c8b95fa527be6086cf6f528cad9; b5452d59 never committed. RE-CONFIRMED; lock note first, then file.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
