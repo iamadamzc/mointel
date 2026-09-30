@@ -1632,6 +1632,11 @@ HIS RULING (this session, ~10:4xZ, replying to the SANG block's "what it does an
   a partof the query" -> CITY DROPPED; BUSINESS DESCRIPTION = a field the research model returns (prompt + schema),
   stored as-of, so the report restates it and the checker traces it. Read as acceptance of the rest of the SANG
   shape (told him so; he may object). Build AFTER the 10:12 grades read (a prompt change must not touch the v2 read).
+HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape APPROVED. And, verbatim: "no em dashes
+  in any writing. hard rule. nobody uses em dashes as much as llms." -> HARD RULE, all writing he or a customer reads:
+  reports (writer prompt + a deterministic check), board/site/legal copy, marketing, and every seat's messages to him.
+  Routed to Research, Design, Web, Marketing, Commercial; README rule added. En dashes in ranges ($1-$20) not in scope
+  of his words; not extended.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
