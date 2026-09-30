@@ -12604,3 +12604,11 @@ route (never VACUUM INTO in a session). Fills forward only. Order with the 20:05
 proposed to Integration after the 10:12 read.
 **Integration 2026-09-30 ~04:2xZ: ah_low too, same bump** (the recap's session_low is all-sessions). So the bump adds
 ah_reference_close, ah_high, ah_low to desk_assessment_tickers, as-of, filled forward only.
+
+**QUEUED (same market.db bump; Integration ~04:3xZ from Research): FROZEN "OVERALL" COUNTS PER REPORT** -- names traded /
+up / down for the checkpoint's range and session window, plus the window's definition, fixed at capture (live
+ticker_session moves; the checker's re-read would disagree). Premarket kind already has a final source (AH totals for D
+after 20:00); this covers the other three. **Opened: desk_assessments (db.ts:572-603, :824-827) has NO range column; one
+row per checkpoint, band-wide.** So "for the checkpoint's range" cannot be columns on that row once reports come in
+several ranges: it needs a child table keyed (assessment_id, range_key[, window]) -- the same shape per-range top-N
+storage needs. Research specifies columns and window boundaries BEFORE any migration is written; asked 2026-09-30.
