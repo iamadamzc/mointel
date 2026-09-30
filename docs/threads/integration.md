@@ -2189,6 +2189,10 @@ OPS 17:3xZ       New Ops had ALREADY asked him for #1 (17:2xZ) before my message
                  since 16:50Z, parent dead, no log) holds the gate slot and memory; Ops's kill refused by the classifier
                  -> HIS call in Ops's session (I do not route around it). Queue: Ops 46d9f9d, Design 3c0cd04a, Research
                  harness, Ops 89d39053. Runner build STARTED.
+BOX TEST REG     Research: 2f302d87 registers the DESKTOP test (prod copy, 09-29 10:00 names), already FAILED; it is NOT
+                 the box registration (my "2f302d87, Research confirms" to Ops superseded). The BOX test (live store, top
+                 25 at run instant) gets its OWN registration commit (same bars) before Ops runs it; sha + command to me
+                 and Ops before 20:00 ET.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
