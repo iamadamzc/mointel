@@ -15,3 +15,7 @@
 *.conf     text eol=lf
 *.service  text eol=lf
 *.target   text eol=lf
+
+# Pre-registered defect set: pinned to LF so its committed sha256 verifies on any
+# checkout, on any platform (the hash was computed over LF bytes).
+docs/research/session-reports/defect-set.md text eol=lf
