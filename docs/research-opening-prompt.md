@@ -40,7 +40,7 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
 
 ### Where things stand (2026-09-29, evening ET)
 
-**TONIGHT (graded by the retiring seat):** PENDING — filled in after the checks.
+**TONIGHT (graded by the retiring seat):** market worker restarted 00:15:40Z on `1b5ead6`. **Item 1 PASS** (flush clock +6.93 s over 7.0 s; lag 297/383 ms). Capture band took ("recording $0.25-$50, qualifying $0.25-$20"). **Item 6 (date roll): PENDING, filled in after 22:08 ET.**
 
 **In flight, in time order:**
 
