@@ -2370,6 +2370,11 @@ HIS RULING       THIS SESSION (4689366c, typed 2026-09-30T19:34:36Z) "a, try ton
                  a clean day (unused by any bar and not 09-29, whose v5 outputs shaped the fixes). Marketing: fresh set, run
                  3's rules + supply-field regression controls. PRE-FIXED: PASS -> Ops re-picks the re-freeze onto 4b55a049,
                  gate, blob verify, his yes; ANY FAIL -> reports tomorrow, no run 5. All three told.
+RUN 4 FIX        Research 8c52506 (15:38:51 ET, read stat): research.ts + traced.ts + 3 tests (writerV5.ts NOT touched; its
+                 test file 2 lines). Whole SupplyBlock carried except evidenceSourceIds (internal). A mutant first
+                 survived (fixture terms also held the figure); test isolated. DAY 2026-09-21 (Monday, checked; #442/
+                 #452/#455/#456; overall 2,442 / 784 / 533): no bar, no voice run, no fix derived from it. Re-freeze waits
+                 on Ops's gate slot; sha + blobs to me before release.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
