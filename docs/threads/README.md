@@ -512,6 +512,10 @@ writable, global resource on this machine exactly like the index is.*
   it is the same tic.
 - **Generated text gets a deterministic check, not a prompt alone.** The report writer's prompt forbids it AND a code
   check fails any line containing it.
+- **SEARCH THE GLYPH AND ITS ENTITY FORMS, THEN CLASSIFY BEFORE COUNTING (Web's rule, 2026-09-30).** `&mdash;`,
+  `&#8212;` and `&#x2014;` render as the same dash, and a U+2014 search cannot see them: eight were missed on the live
+  public page that way. A file-level grep counts code comments too. Classify every hit as rendered or comment first.
+- **His exception, verbatim:** the lone empty-cell placeholder stays ("keep it. fine for that, not writing.").
 - *Not extended by this seat:* en dashes in numeric ranges ("$1–$20") are outside his words. Ask him before sweeping them.
 
 ## TWO OWNERS DE-DUPLICATING TOWARD EACH OTHER DELETE BOTH
