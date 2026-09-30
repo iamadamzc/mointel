@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE — handed off 2026-09-30 after post-restart item 6 (last read 02:08Z) by seat `local_d6996864` on his "a, hand off after tonight's checks"; opening prompt `docs/research-opening-prompt.md` (newest items at the top of "OPEN, MINE")
+## LIVE STATE: handed off 2026-09-30 after the catalyst-grade read (14:17Z rows) by seat `local_bed7ed93` on his "c" (hand off at the next quiet point after the 10:00 read); opening prompt `docs/research-opening-prompt.md`. The QUEUE under "OPEN, MINE" is current; read it first.
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
@@ -309,6 +309,7 @@ record. He has it from this seat directly as well.
   | told Marketing "I also moved the rank to the end per your lever"; I had not: the drafts ended on the rank because of its VOICE instruction alone | never-assert-what-you-have-not-opened (a claim about my own change, written from the drafts' look, not from the diff) | **YES: REPEAT of row 1's class, same session (my first draft of this row called it "not a repeat"; that label was post hoc). Hygiene §2 trigger: warned him, hand-off proposed** | self, within a minute; correction sent |
   | "registration amended BEFORE any checker change" (commit subject and to Integration); my own `e67a91b` changed `check.ts` (applyStrikes rendering) 34 s earlier | three-claims-wearing-one-name ("checker change" stated for all of check.ts when only the strike logic was true) | no — first for this seat | **peer (Integration 19th)**; re-worded to "strike logic" |
   | after-hours totals "3,245 traded, 967 up / 748 down" (09-28 $1–$20), sent to Marketing and Integration and put into the SANG example; the count included ETFs, preferreds, funds, units and warrants. Board-eligible: 2,454 / 749 / 569 | audited-the-instrument-not-the-experiment (a correct count of the query, on a population the claim is not about) | no — first for this seat | self, while writing Ops's spec |
+  | a Python script written through a bash heredoc lost an escape level (`\\b` became a backspace); the script's own `assert` refused to write | generated-code-loses-backslashes | **YES: REPEAT of this seat's row 2** | self (the assert); from then on, scripts were written with the Write tool |
 - **ERROR LEDGER, seat local_d6996864 (from 2026-09-29T17:10Z)** — | error | TYPE | already logged? | caught by |
   | "the newest highlighted, since recency is what the data supports", put to HIM as the premise of an option he then chose; the test behind it had no non-level control, and the controlled re-test withdrew it | audited-the-instrument-not-the-experiment (a comparison among levels, never levels against non-levels) | no — first for this seat | self, on his question; Integration named the relay consequence |
   | registered date check #1 as "near ~09:55" and coded "the day's max"; it printed FAIL | generated-code-drifts-from-its-registration | no — first for this seat | self, before it reached anyone |
