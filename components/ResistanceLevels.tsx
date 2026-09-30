@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { computedText, horizonText, levelLines, levelsNote } from '@/lib/dashboard/resistance';
+import { computedText, horizonText, levelLines, levelsNote, shownLevels } from '@/lib/dashboard/resistance';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { ResistanceLevels as LevelsRow } from '@/lib/market/resistance';
 
@@ -109,16 +109,19 @@ export function ResistanceLevels({
 }
 
 function LevelsBody({ row }: { row: LevelsRow }) {
-  const lines = levelLines(row);
+  // Nearest 10 by default, the rest behind a link (his "2 b"). The drawer
+  // remounts this per name, so every name opens collapsed.
+  const [showAll, setShowAll] = useState(false);
+  const { shown, toggle } = shownLevels(levelLines(row), showAll);
   const note = levelsNote(row);
   const computed = computedText(row);
   const horizon = horizonText(row);
 
   return (
     <div className="space-y-2">
-      {lines.length > 0 ? (
+      {shown.length > 0 ? (
         <ol className="space-y-0.5">
-          {lines.map((line, index) => (
+          {shown.map((line, index) => (
             <li
               key={`${line.price}:${index}`}
               title={line.title}
@@ -134,6 +137,16 @@ function LevelsBody({ row }: { row: LevelsRow }) {
             </li>
           ))}
         </ol>
+      ) : null}
+      {toggle ? (
+        <button
+          type="button"
+          onClick={() => setShowAll((value) => !value)}
+          aria-expanded={showAll}
+          className="min-h-6 text-[11px] font-semibold text-accent hover:underline"
+        >
+          {toggle}
+        </button>
       ) : null}
       {note ? <p className="text-[12px] text-ink-2">{note}</p> : null}
       {computed || horizon ? (
