@@ -1382,6 +1382,11 @@ ITEM 6 RAW       Ops 22:08 ET: old_open_left 0; closed_at_roll 116; opened_at_ro
                  closed +1.02 s when the new day's high-res set went to 0; 7 at +3.075 s = new high-res set 7, inside the
                  SQL's +5 s window). As written the rule reads 123 vs 116 / 2 vs 1 -> RESEARCH GRADES. Disk re-read
                  02:08Z: 61G free of 77G.
+ITEM 6 GRADE     Research: "PASS on the registered condition" -- NOT as written: registered pass needs opened_at_roll =
+                 open_old and distinct_open = 1; raw 123/116 and 2 -> AS REGISTERED FAIL on two clauses; POST-HOC
+                 (labelled) excluding the 7 rows at +3.075 s (a separate high-res rebuild in the +5 s window) = PASS-
+                 shaped. Correction sent. OPEN QUESTION (not graded): 116 one-second 09-30 intervals opened at the roll
+                 and closed +1.02 s -> sent to Design (Now-cell read 04:00) and Research's successor.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
