@@ -63,7 +63,7 @@ From `/api/market`, read the way you normally read it on the box:
 
 ```sh
 jq '{fetchedAt, highResCount: .health.highResCount,
-     top: ([.demand[] | select(.highRes)] | sort_by(.rvolRank // 1e9) | .[0] | {symbol, rvolRank})}'
+     top: ([.demand[] | select(.highRes)] | sort_by(.rvolRank // 1e9) | .[0] | {ticker, rvolRank})}'
 ```
 
 Then check the top name has an open interval:
@@ -71,10 +71,10 @@ Then check the top name has an open interval:
 ```sh
 sqlite3 -readonly /var/lib/mointel/trades.db \
   "SELECT symbol, opened_ms, last_seen_ms, closed_ms FROM feed_intervals
-    WHERE trading_date = '2026-09-30' AND symbol = '<top.symbol>' ORDER BY opened_ms;"
+    WHERE trading_date = '2026-09-30' AND symbol = '<top.ticker>' ORDER BY opened_ms;"
 ```
 
-**Pass:** `open_rows` ≈ `highResCount`, and `<top.symbol>` has a row with
+**Pass:** `open_rows` ≈ `highResCount`, and `<top.ticker>` has a row with
 `closed_ms` NULL. **Positive control:** `highResCount` > 0. **Fail:**
 `open_rows` = 0 with `highResCount` > 0 means the ACK hook or the high-res hook
 is not firing.
@@ -96,9 +96,9 @@ price is not reaching the store.
 ```sh
 jq '{fetchedAt, asOf: .health.tradeCapture.asOf,
      on:  ([.demand[] | select(.highRes)]     | sort_by(.rvolRank // 1e9) | .[0]
-            | {symbol, n: (.nowBuckets | length), ends: [.nowBuckets[]?.bucketEnd]}),
+            | {ticker, n: (.nowBuckets | length), ends: [.nowBuckets[]?.bucketEnd]}),
      off: ([.demand[] | select(.highRes | not)] | .[0]
-            | {symbol, hasKey: has("nowBuckets"), nowBuckets})}'
+            | {ticker, hasKey: has("nowBuckets"), nowBuckets})}'
 ```
 
 **Pass:** `on.n` = 6, and its `ends` are consecutive and 10 s apart. `off`
@@ -171,3 +171,16 @@ broken, and no unit test reaches it.
 require a rollback.** The board keeps its minute column while the field is
 absent or null. **No worker rollback below `9508fb9` is possible after this
 restart**, because a v1 worker refuses the v2 file.
+
+---
+
+## GRADED 2026-09-30, items 2–5 (Research `local_bed7ed93`, from Ops's raw rows, `ops.md` `d29b378`, taken 08:40–08:42Z)
+
+**INSTRUMENT CORRECTION, labelled:** the `jq` above read `.symbol`, but the payload field is `.ticker`, so the written command printed the top name as NULL. Fixed in this commit (`symbol` → `ticker`). It was a query defect, not an outcome: the corrected re-read (Ops, 08:42:05Z) evaluates the same registered condition.
+
+- **Precondition:** `bucketsWritten` 125,523 → 127,860 across 61 s (PREMARKET), discarded 0.
+- **Item 2: PASS.** `open_rows` 13 = `highResCount` 13 (control > 0 holds). The top name (re-read) is BIYA, with an open interval (`closed_ms` NULL, `last_seen` current). Its other 09-30 interval is the known one-second stub from the date roll (closed at +1.02 s).
+- **Item 3: PASS.** rows 4,422 (control > 0), `null_price` 0, `null_ts` 0.
+- **Item 4: PASS.** `on.n` = 6, ends 08:40:50 → 08:41:40Z consecutive, 10 s apart. `off` has the key with `nowBuckets: null`. `asOf` is 0.75 s behind `fetchedAt` (≤ 30 s).
+- **Item 5: UNTESTED.** No stream reconnect since 00:15:40Z. The journal search's positive control (the 00:18:21Z startup auth) shows it can see such lines.
+- **Consequence per this file:** items 1–3 all PASS, so nothing here blocks Design's Now cell. Its ship is his yes.
