@@ -13024,3 +13024,11 @@ ops/reports-cut-run2 **4b55a049** (= e01b836f + 3c9b2911 + bfa28cf8; the re-free
 A:\mointel-build (fresh npm ci; Turbopack refuses the node_modules junction, environmental). Reviewed Research's
 loadMinuteBarRange (8dfacf4): fine, two wording nits Research fixes at merge. Reports cut waits on: run 2 PASS, Integration's
 literal-sha approval, his yes. Worktrees to remove after tonight: A:\mointel-runner, A:\mointel-reportscut, A:\mointel-build.
+
+**NO REPORTS TONIGHT** (Integration: run 2 and run 3 FAILED as registered; 4b55a049 kept for tomorrow's re-pick).
+**LEVELS CUT ops/levels-cut-on-2bcf1cf e8caa77d** (worktree A:\mointel-levelscut): 2bcf1cf + 6 clean picks (ad6eb0f1,
+ad6fc492, 064e15e1, 607da6ab, 8dfacf4c, 52241465; patch-ids same, Integration); 14 files +2,347/-0, read-only runtime, no
+schema/env. **GATED HERE ALL GREEN 187/187, 2,843 tests.** Integration APPROVED ON CONTENT. Ship conditions: box cost test
+PASS (4612eba registration, from 8dfacf4, once, after 20:00 in a gap, first pass counts: p95 < 100 ms AND max < 250 ms);
+Design renders the cut tree; his yes. Slot: after v28 is live + /proc read, clear of 22:00 +/- 5. Post-ship live read on /desk
+only: the cut has no /review/[token]/api/levels, so the section never mounts on a review link.
