@@ -57,22 +57,23 @@ production's literal web sha now (Ops's /proc read, not a relay).
    responseEnd, plus sizes and the UTC minute). A 15.5 s first load was seen once at
    04:06 ET and not reproduced at 04:53; it is unexplained. Revoke, confirm dead by
    content, close the tab.
-2. **The em-dash cut**, only after both ships resolve, onto /proc's sha: ten `-x` picks in
-   this order. Design: 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0. Web: 5f3a272, f272bec,
+2. **Before the cut, fix the guard hole in design.md item 6a** (Research's find: `isPlaceholder()` trims, so a space-dash-space separator literal passes as the placeholder; three strings survive: `why.ts:392`, `MarketStatus.tsx:115`, `ResearchEngineStatus.tsx:48`). Exempt only an UNTRIMMED whole-dash literal, add the fixture, predict kills, fix the three, gate, and add the sha to the picks after 9e0a3a0.
+3. **The em-dash cut**, only after both ships resolve, onto /proc's sha: eleven `-x` picks in
+   this order. Design: 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0, then the 6a fix. Web: 5f3a272, f272bec,
    1703390, 32a9a84, e68137c, 69bafba (32a9a84 never without the three before it;
    69bafba after f272bec). Declare the test-file count against that base before gating
    (`git ls-tree -r <base> --name-only tests | grep -c '\.test\.ts$'`, never a `**`
    pathspec). Full gate, plus `npx vitest run tests/web/ tests/auth/` as Web's
    completeness check. Tag under `design/`, send Integration the sha for replay; it ships
    on his yes.
-3. **Session reports.** When Research's contract carries `watchCount`, wire `watchLine`
+4. **Session reports.** When Research's contract carries `watchCount`, wire `watchLine`
    (already on main, a496207) into the report window's opening. Then the report v2
    surface (design.md item 3a): the opening narrative, and a per-ticker price path with
    POINT LABELS. The labels are Design's call and are shown to him; his own example
    ("3.5 --> 5.00 --> 4.25") is unlabelled, so never cite labels as his. A path point can
    be absent on older rows.
-4. **Resistance levels** (item 4), now that item 1 is done.
-5. Follow-ups in item 5.
+5. **Resistance levels** (item 4), now that item 1 is done.
+6. Follow-ups in item 5.
 
 **How you see production:** `scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 1
 -Label design`. The URL prints once. **Redact it from printed output**
