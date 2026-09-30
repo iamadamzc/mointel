@@ -1368,6 +1368,8 @@ RESTART DONE     Ops: mointel-market ExecMainStart 00:15:40Z, pid 1574400, cwd 1
                  discarded 0; research NR 0; 0 lock/busy lines. Item 1 PASS-shaped (lag 297/383 ms) -> raw to Research.
                  Start->SIP 2m41s (replay 75.4 s). ROLLBACK FLOOR 9508fb9/3810b9e in force. Next: snapshot (c), 21:50,
                  22:08.
+ITEM 1 GRADED   Research: PASS (flush clock +6.93 s over 7.0 s; lag 297/383 ms; band line; NR 0). 121f97c and floor
+                 3810b9e are ancestors of 1b5ead6 (read). Item 6 after 22:08 ET; items 2-5 -> successor 04:33 ET.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
