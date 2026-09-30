@@ -2123,6 +2123,13 @@ HIS RULINGS      THIS SESSION (4689366c, user turn 2026-09-30T17:03:54Z, first-h
                  3 "Friday sign-in: evening after the close?" yes -> FRIDAY 2026-10-02 after 20:00 ET. Sent to Web.
                    TRIGGER Thu 2026-10-01 (owner this seat or successor): ask him for the Google client id + secret (to
                    Ops), seed confirmation (iamadamzc@gmail.com), a throwaway uninvited Google account, ~10 min Friday.
+RESEARCH 17:1xZ  Rulings recorded 5c9c7b5. v5 real-model run b94988f ($0.19): 5 problems, mostly checker false strikes
+                 ("not proof of selling" struck whole premarket report), zone-less timestamp, sheet gaps, checker read
+                 UTC as ET -> fixed 9037a9c (3,120 pass); v5b re-run next, then Commercial.
+LEVELS SEAM      Research's backup wrote a JSON file per symbol; Ops had committed c443b58 (history.db resistance_levels,
+                 symbol+trading_date PK, payload §2 JSON, on ops/history-store-on-46d9f9d, read). ORDER CALL: ONE storage =
+                 Ops's table; host = research worker, 5-min timer (rank <= 90 + requested names); Ops confirms stores open.
+                 Box test: Research sends Ops the registration sha + command.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
