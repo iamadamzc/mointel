@@ -2223,6 +2223,14 @@ RUNNER BUILT     Ops 4f428748 (ops/report-runner, worktree A:\mointel-runner; ma
                  b4d1f132): job.ts, reportJob.test.ts, worker/research.ts. Met: late-run throws + FK, overwrite rules,
                  RUNNING skip, older-than-lookback skip. OWED before replay: PUBLISHED end-to-end with Research's scripted
                  models; lookback boundary both sides + mutant; spend per slot/day + blocking statement from the code.
+RUNNER READY     Ops 523ef484 (ops/report-runner, 14 tests): PUBLISHED end-to-end with scripted writer + checker (1+1
+                 calls, body stored, checkpoint id = assessment_id); lookback exactly 12 h runs, +1 ms never; mutants:
+                 comparison removed 1/1, < to <= 1/1, filled-slot skip 3 predicted / 2 killed (survivor = in-process loop
+                 test's attempted-set; restart test isolates the store check); restart over filled slot = 0 model calls;
+                 FAILED checkpoint -> MISSED, 0 calls. SPEND: <= 2 calls/slot, 0 if checkpoint not COMPLETE, no retries;
+                 4 slots/day (4 kinds x 1 range) -> <= 8 calls/day; "~$0.003/report" unverified, usage stored per call.
+                 Sync reads per pass/slot NOT timed (estimate "a few ms", labelled). CONDITIONS MET; replay in the cut.
+                 46d9f9d re-gated by the new Ops: ALL GREEN 178/178, 2,731.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
