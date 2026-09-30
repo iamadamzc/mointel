@@ -12591,6 +12591,9 @@ c817ef86's message says "ledger" but the scripted insert failed    commit-messag
   a recursive listing of every file NAME on his C: drive into a local
   tool-result file (~64 MB, names only, nothing sent anywhere); task
   stopped, both output files deleted/emptied ~16:3xZ. Use grep -c.
+told Integration "foreign keys are not enforced (no PRAGMA)"; true: asserted-before-opening-artefact      no      own test
+  better-sqlite3 enables foreign_keys by default. Corrected to
+  Integration ~16:4xZ; consequence only on a market_mode switch.
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
