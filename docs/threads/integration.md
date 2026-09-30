@@ -2219,6 +2219,10 @@ PASS BAR v5      RUNNING: set cd8052b9 verified on 11863526; harness 82493db bef
                  file"). OUTCOME RULES FIXED BEFORE THE RESULT (order call): PASS -> Commercial's sample review last;
                  FAIL on false strikes only -> fix named rule + test, re-freeze, FRESH blind set from a different day
                  (format first, hash last), run 2 tonight; ANY missed defect -> no reports tonight, he hears the class.
+RUNNER BUILT     Ops 4f428748 (ops/report-runner, worktree A:\mointel-runner; main 3bb59a2f + v28 picks 256badaf,
+                 b4d1f132): job.ts, reportJob.test.ts, worker/research.ts. Met: late-run throws + FK, overwrite rules,
+                 RUNNING skip, older-than-lookback skip. OWED before replay: PUBLISHED end-to-end with Research's scripted
+                 models; lookback boundary both sides + mutant; spend per slot/day + blocking statement from the code.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
