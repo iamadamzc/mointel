@@ -986,7 +986,8 @@ CONE RULE   every ship carries 1b5ead6 (deploy.sh re-renders nginx-tls.conf per 
 1 c3d0f06   Now cell (fa61410 -x onto 74c1818). Design's live read PASSED 04:06 ET. Replayed + gated 177.
 2 84b0099   loadMinuteBars ts bound, re-picked onto c3d0f06 (== 6043db3, patch-id 54037044). Local ratio 0.196, 0 of 1.1M
             rows differ. Gated 178. If he says yes only to the bound: ship 6043db3 on 74c1818.
-3 EM-DASH   NOT CUT YET. Design cuts after 1-2 land, onto /proc's sha: Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0; Web
+3 EM-DASH   NOT CUT YET. Design cuts after 1-2 land, onto /proc's sha: Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0 (+ the
+            padded-separator test fix FIRST); Research f6915c4 last; Web
             5f3a272, f272bec, 1703390, 32a9a84 (needs 1-3), e68137c, 69bafba. Count pre-registered. Replay it, then his yes.
 ```
 
@@ -1758,6 +1759,9 @@ GRADES v2 READ  Research (grades-v2-read-2026-09-30.txt): C control PASS (MTNB 2
 DESIGN HAND-OFF on his "yes" (fresh session): design.md re-dated 14:23Z, docs/design-opening-prompt.md rewritten;
   unfinished: em-dash cut (successor, after both ships), live Now-cell read after c3d0f06 ships, 15.5 s first-load
   split (Ops + successor). Route to the NEW Design id; 72b49119 retiring.
+RESEARCH f6915c4 (em-dash text fixes, 3 routed + 8 found, parser test) -> RIDES THE EM-DASH CUT as pick 11 (order
+  call). Discovery-prompt em dash (companySourceContract.ts) folds into item 3's enumeration. PRE-CUT FIX for the
+  successor Design: its noEmDash test passes a padded ' — ' as the glyph (why.ts:392 + two tooltips survive).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
