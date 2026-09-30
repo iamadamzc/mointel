@@ -12434,6 +12434,8 @@ error (asserted vs true)                                          TYPE          
   drops that minute before the GROUP BY
 "two readers make the tail 2-3x" vs two rows 52 min apart in RTH   asserted-cause-without-control   YES(3rd) Research
   (time of day not held fixed); also told to him
+Python text-mode write put CRLF into sync-env.sh      generated-edit-changes-bytes      no       self (before
+  (caught by a CR-byte count before commit or run)                                                  it ran)
 ```
 Repeat of a corrected class -> warned him 2026-09-29 ~12:5x ET and proposed the hand-off timing.
 
@@ -12554,3 +12556,5 @@ is now 1b5ead6 (its own). Owner Ops: re-pin a release at or above the floor, or 
   (which must NOT be VACUUM INTO during a session: see the 16:06 finding).
 - ORDER between (1) and (2): the successor proposes to Integration. Research builds GET /api/reports + the range
   config after the 10:12 grades read.
+
+**HAND-OFF PROMPT WRITTEN 2026-09-30 03:4xZ (23:4x ET):** docs/ops-opening-prompt.md, from the 03:35:35Z box read. This seat still runs 00:57 / 04:33 / 10:12 ET and appends their results below; his ruling: hand off 2026-09-30 after the 10:12 read.
