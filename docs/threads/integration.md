@@ -2392,6 +2392,9 @@ RUN 4 SEEDS v2   Before locking, Marketing changed the set on first-hand as-of r
 RUN 4 SEEDS v3   RE-CONFIRM OF 0ff12a28 WITHDRAWN (ledger 5): AUUD not among #456's 12 covered names; verify.ts:262
                  NO_ROW_FOR_TICKER would strike it (read at cb6d030). Marketing: AUUD out, only each report's 12 names,
                  (a) declared NOT exercisable on 09-21, VEEE stale recast kept; new hash to me before release.
+SAFETY STOP HELD Marketing released v5r4 at 0ff12a28 (8acae017) on my withdrawn re-confirm (retraction arrived second).
+                 Research did NOT run it; runs only on a hash I name. 8acae017's file is VOID for the bar; Marketing
+                 re-authors (AUUD out, 12 names each, (a) not exercisable) under a new file/version and hash.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
