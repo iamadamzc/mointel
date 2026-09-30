@@ -979,6 +979,8 @@ MARKET      1b5ead6's worker, pid 1574400, ExecMainStart 2026-09-30T00:15:40Z. R
             trades.db v2 -> ROLLBACK FLOOR: no market worker below 9508fb9 / 3810b9e.
 PINS        market-floor -> 1b5ead6 (safe rollback); rollback-baseline -> 372f5eb is BELOW the floor, never a market target.
 CONE RULE   every ship carries 1b5ead6 (deploy.sh re-renders nginx-tls.conf per release).
+            KEEP 95b734e OUT of every cut until Ops's v28 bump ships (interpreter prompt v3 + dossier schema v2 on main;
+            cut by -x picks from production, never from main HEAD). The upsertIssuer write follows the column.
 ```
 
 ### SHIPS WAITING ON HIS YES (Ops-tmi asks at 10:27 ET, after the 10:17 grades read)
