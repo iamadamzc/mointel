@@ -2171,6 +2171,10 @@ SUCCESSOR OPS    Brief on its id, in this order: (1) recreate 20:07 reminder, sh
                  2bcf1cf on his yeses, re-pin floor on his word; (4) box levels cost test 2f302d87 in a gap; (5)
                  /api/reports release (runner + 4771363 + Design surface + 0f15521 + sic write); (6) history store LAST
                  (c443b585 ungated, re-stack on v28) or tomorrow.
+NEW OPS          local_8a0801c2 (title Ops-tmi, cwd A:\mointel, not archived: list_sessions read). Old local_bb3d4059 renamed
+                 "Ops-tmi (retired 2026-09-30)", NOT archived (his, cosmetic). /proc 17:20:03Z = the hand-off's. Briefed with
+                 the SUCCESSOR OPS order above; told NOT to re-ask him for #1 (his yes: 7bacf0d6 ~16:0xZ + mine 15:47:13Z;
+                 verify at his turn). Gate queue handed back to Ops (Design 3c0cd04a waiting, then Research harness).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
