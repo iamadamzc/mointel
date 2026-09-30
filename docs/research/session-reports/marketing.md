@@ -681,6 +681,17 @@ Form: `{name}. {country}. {business}.` Drop any null part with its separator; no
 segment. Country is the decoded COUNTRY only (A6 to "Canada"), no state or province,
 same class as the dropped city.
 
+**Name casing (Design's question; NOT for tonight, my ruling).** SEC names file as
+filed, often all caps ("KNOREX LTD.", "FARADAY FUTURE INTELLIGENT ELECTRIC INC."). Ship
+**as filed tonight**: the company line is computed and unchecked, so a mis-cased name is
+a false claim nobody would strike, and a naive title-case mangles acronyms. **Later,
+normalise** on Design's safe rule: title-case only names that are entirely upper case;
+keep tokens of three letters or fewer as filed; keep any token with no vowel as filed
+too (protects consonant acronyms like PLBY); fix the suffix list (Inc., Ltd., Corp.,
+Co., Holdings, Group, plc). **On any doubt, fall back to as filed, never a guessed
+casing.** Low priority, after tonight; no effect on the v5 seed set (the company line is
+not seeded).
+
 **Path line** (surface, from `{from, high, now, fromBasis}`). The writer no longer
 restates the path, so the basis has to live on the path line or the number has no
 frame. **Design owns the label words and finalised them** (`design.md` row 3a,
