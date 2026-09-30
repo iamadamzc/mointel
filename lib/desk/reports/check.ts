@@ -22,9 +22,11 @@
  */
 
 import { humanise } from '../../dashboard/language';
-import { etClock } from '../../market/session';
+import { etClock, etDateString } from '../../market/session';
 import type { MissedCause, ReportCheckpointRef, ReportKind } from './contract';
 import type { ReportFact } from './facts';
+import type { ReportResearch } from './research';
+import { traceLine } from './traced';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
 
@@ -43,6 +45,12 @@ export type StrikeReason =
   | 'BASIS_CONTRADICTED'
   | 'FORBIDDEN_WORDING'
   | 'NOT_SELF_CONTAINED'
+  /* deterministic, v5: research claims traced to the as-of dossier (`traced.ts`) */
+  | 'DATE_NOT_TRACED'
+  | 'TIME_NOT_TRACED'
+  | 'HEDGED_EXACT_TIME'
+  | 'SHARES_UNDATED'
+  | 'SHARES_AS_FLOAT'
   /* model */
   | 'UNSUPPORTED';
 
@@ -61,6 +69,13 @@ export interface CheckInput {
   /** The checker's OWN read of the checkpoint's rows. */
   rows: readonly ReportFact[];
   draft: ReportDraft;
+  /**
+   * v5: each name's research AS OF the checkpoint (`research.ts`), keyed by
+   * ticker. Present = a v5 check: a ticker line's numbers, dates and clock
+   * times are traced to its row AND this block (`traced.ts`). Absent = v4,
+   * unchanged, so the frozen v4 harnesses still run.
+   */
+  research?: ReadonlyMap<string, ReportResearch>;
 }
 
 /** The checker's model: same seam as the writer's, a different reply shape. */
@@ -123,6 +138,12 @@ const FORBIDDEN: Array<[RegExp, string]> = [
   // Marketing's addition: the substitute is never a spaced hyphen, the same tic.
   // A range takes an en dash, a negative number no space after its sign.
   [/\s-\s/, 'spaced hyphen as a dash'],
+  // Commercial section 10 (baee3f7): fit describes a move that HAS happened;
+  // a fit stated as a forecast is advice-shaped.
+  [
+    /\b(?:could|may|might|should|would|is likely to|are likely to|set to|poised to)\s+(?:explain|drive|fuel|support|power|push|lift|carry|extend)\b/i,
+    'fit stated as a forecast',
+  ],
   // The opening's count is COMPUTED (`watchCount`); a writer-stated count of
   // names is struck (Integration's order call; data-map-2026-09-30.md).
   [
@@ -166,9 +187,12 @@ export function ruleStrikes(input: CheckInput): Strike[] {
       hit('FORBIDDEN_WORDING', 'a halt with no halt observed');
     }
 
-    for (const match of line.text.matchAll(CLOCK)) {
-      const said = `${match[1]!.padStart(2, '0')}:${match[2]}`;
-      if (said !== time) hit('TIME_NOT_CHECKPOINT', `${said} vs ${time}`);
+    // v5 traces a ticker line's clock times with its research (below).
+    if (!(input.research && line.ticker !== null)) {
+      for (const match of line.text.matchAll(CLOCK)) {
+        const said = `${match[1]!.padStart(2, '0')}:${match[2]}`;
+        if (said !== time) hit('TIME_NOT_CHECKPOINT', `${said} vs ${time}`);
+      }
     }
 
     if (line.ticker === null) {
@@ -181,8 +205,19 @@ export function ruleStrikes(input: CheckInput): Strike[] {
       continue;
     }
 
-    for (const finding of verifyLine(line, input.rows)) {
-      hit(finding.reason, finding.value === undefined ? line.ticker : String(finding.value));
+    if (input.research) {
+      if (!row) hit('NO_ROW_FOR_TICKER', line.ticker);
+      else {
+        const findings = traceLine(line.text, row, input.research.get(line.ticker) ?? null, {
+          clock: time,
+          date: etDateString(new Date(input.checkpoint.completedAt)),
+        });
+        for (const finding of findings) hit(finding.reason, finding.detail);
+      }
+    } else {
+      for (const finding of verifyLine(line, input.rows)) {
+        hit(finding.reason, finding.value === undefined ? line.ticker : String(finding.value));
+      }
     }
     if (!row) continue;
 
