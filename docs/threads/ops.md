@@ -12523,3 +12523,9 @@ item 1     last_flush_ms advanced 00:19:05 -> 00:19:12Z, lag 297 / 383 ms (raw t
 FAILS the registered gate vs (b') 8.9, but (b') was post-roll 00:55 ET on a near-empty trading date and (c) is pre-roll
 with a full day: CONFOUNDED by time of day. Matched re-take (c') scheduled 00:57 ET; Integration to rule.**
 **Integration ruling on (c):** FAIL-AS-REGISTERED, ATTRIBUTED TO NOTHING (two confounds: pre- vs post-roll content, and the sessionEnd memo 8455b48 between (b') and (c) lowering build time). 811.7 ms is recorded as the first post-restart pre-roll full-day baseline, not a gate. **(c') PRE-REGISTERED: ~00:55 ET 09-30, (b') method; PASS = median of five maxima <= 28.9 ms** (a PASS carries the caveat that the memo could mask some Now-field cost; a FAIL goes to Design before fa61410 moves). No code switch to omit nowBuckets.
+
+**Item 6, the first date roll after the restart (raw; Research grades):** control 21:50:24 ET open_old = 116; roll_ms
+1790733600178 (02:00:00.178Z; journal "trading date 2026-09-30" at 02:00:00.40, "rolled" at 02:00:39.73).
+old_open_left 0 | closed_at_roll 116 | opened_at_roll 123 | distinct_close 1 | distinct_open 2 | close = open instant.
+Between-counts (01:50:24Z..roll-5s) 0/0. By instant: 116 opened AT roll_ms (closed 1.02 s later when the new day's
+high-res set went to 0) + 7 opened at +3.075 s (high-res set 7), inside the SQL's +5 s window. Disk 02:08Z: 61G free.
