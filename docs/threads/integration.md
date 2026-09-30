@@ -2007,6 +2007,16 @@ RESEARCH         His turn verified by Research. REPORTS remaining: (1) checker t
                  daily ladder starts where stored 15m ends, until backfill. Research builds the interim.
                  NOT TONIGHT (Research): price-range fix (read gate failed; next = web-tier cache keyed (range, flush
                  seq)); other kinds' overall sentence; August-style levels + 22-39 d 15m until backfill.
+HIS RULING       Web's session 3a7e8cd7, user turn 2026-09-30T15:51:37Z (read with the block it answered): "3, sign in
+                 friday" = option 3 "Everything else tonight, sign-in separately". SIGN-IN FRIDAY 2026-10-02, NOT
+                 tonight. SEAM DEFECT: Web and I both put sign-in to him (I told Web I would; Web asked too; I asked after
+                 his answer, crossed). My NEEDS YOU item 2 WITHDRAWN to him. Open with him: Friday EVENING (Web's reading)?
+                 FRIDAY PREP (order call): his Google client id/secret + seed confirmation -> Ops (I ask him); Web writes
+                 the live-proof probe design by Thu 2026-10-01 20:00 ET, Ops builds after tonight, I replay; Ops nginx +
+                 env + seed ride Friday's release.
+COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
+                 him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
+                 (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
 MARKETING        Seeds for v5: pre-staging, final on Research's class list/checkpoints/format, release on my word.
                  Its "6 em dashes on app/page.tsx incl. :321" is PRODUCTION (c3d0f06); origin/main has only the 3
                  placeholders (171/194/399, kept). Web's fixes are on main and ride the em-dash cut. Told.
@@ -2019,6 +2029,9 @@ error                                                  TYPE                     
   My grep matched "sections[]" on a type:user record  (the mirror of the 19th's #5; the
   that was a tool_result: Design reading design.md.   family: a value passed on without
   Retracted to him in the next message.               reading the thing it describes)
+2 put sign-in to HIM after he had answered it in     two seats asked him one question   no       peer
+  Web's session (15:51:37Z); I had told Web I would   (the 19th's recorded SEAM DEFECT)            (Web)
+  ask, Web asked too. Messages crossed. Withdrawn.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
