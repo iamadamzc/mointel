@@ -213,3 +213,16 @@ row per board name.** The minute read must use the bounded query
 4. **Absent vs empty (§2):** an uncomputed name has no row; a computed name with nothing above has `levels: []` and `aboveAllStored: true`. Both pinned by tests.
 
 **The label is his, not a measurement (§ top).** No copy, comment or commit may call these levels measured or tested.
+
+**§6 RESULT (desktop, item 3): FAIL AS REGISTERED.** The registered run (store cold on disk) gave p95 1,175 ms and max 1,380 ms per name against 100 / 250; warm reruns passed and are not counted. Fixture gate (item 1): PASS, 13/14.
+
+## 7. THE BOX COST TEST: PRE-REGISTERED 2026-09-30, BEFORE IT RUNS (seat `local_4b09b3b2`; Integration's order call)
+
+*Tonight the request path ships ONLY if this passes; the precomputed backup waits for tomorrow (its own desktop refresh gate failed as registered, 88.9 s against 60 s).*
+
+- **Code:** branch `levels-request-path` at `8dfacf4` (the request path, the split-today tripwire, Design's 200 / JSON-null contract, one type definition in `lib/market/resistance.ts`).
+- **Where and when:** production hardware, run by Ops ONCE, after 20:00 ET, in a gap between releases with nothing else running on the box, from a checkout of that sha outside the live release, against the LIVE `market.db` opened READ-ONLY (`fileMustExist`).
+- **Command:** `npx tsx scripts/levels-cost.ts --db "$MARKET_DB_PATH" --live` (add `--date YYYY-MM-DD` for today's ET date if it runs after midnight ET). It needs `tsx` (a devDependency); Ops confirms it is present.
+- **Names:** the top 25 by rank in `ticker_session` for today's trading date, either board (each name ranked by the better of `rvol_rank` and `ah_rank`), printed by the script. **`t`:** the latest completed 5-minute close, the route's own moment.
+- **What counts:** the FIRST pass per name, the one the script makes; no rerun, no warm pass, no second invocation.
+- **PASS = p95 < 100 ms AND max < 250 ms per name.** The script exits 0 on PASS and 1 on FAIL (or when nothing was timed). **A FAIL means the request path does not ship tonight.** n, the names, p50, p95 and max are reported as printed, and the result is not re-run to a different verdict.
