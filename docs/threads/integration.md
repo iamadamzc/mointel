@@ -2495,6 +2495,11 @@ BENZINGA QUOTE   Commercial verified his turn (23:28:15Z), registered ac5e5abd a
 19:41 ET CHECK   (own reminder e674f578 fired) New Ops-tmi local_8a0801c2 open (cwd A:\mointel, not archived; read
                  earlier). No 20:07 cron BY DESIGN: the classifier refused an unattended deploy cron twice (ops.md tail,
                  read); the chain starts on his "go" in Ops's chat after 20:00, which Ops has asked him for. Nothing sent.
+ALPACA KEYS      HIS ASK: give trade-researcher the keys or where to find them. Sent WHERE, no values: loader
+                 lib/market/credentials.ts (env APCA_API_KEY_ID / APCA_API_SECRET_KEY, else a root-level .txt/.env* that
+                 parses as a pair); .env.local has none; likely A:\mointel\httpsapi.alpaca.markets.txt (git-ignored) by
+                 name, NOT opened (the classifier refused even a shape check; not pursued). Hazards: REST only, never
+                 stream; never regenerate the key (revokes production's pair); shared limit; off 07-10 ET.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
