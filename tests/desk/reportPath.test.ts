@@ -13,7 +13,14 @@ describe('the price path, computed from the store', () => {
 
   it('premarket: the after-hours arc from today’s close, NEVER the recap row’s all-sessions high', () => {
     // SANG at the 22:00 recap: the row's high is all-sessions; the arc is passed in.
-    const recapRow: PathRow = { price: 5.1, sessionHigh: 9.99, referenceClose: 3.59, referenceBasis: 'CURRENT_SESSION' };
+    // Last print 19:58 ET: an after-hours print, so "AH close" is true.
+    const recapRow: PathRow = {
+      price: 5.1,
+      priceAt: '2026-09-28T23:58:00Z',
+      sessionHigh: 9.99,
+      referenceClose: 3.59,
+      referenceBasis: 'CURRENT_SESSION',
+    };
     expect(reportPath('PREMARKET', recapRow, { referenceClose: 3.59, high: 6.01 })).toEqual({
       from: 3.59,
       high: 6.01,
@@ -21,6 +28,15 @@ describe('the price path, computed from the store', () => {
       fromBasis: 'TODAY_CLOSE',
     });
     expect(reportPath('PREMARKET', recapRow, null)).toBeNull();
+  });
+
+  it('premarket: no path unless the last print IS after-hours, so the "AH close" label is true (Design 6fb68956)', () => {
+    const arc = { referenceClose: 3.59, high: 6.01 };
+    const base: PathRow = { price: 5.1, sessionHigh: 9.99, referenceClose: 3.59, referenceBasis: 'CURRENT_SESSION' };
+    expect(reportPath('PREMARKET', { ...base, priceAt: '2026-09-28T19:30:00Z' }, arc)).toBeNull(); // 15:30 ET, regular session
+    expect(reportPath('PREMARKET', { ...base, priceAt: null }, arc)).toBeNull();
+    expect(reportPath('PREMARKET', { ...base, priceAt: '2026-09-28T20:00:00Z' }, arc)).not.toBeNull(); // 16:00 ET
+    expect(reportPath('PREMARKET', { ...base, priceAt: '2026-09-29T00:00:00Z' }, arc)).not.toBeNull(); // 20:00 ET
   });
 
   it('refuses an intraday row whose percent is not on the prior-session basis', () => {

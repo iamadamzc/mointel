@@ -35,7 +35,13 @@ import { roundTo } from './verify';
 
 /** What the writer returns. Draft text: nothing here is shown until checked. */
 export interface ReportDraft {
+  /** v4's headline. v5 writes none: '' (Design 6fb68956; watchCount marks v5). */
   headline: string;
+  /**
+   * v5, the premarket report only: the after-hours totals sentence, checked as
+   * line 'O' against `CheckInput.afterHoursTotals`. Null or absent otherwise.
+   */
+  overall?: string | null;
   sections: Array<{
     heading: string;
     lines: Array<{ ticker: string | null; text: string }>;

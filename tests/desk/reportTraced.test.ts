@@ -146,6 +146,26 @@ describe('the checker takes the v5 path only when handed research', () => {
     expect(v4).toContain('TIME_NOT_CHECKPOINT');
   });
 
+  describe('the premarket overall sentence, line O, traced to the after-hours totals', () => {
+    const TOTALS = { eligible: 2_850, traded: 2_454, up: 749, down: 569 };
+    const withOverall = (overall: string, totals: typeof TOTALS | null = TOTALS) => ({
+      ...input(new Map([['SANG', RESEARCH]])),
+      draft: { headline: '', overall, sections: [{ heading: 'Moved', lines: [{ ticker: 'SANG', text: TRUE_CATALYST }] }] },
+      afterHoursTotals: totals,
+    });
+    const onO = (strikes: ReturnType<typeof ruleStrikes>) => strikes.filter((s) => s.id === 'O').map((s) => s.reason);
+
+    it('admits the true sentence, range bounds included', () => {
+      expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,454 traded after hours, 749 up, 569 down.')))).toEqual([]);
+    });
+
+    it('strikes a wrong total, a sentence with no totals to trace to, and a count of names', () => {
+      expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,455 traded after hours, 749 up, 569 down.')))).toContain('NUMBER_WITHOUT_ROW');
+      expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,454 traded after hours.', null)))).toContain('NUMBER_WITHOUT_ROW');
+      expect(onO(ruleStrikes(withOverall('2,454 names traded after hours.')))).toContain('FORBIDDEN_WORDING');
+    });
+  });
+
   it('strikes a fit stated as a forecast, in either path', () => {
     const draft = { headline: 'Headline.', sections: [{ heading: 'Moved', lines: [{ ticker: 'SANG', text: 'The headline could drive the open.' }] }] };
     expect(ruleStrikes({ ...input(new Map([['SANG', RESEARCH]])), draft }).map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
