@@ -2231,6 +2231,10 @@ RUNNER READY     Ops 523ef484 (ops/report-runner, 14 tests): PUBLISHED end-to-en
                  4 slots/day (4 kinds x 1 range) -> <= 8 calls/day; "~$0.003/report" unverified, usage stored per call.
                  Sync reads per pass/slot NOT timed (estimate "a few ms", labelled). CONDITIONS MET; replay in the cut.
                  46d9f9d re-gated by the new Ops: ALL GREEN 178/178, 2,731.
+DESIGN PICKS     Nearest-10 on main 52241465 (208 / 3,131, clean). Research confirmed levels contract (200 row / 200 null /
+                 404 no route / 400 bad symbol; types re-exported from Design's resistance.ts). PICKS: reports cut =
+                 80e0bcc0 (+ window 0f15521); levels cut = ad6eb0f1 + 064e15e1 + 52241465 (with Research's 8dfacf4
+                 branch, only if the box test passes).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
