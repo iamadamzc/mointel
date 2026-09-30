@@ -637,19 +637,19 @@ IS, not what it will do), which is a build task there, not a change to this bloc
 **His ruling (first-hand, via Integration):** the opening is the report's OWN list
 ("we're watching N names into premarket"), then the after-hours overall picture.
 
-**Build split (Integration/Research):** the FIRST sentence is SYSTEM TEXT, not voice
-— `applyStrikes` computes N from the ticker lines that survive the checker, so it
-always matches the published list, and the writer never states a count (the checker
-strikes any line that does). The SECOND sentence is voice: the overall picture for
-the kind's window, restating the sheet's counts.
+**Build split (Integration / Research / Design):** the FIRST sentence is not voice —
+the payload carries a `watchCount` (distinct tickers across the surviving lines) and
+**Design's surface words it**, the same principle as `lines: []`. The writer never
+states a count (the checker strikes any line that does). The SECOND sentence is
+voice, and — see below — is data-backed for the premarket report only.
 
 **N = the count of ticker lines the report PUBLISHES — after the 12-name cap
 (`REPORT_NAME_CAP`) AND after strikes — never the ranked-row count.** A reader must be
 able to count the names the report shows. (#551 has 13 in-range, capped to 12, none
 struck → N = 12.)
 
-**The fixed first sentence, per report kind** (mine; `{N}` is the computed slot;
-"name" is singular when N is 1):
+**The fixed first sentence, per report kind** (my words, printed by Design's surface
+from `watchCount`; `{N}` is the computed slot; "name" is singular when N is 1):
 
 | kind | N ≥ 1 | N = 0 |
 |---|---|---|
@@ -659,18 +659,29 @@ struck → N = 12.)
 | After-hours (the close) | We're watching {N} names into after-hours. | Nothing on watch into after-hours. |
 
 *Singular:* "We're watching 1 name into the premarket." — "name", not "names". *Zero*
-never reads "watching 0 names"; it is the "Nothing on watch …" line.
+never reads "watching 0 names"; it is the "Nothing on watch …" line. **The zero line
+is for the case where the rows held no names.** If instead every name was STRUCK, the
+report is `ALL_STRUCK` and is not published at all (Design) — the zero line does not
+appear there.
 
-**The voice second sentence — the overall picture for that kind's window** (premarket
-report: the after-hours session that just closed; into-RTH: the premarket; power
-hour: the day so far; after-hours: the regular session), restating stored counts. For
-#551 (premarket, 09-28 $1–$20 after-hours totals from `ticker_session`):
+**The voice second sentence — the overall picture — is READY for the PREMARKET report
+ONLY.** Research verified one reproducible source: `ticker_session`'s after-hours
+totals for the day, final after 20:00, so the writer and checker read identical
+numbers. For #551 (premarket, 09-28 $1–$20):
 
 > Across the $1–$20 range, 3,245 traded after hours — 967 up, 748 down.
 
 So #551's opening reads: **"We're watching 12 names into the premarket. Across the
-$1–$20 range, 3,245 traded after hours — 967 up, 748 down."** — first sentence system
-text (12 = published lines after cap and strikes), second sentence voice.
+$1–$20 range, 3,245 traded after hours — 967 up, 748 down."** — first sentence from
+the surface's `watchCount` (12, after cap and strikes), second sentence voice.
+
+**The other three kinds have NO overall sentence yet — PENDING.** Into-RTH
+("premarket overall"), power hour ("day so far") and after-hours ("regular session")
+would each read a count from the LIVE table mid-session, which changes every second,
+so the checker's independent re-read would disagree with the writer and strike a true
+line. They need the count FROZEN at the checkpoint — a new stored field (Ops schema)
+and a routing ask Research is raising with Integration. Until that lands, those three
+reports open with the first sentence only.
 
 *Float style, from his ruling:* verdict only, in a "not independently verified"
 register — never a number. **"Small" is NOT producible** and does not go in: no
