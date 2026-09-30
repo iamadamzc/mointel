@@ -13011,3 +13011,9 @@ Design review + render of the shim, Research's range confirmation, the gate slot
 (if run 2 fails, no reports tonight). Docs dropped from the cut: e01b836f (branch -> e01b836f, 42 commits). Design's shim
 condition MET; Research confirmed the range (1-20 only). **89d39053 GATED IN THIS SESSION: ALL GREEN 182/182, 2,768 tests.**
 Gate slot: Research's run-2 suite. Cut gate (201 declared) runs AFTER the re-freeze pick.
+
+**HIS YES IN THIS SESSION, 2026-09-30T17:49:49Z: "yes to all."** It answered a NEEDS YOU block naming exactly three:
+#1 46d9f9d at 8:07 pm ET; #2 em-dash 89d39053 right after #1 is confirmed live; #3 v28 2bcf1cf starting by ~21:15 ET (else
+after 22:10), naming the 10-18 min board + site outage and the market-floor re-pin to v28 after. It does NOT cover the reports
+cut, the history store, HISTORY_STORE_ENABLED or levels. The auto-mode classifier refused a 20:07 cron a second time, now
+citing its own bypass rule, so the ship needs this session active after 20:00: asked him to send "go" then.
