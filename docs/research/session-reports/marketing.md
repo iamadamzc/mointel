@@ -496,3 +496,12 @@ sha. **Its sha256 is committed here first:**
 
 Same reveal protocol as run 1, pinned to LF on commit so the hash verifies on any
 checkout.
+
+**✅ RUN 2 PASSED as registered** (Research, `design.md` "RUN 2"; raw `d7c5df4`).
+All 18 defects struck in all 3 runs; the four regression controls and the ordinary
+controls were never struck — so the fix admits the approved forms run 1 wrongly
+struck, and does it stably. The checker's pass bar is met. *Erratum, for the
+record: the key calls 475-4 an added line, but that draft replaces the EPSM line
+with the STI line — still a single differing line and struck as class 4, so the
+result stands. The committed set is left unchanged: it is the hash-locked artifact
+the run used.*
