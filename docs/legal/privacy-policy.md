@@ -24,6 +24,24 @@ last_changed: 2026-09-18
   RENDERED -- a table gaining a scroll wrapper, type sizes, the dateline's
   layout -- is presentation and does NOT touch `adopted`. Only the words do.
 
+  AND PUNCTUATION THAT PRESERVES THE MEANING IS NOT MATERIAL EITHER. HIS RULING,
+  2026-09-30, asked before the change shipped and answered in his words: "not
+  material, keep adopted." So `adopted` stayed at 2026-09-11 through the em-dash
+  sweep that rewrote 27 marks in this file and the privacy policy.
+
+  THE PRECEDENT IS NARROWER THAN IT LOOKS, AND THE NARROWING IS THE USEFUL PART.
+  It covers a mark replaced by one that does the same work: an aside taking
+  parentheses, a label taking a colon, an amplifying list taking a comma. It does
+  NOT cover punctuation that moves a clause boundary, and two marks in that sweep
+  would have done exactly that if replaced carelessly -- "The desk -- its
+  interface, its wording, ... -- is ours" becomes a LIST of things that are ours
+  if the paired dashes become commas, which changes what the clause grants. Those
+  took parentheses precisely so this would stay a punctuation change.
+
+  SO THE TEST FOR A FUTURE EDITOR IS NOT "is it only punctuation". It is "does
+  any sentence now say something different, or bind differently". If yes, it is a
+  redraft whatever it looks like in a diff, and `adopted` goes to null.
+
   Flipping `adopted` to null for a presentation change would put a DRAFT BANNER
   BACK ON AN IN-FORCE LEGAL DOCUMENT, which is worse than whatever the change
   was fixing. The banner says "do not rely on this"; a renderer does not make

@@ -151,6 +151,36 @@ measures **4.49:1** on the desk ground and **4.30:1** on a panel — under the
 pages on the footer's legal paragraph. `#8792a3` (6.37:1) replaces it. *Every
 ratio on the `System` artboard was computed, not estimated.*
 
+**NO EM DASH IN ANYTHING A STRANGER READS.** *His hard rule, 2026-09-30: "no em
+dashes in any writing."* **Two of his rulings define the edges, and both were
+asked before the sweep shipped rather than assumed:**
+
+- **A bare glyph standing in for a missing VALUE stays** — the example board's
+  empty cells, the legal dateline's absent date. *His words: "keep it. fine for
+  that, not writing."*
+- **Punctuation that preserves meaning is NOT a material redraft of the adopted
+  legal texts.** *His words: "not material, keep adopted."* `adopted: 2026-09-11`
+  survived a 27-mark sweep. **The narrower test a future editor needs is in those
+  files' own comment block, not here.**
+
+**Page `<title>` separators are a PIPE**, *"Sign in | The Momentum Intelligence
+Trading Desk"*. **His ruling, 2026-09-30: "pipe is fine."** *It was the one
+replacement outside the comma/colon/full-stop/parenthesis set, because a comma
+reads as a list and a colon reads as a subtitle; a pipe is the web convention and
+is not a dash.* **In-page label separators are a COLON** ("01: IT CATCHES THEM
+COMING INTO PLAY"), **and the example board keeps the board's `&middot;`** because
+that block depicts the product — *the boundary is site prose versus depicted
+board, not site versus board, and the reason sits in `app/page.tsx` at the
+illustration where someone would otherwise tidy it away.*
+
+**The guard is `tests/web/emDash.test.ts`, and the thing worth knowing is why the
+FIRST sweep passed while the pages still showed em dashes:** *`&mdash;` renders
+identically to U+2014 and a codepoint search cannot see it.* **So the guard checks
+both encodings, expresses the placeholder ruling as a property rather than a list
+of line numbers, and gives markdown no placeholder exception at all** — *legal
+prose is hard-wrapped, so a line there can legitimately end on a dash mid-sentence,
+which is the one mutant of three that a per-line rule waves through.*
+
 **Google's sign-in button is used to Google's spec and not restyled** — white
 surface, `#1f1f1f` label, the four-colour mark, 4px radius. A restyled one is
 both a verification risk and, to a stranger, the thing a phishing page does.
