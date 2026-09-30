@@ -2440,6 +2440,10 @@ RESEARCH RETIRES local_4b09b3b2 on his "a, write the hand-off prompt"; hand-off 
                  20:05 premarket move, sic_description WRITE (NOT in e8822583: read here, only the read mapping ships),
                  grades B re-run). Nothing of Research's in flight tonight. Successor: he opens a new Research chat
                  (tonight or tomorrow); route by title.
+NEW RESEARCH     local_f6fa4717 (title Research-tmi, cwd A:\mointel, not archived, Opus 5.5: get_session read), 23:11Z.
+                 Briefed with live state (nothing shipped before 20:00; chain; run 4 PASS) and tomorrow's order: 0 read the
+                 first live report tonight vs the store; 1 sic write; 2 stability proposal; 3 Now-cell "/min"; 4 levels
+                 merge/backup per box test; 5 history.db reader; 6 20:05 premarket; 7 grades B; + writer filing + sample.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
