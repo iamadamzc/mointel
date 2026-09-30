@@ -1387,6 +1387,10 @@ ITEM 6 GRADE     Research: "PASS on the registered condition" -- NOT as written:
                  (labelled) excluding the 7 rows at +3.075 s (a separate high-res rebuild in the +5 s window) = PASS-
                  shaped. Correction sent. OPEN QUESTION (not graded): 116 one-second 09-30 intervals opened at the roll
                  and closed +1.02 s -> sent to Design (Now-cell read 04:00) and Research's successor.
+                 DESIGN (read here, nowBuckets.ts:137-141,156): a slot counts only if ONE interval covers the whole 10 s
+                 slot -> a 1.02 s stub can never mark a slot; no measured slot -> nowBuckets null. Now cell UNAFFECTED.
+                 feed_intervals readers on main: feedMembership.ts, store/trades.ts only. Remaining question (data
+                 side, any consumer counting intervals) -> Research's successor.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
