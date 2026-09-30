@@ -2072,6 +2072,11 @@ SEEDS v5 LOCKED  sha256(defect-set-v5.md) 437e30a660b67370fd66b6a9726ce09affd715
                  696fd997 (12:23:12 ET, marketing.md:535 read at 70920cdc; pushed to origin here). 19 classes, 09-24 rows,
                  blind. RELEASE to Research only on my word AFTER the v5 checker freeze sha; Research verifies the hash
                  and commits the harness before any call.
+HOLD RELEASED    Ops: releaseRetention 3x on 46d9f9d (1 fail each: timeouts, 35.8/74.4/36.7 s) + 3x on 89d39053 (29/29,
+                 29/29, 1 timeout); FreeVirtualMemory 3.5-5.8 GB. Both failing tests exist at c3d0f06 (:120, :316; read
+                 here) = pre-existing; no wrong guard status in any run -> environment (commit memory). 89d39053 hold
+                 RELEASED (order call); 46d9f9d gate stands. TOMORROW, owner Ops: bash-spawning release tests more time
+                 or fewer spawns; seats free node processes before gating.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
