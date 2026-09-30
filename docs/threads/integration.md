@@ -2077,6 +2077,11 @@ HOLD RELEASED    Ops: releaseRetention 3x on 46d9f9d (1 fail each: timeouts, 35.
                  here) = pre-existing; no wrong guard status in any run -> environment (commit memory). 89d39053 hold
                  RELEASED (order call); 46d9f9d gate stands. TOMORROW, owner Ops: bash-spawning release tests more time
                  or fewer spawns; seats free node processes before gating.
+OPS CORRECTION   "FKs not enforced" WRONG (Ops, own catch via its v28 test): better-sqlite3 foreign_keys = 1 by default.
+                 Checked here at 46d9f9d: only DELETE on desk_assessments = db.ts:1415 mode-switch clear; no REPLACE on
+                 desk_assessments/issuer_registry (assessmentRepo.ts:190 plain INSERT, :305 DO NOTHING; researchRepo.ts:444
+                 DO UPDATE). v27 worker safe on v28 except the mode-switch clear (never runs in LIVE). Conditions: the
+                 enumeration says so + the floor pin enforces it; runner FK test (real id inserts, missing id fails loud).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
