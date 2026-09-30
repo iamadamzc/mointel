@@ -12829,3 +12829,9 @@ carrying it is live (preflight runs from the deployed release). Sent to Integrat
 PROPOSAL (where the check lives): run the pre-stop quick_check ONLY when a migration is pending (release
 SCHEMA_VERSION != store user_version); same-schema deploys, the common case, skip it. Keep integrity detection with a
 nightly quick_check timer after 20:00 ET. Posting it after the stop instead would turn 3 s of downtime into 13+ min.
+**Integration APPROVED 46d9f9d by literal sha (~15:3xZ): ONE release tonight after 20:00 ET, carrying 84b0099** (no
+runtime file in 46d9f9d, so R2 still isolates the bound; the 13-min check runs once). His "yes to both" covers the
+speed fix; the deploy-window guard is new tooling, so it goes to him in the same question. R2 >= 2 min after start,
+confounded vs R0. CHECK RELOCATION APPROVED in direction (quick_check only on a pending migration + nightly timer
+after 20:00 ET): its own enumeration AFTER tonight. v28 still runs the check (a migration): after 20:00. Re-pick
+46d9f9d onto main after it ships.
