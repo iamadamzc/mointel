@@ -1522,6 +1522,9 @@ NEW OPS = local_bb3d4059 (created 03:38:11Z; title/cwd/not-archived checked); bo
 HAZARD: retiring Ops local_37a1741e is ARCHIVED (read) and holds the ONLY 00:57/04:33/10:12 session reminders --
 firing in an archived session NOT verified. New Ops told to set guarded duplicates at 01:05 / 04:40 / 10:17 ET
 (each checks ops.md for the retiring seat's result first; (c') must never run twice).
+  SET (read in new Ops transcript 7bacf0d6): 5 1 / 40 4 / 17 10 on 30 9, one-shot, guarded. Ops reads the retiring
+  seat's CronCreate jobs as DEAD (in-memory, session not running). All reminders fire ONLY while the app is open.
+  DESIGN had NO reminder for its 04:00 read (350e6daa: no CronCreate) -> asked to set 04:05 ET.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
