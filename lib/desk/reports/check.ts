@@ -23,7 +23,7 @@
 
 import { humanise } from '../../dashboard/language';
 import { etClock } from '../../market/session';
-import { EMPTIED_SECTION_LINE, type MissedCause, type ReportCheckpointRef, type ReportKind } from './contract';
+import type { MissedCause, ReportCheckpointRef, ReportKind } from './contract';
 import type { ReportFact } from './facts';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
@@ -349,12 +349,13 @@ export type CheckedReport =
 
 /**
  * The draft with its struck lines removed. A section the strikes emptied KEEPS
- * its heading and reads `EMPTIED_SECTION_LINE` -- never NOTHING_LINE, which
- * would claim our sources held nothing when they held the struck name, and
- * never a dropped section, which reads as a shape change (Design's ruling,
- * superseding Research's drop in cdc77af). This includes a section whose own
- * NOTHING_LINE was struck. Every line and the headline struck is
- * `ALL_STRUCK`: an empty report is the forbidden shape.
+ * its heading with `lines: []`, and the surface prints its one copy of the
+ * neutral line under it (`EMPTY_SECTION_LINE`, `lib/dashboard/sessionReports.ts`;
+ * Design's ruling, Marketing's words) -- so the payload never carries surface
+ * copy. Never NOTHING_LINE, which would claim our sources held nothing when
+ * they held the struck name, and never a dropped section (supersedes cdc77af).
+ * This includes a section whose own NOTHING_LINE was struck. Every line and
+ * the headline struck is `ALL_STRUCK`: an empty report is the forbidden shape.
  */
 export function applyStrikes(
   draft: ReportDraft,
@@ -366,12 +367,9 @@ export function applyStrikes(
   if (lines.every((line) => struck.has(line.id))) {
     return { ok: false, cause: { kind: 'ALL_STRUCK', at: now().toISOString() } };
   }
-  const sections = draft.sections.map((section, s) => {
-    const kept = section.lines.filter((_, l) => !struck.has(`S${s + 1}L${l + 1}`));
-    return {
-      heading: section.heading,
-      lines: kept.length > 0 ? kept : [{ ticker: null, text: EMPTIED_SECTION_LINE }],
-    };
-  });
+  const sections = draft.sections.map((section, s) => ({
+    heading: section.heading,
+    lines: section.lines.filter((_, l) => !struck.has(`S${s + 1}L${l + 1}`)),
+  }));
   return { ok: true, headline: struck.has('H') ? null : draft.headline, sections };
 }

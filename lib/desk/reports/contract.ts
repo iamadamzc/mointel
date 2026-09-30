@@ -79,15 +79,6 @@ export interface CheckpointSlotRef {
  * member is a state the store records. The trader's words are the panel's,
  * rendered from `kind`; nothing here is shown verbatim.
  */
-/**
- * The line under a section the checker emptied (Design's ruling, Marketing's
- * words, `marketing.md` 8c76fe0). It speaks about the REPORT, not the
- * sources: after a strike our sources DID hold a name, so the writer's
- * NOTHING_LINE ("Nothing in our sources for this section.") would be false
- * there. True whether a line was struck or the section held nothing.
- */
-export const EMPTIED_SECTION_LINE = 'No line for this section in this report.';
-
 export type MissedCause =
   | {
       kind: 'CHECKPOINT_NOT_RUN';
