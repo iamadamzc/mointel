@@ -2375,6 +2375,13 @@ RUN 4 FIX        Research 8c52506 (15:38:51 ET, read stat): research.ts + traced
                  survived (fixture terms also held the figure); test isolated. DAY 2026-09-21 (Monday, checked; #442/
                  #452/#455/#456; overall 2,442 / 784 / 533): no bar, no voice run, no fix derived from it. Re-freeze waits
                  on Ops's gate slot; sha + blobs to me before release.
+RUN 4 RE-FREEZE  cb6d030 (15:45:18 ET, on origin) VERIFIED here: research bc57f2a75057, traced fc8ca9327cca (changed);
+                 check b3c91fd86dba, verify b5d452f829c0, path 196636232499, totals c39b9eeeb83c, pipeline 3340640182f8,
+                 stateCountry 081cab7faee2, writerV5 70f3203c2316 (unchanged). Only 8c52506 between 925c9dc and it.
+                 Research gate: first full run 6 non-report failures, signatures NOT captured, not claimed environmental;
+                 all 6 pass alone; SECOND complete run 208/208, 3,138 (accepted; the ship cut gets Ops's own gate).
+                 Research told Marketing "the checker carries the whole supply block": ruled NOT tainting (class already
+                 given by me; blind to code/prompts). Marketing released conditional on hash commit before file commit.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
