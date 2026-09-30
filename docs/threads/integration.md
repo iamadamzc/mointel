@@ -1529,6 +1529,11 @@ firing in an archived session NOT verified. New Ops told to set guarded duplicat
   all three hold). THIS SEAT: own one-shot check at 04:23 ET for (c') and Design's read (session-only).
   HIS "why wait" -> (c') MOVED TO NOW (its condition is post-roll, met since 22:00; 00:55 was a proxy). Design 04:05
   (needs premarket trades) and grades 10:17 (full premarket of v2 rows; outside 07-10) keep their times.
+  (c') RUN 23:49 ET (Ops 7110dcb): maxima 23.8/44.5/8.2/8.8/11.7 -> median 11.7 <= 28.9 = PASS AS REGISTERED,
+  INSTRUMENT BLIND TO THE FIELD (0 nowBuckets on the post-roll board; (b') equally blind -> the gate could never see
+  it). Production already attaches nowBuckets (74c1818 readModel.ts:431, read); fa61410 is client-only -> (c')
+  neither moves nor blocks it. Replacement: 10:17 access-log read of his 07-10 polls (200 vs 499/min, bytes; vs
+  09-29's 54-59/60), observation only, no probes in his window.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
