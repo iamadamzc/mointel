@@ -59,14 +59,14 @@ function dossier(extra: Partial<ResearchDossier> = {}): ResearchDossier {
         {
           type: 'REGISTERED_RESALE',
           amountShares: null,
-          dollarCapacity: null,
+          dollarCapacity: 6_530_000,
           sourceFiling: 'F-3',
           registrationStatus: 'EFFECTIVE',
           effectiveDate: '2023-04-12',
-          terms: null,
-          holderRestrictions: null,
+          terms: 'Up to $6.53 million at an offering price of $4.25 per share',
+          holderRestrictions: 'Lock-up expires November 15, 2026',
           status: 'POSSIBLY_ACTIVE',
-          eligibilityAssessment: null,
+          eligibilityAssessment: 'Eligible after a holding period of 180 days',
           evidenceSourceIds: [9],
           confidence: 'MEDIUM',
         },
@@ -179,6 +179,12 @@ describe('the research a report may use, as of its checkpoint', () => {
         amountShares: null,
         sourceFiling: 'F-3',
         registrationStatus: 'EFFECTIVE',
+        // Run 4: the whole SupplyBlock, audited field by field, through reportResearch itself.
+        dollarCapacity: 6_530_000,
+        terms: 'Up to $6.53 million at an offering price of $4.25 per share',
+        holderRestrictions: 'Lock-up expires November 15, 2026',
+        eligibilityAssessment: 'Eligible after a holding period of 180 days',
+        confidence: 'MEDIUM',
       },
     ]);
   });
