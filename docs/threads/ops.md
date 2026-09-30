@@ -12594,6 +12594,10 @@ c817ef86's message says "ledger" but the scripted insert failed    commit-messag
 told Integration "foreign keys are not enforced (no PRAGMA)"; true: asserted-before-opening-artefact      no      own test
   better-sqlite3 enables foreign_keys by default. Corrected to
   Integration ~16:4xZ; consequence only on a market_mode switch.
+told Integration + him "levels are meaningful only after the         asserted-before-opening-artefact   YES      Integration
+  history backfill"; true: Research's compute reads market.db
+  minute_bars + daily_bars (Research branch ad6fc492/607da6ab); history.db
+  only stores the rows. Levels are meaningful tonight without it.
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
