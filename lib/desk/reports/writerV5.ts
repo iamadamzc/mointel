@@ -81,12 +81,25 @@ const shares = (count: number) => Math.round(count).toLocaleString('en-US');
 
 /* ------------------------------------------------------------- fact sheet */
 
+/**
+ * What each catalyst status lets a line say, in the desk's approved words. Voice
+ * run v5: an UNKNOWN written as "no catalyst found" (KMRK) and a NONE_FOUND the
+ * checker could not map (SDEV).
+ */
+const STATUS_WORDS: Record<string, string> = {
+  FRESH_FOUND: 'a fresh catalyst was found in our sources',
+  SECONDARY_STALE: 'only older or secondary news was found in our sources (say it is not a fresh catalyst)',
+  NONE_FOUND: 'no catalyst found in our sources (say exactly this)',
+  CONFLICTING: 'the sources found conflict with each other',
+  UNKNOWN: 'the analysis reached no conclusion about a catalyst (never say that none was found)',
+};
+
 function researchSheet(research: ReportResearch): string[] {
   const { catalyst, structure } = research;
   const lines: string[] = [];
 
   lines.push(
-    `catalyst grade: ${humanise(catalyst.grade)}; type: ${humanise(catalyst.type)}; status: ${humanise(catalyst.status)}; confidence: ${humanise(catalyst.confidence)}`,
+    `catalyst: ${STATUS_WORDS[catalyst.status] ?? humanise(catalyst.status)}; grade: ${humanise(catalyst.grade)}; type: ${humanise(catalyst.type)}; confidence: ${humanise(catalyst.confidence)}`,
   );
   if (catalyst.summary) lines.push(`catalyst summary (restate in your own words, never quote): ${catalyst.summary}`);
   const eventClock = clock(catalyst.eventTimestamp);
@@ -100,6 +113,7 @@ function researchSheet(research: ReportResearch): string[] {
   }
   if (catalyst.plausiblyExplainsMove === true) lines.push('fit: the desk reads it as plausibly explaining the move that has happened');
   if (catalyst.plausiblyExplainsMove === false) lines.push('fit: the desk does not read it as explaining the move');
+  if (catalyst.plausiblyExplainsMove === null) lines.push('fit: not stated (say nothing about whether it explains the move)');
   if (catalyst.whyTradersMayCare) lines.push(`what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): ${catalyst.whyTradersMayCare}`);
   if (catalyst.unknowns.length > 0) lines.push(`what the desk does not have (repeat none of its numbers): ${catalyst.unknowns.join('; ')}`);
 
@@ -114,7 +128,7 @@ function researchSheet(research: ReportResearch): string[] {
     const parts = [humanise(block.type), humanise(block.status)];
     if (block.amountShares !== null) parts.push(`${shares(block.amountShares)} shares`);
     if (block.effectiveDate) parts.push(`effective ${longDate(block.effectiveDate)}`);
-    lines.push(`supply: ${parts.join(', ')} (capacity, not proof of selling)`);
+    lines.push(`supply: ${parts.join(', ')} (capacity, not proof of selling; give its status exactly as written, and "possibly active" is never "active")`);
   }
   return lines;
 }
@@ -189,6 +203,8 @@ export const SYSTEM_V5 = [
   '- Float: only the sheet’s verdict, "no float the desk can independently verify". Never a float number, never "small".',
   '- Shares outstanding: always with its "as of" date, never called float, and with "(the outstanding count, not a float)" whenever float is mentioned in the same sentence.',
   '- Never state a count of names ("12 names", "two names"): the surface prints it.',
+  '- An agreement or a plan is what was agreed or announced ("agreed to acquire", "announced a plan to"), never "will". Never "confirmed" or "company-confirmed": say "reported by the company".',
+  '- A supply block\'s status is said exactly as the sheet gives it: "possibly active" is never "active", and blocks of different status are never lumped together as active.',
   '',
   'NEVER',
   '- Advice or action words: buy, sell, enter, exit, size, add, take it, get in, keep an eye on, watch, one to watch.',

@@ -115,6 +115,55 @@ describe('stored dates are model-written, so they are read tolerantly and never 
   });
 });
 
+describe('voice run v5 (b94988f): each false strike and gap it found, pinned', () => {
+  const v5in = (research: ReadonlyMap<string, ReportResearch>) => ({
+    kind: 'PREMARKET' as const,
+    range: { min: 1, max: 20 },
+    checkpoint: { id: 551, type: 'NEXT_DAY_RECAP' as never, completedAt: '2026-09-29T02:00:30.000Z' },
+    rows: [ROW],
+    draft: { headline: '', sections: [] },
+    research,
+  });
+
+  it('admits a change note the sheet itself supplied (BKYI "up 32.2% since the previous checkpoint")', () => {
+    const noted = { ...ROW, changeSummary: 'SANG: +32.2% since prior assessment.' } as ReportFact;
+    expect(traceLine('It was up 32.2% since the previous checkpoint.', noted, RESEARCH, AT)).toEqual([]);
+    expect(traceLine('It was up 32.2% since the previous checkpoint.', ROW, RESEARCH, AT).map((f) => f.reason)).toContain(
+      'NUMBER_NOT_IN_ROW',
+    );
+  });
+
+  it('reads a clock with no zone as a date with NO clock (EGG "2026-09-11T16:00:00")', () => {
+    expect(etDayAndClock('2026-09-11T16:00:00')).toEqual({ date: '2026-09-11', clock: null });
+    expect(etDayAndClock('2026-09-11T16:00:00.000Z')).toEqual({ date: '2026-09-11', clock: '12:00' });
+  });
+
+  it('admits the ruled "not proof of selling", and still strikes selling as a trade word', () => {
+    const on = (text: string) =>
+      ruleStrikes({ ...v5in(new Map([['SANG', RESEARCH]])), draft: { headline: '', sections: [{ heading: 'M', lines: [{ ticker: 'SANG', text }] }] } })
+        .filter((s) => s.reason === 'FORBIDDEN_WORDING')
+        .map((s) => s.detail);
+    expect(on('Registered-resale capacity the desk cannot quantify: capacity, not proof of selling.')).toEqual([]);
+    expect(on('Holders were selling into the move.').join(' ')).toContain('buy/sell');
+    expect(on('A plan to sell shares.').join(' ')).toContain('buy/sell');
+  });
+
+  it('shows the checker each time already in ET, beside the raw UTC (BGIN 09:40Z is 05:40 ET)', () => {
+    const bgin: ReportResearch = {
+      ...RESEARCH,
+      catalyst: {
+        ...RESEARCH.catalyst,
+        eventTimestamp: '2026-09-29T09:40:00.000Z',
+        sources: [{ id: 1, title: 'x', publishedAt: '2026-09-29T09:40:00.000Z', precision: 'EXACT' }],
+      },
+    };
+    const prompt = buildCheckerPrompt({ ...v5in(new Map([['SANG', bgin]])), afterHoursTotals: null });
+    expect(prompt.user).toContain('"et": "05:40 ET on 2026-09-29"');
+    expect(prompt.system).toContain('Judge a stated time against the "et" reading only');
+    expect(prompt.system).toContain('NONE_FOUND supports "no catalyst found in our sources"');
+  });
+});
+
 describe('the SANG block, the true control', () => {
   it('admits every clause of the approved prose', () => {
     expect(reasons(TRUE_CATALYST)).toEqual([]);

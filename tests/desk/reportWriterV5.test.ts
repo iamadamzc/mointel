@@ -87,6 +87,16 @@ describe('the v5 fact sheet', () => {
     expect(lines.some((line) => line.startsWith('path PRINTED ABOVE'))).toBe(false);
   });
 
+  it('gives each catalyst status the desk’s words, a null fit as "not stated", and supply status exactly (voice run v5)', () => {
+    const unknown = factSheetV5(FACT, { ...RESEARCH, catalyst: { ...RESEARCH.catalyst, status: 'UNKNOWN', plausiblyExplainsMove: null } }, PATH);
+    expect(unknown.some((l) => l.startsWith('catalyst: the analysis reached no conclusion about a catalyst (never say that none was found)'))).toBe(true);
+    expect(unknown).toContain('fit: not stated (say nothing about whether it explains the move)');
+    const none = factSheetV5(FACT, { ...RESEARCH, catalyst: { ...RESEARCH.catalyst, status: 'NONE_FOUND' } }, PATH);
+    expect(none.some((l) => l.startsWith('catalyst: no catalyst found in our sources (say exactly this)'))).toBe(true);
+    expect(sheet.some((l) => l.includes('"possibly active" is never "active"'))).toBe(true);
+    expect(SYSTEM_V5).toMatch(/never "will"/);
+  });
+
   it('says plainly when a name has no research', () => {
     expect(factSheetV5(FACT, null, PATH)).toContain('research: not researched yet; no dossier at this checkpoint (say so plainly)');
   });
