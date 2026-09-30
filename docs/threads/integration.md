@@ -1395,6 +1395,11 @@ SET 2 LOCKED     764ba14 sha256 6fa70904...de18a (Marketing; informed, blind to 
                  used (registration 8120a28 listed 474 too -> Research to record "474 unused" in the harness commit).
                  Regression controls: DCOY recap since-previous; SVRE no-catalyst-on-file; power headline "Going into the
                  last hour."; DCOY power exit-and-avoid. Classes 4/6 ADD a line (keyed). RELEASED on my word.
+PASS BAR RUN 2   PASS AS REGISTERED (amended): 1c47bfb < 27ca224 < 25ec0a0 < d7c5df4, check.ts frozen (read); 18/18 keyed
+                 struck in 3/3 runs; regression 0; ordinary 0; no CHECKER_FAILED; $0.62. Limits: one day, three kinds,
+                 one author; regression controls test only that known fixes took. NOT A SHIP. Remaining: Research GET
+                 /api/reports + range config (after 10:12); Ops/successor 20:05 checkpoint + per-range top-N storage
+                 (routed to Ops's hand-off); his ship yes. main tsc clean at 00:0x (read).
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
