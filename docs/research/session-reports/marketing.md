@@ -641,6 +641,36 @@ the 07:00 premarket build the move has not happened yet, so the identical senten
 would read as a forecast, the 07:00 shape needs a different tense (what the catalyst
 IS, not what it will do), which is a build task there, not a change to this block.
 
+### v5 split: which lines the system computes, and their wording
+
+**The shape still reads as he approved it** (`design.md` §8, v5). What changes is who
+produces the header lines, not what a reader sees: the **company line** and the
+**path line** are now COMPUTED (they cannot disagree with the store and cannot be
+struck), the writer produces only the catalyst/structure/cycle sentences and the
+premarket overall, and the **headline is retired**. The SANG block maps directly:
+its sentences never restate the ticker, the company, or the path, so they stand
+unchanged below the computed lines.
+
+**Company line** (surface, from the as-of dossier: `name`, decoded `country`,
+`business`; each part omitted when null, never guessed; ticker is the surface's lead):
+
+> Sangoma Technologies Corp. Canada. [business, the research-model sector, pending].
+
+Form: `{name}. {country}. {business}.` Drop any null part with its separator; no empty
+segment. Country is the decoded COUNTRY only (A6 to "Canada"), no state or province,
+same class as the dropped city.
+
+**Path line** (surface, from `{from, high, now, fromBasis}`). The writer no longer
+restates the path, so the basis has to live on the path line or the first number has
+no frame. Label the first point by `fromBasis`, keep the rest positional:
+
+> intraday (`PRIOR_CLOSE`): **$3.59 prior close → $6.01 high → $5.10 now**
+> premarket (`TODAY_CLOSE`): **$3.59 today's close → $6.01 after-hours high → $5.10 now**
+
+If Design wants it barer, the minimum that keeps a frame is to tag the first point
+only ("$3.59 prior close → $6.01 → $5.10"); a fully bare "$3.59 → $6.01 → $5.10"
+drops the basis and should not ship. Recommend the labelled form.
+
 ### The opening narrative, a fixed first sentence, then voice
 
 **His ruling (first-hand, via Integration):** the opening is the report's OWN list
