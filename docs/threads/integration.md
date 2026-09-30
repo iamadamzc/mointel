@@ -1350,6 +1350,10 @@ REPORTS STEP 1   a3d9880 (read): OpenAiReportModel wired; sized on 4 real 09-29 
                  local_fdc0aa9a (voice framework 1ee4fd3; id read off list_sessions after a guessed id failed) for prompt
                  edits, to Research. Next: semantic checker, then the 43c1b7c pass bar. Roll stubs: no other reader
                  (Research read feedMembership.ts writes only; readFeedIntervals's one caller is nowBuckets).
+PASS-BAR SEEDS   ORDER CALL: Marketing writes the 43c1b7c seeded defect set BLIND to the checker (6 classes x specimens
+                 423/433/437, one line each, keyed; specimen 3's band ordinal reworded for the control); commits sha256
+                 first, sends the file after Research commits the checker; Research commits the run before reading.
+                 Research seeds nothing. Marketing's voice review follows.
                  DONE d626f1c (read: research-opening-prompt.md item 3). SPEND: his "1 set ranges, 2 yes, 3 yes"
                  (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
                  are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
