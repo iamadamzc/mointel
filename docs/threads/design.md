@@ -690,6 +690,8 @@ probe came before any edit, as the ledger says it must.**
 | --- | --- | --- | --- |
 | Told HIM "your board may be frozen right now" and "this probably explains SLND", from a probe at 12:06Z. At rest ~90% of his polls land; the freeze coincided with MY OWN 39 requests plus Ops's, each a synchronous build the server finishes even after an abort, so my instrument made the load it measured. It also degraded the live desk in his window. SLND was a hidden tab. Retracted to him in this session; the fix's comments re-cut | PROBE-MEASURED-ITSELF (an instrument that loads the system it measures, read as the system's state; sibling of the 16th's disk-local-absolute class) | No, first this seat | **Peer (Ops's nginx log, Integration's review)**. It REACHED HIM |
 
+| Told HIM the report window would be built "after tomorrow's premarket Now check" as though it depended on it. It was Integration's queue order; nothing linked the two. He asked "why then?" | ORDER-RELAYED-AS-DEPENDENCY (the memory's "an estimate relayed as a constraint", same shape) | No, first this seat (but a known memory class) | **HIM**, the costly kind |
+
 **Rule taken from it: no heavy `/api/market` probe from Design between 07:00 and 10:00 ET, and any timing of the live desk states its own concurrency beside the number.**
 
 ## Where the rest of the record is
