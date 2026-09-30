@@ -12710,3 +12710,5 @@ pre-registered 178 files, re-gate. Ship yes is HIS.
 (branch ops/minute-bars-bound-on-c3d0f06, cherry-pick -x of 6043db3 onto c3d0f06, clean, same 2 files):
 **test-gate ALL GREEN 178/178 (pre-registered 178), 2,726 tests (= 2,723 + the 3 new), lint 0 errors.** Sent to
 Integration for replay. Both go to him in ONE message after 10:17.
+**Integration REPLAYED AND APPROVED 84b0099** (patch-id = 6043db3; 74c1818..84b0099 = 2; 178 = pre-registered). Both
+ships now wait only on HIS yes after 10:17: c3d0f06, then 84b0099, separate slots. Bound-only yes -> 6043db3 on 74c1818.
