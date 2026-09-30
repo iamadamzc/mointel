@@ -12905,3 +12905,7 @@ never run the market_mode clear on a v28 store** (the new FKs from desk_assessme
 release lineage (ops scripts are never shipped). The owed B re-run must use MAIN's amended query (promptVersion >= 2), not
 the old "= 2". Research's upsertIssuer write is NOT in v28: already-researched names keep an empty business line until it
 ships (it may ride /api/reports).
+**GATE RULE FOR TONIGHT (Integration order call, ~18:0xZ):** one full-suite gate at a time across all seats, Ops's release
+gates first (others announce to Ops and wait for a clear); a failure is environmental ONLY if it is a timeout, a spawn
+failure (126/127/0xC0000142) or SQLite OOM, never a wrong assertion, AND the file passes alone on the same tree, AND the
+gate report names file + signature; close stray processes before a gate.
