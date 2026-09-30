@@ -1983,6 +1983,30 @@ OPS ANSWERS      Sequence (Ops's estimates): 20:07 46d9f9d; ~20:32 em-dash; ~20:
                  consequence: a live-desk finding to HIM, DELAY vs LOSS separated first -> asked Ops for discarded +
                  bucket/minute gaps. Also asked: is v28 additive-only for every table the market worker writes; v28's
                  yes must name the ~10-18 min board + site outage.
+WEB              Picks unchanged on main. CANVAS: ~104 prose + 5 canvas.json; artifact "TMI Public Site" reachable; GO
+                 after the em-dash release is live + /proc read (order call, told). SIGN-IN = HIS DECISION: remaining =
+                 his Google client id/secret + seed his email + ~10 min live sign-in; Ops nginx exemptions (= /signin,
+                 ^~ /auth/) + 4 env keys + seed; Web one commit wiring authenticate() into /desk + /api/* + privacy
+                 [FLOW COOKIE NAME] on the same deploy. UNARRANGED: a live-proof method (Basic Auth blocks outside
+                 probes). Wired = password AND invited Google sign-in; everyone but the seed locked out until invited;
+                 sessions end 20:00 ET. Risk: tomorrow 07:00 premarket is the gate's first real session. Web recommends:
+                 wire tonight with Basic Auth ON + he signs in once live; Basic Auth off a separate night. Alternative:
+                 a non-trading evening. Billing = scope docs only.
+RESEARCH         His turn verified by Research. REPORTS remaining: (1) checker traced rules ~3 h; (2) sheet v2 + writer v5
+                 (Design's §8 answers at 6fb68956 -> unblocked; told); (3) store pipeline ~2 h; (4) run + Commercial +
+                 blind seeds + freeze + N=3 ~2-3 h; (5) /api/reports. HARD DEPENDENCY: a REPORT TABLE + a worker REPORT
+                 RUNNER (credentials worker-side), both Ops's -> ROUTED URGENT: table DDL INTO v28 (order call), runner
+                 in the /api/reports release. Earliest gated v5 ~01:00-03:00 ET (Research's estimate); premarket report
+                 as a catch-up from the 22:00 recap (contract `late`). Without v28 counts: other kinds no overall
+                 sentence (interim); business line empty until v3 + re-research ("{name}. {country}." tonight).
+                 LEVELS: buildable tonight on stored data, verified vs SLXN/NCI/MSGY (recall >= 13/14). APPROVED: per-name
+                 GET /api/levels computed on request, memoized to the 5m close, cost gate p95 < 100 ms pre-registered
+                 (no market restart, no schema). STAFFING: levels in PARALLEL via a Research subagent in its own
+                 worktree, Research owning pre-registration, review, gate (order call); fallback a 2nd Research chat
+                 (his). FOR HIM: the 22-39 day gap (15m store holds ~21 days; his rule says 15m to 39 days) -> interim:
+                 daily ladder starts where stored 15m ends, until backfill. Research builds the interim.
+                 NOT TONIGHT (Research): price-range fix (read gate failed; next = web-tier cache keyed (range, flush
+                 seq)); other kinds' overall sentence; August-style levels + 22-39 d 15m until backfill.
 MARKETING        Seeds for v5: pre-staging, final on Research's class list/checkpoints/format, release on my word.
                  Its "6 em dashes on app/page.tsx incl. :321" is PRODUCTION (c3d0f06); origin/main has only the 3
                  placeholders (171/194/399, kept). Web's fixes are on main and ride the em-dash cut. Told.
