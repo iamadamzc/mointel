@@ -12543,3 +12543,14 @@ capture goes DISCARDING.** The pin was right for web/research/assess; for the ma
 is now 1b5ead6 (its own). Owner Ops: re-pin a release at or above the floor, or document per-unit rollback targets.
 
 **RE-PINNED on his "yes, pin it" (2026-09-30 02:36:09Z):** pins.sh pin 1b5ead6 market-floor (schema v27, backup none: same schema as the live store, so a rollback to it needs no restore). pins.sh check: all satisfiable. The hazard above is CLOSED for the market worker; rollback-baseline 372f5eb stays for web/research/assess history only.
+
+**QUEUED for the successor's first day (Integration, 2026-09-30 ~02:4xZ), SESSION REPORTS, his "reports first" ruling
+2026-09-30T02:11:43Z; the checker PASSED its pre-registered ship test (Research d7c5df4):**
+- (1) THE 20:05 ET CHECKPOINT the evening report runs from: a scheduler change (worker/desk-assessments / assess).
+  OWNER Ops. TRIGGER: after the history store's design call. DEPENDS on nothing else Ops-side.
+- (2) PER-RANGE TOP-N STORAGE at each checkpoint (today only the band's top 25 is stored, so a $1-$20 report is
+  complete only to ~#13). OWNER Ops. DEPENDS on Research's faster range query (the covering index is doubtful on the
+  write side; see the flush-timer readings from 09-30 RTH) and the schema bump behind the pre-deploy backup route
+  (which must NOT be VACUUM INTO during a session: see the 16:06 finding).
+- ORDER between (1) and (2): the successor proposes to Integration. Research builds GET /api/reports + the range
+  config after the 10:12 grades read.
