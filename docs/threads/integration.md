@@ -1511,6 +1511,10 @@ error                                                  TYPE                     
   grep for cron "55 0 30 9"; Ops had scheduled it at  could not see the present case             (Ops)
   00:57 ("57 0 30 9", 7 entries). Retracted to him.   (memory: failed checks return
                                                       plausible answers)
+7 put to HIM, as the float option's example, "small   an option worded on an unread      YES (7th  peer
+  float, not independently verified"; no stored      mapping (memory: a well-formed     of the   (Research)
+  field says "small" (structureClassification +       question on an invented mapping)   family)
+  floatConfidence UNKNOWN 45/45). Told him next msg.
 ```
 HIS RULING (this session, after ledger 6): "keep it until 10:12" -> this seat carries the overnight results ((c') 00:57 ET,
 Design's 04:00 Now-cell read, Research's 04:33 items, the 10:12 grades read), then does the full hand-off. A 7th entry of
@@ -1574,6 +1578,8 @@ DATA MAP        Research data-map-2026-09-30.md (read): EXISTS as-of checkpoint:
 HIS RULINGS (this session, first-hand): "1 a, 2 a" -> FLOAT: verdict only for now (e.g. "small float, not
   independently verified"), no number, no float source sought; ON WATCH = the report's own list ("we're watching N
   names into premarket"), then the AH overall picture. Sent to Research, Marketing, Design.
+  CORRECTION (Research, read at his turns 04:10:24Z/04:11:25Z): "small" is NOT producible; v2 says "float not
+  independently verified" + the structure label (CAUTION 34 / UNKNOWN 9 / DIRTY_FLOAT 2 of 45). Told him.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
