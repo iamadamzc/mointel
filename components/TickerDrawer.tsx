@@ -240,8 +240,8 @@ function NotAnalyzedPanel({
       <p className="mt-3 text-[12px] leading-relaxed text-ink-2">
         {symbol} was discovered by the market feed on abnormal participation. The research desk
         has not produced a catalyst, cycle, structure or float assessment for it. Nothing here
-        should be read as a clean structure, a legitimate catalyst, or a frontside classification —
-        only that demand was detected and deserves investigation.
+        should be read as a clean structure, a legitimate catalyst, or a frontside classification.
+        It says only that demand was detected and deserves investigation.
       </p>
     </Section>
   );
@@ -347,7 +347,7 @@ function DrawerHeader({
                 title={
                   t.source === 'ALPACA'
                     ? 'Live Alpaca market data'
-                    : 'Google Sheet value — no live market data for this ticker'
+                    : 'Google Sheet value. No live market data for this ticker.'
                 }
               />
               {t.stale ? <StatusBadge label="stale" tone="warn" /> : null}
@@ -377,7 +377,7 @@ function Demand({ row }: { row: DeskRow | null }) {
 
   if (!demand) {
     return (
-      <Section title="Demand — Alpaca">
+      <Section title="Demand · Alpaca">
         <p className="text-[12px] text-ink-3">
           No live market state for this ticker. Start the market worker with{' '}
           <code className="text-ink-2">npm run market:alpaca</code> to populate demand telemetry.
@@ -387,7 +387,7 @@ function Demand({ row }: { row: DeskRow | null }) {
   }
 
   return (
-    <Section title={`Demand — Alpaca ${demand.feed.toUpperCase()}`}>
+    <Section title={`Demand · Alpaca ${demand.feed.toUpperCase()}`}>
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <StatusBadge label="Demand detected" tone="accent" />
         {demand.highRes ? (
@@ -548,7 +548,7 @@ function Demand({ row }: { row: DeskRow | null }) {
         {demand.referenceRthCloseDate ? ` (${demand.referenceRthCloseDate})` : ''}, source{' '}
         {demand.referenceRthCloseSource ?? 'unknown'}. Prior session close{' '}
         {formatPrice(demand.previousClose)}. Volume from{' '}
-        {demand.volumeSource ?? 'unknown source'}. Level 1 spread only — this is not depth.
+        {demand.volumeSource ?? 'unknown source'}. Level 1 spread only. This is not depth.
       </p>
     </Section>
   );
@@ -717,7 +717,7 @@ function MomentumCycle({
           {sheetReportedFlush && sheetReportedFlush.basisKind === 'HISTORICAL' ? (
             <p className="mt-1 text-[11px] leading-relaxed text-ink-3">
               Sheet-reported distance from that historical level: {sheetReportedFlush.raw} (raw sheet
-              value, retained for audit — not a current-cycle giveback).
+              value, retained for audit; not a current-cycle giveback).
             </p>
           ) : null}
         </div>

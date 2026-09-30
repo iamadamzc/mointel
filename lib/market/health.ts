@@ -168,7 +168,7 @@ export function projectMarketHealth(options: {
       ...base,
       state: 'SIMULATED',
       label: `Market: ${feed}`,
-      detail: 'Synthetic data — not a market feed and not tradeable',
+      detail: 'Synthetic data: not a market feed and not tradeable',
       tone: 'warn',
       live: false,
     };
@@ -211,7 +211,7 @@ export function projectMarketHealth(options: {
     return {
       ...base,
       state: 'CONNECTING',
-      label: `Market: ${feed} — connecting`,
+      label: `Market: ${feed} · connecting`,
       detail: 'Handshake in progress',
       tone: 'accent',
       live: false,
@@ -233,7 +233,7 @@ export function projectMarketHealth(options: {
     return {
       ...base,
       state: 'IDLE',
-      label: `Market: ${feed} — closed`,
+      label: `Market: ${feed} · closed`,
       detail: closedDetail,
       tone: 'dim',
       live: false,
@@ -244,7 +244,7 @@ export function projectMarketHealth(options: {
     return {
       ...base,
       state: 'DEGRADED',
-      label: `Market: ${feed} — degraded`,
+      label: `Market: ${feed} · degraded`,
       detail: workerLate
         ? `Worker heartbeat is ${heartbeatAgeSeconds}s old`
         : (health.lastError ?? 'Stream reported a degraded state'),
@@ -257,7 +257,7 @@ export function projectMarketHealth(options: {
     return {
       ...base,
       state: 'STALE',
-      label: `Market: ${feed} — DATA STALE`,
+      label: `Market: ${feed} · DATA STALE`,
       detail:
         `Socket is connected but no whole-market message for ${messageAgeSeconds ?? '—'}s ` +
         `(stale beyond ${thresholds.staleSeconds}s). Connection is not freshness.`,
@@ -270,7 +270,7 @@ export function projectMarketHealth(options: {
     return {
       ...base,
       state: 'DEGRADED',
-      label: `Market: ${feed} — DATA DEGRADED`,
+      label: `Market: ${feed} · DATA DEGRADED`,
       detail:
         `Socket is connected but the newest whole-market message is ${messageAgeSeconds ?? '—'}s ` +
         `old (fresh under ${thresholds.freshSeconds}s).`,
@@ -282,7 +282,7 @@ export function projectMarketHealth(options: {
   return {
     ...base,
     state: 'LIVE',
-    label: `Market: ${feed} — LIVE`,
+    label: `Market: ${feed} · LIVE`,
     detail: `Streaming; newest whole-market message ${messageAgeSeconds ?? 0}s old`,
     tone: 'pos',
     live: true,

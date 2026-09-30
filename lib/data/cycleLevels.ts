@@ -240,7 +240,7 @@ export function deriveCycleLevels(input: CycleLevelInput): CycleLevels {
   }
   if (sheetReportedFlush && sheetReportedFlush.basisKind === 'HISTORICAL') {
     notes.push(
-      `The sheet's ${sheetReportedFlush.raw} is measured from ${sheetReportedFlush.basisField}, a historical level — not a current-cycle giveback.`,
+      `The sheet's ${sheetReportedFlush.raw} is measured from ${sheetReportedFlush.basisField}, a historical level, not a current-cycle giveback.`,
     );
   }
 

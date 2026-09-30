@@ -179,7 +179,7 @@ function FocusCard({
             title={
               t.source === 'ALPACA'
                 ? 'Live Alpaca market data'
-                : 'Google Sheet value — no live market data for this ticker'
+                : 'Google Sheet value. No live market data for this ticker.'
             }
           >
             {t.stale ? `${t.sourceLabel} stale` : t.sourceLabel}

@@ -416,7 +416,7 @@ export function AutomaticIntelligence({
         />
       </Section>
 
-      <Section title="Structural Intelligence — Desk">
+      <Section title="Structural Intelligence · Desk">
         {/* The immediate read first; the model's fuller account below it. */}
         {structureSummary ? (
           <StructureSummaryBlock summary={structureSummary} FieldLabel={FieldLabel} />
@@ -552,7 +552,7 @@ export function AutomaticIntelligence({
         />
       </Section>
 
-      <Section title="Momentum Cycle — Automatic">
+      <Section title="Momentum Cycle · Automatic">
         <StatusBadge label={CYCLE_LABEL[cycle.cycleClassification]} tone="dim" />
         <ProseField label="Reasoning" value={cycle.reasoning ?? '—'} className="mt-3" />
         {/* Current-cycle high and historical resistance are separate rows on

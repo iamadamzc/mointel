@@ -116,13 +116,13 @@ export function DashboardHeader({
 
       {marketHealth.mode === 'SIMULATOR' ? (
         <div className="border-t border-warn/30 bg-warn/12 px-4 py-1 text-[11px] font-semibold tracking-wide text-warn uppercase">
-          Simulator mode — market values on this screen are synthetic and must not be traded
+          Simulator mode: market values on this screen are synthetic and must not be traded
         </div>
       ) : null}
 
       {marketHealth.mode === 'TEST' ? (
         <div className="border-t border-warn/30 bg-warn/12 px-4 py-1 text-[11px] font-semibold tracking-wide text-warn uppercase">
-          Alpaca test stream (FAKEPACA) — diagnostics only, not market data
+          Alpaca test stream (FAKEPACA): diagnostics only, not market data
         </div>
       ) : null}
     </header>

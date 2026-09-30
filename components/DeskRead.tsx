@@ -197,7 +197,7 @@ export function DeskReadPanel({ read }: { read: DeskRead }) {
             title={
               t.source === 'ALPACA'
                 ? 'Live Alpaca market data'
-                : 'Google Sheet value — no live market data for this ticker'
+                : 'Google Sheet value. No live market data for this ticker.'
             }
           />
           {/* Aged live data still wins over the sheet, but never silently. */}

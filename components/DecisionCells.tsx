@@ -336,7 +336,7 @@ function SessionMoveLine({ telemetry }: { telemetry: MarketTelemetry }) {
         `${reading.label} from ${formatPrice(reading.openPrice)}` +
         (anchorAt ? ` at ${anchorAt}` : '') +
         (reading.tradeCount === null
-          ? ' — the feed reported no trade count for that minute, so how thin the anchor is cannot be said'
+          ? '. The feed reported no trade count for that minute, so how thin the anchor is cannot be said.'
           : ` on ${reading.tradeCount} trades in the anchoring minute`)
       }
     >
@@ -371,7 +371,7 @@ function VwapLine({ telemetry }: { telemetry: MarketTelemetry }) {
       className="num truncate text-[11px] whitespace-nowrap"
       title={`${vwap.label} ${vwap.vwap?.toFixed(4)}${
         vwap.coverage === 'PARTIAL'
-          ? ' — partial coverage: part of this session arrived as a reconstructed total with no per-minute notional behind it'
+          ? '. Partial coverage: part of this session arrived as a reconstructed total with no per-minute notional behind it.'
           : ''
       }`}
     >
@@ -616,7 +616,7 @@ export function TickerCell({
       {stale ? (
         <span
           className="text-[9px] font-semibold tracking-wide text-warn uppercase"
-          title={`No market event for ${ageSeconds ?? '—'}s — this is the last live print, not a current one`}
+          title={`No market event for ${ageSeconds ?? '—'}s. This is the last live print, not a current one.`}
         >
           stale
         </span>

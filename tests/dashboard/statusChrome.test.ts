@@ -201,8 +201,8 @@ describe('status chrome shows only what varies', () => {
    */
   it('hides the sheet freshness label in its healthy state', async () => {
     const source = await read('components/DataFreshness.tsx');
-    expect(source).toContain("{degraded ? 'Research: Google Sheet — Stale' : null}");
-    expect(source).not.toMatch(/Research: Google Sheet — \{degraded/);
+    expect(source).toContain("{degraded ? 'Research: Google Sheet · Stale' : null}");
+    expect(source).not.toMatch(/Research: Google Sheet · \{degraded/);
   });
 
   it('hides the research label in its nominal IDLE state', async () => {

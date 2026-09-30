@@ -193,7 +193,7 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     key: 'now',
     label: 'Now',
     title:
-      'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL — that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
+      'Trades in the most recent settled minute. Which names are trading heaviest right now, which is a different question from RVOL: that is a ratio against a twenty-session baseline and can stay high on a name that has stopped trading.',
     /* Reads after the label: "sorted by now · trades in the last settled minute". */
     metric: 'trades in the last settled minute',
     column: 'now',
@@ -788,13 +788,13 @@ export function DiscoveryBoard({
             AH Participation = volume since the {discovery.rthClose} ET close ÷ average volume over
             the previous 20 eligible full sessions. It is deliberately not Daily RVOL: the
             numerator is one evening, not a trading day. High rank means abnormal after-hours
-            participation worth investigating — not a trade, a catalyst, or a clean structure.
+            participation worth investigating. It is not a trade, a catalyst, or a clean structure.
           </>
         ) : (
           <>
             Daily RVOL = cumulative session volume ÷ average volume over the previous 20 eligible
-            full sessions. High rank means abnormal participation worth investigating — not a
-            trade, a catalyst, or a clean structure.
+            full sessions. High rank means abnormal participation worth investigating. It is not
+            a trade, a catalyst, or a clean structure.
           </>
         )}
       </p>
