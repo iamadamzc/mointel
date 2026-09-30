@@ -528,9 +528,9 @@ for Research's data map to confirm before the SANG example is written.**
 "we're watching N names into the premarket" — then the after-hours overall picture:
 how many traded AH in range, up vs down. Written from stored counts, never an
 invented "quiet/wild" characterization.
-*Needs: N = the count of ticker lines the report actually PUBLISHES — after the
-12-name cap AND after the checker's strikes, never the ranked-row count (a reader
-must be able to count the names the report shows). The AH traded/up/down totals from
+*Needs: N = the DISTINCT NAMES the report shows — after the 12-name cap AND after the
+checker's strikes, never the ranked-row count (a name can appear in two sections, e.g.
+moved in premarket AND held, and counts once). The AH traded/up/down totals from
 `ticker_session` (both confirmed in the data map).*
 
 **2. Per-ticker blocks — a path line, then two or three sentences.**
@@ -643,10 +643,10 @@ the payload carries a `watchCount` (distinct tickers across the surviving lines)
 states a count (the checker strikes any line that does). The SECOND sentence is
 voice, and — see below — is data-backed for the premarket report only.
 
-**N = the count of ticker lines the report PUBLISHES — after the 12-name cap
-(`REPORT_NAME_CAP`) AND after strikes — never the ranked-row count.** A reader must be
-able to count the names the report shows. (#551 has 13 in-range, capped to 12, none
-struck → N = 12.)
+**N = the DISTINCT NAMES the report shows — after the 12-name cap (`REPORT_NAME_CAP`)
+AND after strikes — never the ranked-row count, and names not lines** (a name can
+appear in two sections, e.g. moved in premarket AND held, and counts once). "Watching
+N names" counts names. (#551 has 13 in-range, capped to 12, none struck → N = 12.)
 
 **The fixed first sentence, per report kind** (my words, printed by Design's surface
 from `watchCount`; `{N}` is the computed slot; "name" is singular when N is 1):
