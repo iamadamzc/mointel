@@ -617,26 +617,33 @@ first-hand (no look-ahead). Specimens: VEEE (av 1819, stale catalyst, $100M S-3 
 5,050,505 offering, backside, lost $17.30 support), AVX (av 1252, dirty float, $2B shelf +
 5,271,783 resale, $6.8M debt retirement), VRME (av 1987, $0.15 dividend, $15.8M ATM with
 "Roth 3.0%" terms + $40M shelf), TOPS (av 2010, dirty float, $200M shelf + $5.8M ATM,
-$680.4M revenue), AUUD (av 51, NONE_FOUND, $150M shelf + $3.04M ATM), PRTH (not researched).
-Regression controls: (a) "We found no catalyst in our sources" on AUUD; (b) form-named
-supply on every supply line; (c) supply dollar capacity / terms on VEEE/AVX/VRME/TOPS/AUUD
-(the run-3 fault class). Overall uses the 09-21 board-eligible totals verified first-hand
-(2,442 traded, 784 up, 533 down); wrong-total defect 811. Authored **informed by
+$680.4M revenue), PRTH (not researched). Every control and variant line names one of its
+checkpoint's top-12 covered names by assessment_rank (VEEE/PRTH/AVX/VRME/TOPS), verified
+first-hand. Regression controls: (b) form-named supply on every supply line; (c) supply
+dollar capacity / terms on VEEE/AVX/VRME/TOPS (the run-3 fault class). **Regression (a) is
+declared NOT exercisable on 09-21, not imported** (as (c) was in run 3): within every
+checkpoint's covered 12 no name is NONE_FOUND, so the "no catalyst found in our sources"
+admit-path is not tested tonight. Overall uses the 09-21 board-eligible totals verified
+first-hand (2,442 traded, 784 up, 533 down); wrong-total defect 811. Authored **informed by
 Integration's phrasing class, BLIND to the checker's code, tests and prompts** (Research's
 remark "the checker now carries the whole supply block" described the fix and did not shape
-the set beyond that phrasing class). New file, prior sets intact, format first / hash last:
+the set beyond that phrasing class). The released file is a NEW file, prior sets intact,
+format first / hash last:
 
-    sha256(defect-set-v5r4.md) = 0ff12a28432fb84d69ce072376c3a75ae0f34c8b95fa527be6086cf6f528cad9
+    sha256(defect-set-v5r4b.md) = 240e2f3a59a9ae79832b46a3b16f3c5cacf26c713d313b1c0b6cbfd5490cabaa
 
-**The composition changed before locking, and why** (Integration re-confirmed, this session):
-a first draft hashed to `b5452d59...` but was never committed, so nothing is superseded on
-record. Reading the store as-of each checkpoint corrected two things before the lock: VEEE
-was recast from the absence form ("no fresh catalyst") to the stale-catalyst phrasing, since
-av 1819 is SECONDARY_STALE (a name that HAS a stale catalyst); and AUUD was added as the
-regression-(a) control after first-hand verification found it NONE_FOUND, correcting
-Research's relayed "no 09-21 name has NONE_FOUND." Both changes make the controls truer, not
-easier. One U+2014 by design (the class-7 defect 442-07); the rest are en-dash ranges.
-Released on Integration's re-confirm after the `cb6d030` re-freeze; pinned LF.
+**A voided earlier blob, and why** (Integration named 240e2f3a, this session). An earlier
+draft `defect-set-v5r4.md` hashed to `0ff12a28...`, committed at `8acae017`, WAS WITHDRAWN
+before any harness run: it carried an AUUD regression-(a) line, but AUUD is #456 rank 24,
+outside the report's top-12 coverage, so that line would be struck for naming a ticker with
+no row (NO_ROW_FOR_TICKER), a certain control strike and an automatic FAIL. Research halted;
+Integration withdrew its re-confirm. `defect-set-v5r4.md` / `0ff12a28` is void for the bar
+and left in history; the live artifact is `defect-set-v5r4b.md` / `240e2f3a`, which drops
+AUUD and declares (a) not exercisable. (An even earlier draft hashed to `b5452d59...` was
+never committed.) The VEEE recast from the absence form to the stale-catalyst phrasing,
+correct because av 1819 is SECONDARY_STALE, is kept. One U+2014 by design (the class-7
+defect 442-07); the rest are en-dash ranges. Released on Integration's named hash after the
+`cb6d030` re-freeze; pinned LF.
 
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
