@@ -124,7 +124,7 @@ describe('looksLikeEnum', () => {
   });
 
   it('leaves ordinary text alone', () => {
-    expect(looksLikeEnum('yellow · frontside warning')).toBe(false);
+    expect(looksLikeEnum('yellow, frontside warning')).toBe(false);
     expect(looksLikeEnum('DIRTY FLOAT')).toBe(false);
     expect(looksLikeEnum('SEC submissions')).toBe(false);
   });
@@ -143,7 +143,7 @@ describe('humanise', () => {
 
   it('gives the values that need more than de-underscoring a real phrase', () => {
     expect(humanise('AUTO_SOURCE_GAP')).toBe('the desk research had not seen the newer source');
-    expect(humanise('YELLOW_FRONTSIDE_WARNING')).toBe('yellow · frontside warning');
+    expect(humanise('YELLOW_FRONTSIDE_WARNING')).toBe('yellow, frontside warning');
     expect(humanise('SEC_SUBMISSIONS')).toBe('SEC submissions');
   });
 
