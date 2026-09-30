@@ -1560,6 +1560,10 @@ HIS RULING ON THE #551 SAMPLE (this session, first-hand, 2026-09-30 ~04:0xZ), ke
     ATTRIBUTION (Design's catch): his path is UNLABELLED ("3.5 --> 5.00 --> 4.25"); the labels close / AH high / last
     were MY example. Labelling is Design's call, never cited as his. Design (item 3a) asks Research which points exist
     per report kind.
+    COMMERCIAL f3fa34d (commercial.md §8 in session-reports; verified his turn independently): catalyst commentary
+    descriptive never predictive; float/structure = VERDICT never NUMBER (a SEAT default, Integration 2026-09-17,
+    commercial.md:176/516 read: vendor float wrong on 8-9 of 46; becomes HIS if anyone proposes the number);
+    company facts no new risk; price path = licence question already under accepted exposure. Reviews next sample.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
