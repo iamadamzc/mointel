@@ -12667,3 +12667,11 @@ gzip (corrob) his board poll, same client + symbols: 22:24:50Z 09-29 (pre-1b5ead
 **INSTRUMENT NOTE (the doc's, not the box's):** post-restart-check-2026-09-29.md's jq reads `.symbol` on demand
 states; the field is `.ticker` (demand is a map of states), so the written query returns symbol NULL. Item 2's
 top-name lookup was re-taken with `.ticker` on a second fetch 24 s later; both fetches are reported.
+
+**2026-09-30 04:53 ET, Design's repeat first-load (link 56): 15 s NOT REPRODUCED at 08:53:27Z.** Board URL (symbols=),
+duration 1,949 ms = queue 33 (connection reused) + **server TTFB 1,892** + transfer 24 ms; 168,418 B transferred,
+862,753 decoded. Box, same window: [flush] line 08:54:14Z (covers 08:53:14-08:54:14) whole max 1,039.0 / upsert max
+192.0 ms, over250 3; research collecting sources (CAPR); io some avg10 0.13, cpu some avg10 1.09, load 0.46. The
+04:06 15,465 ms case has no split and stays UNEXPLAINED; Design's post-ship read takes the next attempt.
+**What it does show: ~1.9 s of server time per board request AT REST in premarket, vs a 1 s poll.** One reading. It is
+the build cost the queued loadMinuteBars bound targets (Research: 83% of a build, D-1 bound 0.35x on the copy).
