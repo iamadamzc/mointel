@@ -12,14 +12,16 @@
 import {
   reportKey,
   type MissedCause,
+  type ReportCompany,
   type ReportKind,
+  type ReportPath,
   type ReportRange,
   type ReportSlot,
   type SessionReport,
   type SessionReportsPayload,
 } from '../desk/reports/contract';
 import { assessmentLabel } from '../desk/schedule';
-import { formatEtMinute } from '../format';
+import { formatEtMinute, formatPrice } from '../format';
 
 /**
  * What a section reads when it has no line: the checker struck every sentence
@@ -95,6 +97,87 @@ export function watchLine(kind: ReportKind, count: number): string | null {
   const into = WATCH_INTO[kind];
   if (count === 0) return `Nothing on watch ${into}.`;
   return `We're watching ${count} ${count === 1 ? 'name' : 'names'} ${into}.`;
+}
+
+/**
+ * What leads a report: on the briefing line, and at the top of the window.
+ *
+ * A v5 report is one whose payload carries `watchCount` as a NUMBER. It is
+ * computed after the strikes and cannot itself be struck, so it is on every v5
+ * row, zero included, and it is the marker. Not `headline` null against
+ * absent: those are one step of serialisation apart, and a v5 row that picked
+ * up a null would read as "the checker struck it" (Design, 2026-09-30,
+ * research design.md §8 question 2).
+ *
+ * v5 leads with the watch sentence and never reads `headline`, so the line
+ * cannot go blank on a strike. v4 leads with its headline, null when struck.
+ */
+export function reportLead(report: Pick<SessionReport, 'kind' | 'headline' | 'watchCount'>): string | null {
+  if (typeof report.watchCount === 'number') return watchLine(report.kind, report.watchCount);
+  return report.headline;
+}
+
+/**
+ * The company line: "{name}. {country}. {business}." with an absent part
+ * dropped along with its full stop, never guessed (Marketing, d35e1bba). A
+ * part that already ends a sentence ("Sangoma Technologies Corp.") takes no
+ * second stop. Null when nothing is known.
+ */
+export function companyText(company: ReportCompany | null | undefined): string | null {
+  if (!company) return null;
+  const parts = [company.name, company.country, company.business]
+    .map((part) => (typeof part === 'string' ? part.trim() : ''))
+    .filter((part) => part.length > 0)
+    .map((part) => (/[.!?]$/.test(part) ? part : `${part}.`));
+  return parts.length > 0 ? parts.join(' ') : null;
+}
+
+/**
+ * The price path, "$3.59 prior close → $6.01 high → $5.10 at 09:27 ET".
+ *
+ * EVERY POINT CARRIES ITS LABEL, and no label is relative to the moment of
+ * reading. His complaint was "now 15% under what?"; a bare path asks the same
+ * question three times. And a report is read after it is written, the
+ * premarket one the next morning, so "today's close" and "now" would name the
+ * wrong day and the wrong minute by then. The labels are Design's call
+ * (research design.md §8 question 3), never his words: his example was bare.
+ *
+ * - The first point is the PRIOR CLOSE for both bases. Intraday it is the
+ *   close before this session; on the premarket report it is the close of the
+ *   day the report was written, which is the close before the session the
+ *   report is FOR. Either way it is "prior" to the report's own session, so no
+ *   date is needed and none can be stamped wrong.
+ * - The after-hours arc says so: "AH high", "AH close" (the premarket report
+ *   is built after the 20:00 close).
+ * - The intraday last point is the price at the checkpoint the report was
+ *   built from, labelled with that checkpoint's COMPLETED clock (the writer's
+ *   own clock rule). The newest one, when a report read more than one.
+ *
+ * Null when the payload has no path (older rows, a point the store could not
+ * state) or a basis this build does not know: no line, no placeholder.
+ */
+export function pathText(
+  path: ReportPath | null | undefined,
+  report: Pick<SessionReport, 'checkpoints'>,
+): string | null {
+  if (!path) return null;
+  const points = [path.from, path.high, path.now];
+  if (!points.every((value) => typeof value === 'number' && Number.isFinite(value) && value > 0)) return null;
+  const money = (value: number) => `$${formatPrice(value)}`;
+  const from = `${money(path.from)} prior close`;
+
+  if (path.fromBasis === 'TODAY_CLOSE') {
+    return `${from} → ${money(path.high)} AH high → ${money(path.now)} AH close`;
+  }
+  if (path.fromBasis !== 'PRIOR_CLOSE') return null;
+
+  const newest = report.checkpoints
+    .map((checkpoint) => checkpoint.completedAt)
+    .filter((at) => Number.isFinite(Date.parse(at)))
+    .sort((a, b) => Date.parse(a) - Date.parse(b))
+    .at(-1);
+  const at = formatEtMinute(newest);
+  return `${from} → ${money(path.high)} high → ${money(path.now)} ${at ? `at ${at}` : 'at the checkpoint'}`;
 }
 
 /**
