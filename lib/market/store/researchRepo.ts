@@ -895,6 +895,28 @@ export function readCurrentAnalyses(
   return found;
 }
 
+/**
+ * Analysis versions by id, keyed by id. For a session report: a checkpoint row
+ * stores the `analysis_version_id` that was current AT CAPTURE, so a report
+ * built later reads the dossier the checkpoint saw, not today's. Read-only.
+ */
+export function readAnalysisVersionsByIds(
+  db: MarketDatabase,
+  ids: readonly number[],
+): Map<number, ResearchAnalysisVersion> {
+  const found = new Map<number, ResearchAnalysisVersion>();
+  const unique = [...new Set(ids)];
+  if (unique.length === 0 || !researchTablesPresent(db)) return found;
+
+  const placeholders = unique.map(() => '?').join(',');
+  const rows = db
+    .prepare(`SELECT * FROM research_analysis_versions WHERE id IN (${placeholders})`)
+    .all(...unique) as VersionRow[];
+
+  for (const row of rows) found.set(row.id, toVersion(row));
+  return found;
+}
+
 /* ------------------------------------------------------------------- health */
 
 export function writeResearchHealth(db: MarketDatabase, health: ResearchHealth): void {
