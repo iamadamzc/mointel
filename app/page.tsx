@@ -136,7 +136,7 @@ export default function LandingPage() {
             </div>
             <table className="hidden w-full table-fixed border-collapse md:table">
               <caption className="px-4 pb-3 pt-2.5 text-left text-xs text-ink-3 [caption-side:bottom]">
-                Example board. Illustration only &mdash; no market data.
+                Example board. Illustration only. No market data.
               </caption>
               <thead>
                 <tr className="font-mono text-[10px] tracking-[0.12em] text-ink-3">
@@ -187,7 +187,7 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <p className="text-xs text-ink-3 md:hidden">Example board. Illustration only &mdash; no market data.</p>
+          <p className="text-xs text-ink-3 md:hidden">Example board. Illustration only. No market data.</p>
         </div>
       </section>
 
