@@ -2272,6 +2272,10 @@ RUN 2 FIX        Research 3c9b291: check.ts (cause 1), research.ts (sourceFiling
                  pre-fix sample) -> TOMORROW item: writer change + fresh Commercial sample. "Unheld form is struck" is the
                  model's judgement, not deterministic (accepted). Runner and API share reportRanges() (range question
                  closed). Run 2 day 09-25, #532 overall 2,463 / 690 / 547.
+WRITER DELTA     Writer-sheet filing STRIPPED (Research). Shipping writer differs from Commercial's v5b sample (1cb4ed6 on
+                 writerV5 @ 9037a9c) by ONE instruction (2e8450f: analyst Buy/Sell -> "a positive (or negative) analyst
+                 rating"). KEEP conditional on Commercial's confirm; asked. ALSO ASKED: Commercial's actual verdict on
+                 v5b (I have not read one; "Commercial's PASS" so far is Research's word only).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
