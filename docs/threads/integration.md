@@ -966,7 +966,67 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE — AT THE EIGHTEENTH SEAT'S HAND-OFF (2026-09-29, after his 17:28:33Z; the commit that lands this is its time)
+## LIVE STATE: AT THE NINETEENTH SEAT'S HAND-OFF (2026-09-30; the commit that lands this is its time)
+
+*A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. Re-read production before
+acting (ask Ops-tmi for /proc). The eighteenth's LIVE STATE below is ARCHIVE; where they disagree, this wins. The
+nineteenth's running notes (further down) carry the verification trail. NO EM DASHES in anything he reads (README).*
+
+### PRODUCTION (Ops /proc 03:39:03Z and after; re-read before acting)
+```
+WEB         74c1818 (brand header v2 on 1b5ead6 gzip on 803008b rows). web/research/assess, NR 0.
+MARKET      1b5ead6's worker, pid 1574400, ExecMainStart 2026-09-30T00:15:40Z. Recording $0.25-$50, qualifying $0.25-$20.
+            trades.db v2 -> ROLLBACK FLOOR: no market worker below 9508fb9 / 3810b9e.
+PINS        market-floor -> 1b5ead6 (safe rollback); rollback-baseline -> 372f5eb is BELOW the floor, never a market target.
+CONE RULE   every ship carries 1b5ead6 (deploy.sh re-renders nginx-tls.conf per release).
+```
+
+### SHIPS WAITING ON HIS YES (Ops-tmi asks at 10:27 ET, after the 10:17 grades read)
+```
+1 c3d0f06   Now cell (fa61410 -x onto 74c1818). Design's live read PASSED 04:06 ET. Replayed + gated 177.
+2 84b0099   loadMinuteBars ts bound, re-picked onto c3d0f06 (== 6043db3, patch-id 54037044). Local ratio 0.196, 0 of 1.1M
+            rows differ. Gated 178. If he says yes only to the bound: ship 6043db3 on 74c1818.
+3 EM-DASH   NOT CUT YET. Design cuts after 1-2 land, onto /proc's sha: Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0; Web
+            5f3a272, f272bec, 1703390, 32a9a84 (needs 1-3), e68137c, 69bafba. Count pre-registered. Replay it, then his yes.
+```
+
+### HIS RULINGS SINCE THE EIGHTEENTH (each read at his turn; full text in the running notes)
+```
+reports first (02:11:43Z); build the history store; show all levels, labelled "resistance levels", no highlighting;
+windows 5m today / 15m back 39 days / daily beyond; report shape = the SANG block (approved); business description
+from the research model's query, city dropped; float = verdict only; "on watch" = the report's own list; NO EM DASHES
+IN ANY WRITING (hard rule) except the empty-cell placeholder; legal punctuation edit not material, keep adopted; pipe ok.
+```
+
+### APPROVED, NOT BUILT (the list he asked to always see; owner and trigger)
+```
+SESSION REPORTS  Research: writer v5 to the SANG shape (business description, no city, no em dashes, computed watch
+                 line) -> checker extension -> NEW frozen version + blind pass bar (Marketing seeds) -> Commercial §8
+                 review -> sample to him. Then GET /api/reports + range config. Ops: 20:05 checkpoint; per-range child
+                 table (top-N + frozen counts) + AH close/high/low freeze, ONE market.db bump behind the backup route.
+RESEARCH PROMPT  ONE interpreter version bump: business description + em-dash ban. Never overlapping a live read window.
+HISTORY STORE    Ops, after the bound ships. Separate file beside market.db; 15m keyed by bucket START; split re-fetch by
+                 overlap check. Spec docs/research/resistance-levels-spec.md c9f9835.
+LEVELS           Research compute (after reports), Design section (row contract §2). Ship = his yes.
+CANVAS           Web: em-dash sweep + re-stamp + republish as one job, after the em-dash release.
+PRICE-RANGE FIX  Research + Ops, gated on the range-read measurements.
+SIGN-IN          built on main; waits on his Google OAuth client. DAILY BILLING after sign-in refuses correctly.
+```
+
+### SEATS (look up by title; check cwd and not-archived before every send)
+```
+Ops-tmi local_bb3d4059   Research-tmi local_bed7ed93   Design-tmi local_72b49119   Marketing-tmi local_fdc0aa9a
+Web-tmi local_2c0e391a   Commercial-tmi local_2ce868d2   (retired + archived: Ops 37a1741e, Research d6996864)
+Reminders are SESSION-ONLY and die with the session; an archived seat's reminders are dead.
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc and the 10:17 grades read + 10:27 ship answers. Then replay Design's em-dash cut. Then keep the
+session-reports chain moving (it is his top priority) and bring him the next sample only after Commercial's review.
+```
+
+## ARCHIVE — THE EIGHTEENTH'S LIVE STATE (SUPERSEDED BY THE NINETEENTH'S) — WAS: LIVE STATE AT THE EIGHTEENTH SEAT'S HAND-OFF (2026-09-29, after his 17:28:33Z; the commit that lands this is its time)
 
 *A SNAPSHOT. Every time is a commit time, a transcript timestamp, or a peer's stated reading. Re-read production
 before acting: ask Ops for `/proc/<pid>/cwd`. The seventeenth's LIVE STATE below is now ARCHIVE; where they disagree,
