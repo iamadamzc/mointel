@@ -45,7 +45,6 @@ function scan() {
   let glyphs = 0;
   for (const file of files) {
     const source = readFileSync(file, 'utf8');
-    if (!source.includes(EM_DASH)) continue;
     const tree = ts.createSourceFile(
       file,
       source,
@@ -55,9 +54,16 @@ function scan() {
     );
     const visit = (node: ts.Node) => {
       if (TEXT_KINDS.has(node.kind)) {
-        const text = node.getText(tree);
+        // The RENDERED text, not the source: a string's cooked value turns a
+        // `—` escape into the dash, and JSX text renders HTML entities,
+        // which a scan of the source characters cannot see (Web's catch).
+        const text = (
+          node.kind === ts.SyntaxKind.JsxText
+            ? node.getText(tree)
+            : (node as ts.LiteralLikeNode).text
+        ).replace(/&mdash;|&#8212;|&#x2014;/gi, EM_DASH);
         if (text.includes(EM_DASH)) {
-          const bare = text.replace(/^[`'"}]|[`'"]$|\$\{$/g, '').trim();
+          const bare = text.trim();
           if (bare === EM_DASH) glyphs += 1;
           else {
             const line = tree.getLineAndCharacterOfPosition(node.getStart(tree)).line + 1;
