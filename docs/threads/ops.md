@@ -12576,3 +12576,20 @@ its first work (the history store) triggers after it.
 error (asserted vs true)                                          TYPE                              repeat?  caught by
 (none yet)
 ```
+
+**2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
+post-roll; the 00:55 clock was a proxy; the retiring seat's 00:57 reminder died with its archived session). Pre-checks
+03:49:51Z: web start 02:33:33Z, market 00:15:40Z, NR 0, no deploy unit, last board poll in the access log 03:32:02Z,
+io pressure 0.00. Method as registered, 5 x (1 cold + 20 warm) on 74c1818:
+```
+run  start      cold ms  warm median  warm max
+1    03:49:56Z   6.2       6.4          23.8
+2    03:49:59Z  17.4      11.9          44.5
+3    03:50:02Z   5.5       5.7           8.2
+4    03:50:04Z   5.8       5.4           8.8
+5    03:50:07Z   6.1       6.6          11.7
+```
+**Median of maxima 11.7 ms <= 28.9: PASS AS REGISTERED** (vs (b') 8.9), memo caveat. **But the instrument could not see
+the Now field:** one follow-up fetch at 03:5xZ returned 3,734 B with ZERO nowBuckets keys (post-roll board is empty).
+So (c') shows only that 74c1818 on an empty date costs what 0342e7d did on an empty date. The Now field's own cost
+is still UNMEASURED; the only reading with it present is (c), 811.7 ms pre-roll with 15 names, which is confounded.
