@@ -12582,6 +12582,11 @@ e273e31's message says "ledger entry" but the ledger edit had failed   commit-me
 R1's first set ran 60-115 s after the web start vs the registered    method-condition-estimated-not-read no      self
   >= 2 min: I estimated the clock instead of reading it; re-taken
   with the elapsed seconds computed and enforced in the command
+a gap-check loop (sqlite3 per missing minute) ran >3 min on the LIVE  probe-load-in-session              no      self
+  box in RTH and kept running after my local timeout; my pkill
+  matched its own ssh shell. Killed by pid ~16:2xZ, health 0.49 s.
+c817ef86's message says "ledger" but the scripted insert failed    commit-message-ahead-of-content    YES      self
+  again: a REPEAT of the class corrected at e273e31 -> warn him
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
