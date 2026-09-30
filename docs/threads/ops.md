@@ -12705,3 +12705,8 @@ minuteBarsBound.test.ts). Mutants, predicted 1 kill each over tests/market (634 
 test fails; bound tightened to D 00:00Z -> ONLY the D-1 bar test fails. Restored after each. **test-gate.sh ALL GREEN:
 177/177 files (pre-registered 177), 2,691 tests, lint 0 errors.** If c3d0f06 ships first: cherry-pick onto it,
 pre-registered 178 files, re-gate. Ship yes is HIS.
+**SHIP ORDER RULED (Integration): two separate releases, c3d0f06 first, then the bound re-picked onto it.** Approved
+6043db3 by literal sha (fallback if only the bound is approved). **Re-pick: 84b00991d524c43631b936ecf1dfcb91ab80d04f**
+(branch ops/minute-bars-bound-on-c3d0f06, cherry-pick -x of 6043db3 onto c3d0f06, clean, same 2 files):
+**test-gate ALL GREEN 178/178 (pre-registered 178), 2,726 tests (= 2,723 + the 3 new), lint 0 errors.** Sent to
+Integration for replay. Both go to him in ONE message after 10:17.
