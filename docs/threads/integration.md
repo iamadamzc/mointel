@@ -2333,6 +2333,15 @@ RUN 3 RUNNING    Set 42818555 verified on 32541fb5 (hash computed here too); har
                  cite "$6,530,000 of ATM capacity" = supply dollarCapacity, which the frozen research block does NOT carry
                  -> likely NUMBER_NOT_IN_ROW strikes on 493-C S1L1 / 494-C S1L1 = a CHECKER hole (run 1's class). Pre-fixed
                  rule holds: any FAIL -> no reports tonight. Tomorrow's fix if so: carry dollarCapacity to the checker.
+PASS BAR RUN 3   FAIL AS REGISTERED: raw 141ee34 before read; harness 9b44df8; checker 925c9dc; set 42818555; $2.45. Keyed
+                 19/19 x3 (no missed defect, third run). 4 regression-control strikes, ALL CHECKER FAULTS: (1) predicted:
+                 research.ts lacks supply dollarCapacity (ARTL 6,530,000; XXII 6,400,000 held in dossiers) -> traced rule +
+                 model strike; (2) model instability 1-of-3 on true lines (WHLR "no fresh catalyst", ARTL "no share count
+                 is on file"). Marketing's run-3 set sound. PRE-FIXED RULE APPLIED: NO REPORTS TONIGHT, no run 4; cut
+                 4b55a049 does not ship (kept for tomorrow). All seats told.
+                 TOMORROW (owner Research, trigger 2026-10-01 first): whole SupplyBlock to the checker, field by field with
+                 tests; model-stability proposal before change; new registration + re-freeze + fresh set (Marketing) +
+                 run; then re-pick 4b55a049. LEVELS CUT: Ops trial-picking Research's route + Design's 3 onto 2bcf1cf now.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
