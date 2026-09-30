@@ -2257,6 +2257,14 @@ PASS BAR RUN 1   v5: FAIL AS REGISTERED (seed-lock deviation cd8052b9). Raw 70da
                  re-freeze (sha + blobs to me before release), FRESH set from a different day with (1)/(2) phrasing as
                  regression controls, voice list obeyed; Marketing authoring now.
 RUN 2 SET DAY    09-25 (#518/#528/#531/#532) confirmed to Marketing (earlier sets: 09-24 v5, 09-22 v2 bar).
+REPORTS CUT      1fde525b (ops/reports-cut-on-2bcf1cf, A:\mointel-reportscut) REPLAYED HERE (structure): 41 on 2bcf1cfe;
+                 95b734e not ancestor; no PriceRangeControl/boardRange file; non-doc files = origin/main blobs except
+                 Ops's 7 (shim, runner, readModel) + checker/writer files that moved on main after (3c9b2911 run-2 fixes);
+                 8 frozen blobs = 1ab48be (read). 54 files vs 2bcf1cf; outside-report files additive + named by Ops.
+                 APPROVED IN STRUCTURE, NOT FOR SHIP: carries the run-1 (FAILED) checker. Ship only after run 2 PASSES
+                 with the re-freeze picked in and the new blob list re-verified here; if run 2 fails, no reports tonight.
+                 Docs (4 files) dropped by a cut-only commit (order call). Owed: 201-file gate; Design shim review +
+                 cut-tree render; Research range answer.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
