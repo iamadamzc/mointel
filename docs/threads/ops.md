@@ -12772,3 +12772,7 @@ NULL in the same market.db bump** (his "what the company does" ruling). Opened: 
 upserts with COALESCE per column, so it fills forward on each SEC collection; the ALTER list (db.ts:738 has
 issuer_registry.company_sources) is the pattern. Constraint: Research's writer code must ship IN or AFTER the release
 that migrates, never before (a v27 store has no such column and the INSERT would fail). Pending Integration's yes.
+**Integration APPROVED sic_description into the bump (~14:3xZ).** The v28 bump now carries: desk_assessment_ranges
+(top-N + frozen counts), ah_reference_close/ah_high/ah_low on desk_assessment_tickers, issuer_registry.sic_description.
+One migration, behind the backup route; Research's writer ships no earlier. ORDER: 84b0099 + R2, then the history
+store, then this bump (Ops may propose the bump first if the reports need it sooner).
