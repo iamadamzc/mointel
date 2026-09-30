@@ -1536,6 +1536,9 @@ firing in an archived session NOT verified. New Ops told to set guarded duplicat
   09-29's 54-59/60), observation only, no probes in his window.
   Ops 10:17 reminder now 13965d6f: A grades; B his polls 11:00-14:00Z (= 07-10 ET, EDT) 200/499/other per minute +
   bytes; confounds named: a391c61 client fix went live after the 09-29 baseline; zero-request minutes = tab hidden.
+REPORTS STATUS  (his 3rd ask ~03:53Z) no report commits since 0811b14/3d618f0. Voice v3 IS in writer (e67a91b, read
+  writer.ts:246-250) but NEVER RUN on real data -> ORDER CALL: Research voice run v3 on #551/#556/#566/#569 now,
+  drafts committed before reading; one complete checked report (#551) to show HIM verbatim, unpicked.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
