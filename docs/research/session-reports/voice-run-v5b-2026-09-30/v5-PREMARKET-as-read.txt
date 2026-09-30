@@ -1,0 +1,53 @@
+Into the premarket · $1–$20 · built from checkpoint #551 (2026-09-29T02:00:09.248Z)
+[opening, printed by the surface from watchCount = 11]
+Across the $1.00–$20.00 range, 2,456 traded after hours, 751 up, 568 down.
+
+Fresh or identifiable catalysts
+  KNRX: KNOREX LTD.. Singapore.
+  $1.23 → $1.4 → $0.8502 (TODAY_CLOSE)
+  At 08:00 ET, September 28, 2026, a Form 6-K reported pursuit of a strategic carve-out that would separate and independently capitalize AscendX with external investors while retaining a minority equity interest; the transaction is proposed, with definitive terms, valuation, financing, conditions and completion not established. The desk has no float it can independently verify; registered resale, possibly active, effective September 25, 2026, plus an equity purchase agreement, unknown, and warrants, unknown, add structure uncertainty. KNRX sits green, fresh / frontside.
+
+  SANG: Sangoma Technologies Corp.
+  $3.59 → $6.0071 → $5.1 (TODAY_CLOSE)
+  At 17:26 ET, September 28, 2026, a secondary earnings headline reported adjusted EPS of $(0.18) versus a $(0.06) estimate and sales of $46.802 million versus a $51.467 million estimate; the desk reads the event as timely but conflicting with the positive reaction, and the full release and guidance are not on file. The desk has no float it can independently verify; shares outstanding were 33,338,932 as of June 30, 2026 (the outstanding count, not a float), with registered resale, possibly active, effective April 12, 2023. SANG sits yellow, frontside warning.
+
+  YMT: Yimutian Inc..
+  $1.77 → $3.68 → $2.0997 (TODAY_CLOSE)
+  At 12:01 ET, September 28, 2026, a Form 6-K disclosed completion of the Qingdao Xingongguan acquisition through VIE agreements for an aggregate US$5.8 million and completion of the first-phase acquisition of 33.33% of Qingdao Quanao; the desk reads this as a fresh corporate-development headline, but SEC-only coverage leaves the market timing and principal driver unresolved. The desk has no float it can independently verify; registered resale, possibly active, 42,307,692 shares, convertibles, possibly active, and acquisition shares, unknown, effective September 10, 2026, create supply considerations. YMT has no cycle conclusion.
+
+  SER: Serina Therapeutics, Inc.. United States.
+  $2.01 → $2.159 → $2.14 (TODAY_CLOSE)
+  On September 9 at 07:45 ET, Serina reported Cohort 1 observations from the SER-252 registrational study and advancement to Cohort 2; the desk grades that as a legitimate positive development milestone, while the supplied evidence lacks detailed efficacy, safety, cohort-size and statistical information. The structure is dirty float, but the desk has no float it can independently verify; shares outstanding were 25,400,473 as of August 10, 2026 (the outstanding count, not a float), alongside an equity purchase agreement, possibly active, effective August 31, 2026, registered resale, possibly active, 954,759 shares, and warrants, unknown, 3,861,003 shares. SER has no cycle conclusion.
+
+
+Older or secondary source material
+  BYSI: BeyondSpring Inc.. United States.
+  $1.12 → $1.31 → $0.9888 (TODAY_CLOSE)
+  The source file has no fresh catalyst: the latest identified item was a September 18, 2026 Nasdaq minimum-bid-price deficiency notice, while the latest substantive company update was the August 14 Q2 report; the desk does not read either as explaining the present activity. The desk has no float it can independently verify; shares outstanding were 41,119,820 as of July 31, 2026 (the outstanding count, not a float), with shelf capacity, possibly active, 10,000,000 shares, effective August 18, 2025, and recent offering, unknown, 800,000 shares, effective November 17, 2025. BYSI has no cycle conclusion.
+
+  ONFO: Onfolio Holdings, Inc. United States.
+  $1.06 → $1.38 → $1.2 (TODAY_CLOSE)
+  The source file has no fresh catalyst: the latest company item is a September 21 strategy blog post, while the identifiable corporate developments are older compliance and strategic-alternatives updates; the desk does not read them as explaining the move. The desk has no float it can independently verify; shares outstanding were 2,452,712 as of August 19, 2026 (the outstanding count, not a float), with registered resale, possibly active, 32,696,345 shares, effective April 27, 2026, and warrants, possibly active, 6,199,863 shares, effective August 29, 2025. ONFO has no cycle conclusion.
+
+  EGG: ENIGMATIG LTD.
+  $4.25 → $5.17 → $5.05 (TODAY_CLOSE)
+  The source file has no fresh catalyst: the latest identified company financing event was an F-3 mixed shelf that became effective September 11, 2026, representing financing capacity rather than a positive operating event; the desk does not read it as explaining the move. The desk has no float it can independently verify; shares outstanding were 12,095,200 as of September 30, 2025 (the outstanding count, not a float), with shelf capacity, possibly active, effective September 11, 2026. EGG has no cycle conclusion.
+
+  FFAI: FARADAY FUTURE INTELLIGENT ELECTRIC INC.. United States.
+  $1.41 → $2.4 → $1.7189 (TODAY_CLOSE)
+  The source file has no fresh catalyst: the latest item rescheduled an investor report and promoted a September 29 partner-conference session, while earlier robotics announcements and a subsidiary incentive plan provide narrative but no fresh financing close, revenue result or binding customer contract; the desk does not state whether these explain the move. The desk has no float it can independently verify; registered resale, not yet active, 2,934,055 shares, convertibles, possibly active, effective September 15, 2026, and warrants, unknown, effective August 31, 2026, define the structure. FFAI has no cycle conclusion.
+
+  BNKK: BONK, INC.. United States.
+  $1.87 → $1.9 → $1.7733 (TODAY_CLOSE)
+  The source file has no fresh catalyst: the latest identified event was a September 4 preferred-stock redemption agreement disclosed September 11, under which Bonk agreed to pay $4.0 million to retire 26,667 Series A preferred shares while Core4 retained 73,333 preferred shares and waived specified anti-dilution protections; the desk does not read the older agreement as explaining the move. The desk has no float it can independently verify; shares outstanding were 8,000,940 as of August 14, 2026 (the outstanding count, not a float), with shelf capacity, possibly active, registered resale, possibly active, 857,144 shares, warrants, possibly active, 52,557 shares, and preferred conversion, not yet active, 1,516,873 shares, effective September 4, 2026. BNKK has no cycle conclusion.
+
+
+Unclear or no catalyst in the file
+  TRSG: Tungray Technologies Inc. Singapore.
+  $1.22 → $1.46 → $1.37 (TODAY_CLOSE)
+  The analysis does not determine a catalyst: the latest September 18, 2026 Form 6-K includes an employment-related offer-letter exhibit, but the excerpt does not establish a business, financing or operating event, and SEC-only coverage is incomplete. The desk has no float it can independently verify; warrants, unknown, effective March 28, 2024, and convertibles, unknown, leave the structure unresolved. TRSG has no cycle conclusion.
+
+  CLRO: CLEARONE INC. United States.
+  $5.1 → $5.35 → $4.94 (TODAY_CLOSE)
+  No catalyst found in our sources: the available material contains a September 24 secondary technical-analysis headline and older merger and financing filings, but no fresh company event sufficient to explain the present activity. The desk has no float it can independently verify; shares outstanding were 2,675,412 as of August 14, 2026 (the outstanding count, not a float), with acquisition shares, not yet active, 12,500,000 shares, recent offering, not yet active, 4,285,714 shares, shelf capacity, unknown, and warrants, not yet active, 437,500 shares, effective August 4, 2026. CLRO has no cycle conclusion.
+

@@ -17,6 +17,7 @@ import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
 import { LevelLadder } from '@/components/LevelLadder';
+import { ResistanceLevels } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
@@ -158,6 +159,8 @@ export function TickerDrawer({
           <DeskReadPanel read={buildDeskRead(row)} />
 
           <LevelLadder map={row.levelMap} blueSky={row.blueSky} Section={Section} />
+
+          <ResistanceLevels key={row.ticker} symbol={row.ticker} Section={Section} />
 
           <AutomaticIntelligence
             intel={row.intelligence}

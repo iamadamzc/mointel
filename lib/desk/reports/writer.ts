@@ -76,7 +76,7 @@ export const NOTHING_LINE = 'Nothing in our sources for this section.';
 
 /* ---------------------------------------------------------------- numbers */
 
-function price(value: number): string {
+export function price(value: number): string {
   return `$${roundTo(value, 2).toFixed(2)}`;
 }
 
@@ -101,7 +101,7 @@ function directed(value: number): string {
  * IMCC -25.1% against $4.23). One wording rule across all four reports gets
  * the premarket report wrong by a whole session.
  */
-function framedChange(fact: ReportFact): string | null {
+export function framedChange(fact: ReportFact): string | null {
   if (fact.percentChange === null) return null;
   if (fact.referenceBasis === 'PRIOR_SESSION') {
     return `${directed(fact.percentChange)} from the prior close`;
@@ -314,11 +314,11 @@ export function buildWriterPrompt(input: WriterInput): WriterPrompt {
 
 /* ----------------------------------------------------------------- parse */
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-const nonEmpty = (value: unknown): value is string =>
+export const nonEmpty = (value: unknown): value is string =>
   typeof value === 'string' && value.trim().length > 0;
 
 /**

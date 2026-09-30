@@ -1,0 +1,31 @@
+writer gpt-5.6-luna, checker gpt-5.6-terra
+PREMARKET 2026-09-28: MISSED ALL_STRUCK; 12 of 13 lines struck; $0.0552; writer 27606 ms, checker 22669 ms; tokens gpt-5.6-luna:8963/3216 gpt-5.6-terra:14976/1636
+  S1L1 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S1L2 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S1L3 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S1L4 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L1 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L2 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L3 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L4 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L5 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L6 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L7 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S3L1 rule:FORBIDDEN_WORDING: buy/sell: "selling"
+  S2L6 model:UNSUPPORTED: The claim that the desk does not read FFAI's catalyst as explaining the move is unsupported: plausiblyExplainsMove is null, not false.
+INTO_RTH 2026-09-29: PUBLISHED; 5 of 12 lines struck; $0.0432; writer 28767 ms, checker 70875 ms; tokens gpt-5.6-luna:7710/3130 gpt-5.6-terra:12310/1103
+  S1L1 rule:NUMBER_NOT_IN_ROW: 32.2
+  S1L4 rule:NUMBER_NOT_IN_ROW: 13.1
+  S2L3 rule:NUMBER_NOT_IN_ROW: 14.0
+  S1L7 model:UNSUPPORTED: The shelf capacity is only marked possibly active, so calling it active is unsupported.
+  S2L3 model:UNSUPPORTED: The stored effective-event timestamp has no timezone, so the claim that it was effective at 16:00 ET is unsupported.
+  S2L4 model:UNSUPPORTED: The warrant capacity is not all active: one warrant block is not yet active and another has unknown status.
+INTO_POWER_HOUR 2026-09-29: PUBLISHED; 2 of 12 lines struck; $0.0476; writer 20511 ms, checker 19902 ms; tokens gpt-5.6-luna:7692/2365 gpt-5.6-terra:12428/1528
+  S1L6 rule:FORBIDDEN_WORDING: prediction or certainty: "confirmed"
+  S2L2 model:UNSUPPORTED: “No catalyst found in our sources” overstates the research, which says no sufficient fresh company-specific event explaining the move was identified.
+AFTER_HOURS 2026-09-29: PUBLISHED; 4 of 12 lines struck; $0.0413; writer 22230 ms, checker 14424 ms; tokens gpt-5.6-luna:7568/2625 gpt-5.6-terra:12244/1011
+  S1L4 rule:FORBIDDEN_WORDING: prediction or certainty: "will"
+  S1L6 rule:FORBIDDEN_WORDING: prediction or certainty: "confirmed"
+  S2L1 model:UNSUPPORTED: The secondary report is timestamped 09:40 ET, not 05:40 ET.
+  S2L2 model:UNSUPPORTED: KMRK’s catalyst is UNKNOWN with incomplete coverage; the rows do not support concluding that no fresh catalyst explains the move.
+TOTAL spend $0.1872

@@ -76,6 +76,45 @@ function titleCase(name: string): string {
     .join(' ');
 }
 
+/** Every country name this module can print, lower-cased, for matching a name already written out. */
+let displayNames: Map<string, string> | null = null;
+function knownNames(): Map<string, string> {
+  if (displayNames) return displayNames;
+  displayNames = new Map();
+  for (const code of EDGAR_STATE_COUNTRY.keys()) {
+    const name = edgarCountry(code);
+    if (name) displayNames.set(name.toLowerCase(), name);
+  }
+  for (const [alias, name] of [
+    ['us', 'United States'],
+    ['usa', 'United States'],
+    ['u.s.', 'United States'],
+    ['u.s.a.', 'United States'],
+    ['united states of america', 'United States'],
+    ['uk', 'United Kingdom'],
+  ] as const) {
+    displayNames.set(alias, name);
+  }
+  return displayNames;
+}
+
+/**
+ * A country from a value that may be EDGAR's code OR a name already written
+ * out. `dossier.country` is MODEL-WRITTEN and mixed: on 2,500 prod versions,
+ * mostly EDGAR codes copied from the bundle ("CA" 310, "F4" 122), but also
+ * names ("Cayman Islands" 67, "Israel" 27, "United States" 16, "US" 15), and
+ * SANG's dossier says "Canada" where the registry says "A6". A two-character
+ * value is read as EDGAR's code (so "CA" stays California); a longer one must
+ * match a country this module prints, or it is null. Never a guess.
+ */
+export function countryName(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  // A code EDGAR lists wins ("CA" is California); "US" and "UK" are not codes.
+  if (trimmed.length === 2 && EDGAR_STATE_COUNTRY.has(trimmed.toUpperCase())) return edgarCountry(trimmed);
+  return knownNames().get(trimmed.toLowerCase()) ?? null;
+}
+
 /**
  * The country for an EDGAR `stateOrCountry` code, or null when the code is
  * absent, unknown to EDGAR's list, or EDGAR's own UNKNOWN (XX). Never a guess.

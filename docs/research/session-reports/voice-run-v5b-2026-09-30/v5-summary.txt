@@ -1,0 +1,11 @@
+writer gpt-5.6-luna, checker gpt-5.6-terra
+PREMARKET 2026-09-28: PUBLISHED; 1 of 13 lines struck; $0.0497; writer 62975 ms, checker 15835 ms; tokens gpt-5.6-luna:9740/2683 gpt-5.6-terra:15843/1069
+  S1L5 model:UNSUPPORTED: The corrected EPS loss of $0.01 was reported in the 16:33 ET correction, not at 16:18 ET.
+INTO_RTH 2026-09-29: PUBLISHED; 3 of 12 lines struck; $0.0412; writer 24961 ms, checker 10030 ms; tokens gpt-5.6-luna:8411/2977 gpt-5.6-terra:13505/741
+  S1L2 rule:FORBIDDEN_WORDING: prediction or certainty: "will"
+  S1L4 rule:FORBIDDEN_WORDING: buy/sell: "Buy"
+  S2L7 model:UNSUPPORTED: “Does not treat it as a fresh catalyst” is unsupported; SECONDARY_STALE supports only that the news is older or secondary.
+INTO_POWER_HOUR 2026-09-29: PUBLISHED; 0 of 12 lines struck; $0.0379; writer 47049 ms, checker 9682 ms; tokens gpt-5.6-luna:8373/2200 gpt-5.6-terra:13358/574
+AFTER_HOURS 2026-09-29: PUBLISHED; 1 of 12 lines struck; $0.0463; writer 24480 ms, checker 17993 ms; tokens gpt-5.6-luna:8258/2857 gpt-5.6-terra:13275/1219
+  S1L12 model:UNSUPPORTED: The 44% slowing figure is documented in the 07:16 ET source; the stored research does not support attributing that specific figure to the 05:05 ET report.
+TOTAL spend $0.1750

@@ -10,10 +10,13 @@ import {
   agoText,
   briefingLineText,
   checkpointText,
+  companyText,
   coverageText,
   EMPTY_SECTION_LINE,
+  pathText,
   reportCoverage,
   outsideBoardRange,
+  reportLead,
   reportTitle,
   sessionText,
   type BoardRange,
@@ -77,6 +80,7 @@ export function BriefingLine({
   const hasEarlier = timeline.earlier.some((view) => view.report);
   const canOpen = Boolean(current.report) || hasEarlier;
   const published = current.state === 'PUBLISHED' && current.report;
+  const lead = current.report ? reportLead(current.report) : null;
 
   return (
     <Band>
@@ -86,9 +90,7 @@ export function BriefingLine({
 
       {published && current.report?.late ? <Late /> : null}
 
-      {published && !read && current.report?.headline ? (
-        <span className="min-w-0 truncate text-ink-1">{current.report.headline}</span>
-      ) : null}
+      {published && !read && lead ? <span className="min-w-0 truncate text-ink-1">{lead}</span> : null}
 
       {current.state === 'MISSED' && current.missedReason ? (
         <span className="min-w-0 truncate text-ink-3">{current.missedReason}</span>
@@ -333,6 +335,7 @@ function ReportBody({
   const written = formatEtMinute(report.publishedAt);
   const ago = agoText(report.publishedAt, nowMs);
   const coverage = coverageText(reportCoverage(report));
+  const lead = reportLead(report);
 
   return (
     <article>
@@ -392,8 +395,11 @@ function ReportBody({
         </div>
       </dl>
 
-      {report.headline ? (
-        <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{report.headline}</p>
+      {/* v5 opens with the watch sentence, then the after-hours picture when the
+          report has one; v4 with its headline. `reportLead` decides which. */}
+      {lead ? <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{lead}</p> : null}
+      {typeof report.watchCount === 'number' && report.overall ? (
+        <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{report.overall}</p>
       ) : null}
 
       {report.sections.map((section) => (
@@ -407,9 +413,31 @@ function ReportBody({
             <p className="text-[13px] text-ink-3">{EMPTY_SECTION_LINE}</p>
           ) : (
             <ul className="space-y-1.5">
-              {section.lines.map((line, index) => (
+              {section.lines.map((line, index) => {
+                const company = companyText(line.company);
+                const path = pathText(line.path, report);
+                const block = Boolean(company || path);
+                return (
                 <li key={`${line.ticker ?? '-'}:${index}`} className="text-[14px] leading-relaxed text-ink-1 print:text-black">
-                  {line.ticker ? (
+                  {/* v5 block: the ticker lead with its company line, then the
+                      path, then the writer's sentences. Both computed lines are
+                      absent on v4 rows, which keep the one-line form. */}
+                  {line.ticker && block ? (
+                    <div className="text-[13px] text-ink-2 print:text-black">
+                      <button
+                        type="button"
+                        onClick={() => onSelectTicker(line.ticker as string)}
+                        className="mr-1.5 font-mono text-[14px] font-bold text-ink hover:text-accent print:text-black"
+                      >
+                        {line.ticker}
+                      </button>
+                      {company}
+                    </div>
+                  ) : null}
+                  {path ? (
+                    <div className="font-mono text-[13px] text-ink-2 tabular-nums print:text-black">{path}</div>
+                  ) : null}
+                  {line.ticker && !block ? (
                     <button
                       type="button"
                       onClick={() => onSelectTicker(line.ticker as string)}
@@ -435,7 +463,8 @@ function ReportBody({
                     </Qualifier>
                   ) : null}
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
         </section>

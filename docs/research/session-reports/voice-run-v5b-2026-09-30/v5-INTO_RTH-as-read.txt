@@ -1,0 +1,42 @@
+Into the open · $1–$20 · built from checkpoint #556 (2026-09-29T13:25:06.433Z)
+[opening, printed by the surface from watchCount = 9]
+
+Held into the open
+  SANG: Sangoma Technologies Corp. Canada.
+  $3.59 → $5.17 → $4.9728 (PRIOR_CLOSE)
+  Sangoma announced a definitive agreement to be acquired by BRC Group Holdings on September 28, 2026, a strong, high-confidence news catalyst that the desk reads as plausibly explaining the move. The structure is unknown; the desk cannot independently verify the float, and shares outstanding are 33,338,932 as of June 30, 2026 (the outstanding count, not a float), with registered resale and warrants both unknown. The sheet places the name green, fresh / frontside.
+
+  FFAI: FARADAY FUTURE INTELLIGENT ELECTRIC INC.. United States.
+  $1.41 → $1.85 → $1.56 (PRIOR_CLOSE)
+  Faraday Future disclosed a term sheet on September 28, 2026, for a proposed transaction in which AIxC would acquire the robotics business at an expected $200 million purchase price paid in AIxC common stock and non-voting convertible preferred stock; the desk grades this moderate / mixed / secondary with high confidence and reads it as plausibly explaining the move. The structure is unknown, and the desk cannot independently verify the float; the proposal remains subject to special-committee review, a favorable recommendation, definitive documentation and other conditions. The sheet places the name at no cycle conclusion.
+
+
+Gave back the spike
+  BKYI: BIO KEY INTERNATIONAL INC.
+  $1.68 → $3.61 → $3.2797 (PRIOR_CLOSE)
+  At 03:38 ET, September 29, 2026, a secondary-news headline reported a partnership with Al Majlis Group to offer phishing-resistant biometric authentication in the UAE and Saudi Arabia; the desk grades the fresh news legitimate positive with medium confidence and reads it as plausibly explaining the move. The structure is dirty float, the desk cannot independently verify the float, and shares outstanding are 1,436,344 as of August 11, 2026 (the outstanding count, not a float), with registered resale possibly active at 618,334 shares effective December 1, 2025, plus warrants not yet active at 1,236,668 shares and warrants unknown at 3,091,668 shares effective May 5, 2025. The sheet places the name yellow, frontside warning.
+
+  YMT: Yimutian Inc.. China.
+  $1.77 → $3.11 → $2.19 (PRIOR_CLOSE)
+  At 07:38 ET, September 29, 2026, a secondary report attributed the move to an assertion of meeting Nasdaq’s $2.5 million equity requirement following acquisitions; the desk grades this moderate / mixed / secondary with medium confidence, with the September 28, 2026 Form 6-K providing a primary-company acquisition backdrop but not independently establishing the compliance conclusion. The desk cannot independently verify the float; supply includes registered resale possibly active at 42,307,692 shares, convertibles possibly active, and acquisition shares known active effective September 10, 2026. The sheet marks down 13.1% since the previous checkpoint and gives no cycle conclusion.
+
+  POLA: Polar Power, Inc.. United States.
+  $1.26 → $1.52 → $1.23 (PRIOR_CLOSE)
+  At 07:15 ET, September 29, 2026, Polar Power announced a trial order for 50 propane-fueled DC generators from a major Southeast Asian telecom operator, while secondary coverage described a potential five-year revenue opportunity of up to $60M; the desk grades the fresh news legitimate positive with high confidence and reads it as plausibly explaining the move. The structure is caution, the desk cannot independently verify the float, and supply includes registered resale possibly active at 8,653,774 shares effective September 25, 2026, convertibles possibly active, an equity purchase agreement possibly active, preferred conversion possibly active effective September 25, 2026, and warrants possibly active at 382,276 shares effective September 25, 2026. The sheet places the name at no cycle conclusion.
+
+  QURE
+  $39.11 → $39.9247 → $22 (PRIOR_CLOSE)
+  Research is not on file at this checkpoint: no dossier or cycle read is available.
+
+  EGG: ENIGMATIG LTD.
+  $4.25 → $13.11 → $4 (PRIOR_CLOSE)
+  The latest identified company financing event is an F-3 mixed shelf registering up to $100 million of securities, effective September 11, 2026; the desk grades this older, secondary and stale item weak / negative / dilutive with medium confidence and does not read it as explaining the move. The structure is caution, the desk cannot independently verify the float, and shares outstanding are 12,095,200 as of September 30, 2025 (the outstanding count, not a float), with shelf capacity possibly active effective September 11, 2026. The sheet marks up 14.0% since the previous checkpoint and gives no cycle conclusion.
+
+  MSGY: Masonglory Ltd. Hong Kong.
+  $3.13 → $5.2 → $4.09 (PRIOR_CLOSE)
+  On September 28, 2026, Masonglory disclosed a September 25 securities purchase agreement for 667,000 Class A ordinary shares at $1.50 per share for $1,000,500 in gross proceeds, plus Series A and Series B warrants deliverable at closing, to support the continuing acquisition of an interest in Beta Beteiligungs und Besitz GmbH; the desk grades the fresh news weak / negative / dilutive with high confidence. The structure is caution, the desk cannot independently verify the float, and shares outstanding are 16,957,000 as of March 31, 2026 (the outstanding count, not a float); pipe and both warrant blocks are not yet active, while acquisition shares are unknown at 1,377,000 shares effective August 12, 2026. The sheet places the name at no cycle conclusion.
+
+  IVVD: Invivyd, Inc.. United States.
+  $0.95 → $1.26 → $0.9249 (PRIOR_CLOSE)
+  On September 29, 2026, Invivyd announced positive topline LIBERTY Phase 3 results for VYD2311, including a company-stated safety and tolerability outcome superior to an mRNA-based COVID-19 vaccine, alongside regulatory-submission plans; the desk grades the fresh news legitimate positive with high confidence and reads it as plausibly explaining the move. The structure is caution, the desk cannot independently verify the float, and supply includes atm and shelf capacity both known active effective December 23, 2025, other issued shares known active at 11,803,589 shares effective June 30, 2026, warrants not yet active at 10,700,000 shares effective August 31, 2026, and warrants unknown at 27,342,442 shares effective August 22, 2025. The sheet places the name at no cycle conclusion.
+

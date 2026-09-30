@@ -1,0 +1,301 @@
+{
+  "run": {
+    "kind": "AFTER_HOURS",
+    "tradingDate": "2026-09-29",
+    "label": "Into after-hours"
+  },
+  "draft": {
+    "headline": "",
+    "overall": null,
+    "sections": [
+      {
+        "heading": "Session catalysts and structure",
+        "lines": [
+          {
+            "ticker": "BKYI",
+            "text": "A September 29, 2026 announcement described a partnership with Al Majlis Group to expand identity-security offerings across the Arabian Gulf, including UAE and Saudi Arabia; the desk grades the fresh news moderate / mixed / secondary, with medium confidence, and finds no contract value, revenue commitment or other quantified economics. No float the desk can independently verify; shares outstanding are 1,436,344 as of August 11, 2026 (the outstanding count, not a float), with registered resale possibly active at 6,183,336 shares, effective December 1, 2025, warrants not yet active at 1,236,668 shares, and other issued shares known active at 618,334 shares, effective December 1, 2025; the checkpoint sits at yellow, frontside warning."
+          },
+          {
+            "ticker": "BGIN",
+            "text": "Secondary coverage at 05:40 ET, September 29, 2026 described a custom at-home cryptocurrency-mining hardware business for Korean blockchain projects; the desk grades the fresh news moderate / mixed / secondary, with medium confidence, but has no primary company announcement, customer commitment, revenue estimate or financial impact. No float the desk can independently verify; shares outstanding are 113,135,941 as of December 31, 2025 (the outstanding count, not a float), and a recent offering is unknown and effective September 30, 2025; the checkpoint has no cycle conclusion."
+          },
+          {
+            "ticker": "DXST",
+            "text": "An undated newswire announcement reported the launch of an AI-powered in-home senior-care service through a strategic collaboration with Ruilan International; the desk grades the fresh news legitimate positive, with medium confidence, and reads the company-specific announcement as plausibly explaining the move that has happened, without financial terms or revenue expectations. No float the desk can independently verify; shares outstanding are 2,215,128 as of June 1, 2026 (the outstanding count, not a float), with shelf capacity possibly active effective May 7, 2026, a recent offering not yet active at 1,568,627 shares, and warrants unknown at 26,666,666 shares; the checkpoint sits at yellow, frontside warning."
+          },
+          {
+            "ticker": "KMRK",
+            "text": "The latest SEC-only item, at 06:03 ET on June 11, 2026, covered construction and testing progress for the initial 5 MW phase of the Aurora AZ Energy joint venture; catalyst analysis is unknown with low confidence, and coverage is incomplete because no company IR, newsroom or non-SEC newswire item was located. No float the desk can independently verify; shares outstanding are 21,100,000 as of March 31, 2026 (the outstanding count, not a float), with registered resale possibly active effective September 22, 2025, a recent offering unknown at 1,600,000 shares effective July 16, 2025, and warrants possibly active at 80,000 shares; the checkpoint has no cycle conclusion."
+          },
+          {
+            "ticker": "SANG",
+            "text": "Sangoma announced a definitive agreement to be acquired by BRC Group Holdings on September 28, 2026, corroborated by the company newsroom and a newswire; the desk grades the fresh news strong, with high confidence, and reads the acquisition agreement as plausibly explaining the move that has happened, while transaction consideration, closing conditions and timing are not provided. No float the desk can independently verify; shares outstanding are 33,338,932 as of June 30, 2026 (the outstanding count, not a float), with registered resale and warrants both unknown; the checkpoint sits at green, fresh / frontside."
+          },
+          {
+            "ticker": "SDEV",
+            "text": "No catalyst found in our sources; contemporaneous secondary coverage at 15:02 ET, September 29, 2026 described a heavy-volume surge without company-specific news, and the desk grades the move flow dominant with medium confidence. No float the desk can independently verify; shares outstanding are 50,615,437 as of July 27, 2026 (the outstanding count, not a float), with registered resale not yet active at 212,876,259 shares, warrants possibly active at 167,539,227 shares, other issued shares known active at 398,367 shares effective May 14, 2026, and shelf capacity possibly active effective November 26, 2025; the checkpoint sits at green, fresh / frontside."
+          },
+          {
+            "ticker": "SSTI",
+            "text": "At 07:35 ET, September 29, 2026, the company reported a definitive merger agreement under which Transom Capital Group agreed to acquire the business through a tender offer for $8.00 per share in cash plus one non-transferable contingent value right worth up to $3.00 per share; the desk grades the fresh news strong, with medium confidence, and reads the defined consideration as plausibly explaining the move that has happened. No float the desk can independently verify; shares outstanding are 13,163,790 as of August 5, 2026 (the outstanding count, not a float), with other issued shares unknown at 791,298 shares and 1,543,920 shares; the checkpoint sits at green, fresh / frontside."
+          },
+          {
+            "ticker": "WFCF",
+            "text": "The September 25, 2026 S-3/A, at 13:44 ET, continued a proposed $50 million universal shelf for common stock, preferred stock and warrants; the filing is not a fresh catalyst, the desk grades the news weak / negative / dilutive with medium confidence, and the filing does not establish an effective registration or completed sale. No float the desk can independently verify; shares outstanding are 4,979,663 as of July 31, 2026 (the outstanding count, not a float), with shelf capacity not yet active; the checkpoint has no cycle conclusion."
+          },
+          {
+            "ticker": "QLEP",
+            "text": "Research is not on file at this checkpoint, and no dossier is available; the checkpoint has no cycle read on file."
+          },
+          {
+            "ticker": "EJH",
+            "text": "No catalyst found in our sources; the latest supplied company or SEC item was a July 24, 2026 6-K concerning the July 15 extraordinary general meeting, not a contemporaneous operating or financing announcement, and the desk does not read that item as explaining the move. No float the desk can independently verify; shares outstanding are 4,003,859 as of June 30, 2025 (the outstanding count, not a float), with recent offerings possibly active at 30,000,000 shares effective December 2, 2025, 16,000,000 shares effective August 11, 2025, and 100,000,000 shares effective March 24, 2025, plus shelf capacity possibly active effective September 2, 2025; the checkpoint has no cycle conclusion."
+          },
+          {
+            "ticker": "YMT",
+            "text": "Secondary coverage at 07:38 ET, September 29, 2026 attributed the move to an assertion that the Nasdaq $2.5 million equity requirement had been met following acquisitions, while a September 28, 2026 Form 6-K reported completed acquisition transactions; the desk grades the fresh news moderate / mixed / secondary with medium confidence and reads the development as plausibly explaining the move that has happened, though the compliance conclusion is not established by the supplied primary excerpt. No float the desk can independently verify; supply includes registered resale possibly active at 42,307,692 shares, convertibles possibly active, and acquisition shares known active effective September 10, 2026; the checkpoint has no cycle conclusion."
+          },
+          {
+            "ticker": "QURE",
+            "text": "At 05:05 ET, September 29, 2026, the company reported additional Phase I/II AMT-130 Huntington’s disease data, including 44% slowing on the cUHDRS primary endpoint in 12 high-dose patients at 48 months; the desk grades the fresh company-reported clinical-data event legitimate positive with high confidence and reads it as plausibly explaining the move that has happened, while market interpretation versus prior expectations is not established. No float the desk can independently verify; shares outstanding are 63,067,485 as of May 1, 2026 (the outstanding count, not a float), with a recent offering possibly active at 4,945,055 shares effective June 24, 2026, other issued shares possibly active at 350,000 shares effective July 29, 2026, warrants unknown effective June 24, 2026, and shelf capacity possibly active effective January 7, 2025; the checkpoint has no cycle conclusion."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "AFTER_HOURS",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-09-29",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 569,
+          "type": "RTH_CLOSE",
+          "completedAt": "2026-09-29T20:00:07.394Z"
+        }
+      ],
+      "publishedAt": "2026-09-30T17:12:15.940Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "Session catalysts and structure",
+          "lines": [
+            {
+              "ticker": "BKYI",
+              "liveFeed": null,
+              "text": "A September 29, 2026 announcement described a partnership with Al Majlis Group to expand identity-security offerings across the Arabian Gulf, including UAE and Saudi Arabia; the desk grades the fresh news moderate / mixed / secondary, with medium confidence, and finds no contract value, revenue commitment or other quantified economics. No float the desk can independently verify; shares outstanding are 1,436,344 as of August 11, 2026 (the outstanding count, not a float), with registered resale possibly active at 6,183,336 shares, effective December 1, 2025, warrants not yet active at 1,236,668 shares, and other issued shares known active at 618,334 shares, effective December 1, 2025; the checkpoint sits at yellow, frontside warning.",
+              "company": {
+                "name": "BIO KEY INTERNATIONAL INC",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 1.68,
+                "high": 4.66,
+                "now": 3.1301,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "BGIN",
+              "liveFeed": null,
+              "text": "Secondary coverage at 05:40 ET, September 29, 2026 described a custom at-home cryptocurrency-mining hardware business for Korean blockchain projects; the desk grades the fresh news moderate / mixed / secondary, with medium confidence, but has no primary company announcement, customer commitment, revenue estimate or financial impact. No float the desk can independently verify; shares outstanding are 113,135,941 as of December 31, 2025 (the outstanding count, not a float), and a recent offering is unknown and effective September 30, 2025; the checkpoint has no cycle conclusion.",
+              "company": {
+                "name": "BGIN BLOCKCHAIN Ltd",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 1.9068,
+                "high": 3.39,
+                "now": 2.53,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "DXST",
+              "liveFeed": null,
+              "text": "An undated newswire announcement reported the launch of an AI-powered in-home senior-care service through a strategic collaboration with Ruilan International; the desk grades the fresh news legitimate positive, with medium confidence, and reads the company-specific announcement as plausibly explaining the move that has happened, without financial terms or revenue expectations. No float the desk can independently verify; shares outstanding are 2,215,128 as of June 1, 2026 (the outstanding count, not a float), with shelf capacity possibly active effective May 7, 2026, a recent offering not yet active at 1,568,627 shares, and warrants unknown at 26,666,666 shares; the checkpoint sits at yellow, frontside warning.",
+              "company": {
+                "name": "Decent Holding Inc.",
+                "country": "China",
+                "business": null
+              },
+              "path": {
+                "from": 1.95,
+                "high": 5.7,
+                "now": 3.035,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "KMRK",
+              "liveFeed": null,
+              "text": "The latest SEC-only item, at 06:03 ET on June 11, 2026, covered construction and testing progress for the initial 5 MW phase of the Aurora AZ Energy joint venture; catalyst analysis is unknown with low confidence, and coverage is incomplete because no company IR, newsroom or non-SEC newswire item was located. No float the desk can independently verify; shares outstanding are 21,100,000 as of March 31, 2026 (the outstanding count, not a float), with registered resale possibly active effective September 22, 2025, a recent offering unknown at 1,600,000 shares effective July 16, 2025, and warrants possibly active at 80,000 shares; the checkpoint has no cycle conclusion.",
+              "company": {
+                "name": "K-TECH SOLUTIONS CO LTD",
+                "country": "Hong Kong",
+                "business": null
+              },
+              "path": {
+                "from": 0.931,
+                "high": 1.44,
+                "now": 1.1,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "SANG",
+              "liveFeed": null,
+              "text": "Sangoma announced a definitive agreement to be acquired by BRC Group Holdings on September 28, 2026, corroborated by the company newsroom and a newswire; the desk grades the fresh news strong, with high confidence, and reads the acquisition agreement as plausibly explaining the move that has happened, while transaction consideration, closing conditions and timing are not provided. No float the desk can independently verify; shares outstanding are 33,338,932 as of June 30, 2026 (the outstanding count, not a float), with registered resale and warrants both unknown; the checkpoint sits at green, fresh / frontside.",
+              "company": {
+                "name": "Sangoma Technologies Corp",
+                "country": "Canada",
+                "business": null
+              },
+              "path": {
+                "from": 3.59,
+                "high": 5.17,
+                "now": 4.915,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "SDEV",
+              "liveFeed": null,
+              "text": "No catalyst found in our sources; contemporaneous secondary coverage at 15:02 ET, September 29, 2026 described a heavy-volume surge without company-specific news, and the desk grades the move flow dominant with medium confidence. No float the desk can independently verify; shares outstanding are 50,615,437 as of July 27, 2026 (the outstanding count, not a float), with registered resale not yet active at 212,876,259 shares, warrants possibly active at 167,539,227 shares, other issued shares known active at 398,367 shares effective May 14, 2026, and shelf capacity possibly active effective November 26, 2025; the checkpoint sits at green, fresh / frontside.",
+              "company": {
+                "name": "Stablecoin Development Corp",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 1.57,
+                "high": 3.9299,
+                "now": 3.2802,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "SSTI",
+              "liveFeed": null,
+              "text": "At 07:35 ET, September 29, 2026, the company reported a definitive merger agreement under which Transom Capital Group agreed to acquire the business through a tender offer for $8.00 per share in cash plus one non-transferable contingent value right worth up to $3.00 per share; the desk grades the fresh news strong, with medium confidence, and reads the defined consideration as plausibly explaining the move that has happened. No float the desk can independently verify; shares outstanding are 13,163,790 as of August 5, 2026 (the outstanding count, not a float), with other issued shares unknown at 791,298 shares and 1,543,920 shares; the checkpoint sits at green, fresh / frontside.",
+              "company": {
+                "name": "SOUNDTHINKING, INC.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 5.47,
+                "high": 8.5,
+                "now": 8.21,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "WFCF",
+              "liveFeed": null,
+              "text": "The September 25, 2026 S-3/A, at 13:44 ET, continued a proposed $50 million universal shelf for common stock, preferred stock and warrants; the filing is not a fresh catalyst, the desk grades the news weak / negative / dilutive with medium confidence, and the filing does not establish an effective registration or completed sale. No float the desk can independently verify; shares outstanding are 4,979,663 as of July 31, 2026 (the outstanding count, not a float), with shelf capacity not yet active; the checkpoint has no cycle conclusion.",
+              "company": {
+                "name": "Where Food Comes From, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 11.58,
+                "high": 14,
+                "now": 10.9,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "QLEP",
+              "liveFeed": null,
+              "text": "Research is not on file at this checkpoint, and no dossier is available; the checkpoint has no cycle read on file.",
+              "company": null,
+              "path": {
+                "from": 10.05,
+                "high": 10.06,
+                "now": 10.05,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "EJH",
+              "liveFeed": null,
+              "text": "No catalyst found in our sources; the latest supplied company or SEC item was a July 24, 2026 6-K concerning the July 15 extraordinary general meeting, not a contemporaneous operating or financing announcement, and the desk does not read that item as explaining the move. No float the desk can independently verify; shares outstanding are 4,003,859 as of June 30, 2025 (the outstanding count, not a float), with recent offerings possibly active at 30,000,000 shares effective December 2, 2025, 16,000,000 shares effective August 11, 2025, and 100,000,000 shares effective March 24, 2025, plus shelf capacity possibly active effective September 2, 2025; the checkpoint has no cycle conclusion.",
+              "company": {
+                "name": "E-Home Household Service Holdings Ltd",
+                "country": "China",
+                "business": null
+              },
+              "path": {
+                "from": 1.2089,
+                "high": 1.73,
+                "now": 1.51,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "YMT",
+              "liveFeed": null,
+              "text": "Secondary coverage at 07:38 ET, September 29, 2026 attributed the move to an assertion that the Nasdaq $2.5 million equity requirement had been met following acquisitions, while a September 28, 2026 Form 6-K reported completed acquisition transactions; the desk grades the fresh news moderate / mixed / secondary with medium confidence and reads the development as plausibly explaining the move that has happened, though the compliance conclusion is not established by the supplied primary excerpt. No float the desk can independently verify; supply includes registered resale possibly active at 42,307,692 shares, convertibles possibly active, and acquisition shares known active effective September 10, 2026; the checkpoint has no cycle conclusion.",
+              "company": {
+                "name": "Yimutian Inc.",
+                "country": "China",
+                "business": null
+              },
+              "path": {
+                "from": 1.77,
+                "high": 3.11,
+                "now": 1.8,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 11,
+      "overall": null
+    },
+    "diagnostics": {
+      "lines": 12,
+      "strikes": [
+        {
+          "id": "S1L12",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The 44% slowing figure is documented in the 07:16 ET source; the stored research does not support attributing that specific figure to the 05:05 ET report."
+        }
+      ],
+      "writerMs": 24480,
+      "checkerMs": 17993
+    }
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 8258,
+      "outputTokens": 2857,
+      "cachedInputTokens": 1108,
+      "reasoningTokens": 1025,
+      "durationMs": 24478
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 13275,
+      "outputTokens": 1219,
+      "cachedInputTokens": 1399,
+      "reasoningTokens": 973,
+      "durationMs": 17987
+    }
+  ]
+}

@@ -12587,6 +12587,17 @@ a gap-check loop (sqlite3 per missing minute) ran >3 min on the LIVE  probe-load
   matched its own ssh shell. Killed by pid ~16:2xZ, health 0.49 s.
 c817ef86's message says "ledger" but the scripted insert failed    commit-message-ahead-of-content    YES      self
   again: a REPEAT of the class corrected at e273e31 -> warn him
+`tasklist | find /c "node.exe"` in Git Bash ran GNU find over /c:     shell-semantics-assumed            no      self
+  a recursive listing of every file NAME on his C: drive into a local
+  tool-result file (~64 MB, names only, nothing sent anywhere); task
+  stopped, both output files deleted/emptied ~16:3xZ. Use grep -c.
+told Integration "foreign keys are not enforced (no PRAGMA)"; true: asserted-before-opening-artefact      no      own test
+  better-sqlite3 enables foreign_keys by default. Corrected to
+  Integration ~16:4xZ; consequence only on a market_mode switch.
+told Integration + him "levels are meaningful only after the         asserted-before-opening-artefact   YES      Integration
+  history backfill"; true: Research's compute reads market.db
+  minute_bars + daily_bars (Research branch ad6fc492/607da6ab); history.db
+  only stores the rows. Levels are meaningful tonight without it.
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
@@ -12880,3 +12891,83 @@ BIYA 155, TGE 154, LGHL 153, CMCT 130, ANTA 98, AURE 78 (first bar 14:45Z). Miss
 no-trade vs lost: my trade_buckets cross-check loop ran too long in RTH and was killed (below).
 Box note: pid 146984, a `bash -c until ! pgrep deploy.sh ...` loop from 2026-09-11, still running (sleep loop, harmless);
 leave or kill on his word.
+**~17:0xZ Integration:** hold on 89d39053 RELEASED (both failing tests pre-exist at c3d0f06:120/:316; only timeouts/spawn
+failures). 89d39053 still needs THIS seat's gate (pre-registered 182) + his separate yes. v28 enumeration conditions:
+(1) state that a v27 process must never run the market_mode clear on a v28 store (FKs from desk_assessment_ranges /
+session_reports would fail it) and that re-pinning market-floor to the v28 release is what enforces it; (2) the report
+runner's release carries a test: a late run for a real checkpoint inserts, a run for a missing assessment_id FAILS LOUDLY.
+v28 release stack 2bcf1cfe (on 89d39053: b0de76e, b8002fa, 63dd67f = 95b734e picked minus its grades SQL, 2bcf1cf test
+flip), 183 test files pre-registered, gating. Tooling item for tomorrow (Ops): bash-spawning preflight/release tests need
+more time or fewer spawns; free node processes before gating.
+**v28 release stack 2bcf1cfe7238e0dd01adb3833ccc8b87e6d0c23f GATED ALL GREEN: 183/183 (pre-registered), 2,782 tests, lint 0
+errors.** Gating 89d39053 (em-dash cut), pre-registered 182.
+**Integration REPLAYED + APPROVED v28 stack 2bcf1cfe by literal sha (~17:5xZ).** Ship conditions: (1) em-dash 89d39053 live,
+/proc reads it; (2) HIS separate yes naming the ~10-18 min board + public site outage; (3) THIS LINE: **a v27 process must
+never run the market_mode clear on a v28 store** (the new FKs from desk_assessment_ranges / session_reports would fail it);
+**the market-floor pin moves to the v28 release at the bump**, which is what enforces it (his word for the re-pin, as on
+09-29). WHY 95b734e's scripts/ops/grades-v2-read.sql hunk dropped: modify/delete conflict, the file does not exist in the
+release lineage (ops scripts are never shipped). The owed B re-run must use MAIN's amended query (promptVersion >= 2), not
+the old "= 2". Research's upsertIssuer write is NOT in v28: already-researched names keep an empty business line until it
+ships (it may ride /api/reports).
+**GATE RULE FOR TONIGHT (Integration order call, ~18:0xZ):** one full-suite gate at a time across all seats, Ops's release
+gates first (others announce to Ops and wait for a clear); a failure is environmental ONLY if it is a timeout, a spawn
+failure (126/127/0xC0000142) or SQLite OOM, never a wrong assertion, AND the file passes alone on the same tree, AND the
+gate report names file + signature; close stray processes before a gate.
+
+## HAND-OFF, 2026-09-30 17:1xZ (13:1x ET): this seat (local_bb3d4059) RETIRES on his word ("time to retire?")
+Reason: two repeats of corrected error classes in one session (commit-message-ahead-of-content; asserted-before-opening),
+all caught by peers or self before anything shipped. Ledger above.
+
+**Production, read 17:11:52Z:** web 1631221 / research 1631287 / assess 1631397 on c3d0f06 (start 14:51:49-50Z), NR 0;
+market 1574400 on 1b5ead6 (00:15:40Z), NR 0. Releases 1b5ead6 372f5eb 74c1818 c3d0f06. Pins: market-floor 1b5ead6 (v27),
+rollback-baseline 372f5eb (v18). Schema 27. 62G free. RTH, discarded 0.
+
+**TONIGHT'S SEQUENCE (Integration-approved; one release at a time, /proc read between, none straddling 22:00 +/-5;
+each needs its gate here + its sha approved by Integration + HIS word where named):**
+| # | release | sha | gate | his word | state |
+| 1 | speed fix + live-store guard | 46d9f9d3cc9eac69965364af7282c543c5061561 (carries 84b0099) | ALL GREEN 178/178 | YES, "yes tonight" (~15:47Z) | launch 20:07 ET; then R2 |
+| 2 | em-dash cut (Design) | 89d3905303bd5e28b93dd111254833f0f7b2b354 | run1: 1 env timeout (releaseRetention 07-10 test); run2: see below | NOT YET, own question | after #1 live |
+| 3 | v28 (ranges, AH freeze, sic, session_reports, 20:05, prompt v3) | 2bcf1cfe7238e0dd01adb3833ccc8b87e6d0c23f (on 89d39053) | ALL GREEN 183/183, 2,782 | NOT YET: must name ~10-18 min board + site outage (migration VACUUM INTO backup after the stop) | launch <= ~21:15 ET else after 22:10; then RE-PIN market-floor to it (his word) |
+| 4 | history store (+ resistance_levels table) | branch ops/history-store-on-46d9f9d c443b585 (b77f1dc1 + c443b58) | NOT GATED; must be re-stacked onto #3 and gated | NOT YET: release + HISTORY_STORE_ENABLED env (both his) | after 22:10 |
+| 5 | /api/reports (Research) + report runner (Ops, research worker, job enqueued by assess) | not built (Ops half) | - | NOT YET | Integration's condition: FK test (late run inserts; missing assessment_id fails loudly) |
+| 6 | levels (Research compute on a 5-min research-worker timer, rows in history.db resistance_levels; Design section) | Research branch worktree-agent-acfba7ff0c32d6e90 | box cost gate FIRST: scripts/levels-cost.ts at Research's registration sha (2f302d87, to confirm), run once from /tmp on the box (git archive, node_modules from the live release, market.db read-only), after 20:00 in a gap | NOT YET | |
+
+**Pending, owner = the successor Ops seat:**
+- The 20:07 ET ship reminder (cron 034bcf2f) DIES WITH THIS SESSION: recreate it. Ship with the base-check first
+  (scratchpad script was: /proc web/research/assess == expected sha x3, market == 1b5ead6, no mointel-deploy unit, ABORT on
+  mismatch, then `DEPLOY_TESTS_SKIP=1 RESTART_MARKET=no bash deploy/aws/push-release.sh mointel-ssm
+  A:/AWS_creds/mointel-prod-key.pem <sha>`). Each deploy's pre-stop quick_check takes ~13-14 min on the 4.3 GB store; the
+  push-release follower times out before it ends: confirm from /proc, never from its exit line.
+- R2 (after #1): (b') method, 5 x (1+20) scripts/ops/snapshot-latency.sh, **>= 120 s after the web start ENFORCED in the
+  command**; confounded vs R0 473.6 / R1 501.6 (time of day, content).
+- v28 on MAIN: branch ops/v28-on-main 9f4133b1 (worktree A:\mointel-v28main) = db5d142 + 9f4133b; NOT yet tested as a
+  whole on main (db5d142's gate had only env failures) and NOT landed. Land via patch into A:\mointel + `commit --only`
+  of exactly those 10 paths (checked clean at ~17:0xZ), then send Research the main sha: its upsertIssuer WRITE of
+  sic_description + round-trip test land on main after it and ride the /api/reports release (not in v28).
+- Capture loss vs delay for today's slow flushes: minute_bars gaps listed above for the top 10; classify each missing
+  minute against trade_buckets with ONE set-based query after 16:00 ET, time-boxed on the remote side.
+- The em-dash worker strings (engine.ts:1801/1842/2024/2120, activity.ts:410) ride the next market-worker restart.
+- Check relocation (quick_check only on a pending migration + a nightly timer after 20:00 ET): approved in direction,
+  its own enumeration after tonight.
+- Tooling: bash-spawning preflight/release tests time out under this PC's low commit memory; give them more time or fewer
+  spawns. Gate rule for tonight above (one full suite at a time; environmental only on three conditions).
+- RTH flush baseline (p50 per-minute max 2.5 s, max 11.35 s) fails the price-range write gate: Integration takes it to him.
+- Box: pid 146984 (a 2026-09-11 sleep loop waiting on deploy.sh) still running; harmless; kill on his word.
+- Local worktrees to remove when their branches are merged or dead: A:\mointel-ops, A:\mointel-hist, A:\mointel-v28main,
+  A:\mointel-chk1, A:\mointel-chk2 (each node_modules is a JUNCTION to A:\mointel's: remove with `git worktree remove`,
+  never a recursive delete through the junction).
+
+## SUCCESSOR OPS SEAT OPENS, 2026-09-30 17:19Z (local_8a0801c2, Opus 5.5)
+**Production, read 17:20:03Z (matches the hand-off):** web 1631221 / research 1631287 / assess 1631397 cwd c3d0f06, NR 0;
+market 1574400 cwd 1b5ead6, NR 0; no mointel-deploy unit; pins market-floor 1b5ead6 (v27), rollback-baseline 372f5eb (v18);
+/api/health ok, schema 27/27, LIVE, discarded 0; market.db 4.43 GB + 0.84 GB WAL; 62G free.
+**His yes for #1, verified at his turn:** "yes tonight" in 7bacf0d6 (the retired Ops seat) at 2026-09-30T15:47:06Z, answering
+the question on 46d9f9d after 20:00 ET. Asked him to re-confirm in THIS session (deploy rule); the auto-mode classifier also
+refused a cron that would ship unattended, so the 20:07 ship is an in-session act on his word, not a scheduled one.
+**Gate:** 46d9f9d not yet gated in this session. At 17:2xZ a full gate on 89d39053 (temp worktree mointel-gate-rW7H2g, the
+retired seat's em-dash run2, started 16:50Z) and a peer's partial suite were running; commit memory 4.0 GB free. Gate
+reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
+
+**Error ledger (this seat):**
+| error (asserted vs true) | TYPE | already logged? | caught by |
+| - | - | - | - |

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { EDGAR_STATE_COUNTRY, edgarCountry } from '@/lib/research/sec/stateCountry';
+import { EDGAR_STATE_COUNTRY, countryName, edgarCountry } from '@/lib/research/sec/stateCountry';
 
 /*
  * Every non-null `issuer_registry.country` code on the 2026-09-29 prod copy
@@ -48,6 +48,17 @@ describe('EDGAR state and country codes, decoded to a country', () => {
       expect(edgarCountry(code)).toBeNull();
     }
     expect(edgarCountry(' a6 ')).toBe('Canada');
+  });
+
+  it('reads the model-written dossier field, which mixes codes and names (SANG: "Canada" where the registry says A6)', () => {
+    expect(countryName('A6')).toBe('Canada');
+    expect(countryName('CA')).toBe('United States'); // a code: California
+    expect(countryName('Canada')).toBe('Canada');
+    expect(countryName('Cayman Islands')).toBe('Cayman Islands');
+    expect(countryName('israel')).toBe('Israel');
+    expect(countryName('US')).toBe('United States');
+    expect(countryName('United States')).toBe('United States');
+    for (const unknown of ['Ontario', 'Atlantis', '', null]) expect(countryName(unknown)).toBeNull();
   });
 
   it('decodes every code EDGAR lists except its own UNKNOWN, and never prints capitals or an em dash', () => {

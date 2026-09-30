@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { ruleStrikes } from '@/lib/desk/reports/check';
+import { applyStrikes, buildCheckerPrompt, checkReport, ruleStrikes } from '@/lib/desk/reports/check';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
-import { claimsIn, traceLine } from '@/lib/desk/reports/traced';
+import { claimsIn, etDayAndClock, traceLine } from '@/lib/desk/reports/traced';
 
 /*
  * SANG at the 2026-09-28 22:00 ET recap (#551, dossier 2407), as the SANG
@@ -90,6 +90,80 @@ describe('what a line claims', () => {
   });
 });
 
+describe('stored dates are model-written, so they are read tolerantly and never throw', () => {
+  it('reads a bare date, an ISO instant, an ET wall clock, and refuses free text as null', () => {
+    expect(etDayAndClock('2026-06-30')).toEqual({ date: '2026-06-30', clock: null });
+    expect(etDayAndClock('2026-09-28T21:26:40Z')).toEqual({ date: '2026-09-28', clock: '17:26' });
+    // The prod form: its date and clock are ALREADY Eastern.
+    expect(etDayAndClock('2026-08-19 20:00:00 ET')).toEqual({ date: '2026-08-19', clock: '20:00' });
+    for (const junk of ['Q3 2024', 'effective upon filing', '', null]) {
+      expect(etDayAndClock(junk)).toEqual({ date: null, clock: null });
+    }
+  });
+
+  it('a dossier with free-text and ET-wall dates is traced, not crashed on', () => {
+    const odd: ReportResearch = {
+      ...RESEARCH,
+      // No cited source, so 17:26 can ONLY trace to the ET-wall event time.
+      catalyst: { ...RESEARCH.catalyst, eventTimestamp: '2026-09-28 17:26:00 ET', sources: [] },
+      structure: {
+        ...RESEARCH.structure,
+        supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null }],
+      },
+    };
+    expect(traceLine('The headline crossed at 17:26 ET on September 28, 2026.', ROW, odd, AT)).toEqual([]);
+  });
+});
+
+describe('voice run v5 (b94988f): each false strike and gap it found, pinned', () => {
+  const v5in = (research: ReadonlyMap<string, ReportResearch>) => ({
+    kind: 'PREMARKET' as const,
+    range: { min: 1, max: 20 },
+    checkpoint: { id: 551, type: 'NEXT_DAY_RECAP' as never, completedAt: '2026-09-29T02:00:30.000Z' },
+    rows: [ROW],
+    draft: { headline: '', sections: [] },
+    research,
+  });
+
+  it('admits a change note the sheet itself supplied (BKYI "up 32.2% since the previous checkpoint")', () => {
+    const noted = { ...ROW, changeSummary: 'SANG: +32.2% since prior assessment.' } as ReportFact;
+    expect(traceLine('It was up 32.2% since the previous checkpoint.', noted, RESEARCH, AT)).toEqual([]);
+    expect(traceLine('It was up 32.2% since the previous checkpoint.', ROW, RESEARCH, AT).map((f) => f.reason)).toContain(
+      'NUMBER_NOT_IN_ROW',
+    );
+  });
+
+  it('reads a clock with no zone as a date with NO clock (EGG "2026-09-11T16:00:00")', () => {
+    expect(etDayAndClock('2026-09-11T16:00:00')).toEqual({ date: '2026-09-11', clock: null });
+    expect(etDayAndClock('2026-09-11T16:00:00.000Z')).toEqual({ date: '2026-09-11', clock: '12:00' });
+  });
+
+  it('admits the ruled "not proof of selling", and still strikes selling as a trade word', () => {
+    const on = (text: string) =>
+      ruleStrikes({ ...v5in(new Map([['SANG', RESEARCH]])), draft: { headline: '', sections: [{ heading: 'M', lines: [{ ticker: 'SANG', text }] }] } })
+        .filter((s) => s.reason === 'FORBIDDEN_WORDING')
+        .map((s) => s.detail);
+    expect(on('Registered-resale capacity the desk cannot quantify: capacity, not proof of selling.')).toEqual([]);
+    expect(on('Holders were selling into the move.').join(' ')).toContain('buy/sell');
+    expect(on('A plan to sell shares.').join(' ')).toContain('buy/sell');
+  });
+
+  it('shows the checker each time already in ET, beside the raw UTC (BGIN 09:40Z is 05:40 ET)', () => {
+    const bgin: ReportResearch = {
+      ...RESEARCH,
+      catalyst: {
+        ...RESEARCH.catalyst,
+        eventTimestamp: '2026-09-29T09:40:00.000Z',
+        sources: [{ id: 1, title: 'x', publishedAt: '2026-09-29T09:40:00.000Z', precision: 'EXACT' }],
+      },
+    };
+    const prompt = buildCheckerPrompt({ ...v5in(new Map([['SANG', bgin]])), afterHoursTotals: null });
+    expect(prompt.user).toContain('"et": "05:40 ET on 2026-09-29"');
+    expect(prompt.system).toContain('Judge a stated time against the "et" reading only');
+    expect(prompt.system).toContain('NONE_FOUND supports "no catalyst found in our sources"');
+  });
+});
+
 describe('the SANG block, the true control', () => {
   it('admits every clause of the approved prose', () => {
     expect(reasons(TRUE_CATALYST)).toEqual([]);
@@ -163,6 +237,49 @@ describe('the checker takes the v5 path only when handed research', () => {
       expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,455 traded after hours, 749 up, 569 down.')))).toContain('NUMBER_WITHOUT_ROW');
       expect(onO(ruleStrikes(withOverall('Across the $1–$20 range, 2,454 traded after hours.', null)))).toContain('NUMBER_WITHOUT_ROW');
       expect(onO(ruleStrikes(withOverall('2,454 names traded after hours.')))).toContain('FORBIDDEN_WORDING');
+    });
+  });
+
+  describe('the model half sees the research only on a v5 check', () => {
+    it('v4 gets exactly the v4 text; v5 adds the research rules, the research and the totals', () => {
+      const v4 = buildCheckerPrompt(input());
+      expect(v4.system).not.toContain('RESEARCH SUPPORTS');
+      expect(v4.user).not.toContain('Stored research');
+
+      const v5 = buildCheckerPrompt({ ...input(new Map([['SANG', RESEARCH]])), afterHoursTotals: { eligible: 1, traded: 2, up: 3, down: 4 } });
+      expect(v5.system.startsWith(v4.system)).toBe(true);
+      expect(v5.system).toContain('v5: WHAT A NAME');
+      expect(v5.user).toContain('"analysisVersionId": 2407');
+      expect(v5.user).toContain('After-hours totals for the overall line: {"eligible":1,"traded":2,"up":3,"down":4}');
+      expect(v5.system + v5.user).not.toContain('—');
+    });
+
+    it('end to end: the model is asked about O, and a model strike on O removes only the overall', async () => {
+      const draft = {
+        headline: '',
+        overall: 'Across the $1–$20 range, 2 traded after hours, 3 up, 4 down.',
+        sections: [{ heading: 'Moved', lines: [{ ticker: 'SANG', text: TRUE_CATALYST }] }],
+      };
+      let asked = '';
+      const model = {
+        complete: async (prompt: { user: string }) => {
+          asked = prompt.user;
+          return JSON.stringify({
+            verdicts: [
+              { id: 'O', supported: false, note: 'test' },
+              { id: 'S1L1', supported: true, note: '' },
+            ],
+          });
+        },
+      };
+      const checked = await checkReport(
+        { ...input(new Map([['SANG', RESEARCH]])), draft, afterHoursTotals: { eligible: 1, traded: 2, up: 3, down: 4 } },
+        model,
+      );
+      expect(asked).toContain('O: Across the');
+      expect(checked.ok && checked.strikes.map((s) => `${s.id}:${s.by}`)).toEqual(['O:model']);
+      const applied = applyStrikes(draft, checked.ok ? checked.strikes : []);
+      expect(applied).toMatchObject({ ok: true, overall: null, watchCount: 1 });
     });
   });
 

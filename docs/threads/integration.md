@@ -2064,6 +2064,117 @@ RESEARCH 16:3xZ  6a42209 = Design's §8 answers built (no headline, overall 'O' 
                  SANG example opening "2,454 / 749 / 569" (09-28) -> 2,456 / 751 / 568 on the ruled population -> told
                  him in my next message (one line). ORDER CALL: levels setup FIRST, bounded (pre-registration commit,
                  response shape to Design, subagent launch), then writer v5.
+FLAKY PREFLIGHT  Ops running releaseRetention 3x on 46d9f9d + 3x on 89d39053, sequential, free commit memory logged.
+                 Early evidence ENVIRONMENT: this PC FreeVirtualMemory 4.3 GB ~16:2xZ; Ops's own db5d142 gate hit exit 127
+                 on 3 bash-spawning tests, green alone. 126/127 = spawned bash could not start (09-27 commit-memory
+                 incident shape). HAZARD for tonight: every gate runs on this PC with five seats + a levels subagent.
+SEEDS v5 LOCKED  sha256(defect-set-v5.md) 437e30a660b67370fd66b6a9726ce09affd7159af706ec229647bd7cd2c0d0a6, registered in
+                 696fd997 (12:23:12 ET, marketing.md:535 read at 70920cdc; pushed to origin here). 19 classes, 09-24 rows,
+                 blind. RELEASE to Research only on my word AFTER the v5 checker freeze sha; Research verifies the hash
+                 and commits the harness before any call.
+HOLD RELEASED    Ops: releaseRetention 3x on 46d9f9d (1 fail each: timeouts, 35.8/74.4/36.7 s) + 3x on 89d39053 (29/29,
+                 29/29, 1 timeout); FreeVirtualMemory 3.5-5.8 GB. Both failing tests exist at c3d0f06 (:120, :316; read
+                 here) = pre-existing; no wrong guard status in any run -> environment (commit memory). 89d39053 hold
+                 RELEASED (order call); 46d9f9d gate stands. TOMORROW, owner Ops: bash-spawning release tests more time
+                 or fewer spawns; seats free node processes before gating.
+OPS CORRECTION   "FKs not enforced" WRONG (Ops, own catch via its v28 test): better-sqlite3 foreign_keys = 1 by default.
+                 Checked here at 46d9f9d: only DELETE on desk_assessments = db.ts:1415 mode-switch clear; no REPLACE on
+                 desk_assessments/issuer_registry (assessmentRepo.ts:190 plain INSERT, :305 DO NOTHING; researchRepo.ts:444
+                 DO UPDATE). v27 worker safe on v28 except the mode-switch clear (never runs in LIVE). Conditions: the
+                 enumeration says so + the floor pin enforces it; runner FK test (real id inserts, missing id fails loud).
+DESIGN 16:4xZ    Report v5 surface 80e0bcc0 (SessionReports.tsx, sessionReports.ts, test; gated 203). Resistance section
+                 ad6eb0f1 (ResistanceLevels.tsx, TickerDrawer.tsx +3, lib/dashboard/resistance.ts, lib/market/resistance.ts
+                 = §2 contract declared by Design, Research owns; gated 206). Empty copy read: "No level above the price in
+                 the candles read" / "above every high we have stored, back to X" -> meets Commercial's check. "No row"
+                 must be 200 + JSON null (Design -> Research). Both ride the SAME cuts as Research's routes. ORDER CALL:
+                 both rendered locally with fixtures before those cuts (neither viewed rendered yet). Now-cell live read:
+                 Design's classifier refused the review token; Design asks HIM; no other seat routes around a refusal.
+LEVELS BUILT     Research subagent, branch worktree-agent-acfba7ff0c32d6e90 (ad6fc49), NOT merged; pre-reg 2f302d8.
+                 FIXTURE PASS 13/14 at the bar (SLXN 5/5, NCI 4/4, MSGY 4/5); BIYA 2.501/2.421 present, 2.462/2.490 wait
+                 on backfill. COST FAIL AS REGISTERED: cold p95 1,175 / max 1,380 ms vs 100 / 250 (warm reruns 64-78 ms,
+                 NOT counted). Sync better-sqlite3 in web -> a cold read stalls every poll. Split-today tripwire being
+                 added. Show-all counts: NIVF 140, SLXN 101 levels.
+                 ORDER CALL: (b) BOX GATE pre-registered first, Ops runs once after 20:00 ET between releases, first pass
+                 counts, fail = no request-path ship; AND (a) in parallel: stored rows computed on a timer in the research
+                 worker, written OUTSIDE market.db (Ops picks the file), served from the row. Count (100+) -> HIM.
+REPORTS          2d93de4 pipeline end to end on 09-24 rows, all four kinds publish (scripted models); runner factory
+                 f47080b. Next: first real-model v5 run on 09-29 checkpoints -> Commercial's sample (~$0.15, his "3 yes").
+V28 REPLAYED     2bcf1cf (ops/v28-on-89d39053) APPROVED by literal sha: rev-list 89d39053..2bcf1cf = 4; b0de76e1 patch-id
+                 2e2253fa == 0d4d439; b8002fa5 session_reports + range-only guard extracted/tested + mode clear covers new
+                 tables (conditions MET); 63dd67f7 vs 95b734e differs ONLY by scripts/ops/grades-v2-read.sql dropped (B
+                 re-run must use main's >= 2 query); 2bcf1cfe tests. 183 test files = Ops gate (2,782). No market-worker
+                 runtime file. NOT IN IT: Research's upsertIssuer sic_description WRITE -> rides /api/reports release;
+                 business line empty for researched names until then. SHIP: after 89d39053 live + /proc; HIS yes naming
+                 the outage; ops.md records the v27 mode-clear hazard + floor pin to v28.
+                 Levels storage: history.db table resistance_levels (Ops c443b58), rides the history-store release empty.
+LEVELS COPY      Design 064e15e1: Commercial's empty-list condition MET (scoped "in the history we hold, back to X";
+                 split-refused wording; a test refuses clear / blue sky / no resistance / nothing above|stopping|in the
+                 way). Design logged an ungated rebase+push (post-gated 207 / 3,115 after).
+GATE RULE        PC commit memory (read 17:0xZ: FreeVirtualMemory 5.4 of 36.2 GB, physical 11.3 free, 4 node procs; many
+                 claude procs, small page file). ORDER CALL to Ops/Design/Research: one full-suite gate at a time, Ops's
+                 release gates first, others announce to Ops; a failure is ENVIRONMENTAL only if timeout / spawn
+                 (126/127/0xC0000142) / SQLite OOM, AND passes alone on the same tree, AND named; a wrong-value assertion
+                 is always real; close stray processes before a gate. Page-file size is a system setting: HIS, not ours.
+HIS RULINGS      THIS SESSION (4689366c, user turn 2026-09-30T17:03:54Z, first-hand) "1 a, 2 b, 3 yes evening":
+                 1 (a) "Use daily candles for anything older than 3 weeks, then switch to your 39 days automatically once
+                   the download completes." -> Research's interim is HIS ruling. Sent to Research + Design.
+                 2 (b) "Show the nearest 10 above the price, plus a 'show all' link." -> Design display cap; Research's
+                   route returns all. Sent.
+                 3 "Friday sign-in: evening after the close?" yes -> FRIDAY 2026-10-02 after 20:00 ET. Sent to Web.
+                   TRIGGER Thu 2026-10-01 (owner this seat or successor): ask him for the Google client id + secret (to
+                   Ops), seed confirmation (iamadamzc@gmail.com), a throwaway uninvited Google account, ~10 min Friday.
+RESEARCH 17:1xZ  Rulings recorded 5c9c7b5. v5 real-model run b94988f ($0.19): 5 problems, mostly checker false strikes
+                 ("not proof of selling" struck whole premarket report), zone-less timestamp, sheet gaps, checker read
+                 UTC as ET -> fixed 9037a9c (3,120 pass); v5b re-run next, then Commercial.
+LEVELS SEAM      Research's backup wrote a JSON file per symbol; Ops had committed c443b58 (history.db resistance_levels,
+                 symbol+trading_date PK, payload §2 JSON, on ops/history-store-on-46d9f9d, read). ORDER CALL: ONE storage =
+                 Ops's table; host = research worker, 5-min timer (rank <= 90 + requested names); Ops confirms stores open.
+                 Box test: Research sends Ops the registration sha + command.
+RENDERED         Design viewed both surfaces locally (temporary fixture routes, not committed, deleted): reports at 1,280
+                 (v5 lead, company line, labelled paths incl. sub-dollar, null path = no line, emptied section neutral
+                 line, zero-watch line); levels (several / aboveAllStored / basisBreak / JSON null / 404 not mounted;
+                 1,024 no overflow). OWED before the levels cut: his 2 b cap (nearest 10 + show all) built, tested, and a
+                 140-level fixture rendered.
+LEVELS HOST      Ops: research worker CAN host; timer opens its OWN history.db handle. Ops's condition "levels meaningless
+                 until backfill" WRONG, read on Research's branch (ad6fc492/607da6ab): compute reads market.db minute_bars
+                 (repo.ts) + daily_bars (history.ts:154/213/221); history.db only stores rows. Corrected to Ops. Backfill
+                 adds 15m to 39 d later. HISTORY_STORE_ENABLED (fetch job) = in the history-store release's question to
+                 him. Box test from /tmp git archive, read-only: approved; registration commit 2f302d87 (Research
+                 confirms).
+OPS REPEAT       Ops ledgered a REPEAT (asserted without opening: FK default, then the backfill condition). Hygiene §2 =
+                 Ops warns him + proposes hand-off (Ops's question; I stand down). My read if asked: after tonight's last
+                 release, or now if he prefers. openHistoryStore has no flag check; openHistoryStoreReadonly fileMustExist
+                 -> /api/levels treats missing history.db as no row (Research to test).
+OPS RETIRING     local_bb3d4059 retires on his word ("time to retire?", ~17:1xZ, Ops's session). Hand-off 2d745125 (read
+                 ops.md "HAND-OFF, 2026-09-30 17:1xZ": release table matches mine; history store c443b585 NOT gated and not
+                 re-stacked on v28; v28-on-main 9f4133b1 not landed; market-floor re-pin to v28 = his word; 20:07 reminder
+                 034bcf2f DIES -> successor recreates). MY REMINDER one-shot 19:41 ET: new Ops-tmi open + 20:07 reminder
+                 set, else tell him. Route to the NEW Ops by id until the old one is renamed.
+SHOW-ALL CAP     Design 3c0cd04a (local, ungated): nearest 10 + "Show all N levels"; tests 0/1/10/11/140; mutants at
+                 prediction; 140 fixture rendered at 1,280 + 1,024. GATE QUEUE held by me until the new Ops opens: Ops's
+                 89d39053 run 2, then Design, then Research.
+V5 FREEZE        Research 1ab48be (13:16:22 ET, on origin): pass bar pre-registered in it; frozen blobs verified here equal
+                 at 1ab48be and origin HEAD (check cdfe3896ba81, traced 963ccbedf301, verify b5d452f829c0, research
+                 52a751a778eb, path 196636232499, totals c39b9eeeb83c, pipeline 3340640182f8, stateCountry 081cab7faee2).
+                 Seeds hash-locked earlier 696fd997 (12:23:12 ET). RELEASED to Marketing on my word -> commit file LF ->
+                 Research verifies sha256, harness before calls, N=3 (~$2-3, his "3 yes"), raw before read.
+                 v5b voice run 1cb4ed6: all four kinds publish, 5/49 struck; premarket sample with Commercial (~19:30 ET).
+RESEARCH 17:3xZ  /api/reports + range config 4771363 on main (404 until session_reports exists = "not built"). Research
+                 said the table is NOT in v28 (it read db5d142); WRONG: in release stack 2bcf1cf (db.ts:719) and main
+                 twin 9f4133b1 (read) -> corrected. RUNNER (Ops half) UNBUILT = successor Ops's FIRST BUILD ITEM after
+                 the 20:07 ship; without it no report appears. LEVELS BACKUP 8bdedb9 (files, crossed my storage ruling):
+                 refresh gate FAILED AS REGISTERED 88.9 s vs 60 s (desktop cold). ORDER CALL: tonight levels ship ONLY via
+                 the request path IF the box cost test (2f302d87) passes; backup stops tonight; tomorrow = new
+                 registration on production hardware before running, non-blocking host, ONE storage (Ops's table).
+SUCCESSOR OPS    Brief on its id, in this order: (1) recreate 20:07 reminder, ship 46d9f9d, /proc, R2; (2) BUILD THE REPORT
+                 RUNNER (research worker job enqueued by assess per checkpoint; FK test); (3) em-dash 89d39053 + v28
+                 2bcf1cf on his yeses, re-pin floor on his word; (4) box levels cost test 2f302d87 in a gap; (5)
+                 /api/reports release (runner + 4771363 + Design surface + 0f15521 + sic write); (6) history store LAST
+                 (c443b585 ungated, re-stack on v28) or tomorrow.
+NEW OPS          local_8a0801c2 (title Ops-tmi, cwd A:\mointel, not archived: list_sessions read). Old local_bb3d4059 renamed
+                 "Ops-tmi (retired 2026-09-30)", NOT archived (his, cosmetic). /proc 17:20:03Z = the hand-off's. Briefed with
+                 the SUCCESSOR OPS order above; told NOT to re-ask him for #1 (his yes: 7bacf0d6 ~16:0xZ + mine 15:47:13Z;
+                 verify at his turn). Gate queue handed back to Ops (Design 3c0cd04a waiting, then Research harness).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.

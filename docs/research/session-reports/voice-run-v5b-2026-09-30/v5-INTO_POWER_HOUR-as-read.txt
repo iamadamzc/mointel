@@ -1,0 +1,56 @@
+Into power hour · $1–$20 · built from checkpoint #566 (2026-09-29T18:30:19.885Z)
+[opening, printed by the surface from watchCount = 12]
+
+Fresh catalysts
+  BKYI: BIO KEY INTERNATIONAL INC. United States.
+  $1.68 → $4.66 → $3.2 (PRIOR_CLOSE)
+  A fresh partnership with Al Majlis Group expands stated identity-security distribution across Gulf markets, including UAE and Saudi Arabia; the desk grades it moderate / mixed / secondary and plausibly explanatory of the move that has happened, with no contract value, revenue commitment, or other quantified economics supplied. No float the desk can independently verify; 1,436,344 shares outstanding as of August 11, 2026 (the outstanding count, not a float), with registered resale possibly active at 6,183,336 shares, warrants not yet active at 1,236,668 shares, and other issued shares known active at 618,334 shares effective December 1, 2025. Yellow, frontside warning.
+
+  DXST: Decent Holding Inc.. China.
+  $1.95 → $5.7 → $2.9 (PRIOR_CLOSE)
+  A newswire reported the launch of an AI-powered in-home senior-care service through a strategic collaboration with Ruilan International; the desk grades it legitimate positive and plausibly explanatory of the move that has happened, though no financial terms or publication time are supplied. No float the desk can independently verify; caution structure, with 2,215,128 shares outstanding as of June 1, 2026 (the outstanding count, not a float), shelf capacity possibly active effective May 7, 2026, a recent offering not yet active at 1,568,627 shares, and warrants of unknown status at 26,666,666 shares. Yellow, frontside warning.
+
+  SANG: Sangoma Technologies Corp. Canada.
+  $3.59 → $5.17 → $4.94 (PRIOR_CLOSE)
+  Sangoma announced a definitive agreement to be acquired by BRC Group Holdings, corroborated by the company newsroom and a newswire; the desk grades it strong and plausibly explanatory of the move that has happened, while the consideration, closing conditions, shareholder approval requirements, and expected closing date are not supplied. No float the desk can independently verify; 33,338,932 shares outstanding as of June 30, 2026 (the outstanding count, not a float), with registered resale and warrants both of unknown status. Green, fresh / frontside.
+
+  SSTI: SOUNDTHINKING, INC.. United States.
+  $5.47 → $8.5 → $8.24 (PRIOR_CLOSE)
+  A definitive merger agreement provides an $8.00 cash component plus one non-transferable contingent value right worth up to $3.00 per share; the desk grades it strong and plausibly explanatory of the move that has happened, with closing conditions, CVR milestones, and the probability of CVR payment not supplied. No float the desk can independently verify; caution structure, with 13,163,790 shares outstanding as of August 5, 2026 (the outstanding count, not a float), plus other issued shares of unknown status at 791,298 shares and 1,543,920 shares. Green, fresh / frontside.
+
+  QURE: uniQure N.V..
+  $39.11 → $39.9247 → $24.87 (PRIOR_CLOSE)
+  The company reported additional long-term clinical data from its Huntington’s disease studies, including a dose-dependent response and 44% slowing on the cUHDRS primary endpoint in 12 high-dose patients at 48 months; the desk grades it legitimate positive and plausibly explanatory of the move that has happened, while market interpretation versus prior expectations is not established. No float the desk can independently verify; caution structure, with 63,067,485 shares outstanding as of May 1, 2026 (the outstanding count, not a float), a recent offering possibly active at 4,945,055 shares effective June 24, 2026, other issued shares possibly active at 350,000 shares effective July 29, 2026, warrants of unknown status effective June 24, 2026, and shelf capacity possibly active effective January 7, 2025. No cycle conclusion.
+
+
+Secondary or unclear catalysts
+  BGIN: BGIN BLOCKCHAIN Ltd.
+  $1.9068 → $3.39 → $2.23 (PRIOR_CLOSE)
+  Secondary coverage described a custom at-home cryptocurrency-mining hardware business for Korean blockchain projects; the desk grades it moderate / mixed / secondary, with no primary company announcement, customer commitment, order value, or revenue impact supplied. No float the desk can independently verify; 113,135,941 shares outstanding as of December 31, 2025 (the outstanding count, not a float), with a recent offering of unknown status effective September 30, 2025. No cycle conclusion.
+
+  KMRK: K-TECH SOLUTIONS CO LTD. Hong Kong.
+  $0.931 → $1.44 → $1.0801 (PRIOR_CLOSE)
+  The latest identified SEC event, at 06:03 ET, June 11, 2026, concerned construction and testing progress for the initial 5 MW phase of the Aurora AZ Energy joint venture; catalyst analysis reached no conclusion, and coverage is incomplete outside SEC filings. No float the desk can independently verify; caution structure, with 21,100,000 shares outstanding as of March 31, 2026 (the outstanding count, not a float), registered resale possibly active effective September 22, 2025, a recent offering of unknown status at 1,600,000 shares effective July 16, 2025, and warrants possibly active at 80,000 shares. No cycle conclusion.
+
+  YMT: Yimutian Inc.. China.
+  $1.77 → $3.11 → $1.795 (PRIOR_CLOSE)
+  A secondary report attributed the move to an assertion that Nasdaq’s $2.5 million equity requirement was met following acquisitions, while a September 28 Form 6-K supplies a recent acquisition backdrop; the desk grades it moderate / mixed / secondary and plausibly explanatory of the move that has happened, but the primary filing does not establish the compliance conclusion. No float the desk can independently verify; caution structure, with registered resale possibly active at 42,307,692 shares, convertibles possibly active, and acquisition shares known active effective September 10, 2026. No cycle conclusion.
+
+  HTLM: HomesToLife Ltd.
+  $1.75 → $2.2499 → $1.905 (PRIOR_CLOSE)
+  The company disclosed an application for a secondary listing by introduction on the Singapore Exchange Main Board; this is not a fresh catalyst, and the desk grades the item moderate / mixed / secondary, with approval, timing, financing connection, and liquidity effect not established. No float the desk can independently verify; caution structure, with 89,687,500 shares outstanding as of December 31, 2025 (the outstanding count, not a float), and a recent offering not yet active. No cycle conclusion.
+
+  WFCF: Where Food Comes From, Inc.. United States.
+  $11.58 → $14 → $10.55 (PRIOR_CLOSE)
+  The September 25 S-3/A describes a proposed $50 million universal shelf for common stock, preferred stock, and warrants; this is not a fresh catalyst, and the desk grades it weak / negative / dilutive, with no evidence of an effective registration or completed sale. No float the desk can independently verify; caution structure, with 4,979,663 shares outstanding as of July 31, 2026 (the outstanding count, not a float), and shelf capacity not yet active. No cycle conclusion.
+
+
+No research or identified catalyst
+  SDEV: Stablecoin Development Corp. United States.
+  $1.57 → $3.9299 → $3.3485 (PRIOR_CLOSE)
+  No catalyst found in our sources; the desk reads the move as demand and flow dominant rather than tied to a substantiated new company announcement, with the catalyst unidentified. No float the desk can independently verify; caution structure, with 50,615,437 shares outstanding as of July 27, 2026 (the outstanding count, not a float), registered resale not yet active at 212,876,259 shares, warrants possibly active at 167,539,227 shares, other issued shares possibly active at 45,337,032 shares, other issued shares known active at 398,367 shares effective May 20, 2026, atm possibly active effective January 20, 2026, and shelf capacity possibly active effective November 26, 2025. No cycle conclusion.
+
+  QLEP
+  $10.05 → $10.06 → $10.05 (PRIOR_CLOSE)
+  Research not researched yet; no dossier at this checkpoint. No cycle read on file.
+
