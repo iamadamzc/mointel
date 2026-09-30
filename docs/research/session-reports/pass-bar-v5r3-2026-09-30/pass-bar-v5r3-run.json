@@ -1,0 +1,2388 @@
+{
+  "sha": "42818555d8b1231713cf439b4dc8773f744571e12a0e0d97d90505f4ba546128",
+  "results": [
+    {
+      "name": "480-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 193,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 144,
+        "durationMs": 3975
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 321,
+        "cachedInputTokens": 16037,
+        "reasoningTokens": 216,
+        "durationMs": 5395
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: “no fresh catalyst.” The research identifies the September 21 reverse split as a fresh corporate-action event, while concluding only that no sufficient fresh positive operating catalyst was identified."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 364,
+        "cachedInputTokens": 16037,
+        "reasoningTokens": 315,
+        "durationMs": 5786
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14601,
+        "outputTokens": 425,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 376,
+        "durationMs": 7002
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14601,
+        "outputTokens": 310,
+        "cachedInputTokens": 14598,
+        "reasoningTokens": 261,
+        "durationMs": 5662
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14601,
+        "outputTokens": 264,
+        "cachedInputTokens": 14598,
+        "reasoningTokens": 215,
+        "durationMs": 4030
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16293,
+        "outputTokens": 382,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 333,
+        "durationMs": 6502
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16293,
+        "outputTokens": 296,
+        "cachedInputTokens": 16290,
+        "reasoningTokens": 247,
+        "durationMs": 5424
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16293,
+        "outputTokens": 393,
+        "cachedInputTokens": 16290,
+        "reasoningTokens": 300,
+        "durationMs": 6930
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: “no share count is on file.” The stored research only has a null shares-outstanding field; it does not state that no share count is on file."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "494-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 503,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 415,
+        "durationMs": 7785
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed $6,400,000 of ATM capacity is not supported; the stored XXII ATM entry provides no dollar-capacity figure."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 158,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 69,
+        "durationMs": 2968
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed $6,400,000 of ATM capacity is not supported by the stored XXII research; its ATM entry gives no capacity amount."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 380,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 293,
+        "durationMs": 6168
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6,400,000 ATM-capacity claim is not supported by the stored research; its ATM capacity amount is not provided."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "480-01",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 222,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 139,
+        "durationMs": 4107
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "2,140,900"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding figure: WHLR has 1,931,568 shares outstanding as of August 4, 2026, not 2,140,900."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-01",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 205,
+        "cachedInputTokens": 16037,
+        "reasoningTokens": 122,
+        "durationMs": 4366
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "2,140,900"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding figure: stored research lists 1,931,568 shares outstanding as of August 4, 2026, not 2,140,900."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-01",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 217,
+        "cachedInputTokens": 16037,
+        "reasoningTokens": 115,
+        "durationMs": 3663
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "2,140,900"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding figure: stored research lists 1,931,568 shares outstanding as of August 4, 2026, not 2,140,900."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "494-02",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 245,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 147,
+        "durationMs": 3967
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "78.1"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL was noted down 22.8% since the previous checkpoint, not 78.1%."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "XXII's research does not state $6,400,000 of ATM capacity."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-02",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 389,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 291,
+        "durationMs": 5455
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "78.1"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL was down 22.8% since the previous checkpoint, not 78.1%."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not give $6,400,000 of XXII ATM capacity."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-02",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 374,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 271,
+        "durationMs": 5830
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "78.1"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL was down 22.8% since the previous checkpoint, not 78.1%."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "No $6,400,000 ATM capacity is stored for XXII; its ATM capacity amount is not provided."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-03",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 523,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 421,
+        "durationMs": 8030
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6.4 million ATM-capacity figure is not in the stored research, and “down 18.0% from the prior close” uses an unsupported frame for this CURRENT_SESSION after-hours change."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-03",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 376,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 295,
+        "durationMs": 6617
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6,400,000 ATM-capacity claim is not supported by the stored XXII research."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-03",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 419,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 318,
+        "durationMs": 6677
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6,400,000 ATM-capacity claim is not in the stored research, and “down 18.0% from the prior close” uses an unsupported frame for this CURRENT_SESSION change."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15821,
+        "outputTokens": 281,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 193,
+        "durationMs": 3884
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6,400,000 ATM-capacity figure is not stored, and the claim that XXII dropped off the board is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15821,
+        "outputTokens": 260,
+        "cachedInputTokens": 15818,
+        "reasoningTokens": 177,
+        "durationMs": 3852
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6.4M ATM capacity is not stored, and “dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15821,
+        "outputTokens": 223,
+        "cachedInputTokens": 15818,
+        "reasoningTokens": 134,
+        "durationMs": 3848
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The $6,400,000 ATM-capacity claim is not in the stored research, and “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "493-05",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 275,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 214,
+        "durationMs": 4331
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "WHLR is ranked #5 in range, not third-ranked."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-05",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 234,
+        "cachedInputTokens": 16297,
+        "reasoningTokens": 175,
+        "durationMs": 3935
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "WHLR is ranked fifth in range, not third."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-05",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 217,
+        "cachedInputTokens": 16297,
+        "reasoningTokens": 156,
+        "durationMs": 4364
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "WHLR is ranked #5 in range, not third-ranked."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "494-06",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15822,
+        "outputTokens": 312,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 213,
+        "durationMs": 5710
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: ARTL was halted late in the session; its stored halt state is TRADING."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: $6,400,000 of ATM capacity is not stated in the stored XXII research."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-06",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15822,
+        "outputTokens": 499,
+        "cachedInputTokens": 15819,
+        "reasoningTokens": 397,
+        "durationMs": 6878
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that ARTL was halted late in the session is unsupported; its stored halt state is TRADING."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed $6,400,000 of ATM capacity is not supported by the stored XXII research."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-06",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15822,
+        "outputTokens": 377,
+        "cachedInputTokens": 15819,
+        "reasoningTokens": 287,
+        "durationMs": 7349
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL was not halted; its stored halt state is TRADING."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not provide $6.4 million of XXII ATM capacity."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "480-07",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16041,
+        "outputTokens": 292,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 243,
+        "durationMs": 4502
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-07",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16041,
+        "outputTokens": 238,
+        "cachedInputTokens": 16038,
+        "reasoningTokens": 189,
+        "durationMs": 4034
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-07",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16041,
+        "outputTokens": 205,
+        "cachedInputTokens": 16038,
+        "reasoningTokens": 156,
+        "durationMs": 4172
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-08",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14601,
+        "outputTokens": 370,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 321,
+        "durationMs": 5440
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-08",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14601,
+        "outputTokens": 244,
+        "cachedInputTokens": 14598,
+        "reasoningTokens": 195,
+        "durationMs": 4116
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-08",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14601,
+        "outputTokens": 326,
+        "cachedInputTokens": 14598,
+        "reasoningTokens": 277,
+        "durationMs": 5070
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-09",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16042,
+        "outputTokens": 354,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 274,
+        "durationMs": 6707
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"four names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: HCTI is “one of the four” names not researched; it is the only one of the 12 listed names without stored research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-09",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16042,
+        "outputTokens": 252,
+        "cachedInputTokens": 16039,
+        "reasoningTokens": 182,
+        "durationMs": 5984
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"four names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim that HCTI is one of four names not researched; only HCTI lacks stored research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-09",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16042,
+        "outputTokens": 305,
+        "cachedInputTokens": 16039,
+        "reasoningTokens": 224,
+        "durationMs": 5707
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"four names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim that HCTI is one of four names not researched; the stored material shows no research for HCTI but does not support a count of four."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-10",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16033,
+        "outputTokens": 220,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 146,
+        "durationMs": 4406
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 1,931,568 shares of float as of August 4, 2"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: 1,931,568 is shares outstanding as of August 4, 2026, not independently verified float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-10",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16033,
+        "outputTokens": 236,
+        "cachedInputTokens": 16030,
+        "reasoningTokens": 164,
+        "durationMs": 3901
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 1,931,568 shares of float as of August 4, 2"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: 1,931,568 is shares outstanding as of August 4, 2026, not float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-10",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16033,
+        "outputTokens": 197,
+        "cachedInputTokens": 16030,
+        "reasoningTokens": 123,
+        "durationMs": 2982
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 1,931,568 shares of float as of August 4, 2"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: 1,931,568 is shares outstanding as of August 4, 2026, not independently verified float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-11",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16031,
+        "outputTokens": 308,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 216,
+        "durationMs": 5402
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "1931568"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 1,931,568 shares-outstanding figure is stated without its required as-of date (2026-08-04)."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-11",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16031,
+        "outputTokens": 216,
+        "cachedInputTokens": 16028,
+        "reasoningTokens": 167,
+        "durationMs": 3860
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "1931568"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-11",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16031,
+        "outputTokens": 191,
+        "cachedInputTokens": 16028,
+        "reasoningTokens": 142,
+        "durationMs": 3471
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "1931568"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-12",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16302,
+        "outputTokens": 298,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 228,
+        "durationMs": 4540
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should drive\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the patent should drive the next leg higher."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-12",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16302,
+        "outputTokens": 240,
+        "cachedInputTokens": 16299,
+        "reasoningTokens": 169,
+        "durationMs": 4463
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should drive\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported forecast: the patent “should drive the next leg higher.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-12",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16302,
+        "outputTokens": 325,
+        "cachedInputTokens": 16299,
+        "reasoningTokens": 264,
+        "durationMs": 5094
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should drive\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported prediction: that the patent should drive the next leg higher."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-13",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16299,
+        "outputTokens": 265,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 184,
+        "durationMs": 4589
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 16:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The announcement time is unsupported: stored research gives 07:33 ET, not 09:15 ET."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-13",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16299,
+        "outputTokens": 363,
+        "cachedInputTokens": 16296,
+        "reasoningTokens": 286,
+        "durationMs": 6572
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 16:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The ART L announcement was at 07:33 ET, not 09:15 ET."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-13",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16299,
+        "outputTokens": 265,
+        "cachedInputTokens": 16296,
+        "reasoningTokens": 185,
+        "durationMs": 4669
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 16:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stated 09:15 ET announcement time is unsupported; the stored research gives 07:33 ET."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-14",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 476,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 427,
+        "durationMs": 9136
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "07:33"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-14",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 175,
+        "cachedInputTokens": 16297,
+        "reasoningTokens": 126,
+        "durationMs": 4779
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "07:33"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-14",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 269,
+        "cachedInputTokens": 16297,
+        "reasoningTokens": 220,
+        "durationMs": 5125
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "07:33"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-15",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16293,
+        "outputTokens": 287,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 218,
+        "durationMs": 4822
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "55"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL’s research states approximately 20% weight loss as monotherapy, not about 55%."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-15",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16293,
+        "outputTokens": 377,
+        "cachedInputTokens": 16290,
+        "reasoningTokens": 308,
+        "durationMs": 7708
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "55"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL’s research cites about 20% weight loss as monotherapy, not about 55%."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-15",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16293,
+        "outputTokens": 541,
+        "cachedInputTokens": 16290,
+        "reasoningTokens": 460,
+        "durationMs": 7946
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "55"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "ARTL's cited nonclinical monotherapy finding was approximately 20% weight loss, not about 55%."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-16",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 240,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 160,
+        "durationMs": 4004
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The reverse split is stated as effective September 11, 2026; the stored WHLR research says it was effective September 21, 2026."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-16",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 194,
+        "cachedInputTokens": 16037,
+        "reasoningTokens": 124,
+        "durationMs": 3413
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The reverse split was effective September 21, 2026, not September 11, 2026."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-16",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16040,
+        "outputTokens": 222,
+        "cachedInputTokens": 16037,
+        "reasoningTokens": 152,
+        "durationMs": 3221
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The reverse split was effective September 21, 2026, not September 11, 2026."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-17",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 319,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 246,
+        "durationMs": 4841
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "WHLR is researched as a United States company; the stored research does not support calling it a Chinese real-estate company."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-17",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 217,
+        "cachedInputTokens": 16297,
+        "reasoningTokens": 141,
+        "durationMs": 4092
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: WHLR is a Chinese real-estate company; stored research identifies it as a United States company and provides no business description."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-17",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16300,
+        "outputTokens": 290,
+        "cachedInputTokens": 16297,
+        "reasoningTokens": 212,
+        "durationMs": 7308
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: WHLR is a Chinese real-estate company; research identifies it as Wheeler Real Estate Investment Trust, Inc. in the United States."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "494-18",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15839,
+        "outputTokens": 331,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 229,
+        "durationMs": 6041
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: that the patent makes ARTL a multi-day runner."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: $6,400,000 of ATM capacity; no such ATM capacity amount is stored."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-18",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15839,
+        "outputTokens": 333,
+        "cachedInputTokens": 15836,
+        "reasoningTokens": 244,
+        "durationMs": 5604
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the patent makes ARTL a “multi-day runner.”"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: XXII has $6,400,000 of ATM capacity."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-18",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15839,
+        "outputTokens": 471,
+        "cachedInputTokens": 15836,
+        "reasoningTokens": 372,
+        "durationMs": 8456
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the patent makes ARTL a “multi-day runner” is an unsupported prediction."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not support a claim of $6.4 million of ATM capacity for XXII."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-19",
+      "run": 1,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 411,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 293,
+        "durationMs": 6333
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "812"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The line says 812 were up; stored after-hours totals report 787 up."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed $6,400,000 of ATM capacity is not supported; XXII's stored ATM entry provides no capacity amount."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-19",
+      "run": 2,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 412,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 312,
+        "durationMs": 6656
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "812"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported after-hours up count: stored total is 787, not 812."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim of $6,400,000 of ATM capacity; no such ATM capacity figure is stored."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-19",
+      "run": 3,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15827,
+        "outputTokens": 350,
+        "cachedInputTokens": 15824,
+        "reasoningTokens": 235,
+        "durationMs": 7561
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "812"
+          },
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,530,000"
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "6,400,000"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stated 812 names up is unsupported; stored after-hours total is 787 up."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed $6,400,000 of ATM capacity is not supported by the stored XXII research."
+          }
+        ],
+        "lines": 3
+      }
+    }
+  ]
+}

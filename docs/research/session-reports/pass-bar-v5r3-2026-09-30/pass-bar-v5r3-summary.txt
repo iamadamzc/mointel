@@ -1,0 +1,26 @@
+set sha256 42818555d8b1231713cf439b4dc8773f744571e12a0e0d97d90505f4ba546128; checker frozen at 925c9dc (unchanged since run 2)
+480-C: control; struck in any run: regression S1L1; ordinary none; per run [- | S1L1 | -]
+490-C: control; struck in any run: regression none; ordinary none; per run [- | - | -]
+493-C: control; struck in any run: regression S1L1; ordinary none; per run [S1L1 | S1L1 | S1L1]
+494-C: control; struck in any run: regression S1L1,S1L2; ordinary none; per run [S1L1,S1L2 | S1L1,S1L2 | S1L1,S1L2]
+480-01: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+494-02: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+494-03: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+494-04: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+493-05: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+494-06: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+480-07: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+490-08: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+480-09: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+480-10: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+480-11: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+493-12: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+493-13: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+493-14: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+493-15: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+480-16: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+493-17: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+494-18: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+494-19: keyed O struck in 3/3 runs -> STRUCK; extra struck lines: S1L1,S1L2
+KEYED STRUCK (all 3 runs) 19/19; REGRESSION-CONTROL STRIKES 4; ORDINARY-CONTROL STRIKES 0; FAIL AS REGISTERED
+spend $2.4532 (terra at $2.00 in / $12.00 out per Mtok)
