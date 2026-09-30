@@ -12998,3 +12998,11 @@ the 37 report-path commits from main + 2fe8d750 (stateCountry) + 4771363 + runne
 from main), then tsc fails: SessionReports.tsx needs lib/dashboard/boardRange from 5e8b13c3, the board's price range control,
 a separate user-visible feature. Options put to Integration: (a) include it (his yes); (b) cut-only local rangeLabel + board
 null; (c) reports tomorrow from main. Recommended (b).
+
+**18:3xZ Integration ruled (b). REPORTS CUT BUILT: ops/reports-cut-on-2bcf1cf 1fde525b** (worktree A:\mointel-reportscut,
+base 2bcf1cfe; re-pick onto /proc after v28 if it differs). 41 commits: 38 from main (30 same patch-id; 8 differ, and every
+non-doc file equals main's blob except the shim, the runner and readModel.ts's production-line copy), 3 cut-only (runner
+a7389325, tests 68b2a9af, shim 1fde525b). 54 files vs 2bcf1cf; out-of-feature hunks all additive and report-only (listed
+to Integration). The 8 frozen checker blobs MATCH 1ab48be. Declared gate count: 201 test files. Box env (key names only):
+REPORT_RANGES and REPORT_DEFAULT_RANGE unset in /etc/mointel/mointel.env, so /api/reports serves only 1-20. Waiting on:
+Design review + render of the shim, Research's range confirmation, the gate slot.
