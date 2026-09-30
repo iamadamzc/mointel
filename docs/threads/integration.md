@@ -986,7 +986,7 @@ CONE RULE   every ship carries 1b5ead6 (deploy.sh re-renders nginx-tls.conf per 
 ### SHIPS WAITING ON HIS YES (Ops-tmi asks at 10:27 ET, after the 10:17 grades read)
 ```
 1 c3d0f06   Now cell (fa61410 -x onto 74c1818). Design's live read PASSED 04:06 ET. Replayed + gated 177.
-2 84b0099   loadMinuteBars ts bound, re-picked onto c3d0f06 (== 6043db3, patch-id 54037044). Local ratio 0.196, 0 of 1.1M
+2 84b0099   (SHIPS AS 46d9f9d TONIGHT after 20:00 ET, with the deploy-window guard) loadMinuteBars ts bound, re-picked onto c3d0f06 (== 6043db3, patch-id 54037044). Local ratio 0.196, 0 of 1.1M
             rows differ. Gated 178. If he says yes only to the bound: ship 6043db3 on 74c1818.
 3 EM-DASH   NOT CUT YET. Design cuts after 1-2 land, onto /proc's sha: Design 1dacc16, 9a1d8e7, c76e98f, 9e0a3a0 (+ the
             padded-separator test fix FIRST); Research f6915c4 last; Web
@@ -1782,6 +1782,9 @@ NOW CELL LIVE  c3d0f06 14:51:49Z (Ops /proc x3, NR 0, market untouched, discarde
   (/api/health silent 20 s) and hit the MARKET worker (flush max 6-10 s, 49-54/min, over250 every flush; discarded 0).
   RULED: 84b0099 HELD to after 20:00 ET (Ops tells him); preflight REFUSES deploys 04:00-20:00 ET on trading days
   until the check moves; every ship incl. em-dash after 20:00. R1 control 501.6 vs R0 473.6 ms (confounded).
+  GUARD 46d9f9d REPLAYED + APPROVED (on 84b0099; preflight.sh + test only; 95b734e out; 178). TONIGHT after 20:00 ET:
+  ONE release 46d9f9d (carries the speed fix; guard active once live). Check relocation (only on pending migration +
+  nightly timer) approved as direction, own enumeration after tonight. Re-pick 46d9f9d onto main after ship.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
