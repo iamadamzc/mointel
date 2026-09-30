@@ -81,7 +81,7 @@ export function projectSchedulerHealth(options: {
     return {
       state: 'OFFLINE',
       label: 'Assessments: scheduler offline',
-      detail: `Last heartbeat ${Number.isFinite(age) ? `${Math.round(age / 1000)}s` : 'never'} ago — checkpoints will be missed`,
+      detail: `Last heartbeat ${Number.isFinite(age) ? `${Math.round(age / 1000)}s` : 'never'} ago. Checkpoints will be missed.`,
       tone: 'neg',
       running: false,
     };
@@ -157,13 +157,13 @@ export function describeSession(options: {
 
     case 'RTH':
       return {
-        headline: options.earlyClose ? `RTH — EARLY CLOSE ${options.rthClose} ET` : 'RTH',
+        headline: options.earlyClose ? `RTH · EARLY CLOSE ${options.rthClose} ET` : 'RTH',
         subline: joined || 'Discovery ranked on Daily RVOL',
       };
 
     case 'AFTER_HOURS':
       return {
-        headline: 'AFTER HOURS — LIVE DISCOVERY',
+        headline: 'AFTER HOURS · LIVE DISCOVERY',
         subline:
           `AH session since ${options.rthClose} ET` +
           (nextPart ? ` · ${nextPart}` : '') +

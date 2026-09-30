@@ -151,7 +151,7 @@ describe('resolveBlueSky', () => {
   it('calls out overhead supply when the ceiling is far above', () => {
     const state = resolveBlueSky(verified(), 4);
     expect(state.status).toBe('NOT_BLUE_SKY');
-    expect(state.label).toBe('NOT BLUE SKY — OVERHEAD AT $10.00');
+    expect(state.label).toBe('NOT BLUE SKY · OVERHEAD AT $10.00');
   });
 
   it('never claims blue sky from an unverified level', () => {

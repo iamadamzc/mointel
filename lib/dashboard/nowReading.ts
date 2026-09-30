@@ -209,7 +209,7 @@ export function nowColumnCopy(capture: NowCapture): NowColumnCopy {
         sub: 'last 10s',
         title:
           'Trades in the most recent completed 10 seconds; the bars are the last minute in 10-second slots. ' +
-          'Which names are trading heaviest right now — not RVOL, which can stay high on a name that has stopped. ' +
+          'Which names are trading heaviest right now. Not RVOL, which can stay high on a name that has stopped. ' +
           'A muted /min figure has no live count and sorts after every live row.',
         metric: 'trades in the last 10 seconds',
       };
@@ -218,7 +218,7 @@ export function nowColumnCopy(capture: NowCapture): NowColumnCopy {
         sub: 'not live',
         title:
           'The live trade count has stopped updating, so nothing is shown rather than a stale count that would look current.',
-        metric: 'not live — the trade count stopped updating',
+        metric: 'not live: the trade count stopped updating',
       };
     case 'UNWIRED':
       return { sub: sparklineLagLabel() };
@@ -239,6 +239,6 @@ export function nowCellTitle(reading: NowReading): string {
     case 'MINUTE':
       return reading.count === null
         ? 'No minute has been counted for this name yet, which is not the same as no trading.'
-        : `${reading.count.toLocaleString()} trades in the most recent settled minute. The minute in progress is never counted — it has not finished.`;
+        : `${reading.count.toLocaleString()} trades in the most recent settled minute. The minute in progress is never counted, because it has not finished.`;
   }
 }

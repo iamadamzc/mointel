@@ -67,11 +67,11 @@ export const NO_TITLE_NEEDED = ['changed', 'ticker', 'priority'] as const;
 export const COLUMN_TITLE = {
   rvol: 'Relative volume: this session’s volume so far against the average for the same stock over the previous 20 eligible sessions. It is cumulative and never decays within a session, so a name that ran at 07:15 and stopped can still show a large number at 10:00. Now, beside it, is the correction.',
 
-  float: 'Free float: the shares actually available to trade — shares outstanding less the stock held by insiders, affiliates and anyone restricted from selling. It is the supply a move has to move through, which is why a small one runs. The figure here is the vendor’s, and blank means nobody stated one — never that the float is small.',
+  float: 'Free float: the shares actually available to trade: shares outstanding less the stock held by insiders, affiliates and anyone restricted from selling. It is the supply a move has to move through, which is why a small one runs. The figure here is the vendor’s, and blank means nobody stated one, never that the float is small.',
 
-  why: 'Two quantities in one cell. The letter is strength — A strong, B moderate or secondary, C weak or dilutive. The colour is freshness, which is a different question: green is today or since the prior session’s close, amber is older. A green A and an amber A are the same strength and different news.',
+  why: 'Two quantities in one cell. The letter is strength: A strong, B moderate or secondary, C weak or dilutive. The colour is freshness, which is a different question: green is today or since the prior session’s close, amber is older. A green A and an amber A are the same strength and different news.',
 
-  risk: 'What would kill the trade. DIRTY FLOAT: more shares can be sold than the float number says. SUPPLY OVERHEAD: shares a filing permits to be sold that are not in the float — registered resale stock, warrants, convertibles. Permission to sell, not evidence anyone is. STRUCTURE CAUTION or UNKNOWN: a concern found, or the structure could not be established — not the same as finding nothing. NO FLAG FOUND: the desk looked and found nothing, which is a result.',
+  risk: 'What would kill the trade. DIRTY FLOAT: more shares can be sold than the float number says. SUPPLY OVERHEAD: shares a filing permits to be sold that are not in the float: registered resale stock, warrants, convertibles. Permission to sell, not evidence anyone is. STRUCTURE CAUTION or UNKNOWN: a concern found, or the structure could not be established. That is not the same as finding nothing. NO FLAG FOUND: the desk looked and found nothing, which is a result.',
 
   cycle: 'Where the name sits in its own run: NO RUN, DAY 1, FRONTSIDE, OFF HIGH, BACKSIDE, or PRIOR RUN for a move that has already finished. The two prices are the run’s high and the last price, so the give-back is readable without arithmetic.',
 } as const;
@@ -118,7 +118,7 @@ export function rankingQuantity(board: DiscoveryBoard): { label: string; title: 
     return {
       label: 'Part',
       title:
-        'After-hours participation: volume since the 16:00 close against the same stock’s average full-session volume. It is what the evening board ranks on. Daily RVOL is not — it still carries what the day earned and stops moving at the bell.',
+        'After-hours participation: volume since the 16:00 close against the same stock’s average full-session volume. It is what the evening board ranks on. Daily RVOL is not: it still carries what the day earned and stops moving at the bell.',
     };
   }
   return { label: 'RVOL', title: COLUMN_TITLE.rvol };

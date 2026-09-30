@@ -111,13 +111,13 @@ export function supplyReading(pair: SupplyPair | null | undefined): SupplyReadin
       ? 'no live supply proven'
       : settles
         ? // Worth its own sentence: this is the case that needs no float at all.
-          `${shares(pair.floorShares)} proven live — exceeds every share outstanding (${ratioPct(pair.floorRatio)})`
-        : `at least ${ratioPct(pair.floorRatio)} of shares outstanding — ${shares(pair.floorShares)} proven live across ${plural(pair.floorBlocks, 'block')}`;
+          `${shares(pair.floorShares)} proven live, exceeding every share outstanding (${ratioPct(pair.floorRatio)})`
+        : `at least ${ratioPct(pair.floorRatio)} of shares outstanding: ${shares(pair.floorShares)} proven live across ${plural(pair.floorBlocks, 'block')}`;
 
   const filedMax =
     pair.totalRatio === null || pair.totalShares === null
       ? null
-      : `up to ${ratioPct(pair.totalRatio)} if every filed block is live — ${shares(pair.totalShares)} across ${plural(pair.totalBlocks, 'block')}`;
+      : `up to ${ratioPct(pair.totalRatio)} if every filed block is live: ${shares(pair.totalShares)} across ${plural(pair.totalBlocks, 'block')}`;
 
   const denominator = `${shares(pair.sharesOutstanding)} shares outstanding${
     pair.sharesOutstandingAsOf ? ` as of ${pair.sharesOutstandingAsOf}` : ''
@@ -200,7 +200,7 @@ export function floatBoundReading(
     const since = coverageStart ? `; our price history begins ${coverageStart}` : '';
     return {
       verdict: bound.verdict,
-      sentence: `Float bound unverifiable — ${shares(pair.sharesOutstanding)} ${quantity}${dated}`,
+      sentence: `Float bound unverifiable: ${shares(pair.sharesOutstanding)} ${quantity}${dated}`,
       detail:
         `${since ? since.slice(2) : 'The share count predates our price history'}` +
         ', so we cannot certify no split occurred in between.',
@@ -289,7 +289,7 @@ export function floatClaimReading(
       verdict: check.verdict,
       float,
       label: 'REFUTED',
-      reason: `above ${filed}${asOf}${adjusted} — a float cannot exceed the shares that exist`,
+      reason: `above ${filed}${asOf}${adjusted}. A float cannot exceed the shares that exist`,
       tone: 'neg',
     };
   }
@@ -306,7 +306,7 @@ export function floatClaimReading(
        * hover: "an older count can confirm and never refute" is what stops a
        * reader discounting this the way an ordinary uncertainty is discounted.
        */
-      reason: `under ${filed}${asOf}${adjusted} — an older count can confirm a float and can never refute one`,
+      reason: `under ${filed}${asOf}${adjusted}. An older count can confirm a float and can never refute one`,
       tone: 'dim',
     };
   }

@@ -44,9 +44,9 @@ const ENUM_PHRASE: Record<string, string> = {
   SHELF_CAPACITY: 'shelf capacity',
 
   /* Cycle. The colour word is kept: it is how the desk says these out loud. */
-  GREEN_FRESH_FRONTSIDE: 'green — fresh / frontside',
-  YELLOW_FRONTSIDE_WARNING: 'yellow — frontside warning',
-  RED_BACKSIDE: 'red — backside',
+  GREEN_FRESH_FRONTSIDE: 'green · fresh / frontside',
+  YELLOW_FRONTSIDE_WARNING: 'yellow · frontside warning',
+  RED_BACKSIDE: 'red · backside',
   FORMER_RUNNER: 'former runner',
   FORMER_SUPERRUNNER: 'former superrunner',
 

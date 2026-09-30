@@ -28,7 +28,7 @@ export function DataFreshness({ meta, now, mounted, failure }: DataFreshnessProp
           <StatusBadge
             label="Research: Mock Data"
             tone="warn"
-            title="No Google credentials configured — showing built-in mock dataset"
+            title="No Google credentials configured. Showing the built-in mock dataset."
           />
         ) : (
           <span
@@ -57,7 +57,7 @@ export function DataFreshness({ meta, now, mounted, failure }: DataFreshnessProp
              * Stale keeps its words, and its colour and hover are unchanged in
              * both states.
              */}
-            {degraded ? 'Research: Google Sheet — Stale' : null}
+            {degraded ? 'Research: Google Sheet · Stale' : null}
           </span>
         )}
       </div>
