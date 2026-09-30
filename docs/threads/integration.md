@@ -2428,6 +2428,12 @@ REPORTS GATED    e8822583 run 2 ALL GREEN 201/201, 3,062; build 0. Only his yes 
                  (205 declared).
 ALL FIVE GATED   74fd7244 ALL GREEN 205/205, 3,123. Gated in Ops's session: 46d9f9d, 89d39053, 2bcf1cf, e8822583, 74fd7244.
                  Open: his reports yes (asked); levels box cost test (after 20:00).
+HIS REPORTS YES  Ops's session d33d893e, typed "yes" 2026-09-30T22:45:12Z (read): answers Ops's 20:28:22Z block "Can session
+                 reports ship tonight?" (e8822583 after v28, clear of 22:00, then levels; $1-$20 only; <= 8 model calls/day;
+                 first report = tomorrow's premarket from the 22:00 recap). ALL FIVE releases have his word + gates.
+                 SEQUENCE on his "go" after 20:00: 46d9f9d -> /proc -> R2 -> 89d39053 -> /proc -> box cost test -> v28
+                 2bcf1cf (start by ~21:15) -> /proc + re-pin floor -> reports e8822583 after 22:10 -> /proc -> levels
+                 74fd7244 on a cost-test PASS -> /proc + one /api/levels read.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
