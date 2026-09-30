@@ -2014,6 +2014,13 @@ HIS RULING       Web's session 3a7e8cd7, user turn 2026-09-30T15:51:37Z (read wi
                  FRIDAY PREP (order call): his Google client id/secret + seed confirmation -> Ops (I ask him); Web writes
                  the live-proof probe design by Thu 2026-10-01 20:00 ET, Ops builds after tonight, I replay; Ops nginx +
                  env + seed ride Friday's release.
+PROBE DESIGN     Web bb4e14a8 (docs/web/2026-10-01-gate-probe-design.md, 174 lines, commit read): GET /auth/probe under
+                 Friday's ^~ /auth/ (no new exemption), fails closed on an env flag (404 when off), no parameter, no id
+                 returned. Proves admit / refuse / anonymous; CANNOT prove a no-password sign-in end to end (only when
+                 Basic Auth comes off) -> Friday's report must not say "sign-in works" beyond that. Refusal test needs a
+                 throwaway Google account (HIS to create; seats never create accounts); admit test must use the SEEDED
+                 address. ROUTE TO OPS after tonight's releases are clear (trigger: last release /proc read), not before.
+                 Seam rule agreed with Web: the asking seat says so; the other stands down explicitly.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
