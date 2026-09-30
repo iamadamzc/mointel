@@ -1591,6 +1591,9 @@ SANG BLOCK      Marketing 06dfd1e (read): company header, AH path $3.59 -> $6.01
   REVISED (Research, approved): N is COMPUTED by applyStrikes after strikes ("We're watching N names ..."), never
   written by the model -> can't go false after a strike; seed = any writer line asserting a name count; 0-line case
   gets an honest form + test.
+  OVERALL SENTENCE per kind: only premarket has an as-of source (AH totals day D). Into-RTH / power hour / AH-report
+  need counts FROZEN on desk_assessments at capture -> ROUTED to Ops, same bump (Research specifies columns);
+  interim: those kinds ship with no overall sentence, marked pending.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
