@@ -1366,6 +1366,8 @@ HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20
                  DONE on his "yes, pin it" (Ops): market-floor pin -> 1b5ead6 at 02:36:09Z (3810b9e is its ancestor, read);
                  pins.sh check: all satisfiable. Pins: market-floor 1b5ead6, rollback-baseline 372f5eb (below floor --
                  never a market target).
+                 HEADER READ LIVE (Design 1d14999): lockup row 1 at 1,280 and 1,024, no horizontal scroll; review link 54
+                 revoked. CLOSED. Next Design base = 74c1818 (Now-cell cut after the 04:00 read).
                  DONE d626f1c (read: research-opening-prompt.md item 3). SPEND: his "1 set ranges, 2 yes, 3 yes"
                  (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
                  are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
