@@ -12979,3 +12979,14 @@ replay: lib/desk/reports/job.ts, tests/desk/reportJob.test.ts, worker/research.t
 **Gate slot:** the orphaned 89d39053 run (pids 20200/22704/24128, parent shell dead, no log) showed 0 CPU over 20 s at
 17:4xZ: hung, not loading the PC. The classifier refused my kill (his call). Gate 46d9f9d started in this session, log in
 this seat's scratchpad (gate-46d9f9d.log). Queue after it: Design 3c0cd04a, Research's harness, Ops 89d39053.
+
+**17:35Z 46d9f9d GATED IN THIS SESSION: ALL GREEN 178/178 files, 2,731 tests** (lockfile, types, typecheck, lint, suite;
+123 s). DEPLOY_TESTS_SKIP is now valid for it from this seat. Slot handed to Design 3c0cd04a.
+**Runner, Integration's conditions:** 523ef484 (14 tests: published path with scripted models, restart = 0 model calls,
+lookback both sides, FAILED stated). Integration approved the derived-queue design; cut = onto production after v28, one
+reports cut with 4771363 + sic write + Design 80e0bcc0 + 0f15521 (Integration replays). Spend from code: <= 2 model calls
+per slot, no retries; 4 slots/day at one range.
+**Levels cost test (Research):** registration 4612eba (main), code levels-request-path 8dfacf4; run ONCE after 20:00 ET in a
+gap, from a checkout outside the live release, `npx tsx scripts/levels-cost.ts --db "$MARKET_DB_PATH" --live`; output
+as-is to Research; no re-run. Before its merge: Ops reads loadMinuteBarRange in that branch's repo.ts.
+**Waiting on him:** his yes IN THIS SESSION for #1 at 20:07 ET (asked 17:2xZ).
