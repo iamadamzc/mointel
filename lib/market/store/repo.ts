@@ -255,6 +255,7 @@ export interface MinuteBarPoint {
   tradingDate: string;
   /** Minute START, ISO UTC, as stored. */
   ts: string;
+  open: number | null;
   high: number | null;
   close: number | null;
 }
@@ -278,7 +279,7 @@ export function loadMinuteBarRange(
 ): MinuteBarPoint[] {
   return db
     .prepare(
-      `SELECT trading_date AS tradingDate, ts, high, close
+      `SELECT trading_date AS tradingDate, ts, open, high, close
          FROM minute_bars
         WHERE symbol = ? AND ts >= ? AND ts <= ?
         ORDER BY ts`,

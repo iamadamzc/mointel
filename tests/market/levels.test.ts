@@ -21,8 +21,8 @@ import {
 const TODAY = '2026-09-29';
 const ms = (iso: string) => Date.parse(iso);
 
-function bar(tradingDate: string, ts: string, high: number, close = high): LevelsMinuteBar {
-  return { tradingDate, ts, high, close };
+function bar(tradingDate: string, ts: string, high: number, close = high, open = close): LevelsMinuteBar {
+  return { tradingDate, ts, open, high, close };
 }
 
 function daily(tradingDate: string, high: number, splitFactor: number | null = 1, close = high): LevelsDailyBar {
@@ -289,6 +289,84 @@ describe('basisBreak (spec section 6): refuse, never mix', () => {
       }),
     )!;
     expect(row.basisBreak).toBeUndefined();
+  });
+});
+
+describe('basisBreak: a split taking effect TODAY (section 3 tripwire)', () => {
+  /** Today's bars from 13:30Z, one per 5m bucket: [open, high] pairs, then the last bar sets L. */
+  const todayOpens = (pairs: Array<[number, number]>, last: number, lastOpen = last) => {
+    const bars = pairs.map(([open, high], i) =>
+      bar(TODAY, new Date(ms(`${TODAY}T13:30:00.000Z`) + i * FIVE_MIN_MS).toISOString(), high, high, open),
+    );
+    const lastTs = new Date(ms(`${TODAY}T13:30:00.000Z`) + pairs.length * FIVE_MIN_MS).toISOString();
+    bars.push(bar(TODAY, lastTs, Math.max(last, lastOpen), last, lastOpen));
+    return bars;
+  };
+  const priorSession = (date: string, high: number, close: number) =>
+    bar(date, `${date}T19:00:00.000Z`, high, close);
+
+  it('a 1-for-10 reverse split today (open 10x the prior close) sets basisBreak and walks only 5m', () => {
+    const row = computeResistanceLevels(
+      input({
+        todayBars: todayOpens([[10, 11]], 10.2),
+        // Pre-split raw 1.5 is 15 on today's basis; walked, it would be a wrong level.
+        priorBars: [priorSession('2026-09-28', 15, 1.0)],
+        dailyBars: [daily('2026-09-01', 20, 1)],
+      }),
+    )!;
+    expect(row.basisBreak).toBe(true);
+    expect(row.levels.map((l) => [l.price, l.timeframes])).toEqual([[11, ['5m']]]);
+    expect(row.horizon.fifteenMinFrom).toBeNull();
+    expect(row.horizon.dailyFrom).toBeNull();
+  });
+
+  it('a +250% gap with NO split (ratio 3.5) also sets it: the tripwire accepted false positive', () => {
+    const row = computeResistanceLevels(
+      input({ todayBars: todayOpens([[3.5, 3.6]], 3.4), priorBars: [priorSession('2026-09-28', 5, 1.0)] }),
+    )!;
+    expect(row.basisBreak).toBe(true);
+  });
+
+  it('a +150% gap (ratio 2.5) does not; the FIRST open and the MOST RECENT prior close are the ones compared', () => {
+    const row = computeResistanceLevels(
+      input({
+        // Later bars open at 3.6: only the first open counts.
+        todayBars: todayOpens(
+          [
+            [2.5, 2.6],
+            [3.6, 3.7],
+          ],
+          2.4,
+          3.6,
+        ),
+        // An older session closed at 0.5 (2.5 / 0.5 = 5): only the latest close counts.
+        priorBars: [priorSession('2026-09-25', 4.5, 0.5), priorSession('2026-09-28', 4, 1.0)],
+      }),
+    )!;
+    expect(row.basisBreak).toBeUndefined();
+    expect(row.levels.some((l) => l.timeframes.includes('15m'))).toBe(true);
+  });
+
+  it('the boundaries: exactly 3 and exactly 1/3 set it, as does a drop to 0.3', () => {
+    const run = (open: number, priorClose: number) =>
+      computeResistanceLevels(
+        input({ todayBars: todayOpens([[open, open]], open), priorBars: [priorSession('2026-09-28', 50, priorClose)] }),
+      )!.basisBreak;
+    expect(run(3, 1)).toBe(true);
+    expect(run(1, 3)).toBe(true);
+    expect(run(0.3, 1)).toBe(true);
+    expect(run(2.99, 1)).toBeUndefined();
+  });
+
+  it('a split_factor on the most recent daily row that differs from the 15m window dates sets it', () => {
+    const row = computeResistanceLevels(
+      input({
+        todayBars: todayOpens([[2, 2.1]], 2),
+        priorBars: [priorSession('2026-09-25', 5, 2.0), priorSession('2026-09-28', 5, 2.0)],
+        dailyBars: [daily('2026-09-25', 5, 1), daily('2026-09-28', 5, 1), daily(TODAY, 5, 10)],
+      }),
+    )!;
+    expect(row.basisBreak).toBe(true);
   });
 });
 
