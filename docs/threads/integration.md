@@ -1363,6 +1363,9 @@ HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20
                  ship cut from 74c1818 (1b5ead6 ancestor). HAZARD (Ops 25aaa04, read here): prune left 372f5eb as the only
                  pinned release, and it lacks 9508fb9 AND 3810b9e -> a market rollback to it DISCARDS (trades.db v2).
                  Ops item: re-pin at/above the floor or per-unit rollback targets. Trigger: before the next ship.
+                 DONE on his "yes, pin it" (Ops): market-floor pin -> 1b5ead6 at 02:36:09Z (3810b9e is its ancestor, read);
+                 pins.sh check: all satisfiable. Pins: market-floor 1b5ead6, rollback-baseline 372f5eb (below floor --
+                 never a market target).
                  DONE d626f1c (read: research-opening-prompt.md item 3). SPEND: his "1 set ranges, 2 yes, 3 yes"
                  (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
                  are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
