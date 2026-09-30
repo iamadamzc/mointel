@@ -2342,6 +2342,8 @@ PASS BAR RUN 3   FAIL AS REGISTERED: raw 141ee34 before read; harness 9b44df8; c
                  TOMORROW (owner Research, trigger 2026-10-01 first): whole SupplyBlock to the checker, field by field with
                  tests; model-stability proposal before change; new registration + re-freeze + fresh set (Marketing) +
                  run; then re-pick 4b55a049. LEVELS CUT: Ops trial-picking Research's route + Design's 3 onto 2bcf1cf now.
+LEVELS TRIAL     Design's 3 picks onto 2bcf1cf: clean, no TickerDrawer conflict, tsc adds nothing, targeted 25/25 (Design,
+                 discarded worktree). Research's route half: Ops trialling. Design renders the cut tree before my approval.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
