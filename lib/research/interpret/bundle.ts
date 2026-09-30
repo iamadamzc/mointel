@@ -176,6 +176,8 @@ export interface ResearchEvidenceBundle {
   cik: string | null;
   country: string | null;
   foreignIssuer: boolean | null;
+  /** EDGAR's SIC industry label: the grounding for `businessDescription`. */
+  sicDescription: string | null;
   exchange: string | null;
   cikConfidence: string;
   demand: DemandSummary | null;
@@ -535,6 +537,7 @@ export function buildEvidenceBundle(
     cik: issuer?.cik ?? null,
     country: issuer?.country ?? null,
     foreignIssuer: issuer?.foreignIssuer ?? null,
+    sicDescription: issuer?.sicDescription ?? null,
     exchange: issuer?.exchange ?? null,
     cikConfidence: issuer?.cikConfidence ?? 'NONE',
     demand,

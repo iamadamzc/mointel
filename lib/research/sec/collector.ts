@@ -229,6 +229,7 @@ export async function collectSecEvidence(
     exchange: resolution.exchange ?? profile.exchanges[0] ?? null,
     country: profile.country,
     foreignIssuer: profile.foreignIssuer,
+    sicDescription: profile.sicDescription,
     cikConfidence: resolution.confidence as CikConfidence,
     mappingSource: 'company_tickers_exchange',
     irUrl: null,

@@ -67,6 +67,12 @@ export interface IssuerProfile {
   tickers: string[];
   exchanges: string[];
   entityType: string | null;
+  /**
+   * EDGAR's industry label for the registrant's SIC code, e.g. "Pharmaceutical
+   * Preparations". The grounding for the dossier's `businessDescription` (his
+   * ruling 2026-09-30T10:42:25Z). Null where EDGAR states none.
+   */
+  sicDescription: string | null;
   country: string | null;
   /** Null when the filing history does not establish it. */
   foreignIssuer: boolean | null;
@@ -121,6 +127,7 @@ export function parseSubmissions(response: SubmissionsResponse, cik: string): Is
     tickers: (response.tickers ?? []).map((t) => String(t).toUpperCase()),
     exchanges: (response.exchanges ?? []).map((e) => String(e)),
     entityType: text(response.entityType),
+    sicDescription: text(response.sicDescription),
     country: text(response.addresses?.business?.stateOrCountry),
     foreignIssuer: inferForeignIssuer(filings.map((filing) => filing.form)),
     filings,

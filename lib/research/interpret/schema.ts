@@ -13,9 +13,12 @@
 
 import { catalystGradeSchemaDescription } from './catalystGrades';
 
-export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 1;
+// 2: `businessDescription` added (his ruling 2026-09-30T10:42:25Z).
+export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 2;
 // 2: catalyst grades defined (his ruling 2026-09-29T14:46:55Z, `catalystGrades.ts`).
-export const INTERPRETER_PROMPT_VERSION = 2;
+// 3: the business line, and no em dash in any text written (his rulings
+//    2026-09-30T10:42:25Z and 10:43:39Z). The grade text is unchanged from 2.
+export const INTERPRETER_PROMPT_VERSION = 3;
 
 const CONFIDENCE = ['HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'] as const;
 
@@ -170,6 +173,11 @@ export const AUTOMATIC_DOSSIER_SCHEMA = required({
   cik: nullableString,
   country: nullableString,
   foreignIssuer: { type: ['boolean', 'null'] },
+  businessDescription: {
+    type: ['string', 'null'],
+    description:
+      'What the company does, in one plain sentence, from sicDescription and the filings in the bundle. Null when the bundle does not say.',
+  },
   catalyst: CATALYST,
   structure: STRUCTURE,
   cycle: CYCLE,
