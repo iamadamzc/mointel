@@ -12699,3 +12699,9 @@ Plans: old `(symbol=?)`, new `(symbol=? AND ts>?)`. Ratio, 50 heaviest names on 
 per-round 0.187-0.209, **median 0.196** (old 2,185.9 / new 431.7 ms median); cold old 2,267 / new 456 ms. Better than
 the 0.35 prediction; the sample differs from Research's (heaviest names on D here vs board names there). Local-copy
 ratio only.
+**BUILT + GATED (~09:3xZ): 6043db3b8f6ee47b7d251f74ca9edebacc07f28d** (branch ops/minute-bars-bound-on-74c1818,
+worktree A:\mointel-ops), parent 74c1818 = production, 1b5ead6 ancestor, 2 files (repo.ts + tests/market/
+minuteBarsBound.test.ts). Mutants, predicted 1 kill each over tests/market (634 tests): bound removed -> ONLY the plan
+test fails; bound tightened to D 00:00Z -> ONLY the D-1 bar test fails. Restored after each. **test-gate.sh ALL GREEN:
+177/177 files (pre-registered 177), 2,691 tests, lint 0 errors.** If c3d0f06 ships first: cherry-pick onto it,
+pre-registered 178 files, re-gate. Ship yes is HIS.
