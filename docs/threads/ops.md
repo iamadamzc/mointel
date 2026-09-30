@@ -12726,3 +12726,6 @@ components (web tier), so it rides a web ship; tests/dashboard/merge.test.ts:93 
 label. health.ts:266/:279 use '—' as a no-value placeholder: a display convention, asked of Design. Worker console/log
 lines are not product writing and are left. Stored events keep old text; render-time fix is Design's (offered to him
 by Design). TRIGGER: after today's two ships; one commit, Integration enumerates.
+**Integration ruling:** no market restart for punctuation; the worker strings ride the NEXT market-worker restart
+whenever one is due (carry in the hand-off); Design normalises stored/emitted text at render meanwhile. The web-tier
+label (health.ts:207) may ride a web ship. The A/B script is in no ship cone (ls-tree 0 in 84b0099/6043db3/c3d0f06).
