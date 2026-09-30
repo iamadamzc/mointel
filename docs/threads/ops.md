@@ -12529,3 +12529,4 @@ with a full day: CONFOUNDED by time of day. Matched re-take (c') scheduled 00:57
 old_open_left 0 | closed_at_roll 116 | opened_at_roll 123 | distinct_close 1 | distinct_open 2 | close = open instant.
 Between-counts (01:50:24Z..roll-5s) 0/0. By instant: 116 opened AT roll_ms (closed 1.02 s later when the new day's
 high-res set went to 0) + 7 opened at +3.075 s (high-res set 7), inside the SQL's +5 s window. Disk 02:08Z: 61G free.
+**Research graded (22:1x ET): ITEM 1 PASS, ITEM 6 PASS** on the registered condition (116 closed and 116 opened at roll instant 1790733600178, expected 116, drift 0/0). The 123 / 2 instants were Research's own +/-5 s window catching the 02:00:03Z high-res rebuild (logged as its instrument error). Research local_d6996864 has handed off; items 2-5 (04:33 ET) go to its successor by title.
