@@ -8,11 +8,13 @@ import { getResistanceLevels } from '@/lib/market/levelsService';
  * (symbol, that close). Spec: `docs/research/resistance-levels-spec.md`,
  * section 2 (the row) and section 6 (this route, tonight).
  *
- * 200: the `ResistanceLevels` row as-is. An EMPTY row is `levels: []` with
- *      `aboveAllStored: true`.
- * 404: ABSENT. No row exists for the symbol (nothing stored to take a price
- *      from). The body carries no `levels` field, so it cannot be read as empty.
- * 400: no usable `symbol`. 503: the store could not be read.
+ * The contract Design's section is built to (`components/ResistanceLevels.tsx`):
+ *   200 + the `ResistanceLevels` row. An EMPTY row is `levels: []` with
+ *         `aboveAllStored: true`.
+ *   200 + a JSON `null` body: ABSENT. Not computed, no data for the symbol,
+ *         or the store could not be read. Never a 404 and never a 500:
+ *         the section reads 404 as "the route does not exist".
+ *   400: no usable `symbol`.
  *
  * The levels are labelled resistance by the owner's ruling; nothing here
  * measures them.
@@ -32,15 +34,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'symbol is required' }, { status: 400, headers: NO_STORE });
   }
 
-  const result = getResistanceLevels(symbol, Date.now());
-  if (result.kind === 'present') {
-    return NextResponse.json(result.row, { headers: NO_STORE });
+  try {
+    const result = getResistanceLevels(symbol, Date.now());
+    return NextResponse.json(result.kind === 'present' ? result.row : null, { headers: NO_STORE });
+  } catch {
+    // A store failure is absent to the section, never a 500.
+    return NextResponse.json(null, { headers: NO_STORE });
   }
-  if (result.kind === 'absent') {
-    return NextResponse.json({ symbol, absent: true }, { status: 404, headers: NO_STORE });
-  }
-  return NextResponse.json(
-    { symbol, error: 'state store unavailable', problem: result.reason },
-    { status: 503, headers: NO_STORE },
-  );
 }
