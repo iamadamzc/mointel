@@ -12716,3 +12716,13 @@ pre-registered 178 files, re-gate. Ship yes is HIS.
 Integration for replay. Both go to him in ONE message after 10:17.
 **Integration REPLAYED AND APPROVED 84b0099** (patch-id = 6043db3; 74c1818..84b0099 = 2; 178 = pre-registered). Both
 ships now wait only on HIS yes after 10:17: c3d0f06, then 84b0099, separate slots. Bound-only yes -> 6043db3 on 74c1818.
+
+**HIS RULE, verified at his turn (transcript 845dd4cb, 2026-09-30T10:43:39Z): "no em dashes in any writing. hard
+rule."** Main's lint was RED from de7f181 (bare require in my A/B script); fixed e273e31, repo lint 0 errors; ledger.
+**QUEUED (Ops): em dashes in product strings under lib/market + worker.** Opened: engine.ts:1801, :1842 (" — RVOL"),
+:2024 (" — +x% AH"), :2120 ("Halted — raw"); activity.ts:410 ("— state held") are emitted by the MARKET WORKER, so they
+change only at its next restart (his word, no session). health.ts:207 ("Market: <feed> — ...") is imported by
+components (web tier), so it rides a web ship; tests/dashboard/merge.test.ts:93 and telemetry.test.ts:216 carry the
+label. health.ts:266/:279 use '—' as a no-value placeholder: a display convention, asked of Design. Worker console/log
+lines are not product writing and are left. Stored events keep old text; render-time fix is Design's (offered to him
+by Design). TRIGGER: after today's two ships; one commit, Integration enumerates.
