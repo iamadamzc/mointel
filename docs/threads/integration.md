@@ -1354,6 +1354,12 @@ PASS-BAR SEEDS   ORDER CALL: Marketing writes the 43c1b7c seeded defect set BLIN
                  423/433/437, one line each, keyed; specimen 3's band ordinal reworded for the control); commits sha256
                  first, sends the file after Research commits the checker; Research commits the run before reading.
                  Research seeds nothing. Marketing's voice review follows.
+HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
+                 header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
+                 74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
+                 ship cut from 74c1818 (1b5ead6 ancestor). HAZARD (Ops 25aaa04, read here): prune left 372f5eb as the only
+                 pinned release, and it lacks 9508fb9 AND 3810b9e -> a market rollback to it DISCARDS (trades.db v2).
+                 Ops item: re-pin at/above the floor or per-unit rollback targets. Trigger: before the next ship.
                  DONE d626f1c (read: research-opening-prompt.md item 3). SPEND: his "1 set ranges, 2 yes, 3 yes"
                  (907420a6, 2026-09-27T23:13:38Z, read) -- "3" answered "Approve the build?" -> the build's model calls
                  are inside it; "sizing and the pass-bar test ONLY" is a seat's narrower reading, binding. Successor
