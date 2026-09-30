@@ -524,10 +524,12 @@ for Research's data map to confirm before the SANG example is written.**
 
 ### The shape
 
-**1. An opening narrative paragraph.** What the after-hours session left and how many
-names are on the premarket watch. Written from stored counts and the named leaders,
-never an invented "quiet/wild" characterization.
-*Needs: the count of ranked names in range; the top names and their moves (have).*
+**1. An opening narrative paragraph** (his ruling): the report's OWN list first —
+"we're watching N names into the premarket" — then the after-hours overall picture:
+how many traded AH in range, up vs down. Written from stored counts, never an
+invented "quiet/wild" characterization.
+*Needs: the count of the report's in-range list; the AH traded/up/down totals from
+`ticker_session` (both confirmed in the data map).*
 
 **2. Per-ticker blocks — a path line, then two or three sentences.**
 
@@ -578,8 +580,8 @@ never expected effect; float verdict never the number; shares outstanding dated 
 never called float; company name and country only (business and city are not stored
 yet — Ops's fix is pending). The premarket path is the after-hours arc.
 
-> **SANG — Sangoma Technologies Corp** (Canada; what it does and its city aren't in
-> our data yet).
+> **SANG — Sangoma Technologies Corp** — Canada · [pending field] sector ·
+> [pending field] HQ city.
 > **$3.59 → $6.01 → $5.10**
 >
 > The catalyst is a same-day fiscal-Q4 earnings headline (~17:26 ET): adjusted EPS
@@ -589,15 +591,16 @@ yet — Ops's fix is pending). The premarket path is the after-hours arc.
 > positive catalyst; confidence is medium, and the full release and guidance aren't
 > in what we have.
 > On structure the desk is at caution: 33,338,932 shares outstanding as of June 30,
-> 2026 — that is the outstanding count, not a float, and no float is sourced, so the
-> tradable supply is unknown; an effective 2023 F-3 leaves registered-resale
-> capacity the desk cannot quantify — capacity, not proof of selling.
+> 2026 — that is the outstanding count, not a float, and no float the desk can
+> independently verify, so the tradable supply is unknown; an effective 2023 F-3
+> leaves registered-resale capacity the desk cannot quantify — capacity, not proof
+> of selling.
 > Where it sits: yellow — frontside warning.
 
 | Clause | Field (assessment 551 / dossier 2407) |
 |---|---|
 | "Sangoma Technologies Corp … Canada" | `dossier.companyName`; `dossier.country` |
-| "business and city … aren't in our data yet" | not stored; Ops fix pending (data map) |
+| "[pending field] sector · [pending field] HQ city" | not stored yet (data map): sector via Research's code change, HQ city via Ops's schema bump; live report omits until present |
 | "$3.59 → $6.01 → $5.10" | after-hours arc: `reference_close` 3.59 (CURRENT_SESSION) → `session_high` 6.0071 (AH high, coincides) → `price` 5.10 |
 | "same-day fiscal-Q4 earnings … ~17:26 ET" | `catalyst.catalystType` NEWS_DRIVEN; `catalyst.eventTimestamp` 2026-09-28T21:26:40Z (17:26 ET) |
 | "EPS $(0.18) vs $(0.06); sales $46.8M vs $51.5M … miss that conflicts … full release/guidance aren't in what we have" | `catalyst.summary` verbatim facts |
@@ -608,7 +611,7 @@ yet — Ops's fix is pending). The premarket path is the after-hours arc.
 | "confidence is medium" | `catalyst.confidence` MEDIUM |
 | "caution" | `structure.structureClassification` CAUTION |
 | "33,338,932 shares outstanding as of June 30, 2026 … not a float" | `structure.sharesOutstanding` + `sharesOutstandingDate` (§8: dated, never called float) |
-| "no float is sourced, so the tradable supply is unknown" | `structure.displayedFloat` null; `floatConfidence` UNKNOWN (§8: verdict, never a number) |
+| "no float the desk can independently verify, so the tradable supply is unknown" | `structure.displayedFloat` null; `floatConfidence` UNKNOWN (§8 + his ruling: verdict in a "not independently verified" register, never a number) |
 | "an effective 2023 F-3 leaves registered-resale capacity … capacity, not proof of selling" | `structure.supplyLedger[0]` REGISTERED_RESALE, effective 2023-04-12, amount null, POSSIBLY_ACTIVE |
 | "yellow — frontside warning" | `cycle` YELLOW_FRONTSIDE_WARNING |
 
@@ -617,7 +620,23 @@ business line or city (not stored; pending Ops); no "our view" of where the pric
 goes (§8 rule 1 — characteristics only). The percent (+42.1% after hours) is left to
 the path line rather than repeated in prose, per "uncomplicate it".
 
-**Opening narrative (report-level, for #551's day):** the after-hours totals are
-available (`ticker_session`, 09-28 $1–$20: 3,245 with AH activity, 967 up / 748
-down), but "how many names are on the premarket watch" is undefined until he answers
-Integration's question, so the opening's count line waits on that.
+### The opening narrative — to his definition
+
+**His ruling (first-hand, via Integration):** the opening is the report's OWN list
+("we're watching N names into the premarket"), then the after-hours overall picture
+(how many traded AH in range, up vs down). For #551 (the 09-28 recap that prepares
+09-29): 13 names in the $1–$20 range on the recap board; after-hours totals from
+`ticker_session` (09-28 $1–$20: 3,245 traded AH, 967 up / 748 down). Written to that:
+
+> **We're watching 13 names into the premarket.** Across the $1–$20 range, 3,245
+> traded after hours — 967 up, 748 down.
+
+| Clause | Source |
+|---|---|
+| "watching 13 names" | count of $1–$20 ranked rows in assessment 551 (subject to the report's display cap) |
+| "3,245 traded after hours — 967 up, 748 down" | `ticker_session` 09-28, $1–$20 (data map) |
+
+*Float style, from his ruling:* verdict only, in a "not independently verified"
+register — never a number. SANG's block above renders that as "no float the desk can
+independently verify"; a name believed small-but-unconfirmed would read "small
+float, not independently verified" (his words).
