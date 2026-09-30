@@ -2183,6 +2183,12 @@ SEED LOCK LOST   Marketing (stopped before release): Research asked, AFTER the 1
                  lock note states format-only + counts; result reported "AS REGISTERED, with the seed-lock deviation".
                  SEAM: after a freeze the harness adapts to the locked artifact; lock the FINAL artifact (format first,
                  hash last). I released on 437e30a6 without asking whether it was in the harness's format.
+OPS 17:3xZ       New Ops had ALREADY asked him for #1 (17:2xZ) before my message: the classifier refused an unattended
+                 ship cron, so 20:07 must be an in-session act with his word in Ops's session (verified 7bacf0d6 15:47:06Z).
+                 I do not ask it. ORPHANED full suite on 89d39053 (retired seat's run 2, worktree mointel-gate-rW7H2g,
+                 since 16:50Z, parent dead, no log) holds the gate slot and memory; Ops's kill refused by the classifier
+                 -> HIS call in Ops's session (I do not route around it). Queue: Ops 46d9f9d, Design 3c0cd04a, Research
+                 harness, Ops 89d39053. Runner build STARTED.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
