@@ -2410,6 +2410,12 @@ PASS BAR RUN 4   PASS AS REGISTERED: raw ce09e3d; harness 1b78581 (coverage pre-
                  raw 16:19:13 ET; no lib/desk/reports change since cb6d030. LIMITS (Research): one day per run, one
                  author, N=3; model-stability work deferred to tomorrow; live strike rate to diagnostics.
                  REPORTS ON TONIGHT: Ops re-picks 8c52506 onto 4b55a049, nine blobs to be verified by me, gate, his yes.
+REPORTS FINAL    e8822583 (ops/reports-cut-run4) REPLAYED + APPROVED BY LITERAL SHA: 1 on 4b55a049 (45 on 2bcf1cfe); patch-id
+                 fa635979 == 8c52506; diff = research.ts, traced.ts + 3 tests; nine blobs = cb6d030; no range control; 0
+                 docs; 201 test files. Ship: Ops gate + build, his yes.
+SEQUENCE TRAP    Caught in the replay: levels e8caa77d and reports e8822583 are SIBLINGS on 2bcf1cfe; the second deploy
+                 would remove the first. ORDER CALL: v28 -> REPORTS e8822583 -> LEVELS re-picked onto e8822583 (6 picks,
+                 replayed). If reports cannot ship, levels ship as e8caa77d. /proc before each launch = the base.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
