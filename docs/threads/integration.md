@@ -2365,6 +2365,11 @@ NOW-CELL LIVE    Design, on his "allow it" (Design's session): production c3d0f0
                  15:07:02 ET showed EVERY row as "/min"; not reproduced in 45 samples. -> TOMORROW, owner Research: which
                  code paths null nowBuckets board-wide for one poll, and whether any logs (Ops counts); no probes in his
                  window.
+HIS RULING       THIS SESSION (4689366c, typed 2026-09-30T19:34:36Z) "a, try tonight" -> RUN 4 tonight, the LAST (overrules
+                 my "no run 4"). Research: whole SupplyBlock to the checker, field tests, re-freeze to me before release,
+                 a clean day (unused by any bar and not 09-29, whose v5 outputs shaped the fixes). Marketing: fresh set, run
+                 3's rules + supply-field regression controls. PRE-FIXED: PASS -> Ops re-picks the re-freeze onto 4b55a049,
+                 gate, blob verify, his yes; ANY FAIL -> reports tomorrow, no run 5. All three told.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
