@@ -1362,6 +1362,12 @@ MOTION CHECKED   Ops read-back 00:15:23Z (before the restart): mointel.env 640 r
                  (21 + the four); CAPTURE_PRICE_MIN=0.25, CAPTURE_PRICE_MAX=50. Drift re-run 20:15:07 ET and real sync
                  stderr identical to 19:5x ("sync-env.sh: command not found" among the six lines). SATISFIED. Restart
                  of mointel-market in progress; result + /proc owed.
+RESTART DONE     Ops: mointel-market ExecMainStart 00:15:40Z, pid 1574400, cwd 1b5ead6. "[demand] recording $0.25-$50,
+                 qualifying $0.25-$20" -- qualifying = DISCOVERY_PRICE_MIN/MAX (runtime.ts:567-569, read), the 09-25
+                 floor already on the box (sync-env.sh:133), NOT new. trades.db user_version 2. STREAMING/RECORDING,
+                 discarded 0; research NR 0; 0 lock/busy lines. Item 1 PASS-shaped (lag 297/383 ms) -> raw to Research.
+                 Start->SIP 2m41s (replay 75.4 s). ROLLBACK FLOOR 9508fb9/3810b9e in force. Next: snapshot (c), 21:50,
+                 22:08.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
