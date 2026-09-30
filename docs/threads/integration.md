@@ -1738,6 +1738,9 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   Design 4 + Web 5f3a272, f272bec, 1703390, 32a9a84 (+ optional e68137c comment, 69bafba docs). adopted 2026-09-11
   stands; pipes stand. Web recorded the precedent NARROWER in the legal files (a mark replaced by one doing the same
   work; anything moving a clause boundary is a redraft).
+HIS WORDS (this session, 14:06:49Z): "im done trading for the day. board is free." -> Ops: ships after the 10:17 read
+  completes (research worker must not restart inside it); matched box before/after of the speed fix pre-registered
+  (baseline on 74c1818 after 10:17, control after c3d0f06, reading after 84b0099; observation, not a gate).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
