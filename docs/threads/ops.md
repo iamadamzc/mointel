@@ -12869,3 +12869,9 @@ range ranking; round trip; schedule. Mutants: eligibility dropped 3 kills (predi
 not written 1 (1). UNTESTED: the worker's range-only union + no-reassess guard. MAIN version db5d142 (main's 5-arg
 rankInRange; Research's two sic tests flipped: column present, reads null until written) gating. v28 must stack on the
 em-dash cut (95b734e needs f6915c44 etc.). History store: separate worktree A:\mointel-hist, in progress.
+**~16:1xZ box read (read-only):** tradeCapture bucketsDiscarded 0; 0 journal lines matching discard/SQLITE_BUSY/locked
+since 08:00Z. minute_bars coverage 13:30-16:07Z (158 min) for the top 10 by rvol_rank: CNTB/NIVF/VBIO 158, LIQT 157,
+BIYA 155, TGE 154, LGHL 153, CMCT 130, ANTA 98, AURE 78 (first bar 14:45Z). Missing minutes NOT yet classified as
+no-trade vs lost: my trade_buckets cross-check loop ran too long in RTH and was killed (below).
+Box note: pid 146984, a `bash -c until ! pgrep deploy.sh ...` loop from 2026-09-11, still running (sleep loop, harmless);
+leave or kill on his word.
