@@ -20,3 +20,6 @@
 # checkout, on any platform (the hashes were computed over LF bytes).
 docs/research/session-reports/defect-set.md text eol=lf
 docs/research/session-reports/defect-set-2.md text eol=lf
+
+# v5 pre-registered defect set: pinned to LF so its committed sha256 verifies.
+docs/research/session-reports/defect-set-v5.md text eol=lf

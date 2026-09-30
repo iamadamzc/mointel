@@ -532,10 +532,26 @@ float", an en-dash range). Authored **informed by the v5 CONTRACT only (`design.
 board-eligible after-hours totals (2,419 traded, 697 up, 559 down; `report-ah-totals.ts`
 = Ops v28), and its wrong-total defect uses the all-rows up-count (795).
 
-    sha256(defect-set-v5.md) = 437e30a660b67370fd66b6a9726ce09affd7159af706ec229647bd7cd2c0d0a6
+    sha256(defect-set-v5.md) = cd8052b906d81feaac123d1bf20ace7d84981d7bf646fb35d02aca34a70766b0
 
-Sealed in scratchpad; released to Research only after Integration confirms the v5
-checker freeze, pinned LF so the hash verifies on any checkout.
+**Seed-lock deviation, cd8052b9 supersedes 437e30a6 (Integration's order call).** The
+set was first locked pre-freeze at `437e30a660b67370fd66b6a9726ce09affd7159af706ec229647bd7cd2c0d0a6`
+(committed `70920cdc`, 12:xx ET, before the checker froze at `1ab48be`, 13:16 ET). The
+harness author (Research) then asked, AFTER the freeze, for the consumer's format: full
+JSON drafts per control/variant, `"headline": ""`, `<checkpoint>-<class>` ids, and a
+keyed-line table. Reformatting to that overwrote the original file, which was
+scratchpad-only and never committed, so 437e30a6 cannot be reproduced byte-exact and the
+new artifact hashes to cd8052b9. **The change is format only.** I attest in good faith
+that no seeded line's class, keying, or wording was changed, and that I remain BLIND to
+the checker (`1ab48be` unread), but this is CLASS-LEVEL, matching the pre-freeze
+description above; the byte-level proof that no seeded line changed during the reformat
+is what the deviation gives up, and the run must carry that limit. Counts: 19 classes,
+19 keyed defect variants, 4 controls (499-C, 509-C, 512-C, 513-C). Going forward the
+lock covers the final artifact in the consumer's format: format first, hash last.
+
+Released to Research after Integration's confirm, pinned LF so the hash verifies on any
+checkout. Research reports the bar as "PASS/FAIL AS REGISTERED, with the seed-lock
+deviation of cd8052b9", never as a clean registration.
 
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
