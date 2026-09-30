@@ -102,6 +102,14 @@ describe('every phrase the writer is handed survives the checker', () => {
   });
 });
 
+describe('the distance from the high names its referent', () => {
+  it('says "under its session high", never a bare "under it" a reader can hang on the close', () => {
+    const sheet = factSheet(IMCC_0925).join('\n');
+    expect(sheet).toContain('now 34.6% under its session high');
+    expect(sheet).not.toMatch(/under it\b(?!s)/);
+  });
+});
+
 describe('what the writer is never shown', () => {
   it('no band ordinal from the change notes', () => {
     const sheet = factSheet(IMCC_RECAP).join('\n');
