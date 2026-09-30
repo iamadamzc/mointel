@@ -384,10 +384,12 @@ VOICE
   "names remain near their highs" (that headline was struck in the voice run).
 
 SHAPE  (replace the self-contained bullet with:)
-- Each line about a name is ONE self-contained SENTENCE naming that ticker: it
-  stands alone, with no "it", "also" or "the same name" pointing at another line —
-  self-contained means it does not lean on another line, NOT that it is a row of
-  fields. Set "ticker" to that ticker; a line about no single name has "ticker": null.
+- Each line about a name is ONE self-contained SENTENCE: it stands alone, with no
+  "it", "also" or "the same name" pointing at another line — self-contained means
+  it does not lean on another line, NOT that it is a row of fields. The surface
+  prints the ticker as the line's lead (Design's ruling), so set "ticker" to that
+  ticker but do NOT repeat it in the text — open on what the name did. A line about
+  no single name has "ticker": null.
 ```
 
 **Before / after, on a real checked row (my 09-18 IMCC, so it teaches no
@@ -416,6 +418,25 @@ every name with `ranked #N`, and a cheap model opens where the sheet opens. If
 of each name's sheet block (a facts-presentation change, no fact altered) would
 remove the pull at the source. Your call — it touches the fact sheet, which is
 yours.
+
+## The line under a section the checker emptied
+
+When strikes remove every line in a section (or the section held nothing), Design
+keeps the heading and needs one printed line under it. `NOTHING_LINE` ("Nothing in
+our sources for this section.") is reserved for the writer's OWN checked absence,
+so this cannot reuse it — in the struck case our sources DID hold a name, its
+sentence just failed the check. The words, mine:
+
+> **No line for this section in this report.**
+
+Checked against the four constraints Design set: it is **true in both cases** (a
+name whose sentence failed, or nothing at all) because it speaks about the report,
+not the sources; it **claims nothing about the market**; it **cannot be read as a
+removal** — it states the current rendering, and invites no guess about what a
+strike took; and it is **distinct from `NOTHING_LINE`** ("No line …" vs "Nothing
+in our sources …"). Tight, as printed copy must be. I endorse Design's placeholder
+wording as final rather than reword it — a warmer phrasing risks reintroducing a
+market or removal hint.
 
 ## For Commercial — where I am writing near the line, and unsure
 
