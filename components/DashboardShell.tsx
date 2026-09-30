@@ -13,7 +13,7 @@ import { countCyclePhases, cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { Graveyard } from '@/components/Graveyard';
 import { MomentumTable } from '@/components/MomentumTable';
 import { FocusStrip } from '@/components/FocusStrip';
-import { BriefingLine, ReportPanel } from '@/components/SessionReports';
+import { BriefingLine, ReportWindow } from '@/components/SessionReports';
 import { TickerDrawer } from '@/components/TickerDrawer';
 import { dedupeSheetRows, mergeDesk } from '@/lib/dashboard/merge';
 import {
@@ -683,7 +683,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       </main>
 
       {reportPanelOpen && timeline && reports && reportChoice?.kind === 'CHOSEN' ? (
-        <ReportPanel
+        <ReportWindow
           timeline={timeline}
           ranges={reports.ranges}
           range={reportChoice.range}
@@ -693,7 +693,13 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           nowMs={now}
           onClose={closeReport}
           onSelectTicker={setSelectedTicker}
-          onOpenCheckpoint={setSelectedAssessment}
+          // A checkpoint swaps the board UNDER the window, out of sight; close
+          // the window so the reader sees what the link opened.
+          onOpenCheckpoint={(id) => {
+            closeReport();
+            setSelectedAssessment(id);
+          }}
+          covered={selectedTicker !== null}
         />
       ) : null}
       </div>
