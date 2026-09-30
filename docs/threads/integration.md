@@ -1525,6 +1525,8 @@ firing in an archived session NOT verified. New Ops told to set guarded duplicat
   SET (read in new Ops transcript 7bacf0d6): 5 1 / 40 4 / 17 10 on 30 9, one-shot, guarded. Ops reads the retiring
   seat's CronCreate jobs as DEAD (in-memory, session not running). All reminders fire ONLY while the app is open.
   DESIGN had NO reminder for its 04:00 read (350e6daa: no CronCreate) -> asked to set 04:05 ET.
+  DESIGN SET job b8a3af6a `5 4 30 9 *` (one page load, fresh link revoked after; result + cut request on 74c1818 if
+  all three hold). THIS SEAT: own one-shot check at 04:23 ET for (c') and Design's read (session-only).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
