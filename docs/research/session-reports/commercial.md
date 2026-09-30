@@ -321,3 +321,53 @@ commit to what happens next?** Applied to what's new:
 from the draft, per Integration's ask, so the review against this document (§3–§4)
 before it reaches him is a check against a known standard, not a first encounter with
 one.
+
+---
+
+## 9. RULED 2026-09-30 — SHARES OUTSTANDING IS NOT THE BANNED NUMBER
+
+*Research's question, ahead of the writer build: rule 2 above bars the float
+NUMBER in prose. Does it also bar shares outstanding — `structure.sharesOutstanding`
++ `sharesOutstandingDate`, EDGAR-reported, present on 36 of 48 report rows checked?
+Research's own lean was option (a), printable with its as-of date and never called
+float; this seat's ruling is (a), with one addition below.*
+
+**Ruled: printable, dated, never labelled float — because it is a different
+quantity from a different source, not the same number under a gentler rule.** The
+float-number ban (§2f item 3, naming document `2026-09-10`) exists for a specific,
+narrow reason, re-read to be sure before answering: it struck a defect **rate** about
+a **vendor's** float, because the desk's own measurement is that a vendor-sourced
+float can be wrong — its conditions are *"no vendor named or inferable; no rate,
+ratio or count."* The 2026-09-17 standing default (*"narrate the verdict, never the
+number"*) extends that same reasoning to the board's own displayed float: the
+number comes from the Sheet, relayed from a vendor, and the desk's own check is that
+it contradicts the filed share count on roughly one name in six — so publishing it
+as fact would mean knowingly printing a number the desk itself distrusts.
+
+**Shares outstanding, as Research describes it, is neither of those things.** It is
+not a vendor's computed float — it is the company's own SEC-filed count, dated. It
+is not a number the desk has measured to be unreliable; the desk's own float module
+uses exactly this figure as the reference it checks a vendor float *against* (naming
+doc §2f item 3: *"the desk checks the float it is shown against the filed share
+count and refuses the one that cannot be right"*). Banning shares outstanding by the
+same rule that bans the float number would strike the very yardstick the desk uses
+to justify not trusting the other one — a different failure than the one either rule
+was written to prevent.
+
+**The one real risk is Research's, not this seat's, and Research named it
+correctly: a reader may take a share count for float, and a stale one can mislead.**
+Both are solved by form, not by suppression:
+
+1. **Always dated, no exception.** `sharesOutstandingDate` prints with the number,
+   every time — a share count with no as-of date is where the staleness risk
+   actually lives, not in the number itself.
+2. **Never called float, and never adjacent to a float verdict without the
+   distinction stated.** "12.3M shares outstanding (SEC, as of 08-11)" is a company
+   fact in the same register as §8 item 3. If the same paragraph also carries the
+   desk's float verdict, the two must be visibly different things on the page — a
+   labelled share count next to a labelled verdict, not one flowing into the other
+   as if they answer the same question. The checker Research proposes (strike any
+   line calling it float) is the right instrument; add to it: strike any line where
+   the two appear together with no distinguishing label.
+
+**v5 may print the share count under those two conditions.**
