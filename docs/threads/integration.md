@@ -2389,6 +2389,9 @@ RUN 4 SEEDS v2   Before locking, Marketing changed the set on first-hand as-of r
                  NONE_FOUND) recast from absence to stale-catalyst phrasing; AUUD (av 51, NONE_FOUND) added as the (a)
                  control (Research's relayed "no NONE_FOUND on 09-21" was wrong). New sha256 0ff12a28432fb84d69ce072376c3a75
                  ae0f34c8b95fa527be6086cf6f528cad9; b5452d59 never committed. RE-CONFIRMED; lock note first, then file.
+RUN 4 SEEDS v3   RE-CONFIRM OF 0ff12a28 WITHDRAWN (ledger 5): AUUD not among #456's 12 covered names; verify.ts:262
+                 NO_ROW_FOR_TICKER would strike it (read at cb6d030). Marketing: AUUD out, only each report's 12 names,
+                 (a) declared NOT exercisable on 09-21, VEEE stale recast kept; new hash to me before release.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
@@ -2419,6 +2422,10 @@ error                                                  TYPE                     
 4 relayed "09-26" to Marketing as run 3's day (from   a value relayed unopened (the      YES      peer
   Research); 2026-09-26 is a Saturday, no session.    family again; hand-off already     (family) (Research)
   Corrected to 09-23; did not reach him.              ruled for after tonight)
+5 re-confirmed Marketing's run-4 set 0ff12a28 with   accepted a composition without     YES      peer
+  AUUD as a control; AUUD is not among #456's 12      opening the rule it would meet     (family) (Research)
+  covered names, and verify.ts:262 strikes a ticker   (the family: a value passed on
+  with no row. Withdrawn before any release.          without reading)
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
