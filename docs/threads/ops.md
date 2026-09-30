@@ -12763,3 +12763,7 @@ UNKNOWN 6, WEAK_NEGATIVE_DILUTIVE 29 (= 104). B (amended): 1 row, id 2528 BIYA M
 Bytes per 200: min 154,173 / median 163,324 / max 171,717 (gzip; ~19-20% of the ~800-860 KB raw). vs 09-29 11:00-11:05Z
 54-59/60. Confounds: time of day; tab visibility; the client poll fix a391c61 (09-29 15:17Z) came AFTER that baseline
 and may change whether a slow build shows as a 499 at all; gzip since 1b5ead6; 74c1818 + Now field live.
+**R0 BASELINE (74c1818), 14:18:30-14:19:36Z:** pre-check /proc web/research/assess 74c1818 (start 02:33:33Z), market
+1b5ead6, no deploy unit, load 0.25, io some avg10 1.32. Runs (cold s / warm median / warm max ms):
+3.47/477.1/705.7 | 0.45/467.9/521.6 | 0.93/484.7/692.0 | 0.43/473.6/521.6 | 0.50/471.7/664.7.
+**Median of medians 473.6 ms; median of maxima 664.7 ms.** Payload 774,476 B, 50 demand states (14:19:4xZ).
