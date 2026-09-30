@@ -234,6 +234,7 @@ describe('deployment preflight', () => {
       PREFLIGHT_NOW_DOW: '2',
       PREFLIGHT_NOW_MINUTES: '720',
       DEPLOY_WINDOW_OVERRIDE: 'production incident: symbol loop',
+      LIVE_STORE_CHECK_OVERRIDE: 'test: isolates the checkpoint override',
     });
 
     expect(out).toContain('OVERRIDE:');
@@ -249,6 +250,7 @@ describe('deployment preflight', () => {
     const out = sh(PREFLIGHT_SH, [], {
       PROTECTED_MINUTES: '0',
       PREFLIGHT_NOW_MINUTES: '725',
+      LIVE_STORE_CHECK_OVERRIDE: 'test: isolates the reporting',
     });
     expect(out).toMatch(/previous checkpoint|next checkpoint/);
   });
@@ -270,6 +272,7 @@ describe('deployment preflight', () => {
     const out = sh(PREFLIGHT_SH, [], {
       PROTECTED_MINUTES: '0',
       PREFLIGHT_NOW_MINUTES: '960',
+      LIVE_STORE_CHECK_OVERRIDE: 'test: isolates the zero window',
     });
     expect(out).toContain('clear of every checkpoint');
   });
@@ -288,6 +291,10 @@ describe('deployment preflight', () => {
         PROTECTED_MINUTES: '5',
         PREFLIGHT_NOW_MINUTES: String(minutes),
         PREFLIGHT_NOW_DOW: String(dow),
+        // Isolates the checkpoint and trading-window logic from the live-store
+        // check, which refuses every weekday minute these tests pin. The
+        // live-store tests below pass '' to switch it back on.
+        LIVE_STORE_CHECK_OVERRIDE: 'test: isolates the other windows',
         ...extra,
       });
       return { status: 0, out };
@@ -371,5 +378,49 @@ describe('deployment preflight', () => {
     const result = preflightAt(480, 2, { TRADING_WINDOW_OVERRIDE: 'his word: board down' });
     expect(result.status).toBe(0);
     expect(result.out).toContain('TRADING WINDOW OVERRIDE REASON: his word: board down');
+  });
+  /**
+   * The live-store check (2026-09-30): deploy.sh's pre-stop quick_check read the
+   * live store for 803.8 s at 10:38 ET, stalled the web tier and slowed the
+   * market worker's flushes to 6-10 s. Until it moves, no deploy may be running
+   * 04:00-20:00 ET on a weekday.
+   */
+  it('refuses a weekday start that could run inside 04:00-20:00 ET', () => {
+    for (const minutes of [300, 660, 1199]) {
+      const result = preflightAt(minutes, 2, { LIVE_STORE_CHECK_OVERRIDE: '' });
+      expect(result.status, `at minute ${minutes}`).toBe(3);
+      expect(result.out).toContain('the live-store check');
+    }
+  });
+
+  it('draws the live-store edge at the latest possible run, and reopens at 20:00', () => {
+    const on = { LIVE_STORE_CHECK_OVERRIDE: '', PROTECTED_MINUTES: '0' };
+    // 03:39 + 20m = 03:59: over before premarket opens.
+    expect(preflightAt(219, 1, on).status).toBe(0);
+    // 03:40 + 20m = 04:00: it could still be reading the store at 04:00.
+    expect(preflightAt(220, 1, on).status).toBe(3);
+    // 20:00 itself is outside the window.
+    expect(preflightAt(1200, 1, on).status).toBe(0);
+  });
+
+  it('admits the same hours at a weekend', () => {
+    // Checkpoints switched off so this isolates the live-store check.
+    expect(preflightAt(660, 6, { LIVE_STORE_CHECK_OVERRIDE: '', PROTECTED_MINUTES: '0' }).status).toBe(0);
+  });
+
+  it('is not covered by the checkpoint or trading-window overrides', () => {
+    const result = preflightAt(660, 2, {
+      LIVE_STORE_CHECK_OVERRIDE: '',
+      DEPLOY_WINDOW_OVERRIDE: 'incident',
+      TRADING_WINDOW_OVERRIDE: 'his word',
+    });
+    expect(result.status).toBe(3);
+    expect(result.out).toContain('the live-store check');
+  });
+
+  it('proceeds inside it only on its own override, and records why', () => {
+    const result = preflightAt(636, 2, { LIVE_STORE_CHECK_OVERRIDE: 'his word: board down' });
+    expect(result.status).toBe(0);
+    expect(result.out).toContain('LIVE-STORE CHECK OVERRIDE REASON: his word: board down');
   });
 });
