@@ -1518,6 +1518,9 @@ error                                                  TYPE                     
 8 routed per-range counts to "the desk_assessments   a schema location named unread     YES      peer
   row"; it has no range column (db.ts:572-603, Ops   (the family)                        (Ops)
   read). Child table approved instead.
+9 sent Web em-dash counts from a grep over files      an inventory from the wrong      YES      peer
+  (signin 7 = 6 comments) and MISSED docs/legal/*.md instrument (files, not rendered   (family) (Web)
+  (27, the published legal text).                     text)
 ```
 HIS RULING (this session, after ledger 6): "keep it until 10:12" -> this seat carries the overnight results ((c') 00:57 ET,
 Design's 04:00 Now-cell read, Research's 04:33 items, the 10:12 grades read), then does the full hand-off. A 7th entry of
@@ -1647,6 +1650,10 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   GLYPH -> HIM (Design recommends keep; fallback en dash via EMPTY_DISPLAY). normalize.ts:42/documents.ts:56 untouched.
   HIS RULING (this session): "keep it. fine for that, not writing." -> empty-cell "—" glyph KEPT. Research folds the
   interpreter em-dash ban into the business-description prompt bump (one version, one enumeration).
+  WEB 5f3a272 (public pages) + f272bec (27 em dashes in docs/legal/*.md, the PUBLISHED text; rendered check with a
+  positive control) on main (read; legal md now 0). My inventory to Web was grep-by-file and MISSED the legal text
+  (ledger 9). Canvas sweep -> Web (order call). Release: ONE em-dash cut (Design + Web + canvas) from production AFTER
+  the 10:27 ships. TO HIM: keep 'adopted: 2026-09-11' (punctuation only) vs re-adopt; the pipe in page titles.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
