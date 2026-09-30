@@ -1539,6 +1539,10 @@ firing in an archived session NOT verified. New Ops told to set guarded duplicat
 REPORTS STATUS  (his 3rd ask ~03:53Z) no report commits since 0811b14/3d618f0. Voice v3 IS in writer (e67a91b, read
   writer.ts:246-250) but NEVER RUN on real data -> ORDER CALL: Research voice run v3 on #551/#556/#566/#569 now,
   drafts committed before reading; one complete checked report (#551) to show HIM verbatim, unpicked.
+VOICE RUN v3     c705efc harness, caecad3 raw (before reading): 1/52 struck (#551 headline, 'two decliners' vs three);
+  $0.090. Referent defect the checker cannot see: 'now N% under it' reads as the close, is the session high -> sheet
+  fix APPROVED. #551 read from docs/research/session-reports/voice-run-v3-2026-09-30/report-551-as-read.txt and put
+  to HIM verbatim; my read: accurate, template-shaped (same sentence frame, ~9 numbers per line). Voice work held.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
