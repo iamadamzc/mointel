@@ -12504,3 +12504,21 @@ step 2 is this same sync. FULL SYNC at 20:15, as approved.
 at the dry run: `rm -rf` with no args -- a no-op -- plus five not-found words; the substitutions also delete those words
 from the comments). Harmless today, but it runs whatever a comment puts in backticks, one line from the prod env. Fix:
 escape the backticks (the heredoc must still expand $ALPACA / $LOCAL_ENV). Owner Ops.
+
+## 2026-09-29 20:15 ET: THE MARKET-WORKER RESTART, on his word ("tonight at 20:15")
+```
+env sync   00:15:21Z  full sync; pre-run drift check identical to 19:5x; 25 keys; CAPTURE_PRICE_MIN=0.25 / MAX=50 read back
+restart    ExecMainStart 2026-09-30 00:15:40Z, pid 1574400, cwd 1b5ead6 (was 3b78b8c pid 1347535 since 09-27 23:17:45Z)
+startup    "[demand] recording $0.25-$50, qualifying $0.25-$20"
+replay     1,142,348 stored bars / 8,177 symbols in 75,448 ms  (the "+~10 s" projection was WRONG)
+SIP        authenticated 00:18:21Z -> start-to-live 2m41s (no session in progress)
+trades.db  user_version 2; trade_buckets, feed_intervals, trades_meta
+research   NRestarts 0 -> 0 across the restart's write lock (c49bb3a held)
+errors     0 lock / SQLITE_BUSY / error lines in market+research+web since the start
+timer      first flush: whole 728.6 ms, upsert 261.0 ms, dirty 3291, over250 1 (post-market, startup flush)
+item 1     last_flush_ms advanced 00:19:05 -> 00:19:12Z, lag 297 / 383 ms (raw to Research)
+```
+**ROLLBACK FLOOR NOW IN FORCE: no worker below 9508fb9/3810b9e.**
+**Snapshot (c) 00:19:45Z: median of maxima 811.7 ms (runs 811.7/1768.9/822.4/682.8/805.4), 15 names with nowBuckets.
+FAILS the registered gate vs (b') 8.9, but (b') was post-roll 00:55 ET on a near-empty trading date and (c) is pre-roll
+with a full day: CONFOUNDED by time of day. Matched re-take (c') scheduled 00:57 ET; Integration to rule.**
