@@ -12730,3 +12730,6 @@ by Design). TRIGGER: after today's two ships; one commit, Integration enumerates
 **Integration ruling:** no market restart for punctuation; the worker strings ride the NEXT market-worker restart
 whenever one is due (carry in the hand-off); Design normalises stored/emitted text at render meanwhile. The web-tier
 label (health.ts:207) may ride a web ship. The A/B script is in no ship cone (ls-tree 0 in 84b0099/6043db3/c3d0f06).
+**Integration ~11:2xZ: the em-dash web fixes are the THIRD ship, one cut** (Design 1dacc16 / 9a1d8e7 / c76e98f / 9e0a3a0 +
+Web's), cut by Design onto /proc's sha AFTER c3d0f06 and 84b0099 land, replayed by Integration, put to him separately.
+At 10:27 ask ONLY the two this seat holds. None of those commits is in 74c1818 / c3d0f06 / 84b0099 (merge-base checked).
