@@ -12819,3 +12819,13 @@ propose where the check should live (snapshot, or post-stop). (2) R1's first set
 ~4.3 GB + 0.7 GB WAL (80-330 s on record, 3m27s on 1.8 GB 09-17); it only grows (retention 20).
 NOTE: preflight runs from the DEPLOYED release when it has one, so the refusal is procedural until a release carrying
 it is live.
+**BUILT + GATED: 46d9f9d3cc9eac69965364af7282c543c5061561 (preflight live-store refusal), stacked on 84b0099** (branch
+ops/preflight-live-check-on-84b0099). Weekday starts refused if the deploy could run inside 04:00-20:00 ET
+(LIVE_CHECK_RUN_MAX 20 min; 15 measured), own override LIVE_STORE_CHECK_OVERRIDE, neither other override covers it.
+5 tests; mutant (block disabled) killed exactly the 4 predicted. Existing preflight tests pass the override to stay
+isolated. Found in passing: production's preflight (74c1818 lineage) lacks main's weekend checkpoint guard.
+**test-gate ALL GREEN 178/178 (pre-registered), 2,731 tests (2,726 + 5), lint 0 errors.** Active only once a release
+carrying it is live (preflight runs from the deployed release). Sent to Integration.
+PROPOSAL (where the check lives): run the pre-stop quick_check ONLY when a migration is pending (release
+SCHEMA_VERSION != store user_version); same-schema deploys, the common case, skip it. Keep integrity detection with a
+nightly quick_check timer after 20:00 ET. Posting it after the stop instead would turn 3 s of downtime into 13+ min.
