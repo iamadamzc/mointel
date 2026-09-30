@@ -77,6 +77,9 @@ import {
   type BlueSkyThreshold,
 } from './blueSky';
 import { projectResearchHealth } from '../research/health';
+import { readReportsPayload } from '../desk/reports/api';
+import type { SessionReportsPayload } from '../desk/reports/contract';
+import { reportRanges } from '../desk/reports/ranges';
 import {
   RESEARCH_STATUS_LABEL,
   resolveDisplayStatus,
@@ -774,6 +777,30 @@ export function getAssessmentSnapshot(id: number): {
 }
 
 /** The assessment history selector's options, newest first, across dates. */
+/**
+ * The session-reports payload for `GET /api/reports`, or null when there is
+ * nothing to serve (no store, or no `session_reports` table yet): the route
+ * then answers 404 and the panel does not mount. Reads stored reports only.
+ */
+export function getSessionReports(now: Date = new Date()): SessionReportsPayload | null {
+  const config = loadMarketConfig();
+  let db: MarketDatabase | null;
+  try {
+    db = connection(config.dbPath);
+  } catch {
+    resetConnection();
+    db = null;
+  }
+  if (!db || !assessmentTablesPresent(db)) return null;
+  try {
+    const { ranges, defaultRangeId } = reportRanges();
+    return readReportsPayload(db, now, ranges, defaultRangeId);
+  } catch {
+    resetConnection();
+    return null;
+  }
+}
+
 export function listAssessments(limit = 60): AssessmentSummary[] {
   const config = loadMarketConfig();
   let db: MarketDatabase | null;
