@@ -1515,6 +1515,9 @@ error                                                  TYPE                     
 HIS RULING (this session, after ledger 6): "keep it until 10:12" -> this seat carries the overnight results ((c') 00:57 ET,
 Design's 04:00 Now-cell read, Research's 04:33 items, the 10:12 grades read), then does the full hand-off. A 7th entry of
 the same family before then -> say so to him in the next message.
+OPS PREP (read): d9df1c4 sync-env backticks escaped (read at l.81-83); b6d1635 docs/ops-opening-prompt.md carries
+production 74c1818/1b5ead6, pins, the history store (after 10:12), reports' 20:05 checkpoint + per-range top-N
+(order proposed to Integration). Both were unpushed from the shared tree; pushed here.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
