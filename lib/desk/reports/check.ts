@@ -23,7 +23,7 @@
 
 import { humanise } from '../../dashboard/language';
 import { etClock } from '../../market/session';
-import type { MissedCause, ReportCheckpointRef, ReportKind } from './contract';
+import { EMPTIED_SECTION_LINE, type MissedCause, type ReportCheckpointRef, type ReportKind } from './contract';
 import type { ReportFact } from './facts';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
@@ -348,10 +348,13 @@ export type CheckedReport =
   | { ok: false; cause: MissedCause };
 
 /**
- * The draft with its struck lines removed. A section emptied by strikes reads
- * `NOTHING_LINE`, so a removal can never publish "nothing held" by omission
- * (rule 2). Every line and the headline struck is `ALL_STRUCK`: an empty
- * report is the forbidden shape.
+ * The draft with its struck lines removed. A section the strikes emptied KEEPS
+ * its heading and reads `EMPTIED_SECTION_LINE` -- never NOTHING_LINE, which
+ * would claim our sources held nothing when they held the struck name, and
+ * never a dropped section, which reads as a shape change (Design's ruling,
+ * superseding Research's drop in cdc77af). This includes a section whose own
+ * NOTHING_LINE was struck. Every line and the headline struck is
+ * `ALL_STRUCK`: an empty report is the forbidden shape.
  */
 export function applyStrikes(
   draft: ReportDraft,
@@ -363,23 +366,12 @@ export function applyStrikes(
   if (lines.every((line) => struck.has(line.id))) {
     return { ok: false, cause: { kind: 'ALL_STRUCK', at: now().toISOString() } };
   }
-  const sections: ReportDraft['sections'] = [];
-  draft.sections.forEach((section, s) => {
+  const sections = draft.sections.map((section, s) => {
     const kept = section.lines.filter((_, l) => !struck.has(`S${s + 1}L${l + 1}`));
-    if (kept.length > 0) {
-      sections.push({ heading: section.heading, lines: kept });
-      return;
-    }
-    /*
-     * RESEARCH'S ADDITION, flagged to Design: a section whose own
-     * NOTHING_LINE was struck is DROPPED, not refilled. Refilling it would
-     * publish the very claim the checker refused ("nothing in our sources"
-     * where the rows hold something). Every other emptied section reads
-     * NOTHING_LINE, as ruled.
-     */
-    if (section.lines.some((line) => line.text === NOTHING_LINE)) return;
-    sections.push({ heading: section.heading, lines: [{ ticker: null, text: NOTHING_LINE }] });
+    return {
+      heading: section.heading,
+      lines: kept.length > 0 ? kept : [{ ticker: null, text: EMPTIED_SECTION_LINE }],
+    };
   });
-  if (sections.length === 0) return { ok: false, cause: { kind: 'ALL_STRUCK', at: now().toISOString() } };
   return { ok: true, headline: struck.has('H') ? null : draft.headline, sections };
 }
