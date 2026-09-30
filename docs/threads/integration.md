@@ -1569,6 +1569,8 @@ DATA MAP        Research data-map-2026-09-30.md (read): EXISTS as-of checkpoint:
   MISSING: (a) sector + HQ city (EDGAR already fetched, discarded) -> APPROVED to Research, code only; (b) FLOAT
   0/48 -> HIS data decision (vendor stays on his desktop); (c) ah_high not on checkpoint row -> Ops (new) with the
   checkpoint/bump work; (d) "on watch" undefined -> HIS word, asked.
+  Ops fc77734 (read db.ts:618-660/800-806/136-137): neither ah_reference_close nor ah_high on the checkpoint row ->
+  both frozen at capture in the one bump; ah_low ADDED (order call). Fills forward only.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
