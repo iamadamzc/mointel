@@ -12913,3 +12913,46 @@ ships (it may ride /api/reports).
 gates first (others announce to Ops and wait for a clear); a failure is environmental ONLY if it is a timeout, a spawn
 failure (126/127/0xC0000142) or SQLite OOM, never a wrong assertion, AND the file passes alone on the same tree, AND the
 gate report names file + signature; close stray processes before a gate.
+
+## HAND-OFF, 2026-09-30 17:1xZ (13:1x ET): this seat (local_bb3d4059) RETIRES on his word ("time to retire?")
+Reason: two repeats of corrected error classes in one session (commit-message-ahead-of-content; asserted-before-opening),
+all caught by peers or self before anything shipped. Ledger above.
+
+**Production, read 17:11:52Z:** web 1631221 / research 1631287 / assess 1631397 on c3d0f06 (start 14:51:49-50Z), NR 0;
+market 1574400 on 1b5ead6 (00:15:40Z), NR 0. Releases 1b5ead6 372f5eb 74c1818 c3d0f06. Pins: market-floor 1b5ead6 (v27),
+rollback-baseline 372f5eb (v18). Schema 27. 62G free. RTH, discarded 0.
+
+**TONIGHT'S SEQUENCE (Integration-approved; one release at a time, /proc read between, none straddling 22:00 +/-5;
+each needs its gate here + its sha approved by Integration + HIS word where named):**
+| # | release | sha | gate | his word | state |
+| 1 | speed fix + live-store guard | 46d9f9d3cc9eac69965364af7282c543c5061561 (carries 84b0099) | ALL GREEN 178/178 | YES, "yes tonight" (~15:47Z) | launch 20:07 ET; then R2 |
+| 2 | em-dash cut (Design) | 89d3905303bd5e28b93dd111254833f0f7b2b354 | run1: 1 env timeout (releaseRetention 07-10 test); run2: see below | NOT YET, own question | after #1 live |
+| 3 | v28 (ranges, AH freeze, sic, session_reports, 20:05, prompt v3) | 2bcf1cfe7238e0dd01adb3833ccc8b87e6d0c23f (on 89d39053) | ALL GREEN 183/183, 2,782 | NOT YET: must name ~10-18 min board + site outage (migration VACUUM INTO backup after the stop) | launch <= ~21:15 ET else after 22:10; then RE-PIN market-floor to it (his word) |
+| 4 | history store (+ resistance_levels table) | branch ops/history-store-on-46d9f9d c443b585 (b77f1dc1 + c443b58) | NOT GATED; must be re-stacked onto #3 and gated | NOT YET: release + HISTORY_STORE_ENABLED env (both his) | after 22:10 |
+| 5 | /api/reports (Research) + report runner (Ops, research worker, job enqueued by assess) | not built (Ops half) | - | NOT YET | Integration's condition: FK test (late run inserts; missing assessment_id fails loudly) |
+| 6 | levels (Research compute on a 5-min research-worker timer, rows in history.db resistance_levels; Design section) | Research branch worktree-agent-acfba7ff0c32d6e90 | box cost gate FIRST: scripts/levels-cost.ts at Research's registration sha (2f302d87, to confirm), run once from /tmp on the box (git archive, node_modules from the live release, market.db read-only), after 20:00 in a gap | NOT YET | |
+
+**Pending, owner = the successor Ops seat:**
+- The 20:07 ET ship reminder (cron 034bcf2f) DIES WITH THIS SESSION: recreate it. Ship with the base-check first
+  (scratchpad script was: /proc web/research/assess == expected sha x3, market == 1b5ead6, no mointel-deploy unit, ABORT on
+  mismatch, then `DEPLOY_TESTS_SKIP=1 RESTART_MARKET=no bash deploy/aws/push-release.sh mointel-ssm
+  A:/AWS_creds/mointel-prod-key.pem <sha>`). Each deploy's pre-stop quick_check takes ~13-14 min on the 4.3 GB store; the
+  push-release follower times out before it ends: confirm from /proc, never from its exit line.
+- R2 (after #1): (b') method, 5 x (1+20) scripts/ops/snapshot-latency.sh, **>= 120 s after the web start ENFORCED in the
+  command**; confounded vs R0 473.6 / R1 501.6 (time of day, content).
+- v28 on MAIN: branch ops/v28-on-main 9f4133b1 (worktree A:\mointel-v28main) = db5d142 + 9f4133b; NOT yet tested as a
+  whole on main (db5d142's gate had only env failures) and NOT landed. Land via patch into A:\mointel + `commit --only`
+  of exactly those 10 paths (checked clean at ~17:0xZ), then send Research the main sha: its upsertIssuer WRITE of
+  sic_description + round-trip test land on main after it and ride the /api/reports release (not in v28).
+- Capture loss vs delay for today's slow flushes: minute_bars gaps listed above for the top 10; classify each missing
+  minute against trade_buckets with ONE set-based query after 16:00 ET, time-boxed on the remote side.
+- The em-dash worker strings (engine.ts:1801/1842/2024/2120, activity.ts:410) ride the next market-worker restart.
+- Check relocation (quick_check only on a pending migration + a nightly timer after 20:00 ET): approved in direction,
+  its own enumeration after tonight.
+- Tooling: bash-spawning preflight/release tests time out under this PC's low commit memory; give them more time or fewer
+  spawns. Gate rule for tonight above (one full suite at a time; environmental only on three conditions).
+- RTH flush baseline (p50 per-minute max 2.5 s, max 11.35 s) fails the price-range write gate: Integration takes it to him.
+- Box: pid 146984 (a 2026-09-11 sleep loop waiting on deploy.sh) still running; harmless; kill on his word.
+- Local worktrees to remove when their branches are merged or dead: A:\mointel-ops, A:\mointel-hist, A:\mointel-v28main,
+  A:\mointel-chk1, A:\mointel-chk2 (each node_modules is a JUNCTION to A:\mointel's: remove with `git worktree remove`,
+  never a recursive delete through the junction).
