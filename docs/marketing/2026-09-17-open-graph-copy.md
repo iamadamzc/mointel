@@ -1,4 +1,4 @@
-# Open Graph copy for tmitrader.com — selected, not drafted
+# Open Graph copy for tmitrader.com, selected, not drafted
 
 **Marketing, 2026-09-17.** Integration found the site carries no Open Graph
 tags: shared in a DM or a channel it renders as a bare URL. **Rule for this
@@ -12,7 +12,7 @@ one before it); Warrior Trading never named; no price, feed, outcome or proof.
 
 ## Where the site already stands
 
-Live `<title>`: **TMI Trader — True Move Intelligence** (36 chars).
+Live `<title>`: **TMI Trader, True Move Intelligence** (36 chars).
 Live `<meta name="description">`: *"An intelligence desk for people who trade
 US small-cap momentum in the premarket: what is moving, why, where it sits in
 the cycle, and what the share structure actually looks like."* (180 chars).
@@ -23,11 +23,11 @@ stronger line below.
 
 Preferred, the settled line, his direction and never restyled:
 
-> **TMI Trader — Intelligence on what's moving.** (44 chars)
+> **TMI Trader: Intelligence on what's moving.** (44 chars)
 
 Fallback if Web wants the title tag and the OG title identical:
 
-> TMI Trader — True Move Intelligence (36 chars)
+> TMI Trader, True Move Intelligence (36 chars)
 
 ## og:description
 
@@ -62,7 +62,7 @@ unknown point. Measured, not eyeballed.
 
 **og:title (43):**
 
-> TMI Trader — Intelligence on what's moving.
+> TMI Trader: Intelligence on what's moving.
 
 **og:description (108):** the registered statement's list, deletion-only.
 Under the title it reads as one thought: what's moving, then why. Every
@@ -122,7 +122,7 @@ removed by collateral, which is the shape this desk keeps catching.
 
 **The string, cut to the new name (36):**
 
-> TMI — Intelligence on what's moving.
+> TMI: Intelligence on what's moving.
 
 Not the long name plus the tagline: 71 chars, and "Intelligence" twice in one
 line. `og:site_name` already carries the full name on every card that shows

@@ -1,4 +1,4 @@
-# Landing page copy pass — words, not descriptions of words
+# Landing page copy pass, words, not descriptions of words
 
 **Marketing, 2026-09-10 17:25 ET, against `Main.dc.html` at `70198bb`.**
 Co-owned with Web. **Laid in by Web at `56394fe`, both artboards.** The two
@@ -26,7 +26,7 @@ Every proposed line was checked against `what-it-is-not.md`.
 **H1, settled, untouched:** Intelligence on what's moving.
 
 **Sub, current:**
-> It watches the whole small-cap tape and tells you the moment a name joins the day's momentum cohort — while it is joining, not after it has run. Then it goes and reads the filings underneath it, without being asked: what the float actually is, whether the number on your screen can be trusted, and how many shares can reach the market that the float does not count.
+> It watches the whole small-cap tape and tells you the moment a name joins the day's momentum cohort, while it is joining, not after it has run. Then it goes and reads the filings underneath it, without being asked: what the float actually is, whether the number on your screen can be trusted, and how many shares can reach the market that the float does not count.
 
 **Sub, proposed:**
 > A name is running at 07:15 and nothing you can find explains it. This tells you what the move is standing on. Whether there is a catalyst and how old it is. Where it sits in the run. What the float actually is, and how many shares can reach the market that the float does not count. Before you have to decide. Where it has nothing, it says so.
@@ -44,24 +44,24 @@ Why: "watches the whole small-cap tape" sells the tape. No percentage in the her
 
 Why: a sentence about money changing hands is an outcome claim whatever its sign. The float is the number vendors print N/A for and the desk bounds from filings, so that is what the header says.
 
-### 01 — current: IT FINDS THEM JOINING / Cohort entry, not a leaderboard
+### 01, current: IT FINDS THEM JOINING / Cohort entry, not a leaderboard
 **Proposed:** IT CATCHES THEM COMING INTO PLAY / As it happens, not once it tops a list
 
 > Relative volume is ranked across every small cap at once, so a name shows up as it crosses into the day's runners, not after it is already third on somebody's list. Once it is on the board it stays for the session. A name that goes quiet at 08:10 and goes again at 09:20 is still there, because the one you stopped watching is the one that runs.
 
-### 02 — current: IT READS THE FILINGS UNPROMPTED / The structure work happens before you ask
+### 02, current: IT READS THE FILINGS UNPROMPTED / The structure work happens before you ask
 **Proposed:** IT READS THE FILINGS BEFORE YOU ASK / The structure work is done before the premarket is
 
 > When a name reaches the top of the ranking its filings are pulled and read, on a schedule that starts before the premarket does. Nobody is typing a ticker into EDGAR at 07:15 with half a decision already made. Either the work is done, or the board says plainly that it is not.
 
-### 03 — current: IT SEPARATES CAPACITY FROM INTENT / It says capacity, never selling
+### 03, current: IT SEPARATES CAPACITY FROM INTENT / It says capacity, never selling
 **Proposed:** IT SAYS CAPACITY. IT NEVER SAYS SELLING.
 
 Web split it at the full stop: eyebrow `IT SAYS CAPACITY.`, heading `It never says selling.` The break is right and stands.
 
 > A resale registration, a warrant, a convertible: each is labelled as what it is, shares that can come to market. Not shares that are coming. A filing tells you capacity and nothing else. Anything that tells you someone is selling is guessing, and you find out which on the day it matters.
 
-### 04 — IT TELLS YOU THE FLOAT IS WRONG / DIRTY FLOAT — keep, one tightening
+### 04, IT TELLS YOU THE FLOAT IS WRONG / DIRTY FLOAT, keep, one tightening
 
 > The float on your screen is a number someone published on a date. It knows nothing about the shelf that went effective on Tuesday, the warrants struck under the current price, or the note that converts at a discount to here.
 >
@@ -94,7 +94,7 @@ Why: 07:00 to 10:00 is Cameron's window, not his. His own record says the setup 
 
 > One reads what the market is doing. One reads what the company has filed. They answer different questions, they disagree more often than you would think, and the desk shows you both instead of blending them into a score.
 
-### DEMAND — THE TAPE / What the market is doing
+### DEMAND, THE TAPE / What the market is doing
 **Current:**
 > A continuous read of the market, held open all session. Volume against a twenty-session baseline, the ranking that follows from it, and the moment a name crosses into the day's discovery list.
 
@@ -103,9 +103,9 @@ Why: 07:00 to 10:00 is Cameron's window, not his. His own record says the setup 
 
 Why: "a continuous read of the market, held open all session" is the feed described as a feature. Cut the sentence, not the card. "Discovery list" is engine vocabulary.
 
-### STRUCTURE — THE PAPERWORK — keep as is.
+### STRUCTURE, THE PAPERWORK, keep as is.
 
-### WHEN THERE IS NOTHING TO SAY / Unknown stays unknown — keep as is. It is the best card on the page.
+### WHEN THERE IS NOTHING TO SAY / Unknown stays unknown, keep as is. It is the best card on the page.
 
 ---
 
@@ -135,7 +135,7 @@ Why: "a working small-cap momentum desk" is a company describing a market. The t
 
 ---
 
-## 8. Access — keep. Footer legal — Commercial's, untouched.
+## 8. Access, keep. Footer legal, Commercial's, untouched.
 
 ---
 
