@@ -1661,6 +1661,10 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   read -- crossed), 32a9a84 (:321 FULL STOP per Commercial d85ddad + tests/web/emDash.test.ts: both encodings,
   placeholder = nothing on one side, no markdown exception; 3/3 mutants). Register :392 ("TMI Trader", REGISTERED
   2026-09-10) left as a frozen record, raised with Commercial. Canvas: sweep + re-seed + republish after the cut.
+  DESIGN 1dacc16 (64 strings, 24 files) + 9a1d8e7 (rendered-text guard). Board labels use " · " ("red · backside");
+  Research told via Design for v5. ORDER: c3d0f06 -> 84b0099 -> ONE em-dash cut (Design 2 + Web 4) on then-production.
+  Worker text (engine.ts/activity.ts) rides the next market restart; board normalises at render. Main lint red from
+  Ops's de7f181 script -> Ops (not in ship cones).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
