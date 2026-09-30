@@ -2311,6 +2311,9 @@ V28 GATED        2bcf1cf ALL GREEN 183/183, 2,782 (new Ops). #1-#3 all gated her
                  gate running (201 declared).
 REPORTS GATED    4b55a049 ALL GREEN 201/201, 3,058 (Ops). next build running (test-gate.sh does not build). Remaining:
                  build result, run 2 PASS, my literal-sha approval, his yes (Ops asks after).
+REPORTS BUILD    4b55a049 next build exit 0 in a fresh worktree with its own npm ci (junction refused by Turbopack = env);
+                 /api/reports in the route table. deploy.sh builds before the stop (a build defect aborts with all
+                 serving). Reports cut waits ONLY on run 2 PASS -> my literal-sha approval -> his yes.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
