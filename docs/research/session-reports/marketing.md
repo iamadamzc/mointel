@@ -476,3 +476,23 @@ the checker afterward:**
 **Protocol:** the file goes to Research only after Research reports its checker
 committed; Research commits the run before reading any result. On reveal the file
 is committed to the repo and this hash verifies it unchanged.
+
+### Run 2 — a fresh set, informed authorship, guardrailed
+
+Run 1 FAILED as registered: all 18 defects struck, but the checker false-struck
+approved forms it was never given (a checker gap, not a set gap). Its controls are
+now read, so run 2 needs a fresh set. Integration ruled INFORMED authorship (I had
+read run 1's causes) with a guardrail: the four run-1-struck approved forms are
+placed DELIBERATELY in the new controls, keyed as REGRESSION CONTROLS, so run 2
+directly tests that the fix admits them. I stay blind to the checker's code, its
+fix, and the new sha.
+
+The set (session 2026-09-22, $1–$20, checkpoints 475/461/471; 18 corrupted drafts
+across classes 1-6, plus controls with the four regression forms and ordinary
+lines) is sealed until Integration confirms Research's checker is FROZEN at a new
+sha. **Its sha256 is committed here first:**
+
+    sha256(defect-set-2.md) = 6fa70904834004fb86dba848dd0af94c3d4caeb9a989fc0f860b36d04fbde18a
+
+Same reveal protocol as run 1, pinned to LF on commit so the hash verifies on any
+checkout.
