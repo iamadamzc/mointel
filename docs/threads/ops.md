@@ -13055,3 +13055,8 @@ passes alone 6/6 at e8822583; the cut touches no db/migration file), **run 2 ALL
 first.** Order now: v28 2bcf1cf -> reports e8822583 -> levels **ops/levels-cut-on-reports 74fd7244** (6 clean picks; delta
 patch-id == the approved e8caa77d delta; Integration APPROVED BY LITERAL SHA; 205 declared, gate running). Fallback if
 reports can't go: levels as e8caa77d on v28. /proc must read the release being stacked on before each launch.
+Levels 74fd7244 **GATED HERE ALL GREEN 205/205, 3,123 tests.**
+**HIS YES IN THIS SESSION, 2026-09-30T22:45:12Z: "yes"**, to "Can session reports ship tonight?" (e8822583, after v28, clear of
+22:00, then levels follows). **All five releases now have his word in this session:** #1 46d9f9d, #2 89d39053, #3 v28 2bcf1cf
+(17:49:49Z), reports e8822583 (22:45:12Z), levels 74fd7244 (18:28:16Z, conditional on the box cost test). Waiting on his
+"go" after 20:00 ET (the classifier refuses an unattended deploy).
