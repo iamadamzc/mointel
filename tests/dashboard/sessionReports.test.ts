@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
 import type {
@@ -12,12 +15,14 @@ import {
   checkpointText,
   chooseReportRange,
   coverageText,
+  EMPTY_SECTION_LINE,
   missedCauseText,
   outsideBoardRange,
   reportCoverage,
   reportTimeline,
   sessionText,
 } from '@/lib/dashboard/sessionReports';
+import { NOTHING_LINE } from '@/lib/desk/reports/writer';
 
 /*
  * Written from the design (design-seat.md), not from the implementation:
@@ -289,6 +294,24 @@ describe('the words', () => {
   it('a session is a calendar day, not an instant', () => {
     expect(sessionText('2026-09-28')).toBe('Mon, Sep 28');
     expect(sessionText('garbage')).toBeNull();
+  });
+});
+
+describe('a section with no line', () => {
+  it("reads Marketing's line, which speaks about the report and not the sources", () => {
+    expect(EMPTY_SECTION_LINE).toBe('No line for this section in this report.');
+  });
+
+  it("is never the writer's checked absence: after a strike the sources DO hold a name", () => {
+    expect(EMPTY_SECTION_LINE).not.toBe(NOTHING_LINE);
+    expect(EMPTY_SECTION_LINE).not.toMatch(/sources|nothing|removed|struck|checked/i);
+  });
+
+  it('is what the window prints for an empty section, and the claim is nowhere in it', () => {
+    const source = readFileSync(join(process.cwd(), 'components/SessionReports.tsx'), 'utf8');
+    expect(source).toMatch(/lines\.length === 0 \?[\s\S]{0,400}\{EMPTY_SECTION_LINE\}/);
+    expect(source).not.toContain(NOTHING_LINE);
+    expect(source).not.toMatch(/Nothing in our sources/);
   });
 });
 
