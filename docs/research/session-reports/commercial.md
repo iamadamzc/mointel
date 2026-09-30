@@ -414,3 +414,58 @@ the block itself, not the summary, against §3, §8 and §9.*
 
 **Nothing here needs a wording change. Reply is PASS on all four**, with the one
 flag above carried forward for whoever builds the 07:00 shape.
+
+---
+
+## 11. REVIEWED 2026-09-30 — THE V5 SAMPLE (voice-run-v5b, `v5-PREMARKET-as-read.txt`) — PASS, ELEVEN NAMES, TWO NON-BLOCKING NOTES
+
+*Research's request, before he sees a sample tonight: all eleven entries checked
+against §3, §8, §9 and §10, not spot-checked. Three changes landed after this
+sample (`2e8450f`, not visible here — country in the company line, "a positive (or
+negative) analyst rating" wording, `SECONDARY_STALE` alignment) and are not part of
+this review; flagged for the sample that carries them.*
+
+1. **Catalyst commentary — PASS, all eleven.** Every catalyst sentence describes
+   what the filing says and how the desk reads its fit, never what the stock will
+   do. Two forms worth naming because they generalise: *"the desk reads the event
+   as timely but conflicting with the positive reaction"* (SANG) grades fit against
+   a reaction that has already happened (the price path beside it already shows the
+   completed move) — the same backward-looking shape §10 cleared, not the
+   forward-tense risk flagged there for the 07:00 build. *"The desk does not read
+   [X] as explaining the present activity"* (the seven no-catalyst names) is a
+   negation, the safest possible form: it states what the desk does NOT conclude,
+   which cannot be a prediction of anything.
+2. **Catalyst valence — PASS.** *"The desk grades that as a legitimate positive
+   development milestone"* (SER) classifies the news's own character, same class as
+   the SANG example's "does not read it as a positive catalyst," already cleared —
+   grading what kind of news it is, not what the stock does with it.
+3. **Float — PASS, uniformly.** *"The desk has no float it can independently
+   verify"* appears in all eleven entries, verbatim or near it, and never once
+   attaches a number to it. "Dirty float" (SER) is the structure classification
+   label, not a number — allowed under the standing default the same way a board
+   cell's verdict is.
+4. **Shares outstanding — PASS where present, correctly absent where not.** Every
+   instance that prints a share count carries both conditions from §9 in the same
+   clause: dated, and explicitly *"(the outstanding count, not a float)"* — KNRX,
+   YMT, FFAI, TRSG and BNKK's opening sentence(!) omit the figure entirely rather
+   than print it undated or unlabelled, consistent with the field being genuinely
+   absent for those names (dossier coverage, not a writer choice).
+5. **Supply/structure — PASS, and a note on form rather than substance.** No
+   sentence claims a sale has happened or will happen; every registration or shelf
+   fact carries a status qualifier (*"possibly active," "unknown," "not yet
+   active"*) instead of asserting activity. **This is terser than the hand-written
+   SANG example's explicit "capacity, not proof of selling"** — the writer lists
+   the structural facts with status qualifiers and stops, rather than adding the
+   disclaiming clause. **Not a defect: a sentence that never claims selling at all
+   satisfies the rule at least as well as one that claims it and then disclaims
+   it.** Named so it is a deliberate reading, not an oversight on re-check.
+6. **The literal price path — present throughout, as already ruled (§8 item 4),
+   not a fresh question.** No action needed; recorded here only so the review
+   doesn't read as having missed it.
+
+**Two non-blocking notes, not compliance findings, for whoever owns copy quality:**
+a punctuation artefact where a company name ending in a legal suffix collides with
+the sentence's own period (*"KNOREX LTD.."*, *"BeyondSpring Inc.."*, *"Yimutian
+Inc.."*) — cosmetic, not this seat's to rule, flagged so it doesn't ship unnoticed.
+
+**PASS, no lines to change. Reports may ship tonight on this review.**
