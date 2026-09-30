@@ -1755,6 +1755,9 @@ GRADES v2 READ  Research (grades-v2-read-2026-09-30.txt): C control PASS (MTNB 2
   bump (business line + em-dash ban), reports v5 chain + Commercial review, /api/reports + range config, levels;
   grades B re-run. Route to the NEW Research id once he opens it; bed7ed93 retiring.
   NEW RESEARCH = local_4b09b3b2 (created 14:22:24Z; title/cwd/not-archived checked). Briefed with artefacts 14:23Z.
+DESIGN HAND-OFF on his "yes" (fresh session): design.md re-dated 14:23Z, docs/design-opening-prompt.md rewritten;
+  unfinished: em-dash cut (successor, after both ships), live Now-cell read after c3d0f06 ships, 15.5 s first-load
+  split (Ops + successor). Route to the NEW Design id; 72b49119 retiring.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
