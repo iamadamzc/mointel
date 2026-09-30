@@ -1,0 +1,26 @@
+set sha256 cd8052b906d81feaac123d1bf20ace7d84981d7bf646fb35d02aca34a70766b0 (the seed-lock deviation of cd8052b9); checker frozen at 1ab48be
+499-C: control; struck in any run: regression S1L1; ordinary S1L2; per run [S1L1,S1L2 | S1L1,S1L2 | S1L1,S1L2]
+509-C: control; struck in any run: regression none; ordinary S1L1; per run [S1L1 | S1L1 | S1L1]
+512-C: control; struck in any run: regression S1L1; ordinary none; per run [S1L1 | S1L1 | S1L1]
+513-C: control; struck in any run: regression none; ordinary S1L1; per run [S1L1 | S1L1 | S1L1]
+512-01: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+513-02: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+513-03: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+512-04: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+513-05: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+513-06: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+512-07: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+499-08: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+499-09: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+512-10: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+512-11: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+513-12: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+499-13: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+499-14: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: S1L2
+512-15: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+512-16: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+512-17: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+513-18: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+513-19: keyed O struck in 3/3 runs -> STRUCK; extra struck lines: S1L1
+KEYED STRUCK (all 3 runs) 19/19; REGRESSION-CONTROL STRIKES 2; ORDINARY-CONTROL STRIKES 3; FAIL AS REGISTERED, with the seed-lock deviation of cd8052b9
+spend $2.1877 (terra at $2.00 in / $12.00 out per Mtok)

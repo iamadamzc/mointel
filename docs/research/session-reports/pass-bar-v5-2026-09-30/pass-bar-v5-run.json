@@ -1,0 +1,2765 @@
+{
+  "sha": "cd8052b906d81feaac123d1bf20ace7d84981d7bf646fb35d02aca34a70766b0",
+  "results": [
+    {
+      "name": "499-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13819,
+        "outputTokens": 368,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 273,
+        "durationMs": 33648
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research supports registered-resale capacity but does not identify it as an F-1 filing."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not state that the registered-resale, convertible, and warrant capacity came from an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13819,
+        "outputTokens": 474,
+        "cachedInputTokens": 13816,
+        "reasoningTokens": 375,
+        "durationMs": 6799
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The specific claim that the registered-resale capacity is an F-1 on file is not supported by the stored research."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not establish that the registered-resale, convertible, and warrant capacity came from an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13819,
+        "outputTokens": 396,
+        "cachedInputTokens": 13816,
+        "reasoningTokens": 293,
+        "durationMs": 5858
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The registered-resale supply is supported, but the stored research does not identify it as an F-1 filing."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The registered-resale, convertible, and warrant supply entries are supported, but the stored research does not trace them specifically to an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "509-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13588,
+        "outputTokens": 309,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 233,
+        "durationMs": 37447
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "509-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13588,
+        "outputTokens": 374,
+        "cachedInputTokens": 13585,
+        "reasoningTokens": 279,
+        "durationMs": 5682
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the shelf capacity is on an effective F-3 is unsupported; the research identifies shelf capacity and an effective date, but not the form type."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "509-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13588,
+        "outputTokens": 329,
+        "cachedInputTokens": 13585,
+        "reasoningTokens": 237,
+        "durationMs": 4742
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the shelf capacity is on an effective F-3 is unsupported; the stored structure lists shelf capacity but does not identify an F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 433,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 356,
+        "durationMs": 6047
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not say it is on an effective F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 444,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 367,
+        "durationMs": 6780
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research identifies shelf capacity but does not state that it is an effective F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 487,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 409,
+        "durationMs": 7083
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the stored research identifies shelf capacity but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "513-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 241,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 163,
+        "durationMs": 5489
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not state that it is an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 382,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 305,
+        "durationMs": 5665
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research notes shelf capacity but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 319,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 227,
+        "durationMs": 5452
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the shelf capacity is on an effective F-3 is not supported; the stored research identifies shelf capacity but does not specify an F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "512-01",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 296,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 203,
+        "durationMs": 4754
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "1,742,860"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS shares outstanding are 1,509,118 as of August 12, 2026, not 1,742,860."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-01",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 297,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 202,
+        "durationMs": 4490
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "1,742,860"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not state that it is on an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS shares outstanding are 1,509,118 as of August 12, 2026, not 1,742,860."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-01",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 371,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 273,
+        "durationMs": 5339
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "1,742,860"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the row identifies shelf capacity but does not state that it is an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: APUS shares outstanding are 1,509,118 as of August 12, 2026, not 1,742,860."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "513-02",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 335,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 239,
+        "durationMs": 4906
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "122.3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS was up 12.7%, not 122.3%, since the previous checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-02",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 394,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 297,
+        "durationMs": 5239
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "122.3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored structure research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "It was up 12.7%, not 122.3%, since the previous checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-02",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 332,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 234,
+        "durationMs": 4567
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "122.3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS is noted as up 12.7%, not 122.3%, since the previous checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-03",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 422,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 306,
+        "durationMs": 6109
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research supports unquantified shelf capacity, but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-03",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 553,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 429,
+        "durationMs": 7478
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that IFBD has shelf capacity on an effective F-3 is unsupported; the stored research identifies shelf capacity but does not identify an F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-03",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 521,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 411,
+        "durationMs": 6739
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The structure research identifies shelf capacity but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "512-04",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13474,
+        "outputTokens": 388,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 304,
+        "durationMs": 5965
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: IFBD “has dropped off the board”; the research also does not identify the shelf as an F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-04",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13474,
+        "outputTokens": 582,
+        "cachedInputTokens": 13471,
+        "reasoningTokens": 495,
+        "durationMs": 7077
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: calling the shelf an effective F-3 (the structure only identifies shelf capacity) and saying IFBD “has dropped off the board.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-04",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13474,
+        "outputTokens": 489,
+        "cachedInputTokens": 13471,
+        "reasoningTokens": 394,
+        "durationMs": 7191
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“effective F-3” is not stated in the stored structure, and IFBD having “dropped off the board” requires another checkpoint."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "513-05",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13206,
+        "outputTokens": 361,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 253,
+        "durationMs": 51511
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored structure research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS is ranked #8 in range, not third-ranked."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-05",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13206,
+        "outputTokens": 349,
+        "cachedInputTokens": 13203,
+        "reasoningTokens": 250,
+        "durationMs": 5210
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored structure research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS is ranked #8 in range, not third-ranked."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-05",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13206,
+        "outputTokens": 403,
+        "cachedInputTokens": 13203,
+        "reasoningTokens": 287,
+        "durationMs": 5931
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the stored structure research identifies shelf capacity but does not say it is on an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: APUS is ranked #8, not the third-ranked name."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-06",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13194,
+        "outputTokens": 385,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 236,
+        "durationMs": 5372
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Shelf capacity on an effective F-3” is unsupported because the stored structure identifies shelf capacity but not an F-3; “it was halted late in the session” is also unsupported because the checkpoint halt state is UNKNOWN."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-06",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13194,
+        "outputTokens": 500,
+        "cachedInputTokens": 13191,
+        "reasoningTokens": 352,
+        "durationMs": 6887
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: IFBD was halted late in the session; its stored halt state is UNKNOWN. The stated effective F-3 is also not identified in the stored research."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-06",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13194,
+        "outputTokens": 437,
+        "cachedInputTokens": 13191,
+        "reasoningTokens": 317,
+        "durationMs": 6582
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the row does not identify the shelf capacity as an effective F-3, and IFBD's halt state is UNKNOWN—not halted late in the session."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "512-07",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 536,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 458,
+        "durationMs": 6680
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research notes shelf capacity but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-07",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 588,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 489,
+        "durationMs": 7941
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Our sources found nothing that explains the move” is too absolute; the research says the stale reverse-split disclosure may focus attention, while not establishing it as the cause."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-07",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 394,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 317,
+        "durationMs": 5613
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research does not state that IFBD’s shelf capacity is on an effective F-3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-08",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13819,
+        "outputTokens": 448,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 347,
+        "durationMs": 6259
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research identifies registered-resale capacity but does not identify it as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The rows do not attribute the registered-resale, convertible, and warrant capacity to the August 14 Form 10-Q, and do not establish that nothing explains the move."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-08",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13819,
+        "outputTokens": 500,
+        "cachedInputTokens": 13816,
+        "reasoningTokens": 381,
+        "durationMs": 7320
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the registered-resale capacity is specifically an F-1 on file; the research identifies registered-resale supply but does not state the filing form."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the registered-resale, convertible, and warrant capacity is from an August 14 Form 10-Q; the research does not establish that filing form or attribute those supply items to it."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-08",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13819,
+        "outputTokens": 455,
+        "cachedInputTokens": 13816,
+        "reasoningTokens": 363,
+        "durationMs": 5931
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies registered-resale supply but does not identify it as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The rows do not say the registered-resale, convertible, and warrant supply items came from the August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-09",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13828,
+        "outputTokens": 552,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 428,
+        "durationMs": 7258
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"three names\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: SPHL is described as one of three names on watch, and the registered-resale supply is specifically called an F-1; neither is stored."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the registered-resale, convertible, and warrant capacity is attributed to an August 14 Form 10-Q; the stored research does not identify that filing as a Form 10-Q or tie those items to it."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-09",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13828,
+        "outputTokens": 411,
+        "cachedInputTokens": 13825,
+        "reasoningTokens": 305,
+        "durationMs": 6380
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"three names\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“One of the three names on watch” is untraceable, and the stored research does not identify the registered-resale filing as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not tie the registered-resale, convertible, and warrant supply items to an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-09",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13828,
+        "outputTokens": 415,
+        "cachedInputTokens": 13825,
+        "reasoningTokens": 327,
+        "durationMs": 6041
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"three names\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“One of the three names on watch” is not supported, and the registered-resale filing is not identified as an F-1."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-10",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13459,
+        "outputTokens": 347,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 258,
+        "durationMs": 4646
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 1,509,118 shares of float as of August 12, "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored structure research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "1,509,118 is shares outstanding as of August 12, 2026, not shares of float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-10",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13459,
+        "outputTokens": 406,
+        "cachedInputTokens": 13456,
+        "reasoningTokens": 312,
+        "durationMs": 5567
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 1,509,118 shares of float as of August 12, "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the stored research identifies shelf capacity but does not say it is on an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: 1,509,118 is shares outstanding as of August 12, 2026, not shares of float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-10",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13459,
+        "outputTokens": 325,
+        "cachedInputTokens": 13456,
+        "reasoningTokens": 237,
+        "durationMs": 4700
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at caution: 1,509,118 shares of float as of August 12, "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not state that it is an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "1,509,118 is shares outstanding as of August 12, 2026, not shares of float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-11",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13457,
+        "outputTokens": 352,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 261,
+        "durationMs": 4594
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "1509118"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 1,509,118 shares-outstanding figure is stated without its required as-of date (2026-08-12)."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-11",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13457,
+        "outputTokens": 381,
+        "cachedInputTokens": 13454,
+        "reasoningTokens": 300,
+        "durationMs": 5010
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "1509118"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the shelf capacity was on an effective F-3 is unsupported; no registration form is stored."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-11",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13457,
+        "outputTokens": 682,
+        "cachedInputTokens": 13454,
+        "reasoningTokens": 585,
+        "durationMs": 8946
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "1509118"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research does not identify the shelf capacity as an effective F-3; that specific filing/form claim is unsupported."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 1,509,118 shares-outstanding figure is stated without its required as-of date (2026-08-12)."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "513-12",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13211,
+        "outputTokens": 311,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 197,
+        "durationMs": 4634
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should push\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the reverse split should push the stock higher into tomorrow's session is an unsupported forecast."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-12",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13211,
+        "outputTokens": 325,
+        "cachedInputTokens": 13208,
+        "reasoningTokens": 210,
+        "durationMs": 4564
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should push\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not state that it is on an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the reverse split should push the stock higher into tomorrow’s session is an unsupported prediction."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-12",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13211,
+        "outputTokens": 282,
+        "cachedInputTokens": 13208,
+        "reasoningTokens": 178,
+        "durationMs": 37083
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should push\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored structure research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“The reverse split should push it higher into tomorrow's session” is an unsupported prediction."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "499-13",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13825,
+        "outputTokens": 453,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 325,
+        "durationMs": 6841
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "15:05 vs 09:25"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 6-K timing is unsupported: the stored event/source time is 16:30 ET on September 23, not 15:05 ET. The research also does not identify the registered-resale supply as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not attribute the registered-resale, convertible, and warrant supply items to an August 14 Form 10-Q; that source linkage is unsupported."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-13",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13825,
+        "outputTokens": 409,
+        "cachedInputTokens": 13822,
+        "reasoningTokens": 294,
+        "durationMs": 6112
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "15:05 vs 09:25"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 6-K event time is unsupported: it was 16:30 ET, not 15:05 ET. The research also does not identify the registered-resale filing as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research does not attribute the registered-resale, convertible, and warrant supply items specifically to an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-13",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13825,
+        "outputTokens": 455,
+        "cachedInputTokens": 13822,
+        "reasoningTokens": 325,
+        "durationMs": 6342
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "15:05 vs 09:25"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The filing time is unsupported/incorrect: the exact source time is 16:30 ET, not 15:05 ET; the research also does not identify the registered resale as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research does not establish that the registered-resale, convertibles, and warrants came from an August 14 Form 10-Q; it only lists those supply items, with the latter two unquantified."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-14",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13826,
+        "outputTokens": 429,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 315,
+        "durationMs": 5774
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "16:30"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The structure research lists a registered-resale supply block but does not identify it as an F-1."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research also has a September 23 8-K, so it does not support calling the September 22 filing the most recent; it also does not tie the listed supply blocks to an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-14",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13826,
+        "outputTokens": 480,
+        "cachedInputTokens": 13823,
+        "reasoningTokens": 382,
+        "durationMs": 6667
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "16:30"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The registered-resale supply is supported, but calling it an F-1 is not supported by the stored research."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not support saying the registered-resale, convertible, and warrant capacity came from an August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "499-14",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13826,
+        "outputTokens": 436,
+        "cachedInputTokens": 13823,
+        "reasoningTokens": 344,
+        "durationMs": 6052
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"clearly\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "16:30"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored structure does not identify the registered-resale capacity as an F-1 filing."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not say the registered-resale, convertible, and warrant capacity came from the August 14 Form 10-Q."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-15",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13472,
+        "outputTokens": 430,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 344,
+        "durationMs": 6824
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "12 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not identify the shelf capacity as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not support a $12 million raise; it also does not establish that nothing explains the move."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-15",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13472,
+        "outputTokens": 318,
+        "cachedInputTokens": 13469,
+        "reasoningTokens": 232,
+        "durationMs": 5469
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "12 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research identifies shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not support the claim that the September 22 filing disclosed a $12 million raise."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-15",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13472,
+        "outputTokens": 412,
+        "cachedInputTokens": 13469,
+        "reasoningTokens": 331,
+        "durationMs": 6349
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "12 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claimed $12 million raise is not supported by the stored research or row."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-16",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 350,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 246,
+        "durationMs": 5076
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "June 3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that IFBD has shelf capacity on an effective F-3 is unsupported; the stored structure lists shelf capacity but does not identify an F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS's 1-for-10 reverse split was effective July 24, 2026, not June 3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-16",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 337,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 252,
+        "durationMs": 4895
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "June 3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“effective F-3” is unsupported; the stored structure lists shelf capacity but does not identify an F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The reverse split was effective July 24, not June 3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-16",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13466,
+        "outputTokens": 311,
+        "cachedInputTokens": 13463,
+        "reasoningTokens": 217,
+        "durationMs": 5273
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "June 3"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the stored structure research identifies shelf capacity but does not say it is on an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: the 1-for-10 reverse split was stated to have become effective July 24, not June 3."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-17",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13462,
+        "outputTokens": 391,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 299,
+        "durationMs": 5357
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the shelf capacity is described as being on an effective F-3; the stored research does not identify the filing form."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: APUS is Canadian; stored research identifies it as a United States company."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-17",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13462,
+        "outputTokens": 328,
+        "cachedInputTokens": 13459,
+        "reasoningTokens": 246,
+        "durationMs": 4926
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not state that it is on an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS is researched as a United States company, not a Canadian pharmaceutical company."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "512-17",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13462,
+        "outputTokens": 254,
+        "cachedInputTokens": 13459,
+        "reasoningTokens": 173,
+        "durationMs": 3722
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research notes shelf capacity but does not identify it as an effective F-3."
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "APUS is researched as a United States company, not a Canadian pharmaceutical company."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "513-18",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13215,
+        "outputTokens": 325,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 213,
+        "durationMs": 4472
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"will\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported prediction that IFBD is a pump that will collapse tomorrow; “effective F-3” is also not stated in the stored research."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-18",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13215,
+        "outputTokens": 316,
+        "cachedInputTokens": 13212,
+        "reasoningTokens": 214,
+        "durationMs": 5142
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"will\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that IFBD is a pump that will collapse tomorrow is an unsupported prediction."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-18",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13215,
+        "outputTokens": 385,
+        "cachedInputTokens": 13212,
+        "reasoningTokens": 251,
+        "durationMs": 5611
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "prediction or certainty: \"will\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported prediction that IFBD is a pump that will collapse tomorrow; additionally, the stored structure does not identify the shelf capacity as an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-19",
+      "run": 1,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 297,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 171,
+        "durationMs": 4460
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "795"
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The reported up count is unsupported: stored after-hours totals show 697 up, not 795."
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the shelf capacity is on an effective F-3 is unsupported; the stored structure data identifies shelf capacity but does not identify an F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-19",
+      "run": 2,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 313,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 208,
+        "durationMs": 4781
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "795"
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported count: rows give 697 up, not 795."
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the stored research identifies shelf capacity but does not identify it as an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "513-19",
+      "run": 3,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 13199,
+        "outputTokens": 440,
+        "cachedInputTokens": 13196,
+        "reasoningTokens": 331,
+        "durationMs": 6072
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "795"
+          },
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "bare \"no catalyst\": \"no catalyst\""
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The up count is unsupported: stored after-hours totals show 697 up, not 795."
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The research identifies shelf capacity but does not state that it was on an effective F-3."
+          }
+        ],
+        "lines": 3
+      }
+    }
+  ]
+}
