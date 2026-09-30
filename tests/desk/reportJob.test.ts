@@ -12,7 +12,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { claimAssessmentSlot, completeAssessment, readAssessment } from '@/lib/market/store/assessmentRepo';
+import {
+  claimAssessmentSlot,
+  completeAssessment,
+  insertAssessmentTickers,
+  readAssessment,
+  type AssessmentTickerRecord,
+} from '@/lib/market/store/assessmentRepo';
 import { openDatabase } from '@/lib/market/store/db';
 import type { SessionReport } from '@/lib/desk/reports/contract';
 import {
@@ -123,7 +129,13 @@ describe('the late run, by assessment id', () => {
     const stored = rows(db);
     expect(stored).toHaveLength(1);
     expect(stored[0]).toMatchObject({ kind: 'INTO_RTH', range_key: '1-20', trading_date: DATE, assessment_id: id, status: 'MISSED' });
-    expect(JSON.parse(stored[0]!.missed_cause!).kind).toBe('CHECKPOINT_INCOMPLETE');
+    // What a FAILED checkpoint produces, stated: a MISSED row whose cause is
+    // CHECKPOINT_INCOMPLETE with the checkpoint's own status, and no model call.
+    expect(JSON.parse(stored[0]!.missed_cause!)).toMatchObject({
+      kind: 'CHECKPOINT_INCOMPLETE',
+      status: 'FAILED',
+      checkpoint: { id },
+    });
   });
 
   it('a run for a missing id fails loudly and writes nothing', async () => {
@@ -244,5 +256,142 @@ describe('the derived queue', () => {
     loop.stop();
     expect(rows(db)).toHaveLength(1);
     expect(lines.filter((l) => l.includes('INTO_RTH'))).toHaveLength(1);
+  });
+});
+
+function ticker(overrides: Partial<AssessmentTickerRecord> = {}): AssessmentTickerRecord {
+  return {
+    ticker: 'IVF',
+    assessmentRank: 1,
+    liveSessionRank: 1,
+    price: 4,
+    percentChange: 20,
+    rvol: 12,
+    rvolRank: 1,
+    ahPercentChange: null,
+    ahVolume: null,
+    ahParticipation: null,
+    ahRank: null,
+    volume: 1_000_000,
+    spreadPct: 0.4,
+    sessionHigh: 4.2,
+    sessionLow: 3.1,
+    referenceClose: 3.33,
+    referenceBasis: 'CURRENT_SESSION',
+    priceAt: '2026-09-29T13:24:50.000Z',
+    cycle: 'GREEN_FRESH_FRONTSIDE',
+    catalyst: 'LEGITIMATE_POSITIVE',
+    structure: 'CLEAN',
+    intelligenceStatus: 'AUTO',
+    intelligenceSource: 'AUTO',
+    analysisVersionId: null,
+    evidenceFingerprint: null,
+    cycleFingerprint: null,
+    levelSummary: null,
+    haltState: 'TRADING',
+    focus: false,
+    warnings: [],
+    changedFields: [],
+    changeSummary: '',
+    ...overrides,
+  } as AssessmentTickerRecord;
+}
+
+/**
+ * Scripted models (no spend), as Research's scripts/report-inputs-smoke.ts:
+ * one plain line per name, and a checker that supports every line. Counts
+ * every call, which is the spend the loop would make.
+ */
+function scriptedModels(calls: { writer: number; checker: number }) {
+  return (): ReportModels => ({
+    writer: {
+      complete: async () => {
+        calls.writer += 1;
+        return JSON.stringify({
+          overall: null,
+          sections: [{ heading: 'Names', lines: [{ ticker: 'IVF', text: 'Where it sits: on file.' }] }],
+        });
+      },
+    },
+    checker: {
+      complete: async (prompt: { user: string }) => {
+        calls.checker += 1;
+        const ids = [...prompt.user.matchAll(/^(S\d+L\d+|O|H)(?: \[|:)/gm)].map((m) => m[1]);
+        return JSON.stringify({ verdicts: ids.map((verdict) => ({ id: verdict, supported: true, note: '' })) });
+      },
+    },
+  });
+}
+
+describe('the published path, end to end through the loop', () => {
+  it('a finished checkpoint with a name in range stores a PUBLISHED row with the report body: one writer call, one checker call', async () => {
+    const db = temporaryDb();
+    const id = checkpoint(db, 'OPEN_SPIKE_ASSESSMENT', INTO_RTH_AT, 'COMPLETE');
+    insertAssessmentTickers(db, id, [ticker()]);
+    const calls = { writer: 0, checker: 0 };
+    const lines: string[] = [];
+    const loop = startReportLoop({ db, ranges: DEFAULT_REPORT_RANGES, createModels: scriptedModels(calls), versions: VERSIONS, log: (l) => lines.push(l), now: () => NOW });
+    await loop.tick();
+    loop.stop();
+
+    expect(lines.join('\n')).toContain('PUBLISHED');
+    expect(calls).toEqual({ writer: 1, checker: 1 });
+    const row = db.prepare('SELECT status, payload, assessment_id, published_at, versions FROM session_reports').get() as {
+      status: string;
+      payload: string;
+      assessment_id: number;
+      published_at: string;
+      versions: string;
+    };
+    expect(row.status).toBe('PUBLISHED');
+    expect(row.assessment_id).toBe(id);
+    const report = JSON.parse(row.payload) as SessionReport;
+    expect(report.kind).toBe('INTO_RTH');
+    expect(report.checkpoints.map((c) => c.id)).toEqual([id]);
+    expect(report.sections[0]!.lines.map((l) => l.ticker)).toEqual(['IVF']);
+    expect(row.published_at).toBe(report.publishedAt);
+    expect(JSON.parse(row.versions)).toEqual(VERSIONS);
+  });
+
+  it('across a restart a filled slot is never re-run: a fresh loop calls no model and changes nothing', async () => {
+    const db = temporaryDb();
+    const id = checkpoint(db, 'OPEN_SPIKE_ASSESSMENT', INTO_RTH_AT, 'COMPLETE');
+    insertAssessmentTickers(db, id, [ticker()]);
+    const first = { writer: 0, checker: 0 };
+    const before = startReportLoop({ db, ranges: DEFAULT_REPORT_RANGES, createModels: scriptedModels(first), versions: VERSIONS, log: () => {}, now: () => NOW });
+    await before.tick();
+    before.stop();
+    const stored = db.prepare('SELECT * FROM session_reports').all();
+
+    const second = { writer: 0, checker: 0 };
+    const after = startReportLoop({ db, ranges: DEFAULT_REPORT_RANGES, createModels: scriptedModels(second), versions: VERSIONS, log: () => {}, now: () => new Date(NOW.getTime() + 60_000) });
+    await after.tick();
+    after.stop();
+    expect(second).toEqual({ writer: 0, checker: 0 });
+    expect(db.prepare('SELECT * FROM session_reports').all()).toEqual(stored);
+  });
+});
+
+describe('the 12-hour lookback boundary', () => {
+  // A newer checkpoint on the same date that no report reads (15:00 ET), so the
+  // date itself is inside the window and the per-checkpoint comparison decides.
+  function withSameDateNeighbour(db: Db) {
+    checkpoint(db, 'RTH_INTERVAL', '2026-09-29T19:00:00.000Z', 'COMPLETE');
+  }
+
+  it('a checkpoint exactly 12 h old still runs', () => {
+    const db = temporaryDb();
+    const id = checkpoint(db, 'OPEN_SPIKE_ASSESSMENT', INTO_RTH_AT, 'FAILED');
+    withSameDateNeighbour(db);
+    const now = new Date(Date.parse(INTO_RTH_AT) + REPORT_LOOKBACK_MS);
+    expect(pendingReports(db, DEFAULT_REPORT_RANGES, now).map((p) => p.assessmentId)).toEqual([id]);
+  });
+
+  it('a checkpoint 1 ms past 12 h never runs, so a first start spends nothing on history', () => {
+    const db = temporaryDb();
+    checkpoint(db, 'OPEN_SPIKE_ASSESSMENT', INTO_RTH_AT, 'FAILED');
+    withSameDateNeighbour(db);
+    const now = new Date(Date.parse(INTO_RTH_AT) + REPORT_LOOKBACK_MS + 1);
+    expect(pendingReports(db, DEFAULT_REPORT_RANGES, now)).toEqual([]);
   });
 });
