@@ -12897,3 +12897,11 @@ flip), 183 test files pre-registered, gating. Tooling item for tomorrow (Ops): b
 more time or fewer spawns; free node processes before gating.
 **v28 release stack 2bcf1cfe7238e0dd01adb3833ccc8b87e6d0c23f GATED ALL GREEN: 183/183 (pre-registered), 2,782 tests, lint 0
 errors.** Gating 89d39053 (em-dash cut), pre-registered 182.
+**Integration REPLAYED + APPROVED v28 stack 2bcf1cfe by literal sha (~17:5xZ).** Ship conditions: (1) em-dash 89d39053 live,
+/proc reads it; (2) HIS separate yes naming the ~10-18 min board + public site outage; (3) THIS LINE: **a v27 process must
+never run the market_mode clear on a v28 store** (the new FKs from desk_assessment_ranges / session_reports would fail it);
+**the market-floor pin moves to the v28 release at the bump**, which is what enforces it (his word for the re-pin, as on
+09-29). WHY 95b734e's scripts/ops/grades-v2-read.sql hunk dropped: modify/delete conflict, the file does not exist in the
+release lineage (ops scripts are never shipped). The owed B re-run must use MAIN's amended query (promptVersion >= 2), not
+the old "= 2". Research's upsertIssuer write is NOT in v28: already-researched names keep an empty business line until it
+ships (it may ride /api/reports).
