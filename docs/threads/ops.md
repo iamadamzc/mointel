@@ -12845,3 +12845,6 @@ ops/minute-bars-bound-on-74c1818 (6043db3), ops/minute-bars-bound-on-c3d0f06 (84
 **Integration (20th) order call ~15:5xZ: em-dash release SAME NIGHT, conditional:** Design cuts its 12 picks onto
 46d9f9d now; Integration replays; Ops gates; launch only after post-release /proc reads 46d9f9d x3 NR 0 AND R2 is taken;
 its own yes from him, asked only once gated, separately. If 46d9f9d does not ship tonight, that cut is void.
+**HIS WORD, first-hand in THIS session (~16:0xZ): "yes tonight. but i want sessoin reports and ladder resistance all to
+go tonight. i want everything pending to go tonight. i'll tell integration"** -> 46d9f9d (speed fix + guard) approved
+for tonight after 20:00 ET. The rest: inventory below.
