@@ -22,10 +22,11 @@
  */
 
 import { humanise } from '../../dashboard/language';
-import { etClock, etDateString } from '../../market/session';
+import { etClock } from '../../market/session';
 import type { ReportKind, ReportPath } from './contract';
 import type { ReportFact } from './facts';
 import type { ReportResearch } from './research';
+import { etDayAndClock } from './traced';
 import type { AfterHoursTotals } from './totals';
 import { roundTo } from './verify';
 import {
@@ -63,7 +64,8 @@ const MONTH_NAMES = [
 
 /** "2026-06-30" (or an instant, read in ET) as "June 30, 2026": the form the checker parses. */
 export function longDate(value: string): string | null {
-  const day = /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : etDateString(new Date(value));
+  const day = etDayAndClock(value).date;
+  if (!day) return null;
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day);
   if (!match) return null;
   return `${MONTH_NAMES[Number(match[2]) - 1]} ${Number(match[3])}, ${match[1]}`;
@@ -71,9 +73,8 @@ export function longDate(value: string): string | null {
 
 /** An instant's ET clock to the minute, or null for a bare date. */
 function clock(value: string | null): string | null {
-  if (!value || !value.includes('T')) return null;
-  const at = new Date(value);
-  return Number.isNaN(at.getTime()) ? null : `${etClock(at).slice(0, 5)} ET`;
+  const found = etDayAndClock(value).clock;
+  return found ? `${found} ET` : null;
 }
 
 const shares = (count: number) => Math.round(count).toLocaleString('en-US');
