@@ -250,6 +250,42 @@ export function loadMinuteBars(
   }));
 }
 
+/** The columns the resistance-levels ladders read from one 1m bar. */
+export interface MinuteBarPoint {
+  tradingDate: string;
+  /** Minute START, ISO UTC, as stored. */
+  ts: string;
+  high: number | null;
+  close: number | null;
+}
+
+/**
+ * One symbol's 1m bars whose START is in [fromTs, toTs], oldest first.
+ *
+ * A range on the `(symbol, ts)` primary key, so it reads this symbol's rows in
+ * the window and nothing else: bounded by ts, never the all-sessions walk
+ * (spec section 5). `loadMinuteBars` asks one trading date at a time, and
+ * EXPLAIN QUERY PLAN on the 2026-09-29 production copy shows it searching the
+ * primary key on `symbol=?` alone, so each call visits every stored row of the
+ * symbol; this range plans as `symbol=? AND ts>? AND ts<?` and serves every
+ * session in one pass.
+ */
+export function loadMinuteBarRange(
+  db: MarketDatabase,
+  symbol: string,
+  fromTs: string,
+  toTs: string,
+): MinuteBarPoint[] {
+  return db
+    .prepare(
+      `SELECT trading_date AS tradingDate, ts, high, close
+         FROM minute_bars
+        WHERE symbol = ? AND ts >= ? AND ts <= ?
+        ORDER BY ts`,
+    )
+    .all(symbol, fromTs, toTs) as MinuteBarPoint[];
+}
+
 /** Drops minute bars outside the retained trading dates. */
 /**
  * The trading dates minute bars actually exist for, newest first.
