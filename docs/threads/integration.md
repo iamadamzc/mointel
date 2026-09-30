@@ -1751,6 +1751,9 @@ GRADES v2 READ  Research (grades-v2-read-2026-09-30.txt): C control PASS (MTNB 2
   unknown 6, weak/neg/dilutive 29. B UNTESTED: no v2 reverse-split catalyst in the window -> red-only-with-pairing
   rule UNVALIDATED; OWNER Research successor, TRIGGER re-run B on a later window (a week, or the first v2 split row).
   Research seat handing off now (his "c").
+  RESEARCH HAND-OFF (read docs/research-opening-prompt.md l.42-62): queue = em-dash fixes (3 files), ONE interpreter
+  bump (business line + em-dash ban), reports v5 chain + Commercial review, /api/reports + range config, levels;
+  grades B re-run. Route to the NEW Research id once he opens it; bed7ed93 retiring.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
