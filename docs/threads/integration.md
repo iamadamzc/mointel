@@ -2404,6 +2404,12 @@ RUN 4 SET IN     lock note ce7fe5a3 (16:11:56 ET) before file c0ddb99f (16:12:23
 RUN 4 RUNNING    on 240e2f3a (verified on c0ddb99f); harness 1b78581 before calls with the COVERAGE PRE-CHECK (passed on
                  240e2f3a; positive control: stops on every AUUD line of void 0ff12a28). Checker cb6d030. PREDICTION
                  (before calls): rules half admits all controls; risk = model half's 1-in-3 strikes on true lines.
+PASS BAR RUN 4   PASS AS REGISTERED: raw ce09e3d; harness 1b78581 (coverage pre-check passed); checker cb6d030; set
+                 240e2f3a; $2.93. Keyed 19/19 x3; control strikes 0 regression / 0 ordinary in every run; no extra; no
+                 CHECKER_FAILED. ORDER VERIFIED HERE: freeze 15:45:18 < lock 16:11:56 < set 16:12:23 < harness 16:14:15 <
+                 raw 16:19:13 ET; no lib/desk/reports change since cb6d030. LIMITS (Research): one day per run, one
+                 author, N=3; model-stability work deferred to tomorrow; live strike rate to diagnostics.
+                 REPORTS ON TONIGHT: Ops re-picks 8c52506 onto 4b55a049, nine blobs to be verified by me, gate, his yes.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
