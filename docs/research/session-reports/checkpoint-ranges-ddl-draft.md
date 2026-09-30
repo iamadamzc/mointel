@@ -28,6 +28,13 @@ CREATE TABLE IF NOT EXISTS desk_assessment_ranges (
   volume_base_seeded INTEGER NOT NULL DEFAULT 0,
   -- Per-range top-N. Ordered tickers; every one has a desk_assessment_tickers row in the SAME
   -- assessment (the capture writes the union of all ranges' top-N plus the band's top 25).
+  -- ORDER = the parent's own board (desk_assessments.board: DAILY_RVOL at 09:25/14:30/16:00,
+  -- AFTER_HOURS at 20:05/22:00), produced by readRangeBoard (repo.ts:1081), the live board's own
+  -- read, so the list is exactly what a viewer of that range saw.
+  -- DELIBERATE DIFFERENCE, DO NOT "FIX": top_tickers admit a name LATCHED inside the range at a
+  -- price now outside it (rangeRank.ts:157-158, :168-169), as the board does; the COUNTS above use
+  -- price at capture only, no latch, because they describe the market in the range, not the board.
+  -- Bounds are inclusive at both ends and a NULL price is outside, for both (rangeRank.ts:150-151).
   top_n              INTEGER NOT NULL,
   top_tickers        TEXT NOT NULL DEFAULT '[]',
   ranking_definition TEXT NOT NULL DEFAULT '',
@@ -52,15 +59,13 @@ Copied from ticker_session at capture. NULL on every row captured before v28 (fi
 | NEXT_DAY_RECAP 22:00 | AFTER_HOURS (16:00-20:00 ET of D) | ah_participation > 0 | sign of ah_percent_change (vs ah_reference_close) |
 | OPEN_SPIKE 09:25, RTH_INTERVAL 14:30, RTH_CLOSE 16:00 | SESSION_TO_DATE (04:00 ET of D to capture) | cumulative_volume > 0 (NULL = not traded) | sign of percent_change (vs prior close) |
 
-## 4. Open for Research before the migration
+## 4. Research's answers (2026-09-30 ~05:3xZ), checked against rangeRank.ts:145-170
 
-1. **Bounds:** inclusive at both ends, as written? It must match the board's own range filter, or a
-   report's count and its list disagree on a name priced exactly at a bound.
-2. **Flat names:** traded names with a change of exactly 0 (or NULL) count as neither up nor down,
-   so up + down <= traded. Say if the report needs a stored `flat`.
-3. **Price NULL** at capture: excluded from `eligible`?
-4. **top_n and the rank basis per range:** N (the report shows 12; the band stores 25), and which rank
-   orders top_tickers at each checkpoint kind (the board's DAILY_RVOL rank within the range, or ah_rank
-   at the 22:00 recap?). `ranking_definition` records whichever is chosen.
-5. The 20:05 ET checkpoint (a separate Ops piece) will need its own row in the table above
-   (AFTER_HOURS, final at 20:05). Say if its window differs.
+1. Bounds inclusive at both ends, NULL price outside (rangeRank.ts:150-151). Latch: lists yes, counts no (comment above).
+2. No stored flat: up + down <= traded; the report never prints flat.
+3. NULL price excluded from `eligible`.
+4. top_n = 25 per range (the report's 12 is an interim cap). Rank basis = the checkpoint's own board, via readRangeBoard.
+5. 20:05 ET: AFTER_HOURS, 16:00-20:00 ET of D, final at 20:05. Cross-check for free: the 20:05 and 22:00 rows for the
+   same D must carry identical counts; a difference means a late write.
+
+No open points. Next: the migration + capture code, after the pre-deploy backup route and the 10:17 ET read.
