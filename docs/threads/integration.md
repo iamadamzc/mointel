@@ -1347,6 +1347,15 @@ REPORT DISPLAY   HIS RULING (Research's session 23:51:49Z, read): "i dont like i
                  a specific ticker." -> briefing line KEPT as the link; drawer-slot reading panel REJECTED. Ticker click
                  today = TickerDrawer overlay (fixed inset-0, max-w 860px; TickerDrawer.tsx:123-136), not a route.
                  Routed to Design: build to that pattern; ask him in one line at review whether he also wants a URL.
+                 BUILT 0f15521 (read: 4 files, client only) on his "why then? can it be built earlier?" (Design's
+                 session 23:54:51Z, read). Inert until Research's /api/reports ships; rides with 307e42d's briefing line.
+RED ON MAIN      tests/research/interpret.test.ts:1908 fails on main (REPRODUCED here 00:04Z: BASIS_STALE vs
+                 PROVEN_AT_OR_ABOVE_FLOAT). Sent to Research (date-dependence is my guess, unread). Every gate names it
+                 until fixed; ask whether it is red at 1b5ead6 / 74ac35c.
+RESTART 20:15    Ops prep 08b6255 (read): FULL env sync (adds CAPTURE_PRICE_MIN/MAX + two INERT sign-in keys; 21 existing
+                 values hash-equal), his "why not do the full sync?" 23:52:52Z (read). sync-env.sh heredoc executes
+                 backticked comment words locally (l.81-129 incl. `sync-env.sh` itself) -> Ops told: invoke exactly as the
+                 dry run; stop on any new output; read back both CAPTURE vars before the restart.
 ```
 **THE NINETEENTH SEAT'S LEDGER:**
 ```
