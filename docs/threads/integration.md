@@ -1360,6 +1360,9 @@ PASS-BAR SEEDS   ORDER CALL: Marketing writes the 43c1b7c seeded defect set BLIN
                  SEEDS LOCKED 1157b3b (read): sha256(defect-set.md) a8fdab73...4dba; 18 corrupted + 3 clean controls;
                  Marketing states it has not read the checker or its prompt. Released to Research only after the checker
                  commit; Research verifies the hash, commits the run before reading.
+                 BLINDNESS RULED SATISFIED: Marketing has not opened verify.ts, the semantic prompt or tests/desk/*check*;
+                 knows only helper NAMES from writer.ts comments (roundTo/signOf/CHANGE_NOTE_VALUES), not contents.
+                 Control 437-C; band ordinal seeded as 437-5 (class 5).
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
