@@ -2426,6 +2426,8 @@ REPORTS GATE R1  e8822583 RED 200/201: tests/market/migrationConcurrency.test.ts
                  runs a full run 2; ships only on ALL GREEN 201/201. Build exit 0, /api/reports in the route table.
 REPORTS GATED    e8822583 run 2 ALL GREEN 201/201, 3,062; build 0. Only his yes remains (Ops asking). Levels 74fd7244 gating
                  (205 declared).
+ALL FIVE GATED   74fd7244 ALL GREEN 205/205, 3,123. Gated in Ops's session: 46d9f9d, 89d39053, 2bcf1cf, e8822583, 74fd7244.
+                 Open: his reports yes (asked); levels box cost test (after 20:00).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
