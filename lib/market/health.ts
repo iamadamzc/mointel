@@ -204,7 +204,7 @@ export function projectMarketHealth(options: {
     return {
       ...base,
       state: 'OFFLINE',
-      label: `Market: ${feed} — ${connection === 'ERROR' ? 'error' : 'disconnected'}`,
+      label: `Market: ${feed} · ${connection === 'ERROR' ? 'error' : 'disconnected'}`,
       detail: health.lastError ?? 'Reconnecting',
       tone: 'neg',
       live: false,
