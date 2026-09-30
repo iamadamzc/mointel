@@ -997,7 +997,7 @@ EM-DASH     NOT CUT. The NEW Design seat cuts after 46d9f9d lands, onto /proc's 
 
 ### OPEN, WAITING ON A SEAT
 ```
-DESIGN SEAT  NOT OPEN at hand-off (old 72b49119 retiring). On its id send: design.md §8 (966e579) questions (1)
+DESIGN SEAT  NEW = local_4f84a562 (created 15:37:27Z; checked). §8 questions SENT to it 15:3xZ by the 19th. Were: (1)
              sections[] shape, (2) retired-headline state, (3) path-line labels (Marketing's proposal d35e1bba).
 CONE         95b734e (prompt v3) OUT of every cut until Ops's v28 bump (child table + AH freeze + sic_description).
 ```
