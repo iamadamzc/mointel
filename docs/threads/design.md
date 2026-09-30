@@ -44,15 +44,15 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-30 00:06 UTC / 2026-09-29 20:06 ET (third seat of 09-29, RETIRING on his "fresh session"; clock read via zoneinfo)
+## Live state — 2026-09-30 00:18 UTC / 2026-09-29 20:18 ET (fourth seat, `Design-tmi` `local_72b49119`, Opus 5.5, opened 00:09Z; clock read via zoneinfo)
 
-**Nothing uncommitted. Nothing in flight.** Production web/research/assess = **1b5ead6** (gzip) per Integration's
-last /proc relay; the market worker's restart is his ruled 20:15 ET 09-29. Every open item with its trigger:
+**Nothing uncommitted. Nothing in flight on Design's side.** Production web/research/assess = **1b5ead6** (gzip) per the retiring seat's
+last relay from Integration; **this seat has asked Integration and Ops for the literal sha and the 20:15 ET restart result, and has not had an answer yet.** Every open item with its trigger:
 
 | # | Item | State | Trigger / next step |
 | --- | --- | --- | --- |
-| 0 | **Red test** `tests/research/interpret.test.ts` › "proves the overhang when established supply exceeds the share count" | ROUTED TO DESIGN by Integration (19th). Clock-dependent: `run()` (~l.1876) calls `interpretPipeline` with no `asOf`, so `pipeline.ts:494-497` judges the fixture's share count (as of **2026-08-15**, Research's correction `e998b21`) against the wall clock with a 45-day window (`float.ts:92`); flipped at 00:00Z 09-30. Test-only fix | Pass `asOf: DATE` in `run()`; prove it passes at wall clock AND under `vi.setSystemTime` far ahead (2027); grep `tests/research/` for other no-`asOf` pipeline calls asserting a freshness verdict; **Integration's arithmetic: 08-15 + 45 days = 09-29, so it goes stale on the UTC date 09-30 (00:00Z = 20:00 ET), because the pipeline slices as-of from a UTC ISO; put that one line in the test comment, and include a `vi.setSystemTime` just after 2026-09-30T00:00Z in the proof;** pre-register the file's pass count before/after (today 93/94). `--only` commit on main; send Integration the sha + full suite |
-| 1 | **Brand header** (his "the compact lockup") | `design/brand-header-on-1b5ead6` → `74ac35c` approved, but its gate is now red (item 0) | Re-cut **`design/brand-header-on-1b5ead6-v2`** = 1b5ead6 + `-x` header pick (c01a5b4) + `-x` item-0 fix. Pre-registered **176** test files. Gate, send to Integration; Ops asks him; NOT during 04:00–10:15 ET 09-30. Then read it live |
+| 0 | **Red test** `tests/research/interpret.test.ts` › "proves the overhang when established supply exceeds the share count" | **DONE: main `7a62d62`** (test-only). `run()` now passes `asOf: '2026-08-18T00:00:00Z'`, the sibling asOf test's cutoff. ~~`asOf: DATE`~~ **was wrong:** `asOf` also bounds sources by `fetched_at <= asOf` as a string, the fixture's sources are fetched 08-17T12:00Z, and at `'2026-08-17'` none survives (measured 92/94, the POSSIBLY_ACTIVE case passing on `undefined`; it now asserts a defined verdict). New test fakes Date at 00:00:01Z 09-30 and 2027-06-01 with an undated BASIS_STALE control. File 93/94 → 95/95 pre-registered; mutants at prediction (null kills 2, DATE kills 4); `tests/research` under a 2027 fake clock 52/847 green, the instrument proven to discriminate (HEAD's file green at 2026-08-20, red at 2027). Gate 192 / 2,919, lint 0 errors, build 0, typecheck 0 | Sent to Integration; nothing owed |
+| 1 | **Brand header** (his "the compact lockup") | **RE-CUT: tag `design/brand-header-on-1b5ead6-v2` → `74c1818`** (tagger 2026-09-29T20:18:02-04:00) = 1b5ead6 + `-x` c01a5b4 (6c3c475, patch-id a0da3aea) + `-x` 7a62d62 (74c1818, e98e3f89). Declared 176 before gating (`ls-tree` 175 + 1), met: 176 / 2,688, lint 0 errors, build 0, typecheck 0. `74ac35c` is SUPERSEDED | Integration replays; Ops asks him; NOT during 04:00–10:15 ET 09-30. Re-cut if production is not literally 1b5ead6. Then read it live |
 | 2 | **Now cell** `fa61410` (main) | Built, inert, rides NO deploy | After tonight's restart: plumbing read (`tradeCapture.asOf` fresh, `nowBuckets` present). **From 04:00 ET 09-30: the real-10 s read** on a fresh review link, one page load, no timing loops; then ask Integration for a cut on confirmed production (cone must carry 1b5ead6) |
 | 3 | **Session report window** `0f15521` (main) + briefing line `307e42d` | Built, inert until Research's `GET /api/reports` | When the route ships, the surface goes to him as one ship; ask him in one line if he also wants a direct URL |
 | 4 | **Resistance levels** section | Routed; spec `docs/research/resistance-levels-spec.md` §2 at **c9f9835** | After item 2. Re-read his rulings at his turns first (row in Open items) |
@@ -709,6 +709,16 @@ probe came before any edit, as the ledger says it must.**
 | Told HIM the report window would be built "after tomorrow's premarket Now check" as though it depended on it. It was Integration's queue order; nothing linked the two. He asked "why then?" | ORDER-RELAYED-AS-DEPENDENCY (the memory's "an estimate relayed as a constraint", same shape) | No, first this seat (but a known memory class) | **HIM**, the costly kind |
 
 **Rule taken from it: no heavy `/api/market` probe from Design between 07:00 and 10:00 ET, and any timing of the live desk states its own concurrency beside the number.**
+
+**Fourth seat, opened 2026-09-30 00:09 UTC.**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Reverting a mutant, ran `git checkout -- <file>`: it took the whole fix with it. My backup `cp` had gone to `$TMP`, not the scratchpad path the restore read from, so the restore failed and the next mutant ran on the ORIGINAL file (it could not match, and the run looked like a mutant result) | REVERSED-THE-FILE-NOT-THE-EDIT (this charter's own working rule, "Reverse the edit, never the file") | **Yes: a working rule, not this session.** The first act of this seat to break a written rule | Self, from the count (94 tests, not 95); fix restored whole from the `$TMP` copy, content identical; that mutant re-run properly |
+| Pre-registered 191 test files at `e30316e` with `git ls-files 'tests/**/*.test.ts'`; the gate ran 192. Git's `**/` needs a subdirectory, so the pathspec cannot see `tests/security.test.ts` | COUNT-INSTRUMENT-BLIND (a check that cannot see a present case; memory: failed checks return plausible answers) | No | Self, the gate's own count; recounted with `ls-tree -r <base> tests \| grep -c` before declaring on 1b5ead6 |
+| The routed fix said `asOf: DATE`; it empties the evidence (see item 0). Caught before commit by reading `readSources` first | (not my error: RELAYED-FIX-SHAPE, Integration's ledger 5) | — | Self, by opening the code at answer time |
+
+**Rule taken from it: every mutant run is `sed` forward and `sed` back, then `cmp` against a scratchpad backup, and the backup's path is one variable used by both the write and the read.**
 
 ## Where the rest of the record is
 
