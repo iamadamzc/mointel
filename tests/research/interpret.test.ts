@@ -315,12 +315,12 @@ describe('interpreter transport', () => {
       expect(parseSubmissions(base, '1').sicDescription).toBeNull();
     });
 
-    it('reads null on a store without the column, and never throws', () => {
+    it('reads null until the column is written, and never throws', () => {
       const db = temporaryDb();
       const columns = db.prepare('PRAGMA table_info(issuer_registry)').all() as Array<{ name: string }>;
-      // The precondition: when schema v28 adds the column, this fails and the
-      // test becomes a write round trip through upsertIssuer.
-      expect(columns.map((column) => column.name)).not.toContain('sic_description');
+      // Schema v28 adds the column (Ops). Research's upsertIssuer write and its
+      // round-trip test follow on top.
+      expect(columns.map((column) => column.name)).toContain('sic_description');
       upsertIssuer(db, ISSUER);
       expect(buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE }).sicDescription).toBeNull();
     });
@@ -328,8 +328,6 @@ describe('interpreter transport', () => {
     it('forwards a stored SIC label into the bundle, which is the model’s input', async () => {
       const db = temporaryDb();
       upsertIssuer(db, ISSUER);
-      // Stands in for schema v28's column until Ops's migration lands.
-      db.exec('ALTER TABLE issuer_registry ADD COLUMN sic_description TEXT');
       db.prepare('UPDATE issuer_registry SET sic_description = ? WHERE ticker = ?')
         .run('Pharmaceutical Preparations', 'ACME');
 
