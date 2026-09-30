@@ -18,7 +18,8 @@ import { describe, expect, it } from 'vitest';
  * first would pass `.join(' — ')`, which is how three such strings survive
  * `tests/dashboard/noEmDash.test.ts`.
  */
-const RESEARCH = /^lib\/research\/.+\.ts$/;
+// Research's code: the research tree and the session reports' writer and checker.
+const RESEARCH = /^lib\/(?:research|desk\/reports)\/.+\.ts$/;
 
 const EM_DASH = '—';
 
@@ -79,7 +80,7 @@ describe('telling the decoder glyph from writing', () => {
 });
 
 describe('no em dashes in research writing', () => {
-  const files = execSync('git ls-files lib/research', { encoding: 'utf8' })
+  const files = execSync('git ls-files lib/research lib/desk/reports', { encoding: 'utf8' })
     .split('\n')
     .filter((file) => RESEARCH.test(file));
   const writing: string[] = [];

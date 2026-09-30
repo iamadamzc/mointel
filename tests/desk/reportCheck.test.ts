@@ -152,8 +152,22 @@ describe('ruleStrikes strikes', () => {
     ['a halt with none observed', 'SANG was not halted.', 'S1L1:FORBIDDEN_WORDING'],
     ['"entered" the board', 'SANG entered the board at $4.97.', 'S1L1:FORBIDDEN_WORDING'],
     ['a line that leans on another', 'It was $4.97, SANG says.', 'S1L1:NOT_SELF_CONTAINED'],
+    ['an em dash (his hard rule)', 'SANG ran to $6.01 — and came back.', 'S1L1:FORBIDDEN_WORDING'],
+    ['an em dash as an entity', 'SANG ran to $6.01 &mdash; and came back.', 'S1L1:FORBIDDEN_WORDING'],
+    ['a spaced hyphen used as a dash', 'SANG ran to $6.01 - and came back.', 'S1L1:FORBIDDEN_WORDING'],
+    ['a written count of names', 'SANG led 12 names into the premarket.', 'S1L1:FORBIDDEN_WORDING'],
+    ['a count of names in words', 'SANG led twelve names into the premarket.', 'S1L1:FORBIDDEN_WORDING'],
   ])('%s', (_, text, expected) => {
     expect(reasons([{ ticker: 'SANG', text }])).toContain(expected);
+  });
+
+  it('admits what the dash and count rules must not strike: an en-dash range, a negative number, "a name"', () => {
+    expect(reasons([{ ticker: 'SANG', text: 'SANG traded in the $1–$20 range from 04:00–20:00.' }])).not.toContain(
+      'S1L1:FORBIDDEN_WORDING',
+    );
+    expect(reasons([{ ticker: 'SANG', text: 'SANG was -25.1% after hours, a name that gave back.' }])).not.toContain(
+      'S1L1:FORBIDDEN_WORDING',
+    );
   });
 
   it('"on file" in ANOTHER sentence does not rescue a bare "no catalyst"', () => {

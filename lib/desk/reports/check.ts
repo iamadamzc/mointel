@@ -117,6 +117,18 @@ const FORBIDDEN: Array<[RegExp, string]> = [
   [/\bno catalyst\b(?! found in our sources)(?![^.;]*\bon file\b)/i, 'bare "no catalyst"'],
   [/\bquiet\b/i, '"quiet"'],
   [/\b[A-Z]{2,}(?:_[A-Z0-9]+)+\b/, 'engine constant'],
+  // His rule 2026-09-30T10:43:39Z: "no em dashes in any writing. hard rule."
+  // Any line containing one, whatever its source. Entities included.
+  [/\u2014|&mdash;|&#8212;|&#x2014;/i, 'em dash'],
+  // Marketing's addition: the substitute is never a spaced hyphen, the same tic.
+  // A range takes an en dash, a negative number no space after its sign.
+  [/\s-\s/, 'spaced hyphen as a dash'],
+  // The opening's count is COMPUTED (`watchCount`); a writer-stated count of
+  // names is struck (Integration's order call; data-map-2026-09-30.md).
+  [
+    /\b(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|a dozen)\s+(?:names?|tickers?|stocks?|movers?)\b/i,
+    'a count of names (computed, never written)',
+  ],
 ];
 
 const HALT = /\bhalt(?:s|ed|ing)?\b/i;
@@ -230,7 +242,7 @@ const CHECKER_SYSTEM = [
   '- the distance from the session high: (high − price) / high, said as "N% under its session high" or "N% off its high". Qualitative words that follow from it for THIS row are supported ("near its high" for a small distance, "gave back" or "well off its high" for a large one).',
   '- the notes. EVERY note is a change between the previous checkpoint and this one (the desk writes them by comparing the two rows), so saying any of them happened "since the last check", "since the last read" or "since the previous checkpoint" is supported: "N% since prior assessment" (a move since the previous checkpoint), "N% off session high" (the CURRENT distance from the high, which first passed its threshold since the previous checkpoint: it is not a fall of N% since then), "lost $X support" (price fell below that level since the previous checkpoint), "new HOD" (a new high of day since the previous checkpoint).',
   '- catalyst, structure and cycle ONLY as their labels, or a plain restatement of what the label means. A label null means no research on file ("not researched", "no catalyst, structure or cycle on file"); UNKNOWN means analysis reached no conclusion; NONE for catalyst means no catalyst found in our sources. The row does NOT hold what the news said, so naming a catalyst\'s content (an approval, a contract, an offering) is unsupported.',
-  '- the desk\'s RULED READINGS of a label are restatements, not advice: cycle red — backside means most of the advance has been given back, and its ruled reading is "an exit-and-avoid read, not a setup" (the desk is long-only). Saying that is supported.',
+  '- the desk\'s RULED READINGS of a label are restatements, not advice: cycle "red, backside" means most of the advance has been given back, and its ruled reading is "an exit-and-avoid read, not a setup" (the desk is long-only). Saying that is supported.',
   '- halts only when haltState is HALTED or RESUMING.',
   '- the checkpoint time given, and nothing about any other time.',
   '',

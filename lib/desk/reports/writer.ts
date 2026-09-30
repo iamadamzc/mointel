@@ -176,13 +176,13 @@ function researchLine(label: string, value: string | null, none: string): string
  * would make every faithful draft fail.
  */
 export function factSheet(fact: ReportFact): string[] {
-  const lines: string[] = [`${fact.ticker} — ranked #${fact.assessmentRank} in this range`];
+  const lines: string[] = [`${fact.ticker}: ranked #${fact.assessmentRank} in this range`];
 
   lines.push(
     fact.liveFeed === true
       ? 'live trade data: yes'
       : fact.liveFeed === false
-        ? 'live trade data: no — minute data only; say nothing about how it traded between minutes'
+        ? 'live trade data: no (minute data only); say nothing about how it traded between minutes'
         : 'live trade data: not recorded for this checkpoint; say nothing about it',
   );
 
@@ -214,7 +214,7 @@ export function factSheet(fact: ReportFact): string[] {
   lines.push(researchLine('structure', fact.structure, 'none recorded'));
   lines.push(
     fact.cycle === 'RED_BACKSIDE'
-      ? 'cycle: red — backside (most of the advance has been given back; an exit-and-avoid read, never a setup)'
+      ? 'cycle: red, backside (most of the advance has been given back; an exit-and-avoid read, never a setup)'
       : researchLine('cycle', fact.cycle, 'none recorded'),
   );
 
@@ -250,12 +250,12 @@ const SYSTEM = [
   // v2's persistence words ("still leading", "remains") were struck by the
   // checker as claims about another checkpoint.
   'VOICE',
-  '- You are briefing a trader sitting down at the desk, not filling a table. Lead each name with what it DID this checkpoint — ran and came back, sits near its high, has broken down, hasn’t been looked at yet — and let the numbers support that read. Never open a line with the rank.',
+  '- You are briefing a trader sitting down at the desk, not filling a table. Lead each name with what it DID this checkpoint (ran and came back, sits near its high, has broken down, hasn’t been looked at yet), and let the numbers support that read. Never open a line with the rank.',
   '- Describe ONLY this checkpoint. Never say a name is "still" anything, "remains", "holds", "keeps" or "continues": that asserts it matches an earlier checkpoint, which this report cannot see and the checker strikes as a cross-checkpoint claim. The one comparison to a prior checkpoint you may make is the sheet’s "since the previous checkpoint" line, in the sheet’s own words.',
   '- Choose what carries the name’s story. The sheet lists more than a briefing says: put in the price and the one or two numbers that matter, and you need not use every field. Leaving a fact out is fine; inventing or restating one is not.',
   '- Write one flowing sentence per name, not "field; field; field". The rank is a bare present-checkpoint detail late in the line ("…, #3 among these names"), never the subject and never "still #N".',
   '- Vary how the lines open across names so the report is not a repeated template. The desk’s spoken words carry the voice: ran to, came in, off its high, near its high, gave it back, on tape alone, hasn’t been looked at.',
-  '- The headline is one plain sentence about what this moment looks like across the names — not a label like "Premarket report", and not a persistence claim like "names remain near their highs".',
+  '- The headline is one plain sentence about what this moment looks like across the names: not a label like "Premarket report", and not a persistence claim like "names remain near their highs".',
   '',
   'FACTS',
   '- Use ONLY the facts in the sheet you are given. Say nothing the sheet does not say.',
@@ -279,7 +279,7 @@ const SYSTEM = [
   '- A headline of one sentence, then one to three sections, each with a short heading.',
   // Design's ruling (the surface prints `ticker` as the line's lead) in
   // Marketing's words (`marketing.md`, 8c76fe0).
-  '- Each line about a name is ONE self-contained SENTENCE: it stands alone, with no "it", "also" or "the same name" pointing at another line — self-contained means it does not lean on another line, NOT that it is a row of fields. The surface prints the ticker as the line’s lead, so set "ticker" to that ticker but do NOT repeat it in the text — open on what the name did. A line about no single name has "ticker": null.',
+  '- Each line about a name is ONE self-contained SENTENCE: it stands alone, with no "it", "also" or "the same name" pointing at another line. Self-contained means it does not lean on another line, NOT that it is a row of fields. The surface prints the ticker as the line’s lead, so set "ticker" to that ticker but do NOT repeat it in the text. Open on what the name did. A line about no single name has "ticker": null.',
   `- A section with nothing to say carries exactly one line: {"ticker": null, "text": "${NOTHING_LINE}"}.`,
   '- Return JSON only: {"headline": string, "sections": [{"heading": string, "lines": [{"ticker": string | null, "text": string}]}]}.',
 ].join('\n');
