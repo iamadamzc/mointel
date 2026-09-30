@@ -1358,6 +1358,10 @@ RESTART 20:15    Ops prep 08b6255 (read): FULL env sync (adds CAPTURE_PRICE_MIN/
                  dry run; stop on any new output; read back both CAPTURE vars before the restart.
                  Ops's precaution: re-run the non-installing hash copy first; proceed only if stderr == the 19:5x pattern
                  and the key diff == the four keys; then read back both CAPTURE values before the restart.
+MOTION CHECKED   Ops read-back 00:15:23Z (before the restart): mointel.env 640 root:mointel, written 00:15:21Z, 25 keys
+                 (21 + the four); CAPTURE_PRICE_MIN=0.25, CAPTURE_PRICE_MAX=50. Drift re-run 20:15:07 ET and real sync
+                 stderr identical to 19:5x ("sync-env.sh: command not found" among the six lines). SATISFIED. Restart
+                 of mointel-market in progress; result + /proc owed.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
