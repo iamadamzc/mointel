@@ -364,6 +364,14 @@ export type CheckedReport =
       /** Null when struck: a struck headline is NOT replaced (`design-seat.md` §3a rule 3). */
       headline: string | null;
       sections: ReportDraft['sections'];
+      /**
+       * DISTINCT tickers across the SURVIVING lines: a name in two sections
+       * counts once, a NOTHING_LINE counts none. Computed here, after the
+       * strikes, so the opening sentence the surface words from it (`watchLine`)
+       * cannot disagree with the lines. The writer never states a count
+       * (Integration's order call; data-map-2026-09-30.md).
+       */
+      watchCount: number;
     }
   | { ok: false; cause: MissedCause };
 
@@ -391,5 +399,8 @@ export function applyStrikes(
     heading: section.heading,
     lines: section.lines.filter((_, l) => !struck.has(`S${s + 1}L${l + 1}`)),
   }));
-  return { ok: true, headline: struck.has('H') ? null : draft.headline, sections };
+  const watched = new Set(
+    sections.flatMap((section) => section.lines.map((line) => line.ticker)).filter((ticker) => ticker !== null),
+  );
+  return { ok: true, headline: struck.has('H') ? null : draft.headline, sections, watchCount: watched.size };
 }

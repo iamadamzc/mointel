@@ -492,6 +492,8 @@ checkpoints[] { id, type, completedAt }  one per checkpoint read. The reader nev
 | Path ("$3.59 → $6.01 → $5.10") | COMPUTED: intraday from the row (`reference_close` → `session_high` → `price`); premarket from `ticker_session` D (`ah_reference_close` → `ah_high` → `price`) | `ReportLine.path: { from, high, now, fromBasis } \| null`, `fromBasis` = `PRIOR_CLOSE` \| `TODAY_CLOSE`, so the surface labels the first point |
 | The two or three sentences | writer; checker | `ReportLine.text`, unchanged |
 
+**✅ Marketing CONFIRMED the shape (`marketing.md` d35e1bba); Integration's calls:** the company line is **"{name}. {country}. {business}."**, a null part dropped with its separator, never guessed: ACCEPTED. **The path line's LABELS** (Marketing proposes "$3.59 prior close → $6.01 high → $5.10 now", and "today's close" / "after-hours high" on the premarket report) **are Design's call, with the two questions below. So the contract carries VALUES and the basis KIND only, and the words are chosen at render; Design's answer then never touches the checker.**
+
 **Why computed rather than written:** a path point or a company name in model text is one more place to invent, and the checker could only strike what code already knows. Computed, they cannot disagree with the store, cannot be struck, and cost no tokens. The writer is told the path and the company line are printed above its text, and does not restate them.
 
 **Three questions, each with a proposal:**
