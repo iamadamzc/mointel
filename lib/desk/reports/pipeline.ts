@@ -204,6 +204,8 @@ export async function runReport(
   slot: { kind: ReportKind; rangeId: string; tradingDate: string; range: { min: number; max: number } },
   models: { writer: ReportModel; checker: CheckerModel },
   now: () => Date = () => new Date(),
+  /** Harnesses only: sees the unchecked draft. Never changes the run. */
+  observe?: { draft?: (draft: ReportDraft) => void },
 ): Promise<ReportRun> {
   const read = readReportInputs(db, slot.kind, slot.tradingDate, slot.range);
   if (!read.ok) return { status: 'MISSED', cause: read.cause, diagnostics: null };
@@ -227,6 +229,7 @@ export async function runReport(
   if (!written.ok) return { status: 'MISSED', cause: written.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs: null } };
 
   const draft: ReportDraft = written.draft;
+  observe?.draft?.(draft);
   const checkerStart = Date.now();
   const checked = await checkReport(
     {
