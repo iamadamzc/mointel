@@ -469,3 +469,76 @@ the sentence's own period (*"KNOREX LTD.."*, *"BeyondSpring Inc.."*, *"Yimutian
 Inc.."*) — cosmetic, not this seat's to rule, flagged so it doesn't ship unnoticed.
 
 **PASS, no lines to change. Reports may ship tonight on this review.**
+
+---
+
+## 12. RULED 2026-09-30 — AN ENTRY GATE, NOT JUST A LINK, HIS INSTRUCTION DIRECT
+
+**His words, direct to this seat, not relayed:** *"regarding disclaimer, let's add a
+disclaimer entry. attached is warrior tradings. this is required before you can
+enter the platform."* Attached: Warrior Trading's own disclaimer modal — a dark
+full-screen dialog, title "Disclaimer," three short paragraphs, a link to their full
+disclaimer, and two buttons, **ACCEPT** and **DECLINE**, required before the
+platform is reached.
+
+**This changes §4's answer for "in the app," not just adds a new document.** §4 said
+the disclaimer reaches an app reader *"by construction — the terms are one link
+away on every page."* A link one click away and a gate that must be accepted before
+entry are different things: one is available, the other is unavoidable. **His
+instruction is to move from the first to the second — for the whole platform, not
+only the session reports this document was written about.** Recorded here because
+this document is where the desk's disclaimer reach already lives; the gate is
+broader than reports and Web/Design build it once, platform-wide.
+
+**What this does NOT require: new legal drafting.** `terms.md` §7 is already adopted
+and already says everything the gate needs to say — *"We are not a broker-dealer. We
+are not an investment adviser. We are not your fiduciary. Nothing the desk displays
+is a recommendation, an endorsement, a solicitation, or a suggestion to buy or sell
+any security."* The gate is a **presentation** change (how the existing text reaches
+a reader), which is explicitly the kind of change `terms.md`'s own banner rule
+(quoted in its header comment) does not touch `adopted` for — only a redraft of the
+words does that.
+
+**Where our posture differs from Warrior's model, named so the short form isn't
+copied wholesale:**
+
+- **Warrior's second paragraph is about one named person's results** (*"Ross's
+  results are NOT typical... do not attempt to mirror trade or blindly follow Ross or
+  anyone else"*). **This desk has no equivalent clause to write, not a weaker one** —
+  §2f's standing rule already prohibits any outcome or performance claim in any
+  form (`docs/threads/commercial.md`, *"Outcome claims are prohibited in any form,
+  loss statements included"*), so there is no "past results" claim anywhere on this
+  product for a disclaimer to qualify. Including a results disclaimer here would
+  imply a results claim exists to be disclaimed, which is the opposite of the
+  desk's actual posture.
+- **"Trade in a simulator before trading with real money"** is Warrior's own
+  practice recommendation, not a legal requirement either of us is under. Optional
+  for this desk to include in its own voice — Marketing's call, not this seat's to
+  require.
+- **The referral clause maps directly and should be kept in substance:** *"A
+  referral to a stock or commodity is not an indication to buy or sell"* is the same
+  thing terms.md §7 already says, just phrased for a first-entry reader rather than
+  a terms page.
+
+**Short-form text for the gate, drafted from the already-adopted §7 language, not
+new drafting — for Web/Design to build and Marketing to voice-check:**
+
+> **Disclaimer**
+>
+> What TMI shows is for educational and informational purposes only and is not
+> tax, legal, or investment advice. Naming a stock or its price moving is not a
+> suggestion to buy or sell it.
+>
+> TMI is not a broker-dealer, an investment adviser, or your fiduciary. Nothing it
+> displays is a recommendation, an endorsement, or a solicitation.
+>
+> This does not represent our full Terms of Service. [Read the full terms.]
+
+**Build note, not a ruling:** whether ACCEPT is required once (stored, like a
+cookie or an account flag) or every session is Design's and Web's implementation
+choice — Warrior's own screenshot doesn't resolve it either way, and nothing in
+this desk's legal position turns on the choice. What does matter, and is this
+seat's to state: **DECLINE must actually withhold the platform** for the gate to
+be the "unavoidable" thing this ruling calls for — a DECLINE that still lets
+someone through by another route (back button, direct link) is the old "one click
+away" shape wearing a gate's costume, not the gate his instruction asked for.
