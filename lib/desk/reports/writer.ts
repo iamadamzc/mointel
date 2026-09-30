@@ -121,9 +121,17 @@ const CHANGE_NOTES: Array<[RegExp, (match: RegExpMatchArray) => string]> = [
   ],
   [
     /^([+-]?\d+(?:\.\d+)?)% off session high$/,
-    // Signed, as stored: the checker holds the note's own -34.6, and a bare
-    // magnitude would need the row's price and high to be supported at all.
-    (m) => `${directed(Number(m[1]))} off its session high`,
+    /*
+     * A STATE, NOT A CHANGE. `assessment.ts` writes this note when the
+     * giveback first crosses its threshold since the prior checkpoint, and
+     * its number is the CURRENT distance from the high. "down 15.7% off its
+     * session high" under "since the previous checkpoint" was written by the
+     * first live draft (FFAI, 09-29 09:25) as a 15.7% fall since the last
+     * read. "slipped to ... under" says where it went, not how far it moved.
+     * The magnitude is supported by the row's own giveback, which the note
+     * is computed from.
+     */
+    (m) => `slipped to ${percentMagnitude(Number(m[1]))} under its session high`,
   ],
   [/^lost \$(\d+(?:\.\d+)?) support$/, (m) => `lost $${m[1]} support`],
   [/^new HOD$/, () => 'printed a new high of day'],
