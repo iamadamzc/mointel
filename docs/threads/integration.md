@@ -1374,6 +1374,9 @@ CHECKER BUILT    cdc77af lib/desk/reports/check.ts (rules + model reading of the
                  ticker. ALSO: a section emptied by strikes must NOT refill "Nothing in our sources" (false after a
                  strike): heading stays, neutral line (words from Marketing). Research: applyStrikes; Design: empty
                  state. Inert until /api/reports.
+                 SEEDS IN REPO 67406d5: blob sha256 == a8fdab73...4dba (computed here); .gitattributes adds ONE line
+                 (defect-set.md eol=lf), nothing else. VOICE v3 input 7a064b1 (Marketing): continuity vocabulary removed,
+                 rule "describe only this checkpoint" -> Research prompt v3. Pass-bar run owed by Research.
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
