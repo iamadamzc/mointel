@@ -2145,6 +2145,11 @@ OPS REPEAT       Ops ledgered a REPEAT (asserted without opening: FK default, th
                  Ops warns him + proposes hand-off (Ops's question; I stand down). My read if asked: after tonight's last
                  release, or now if he prefers. openHistoryStore has no flag check; openHistoryStoreReadonly fileMustExist
                  -> /api/levels treats missing history.db as no row (Research to test).
+OPS RETIRING     local_bb3d4059 retires on his word ("time to retire?", ~17:1xZ, Ops's session). Hand-off 2d745125 (read
+                 ops.md "HAND-OFF, 2026-09-30 17:1xZ": release table matches mine; history store c443b585 NOT gated and not
+                 re-stacked on v28; v28-on-main 9f4133b1 not landed; market-floor re-pin to v28 = his word; 20:07 reminder
+                 034bcf2f DIES -> successor recreates). MY REMINDER one-shot 19:41 ET: new Ops-tmi open + 20:07 reminder
+                 set, else tell him. Route to the NEW Ops by id until the old one is renamed.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
