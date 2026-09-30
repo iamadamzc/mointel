@@ -12776,3 +12776,7 @@ that migrates, never before (a v27 store has no such column and the INSERT would
 (top-N + frozen counts), ah_reference_close/ah_high/ah_low on desk_assessment_tickers, issuer_registry.sic_description.
 One migration, behind the backup route; Research's writer ships no earlier. ORDER: 84b0099 + R2, then the history
 store, then this bump (Ops may propose the bump first if the reports need it sooner).
+**CONE CONSTRAINT (Research, ~14:4xZ): 95b734e (readIssuer maps sic_description; prompt v3) is on main and must ship
+WITH v28, never before.** It carries a test asserting the column is ABSENT on a fresh store, which goes red at the v28
+db.ts commit: the v28 commit must invert/replace that test in the same commit or its own gate fails. Any cut picked
+from main before v28 must exclude 95b734e.
