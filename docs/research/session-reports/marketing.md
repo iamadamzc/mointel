@@ -505,3 +505,72 @@ record: the key calls 475-4 an added line, but that draft replaces the EPSM line
 with the STI line — still a single differing line and struck as class 4, so the
 result stands. The committed set is left unchanged: it is the hash-locked artifact
 the run used.*
+
+## His v3 verdict — "uncomplicate it": the report shape (v4)
+
+**His verdict on the v3 sample (#551), verbatim** (`integration.md` `b563207`):
+
+> ***"the voice and tone is right, uncomplicate it."***
+
+**So the register is settled; what changes is density and depth.** He read it as "just
+a ticker runout" — a pile of numbers per name — and named two of my phrasings as
+confusing: **"came in at"** (*"what does came in at mean?"*) and **"now 15% under
+it"** (*"under what?"*). He wants the numbers compressed into a price PATH so the
+words can carry catalyst, float, structure and the company.
+
+**This is voice. The depth he wants is only writable where the fact exists — the
+determinism rule does not bend — so each element below carries the field it needs,
+for Research's data map to confirm before the SANG example is written.**
+
+### The shape
+
+**1. An opening narrative paragraph.** What the after-hours session left and how many
+names are on the premarket watch. Written from stored counts and the named leaders,
+never an invented "quiet/wild" characterization.
+*Needs: the count of ranked names in range; the top names and their moves (have).*
+
+**2. Per-ticker blocks — a path line, then two or three sentences.**
+
+```
+TICKER — Company Name, what it does, based in City, ST.
+$3.59 → $6.01 → $5.10
+<two or three sentences: the catalyst named and what the desk makes of it;
+ the float / structure story; where it sits or that we have not looked.>
+```
+
+- **The path line** is the price arc from ONE row's own fields — the reference close,
+  the session high it reached, and the current price — so it is not a cross-checkpoint
+  read. It replaces both phrases he flagged: the retracement is shown, not narrated.
+  *Needs: `reference_close` (+ its basis), `session_high`, `price` (have).* The first
+  point is labelled by basis — the prior close intraday, that day's own close on the
+  premarket report.
+- **The catalyst, named, and the desk's read of it.** *Needs a confirmed field the
+  report layer can see: the dossier's catalyst text/headline, and any stored rationale.
+  The current fields carry only the GRADE (`design.md`: "the summary text lives in the
+  research dossier and is a separate read"). "What WE think beyond the grade" can only
+  be the stored dossier rationale — never an invented opinion. If that text is not
+  available to the report, the block names the grade and stops.*
+- **Float / structure**, in the desk's words — "dirty float", "supply overhead",
+  "capacity, not proof of selling". *Needs: `structure` (have) and, for a named number,
+  the supply figures (confirm).*
+- **The company: name, what it does, where based.** *Needs: company name
+  (`tickerMap`), business description and location (SEC company facts or the dossier —
+  confirm the report layer can read them). Where absent, the block omits it rather than
+  guessing.*
+
+### Plain words, replacing the phrases he flagged
+
+| confusing (v3) | plain (v4) |
+|---|---|
+| "came in at $5.10" / "came in to $X" | the path line carries it; in prose, "now $5.10, back from its $6.01 high" |
+| "now 15% under it" ("under what?") | name the referent or let the path show it: "$6.01 high → $5.10 now" (no bare percentage) |
+| a stack of percentages (from prior close / off high / since last check) | one path line for the numbers; the sentences carry meaning, not more percentages |
+
+**Rule added to the voice:** never a pronoun referent for a number ("under it",
+"off it") — name what the number is measured against, or move it into the path line.
+
+### The SANG example — PENDING Research's data map
+
+Held until Research confirms which of the above fields exist and are readable by the
+report layer for SANG. I will write the block by hand, from confirmed facts only,
+and annotate each sentence to its field — as with the run specimens.
