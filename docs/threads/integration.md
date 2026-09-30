@@ -2248,6 +2248,14 @@ DESIGN PRE-REG   Shim review criteria stated BEFORE seeing it: rangeLabel words 
                  "covers $1-$20" unchanged); board = null -> chooseReportRange stored-then-default, never STRADDLE;
                  outsideBoardRange never "not in your range"; no 5e8b13c3/range-control file in the cone; render v5
                  struck / zero-watch / null path / sub-dollar / briefing lead / earlier-today list at 1,280 + 1,024.
+PASS BAR RUN 1   v5: FAIL AS REGISTERED (seed-lock deviation cd8052b9). Raw 70da3eb before read; harness 82493db;
+                 checker 1ab48be; $2.19. Keyed 19/19 struck x3 = NO MISSED DEFECT. Control strikes: regression 2 (499-C
+                 S1L1, 512-C S1L1), ordinary 3 (499-C S1L2, 509-C S1L1, 513-C S1L1); no CHECKER_FAILED. Causes: (1)
+                 bare-"no catalyst" rule too narrow (predicted); (2) research.ts drops supplyLedger[].sourceFiling, so
+                 held forms read unheld (Research's hole); (3) "clearly" in SPHL control. RULING (order call): (3) strike
+                 CORRECT, rule stays, a SET error. Per pre-fixed rule -> RUN 2 TONIGHT: fix (1)+(2) only with tests,
+                 re-freeze (sha + blobs to me before release), FRESH set from a different day with (1)/(2) phrasing as
+                 regression controls, voice list obeyed; Marketing authoring now.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
