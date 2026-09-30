@@ -516,7 +516,7 @@ with the STI line, still a single differing line and struck as class 4, so the
 result stands. The committed set is left unchanged: it is the hash-locked artifact
 the run used.*
 
-### Run 3 (v5) — a fresh set, 19 classes, informed by the contract only
+### Run 3 (v5): a fresh set, 19 classes, informed by the contract only
 
 For the v5 pass bar (ship-tonight, 2026-09-30). v5 computes the company/path/watchCount
 lines, so the checker judges only the writer's `text` and the premarket `overall`; the
