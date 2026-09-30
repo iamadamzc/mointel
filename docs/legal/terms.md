@@ -85,7 +85,7 @@ us before you rely on it rather than after.
 
 ## 1. Who we are, and what this is
 
-**The Momentum Intelligence Trading Desk** — TMI — is operated by **Andromeda
+**The Momentum Intelligence Trading Desk** (TMI) is operated by **Andromeda
 Genius, Inc**, of 5460 Babcock Rd, Suite 120 PMB 95234, San Antonio, TX 78240,
 United States. "We" is that company. "You" is the person signed in. "The desk"
 is the service.
@@ -128,7 +128,7 @@ use it to harm anyone else.
 **This is the term that matters most, and it is here because of how the desk is
 supplied rather than because lawyers like the word.**
 
-Market data reaching this desk is licensed **for one person's use** — the
+Market data reaching this desk is licensed **for one person's use**: the
 operator's. What the desk shows you is built on it.
 
 So: **what you see is for you.** You may not republish it, forward it, post it,
@@ -149,7 +149,7 @@ for. Passing on what it showed you is not.*
 ## 6. What we do not promise
 
 **Availability.** The desk is one operator's service, not a utility. It may be
-down, slow, or incomplete — including in the premarket, including on a morning
+down, slow, or incomplete, including in the premarket, including on a morning
 you planned around it. We do not promise uptime and there is no service level
 here.
 
@@ -173,8 +173,8 @@ do next.
 
 ## 8. What belongs to whom
 
-The desk — its interface, its wording, its classifications, and the judgements
-it renders — is ours. Signing in gives you permission to use it, not to own any
+The desk (its interface, its wording, its classifications, and the judgements
+it renders) is ours. Signing in gives you permission to use it, not to own any
 part of it.
 
 Public filings and market data belong to whoever they belong to; we claim no
@@ -186,13 +186,13 @@ right over the underlying facts.
 happens to your data then is in the [privacy policy](/privacy).
 
 **We may end your access at any time**, with or without a reason. Where we
-reasonably can, we will tell you first — except where the reason is a breach of
+reasonably can, we will tell you first, except where the reason is a breach of
 section 5, where we may act immediately.
 
 ## 10. If something goes wrong
 
 Nothing in these terms limits liability where the law does not allow it to be
-limited — including for fraud, or for death or personal injury caused by
+limited, including for fraud, or for death or personal injury caused by
 negligence.
 
 Subject to that: **we are not liable for trading losses.** Not for a decision
@@ -206,8 +206,8 @@ and (b) US$100.**
 
 If we change something that matters, we will tell signed-in users by email
 before it takes effect, and change the date at the top of this page. Continuing
-to use the desk after that is how you accept the change. Minor corrections — a
-typo, a clearer sentence — are made without notice, and the history of this file
+to use the desk after that is how you accept the change. Minor corrections (a
+typo, a clearer sentence) are made without notice, and the history of this file
 is kept.
 
 ## 12. Law, and where disputes go
