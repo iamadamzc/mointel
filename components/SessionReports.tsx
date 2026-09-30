@@ -11,6 +11,7 @@ import {
   briefingLineText,
   checkpointText,
   coverageText,
+  EMPTY_SECTION_LINE,
   reportCoverage,
   outsideBoardRange,
   reportTitle,
@@ -401,9 +402,9 @@ function ReportBody({
             {section.heading}
           </h3>
           {section.lines.length === 0 ? (
-            // Empty for ANY reason reads the same. "Nothing happened" exists only
-            // as a written, checked line, so an empty section never claims it.
-            <p className="text-[13px] text-ink-3">Nothing in our sources for this section.</p>
+            // Empty for ANY reason reads the same, and claims nothing: "nothing
+            // in our sources" exists only as the writer's checked line.
+            <p className="text-[13px] text-ink-3">{EMPTY_SECTION_LINE}</p>
           ) : (
             <ul className="space-y-1.5">
               {section.lines.map((line, index) => (
