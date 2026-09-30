@@ -1370,6 +1370,12 @@ RESTART DONE     Ops: mointel-market ExecMainStart 00:15:40Z, pid 1574400, cwd 1
                  22:08.
 ITEM 1 GRADED   Research: PASS (flush clock +6.93 s over 7.0 s; lag 297/383 ms; band line; NR 0). 121f97c and floor
                  3810b9e are ancestors of 1b5ead6 (read). Item 6 after 22:08 ET; items 2-5 -> successor 04:33 ET.
+SNAPSHOT (c)     Ops, first run 00:19:45Z: maxima 811.7/1768.9/822.4/682.8/805.4 ms (median 811.7); nowBuckets on 15
+                 names. FAIL AS REGISTERED, ATTRIBUTED TO NOTHING: (b') was post-roll on a near-empty date (00:55 ET),
+                 (c) pre-roll on a full day (Ops's catch); AND the sessionEnd memo (8455b48) sits between and lowers
+                 build time (opposite direction). RULED: (c') ~00:55 ET 09-30, same method; PRE-REGISTERED PASS = median
+                 of maxima <= 28.9 ms; a pass carries the memo caveat; a fail is named to Design before fa61410
+                 moves. No code switch to omit nowBuckets.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
