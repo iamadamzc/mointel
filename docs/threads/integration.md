@@ -1931,8 +1931,12 @@ HIS OBJECTION    Research's session 22:56:28Z (read): "all it needs is to show r
 OLD CHAT         local_962d5920: first list_sessions 15:4xZ showed it renamed, NOT archived; get_session minutes later
                  read isArchived true. Nothing to ask him.
 SEATS FIX        LIVE STATE named Design-tmi local_72b49119 (retired); corrected to local_4f84a562 (list_sessions read).
-§8 QUESTIONS     DELIVERED: Design-tmi transcript ec87dec7 carries them as a user turn at 15:38:40Z (read). Prompt task 2
-                 was already done by the nineteenth; nothing to re-send. Writer v5's prompt waits on Design's answer.
+§8 QUESTIONS     ~~DELIVERED: Design-tmi transcript ec87dec7 carries them as a user turn at 15:38:40Z (read).~~ WRONG
+                 (Design's catch): that record is a tool_result, Design reading design.md §8 itself; the 19th's message
+                 was never processed there. Moot: Design ANSWERED from the committed file at 6fb68956 (read): keep
+                 sections[]; v5 marker = watchCount is a number, briefing line shows watchLine in the headline's place;
+                 path labels "prior close / high / at HH:MM" intraday, "<Wkd> close / AH high / AH close" premarket.
+                 Sent to Research + Marketing by Design. 6a guard fix = 7aa2aa7c (pick 12, after 9e0a3a0).
 46d9f9d REPLAY   on c3d0f06 (prod per the hand-off): rev-list 2 (84b0099, 46d9f9d); 1b5ead6 ancestor; 95b734e NOT
                  ancestor; diff preflight.sh, repo.ts, 2 tests. Matches the 19th's approval.
 HIS YES OPEN     ops.md at bd57662d: the guard "goes to him in the same question" as the held speed fix. His 14:08:40Z
@@ -1964,11 +1968,20 @@ HIS RULING       THIS SESSION (transcript 4689366c, user turn 2026-09-30T15:47:1
                  SENT (all cwd A:\mointel, not archived): Ops (queued), Research, Design (queued, §8 first), Web,
                  Marketing, Commercial; each asked for what can be built + gated tonight, what cannot and why, within
                  ~90 min.
+OPS PLAN         (Ops, after his same words in Ops's session ~16:0xZ, which end "i'll tell integration"): 46d9f9d at 20:07
+                 ET; em-dash cut on its own yes; v28 = ranges table + AH freeze + sic_description + capture code + 20:05
+                 checkpoint, pre-migration backup after 20:00; history store, backfill overnight. None straddles the
+                 22:00 recap. Ops building v28 in A:\mointel-ops on 46d9f9d. OPEN: whether v28's capture code needs a
+                 MARKET-WORKER RESTART (asked in my queued message, item b; not answered in this one).
 ```
 **THE TWENTIETH SEAT'S LEDGER:**
 ```
 error                                                  TYPE                               repeat?  caught by
-(none yet)
+1 told HIM and wrote here that Design had received    a presence from a search that      no       peer
+  the §8 questions (15:38:40Z "user turn", read).     could not tell the case apart               (Design)
+  My grep matched "sections[]" on a type:user record  (the mirror of the 19th's #5; the
+  that was a tool_result: Design reading design.md.   family: a value passed on without
+  Retracted to him in the next message.               reading the thing it describes)
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
