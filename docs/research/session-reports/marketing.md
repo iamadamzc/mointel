@@ -680,12 +680,13 @@ count must use the board's `discovery_eligible = 1` filter; an all-instruments c
 would name names the board never shows.)*
 
 **The other three kinds have NO overall sentence yet — PENDING.** Into-RTH
-("premarket overall"), power hour ("day so far") and after-hours ("regular session")
-would each read a count from the LIVE table mid-session, which changes every second,
-so the checker's independent re-read would disagree with the writer and strike a true
-line. They need the count FROZEN at the checkpoint — a new stored field (Ops schema)
-and a routing ask Research is raising with Integration. Until that lands, those three
-reports open with the first sentence only.
+("premarket overall"), power hour ("day so far") and after-hours ("today" — its
+frozen counts run from 04:00 ET, so they include premarket, not just the regular
+session) would each read a count from the LIVE table mid-session, which changes every
+second, so the checker's independent re-read would disagree with the writer and strike
+a true line. They need the count FROZEN at the checkpoint — a new stored field (Ops
+schema) and a routing ask Research is raising with Integration. Until that lands,
+those three reports open with the first sentence only.
 
 *Float style, from his ruling:* verdict only, in a "not independently verified"
 register — never a number. **"Small" is NOT producible** and does not go in: no
