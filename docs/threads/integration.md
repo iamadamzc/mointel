@@ -1377,6 +1377,12 @@ CHECKER BUILT    cdc77af lib/desk/reports/check.ts (rules + model reading of the
                  SEEDS IN REPO 67406d5: blob sha256 == a8fdab73...4dba (computed here); .gitattributes adds ONE line
                  (defect-set.md eol=lf), nothing else. VOICE v3 input 7a064b1 (Marketing): continuity vocabulary removed,
                  rule "describe only this checkpoint" -> Research prompt v3. Pass-bar run owed by Research.
+PASS BAR RUN 1   FAIL AS REGISTERED (protocol held: cdc77af < 67406d5 < 82b07ae < dbb2889, checker unchanged; $0.24):
+                 defects 18/18 struck; controls 5 false strikes (4 causes = ruled sources the checker lacked) + 423-C
+                 headline unstable. APPROVED ORDER: (1) amend registration FIRST: >= 2 runs/draft, SYMMETRIC (control
+                 admitted only if every run admits; defect struck only if every run strikes); (2) fix the four from
+                 sources, freeze checker, sha to me; (3) Marketing FRESH blind set, different day, hash-locked, released
+                 after the freeze; (4) run 2. 04:33 ET items take precedence on collision.
 HEADER LIVE      74c1818 PRODUCTION WEB on his "deploy now" (Ops's session 02:20:25Z, read; answered Ops's 02:20:09Z
                  header block). Ops /proc 02:33:59Z: web 1587281 (start 02:33:33Z) / research 1587339 / assess 1587457 on
                  74c1818, NR 0; market 1574400 on 1b5ead6 untouched. Gated 176/176; gzip survived. CONE: every later
