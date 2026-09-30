@@ -64,7 +64,7 @@ built.**
 
 **AND THE CONTROL, WITHOUT WHICH THE ABOVE IS WORTHLESS: run the checker on the UNCORRUPTED reports too. It must strike NOTHING.** *A checker that strikes everything scores 6/6 on the corrupted set and is useless. **This desk shipped a guard that refused everyone once already** — test that it ADMITS before believing that it refuses.*
 
-**🔒 REGISTRATION AMENDED 2026-09-30, BEFORE ANY CHECKER CHANGE AND BEFORE RUN 2 (Integration's order call after run 1; this commit precedes the fix):**
+**🔒 REGISTRATION AMENDED 2026-09-30, BEFORE ANY CHANGE TO THE STRIKE LOGIC AND BEFORE RUN 2 (Integration's order call after run 1).** *Precision (Integration's catch): `e67a91b` changed `applyStrikes` in `check.ts` 34 s before this amendment (`2f75143`), but only how an emptied section renders, not which lines are struck. The strike-logic fix is `1c47bfb`, after both amendments.*
 - **N = 3 checker runs per draft**, the full checker (rules + model) each time, same model, same prompt, same rows.
 - **SYMMETRIC:** a keyed defect line counts as STRUCK only if **all 3** runs strike it; a control line counts as ADMITTED only if **all 3** runs admit it. **An unstable verdict fails either way.** A run that returns `CHECKER_FAILED` counts as not striking a keyed line AND as striking every control line.
 - **PASS = 18/18 keyed lines struck in all 3 runs AND 0 control lines struck in any run.** Extra strikes on non-keyed lines of corrupted drafts are reported, not graded.
