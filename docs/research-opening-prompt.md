@@ -44,6 +44,17 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
 
 **In flight, in time order:**
 
+0. **FIRST, A RED TEST ON MAIN IN YOUR AREA** (unless Integration has already
+   routed it elsewhere; ask). `tests/research/interpret.test.ts` › "proves the
+   overhang when established supply exceeds the share count" gets `BASIS_STALE`
+   (reproduced at `8801f51`). **Diagnosis, read in code, NOT yet proven by a
+   fixed-clock run:** the test's `run()` omits `asOf`, so
+   `pipeline.ts:494-497` judges the fixture's share count (as of 2026-08-11)
+   against the WALL CLOCK, and `FILED_SHARES_CURRENT_DAYS = 45` made it stale
+   around 09-25. **Fix: pass `asOf: DATE` in `run()`'s `interpretPipeline`
+   options.** Prove it with `vi.setSystemTime` far ahead, and grep the file for
+   other pipeline calls without `asOf` that assert freshness.
+
 1. **09-30, 04:33 ET: post-restart items 2–5** (Ops runs them and sends raw rows
    BY ID). Grade each against the pre-registered pass condition in the check
    file. A zero positive control is UNTESTED, never passed.
