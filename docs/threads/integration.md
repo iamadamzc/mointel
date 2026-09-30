@@ -1356,6 +1356,12 @@ RESTART 20:15    Ops prep 08b6255 (read): FULL env sync (adds CAPTURE_PRICE_MIN/
                  values hash-equal), his "why not do the full sync?" 23:52:52Z (read). sync-env.sh heredoc executes
                  backticked comment words locally (l.81-129 incl. `sync-env.sh` itself) -> Ops told: invoke exactly as the
                  dry run; stop on any new output; read back both CAPTURE vars before the restart.
+                 Ops's precaution: re-run the non-installing hash copy first; proceed only if stderr == the 19:5x pattern
+                 and the key diff == the four keys; then read back both CAPTURE values before the restart.
+RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
+                 same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
+                 tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
+                 Ops told: no header ask until the replayed v2.
 ```
 **THE NINETEENTH SEAT'S LEDGER:**
 ```
