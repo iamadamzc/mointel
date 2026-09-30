@@ -2301,6 +2301,8 @@ HIS YES x3       Ops's session d33d893e, typed turn 2026-09-30T17:49:49Z (read w
                  ~9:15 pm else after 10:10 pm, naming the 10-18 min board + tmitrader.com outage and the floor re-pin.
                  NOT covered: reports cut, history store, levels. His question on 8 pm is Ops's to answer (the deploy's
                  13-min live-store check stalled the box in RTH; after-hours capture runs to 20:00).
+RUN 2 SET IN     100bb618 (13:52:20 ET, on origin): defect-set-v5r2.md blob sha256 ab6d6a84e558fbe3... (computed here) =
+                 the a7b3ed71 lock; byte-exact, no deviation. Research runs N=3 next.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
