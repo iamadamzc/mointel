@@ -208,6 +208,7 @@ export function researchAllowance(research: ReportResearch | null): ResearchAllo
     allowance.dates.add(structure.sharesOutstanding.asOf);
   }
   for (const block of structure.supply) {
+    harvest(block.sourceFiling);
     if (block.amountShares !== null) allowance.magnitudes.push(block.amountShares);
     for (const day of datesOf(block.effectiveDate)) allowance.dates.add(day);
   }

@@ -139,7 +139,9 @@ const FORBIDDEN: Array<[RegExp, string]> = [
   // claims about US and are admitted: "no catalyst found in our sources" and
   // "... on file" in the same clause (`marketing.md`, the never-use table's
   // "Instead": "we found no catalyst on file"). Run 1 struck the second.
-  [/\bno catalyst\b(?! found in our sources)(?![^.;]*\bon file\b)/i, 'bare "no catalyst"'],
+  // Run 1 (70da3eb) struck the true "we found no catalyst in our sources":
+  // a statement about OUR sources, like the two forms above.
+  [/\bno catalyst\b(?! found in our sources)(?! in our sources)(?![^.;]*\bon file\b)/i, 'bare "no catalyst"'],
   [/\bquiet\b/i, '"quiet"'],
   [/\b[A-Z]{2,}(?:_[A-Z0-9]+)+\b/, 'engine constant'],
   // His rule 2026-09-30T10:43:39Z: "no em dashes in any writing. hard rule."

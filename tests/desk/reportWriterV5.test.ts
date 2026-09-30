@@ -59,7 +59,7 @@ const RESEARCH: ReportResearch = {
     classification: 'CAUTION',
     floatConfidence: 'UNKNOWN',
     sharesOutstanding: { count: 33_338_932, asOf: '2026-06-30' },
-    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null }],
+    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null, sourceFiling: 'F-3', registrationStatus: 'EFFECTIVE' }],
   },
 };
 
@@ -94,6 +94,8 @@ describe('the v5 fact sheet', () => {
     const none = factSheetV5(FACT, { ...RESEARCH, catalyst: { ...RESEARCH.catalyst, status: 'NONE_FOUND' } }, PATH);
     expect(none.some((l) => l.startsWith('catalyst: no catalyst found in our sources (say exactly this)'))).toBe(true);
     expect(sheet.some((l) => l.includes('"possibly active" is never "active"'))).toBe(true);
+    // Run 1 (70da3eb): the filing reaches the writer too, so both see one fact.
+    expect(sheet.some((l) => l.startsWith('supply: registered resale, possibly active, effective April 12, 2023, filing: F-3'))).toBe(true);
     expect(SYSTEM_V5).toMatch(/never "will"/);
   });
 
