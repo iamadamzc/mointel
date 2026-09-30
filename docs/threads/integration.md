@@ -1626,6 +1626,7 @@ NOW-CELL CUT    c3d0f06 (tag design/now-cell-on-74c1818) REPLAYED + APPROVED: co
   BOUND 6043db3 REPLAYED + APPROVED: 1 commit on 74c1818, repo.ts adds only ts >= (D-1)T00:00Z (format matches stored
   ts), 177; mutants 1/1 each; ratio 0.196 (bea99f0 registered first); 0 mismatches / 1.1M rows. SHIP ORDER: c3d0f06
   first, then bound re-picked onto it (178, replay); both put to HIM in one message after 10:17.
+  RE-PICK 84b0099 on c3d0f06 REPLAYED + APPROVED: patch-id 54037044 == 6043db3; 178; gzip in. Fallback 6043db3.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
