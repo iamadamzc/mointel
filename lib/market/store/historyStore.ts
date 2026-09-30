@@ -100,6 +100,17 @@ CREATE TABLE IF NOT EXISTS history_meta (
   key   TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+-- Resistance levels (spec section 2): one row per board name per trading date,
+-- recomputed by the research worker at each 5m close and served by the web
+-- AS STORED, never computed per poll. payload is the ResistanceLevels JSON.
+-- Absent, not empty: a name not yet computed has no row.
+CREATE TABLE IF NOT EXISTS resistance_levels (
+  symbol       TEXT NOT NULL,
+  trading_date TEXT NOT NULL,
+  computed_at  TEXT NOT NULL,
+  payload      TEXT NOT NULL,
+  PRIMARY KEY (symbol, trading_date)
+);
 `;
 
 /** Refuses a path inside a release directory, the same guard as trades.db. */
@@ -490,6 +501,49 @@ export function setHistoryMeta(db: HistoryDatabase, key: string, value: string):
     `INSERT INTO history_meta (key, value) VALUES (?, ?)
      ON CONFLICT (key) DO UPDATE SET value = excluded.value`,
   ).run(key, value);
+}
+
+/* ------------------------------------------------------------------ resistance levels */
+
+export interface StoredLevels {
+  symbol: string;
+  tradingDate: string;
+  computedAt: string;
+  /** The ResistanceLevels JSON as the worker wrote it. */
+  payload: string;
+}
+
+/** The worker's write: replaces the name's row for the date (a newer 5m close supersedes). */
+export function writeResistanceLevels(db: HistoryDatabase, rows: readonly StoredLevels[]): void {
+  const statement = db.prepare(
+    `INSERT INTO resistance_levels (symbol, trading_date, computed_at, payload)
+     VALUES (@symbol, @tradingDate, @computedAt, @payload)
+     ON CONFLICT (symbol, trading_date) DO UPDATE SET
+       computed_at = excluded.computed_at, payload = excluded.payload
+     WHERE excluded.computed_at >= resistance_levels.computed_at`,
+  );
+  db.transaction((batch: readonly StoredLevels[]) => {
+    for (const row of batch) statement.run(row);
+  })(rows);
+}
+
+/** The web's read: one indexed lookup per name, the stored row as-is. */
+export function readResistanceLevels(
+  db: HistoryDatabase,
+  tradingDate: string,
+  symbols: readonly string[],
+): Map<string, StoredLevels> {
+  const result = new Map<string, StoredLevels>();
+  if (symbols.length === 0) return result;
+  const rows = db
+    .prepare(
+      `SELECT symbol, trading_date AS tradingDate, computed_at AS computedAt, payload
+         FROM resistance_levels
+        WHERE trading_date = ? AND symbol IN (${symbols.map(() => '?').join(', ')})`,
+    )
+    .all(tradingDate, ...symbols) as StoredLevels[];
+  for (const row of rows) result.set(row.symbol, row);
+  return result;
 }
 
 /* ------------------------------------------------------------------ the read for consumers */

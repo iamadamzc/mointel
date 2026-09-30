@@ -8,6 +8,8 @@ import { upsertMinuteBars } from '@/lib/market/store/repo';
 import {
   openHistoryStore,
   readLadderBars,
+  readResistanceLevels,
+  writeResistanceLevels,
   registerHistorySymbols,
   resolveHistoryDbPath,
   updateSymbolState,
@@ -303,5 +305,26 @@ describe('readLadderBars', () => {
   it('says not-backfilled for a name the store does not hold yet (absent, not empty)', () => {
     const history = openHistoryStore(path.join(tempDir(), 'history.db'));
     expect(readLadderBars(history, 'NONE', new Date()).status).toBe('not-backfilled');
+  });
+});
+
+describe('resistance levels rows (spec section 2, served as stored)', () => {
+  it('keeps one row per name per date, a newer computation superseding, never an older one', () => {
+    const db = openHistoryStore(path.join(tempDir(), 'history.db'));
+    const row = (computedAt: string, payload: string) => ({
+      symbol: 'ACME',
+      tradingDate: '2026-09-30',
+      computedAt,
+      payload,
+    });
+    writeResistanceLevels(db, [row('2026-09-30T14:05:00.000Z', '{"v":1}')]);
+    writeResistanceLevels(db, [row('2026-09-30T14:10:00.000Z', '{"v":2}')]);
+    // A late write of an older computation must not roll the row back.
+    writeResistanceLevels(db, [row('2026-09-30T14:00:00.000Z', '{"v":0}')]);
+    const read = readResistanceLevels(db, '2026-09-30', ['ACME', 'NONE']);
+    expect(read.get('ACME')?.payload).toBe('{"v":2}');
+    // Absent, not empty: an uncomputed name has no row.
+    expect(read.has('NONE')).toBe(false);
+    db.close();
   });
 });
