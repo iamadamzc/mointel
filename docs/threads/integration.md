@@ -2265,6 +2265,7 @@ REPORTS CUT      1fde525b (ops/reports-cut-on-2bcf1cf, A:\mointel-reportscut) RE
                  with the re-freeze picked in and the new blob list re-verified here; if run 2 fails, no reports tonight.
                  Docs (4 files) dropped by a cut-only commit (order call). Owed: 201-file gate; Design shim review +
                  cut-tree render; Research range answer.
+REPORTS CUT      -> e01b836f (42; docs dropped, 0 docs files vs 2bcf1cfe, read). Gate runs AFTER the run-2 re-freeze pick.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
