@@ -1,0 +1,26 @@
+set sha256 240e2f3a59a9ae79832b46a3b16f3c5cacf26c713d313b1c0b6cbfd5490cabaa (the hash Integration named); checker re-frozen at cb6d030; coverage pre-check passed
+442-C: control; struck in any run: regression none; ordinary none; per run [- | - | -]
+452-C: control; struck in any run: regression none; ordinary none; per run [- | - | -]
+455-C: control; struck in any run: regression none; ordinary none; per run [- | - | -]
+456-C: control; struck in any run: regression none; ordinary none; per run [- | - | -]
+442-01: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-02: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-03: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-04: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-05: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-06: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+442-07: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+452-08: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+442-09: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+452-10: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+452-11: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-12: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-13: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+455-14: keyed S1L2 struck in 3/3 runs -> STRUCK; extra struck lines: none
+452-15: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+442-16: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-17: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+452-18: keyed S1L1 struck in 3/3 runs -> STRUCK; extra struck lines: none
+456-19: keyed O struck in 3/3 runs -> STRUCK; extra struck lines: none
+KEYED STRUCK (all 3 runs) 19/19; REGRESSION-CONTROL STRIKES 0; ORDINARY-CONTROL STRIKES 0; PASS AS REGISTERED
+spend $2.9335 (terra at $2.00 in / $12.00 out per Mtok)

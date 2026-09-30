@@ -1,0 +1,1931 @@
+{
+  "sha": "240e2f3a59a9ae79832b46a3b16f3c5cacf26c713d313b1c0b6cbfd5490cabaa",
+  "results": [
+    {
+      "name": "442-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 188,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 139,
+        "durationMs": 3852
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 163,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 114,
+        "durationMs": 3438
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 139,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 90,
+        "durationMs": 2625
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 306,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 257,
+        "durationMs": 5205
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 221,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 172,
+        "durationMs": 4553
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 237,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 188,
+        "durationMs": 4223
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 202,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 153,
+        "durationMs": 4157
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 194,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 145,
+        "durationMs": 3770
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 242,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 193,
+        "durationMs": 4447
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "456-C",
+      "run": 1,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 188,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 127,
+        "durationMs": 4395
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "run": 2,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 174,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 113,
+        "durationMs": 3085
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "run": 3,
+      "keyed": null,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 193,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 132,
+        "durationMs": 3498
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "442-01",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 127,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 32,
+        "durationMs": 2487
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "612,900"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding claim: stored research gives 574,502 shares as of 2026-08-03, not 612,900."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-01",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 169,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 72,
+        "durationMs": 3320
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "612,900"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding claim: stored research gives 574,502 shares outstanding as of August 3, 2026, not 612,900."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-01",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 152,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 54,
+        "durationMs": 3079
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "612,900"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported shares-outstanding claim: stored research gives 574,502 shares as of August 3, 2026, not 612,900."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "456-02",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 218,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 127,
+        "durationMs": 5998
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "115.6"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE is up 115.6% since the previous checkpoint; the stored note only records that it lost $17.30 support."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-02",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 222,
+        "cachedInputTokens": 20202,
+        "reasoningTokens": 143,
+        "durationMs": 3622
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "115.6"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that VEEE is up 115.6% since the previous checkpoint is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-02",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 242,
+        "cachedInputTokens": 20202,
+        "reasoningTokens": 157,
+        "durationMs": 4918
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "115.6"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE is up 115.6% since the previous checkpoint; the stored note provides no such move."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-03",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 391,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 297,
+        "durationMs": 7722
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stated 1.7% move is after-hours from that day's regular-session close; describing it simply as from the prior close does not state the supported reference frame."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-03",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 232,
+        "cachedInputTokens": 20202,
+        "reasoningTokens": 133,
+        "durationMs": 5642
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Down 1.7% from the prior close” uses the wrong frame: the stored percentage is an after-hours move from that day’s regular-session close, not a prior-close change."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-03",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 452,
+        "cachedInputTokens": 20202,
+        "reasoningTokens": 357,
+        "durationMs": 8269
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "BASIS_CONTRADICTED",
+            "by": "rule",
+            "detail": "basis CURRENT_SESSION"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“Down 1.7% from the prior close” uses an unsupported percent-change frame; this row’s change is the after-hours move from its own regular-session close."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 181,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 95,
+        "durationMs": 3861
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; the stored rows do not support board entry/exit claims across checkpoints."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 183,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 102,
+        "durationMs": 3867
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that VEEE “has dropped off the board” requires comparison with another checkpoint and is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 170,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 79,
+        "durationMs": 4117
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; it is ranked #5 at this checkpoint, and board entry/exit claims require another checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-05",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20207,
+        "outputTokens": 253,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 151,
+        "durationMs": 4596
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "VEEE is not the top-ranked name here; its stored in-range rank is #5."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-05",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20207,
+        "outputTokens": 194,
+        "cachedInputTokens": 20204,
+        "reasoningTokens": 121,
+        "durationMs": 4234
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "VEEE is ranked #5, not the top-ranked name."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-05",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20207,
+        "outputTokens": 182,
+        "cachedInputTokens": 20204,
+        "reasoningTokens": 109,
+        "durationMs": 4048
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "VEEE is ranked #5, not the top-ranked name."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-06",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 168,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 88,
+        "durationMs": 3795
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE was halted late in the session; its stored haltState is TRADING."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-06",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 185,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 105,
+        "durationMs": 3420
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE was halted late in the session; its stored halt state is TRADING."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-06",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 131,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 51,
+        "durationMs": 3140
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a halt with no halt observed"
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE was halted late in the session; its stored haltState is TRADING."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "442-07",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19183,
+        "outputTokens": 180,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 131,
+        "durationMs": 3376
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-07",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19183,
+        "outputTokens": 150,
+        "cachedInputTokens": 19180,
+        "reasoningTokens": 101,
+        "durationMs": 2913
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-07",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19183,
+        "outputTokens": 173,
+        "cachedInputTokens": 19180,
+        "reasoningTokens": 87,
+        "durationMs": 3923
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "em dash: \"—\""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-08",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20218,
+        "outputTokens": 488,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 406,
+        "durationMs": 7455
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“No cycle call yet” is unsupported; the null cycle label supports only that no cycle research is on file."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-08",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20218,
+        "outputTokens": 243,
+        "cachedInputTokens": 20215,
+        "reasoningTokens": 194,
+        "durationMs": 4480
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-08",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20218,
+        "outputTokens": 205,
+        "cachedInputTokens": 20215,
+        "reasoningTokens": 156,
+        "durationMs": 3357
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "spaced hyphen as a dash: \" - \""
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-09",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19184,
+        "outputTokens": 196,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 112,
+        "durationMs": 3616
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"four names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: PRTH is “one of the four” names not researched; the stored material shows research for 11 of 12 names, leaving only PRTH without research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-09",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19184,
+        "outputTokens": 285,
+        "cachedInputTokens": 19181,
+        "reasoningTokens": 204,
+        "durationMs": 4810
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"four names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim that PRTH is one of four names not researched; the stored research covers 11 of 12 names, with PRTH the only name without research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-09",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19184,
+        "outputTokens": 208,
+        "cachedInputTokens": 19181,
+        "reasoningTokens": 126,
+        "durationMs": 3738
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "a count of names (computed, never written): \"four names\""
+          },
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim that PRTH is one of four unresearched names; the stored research covers 11 of 12 names, with PRTH the only name without research."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-10",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20210,
+        "outputTokens": 208,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 113,
+        "durationMs": 3761
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at dirty float: 7,397,383 shares of float as of August "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "It incorrectly calls 7,397,383 shares of outstanding as of August 12, 2026 “shares of float”; the research supports only shares outstanding, not float."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-10",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20210,
+        "outputTokens": 307,
+        "cachedInputTokens": 20207,
+        "reasoningTokens": 206,
+        "durationMs": 4967
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at dirty float: 7,397,383 shares of float as of August "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: 7,397,383 is described as shares of float; research provides it only as shares outstanding as of August 12, 2026, and no independently verified float is on file."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-10",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20210,
+        "outputTokens": 248,
+        "cachedInputTokens": 20207,
+        "reasoningTokens": 162,
+        "durationMs": 4569
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_AS_FLOAT",
+            "by": "rule",
+            "detail": "On structure the desk is at dirty float: 7,397,383 shares of float as of August "
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: it calls 7,397,383 shares “float”; research supports that as shares outstanding as of August 12, 2026, while no float is independently verified."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-11",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20208,
+        "outputTokens": 216,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 167,
+        "durationMs": 4682
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "7397383"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-11",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20208,
+        "outputTokens": 535,
+        "cachedInputTokens": 20205,
+        "reasoningTokens": 460,
+        "durationMs": 8343
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "7397383"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 7,397,383 shares-outstanding figure is stated without its required as-of date (2026-08-12)."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-11",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20208,
+        "outputTokens": 244,
+        "cachedInputTokens": 20205,
+        "reasoningTokens": 169,
+        "durationMs": 4158
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "SHARES_UNDATED",
+            "by": "rule",
+            "detail": "7397383"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The 7,397,383 shares-outstanding figure is stated without its required as-of date (2026-08-12)."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "456-12",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20212,
+        "outputTokens": 165,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 87,
+        "durationMs": 3129
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should lift\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that the newbuilding program should lift TOPS further tomorrow is an unsupported prediction."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-12",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20212,
+        "outputTokens": 277,
+        "cachedInputTokens": 20209,
+        "reasoningTokens": 203,
+        "durationMs": 4438
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should lift\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported prediction that the newbuilding program should lift the stock further tomorrow."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-12",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20212,
+        "outputTokens": 157,
+        "cachedInputTokens": 20209,
+        "reasoningTokens": 82,
+        "durationMs": 2903
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "FORBIDDEN_WORDING",
+            "by": "rule",
+            "detail": "fit stated as a forecast: \"should lift\""
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported forecast: the newbuilding program “should lift the stock further tomorrow.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-13",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20206,
+        "outputTokens": 213,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 127,
+        "durationMs": 3416
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 22:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The September 16 press release is not supported as occurring at 09:15 ET; no such time is in the research."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-13",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20206,
+        "outputTokens": 210,
+        "cachedInputTokens": 20203,
+        "reasoningTokens": 105,
+        "durationMs": 3656
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 22:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The stored research does not support a September 16 press release at 09:15 ET; its stated dated event/source timing is September 17 at 06:42 ET (with the release discussed as September 16)."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-13",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20206,
+        "outputTokens": 213,
+        "cachedInputTokens": 20203,
+        "reasoningTokens": 131,
+        "durationMs": 4153
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "TIME_NOT_TRACED",
+            "by": "rule",
+            "detail": "09:15 vs 22:00"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claimed time: the September 16 press release is not supported as occurring at 09:15 ET."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "455-14",
+      "run": 1,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19848,
+        "outputTokens": 190,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 141,
+        "durationMs": 3538
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "16:26"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-14",
+      "run": 2,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19848,
+        "outputTokens": 220,
+        "cachedInputTokens": 19845,
+        "reasoningTokens": 171,
+        "durationMs": 3571
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "16:26"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-14",
+      "run": 3,
+      "keyed": "S1L2",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19848,
+        "outputTokens": 244,
+        "cachedInputTokens": 19845,
+        "reasoningTokens": 195,
+        "durationMs": 4048
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "HEDGED_EXACT_TIME",
+            "by": "rule",
+            "detail": "16:26"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-15",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 143,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 67,
+        "durationMs": 4464
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "9.5 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported debt amount: the August 5 restructuring retired approximately $6.8 million of convertible debt, not about $9.5 million."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-15",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 258,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 181,
+        "durationMs": 4154
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "9.5 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: the August 5 restructuring retired about $9.5 million of convertible debt; stored research states approximately $6.8 million."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-15",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 238,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 155,
+        "durationMs": 4185
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "NUMBER_NOT_IN_ROW",
+            "by": "rule",
+            "detail": "9.5 million"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: AVX's August 5 restructuring retired about $9.5 million of convertible debt; the research states approximately $6.8 million."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-16",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 122,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 47,
+        "durationMs": 2752
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "March 4"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported reverse-split date: research says the previously disclosed reverse split was May 4, 2026, not March 4."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-16",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 138,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 65,
+        "durationMs": 2692
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "March 4"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: it calls the previously disclosed reverse split a March 4 event; research states May 4, 2026."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-16",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 137,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 47,
+        "durationMs": 2740
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "DATE_NOT_TRACED",
+            "by": "rule",
+            "detail": "March 4"
+          },
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: it says the previously disclosed reverse split was March 4; research states May 4, 2026."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "456-17",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 184,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 93,
+        "durationMs": 3953
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: TOPS is a Texas shipping company; research identifies it as TOP SHIPS INC. in the Marshall Islands and provides no shipping-business field."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-17",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 245,
+        "cachedInputTokens": 20202,
+        "reasoningTokens": 151,
+        "durationMs": 4389
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: TOPS is described as a Texas shipping company; research identifies it as TOP SHIPS INC. in the Marshall Islands and does not provide that business/location claim."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-17",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20205,
+        "outputTokens": 180,
+        "cachedInputTokens": 20202,
+        "reasoningTokens": 47,
+        "durationMs": 2982
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported/contradicted claim: TOPS is a Texas shipping company; research identifies TOP SHIPS INC. as a Marshall Islands company, and does not state Texas."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "452-18",
+      "run": 1,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20229,
+        "outputTokens": 205,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 142,
+        "durationMs": 3295
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: “we think the stock has nothing left to run on.”"
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-18",
+      "run": 2,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20229,
+        "outputTokens": 215,
+        "cachedInputTokens": 20226,
+        "reasoningTokens": 134,
+        "durationMs": 3996
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: “we think the stock has nothing left to run on” is an unsupported judgment/prediction."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-18",
+      "run": 3,
+      "keyed": "S1L1",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20229,
+        "outputTokens": 264,
+        "cachedInputTokens": 20226,
+        "reasoningTokens": 182,
+        "durationMs": 4074
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: “we think the stock has nothing left to run on” is an ungrounded prediction/judgment."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "456-19",
+      "run": 1,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 183,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 99,
+        "durationMs": 3249
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "811"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported after-hours up count: stored total is 784, not 811."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-19",
+      "run": 2,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 198,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 97,
+        "durationMs": 3343
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "811"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported up count: stored after-hours total is 784 up, not 811."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-19",
+      "run": 3,
+      "keyed": "O",
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 202,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 124,
+        "durationMs": 3259
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "O",
+            "reason": "NUMBER_WITHOUT_ROW",
+            "by": "rule",
+            "detail": "811"
+          },
+          {
+            "id": "O",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported after-hours up count: stored total is 784, not 811."
+          }
+        ],
+        "lines": 3
+      }
+    }
+  ]
+}
