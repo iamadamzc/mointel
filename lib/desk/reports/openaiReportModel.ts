@@ -24,7 +24,7 @@ import type { ReportModel, WriterPrompt } from './writer';
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
 
 /** Bumped whenever `SYSTEM` in `writer.ts` or the schema below changes. */
-export const REPORT_WRITER_PROMPT_VERSION = 1;
+export const REPORT_WRITER_PROMPT_VERSION = 2;
 
 /** `ReportDraft`, as a strict schema: every key required, nothing extra. */
 export const DRAFT_SCHEMA = {
