@@ -496,6 +496,13 @@ checkpoints[] { id, type, completedAt }  one per checkpoint read. The reader nev
 
 **Why computed rather than written:** a path point or a company name in model text is one more place to invent, and the checker could only strike what code already knows. Computed, they cannot disagree with the store, cannot be struck, and cost no tokens. The writer is told the path and the company line are printed above its text, and does not restate them.
 
+**CHECKER v5, THE TRACED RULES: design notes found in `verify.ts` 2026-09-30, BEFORE any code (seat `local_4b09b3b2`).** The research half of a line (catalyst, structure, company) carries numbers the row does not, and today's allowlist is the row only. Read against the SANG block, `numbersIn` would strike TRUE prose on three counts, so the extension must settle each before its pass bar is registered:
+- **Digits inside a token are not assertions:** "F-3", "8-K", "10-Q", "424B5", "fiscal-Q4" each yield a number today (the hyphen-joined digit reads as unsigned 3, 8, 10). Proposed: a number touching a letter on either side is part of a name and is skipped, EXCEPT a magnitude suffix below.
+- **Units:** "$46.8M" must trace to the stored "$46.802 million" (the data map: one-decimal rounding, same as the row numbers). Proposed: normalise M / B / K / million / billion / thousand to a base value on BOTH sides, then compare at the writer's decimal places.
+- **Dates:** "June 30, 2026" yields 30 and 2026. Proposed: a date in any written form is parsed as one value and must equal a stored date on that name (`sharesOutstandingDate`, a supply `effectiveDate`, a cited source's `published_at`), else struck; `stripTimestamps` covers only ISO dates and clock times today.
+- **The allowlist per name then adds:** numbers in the cited sources' titles and `catalyst.summary`; the dated share count; supply amounts and years. **Never** `whyTradersMayCare` alone for a number, since that is the model's gloss and not a source.
+- **Clock times:** allowed when equal, to the minute in ET, to a cited source's `published_at` with EXACT precision or to `eventTimestamp`; "~", "around", "about" before an exact time is struck (the SANG 17:26 case).
+
 **Three questions, each with a proposal:**
 
 1. **Sections.** The SANG block shows none. *Proposed: keep `sections[]` (the ruled emptied-section and NOTHING_LINE rules stay valid unchanged); each block is one `ReportLine`.* The alternative, one flat list, drops "what held" versus "what faded", which his original request named.
