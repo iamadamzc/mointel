@@ -445,10 +445,10 @@ function parseCompanySources(raw: string | null): CompanySourceRegistry | undefi
 export function upsertIssuer(db: MarketDatabase, issuer: IssuerRecord): void {
   const statement = db.prepare(
     `INSERT INTO issuer_registry
-       (ticker, company_name, cik, exchange, country, foreign_issuer,
+       (ticker, company_name, cik, exchange, country, foreign_issuer, sic_description,
         cik_confidence, mapping_source, ir_url, last_verified_at, company_sources)
      VALUES
-       (@ticker, @companyName, @cik, @exchange, @country, @foreignIssuer,
+       (@ticker, @companyName, @cik, @exchange, @country, @foreignIssuer, @sicDescription,
         @cikConfidence, @mappingSource, @irUrl, @lastVerifiedAt, @companySources)
      ON CONFLICT(ticker) DO UPDATE SET
        company_name     = COALESCE(excluded.company_name, company_name),
@@ -456,6 +456,7 @@ export function upsertIssuer(db: MarketDatabase, issuer: IssuerRecord): void {
        exchange         = COALESCE(excluded.exchange, exchange),
        country          = COALESCE(excluded.country, country),
        foreign_issuer   = COALESCE(excluded.foreign_issuer, foreign_issuer),
+       sic_description  = COALESCE(excluded.sic_description, sic_description),
        cik_confidence   = excluded.cik_confidence,
        mapping_source   = COALESCE(excluded.mapping_source, mapping_source),
        ir_url           = COALESCE(excluded.ir_url, ir_url),
@@ -470,6 +471,9 @@ export function upsertIssuer(db: MarketDatabase, issuer: IssuerRecord): void {
       exchange: issuer.exchange,
       country: issuer.country,
       foreignIssuer: issuer.foreignIssuer === null ? null : issuer.foreignIssuer ? 1 : 0,
+      // Only the SEC collector knows it; every other caller omits it, and the
+      // COALESCE above keeps the stored label.
+      sicDescription: issuer.sicDescription ?? null,
       cikConfidence: issuer.cikConfidence,
       mappingSource: issuer.mappingSource,
       irUrl: issuer.irUrl,

@@ -319,11 +319,31 @@ describe('interpreter transport', () => {
     it('reads null until the column is written, and never throws', () => {
       const db = temporaryDb();
       const columns = db.prepare('PRAGMA table_info(issuer_registry)').all() as Array<{ name: string }>;
-      // Schema v28 adds the column (Ops). Research's upsertIssuer write and its
-      // round-trip test follow on top.
+      // Schema v28 adds the column (Ops); upsertIssuer writes it (next test).
       expect(columns.map((column) => column.name)).toContain('sic_description');
       upsertIssuer(db, ISSUER);
       expect(buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE }).sicDescription).toBeNull();
+    });
+
+    it('writes the SEC label through upsertIssuer, and a caller that omits it keeps the stored one', () => {
+      const db = temporaryDb();
+      const stored = () => buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE }).sicDescription;
+
+      // A name researched before the write existed: its row is there, the label is not.
+      upsertIssuer(db, ISSUER);
+      expect(stored()).toBeNull();
+      // The next SEC collection fills it forward; no fingerprint moves.
+      upsertIssuer(db, { ...ISSUER, sicDescription: 'Pharmaceutical Preparations' });
+      expect(stored()).toBe('Pharmaceutical Preparations');
+
+      // The catalyst collector and the IR registry never pass it; neither erases it.
+      upsertIssuer(db, ISSUER);
+      upsertIssuer(db, { ...ISSUER, sicDescription: null });
+      expect(stored()).toBe('Pharmaceutical Preparations');
+
+      // EDGAR relabels an issuer: the newer label wins.
+      upsertIssuer(db, { ...ISSUER, sicDescription: 'In Vitro & In Vivo Diagnostic Substances' });
+      expect(stored()).toBe('In Vitro & In Vivo Diagnostic Substances');
     });
 
     it('forwards a stored SIC label into the bundle, which is the model’s input', async () => {
