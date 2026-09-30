@@ -2107,6 +2107,14 @@ V28 REPLAYED     2bcf1cf (ops/v28-on-89d39053) APPROVED by literal sha: rev-list
                  business line empty for researched names until then. SHIP: after 89d39053 live + /proc; HIS yes naming
                  the outage; ops.md records the v27 mode-clear hazard + floor pin to v28.
                  Levels storage: history.db table resistance_levels (Ops c443b58), rides the history-store release empty.
+LEVELS COPY      Design 064e15e1: Commercial's empty-list condition MET (scoped "in the history we hold, back to X";
+                 split-refused wording; a test refuses clear / blue sky / no resistance / nothing above|stopping|in the
+                 way). Design logged an ungated rebase+push (post-gated 207 / 3,115 after).
+GATE RULE        PC commit memory (read 17:0xZ: FreeVirtualMemory 5.4 of 36.2 GB, physical 11.3 free, 4 node procs; many
+                 claude procs, small page file). ORDER CALL to Ops/Design/Research: one full-suite gate at a time, Ops's
+                 release gates first, others announce to Ops; a failure is ENVIRONMENTAL only if timeout / spawn
+                 (126/127/0xC0000142) / SQLite OOM, AND passes alone on the same tree, AND named; a wrong-value assertion
+                 is always real; close stray processes before a gate. Page-file size is a system setting: HIS, not ours.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
