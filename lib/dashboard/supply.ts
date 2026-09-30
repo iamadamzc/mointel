@@ -217,7 +217,7 @@ export function floatBoundReading(
     sentence:
       bound.verdict === 'PROVEN'
         ? `Float is at most ${at} ${quantity}${adjusted}`
-        : `Float not bounded under ${shares(LOW_FLOAT_CEILING)} — ${at} ${quantity}${adjusted}`,
+        : `Float not bounded under ${shares(LOW_FLOAT_CEILING)}: ${at} ${quantity}${adjusted}`,
     detail:
       bound.verdict === 'PROVEN'
         ? `Float cannot exceed the share count${asOf}, whoever holds the rest.`

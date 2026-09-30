@@ -10,8 +10,8 @@ import { describe, expect, it } from 'vitest';
  *
  * Every string and JSX text on Design's surfaces is read with the TypeScript
  * parser, so a comment is never counted and a string never missed. A bare "—"
- * standing alone is the EMPTY-CELL glyph, not writing, and is allowed until he
- * rules on the glyph (Design's recommendation to Integration: keep it).
+ * standing alone is the EMPTY-CELL glyph, and he ruled it stays: "keep it.
+ * fine for that, not writing." (2026-09-30T10:48:04Z).
  *
  * Web's pages (app/, LegalPage, the auth error page) and the reports' writer
  * and checker are other seats' sweeps; extend DESIGN_SURFACES when they land.
@@ -37,6 +37,30 @@ const TEXT_KINDS = new Set([
   ts.SyntaxKind.JsxText,
 ]);
 
+/*
+ * A PLACEHOLDER stands where a value would be, so nothing sits beside it: a
+ * whole string ('—'), or JSX text that is its element's only content
+ * (<td>—</td>). A dash in a template part (`${a} — ${b}`) or in JSX text next
+ * to an expression ("— {field}") always has a value beside it, so it is
+ * writing. The first version of this test trimmed those to a bare dash and
+ * called them placeholders, and five went through (health.ts:207 among them,
+ * found by Ops). Web's property, which is the right one.
+ */
+function isPlaceholder(node: ts.Node, bare: string): boolean {
+  if (bare !== EM_DASH) return false;
+  if (node.kind === ts.SyntaxKind.StringLiteral || node.kind === ts.SyntaxKind.NoSubstitutionTemplateLiteral) {
+    return true;
+  }
+  if (node.kind === ts.SyntaxKind.JsxText) {
+    const parent = node.parent;
+    const siblings = ts.isJsxElement(parent) || ts.isJsxFragment(parent) ? parent.children : [];
+    return siblings.every(
+      (child) => child === node || (ts.isJsxText(child) && child.containsOnlyTriviaWhiteSpaces),
+    );
+  }
+  return false;
+}
+
 function scan() {
   const files = execSync('git ls-files components lib', { encoding: 'utf8' })
     .split('\n')
@@ -44,7 +68,18 @@ function scan() {
   const prose: string[] = [];
   let glyphs = 0;
   for (const file of files) {
-    const source = readFileSync(file, 'utf8');
+    const found = classify(file, readFileSync(file, 'utf8'));
+    prose.push(...found.prose);
+    glyphs += found.glyphs;
+  }
+  return { files: files.length, prose, glyphs };
+}
+
+/** Every em dash in one file's strings and JSX text: writing, or a placeholder. */
+function classify(file: string, source: string) {
+  const prose: string[] = [];
+  let glyphs = 0;
+  {
     const tree = ts.createSourceFile(
       file,
       source,
@@ -55,7 +90,7 @@ function scan() {
     const visit = (node: ts.Node) => {
       if (TEXT_KINDS.has(node.kind)) {
         // The RENDERED text, not the source: a string's cooked value turns a
-        // `—` escape into the dash, and JSX text renders HTML entities,
+        // unicode escape into the dash, and JSX text renders HTML entities,
         // which a scan of the source characters cannot see (Web's catch).
         const text = (
           node.kind === ts.SyntaxKind.JsxText
@@ -64,7 +99,7 @@ function scan() {
         ).replace(/&mdash;|&#8212;|&#x2014;/gi, EM_DASH);
         if (text.includes(EM_DASH)) {
           const bare = text.trim();
-          if (bare === EM_DASH) glyphs += 1;
+          if (isPlaceholder(node, bare)) glyphs += 1;
           else {
             const line = tree.getLineAndCharacterOfPosition(node.getStart(tree)).line + 1;
             prose.push(`${file}:${line} ${bare.slice(0, 80)}`);
@@ -75,8 +110,26 @@ function scan() {
     };
     visit(tree);
   }
-  return { files: files.length, prose, glyphs };
+  return { prose, glyphs };
 }
+
+describe('telling a placeholder from writing', () => {
+  const kinds = (source: string) => {
+    const found = classify('fixture.tsx', source);
+    return { writing: found.prose.length, placeholders: found.glyphs };
+  };
+
+  it('a whole string, or the only content of an element, is a placeholder', () => {
+    expect(kinds("const a = '—';")).toEqual({ writing: 0, placeholders: 1 });
+    expect(kinds('const c = <td>—</td>;')).toEqual({ writing: 0, placeholders: 1 });
+  });
+
+  it('a dash beside a value is writing, in a template or in JSX', () => {
+    expect(kinds('const b = `${x} — ${y}`;')).toEqual({ writing: 1, placeholders: 0 });
+    expect(kinds('const d = <p>— {field}</p>;')).toEqual({ writing: 1, placeholders: 0 });
+    expect(kinds('const e = <p>{x} — {y}</p>;')).toEqual({ writing: 1, placeholders: 0 });
+  });
+});
 
 describe('no em dashes in the board’s writing', () => {
   const result = scan();

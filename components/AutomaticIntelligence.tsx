@@ -634,7 +634,7 @@ export function AutomaticIntelligence({
                   >
                     [{source.id}] {source.secForm ?? humanise(source.sourceType)}
                     {source.accession ? ` · ${source.accession}` : ''}
-                    {source.title ? ` — ${source.title}` : ''}
+                    {source.title ? ` · ${source.title}` : ''}
                   </a>
                   <span className="ml-1 text-ink-3">
                     {humanise(source.authority)}

@@ -430,7 +430,7 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
 /** The letter's hover on an OLD row, where the colour no longer carries freshness. */
 function oldTitle(grade: string): string {
   const meaning = GRADE_MEANING[grade];
-  const letter = meaning ? `Catalyst grade ${grade} — ${meaning}.` : 'No catalyst grade established.';
+  const letter = meaning ? `Catalyst grade ${grade}: ${meaning}.` : 'No catalyst grade established.';
   return `${letter} Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.`;
 }
 
@@ -462,7 +462,7 @@ function whyTitle(
 ): string {
   const meaning = GRADE_MEANING[grade];
   const letter = meaning
-    ? `Catalyst grade ${grade} — ${meaning}. That is how STRONG it is, not how fresh.`
+    ? `Catalyst grade ${grade}: ${meaning}. That is how STRONG it is, not how fresh.`
     : 'No catalyst grade established.';
 
   // Silence rather than a sentence about a colour that is carrying nothing:
