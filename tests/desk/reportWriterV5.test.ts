@@ -59,7 +59,7 @@ const RESEARCH: ReportResearch = {
     classification: 'CAUTION',
     floatConfidence: 'UNKNOWN',
     sharesOutstanding: { count: 33_338_932, asOf: '2026-06-30' },
-    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null, sourceFiling: 'F-3', registrationStatus: 'EFFECTIVE' }],
+    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null, sourceFiling: 'F-3', registrationStatus: 'EFFECTIVE', dollarCapacity: 6530000, terms: 'Up to $6.53 million of common stock at an offering price of $4.25 per share', holderRestrictions: 'Lock-up expires November 15, 2026', eligibilityAssessment: 'Eligible for resale after a holding period of 180 days', confidence: 'MEDIUM' }],
   },
 };
 

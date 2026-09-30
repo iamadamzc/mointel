@@ -79,6 +79,18 @@ export interface ReportResearch {
        */
       sourceFiling: string | null;
       registrationStatus: string | null;
+      /** A dollar shelf or ATM size ("$6,530,000 of ATM capacity"). Run 3 (141ee34) failed on its absence. */
+      dollarCapacity: number | null;
+      terms: string | null;
+      holderRestrictions: string | null;
+      eligibilityAssessment: string | null;
+      confidence: Confidence;
+      /*
+       * AUDITED against SupplyBlock, field by field (run 4): every field is
+       * carried EXCEPT evidenceSourceIds, which are internal source ids no
+       * printed line can cite; the block's catalyst-side sources are carried
+       * in catalyst.sources.
+       */
     }>;
   };
 }
@@ -139,6 +151,11 @@ export function reportResearch(
         amountShares: block.amountShares,
         sourceFiling: clean(block.sourceFiling),
         registrationStatus: clean(block.registrationStatus),
+        dollarCapacity: block.dollarCapacity,
+        terms: clean(block.terms),
+        holderRestrictions: clean(block.holderRestrictions),
+        eligibilityAssessment: clean(block.eligibilityAssessment),
+        confidence: block.confidence,
       })),
     },
   };

@@ -56,7 +56,7 @@ const RESEARCH: ReportResearch = {
     classification: 'CAUTION',
     floatConfidence: 'UNKNOWN',
     sharesOutstanding: { count: 33_338_932, asOf: '2026-06-30' },
-    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null, sourceFiling: 'F-3', registrationStatus: 'EFFECTIVE' }],
+    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null, sourceFiling: 'F-3', registrationStatus: 'EFFECTIVE', dollarCapacity: 6530000, terms: 'Up to $6.53 million of common stock at an offering price of $4.25 per share', holderRestrictions: 'Lock-up expires November 15, 2026', eligibilityAssessment: 'Eligible for resale after a holding period of 180 days', confidence: 'MEDIUM' }],
   },
 };
 
@@ -108,7 +108,7 @@ describe('stored dates are model-written, so they are read tolerantly and never 
       catalyst: { ...RESEARCH.catalyst, eventTimestamp: '2026-09-28 17:26:00 ET', sources: [] },
       structure: {
         ...RESEARCH.structure,
-        supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null, sourceFiling: null, registrationStatus: null }],
+        supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null, sourceFiling: null, registrationStatus: null, dollarCapacity: null, terms: null, holderRestrictions: null, eligibilityAssessment: null, confidence: 'UNKNOWN' }],
       },
     };
     expect(traceLine('The headline crossed at 17:26 ET on September 28, 2026.', ROW, odd, AT)).toEqual([]);
@@ -195,6 +195,42 @@ describe('pass bar run 1 (70da3eb): each false strike on a control, pinned', () 
     });
     expect(prompt.user).toContain('"sourceFiling": "F-3"');
     expect(prompt.user).toContain('"registrationStatus": "EFFECTIVE"');
+  });
+});
+
+describe('run 4: the WHOLE supply block reaches the traced rules (run 3, 141ee34, failed on dollarCapacity)', () => {
+  const reasonsOf = (text: string) => traceLine(text, ROW, RESEARCH, AT).map((f) => f.reason);
+
+  it('dollarCapacity: the held figure is admitted in any written form, a different one is struck', () => {
+    // The figure lives ONLY in dollarCapacity here: the shared fixture's terms
+    // also say "$6.53 million", which let a mutant that ignores dollarCapacity
+    // survive (the control could not see the rule).
+    const onlyDollars: ReportResearch = {
+      ...RESEARCH,
+      structure: {
+        ...RESEARCH.structure,
+        supply: RESEARCH.structure.supply.map((block) => ({ ...block, terms: null, holderRestrictions: null, eligibilityAssessment: null })),
+      },
+    };
+    const on = (text: string) => traceLine(text, ROW, onlyDollars, AT).map((f) => f.reason);
+    expect(on('It carries $6,530,000 of ATM capacity.')).toEqual([]);
+    expect(on('It carries $6.53 million of ATM capacity.')).toEqual([]);
+    expect(on('It carries $6,540,000 of ATM capacity.')).toContain('NUMBER_NOT_IN_ROW');
+  });
+
+  it('terms: a number the terms state is admitted, one they do not is struck', () => {
+    expect(reasonsOf('The ATM prices shares at $4.25 per share.')).toEqual([]);
+    expect(reasonsOf('The ATM prices shares at $4.35 per share.')).toContain('NUMBER_NOT_IN_ROW');
+  });
+
+  it('holderRestrictions: a date they state is admitted, another is struck', () => {
+    expect(reasonsOf('The lock-up expires November 15, 2026.')).toEqual([]);
+    expect(reasonsOf('The lock-up expires November 16, 2026.')).toContain('DATE_NOT_TRACED');
+  });
+
+  it('eligibilityAssessment: a number it states is admitted, another is struck', () => {
+    expect(reasonsOf('The shares become eligible after 180 days.')).toEqual([]);
+    expect(reasonsOf('The shares become eligible after 190 days.')).toContain('NUMBER_NOT_IN_ROW');
   });
 });
 

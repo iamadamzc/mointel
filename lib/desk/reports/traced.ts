@@ -208,7 +208,13 @@ export function researchAllowance(research: ReportResearch | null): ResearchAllo
     allowance.dates.add(structure.sharesOutstanding.asOf);
   }
   for (const block of structure.supply) {
+    // Every text field the block holds, and its dollar size (run 4: the whole
+    // SupplyBlock). A line may restate any value the dossier states here.
     harvest(block.sourceFiling);
+    harvest(block.terms);
+    harvest(block.holderRestrictions);
+    harvest(block.eligibilityAssessment);
+    if (block.dollarCapacity !== null) allowance.magnitudes.push(block.dollarCapacity);
     if (block.amountShares !== null) allowance.magnitudes.push(block.amountShares);
     for (const day of datesOf(block.effectiveDate)) allowance.dates.add(day);
   }
