@@ -8,7 +8,7 @@ import { loadLegalDocument } from '@/lib/legal/document';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Privacy policy — The Momentum Intelligence Trading Desk',
+  title: 'Privacy policy | The Momentum Intelligence Trading Desk',
   description: 'What The Momentum Intelligence Trading Desk learns about you, why it holds it, who else sees it, and how to make it delete it.',
 };
 
