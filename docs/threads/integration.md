@@ -1515,6 +1515,9 @@ error                                                  TYPE                     
   float, not independently verified"; no stored      mapping (memory: a well-formed     of the   (Research)
   field says "small" (structureClassification +       question on an invented mapping)   family)
   floatConfidence UNKNOWN 45/45). Told him next msg.
+8 routed per-range counts to "the desk_assessments   a schema location named unread     YES      peer
+  row"; it has no range column (db.ts:572-603, Ops   (the family)                        (Ops)
+  read). Child table approved instead.
 ```
 HIS RULING (this session, after ledger 6): "keep it until 10:12" -> this seat carries the overnight results ((c') 00:57 ET,
 Design's 04:00 Now-cell read, Research's 04:33 items, the 10:12 grades read), then does the full hand-off. A 7th entry of
@@ -1594,6 +1597,8 @@ SANG BLOCK      Marketing 06dfd1e (read): company header, AH path $3.59 -> $6.01
   OVERALL SENTENCE per kind: only premarket has an as-of source (AH totals day D). Into-RTH / power hour / AH-report
   need counts FROZEN on desk_assessments at capture -> ROUTED to Ops, same bump (Research specifies columns);
   interim: those kinds ship with no overall sentence, marked pending.
+  OPS CORRECTION (db.ts:572-603 read by Ops): desk_assessments has no range column -> ONE child table (assessment_id,
+  range_key) for per-range top-N AND per-range counts, same bump. Approved.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
