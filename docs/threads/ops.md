@@ -13046,3 +13046,12 @@ snapshot-latency.sh), so not comparable to them as a series.
 writer lines riding a checker commit, as bfa28cf8 undid 3c9b2911's), declare, gate, Integration verifies blobs, then ask HIM
 for the reports release as its own question (his earlier "yes to all" does not cover it). Slot: after levels, a deploy
 finished before 04:00 ET. Gate queue: Research's re-freeze suite next.
+
+**RUN 4 PASSED (Research raw ce09e3d; Integration verified the order).** REPORTS CUT **ops/reports-cut-run4 e8822583** =
+4b55a049 + 8c52506 (research.ts, traced.ts, 3 tests; writerV5 untouched); nine blobs = cb6d030; Integration APPROVED BY
+LITERAL SHA. Gate here: run 1 RED 200/201 (migrationConcurrency "timed out waiting for children to load", a spawn/timeout;
+passes alone 6/6 at e8822583; the cut touches no db/migration file), **run 2 ALL GREEN 201/201, 3,062 tests**; next build 0.
+**SEQUENCING (Integration's catch): levels and reports were sibling cuts on 2bcf1cf; the second deploy would remove the
+first.** Order now: v28 2bcf1cf -> reports e8822583 -> levels **ops/levels-cut-on-reports 74fd7244** (6 clean picks; delta
+patch-id == the approved e8caa77d delta; Integration APPROVED BY LITERAL SHA; 205 declared, gate running). Fallback if
+reports can't go: levels as e8caa77d on v28. /proc must read the release being stacked on before each launch.
