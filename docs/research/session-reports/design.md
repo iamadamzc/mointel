@@ -477,3 +477,25 @@ checkpoints[] { id, type, completedAt }  one per checkpoint read. The reader nev
 **⚠️ WHY IT NEEDED A DEFINITION AT ALL, kept because the reasoning generalises:** It can only mean *"how many named tickers in THIS report had a live trades/quotes feed"* — the top-50 `internalRank` set (`engine.ts:2088`). **It is a property of the desk's observation, not of the session**, and a number with no frame beside prose is the defect this layer is most likely to produce. *Proposed: emit it as `{ named: n, withLiveFeed: m }` so the denominator travels with it and no surface has to reconstruct it.*
 
 **AND ONE FIELD I WOULD ADD: `checkpointId` and `checkpointType`.** *Design's `dataAsOf` says WHEN; it does not say WHICH checkpoint, and my §5 forbids silently falling back to an older one. With the id on the payload, "this report was built from the 09:25 open-spike assessment" is verifiable by a reader rather than asserted by us.*
+
+## 8. v5 CONTRACT, PROPOSED 2026-09-30 (seat `local_4b09b3b2`); NOT BUILT until Design and Marketing rule
+
+*The SANG shape (`marketing.md` 06dfd1e, his "the shape is good" 10:43:39Z) is an opening, then per-ticker blocks: a company line, a price path, and two or three sentences. Today's contract is a headline plus sections of `{ticker, text}` lines. This maps one onto the other.*
+
+**The principle is already ruled, for `watchCount`: what the store states exactly is COMPUTED and worded by the surface; the model writes only what needs a voice.** Applied to every element of the block:
+
+| SANG element | produced by | contract field (proposed) |
+| --- | --- | --- |
+| Opening, sentence 1 ("We're watching 12 names into the premarket.") | surface (`watchLine`, a4962078), from a count | `SessionReport.watchCount: number`, distinct tickers across SURVIVING lines, computed by `applyStrikes` |
+| Opening, sentence 2 (premarket only: "Across the $1–$20 range, 2,454 traded after hours, 749 up, 569 down.") | writer (voice); checker traces each count to `ticker_session` for D, board-eligible | `SessionReport.overall: string \| null`: null for the other three kinds until Ops's frozen counts (v28), and null when struck |
+| Company line ("Sangoma Technologies Corp. Canada. <what it does>") | COMPUTED from the as-of dossier (`analysis_version_id`): `companyName`, decoded `country`, `businessDescription` | `ReportLine.company: { name, country, business } \| null`, each part null when absent, never guessed |
+| Path ("$3.59 → $6.01 → $5.10") | COMPUTED: intraday from the row (`reference_close` → `session_high` → `price`); premarket from `ticker_session` D (`ah_reference_close` → `ah_high` → `price`) | `ReportLine.path: { from, high, now, fromBasis } \| null`, `fromBasis` = `PRIOR_CLOSE` \| `TODAY_CLOSE`, so the surface labels the first point |
+| The two or three sentences | writer; checker | `ReportLine.text`, unchanged |
+
+**Why computed rather than written:** a path point or a company name in model text is one more place to invent, and the checker could only strike what code already knows. Computed, they cannot disagree with the store, cannot be struck, and cost no tokens. The writer is told the path and the company line are printed above its text, and does not restate them.
+
+**Three questions, each with a proposal:**
+
+1. **Sections.** The SANG block shows none. *Proposed: keep `sections[]` (the ruled emptied-section and NOTHING_LINE rules stay valid unchanged); each block is one `ReportLine`.* The alternative, one flat list, drops "what held" versus "what faded", which his original request named.
+2. **Headline.** The opening replaces it. *Proposed: v5 writes no headline; the field stays for stored v4 rows.* But `headline: null` today MEANS "the checker struck it", so v5 needs a distinguishable state (for example `headline` absent) or the surface cannot tell a retired headline from a struck one. Design's call.
+3. **Country.** `dossier.country` is EDGAR's `stateOrCountry` CODE (SANG "A6"). *Proposed: decode to the COUNTRY only (every US state code to "United States", every Canadian province code to "Canada", other codes by EDGAR's published list), deterministic, in Research.* No state or province: it is the same class as the city he dropped. Marketing's SANG block already reads "Canada" for A6.
