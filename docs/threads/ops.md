@@ -12620,3 +12620,12 @@ predates Integration's child-table ruling; proposed the same content as columns 
 Its volume question, OPENED: cumulative_volume = volumeBase + minuteSum (engine.ts:1577); minuteSum = bars 04:00-20:00
 ET of the date only (engine.ts:1027-1031); volumeBase = 0 unless seeded mid-date from an Alpaca snapshot daily bar
 (worker/runtime.ts:1021/:1291), whose own window is NOT verified. traded = cumulative_volume > 0, seed flag frozen.
+**COUNTS SPEC AGREED with Research (~05:1xZ), supersedes the JSON shape.** Child table keyed (assessment_id, range_key):
+range_key TEXT ("1-20"), range_min REAL, range_max REAL, window ('AFTER_HOURS' | 'SESSION_TO_DATE'), eligible, traded,
+up, down INTEGER, counts_version INTEGER (1) -- plus Ops's volume_base_seeded flag, and the per-range top-N on the
+same key. Population: ticker_session for the checkpoint's trading_date (by D, never "current date": the 22:00 recap and
+the 22:00 roll share a clock), universe.discovery_eligible = 1, price at capture in [min, max]. NEXT_DAY_RECAP =
+AFTER_HOURS 16:00-20:00 ET of D: traded = ah_participation > 0, up/down = sign ah_percent_change (vs
+ah_reference_close). OPEN_SPIKE / RTH_INTERVAL / RTH_CLOSE = SESSION_TO_DATE 04:00 ET to capture: traded =
+cumulative_volume > 0, up/down = sign percent_change (vs prior close) -- so 16:00 says "today". Every configured range at
+each checkpoint (today $1-$20). Column name note: WINDOW is an SQLite keyword; the DDL will use count_window.
