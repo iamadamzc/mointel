@@ -414,8 +414,17 @@ Integration. Answers, each a sentence, with the reason.*
    with one word if he wants it.
 
    **PUNCTUATION FIX 2026-09-30, his hard rule (verified at his own turn,
-   Integration's session, 10:43:39Z): "no em dashes in any writing."** The live
-   page (`app/page.tsx:321`) renders the mid-sentence em dash before the list —
+   Integration's session, 10:43:39Z): "no em dashes in any writing."
+   CONFIRMED, on Web's question: the quotation above (the "TMI Trader"
+   opening) is NOT edited by this fix and should not be — it is the frozen
+   2026-09-10 record, already marked history rather than instruction at the
+   top of this document, and it already diverges from the live page in its
+   first five words because of the 2026-09-18 rename, by the same design.
+   Editing only its punctuation would make it a partial mirror, worse than
+   either a faithful record or a faithful mirror. This amendment is the
+   governing text for the live wording; the quotation above stays exactly as
+   registered on the date it was registered.** The live page (`app/page.tsx:321`)
+   renders the mid-sentence em dash before the list —
    *"...on a single shared board — why it is moving, where it sits in the
    cycle, what the share structure is, and what supply stands behind it"* — as
    an actual em dash via `&mdash;`.
