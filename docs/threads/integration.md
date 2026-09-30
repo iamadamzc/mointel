@@ -2328,6 +2328,11 @@ RUN 3 DAY        2026-09-23 (#480/#490/#493/#494; overall 2,431 / 787 / 564), ne
 RUN 3 SEEDS      sha256(defect-set-v5r3.md) 42818555d8b1231713cf439b4dc8773f744571e12a0e0d97d90505f4ba546128, registered
                  a0afc02f (14:12:32 ET; pushed here). 09-23, 19 classes, controls field-traced; asset-sale regression
                  control NOT exercisable on 09-23 (documented). RELEASED on my word (checker 925c9dc unchanged).
+RUN 3 RUNNING    Set 42818555 verified on 32541fb5 (hash computed here too); harness 9b44df8c before calls (run 2's, 13
+                 constants diffed); checker 925c9dc. RESEARCH'S PREDICTION (in the harness, before calls): ARTL controls
+                 cite "$6,530,000 of ATM capacity" = supply dollarCapacity, which the frozen research block does NOT carry
+                 -> likely NUMBER_NOT_IN_ROW strikes on 493-C S1L1 / 494-C S1L1 = a CHECKER hole (run 1's class). Pre-fixed
+                 rule holds: any FAIL -> no reports tonight. Tomorrow's fix if so: carry dollarCapacity to the checker.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
