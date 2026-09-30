@@ -13034,3 +13034,10 @@ Design renders the cut tree; his yes. Slot: after v28 is live + /proc read, clea
 only: the cut has no /review/[token]/api/levels, so the section never mounts on a review link.
 **HIS YES IN THIS SESSION, 2026-09-30T18:28:16Z: "yes"**, to "Can resistance levels ship tonight, if the speed test passes
 and Design signs off?" (e8caa77d, after v28, clear of 22:00). Conditional: no ship on a cost-test FAIL or without Design's render.
+Design's render MET (Integration). POST-SHIP CHECK for levels (Integration's order): after /proc confirms e8caa77d, ONE
+`curl -s 127.0.0.1:3000/api/levels?symbol=<a top-5 board name>` on the box, after hours; report status, row y/n, level count,
+horizon fields, computedAt. A null for a name with bars today = a defect, report before anything else ships.
+**/api/market "before" samples (Design, one visible review page polling 1/s, production c3d0f06, pre-84b0099):** 19:06:3xZ
+first load 2,760 ms (2,704 TTFB); 19:09:09Z reload 706 ms (635 TTFB). Server-bound, not queue or transfer. The 04:06 ET
+15.5 s first load is still unexplained and did not reproduce. Different method from R0/R1 (browser resource timing vs
+snapshot-latency.sh), so not comparable to them as a series.
