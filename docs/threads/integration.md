@@ -2492,6 +2492,9 @@ TRADE-RESEARCHER HIS ASK (this session, ~23:2xZ): brief @trade-researcher (local
                  work. HIS BENZINGA QUOTE -> Commercial (register fact, no action).
 BENZINGA QUOTE   Commercial verified his turn (23:28:15Z), registered ac5e5abd as a fact; open: which product (Stock News vs
                  Press Releases) and terms. No action unless he raises it. Trade-researcher licensing posture: no gap.
+19:41 ET CHECK   (own reminder e674f578 fired) New Ops-tmi local_8a0801c2 open (cwd A:\mointel, not archived; read
+                 earlier). No 20:07 cron BY DESIGN: the classifier refused an unattended deploy cron twice (ops.md tail,
+                 read); the chain starts on his "go" in Ops's chat after 20:00, which Ops has asked him for. Nothing sent.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
