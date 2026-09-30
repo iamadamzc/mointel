@@ -195,3 +195,21 @@ prior), plus the read. At the 5m close for board names only (~25–90 names),
 that is well under a second of worker time per 5 minutes. **The web reads one
 row per board name.** The minute read must use the bounded query
 (`ts >= (D−1)T00:00Z`, Ops's `loadMinuteBars` fix), never the all-sessions walk.
+
+## 6. TONIGHT'S BUILD ON STORED DATA: PRE-REGISTERED 2026-09-30, BEFORE ANY LEVELS CODE (seat `local_4b09b3b2`)
+
+*His ruling 2026-09-30T15:47:13Z (verified): levels go tonight. Integration's order calls (20th seat): the per-name API form, a pre-registered cost gate, levels built IN PARALLEL through a subagent in its own worktree, reviewed by this seat.*
+
+**Where it runs (replaces §2's worker + table for tonight; the row contract is UNCHANGED):** `GET /api/levels?symbol=X` computes ONE name on request and memoizes the result per `(symbol, the latest completed 5m close)`. No worker change, no schema, no market restart. The computation is a PURE function over (1m bars, daily bars, `t`); the store read is a separate adapter, so the fixtures below test the same function the route runs.
+
+**Windows on stored data (INTERIM, his approval pending via Integration; built so it can ship on his yes):** today = 5m rolled up from today's 1m bars; the 15m window = 15m rolled up from the stored 1m bars of the prior sessions the store retains (15 on the box), keyed by bucket START in UTC per §3; the daily window = `daily_bars` rows OLDER than the oldest stored 15m session, out to 12 months, then §1's far-back extension. **The daily window begins where stored 15m data ends, not at 39 days**, so no day falls in neither ladder. `horizon` states each ladder's oldest data. When the history store backfill lands, 15m reads it to 39 calendar days and daily begins beyond, per §1. **If he rules against the interim, the daily window starts at 39 days and the gap is stated in `horizon`.**
+
+**Basis (refuse, never mix):** the stored 1m bars are RAW. If `daily_bars.split_factor` changes inside the 15m window, or two consecutive stored sessions' closes differ by a ratio ≥ 3 or ≤ 1/3, only today's 5m window is walked and the row carries `basisBreak`. Daily rows with a null `split_factor` (the basis is not established) are not walked: `horizon.dailyFrom` is null.
+
+**Verification, pre-registered (a FAIL means it does not ship):**
+1. **His charts, the pure function on Ops's CSVs** (`data/slxn-2026-09-29-minute-bars.csv`, `data/nci-msgy-biya-minute-bars.csv`, `data/nci-msgy-biya-daily-bars.csv`) at his chart moments (§4.1): **PASS = recall ≥ 13 of his 14 lines on SLXN, NCI and MSGY**, tolerance max($0.002, 0.5% of L). Extra levels are not failures ("show all").
+2. **BIYA, reported and NOT a pass condition:** under the interim window its 2.421 and 2.501 are August DAILY highs and are EXPECTED as daily levels; its 2.462 and 2.490 need August 15m, which only the backfill holds, and are EXPECTED ABSENT. Any other outcome is investigated before shipping.
+3. **Cost gate, on the prod copy** (`data/market-prod-2026-09-29.db`, read-only): the names at live rank ≤ 25 at the 2026-09-29 10:00 ET checkpoint, each computed COLD (no memo) at `t` = 2026-09-29 16:00 ET through the route's own store adapter: **PASS = p95 < 100 ms per name AND max < 250 ms**, on this desktop. n and the distribution are reported. It is a local prior, not a box reading: the box is read after deploy, with Ops.
+4. **Absent vs empty (§2):** an uncomputed name has no row; a computed name with nothing above has `levels: []` and `aboveAllStored: true`. Both pinned by tests.
+
+**The label is his, not a measurement (§ top).** No copy, comment or commit may call these levels measured or tested.
