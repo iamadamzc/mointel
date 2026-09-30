@@ -1401,7 +1401,12 @@ error                                                  TYPE                     
   18th's LIVE STATE) and my evening overview omitted   stale charter line read as
   them; research.md said otherwise and no seat was     current)
   building them since 09:16 ET. His 2nd ask 23:39:14Z.
+5 routed Research's fix SHAPE "asOf: DATE" to Design  relayed the fix shape, not the     no       peer
+  as the fix; asOf also bounds fetched_at <= asOf      defect (README: RELAY THE DEFECT,           (Design)
+  (researchRepo.ts readSources) -> no source survives  NOT THE FIX SHAPE)
+  (92/94). Design used 2026-08-18T00:00:00Z (7a62d62).
 ```
+RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 GZIP SHIPPING    deploy unit mointel-deploy-1b5ead6-221229 started 18:12:29 ET (Ops; pre-launch /proc 18:12:00 ET on
                  803008b, NR 0; market 1347535). Post-ship set owed by Ops to this seat.
 GZIP LIVE        PRODUCTION = 1b5ead6 (Ops /proc 22:26:01Z: web 1567784 start 22:25:15Z / research 1567847 / assess
