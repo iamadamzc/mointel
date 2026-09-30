@@ -2175,6 +2175,14 @@ NEW OPS          local_8a0801c2 (title Ops-tmi, cwd A:\mointel, not archived: li
                  "Ops-tmi (retired 2026-09-30)", NOT archived (his, cosmetic). /proc 17:20:03Z = the hand-off's. Briefed with
                  the SUCCESSOR OPS order above; told NOT to re-ask him for #1 (his yes: 7bacf0d6 ~16:0xZ + mine 15:47:13Z;
                  verify at his turn). Gate queue handed back to Ops (Design 3c0cd04a waiting, then Research harness).
+SEED LOCK LOST   Marketing (stopped before release): Research asked, AFTER the 13:16 freeze, for the set reformatted to
+                 the harness's JSON; Marketing overwrote the scratchpad original (never committed), so 437e30a6 cannot be
+                 reproduced; new file sha256 cd8052b906d81feaac123d1bf20ace7d84981d7bf646fb35d02aca34a70766b0. Pre-freeze
+                 note 70920cdc is CLASS-level (read), so no line-level check is possible. RULING (order call): proceed on
+                 cd8052b9 as a LABELLED DEVIATION (author blind to 1ab48be; classes/rows/795-vs-697 documented pre-freeze);
+                 lock note states format-only + counts; result reported "AS REGISTERED, with the seed-lock deviation".
+                 SEAM: after a freeze the harness adapts to the locked artifact; lock the FINAL artifact (format first,
+                 hash last). I released on 437e30a6 without asking whether it was in the harness's format.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
