@@ -1571,6 +1571,9 @@ DATA MAP        Research data-map-2026-09-30.md (read): EXISTS as-of checkpoint:
   checkpoint/bump work; (d) "on watch" undefined -> HIS word, asked.
   Ops fc77734 (read db.ts:618-660/800-806/136-137): neither ah_reference_close nor ah_high on the checkpoint row ->
   both frozen at capture in the one bump; ah_low ADDED (order call). Fills forward only.
+HIS RULINGS (this session, first-hand): "1 a, 2 a" -> FLOAT: verdict only for now (e.g. "small float, not
+  independently verified"), no number, no float source sought; ON WATCH = the report's own list ("we're watching N
+  names into premarket"), then the AH overall picture. Sent to Research, Marketing, Design.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
