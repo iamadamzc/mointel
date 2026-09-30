@@ -578,6 +578,33 @@ Sealed in scratchpad; released to Research only after Research re-freezes the fi
 checker and Integration gives the word, pinned LF so the hash verifies. One U+2014 in
 the file by design (the class-7 defect 518-07); the 13 U+2013 are the en-dash ranges.
 
+**Run 2 result: FAIL as registered, no missed defect.** All 19 struck; the failures were
+my SET errors, not the checker: "noted but not quantified" while amounts were held, an
+unstated dirty-float gloss, "flow-dominant" imported to a name whose dossier did not state
+it, and "sell" for an asset sale (correct strike). The checker is validated; the set was
+wrong.
+
+### Run 3 (v5): fresh set, 2026-09-23, every control clause field-traced
+
+Run 3 fixes the SET under the new rule (Integration, design.md): every control clause is
+FIELD-TRACED to the stored field it restates, nothing the research does not state, no
+never-use word, no buy/sell even descriptively ("sale"/"divest", never "sell"). Fresh day
+09-23 (#480/#490/#493/#494), same 19 classes, same format, checker UNCHANGED (925c9dc, no
+re-freeze). Specimens WHLR (no fresh catalyst in sources + a quantified supply line naming
+its form, regression a and b), HCTI (not researched yet), TRNR (earnings, dirty-float
+label only), ARTL (patent, cited 40/20 numbers, giveback), XXII (no catalyst conclusion,
+giveback). The file carries a full field-trace of every control clause to its field.
+**Asset-sale regression (c) is NOT exercisable on 09-23** (no asset-sale catalyst on the
+board) and is not imported, per Research; (a) and (b) are present. Overall uses the 09-23
+board-eligible totals verified first-hand (2,431 traded, 787 up, 564 down); wrong-total
+defect 812. Authored **informed by run 2's set errors, BLIND to the checker.** New file,
+prior sets intact, format first / hash last:
+
+    sha256(defect-set-v5r3.md) = 42818555d8b1231713cf439b4dc8773f744571e12a0e0d97d90505f4ba546128
+
+One U+2014 by design (the class-7 defect 480-07); the rest are en-dash ranges. Released on
+Integration's word (checker unchanged, so no re-freeze); pinned LF.
+
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
 **His verdict on the v3 sample (#551), verbatim** (`integration.md` `b563207`):
