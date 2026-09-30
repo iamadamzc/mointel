@@ -102,25 +102,38 @@ export function levelLines(row: ResistanceLevels): LevelLine[] {
 /**
  * What the section says when there is no level to draw, or when fewer ladders
  * were read than usual. Null when the list speaks for itself.
+ *
+ * AN EMPTY LIST SAYS ONLY WHAT IS TRUE ABOUT OUR HISTORY (Commercial, via
+ * Integration, 2026-09-30): no prior high found in the history we hold, and
+ * how far back that history goes. Never anything that reads as clear air above
+ * the stock. A row refused across a split says that OLDER levels are not
+ * shown, so it cannot read as "no levels".
  */
 export function levelsNote(row: ResistanceLevels): string | null {
   const notes: string[] = [];
+  const empty = levelLines(row).length === 0;
   if (row.basisBreak) {
-    notes.push('A split is not yet reflected in the stored history, so only today’s 5-minute candles were read.');
+    notes.push('Older levels are not shown: a split is not yet reflected in our stored history.');
+    if (empty) notes.push('None of today’s 5-minute candles is above the price.');
+    return notes.join(' ');
   }
-  if (levelLines(row).length === 0) {
-    if (row.aboveAllStored) {
-      const back = dayText(row.horizon.dailyFrom);
-      notes.push(
-        back
-          ? `Price is above every high we have stored, back to ${back}.`
-          : 'Price is above every high we have stored.',
-      );
-    } else {
-      notes.push('No level above the price in the candles read.');
-    }
+  if (empty) {
+    const back = row.aboveAllStored ? dayYearText(row.horizon.dailyFrom) : null;
+    notes.push(
+      back
+        ? `No prior high above the price in the history we hold, back to ${back}.`
+        : 'No prior high above the price in the history we hold.',
+    );
   }
   return notes.length > 0 ? notes.join(' ') : null;
+}
+
+/** "Sep 29, 2025" on the ET calendar; null when unparseable. */
+function dayYearText(iso: string | null | undefined): string | null {
+  const day = dayText(iso);
+  if (!day || !iso) return null;
+  const year = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric' }).format(new Date(iso));
+  return `${day}, ${year}`;
 }
 
 /** "Read: today's 5m candles, 15m from Sep 9, daily from Oct 1, 2025." How far back it looked. */

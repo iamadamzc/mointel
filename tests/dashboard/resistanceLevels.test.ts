@@ -78,24 +78,40 @@ describe('every level, nearest first', () => {
   });
 });
 
-describe('absent is not empty', () => {
-  it('a computed row with nothing stored above says so, never "all-time high"', () => {
+describe('absent is not empty, and empty is not clear air', () => {
+  // Commercial (via Integration, 2026-09-30): an empty list says only what is
+  // true about OUR HISTORY and how far back it goes; a split-refused row must
+  // not read as "no levels".
+  const undatedHorizon = { fiveMinFrom: null, fifteenMinFrom: null, dailyFrom: null };
+
+  it('a computed row with nothing stored above names the history and its reach, never "all-time high"', () => {
     const note = levelsNote(row({ levels: [], aboveAllStored: true }));
-    expect(note).toBe('Price is above every high we have stored, back to Sep 29.');
+    expect(note).toBe('No prior high above the price in the history we hold, back to Sep 29, 2025.');
     expect(note).not.toMatch(/all[- ]time/i);
-    // With no daily horizon the sentence loses its date, not its meaning.
-    const undated = row({ levels: [], aboveAllStored: true, horizon: { fiveMinFrom: null, fifteenMinFrom: null, dailyFrom: null } });
-    expect(levelsNote(undated)).toBe('Price is above every high we have stored.');
   });
 
-  it('a computed row with no level and no such flag says only what was read', () => {
-    expect(levelsNote(row({ levels: [] }))).toBe('No level above the price in the candles read.');
+  it('with no daily horizon the sentence loses its date, not its meaning', () => {
+    expect(levelsNote(row({ levels: [], aboveAllStored: true, horizon: undatedHorizon }))).toBe(
+      'No prior high above the price in the history we hold.',
+    );
   });
 
-  it('a split behind the store is stated, and levels still draw', () => {
+  it('an empty row without the flag claims no reach at all', () => {
+    expect(levelsNote(row({ levels: [] }))).toBe('No prior high above the price in the history we hold.');
+  });
+
+  it('a split behind the store says older levels are not shown, and levels still draw', () => {
     const r = row({ basisBreak: true, levels: [level(4.5)] });
-    expect(levelsNote(r)).toMatch(/only today’s 5-minute candles were read/);
+    expect(levelsNote(r)).toBe('Older levels are not shown: a split is not yet reflected in our stored history.');
     expect(levelLines(r)).toHaveLength(1);
+  });
+
+  it('a split-refused row with nothing above never reads as "no levels"', () => {
+    const note = levelsNote(row({ basisBreak: true, levels: [], aboveAllStored: true })) ?? '';
+    expect(note).toBe(
+      'Older levels are not shown: a split is not yet reflected in our stored history. None of today’s 5-minute candles is above the price.',
+    );
+    expect(note).not.toMatch(/history we hold/);
   });
 
   it('a row with levels and nothing unusual adds no note', () => {
@@ -122,7 +138,8 @@ describe('how far back it looked, and from where', () => {
 });
 
 describe('his label, not a measurement', () => {
-  const FORBIDDEN = /\b(measured|tested|strength|strong|weak|all[- ]time)\b/i;
+  const FORBIDDEN =
+    /\b(measured|tested|strength|strong|weak|all[- ]time|clear|blue sky|no resistance|nothing (above|stopping|in the way))\b/i;
 
   it('no word the section prints claims strength or a test', () => {
     const r = row({
@@ -134,6 +151,8 @@ describe('his label, not a measurement', () => {
       levelsNote(r) ?? '',
       levelsNote(row({ aboveAllStored: true })) ?? '',
       levelsNote(row({ aboveAllStored: true, horizon: { fiveMinFrom: null, fifteenMinFrom: null, dailyFrom: null } })) ?? '',
+      levelsNote(row({ basisBreak: true, levels: [] })) ?? '',
+      levelsNote(row({ levels: [] })) ?? '',
       horizonText(r) ?? '',
       computedText(r) ?? '',
     ];
