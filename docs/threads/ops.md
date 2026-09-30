@@ -12593,3 +12593,12 @@ run  start      cold ms  warm median  warm max
 the Now field:** one follow-up fetch at 03:5xZ returned 3,734 B with ZERO nowBuckets keys (post-roll board is empty).
 So (c') shows only that 74c1818 on an empty date costs what 0342e7d did on an empty date. The Now field's own cost
 is still UNMEASURED; the only reading with it present is (c), 811.7 ms pre-roll with 15 names, which is confounded.
+
+**QUEUED (Ops, schema; Integration 2026-09-30 ~04:1xZ, his report-sample ruling integration.md b563207): FREEZE THE
+AFTER-HOURS PATH ONTO THE CHECKPOINT ROW.** Opened, not relayed: desk_assessment_tickers (db.ts:618-660 + the
+column list at :800-806) carries ah_percent_change / ah_volume / ah_participation / ah_rank but NOT ah_reference_close
+or ah_high; those live only on ticker_session (db.ts:136-137, upserted repo.ts:872-873), which keeps moving. Research's
+data map d137a46 line 19 agrees. Add both columns, copied from ticker_session at capture, so the 20:05 / 22:00 reports
+read the AH path (reference close -> high -> last) as-of. Rides the ONE market.db bump, behind the pre-deploy backup
+route (never VACUUM INTO in a session). Fills forward only. Order with the 20:05 checkpoint and per-range top-N:
+proposed to Integration after the 10:12 read.
