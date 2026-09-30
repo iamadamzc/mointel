@@ -16,13 +16,18 @@
 import { describeFailure, readProviderFailure } from '../../research/providerError';
 import type { ReportModel, WriterPrompt } from './writer';
 
+/*
+ * One provider for both calls: the checker is the same wire with a different
+ * schema and model. `CheckerModel` and `ReportModel` share one method.
+ */
+
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
 
 /** Bumped whenever `SYSTEM` in `writer.ts` or the schema below changes. */
 export const REPORT_WRITER_PROMPT_VERSION = 1;
 
 /** `ReportDraft`, as a strict schema: every key required, nothing extra. */
-const DRAFT_SCHEMA = {
+export const DRAFT_SCHEMA = {
   type: 'object',
   additionalProperties: false,
   required: ['headline', 'sections'],
@@ -83,15 +88,26 @@ export interface OpenAiReportModelOptions {
   model: string;
   timeoutMs?: number;
   fetchImpl?: typeof fetch;
+  /**
+   * The reply's strict schema. Defaults to the writer's draft; the checker
+   * passes its verdict schema. `promptVersion` goes to the request metadata.
+   */
+  format?: { name: string; schema: object; promptVersion: number };
   /** Called once per call that reached the provider, success or not. */
   onUsage?: (usage: ReportModelUsage) => void;
 }
 
 export class OpenAiReportModel implements ReportModel {
   private readonly fetchImpl: typeof fetch;
+  private readonly format: { name: string; schema: object; promptVersion: number };
 
   constructor(private readonly options: OpenAiReportModelOptions) {
     this.fetchImpl = options.fetchImpl ?? fetch;
+    this.format = options.format ?? {
+      name: 'report_draft',
+      schema: DRAFT_SCHEMA,
+      promptVersion: REPORT_WRITER_PROMPT_VERSION,
+    };
   }
 
   get available(): boolean {
@@ -115,10 +131,10 @@ export class OpenAiReportModel implements ReportModel {
         // The sheet is the only source. No search, no tools.
         tools: [],
         text: {
-          format: { type: 'json_schema', name: 'report_draft', strict: true, schema: DRAFT_SCHEMA },
+          format: { type: 'json_schema', name: this.format.name, strict: true, schema: this.format.schema },
         },
         store: false,
-        metadata: { report_writer_prompt_version: String(REPORT_WRITER_PROMPT_VERSION) },
+        metadata: { [`${this.format.name}_prompt_version`]: String(this.format.promptVersion) },
       }),
       signal: this.options.timeoutMs ? AbortSignal.timeout(this.options.timeoutMs) : undefined,
     });

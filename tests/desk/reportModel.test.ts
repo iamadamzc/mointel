@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { OpenAiReportModel, type ReportModelUsage } from '@/lib/desk/reports/openaiReportModel';
+import { VERDICT_SCHEMA } from '@/lib/desk/reports/check';
+import { DRAFT_SCHEMA, OpenAiReportModel, type ReportModelUsage } from '@/lib/desk/reports/openaiReportModel';
 import { NOTHING_LINE, parseDraft, writeReport } from '@/lib/desk/reports/writer';
 import { readReportModelConfig } from '@/lib/research/config';
 
@@ -50,6 +51,24 @@ describe('OpenAiReportModel', () => {
     expect(body.tools).toEqual([]);
     expect(body.store).toBe(false);
     expect(body.text.format).toMatchObject({ type: 'json_schema', strict: true });
+  });
+
+  it('the checker passes its own reply schema; the draft schema is the default', async () => {
+    const bodies: Array<{ text: { format: { name: string; schema: unknown } }; metadata: Record<string, string> }> = [];
+    const fetchImpl = async (_: unknown, init?: RequestInit) => {
+      bodies.push(JSON.parse(String(init?.body)));
+      return ok('{}');
+    };
+    await new OpenAiReportModel({ apiKey: 'k', model: 'w', fetchImpl }).complete(prompt);
+    await new OpenAiReportModel({
+      apiKey: 'k',
+      model: 'c',
+      fetchImpl,
+      format: { name: 'report_verdicts', schema: VERDICT_SCHEMA, promptVersion: 7 },
+    }).complete(prompt);
+    expect(bodies[0]!.text.format).toMatchObject({ name: 'report_draft', schema: DRAFT_SCHEMA });
+    expect(bodies[1]!.text.format).toMatchObject({ name: 'report_verdicts', schema: VERDICT_SCHEMA });
+    expect(bodies[1]!.metadata).toEqual({ report_verdicts_prompt_version: '7' });
   });
 
   it('reports usage: cached a subset of input, reasoning a subset of output', async () => {
