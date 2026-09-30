@@ -12602,3 +12602,5 @@ data map d137a46 line 19 agrees. Add both columns, copied from ticker_session at
 read the AH path (reference close -> high -> last) as-of. Rides the ONE market.db bump, behind the pre-deploy backup
 route (never VACUUM INTO in a session). Fills forward only. Order with the 20:05 checkpoint and per-range top-N:
 proposed to Integration after the 10:12 read.
+**Integration 2026-09-30 ~04:2xZ: ah_low too, same bump** (the recap's session_low is all-sessions). So the bump adds
+ah_reference_close, ah_high, ah_low to desk_assessment_tickers, as-of, filled forward only.
