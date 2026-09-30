@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import type {
   ReportRange,
@@ -22,6 +22,7 @@ import {
 } from '@/lib/dashboard/sessionReports';
 import { rangeLabel } from '@/lib/dashboard/boardRange';
 import { formatEtMinute } from '@/lib/format';
+import { useModalFocus } from '@/lib/hooks/useModalFocus';
 
 /**
  * The briefing line: one row between Focus and Discovery.
@@ -145,7 +146,17 @@ function Late() {
  * "held $4.10" beside a live $3.20 would be two true numbers from two instants,
  * reading as one. The live price is one click away, in the dossier.
  */
-export function ReportPanel({
+/**
+ * The report, in a larger window. HIS RULING, 2026-09-29T23:51:49Z: *"it
+ * needs to open up a larger window like when you click on a specific
+ * ticker."* The side panel beside the board was "too much to review/read/
+ * ingest in that one small space" and is gone. So this is the ticker window's
+ * pattern (`TickerDrawer`: fixed over a dimmed board, panel from the right),
+ * wider than the ticker's 860 px, with the prose held to a reading measure
+ * inside it. A ticker opened from the report stacks ABOVE it (z-50 over z-40)
+ * and closes back to it.
+ */
+export function ReportWindow({
   timeline,
   ranges,
   range,
@@ -156,6 +167,7 @@ export function ReportPanel({
   onClose,
   onSelectTicker,
   onOpenCheckpoint,
+  covered,
 }: {
   timeline: ReportTimeline;
   ranges: ReportRange[];
@@ -167,8 +179,11 @@ export function ReportPanel({
   onClose: () => void;
   onSelectTicker: (ticker: string) => void;
   onOpenCheckpoint: (id: number) => void;
+  /** A ticker window is open above this one; it owns the keys meanwhile. */
+  covered: boolean;
 }) {
   const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const panelRef = useRef<HTMLElement | null>(null);
   const [pinned, setPinned] = useState<SlotView | null>(null);
 
   const views = [timeline.current, ...timeline.earlier].filter(
@@ -179,24 +194,22 @@ export function ReportPanel({
     views.find((view) => view.report) ??
     timeline.current;
 
-  useEffect(() => {
-    const restore = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    headingRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      restore?.focus?.();
-    };
-  }, [onClose]);
+  useModalFocus({ open: true, covered, panel: panelRef, heading: headingRef, onClose });
 
   return (
+    <div className="fixed inset-0 z-40 flex justify-end print:static print:block" data-report-panel>
+      <div
+        className="absolute inset-0 bg-black/60 print:hidden"
+        onClick={onClose}
+        role="presentation"
+        aria-hidden="true"
+      />
     <aside
+      ref={panelRef}
+      role="dialog"
+      aria-modal="true"
       aria-label="Session briefing"
-      data-report-panel
-      className="flex h-full w-[440px] shrink-0 flex-col border-l border-line-2 bg-panel print:h-auto print:w-full print:border-0 print:bg-white print:text-black"
+      className="relative flex h-full w-full max-w-[960px] flex-col border-l border-line-2 bg-panel shadow-2xl print:h-auto print:max-w-none print:border-0 print:bg-white print:text-black print:shadow-none"
     >
       <header className="flex items-center gap-2 border-b border-line px-4 py-2 print:hidden">
         <span className="text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase">
@@ -239,7 +252,10 @@ export function ReportPanel({
         </button>
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-3 pb-8 print:overflow-visible">
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-4 pb-10 print:overflow-visible">
+        {/* A reading measure: the window is wide so the report has room, but
+            a line of prose past ~80 characters stops being read as one. */}
+        <div className="mx-auto w-full max-w-[760px]">
         {shown?.report ? (
           <ReportBody
             view={shown}
@@ -282,8 +298,10 @@ export function ReportPanel({
             </ul>
           </nav>
         ) : null}
+        </div>
       </div>
     </aside>
+    </div>
   );
 }
 
@@ -320,7 +338,7 @@ function ReportBody({
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="text-[15px] font-bold text-ink outline-none print:text-black"
+        className="text-[18px] font-bold text-ink outline-none print:text-black"
       >
         {reportTitle(report.kind)}
         {session ? <span className="font-normal text-ink-2"> · for {session}</span> : null}
@@ -374,7 +392,7 @@ function ReportBody({
       </dl>
 
       {report.headline ? (
-        <p className="mt-3 text-[13px] leading-snug text-ink print:text-black">{report.headline}</p>
+        <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{report.headline}</p>
       ) : null}
 
       {report.sections.map((section) => (
@@ -385,16 +403,16 @@ function ReportBody({
           {section.lines.length === 0 ? (
             // Empty for ANY reason reads the same. "Nothing happened" exists only
             // as a written, checked line, so an empty section never claims it.
-            <p className="text-[12px] text-ink-3">Nothing in our sources for this section.</p>
+            <p className="text-[13px] text-ink-3">Nothing in our sources for this section.</p>
           ) : (
             <ul className="space-y-1.5">
               {section.lines.map((line, index) => (
-                <li key={`${line.ticker ?? '-'}:${index}`} className="text-[12px] leading-snug text-ink-1 print:text-black">
+                <li key={`${line.ticker ?? '-'}:${index}`} className="text-[14px] leading-relaxed text-ink-1 print:text-black">
                   {line.ticker ? (
                     <button
                       type="button"
                       onClick={() => onSelectTicker(line.ticker as string)}
-                      className="mr-1.5 font-mono text-[13px] font-bold text-ink hover:text-accent print:text-black"
+                      className="mr-1.5 font-mono text-[14px] font-bold text-ink hover:text-accent print:text-black"
                     >
                       {line.ticker}
                     </button>
