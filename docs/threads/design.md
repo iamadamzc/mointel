@@ -44,7 +44,7 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state — 2026-09-30 02:40 UTC / 2026-09-29 22:40 ET (fourth seat, `Design-tmi` `local_72b49119`, Opus 5.5, opened 00:09Z; clock read via zoneinfo)
+## Live state — 2026-09-30 02:36 UTC / 2026-09-29 22:36 ET (fourth seat, `Design-tmi` `local_72b49119`, Opus 5.5, opened 00:09Z; clock read via zoneinfo)
 
 **Nothing uncommitted. Nothing in flight on Design's side.** **PRODUCTION WEB = `74c1818`** (the brand header v2 on 1b5ead6;
 Ops, web start 02:33:33Z 09-30). **Base for any new Design cut: 74c1818.** Market worker: 1b5ead66 from 00:15:40Z (the ruled restart, v2
@@ -718,6 +718,8 @@ probe came before any edit, as the ledger says it must.**
 | Reverting a mutant, ran `git checkout -- <file>`: it took the whole fix with it. My backup `cp` had gone to `$TMP`, not the scratchpad path the restore read from, so the restore failed and the next mutant ran on the ORIGINAL file (it could not match, and the run looked like a mutant result) | REVERSED-THE-FILE-NOT-THE-EDIT (this charter's own working rule, "Reverse the edit, never the file") | **Yes: a working rule, not this session.** The first act of this seat to break a written rule | Self, from the count (94 tests, not 95); fix restored whole from the `$TMP` copy, content identical; that mutant re-run properly |
 | Pre-registered 191 test files at `e30316e` with `git ls-files 'tests/**/*.test.ts'`; the gate ran 192. Git's `**/` needs a subdirectory, so the pathspec cannot see `tests/security.test.ts` | COUNT-INSTRUMENT-BLIND (a check that cannot see a present case; memory: failed checks return plausible answers) | No | Self, the gate's own count; recounted with `ls-tree -r <base> tests \| grep -c` before declaring on 1b5ead6 |
 | The routed fix said `asOf: DATE`; it empties the evidence (see item 0). Caught before commit by reading `readSources` first | (not my error: RELAYED-FIX-SHAPE, Integration's ledger 5) | — | Self, by opening the code at answer time |
+
+| Stamped the live-state header "02:40 UTC" in the same step that read the clock, and the clock said 02:36: the time was written before it was read (commit 1d14999, corrected next commit) | TIME-BEFORE-CLOCK (the first seat's class, in this ledger) | **Yes, in this charter; first time this seat** | Self, on the clock line printed beside the commit |
 
 **Rule taken from it: every mutant run is `sed` forward and `sed` back, then `cmp` against a scratchpad backup, and the backup's path is one variable used by both the write and the read.**
 
