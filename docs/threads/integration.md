@@ -1376,6 +1376,8 @@ SNAPSHOT (c)     Ops, first run 00:19:45Z: maxima 811.7/1768.9/822.4/682.8/805.4
                  build time (opposite direction). RULED: (c') ~00:55 ET 09-30, same method; PRE-REGISTERED PASS = median
                  of maxima <= 28.9 ms; a pass carries the memo caveat; a fail is named to Design before fa61410
                  moves. No code switch to omit nowBuckets.
+ITEM 6 CONTROL   Ops 21:50:24 ET: open_old = 116 (all of 09-29's feed_intervals open) -> item 6 TESTABLE at the
+                 22:00 roll; post-roll read 22:08 ET; raw to Research d6996864.
 RED TEST FIX     ROUTED TO DESIGN (order call; Research retiring): asOf in run() + vi.setSystemTime proof + grep for the
                  same latent defect. Timing correction to Research: green at 1b5ead6 17:12 ET, red 00:04Z -> flipped
                  tonight, not ~09-25. 74ac35c SUPERSEDED as a cut (carries the red test); v2 = 1b5ead6 + header + fix.
