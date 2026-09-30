@@ -1607,6 +1607,9 @@ NOW-CELL READ   Design 04:06 ET on 74c1818: PASS all three (asOf lag 547 ms, REC
   GZIP JSON CONFIRMED (144,754 B wire / 771,097 decoded). First /api/market 15.5 s (next 1.19 s) -> Ops, no probes.
   Ops 9821c55: Now field = 1.19% of a real premarket body (23/51 rows); gzip ~5.3x. 15,465 ms first fetch: /review/
   has access_log off, no request_time anywhere -> TTFB split asked of Design before naming a cause.
+NOW-CELL CUT    c3d0f06 (tag design/now-cell-on-74c1818) REPLAYED + APPROVED: cone 1 on 74c1818; patch-id differs on
+  context only (sorted +/- lines identical to fa61410, diffed); 0 onRangeChange; gzip in; 177. -> Ops: gate, ask HIM
+  after 10:15 ET (board-behaviour change).
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
