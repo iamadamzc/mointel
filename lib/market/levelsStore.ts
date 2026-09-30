@@ -64,6 +64,34 @@ export function readLevelsInput(db: MarketDatabase, symbol: string, t: number): 
   return { symbol, t, tradingDate, todayBars, priorBars, dailyBars };
 }
 
+export interface BoardLevels {
+  /** Every requested symbol, in order; null = ABSENT (nothing stored to take L from). */
+  rows: Map<string, ResistanceLevels | null>;
+  /** Wall time per name, read plus compute, in milliseconds. */
+  timings: Array<{ symbol: string; ms: number }>;
+}
+
+/**
+ * A board's rows at `t`: the same pure function per name, in ONE read pass
+ * (each name's bars are read exactly once, names in order, nothing re-read).
+ * Meant for a worker; the web tier never calls it.
+ */
+export function computeBoardLevels(
+  db: MarketDatabase,
+  t: number,
+  symbols: readonly string[],
+): BoardLevels {
+  const rows = new Map<string, ResistanceLevels | null>();
+  const timings: BoardLevels['timings'] = [];
+  for (const symbol of symbols) {
+    if (rows.has(symbol)) continue;
+    const start = performance.now();
+    rows.set(symbol, computeLevelsFromStore(db, symbol, t));
+    timings.push({ symbol, ms: performance.now() - start });
+  }
+  return { rows, timings };
+}
+
 /** One name's row at `t`, or null when it is ABSENT (no 1m bar to take L from). */
 export function computeLevelsFromStore(
   db: MarketDatabase,

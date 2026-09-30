@@ -287,6 +287,31 @@ export function loadMinuteBarRange(
     .all(symbol, fromTs, toTs) as MinuteBarPoint[];
 }
 
+/**
+ * The symbols ranked at or better than `maxRank` on EITHER Discovery board
+ * (day `rvol_rank`, evening `ah_rank`) for a trading date, best rank first.
+ * Both, as `readDemandStates` shows both after the close: the levels refresh
+ * then covers the board across the 16:00 switch. Each side is served by its
+ * `(trading_date, rank)` index.
+ */
+export function readBoardRankedSymbols(
+  db: MarketDatabase,
+  tradingDate: string,
+  maxRank: number,
+): string[] {
+  const read = (column: 'rvol_rank' | 'ah_rank') =>
+    (
+      db
+        .prepare(
+          `SELECT symbol FROM ticker_session
+            WHERE trading_date = ? AND ${column} IS NOT NULL AND ${column} <= ?
+            ORDER BY ${column} ASC`,
+        )
+        .all(tradingDate, maxRank) as Array<{ symbol: string }>
+    ).map((row) => row.symbol);
+  return [...new Set([...read('rvol_rank'), ...read('ah_rank')])];
+}
+
 /** Drops minute bars outside the retained trading dates. */
 /**
  * The trading dates minute bars actually exist for, newest first.
