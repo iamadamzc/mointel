@@ -2470,6 +2470,13 @@ NOW "/min" v5    Research (code): newest slot = floor(asOf/10 s)*10 s, never ahe
 SIC WRITE        Research a4a92a8f on research/sic-write (based on Ops's v28 main twin 9f4133b1; test + 2 mutants 1/1).
                  CHERRY-PICK ONLY (its cone carries v28). Lands on main after v28's main twin lands; ships in a later
                  release (tomorrow), not e8822583.
+STABILITY PROP   Research dae74ab4 (design.md): model split verdict on a true control 2 of 108 (both run 3: WHLR, ARTL);
+                 runs 2 + 4: 0. Cause: status wording read stricter than defined (catalyst status = freshness verdict
+                 unstated; no sentence for null share count). APPROVED for TOMORROW: P2 probe (old vs P1, N=10/draft,
+                 instrument, criteria pre-registered) -> P1 as prompt v4 if it helps without admitting a defect ->
+                 registration, re-freeze, fresh set, N=3 -> later release. SPEND inside his "3 yes" (907420a6
+                 2026-09-27T23:13:38Z answered "Approve the build?" for reports; read), cap $10; named to him. Majority-of-3
+                 rejected.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
