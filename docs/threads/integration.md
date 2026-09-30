@@ -2159,6 +2159,18 @@ V5 FREEZE        Research 1ab48be (13:16:22 ET, on origin): pass bar pre-registe
                  Seeds hash-locked earlier 696fd997 (12:23:12 ET). RELEASED to Marketing on my word -> commit file LF ->
                  Research verifies sha256, harness before calls, N=3 (~$2-3, his "3 yes"), raw before read.
                  v5b voice run 1cb4ed6: all four kinds publish, 5/49 struck; premarket sample with Commercial (~19:30 ET).
+RESEARCH 17:3xZ  /api/reports + range config 4771363 on main (404 until session_reports exists = "not built"). Research
+                 said the table is NOT in v28 (it read db5d142); WRONG: in release stack 2bcf1cf (db.ts:719) and main
+                 twin 9f4133b1 (read) -> corrected. RUNNER (Ops half) UNBUILT = successor Ops's FIRST BUILD ITEM after
+                 the 20:07 ship; without it no report appears. LEVELS BACKUP 8bdedb9 (files, crossed my storage ruling):
+                 refresh gate FAILED AS REGISTERED 88.9 s vs 60 s (desktop cold). ORDER CALL: tonight levels ship ONLY via
+                 the request path IF the box cost test (2f302d87) passes; backup stops tonight; tomorrow = new
+                 registration on production hardware before running, non-blocking host, ONE storage (Ops's table).
+SUCCESSOR OPS    Brief on its id, in this order: (1) recreate 20:07 reminder, ship 46d9f9d, /proc, R2; (2) BUILD THE REPORT
+                 RUNNER (research worker job enqueued by assess per checkpoint; FK test); (3) em-dash 89d39053 + v28
+                 2bcf1cf on his yeses, re-pin floor on his word; (4) box levels cost test 2f302d87 in a gap; (5)
+                 /api/reports release (runner + 4771363 + Design surface + 0f15521 + sic write); (6) history store LAST
+                 (c443b585 ungated, re-stack on v28) or tomorrow.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
