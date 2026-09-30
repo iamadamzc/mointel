@@ -2421,6 +2421,9 @@ LEVELS ON REPS   74fd7244 (ops/levels-cut-on-reports) REPLAYED + APPROVED BY LIT
                  files = declared. Ship: Ops gate + build, box cost test PASS, his conditional yes, /proc = e8822583.
                  TONIGHT'S RELEASE CHAIN: 46d9f9d -> 89d39053 -> 2bcf1cf (v28) -> e8822583 (reports, his yes pending) ->
                  74fd7244 (levels, box test). Fallback: e8caa77d on v28 if reports cannot ship.
+REPORTS GATE R1  e8822583 RED 200/201: tests/market/migrationConcurrency.test.ts timeout ("timed out waiting for children
+                 to load"); passes alone 6/6; exists at 2bcf1cfe and the cut touches no migration file (read here). Ops
+                 runs a full run 2; ships only on ALL GREEN 201/201. Build exit 0, /api/reports in the route table.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
