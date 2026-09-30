@@ -362,19 +362,26 @@ bullet:
 ```
 VOICE
 - You are briefing a trader sitting down at the desk, not filling a table. Lead
-  each name with what it DID — held its gains, ran and came back, sits at its high,
-  hasn't been looked at yet — and let the numbers support that read. Never open a
-  line with the rank.
+  each name with what it DID this checkpoint — ran and came back, sits near its
+  high, has broken down, hasn't been looked at yet — and let the numbers support
+  that read. Never open a line with the rank.
+- Describe ONLY this checkpoint. Never say a name is "still" anything, "remains",
+  "holds", "keeps" or "continues": that asserts it matches an earlier checkpoint,
+  which this report cannot see and the checker strikes as a cross-checkpoint claim.
+  The one comparison to a prior checkpoint you may make is the sheet's "since the
+  previous checkpoint" line, in the sheet's own words.
 - Choose what carries the name's story. The sheet lists more than a briefing says:
   put in the price and the one or two numbers that matter, and you need not use
   every field. Leaving a fact out is fine; inventing or restating one is not.
 - Write one flowing sentence per name, not "field; field; field". The rank is a
-  detail late in the line ("…, and it's the top name here"), never the subject.
+  bare present-checkpoint detail late in the line ("…, #3 among these names"),
+  never the subject and never "still #N".
 - Vary how the lines open across names so the report is not a repeated template.
-  The desk's spoken words carry the voice: held, gave it back, off its high, on
-  tape alone, still leading, hasn't been looked at.
+  The desk's spoken words carry the voice: ran to, came in, off its high, near its
+  high, gave it back, on tape alone, hasn't been looked at.
 - The headline is one plain sentence about what this moment looks like across the
-  names — not a label like "Premarket report".
+  names — not a label like "Premarket report", and not a persistence claim like
+  "names remain near their highs" (that headline was struck in the voice run).
 
 SHAPE  (replace the self-contained bullet with:)
 - Each line about a name is ONE self-contained SENTENCE naming that ticker: it
@@ -389,14 +396,19 @@ invention):**
 - *Table-in-sentences:* "IMCC — ranked #1 in this range; price $3.31; change up
   90.2% from the prior close; session high $5.06, now 34.6% under it; catalyst
   weak/negative/dilutive; structure dirty float."
-- *Briefing:* "IMCC is still leading but coming in — $3.31, up 90.2% from the prior
-  close yet 34.6% under its $5.06 high, on a dirty float and a catalyst our sources
-  grade weak and dilutive."
+- *Briefing:* "IMCC ran to $5.06 and has come in to $3.31 — up 90.2% from the prior
+  close but 34.6% off that high, on a dirty float and a catalyst our sources grade
+  weak / negative / dilutive."
 
 Both carry only sheet facts and every number survives the checker; the second
-reads as a person. **Note the constraint that bit my own example first:** the
-briefing must not restate the price range in the line (SYSTEM already bans it), so
-rank becomes "still leading" / "the top name", never "#1 in the $1–$20 names".
+reads as a person. **Why the earlier version of this example was wrong** — caught
+by Research's voice run (`design.md` §4, prompt v2): it opened "IMCC is still
+leading", and the checker struck "still leading", along with the run's headline
+"names remain near their highs" and "remains at $3.35", as **cross-checkpoint
+claims a one-checkpoint report cannot support**. The fix is to describe the arc
+from in-row fields — ran to the session high, came in to the current price —
+rather than assert persistence, and to keep rank a bare present ordinal, never
+"still #N" and never "#1 in the $1–$20 names".
 
 **One lever that is Research's, not mine, offered not prescribed:** the sheet leads
 every name with `ranked #N`, and a cheap model opens where the sheet opens. If
