@@ -423,7 +423,10 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
    * Session briefings. Nothing mounts until the payload exists: "the route is
    * not there" must never render as "today's briefing was missed".
    */
-  const board = discovery ? { min: discovery.priceMin, max: discovery.priceMax } : null;
+  // CUT-ONLY (the reports release on the production line): no board range.
+  // The price range control (5e8b13c3) does not ride, so the report range is
+  // the viewer's stored choice or the configured default, never the board's.
+  const board: { min: number; max: number } | null = null;
   const reportChoice = reports
     ? chooseReportRange({
         ranges: reports.ranges,

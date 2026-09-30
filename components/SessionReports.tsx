@@ -24,9 +24,18 @@ import {
   type ReportTimeline,
   type SlotView,
 } from '@/lib/dashboard/sessionReports';
-import { rangeLabel } from '@/lib/dashboard/boardRange';
 import { formatEtMinute } from '@/lib/format';
 import { useModalFocus } from '@/lib/hooks/useModalFocus';
+
+/**
+ * CUT-ONLY (the reports release on the production line): a local copy of
+ * `lib/dashboard/boardRange`'s rangeLabel, because the board's price range
+ * control (5e8b13c3) that owns it does not ride this release. Same output.
+ */
+export function rangeLabel(range: { min: number; max: number }): string {
+  const end = (value: number) => (Number.isInteger(value) ? `$${value}` : `$${value.toFixed(2)}`);
+  return `${end(range.min)}–${end(range.max)}`;
+}
 
 /**
  * The briefing line: one row between Focus and Discovery.
