@@ -2444,6 +2444,12 @@ NEW RESEARCH     local_f6fa4717 (title Research-tmi, cwd A:\mointel, not archive
                  Briefed with live state (nothing shipped before 20:00; chain; run 4 PASS) and tomorrow's order: 0 read the
                  first live report tonight vs the store; 1 sic write; 2 stability proposal; 3 Now-cell "/min"; 4 levels
                  merge/backup per box test; 5 history.db reader; 6 20:05 premarket; 7 grades B; + writer filing + sample.
+NOW "/min" CODE  Research (new) dc854c90: "/min" = FALLBACK (LIVE head, every row's newest slot unmeasured); a trades.db
+                 error gives UNWIRED (no "/min"), not a match. Board-wide causes: SIP reconnect, high-res set emptied,
+                 failed interval write (all logged), vendor ack dropping names (NOT logged). Each blanks 10-20 s of polls,
+                 never one. -> asked Design whether its samples covered 15:06:52-15:07:22 ET; if not, Ops greps the 3
+                 logged lines 19:06:40-19:07:30Z. Proposed logging (batch closing >= 2 intervals; rate-limited warn in
+                 readNowBuckets catch): TOMORROW after the sic write.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
