@@ -12579,6 +12579,9 @@ de7f181 put a bare require() in scripts/ops/minute-bars-bound-ab.cjs:  gate-not-
   shipping sha, never main after my own commit
 e273e31's message says "ledger entry" but the ledger edit had failed   commit-message-ahead-of-content   no       self
   (a scripted replace missed; committed without checking the diff)
+R1's first set ran 60-115 s after the web start vs the registered    method-condition-estimated-not-read no      self
+  >= 2 min: I estimated the clock instead of reading it; re-taken
+  with the elapsed seconds computed and enforced in the command
 ```
 
 **2026-09-30 03:49:56-03:50:10Z (23:49 ET): SNAPSHOT (c'), run early on Integration's ruling** (the condition is
