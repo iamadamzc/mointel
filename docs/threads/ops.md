@@ -12522,3 +12522,4 @@ item 1     last_flush_ms advanced 00:19:05 -> 00:19:12Z, lag 297 / 383 ms (raw t
 **Snapshot (c) 00:19:45Z: median of maxima 811.7 ms (runs 811.7/1768.9/822.4/682.8/805.4), 15 names with nowBuckets.
 FAILS the registered gate vs (b') 8.9, but (b') was post-roll 00:55 ET on a near-empty trading date and (c) is pre-roll
 with a full day: CONFOUNDED by time of day. Matched re-take (c') scheduled 00:57 ET; Integration to rule.**
+**Integration ruling on (c):** FAIL-AS-REGISTERED, ATTRIBUTED TO NOTHING (two confounds: pre- vs post-roll content, and the sessionEnd memo 8455b48 between (b') and (c) lowering build time). 811.7 ms is recorded as the first post-restart pre-roll full-day baseline, not a gate. **(c') PRE-REGISTERED: ~00:55 ET 09-30, (b') method; PASS = median of five maxima <= 28.9 ms** (a PASS carries the caveat that the memo could mask some Now-field cost; a FAIL goes to Design before fa61410 moves). No code switch to omit nowBuckets.
