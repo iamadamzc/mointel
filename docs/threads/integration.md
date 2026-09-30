@@ -2068,6 +2068,10 @@ FLAKY PREFLIGHT  Ops running releaseRetention 3x on 46d9f9d + 3x on 89d39053, se
                  Early evidence ENVIRONMENT: this PC FreeVirtualMemory 4.3 GB ~16:2xZ; Ops's own db5d142 gate hit exit 127
                  on 3 bash-spawning tests, green alone. 126/127 = spawned bash could not start (09-27 commit-memory
                  incident shape). HAZARD for tonight: every gate runs on this PC with five seats + a levels subagent.
+SEEDS v5 LOCKED  sha256(defect-set-v5.md) 437e30a660b67370fd66b6a9726ce09affd7159af706ec229647bd7cd2c0d0a6, registered in
+                 696fd997 (12:23:12 ET, marketing.md:535 read at 70920cdc; pushed to origin here). 19 classes, 09-24 rows,
+                 blind. RELEASE to Research only on my word AFTER the v5 checker freeze sha; Research verifies the hash
+                 and commits the harness before any call.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
