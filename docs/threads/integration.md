@@ -2286,6 +2286,11 @@ COMMERCIAL PASS  v5b sample PASS, commercial.md §11 6388b4a1 (13:17:54 ET, afte
                  gates for reports: Commercial DONE; Design shim/render DONE; remaining = run 2 PASS + re-freeze pick +
                  Ops gate + my blob re-verify + his yes.
 EM-DASH GATED    89d39053 ALL GREEN 182/182, 2,768 (new Ops). Ready: replayed + gated; needs 46d9f9d live + his yes.
+RUN 2 SEEDS      Marketing: sha256(defect-set-v5r2.md) ab6d6a84e558fbe30d49a74c6264bb542813ef9add08f5f1848f6d7a9d20baeb
+                 registered a7b3ed71 (13:50:06 ET; hash present, read; pushed here). 09-25, 19 classes, MGLD/AIFF/ELPW/
+                 MSGY/KITT; regression controls: ELPW "We found no catalyst in our sources", AIFF effective S-3 + 424B3
+                 reg no. + dated forms; never-use words scrubbed; overall 2,463/690/547, wrong-total defect 2,640. New
+                 file, run-1 file intact. RELEASE on my word after Research's re-freeze sha + blob list.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
