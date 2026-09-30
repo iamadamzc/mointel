@@ -2115,6 +2115,14 @@ GATE RULE        PC commit memory (read 17:0xZ: FreeVirtualMemory 5.4 of 36.2 GB
                  release gates first, others announce to Ops; a failure is ENVIRONMENTAL only if timeout / spawn
                  (126/127/0xC0000142) / SQLite OOM, AND passes alone on the same tree, AND named; a wrong-value assertion
                  is always real; close stray processes before a gate. Page-file size is a system setting: HIS, not ours.
+HIS RULINGS      THIS SESSION (4689366c, user turn 2026-09-30T17:03:54Z, first-hand) "1 a, 2 b, 3 yes evening":
+                 1 (a) "Use daily candles for anything older than 3 weeks, then switch to your 39 days automatically once
+                   the download completes." -> Research's interim is HIS ruling. Sent to Research + Design.
+                 2 (b) "Show the nearest 10 above the price, plus a 'show all' link." -> Design display cap; Research's
+                   route returns all. Sent.
+                 3 "Friday sign-in: evening after the close?" yes -> FRIDAY 2026-10-02 after 20:00 ET. Sent to Web.
+                   TRIGGER Thu 2026-10-01 (owner this seat or successor): ask him for the Google client id + secret (to
+                   Ops), seed confirmation (iamadamzc@gmail.com), a throwaway uninvited Google account, ~10 min Friday.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
