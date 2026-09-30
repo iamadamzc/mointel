@@ -100,6 +100,32 @@ export function levelLines(row: ResistanceLevels): LevelLine[] {
 }
 
 /**
+ * HIS RULING, 2026-09-30T17:03:54Z, "2 b" (Integration's session, read at his
+ * turn), selecting: "Show the nearest 10 above the price, plus a 'show all'
+ * link." A DISPLAY cap only: the route returns every level and the rest are
+ * one click away, so "show all" (his earlier "a, show all 7") still holds.
+ */
+export const NEAREST_LEVELS = 10;
+
+export interface ShownLevels {
+  shown: LevelLine[];
+  /** How many the link would reveal; 0 means no link. */
+  hidden: number;
+  /** The link's words, null when there is no link. */
+  toggle: string | null;
+}
+
+export function shownLevels(lines: LevelLine[], showAll: boolean): ShownLevels {
+  if (lines.length <= NEAREST_LEVELS) return { shown: lines, hidden: 0, toggle: null };
+  if (showAll) return { shown: lines, hidden: 0, toggle: `Show the nearest ${NEAREST_LEVELS}` };
+  return {
+    shown: lines.slice(0, NEAREST_LEVELS),
+    hidden: lines.length - NEAREST_LEVELS,
+    toggle: `Show all ${lines.length} levels`,
+  };
+}
+
+/**
  * What the section says when there is no level to draw, or when fewer ladders
  * were read than usual. Null when the list speaks for itself.
  *
