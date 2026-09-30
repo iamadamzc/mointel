@@ -13041,3 +13041,8 @@ horizon fields, computedAt. A null for a name with bars today = a defect, report
 first load 2,760 ms (2,704 TTFB); 19:09:09Z reload 706 ms (635 TTFB). Server-bound, not queue or transfer. The 04:06 ET
 15.5 s first load is still unexplained and did not reproduce. Different method from R0/R1 (browser resource timing vs
 snapshot-latency.sh), so not comparable to them as a series.
+**REPORTS BACK ON IF RUN 4 PASSES.** His ruling, verified at his turn in Integration's 4689366c at 2026-09-30T19:34:36Z:
+"a, try tonight" (a fourth and last run). On PASS: re-pick Research's new re-freeze commit(s) onto 4b55a049 (check for
+writer lines riding a checker commit, as bfa28cf8 undid 3c9b2911's), declare, gate, Integration verifies blobs, then ask HIM
+for the reports release as its own question (his earlier "yes to all" does not cover it). Slot: after levels, a deploy
+finished before 04:00 ET. Gate queue: Research's re-freeze suite next.
