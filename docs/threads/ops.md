@@ -12956,3 +12956,18 @@ each needs its gate here + its sha approved by Integration + HIS word where name
 - Local worktrees to remove when their branches are merged or dead: A:\mointel-ops, A:\mointel-hist, A:\mointel-v28main,
   A:\mointel-chk1, A:\mointel-chk2 (each node_modules is a JUNCTION to A:\mointel's: remove with `git worktree remove`,
   never a recursive delete through the junction).
+
+## SUCCESSOR OPS SEAT OPENS, 2026-09-30 17:19Z (local_8a0801c2, Opus 5.5)
+**Production, read 17:20:03Z (matches the hand-off):** web 1631221 / research 1631287 / assess 1631397 cwd c3d0f06, NR 0;
+market 1574400 cwd 1b5ead6, NR 0; no mointel-deploy unit; pins market-floor 1b5ead6 (v27), rollback-baseline 372f5eb (v18);
+/api/health ok, schema 27/27, LIVE, discarded 0; market.db 4.43 GB + 0.84 GB WAL; 62G free.
+**His yes for #1, verified at his turn:** "yes tonight" in 7bacf0d6 (the retired Ops seat) at 2026-09-30T15:47:06Z, answering
+the question on 46d9f9d after 20:00 ET. Asked him to re-confirm in THIS session (deploy rule); the auto-mode classifier also
+refused a cron that would ship unattended, so the 20:07 ship is an in-session act on his word, not a scheduled one.
+**Gate:** 46d9f9d not yet gated in this session. At 17:2xZ a full gate on 89d39053 (temp worktree mointel-gate-rW7H2g, the
+retired seat's em-dash run2, started 16:50Z) and a peer's partial suite were running; commit memory 4.0 GB free. Gate
+reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
+
+**Error ledger (this seat):**
+| error (asserted vs true) | TYPE | already logged? | caught by |
+| - | - | - | - |
