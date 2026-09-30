@@ -12780,3 +12780,31 @@ store, then this bump (Ops may propose the bump first if the reports need it soo
 WITH v28, never before.** It carries a test asserting the column is ABSENT on a fresh store, which goes red at the v28
 db.ts commit: the v28 commit must invert/replace that test in the same commit or its own gate fails. Any cut picked
 from main before v28 must exclude 95b734e.
+
+## 2026-09-30 10:51 ET: c3d0f06 (Now cell) LIVE, on his "yes to both"; and the pre-stop integrity check stalls the box in RTH
+```
+base-check 14:35:13Z OK (74c1818 x3, market 1b5ead6, no deploy unit)
+attempt 1  14:35:46Z  release uploaded, launch FAILED: SSM "TargetNotConnected" (exit 6). Box checked 14:36Z: nothing ran.
+attempt 2  base-check 14:36:24Z OK; unit mointel-deploy-c3d0f06b-143656 launched 14:36:56Z
+           deps 14:36:59, build 14:37:19-14:38:19, nginx -t ok, integrity check 14:38:20Z
+           **quick_check ok in 803.8 s** (14:38:21 -> 14:51:48Z), services still up throughout
+           stop 14:51:48, current -> c3d0f06, migrate v27 (no check), start; **down 3s**; deployed 14:52:00Z
+           push-release's follower hit its deadline ("NOT confirmed"); confirmed from /proc instead
+/proc      web 1631221 / research 1631287 / assess 1631397 on c3d0f06 (start 14:51:49-50Z), NR 0;
+           market 1574400 on 1b5ead6 untouched, NR 0
+health     200 in 0.5 s, schema 27/27, RTH, RECORDING, bucketsDiscarded 0; /privacy Content-Encoding: gzip
+prune      -803008b; retained c3d0f06 74c1818 1b5ead6 372f5eb; pins satisfiable
+```
+**FINDING: the pre-stop quick_check (deploy.sh:161) on the live store IN RTH stalls the box for its whole length.**
+14:47:42Z mid-check: io some avg10 55 / full 53; /api/health NO ANSWER in 20 s (web tier stalled, public site
+included); and unlike 09-29 16:06 the MARKET WORKER was hit: [flush] lines 14:45-14:49Z whole max 6.3-10.1 s, upsert
+max 1.7-3.0 s, 49-54 flushes/min (vs 60), over250 on every flush. Capture discarded 0 throughout. Recovered by
+14:52Z. The store is 4.34 GB + 712 MB WAL; 803.8 s vs the 80-330 s on record. **Preflight's "the stop lands 2-12m from
+now" was false: it landed at +15m.** CONSEQUENCE: no further deploy in RTH while quick_check runs on the live store
+before the stop; 84b0099 is held for tonight (after 20:00 ET) pending his word.
+**R1 (control, c3d0f06): FIRST SET INVALID** -- runs started 14:52:49-14:53:44Z, 60-115 s after the web start,
+violating the registered >= 2 min (my clock estimate, not a read). Kept, labelled: medians 537.2/502.6/489.5/471.2/499.3,
+maxima 1283.7/558.1/765.7/555.2/611.6. **R1 VALID, 14:54:13-14:55:20Z (145 s+ after start, checked by the command):**
+medians 504.7/485.3/501.6/528.2/486.8, maxima 603.7/560.4/754.2/1318.0/697.8; cold 0.50-0.55 s. **Median of medians
+501.6 ms (R0 473.6), median of maxima 697.8 ms (R0 664.7): +6% / +5%.** Payload 787,898 B, 50 demand states. Confounds:
+load 1.6-1.8 (R0 0.25), io avg300 still 26-33% (the check's tail), the day's content grew 35 min. Not attributed.
