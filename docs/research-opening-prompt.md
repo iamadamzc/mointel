@@ -40,7 +40,7 @@ below and read each off its artefact. **This prompt is a lead, not a source.**
 
 ### Where things stand (2026-09-29, evening ET)
 
-**TONIGHT (graded by the retiring seat):** market worker restarted 00:15:40Z on `1b5ead6`. **Item 1 PASS** (flush clock +6.93 s over 7.0 s; lag 297/383 ms). Capture band took ("recording $0.25-$50, qualifying $0.25-$20"). **Item 6 (date roll) PASS** on the registered condition (116 closed and 116 opened at the roll instant 02:00:00.178Z; none left open). The command's ±5 s window also caught a set rebuild 3 s later (7 rows), which is not part of the roll. **Items 2–5 at 04:33 ET are yours.** The new day's high-res set was 7 names at 02:00:03Z, so the 04:33 item-2 control (highResCount > 0) should have content.
+**TONIGHT (graded by the retiring seat):** market worker restarted 00:15:40Z on `1b5ead6`. **Item 1 PASS** (flush clock +6.93 s over 7.0 s; lag 297/383 ms). Capture band took ("recording $0.25-$50, qualifying $0.25-$20"). **Item 6 (date roll): AS REGISTERED, FAIL on 2 clauses** (opened_at_roll 123 ≠ 116; 2 open instants). **POST-HOC, PASS-shaped:** the extra 7 rows were a high-res rebuild 3.075 s after the roll, caught by the command's ±5 s window; the roll itself opened 116 at the close instant. **❓ Open for you + Design:** the 116 carried-over 09-30 intervals all closed +1.02 s later, so 09-30 starts with 116 one-second intervals for names never live that day. Is that intended? Does it leak into the Now cell or reports' live-data counts? It is unverified in code; see `research.md` LIVE STATE. **Items 2–5 at 04:33 ET are yours.** The new day's high-res set was 7 names at 02:00:03Z, so the 04:33 item-2 control (highResCount > 0) should have content.
 
 **In flight, in time order:**
 
