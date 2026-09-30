@@ -158,6 +158,33 @@ function positiveNumber(raw: string | undefined, fallback: number): number {
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
+/**
+ * The session reports' two model calls (`docs/research/session-reports/design.md` §4).
+ *
+ * THE PAIR IS SPLIT ON PURPOSE. The writer arranges prose over a fact sheet,
+ * which the cheap tier does well, so it falls back to the change-detect tier.
+ * The checker decides what ships to a stranger -- a checker that rubber-stamps
+ * turns an unverified report into a verified-looking one -- so it falls back
+ * to the interpreter's tier. Both fall back further to the research model, as
+ * every tier here does.
+ */
+export interface ReportModelConfig {
+  apiKey: string | null;
+  writerModel: string;
+  checkerModel: string;
+}
+
+export function readReportModelConfig(env: NodeJS.ProcessEnv = process.env): ReportModelConfig {
+  const apiKey = env.OPENAI_API_KEY?.trim();
+  const researchModel = env.OPENAI_RESEARCH_MODEL?.trim() || DEFAULT_RESEARCH_MODEL;
+  const cheap = env.OPENAI_CHANGE_DETECT_MODEL?.trim() || researchModel;
+  return {
+    apiKey: apiKey ? apiKey : null,
+    writerModel: env.OPENAI_REPORT_WRITER_MODEL?.trim() || cheap,
+    checkerModel: env.OPENAI_REPORT_CHECKER_MODEL?.trim() || researchModel,
+  };
+}
+
 export function readResearchConfig(env: NodeJS.ProcessEnv = process.env): ResearchConfig {
   const userAgent = env.SEC_USER_AGENT?.trim();
   const apiKey = env.OPENAI_API_KEY?.trim();

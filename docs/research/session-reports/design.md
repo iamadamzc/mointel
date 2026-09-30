@@ -210,6 +210,18 @@ per report:  writer   input ~10k tok (25 tickers x ~250 tok + dossier summaries)
 | both on `gpt-5.6-terra` (\$2.00 / \$12.00) | **\$0.055** | **\$0.22** | **~\$56** |
 | both on `gpt-5.6-luna` (\$0.20 / \$1.20) | **\$0.0055** | **\$0.022** | **~\$5.60** |
 
+**✅ WRITER SIZED 2026-09-30, MEASURED (Research, provider `OpenAiReportModel`; four real 09-29 checkpoints from the read-only prod copy, one per kind, `$1–$20`, 12 names each, `gpt-5.6-luna`, one call each, no latch map and no live feed, so these are token counts and NOT shippable reports):**
+
+| report | checkpoint | input tok | output tok | latency | cost |
+| --- | --- | ---: | ---: | ---: | ---: |
+| premarket | #551 recap 22:00 | 2,370 | 2,385 | 19.9 s | \$0.0033 |
+| into RTH | #556 09:25 | 2,284 | 2,444 | 19.8 s | \$0.0034 |
+| into power hour | #566 14:30 | 2,256 | 1,375 | 11.3 s | \$0.0021 |
+| after-hours | #569 16:00 | 2,246 | 2,189 | 17.6 s | \$0.0031 |
+
+**Writer ≈ \$0.003 per report, \$0.012 per range-session, ≈ \$3 a year per range** (priced at luna's \$0.20 / \$1.20 per Mtok as recorded above; 0 cached, so no cached-rate question). **The estimate's SHAPE was wrong and its total was not:** input is ~2.3k, not ~10k (the sheet is compact), and output is 1.4–2.4k, not ~800. How much of that output is reasoning was not captured on this run; the provider now records `reasoningTokens`. **Latency 11–20 s per writer call**, against into-RTH's 5-minute window: the writer alone fits with room. The checker's cost and latency are unmeasured until its semantic half exists.
+**Not the pass bar, reported only:** the deterministic checker struck **0 of 84** draft lines, and no draft used a banned word. **One sheet defect found and fixed:** the giveback change note (a STATE: the current distance from the high, written when it first crosses the threshold) was printed under "since the previous checkpoint" as "down 15.7% off its session high", and the draft read it as a 15.7% fall since the last read. The note now reads "slipped to 15.7% under its session high". **Voice, for Marketing and Design, not a defect:** faithful to the sheet, but it reads as a table in sentences ("Ranked #5 in this range; price \$1.37, …") rather than an assistant's briefing.
+
 **So the whole feature is between \$6 and \$56 a year. It is not a cost
 decision.** *State it anyway, because "sized not discovered" is the constraint —
 and because the number being small is itself the finding.*

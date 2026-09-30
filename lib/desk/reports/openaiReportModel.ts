@@ -1,0 +1,155 @@
+/**
+ * The writer's model, over OpenAI's Responses API.
+ *
+ * WORKER-SIDE ONLY. It holds the API key; nothing under app/, components/,
+ * lib/hooks or lib/dashboard may import it (those read `contract.ts` only).
+ *
+ * THE OUTPUT SHAPE IS ENFORCED TWICE, AND ONLY ONE OF THEM IS TRUSTED. The
+ * request asks for a strict JSON schema so a well-behaved model cannot drift
+ * from the draft's shape; `parseDraft` still validates whatever comes back,
+ * because a provider-side guarantee is a claim about someone else's code.
+ *
+ * A FAILURE THROWS. `writeReport` turns any throw into `WRITER_FAILED` and
+ * never retries: a retry is spend, and the slot's owner decides it.
+ */
+
+import { describeFailure, readProviderFailure } from '../../research/providerError';
+import type { ReportModel, WriterPrompt } from './writer';
+
+const RESPONSES_URL = 'https://api.openai.com/v1/responses';
+
+/** Bumped whenever `SYSTEM` in `writer.ts` or the schema below changes. */
+export const REPORT_WRITER_PROMPT_VERSION = 1;
+
+/** `ReportDraft`, as a strict schema: every key required, nothing extra. */
+const DRAFT_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['headline', 'sections'],
+  properties: {
+    headline: { type: 'string' },
+    sections: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['heading', 'lines'],
+        properties: {
+          heading: { type: 'string' },
+          lines: {
+            type: 'array',
+            items: {
+              type: 'object',
+              additionalProperties: false,
+              required: ['ticker', 'text'],
+              properties: {
+                ticker: { type: ['string', 'null'] },
+                text: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+} as const;
+
+/**
+ * What one call cost, for sizing and the strike-rate diagnostics.
+ * `cachedInputTokens` is a SUBSET of `inputTokens`, not an addition.
+ */
+export interface ReportModelUsage {
+  model: string;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  cachedInputTokens: number | null;
+  /** A SUBSET of `outputTokens`: billed as output, never shown. */
+  reasoningTokens: number | null;
+  durationMs: number;
+}
+
+interface ResponsesPayload {
+  output?: Array<{ type: string; content?: Array<{ text?: string }> }>;
+  usage?: {
+    input_tokens?: number;
+    output_tokens?: number;
+    input_tokens_details?: { cached_tokens?: number };
+    output_tokens_details?: { reasoning_tokens?: number };
+  };
+}
+
+export interface OpenAiReportModelOptions {
+  apiKey: string | null;
+  model: string;
+  timeoutMs?: number;
+  fetchImpl?: typeof fetch;
+  /** Called once per call that reached the provider, success or not. */
+  onUsage?: (usage: ReportModelUsage) => void;
+}
+
+export class OpenAiReportModel implements ReportModel {
+  private readonly fetchImpl: typeof fetch;
+
+  constructor(private readonly options: OpenAiReportModelOptions) {
+    this.fetchImpl = options.fetchImpl ?? fetch;
+  }
+
+  get available(): boolean {
+    return this.options.apiKey !== null;
+  }
+
+  async complete(prompt: WriterPrompt): Promise<string> {
+    if (this.options.apiKey === null) throw new Error('OPENAI_API_KEY not set');
+
+    const startedAt = Date.now();
+    const response = await this.fetchImpl(RESPONSES_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.options.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: this.options.model,
+        instructions: prompt.system,
+        input: prompt.user,
+        // The sheet is the only source. No search, no tools.
+        tools: [],
+        text: {
+          format: { type: 'json_schema', name: 'report_draft', strict: true, schema: DRAFT_SCHEMA },
+        },
+        store: false,
+        metadata: { report_writer_prompt_version: String(REPORT_WRITER_PROMPT_VERSION) },
+      }),
+      signal: this.options.timeoutMs ? AbortSignal.timeout(this.options.timeoutMs) : undefined,
+    });
+
+    if (!response.ok) {
+      // Code and type only: the provider's message can echo the prompt.
+      const failure = await readProviderFailure(response);
+      this.report(startedAt, null);
+      throw new Error(describeFailure(failure));
+    }
+
+    const payload = (await response.json()) as ResponsesPayload;
+    this.report(startedAt, payload);
+
+    const text = payload.output
+      ?.filter((item) => item.type === 'message')
+      .flatMap((item) => item.content ?? [])
+      .map((part) => part.text ?? '')
+      .join('');
+    if (!text) throw new Error('no content returned');
+    return text;
+  }
+
+  private report(startedAt: number, payload: ResponsesPayload | null): void {
+    this.options.onUsage?.({
+      model: this.options.model,
+      inputTokens: payload?.usage?.input_tokens ?? null,
+      outputTokens: payload?.usage?.output_tokens ?? null,
+      cachedInputTokens: payload?.usage?.input_tokens_details?.cached_tokens ?? null,
+      reasoningTokens: payload?.usage?.output_tokens_details?.reasoning_tokens ?? null,
+      durationMs: Date.now() - startedAt,
+    });
+  }
+}

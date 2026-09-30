@@ -116,7 +116,7 @@ describe('what the writer is never shown', () => {
       ),
     ).toEqual([
       'up 10.8% since the previous checkpoint',
-      'down 6.3% off its session high',
+      'slipped to 6.3% under its session high',
       'lost $1.84 support',
       'printed a new high of day',
     ]);
