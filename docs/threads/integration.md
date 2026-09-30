@@ -2434,6 +2434,12 @@ HIS REPORTS YES  Ops's session d33d893e, typed "yes" 2026-09-30T22:45:12Z (read)
                  SEQUENCE on his "go" after 20:00: 46d9f9d -> /proc -> R2 -> 89d39053 -> /proc -> box cost test -> v28
                  2bcf1cf (start by ~21:15) -> /proc + re-pin floor -> reports e8822583 after 22:10 -> /proc -> levels
                  74fd7244 on a cost-test PASS -> /proc + one /api/levels read.
+RESEARCH RETIRES local_4b09b3b2 on his "a, write the hand-off prompt"; hand-off 9bb248e (19:10:32 ET; read stat):
+                 research-opening-prompt.md rewritten; tomorrow's list in research.md "OPEN, MINE" (model-half stability
+                 proposal, Now-cell flicker from code, levels history.db reader, levels merge/backup per the box test,
+                 20:05 premarket move, sic_description WRITE (NOT in e8822583: read here, only the read mapping ships),
+                 grades B re-run). Nothing of Research's in flight tonight. Successor: he opens a new Research chat
+                 (tonight or tomorrow); route by title.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
