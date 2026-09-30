@@ -2208,6 +2208,11 @@ LEVELS CODE      Box test registered 4612eba (spec §7), sent to Ops with the co
                  8dfacf4 (pushed, not main): 200 row / 200 null, one type (Design's resistance.ts = §2), split tripwire,
                  interim windows. APPROVED-NOT-BUILT added: a history.db 15m/daily READER for levels (owner Research;
                  trigger: with or after the history-store release) so the 39-day switch then happens with no action.
+HIS RULING       THIS SESSION (4689366c, typed user turn 2026-09-30T17:29:40Z, first-hand): "a, hand off after tonight" ->
+                 this seat hands off AFTER tonight's last release (full hand-off per hygiene §3: charter, prompt, ledger).
+                 (A first grep returned 15:43:09Z: a tool_result quoting Research's 09-29 "a, hand off after tonight's
+                 checks". Same trap as ledger 1; caught before use by reading typed text only. Not ledgered as a relay:
+                 nothing left this seat.)
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
