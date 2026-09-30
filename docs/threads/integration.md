@@ -1657,6 +1657,10 @@ HIS RULINGS (this session, ~10:5xZ): "the shape is good." -> SANG block shape AP
   MARKETING 793e0e2 + f85fe35 swept its copy (157 + 49). FOUND: app/page.tsx on main still has &mdash; ENTITIES (read)
   at 139/190 (captions) and 321 (registered statement) -> Web (entity-aware check); 321's wording -> Commercial. 160/
   183/388 are empty-cell glyphs: KEPT per his ruling. Tagline separator = colon ("TMI: Intelligence on what's moving.").
+  WEB CUT INPUTS on origin (branch -r read): 5f3a272, f272bec, 1703390 (entities; the 139/190 fix landed after my
+  read -- crossed), 32a9a84 (:321 FULL STOP per Commercial d85ddad + tests/web/emDash.test.ts: both encodings,
+  placeholder = nothing on one side, no markdown exception; 3/3 mutants). Register :392 ("TMI Trader", REGISTERED
+  2026-09-10) left as a frozen record, raised with Commercial. Canvas: sweep + re-seed + republish after the cut.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
