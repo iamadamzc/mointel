@@ -1543,6 +1543,7 @@ VOICE RUN v3     c705efc harness, caecad3 raw (before reading): 1/52 struck (#55
   $0.090. Referent defect the checker cannot see: 'now N% under it' reads as the close, is the session high -> sheet
   fix APPROVED. #551 read from docs/research/session-reports/voice-run-v3-2026-09-30/report-551-as-read.txt and put
   to HIM verbatim; my read: accurate, template-shaped (same sentence frame, ~9 numbers per line). Voice work held.
+  Referent fix 3d29859 (read stat: writer.ts, openaiReportModel.ts, test; check.ts untouched). No live re-run.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
