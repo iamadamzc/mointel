@@ -56,7 +56,7 @@ const RESEARCH: ReportResearch = {
     classification: 'CAUTION',
     floatConfidence: 'UNKNOWN',
     sharesOutstanding: { count: 33_338_932, asOf: '2026-06-30' },
-    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null }],
+    supply: [{ type: 'REGISTERED_RESALE', status: 'POSSIBLY_ACTIVE', effectiveDate: '2023-04-12', amountShares: null, sourceFiling: 'F-3', registrationStatus: 'EFFECTIVE' }],
   },
 };
 
@@ -108,7 +108,7 @@ describe('stored dates are model-written, so they are read tolerantly and never 
       catalyst: { ...RESEARCH.catalyst, eventTimestamp: '2026-09-28 17:26:00 ET', sources: [] },
       structure: {
         ...RESEARCH.structure,
-        supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null }],
+        supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null, sourceFiling: null, registrationStatus: null }],
       },
     };
     expect(traceLine('The headline crossed at 17:26 ET on September 28, 2026.', ROW, odd, AT)).toEqual([]);
@@ -161,6 +161,40 @@ describe('voice run v5 (b94988f): each false strike and gap it found, pinned', (
     expect(prompt.user).toContain('"et": "05:40 ET on 2026-09-29"');
     expect(prompt.system).toContain('Judge a stated time against the "et" reading only');
     expect(prompt.system).toContain('NONE_FOUND supports "no catalyst found in our sources"');
+  });
+});
+
+describe('pass bar run 1 (70da3eb): each false strike on a control, pinned', () => {
+  const on = (text: string) =>
+    ruleStrikes({
+      kind: 'PREMARKET',
+      range: { min: 1, max: 20 },
+      checkpoint: { id: 551, type: 'NEXT_DAY_RECAP' as never, completedAt: '2026-09-29T02:00:30.000Z' },
+      rows: [ROW],
+      draft: { headline: '', sections: [{ heading: 'M', lines: [{ ticker: 'SANG', text }] }] },
+      research: new Map([['SANG', RESEARCH]]),
+    })
+      .filter((s) => s.reason === 'FORBIDDEN_WORDING')
+      .map((s) => s.detail);
+
+  it('admits "we found no catalyst in our sources", a statement about our sources (IFBD, three controls)', () => {
+    expect(on('We found no catalyst in our sources; the move looks flow-dominant.')).toEqual([]);
+    expect(on('No catalyst in our sources explains the move.')).toEqual([]);
+    expect(on('It has no catalyst.').join(' ')).toContain('bare "no catalyst"');
+  });
+
+  it('shows the checker each supply block\'s filing, which the dossier holds ("an effective F-3")', () => {
+    const prompt = buildCheckerPrompt({
+      kind: 'PREMARKET',
+      range: { min: 1, max: 20 },
+      checkpoint: { id: 551, type: 'NEXT_DAY_RECAP' as never, completedAt: '2026-09-29T02:00:30.000Z' },
+      rows: [ROW],
+      draft: { headline: '', sections: [] },
+      research: new Map([['SANG', RESEARCH]]),
+      afterHoursTotals: null,
+    });
+    expect(prompt.user).toContain('"sourceFiling": "F-3"');
+    expect(prompt.user).toContain('"registrationStatus": "EFFECTIVE"');
   });
 });
 

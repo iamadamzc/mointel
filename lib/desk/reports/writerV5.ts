@@ -128,6 +128,8 @@ function researchSheet(research: ReportResearch): string[] {
     const parts = [humanise(block.type), humanise(block.status)];
     if (block.amountShares !== null) parts.push(`${shares(block.amountShares)} shares`);
     if (block.effectiveDate) parts.push(`effective ${longDate(block.effectiveDate)}`);
+    if (block.sourceFiling) parts.push(`filing: ${block.sourceFiling}`);
+    if (block.registrationStatus) parts.push(`registration: ${block.registrationStatus}`);
     lines.push(`supply: ${parts.join(', ')} (capacity, not proof of selling; give its status exactly as written, and "possibly active" is never "active")`);
   }
   return lines;

@@ -169,6 +169,20 @@ describe('the research a report may use, as of its checkpoint', () => {
     expect(reportResearch({ ...version(), dossier: undated }, SOURCES).structure.sharesOutstanding).toBeNull();
   });
 
+  it('carries each supply block’s filing and registration status from the dossier (pass bar run 1, 70da3eb)', () => {
+    // Without them the checker struck three true lines naming the form ("an effective F-3").
+    expect(reportResearch(version(), SOURCES).structure.supply).toEqual([
+      {
+        type: 'REGISTERED_RESALE',
+        status: 'POSSIBLY_ACTIVE',
+        effectiveDate: '2023-04-12',
+        amountShares: null,
+        sourceFiling: 'F-3',
+        registrationStatus: 'EFFECTIVE',
+      },
+    ]);
+  });
+
   it('lists only the sources the catalyst cites, once each', () => {
     const ids = reportResearch(version(), SOURCES).catalyst.sources.map((item) => item.id);
     expect(ids).toEqual([7, 9]);

@@ -72,6 +72,13 @@ export interface ReportResearch {
       status: SupplyBlockStatus;
       effectiveDate: string | null;
       amountShares: number | null;
+      /**
+       * The filing the block rests on ("F-3", "Form 10-Q filed 2026-08-14"), as
+       * the dossier states it. Run 1 (70da3eb): without it the checker struck
+       * three true lines naming the form, because it was never shown the form.
+       */
+      sourceFiling: string | null;
+      registrationStatus: string | null;
     }>;
   };
 }
@@ -130,6 +137,8 @@ export function reportResearch(
         status: block.status,
         effectiveDate: block.effectiveDate,
         amountShares: block.amountShares,
+        sourceFiling: clean(block.sourceFiling),
+        registrationStatus: clean(block.registrationStatus),
       })),
     },
   };
