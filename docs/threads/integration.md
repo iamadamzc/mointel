@@ -2477,6 +2477,11 @@ STABILITY PROP   Research dae74ab4 (design.md): model split verdict on a true co
                  registration, re-freeze, fresh set, N=3 -> later release. SPEND inside his "3 yes" (907420a6
                  2026-09-27T23:13:38Z answered "Approve the build?" for reports; read), cap $10; named to him. Majority-of-3
                  rejected.
+NOW "/min" v6    Research: vendor-ack path ALSO excluded (subscriptions change only via setHighResSymbols, alpaca.ts:158,
+                 which logs "high-res interest set", runtime.ts:1601; none in the window; reconnect none). UNEXPLAINED from
+                 code; every found path excluded. I had told HIM "likelier: vendor dropped names" -> corrected to him.
+                 LOGGING APPROVED (tomorrow, after sic write): web-tier line when asOf fresh but EVERY row's newest slot
+                 unmeasured (asOf, intervals, open, min last_seen), rate-limited; warn on the catch.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
