@@ -102,7 +102,7 @@ export function buildResolverPrompt(request: CompanySourceRequest): string {
   return [
     `Locate the pages ${company} uses to publish its own announcements.`,
     '',
-    'You are looking for durable collection points — pages that will list a',
+    'You are looking for durable collection points: pages that will list a',
     'future announcement that has not happened yet. Report:',
     '  FEED             an RSS or Atom endpoint',
     '  NEWSROOM_INDEX   a page listing multiple press releases',

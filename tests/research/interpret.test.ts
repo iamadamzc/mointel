@@ -19,6 +19,7 @@ import { OpenAiInterpreter, SYSTEM_PROMPT, SYSTEM_PROMPT_A, SYSTEM_PROMPT_B, sys
 import { readResearchConfig } from '@/lib/research/config';
 import { NoopInterpreter, type InterpretResult, type ResearchInterpreter } from '@/lib/research/interpret/interpreter';
 import { AUTOMATIC_DOSSIER_SCHEMA } from '@/lib/research/interpret/schema';
+import { parseSubmissions } from '@/lib/research/sec/submissions';
 import { compareSheetAndAuto } from '@/lib/research/merge/sheetAuto';
 import type { ResearchDossier, SupplyBlock } from '@/lib/research/types';
 
@@ -61,6 +62,12 @@ afterEach(() => {
 });
 
 const DATE = '2026-08-17';
+
+const ISSUER = {
+  ticker: 'ACME', companyName: 'Acme Inc.', cik: '0000000123', exchange: 'NASDAQ',
+  country: 'CA', foreignIssuer: false, cikConfidence: 'HIGH' as const,
+  mappingSource: 'test', irUrl: null, lastVerifiedAt: null,
+};
 const MODEL_CONFIG = {
   apiKey: 'test-key',
   researchModel: 'terra-model',
@@ -137,6 +144,7 @@ function bundle(overrides: Partial<ResearchEvidenceBundle> = {}): ResearchEviden
     cik: '0000000123',
     country: 'CA',
     foreignIssuer: false,
+    sicDescription: 'Pharmaceutical Preparations',
     exchange: 'NASDAQ',
     cikConfidence: 'HIGH',
     demand: {
@@ -291,6 +299,71 @@ describe('interpreter transport', () => {
     expect(SYSTEM_PROMPT).toMatch(/Shares outstanding is NOT float/);
     expect(SYSTEM_PROMPT).toMatch(/dollar shelf is capacity/i);
     expect(SYSTEM_PROMPT).toMatch(/never produce buy or sell instructions/i);
+  });
+
+  /*
+   * His rulings 2026-09-30: "what the company does should be easily deriveable
+   * from the llm request. just make it a partof the query" (10:42:25Z) and "no
+   * em dashes in any writing. hard rule." (10:43:39Z). Prompt v3, schema v2.
+   */
+  describe('the business line and the em dash rule', () => {
+    it('reads EDGAR’s SIC label from the submissions response, and null when it is absent or blank', () => {
+      const base = { name: 'Acme Inc.', filings: { recent: {} } };
+      expect(parseSubmissions({ ...base, sicDescription: 'Pharmaceutical Preparations' }, '1').sicDescription)
+        .toBe('Pharmaceutical Preparations');
+      expect(parseSubmissions({ ...base, sicDescription: '  ' }, '1').sicDescription).toBeNull();
+      expect(parseSubmissions(base, '1').sicDescription).toBeNull();
+    });
+
+    it('reads null on a store without the column, and never throws', () => {
+      const db = temporaryDb();
+      const columns = db.prepare('PRAGMA table_info(issuer_registry)').all() as Array<{ name: string }>;
+      // The precondition: when schema v28 adds the column, this fails and the
+      // test becomes a write round trip through upsertIssuer.
+      expect(columns.map((column) => column.name)).not.toContain('sic_description');
+      upsertIssuer(db, ISSUER);
+      expect(buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE }).sicDescription).toBeNull();
+    });
+
+    it('forwards a stored SIC label into the bundle, which is the model’s input', async () => {
+      const db = temporaryDb();
+      upsertIssuer(db, ISSUER);
+      // Stands in for schema v28's column until Ops's migration lands.
+      db.exec('ALTER TABLE issuer_registry ADD COLUMN sic_description TEXT');
+      db.prepare('UPDATE issuer_registry SET sic_description = ? WHERE ticker = ?')
+        .run('Pharmaceutical Preparations', 'ACME');
+
+      const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+      expect(built.sicDescription).toBe('Pharmaceutical Preparations');
+
+      let body: Record<string, unknown> = {};
+      await new OpenAiInterpreter({
+        config: MODEL_CONFIG,
+        fetchImpl: async (_url, init) => {
+          body = JSON.parse(String(init?.body));
+          return new Response(JSON.stringify({ output: [] }), { status: 200 });
+        },
+      }).interpret(built);
+      expect(JSON.stringify(body.input)).toContain('Pharmaceutical Preparations');
+    });
+
+    it('asks for businessDescription as a required, nullable string', () => {
+      const schema = AUTOMATIC_DOSSIER_SCHEMA as {
+        required: string[];
+        properties: Record<string, { type: unknown }>;
+      };
+      expect(schema.required).toContain('businessDescription');
+      expect(schema.properties.businessDescription.type).toEqual(['string', 'null']);
+    });
+
+    it('states both rules in BOTH prompt variants, without containing the character it bans', () => {
+      for (const prompt of [SYSTEM_PROMPT_A, SYSTEM_PROMPT_B]) {
+        expect(prompt).toMatch(/businessDescription says what the company does/);
+        expect(prompt).toMatch(/Ground it in sicDescription/);
+        expect(prompt).toMatch(/Never write the em dash character \(Unicode U\+2014\)/);
+        expect(prompt).not.toContain('—');
+      }
+    });
   });
 
   it('never echoes the key on failure', async () => {
@@ -888,8 +961,8 @@ describe('interpretation pipeline', () => {
     });
 
     const current = readCurrentAnalysis(db, 'ACME')!;
-    expect(current.metadata.schemaVersion).toBe(1);
-    expect(current.metadata.promptVersion).toBe(2);
+    expect(current.metadata.schemaVersion).toBe(2);
+    expect(current.metadata.promptVersion).toBe(3);
     expect((current.metadata.metrics as { inputTokens: number }).inputTokens).toBe(1000);
   });
 

@@ -401,6 +401,8 @@ interface IssuerRow {
   exchange: string | null;
   country: string | null;
   foreign_issuer: number | null;
+  /** Absent on a store before v28, which `SELECT *` returns as undefined. */
+  sic_description?: string | null;
   cik_confidence: string;
   mapping_source: string | null;
   ir_url: string | null;
@@ -417,6 +419,7 @@ function toIssuer(row: IssuerRow): IssuerRecord {
     country: row.country,
     // Tri-state on purpose: null means "not established", not "domestic".
     foreignIssuer: row.foreign_issuer === null ? null : row.foreign_issuer === 1,
+    sicDescription: row.sic_description ?? null,
     cikConfidence: row.cik_confidence as CikConfidence,
     mappingSource: row.mapping_source,
     irUrl: row.ir_url,

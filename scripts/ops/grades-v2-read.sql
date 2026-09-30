@@ -20,11 +20,16 @@ FROM research_analysis_versions
 WHERE generated_at >= '2026-09-29T16:17:16Z'
 GROUP BY 1,2 ORDER BY 1,2;
 
+-- B was `promptVersion = 2` on its first run (2026-09-30, UNTESTED: no v2 split catalyst).
+-- Amended with the v3 bump, before any v3 row exists: >= 2, because the grade text is
+-- unchanged from v2, and an owed re-run filtered to 2 would be blind to every row after
+-- the bump. pv is printed so the re-run reports v2 and v3 rows separately.
 .print '== B'
-SELECT id, ticker, json_extract(dossier,'$.catalyst.catalystGrade') grade,
+SELECT id, ticker, json_extract(metadata,'$.promptVersion') pv,
+       json_extract(dossier,'$.catalyst.catalystGrade') grade,
        json_extract(dossier,'$.catalyst.summary') summary
 FROM research_analysis_versions
-WHERE generated_at >= '2026-09-29T16:17:16Z' AND json_extract(metadata,'$.promptVersion') = 2
+WHERE generated_at >= '2026-09-29T16:17:16Z' AND json_extract(metadata,'$.promptVersion') >= 2
   AND (lower(json_extract(dossier,'$.catalyst.summary')) LIKE '%reverse%split%'
     OR lower(json_extract(dossier,'$.catalyst.summary')) LIKE '%consolidat%'
     OR lower(json_extract(dossier,'$.catalyst.summary')) LIKE '%ratio change%');

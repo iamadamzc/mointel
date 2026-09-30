@@ -102,6 +102,12 @@ export interface IssuerRecord {
    * not a boolean that may default to false.
    */
   foreignIssuer: boolean | null;
+  /**
+   * EDGAR's SIC industry label, from the submissions response. Optional:
+   * a store before schema v28 has no column, and a record built without a
+   * submissions fetch has nothing to say. Absent reads as unknown.
+   */
+  sicDescription?: string | null;
   cikConfidence: CikConfidence;
   /** Which mapping source produced the CIK, e.g. company_tickers_exchange. */
   mappingSource: string | null;
@@ -564,6 +570,13 @@ export interface ResearchDossier {
   cik: string | null;
   country: string | null;
   foreignIssuer: boolean | null;
+  /**
+   * What the company does, in one plain line, grounded in EDGAR's SIC label and
+   * the filings in the bundle. His ruling 2026-09-30T10:42:25Z: "just make it a
+   * partof the query" (verbatim). Optional because every dossier written before schema
+   * v2 lacks it; absent and null both read as not stated.
+   */
+  businessDescription?: string | null;
   catalyst: CatalystFindings;
   structure: StructureFindings;
   cycle: CycleFindings;

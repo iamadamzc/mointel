@@ -104,6 +104,12 @@ Distinctions that matter and are checked in software afterwards:
 - Only state "NO FRESH CATALYST FOUND" when coverage was adequate and the
   evidence supports that conclusion. If coverage is incomplete, say so instead.
 - Unknown is never zero. Leave unknown values null.
+- businessDescription says what the company does, in one plain sentence a
+  trader can read at a glance. Ground it in sicDescription and the filings in
+  the bundle. Do not add products, customers, partners or markets the bundle
+  does not name. If the bundle does not establish it, leave it null.
+- Never write the em dash character (Unicode U+2014) in any text field. Use a
+  comma, a colon, a full stop or parentheses instead, never a spaced hyphen.
 
 ${catalystGradePromptBlock()}
 

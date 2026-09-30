@@ -20,12 +20,6 @@ import { describe, expect, it } from 'vitest';
  */
 const RESEARCH = /^lib\/research\/.+\.ts$/;
 
-/*
- * Named exclusions, each with its reason. A model prompt changes only through
- * its own enumeration, so the discovery prompt's dash waits for one.
- */
-const EXCLUDED = new Set(['lib/research/catalyst/companySourceContract.ts']);
-
 const EM_DASH = '—';
 
 const TEXT_KINDS = new Set([
@@ -87,7 +81,7 @@ describe('telling the decoder glyph from writing', () => {
 describe('no em dashes in research writing', () => {
   const files = execSync('git ls-files lib/research', { encoding: 'utf8' })
     .split('\n')
-    .filter((file) => RESEARCH.test(file) && !EXCLUDED.has(file));
+    .filter((file) => RESEARCH.test(file));
   const writing: string[] = [];
   let glyphs = 0;
   for (const file of files) {
@@ -104,12 +98,5 @@ describe('no em dashes in research writing', () => {
 
   it('has no em dash in any string research emits', () => {
     expect(writing).toEqual([]);
-  });
-
-  it('keeps the excluded prompt excluded for its dash, not for nothing', () => {
-    // When the prompt loses its dash in its own enumeration, drop the exclusion.
-    for (const file of EXCLUDED) {
-      expect(classify(file, readFileSync(file, 'utf8')).writing.length).toBeGreaterThan(0);
-    }
   });
 });
