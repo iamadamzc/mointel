@@ -2150,6 +2150,9 @@ OPS RETIRING     local_bb3d4059 retires on his word ("time to retire?", ~17:1xZ,
                  re-stacked on v28; v28-on-main 9f4133b1 not landed; market-floor re-pin to v28 = his word; 20:07 reminder
                  034bcf2f DIES -> successor recreates). MY REMINDER one-shot 19:41 ET: new Ops-tmi open + 20:07 reminder
                  set, else tell him. Route to the NEW Ops by id until the old one is renamed.
+SHOW-ALL CAP     Design 3c0cd04a (local, ungated): nearest 10 + "Show all N levels"; tests 0/1/10/11/140; mutants at
+                 prediction; 140 fixture rendered at 1,280 + 1,024. GATE QUEUE held by me until the new Ops opens: Ops's
+                 89d39053 run 2, then Design, then Research.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
