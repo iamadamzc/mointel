@@ -2416,6 +2416,11 @@ REPORTS FINAL    e8822583 (ops/reports-cut-run4) REPLAYED + APPROVED BY LITERAL 
 SEQUENCE TRAP    Caught in the replay: levels e8caa77d and reports e8822583 are SIBLINGS on 2bcf1cfe; the second deploy
                  would remove the first. ORDER CALL: v28 -> REPORTS e8822583 -> LEVELS re-picked onto e8822583 (6 picks,
                  replayed). If reports cannot ship, levels ship as e8caa77d. /proc before each launch = the base.
+LEVELS ON REPS   74fd7244 (ops/levels-cut-on-reports) REPLAYED + APPROVED BY LITERAL SHA: 6 on e8822583, per-pick patch-ids
+                 equal; whole delta patch-id 9eb597c5 == 2bcf1cfe..e8caa77d (approved + rendered); 14 files; 205 test
+                 files = declared. Ship: Ops gate + build, box cost test PASS, his conditional yes, /proc = e8822583.
+                 TONIGHT'S RELEASE CHAIN: 46d9f9d -> 89d39053 -> 2bcf1cf (v28) -> e8822583 (reports, his yes pending) ->
+                 74fd7244 (levels, box test). Fallback: e8caa77d on v28 if reports cannot ship.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
