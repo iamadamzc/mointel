@@ -1973,6 +1973,19 @@ OPS PLAN         (Ops, after his same words in Ops's session ~16:0xZ, which end 
                  checkpoint, pre-migration backup after 20:00; history store, backfill overnight. None straddles the
                  22:00 recap. Ops building v28 in A:\mointel-ops on 46d9f9d. OPEN: whether v28's capture code needs a
                  MARKET-WORKER RESTART (asked in my queued message, item b; not answered in this one).
+OPS ANSWERS      Sequence (Ops's estimates): 20:07 46d9f9d; ~20:32 em-dash; ~20:55 v28 (full VACUUM INTO backup after
+                 the stop: web/research/assess DOWN ~10-18 min, launch cutoff ~21:15 else after 22:10); ~22:15 history
+                 store (UNBUILT, the risk); then /api/reports, then levels, before ~03:40. APPROVED as order.
+                 NO MARKET RESTART needed for any of it; the v27 market worker runs on the v28 store; market-floor pin
+                 moves to v28. Engine em-dash strings + PRICE-RANGE FIX are market-worker code (his restart).
+                 PRICE-RANGE FIX NOT TONIGHT: write gate "max whole flush < 250 ms in RTH" FAILS AT BASELINE (Ops: RTH
+                 excl. 14:37-14:53, per-minute max p50 2,501 ms, max 11,353 ms, 845 over 250 in 122 min). Registered
+                 consequence: a live-desk finding to HIM, DELAY vs LOSS separated first -> asked Ops for discarded +
+                 bucket/minute gaps. Also asked: is v28 additive-only for every table the market worker writes; v28's
+                 yes must name the ~10-18 min board + site outage.
+MARKETING        Seeds for v5: pre-staging, final on Research's class list/checkpoints/format, release on my word.
+                 Its "6 em dashes on app/page.tsx incl. :321" is PRODUCTION (c3d0f06); origin/main has only the 3
+                 placeholders (171/194/399, kept). Web's fixes are on main and ride the em-dash cut. Told.
 ```
 **THE TWENTIETH SEAT'S LEDGER:**
 ```
