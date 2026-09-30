@@ -2296,6 +2296,11 @@ RE-FREEZE        925c9dc (13:50:53 ET, on origin) VERIFIED here: check b3c91fd86
                  3340640182f8, stateCountry 081cab7faee2, writerV5 70f3203c2316 (unchanged vs 1ab48be). Research gate 208
                  / 3,134. Seeds a7b3ed71 13:50:06 < freeze -> RELEASED to Marketing. After PASS: Ops re-picks the 3 files
                  at 925c9dc onto e01b836f; I re-verify nine blobs in the cut.
+HIS YES x3       Ops's session d33d893e, typed turn 2026-09-30T17:49:49Z (read with its block): "yes to all. is there a
+                 reason to wait until 8?" answering #1 46d9f9d 8:07 pm, #2 89d39053 after #1 live, #3 v28 2bcf1cf start by
+                 ~9:15 pm else after 10:10 pm, naming the 10-18 min board + tmitrader.com outage and the floor re-pin.
+                 NOT covered: reports cut, history store, levels. His question on 8 pm is Ops's to answer (the deploy's
+                 13-min live-store check stalled the box in RTH; after-hours capture runs to 20:00).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
