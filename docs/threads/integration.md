@@ -1564,6 +1564,11 @@ HIS RULING ON THE #551 SAMPLE (this session, first-hand, 2026-09-30 ~04:0xZ), ke
     descriptive never predictive; float/structure = VERDICT never NUMBER (a SEAT default, Integration 2026-09-17,
     commercial.md:176/516 read: vendor float wrong on 8-9 of 46; becomes HIS if anyone proposes the number);
     company facts no new risk; price path = licence question already under accepted exposure. Reviews next sample.
+DATA MAP        Research data-map-2026-09-30.md (read): EXISTS as-of checkpoint: company name 45/48, catalyst summary +
+  headline + why-traders-may-care 45, event time 40, shares 36, structure 45, intraday path 48; AH overall computable.
+  MISSING: (a) sector + HQ city (EDGAR already fetched, discarded) -> APPROVED to Research, code only; (b) FLOAT
+  0/48 -> HIS data decision (vendor stays on his desktop); (c) ah_high not on checkpoint row -> Ops (new) with the
+  checkpoint/bump work; (d) "on watch" undefined -> HIS word, asked.
 RED TEST FIXED   7a62d62 on origin (Design, test-only): 95/95 here on merged main. Header v2 = 1b5ead6 + c01a5b4 + 7a62d62.
 HEADER v2        74c1818 (tag design/brand-header-on-1b5ead6-v2) REPLAYED + APPROVED: cone 2 (6c3c475 a0da3aea ==
                  c01a5b4; 74c1818 e98e3f89 == 7a62d62); 3 files; gzip in; fa61410 out; 176. Supersedes 74ac35c. Sent to
