@@ -12643,3 +12643,27 @@ suite **177/177 files (pre-registered 177), 2,723 tests.** The "[pins] FAILED de
 the output are test fixtures (tests/desk/releaseRetention.test.ts), not the gate. Cone 74c1818..c3d0f06 = 1 commit, 8
 files; 1b5ead6 ancestor. Board-behaviour change: HIS yes in this session, asked after 10:15 ET (reminder 10:27 ET);
 RESTART_MARKET=no; DEPLOY_TESTS_SKIP is valid for this sha only while nothing changes.
+
+## 2026-09-30 04:40 ET: POST-RESTART ITEMS 2-4 (+5 check) and the gzip line, RAW (Research grades)
+Guard: retiring seat local_37a1741e archived, not running; no ops.md commit since 08:30Z. Read-only throughout.
+```
+precondition  08:40:39.982Z PREMARKET RECORDING bucketsWritten 125,523 discarded 0
+              08:41:41.190Z PREMARKET RECORDING bucketsWritten 127,860 discarded 0   (+2,337 in 61 s)
+item 1 (ctx)  last_flush_ms 1790757700481  wall 1790757701206  lag 725 ms
+item 2        open_rows 13 (08:41:41.209Z) | fetch 08:41:41.230Z (fetchedAt), 848,643 B | open_rows 13 after
+              highResCount 13 | top by rvolRank among highRes: rvolRank 1, symbol NULL  <- see instrument note
+              re-read 08:42:05Z (2nd fetch): top = BIYA (ticker), highResCount 13, open_rows 13
+              BIYA feed_intervals 09-30: 1790733600178 / 1790733601199 / closed 1790733601199   (roll stub)
+                                         1790734360783 / 1790757725179 / closed NULL
+item 3        rows 4,422  null_price 0  null_ts 0
+item 4        fetchedAt 08:41:41.230Z  asOf 08:41:40.481Z
+              on:  n 6, ends 08:40:50, 08:41:00, :10, :20, :30, :40.000Z   (symbol NULL, same note)
+              off: hasKey true, nowBuckets null   (2nd fetch: off = ATCX; top 3 BIYA/NIVF/CHGA n=6 each)
+item 5        journal since 00:15:40Z: ONE "[alpaca] authenticated SIP" (00:18:21Z, the startup), no
+              reconnect line -> UNTESTED. (The startup line is the grep's positive control.)
+gzip (corrob) his board poll, same client + symbols: 22:24:50Z 09-29 (pre-1b5ead6) 1,172,059 B;
+              first after, 22:34:21Z 238,927 B = 20.4%. 00:21Z 09-30 polls 216 KB.
+```
+**INSTRUMENT NOTE (the doc's, not the box's):** post-restart-check-2026-09-29.md's jq reads `.symbol` on demand
+states; the field is `.ticker` (demand is a map of states), so the written query returns symbol NULL. Item 2's
+top-name lookup was re-taken with `.ticker` on a second fetch 24 s later; both fetches are reported.
