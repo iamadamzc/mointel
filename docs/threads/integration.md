@@ -2359,6 +2359,12 @@ LEVELS RENDER    Design MET on e8caa77d: real route 200 + JSON null (09-25 store
                  + "Show all 140 levels" / expanded 140; empty + split copy; 1,280 + 1,024 no overflow. NOT SEEN: a real
                  computed row. POST-SHIP (order call): Ops curls 127.0.0.1:3000/api/levels?symbol=<top-5 name> once after
                  /proc confirms; 200 row with levels = verified; null for a name with bars today = defect.
+NOW-CELL LIVE    Design, on his "allow it" (Design's session): production c3d0f06 read 15:06-15:09 ET, link 58 created/read/
+                 revoked. Top 12: 10 live 10 s cells + 2 muted "/min" fallbacks (stable set); hover series; 1,024 no clip.
+                 Timing split to Ops: 2,760 ms first load / 706 ms after reload, server-bound. UNEXPLAINED: one poll at
+                 15:07:02 ET showed EVERY row as "/min"; not reproduced in 45 samples. -> TOMORROW, owner Research: which
+                 code paths null nowBuckets board-wide for one poll, and whether any logs (Ops counts); no probes in his
+                 window.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
