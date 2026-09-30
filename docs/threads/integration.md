@@ -2204,6 +2204,10 @@ RUNNER DESIGN    Ops: NOT research_jobs (ticker NOT NULL + unique live index). R
 SEEDS RELEASED   11863526 (13:27:48 ET, on origin): defect-set-v5.md blob sha256 = cd8052b906d81fea... (computed here);
                  .gitattributes adds one eol=lf rule + comment; lock note with the deviation (19 classes / 19 keyed
                  variants / 4 controls, attestation class-level). Path sent to Research. Marketing done for tonight.
+LEVELS CODE      Box test registered 4612eba (spec §7), sent to Ops with the command; code branch levels-request-path
+                 8dfacf4 (pushed, not main): 200 row / 200 null, one type (Design's resistance.ts = §2), split tripwire,
+                 interim windows. APPROVED-NOT-BUILT added: a history.db 15m/daily READER for levels (owner Research;
+                 trigger: with or after the history-store release) so the 39-day switch then happens with no action.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
@@ -2225,6 +2229,12 @@ error                                                  TYPE                     
 2 put sign-in to HIM after he had answered it in     two seats asked him one question   no       peer
   Web's session (15:51:37Z); I had told Web I would   (the 19th's recorded SEAM DEFECT)            (Web)
   ask, Web asked too. Messages crossed. Withdrawn.
+3 told HIM (and Research) the levels switch to 39     a property of code asserted        YES      peer
+  days is "automatic, no second release"; tonight's   unopened (the FAMILY of #1: a      (family  (Research)
+  code (8dfacf4) reads only the minute store, no      value passed on without reading    of #1)
+  history.db reader. The reader is a code change      the thing it describes)
+  with/after the history store. Retracted to him;
+  hand-off warning given per hygiene §2.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
