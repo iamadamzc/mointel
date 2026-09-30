@@ -2399,6 +2399,8 @@ RUN 4 NAMED      240e2f3a59a9ae79832b46a3b16f3c5cacf26c713d313b1c0b6cbfd5490caba
                  (a) declared not exercisable; VEEE stale kept; lines on covered top-12 only per Marketing). Research told:
                  structural pre-check in the harness dry run (every named ticker in its checkpoint's covered 12) before
                  any call; a violation = stop and report.
+RUN 4 SET IN     lock note ce7fe5a3 (16:11:56 ET) before file c0ddb99f (16:12:23 ET), both on origin; v5r4b blob sha256 =
+                 240e2f3a (computed here). Research runs after its coverage pre-check.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
