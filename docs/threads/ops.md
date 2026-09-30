@@ -12895,3 +12895,5 @@ runner's release carries a test: a late run for a real checkpoint inserts, a run
 v28 release stack 2bcf1cfe (on 89d39053: b0de76e, b8002fa, 63dd67f = 95b734e picked minus its grades SQL, 2bcf1cf test
 flip), 183 test files pre-registered, gating. Tooling item for tomorrow (Ops): bash-spawning preflight/release tests need
 more time or fewer spawns; free node processes before gating.
+**v28 release stack 2bcf1cfe7238e0dd01adb3833ccc8b87e6d0c23f GATED ALL GREEN: 183/183 (pre-registered), 2,782 tests, lint 0
+errors.** Gating 89d39053 (em-dash cut), pre-registered 182.
