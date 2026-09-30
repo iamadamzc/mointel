@@ -2395,6 +2395,10 @@ RUN 4 SEEDS v3   RE-CONFIRM OF 0ff12a28 WITHDRAWN (ledger 5): AUUD not among #45
 SAFETY STOP HELD Marketing released v5r4 at 0ff12a28 (8acae017) on my withdrawn re-confirm (retraction arrived second).
                  Research did NOT run it; runs only on a hash I name. 8acae017's file is VOID for the bar; Marketing
                  re-authors (AUUD out, 12 names each, (a) not exercisable) under a new file/version and hash.
+RUN 4 NAMED      240e2f3a59a9ae79832b46a3b16f3c5cacf26c713d313b1c0b6cbfd5490cabaa, NEW file defect-set-v5r4b.md (AUUD out;
+                 (a) declared not exercisable; VEEE stale kept; lines on covered top-12 only per Marketing). Research told:
+                 structural pre-check in the harness dry run (every named ticker in its checkpoint's covered 12) before
+                 any call; a violation = stop and report.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
