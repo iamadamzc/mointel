@@ -1951,6 +1951,19 @@ EM-DASH ORDER    ORDER CALL (this seat): Design cuts the 12 picks onto 46d9f9d N
                  does not ship, the cut is VOID; re-cut onto /proc. Sent to Ops (delivered) and Design (queued), with
                  the §8 answers asked to come first (reports = his top priority).
 MY REMINDER      7867a2ae one-shot 21:47 ET 09-30 (session-only): checks for Ops's release result; asks only if absent.
+HIS RULING       THIS SESSION (transcript 4689366c, user turn 2026-09-30T15:47:13Z, first-hand), verbatim: "yes tonight.
+                 but i want sessoin reports and ladder resistance all to go tonight. i want everything pending to go
+                 tonight." -> "yes tonight" answered my NEEDS YOU block naming 46d9f9d (speed fix + 04:00-20:00 ET weekday
+                 deploy block) as one release after 8 pm ET. Ops told to verify at his turn before launch (relayed as a
+                 fact, not an authorisation).
+                 "everything pending" -> every approved-not-built item is a TONIGHT build. ORDER CALL: window after 20:00
+                 ET to before 04:00 ET, one release at a time, /proc between, clear of the 22:00 roll; gates stay; what
+                 misses its gate does not ship and he hears the concrete reason. NOT READ INTO IT: a market-worker
+                 restart (his, asked explicitly once Ops says which items need one) and sign-in (needs his Google OAuth
+                 client; what switching it on changes goes to him as a decision).
+                 SENT (all cwd A:\mointel, not archived): Ops (queued), Research, Design (queued, §8 first), Web,
+                 Marketing, Commercial; each asked for what can be built + gated tonight, what cannot and why, within
+                 ~90 min.
 ```
 **THE TWENTIETH SEAT'S LEDGER:**
 ```
