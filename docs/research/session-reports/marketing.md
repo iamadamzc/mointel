@@ -605,6 +605,39 @@ prior sets intact, format first / hash last:
 One U+2014 by design (the class-7 defect 480-07); the rest are en-dash ranges. Released on
 Integration's word (checker unchanged, so no re-freeze); pinned LF.
 
+### Run 4 (v5, LAST): fresh set, 2026-09-21, supply dollar/terms regression
+
+Run 4 is the last run tonight (Adam's ruling 2026-09-30T19:34:36Z, "a, try tonight"). Its
+purpose is run 3's checker-fault class: supply lines that cite a stored dollar capacity,
+terms or restriction. The checker was fixed and re-frozen for it at `cb6d030` (Research;
+research.ts `bc57f2a75057`, traced.ts `fc8ca9327cca`, seven blobs unchanged). Fresh day
+09-21 (#442/#452/#455/#456), same 19 classes, same format. Every control clause is
+FIELD-TRACED to its stored field AS-OF the checkpoint's pinned analysis version, read
+first-hand (no look-ahead). Specimens: VEEE (av 1819, stale catalyst, $100M S-3 shelf +
+5,050,505 offering, backside, lost $17.30 support), AVX (av 1252, dirty float, $2B shelf +
+5,271,783 resale, $6.8M debt retirement), VRME (av 1987, $0.15 dividend, $15.8M ATM with
+"Roth 3.0%" terms + $40M shelf), TOPS (av 2010, dirty float, $200M shelf + $5.8M ATM,
+$680.4M revenue), AUUD (av 51, NONE_FOUND, $150M shelf + $3.04M ATM), PRTH (not researched).
+Regression controls: (a) "We found no catalyst in our sources" on AUUD; (b) form-named
+supply on every supply line; (c) supply dollar capacity / terms on VEEE/AVX/VRME/TOPS/AUUD
+(the run-3 fault class). Overall uses the 09-21 board-eligible totals verified first-hand
+(2,442 traded, 784 up, 533 down); wrong-total defect 811. Authored **informed by
+Integration's phrasing class, BLIND to the checker's code, tests and prompts** (Research's
+remark "the checker now carries the whole supply block" described the fix and did not shape
+the set beyond that phrasing class). New file, prior sets intact, format first / hash last:
+
+    sha256(defect-set-v5r4.md) = 0ff12a28432fb84d69ce072376c3a75ae0f34c8b95fa527be6086cf6f528cad9
+
+**The composition changed before locking, and why** (Integration re-confirmed, this session):
+a first draft hashed to `b5452d59...` but was never committed, so nothing is superseded on
+record. Reading the store as-of each checkpoint corrected two things before the lock: VEEE
+was recast from the absence form ("no fresh catalyst") to the stale-catalyst phrasing, since
+av 1819 is SECONDARY_STALE (a name that HAS a stale catalyst); and AUUD was added as the
+regression-(a) control after first-hand verification found it NONE_FOUND, correcting
+Research's relayed "no 09-21 name has NONE_FOUND." Both changes make the controls truer, not
+easier. One U+2014 by design (the class-7 defect 442-07); the rest are en-dash ranges.
+Released on Integration's re-confirm after the `cb6d030` re-freeze; pinned LF.
+
 ## His v3 verdict, "uncomplicate it": the report shape (v4)
 
 **His verdict on the v3 sample (#551), verbatim** (`integration.md` `b563207`):
