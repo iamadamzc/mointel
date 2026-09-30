@@ -2201,6 +2201,9 @@ RUNNER DESIGN    Ops: NOT research_jobs (ticker NOT NULL + unique live index). R
                  cut from PRODUCTION post-v28 as ONE reports cut (runner + 4771363 + 80e0bcc0 + 0f15521 + sic write);
                  tests w/ mutants: lookback boundary, restart idempotence, MISSED->PUBLISHED, late-run throws + FK,
                  RUNNING skipped + FAILED behaviour; spend named per slot/day; non-blocking stated from code.
+SEEDS RELEASED   11863526 (13:27:48 ET, on origin): defect-set-v5.md blob sha256 = cd8052b906d81fea... (computed here);
+                 .gitattributes adds one eol=lf rule + comment; lock note with the deviation (19 classes / 19 keyed
+                 variants / 4 controls, attestation class-level). Path sent to Research. Marketing done for tonight.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
