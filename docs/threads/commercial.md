@@ -127,6 +127,7 @@ the signal that closed this tenure rather than a single incident.
 | --- | --- | --- | --- | --- |
 | 1 | Told Integration `monetization-gates.md:226` ("after Gate 1 closed", 09-07) contradicted the 09-27 day pass → it didn't; Gate 1 was ruled 09-07 (*"the unit sold is everything together"*), in `which-price.md:4`. Also wrote "answered 2026-09-27" into this charter's own open-items row (`15b609b`) on the same premise | **source-not-opened** (the prompt's mechanism 1: where a claim is discussed ≠ what establishes it) | no — first in this tenure; the class was the prior tenure's | peer (Integration) |
 | 2 | Told Research "not grounds to reopen" his "no to both" ruling on the Benzinga enquiry, after a fact under that ruling changed → whether a changed premise reopens a ruling is his judgement, not this seat's; Research put it to him as a fresh question and was right to | **overstated authority** (stating a verdict on a question that is his to answer, not this seat's to pre-empt) | no — first instance | peer (Research) |
+| 3 | Ruled a colon as the em-dash replacement in the registered statement, reading the clause in isolation → the sentence it sits in already has a colon ("not a signal service: it takes..."), so a second one collides; corrected to a full stop, Web's own first-ranked option | **excerpt-not-context** (checked the change against what the statement is relied on for, not against the sentence's own existing punctuation) | no — first instance | peer (Web) |
 
 ### What this seat has delivered — dated documents, unchanged since landing
 

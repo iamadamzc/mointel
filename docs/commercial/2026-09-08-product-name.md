@@ -418,15 +418,30 @@ Integration. Answers, each a sentence, with the reason.*
    page (`app/page.tsx:321`) renders the mid-sentence em dash before the list —
    *"...on a single shared board — why it is moving, where it sits in the
    cycle, what the share structure is, and what supply stands behind it"* — as
-   an actual em dash via `&mdash;`. **Ruled: replace with a colon.** *"...on a
-   single shared board: why it is moving, where it sits in the cycle, what the
-   share structure is, and what supply stands behind it."* A colon introducing
-   an enumerated list is the standard construction for exactly this shape —
-   the em dash was never doing parenthetical or dramatic work here, only
-   introducing four items — so nothing is lost. **Touches neither dependency
-   above nor anything else this statement is relied on for**: both rest on the
-   wording, not the punctuation, and the position ruling later in this section
-   is unaffected. Given to Web to apply; not this seat's file to edit.
+   an actual em dash via `&mdash;`.
+
+   **First ruled: replace with a colon. CORRECTED the same day, Web's catch:
+   the sentence already has one** — *"It is not a scanner and it is not a
+   signal service: it takes the names..."* — so a second colon later in the
+   same sentence collides with it, doing the same job twice. This seat looked
+   at the clause in isolation and didn't re-read the whole sentence it sits
+   in before ruling; the error is logged in this seat's charter ledger.
+
+   **Ruled instead, Web's own first-ranked option: a full stop, a deliberate
+   fragment.** *"...on a single shared board. Why it is moving, where it sits
+   in the cycle, what the share structure is, and what supply stands behind
+   it."* Single edit — only the dash becomes a period and "why" capitalises —
+   touches nothing else in the registered wording, doesn't collide with the
+   existing colon, and if anything gives the four-item list more weight as
+   its own statement than a colon would, not less. **Ranked and rejected:**
+   recasting both colons (Web's option 2) touches more registered words for
+   no gain; parentheses (option 3) subordinate the four things the sentence
+   exists to promise, which §2e's own dependencies and Design's type-level
+   verification (above) treat as load-bearing, not decorative. **Touches
+   neither dependency above nor anything else this statement is relied on
+   for**: both rest on the wording, not the punctuation, and the position
+   ruling later in this section is unaffected. Given to Web to apply; not
+   this seat's file to edit.
 
    **Verified by Design, 2026-09-10 (`ba13d79`), by reading the code rather
    than the live board — a live read proves the board was right this
