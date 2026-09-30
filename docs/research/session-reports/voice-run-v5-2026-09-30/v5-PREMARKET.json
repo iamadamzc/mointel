@@ -1,0 +1,186 @@
+{
+  "run": {
+    "kind": "PREMARKET",
+    "tradingDate": "2026-09-28",
+    "label": "Into the premarket"
+  },
+  "draft": {
+    "headline": "",
+    "overall": "Across the $1.00–$20.00 range, 2,456 traded after hours, 751 up, 568 down.",
+    "sections": [
+      {
+        "heading": "Fresh and event-linked",
+        "lines": [
+          {
+            "ticker": "KNRX",
+            "text": "At 08:00 ET, September 28, 2026, a Form 6-K described a proposed carve-out of AscendX, with external investors providing independent capitalization and KNRX retaining a minority equity interest; the desk grades the fresh structure story moderate, mixed and secondary, and reads it as plausibly explaining the move that has happened, although transaction terms, valuation, financing, conditions and completion are not established. No float the desk can independently verify; registered resale, possibly active, effective September 25, 2026, plus an equity purchase agreement and warrants of unknown capacity, are not proof of selling. KNRX is down 30.9% after hours from the regular-session close of $1.23, with 6800.9x relative volume, and sits green, fresh / frontside."
+          },
+          {
+            "ticker": "YMT",
+            "text": "A September 28 Form 6-K disclosed completion of the Qingdao Xingongguan acquisition through VIE agreements for an aggregate US$5.8 million purchase price, along with completion of the first-phase acquisition of 33.33% of Qingdao Quanao; the desk treats the filing as a fresh corporate-development headline but not a clean stand-alone structure catalyst. No float the desk can independently verify; registered resale, possibly active, 42,307,692 shares, convertibles, possibly active, and acquisition shares of unknown capacity, effective September 10, 2026, are not proof of selling. YMT is up 18.6% after hours from the regular-session close of $1.77, with 92.0x relative volume, and has no cycle conclusion."
+          },
+          {
+            "ticker": "SER",
+            "text": "On September 9 at 07:45 ET, Serina reported Cohort 1 observations from its SER-252 registrational study in advanced Parkinson’s disease and advancement to Cohort 2; the desk grades the study milestone legitimate positive and reads it as plausibly explaining the move that has happened, while the supplied evidence lacks detailed efficacy, safety and statistical results. No float the desk can independently verify; 25,400,473 shares as of August 10, 2026 (the outstanding count, not a float), plus an equity purchase agreement and registered resale capacity, possibly active, and warrants and convertibles of unknown capacity, are not proof of selling. SER is up 6.5% after hours from the regular-session close of $2.01, with 17.3x relative volume, and has no cycle conclusion."
+          },
+          {
+            "ticker": "POCI",
+            "text": "Fresh after-hours FY2026 Q4 results reported sales of $8.774M versus a $7.148M estimate and a corrected EPS loss of $0.01 versus a $0.06 estimated loss; FY2027 sales guidance of $30M-$33M was below the cited $34.462M estimate, giving the desk a moderate, mixed and secondary read that plausibly explains the move that has happened. No float the desk can independently verify; 10,972,792 shares as of September 20, 2026 (the outstanding count, not a float), a known active recent offering of 2,777,777 shares effective March 30, 2026, and shelf capacity effective June 14, 2024, are not proof of selling. POCI is up 4.3% after hours from the regular-session close of $4.53, with 12.6x relative volume, and has no cycle conclusion."
+          }
+        ]
+      },
+      {
+        "heading": "Mixed or stale catalysts",
+        "lines": [
+          {
+            "ticker": "SANG",
+            "text": "At 17:26 ET, September 28, 2026, a secondary earnings headline reported adjusted EPS of $(0.18) versus a $(0.06) estimate and sales of $46.802 million versus a $51.467 million estimate; the desk grades the event moderate, mixed and secondary, because the timely report is negative despite the positive price reaction. No float the desk can independently verify; 33,338,932 shares as of June 30, 2026 (the outstanding count, not a float), alongside registered resale capacity, possibly active, effective April 12, 2023, is not proof of selling. SANG is up 42.1% after hours from the regular-session close of $3.59, with 136.1x relative volume, and sits yellow, frontside warning."
+          },
+          {
+            "ticker": "BYSI",
+            "text": "The latest identified company event was a September 18, 2026 Nasdaq minimum-bid-price deficiency notice, while the latest substantive update located was the August 14 Q2 report; no catalyst found in our sources is contemporaneous positive company news sufficient to explain the present abnormal trading activity, and the desk grades the material secondary and stale. No float the desk can independently verify; 41,119,820 shares as of July 31, 2026 (the outstanding count, not a float), a shelf capacity of 10,000,000 shares effective August 18, 2025, and a recent offering of 800,000 shares effective November 17, 2025, are not proof of selling. BYSI is down 11.7% after hours from the regular-session close of $1.12, printed a new high of day, and has no cycle conclusion."
+          },
+          {
+            "ticker": "ONFO",
+            "text": "No source-backed fresh, transaction-specific company catalyst is present in the collected materials; the latest company item is a September 21 strategy blog post, with older developments covering Nasdaq minimum-bid-price compliance restoration and strategic alternatives, so the desk grades the catalyst secondary and stale and does not read it as explaining the move. No float the desk can independently verify; 2,452,712 shares as of August 19, 2026 (the outstanding count, not a float), registered resale capacity of 32,696,345 shares effective April 27, 2026, and warrants for 6,199,863 shares effective August 29, 2025, are not proof of selling. ONFO is up 13.2% after hours from the regular-session close of $1.06, with 32.6x relative volume, and has no cycle conclusion."
+          },
+          {
+            "ticker": "EGG",
+            "text": "The latest identified company financing event is an F-3 mixed shelf that became effective September 11, 2026, registering up to $100 million of securities; the desk grades this weak, negative and dilutive, treats the shelf as financing capacity rather than a positive operating catalyst, and does not read it as explaining the move. No float the desk can independently verify; 12,095,200 shares as of September 30, 2025 (the outstanding count, not a float), with shelf capacity possibly active effective September 11, 2026, is not proof of selling. EGG is up 18.8% after hours from the regular-session close of $4.25, with 588.4x relative volume, and has no cycle conclusion."
+          },
+          {
+            "ticker": "TRSG",
+            "text": "No fresh price-relevant company catalyst can be determined from this bundle; the latest September 18, 2026 Form 6-K contains an employment-related offer-letter exhibit, but the excerpt does not establish a business, financing or operating event explaining the move, and coverage is SEC-only and incomplete. No float the desk can independently verify; warrants effective March 28, 2024 and convertibles of unknown capacity are not proof of selling. TRSG is up 12.3% after hours from the regular-session close of $1.22, with 281.0x relative volume, and has no cycle conclusion."
+          },
+          {
+            "ticker": "FFAI",
+            "text": "The latest company item rescheduled an investor report and promoted a September 29 partner-conference session, while the broader recent record supplies a robotics product-development narrative without a financing close, revenue result or binding customer contract; the desk grades the catalyst secondary and stale and does not read it as explaining the move. No float the desk can independently verify; registered resale of 2,934,055 shares is not yet active, convertibles are possibly active effective September 15, 2026, and warrants of unknown capacity are effective August 31, 2026, all capacity rather than proof of selling. FFAI is up 21.9% after hours from the regular-session close of $1.41, with 9.4x relative volume, and has no cycle conclusion."
+          },
+          {
+            "ticker": "BNKK",
+            "text": "The latest identified company event was a September 4 preferred-stock redemption agreement disclosed September 11, under which $4.0 million would redeem and retire 26,667 Series A preferred shares while Core4 retains 73,333 preferred shares and waives specified anti-dilution protections; the desk grades this secondary and stale and does not read it as explaining the move. No float the desk can independently verify; 8,000,940 shares as of August 14, 2026 (the outstanding count, not a float), plus shelf capacity, registered resale of 857,144 shares, warrants of 52,557 shares, and preferred conversion of 1,516,873 shares effective September 4, 2026, are not proof of selling. BNKK is down 5.2% after hours from the regular-session close of $1.87, with 87.3x relative volume, and has no cycle conclusion."
+          }
+        ]
+      },
+      {
+        "heading": "No fresh catalyst found",
+        "lines": [
+          {
+            "ticker": "CLRO",
+            "text": "No catalyst found in our sources sufficient to explain the present move; the latest non-SEC item is a September 24 technical-analysis headline, while the substantive filings concern previously announced merger and financing matters, so the desk does not read the available material as explaining the move. No float the desk can independently verify; 2,675,412 shares as of August 14, 2026 (the outstanding count, not a float), acquisition shares of 12,500,000 and a recent offering of 4,285,714 are not yet active, shelf capacity is unknown, and warrants for 437,500 shares are not yet active, all capacity rather than proof of selling. CLRO is down 3.1% after hours from the regular-session close of $5.10, with 379.0x relative volume, and has no cycle conclusion."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "MISSED",
+    "cause": {
+      "kind": "ALL_STRUCK",
+      "at": "2026-09-30T16:57:35.745Z"
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S1L2",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S1L4",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L1",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L2",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L4",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L5",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L6",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L7",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S3L1",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"selling\""
+        },
+        {
+          "id": "S2L6",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The claim that the desk does not read FFAI's catalyst as explaining the move is unsupported: plausiblyExplainsMove is null, not false."
+        }
+      ],
+      "writerMs": 27606,
+      "checkerMs": 22669
+    }
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 8963,
+      "outputTokens": 3216,
+      "cachedInputTokens": 0,
+      "reasoningTokens": 1002,
+      "durationMs": 27595
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 14976,
+      "outputTokens": 1636,
+      "cachedInputTokens": 0,
+      "reasoningTokens": 1395,
+      "durationMs": 22649
+    }
+  ]
+}

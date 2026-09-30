@@ -1,0 +1,287 @@
+{
+  "run": {
+    "kind": "INTO_RTH",
+    "tradingDate": "2026-09-29",
+    "label": "Into the open"
+  },
+  "draft": {
+    "headline": "",
+    "overall": null,
+    "sections": [
+      {
+        "heading": "What moved",
+        "lines": [
+          {
+            "ticker": "BKYI",
+            "text": "A 03:38 ET, September 29, 2026 secondary-news headline reported a partnership for phishing-resistant biometric authentication in UAE and Saudi Arabia. The desk grades the news as legitimate positive, but the supplied headline discloses no partnership economics, contractual commitments, or primary-company confirmation; no float the desk can independently verify, with 1,436,344 shares outstanding as of August 11, 2026 (the outstanding count, not a float), alongside registered resale and warrant capacity. The sheet marks the name yellow, frontside warning, up 32.2% since the previous checkpoint."
+          },
+          {
+            "ticker": "SANG",
+            "text": "On September 28, 2026, the company announced a definitive agreement to be acquired by BRC Group Holdings, a strong news-driven catalyst corroborated by company and newswire sources. Transaction consideration, closing conditions, shareholder approvals, and timing are not established; no float the desk can independently verify, with 33,338,932 shares outstanding as of June 30, 2026 (the outstanding count, not a float), and registered-resale and warrant capacity of unknown status. The sheet marks the name green, fresh / frontside."
+          },
+          {
+            "ticker": "SSTI",
+            "text": "At 07:35 ET, September 29, 2026, the company announced a merger agreement under which Transom Capital Group would acquire the company through a tender offer for $8.00 per share in cash plus one contingent value right worth up to $3.00 per share. The desk grades the news strong, while closing conditions, regulatory steps, financing, and CVR milestones are not supplied; no float the desk can independently verify, with 13,163,790 shares outstanding as of August 5, 2026 (the outstanding count, not a float), plus other issued-share capacity. The sheet marks the name green, fresh / frontside."
+          },
+          {
+            "ticker": "YMT",
+            "text": "At 07:38 ET, September 29, 2026, secondary coverage attributed the move to an assertion of meeting Nasdaq’s $2.5 million equity requirement after acquisitions, with a September 28, 2026 Form 6-K supplying the corporate-event backdrop. The desk grades the catalyst moderate / mixed / secondary because the supplied primary excerpt does not establish the compliance conclusion; no float the desk can independently verify, with registered resale, convertible, and acquisition-share capacity. The sheet gives no cycle conclusion and records down 13.1% since the previous checkpoint."
+          },
+          {
+            "ticker": "MSGY",
+            "text": "At 13:30 ET, September 28, 2026, a securities purchase agreement covered 667,000 Class A ordinary shares at $1.50 per share for $1,000,500 in gross proceeds, plus Series A and Series B warrants, to support an acquisition interest. The desk grades the fresh news weak / negative / dilutive; closing, issuance, registration, resale eligibility, and full warrant terms are not established, with no float the desk can independently verify and 16,957,000 shares outstanding as of March 31, 2026 (the outstanding count, not a float), alongside placement, warrant, and acquisition-share capacity. The sheet gives no cycle conclusion."
+          },
+          {
+            "ticker": "FFAI",
+            "text": "At 17:05 ET, September 28, 2026, a company-disclosed term sheet proposed an AIxC acquisition of the robotics business at an expected $200 million purchase price paid in common and non-voting convertible preferred stock. The desk grades the event moderate / mixed / secondary, while definitive documentation, closing, the securities received, and their eventual liquidity are not established; no float the desk can independently verify. The sheet gives no cycle conclusion."
+          },
+          {
+            "ticker": "NAUT",
+            "text": "At 05:31 ET, September 29, 2026, secondary coverage reported favorable analyst initiation with a $3.50 price target. The desk grades the fresh news moderate / mixed / secondary, but no company release for the coverage is supplied; no float the desk can independently verify, with 127,255,223 shares outstanding as of July 24, 2026 (the outstanding count, not a float), plus active ATM and shelf capacity. The sheet gives no cycle conclusion."
+          }
+        ]
+      },
+      {
+        "heading": "What came back down",
+        "lines": [
+          {
+            "ticker": "POLA",
+            "text": "At 07:15 ET, September 29, 2026, the company announced a trial order for 50 propane-fueled DC generators from a major Southeast Asian telecom operator, while secondary coverage described a potential five-year opportunity of up to $60 million in revenue. The desk grades the news legitimate positive, but the order value, delivery schedule, margins, customer identity, and larger program are not established; no float the desk can independently verify, with registered resale, convertible, equity-purchase, preferred-conversion, and warrant capacity. The sheet gives no cycle conclusion."
+          },
+          {
+            "ticker": "QURE",
+            "text": "No research is on file at this checkpoint, and no dossier is available. No cycle read is on file."
+          },
+          {
+            "ticker": "EGG",
+            "text": "The latest identified financing event was an F-3 mixed shelf for up to $100 million of securities, effective September 11, 2026 at 16:00 ET, and the desk does not read that stale capacity as explaining the move. No contemporaneous company-specific catalyst is identified; no float the desk can independently verify, with 12,095,200 shares outstanding as of September 30, 2025 (the outstanding count, not a float), and shelf capacity effective September 11, 2026. The sheet gives no cycle conclusion and records up 14.0% since the previous checkpoint."
+          },
+          {
+            "ticker": "IVVD",
+            "text": "On September 29, 2026, the company reported positive topline LIBERTY Phase 3 safety and tolerability results for VYD2311 and regulatory-submission plans. The desk grades the news legitimate positive, while the supplied evidence does not establish efficacy outcomes, an accepted submission, or approval; no float the desk can independently verify, with 294,758,746 shares outstanding as of July 30, 2026 (the outstanding count, not a float), alongside active ATM, shelf, issued-share, and warrant capacity. The sheet gives no cycle conclusion."
+          }
+        ]
+      },
+      {
+        "heading": "What held",
+        "lines": [
+          {
+            "ticker": "PN",
+            "text": "At 09:05 ET, September 23, 2026, secondary coverage reported a framework cooperation agreement linking AI-enabled solar-plant operations and maintenance with the company. The desk grades the stale secondary item moderate / mixed / secondary, with no primary confirmation, disclosed economics, binding terms, or implementation timing; no float the desk can independently verify, alongside recent offering, warrant, shelf, and acquisition-share capacity. The sheet gives no cycle conclusion."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-09-29",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 556,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-09-29T13:25:06.433Z"
+        }
+      ],
+      "publishedAt": "2026-09-30T16:59:15.638Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "What moved",
+          "lines": [
+            {
+              "ticker": "SANG",
+              "liveFeed": null,
+              "text": "On September 28, 2026, the company announced a definitive agreement to be acquired by BRC Group Holdings, a strong news-driven catalyst corroborated by company and newswire sources. Transaction consideration, closing conditions, shareholder approvals, and timing are not established; no float the desk can independently verify, with 33,338,932 shares outstanding as of June 30, 2026 (the outstanding count, not a float), and registered-resale and warrant capacity of unknown status. The sheet marks the name green, fresh / frontside.",
+              "company": {
+                "name": "Sangoma Technologies Corp",
+                "country": "Canada",
+                "business": null
+              },
+              "path": {
+                "from": 3.59,
+                "high": 5.17,
+                "now": 4.9728,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "SSTI",
+              "liveFeed": null,
+              "text": "At 07:35 ET, September 29, 2026, the company announced a merger agreement under which Transom Capital Group would acquire the company through a tender offer for $8.00 per share in cash plus one contingent value right worth up to $3.00 per share. The desk grades the news strong, while closing conditions, regulatory steps, financing, and CVR milestones are not supplied; no float the desk can independently verify, with 13,163,790 shares outstanding as of August 5, 2026 (the outstanding count, not a float), plus other issued-share capacity. The sheet marks the name green, fresh / frontside.",
+              "company": {
+                "name": "SOUNDTHINKING, INC.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 5.47,
+                "high": 8.5,
+                "now": 8.3,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "MSGY",
+              "liveFeed": null,
+              "text": "At 13:30 ET, September 28, 2026, a securities purchase agreement covered 667,000 Class A ordinary shares at $1.50 per share for $1,000,500 in gross proceeds, plus Series A and Series B warrants, to support an acquisition interest. The desk grades the fresh news weak / negative / dilutive; closing, issuance, registration, resale eligibility, and full warrant terms are not established, with no float the desk can independently verify and 16,957,000 shares outstanding as of March 31, 2026 (the outstanding count, not a float), alongside placement, warrant, and acquisition-share capacity. The sheet gives no cycle conclusion.",
+              "company": {
+                "name": "Masonglory Ltd",
+                "country": "Hong Kong",
+                "business": null
+              },
+              "path": {
+                "from": 3.13,
+                "high": 5.2,
+                "now": 4.09,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "FFAI",
+              "liveFeed": null,
+              "text": "At 17:05 ET, September 28, 2026, a company-disclosed term sheet proposed an AIxC acquisition of the robotics business at an expected $200 million purchase price paid in common and non-voting convertible preferred stock. The desk grades the event moderate / mixed / secondary, while definitive documentation, closing, the securities received, and their eventual liquidity are not established; no float the desk can independently verify. The sheet gives no cycle conclusion.",
+              "company": {
+                "name": "FARADAY FUTURE INTELLIGENT ELECTRIC INC.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 1.41,
+                "high": 1.85,
+                "now": 1.56,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            }
+          ]
+        },
+        {
+          "heading": "What came back down",
+          "lines": [
+            {
+              "ticker": "POLA",
+              "liveFeed": null,
+              "text": "At 07:15 ET, September 29, 2026, the company announced a trial order for 50 propane-fueled DC generators from a major Southeast Asian telecom operator, while secondary coverage described a potential five-year opportunity of up to $60 million in revenue. The desk grades the news legitimate positive, but the order value, delivery schedule, margins, customer identity, and larger program are not established; no float the desk can independently verify, with registered resale, convertible, equity-purchase, preferred-conversion, and warrant capacity. The sheet gives no cycle conclusion.",
+              "company": {
+                "name": "Polar Power, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 1.26,
+                "high": 1.52,
+                "now": 1.23,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            },
+            {
+              "ticker": "QURE",
+              "liveFeed": null,
+              "text": "No research is on file at this checkpoint, and no dossier is available. No cycle read is on file.",
+              "company": null,
+              "path": {
+                "from": 39.11,
+                "high": 39.9247,
+                "now": 22,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            }
+          ]
+        },
+        {
+          "heading": "What held",
+          "lines": [
+            {
+              "ticker": "PN",
+              "liveFeed": null,
+              "text": "At 09:05 ET, September 23, 2026, secondary coverage reported a framework cooperation agreement linking AI-enabled solar-plant operations and maintenance with the company. The desk grades the stale secondary item moderate / mixed / secondary, with no primary confirmation, disclosed economics, binding terms, or implementation timing; no float the desk can independently verify, alongside recent offering, warrant, shelf, and acquisition-share capacity. The sheet gives no cycle conclusion.",
+              "company": {
+                "name": "PN Smart Energy Ltd",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 2.62,
+                "high": 3.02,
+                "now": 2.7796,
+                "fromBasis": "PRIOR_CLOSE"
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 7,
+      "overall": null
+    },
+    "diagnostics": {
+      "lines": 12,
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "32.2"
+        },
+        {
+          "id": "S1L4",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "13.1"
+        },
+        {
+          "id": "S2L3",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "14.0"
+        },
+        {
+          "id": "S1L7",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The shelf capacity is only marked possibly active, so calling it active is unsupported."
+        },
+        {
+          "id": "S2L3",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored effective-event timestamp has no timezone, so the claim that it was effective at 16:00 ET is unsupported."
+        },
+        {
+          "id": "S2L4",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The warrant capacity is not all active: one warrant block is not yet active and another has unknown status."
+        }
+      ],
+      "writerMs": 28767,
+      "checkerMs": 70875
+    }
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 7710,
+      "outputTokens": 3130,
+      "cachedInputTokens": 1025,
+      "reasoningTokens": 1687,
+      "durationMs": 28679
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 12310,
+      "outputTokens": 1103,
+      "cachedInputTokens": 1300,
+      "reasoningTokens": 845,
+      "durationMs": 70849
+    }
+  ]
+}
