@@ -12990,3 +12990,11 @@ per slot, no retries; 4 slots/day at one range.
 gap, from a checkout outside the live release, `npx tsx scripts/levels-cost.ts --db "$MARKET_DB_PATH" --live`; output
 as-is to Research; no re-run. Before its merge: Ops reads loadMinuteBarRange in that branch's repo.ts.
 **Waiting on him:** his yes IN THIS SESSION for #1 at 20:07 ET (asked 17:2xZ).
+
+**17:5xZ THE REPORTS CUT IS NOT FIVE COMMITS (sent to Integration for a ruling).** 2bcf1cf has none of the report feature
+(pipeline/runner/writerV5/contract, SessionReports.tsx, dashboard/sessionReports.ts all ABSENT); it lives on main, 1,301
+non-merge commits past the production line's fork (757cf6a2, 09-24). Trial in A:\mointel-reportscut (scratch, detached):
+the 37 report-path commits from main + 2fe8d750 (stateCountry) + 4771363 + runner = 40 apply (7 docs-only conflicts taken
+from main), then tsc fails: SessionReports.tsx needs lib/dashboard/boardRange from 5e8b13c3, the board's price range control,
+a separate user-visible feature. Options put to Integration: (a) include it (his yes); (b) cut-only local rangeLabel + board
+null; (c) reports tomorrow from main. Recommended (b).
