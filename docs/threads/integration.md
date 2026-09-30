@@ -2064,6 +2064,10 @@ RESEARCH 16:3xZ  6a42209 = Design's §8 answers built (no headline, overall 'O' 
                  SANG example opening "2,454 / 749 / 569" (09-28) -> 2,456 / 751 / 568 on the ruled population -> told
                  him in my next message (one line). ORDER CALL: levels setup FIRST, bounded (pre-registration commit,
                  response shape to Design, subagent launch), then writer v5.
+FLAKY PREFLIGHT  Ops running releaseRetention 3x on 46d9f9d + 3x on 89d39053, sequential, free commit memory logged.
+                 Early evidence ENVIRONMENT: this PC FreeVirtualMemory 4.3 GB ~16:2xZ; Ops's own db5d142 gate hit exit 127
+                 on 3 bash-spawning tests, green alone. 126/127 = spawned bash could not start (09-27 commit-memory
+                 incident shape). HAZARD for tonight: every gate runs on this PC with five seats + a levels subagent.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
