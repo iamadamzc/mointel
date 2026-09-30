@@ -318,7 +318,7 @@ export default function LandingPage() {
         <p className="mb-7 max-w-[74ch] text-base leading-relaxed text-ink-1 md:mb-10 md:text-lg">
           The Momentum Intelligence Trading Desk is built for people who trade $1&ndash;$20 small-cap momentum
           in the premarket. It is not a scanner and it is not a signal service: it takes the names that are already
-          moving and puts everything the desk knows about each one on a single shared board &mdash; why it is
+          moving and puts everything the desk knows about each one on a single shared board. Why it is
           moving, where it sits in the cycle, what the share structure is, and what supply stands behind it.
           Where it has nothing, it says so.
         </p>
