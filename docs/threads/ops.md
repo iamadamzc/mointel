@@ -12811,3 +12811,11 @@ maxima 1283.7/558.1/765.7/555.2/611.6. **R1 VALID, 14:54:13-14:55:20Z (145 s+ af
 medians 504.7/485.3/501.6/528.2/486.8, maxima 603.7/560.4/754.2/1318.0/697.8; cold 0.50-0.55 s. **Median of medians
 501.6 ms (R0 473.6), median of maxima 697.8 ms (R0 664.7): +6% / +5%.** Payload 787,898 B, 50 demand states. Confounds:
 load 1.6-1.8 (R0 0.25), io avg300 still 26-33% (the check's tail), the day's content grew 35 min. Not attributed.
+**Integration rulings ~15:0xZ:** (1) HOLD 84b0099 to after 20:00 ET (put to him). TOOLING: until the pre-stop quick_check
+stops reading the live store in RTH, preflight REFUSES any deploy 04:00-20:00 ET on a trading day (reason printed);
+every ship incl. the em-dash release goes after 20:00 ET. Build the refusal first (small tooling commit + test), then
+propose where the check should live (snapshot, or post-stop). (2) R1's first set correctly labelled invalid; R2 after
+84b0099 tonight, same method, R0/R2 named as confounded (day content, time of day). (3) HAND-OFF: quick_check 804 s on
+~4.3 GB + 0.7 GB WAL (80-330 s on record, 3m27s on 1.8 GB 09-17); it only grows (retention 20).
+NOTE: preflight runs from the DEPLOYED release when it has one, so the refusal is procedural until a release carrying
+it is live.
