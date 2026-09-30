@@ -2344,6 +2344,11 @@ PASS BAR RUN 3   FAIL AS REGISTERED: raw 141ee34 before read; harness 9b44df8; c
                  run; then re-pick 4b55a049. LEVELS CUT: Ops trial-picking Research's route + Design's 3 onto 2bcf1cf now.
 LEVELS TRIAL     Design's 3 picks onto 2bcf1cf: clean, no TickerDrawer conflict, tsc adds nothing, targeted 25/25 (Design,
                  discarded worktree). Research's route half: Ops trialling. Design renders the cut tree before my approval.
+LEVELS CUT       e8caa77d (ops/levels-cut-on-2bcf1cf, A:\mointel-levelscut) REPLAYED HERE + APPROVED ON CONTENT: 6 on
+                 2bcf1cfe, patch-ids ALL SAME (ad6eb0f1, ad6fc492, 064e15e1, 607da6ab, 8dfacf4c, 52241465); 14 files
+                 +2,347/-0 (TickerDrawer +3, repo.ts +37 only modified); 187 test files = declared; range control out.
+                 Read-only runtime (Ops). SHIP: Ops gate 187 -> BOX cost test (4612eba, first pass, p95<100/max<250, fail =
+                 no levels tonight) -> Design renders cut tree -> HIS yes (own question) -> after v28 /proc.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
