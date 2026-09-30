@@ -13032,3 +13032,5 @@ schema/env. **GATED HERE ALL GREEN 187/187, 2,843 tests.** Integration APPROVED 
 PASS (4612eba registration, from 8dfacf4, once, after 20:00 in a gap, first pass counts: p95 < 100 ms AND max < 250 ms);
 Design renders the cut tree; his yes. Slot: after v28 is live + /proc read, clear of 22:00 +/- 5. Post-ship live read on /desk
 only: the cut has no /review/[token]/api/levels, so the section never mounts on a review link.
+**HIS YES IN THIS SESSION, 2026-09-30T18:28:16Z: "yes"**, to "Can resistance levels ship tonight, if the speed test passes
+and Design signs off?" (e8caa77d, after v28, clear of 22:00). Conditional: no ship on a cost-test FAIL or without Design's render.
