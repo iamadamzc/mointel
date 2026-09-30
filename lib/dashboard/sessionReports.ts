@@ -22,20 +22,6 @@ import { assessmentLabel } from '../desk/schedule';
 import { formatEtMinute } from '../format';
 
 /**
- * What a section reads when it has no line: the checker struck every sentence
- * in it, or it arrived empty. Marketing's words (marketing.md, 8c76fe0).
- *
- * TRUE IN BOTH CASES, because it speaks about the REPORT, not about our
- * sources or the market. It is deliberately not the writer's NOTHING_LINE,
- * "Nothing in our sources for this section.": that is a checked claim about
- * the sources, and after a strike the sources DO hold the name whose sentence
- * failed, so printing it here would publish a false absence -- the one case a
- * hidden strike list gets wrong (design-seat.md, "WHAT MAKES HIDING IT SAFE").
- * The heading stays: the sections are a fixed shape, stated, never hidden.
- */
-export const EMPTY_SECTION_LINE = 'No line for this section in this report.';
-
-/**
  * The line's states. `late` is not a sixth member: it is a PUBLISHED report
  * carrying the qualifier, exactly as a late checkpoint is still a checkpoint.
  */
