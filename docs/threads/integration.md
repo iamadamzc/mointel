@@ -2314,6 +2314,15 @@ REPORTS GATED    4b55a049 ALL GREEN 201/201, 3,058 (Ops). next build running (te
 REPORTS BUILD    4b55a049 next build exit 0 in a fresh worktree with its own npm ci (junction refused by Turbopack = env);
                  /api/reports in the route table. deploy.sh builds before the stop (a build defect aborts with all
                  serving). Reports cut waits ONLY on run 2 PASS -> my literal-sha approval -> his yes.
+PASS BAR RUN 2   FAIL AS REGISTERED: raw a3e7229 before read; harness 24b3552; checker 925c9dc; set ab6d6a84; $2.36.
+                 Keyed 19/19 x3 = NO MISSED DEFECT (second run). Control strikes: regression 3 (518-C S1L1 MGLD, 518-C
+                 S1L2 AIFF, 528-C S1L1 ELPW), ordinary 2 (528-C S1L2 MGLD, 531-C S1L2 MGLD). Run-1 fixes held. Causes:
+                 (A) AIFF + ELPW controls FALSE to the store (checker right); (B) MGLD "sell" in an asset-sale catalyst.
+                 RULING (B): strike CORRECT (absolute "no buy/sell language, ever", lib/desk/assessment.ts per Commercial;
+                 "sale"/"divest" say the same) -> SET error; checker made no run-2 error.
+                 RUN 3 = LAST tonight: checker STAYS 925c9dc (no re-freeze), cut 4b55a049 stays candidate; FRESH set
+                 09-26, every control clause FIELD-TRACED, no banned words; PRE-FIXED: PASS -> approve + his yes; ANY FAIL
+                 (missed defect OR control strike, whatever the cause) -> no reports tonight, no run 4, he hears why.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
