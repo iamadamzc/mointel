@@ -70,6 +70,33 @@ export function reportTitle(kind: ReportKind): string {
   return TITLE[kind];
 }
 
+/** Where each report's watch list is headed. Marketing's words (marketing.md, 809e4c4). */
+const WATCH_INTO: Record<ReportKind, string> = {
+  PREMARKET: 'into the premarket',
+  INTO_RTH: 'into the open',
+  INTO_POWER_HOUR: 'into the last hour',
+  AFTER_HOURS: 'into after-hours',
+};
+
+/**
+ * The report's opening sentence, his ruling: "we're watching N names into
+ * premarket", N being the report's own list. Worded here from the payload's
+ * count, so the words live where they are printed.
+ *
+ * N is the number of distinct names the report SHOWS -- counted after the
+ * checker's strikes -- so the sentence can never disagree with the lines
+ * under it. Zero is a quiet session, published as such and never as
+ * "watching 0 names"; a report whose every name was struck does not publish
+ * at all, so it never reaches this line. Anything that is not a whole,
+ * non-negative count prints nothing rather than a guessed number.
+ */
+export function watchLine(kind: ReportKind, count: number): string | null {
+  if (!Number.isInteger(count) || count < 0) return null;
+  const into = WATCH_INTO[kind];
+  if (count === 0) return `Nothing on watch ${into}.`;
+  return `We're watching ${count} ${count === 1 ? 'name' : 'names'} ${into}.`;
+}
+
 /**
  * Slot states for one report range.
  *

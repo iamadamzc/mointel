@@ -21,6 +21,7 @@ import {
   reportCoverage,
   reportTimeline,
   sessionText,
+  watchLine,
 } from '@/lib/dashboard/sessionReports';
 import { NOTHING_LINE } from '@/lib/desk/reports/writer';
 
@@ -294,6 +295,36 @@ describe('the words', () => {
   it('a session is a calendar day, not an instant', () => {
     expect(sessionText('2026-09-28')).toBe('Mon, Sep 28');
     expect(sessionText('garbage')).toBeNull();
+  });
+});
+
+/*
+ * From Marketing's table (marketing.md, 809e4c4), one row per kind, and his
+ * ruling: "we're watching N names into premarket".
+ */
+describe('watchLine: the opening sentence', () => {
+  it('names where each kind of report is headed', () => {
+    expect(watchLine('PREMARKET', 7)).toBe("We're watching 7 names into the premarket.");
+    expect(watchLine('INTO_RTH', 7)).toBe("We're watching 7 names into the open.");
+    expect(watchLine('INTO_POWER_HOUR', 7)).toBe("We're watching 7 names into the last hour.");
+    expect(watchLine('AFTER_HOURS', 7)).toBe("We're watching 7 names into after-hours.");
+  });
+
+  it('one is a name, not names', () => {
+    expect(watchLine('PREMARKET', 1)).toBe("We're watching 1 name into the premarket.");
+  });
+
+  it('a quiet session says nothing is on watch, never "watching 0 names"', () => {
+    expect(watchLine('PREMARKET', 0)).toBe('Nothing on watch into the premarket.');
+    expect(watchLine('INTO_RTH', 0)).toBe('Nothing on watch into the open.');
+    expect(watchLine('INTO_POWER_HOUR', 0)).toBe('Nothing on watch into the last hour.');
+    expect(watchLine('AFTER_HOURS', 0)).toBe('Nothing on watch into after-hours.');
+  });
+
+  it('prints nothing for a count it cannot trust, rather than a guessed number', () => {
+    for (const bad of [-1, 2.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(watchLine('PREMARKET', bad)).toBeNull();
+    }
   });
 });
 
