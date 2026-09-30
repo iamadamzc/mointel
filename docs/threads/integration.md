@@ -2482,6 +2482,14 @@ NOW "/min" v6    Research: vendor-ack path ALSO excluded (subscriptions change o
                  code; every found path excluded. I had told HIM "likelier: vendor dropped names" -> corrected to him.
                  LOGGING APPROVED (tomorrow, after sic write): web-tier line when asOf fresh but EVERY row's newest slot
                  unmeasured (asOf, intervals, open, min last_seen), rate-limited; warn on the catch.
+TRADE-RESEARCHER HIS ASK (this session, ~23:2xZ): brief @trade-researcher (local_c188af94, cwd A:\trade_research, another
+                 project) on all desk data for news-reaction backtests. Inventory by an Explore subagent with file:line
+                 cites; Benzinga doc read. SENT (delivered): hazards first (ONE SIP stream per account: never stream;
+                 shared REST limit; no production box; data/market.db is not prod), the prod copy's tables and limits
+                 (minute_bars ~15 sessions, mixed basis; daily_bars researched names only; NEWS_FEED only since 09-28
+                 10:07 ET, top-12, single-symbol; SEC exact times only after 09-07), what to fetch (Alpaca news + bars REST,
+                 EDGAR), licensing (personal/non-commercial; his Benzinga $1,000/mo quote; Alpaca feed missed MEDS), prior
+                 work. HIS BENZINGA QUOTE -> Commercial (register fact, no action).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
