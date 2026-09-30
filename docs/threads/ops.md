@@ -12837,3 +12837,8 @@ after 20:00 ET): its own enumeration AFTER tonight. v28 still runs the check (a 
 46d9f9d onto main after it ships.
 **Routing ~15:4xZ:** Integration local_962d5920 RETIRING (hand-off 9e8977b2). Send to Integration-tmi BY TITLE (cwd
 A:\mointel, not archived, not 962d5920). Tonight's 46d9f9d and R2 go to the successor.
+**Routing ~15:4xZ: Integration-tmi = local_50b52df9 (20th).** /proc 15:44:49Z: web/research/assess c3d0f06 (1631221 /
+1631287 / 1631397, start 14:51:49-50Z) NR 0; market 1574400 1b5ead6 NR 0. **His tonight/guard answer: NOT given yet.**
+Local state not otherwise recorded: worktree A:\mointel-ops (node_modules = junction to A:\mointel's) with branches
+ops/minute-bars-bound-on-74c1818 (6043db3), ops/minute-bars-bound-on-c3d0f06 (84b0099), ops/preflight-live-check-on-84b0099
+(46d9f9d); session cron 034bcf2f at 20:07 ET (dies with this session).
