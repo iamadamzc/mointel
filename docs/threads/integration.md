@@ -2992,6 +2992,16 @@ OPS ACK          Ops gates (A) when Design hands it over; his question names FOU
 TGE CITATION     Design's finding, UNVERIFIED here: premarket report prints TGE business line ending "[Source 115982]."
                  (token stored inside `business`; production renders it today). Routed to Research (374a166a) to confirm
                  cause + count + fix site. To him only once confirmed, as defect + fix.
+TGE CITATION CONF  Research: REAL; the INTERPRETER writes citation tokens into dossier text (TGE v2624 "[Source
+                 115982]" + 16 other fields; DKI v2625 "[96174, 96176, 119985]"); 2 of 2 prompt-v3 dossiers with
+                 businessDescription carry one, 38 older none (sample only; production count asked of Ops). READ HERE:
+                 published #591 row carries "[Source 115982]" (5c55e489 json :5); research.ts:121 business via clean() =
+                 withoutEmDash + trim only (e8822583); no citation strip in lib/ or worker/. Drawer showing tokens:
+                 Research's "likely", NOT verified; not told to him. ORDER CALL: NOT in (A). Own cut from /proc after (A):
+                 (1) write-side strip in interpreter normalise, (2) render strip in reportResearch clean(), tests with
+                 both forms + a non-citation bracket control; drawer strip only once its render is opened (Design wires,
+                 Research owns the pattern). (3) checker bracketed-id strike ADDED TO v6. Research c794b742, Ops
+                 2da48396 (both queued). TOLD HIM once: the verified #591 instance + the fix's order.
 APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
                  ungraded name (screen readers only). Own commit, after the ship.
 ```
