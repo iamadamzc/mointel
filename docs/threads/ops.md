@@ -13106,3 +13106,10 @@ DB handles (market.db readonly, history.db via openHistoryStore), no new unit. B
 kept both reportLoop.stop() and historyStore?.stop()); tsc 0; historyStore + historyStoreJob + reportJob tests 36/36.
 Waiting on Research: the levels refresh entry + cadence, and the NEW box timing registration (run once after 22:15 ET,
 before 03:30 ET, read-only from /tmp, nothing else running).
+Agreed with Research (child process per 5m close + 20 s, killed at 270 s, killed on shutdown; market.db readonly+skipSchema;
+history.db created by the first child as mointel; route never opens market.db, tested). Registration **90564228** (spec
+section 8): PASS = refresh total < 150 s AND read p95 < 100 ms AND max < 250 ms, --now 2026-09-30T23:55:20Z, scratch
+/tmp history.db; run only on Research's "ready" with the exact sha. **Thursday's levels cut carries FOUR Design picks:**
+ad6eb0f1, 064e15e1, 52241465, **9813ec55** (absent copy; Design gated 208/208).
+PC memory 01:4xZ: commit 1.9 GB free of 36.2 (pagefile 5 GB; 28 claude 10.1 GB, chrome 5.9 GB, orphan suite ~0.6 GB) caused
+Design's OOM gate; he closed Chrome -> 6.5 GB free; Design's rerun clean 208/208. Orphan pids 20200/22704/24128 still resident.
