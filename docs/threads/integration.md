@@ -3118,6 +3118,13 @@ NEW RESEARCH     local_5f4bfcf8 (title Research-tmi, cwd A:\mointel, created 13:
                  local_f6fa4717 = "Research-tmi (retired 2026-10-01)", ARCHIVED (read). Live state given with artefacts;
                  his "yes, wait for the comparison" = my transcript 1bfab363 user record 12:53:31.806Z. Forward Ops's
                  census / 2a625a5b gate / VEEA read to local_5f4bfcf8 as they land.
+SIDE-BY-SIDE     DRAFT d951f238 (docs/research/movers-vs-robust-baseline/side-by-side.md); B pre-registered 09d33239
+                 (09:15:20 ET, ancestor of the draft; read). Research's headline (its numbers, local copy, 39 gated
+                 checkpoints): median baseline puts 5 of 12 testable mover-adds on the board (trimmed 2); swaps median
+                 15 of 50 names per checkpoint, 395 of 613 entries DOWN on the day; needs a market-worker restart, next
+                 baseline build; moves AH participation + FLOW_DOMINANT rvol>=5 gate. A = web tier, no existing reader
+                 changes. cycle.ts already uses its own median. Owed: Ops VEEA 04:00-10:00 volume, readTopMovers timing,
+                 Design paragraph. Nothing to him until final.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
