@@ -3114,6 +3114,10 @@ RESEARCH HANDOFF On HIS word to Research ("hand off, write the opening prompt");
                  the NEW id (createdAt after 13:11Z) once it messages; nothing to local_f6fa4717 after. Successor asks
                  me for live state first: give /proc (from Ops), 2a625a5b gate, citation census (Ops 14:01Z, NOT yet
                  received here), VEEA read, his "wait for the comparison".
+NEW RESEARCH     local_5f4bfcf8 (title Research-tmi, cwd A:\mointel, created 13:12:14Z; get_session read). Old
+                 local_f6fa4717 = "Research-tmi (retired 2026-10-01)", ARCHIVED (read). Live state given with artefacts;
+                 his "yes, wait for the comparison" = my transcript 1bfab363 user record 12:53:31.806Z. Forward Ops's
+                 census / 2a625a5b gate / VEEA read to local_5f4bfcf8 as they land.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
