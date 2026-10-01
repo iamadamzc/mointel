@@ -80,6 +80,16 @@ describe('review response headers', () => {
     expect(response.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
   });
 
+  it('sets no-store on the review reports read too', () => {
+    const response = proxy(request('GET', 'https://desk.example/review/abc123/api/reports'));
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
+  });
+
+  it('refuses a mutation to the review reports path', () => {
+    const response = proxy(request('POST', 'https://desk.example/review/abc123/api/reports'));
+    expect(response.status).toBe(403);
+  });
+
   it('sets no-store and no-referrer on the refusal too', () => {
     const response = proxy(request('POST', 'https://desk.example/review/abc123/api/focus'));
     expect(response.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
