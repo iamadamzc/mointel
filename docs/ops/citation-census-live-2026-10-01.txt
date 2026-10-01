@@ -1,0 +1,42 @@
+[census] 14:01:08Z staging 6fb483a0 at /tmp/census-6fb483a0
+2026-10-01T14:01:36Z
+{
+  "readAt": "2026-10-01T14:01:41.277Z",
+  "ms": 4291,
+  "all": {
+    "versions": 2702,
+    "affected": 2341,
+    "byForm": {
+      "SOURCE": 123,
+      "LIST": 2137,
+      "SINGLE": 2012
+    },
+    "byField": {
+      "catalyst": 1949,
+      "structure": 2333,
+      "cycle": 1230,
+      "companyName": 1,
+      "cik": 1,
+      "country": 2,
+      "businessDescription": 36
+    }
+  },
+  "current": {
+    "versions": 1178,
+    "affected": 996,
+    "byForm": {
+      "SOURCE": 48,
+      "LIST": 910,
+      "SINGLE": 877
+    },
+    "byField": {
+      "structure": 993,
+      "cycle": 454,
+      "catalyst": 827,
+      "country": 1,
+      "businessDescription": 23
+    }
+  },
+  "unreadable": 0
+}
+[census] exit 0
