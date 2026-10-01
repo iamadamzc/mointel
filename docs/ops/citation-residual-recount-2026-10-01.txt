@@ -1,0 +1,22 @@
+14:41:23Z
+{
+ "readAt": "2026-10-01T14:41:51.820Z",
+ "ms": 4695,
+ "versions": 2707,
+ "currentVersions": 1178,
+ "idsEqualSourceIds": 2707,
+ "diffs": [],
+ "beforeRuleCurrent": 293,
+ "beforeRuleCurrentVersions": 66,
+ "beforeRuleAll": 1302,
+ "leftAfterRuleCurrent": 6,
+ "leftList": [
+  "WFF v36: 2",
+  "DUOT v43: 1",
+  "CAST v701: 1",
+  "EHGO v1387: 1",
+  "RPGL v2694: 1"
+ ],
+ "leftAfterRuleAll": 20
+}
+[recount] exit 0
