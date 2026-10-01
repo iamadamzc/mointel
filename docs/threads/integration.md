@@ -2981,6 +2981,19 @@ OPS ACK          Ops gates (A) when Design hands it over; his question names FOU
                  push 49be03b1 without HIS word (asked him). PUSH ROUTE MEANWHILE: my commits cherry-picked onto
                  origin/main in a temp worktree and pushed HEAD:main (5115086b = local 4d900c2c). Never rebase/autostash
                  the shared tree (peers' uncommitted files).
+(A) CUT          840741d399fed79dc05540dea9c9b81007875fa2 (tag design/a-on-b5a35fda) REPLAYED + APPROVED BY LITERAL SHA
+                 (scratchpad replay-a.ps1): merge-base b5a35fda; 3 linear, 0 merges (18 over e8822583); patch-ids equal
+                 35f45d3c=d427dd0e 6b347785, 1e8ee22a=01017f6a 7169578f, 840741d3=89e6c111 88dfaa30; 11 files +884/-96;
+                 no deploy/ lib/db worker/ package*; 0 added U+2014; tests 214 vs 211. SHIP: Ops gate 214/214 + build
+                 (Ops running it; Design did not gate this sha), levels ships FIRST and /proc = b5a35fda, his yes naming
+                 4 changes. Levels not shipped -> this sha does not ship; re-cut from e8822583. Design render of 840741d3
+                 (its account): 2 real stored reports via Ops's 03:04:40Z GET, 11 cards each, no headings, 0 em dashes.
+                 Ops 9efa0f00, Design 4387498b.
+TGE CITATION     Design's finding, UNVERIFIED here: premarket report prints TGE business line ending "[Source 115982]."
+                 (token stored inside `business`; production renders it today). Routed to Research (374a166a) to confirm
+                 cause + count + fix site. To him only once confirmed, as defect + fix.
+APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
+                 ungraded name (screen readers only). Own commit, after the ship.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
