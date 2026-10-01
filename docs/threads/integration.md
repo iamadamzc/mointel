@@ -1057,6 +1057,11 @@ limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register 
 
 ### HAND-OFF LINE
 ```
+HIS ASK (4689366c, after the hand-off), verbatim: "the session report needs some design attention. its hard on the
+eyes. needs something. maybe color? some other elements." + screenshot of the live window (images\1.webp in this
+session's temp dir): dense one-paragraph-per-ticker prose, uniform colour, AND text apparently running past the right
+edge (clip vs his crop: Design to check). ROUTED to Design (mock first, his yes on the mock), Marketing cc on prose
+density; writer changes = Research + a fresh Commercial sample; display-only changes do not touch the checker.
 HE ASKED "why not tonight?" -> NEEDS YOU (tonight vs Thursday; recommended Thursday: new research-worker code's first
 live run would be his premarket). HE ASKED "can the pre-work be done now with no risk?" -> ORDER CALL: ALL PRE-WORK
 TONIGHT, NO DEPLOY: build on a branch, register, box test ONCE read-only from /tmp after 22:15 and before 03:30 ET, cut
