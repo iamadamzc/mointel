@@ -32,6 +32,7 @@ import type { DemandState, MarketSnapshot, SessionPhase } from '@/lib/market/typ
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import type { AutoIntelligence } from '@/lib/research/view';
 import { withoutEmDash, withoutEmDashDeep } from '@/lib/dashboard/prose';
+import { withoutCitationsDeep } from '@/lib/research/citations';
 import {
   compareSheetAndAuto,
   type MergeProvenance,
@@ -306,13 +307,20 @@ function resolveDisplayedFloat(
  * once here, where every row takes it, rather than at each of them. Source
  * titles too, which the collector joined with a dash before his rule. A URL is
  * an address, not writing, and is never touched.
+ *
+ * The dossier's citation tokens go here too ("[Source 115982]", "[96174, 96176]"):
+ * they are the model's pointers into its source bundle and printed verbatim on
+ * the Why and Risk cells, their tooltips and the dossier (design.md row C). The
+ * pattern is Research's (`withoutCitationsDeep`); this is only where it is applied.
  */
 export function readableIntelligence(auto: AutoIntelligence | null | undefined): AutoIntelligence | null {
   if (!auto) return null;
   return {
     ...auto,
     statusLabel: withoutEmDash(auto.statusLabel),
-    analysis: auto.analysis ? { ...auto.analysis, dossier: withoutEmDashDeep(auto.analysis.dossier) } : null,
+    analysis: auto.analysis
+      ? { ...auto.analysis, dossier: withoutEmDashDeep(withoutCitationsDeep(auto.analysis.dossier)) }
+      : null,
     evidence: auto.evidence.map((link) => ({ ...link, title: link.title === null ? null : withoutEmDash(link.title) })),
   };
 }
