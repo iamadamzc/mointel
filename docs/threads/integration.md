@@ -2816,6 +2816,11 @@ DESIGN R1 LIVE   ec1215d2 (read): board text 0 em dashes; OLD rows correct. FIND
                  review mirror; if built, showing reports on review links = HIS question.
 ROW A DESIGN     APPROVED (order call): card per name in writer order, multi-section names joined, emptied section +
                  NOTHING_LINE render nothing, v4 empty body "No line in this report.", overall + watch lines stay.
+REVIEW MIRROR    Research sized (nothing built): ONE route app/review/[token]/api/reports/route.ts (~20 lines, market
+                 mirror's shape, guardReviewApi unchanged, same getSessionReports, REVIEW_HEADERS, 404 when no table, GET
+                 only); no client change (useSessionReports.ts:35 already fetches ${apiBase}/reports); 4 tests + readOnly
+                 line; no file overlap with v6; ~30 min. Read here at e8822583: hook :34, guard access.ts:44, market route
+                 shape. PUT TO HIM: show reports on review links? (rec yes).
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
