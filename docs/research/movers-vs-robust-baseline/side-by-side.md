@@ -1,6 +1,25 @@
 # Big movers: the movers rule (A) vs a robust RVOL baseline (B)
 
-*Seat `local_5f4bfcf8` (Research-tmi), 2026-10-01. DRAFT: three inputs are still owed and are marked PENDING. Nothing here ships anything; both options wait for his decision.*
+*Seat `local_5f4bfcf8` (Research-tmi), 2026-10-01. Complete. All inputs are in: Ops's VEEA read `a5178ac1`, Ops's timing `539ae024`, Design's paragraph `c9dc42ce`. Nothing here ships anything; both options wait for his decision.*
+
+## The answer, short
+
+| | A: movers rule | B: median baseline |
+|---|---|---|
+| VEEA today (his case) | returned by the rule at the registered 10:03 ET read (by then already 34th by RVOL); 08:10 ET not read | RVOL about 201 at 10:00 (registered estimate); about 31 at 08:10 (post hoc) |
+| Big movers in the replay | all 19 | 5 of the 12 testable |
+| Rest of the board | unchanged; 0 to 3 extra rows, in their own group | about 15 of 50 names swapped per checkpoint, most of them DOWN on the day |
+| What has to restart | nothing (web tier only) | the market worker, and it applies from the next day's baselines |
+| Other parts of the desk | none | after-hours board, a research guardrail (`rvol >= 5`), stored history before and after, "average" labels |
+| Running cost | about 4 ms per board refresh (Ops, on a copy) | none at run time |
+| Board principles | two: RVOL, plus a labelled "moving 20%+" group | one, with a changed meaning; matches the cycle module, which already uses a median |
+
+**Recommendation:**
+- **A**, shown the way Design describes: a separate labelled group after the ranked list, in its own order. Placed there, it changes nothing about what the ranked list means.
+- **Not B as the fix for movers.** In the replay it brought in 11 entries up 20% or more against 395 down on the day, left 7 of 12 testable big movers off, and it costs a market-worker restart.
+- If he wants RVOL itself to stop carrying one past spike for 20 sessions, that is a separate question. It needs the backtest that fixed the mean re-run before the definition changes.
+
+**On "becoming a scanner":** A is bounded. At most 10 rows, only names at +20% or more that the RVOL ranking left off, always in their own group. On the replay that was 0 to 3 rows, none before 09:25; today, a busier day, 8 in-band names were up 20% or more at about 10:11 ET. 4 of them were already on the board by RVOL at the 10:03 read.
 
 **His question** (2026-10-01T12:42:22Z, Integration's transcript `1bfab363`): "we went pretty fast on that. was there a cost analysis? (not $, system cost, compatibility, design, etc.) does it make sense? we're slowly becoming a scanner doing that." **His requirement** (12:14:00Z): "VEEA is up 43% from close. it should absolutely show on the baord somewhere." **His ruling** (12:53:31Z): "yes, wait for the comparison."
 
@@ -24,7 +43,7 @@ Evidence: A's replay (`docs/research/board-movers-replay-2026-10-01/`), and B's 
 - **SVRN** (09-18, +35.3%) just misses (B1 52nd).
 - **NCPL** (09-24, +35.6%) ranks LOWER under B1 (75th) than today (56th).
 - **FTFT** UNTESTED (its proxy is off by 21%).
-- **VEEA:** in under both A and B1 (estimate), see section 1a.
+- **VEEA:** A's rule returned it at the 10:03 ET read; under B1 an estimate clears every replay day's cut. See section 1a.
 
 ### 1a. VEEA today (an estimate, as registered)
 
@@ -46,7 +65,8 @@ VEEA's B1 denominator on the copy is **249,061 shares** (median of 20 copy dates
 *POST HOC, labelled, not registered:*
 - Under B1, VEEA's RVOL at 08:10 ET was about **31** (7,801,924 / 249,061).
 - On the replay days the B1 cut at 08:00 was 0.23 to 0.51. Today's board is hotter than those days: 50th place under the MEAN was above 0.581 at 08:10, against 0.08 to 0.14 at 08:00 on the replay days. Even scaled up by that ratio (about 4 to 8 times), 31 clears it.
-- **So both A and B would have put VEEA on the board when he looked; the replay is what separates them.**
+- **A at 08:10 ET was NOT read.** At +43% VEEA would be left off only if ten in-band names off the board were moving more; at about 10:11 ET there were eight at +20% or more in total, four of them already on the board.
+- **So VEEA alone does not separate A from B; the replay does.**
 
 **Today's movers read also returned MEDS** (+32.5%, rank 83 under the mean), a name A would add today. On 09-17 MEDS was a B1 newcomer at -22.9%.
 
@@ -58,7 +78,9 @@ VEEA's B1 denominator on the copy is **249,061 shares** (median of 20 copy dates
 | What comes in | +20% movers only | of 613 entries (summed over 39 checkpoints), **395 are DOWN on the day**, 181 up 0 to 10%, 37 up 10% or more, 11 up 20% or more | not broken out |
 | Thin names (top-50 names under 100k shares at t, median per checkpoint) | unchanged | 20 (vs 24 under the proxy mean) | 21 |
 
-Under B the typical newcomer is a name that had one huge day inside its last 20 sessions and is now fading on ordinary follow-through volume. Example, 09-17 10:00: DLXY -53.7%, MEDS -22.9%, NAMI -34.0%, TGL -35.6%, VEEA +7.0%. A median makes that one day stop counting, so the next weeks' normal volume reads as high relative volume. The churn is measured B against the proxy mean, so it is the statistic, not the proxy.
+**Measured:** the newcomers under B are mostly names DOWN on the day. Example, 09-17 10:00: DLXY -53.7%, MEDS -22.9%, NAMI -34.0%, TGL -35.6%, VEEA +7.0%. The churn is measured B against the proxy mean, so it is the statistic, not the proxy.
+
+**Why, by reading the formula, NOT measured per name:** a name moves up under a median when a few large days dominate its 20, so its median sits far below its mean. Then ordinary follow-through volume after a spike reads as high relative volume. VEEA, with one 202M-share day on 09-15, is the one case checked.
 
 ## 3. System cost
 
@@ -93,13 +115,17 @@ Under B the typical newcomer is a name that had one huge day inside its last 20 
 **B changes the meaning of a value read across the desk.** The inventory counts, approximately, files that compute it (~9), persist it (~9), rank or select by it (~22), display it (~27) and compare it across time (~15). The ones that matter:
 - **After-hours participation moves too.** It divides by the same baseline (`afterHours.ts:57-67`, `engine.ts:1678`, `:1919`), so the after-hours board changes, not only the daily one.
 - **A research guardrail shifts.** `guardrails.ts:318-319` lets a catalyst stand as FLOW_DOMINANT only when `rvol >= 5`. RVOL rises under a median for spiky names, so more names pass. That is grade-affecting.
-- **History splits at the change date.** Checkpoints (`desk_assessment_tickers.rvol`), `rth_final_rvol`, the archive's `final_rvol` (`lib/archive/coverage.ts:405-411`), the first-write latches (`repo.ts:863-866`, `:893-894`) and the RVOL bands in `worker/dead-while-ranked.ts:306-311` would mix mean-era and median-era values. The cycle fingerprint buckets `floor(log2(rvol))` (`lib/desk/assessment.ts:89-91`), so it flips if the change lands between checkpoints.
+- **History splits at the change date.** Checkpoints (`desk_assessment_tickers.rvol`), `rth_final_rvol`, the archive's `final_rvol` (`lib/archive/coverage.ts:405-411`), the first-write latches (`repo.ts:863-866`, `:893-894`) and the RVOL bands in `worker/dead-while-ranked.ts:306-311` would mix mean-era and median-era values. The cycle fingerprint buckets `floor(log2(rvol))` (`lib/desk/assessment.ts:89-91`), so a fingerprint compared across the change date can differ on the denominator alone.
 - **No test tells mean from median.** Every `buildBaseline` fixture uses a flat volume (`tests/market/rvol.test.ts:7`; one test zeroes a single day, which is excluded), so a B change needs a new test.
 - **Already on a median:** the cycle module. `cycle.ts:845-858` computes its own RVOL from a MEDIAN and calibrated `CYCLE_START_RVOL = 5` to it. Its comment states that the stored `rvol` divides by the mean. So **the desk already runs two RVOL denominators.** B would make them one, and that comment would need updating.
 
 ## 5. Design: one principle on the board, or two
 
-PENDING: Design-tmi's paragraph, to be inserted verbatim.
+*Design-tmi (`local_c29a82bd`), verbatim from `design.md` row M2 (`c9dc42ce`):*
+
+> (B) keeps one ordering, so position keeps one meaning (higher = more unusual participation against this name's own history), the controls keep working over one list, and nothing new is added to the layout; its reading cost is that the RVOL figure on every row changes value, so the column title, its tooltip and the caption under the board must say the baseline is a median, and a figure compared against an RVOL from another source may no longer agree. It also changes WHO is on the board in a way a reader will notice: on Research's replay most of the entries it adds (counted per checkpoint) were down on the day, which reads correctly only if the reader already holds "participation, not direction" (the caption says so today); and it brings only some big movers in (of 12 in the replay, 5 under the median; VEEA itself not yet measured). (A) adds a second reason for a row to be there; it reads cleanly only as its own labelled group after the ranking, in its own fixed order (biggest move first), untouched by the sort and Top N, each row showing where it would have ranked; that costs a band, up to 10 rows and a count in the header, and the caption no longer covers every row. Placement is the system cost: as a separate group after the ranking, (A) changes nothing about what the ranked list means; placed above it or mixed into it, the first rows stop meaning "most unusual participation" and every position on the board needs a second look. Neither option touches the other surfaces (Researched names, reports, dossier).
+
+*Since Design wrote it, VEEA has been measured (section 1a): the rule returned it at the registered read, and B1 clears every replay day's cut by a wide margin. A built display for (A), placed as a separate group after the ranking, is parked as tag `design/movers-on-558f5cb5` (`aee14900`). It is HELD on his question.*
 
 ## 6. Product: does the board stay an RVOL board?
 
