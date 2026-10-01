@@ -1047,7 +1047,8 @@ GRADES B RE-RUN      Research: trigger = first v2 reverse-split catalyst row.
 
 ### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
 ```
-Ops-tmi local_8a0801c2   Research-tmi local_f6fa4717   Design-tmi local_4f84a562   Web-tmi local_2c0e391a
+Ops-tmi local_8a0801c2   Research-tmi local_f6fa4717   Design-tmi: NEW SEAT PENDING (4f84a562 retired 10-01)
+Web-tmi local_2c0e391a
 Marketing-tmi local_fdc0aa9a   Commercial-tmi local_2ce868d2.  Retired, NOT archived (his, cosmetic):
 "Ops-tmi (retired 2026-09-30)" local_bb3d4059, "Research-tmi-retired" local_4b09b3b2, this seat local_50b52df9.
 OTHER PROJECT: trade-researcher local_c188af94 (A:\trade_research): briefed on desk data for news backtests + where
@@ -1057,6 +1058,10 @@ limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register 
 
 ### HAND-OFF LINE
 ```
+DESIGN RETIRED   local_4f84a562 on his "yes hand over"; hand-off 7d64be12 (21:59 ET; read stat): design.md LIVE STATE
+                 rows R1 / A (layout, his "a now") / L (Thursday levels render, 4 picks) / B (tags + narrative) / N
+                 (all-"/min") / 5b. HE adds the review-link permission rule himself. Successor: he opens a new
+                 Design-tmi; route by title.
 LEVELS CUT PICKS (Design): ad6eb0f1, 064e15e1, 52241465, 9813ec55 (absent copy true for off-board names under stored
 rows; 3 files; Design gate 208/208). Told Ops + Research.
 DESIGN (01:5xZ): A NOT started; Design repeated a corrected class (generated code losing backslashes) and asked HIM for a
