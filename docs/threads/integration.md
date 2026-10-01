@@ -3166,6 +3166,11 @@ DESIGN RETIRED   local_c29a82bd handed off (ad19ab26, read). Refs on origin are 
                  Design seat: none open yet. Route by title + createdAt after 14:19Z.
 RESEARCH STAYS   Per Research (43777d35): his "a, keep the seat" in its session. local_5f4bfcf8 continues; owns the
                  citation residual (pre-registered local count, then build, after tonight).
+RESIDUAL BUILT   a58aa866 on main (not shipped); registration 5441204f is its ancestor (read). result.md read: rule =
+                 strip a lone 1-4 digit bracket whose value is in the version's own cited ids; covers 272 of 277 non-year
+                 occ. (copy); 17 year-like occ. hand-read, all citations; leaves 5 (WFF 2, DUOT, CAST, EHGO); no call-site
+                 change; 5 mutants at prediction. Waits: tsc + full suite (Ops slot), cut after tonight's three, Ops
+                 production re-count, his yes.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
