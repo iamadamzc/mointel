@@ -13201,3 +13201,9 @@ fast-forward d321c5f3..3671951a; main = origin. From now: commit --only, fetch, 
 10:00 ET is the ONLY full suite for it. Ships after (A), on his yes; re-cut if levels or (A) don't ship Thursday.
 **Live citation census:** scheduled once at 14:01Z from a /tmp archive of 6fb483a0 (readonly, SELECTs only); output to
 docs/ops/citation-census-live-2026-10-01.txt, sha to Integration. Local 09-29 copy said 946 of 1,122 current versions carry a token.
+**CITATION CUT 2a625a5bc806d923856c52e46a3bf74710bc383a** (tag research/citation-cut-on-840741d3) = 840741d3 + 35da6b4e
+(<- fc22dbcb) + 5a36d833 (<- 6fb483a0) + 6be6dd24 (<- d478adde) + 2a625a5b (<- 5f7fd3fe); 217 declared. Integration APPROVED
+BY LITERAL SHA. My gate + build scheduled 14:02Z. Conditions: gate 217/217 + build; Design's render of this tree; /proc =
+840741d3 at launch (levels, then (A), shipped first); his yes. **His question, plain words:** research text on the board, in
+the research panel and in report company lines stops showing database source numbers like "[Source 115982]" or "[4473,4498]";
+new research is saved without them; nothing is re-analysed; plus the live census figure from the 14:01Z run.
