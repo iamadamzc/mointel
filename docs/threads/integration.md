@@ -3180,6 +3180,8 @@ HIS QUESTION     "the question i have is is 20% the right number and what does i
                  ANY mover on the board. d02cfb36 gives no derivation for +20% (read): a choice. Asked Research for a
                  floor sensitivity table (10/15/20/25/30%, K=10 and uncapped; rows added, cap binding, still-up vs faded
                  by 10:00, named examples), definition committed first; Ops for today's counts at those floors.
+                 Ops f1c0628d (11:32 ET, one RTH moment): off-top-50 in band >=10% 22, >=15% 11, >=20% 5, >=25% 2, >=30% 1;
+                 thin names at 10-20% (WFCF 5,756 sh). Research asked to add a volume-floor cross. One table to him.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
