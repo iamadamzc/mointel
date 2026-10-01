@@ -318,6 +318,12 @@ export interface FreshnessState {
 export interface DemandState {
   ticker: string;
   tradingDate: string;
+  /**
+   * Why a row is on the board when it is not by rank: 'MOVER' = a big % move
+   * from the prior close below the RVOL cut (`boardMovers.ts`). Absent on a
+   * ranked row. The board's own placement and label are Design's.
+   */
+  boardReason?: 'MOVER';
 
   price: number | null;
   priceSource: PriceSource | null;
