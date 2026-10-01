@@ -3141,6 +3141,10 @@ CITATION RENDER  Design PASS (f51e3215 read): board 0 tokens in text/tooltips/ar
                  RESIDUAL (order call: ship as is): lone 4-digit ids kept by the year rule (local TNON 44, ENRD 10, PFSA
                  30). Ops to count lone [dddd] in production current dossiers (+ 1900-2099 share); Research proposes a
                  year-safe rule if non-zero, after tonight.
+                 COUNT Ops 6a6d6a8a (read): 65 of 1,178 current have a lone [dddd]; 59 with values outside 1900-2099 (282
+                 occ.), 6 only 1900-2099 (21). ORDER CALL: RESIDUAL, ships as is; Ops names "about 5% keep a short
+                 source number until a follow-up" in his question. Research: follow-up rule (evidenceSourceIds
+                 membership first, year range fallback), after the side-by-side.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
