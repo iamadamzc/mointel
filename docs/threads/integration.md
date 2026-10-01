@@ -2734,6 +2734,19 @@ DESIGN TITLE     local_4f84a562 (created 2026-09-30T15:37:27Z = the RETIRED fift
 OPS ASKED        02:00Z (delivered): /proc now + the PREMARKET report's stored outcome from the 22:00 ET recap.
 RESEARCH TOLD    02:0xZ (queued): premarket line check if PUBLISHED; levels-first Thursday; reports v6 as one re-freeze;
                  asked for the levels registration sha + timing.
+OPS /proc        02:01:18Z (Ops): web 1696306 / research 1696364 / assess 1696442 on e8822583 (start 01:24:28-29Z), NR 0;
+                 market 1574400 on 1b5ead6 (start 2026-09-30T00:15:40Z), NR 0; no deploy unit; pins market-floor 2bcf1cf,
+                 rollback-baseline 372f5eb. UNCHANGED since 01:25Z. Premarket outcome due from Ops's 02:06Z watcher read.
+LEVELS PRE-WORK  Research (matches research.md) + READ HERE: registration 90564228 (21:37:39 ET, spec §8) < code 287561be
+                 (21:55:51 ET, origin/research/levels-stored) < amendment 5db9ea0c (22:02:46 ET: code sha, gate 211/211
+                 3,170, exact command) < 152930f1 (22:03:01 ET, wording only: history FILE must not pre-exist). Box run
+                 not yet started, so both amendments precede it. PASS = refresh < 150 s AND read p95 < 100 ms AND max <
+                 250 ms, first pass, --now 2026-09-30T23:55:20Z; FAIL = no Thursday ship, numbers to him, Friday earliest.
+                 Refresh behind LEVELS_REFRESH_ENABLED (default off), one child per 5m close + 20 s, killed at 270 s.
+                 Post-ship registered observation: 09:30-10:30 ET flush p50 vs 09-30; +50% -> told him same day.
+                 Box test with Ops, once, read-only, after 22:15 and before 03:30 ET; Research grades in a commit.
+                 Then cut from /proc + Design's 4 picks (9813ec55 read: 21:51:14 ET), Design re-render (needs the NEW
+                 Design seat), his yes Thursday.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
