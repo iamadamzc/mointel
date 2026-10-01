@@ -3013,6 +3013,18 @@ CITATION COUNT   Ops 04fefaa7 (read; 2026-10-01T10:53:26Z): all versions since 0
                  BUILD: next build exit 0 (fresh npm ci); route table has /api/levels, /api/reports,
                  /review/[token]/api/reports (Ops). (A) READY. Thursday after 20:00 ET: levels b5a35fda (his yes) ->
                  /proc = b5a35fda -> (A) 840741d3 (his yes, four changes) -> /proc; Design reads (A) live on a review link.
+RECONCILED       HIS YES typed to me ("yes, switch the shared copy over. you ahve permission"). Local main = origin/main
+                 6f9e3070 + Ops's three held commits re-applied (49be03b1->c43d8b95, 04fefaa7->915acb33,
+                 e4ed92ed->0536299a; patch-ids equal), reset --keep, CLAUDE.md edit intact. My three notes pushed by lease
+                 (e6ccb0f2, 9f386550, 6f9e3070). A plain push from main still publishes Ops's three: worktree push route
+                 for every seat until he answers Ops. Ops/Research/Design told.
+CITATION FIX     Research fc22dbcb ON MAIN, NOT IN ANY CUT (read): citations.ts one pattern ("[Source N...]" or bare ids of
+                 5+ digits); write strip in validateDossier; display strip in companyText (report company line);
+                 NOT in reportResearch (frozen checker input, v6). Design cafad894 row C (read): BOARD AND DOSSIER render
+                 tokens verbatim (local e8822583 render; real "[4473,4498]" rows, "[Source N]" planted); no clean strips
+                 either. GAP: bare 4-digit lists are KEPT by the pattern. ORDER: Design wires withoutCitationsDeep into
+                 merge.ts readableIntelligence; ONE cut with fc22dbcb from /proc after (A). Research settles the 4-digit
+                 pattern + sizes it after 10:00 ET (666e54fc); Design f158d041.
                  Shared main: Ops will not touch it; reconcile only on HIS word in Ops's chat.
 APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
                  ungraded name (screen readers only). Own commit, after the ship.
