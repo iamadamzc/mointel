@@ -1,0 +1,24 @@
+14:17:08Z
+{
+  "readAt": "2026-10-01T14:17:10Z",
+  "currentVersions": 1178,
+  "withAnyLone4Digit": 65,
+  "withOnly1900to2099": 6,
+  "withAnyOutside1900to2099": 59,
+  "occurrences": 303,
+  "occurrences1900to2099": 21,
+  "occurrencesOutside": 282,
+  "examplesOutside": [
+    "SLE:[3660, 3680, 3681]",
+    "FSHP:[1030, 1024, 1029]",
+    "WFF:[1002]",
+    "RPGL:[1043, 1046]",
+    "LPCV:[1081, 1083, 1083]",
+    "RETO:[1102, 1102, 1106]",
+    "CEPF:[1110, 1115, 1114]",
+    "XOS:[2833, 2833, 2833]",
+    "RTAC:[1141, 1141, 1141]",
+    "DUOT:[1170, 1171, 1172]"
+  ],
+  "ms": 1643
+}
