@@ -2763,6 +2763,16 @@ LEVELS CONE      e8822583..287561be (read): 14 commits, 29 files, +6,116/-0; no 
                  tree = ship condition, NO Design seat yet -> none rendered by Thu 20:00 ET = no levels that night.
 REFRESH LOGGING  Asked Ops, then read the code and WITHDREW the ask: levels-refresh.ts:49-57 logs totalMs or failure;
                  levelsRefreshJob.ts:98 exit code/ms, :109 the 270 s kill, :92 spawn failure. (Ledger 1.)
+BOX GRADED       Research ed3084e6 (22:18:01 ET, read): PASS AS REGISTERED, all three clauses; prediction missed (1.4x
+                 headroom, not 2x); warm-cache refreshes unmeasured; log prints summaries only (percentiles not
+                 recomputable). Ops confirmed logging incl. "tick skipped" (:123) and "refresh disabled" (:198).
+LEVELS CUT       b5a35fda060eda6e23953d7dc8b0ecace5e2be4b (ops/levels-thu, local branch) REPLAYED + APPROVED BY LITERAL
+                 SHA: 15 linear on e8822583; tip parent 287561be; patch-id a7360d78 == 9813ec55; 287561be..tip 3 files
+                 +37/-3; 29 files +6,150 vs e8822583; 211 test files = declared. SHIP: Ops gate 211/211 + build, /proc =
+                 e8822583, Design render of this tree (no seat yet), his yes with the 4 conditions (in ops.md, Ops says),
+                 after 20:00 ET Thu; post-ship /proc + one /api/levels read after the first refresh.
+                 HIS LINE (Research's draft, for Ops's question): refresh ~107 s of every 300 s cold; morning feed impact
+                 checked only after ship; he can turn it off.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
