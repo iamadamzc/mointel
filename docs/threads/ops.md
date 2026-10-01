@@ -13079,3 +13079,7 @@ only clears on a mode change, so it cannot hit the v28 FK path while running.
 push-release's follower timed out ("NOT confirmed", exit 8) as expected; confirmed from /proc.
 **market-floor RE-PINNED -> 2bcf1cf** (01:08:59Z, schema v28, backup none). 1b5ead6 now unpinned but in use (prune keeps it).
 **Reports e8822583 launched 01:09Z** (not after 22:10: with levels out, its stop lands ~21:23 ET, clear of 22:00 +/- 5).
+**REPORTS e8822583 LIVE** /proc 01:25Z: web 1696306 / research 1696364 / assess 1696442 on e8822583 (start 01:24:28-29Z),
+NR 0; market 1574400 on 1b5ead6 untouched; down 3 s; /api/reports 200; research log 01:24:32Z "[reports] runner started:
+writer gpt-5.6-luna, checker gpt-5.6-terra". Integration's prune question answered by prune.sh in_use_shas (market unit's
+/proc cwd protects 1b5ead6); a market crash-restart starts from /opt/mointel/current (WorkingDirectory), not 1b5ead6.
