@@ -13177,3 +13177,14 @@ from +1000%, a stale comment. **Remaining Thu: /proc = e8822583 at launch; his y
 em-dash fix), gated by Design on main d80d208c 211/211 (3,170 tests), build 0. Research's review mirror d427dd0e. The cut is
 made FROM /proc (b5a35fda if levels shipped, else e8822583), picked, declared, gated here, replayed by Integration; its
 question names all three changes, including "section headings hidden until the report update".
+**(A) CUT: 840741d399fed79dc05540dea9c9b81007875fa2** (Design's tag design/a-on-b5a35fda) = b5a35fda + 35f45d3c (<- d427dd0e,
+review reports mirror) + 1e8ee22a (<- 01017f6a, report cards, headings hidden) + 840741d3 (<- 89e6c111, Sheet labels without em
+dashes). Integration APPROVED BY LITERAL SHA. **GATED HERE ALL GREEN 214/214, 3,202 tests; next build 0** (the PC slept
+overnight; the gate ran on wake ~06:52 local). Design rendered it on the real reports from my 03:04:40Z /api/reports GET.
+**His question for (A) names FOUR changes:** report cards per name with section headings hidden (his "b"); board labels from
+the Sheet without em dashes; session reports on review links (his "1 yes"); a name's minute-data mark now agrees with the
+header's "N of M names had live trade data". Ships only after levels b5a35fda is live (else re-cut from e8822583 + replay).
+NOT in (A): citation tokens ("[Source NNN]") in published reports, confirmed by Integration; Research builds a strip as a THIRD
+release from /proc after (A), its own yes (I ask). Production count at 04fefaa7 (current versions: 2 with "[Source" since 00:00Z).
+**Shared local main is DIVERGED from origin** (Integration's cherry-pick push route); my 49be03b1 + 04fefaa7 are not on origin.
+Integration's reconcile was refused by its classifier and is put to him. Nobody plain-merges or plain-pushes A:\mointel main.
