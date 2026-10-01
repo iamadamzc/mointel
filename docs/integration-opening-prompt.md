@@ -50,12 +50,17 @@ agent, `trade-researcher` (`A:\trade_research`), was briefed 09-30 on the desk's
    + Ops, the stored-rows path, a NEW registration on production hardware before it runs, a cut from /proc, Design's
    re-render, his yes. His 09-30 levels yes was for the request path, which failed. A box-test fail means Friday at
    the earliest, and he hears the numbers.
-3. **THEN REPORTS v6** (Research): one re-freeze covering the stability probe (cap $10, inside his "3 yes") and a
+3. **REPORT DESIGN (A) DISPLAY-ONLY** (Design; his "a now, then b", 01:44:16Z 10-01): build, cut from /proc, ship
+   after 20:00 ET on his yes, one release at a time with levels.
+4. **THEN REPORTS v6 + DESIGN (B) + THE OPENING NARRATIVE AS ONE WRITER CHANGE** (Research, Marketing, Design,
+   Commercial). His ask: "an opening with a general narrative of the session ... then down to the details of the
+   tickers." Today the opening is only the watch line (plus an after-hours totals sentence on premarket).
+   Reports v6 (Research): one re-freeze covering the stability probe (cap $10, inside his "3 yes") and a
    checker input-cost trim, then registration, a fresh Marketing set, N=3, a reports release. Pre-fix every outcome
    BEFORE the run exists.
-4. **THURSDAY 2026-10-01: THE SIGN-IN ASKS** for Friday evening (Google client id + secret to Ops, seed confirmation, a
+5. **THURSDAY 2026-10-01: THE SIGN-IN ASKS** for Friday evening (Google client id + secret to Ops, seed confirmation, a
    throwaway uninvited account, ~10 min of his time Friday). You are the one seat asking; Web stands down.
-5. **THE FLUSH FINDING**: once Ops classifies the minute gaps (no-trade vs lost), bring him the finding about slow
+6. **THE FLUSH FINDING**: once Ops classifies the minute gaps (no-trade vs lost), bring him the finding about slow
    market-hours writes, in plain words, once.
 
 ## His standing rulings and your authority

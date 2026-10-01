@@ -1057,6 +1057,14 @@ limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register 
 
 ### HAND-OFF LINE
 ```
+HIS RULING (4689366c, typed 2026-10-01T01:44:16Z): "a now, then b. but what i dont see in this report is an intro
+narrative ... an opening with a general narrative of the session which is being reported on, then down to the details
+of the tickers." -> Design mock (artifact 2NTiveNj9hbgw4HmH1yph3): (A) DISPLAY-ONLY ships first (Design builds, cut
+from /proc, after 20:00 ET, his yes; order with levels = Design + Ops, one release at a time); (B) tags + shorter prose
+after. OPENING NARRATIVE: code read (contract.ts:166-172, writerV5.ts:16/228-251): today only the computed watch line +
+a templated AH-totals sentence for PREMARKET only; other kinds null "until v28" (v28 live since 01:07Z). OWNERS:
+Research proposes checkable facts + checker tracing; Marketing voice; Design the block in (B); Commercial sample; ONE
+writer change / re-freeze / sample with (B) + reports v6. Trigger: after levels.
 HIS ASK (4689366c, after the hand-off), verbatim: "the session report needs some design attention. its hard on the
 eyes. needs something. maybe color? some other elements." + screenshot of the live window (images\1.webp in this
 session's temp dir): dense one-paragraph-per-ticker prose, uniform colour, AND text apparently running past the right
