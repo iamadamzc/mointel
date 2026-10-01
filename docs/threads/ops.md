@@ -13134,3 +13134,9 @@ window, +50% reported to him same day, turning it off his call; also capture the
 lines that morning (Research: warm vs cold unmeasured); (4) Design re-renders the cut tree before ship; no render by Thu 20:00
 ET = no levels that night, tell Integration. Logging verified at b5a35fda: refresh totalMs, exit code/ms, 270 s kill, skipped
 tick, spawn failure, disabled-at-start all reach the research journal (levelsRefreshJob.ts:92-198, levels-refresh.ts:49).
+**b5a35fda GATED HERE ALL GREEN 211/211 (3,171 tests); next build 0** (A:\mointel-build). Integration APPROVED ON CONTENT BY
+LITERAL SHA (replay: 15 commits linear on e8822583, 29 files +6,150/-0). Remaining for Thu: Design's re-render of this tree;
+his yes with the four conditions after 20:00 ET; /proc = e8822583 at launch (else re-cut + replay); post-ship /proc + ONE
+/api/levels read for a top-5 name after the first refresh writes (200 with levels = verified; null for a name with bars = defect).
+To set the flag (his word): add LEVELS_REFRESH_ENABLED=1 to /etc/mointel/mointel.env BEFORE the deploy, so the restarted
+research worker reads it (compare envs by key name only; never print values).
