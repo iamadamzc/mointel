@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- a one-off Node script run with plain node, kept as the record */
 // PRE-REGISTERED replay, docs/research/movers-vs-robust-baseline/prereg-b.md at 09d33239. READ-ONLY.
 // Reconstruction copied from docs/research/board-movers-replay-2026-10-01/movers.js (A replay).
 const fs = require('fs');

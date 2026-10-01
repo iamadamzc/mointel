@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- a one-off Node script run with plain node, kept as the record */
 const fs = require('fs');
 const path = require('path');
 const out = require('./movers-raw.json');

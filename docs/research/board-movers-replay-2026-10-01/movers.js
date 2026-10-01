@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- a one-off Node script run with plain node, kept as the record */
 // PRE-REGISTERED check, docs/research/board-movers-spec.md at d02cfb36. READ-ONLY.
 const fs = require('fs');
 const path = require('path');

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- a one-off Node script run with plain node, kept as the record */
 const out = require('./movers-raw.json');
 for (const s of out.sessions) {
   for (const c of s.checkpoints) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- a one-off Node script run with plain node, kept as the record */
 const Database = require('A:/mointel/node_modules/better-sqlite3');
 const db = new Database('A:/mointel/data/market-prod-2026-09-29.db', { readonly: true, fileMustExist: true });
 const q = (sql, ...a) => db.prepare(sql).all(...a);
