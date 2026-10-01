@@ -3210,6 +3210,11 @@ LIVE-BAND RESULT b66ca4e5 (read; prereg 1314ae7b ancestor). Engine latches at an
                  NOW (82% on $1 sessions); 15% alone: cap 10, 56% on NOW. UPDATED rec: 10% + 500k, cap 15. NOW gap ~1 in
                  4-5 movers, worker change only for those. Block to him updated. Research correcting its own NOW
                  question to him directly.
+HIS RULING       typed to me, answering "What gets a mover onto the board?": "10% with 500k shares, cap 15". BUILD ORDER
+                 to Research: >=10% AND cumulative volume >=500k, in band, off top 50, top 15 by move; normal rows after
+                 the ranked 50, boardReason MOVER; reports/rangeCapture/checkpoints/AH exclude (tested); no worker/NOW
+                 change. Ops: readTopMovers + volume condition. Design label: NEEDS A DESIGN SEAT (asked him). Cut from
+                 /proc after tonight's three; Friday night earliest; literal-sha replay here; his yes via Ops.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
