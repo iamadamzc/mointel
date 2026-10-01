@@ -6,12 +6,16 @@ import type { DemandState } from '@/lib/market/types';
 
 describe('his numbers are the defaults (2026-10-01T15:53:57Z, "10% with 500k shares, cap 15")', () => {
   it('BOARD_MOVERS_MIN_PCT 10, BOARD_MOVERS_MIN_VOLUME 500,000, BOARD_MOVERS_K 15 when unset', () => {
-    const config = loadMarketConfig({});
+    const config = loadMarketConfig({ NODE_ENV: 'test' } as NodeJS.ProcessEnv);
     expect([config.boardMoversMinPct, config.boardMoversMinVolume, config.boardMoversK]).toEqual([10, 500_000, 15]);
   });
 
   it('0 is honoured for the volume floor and the cap (off), not replaced by the default', () => {
-    const config = loadMarketConfig({ BOARD_MOVERS_MIN_VOLUME: '0', BOARD_MOVERS_K: '0' });
+    const config = loadMarketConfig({
+      NODE_ENV: 'test',
+      BOARD_MOVERS_MIN_VOLUME: '0',
+      BOARD_MOVERS_K: '0',
+    } as NodeJS.ProcessEnv);
     expect([config.boardMoversMinVolume, config.boardMoversK]).toEqual([0, 0]);
   });
 });
