@@ -3171,6 +3171,10 @@ RESIDUAL BUILT   a58aa866 on main (not shipped); registration 5441204f is its an
                  occ. (copy); 17 year-like occ. hand-read, all citations; leaves 5 (WFF 2, DUOT, CAST, EHGO); no call-site
                  change; 5 mutants at prediction. Waits: tsc + full suite (Ops slot), cut after tonight's three, Ops
                  production re-count, his yes.
+                 RECOUNT Ops b2fc64b6 (read; 14:41:51Z, on d11a59f5 = a58aa866 + verify.ts --db only, no lib/tests diff):
+                 current 293 occ. in 66 versions -> 6 in 5 (WFF 2, DUOT, CAST, EHGO, RPGL); ids == source_ids 2,707/2,707,
+                 diffs []. Research's gate on main done (per Ops). Needs a cut from /proc after tonight's three; replay
+                 here; his yes.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
