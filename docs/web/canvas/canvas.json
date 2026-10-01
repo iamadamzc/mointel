@@ -6,7 +6,7 @@
       "y": 0,
       "w": 1440,
       "h": 6100,
-      "title": "Landing — desktop"
+      "title": "Landing (desktop)"
     },
     {
       "file": "LandingMobile.dc.html",
@@ -14,7 +14,7 @@
       "y": 0,
       "w": 390,
       "h": 7800,
-      "title": "Landing — phone"
+      "title": "Landing (phone)"
     },
     {
       "file": "SignIn.dc.html",
@@ -30,7 +30,7 @@
       "y": 1020,
       "w": 1440,
       "h": 1980,
-      "title": "Sign in — every state"
+      "title": "Sign in (every state)"
     },
     {
       "file": "Privacy.dc.html",
@@ -38,7 +38,7 @@
       "y": 3120,
       "w": 1440,
       "h": 1450,
-      "title": "Privacy — adopted"
+      "title": "Privacy (adopted)"
     },
     {
       "file": "System.dc.html",
@@ -77,7 +77,7 @@
       "x": 1600,
       "y": -300,
       "w": 700,
-      "text": "A LIST OF ONE, not one button centred.\nThe group, its label and the stack all survive a second provider arriving; the second row is not drawn.\n\nGoogle's button is used to Google's spec and not restyled to the desk — a restyled one is a verification risk and reads as a fake."
+      "text": "A LIST OF ONE, not one button centred.\nThe group, its label and the stack all survive a second provider arriving; the second row is not drawn.\n\nGoogle's button is used to Google's spec and not restyled to the desk: a restyled one is a verification risk and reads as a fake."
     },
     {
       "id": "note-states",
@@ -98,7 +98,7 @@
       "x": 4000,
       "y": -300,
       "w": 700,
-      "text": "DRAWN AGAINST app/ AT cc70656, re-seeded 2026-09-18 17:04 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish.\n\nTHE SEAM RUNS BOTH WAYS AND THIS STAMP NOW NAMES THE DIRECTION THAT BIT. It used to record the sha the canvas was seeded from, which catches a canvas left behind by the repo. It did not catch the opposite - copy drawn here that never reached the page. On 2026-09-18 the first case happened: the site was renamed and these artboards still said TMI Trader.\n\nSo compare this sha against the last commit that touched app/, not against HEAD:\n  git log -1 --format=%h -- app/\n\nIf that is ahead of the sha above, the page has moved and this canvas has not. A canvas matching app/ can still be ahead of PRODUCTION, which is a deploy question and not this stamp's."
+      "text": "DRAWN AGAINST app/ AT 89d39053 (LIVE on tmitrader.com), re-seeded 2026-09-30 20:42 ET.\n\nEditing a .dc.html does NOT update this canvas - someone must re-seed and republish.\n\nTHE SEAM RUNS BOTH WAYS AND THIS STAMP NOW NAMES THE DIRECTION THAT BIT. It used to record the sha the canvas was seeded from, which catches a canvas left behind by the repo. It did not catch the opposite - copy drawn here that never reached the page. On 2026-09-18 the first case happened: the site was renamed and these artboards still said TMI Trader.\n\nSo compare this sha against the last commit that touched A PAGE THIS CANVAS MIRRORS, not against HEAD and not against all of app/:\n  git log -1 --format=%h -- app/page.tsx app/signin app/privacy app/terms app/layout.tsx\n\nTHE WIDER TEST CRIED WOLF AND WAS NARROWED 2026-09-30. It read `-- app/`, which fires on any API route: 47713639 added app/api/reports/route.ts and would have made this canvas look stale against a page it does not draw. A staleness signal that goes off for unrelated commits is one nobody reads, which costs more than the check buys.\n\nIf that is ahead of the sha above, the page has moved and this canvas has not. A canvas matching app/ can still be ahead of PRODUCTION, which is a deploy question and not this stamp's."
     }
   ],
   "launch": {
