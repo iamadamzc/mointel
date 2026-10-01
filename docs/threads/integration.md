@@ -3219,6 +3219,8 @@ HIS RULING       typed to me, answering "What gets a mover onto the board?": "10
                  boardReason MOVER, discovery.movers removed; counts exclude movers; capture/reports/checkpoints/AH
                  mover-free (tests + import guard); 6 mutants at prediction. ORDER CALL: NO SHIP WITHOUT THE "moving"
                  LABEL (his ruling names it); cut = branch + Design label, Design render a ship condition.
+                 GATE (Research, Ops's slot): e0f18bbb = 825b1eac + one test file (read); tsc 0, 220/220, 3,250. Research
+                 half DONE; waits on a Design seat for the label + render.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
