@@ -13083,3 +13083,8 @@ push-release's follower timed out ("NOT confirmed", exit 8) as expected; confirm
 NR 0; market 1574400 on 1b5ead6 untouched; down 3 s; /api/reports 200; research log 01:24:32Z "[reports] runner started:
 writer gpt-5.6-luna, checker gpt-5.6-terra". Integration's prune question answered by prune.sh in_use_shas (market unit's
 /proc cwd protects 1b5ead6); a market crash-restart starts from /opt/mointel/current (WorkingDirectory), not 1b5ead6.
+**RUNNER PROVEN on real models:** INTO_POWER_HOUR 09-30 (assessment 585) PUBLISHED 01:25:41Z in 39.1 s, 12 lines, 0 strikes;
+AFTER_HOURS 09-30 (588) PUBLISHED 01:26:10Z in 28.9 s, 12 lines, 1 strike; both late=1; /api/reports serves both, no missed.
+INTO_RTH 09-30 (13:25Z) fell just outside the 12 h lookback at the first pass: not written, by design.
+**SPEND (diagnostics.usage, priced with scripts/report-voice-run-v5.ts PRICE, vendor list NOT checked): ~$0.054-0.060 per
+report, ~20x the "~$0.003" line; ~90% is the checker's (gpt-5.6-terra) ~20k input tokens.** Told Integration and Research.
