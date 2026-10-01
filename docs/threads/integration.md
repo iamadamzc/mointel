@@ -3025,6 +3025,10 @@ CITATION FIX     Research fc22dbcb ON MAIN, NOT IN ANY CUT (read): citations.ts 
                  either. GAP: bare 4-digit lists are KEPT by the pattern. ORDER: Design wires withoutCitationsDeep into
                  merge.ts readableIntelligence; ONE cut with fc22dbcb from /proc after (A). Research settles the 4-digit
                  pattern + sizes it after 10:00 ET (666e54fc); Design f158d041.
+                 Research's report (crossed the gap message): fc22dbcb full suite 212/212, 3,185; tsc/eslint 0; mutants as
+                 predicted. DEVIATION ACCEPTED: no strip in reportResearch clean() because research.ts is a frozen checker
+                 input (cb6d030f read: v5 checker re-frozen, research.ts among its changed inputs); that strip + the
+                 bracketed-id checker guard ride v6's re-freeze. fc22dbcb is one commit on 613e9e33.
                  Shared main: Ops will not touch it; reconcile only on HIS word in Ops's chat.
 APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
                  ungraded name (screen readers only). Own commit, after the ship.
@@ -3053,6 +3057,7 @@ error                                                  TYPE                     
   expected e821b2d1; the ops.md diff it printed was                                                all 3 lines
   read by me as origin-side. Reached a peer's work,                                                verified back)
   not the app. LESSON: a guard compares to the sha you EXPECT, never to a value read in the same run.
+  AND (Ops's): announce a reset of shared main to every seat FIRST, so nobody commits into the window.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
