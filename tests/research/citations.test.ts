@@ -36,6 +36,18 @@ describe('withoutCitations: the two production forms', () => {
     expect(withoutCitations('A [source 7].')).toBe('A.');
     expect(withoutCitations('One [Source 1] two [Source 2].')).toBe('One two.');
   });
+
+  it('leaves ONE stop when the token sits between two (Design, the live TGE line)', () => {
+    expect(withoutCitations('a SPAC sponsor manager. [Source 115982].')).toBe('a SPAC sponsor manager.');
+    expect(withoutCitations('First. [Source 1] Second.')).toBe('First. Second.');
+    expect(withoutCitations('Is it? [Source 1]?')).toBe('Is it?');
+  });
+
+  it('removes a comma list of bare ids at any width, and one bare id of 5+ digits', () => {
+    expect(withoutCitations('The August read [4473,4498] holds.')).toBe('The August read holds.');
+    expect(withoutCitations('Early ids [812, 845].')).toBe('Early ids.');
+    expect(withoutCitations('One id [115982].')).toBe('One id.');
+  });
 });
 
 describe('withoutCitations: brackets that are NOT citations are kept', () => {
@@ -47,7 +59,7 @@ describe('withoutCitations: brackets that are NOT citations are kept', () => {
     'The [2026] plan.',
     'A [$1.2M] raise.',
     'Steps [1-3] apply.',
-    'A four-digit list [1234, 5678] stays.',
+    'A lone short id [4460] stays, because a year reads the same.',
   ])('%s', (text) => {
     expect(withoutCitations(text)).toBe(text);
   });
