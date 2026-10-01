@@ -1,0 +1,14 @@
+[box] 02:15:04Z staging 287561be at /tmp/levels-287561be
+scratch history.db absent: ok
+[box] 02:15:24Z pre-run state:
+deploy units: 0
+no levels/vitest process
+[box] 02:15:26Z running (first pass counts)
+refresh 2026-09-30 t=2026-09-30T23:55:00.000Z: n=143 written=143 absent=0 totalMs=107292
+per-name compute: n=143 p50=343.3 ms p95=2626.4 ms max=3303.4 ms
+REFRESH PASS (totalMs 107292 < 150000, cold, first pass in this process)
+route read (fresh read-only open per name): n=143 p50=0.4 ms p95=0.7 ms max=1.4 ms
+READ PASS (p95 < 100 ms and max < 250 ms)
+[box] exit 0
+[box] 02:17:16Z done
+
