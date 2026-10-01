@@ -1124,6 +1124,45 @@ export function readRangeCandidates(
   return rows.map((row) => rowToDemandState(row, nowMs));
 }
 
+/**
+ * Today's biggest % gainers priced inside [min, max], at or above `minPct`,
+ * biggest first, ties by symbol (docs/research/board-movers-spec.md, his VEEA
+ * ruling: a large % mover reaches the board whatever its RVOL rank).
+ *
+ * Its own read because the default board takes readDemandStates' top-N path,
+ * which never sees a name ranked below the limit; a full band read on every
+ * poll would cost more than this bounded one. Eligibility is NOT EXISTS on
+ * universe's primary key, written last, so it is only evaluated for rows that
+ * already passed the cheap filters: joining universe per row was most of the
+ * range read's cost (readIneligibleSymbols). A symbol with no universe row is
+ * kept, as readRangeCandidates keeps it.
+ */
+export function readTopMovers(
+  db: MarketDatabase,
+  tradingDate: string,
+  band: { min: number; max: number },
+  minPct: number,
+  limit: number,
+): DemandState[] {
+  if (limit <= 0) return [];
+  const nowMs = Date.now();
+  const rows = db
+    .prepare(
+      `SELECT ts.* FROM ticker_session ts
+        WHERE ts.trading_date = @date
+          AND ts.price IS NOT NULL
+          AND ts.price >= @min AND ts.price <= @max
+          AND ts.percent_change >= @minPct
+          AND NOT EXISTS (
+                SELECT 1 FROM universe u WHERE u.symbol = ts.symbol AND u.discovery_eligible = 0
+              )
+        ORDER BY ts.percent_change DESC, ts.symbol ASC
+        LIMIT @limit`,
+    )
+    .all({ date: tradingDate, min: band.min, max: band.max, minPct, limit }) as TickerSessionRow[];
+  return rows.map((row) => rowToDemandState(row, nowMs));
+}
+
 export function countTrackedSymbols(db: MarketDatabase, tradingDate: string): number {
   const row = db
     .prepare('SELECT COUNT(*) AS count FROM ticker_session WHERE trading_date = ?')
