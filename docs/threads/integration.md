@@ -3131,6 +3131,8 @@ LIVE CENSUS      Ops 98ef4acd (read): 14:01:36Z, read-only, 4.3 s. CURRENT 996 o
                  GATE 14:02Z = NO RESULT (Ops): typecheck/lint 0, suite printed RUN then RED exit 3 without executing;
                  next build OOM ("Zone Allocation failed"); commit free 1.4 GB. Ops asked HIM to free memory, then
                  reruns gate + build. Not shippable until 217/217. Research + Design told: nothing heavy until then.
+VEEA 10:03 ET    Ops a5178ac1 (read): 14:03:30Z VEEA $3.22 +48.4%, rvol 3.79, rvol_rank 34 = ON THE BOARD by then. Missed
+                 08:10 to ~09:5x ET (ranks 120 -> 82 -> 67). Research: under B (median) VEEA rvol at 10:00 ~201. TOLD HIM.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
