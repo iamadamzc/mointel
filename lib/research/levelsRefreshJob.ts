@@ -153,14 +153,20 @@ export function startLevelsRefreshLoop(options: LevelsRefreshLoopOptions): Level
 }
 
 /**
- * The real child: `node node_modules/tsx/dist/cli.mjs worker/levels-refresh.ts`
- * from `cwd` (the release directory on the server, the same invocation the
- * systemd units use), its stdout and stderr relayed line by line into `log`.
+ * The real child: `node --import tsx worker/levels-refresh.ts` from `cwd` (the
+ * release directory on the server), its stdout and stderr relayed line by line
+ * into `log`.
+ *
+ * NOT `tsx/dist/cli.mjs`, which the systemd units use: that CLI is a wrapper
+ * that runs the script in a SECOND process (measured 2026-10-01: the spawned
+ * pid was the script's ppid). A SIGKILL to the wrapper cannot be relayed, so
+ * the 270 s kill and `stop()` would hit the wrapper and could leave the real
+ * refresh running. With `--import tsx` the spawned pid IS the refresh.
  */
 export function spawnLevelsRefreshChild(log: (message: string) => void, cwd: string = process.cwd()): ChildLike {
   const child = spawn(
     process.execPath,
-    [path.join(cwd, 'node_modules', 'tsx', 'dist', 'cli.mjs'), path.join(cwd, 'worker', 'levels-refresh.ts')],
+    ['--import', 'tsx', path.join(cwd, 'worker', 'levels-refresh.ts')],
     { cwd, env: process.env, stdio: ['ignore', 'pipe', 'pipe'] },
   );
   for (const stream of [child.stdout, child.stderr]) {
@@ -176,6 +182,8 @@ export interface StartLevelsRefreshOptions {
   now?: () => number;
   setTimer?: (run: () => void, ms: number) => unknown;
   clearTimer?: (handle: unknown) => void;
+  /** Injected for tests; default: `process.once('exit', listener)`. */
+  onProcessExit?: (listener: () => void) => void;
 }
 
 /**
@@ -194,17 +202,23 @@ export function maybeStartLevelsRefresh(
     `[levels] refresh enabled: one child at each 5m close + ${LEVELS_REFRESH_OFFSET_MS / 1000} s, ` +
       `killed at ${LEVELS_REFRESH_KILL_MS / 1000} s`,
   );
-  return startLevelsRefreshLoop({
+  const handle = startLevelsRefreshLoop({
     spawnRefresh: options.spawnRefresh ?? (() => spawnLevelsRefreshChild(options.log)),
     now: options.now ?? (() => Date.now()),
     setTimer:
       options.setTimer ??
       ((run, ms) => {
-        const handle = setTimeout(run, ms);
-        handle.unref?.();
-        return handle;
+        const timer = setTimeout(run, ms);
+        timer.unref?.();
+        return timer;
       }),
-    clearTimer: options.clearTimer ?? ((handle) => clearTimeout(handle as NodeJS.Timeout)),
+    clearTimer: options.clearTimer ?? ((timer) => clearTimeout(timer as NodeJS.Timeout)),
     log: options.log,
   });
+  // EVERY exit path, including a fatal rejection out of main() where the
+  // shutdown handlers never run: a running child is killed, never orphaned
+  // as a writer on history.db (Ops's condition). `stop()` is synchronous, as
+  // an 'exit' listener must be, and a second call is a no-op.
+  (options.onProcessExit ?? ((listener) => process.once('exit', listener)))(() => handle.stop());
+  return handle;
 }

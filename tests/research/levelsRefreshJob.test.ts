@@ -287,14 +287,20 @@ function waitForExit(child: ChildLike): Promise<{ code: number | null; signal: N
 }
 
 describe('the real child', () => {
-  it('spawnLevelsRefreshChild runs node on the release tsx cli, and relays stdout and stderr lines', async () => {
-    const cli = path.join(dir, 'node_modules', 'tsx', 'dist', 'cli.mjs');
-    fs.mkdirSync(path.dirname(cli), { recursive: true });
+  it('spawnLevelsRefreshChild: the spawned pid IS the refresh (no wrapper), and its stdout and stderr lines are relayed', async () => {
+    /*
+     * The tsx CLI runs a script in a SECOND process, so a kill aimed at the
+     * spawned pid would miss the refresh. Pinned here: the script reports its
+     * own pid, which must equal the pid the loop holds and kills.
+     */
+    fs.mkdirSync(path.join(dir, 'node_modules'), { recursive: true });
+    fs.symlinkSync(path.join(process.cwd(), 'node_modules', 'tsx'), path.join(dir, 'node_modules', 'tsx'), 'junction');
+    fs.mkdirSync(path.join(dir, 'worker'), { recursive: true });
     fs.writeFileSync(
-      cli,
+      path.join(dir, 'worker', 'levels-refresh.ts'),
       [
-        "const script = process.argv[2].split(/[\\\\/]/).slice(-2).join('/');",
-        "console.log('[levels] refresh ran ' + script);",
+        'const pid: number = process.pid;',
+        "console.log('[levels] refresh pid=' + pid);",
         "console.error('[levels] on stderr');",
         'process.exitCode = 3;',
       ].join('\n'),
@@ -304,9 +310,38 @@ describe('the real child', () => {
     const exited = await waitForExit(child);
     // The exit can land before the last relayed line; give readline a turn.
     await new Promise((resolve) => setTimeout(resolve, 50));
-    expect(exited).toEqual({ code: 3, signal: null });
-    expect(lines).toContain('[levels] refresh ran worker/levels-refresh.ts');
+    expect(exited, lines.join('\n')).toEqual({ code: 3, signal: null });
+    expect(child.pid).toBeDefined();
+    expect(lines).toContain(`[levels] refresh pid=${child.pid}`);
     expect(lines).toContain('[levels] on stderr');
+  }, 60_000);
+
+  it('maybeStartLevelsRefresh registers a process-exit kill: a fatal exit out of main() never orphans a running child', () => {
+    const clock = new FakeClock(at('2026-09-29T16:02:30.000Z'));
+    const children: FakeChild[] = [];
+    let onExit: (() => void) | null = null;
+    maybeStartLevelsRefresh(
+      { LEVELS_REFRESH_ENABLED: '1' },
+      {
+        log: () => {},
+        setTimer: clock.setTimer,
+        clearTimer: clock.clearTimer,
+        now: clock.now,
+        spawnRefresh: () => {
+          const child = new FakeChild();
+          children.push(child);
+          return child;
+        },
+        onProcessExit: (listener) => {
+          onExit = listener;
+        },
+      },
+    );
+    clock.advanceTo(at('2026-09-29T16:05:21.000Z'));
+    expect(children).toHaveLength(1);
+    expect(onExit).not.toBeNull();
+    onExit!();
+    expect(children[0]!.kills).toEqual(['SIGKILL']);
   });
 
   it('worker/levels-refresh.ts: one refresh into history.db, one line, exit 0; market.db untouched', async () => {
