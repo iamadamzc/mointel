@@ -3090,6 +3090,8 @@ MOVERS BUILT     research/movers 558f5cb5 on 2a625a5b (light check here: 3 commi
                  K=0 fallback defect found + fixed. Replay (d02cfb36, local): gate 10/12 sessions; 40 checkpoints, adds
                  median 0 max 3, 15 total; cap never bound; PASS (1) held 40/40. Research made + caught its own
                  origin-only reader carry-over before push. FINAL SHA HELD for his most-active answer + Design's pick.
+                 research/movers now aaebfc42 (doc comment only, repo.ts = Ops's 944c300e). Research has asked HIM
+                 whether its seat hands off (its ask; not repeated by me); if yes, successor reads research.md.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
