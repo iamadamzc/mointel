@@ -2538,6 +2538,9 @@ MARKET RESTART   Ops: mointel-market.service WorkingDirectory=/opt/mointel/curre
                  ~$0.060 + ~$0.054 per report = ~20x the "~$0.003" line; ~90% checker input. -> put to HIM (spend).
                  Next: 22:00 recap -> PREMARKET report; Ops reads after 02:00Z; Research checks it vs the store.
                  LEVELS 74fd7244 NOT shipped (box test FAIL). CHAIN DONE except the premarket proof.
+HIS RULING       THIS SESSION (4689366c, typed 2026-10-01T01:27:53Z) "a, keep them running": reports stay on at ~$5/month
+                 (~$0.06/report). TOMORROW, owner Research: checker input-cost trim proposal without weakening it +
+                 vendor-checked price; one re-freeze shared with the stability probe. Research + Ops told.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
