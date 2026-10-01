@@ -1136,12 +1136,17 @@ export function readRangeCandidates(
  * universe's primary key, written last, so it is only evaluated for rows that
  * already passed the cheap filters, rather than a join per row. A symbol with
  * no universe row is kept, as readRangeCandidates keeps it.
+ *
+ * `minVolume` is his "10% with 500k shares" (2026-10-01): today's cumulative
+ * volume at or above it. A row with no cumulative volume fails it (NULL >= n is
+ * not true), so a name the desk has no volume for never qualifies as a mover.
  */
 export function readTopMovers(
   db: MarketDatabase,
   tradingDate: string,
   band: { min: number; max: number },
   minPct: number,
+  minVolume: number,
   limit: number,
 ): DemandState[] {
   if (limit <= 0) return [];
@@ -1153,13 +1158,14 @@ export function readTopMovers(
           AND ts.price IS NOT NULL
           AND ts.price >= @min AND ts.price <= @max
           AND ts.percent_change >= @minPct
+          AND ts.cumulative_volume >= @minVolume
           AND NOT EXISTS (
                 SELECT 1 FROM universe u WHERE u.symbol = ts.symbol AND u.discovery_eligible = 0
               )
         ORDER BY ts.percent_change DESC, ts.symbol ASC
         LIMIT @limit`,
     )
-    .all({ date: tradingDate, min: band.min, max: band.max, minPct, limit }) as TickerSessionRow[];
+    .all({ date: tradingDate, min: band.min, max: band.max, minPct, minVolume, limit }) as TickerSessionRow[];
   return rows.map((row) => rowToDemandState(row, nowMs));
 }
 
