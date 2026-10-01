@@ -3071,6 +3071,11 @@ error                                                  TYPE                     
   range path (:532-548, rankInRange). His screen     site was read)                              VEEA 5x on his
   contradicts it. Correction to him in the same reply; Ops + Research asked which path serves him.     platform)
   LESSON: when a cited line is the right side of `??` or an else, read the left side before relaying.
+  SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
+  band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
+  over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
+  Sheet or Focus extra (by code). VEEA at 12:22Z: +43.8%, rvol 1.072, rank 82, still excluded. RVOL definition
+  read here (rvol.ts:4-14): cumulative from 04:00 ET over a FULL-DAY 20-session mean, pinned by backtesting.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
