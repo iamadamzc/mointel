@@ -2820,6 +2820,7 @@ error                                                  TYPE                     
   cherry-picks with equal patch-ids, not ancestors.   #1: passed on without reading)      of #1)   later, before
   Corrected to Design. Did not reach him.                                                         any use)
   -> hygiene §2: first family repeat; warned him in the block (his call whether to hand off).
+  -> HIS RULING (434df034, typed "a" after the block): CONTINUE. Every claim to a seat is read at source first.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
