@@ -106,7 +106,12 @@ In-band names off the top 50 at each percent floor: **10%: 22; 15%: 11; 20%: 5; 
 
 ## Recommendation, from the measurement (revised with the volume cross and today's read)
 
-**10%, with a 500k-share volume floor, keeping the cap of 10.**
+> **UPDATED by `liveband-result.md` (registered `1314ae7b`):**
+> - On the live band, 10% + 500k needed a cap of **13** at one checkpoint, so **a cap of 15, not 10**.
+> - 76% of its movers (82% on the $1 sessions) are already live on NOW without a worker change.
+> - 15% alone needs a cap of 10 on the live band.
+
+**10%, with a 500k-share volume floor, keeping the cap of 10** (cap superseded above).
 - On the replay it never needed the cap (the most at once was 10).
 - It typically adds about one row, the same size as 15% alone.
 - Its names hold far better an hour later (82% vs 60%).
