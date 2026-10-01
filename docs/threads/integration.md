@@ -966,7 +966,103 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE NINETEENTH SEAT'S HAND-OFF (2026-09-30; the commit that lands this is its time)
+## LIVE STATE: AT THE TWENTIETH SEAT'S HAND-OFF (2026-10-01 ~01:3xZ; the commit that lands this is its time)
+
+*A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION
+before acting (ask Ops-tmi for /proc). The twentieth's running notes (below the nineteenth's) carry every verification;
+where they disagree with this, the later note wins. NO EM DASHES in anything he reads.*
+
+### PRODUCTION (Ops /proc 01:25Z 10-01; re-read before acting)
+```
+WEB/RESEARCH/ASSESS  e8822583 (reports cut) since 01:25Z: web 1696306 / research 1696364 / assess 1696442, NR 0.
+                     Chain tonight: 46d9f9d (speed fix + 04:00-20:00 ET weekday deploy guard) -> 89d39053 (em dashes)
+                     -> 2bcf1cf (v28: ranges table, AH freeze, sic column, session_reports, 20:05 checkpoint, prompt v3)
+                     -> e8822583 (session reports + runner). Each his yes, each gated, each replayed here by literal sha.
+MARKET               1b5ead6, pid 1574400, since 2026-09-30T00:15:40Z (v27 code on the v28 store; additive-only, safe).
+                     A crash-restart starts from /opt/mointel/current (= e8822583), not 1b5ead6.
+STORE                market.db schema 28. Backup market-v27-2026-10-01T00-49-57-142Z.db (4.31 GB) on the box.
+PINS                 market-floor -> 2bcf1cf (v28); rollback-baseline 372f5eb (v18, below the trades.db floor: NEVER
+                     a market target). prune.sh keeps any release a running unit uses.
+DEPLOY GUARD LIVE    preflight refuses weekday deploys 04:00-20:00 ET (quick_check on the live store ran 804 s in
+                     RTH on 09-30 and stalled the box). Every ship after 20:00 ET.
+CONE                 next cut FROM e8822583 (or /proc's sha). 74fd7244 (levels on reports) did NOT ship.
+```
+
+### SHIPPED TONIGHT, WHAT HE CAN NOW SEE
+```
+Faster board build (R2 ~300 ms warm, confounded vs R0/R1). No em dashes on board, site, legal pages, canvas (Web
+8de08ddf). Session reports on the board, four a day, $1-$20 range only, checked by the v5 checker (pass bar run 4
+PASS as registered, ce09e3d; checker frozen cb6d030). First two published on real models 01:25-01:26Z. ~18 min
+board + site outage for v28 (00:49:56-01:07:37Z).
+```
+
+### HIS RULINGS THIS SEAT (each read at his typed turn; transcripts named)
+```
+15:47:13Z (4689366c)  "yes tonight ... everything pending to go tonight."
+15:51:37Z (Web 3a7e8cd7) "3, sign in friday."   17:03:54Z (4689366c) "1 a, 2 b, 3 yes evening": levels older than the
+                      stored 15m use daily until backfill, then 39 days; NEAREST 10 + "show all"; sign-in FRIDAY EVENING.
+17:29:40Z (4689366c)  "a, hand off after tonight" (this seat).
+17:49:49Z (Ops d33d893e) "yes to all" (46d9f9d, 89d39053, v28).  18:28:16Z (Ops) levels yes, CONDITIONAL on the box test.
+19:34:36Z (4689366c)  "a, try tonight" (a 4th reports run).  22:45:12Z (Ops) "yes" reports tonight.
+01:27:53Z 10-01 (4689366c) "a, keep them running" (reports at ~$5/month, ~$0.06 per report).
+```
+
+### OPEN TONIGHT (in flight at hand-off)
+```
+PREMARKET REPORT     From the 22:00 recap. Ops reads it after 02:00Z; Research checks every line vs the store as-of.
+                     First proof of the premarket kind. Owner Ops + Research. If it MISSES, he hears why.
+```
+
+### APPROVED, NOT BUILT (the list he asked to always see; owner -> trigger)
+```
+LEVELS               Research + Ops: STORED-ROWS path (research-worker timer, non-blocking, history.db
+                     resistance_levels), NEW registration on production hardware (request path FAILED the box test:
+                     p95 1,062 / max 2,042 ms; d98643bb). Then a fresh cut, Design re-render, HIS yes (his 18:28:16Z yes
+                     was for the request path and is spent). History.db 15m/daily reader for the 39-day switch after
+                     the history store.
+HISTORY STORE        Ops: c443b585 UNGATED; re-stack on production; HISTORY_STORE_ENABLED = his yes.
+REPORTS v6           Research: ONE re-freeze for (a) stability probe (cap $10, inside his "3 yes" 907420a6) -> P1
+                     prompt v4 if it helps, (b) checker input-cost trim + vendor-checked price; then registration,
+                     fresh set (Marketing, field-traced controls, format first hash last), N=3, a reports release.
+                     Also: writer showing the SEC form on supply lines + a fresh Commercial sample (stripped tonight).
+SIC WRITE            Research a4a92a8f (research/sic-write; cherry-pick only) after Ops lands the v28 MAIN twin
+                     9f4133b1 on main. Business lines empty for already-researched names until it ships.
+NOW-CELL FLICKER     UNEXPLAINED (one all-"/min" poll ~19:07:02Z 09-30; every code path excluded by the journal).
+                     Research: condition-naming log line in readNowBuckets (+ warn on the catch), after the sic write.
+PRICE-RANGE FIX      Research + Ops: web-tier cache keyed (range, flush seq); the write gate failed at baseline.
+                     LIVE-DESK FINDING STILL OWED TO HIM: RTH flushes max 2.5-11 s (Ops 09-30); discarded 0; minute
+                     gaps for top names NOT yet classified no-trade vs lost (Ops's set-based query owed). Bring it to
+                     him as a finding once classified, in plain words.
+SIGN-IN              FRIDAY 2026-10-02 EVENING. THURSDAY (owner Integration): ask him for the Google client id +
+                     secret (to Ops, never through a seat), seed confirmation (iamadamzc@gmail.com), a throwaway
+                     uninvited Google account, ~10 min Friday. Ops builds Web's probe (bb4e14a8). Web writes the wiring
+                     commit ON FRIDAY ONLY (never on main before). Friday's report must not say "sign-in works" beyond
+                     admit / refuse / anonymous.
+ENGINE EM DASHES     ride the next market-worker restart (engine.ts, activity.ts).
+CHECK RELOCATION     Ops: quick_check only on a pending migration + nightly timer; own enumeration.
+TOOLING              Ops: bash-spawning release tests time out under this PC's low commit memory.
+CANVAS COMMENTS      LOW, his call when convenient: the canvas page uses an undeclared "comments" capability.
+GRADES B RE-RUN      Research: trigger = first v2 reverse-split catalyst row.
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_8a0801c2   Research-tmi local_f6fa4717   Design-tmi local_4f84a562   Web-tmi local_2c0e391a
+Marketing-tmi local_fdc0aa9a   Commercial-tmi local_2ce868d2.  Retired, NOT archived (his, cosmetic):
+"Ops-tmi (retired 2026-09-30)" local_bb3d4059, "Research-tmi-retired" local_4b09b3b2, this seat local_50b52df9.
+OTHER PROJECT: trade-researcher local_c188af94 (A:\trade_research): briefed on desk data for news backtests + where
+the Alpaca keys live (no values). Hazards given: never stream (ONE SIP slot), never regenerate the key, shared REST
+limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register (ac5e5abd).
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc and the premarket report's outcome (Research's line-by-line check). Then keep REPORTS v6 and
+the LEVELS stored-rows path moving (both need a registration before any run). Thursday: the sign-in asks. Bring him
+the flush finding once Ops classifies the minute gaps.
+```
+
+## ARCHIVE — WAS: LIVE STATE AT THE NINETEENTH SEAT'S HAND-OFF (2026-09-30; SUPERSEDED BY THE TWENTIETH'S)
 
 *A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. Re-read production before
 acting (ask Ops-tmi for /proc). The eighteenth's LIVE STATE below is ARCHIVE; where they disagree, this wins. The
