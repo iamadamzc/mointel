@@ -13060,3 +13060,10 @@ Levels 74fd7244 **GATED HERE ALL GREEN 205/205, 3,123 tests.**
 22:00, then levels follows). **All five releases now have his word in this session:** #1 46d9f9d, #2 89d39053, #3 v28 2bcf1cf
 (17:49:49Z), reports e8822583 (22:45:12Z), levels 74fd7244 (18:28:16Z, conditional on the box cost test). Waiting on his
 "go" after 20:00 ET (the classifier refuses an unattended deploy).
+
+**HIS "go" 2026-09-30T23:41Z (19:41 ET, before the window): held to 00:00Z by a timer, then shipped.**
+**#1 46d9f9d LIVE.** Launched 00:00:32Z after the base check; /proc 00:16Z: web 1666384 / research 1666442 / assess 1666517
+on 46d9f9d (start 00:15:32-33Z), NR 0; market 1574400 on 1b5ead6 untouched; down 3 s; migrate ran --no-check (v27, no
+backup). **R2** ((b'), 120 s enforced): warm median/max per set 306.3/430.1, 302.7/407.6, 282.7/369.4, 289.8/386.2,
+341.2/1114.7; cold 256-368 ms; non-200 0. Confounded vs R0 473.6 / R1 501.6 (post-close AFTER_HOURS board, time of day).
+**#2 89d39053 launched 00:18Z.**
