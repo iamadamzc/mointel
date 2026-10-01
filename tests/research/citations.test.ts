@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { companyText } from '@/lib/dashboard/sessionReports';
-import { withoutCitations, withoutCitationsDeep } from '@/lib/research/citations';
+import { citedSourceIds, withoutCitations, withoutCitationsDeep } from '@/lib/research/citations';
 
 /*
  * The citation-token pattern (`lib/research/citations.ts`): what it admits and
@@ -93,6 +93,56 @@ describe('withoutCitationsDeep', () => {
       evidenceSourceIds: [12345, 67890],
       nested: [{ terms: 'Warrants at $1.00.' }, 42, null],
     });
+  });
+});
+
+describe('a lone short id goes only when the dossier cited it (residual, docs/research/citation-residual)', () => {
+  it('removes a production lone id the dossier cites, keeping one stop (BLND version 100, KTCC version 758)', () => {
+    const cited = new Set([2040, 1914]);
+    expect(withoutCitations('Shares outstanding must not be treated as float. [2040]', cited)).toBe(
+      'Shares outstanding must not be treated as float.',
+    );
+    expect(withoutCitations('Shares outstanding, not public float. [1914].', cited)).toBe('Shares outstanding, not public float.');
+    expect(withoutCitations('First. [2040] Second.', cited)).toBe('First. Second.');
+  });
+
+  it('Integration control: an in-range id that IS cited goes; a year in prose that is NOT cited stays', () => {
+    const cited = new Set([1999]);
+    expect(withoutCitations('Registered on Form S-1. [1999]', cited)).toBe('Registered on Form S-1.');
+    expect(withoutCitations('The [2026] plan holds.', cited)).toBe('The [2026] plan holds.');
+    expect(withoutCitations('See note [1].', cited)).toBe('See note [1].');
+  });
+
+  it('with no ids, or an empty set, a lone short bracket stays (the report company line passes none)', () => {
+    expect(withoutCitations('Not float. [2040]')).toBe('Not float. [2040]');
+    expect(withoutCitations('Not float. [2040]', new Set())).toBe('Not float. [2040]');
+  });
+
+  it('deep: ids from EVERY block count, including nested supply blocks, across blocks', () => {
+    const dossier = {
+      catalyst: { summary: 'Offering priced. [1172] In [2026] it may close.', evidenceSourceIds: [1172] },
+      structure: {
+        structuralWarnings: ['Not a current float figure. [2007]', 'Ties to the supply note. [998]'],
+        supplyLedger: [{ terms: 'Warrants at $1.00. [998]', evidenceSourceIds: [998] }],
+        evidenceSourceIds: [2007],
+      },
+      cycle: { reasoning: 'No boundary. [2041]', evidenceSourceIds: [] },
+    };
+    expect(withoutCitationsDeep(dossier)).toEqual({
+      catalyst: { summary: 'Offering priced. In [2026] it may close.', evidenceSourceIds: [1172] },
+      structure: {
+        structuralWarnings: ['Not a current float figure.', 'Ties to the supply note.'],
+        supplyLedger: [{ terms: 'Warrants at $1.00.', evidenceSourceIds: [998] }],
+        evidenceSourceIds: [2007],
+      },
+      cycle: { reasoning: 'No boundary. [2041]', evidenceSourceIds: [] },
+    });
+  });
+
+  it('citedSourceIds collects every evidenceSourceIds array and nothing else', () => {
+    expect([...citedSourceIds({ a: { evidenceSourceIds: [1, 2] }, b: [{ evidenceSourceIds: [3] }], c: [4], d: 5 })].sort()).toEqual([
+      1, 2, 3,
+    ]);
   });
 });
 

@@ -1,0 +1,333 @@
+{
+ "registration": "5441204f",
+ "versions": 2495,
+ "currentVersions": 1122,
+ "fourDigitCurrent": 221,
+ "all": {
+  "occurrences": 1297,
+  "versions": 220,
+  "byClass": {
+   "M": 1278,
+   "T": 19
+  },
+  "byClassY": {
+   "M": 1142,
+   "T": 19,
+   "M+Y": 136
+  },
+  "byDigits": {
+   "3": 371,
+   "4": 926
+  },
+  "byField": {
+   "cycle.recentMajorRuns[]": 28,
+   "cycle.cycleWarnings[]": 56,
+   "catalyst.summary": 47,
+   "catalyst.whyTradersMayCare": 49,
+   "structure.supplyLedger[].terms": 190,
+   "structure.supplyLedger[].registrationStatus": 46,
+   "structure.structuralWarnings[]": 356,
+   "structure.supplyLedger[].eligibilityAssessment": 143,
+   "structure.summary": 53,
+   "structure.supplyLedger[].holderRestrictions": 35,
+   "structure.reverseSplitHistory[]": 109,
+   "cycle.reasoning": 48,
+   "structure.unknowns[]": 52,
+   "catalyst.unknowns[]": 15,
+   "structure.knownRegistrationStatus": 52,
+   "cycle.unknowns[]": 10,
+   "structure.displayedFloatSource": 3,
+   "structure.supplyLedger[].sourceFiling": 5
+  }
+ },
+ "current": {
+  "occurrences": 294,
+  "versions": 66,
+  "byClass": {
+   "M": 289,
+   "T": 5
+  },
+  "byClassY": {
+   "M": 272,
+   "T": 5,
+   "M+Y": 17
+  },
+  "byDigits": {
+   "3": 73,
+   "4": 221
+  },
+  "byField": {
+   "catalyst.summary": 11,
+   "catalyst.whyTradersMayCare": 13,
+   "structure.supplyLedger[].terms": 40,
+   "structure.supplyLedger[].eligibilityAssessment": 21,
+   "structure.structuralWarnings[]": 96,
+   "structure.summary": 5,
+   "cycle.reasoning": 12,
+   "structure.knownRegistrationStatus": 11,
+   "structure.reverseSplitHistory[]": 23,
+   "structure.unknowns[]": 10,
+   "cycle.recentMajorRuns[]": 8,
+   "cycle.cycleWarnings[]": 18,
+   "catalyst.unknowns[]": 4,
+   "structure.supplyLedger[].holderRestrictions": 8,
+   "cycle.unknowns[]": 2,
+   "structure.displayedFloatSource": 2,
+   "structure.supplyLedger[].sourceFiling": 5,
+   "structure.supplyLedger[].registrationStatus": 5
+  }
+ },
+ "handRead": {
+  "MY": [
+   {
+    "version": 62,
+    "ticker": "VOGX",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 1918,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "ivalent to outstanding shares or float. [1918]"
+   },
+   {
+    "version": 62,
+    "ticker": "VOGX",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 1922,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": " the IPO, resale activity, or dilution. [1922]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.supplyLedger[].terms",
+    "value": 2041,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "or an as-converted common-share amount. [2041]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.supplyLedger[].eligibilityAssessment",
+    "value": 2041,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": " conversion eligibility were collected. [2041]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.supplyLedger[].terms",
+    "value": 2034,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "ration status, or exercise eligibility. [2034]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.supplyLedger[].eligibilityAssessment",
+    "value": 2034,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "ant supply from the collected evidence. [2034]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 2040,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "tstanding must not be treated as float. [2040]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 2034,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "e capacity is therefore not reconciled. [2034]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 2039,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "confirmation that the shares were sold. [2039]"
+   },
+   {
+    "version": 100,
+    "ticker": "BLND",
+    "current": true,
+    "field": "cycle.reasoning",
+    "value": 2041,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "elf establish a current-cycle boundary. [2041]"
+   },
+   {
+    "version": 758,
+    "ticker": "KTCC",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 1914,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "s shares outstanding, not public float. [1914]"
+   },
+   {
+    "version": 758,
+    "ticker": "KTCC",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 1913,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": " status, or current resale eligibility. [1913]"
+   },
+   {
+    "version": 1421,
+    "ticker": "GRAN",
+    "current": true,
+    "field": "structure.supplyLedger[].terms",
+    "value": 2009,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": " share amount for that dollar capacity. [2009]"
+   },
+   {
+    "version": 1421,
+    "ticker": "GRAN",
+    "current": true,
+    "field": "structure.supplyLedger[].terms",
+    "value": 1996,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "o not state the registered share total. [1996]"
+   },
+   {
+    "version": 1421,
+    "ticker": "GRAN",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 2009,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "acity, not a quantified share overhang. [2009]"
+   },
+   {
+    "version": 1421,
+    "ticker": "GRAN",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 2007,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "2024 and is not a current float figure. [2007]"
+   },
+   {
+    "version": 2354,
+    "ticker": "TDTH",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 1902,
+    "digits": 4,
+    "cls": "M",
+    "y": true,
+    "context": "rsion status, or adjusted share amount. [1902]"
+   }
+  ],
+  "NY": []
+ },
+ "samples": {
+  "T": [
+   {
+    "version": 36,
+    "ticker": "WFF",
+    "current": true,
+    "field": "structure.reverseSplitHistory[]",
+    "value": 1002,
+    "digits": 4,
+    "cls": "T",
+    "y": false,
+    "context": "e split was effected on April 13, 2026. [1002]"
+   },
+   {
+    "version": 36,
+    "ticker": "WFF",
+    "current": true,
+    "field": "structure.unknowns[]",
+    "value": 998,
+    "digits": 3,
+    "cls": "T",
+    "y": false,
+    "context": "tate an exact outstanding-share figure. [998]"
+   },
+   {
+    "version": 43,
+    "ticker": "DUOT",
+    "current": true,
+    "field": "catalyst.unknowns[]",
+    "value": 1172,
+    "digits": 4,
+    "cls": "T",
+    "y": false,
+    "context": "tions relative to the earnings release. [1172]"
+   },
+   {
+    "version": 701,
+    "ticker": "CAST",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 3909,
+    "digits": 4,
+    "cls": "T",
+    "y": false,
+    "context": "tion, volume, or registered securities. [3909]"
+   },
+   {
+    "version": 1387,
+    "ticker": "EHGO",
+    "current": true,
+    "field": "structure.structuralWarnings[]",
+    "value": 9957,
+    "digits": 4,
+    "cls": "T",
+    "y": false,
+    "context": "ciled to the current capital structure. [9957]"
+   }
+  ],
+  "S": [],
+  "Nnon": []
+ }
+}

@@ -24,6 +24,16 @@
  * "[NASDAQ: TGE]", "[Q3]"), and any other punctuation inside ("[$1.2M]",
  * "[1-3]").
  *
+ * UNLESS THE TEXT'S OWN CITED IDS ARE KNOWN. A lone 1-to-4-digit bracket whose
+ * value is one of the dossier's `evidenceSourceIds` IS a citation, whatever it
+ * looks like: "...must not be treated as float. [2040]" (BLND) is source 2040,
+ * not a year. Measured on the local 09-29 copy
+ * (`docs/research/citation-residual/result.md`): of the 294 lone short brackets
+ * the pattern above leaves in current dossiers, 289 are the dossier's own cited
+ * ids, 0 are anything but a source id, and all 17 year-like ones read as
+ * citations. A year the dossier did not cite is kept. With no ids (the report
+ * company line), the lone short bracket is kept as before.
+ *
  * PUNCTUATION. A token between two sentence stops leaves ONE stop:
  * "manager. [Source 115982]." becomes "manager.", never "manager.." (Design).
  *
@@ -35,20 +45,63 @@
 const CITATION =
   /([.!?])?\s*\[(?:sources?\s*\d+(?:\s*,\s*(?:sources?\s*)?\d+)*|\d+(?:\s*,\s*\d+)+|\d{5,})\]([.!?])?/gi;
 
-/** The text with every citation token removed; nothing else changes. */
-export function withoutCitations(text: string): string {
-  return text.replace(CITATION, (_token, before: string | undefined, after: string | undefined) =>
-    before && after ? before : `${before ?? ''}${after ?? ''}`,
+/** A lone bare number of 1 to 4 digits, removed only when it is a cited id. */
+const LONE_SHORT = /([.!?])?\s*\[(\d{1,4})\]([.!?])?/g;
+
+const keepOneStop = (before: string | undefined, after: string | undefined): string =>
+  before && after ? before : `${before ?? ''}${after ?? ''}`;
+
+/**
+ * The text with every citation token removed; nothing else changes. `citedIds`,
+ * when given, also removes a lone short bracket holding one of those ids.
+ */
+export function withoutCitations(text: string, citedIds?: ReadonlySet<number>): string {
+  const cleaned = text.replace(CITATION, (_token, before: string | undefined, after: string | undefined) =>
+    keepOneStop(before, after),
+  );
+  if (!citedIds || citedIds.size === 0) return cleaned;
+  return cleaned.replace(
+    LONE_SHORT,
+    (token: string, before: string | undefined, digits: string, after: string | undefined) =>
+      citedIds.has(Number(digits)) ? keepOneStop(before, after) : token,
   );
 }
 
-/** Every string in a JSON-shaped value, with citation tokens removed. Numbers, ids and keys are untouched. */
+/**
+ * Every number in an `evidenceSourceIds` array anywhere in the value: for a
+ * dossier, the union of its blocks' cited ids, which is what the pipeline stores
+ * as the version's `source_ids` (`pipeline.ts`).
+ */
+export function citedSourceIds(value: unknown, out: Set<number> = new Set()): Set<number> {
+  if (Array.isArray(value)) {
+    for (const item of value) citedSourceIds(item, out);
+  } else if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) {
+      if (key === 'evidenceSourceIds' && Array.isArray(item)) {
+        for (const id of item) if (typeof id === 'number' && Number.isInteger(id)) out.add(id);
+      } else {
+        citedSourceIds(item, out);
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Every string in a JSON-shaped value, with citation tokens removed. Numbers, ids
+ * and keys are untouched. The value's own `evidenceSourceIds` are collected once,
+ * so a dossier's lone short citations go too (see the header).
+ */
 export function withoutCitationsDeep<T>(value: T): T {
-  if (typeof value === 'string') return withoutCitations(value) as T;
-  if (Array.isArray(value)) return value.map((item) => withoutCitationsDeep(item)) as T;
+  return deep(value, citedSourceIds(value));
+}
+
+function deep<T>(value: T, citedIds: ReadonlySet<number>): T {
+  if (typeof value === 'string') return withoutCitations(value, citedIds) as T;
+  if (Array.isArray(value)) return value.map((item) => deep(item, citedIds)) as T;
   if (value && typeof value === 'object') {
     const out: Record<string, unknown> = {};
-    for (const [key, item] of Object.entries(value)) out[key] = withoutCitationsDeep(item);
+    for (const [key, item] of Object.entries(value)) out[key] = deep(item, citedIds);
     return out as T;
   }
   return value;
