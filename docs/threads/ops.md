@@ -13236,3 +13236,8 @@ the desk a scanner; "most active" withdrawn as a recommendation. Research prepar
 baseline). Ops's part when asked: time readTopMovers per poll ON A COPY (and the poll rate), and the cost of recomputing a
 median/trimmed baseline. Research's research/movers aaebfc42 repo.ts + test = my 944c300e blobs (verified). No movers question tonight.
 The 14:03Z registered VEEA read stays (Research's SQL + VEEA's row); its live timing lines were removed per Integration.
+**10:00 ET runs (2026-10-01):** citation census 98ef4acd (current 996/1,178 carry a token); registered VEEA read a5178ac1
+(5 names; VEEA rank 34 by 10:03, 50,067,518 sh 04:00-10:00 ET); readTopMovers on a COPY 539ae024 (warm p50 4.29 / p95 6.15 /
+max 7.89 ms; live plan = copy plan, live has no sqlite_stat). Median-baseline cost (B) given to Research: market-worker
+restart, applies only at the next rebuild, the "average_volume" label. Citation cut gate 14:02Z: NO RESULT (PC out of commit
+memory: suite printed nothing, build OOM); **he set the page file to system-managed** (was manual 2,000/5,000 MB); rerun running.
