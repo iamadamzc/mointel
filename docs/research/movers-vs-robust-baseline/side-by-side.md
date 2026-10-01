@@ -132,4 +132,6 @@ VEEA's B1 denominator on the copy is **249,061 shares** (median of 20 copy dates
 - **A:** the ordering stays RVOL, untouched. It adds a second reason for a row ("moving 20%+"), which is what a gainers scanner does. Measured size: 0 to 3 rows per checkpoint, none before 09:25 in the replay. Whether that second reason belongs on his board is the design question, not a measurement.
 - **B:** stays one principle in name, but changes what the number means and about a third of the names. The names it brings in are mostly red, and it still leaves most big movers off (7 of the 12 tested). It does not reach the replay's big movers without A on top.
 
+**Band:** both replays use **$1 to $20**. The live board serves **$0.25 to $20** (Ops `f1c0628d`), so the live counts of added rows are higher than these.
+
 **What neither shows:** whether either ordering picks better trades. The backtest that fixed the mean was not re-run. The latch and the after-hours board were not replayed. Ten sessions.

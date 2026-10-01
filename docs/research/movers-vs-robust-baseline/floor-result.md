@@ -2,6 +2,12 @@
 
 *Seat `local_5f4bfcf8`, 2026-10-01. His question, verified at 15:31:15Z. Script `floors.js`, raw `floors-raw.json`; the A replay's reconstruction (local copy, 10 sessions 09-14 to 09-25, checkpoints 08:00, 09:00, 09:25 and 10:00 ET, band $1 to $20). Instrument check passed: at 20% with K = 10 it reproduces A's 19 additions exactly. Today's live counts are Ops's, read separately.*
 
+> **⚠️ BAND CORRECTION (Integration's catch, after `2fce3d4d`).** Every replay number in this file uses the A replay's band, **$1 to $20**. **The live board serves $0.25 to $20** (Ops `f1c0628d`, the worker's `discovery_summary`: priceMin 0.25, priceMax 20; also the qualify band in research.md's post-restart item 1). So on the live board:
+> - **Movers from $0.25 to $1 CAN be shown.** The replay left them out, so every row count below UNDERSTATES what each floor adds live.
+> - The section on movers outside the band was wrong as first written, and is corrected below.
+>
+> **A re-run on $0.25 to $20, with the volume cross and the cap 15% needs there, is queued after his answer** (Integration), and will be pre-registered first.
+
 ## The table
 
 Rows are in-band movers added under the RVOL top 50, over 40 checkpoints.
@@ -46,9 +52,9 @@ Rows are in-band movers added under the RVOL top 50, over 40 checkpoints.
 - NCPL 09-23, +36.0%. +15.7% later.
 - NCPL 09-24, +35.6%. +45.3% later.
 
-## "Any mover in the market": what no floor can do
+## Movers outside the REPLAY's band ($1 to $20)
 
-The board shows only the served price band. At every floor some movers are outside it, almost all of them **under $1**. Per checkpoint (median / max), outside $1 to $20:
+~~The board shows only the served price band. At every floor some movers are outside it, almost all of them under $1.~~ **CORRECTED:** this table counts movers the REPLAY left out. On the live board ($0.25 to $20), the **under-$1 column is mostly movers the board CAN show** (from $0.25 to $1), and the replay did not test them. Only names **over $20** (and under $0.25, which this table does not separate) are outside the live band. Per checkpoint (median / max), outside $1 to $20:
 
 | Floor | Under $1 | Over $20 |
 |---|---|---|
@@ -58,7 +64,7 @@ The board shows only the served price band. At every floor some movers are outsi
 | 25% | 1 / 3 | 0 / 1 |
 | 30% | 1 / 2 | 0 / 1 |
 
-**No floor puts these on the board; only the band setting does.** That is a separate choice of his.
+~~No floor puts these on the board; only the band setting does.~~ **CORRECTED:** on the live band, a floor DOES add movers from $0.25 to $1. Only names over $20 or under $0.25 are beyond every floor; those depend on the band setting, his separate choice.
 
 ## Volume floor x percent floor (registered `4ab690ae`, script `floors-vol.js`)
 
@@ -109,6 +115,6 @@ In-band names off the top 50 at each percent floor: **10%: 22; 15%: 11; 20%: 5; 
 
 **Second choice: 15% with no volume floor**, if he wants every in-band move to count however thin. The cost: on a day like today it reaches the cap, and the cap then hides the smallest move.
 
-**Either way, a mover under $1 or over $20 is outside the served band and no floor shows it.** That is the band setting, his separate choice.
+~~Either way, a mover under $1 or over $20 is outside the served band and no floor shows it.~~ **CORRECTED:** the live band is $0.25 to $20, so only movers under $0.25 or over $20 are beyond every floor. **Both choices above are sized on $1 to $20 and understate the live board**, which also shows $0.25 to $1 names. The live-band re-run decides the sizes and the cap.
 
 **What this does not show:** ten sessions only; no claim about trades; the latch and after-hours are not replayed; the band was fixed at $1 to $20 for the replay.
