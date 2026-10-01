@@ -108,6 +108,12 @@ export interface RangeRanking {
   rankedCount: number;
   /** How many tracked, rank-eligible names are priced inside the range. */
   eligibleCount: number;
+  /**
+   * Every in-range candidate with its IN-RANGE ranks set, so the live board
+   * can pick big movers from it with their band rank (`boardMovers.ts`).
+   * Additive: the checkpoint capture does not read it.
+   */
+  all: DemandState[];
 }
 
 export function rankInRange(
@@ -166,5 +172,6 @@ export function rankInRange(
     ranked,
     rankedCount: active.length,
     eligibleCount: scrubbed.length,
+    all: scrubbed,
   };
 }
