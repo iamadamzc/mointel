@@ -3080,6 +3080,13 @@ CITATION CUT     ORDER CALL: Research cuts on 840741d3 (A): fc22dbcb, 6fb483a0, 
                  SHIP: Ops gate 217/217 + build after 10:00 ET; Design render; /proc = 840741d3 at launch; his yes (Ops
                  asks, with the live census figure). Write strip lives in lib/research/interpret/guardrails.ts: takes
                  effect at the research-worker restart the deploy performs.
+VEEA (HIS, 12:10Z) "running, not on the board, not in search". Ops read 12:10:41Z: CAPTURED ($3.09, +42.4%, 7.8M sh,
+                 minute bars current); rvol 0.581, rvol_rank 120; board = top 50 by rvol_rank (READ HERE at e8822583:
+                 readModel.ts:552-553, repo.ts:1002-1004, config.ts:102 default 50, RVOL_INTERNAL_RANK unset on box per
+                 Ops). Search sees only the payload. Cause: 20-session MEAN baseline 13.4M carries 202.2M on 09-15.
+                 HIS SIDE: add to Sheet (DashboardShell.tsx:214-220 extraSymbols read here; Ops: Sheet cache 10 s, poll 4 s,
+                 ~15 s; NOT seen live; panel not verified). TOLD HIM. NEEDS YOU: raise limit to 150 now (env + web
+                 restart in window) vs no; rec no. Baseline method -> Research to measure + propose (484847b5); his ship.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
