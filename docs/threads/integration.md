@@ -2504,6 +2504,14 @@ ALPACA KEYS      HIS ASK: give trade-researcher the keys or where to find them. 
                  1574400 on 1b5ead6 untouched; down 3 s. R2 (120 s enforced): warm medians 306.3/302.7/282.7/289.8/341.2,
                  maxima 430.1/407.6/369.4/386.2/1114.7, 0 non-200; CONFOUNDED vs R0 473.6 / R1 501.6 (post-close board, new
                  release). Deploy guard now LIVE (refuses weekday 04:00-20:00 ET). #2 89d39053 launched 00:18Z.
+#2 LIVE          89d39053 em-dash: Ops /proc 00:33:40Z web 1675239 / research 1675296 / assess 1675364 (start 00:33:11-12Z), NR
+                 0; down 2 s. Web told CANVAS GO (stamp 89d39053).
+LEVELS BOX TEST  FAIL (Ops): n=25, p50 221.18, p95 1,062.61, max 2,042.41 ms vs p95 < 100 / max < 250. NO LEVELS TONIGHT;
+                 74fd7244 does not ship. Research grades vs 4612eba. Tomorrow: stored-rows path, new registration on
+                 production hardware, non-blocking research-worker host, history.db table.
+V28 LAUNCHED     2bcf1cf 00:36Z (base 89d39053 x3). Ops read: the v27 market worker's mode clear runs only at construction
+                 (runtime.ts:310) and only on a mode change, so it cannot hit the v28 FK path tonight; re-pin after /proc.
+                 Then reports e8822583 after 22:10.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
