@@ -3060,6 +3060,13 @@ error                                                  TYPE                     
   AND (Ops's): announce a reset of shared main to every seat FIRST, so nobody commits into the window.
   CLOSED: on HIS "yes, push them" (Ops's chat) + my yes for my four, Ops fast-forwarded origin d321c5f3..3671951a;
   main = origin/main, 0 / 0 (read). Normal flow resumed: commit --only, fetch, merge, push. No cherry-pick route.
+  HIS QUESTION ("why the mistakes? is a handoff necessary? ... you are barely 20% through"): answered that #2-#4 are
+  one tool-and-habit cause, not saturation; a fresh seat inherits the habit, not a cure. Cure applied: the scratch
+  push/reconcile scripts DELETED (the repeat was one keystroke away), and this seat never rewrites or cherry-picks
+  shared main history again. Recommended CONTINUE; hand-off offer withdrawn pending his word.
+  CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
+  Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
+  copy: 946 of 1,122 current) HELD from him until the live number exists.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
