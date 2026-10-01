@@ -1,0 +1,15 @@
+[copy] 14:10:24Z staging aaebfc42 at /tmp/movers-aaebfc42
+[copy] 14:10:50Z building copy (ticker_session + universe, same DDL), idle priority
+[copy] built in 21943 ms: 298324 ticker_session rows, 13418 universe rows; 252M
+[plan] EXPLAIN QUERY PLAN on the copy:
+QUERY PLAN
+|--SEARCH ts USING INDEX idx_ticker_session_ah_rank (trading_date=?)
+|--CORRELATED SCALAR SUBQUERY 1
+|  `--SEARCH u USING INDEX sqlite_autoindex_universe_1 (symbol=?)
+`--USE TEMP B-TREE FOR ORDER BY
+[time] 14:11:12Z
+readTopMovers(date=2026-10-01, band=1-20, minPct=20, limit=60): rows cold=8 warm=8; cold 30.94 ms; warm n=50 p50 4.29 ms, p95 6.15 ms, max 7.89 ms
+names (cold): NXL 120.1%, SDEV 66.4%, VEEA 46.5%, AISP 38.2%, MEDS 30.9%, JLHL 25.4%, QSI 25.2%, RPGL 21.9%
+[cleanup] removing the copy
+[done] 14:11:14Z
+
