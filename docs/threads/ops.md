@@ -13067,3 +13067,15 @@ on 46d9f9d (start 00:15:32-33Z), NR 0; market 1574400 on 1b5ead6 untouched; down
 backup). **R2** ((b'), 120 s enforced): warm median/max per set 306.3/430.1, 302.7/407.6, 282.7/369.4, 289.8/386.2,
 341.2/1114.7; cold 256-368 ms; non-200 0. Confounded vs R0 473.6 / R1 501.6 (post-close AFTER_HOURS board, time of day).
 **#2 89d39053 launched 00:18Z.**
+**#2 89d39053 LIVE** /proc 00:33:40Z (web 1675239 / research 1675296 / assess 1675364), NR 0; down 2 s.
+**LEVELS BOX COST TEST FAIL** (00:34Z, once, as registered): n=25 p50 221.18, p95 1062.61, max 2042.41 ms. Graded FAIL by
+Research (d98643bb). Verbatim output: docs/ops/levels-cost-box-2026-10-01T0034Z.log. **No levels tonight.**
+Before v28: the running v27 market worker's claimStoreForMode runs only at runtime construction (worker/runtime.ts:310) and
+only clears on a mode change, so it cannot hit the v28 FK path while running.
+**#3 v28 2bcf1cf LIVE** /proc 01:08Z (web 1687456 / research 1687520 / assess 1687590, start 01:07:37-38Z), NR 0; market on
+1b5ead6 untouched; schema 28/28; capture RECORDING, discarded 0; tmitrader.com 200. **Down 1,062 s (17.7 min)**: quick_check
+772.7 s pre-stop, stop 00:49:56Z, VACUUM INTO backup market-v27-2026-10-01T00-49-57-142Z.db (4.31 GB, integrity ok) by
+00:54:28Z, then ~13 min of v27->v28 DDL. The 10-18 min estimate was at its top; the DDL, not the backup, is the long part.
+push-release's follower timed out ("NOT confirmed", exit 8) as expected; confirmed from /proc.
+**market-floor RE-PINNED -> 2bcf1cf** (01:08:59Z, schema v28, backup none). 1b5ead6 now unpinned but in use (prune keeps it).
+**Reports e8822583 launched 01:09Z** (not after 22:10: with levels out, its stop lands ~21:23 ET, clear of 22:00 +/- 5).
