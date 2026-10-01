@@ -7,12 +7,20 @@
  * top-50 cut left it off. Spec and its pre-registered check:
  * `docs/research/board-movers-spec.md`.
  *
- * THE RULE: the board keeps its top 50 by RVOL, and ADDS up to K names (default
- * 10) that are not already on it, in the served price band, moving at least
- * FLOOR (default +20%) from the prior close. Biggest move first, so the cap
- * only ever drops the smallest qualifying moves. Additive: nothing leaves,
- * nothing is re-ranked; an added row keeps its true `rvolRank` and is marked
- * `boardReason: 'MOVER'`.
+ * THE RULE (his ruling 2026-10-01T15:53:57Z, "10% with 500k shares, cap 15"):
+ * the board keeps its top 50 by RVOL, and ADDS up to K names (15) that are not
+ * already on it, in the served price band, moving at least FLOOR (+10%) from
+ * the prior close on at least MIN VOLUME (500,000 shares since 04:00 ET).
+ * Biggest move first, so the cap only ever drops the smallest qualifying moves.
+ * Additive: nothing leaves, nothing is re-ranked; an added row keeps its true
+ * `rvolRank` and is marked `boardReason: 'MOVER'`.
+ *
+ * WHERE THEY SHOW (his ruling 2026-10-01T15:36:50Z, "if something is labeled as
+ * moving it should just be ranked based on all other parameters normally not
+ * placed in a separate group"): movers are ordinary board rows, appended to
+ * `discovery.ranked` AFTER the ranked ones (`readModel`), so any sort places
+ * them by its own value and every reader that takes "the first N" by position
+ * still takes ranked names.
  *
  * Applied on the live board read only (`readModel`), never in the checkpoint
  * capture, so reports and their checker do not change.
@@ -20,11 +28,15 @@
 
 import type { DemandState } from './types';
 
-/** The band's movers at or above `minPct`, biggest move first, ties by symbol. */
+/**
+ * The band's movers at or above `minPct` on at least `minVolume` shares, biggest
+ * move first, ties by symbol. Unknown volume does not qualify.
+ */
 export function selectMovers(
   candidates: readonly DemandState[],
   band: { min: number; max: number },
   minPct: number,
+  minVolume: number,
   limit: number,
 ): DemandState[] {
   if (limit <= 0) return [];
@@ -36,7 +48,10 @@ export function selectMovers(
         state.price <= band.max &&
         state.percentChange !== null &&
         Number.isFinite(state.percentChange) &&
-        state.percentChange >= minPct,
+        state.percentChange >= minPct &&
+        state.cumulativeVolume !== null &&
+        Number.isFinite(state.cumulativeVolume) &&
+        state.cumulativeVolume >= minVolume,
     )
     .sort((a, b) => (b.percentChange as number) - (a.percentChange as number) || a.ticker.localeCompare(b.ticker))
     .slice(0, limit);
