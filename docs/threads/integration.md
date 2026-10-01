@@ -2950,6 +2950,17 @@ OPS /proc        02:40:29Z box clock (Ops): web 1696306 / research 1696364 / ass
 OLD CHAT RENAMED get_session local_1dfa11ae (read after its farewell): title "Integration-tmi-retired", isArchived
                  false. Title collision closed; archiving is his, cosmetic (like the other retired seats). It reports
                  nothing unanswered and nothing in flight.
+LEVELS RENDER    MET. Design-tmi transcript 3faefae2 (opened 02:28:32Z on design-opening-prompt.md), assistant
+                 02:41:19Z, sent to the retired seat, forwarded verbatim. READ HERE: A:\mointel-design detached at
+                 b5a35fda (worktree list + rev-parse), status clean; absent copy resistance.ts:111 and empty copy
+                 :161-162 at b5a35fda. Verdict NO BLOCKER. Real route 200 (NTWO absent); real computed rows from a COPY
+                 of the local store via a fixture route (GNPX 88, VII empty); no box-data row, no timing claim.
+                 Ops told (221f07f2, delivered); Design acked (5d38a53e, queued).
+                 LEVELS REMAINING: /proc = e8822583 at launch, his yes in Ops's chat (4 conditions), post-ship /proc +
+                 one /api/levels read, Design's /desk check.
+APPROVED-NOT-BUILT ADD  Design, after levels ships, own commit, no re-cut: same-price span "4.62 to 4.62" (compare
+                 formatted values); distance column overrun from +1000%; stale "route memoizes per close" comment in
+                 ResistanceLevels.tsx.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
