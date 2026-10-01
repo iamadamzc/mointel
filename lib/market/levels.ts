@@ -84,7 +84,7 @@ export interface LevelsInput {
 export const MINUTE_MS = 60_000;
 export const FIVE_MIN_MS = 5 * MINUTE_MS;
 
-/** The latest completed 5m candle close at or before `nowMs`: the route's compute moment. */
+/** The latest completed 5m candle close at or before `nowMs`: the compute moment for a row. */
 export function latestFiveMinuteClose(nowMs: number): number {
   return Math.floor(nowMs / FIVE_MIN_MS) * FIVE_MIN_MS;
 }
@@ -104,11 +104,6 @@ export const BASIS_BREAK_RATIO = 3;
  * would call quote rounding a split.
  */
 const SAME_SPLIT_FACTOR = 0.01;
-
-/** The latest completed 5m candle close at or before `nowMs`: the compute moment for a row. */
-export function latestFiveMinuteClose(nowMs: number): number {
-  return Math.floor(nowMs / FIVE_MIN_MS) * FIVE_MIN_MS;
-}
 
 /** Coarsest first, the contract's order for `timeframes`. */
 const TIMEFRAME_ORDER: readonly LevelTimeframe[] = ['daily', '15m', '5m'];
