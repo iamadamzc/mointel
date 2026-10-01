@@ -1018,7 +1018,8 @@ BOARD                Sheet-sourced labels (grade, priority, cycle, structure, PR
 
 ### APPROVED, NOT BUILT (the list he asked to always see; owner -> trigger)
 ```
-REVIEW MIRROR   Research, building now (his yes); rides in A's cut.
+REVIEW MIRROR   Research BUILT d427dd0e on main (22:39:21 ET; route + 2 test files, 3 files +117, read here; tsc/eslint
+                clean, full suite NOT run: Ops gates it in A's cut). Rides in A's cut.
 (A) + 5c        Design (local_c29a82bd), building now; cut after levels.
 REPORTS v6      Research: ONE re-freeze: stability probe (cap $10) + checker input-cost trim + vendor-checked price +
                 (a) headings computed from stored status/grade + (b) date-only values never through ET (writer AND traced) +
