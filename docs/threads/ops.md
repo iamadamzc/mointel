@@ -13185,6 +13185,12 @@ overnight; the gate ran on wake ~06:52 local). Design rendered it on the real re
 the Sheet without em dashes; session reports on review links (his "1 yes"); a name's minute-data mark now agrees with the
 header's "N of M names had live trade data". Ships only after levels b5a35fda is live (else re-cut from e8822583 + replay).
 NOT in (A): citation tokens ("[Source NNN]") in published reports, confirmed by Integration; Research builds a strip as a THIRD
-release from /proc after (A), its own yes (I ask). Production count at 04fefaa7 (current versions: 2 with "[Source" since 00:00Z).
-**Shared local main is DIVERGED from origin** (Integration's cherry-pick push route); my 49be03b1 + 04fefaa7 are not on origin.
-Integration's reconcile was refused by its classifier and is put to him. Nobody plain-merges or plain-pushes A:\mointel main.
+release from /proc after (A), its own yes (I ask). Production count at 915acb33 (was 04fefaa7 before the reconcile; current
+versions: 2 with "[Source" since 00:00Z).
+**Shared main RECONCILED by Integration on his yes** (to Integration: "yes, switch the shared copy over. you ahve permission"):
+local main = origin/main 6f9e3070 + my three re-applied (49be03b1 -> c43d8b95, 04fefaa7 -> 915acb33, e4ed92ed -> 0536299a),
+3 ahead / 0 behind; NOT on origin. My 3b1f90fb (below) was committed just before the reset and dropped; re-applied here.
+Until he answers on my pushing, seats push only through a worktree from origin/main (a plain push from main publishes mine).
+Citation strip (third release): Research's **fc22dbcb** on origin/main (from cad7e8d0, suite 212/212, 3,185 tests, Git Bash,
+no memory signature). Cut it FROM /proc after (A) is live (840741d3 + fc22dbcb), declare, gate here, Integration replays,
+ask him separately.
