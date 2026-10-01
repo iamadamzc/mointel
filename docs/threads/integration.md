@@ -2752,11 +2752,25 @@ PREMARKET PUB    Ops: assessment 591 NEXT_DAY_RECAP COMPLETE 02:00:14.706Z -> ru
                  8,596 in / 3,309 out; checker gpt-5.6-terra 19,397 in / 753 out; ~$0.054 (harness PRICE table, not
                  vendor-checked). Audit inputs read here: 88d694fd Q4 latches (01:28:24Z, all ah_* before 00:00Z, so
                  valid for 591) + 5c55e489 Q1/Q2/Q3/Q5. Research line check asked (queued). Nothing to him until it lands.
+LEVELS BOX TEST  Ops ran ONCE 02:15:26Z on 287561be (log f57b86b4, read): refresh n=143 written=143 absent 0, totalMs 107,292
+                 < 150,000 (cold; prediction was 63-76 s); per-name p50 343 / p95 2,626 / max 3,303 ms; read p50 0.4 / p95
+                 0.7 / max 1.4 ms. PASS pending Research's grading commit (registered grader).
+LEVELS CONE      e8822583..287561be (read): 14 commits, 29 files, +6,116/-0; no deploy/, db.ts, worker/market. CARRIES the
+                 history-store code (3321cc84, flag off). ORDER APPROVED: Thursday cut = 287561be + 9813ec55 from /proc,
+                 gated tonight; literal-sha replay here. CONDITIONS on his question (Ops asks Thursday): names
+                 LEVELS_REFRESH_ENABLED on + research-worker restart; history store ships INERT (its on-switch a separate
+                 yes) + history.db file created; the registered 09:30-10:30 ET flush check; Design re-render of the cut
+                 tree = ship condition, NO Design seat yet -> none rendered by Thu 20:00 ET = no levels that night.
+REFRESH LOGGING  Asked Ops, then read the code and WITHDREW the ask: levels-refresh.ts:49-57 logs totalMs or failure;
+                 levelsRefreshJob.ts:98 exit code/ms, :109 the 270 s kill, :92 spawn failure. (Ledger 1.)
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
 error                                                  TYPE                               repeat?  caught by
-(none yet)
+1 asked Ops whether the levels refresh logs its        a question sent before reading     no       self
+  totalMs / kill; the code at 287561be already does    (the 20th's #5 shape; the family:  (first)  (before any
+  (levels-refresh.ts:49-57, levelsRefreshJob.ts:98,    a value passed on without reading           answer)
+  :109). Withdrawn in a follow-up. Did not reach him.  the thing it describes)
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
