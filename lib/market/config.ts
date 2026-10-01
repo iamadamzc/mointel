@@ -11,6 +11,16 @@ function num(value: string | undefined, fallback: number): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
+/**
+ * A count where 0 is meaningful ("off"), which `num` would replace with its
+ * fallback. Unset or unparseable takes the fallback; a negative is 0.
+ */
+function count(value: string | undefined, fallback: number): number {
+  if (value === undefined || value.trim() === '') return fallback;
+  const parsed = Math.floor(Number(value));
+  return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
+}
+
 function bool(value: string | undefined, fallback = false): boolean {
   if (value === undefined) return fallback;
   const normalized = value.trim().toLowerCase();
@@ -109,7 +119,7 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
       : path.join(path.dirname(dbPath), 'trades.db'),
     discoveryRank: num(env.RVOL_DISCOVERY_RANK, 12),
     internalRank: num(env.RVOL_INTERNAL_RANK, 50),
-    boardMoversK: num(env.BOARD_MOVERS_K, 10),
+    boardMoversK: count(env.BOARD_MOVERS_K, 10),
     boardMoversMinPct: num(env.BOARD_MOVERS_MIN_PCT, 20),
     discoveryPriceMin: num(env.DISCOVERY_PRICE_MIN, 1),
     discoveryPriceMax: num(env.DISCOVERY_PRICE_MAX, 20),

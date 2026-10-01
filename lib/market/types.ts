@@ -585,6 +585,14 @@ export interface DiscoveryState {
    */
   ordinalsOmitted: boolean;
   ranked: DemandState[];
+  /**
+   * Big movers below the RVOL cut, biggest move first, each `boardReason:
+   * 'MOVER'` (his ruling 2026-10-01, `boardMovers.ts`). Kept OUT of `ranked`,
+   * so every count and cut taken from `ranked` is unchanged; where they show is
+   * Design's. Empty on the after-hours board and when the rule is off; absent
+   * on a payload from before this field (or the offline snapshot).
+   */
+  movers?: DemandState[];
   calculatedAt: string | null;
 }
 

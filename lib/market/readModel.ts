@@ -46,7 +46,9 @@ import {
   readDemandStates,
   readRangeCandidates,
   readFeedHealth,
+  readTopMovers,
 } from './store/repo';
+import { addBoardMovers, selectMovers } from './boardMovers';
 import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
 import { attachNowBuckets } from './nowBuckets';
 import {
@@ -547,13 +549,30 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         )
       : null;
 
-    const states =
+    const boardStates =
       rangeRanking?.states ??
       readDemandStates(db, tradingDate, {
         limit: config.internalRank,
         extraSymbols: options.extraSymbols,
         board,
       });
+
+    /*
+     * BIG MOVERS, his ruling 2026-10-01T12:14:00Z ("VEEA is up 43% from close.
+     * it should absolutely show on the baord somewhere"): up to K in-band names
+     * moving at least the floor join the DAILY board below the RVOL cut, marked
+     * 'MOVER' (`boardMovers.ts`, spec `docs/research/board-movers-spec.md`).
+     * Fetched past the board size because some top movers are already on it.
+     * The live read only: the checkpoint capture never comes through here.
+     */
+    const moverLimit = config.internalRank + config.boardMoversK;
+    const movers =
+      board !== 'DAILY_RVOL' || config.boardMoversK <= 0
+        ? []
+        : rangeRanking
+          ? selectMovers(rangeRanking.all, served, config.boardMoversMinPct, moverLimit)
+          : readTopMovers(db, tradingDate, served, config.boardMoversMinPct, moverLimit);
+    const states = addBoardMovers(boardStates, movers, config.boardMoversK);
 
     // Ticker freshness is judged per ticker, never from the connection alone.
     const nowMs = Date.now();
@@ -591,7 +610,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
             .filter((state) => state.afterHours.rank !== null)
             .sort((a, b) => (a.afterHours.rank as number) - (b.afterHours.rank as number))
         : states
-            .filter((state) => state.rvolRank !== null)
+            // A mover carries its true rank (e.g. 120) but is not ranked onto the board.
+            .filter((state) => state.rvolRank !== null && state.boardReason !== 'MOVER')
             .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
 
     const discovery: DiscoveryState = {
@@ -625,6 +645,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       rangeDefault,
       ordinalsOmitted: inRange,
       ranked,
+      movers: states.filter((state) => state.boardReason === 'MOVER'),
       calculatedAt: summary.calculatedAt ?? null,
     };
 
