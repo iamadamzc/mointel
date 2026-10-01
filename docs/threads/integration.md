@@ -2500,6 +2500,10 @@ ALPACA KEYS      HIS ASK: give trade-researcher the keys or where to find them. 
                  parses as a pair); .env.local has none; likely A:\mointel\httpsapi.alpaca.markets.txt (git-ignored) by
                  name, NOT opened (the classifier refused even a shape check; not pursued). Hazards: REST only, never
                  stream; never regenerate the key (revokes production's pair); shared limit; off 07-10 ET.
+#1 LIVE          46d9f9d: Ops /proc 00:16Z web 1666384 / research 1666442 / assess 1666517 (start 00:15:32-33Z), NR 0; market
+                 1574400 on 1b5ead6 untouched; down 3 s. R2 (120 s enforced): warm medians 306.3/302.7/282.7/289.8/341.2,
+                 maxima 430.1/407.6/369.4/386.2/1114.7, 0 non-200; CONFOUNDED vs R0 473.6 / R1 501.6 (post-close board, new
+                 release). Deploy guard now LIVE (refuses weekday 04:00-20:00 ET). #2 89d39053 launched 00:18Z.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
