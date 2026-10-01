@@ -3215,6 +3215,10 @@ HIS RULING       typed to me, answering "What gets a mover onto the board?": "10
                  the ranked 50, boardReason MOVER; reports/rangeCapture/checkpoints/AH exclude (tested); no worker/NOW
                  change. Ops: readTopMovers + volume condition. Design label: NEEDS A DESIGN SEAT (asked him). Cut from
                  /proc after tonight's three; Friday night earliest; literal-sha replay here; his yes via Ops.
+                 BUILT research/movers 825b1eac (read msg): defaults 10% / 500k / K=15; appended to ranked after the 50,
+                 boardReason MOVER, discovery.movers removed; counts exclude movers; capture/reports/checkpoints/AH
+                 mover-free (tests + import guard); 6 mutants at prediction. ORDER CALL: NO SHIP WITHOUT THE "moving"
+                 LABEL (his ruling names it); cut = branch + Design label, Design render a ship condition.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
