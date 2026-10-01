@@ -2931,6 +2931,24 @@ error                                                  TYPE                     
   -> HIS RULING (434df034, typed "1 yes, 2 b" 2026-10-01T02:36:53.972Z): HAND OFF. Ledger closed.
 ```
 
+## THE TWENTY-SECOND SEAT'S RUNNING NOTES (opened 2026-10-01T02:39:30Z, `local_697b69cc`, Opus 5.5)
+
+*Newer than the twenty-first's live state and notes where they disagree.*
+```
+START            Titled Integration-tmi; model claude-opus-5-5, effort high (get_session self): nothing to report.
+OLD CHAT         local_1dfa11ae: list_sessions (include_archived) at start read title "Integration-tmi", isArchived
+                 false, not running. TWO sessions answer to Integration-tmi until he renames + archives it. Asked him.
+REVIEW MIRROR    BUILT: d427dd0e on origin/main (22:39:21 ET, read in git log); Research fbb7f59d + Ops 3395cd4b note it
+                 rides in (A). Moves from approved-not-built to built-not-live.
+LEVELS CUT       b5a35fda060eda6e23953d7dc8b0ecace5e2be4b exists (git show, 22:17:52 ET). Branch state asked of Ops.
+OPS ASKED        message 77e08dcb (delivered): /proc now, ops/levels-thu sha, any change to the four Thursday conditions.
+```
+**THE TWENTY-SECOND SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+(none yet)
+```
+
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
 *A SNAPSHOT. **This seat estimated clock times FIVE times (ledger above), so every time below is a transcript
