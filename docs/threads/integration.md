@@ -2942,6 +2942,11 @@ REVIEW MIRROR    BUILT: d427dd0e on origin/main (22:39:21 ET, read in git log); 
                  rides in (A). Moves from approved-not-built to built-not-live.
 LEVELS CUT       b5a35fda060eda6e23953d7dc8b0ecace5e2be4b exists (git show, 22:17:52 ET). Branch state asked of Ops.
 OPS ASKED        message 77e08dcb (delivered): /proc now, ops/levels-thu sha, any change to the four Thursday conditions.
+OPS /proc        02:40:29Z box clock (Ops): web 1696306 / research 1696364 / assess 1696442 on e8822583c1b6 (start
+                 01:24:28-29Z); market 1574400 on 1b5ead66bb7e (start 2026-09-30T00:15:40Z); NR 0 all four; no deploy
+                 unit. Pins market-floor 2bcf1cfe (v28), rollback-baseline 372f5eb9 (v18). UNCHANGED vs the 21st's
+                 snapshot. ops/levels-thu = b5a35fda (local). Four conditions unchanged (ops.md, 3b9e0054 onward);
+                 Design local_c29a82bd still owes the b5a35fda render. Nothing to him.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
