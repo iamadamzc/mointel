@@ -3085,6 +3085,11 @@ error                                                  TYPE                     
   trade 0.4 s old, buckets flushed 0.2 s, bars contiguous: CAPTURE NOT BROKEN. Last minute 5,630 trades, #1 of
   10,102 tracked (next EZRA 894). NOW computed only for payload rows (nowBuckets.ts:96 read here). TOLD HIM.
   NEEDS YOU put: add "most active right now" inclusion to tonight's movers change.
+MOVERS BUILT     research/movers 558f5cb5 on 2a625a5b (light check here: 3 commits 45b2ecec/27589a65/558f5cb5;
+                 repo.ts adds = 0462df04 line-for-line; no deploy/db/worker). discovery.movers kept out of ranked.
+                 K=0 fallback defect found + fixed. Replay (d02cfb36, local): gate 10/12 sessions; 40 checkpoints, adds
+                 median 0 max 3, 15 total; cap never bound; PASS (1) held 40/40. Research made + caught its own
+                 origin-only reader carry-over before push. FINAL SHA HELD for his most-active answer + Design's pick.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
