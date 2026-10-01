@@ -13088,3 +13088,14 @@ AFTER_HOURS 09-30 (588) PUBLISHED 01:26:10Z in 28.9 s, 12 lines, 1 strike; both 
 INTO_RTH 09-30 (13:25Z) fell just outside the 12 h lookback at the first pass: not written, by design.
 **SPEND (diagnostics.usage, priced with scripts/report-voice-run-v5.ts PRICE, vendor list NOT checked): ~$0.054-0.060 per
 report, ~20x the "~$0.003" line; ~90% is the checker's (gpt-5.6-terra) ~20k input tokens.** Told Integration and Research.
+CORRECTION (Research): $0.003 was the writer alone; the last writer+checker estimate was ~$0.02 (v4 checker ~4k input), so
+this is ~3x that, not 20x. His ruling to Integration 01:27:53Z (relayed, no action of mine depends on it): "a, keep them
+running" (~$5/month); Research trims the checker's input tomorrow.
+Report audit (Research): Q4 latches for 585/588 read 01:28:24Z before the roll, committed docs/ops/report-audit-q4-latches-
+2026-09-30.json (88d694fd). OWED: Q1/Q2/Q3/Q5 after the PREMARKET report publishes, with its assessment id, one committed file.
+Integration seat local_50b52df9 RETIRED (~01:3xZ); its successor is found BY TITLE Integration-tmi. Its first ask: the
+premarket outcome.
+**TOMORROW (Integration's order call, Thu 2026-10-01 after 20:00 ET): LEVELS FIRST.** Ops: host the levels refresh timer in the
+research worker without blocking its event loop (worker thread or a small unit, with Research); history.db resistance_levels
+as the one storage (c443b58, can ride ahead of the full history store); the registered box timing test once in a quiet gap;
+gate the cut; ask him. Details in Integration's message to Research.
