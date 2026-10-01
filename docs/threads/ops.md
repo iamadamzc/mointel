@@ -13099,3 +13099,10 @@ premarket outcome.
 research worker without blocking its event loop (worker thread or a small unit, with Research); history.db resistance_levels
 as the one storage (c443b58, can ride ahead of the full history store); the registered box timing test once in a quiet gap;
 gate the cut; ask him. Details in Integration's message to Research.
+**PRE-WORK TONIGHT, NO DEPLOY** (Integration's order on his "can the pre-work be done now with no risk?"): ship Thu after
+20:00 ET on his yes, asked tomorrow. Host proposed to Research: a worker_threads Worker started by worker/research.ts, own
+DB handles (market.db readonly, history.db via openHistoryStore), no new unit. Base built: **ops/levels-prework 868ca0b6**
+(worktree A:\mointel-levelspre) = e8822583 (live) + b77f1dc1 + c443b58 picked (one conflict in worker/research.ts shutdown:
+kept both reportLoop.stop() and historyStore?.stop()); tsc 0; historyStore + historyStoreJob + reportJob tests 36/36.
+Waiting on Research: the levels refresh entry + cadence, and the NEW box timing registration (run once after 22:15 ET,
+before 03:30 ET, read-only from /tmp, nothing else running).
