@@ -2794,6 +2794,10 @@ FALSE "EXACT"    Research, VERIFIED HERE at e8822583: date-only sources stored a
                  Published #588 CMCT "at 08:00 ET, September 29, 2026" (read in 5c55e489); its source 118584 pending an Ops
                  read. v6 (c) APPROVED: clock only from an EXACT/INFERRED cited source; traced the same. TO HIM: one
                  message as a second defect once CMCT's instance is settled.
+HIS RULING       THIS SESSION (434df034, typed "b" 2026-10-01T02:24:33.560Z, answering my block item 1 "Should reports keep
+                 running with titles that can be wrong until the fix ships?"): (b) KEEP RUNNING + Thursday's display
+                 change (A) HIDES THE SECTION HEADINGS until v6 computes them. Fallback if not display-only: (a). Written
+                 into design.md row A (no Design seat open). Told Research + Ops.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
