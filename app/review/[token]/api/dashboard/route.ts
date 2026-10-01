@@ -7,6 +7,7 @@ import {
   dashboardResponseParts,
   etagMatches,
 } from '@/lib/data/etag';
+import { readableSheet } from '@/lib/data/readable';
 import { guardReviewApi, REVIEW_HEADERS } from '@/lib/review/access';
 
 /**
@@ -38,7 +39,7 @@ export async function GET(
   // Scoped and conditional exactly like the owner's endpoint. A reviewer on a
   // capability URL has no reason to receive every stored dossier either.
   const { body, etag, fetchedAt, cacheAgeMs } = dashboardResponseParts(
-    scopeResearch(await getDashboardState(), extra),
+    readableSheet(scopeResearch(await getDashboardState(), extra)),
   );
 
   const headers = {
