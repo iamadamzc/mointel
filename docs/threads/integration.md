@@ -3010,6 +3010,9 @@ CITATION COUNT   Ops 04fefaa7 (read; 2026-10-01T10:53:26Z): all versions since 0
                  (dcfdb58f); Ops: nothing more from the box (02cf2964). (A) gate on 840741d3 restarted after the PC slept.
 (A) GATED        Ops: 840741d3 ALL GREEN 214/214 declared and met, 3,202 tests (lockfile, types, typecheck, lint, suite);
                  next build in A:\mointel-build pending. Ops's word, not re-run here (one suite at a time on this PC).
+                 BUILD: next build exit 0 (fresh npm ci); route table has /api/levels, /api/reports,
+                 /review/[token]/api/reports (Ops). (A) READY. Thursday after 20:00 ET: levels b5a35fda (his yes) ->
+                 /proc = b5a35fda -> (A) 840741d3 (his yes, four changes) -> /proc; Design reads (A) live on a review link.
                  Shared main: Ops will not touch it; reconcile only on HIS word in Ops's chat.
 APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
                  ungraded name (screen readers only). Own commit, after the ship.
