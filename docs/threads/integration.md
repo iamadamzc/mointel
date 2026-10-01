@@ -3197,6 +3197,8 @@ HIS RULING       typed to me (answering "separate moving group?"): "if something
                  label; sort like any row. Reverses 558f5cb5's out-of-ranked design. Research to list every reader of
                  the board rows and what changes (Top N cut, counts, rank column, reports/capture/checkpoints must still
                  exclude). Threshold still open with him. Design seat (not open) builds the label.
+                 Research ecaa0823 (read): BAND CORRECTION block; every replay count is on $1-$20 and UNDERSTATES the live
+                 $0.25-$20 board. Told him: the block's sizes are from the narrower test range; the live re-run sets them.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
