@@ -13207,3 +13207,13 @@ BY LITERAL SHA. My gate + build scheduled 14:02Z. Conditions: gate 217/217 + bui
 840741d3 at launch (levels, then (A), shipped first); his yes. **His question, plain words:** research text on the board, in
 the research panel and in report company lines stops showing database source numbers like "[Source 115982]" or "[4473,4498]";
 new research is saved without them; nothing is re-analysed; plus the live census figure from the 14:01Z run.
+
+**VEEA, 2026-10-01 12:10Z (his window):** captured fine (3.09, +42%, 7.8M sh), but rvol 0.58 / rank 120 because its 20-session
+MEAN baseline (13.4M) holds a real spike (09-15 202.2M; 09-14..17 28.8M/14.0M/14.4M). The board payload is top
+RVOL_INTERNAL_RANK=50 (unset, default; readModel.ts:552, repo.ts:1001-1004, config.ts:102); search only sees the payload.
+Workaround confirmed from code: a Sheet ticker is requested as an extra beyond the limit (DashboardShell.tsx:213-219,
+repo.ts:1023-1030; Sheet cache 10 s, poll 4 s). **His requirement (to Integration):** "VEEA is up 43% from close. it should
+absolutely show on the board somewhere." Research proposes the rule (e.g. top 50 by rvol_rank UNION top K by % change in the
+record band); **the store query in repo.ts readDemandStates is Ops's to change with it.** RVOL_INTERNAL_RANK=150 stays his
+call, asked in this chat (it would catch rank 120, not a gainer at rank 300). Root cause for Research: a mean baseline
+carries one past spike for 20 sessions; a median or outlier-trimmed baseline would not.
