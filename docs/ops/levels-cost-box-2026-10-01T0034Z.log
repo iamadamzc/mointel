@@ -1,0 +1,32 @@
+[cost] 00:33:52Z staging 8dfacf4 at /tmp/levels-8dfacf4 on the box
+[cost] 00:34:15Z running (first pass counts)
+LIVE: now 2026-10-01T00:34:18.818Z, t = 2026-10-01T00:30:00.000Z (the route's latest 5m close); trading date 2026-09-30; names = top 25 of 3228 ranked in ticker_session on EITHER board (day rvol_rank or evening ah_rank, by the better of the two); first pass per name only
+  TGE    (day 1 / evening 1)   192.82 ms  L=1.5601 levels=18 horizon 5m=2026-09-30T10:25:00.000Z 15m=2026-09-09T11:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  CMCT   (day 2 / evening 6)   282.56 ms  L=2.8 levels=62 horizon 5m=2026-09-30T13:30:00.000Z 15m=2026-09-09T13:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  HIT    (day 8 / evening 2)   326.70 ms  L=0.79 levels=51 horizon 5m=2026-09-30T14:10:00.000Z 15m=2026-09-09T12:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  CHGA   (day 3 / evening 12)   459.35 ms  L=2.3 levels=66 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-09T10:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  NCNA   (day 9 / evening 3)   165.19 ms  L=1.3101 levels=42 horizon 5m=2026-09-30T12:10:00.000Z 15m=2026-09-09T13:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  AHG    (day 4 / evening 11)   104.41 ms  L=0.79 levels=41 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-09T16:15:00.000Z daily=2025-09-30T08:00:00.000Z
+  LPA    (day 10 / evening 4)   221.18 ms  L=3.27 levels=22 horizon 5m=2026-09-30T13:30:00.000Z 15m=2026-09-09T13:15:00.000Z daily=2025-09-30T08:00:00.000Z
+  NIVF   (day 5 / evening -)   941.30 ms  L=0.1479 levels=15 basisBreak horizon 5m=2026-09-30T08:35:00.000Z 15m=- daily=-
+  DKI    (day 14 / evening 5)   165.11 ms  L=1.435 levels=52 horizon 5m=2026-09-30T08:10:00.000Z 15m=2026-09-09T12:45:00.000Z daily=2025-09-30T08:00:00.000Z
+  GOW    (day 6 / evening 13)   212.68 ms  L=2.978 levels=14 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-28T13:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  LGHL   (day 7 / evening 43)   675.15 ms  L=4.91 levels=124 horizon 5m=2026-09-30T09:35:00.000Z 15m=2026-09-10T13:00:00.000Z daily=2025-09-30T08:00:00.000Z
+  MI     (day 25 / evening 7)   158.85 ms  L=0.82 levels=21 horizon 5m=2026-09-30T11:15:00.000Z 15m=2026-09-09T08:00:00.000Z daily=-
+  LESL   (day 20 / evening 8)  1062.61 ms  L=0.1974 levels=80 horizon 5m=2026-09-30T12:25:00.000Z 15m=2026-09-09T08:00:00.000Z daily=2025-09-30T08:00:00.000Z
+  PWCM   (day 18 / evening 9)   585.33 ms  L=1.04 levels=84 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-09T08:00:00.000Z daily=2025-09-30T08:00:00.000Z
+  MYND   (day 26 / evening 10)    26.41 ms  L=0.4121 levels=2 horizon 5m=2026-09-30T12:15:00.000Z 15m=2026-09-28T08:45:00.000Z daily=-
+  CNTB   (day 11 / evening 66)  2042.41 ms  L=1.1 levels=49 horizon 5m=2026-09-30T08:05:00.000Z 15m=2026-09-09T08:00:00.000Z daily=2025-09-30T08:00:00.000Z
+  ANTA   (day 12 / evening 26)    75.43 ms  L=2.7705 levels=47 horizon 5m=2026-09-30T11:15:00.000Z 15m=2026-09-09T13:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  LIQT   (day 13 / evening 39)   847.66 ms  L=0.4801 levels=48 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-09T13:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  CTHH   (day 36 / evening 14)   134.44 ms  L=16.67 levels=3 horizon 5m=2026-09-30T13:30:00.000Z 15m=2026-09-09T14:15:00.000Z daily=-
+  VBIO   (day 15 / evening 234)   661.42 ms  L=2.6604 levels=54 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-09T08:00:00.000Z daily=2025-09-30T08:00:00.000Z
+  CTGG   (day 37 / evening 15)   141.66 ms  L=16.15 levels=1 horizon 5m=2026-09-30T13:30:00.000Z 15m=2026-09-09T13:30:00.000Z daily=-
+  BIYA   (day 16 / evening 60)   436.86 ms  L=1.8808 levels=50 horizon 5m=2026-09-30T08:00:00.000Z 15m=2026-09-09T12:00:00.000Z daily=2025-09-30T08:00:00.000Z
+  BEPI   (day 41 / evening 16)   165.32 ms  L=15.92 levels=1 horizon 5m=2026-09-30T13:30:00.000Z 15m=2026-09-09T13:30:00.000Z daily=-
+  AURE   (day 17 / evening 58)   238.79 ms  L=1.13 levels=51 horizon 5m=2026-09-30T08:55:00.000Z 15m=2026-09-09T13:30:00.000Z daily=2025-09-30T08:00:00.000Z
+  FGSN   (day 46 / evening 17)   180.55 ms  L=19.6 levels=5 horizon 5m=2026-09-30T13:30:00.000Z 15m=2026-09-09T13:30:00.000Z daily=-
+names: TGE CMCT HIT CHGA NCNA AHG LPA NIVF DKI GOW LGHL MI LESL PWCM MYND CNTB ANTA LIQT CTHH VBIO CTGG BIYA BEPI AURE FGSN
+n=25  p50=221.18 ms  p95=1062.61 ms  max=2042.41 ms  (bar: p95 < 100 ms AND max < 250 ms)  FAIL
+[cost] exit 1
+[cost] 00:34:28Z done
