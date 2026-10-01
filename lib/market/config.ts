@@ -26,6 +26,15 @@ export interface MarketConfig {
   discoveryRank: number;
   /** Internal high-resolution candidate count. */
   internalRank: number;
+  /**
+   * Big movers on the DAILY board, his ruling 2026-10-01T12:14:00Z ("VEEA is up
+   * 43% from close. it should absolutely show on the baord somewhere"): up to
+   * this many in-band names moving at least `boardMoversMinPct` from the prior
+   * close join the board even below `internalRank`. 0 turns it off.
+   * `docs/research/board-movers-spec.md`.
+   */
+  boardMoversK: number;
+  boardMoversMinPct: number;
   discoveryPriceMin: number;
   discoveryPriceMax: number;
   /**
@@ -100,6 +109,8 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
       : path.join(path.dirname(dbPath), 'trades.db'),
     discoveryRank: num(env.RVOL_DISCOVERY_RANK, 12),
     internalRank: num(env.RVOL_INTERNAL_RANK, 50),
+    boardMoversK: num(env.BOARD_MOVERS_K, 10),
+    boardMoversMinPct: num(env.BOARD_MOVERS_MIN_PCT, 20),
     discoveryPriceMin: num(env.DISCOVERY_PRICE_MIN, 1),
     discoveryPriceMax: num(env.DISCOVERY_PRICE_MAX, 20),
     capturePriceMin: env.CAPTURE_PRICE_MIN ? num(env.CAPTURE_PRICE_MIN, 0) : null,
