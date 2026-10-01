@@ -100,6 +100,17 @@ export function levelLines(row: ResistanceLevels): LevelLine[] {
 }
 
 /**
+ * What the section says when the route has NO ROW for a name (200 + null).
+ *
+ * TRUE FOR EVERY REASON A ROW IS ABSENT (Research, 2026-10-01): rows are kept
+ * only for names ranked on a board, refreshed every few minutes, so a name
+ * opened from search may never get one, and a name new to the board waits a
+ * few minutes. So it never promises one is coming ("yet", "computing").
+ */
+export const LEVELS_ABSENT_TEXT =
+  'No levels stored for this name. Levels are kept for names on the board and refreshed every few minutes.';
+
+/**
  * HIS RULING, 2026-09-30T17:03:54Z, "2 b" (Integration's session, read at his
  * turn), selecting: "Show the nearest 10 above the price, plus a 'show all'
  * link." A DISPLAY cap only: the route returns every level and the rest are

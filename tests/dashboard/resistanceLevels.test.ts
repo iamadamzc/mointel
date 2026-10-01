@@ -3,7 +3,15 @@ import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
-import { computedText, horizonText, levelLines, levelsNote, NEAREST_LEVELS, shownLevels } from '@/lib/dashboard/resistance';
+import {
+  computedText,
+  horizonText,
+  LEVELS_ABSENT_TEXT,
+  levelLines,
+  levelsNote,
+  NEAREST_LEVELS,
+  shownLevels,
+} from '@/lib/dashboard/resistance';
 import type { ResistanceLevel, ResistanceLevels } from '@/lib/market/resistance';
 
 /*
@@ -111,6 +119,14 @@ describe('the nearest 10, then a link (his "2 b", 2026-09-30T17:03:54Z)', () => 
 });
 
 describe('absent is not empty, and empty is not clear air', () => {
+  it('the absent copy is true for every absent name and never promises a row is coming', () => {
+    // A name opened from search, off both boards, never gets a row.
+    expect(LEVELS_ABSENT_TEXT).not.toMatch(/\b(yet|computing|calculating|soon|loading|pending)\b/i);
+    expect(LEVELS_ABSENT_TEXT).toMatch(/names on the board/);
+    // And it is not the empty row's sentence: absent is not empty.
+    expect(LEVELS_ABSENT_TEXT).not.toBe(levelsNote(row({ levels: [], aboveAllStored: true })));
+  });
+
   // Commercial (via Integration, 2026-09-30): an empty list says only what is
   // true about OUR HISTORY and how far back it goes; a split-refused row must
   // not read as "no levels".

@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from 'react';
 
-import { computedText, horizonText, levelLines, levelsNote, shownLevels } from '@/lib/dashboard/resistance';
+import {
+  computedText,
+  horizonText,
+  LEVELS_ABSENT_TEXT,
+  levelLines,
+  levelsNote,
+  shownLevels,
+} from '@/lib/dashboard/resistance';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { ResistanceLevels as LevelsRow } from '@/lib/market/resistance';
 
@@ -101,7 +108,7 @@ export function ResistanceLevels({
       {state.kind === 'LOADING' ? <p className="text-[12px] text-ink-3">Loading levels…</p> : null}
       {state.kind === 'ERROR' ? <p className="text-[12px] text-ink-3">Levels could not be loaded.</p> : null}
       {state.kind === 'ABSENT' ? (
-        <p className="text-[12px] text-ink-3">Levels are not computed for this name yet.</p>
+        <p className="text-[12px] text-ink-3">{LEVELS_ABSENT_TEXT}</p>
       ) : null}
       {state.kind === 'ROW' ? <LevelsBody row={state.row} /> : null}
     </Section>
