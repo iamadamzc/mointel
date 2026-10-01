@@ -13140,3 +13140,8 @@ his yes with the four conditions after 20:00 ET; /proc = e8822583 at launch (els
 /api/levels read for a top-5 name after the first refresh writes (200 with levels = verified; null for a name with bars = defect).
 To set the flag (his word): add LEVELS_REFRESH_ENABLED=1 to /etc/mointel/mointel.env BEFORE the deploy, so the restarted
 research worker reads it (compare envs by key name only; never print values).
+**Report audit (Research efb29e1a):** every checked sentence holds; the section HEADINGS are model-written and unchecked, and
+three names sat under false ones. His ruling to Integration (relayed; verify at his turn before acting on it), 02:24:33Z
+"b": reports keep running; Design's display change (A) hides headings until reports v6 computes them. **When (A) is cut, its
+ship question to him names "section headings hidden until the report update".** Second class (exact "08:00 ET" printed for
+DATE_ONLY sources): sources read for Research at 84b2d760 (114157, 115696, 117114, 118584, 119236 are DATE_ONLY at 12:00:00Z).
