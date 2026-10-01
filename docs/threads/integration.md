@@ -3102,6 +3102,10 @@ HIS QUESTION     "we went pretty fast on that. was there a cost analysis? (not $
                  Tonight: levels -> (A) -> citations only. LESSON (mine): I approved a build order on a board-behaviour
                  change without asking for its cost; a ruling's requirement ("show it somewhere") is not a ruling on
                  the mechanism.
+                 Research did NOT start the side-by-side: asked HIM to hand off its seat (repeat class, "K=0 is off"
+                 unopened). Brief in research.md LIVE STATE (d7b15ca3, read); A replay preserved at
+                 docs/research/board-movers-replay-2026-10-01/. Told Research, scoped as said to me, his words on
+                 hand-off purpose (context refresh). B starts on his answer to Research.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
