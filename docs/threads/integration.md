@@ -3076,6 +3076,11 @@ error                                                  TYPE                     
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
   Sheet or Focus extra (by code). VEEA at 12:22Z: +43.8%, rvol 1.072, rank 82, still excluded. RVOL definition
   read here (rvol.ts:4-14): cumulative from 04:00 ET over a FULL-DAY 20-session mean, pinned by backtesting.
+  HIS ~12:23Z: "pull all stats for VEEA right now ... it should show on NOW no? ... see if something is broken."
+  Asked Ops (46ca576c, queued): full row, trades 10 s/60 s and its rank by activity across ALL tracked, capture lag.
+  READ HERE: NOW sort only reorders the rows given (view.ts:457-481 sortDiscoveryRows; :443 "~50 rows"); no
+  view ranks all tracked names by current activity. Told him. A "most active now" inclusion is a candidate
+  for the movers rule (his call).
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
