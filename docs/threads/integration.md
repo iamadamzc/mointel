@@ -2747,6 +2747,11 @@ LEVELS PRE-WORK  Research (matches research.md) + READ HERE: registration 905642
                  Box test with Ops, once, read-only, after 22:15 and before 03:30 ET; Research grades in a commit.
                  Then cut from /proc + Design's 4 picks (9813ec55 read: 21:51:14 ET), Design re-render (needs the NEW
                  Design seat), his yes Thursday.
+PREMARKET PUB    Ops: assessment 591 NEXT_DAY_RECAP COMPLETE 02:00:14.706Z -> runner PUBLISHED 02:01:10.160Z (37.8 s), late
+                 0, target 2026-10-01, 11 names / 13 lines / 1 strike / 2 sections / overall present. Writer gpt-5.6-luna
+                 8,596 in / 3,309 out; checker gpt-5.6-terra 19,397 in / 753 out; ~$0.054 (harness PRICE table, not
+                 vendor-checked). Audit inputs read here: 88d694fd Q4 latches (01:28:24Z, all ah_* before 00:00Z, so
+                 valid for 591) + 5c55e489 Q1/Q2/Q3/Q5. Research line check asked (queued). Nothing to him until it lands.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
