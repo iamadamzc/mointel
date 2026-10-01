@@ -966,7 +966,92 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTIETH SEAT'S HAND-OFF (2026-10-01 ~01:3xZ; the commit that lands this is its time)
+## LIVE STATE: AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; the commit that lands this is its time)
+
+*A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION before
+acting (ask Ops-tmi for /proc). The twenty-first's running notes (below the twentieth's) carry every verification; where
+they disagree with this, the later note wins. NO EM DASHES in anything he reads.*
+
+### PRODUCTION (Ops /proc 02:01:18Z 10-01, relayed; Design cites an Ops read 02:28:59Z, same shas)
+```
+WEB/RESEARCH/ASSESS  e8822583 since 01:24:28-29Z, NR 0. MARKET 1574400 on 1b5ead6 (since 2026-09-30T00:15:40Z), NR 0.
+PINS                 market-floor 2bcf1cf (v28); rollback-baseline 372f5eb (never a market target).
+DEPLOY GUARD         weekday deploys refused 04:00-20:00 ET. Every ship after 20:00 ET.
+NOTHING SHIPPED after e8822583.
+```
+
+### WHAT HE CAN SEE NOW, AND WHAT IS WRONG ON IT
+```
+REPORTS              Four a day, $1-$20. First PREMARKET published on time (assessment 591, 02:01:10Z). Audit efb29e1a:
+                     every SENTENCE holds. DEFECTS (all told to him): (1) section HEADINGS model-written, never checked
+                     (3 names under false headings); (2) dates through ET a day early (HIT struck from premarket); (3) event
+                     times printed as exact "08:00 ET" from a date-only source (CMCT #588, confirmed 84b2d760).
+BOARD                Sheet-sourced labels (grade, priority, cycle, structure, PRI tooltip, aria) still show EM DASHES
+                     (Design ec1215d2; merge.ts readableIntelligence cleans the auto side only). Told him.
+```
+
+### HIS RULINGS THIS SEAT (each read at his typed turn, transcript 434df034)
+```
+02:24:33.560Z "b"           reports KEEP RUNNING; Design's display change (A) HIDES section headings until v6 computes
+                            them. Fallback if not display-only: keep running, fix in v6.
+02:30:39.217Z "a"           this seat continues (after ledger 2).
+02:36:53.972Z "1 yes, 2 b"  1: review links SHOW session reports (Research builds a read-only mirror, rides in A's cut).
+                            2: THIS SEAT HANDS OFF.
+```
+
+### THURSDAY 2026-10-01 AFTER 20:00 ET (one release at a time, /proc between)
+```
+1 LEVELS     b5a35fda060eda6e23953d7dc8b0ecace5e2be4b (ops/levels-thu, LOCAL branch in the shared .git) = stored-rows
+             code 287561be + 9813ec55. Box test PASS AS REGISTERED (ed3084e6; refresh 107 s < 150, read p95 0.7 ms).
+             REPLAYED + APPROVED here by literal sha; Ops gate 211/211 + build 0. REMAINING: Design renders THIS tree
+             (account to Integration; none by 20:00 ET = no levels), /proc = e8822583 at launch, HIS yes naming the 4
+             conditions (refresh flag ON + research restart; history store INERT + history.db created; 09:30-10:30 ET
+             flush check, +50% told same day; Design render), then /proc + one /api/levels read after the first refresh.
+2 (A) CUT    From /proc after levels: report cards per name with headings hidden (design.md row A, design APPROVED:
+             emptied sections + NOTHING_LINE render nothing) + Sheet em-dash commit (row 5c) + Research's review mirror of
+             /api/reports (his "1 yes"). One question to him naming all three. Integration replays by literal sha.
+             Post-ship: Design reads A live on a review link (never 07:00-10:00 ET).
+3 SIGN-IN ASKS  THURSDAY (owner Integration): ask him for the Google client id + secret (to Ops, never via a seat), seed
+             confirmation (iamadamzc@gmail.com), a throwaway uninvited Google account, ~10 min Friday evening. Web stands
+             down. Sign-in is FRIDAY 2026-10-02 after 20:00 ET.
+```
+
+### APPROVED, NOT BUILT (the list he asked to always see; owner -> trigger)
+```
+REVIEW MIRROR   Research, building now (his yes); rides in A's cut.
+(A) + 5c        Design (local_c29a82bd), building now; cut after levels.
+REPORTS v6      Research: ONE re-freeze: stability probe (cap $10) + checker input-cost trim + vendor-checked price +
+                (a) headings computed from stored status/grade + (b) date-only values never through ET (writer AND traced) +
+                (c) an event clock only from an EXACT/INFERRED cited source (traced the same). Then registration, fresh
+                Marketing set, N=3, reports release. WITH Design (B) + the opening narrative (Research facts, Marketing
+                voice, Commercial sample) as ONE writer change. Trigger: after (A) ships.
+HISTORY STORE   Ops: code ships INERT inside the levels cut; turning it on (HISTORY_STORE_ENABLED, backfill) = his yes.
+LEVELS READER   Research: history.db 15m/daily reader for the 39-day switch, with/after the history store.
+SIC WRITE       Research a4a92a8f (cherry-pick only) after Ops lands the v28 main twin 9f4133b1.
+NOW-CELL LOG    Research: web-tier line when every row's newest slot is unmeasured + warn on the catch; after sic write.
+PRICE-RANGE FIX Research + Ops: web-tier cache keyed (range, flush seq). FLUSH FINDING still owed to him once Ops
+                classifies minute gaps no-trade vs lost.
+ENGINE EM DASHES ride the next market-worker restart (engine.ts, activity.ts).
+CHECK RELOCATION / TOOLING  Ops. CANVAS COMMENTS low, his call. GRADES B RE-RUN Research, on the first v2 reverse-split row.
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_8a0801c2   Research-tmi local_f6fa4717   Design-tmi local_c29a82bd (NEW, 02:28:31Z)   Web-tmi local_2c0e391a
+Marketing-tmi local_fdc0aa9a   Commercial-tmi local_2ce868d2.
+Retired, renamed, NOT archived (his, cosmetic): Design-tmi-retired local_4f84a562, Research-tmi-retired local_4b09b3b2,
+"Ops-tmi (retired 2026-09-30)" local_bb3d4059, and THIS seat local_1dfa11ae once he renames it.
+OTHER PROJECT: trade-researcher local_c188af94 (A:\trade_research).
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc. Then Thursday: levels render (Design) -> levels ship on his yes (Ops asks) -> (A) cut replay
+-> (A) ship. Ask him the sign-in items Thursday. Keep reports v6 moving after (A). Bring him the flush finding once Ops
+classifies the gaps. This seat's failure, all three times: passing a claim on before opening its source (ledger below).
+```
+
+## ARCHIVE — WAS: LIVE STATE AT THE TWENTIETH SEAT'S HAND-OFF (2026-10-01 ~01:3xZ; SUPERSEDED BY THE TWENTY-FIRST'S)
 
 *A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION
 before acting (ask Ops-tmi for /proc). The twentieth's running notes (below the nineteenth's) carry every verification;
@@ -2842,6 +2927,7 @@ error                                                  TYPE                     
   serves scopeResearch (board names + 50 extras),
   Design saw 11 dossiers on link 60. TRUE, but
   unchecked when sent. Told him; hand-off re-offered.
+  -> HIS RULING (434df034, typed "1 yes, 2 b" 2026-10-01T02:36:53.972Z): HAND OFF. Ledger closed.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
