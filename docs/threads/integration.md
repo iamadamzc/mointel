@@ -3160,6 +3160,10 @@ SIDE-BY-SIDE     COMPLETE 1921e75b (read top: "The answer, short", §1, §1a). R
                  refresh (Ops 539ae024 per doc), web tier only, 0-3 rows on replay. PUT TO HIM: A / B / neither.
                  A's ship: needs Design's group render (new Design seat), Ops gate, replay: earliest Friday night.
                  Research proposes its own hand-off (repeat class); citation residual follow-up recorded open (133a2774).
+DESIGN RETIRED   local_c29a82bd handed off (ad19ab26, read). Refs on origin are TAGS (ls-remote read): design/a-on-b5a35fda
+                 = 840741d3, design/citations-wiring = 5f7fd3fe, -on-6fb483a0 = f6de62c6, design/movers-on-558f5cb5 =
+                 aee14900 (parked). Tonight's post-ship reads (levels on /desk, (A) on a review link) belong to the NEXT
+                 Design seat: none open yet. Route by title + createdAt after 14:19Z.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
