@@ -2802,6 +2802,11 @@ FALSE CLOCK CONF Ops 84b2d760 (22:24:03 ET, read): 118584 (CMCT's cited source) 
                  -> published #588 "at 08:00 ET, September 29" is FALSE. CHGA, FRGT noon sources DATE_ONLY; DKI 120192
                  EXACT at 12:00:00Z (a genuine 08:00 ET release: why the fix follows precision, never a noon rule).
                  SECOND DEFECT told to him; fix (c) in v6 (research.md). His (b) stands; no new decision.
+NEW DESIGN       local_c29a82bd (title Design-tmi, cwd A:\mointel, not archived, created 02:28:31Z; get_session read). Old
+                 local_4f84a562 now "Design-tmi-retired", NOT archived (his, cosmetic). Briefed: /proc (Ops 02:01:18Z),
+                 nothing shipped after e8822583, levels cut b5a35fda approved + gated, HIS RENDER = ship condition, row A
+                 + his "b" (hide headings; all-struck section behaviour to me before building), order levels then A.
+                 Corrected one line of mine (ledger 2).
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
@@ -2810,6 +2815,11 @@ error                                                  TYPE                     
   totalMs / kill; the code at 287561be already does    (the 20th's #5 shape; the family:  (first)  (before any
   (levels-refresh.ts:49-57, levelsRefreshJob.ts:98,    a value passed on without reading           answer)
   :109). Withdrawn in a follow-up. Did not reach him.  the thing it describes)
+2 told the new Design seat its three levels picks     a property of git history          YES      self
+  were "in the ancestry" of b5a35fda; they are        asserted unopened (the family of   (family  (minutes
+  cherry-picks with equal patch-ids, not ancestors.   #1: passed on without reading)      of #1)   later, before
+  Corrected to Design. Did not reach him.                                                         any use)
+  -> hygiene §2: first family repeat; warned him in the block (his call whether to hand off).
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
