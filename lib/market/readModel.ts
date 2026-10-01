@@ -558,20 +558,34 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       });
 
     /*
-     * BIG MOVERS, his ruling 2026-10-01T12:14:00Z ("VEEA is up 43% from close.
-     * it should absolutely show on the baord somewhere"): up to K in-band names
-     * moving at least the floor join the DAILY board below the RVOL cut, marked
-     * 'MOVER' (`boardMovers.ts`, spec `docs/research/board-movers-spec.md`).
-     * Fetched past the board size because some top movers are already on it.
-     * The live read only: the checkpoint capture never comes through here.
+     * BIG MOVERS, his rulings of 2026-10-01 (12:14:00Z "VEEA is up 43% from
+     * close. it should absolutely show on the baord somewhere"; 15:53:57Z "10%
+     * with 500k shares, cap 15"): up to K in-band names moving at least the
+     * floor on at least the volume join the DAILY board below the RVOL cut,
+     * marked 'MOVER' (`boardMovers.ts`). Fetched past the board size because
+     * some top movers are already on it. The live read only: the checkpoint
+     * capture never comes through here.
      */
     const moverLimit = config.internalRank + config.boardMoversK;
     const movers =
       board !== 'DAILY_RVOL' || config.boardMoversK <= 0
         ? []
         : rangeRanking
-          ? selectMovers(rangeRanking.all, served, config.boardMoversMinPct, moverLimit)
-          : readTopMovers(db, tradingDate, served, config.boardMoversMinPct, 0, moverLimit);
+          ? selectMovers(
+              rangeRanking.all,
+              served,
+              config.boardMoversMinPct,
+              config.boardMoversMinVolume,
+              moverLimit,
+            )
+          : readTopMovers(
+              db,
+              tradingDate,
+              served,
+              config.boardMoversMinPct,
+              config.boardMoversMinVolume,
+              moverLimit,
+            );
     const states = addBoardMovers(boardStates, movers, config.boardMoversK);
 
     // Ticker freshness is judged per ticker, never from the connection alone.
@@ -603,16 +617,25 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
      * evening by a full-day cumulative metric is what made the desk answer
      * "what was busy today" long after anybody stopped asking it.
      */
-    const ranked = rangeRanking
+    const rankedOnly = rangeRanking
       ? rangeRanking.ranked
       : board === 'AFTER_HOURS'
         ? states
             .filter((state) => state.afterHours.rank !== null)
             .sort((a, b) => (a.afterHours.rank as number) - (b.afterHours.rank as number))
         : states
-            // A mover carries its true rank (e.g. 120) but is not ranked onto the board.
+            // A mover carries its true rank (e.g. 120); it is not one of the ranked rows.
             .filter((state) => state.rvolRank !== null && state.boardReason !== 'MOVER')
             .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
+    /*
+     * MOVERS ARE BOARD ROWS, AFTER THE RANKED ONES (his ruling 2026-10-01T15:36:50Z:
+     * "if something is labeled as moving it should just be ranked based on all
+     * other parameters normally not placed in a separate group"). Appended in
+     * mover order, never interleaved: the dashboard's event feed, the MCP tools
+     * and review diagnostics take "the first N" by POSITION, so ranked names
+     * must lead (`docs/research/movers-vs-robust-baseline/movers-in-ranked-inventory.md`).
+     */
+    const ranked = [...rankedOnly, ...states.filter((state) => state.boardReason === 'MOVER')];
 
     const discovery: DiscoveryState = {
       tradingDate,
@@ -630,11 +653,11 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       eligibleCount: rangeRanking
         ? rangeRanking.eligibleCount
         : ((board === 'AFTER_HOURS' ? summary.ahEligibleCount : summary.eligibleCount) ??
-          ranked.length),
+          rankedOnly.length),
       rankedCount: rangeRanking
         ? rangeRanking.rankedCount
         : ((board === 'AFTER_HOURS' ? summary.ahRankedCount : summary.rankedCount) ??
-          ranked.length),
+          rankedOnly.length),
       baselineCount: summary.baselineCount ?? countBaselines(db, tradingDate),
       trackedCount: summary.trackedCount ?? countTrackedSymbols(db, tradingDate),
       discoveryRank: summary.discoveryRank ?? config.discoveryRank,
@@ -645,7 +668,6 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       rangeDefault,
       ordinalsOmitted: inRange,
       ranked,
-      movers: states.filter((state) => state.boardReason === 'MOVER'),
       calculatedAt: summary.calculatedAt ?? null,
     };
 

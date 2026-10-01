@@ -1,12 +1,30 @@
 import { describe, expect, it } from 'vitest';
 
 import { addBoardMovers, selectMovers } from '@/lib/market/boardMovers';
+import { loadMarketConfig } from '@/lib/market/config';
 import type { DemandState } from '@/lib/market/types';
+
+describe('his numbers are the defaults (2026-10-01T15:53:57Z, "10% with 500k shares, cap 15")', () => {
+  it('BOARD_MOVERS_MIN_PCT 10, BOARD_MOVERS_MIN_VOLUME 500,000, BOARD_MOVERS_K 15 when unset', () => {
+    const config = loadMarketConfig({});
+    expect([config.boardMoversMinPct, config.boardMoversMinVolume, config.boardMoversK]).toEqual([10, 500_000, 15]);
+  });
+
+  it('0 is honoured for the volume floor and the cap (off), not replaced by the default', () => {
+    const config = loadMarketConfig({ BOARD_MOVERS_MIN_VOLUME: '0', BOARD_MOVERS_K: '0' });
+    expect([config.boardMoversMinVolume, config.boardMoversK]).toEqual([0, 0]);
+  });
+});
 
 /* His VEEA ruling, 2026-10-01: a big % mover reaches the board regardless of RVOL rank. */
 
-const state = (ticker: string, price: number | null, percentChange: number | null, rvolRank: number | null = null) =>
-  ({ ticker, price, percentChange, rvolRank }) as unknown as DemandState;
+const state = (
+  ticker: string,
+  price: number | null,
+  percentChange: number | null,
+  rvolRank: number | null = null,
+  cumulativeVolume: number | null = 1_000_000,
+) => ({ ticker, price, percentChange, rvolRank, cumulativeVolume }) as unknown as DemandState;
 
 const BAND = { min: 1, max: 20 };
 
@@ -23,6 +41,7 @@ describe('selectMovers', () => {
       ],
       BAND,
       20,
+      0,
       10,
     );
     expect(picked.map((s) => s.ticker)).toEqual(['BIG', 'VEEA', 'TIEA', 'TIEB', 'ATFLOOR']);
@@ -33,13 +52,30 @@ describe('selectMovers', () => {
       [state('CHEAP', 0.5, 90), state('DEAR', 25, 90), state('NOPRICE', null, 90), state('NOMOVE', 5, null)],
       BAND,
       20,
+      0,
       10,
     );
     expect(picked).toEqual([]);
   });
 
+  it('his volume floor (15:53:57Z, "10% with 500k shares"): under it is refused, exactly at it is kept, unknown volume is refused', () => {
+    const picked = selectMovers(
+      [
+        state('THIN', 5, 40, null, 499_999),
+        state('ATVOL', 5, 30, null, 500_000),
+        state('NOVOL', 5, 50, null, null),
+        state('HEAVY', 5, 12, null, 9_000_000),
+      ],
+      BAND,
+      10,
+      500_000,
+      15,
+    );
+    expect(picked.map((s) => s.ticker)).toEqual(['ATVOL', 'HEAVY']);
+  });
+
   it('returns nothing when the limit is 0 (the rule is off)', () => {
-    expect(selectMovers([state('BIG', 8, 80)], BAND, 20, 0)).toEqual([]);
+    expect(selectMovers([state('BIG', 8, 80)], BAND, 20, 0, 0)).toEqual([]);
   });
 });
 
@@ -68,7 +104,7 @@ describe('addBoardMovers', () => {
 
   it('the whole rule, from UNSORTED candidates: the cap keeps the biggest moves', () => {
     const candidates = [state('M3', 2, 50), state('M1', 2, 90), state('M4', 2, 30), state('M2', 2, 70)];
-    const out = addBoardMovers(board, selectMovers(candidates, BAND, 20, 50 + 2), 2);
+    const out = addBoardMovers(board, selectMovers(candidates, BAND, 20, 0, 50 + 2), 2);
     expect(out.slice(board.length).map((s) => s.ticker)).toEqual(['M1', 'M2']);
   });
 

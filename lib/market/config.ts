@@ -40,11 +40,17 @@ export interface MarketConfig {
    * Big movers on the DAILY board, his ruling 2026-10-01T12:14:00Z ("VEEA is up
    * 43% from close. it should absolutely show on the baord somewhere"): up to
    * this many in-band names moving at least `boardMoversMinPct` from the prior
-   * close join the board even below `internalRank`. 0 turns it off.
-   * `docs/research/board-movers-spec.md`.
+   * close, on at least `boardMoversMinVolume` shares since 04:00 ET, join the
+   * board's rows after the ranked ones. `boardMoversK` 0 turns it off;
+   * `boardMoversMinVolume` 0 is no volume floor.
+   *
+   * Defaults are his ruling of 2026-10-01T15:53:57Z, "10% with 500k shares, cap
+   * 15", chosen from `docs/research/movers-vs-robust-baseline/floor-result.md`
+   * and `liveband-result.md` (on the live band, 10% + 500k needed 13 at most).
    */
   boardMoversK: number;
   boardMoversMinPct: number;
+  boardMoversMinVolume: number;
   discoveryPriceMin: number;
   discoveryPriceMax: number;
   /**
@@ -119,8 +125,9 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
       : path.join(path.dirname(dbPath), 'trades.db'),
     discoveryRank: num(env.RVOL_DISCOVERY_RANK, 12),
     internalRank: num(env.RVOL_INTERNAL_RANK, 50),
-    boardMoversK: count(env.BOARD_MOVERS_K, 10),
-    boardMoversMinPct: num(env.BOARD_MOVERS_MIN_PCT, 20),
+    boardMoversK: count(env.BOARD_MOVERS_K, 15),
+    boardMoversMinPct: num(env.BOARD_MOVERS_MIN_PCT, 10),
+    boardMoversMinVolume: count(env.BOARD_MOVERS_MIN_VOLUME, 500000),
     discoveryPriceMin: num(env.DISCOVERY_PRICE_MIN, 1),
     discoveryPriceMax: num(env.DISCOVERY_PRICE_MAX, 20),
     capturePriceMin: env.CAPTURE_PRICE_MIN ? num(env.CAPTURE_PRICE_MIN, 0) : null,

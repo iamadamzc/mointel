@@ -320,8 +320,8 @@ export interface DemandState {
   tradingDate: string;
   /**
    * Why a row is on the board when it is not by rank: 'MOVER' = a big % move
-   * from the prior close below the RVOL cut (`boardMovers.ts`). Absent on a
-   * ranked row. The board's own placement and label are Design's.
+   * from the prior close, on enough volume, below the RVOL cut
+   * (`boardMovers.ts`). Absent on a ranked row. The "moving" label is Design's.
    */
   boardReason?: 'MOVER';
 
@@ -584,15 +584,15 @@ export interface DiscoveryState {
    * `afterHours.rank` are IN-RANGE ranks. See `lib/market/rangeRank.ts`.
    */
   ordinalsOmitted: boolean;
-  ranked: DemandState[];
   /**
-   * Big movers below the RVOL cut, biggest move first, each `boardReason:
-   * 'MOVER'` (his ruling 2026-10-01, `boardMovers.ts`). Kept OUT of `ranked`,
-   * so every count and cut taken from `ranked` is unchanged; where they show is
-   * Design's. Empty on the after-hours board and when the rule is off; absent
-   * on a payload from before this field (or the offline snapshot).
+   * The board's rows: the ranked ones in rank order, then (DAILY board only) the
+   * big movers below the RVOL cut, biggest move first, each `boardReason:
+   * 'MOVER'` (his ruling 2026-10-01T15:36:50Z: ordinary rows, not a separate
+   * group; `boardMovers.ts`). Ranked rows always lead, so a reader taking the
+   * first N by position takes ranked names. Counts (`rankedCount`,
+   * `eligibleCount`) never include movers.
    */
-  movers?: DemandState[];
+  ranked: DemandState[];
   calculatedAt: string | null;
 }
 

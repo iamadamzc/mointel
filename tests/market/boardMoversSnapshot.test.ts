@@ -9,25 +9,30 @@ import { getMarketSnapshot } from '@/lib/market/readModel';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import type { DemandState } from '@/lib/market/types';
+import { captureRanges } from '@/lib/desk/rangeCapture';
 import { toRow } from '@/worker/runtime';
 
 /*
- * His VEEA ruling, 2026-10-01: a big % mover reaches the board regardless of
- * RVOL rank. Through the real snapshot, on both board paths: the default band
- * (Ops's readTopMovers) and a set range (rankInRange's in-range list).
+ * His rulings, 2026-10-01: a big % mover reaches the board regardless of RVOL
+ * rank (12:14:00Z); at 10% on 500k shares, cap 15 (15:53:57Z); as ordinary rows
+ * after the ranked ones, not a separate group (15:36:50Z). Through the real
+ * snapshot, on both board paths: the default band (Ops's readTopMovers) and a
+ * set range (rankInRange's in-range list). The checkpoint capture never sees them.
  */
 
 const DATE = '2026-09-28';
 const RTH = new Date('2026-09-28T14:00:00.000Z'); // 10:00 ET, a Monday session
 const EVENING = new Date('2026-09-28T22:00:00.000Z'); // 18:00 ET, after-hours board
 const files: string[] = [];
-const saved = { db: process.env.MARKET_DB_PATH, k: process.env.BOARD_MOVERS_K };
+const ENV = ['MARKET_DB_PATH', 'BOARD_MOVERS_K', 'BOARD_MOVERS_MIN_PCT', 'BOARD_MOVERS_MIN_VOLUME'] as const;
+const saved = Object.fromEntries(ENV.map((key) => [key, process.env[key]]));
 
 afterEach(() => {
   vi.useRealTimers();
-  process.env.MARKET_DB_PATH = saved.db;
-  if (saved.k === undefined) delete process.env.BOARD_MOVERS_K;
-  else process.env.BOARD_MOVERS_K = saved.k;
+  for (const key of ENV) {
+    if (saved[key] === undefined) delete process.env[key];
+    else process.env[key] = saved[key];
+  }
   while (files.length) {
     try {
       fs.rmSync(path.dirname(files.pop()!), { recursive: true, force: true });
@@ -37,7 +42,14 @@ afterEach(() => {
   }
 });
 
-function state(ticker: string, price: number, rvol: number, rank: number, percentChange: number): DemandState {
+function state(
+  ticker: string,
+  price: number,
+  rvol: number,
+  rank: number,
+  percentChange: number,
+  volume = 1_000_000,
+): DemandState {
   return {
     ticker,
     tradingDate: DATE,
@@ -53,7 +65,7 @@ function state(ticker: string, price: number, rvol: number, rank: number, percen
     referenceRthCloseSource: 'alpaca-daily-bar-rth-close',
     referenceRthCloseBasis: 'PRIOR_SESSION',
     percentChange,
-    cumulativeVolume: 1_000_000,
+    cumulativeVolume: volume,
     volumeSource: 'minute-bars',
     volumeBase: 0,
     volumeBaseThrough: null,
@@ -88,8 +100,12 @@ function state(ticker: string, price: number, rvol: number, rank: number, percen
   };
 }
 
-/** 50 ranked names under the floor, one of them a big mover ALREADY on the board, and the off-board set. */
-function seed(bandMin: number) {
+/**
+ * 50 ranked names (one a big mover ALREADY on the board), and the off-board set:
+ * VEEA +42% rank 120, SMALL +21%, MID +19.9% (a mover at the 10% floor, not at
+ * the old 20%), THIN +30% on 100k shares, MILD +9.9%, DEAR +90% at $25.
+ */
+function seed(bandMin: number): string {
   const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-movers-')), 'market.db');
   files.push(file);
   const db = openDatabase(file);
@@ -98,42 +114,65 @@ function seed(bandMin: number) {
   const rows: DemandState[] = [];
   for (let i = 1; i <= 50; i += 1) {
     const ticker = `R${String(i).padStart(2, '0')}`;
-    rows.push(state(ticker, 5, 100 - i, i, i === 3 ? 60 : 10));
+    rows.push(state(ticker, 5, 100 - i, i, i === 3 ? 60 : 5));
   }
   rows.push(state('VEEA', 3.1, 0.58, 120, 42));
   rows.push(state('SMALL', 4, 0.1, 200, 21));
-  rows.push(state('UNDER', 4, 0.2, 130, 19.9));
+  rows.push(state('MID', 4, 0.2, 130, 19.9));
+  rows.push(state('THIN', 4, 0.05, 300, 30, 100_000));
+  rows.push(state('MILD', 4, 0.4, 110, 9.9));
   rows.push(state('DEAR', 25, 0.3, 140, 90));
   upsertTickerSessions(db, rows.map((row) => toRow(row)));
   db.close();
   process.env.MARKET_DB_PATH = file;
+  return file;
 }
 
 const tickers = (list: DemandState[] | undefined) => (list ?? []).map((s) => s.ticker);
+const RANKED = Array.from({ length: 50 }, (_, i) => `R${String(i + 1).padStart(2, '0')}`);
 
 describe('big movers on the live board', () => {
-  it('DEFAULT band: VEEA at rank 120 joins as a MOVER with its true rank; the top 50 is unchanged', () => {
+  it('DEFAULT band: movers are board rows AFTER the ranked 50, biggest move first, marked MOVER with their true rank', () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(RTH);
     seed(1);
     const { discovery, demand } = getMarketSnapshot({});
     expect(discovery.board).toBe('DAILY_RVOL');
-    expect(discovery.ranked).toHaveLength(50);
-    expect(tickers(discovery.ranked)).not.toContain('VEEA');
-    expect(tickers(discovery.movers)).toEqual(['VEEA', 'SMALL']);
+    expect(tickers(discovery.ranked)).toEqual([...RANKED, 'VEEA', 'SMALL', 'MID']);
+    expect(discovery.rankedCount).toBe(50);
     expect(demand.VEEA?.boardReason).toBe('MOVER');
     expect(demand.VEEA?.rvolRank).toBe(120);
     expect(demand.R03?.boardReason).toBeUndefined();
   });
 
-  it('SET RANGE ($1-$20 over a $0.25 band): the same movers, from the in-range ranking', () => {
+  it('his floors: THIN (+30% on 100k shares) and MILD (+9.9%) stay off; env overrides move them', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(RTH);
+    seed(1);
+    expect(tickers(getMarketSnapshot({}).discovery.ranked)).not.toContain('THIN');
+    process.env.BOARD_MOVERS_MIN_VOLUME = '0';
+    expect(tickers(getMarketSnapshot({}).discovery.ranked).slice(50)).toEqual(['VEEA', 'THIN', 'SMALL', 'MID']);
+    process.env.BOARD_MOVERS_MIN_PCT = '9';
+    expect(tickers(getMarketSnapshot({}).discovery.ranked)).toContain('MILD');
+  });
+
+  it('the cap keeps the biggest moves (BOARD_MOVERS_K = 2)', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(RTH);
+    process.env.BOARD_MOVERS_K = '2';
+    seed(1);
+    expect(tickers(getMarketSnapshot({}).discovery.ranked).slice(50)).toEqual(['VEEA', 'SMALL']);
+  });
+
+  it('SET RANGE ($1-$20 over a $0.25 band): the same movers, after the in-range 50', () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(RTH);
     seed(0.25);
     const { discovery, demand } = getMarketSnapshot({ range: { min: '1', max: '20' } });
     expect(discovery.ordinalsOmitted).toBe(true);
-    expect(discovery.ranked).toHaveLength(50);
-    expect(tickers(discovery.movers)).toEqual(['VEEA', 'SMALL']);
+    expect(discovery.ranked).toHaveLength(53);
+    expect(tickers(discovery.ranked).slice(50)).toEqual(['VEEA', 'SMALL', 'MID']);
+    expect(discovery.ranked.slice(0, 50).every((s) => s.boardReason === undefined)).toBe(true);
     expect(demand.VEEA?.boardReason).toBe('MOVER');
   });
 
@@ -142,13 +181,40 @@ describe('big movers on the live board', () => {
     vi.setSystemTime(RTH);
     process.env.BOARD_MOVERS_K = '0';
     seed(1);
-    expect(getMarketSnapshot({}).discovery.movers).toEqual([]);
+    expect(tickers(getMarketSnapshot({}).discovery.ranked)).toEqual(RANKED);
 
     delete process.env.BOARD_MOVERS_K;
     vi.setSystemTime(EVENING);
     seed(1);
     const evening = getMarketSnapshot({}).discovery;
     expect(evening.board).toBe('AFTER_HOURS');
-    expect(evening.movers).toEqual([]);
+    expect(evening.ranked.some((s) => s.boardReason === 'MOVER')).toBe(false);
   });
+});
+
+describe('the checkpoint capture never sees movers (reports and checkpoints read it)', () => {
+  it('captureRanges lists the in-range top names only: VEEA is on the live board and NOT in the capture', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(RTH);
+    const file = seed(1);
+    expect(tickers(getMarketSnapshot({}).discovery.ranked)).toContain('VEEA');
+    const db = openDatabase(file);
+    try {
+      const [range] = captureRanges(db, DATE, { board: 'DAILY_RVOL', rankingLabel: 'Daily RVOL' }, [
+        { min: 1, max: 20 },
+      ]);
+      expect(range!.topTickers).not.toContain('VEEA');
+      expect(range!.topTickers).toHaveLength(25);
+    } finally {
+      db.close();
+    }
+  });
+
+  it.each(['lib/desk/rangeCapture.ts', 'worker/desk-assessments.ts'])(
+    '%s never imports the movers rule or the live board read',
+    (file) => {
+      const source = fs.readFileSync(path.join(process.cwd(), file), 'utf8');
+      expect(source).not.toMatch(/boardMovers|readModel|readTopMovers/);
+    },
+  );
 });
