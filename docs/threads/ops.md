@@ -13113,3 +13113,13 @@ section 8): PASS = refresh total < 150 s AND read p95 < 100 ms AND max < 250 ms,
 ad6eb0f1, 064e15e1, 52241465, **9813ec55** (absent copy; Design gated 208/208).
 PC memory 01:4xZ: commit 1.9 GB free of 36.2 (pagefile 5 GB; 28 claude 10.1 GB, chrome 5.9 GB, orphan suite ~0.6 GB) caused
 Design's OOM gate; he closed Chrome -> 6.5 GB free; Design's rerun clean 208/208. Orphan pids 20200/22704/24128 still resident.
+
+**PREMARKET (first) PUBLISHED on time:** recap 591 completed 02:00:14.706Z; report published 02:01:10.160Z in 37.8 s, late 0,
+11 names, 13 lines, 1 strike, overall present; ~$0.054. Audit inputs committed: Q4 88d694fd, Q1/Q2/Q3/Q5 5c55e489.
+**LEVELS STORED-ROWS BOX TEST PASS** (once, 02:15:26Z, 287561be as registered): refresh n=143 written=143 totalMs 107,292 < 150,000
+(cold); compute p50 343 / p95 2,626 / max 3,303 ms; route read p50 0.4 / p95 0.7 / max 1.4 ms. Verbatim f57b86b4. A cold
+refresh keeps a child busy ~107 s of each 300 s: Research's post-ship [flush] comparison (09:30-10:30 ET) watches it.
+**THURSDAY'S LEVELS CUT: ops/levels-thu b5a35fda** (worktree A:\mointel-levelsthu) = 287561be (e8822583 + six levels picks
++ 8bdedb95 + history store + Research's five) + 9813ec55. Declared 211; gate running. **Ships OFF unless
+LEVELS_REFRESH_ENABLED=1 is set in /etc/mointel/mointel.env**: the release AND that env change are both his word, asked
+TOMORROW (Thu), ship after 20:00 ET. HISTORY_STORE_ENABLED stays unset (no backfill/rollup).
