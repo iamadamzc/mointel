@@ -13172,3 +13172,8 @@ from +1000%, a stale comment. **Remaining Thu: /proc = e8822583 at launch; his y
 > - Design checked the screens against test data; nobody has yet seen levels computed from the live data on the board. I look
 >   at one on /desk right after it goes live.
 > Yes: it ships after 8 pm, then I confirm it on the server and read one live stock's levels. No: it waits.
+
+**(A) cut inputs (for Thursday, after levels is live):** Design's 13051502 (row A, report headings hidden) + b74740d4 (Sheet-label
+em-dash fix), gated by Design on main d80d208c 211/211 (3,170 tests), build 0. Research's review mirror d427dd0e. The cut is
+made FROM /proc (b5a35fda if levels shipped, else e8822583), picked, declared, gated here, replayed by Integration; its
+question names all three changes, including "section headings hidden until the report update".
