@@ -13156,3 +13156,19 @@ BLOCKER, rendered at b5a35fda; real /api/levels 200 with the off-board absent co
 fixture route; 1,280 and 1,024 px, 0 em dashes). For his question: no row computed from the box's data was rendered and no
 timing claimed; Design owes a post-ship look on /desk. Cosmetic after ship, no re-cut: "4.62 to 4.62", distance column overrun
 from +1000%, a stale comment. **Remaining Thu: /proc = e8822583 at launch; his yes in THIS chat with the four conditions.**
+
+**DRAFT OF THE THURSDAY QUESTION (Integration's four conditions, plain words, no em dashes; re-check every fact before asking):**
+> **Can resistance levels ship tonight after 8 pm, with the levels refresh switched on?**
+> The stock detail window gets a "Resistance levels" section: the nearest 10 above the price, then "Show all". Levels are now
+> worked out ahead of time, every 5 minutes, for the names ranked on either board, and stored; opening a stock only reads them.
+> Last night's live test: a full refresh of 143 names took 107 seconds (limit 150); opening one read in under 2 ms.
+> - What changes on the server: one setting turns the refresh on, and the research worker restarts with the deploy (a few
+>   seconds). The market worker is not touched.
+> - Also ships, switched off: the history store code. A small history.db file appears beside the main database to hold the
+>   levels. Turning the history store itself on stays a separate question.
+> - Names not ranked on either board show "no levels on file" rather than computing on the spot.
+> - The morning after, I compare the board's save times 9:30 to 10:30 with Wednesday's. If they are more than 50% slower you
+>   hear it the same day, and switching the refresh off is your call.
+> - Design checked the screens against test data; nobody has yet seen levels computed from the live data on the board. I look
+>   at one on /desk right after it goes live.
+> Yes: it ships after 8 pm, then I confirm it on the server and read one live stock's levels. No: it waits.
