@@ -2531,6 +2531,13 @@ MARKET RESTART   Ops: mointel-market.service WorkingDirectory=/opt/mointel/curre
                  crash-restart starts from CURRENT (e8822583 after tonight), not 1b5ead6: capture resumes in ~15 s on newer
                  market-worker code (an unplanned version change, above the v28 floor, not an outage). prune.sh keeps
                  1b5ead6 only while the worker runs from it (log tonight: "in use 1b5ead66... 0 removed").
+#4 LIVE REPORTS  e8822583: Ops /proc 01:25Z web 1696306 / research 1696364 / assess 1696442, NR 0, down 3 s; /api/reports
+                 200. Runner PUBLISHED on real models: INTO_POWER_HOUR 1-20 09-30 (#585, 12 names, 0 strikes) 01:25:41Z;
+                 AFTER_HOURS (#588, 11 names, 1 strike) 01:26:10Z; both late=1. INTO_RTH 09-30 outside the 12 h lookback
+                 (by design). SPEND (Ops, from diagnostics.usage, priced with the harness PRICE table, NOT vendor-checked):
+                 ~$0.060 + ~$0.054 per report = ~20x the "~$0.003" line; ~90% checker input. -> put to HIM (spend).
+                 Next: 22:00 recap -> PREMARKET report; Ops reads after 02:00Z; Research checks it vs the store.
+                 LEVELS 74fd7244 NOT shipped (box test FAIL). CHAIN DONE except the premarket proof.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
