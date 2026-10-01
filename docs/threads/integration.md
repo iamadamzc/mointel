@@ -1057,6 +1057,10 @@ limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register 
 
 ### HAND-OFF LINE
 ```
+HE ASKED "why not tonight?" -> NEEDS YOU (tonight vs Thursday; recommended Thursday: new research-worker code's first
+live run would be his premarket). HE ASKED "can the pre-work be done now with no risk?" -> ORDER CALL: ALL PRE-WORK
+TONIGHT, NO DEPLOY: build on a branch, register, box test ONCE read-only from /tmp after 22:15 and before 03:30 ET, cut
+from e8822583 + Design's 3 picks, gate; Design re-renders in the morning; Ops asks him Thursday. Research, Ops, Design told.
 HE ASKED (after the hand-off) when levels can ship -> ORDER CALL: LEVELS FIRST on 10-01, ahead of reports v6, target
 THURSDAY after 20:00 ET (stored-rows path, one storage, non-blocking host, registered box test, cut from /proc, Design
 re-render, his yes); a box-test fail -> Friday at the earliest, numbers to him. Research + Ops told.
