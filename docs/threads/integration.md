@@ -3125,6 +3125,9 @@ SIDE-BY-SIDE     DRAFT d951f238 (docs/research/movers-vs-robust-baseline/side-by
                  baseline build; moves AH participation + FLOW_DOMINANT rvol>=5 gate. A = web tier, no existing reader
                  changes. cycle.ts already uses its own median. Owed: Ops VEEA 04:00-10:00 volume, readTopMovers timing,
                  Design paragraph. Nothing to him until final.
+LIVE CENSUS      Ops 98ef4acd (read): 14:01:36Z, read-only, 4.3 s. CURRENT 996 of 1,178 versions carry a token (84.5%);
+                 structure 993, catalyst 827, cycle 454, business 23; ALL 2,341 of 2,702. TOLD HIM (the held claim, now
+                 live). Citation cut gate on 2a625a5b running (Ops).
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
