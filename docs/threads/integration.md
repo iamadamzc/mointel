@@ -3087,6 +3087,13 @@ VEEA (HIS, 12:10Z) "running, not on the board, not in search". Ops read 12:10:41
                  HIS SIDE: add to Sheet (DashboardShell.tsx:214-220 extraSymbols read here; Ops: Sheet cache 10 s, poll 4 s,
                  ~15 s; NOT seen live; panel not verified). TOLD HIM. NEEDS YOU: raise limit to 150 now (env + web
                  restart in window) vs no; rec no. Baseline method -> Research to measure + propose (484847b5); his ship.
+                 Research: pre-registered baseline study taken (local copy only).
+HIS RULING       typed to me after 12:10Z 10-01: "VEEA is up 43% from close. it should absolutely show on the baord
+                 somewhere." REQUIREMENT: a large % mover from prior close reaches the board regardless of RVOL rank.
+                 Routed: Research proposes the rule today (e.g. top 50 by rvol_rank UNION top K by % change in the record
+                 band; K, floor, payload size, pre-registered local check where VEEA must appear) 99ab1244; Ops owns the
+                 repo.ts query change aa81da56; Design decides where/how the rows read 7cc5dc16. Ship = his yes via Ops;
+                 aim: buildable for a cut tonight. Separate from the baseline study.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
