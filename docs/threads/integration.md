@@ -3067,6 +3067,12 @@ error                                                  TYPE                     
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
+CITATION CUT     ORDER CALL: Research cuts on 840741d3 (A): fc22dbcb, 6fb483a0, d478adde (test: comma list of years or
+                 footnotes removed, deliberate), 5f7fd3fe (Design's merge.ts wiring, LOCAL branch
+                 design/citations-wiring, parent fc22dbcb; Design asked to push it). ONE full suite = Ops's release gate
+                 after 10:00 ET; Design renders the cut tree ([Source N], [4473,4498], lone [2026] kept). Ships after (A)
+                 on his yes; re-cut if levels or (A) slips. Census: Ops 14:01Z from a git-archive of 6fb483a0, readonly.
+                 Research 3b9dece5, Ops b9113e26, Design 82e240b9.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
