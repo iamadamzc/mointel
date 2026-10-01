@@ -344,6 +344,12 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     () => merged.discovery.filter((row) => rowMatchesFilters(row, filters, cyclePhase)),
     [merged, filters, cyclePhase],
   );
+  // The big movers take the same filters: a filter that hid a name from the
+  // ranking and showed it again below would be two answers to one question.
+  const moverRows = useMemo(
+    () => merged.movers.filter((row) => rowMatchesFilters(row, filters, cyclePhase)),
+    [merged, filters, cyclePhase],
+  );
 
   const sorted = useMemo(
     () => sortTickers(filtered, sort, telemetry),
@@ -568,6 +574,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           <DiscoveryBoard
             discovery={discovery}
             rows={discoveryRows}
+            movers={moverRows}
             onSelect={setSelectedTicker}
             selectedTicker={selectedTicker}
             marketOffline={health.offline}

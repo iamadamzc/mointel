@@ -27,6 +27,7 @@ import { nowCellTitle, nowColumnCopy, nowReadingOf, type NowCapture } from '@/li
  */
 import type { DiscoveryBoard as BoardKind, SessionPhase } from '@/lib/market/types';
 import { rowKeyboardProps } from '@/components/tableKeyboard';
+import { MOVERS_NOTE, MOVERS_TITLE, moverRankText, moversCountText, showMovers } from '@/lib/dashboard/movers';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { resolveConclusions } from '@/lib/dashboard/deskRead';
 import {
@@ -245,6 +246,8 @@ interface DiscoveryBoardProps {
   /** Null until the first market payload arrives — not a fabricated state. */
   discovery: DiscoveryState | null;
   rows: DeskRow[];
+  /** Big movers the ranking left out, biggest move first (`lib/dashboard/movers.ts`). */
+  movers?: DeskRow[];
   onSelect: (ticker: string) => void;
   selectedTicker: string | null;
   marketOffline: boolean;
@@ -273,6 +276,7 @@ interface DiscoveryBoardProps {
 export function DiscoveryBoard({
   discovery,
   rows,
+  movers = [],
   onSelect,
   selectedTicker,
   marketOffline,
@@ -386,6 +390,8 @@ export function DiscoveryBoard({
    */
   const afterHours = discovery?.board === 'AFTER_HOURS';
   const frozen = discovery?.sessionPhase === 'POST_MARKET';
+  const moverRows = showMovers(board, movers.length) ? movers : [];
+  const moversCount = moversCountText(moverRows.length);
 
   return (
     <section className="border-b border-line bg-desk px-4 py-2">
@@ -448,6 +454,7 @@ export function DiscoveryBoard({
               ? `${discovery.eligibleCount.toLocaleString()} eligible · ${discovery.trackedCount.toLocaleString()} tracked`
               : 'counts not loaded'}
           </span>
+          {moversCount ? <span className="text-[11px] font-semibold text-ink-2">{moversCount}</span> : null}
 
           {/*
             * ON THE COUNTS IT INVALIDATES.
@@ -559,7 +566,7 @@ export function DiscoveryBoard({
         </div>
       </div>
 
-      {visible.length === 0 ? (
+      {visible.length === 0 && moverRows.length === 0 ? (
         <p className="rounded-sm border border-dashed border-line-2 bg-panel px-3 py-4 text-[12px] text-ink-2">
           {discovery === null
             ? // FIRST, ahead of every other branch. With no payload the desk has
@@ -778,6 +785,47 @@ export function DiscoveryBoard({
               />
             ))}
           </tbody>
+          {moverRows.length > 0 ? (
+            /*
+             * THE BIG MOVERS, A GROUP OF THEIR OWN AFTER THE RANKING (his ruling,
+             * 2026-10-01; `lib/dashboard/movers.ts`). Same columns so a mover
+             * reads like any row, but never in the ranked body: the sort and Top
+             * N do not touch it, it leads with the move from the prior close
+             * (why it is here), and it carries its own RVOL rank.
+             */
+            <tbody aria-label={MOVERS_TITLE}>
+              <tr>
+                <th
+                  scope="rowgroup"
+                  colSpan={columns.length}
+                  className="border-y border-line-2 bg-panel-2 px-2 py-1 text-left font-normal"
+                >
+                  <span className="text-[11px] font-semibold tracking-[0.1em] text-ink uppercase">
+                    {MOVERS_TITLE}
+                  </span>
+                  <span className="ml-2 text-[11px] text-ink-3">{MOVERS_NOTE}</span>
+                </th>
+              </tr>
+              {moverRows.map((row) => (
+                <DiscoveryRow
+                  key={`mover:${row.ticker}`}
+                  row={row}
+                  selected={selectedTicker === row.ticker}
+                  changed={changedTickers.has(row.ticker)}
+                  onSelect={onSelect}
+                  focused={isFocused(row.ticker)}
+                  onToggleFocus={onToggleFocus}
+                  priceMin={discovery?.priceMin ?? null}
+                  priceMax={discovery?.priceMax ?? null}
+                  afterHours={false}
+                  showFloat={showFloat}
+                  phase={discovery?.sessionPhase ?? null}
+                  lead="GAP"
+                  mover
+                />
+              ))}
+            </tbody>
+          ) : null}
         </table>
         </div>
       )}
@@ -889,6 +937,7 @@ function DiscoveryRow({
   phase,
   lead,
   activeColumn,
+  mover = false,
 }: {
   row: DeskRow;
   selected: boolean;
@@ -905,6 +954,8 @@ function DiscoveryRow({
   lead: 'GAP' | 'MOVE';
   /** Which column the board is ordered by, so the accent can follow it. */
   activeColumn?: string;
+  /** A big mover shown below the ranking: it says so, and shows its own RVOL rank. */
+  mover?: boolean;
 }) {
   const demand = row.demand;
   // One projection for every surface: whatever the Focus strip shows for this
@@ -996,9 +1047,9 @@ function DiscoveryRow({
   return (
     <tr
       {...rowKeyboardProps(
-        `${row.ticker}, ${afterHours ? 'after-hours participation' : 'RVOL'} ${formatMultiple(
-          afterHours ? (ah?.participation ?? null) : t.rvol,
-        )}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
+        `${row.ticker}, ${mover ? `big mover, ${moverRankText(demand?.rvolRank)}, ` : ''}${
+          afterHours ? 'after-hours participation' : 'RVOL'
+        } ${formatMultiple(afterHours ? (ah?.participation ?? null) : t.rvol)}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
         () => onSelect(row.ticker),
       )}
       onClick={() => onSelect(row.ticker)}
@@ -1046,6 +1097,11 @@ function DiscoveryRow({
 
       <td className="px-2 py-1 text-right align-middle">
         <RvolCell telemetry={t} participation={afterHours ? (ah?.participation ?? null) : null} />
+        {mover ? (
+          <span className="num block text-[10px] whitespace-nowrap text-ink-3">
+            {moverRankText(demand?.rvolRank)}
+          </span>
+        ) : null}
       </td>
 
       <td className="px-1 py-1 text-right align-middle">

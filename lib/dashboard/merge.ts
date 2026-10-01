@@ -499,6 +499,8 @@ export interface MergedDesk {
   rows: Map<string, DeskRow>;
   /** Discovery ranking order, highest Daily RVOL first. */
   discovery: DeskRow[];
+  /** Big movers the ranking left out, biggest move first, never in `discovery` (`boardMovers`). */
+  movers: DeskRow[];
   /** Every ticker present on the TODAY sheet, sheet order preserved. */
   watchlist: DeskRow[];
   /** The `Now` column's capture state for the whole board. */
@@ -576,12 +578,41 @@ export function mergeDesk(
   const discovery = (market?.discovery.ranked ?? [])
     .map((state) => rows.get(state.ticker))
     .filter((row): row is DeskRow => row !== undefined);
+  const movers = boardMovers(market?.discovery.movers, rows, discovery);
 
   const watchlist = sheetTickers
     .map((ticker) => rows.get(ticker.ticker))
     .filter((row): row is DeskRow => row !== undefined);
 
-  return { rows, discovery, watchlist, nowCapture };
+  return { rows, discovery, movers, watchlist, nowCapture };
+}
+
+/**
+ * The board's big movers as rows: names up the most from the prior close that
+ * the RVOL ranking left out (his ruling 2026-10-01, "VEEA is up 43% from close.
+ * it should absolutely show on the board somewhere."; the rule is Research's,
+ * `boardMovers.ts`).
+ *
+ * In the producer's order (biggest move first), and NEVER a name already in
+ * the ranked list: the producer keeps the two apart, and this keeps them apart
+ * again, so a mover can never be shown twice or read as ranked.
+ */
+export function boardMovers(
+  movers: readonly DemandState[] | undefined,
+  rows: ReadonlyMap<string, DeskRow>,
+  ranked: readonly DeskRow[],
+): DeskRow[] {
+  const onBoard = new Set(ranked.map((row) => row.ticker));
+  const seen = new Set<string>();
+  const out: DeskRow[] = [];
+  for (const state of movers ?? []) {
+    if (onBoard.has(state.ticker) || seen.has(state.ticker)) continue;
+    const row = rows.get(state.ticker);
+    if (!row) continue;
+    seen.add(state.ticker);
+    out.push(row);
+  }
+  return out;
 }
 
 /**
