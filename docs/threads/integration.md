@@ -2773,6 +2773,17 @@ LEVELS CUT       b5a35fda060eda6e23953d7dc8b0ecace5e2be4b (ops/levels-thu, local
                  after 20:00 ET Thu; post-ship /proc + one /api/levels read after the first refresh.
                  HIS LINE (Research's draft, for Ops's question): refresh ~107 s of every 300 s cold; morning feed impact
                  checked only after ship; he can turn it off.
+REPORTS AUDIT    Research efb29e1a (22:21:53 ET): every published SENTENCE in 585/588/591 holds vs stored rows/dossiers
+                 (rest uncheckable by id, never contradicted). DEFECT, VERIFIED HERE: section HEADINGS are model-written
+                 (writerV5.ts:218) and never checked (check.ts draftLines :105-115 skips section.heading). Read from
+                 5c55e489: 588 "No clear catalyst" holds LGHL (stored fresh, judged to explain the move); 591 "Fresh and
+                 material news" holds GOW (SECONDARY_STALE, WEAK_NEGATIVE_DILUTIVE) and CMCT (UNKNOWN, judged not to
+                 explain). Strikes both right: 588 VBIO misgraded; 591 HIT "March 26" for stored 2026-03-27T00:00Z
+                 (longDate :66-72 via etDayAndClock, a day early; traced rule shares it, the model caught it) -> HIT
+                 dropped from the premarket report. v6 APPROVED (order call): (a) headings computed from stored
+                 status/grade; (b) date-only values never through ET, writer + traced.ts. OPEN with Research: "08:00 ET"
+                 = 12:00:00Z event times (audit line 457), real or a placeholder printed as exact. To HIM: the defect +
+                 keep-running decision (his).
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
