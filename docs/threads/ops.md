@@ -13221,3 +13221,9 @@ carries one past spike for 20 sessions; a median or outlier-trimmed baseline wou
 **readTopMovers BUILT: ops/top-movers 0462df04** (worktree A:\mointel-movers, on origin/main d02cfb36). Research's SQL with
 NOT EXISTS for eligibility; 4 tests; mutants 1/2, 2/2, 1/1. Research composes it into readModel (top 50 UNION top 10 at >= +20%,
 DAILY board only). Registered VEEA read + timing scheduled 14:03Z -> docs/ops/board-movers-veea-read-2026-10-01.txt.
+**Use ops/top-movers-prod 944c300e** (on Research's research/movers 45b2ecec, itself on the citation cut 2a625a5b): the
+same read re-applied by hand on the production line (cherry-picking 0462df04 conflicts: main's repo.ts has neighbours this
+line lacks). 29/29, mutants 2/2, 2/2, 1/1. Research wires readModel on top and hands Integration one sha.
+VEEA 12:22:48Z: rvol 1.072, rank 82 (from 0.581 / 120 at 12:10Z). RVOL = cumulative / FULL-DAY 20-session mean, checked by
+arithmetic at both reads (7,801,924 / 13,426,228.25 = 0.5811; 14,396,154 / 13,426,228.25 = 1.0722), not time-of-day matched.
+INGN on his board at rank 955 can only be a Sheet/Focus extra (repo.ts:1025-1034); band 0.25-20 = served, so inRange false.
