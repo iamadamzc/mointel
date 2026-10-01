@@ -13145,3 +13145,8 @@ three names sat under false ones. His ruling to Integration (relayed; verify at 
 "b": reports keep running; Design's display change (A) hides headings until reports v6 computes them. **When (A) is cut, its
 ship question to him names "section headings hidden until the report update".** Second class (exact "08:00 ET" printed for
 DATE_ONLY sources): sources read for Research at 84b2d760 (114157, 115696, 117114, 118584, 119236 are DATE_ONLY at 12:00:00Z).
+**THURSDAY ORDER (Integration, after 20:00 ET, one release at a time, /proc between, each replayed by literal sha):**
+(1) LEVELS b5a35fda (his yes with the 4 conditions, asked Thu); then (2) Design's (A) cut FROM /proc = report cards with
+section headings hidden (his "b") + Sheet-label em-dash fix + Research's read-only review mirror for /api/reports (his "1 yes",
+relayed, 02:36:53Z: review links show session reports); its question to him names all three. Verify each relayed ruling at
+his turn before shipping on it. Integration seat local_1dfa11ae handed off ~02:37Z: route to the successor BY TITLE.
