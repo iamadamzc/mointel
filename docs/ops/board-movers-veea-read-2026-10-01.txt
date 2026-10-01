@@ -1,0 +1,9 @@
+[{"read_at":"2026-10-01T14:03:32Z"}]
+[{"symbol":"NXL","price":9.90000000000000035,"percent_change":131.308411214953281,"rvol":1650.40228767986604,"rvol_rank":1},
+{"symbol":"SDEV","price":4.20999999999999996,"percent_change":62.5482625482625564,"rvol":4.38017380994219696,"rvol_rank":28},
+{"symbol":"VEEA","price":3.22009999999999996,"percent_change":48.391705069124427,"rvol":3.79328520651360134,"rvol_rank":34},
+{"symbol":"MEDS","price":4.20000000000000017,"percent_change":32.4921135646687773,"rvol":1.69987750296805306,"rvol_rank":83},
+{"symbol":"AISP","price":2.31000000000000005,"percent_change":24.1935483870967686,"rvol":15.5505643206386015,"rvol_rank":11}]
+[{"symbol":"VEEA","price":3.22009999999999996,"percent_change":48.391705069124427,"rvol":3.79328520651360134,"rvol_rank":34,"price_at":"2026-10-01T14:03:30.912Z"}]
+[{"veea_volume_0400_1000_et":50067518,"minute_rows":124}]
+Run Time: real 0.001 user 0.000507 sys 0.000127
