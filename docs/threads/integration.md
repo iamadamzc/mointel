@@ -2720,6 +2720,27 @@ error                                                  TYPE                     
   = today's ~$57/yr. Corrected to him.
 ```
 
+## THE TWENTY-FIRST SEAT'S RUNNING NOTES (opened 2026-10-01T01:59:59Z, `local_1dfa11ae`, Opus 5.5)
+
+*Newer than LIVE STATE and the twentieth's notes where they disagree.*
+```
+START            Titled Integration-tmi; model claude-opus-5-5 (get_session self): nothing to report.
+OLD CHAT         local_50b52df9: list_sessions 02:00Z showed title Integration-tmi, NOT archived; get_session moments
+                 later read "Integration-tmi-retired", isArchived true. Nothing to ask him.
+DESIGN TITLE     local_4f84a562 (created 2026-09-30T15:37:27Z = the RETIRED fifth Design seat) still titled Design-tmi,
+                 not archived; no successor exists yet. HAZARD: routing "Design-tmi" by title reaches the retired seat.
+                 Until he opens the new seat, route nothing to Design; after, route by the NEW id (createdAt after
+                 2026-10-01T01:59Z) until the old one is renamed.
+OPS ASKED        02:00Z (delivered): /proc now + the PREMARKET report's stored outcome from the 22:00 ET recap.
+RESEARCH TOLD    02:0xZ (queued): premarket line check if PUBLISHED; levels-first Thursday; reports v6 as one re-freeze;
+                 asked for the levels registration sha + timing.
+```
+**THE TWENTY-FIRST SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+(none yet)
+```
+
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
 
 *A SNAPSHOT. **This seat estimated clock times FIVE times (ledger above), so every time below is a transcript
