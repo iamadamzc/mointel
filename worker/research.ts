@@ -55,6 +55,7 @@ import {
 } from '../lib/research/historyFetch';
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
 import { maybeStartHistoryStore } from '../lib/research/historyStoreJob';
+import { maybeStartLevelsRefresh } from '../lib/research/levelsRefreshJob';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
   claimQueuedJobs,
@@ -143,6 +144,16 @@ async function main(): Promise<void> {
     },
     openMarketReadonly: (file) => openDatabase(file, { readonly: true }),
   });
+
+  /*
+   * The levels refresh (resistance-levels spec section 2): at each 5m close +
+   * 20 s, ONE child process (`worker/levels-refresh.ts`) reads market.db
+   * read-only and writes the board's rows to history.db. This process only
+   * schedules, spawns and relays; a child still running at 270 s is killed.
+   * OFF unless LEVELS_REFRESH_ENABLED is "1". Both exits below stop it, which
+   * kills a running child, so no exit orphans a writer.
+   */
+  const levelsRefresh = maybeStartLevelsRefresh(process.env, { log });
 
   const secClient = new SecClient({ config: config.sec });
   const tickerMap = new TickerMapCache(secClient);
@@ -376,6 +387,7 @@ async function main(): Promise<void> {
     clearInterval(heartbeat);
     reportLoop.stop();
     historyStore?.stop();
+    levelsRefresh?.stop();
     process.exit(0);
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
@@ -795,6 +807,7 @@ async function main(): Promise<void> {
 
   log('[research] worker stopped');
   historyStore?.stop();
+  levelsRefresh?.stop();
   db.close();
 }
 
