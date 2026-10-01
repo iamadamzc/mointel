@@ -3175,6 +3175,11 @@ RESIDUAL BUILT   a58aa866 on main (not shipped); registration 5441204f is its an
                  current 293 occ. in 66 versions -> 6 in 5 (WFF 2, DUOT, CAST, EHGO, RPGL); ids == source_ids 2,707/2,707,
                  diffs []. Research's gate on main done (per Ops). Needs a cut from /proc after tonight's three; replay
                  here; his yes.
+HIS QUESTION     "the question i have is is 20% the right number and what does it change. i realize its an anamoly, but
+                 we can't have a mover in the market no be on the aboard. that just looks bad, ." Requirement widened:
+                 ANY mover on the board. d02cfb36 gives no derivation for +20% (read): a choice. Asked Research for a
+                 floor sensitivity table (10/15/20/25/30%, K=10 and uncapped; rows added, cap binding, still-up vs faded
+                 by 10:00, named examples), definition committed first; Ops for today's counts at those floors.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
