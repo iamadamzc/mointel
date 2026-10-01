@@ -3071,6 +3071,11 @@ error                                                  TYPE                     
   range path (:532-548, rankInRange). His screen     site was read)                              VEEA 5x on his
   contradicts it. Correction to him in the same reply; Ops + Research asked which path serves him.     platform)
   LESSON: when a cited line is the right side of `??` or an else, read the left side before relaying.
+6 told HIM "both options would have caught it during  a peer's claim relayed unopened   YES      peer
+  that stretch" from Research's message; I verified   (the family of #1 and #5: I       (family) (Research's
+  only the 10:03 read (a5178ac1), not the 08:10-      checked one number in the                  own
+  09:5x claim. Neither option was measured then.      message and relayed the rest)              correction)
+  Corrected to him next message. LESSON: verifying one number in a message does not verify its sentences.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
@@ -3145,6 +3150,9 @@ CITATION RENDER  Design PASS (f51e3215 read): board 0 tokens in text/tooltips/ar
                  occ.), 6 only 1900-2099 (21). ORDER CALL: RESIDUAL, ships as is; Ops names "about 5% keep a short
                  source number until a follow-up" in his question. Research: follow-up rule (evidenceSourceIds
                  membership first, year range fallback), after the side-by-side.
+RETRACTION       Research corrected its "both A and B would have caught VEEA 08:10-09:5x": NEITHER measured then (A read
+                 at 10:03 only; B ~201 at 10:00 registered, ~31 at 08:10 post hoc). I had relayed it to HIM. Corrected
+                 to him in the next message. Ledger 6.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
