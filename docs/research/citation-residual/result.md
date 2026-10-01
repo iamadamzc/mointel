@@ -55,6 +55,10 @@
 - The collected ids equal the stored `source_ids` on **2,495 of 2,495** versions.
 - After the rule, current versions keep **5** lone short brackets, exactly the T class predicted (WFF 2, DUOT, CAST, EHGO); all versions keep 19, which is T's total.
 
-**Not yet run:** `tsc` and the full suite (one slot, Ops's).
+**Gate** (Ops's slot, about 14:37Z): `tsc` 0, full suite 213 of 213 files, 3,194 tests.
+
+**Production re-count** (Ops `b2fc64b6`, 14:41Z, the same `verify.ts`):
+- Ids equal on **2,707 of 2,707** versions.
+- Current versions: **293 in 66 versions before, 6 after** (the local 5, plus RPGL v2694, newer than the copy).
 
 **What this does not show:** production may differ from the 09-29 copy. Ops re-counts on production, on the built rule, before it ships.
