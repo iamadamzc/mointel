@@ -2682,6 +2682,10 @@ error                                                  TYPE                     
   to me". FIX: to him only a product change, a risk
   to his window/data/desk, or a decision of HIS in
   the block; asks owned by another seat stay there.
+7 told HIM reports cost "about 20 times" the first   a value with no frame relayed     YES      peer
+  estimate; the 0.3 cents was the WRITER alone (design (memory a-value-with-no-frame;  (family) (Research)
+  §4); the full writer+checker upper bound was $56/yr the family: passed on unread)
+  = today's ~$57/yr. Corrected to him.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
