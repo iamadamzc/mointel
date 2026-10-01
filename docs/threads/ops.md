@@ -12974,6 +12974,7 @@ reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
 | Told Integration the cut is "b5a35fda1"; true sha b5a35fda (060eda6e...) | sha-transcribed-by-hand | no (first) | self, corrected in the next message |
 | Told him reports cost "~20x the estimate"; the $0.003 was the writer alone, the full estimate was ~$0.02, so ~3x | compared-against-an-unverified-baseline | no (first) | Research; corrected to him |
 | Ran 3 mutants via Windows python writing /tmp, which Git Bash's cp could not see: all "survived" on unchanged code | mutant-never-applied (memory's known trap) | no (first this session) | self, from the cp error; rerun with a shared path and an applied-check |
+| Ran a count(*) over ticker_session (298k rows, index count) at 13:18Z = 09:18 ET, inside his window, after agreeing "after 10:00 only" | time-gate-not-checked-before-a-box-read | no (first) | self, from the box clock in the output; rule: read the clock before any box read |
 
 **17:3xZ Report runner BUILT:** ops/report-runner 4f428748 (worktree A:\mointel-runner; main 3bb59a2f + v28 256badaf,
 b4d1f132). Research worker derives the queue from the store (research_jobs cannot carry it: ticker NOT NULL + live unique
