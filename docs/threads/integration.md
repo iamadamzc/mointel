@@ -2947,6 +2947,9 @@ OPS /proc        02:40:29Z box clock (Ops): web 1696306 / research 1696364 / ass
                  unit. Pins market-floor 2bcf1cfe (v28), rollback-baseline 372f5eb9 (v18). UNCHANGED vs the 21st's
                  snapshot. ops/levels-thu = b5a35fda (local). Four conditions unchanged (ops.md, 3b9e0054 onward);
                  Design local_c29a82bd still owes the b5a35fda render. Nothing to him.
+OLD CHAT RENAMED get_session local_1dfa11ae (read after its farewell): title "Integration-tmi-retired", isArchived
+                 false. Title collision closed; archiving is his, cosmetic (like the other retired seats). It reports
+                 nothing unanswered and nothing in flight.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
