@@ -52,7 +52,7 @@ Background on how the pipeline was built and why:
   ever work on the incidents. This thread's job is that the pipeline produces
   honest catalyst grades at a defensible cost. What those grades *mean* is R&D.
 
-## LIVE STATE: handed off 2026-09-30T23:09Z by seat `local_4b09b3b2` on his "a, write the hand-off prompt", after reports v5 passed its pre-registered bar (run 4, `ce09e3d`); opening prompt `docs/research-opening-prompt.md`. The 🔴 bullets at the top of "OPEN, MINE" are tonight's state and tomorrow's list; read them first. (Previous hand-off: seat `local_bed7ed93`, 2026-09-30 after the 14:17Z grades read.)
+## LIVE STATE: handed off 2026-10-01T13:10Z by seat `local_f6fa4717` on his "hand off, write the opening prompt", with his A-vs-B comparison (movers rule vs a robust RVOL baseline) as the next task, NOT started; opening prompt `docs/research-opening-prompt.md`. The 🔴 bullets at the top of "OPEN, MINE" come first: BIG MOVERS (and its ⏸ block, the comparison brief), then TOMORROW'S QUEUE. (Previous hand-offs: `local_4b09b3b2` 2026-09-30T23:09Z after reports v5 passed; `local_bed7ed93` 2026-09-30 after the 14:17Z grades read.)
 
 *A snapshot of now, not a diary. The section below this one is the diary it
 replaced and is archive. Read this, then the charter under "Opening message for
