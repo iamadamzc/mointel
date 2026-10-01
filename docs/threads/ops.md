@@ -13150,3 +13150,4 @@ DATE_ONLY sources): sources read for Research at 84b2d760 (114157, 115696, 11711
 section headings hidden (his "b") + Sheet-label em-dash fix + Research's read-only review mirror for /api/reports (his "1 yes",
 relayed, 02:36:53Z: review links show session reports); its question to him names all three. Verify each relayed ruling at
 his turn before shipping on it. Integration seat local_1dfa11ae handed off ~02:37Z: route to the successor BY TITLE.
+Research's review reports mirror: **d427dd0e** on main (one route + tests, 21/21 review tests). Rides the (A) cut, NOT b5a35fda.
