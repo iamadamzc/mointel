@@ -20,7 +20,7 @@ This reverses the branch's "movers kept OUT of `discovery.ranked`" (`readModel.t
 | Missing-value count | `view.ts:430-446` (counts rows with no value for the key) | **Changes under the rank sort.** An unranked mover counts as "missing" there. A count, not an error. |
 | Caption | `DiscoveryBoard.tsx:403-406` ("Daily RVOL rank · band · top N of rankedCount") | The caption still says "Daily RVOL rank" and `rankedCount` while some rows are movers. **A wording question for Design.** |
 | Rank cell | (the cell renders the rank the sort reads) | A mover shows its true rank (#120) or nothing. Design decides whether that, plus a "moving" label, is the right signal. |
-| **NOW sort** | `view.ts:472-475` (live 10 s rows first, then minute-grain rows, then none); `engine.ts:2183` (live capture subscribes to rank <= 50 and alive), `:2212` (or latched and alive) | **Does NOT work as he expects.** Movers get the NOW attach (`readModel.ts:575` adds movers, `:596` attaches NOW, branch), but a mover ranked below 50 that never latched has no 10 s capture. So under NOW it sorts below EVERY live row, however active it is. **Fixing it means adding movers to the engine's subscription set: a market-worker change and a restart.** |
+| **NOW sort** | `view.ts:472-475` (live 10 s rows first, then minute-grain rows, then none); `engine.ts:2183` (live capture subscribes to rank <= 50 and alive), `:2212` (or latched and alive) | ~~Does NOT work as he expects. ... a mover ranked below 50 that never latched has no 10 s capture.~~ **CORRECTED (Integration's catch; `liveband-result.md`):** a name latches the first time it is ranked at ANY rank in band (`engine.ts:1781-1791`), so nearly every mover is latched. The live set is then about the **top 250 by rank** (cap, `:2215-2222`). Movers get the NOW attach (`readModel.ts:575`, then `:596`, branch). **At 10% + 500k, 76 to 82% of movers rank 250 or better and ARE live on NOW.** The rest sort below every live row under NOW. Only those would need the market-worker change and its restart. |
 | WHY and RISK cells | `lib/dashboard/why.ts:182`, `:192` ("Not researched yet."), `risk.ts:99-125` (both keyed on research status) | A mover is usually unresearched: automatic research takes `rvol_rank <= 12` only (`researchRepo.ts:136`; `research/config.ts:19`). **It reads "Not researched yet."** Any on-demand research path is NOT checked. |
 
 ## Other readers of the rows
@@ -47,7 +47,7 @@ This reverses the branch's "movers kept OUT of `discovery.ranked`" (`readModel.t
 
 ## What this means for the build (decisions, not code)
 
-1. **NOW needs a market-worker change** to rank movers fairly (the subscription set) **or acceptance** that movers sit below live rows under NOW. The restart is his call; it is the cost B carried in the side-by-side.
+1. ~~NOW needs a market-worker change to rank movers fairly.~~ **CORRECTED:** most movers (76 to 82% at 10% + 500k) are already live on NOW. A market-worker change (and restart) would add only the rest, the ones ranked worse than about 250. His call whether that remainder is worth a restart.
 2. **Movers come last in `ranked`**, so the position-based readers above stay as they are; one test should lock it.
 3. **A mover is usually unresearched**, so its WHY reads "Not researched yet." His call whether a moving name triggers research. That is a research-queue change with a model-bill cost.
 4. **Design:** the caption, and the rank cell beside a "moving" label.
