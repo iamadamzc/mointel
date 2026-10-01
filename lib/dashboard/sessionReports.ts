@@ -23,6 +23,7 @@ import {
 import { NOTHING_LINE } from '../desk/reports/writer';
 import { assessmentLabel } from '../desk/schedule';
 import { formatEtMinute, formatPrice } from '../format';
+import { withoutCitations } from '../research/citations';
 
 /**
  * What a section reads when it has no line: the checker struck every sentence
@@ -123,11 +124,16 @@ export function reportLead(report: Pick<SessionReport, 'kind' | 'headline' | 'wa
  * dropped along with its full stop, never guessed (Marketing, d35e1bba). A
  * part that already ends a sentence ("Sangoma Technologies Corp.") takes no
  * second stop. Null when nothing is known.
+ *
+ * The business part is the interpreter's prose, which may carry a citation
+ * token ("[Source 115982]"); it is removed here (`citations.ts`), so reports
+ * already stored read clean without re-analysis. Done at DISPLAY, not in
+ * `reportResearch`, which is part of the frozen checker's input.
  */
 export function companyText(company: ReportCompany | null | undefined): string | null {
   if (!company) return null;
   const parts = [company.name, company.country, company.business]
-    .map((part) => (typeof part === 'string' ? part.trim() : ''))
+    .map((part) => (typeof part === 'string' ? withoutCitations(part).trim() : ''))
     .filter((part) => part.length > 0)
     .map((part) => (/[.!?]$/.test(part) ? part : `${part}.`));
   return parts.length > 0 ? parts.join(' ') : null;

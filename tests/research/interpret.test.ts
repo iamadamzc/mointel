@@ -386,6 +386,26 @@ describe('interpreter transport', () => {
 /* -------------------------------------------------------------- guardrails */
 
 describe('structural guardrails', () => {
+  it('normalises inline citation tokens out of the written prose, and keeps the cited ids', () => {
+    const d = dossier({
+      businessDescription: 'A digital media provider building AI content tools [96174, 96176, 119985].',
+      catalyst: {
+        ...dossier().catalyst,
+        summary: 'Contract award announced. [Source 1]',
+        unknowns: ['Pricing not disclosed [Source 1, Source 1].'],
+      },
+    } as Partial<ResearchDossier>);
+    const result = validateDossier(d, bundle());
+    const written = result.dossier as ResearchDossier & { businessDescription?: string };
+    expect(written.businessDescription).toBe('A digital media provider building AI content tools.');
+    expect(written.catalyst.summary).toBe('Contract award announced.');
+    expect(written.catalyst.unknowns).toEqual(['Pricing not disclosed.']);
+    expect(written.catalyst.evidenceSourceIds).toEqual([1]);
+    expect(JSON.stringify(written)).not.toMatch(/\[Source/i);
+    // No violation: normalised, not flagged.
+    expect(result.violations.map((v) => v.rule)).not.toContain('CITATION');
+  });
+
   it('rejects a source id that is not in the bundle', () => {
     const result = validateDossier(
       dossier({ catalyst: { ...dossier().catalyst, evidenceSourceIds: [999] } }),

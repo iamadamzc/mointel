@@ -12,6 +12,7 @@
  */
 
 import type { ResearchEvidenceBundle } from './bundle';
+import { withoutCitationsDeep } from '../citations';
 import { resolveCatalystFreshness } from '../time';
 import type {
   Confidence,
@@ -249,6 +250,16 @@ export function validateDossier(
    */
   freshFrom: Date | null = null,
 ): ValidationResult {
+  /*
+   * CITATION TOKENS ARE NORMALISED OUT FIRST, NOT FLAGGED (`citations.ts`).
+   * The model leaves source ids inline in its prose ("[Source 115982]",
+   * "[96174, 96176, 119985]"), which a reader sees as noise; the ids it cites
+   * live in `evidenceSourceIds`, which this does not touch. Normalised rather
+   * than raised for the reason `f224f3d` gives: a violation turns the dossier
+   * PARTIAL, and about half of the business lines written on 2026-10-01 carried
+   * one. Every later check reads the cleaned text.
+   */
+  dossier = withoutCitationsDeep(dossier);
   const violations: Violation[] = [];
   const corrected: ResearchDossier = {
     ...dossier,
