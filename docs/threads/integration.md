@@ -2787,6 +2787,13 @@ REPORTS AUDIT    Research efb29e1a (22:21:53 ET): every published SENTENCE in 58
 LEVELS GATED     b5a35fda ALL GREEN 211/211, 3,171 (Ops; lockfile/types/typecheck/lint/suite), no environmental failures;
                  next build 0 (fresh npm ci), /api/levels + /api/reports in the route table. Remaining: Design render of
                  this tree (no seat), his yes Thu with the 4 conditions, /proc = e8822583 at launch, post-ship read.
+FALSE "EXACT"    Research, VERIFIED HERE at e8822583: date-only sources stored at 12:00:00Z, null clock (time.ts:91);
+                 dossier eventTimestamp model-written, no precision (interpret/schema.ts:99); writer labels any event
+                 clock "(exact)" (writerV5.ts:105-107); traced.ts:19-20 certifies a clock against eventTimestamp itself.
+                 Proven on UONEK (avid 1331) + MI (avid 708) per Research (local 09-29 copy). 6 of 40 dossiers noon-UTC.
+                 Published #588 CMCT "at 08:00 ET, September 29, 2026" (read in 5c55e489); its source 118584 pending an Ops
+                 read. v6 (c) APPROVED: clock only from an EXACT/INFERRED cited source; traced the same. TO HIM: one
+                 message as a second defect once CMCT's instance is settled.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
