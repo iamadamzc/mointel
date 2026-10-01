@@ -13254,3 +13254,6 @@ versions -> 6 in 5; ships after tonight from /proc. Movers floors at f1c0628d (1
 readTopMovers gains `cumulative_volume >= 500,000` (Research sends the spec). Cut from /proc after tonight's three; Friday
 night earliest. Housekeeping: Research reports 60 lint errors from .claude/worktrees/agent-acfba7ff0c32d6e90/.next (an old
 levels worktree eslint scans); not Ops's worktree; owner removes it or eslint ignores .claude/.
+Ruling verified by Research as his user turn 2026-10-01T15:53:57Z in Integration's 1bfab363. **Volume floor built:
+ops/top-movers-volume 499f7a30** (on aaebfc42): readTopMovers(db, tradingDate, band, minPct, minVolume, limit), cumulative_volume
+>= minVolume, NULL fails; readModel.ts:574 passes 0 so it compiles alone (Research replaces with config). 6 tests; mutants 2/2, 1/1.
