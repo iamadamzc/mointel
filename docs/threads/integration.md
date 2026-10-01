@@ -1057,6 +1057,8 @@ limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register 
 
 ### HAND-OFF LINE
 ```
+LEVELS CUT PICKS (Design): ad6eb0f1, 064e15e1, 52241465, 9813ec55 (absent copy true for off-board names under stored
+rows; 3 files; Design gate 208/208). Told Ops + Research.
 DESIGN (01:5xZ): A NOT started; Design repeated a corrected class (generated code losing backslashes) and asked HIM for a
 fresh seat (its question; I stand down). If yes, the fresh Design seat builds A first. Blockers for A: PC commit memory
 (Design's last gate saw 1.9 GB free, all OOM/spawn; my read 6.4 of 35.6 GB free, 28 claude processes = 10.2 GB private)
