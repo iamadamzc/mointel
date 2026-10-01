@@ -3153,6 +3153,13 @@ CITATION RENDER  Design PASS (f51e3215 read): board 0 tokens in text/tooltips/ar
 RETRACTION       Research corrected its "both A and B would have caught VEEA 08:10-09:5x": NEITHER measured then (A read
                  at 10:03 only; B ~201 at 10:00 registered, ~31 at 08:10 post hoc). I had relayed it to HIM. Corrected
                  to him in the next message. Ledger 6.
+SIDE-BY-SIDE     COMPLETE 1921e75b (read top: "The answer, short", §1, §1a). REC: A (movers rule) shown as a separate
+                 labelled group after the ranked list; NOT B for movers (B1 median: 5 of 12 testable movers in, ~15 of
+                 50 names swapped per checkpoint, 395 entries DOWN vs 11 up 20%+, market-worker restart, touches AH board,
+                 rvol>=5 guardrail, history labels); B is its own question needing the backtest re-run. A: ~4 ms per
+                 refresh (Ops 539ae024 per doc), web tier only, 0-3 rows on replay. PUT TO HIM: A / B / neither.
+                 A's ship: needs Design's group render (new Design seat), Ops gate, replay: earliest Friday night.
+                 Research proposes its own hand-off (repeat class); citation residual follow-up recorded open (133a2774).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
