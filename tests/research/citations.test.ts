@@ -48,6 +48,18 @@ describe('withoutCitations: the two production forms', () => {
     expect(withoutCitations('Early ids [812, 845].')).toBe('Early ids.');
     expect(withoutCitations('One id [115982].')).toBe('One id.');
   });
+
+  it('DELIBERATE: a comma list of years or footnotes is removed too, because the list shape cannot tell them from ids', () => {
+    /*
+     * The cost of catching "[4473,4498]" (Integration's edge, 2026-10-01): a
+     * bracketed list of years or footnote numbers reads the same and goes with
+     * it. Accepted because interpreter prose does not write such lists, while
+     * it writes id lists on most rows (local 09-29 census). A LONE year or
+     * footnote is kept (above).
+     */
+    expect(withoutCitations('Fiscal years [2025, 2026] compared.')).toBe('Fiscal years compared.');
+    expect(withoutCitations('See notes [1, 2].')).toBe('See notes.');
+  });
 });
 
 describe('withoutCitations: brackets that are NOT citations are kept', () => {
