@@ -1,0 +1,87 @@
+/**
+ * Design row C: the model's citation tokens printed verbatim on the board (Why
+ * and Risk cells, their tooltips) and in the dossier; rendered locally on
+ * e8822583, 2026-10-01. The pattern is Research's (`withoutCitationsDeep`,
+ * lib/research/citations.ts); what is tested here is that every row takes its
+ * dossier through it, in each field family the render showed it in, and that
+ * nothing but the token changes.
+ */
+
+import { describe, expect, it } from 'vitest';
+
+import { readableIntelligence } from '@/lib/dashboard/merge';
+import type { AutoIntelligence } from '@/lib/research/view';
+
+const D = String.fromCharCode(0x2014);
+
+const auto = {
+  ticker: 'TGE',
+  status: 'COMPLETE',
+  statusLabel: 'Analysed',
+  analysis: {
+    id: 1, ticker: 'TGE', generatedAt: '2026-09-30T10:00:00Z', evidenceFingerprint: 'f', model: 'm',
+    analysisVersion: 1, sourceIds: [115982, 96174], supersedesId: null, metadata: {},
+    dossier: {
+      catalyst: {
+        summary: 'Reported 1H 2026 net profit of US$22.8 million [Source 115982] and a fresh filing.',
+        whyTradersMayCare: `A strong release [96174, 96176] ${D} the desk reads it as explaining the move.`,
+        grade: 'A',
+        unknowns: ['Whether revenue is comparable [Sources 96174, 96176].'],
+      },
+      structure: {
+        summary: 'Registered resale of 57,401,944 shares [Source 96180].',
+        structuralWarnings: [
+          'An effective F-1 [96181] registers resale shares.',
+          'Listed as [NASDAQ: TGE] in [2026].',
+          'A diversified portfolio and a SPAC sponsor manager. [Source 115982].',
+          'Older filings list resale capacity [4473,4498].',
+        ],
+        sharesOutstanding: 62974309,
+      },
+      cycle: { reasoning: 'Yellow, frontside warning [Source 96190].', recentMajorRuns: [] },
+    },
+  },
+  provenance: 'AUTO', generatedAt: null, model: null, schemaVersion: null, analysisVersionId: null,
+  coverageIncomplete: false,
+  evidence: [],
+} as unknown as AutoIntelligence;
+
+type Dossier = {
+  catalyst: { summary: string; whyTradersMayCare: string; grade: string; unknowns: string[] };
+  structure: { summary: string; structuralWarnings: string[]; sharesOutstanding: number };
+  cycle: { reasoning: string };
+};
+
+describe('every row takes its dossier without citation tokens', () => {
+  const out = readableIntelligence(auto)!;
+  const dossier = out.analysis!.dossier as unknown as Dossier;
+
+  it('removes them from each field family the board and the dossier print', () => {
+    expect(dossier.catalyst.summary).toBe('Reported 1H 2026 net profit of US$22.8 million and a fresh filing.');
+    expect(dossier.catalyst.unknowns).toEqual(['Whether revenue is comparable.']);
+    expect(dossier.structure.summary).toBe('Registered resale of 57,401,944 shares.');
+    expect(dossier.structure.structuralWarnings[0]).toBe('An effective F-1 registers resale shares.');
+    expect(dossier.cycle.reasoning).toBe('Yellow, frontside warning.');
+  });
+
+  it('removes the two forms found rendering the board: a 4-digit id list, and a token between two stops', () => {
+    expect(dossier.structure.structuralWarnings[3]).toBe('Older filings list resale capacity.');
+    expect(dossier.structure.structuralWarnings[2]).toBe('A diversified portfolio and a SPAC sponsor manager.');
+  });
+
+  it('cleans the token and the dash in the same string', () => {
+    expect(dossier.catalyst.whyTradersMayCare).toBe('A strong release, the desk reads it as explaining the move.');
+  });
+
+  it('keeps real brackets, numbers and ids', () => {
+    expect(dossier.structure.structuralWarnings[1]).toBe('Listed as [NASDAQ: TGE] in [2026].');
+    expect(dossier.structure.sharesOutstanding).toBe(62974309);
+    expect(dossier.catalyst.grade).toBe('A');
+    expect(out.analysis!.sourceIds).toEqual([115982, 96174]);
+  });
+
+  it('never rewrites the payload it was handed', () => {
+    const original = auto.analysis!.dossier as unknown as Dossier;
+    expect(original.catalyst.summary).toContain('[Source 115982]');
+  });
+});
