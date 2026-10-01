@@ -338,9 +338,12 @@ describe('a section with no line', () => {
     expect(EMPTY_SECTION_LINE).not.toMatch(/sources|nothing|removed|struck|checked/i);
   });
 
-  it('is what the window prints for an empty section, and the claim is nowhere in it', () => {
+  // SUPERSEDED for the window by his "b" (2026-10-01T02:24:33Z): the headings are
+  // hidden until v6 computes them, so an empty section prints nothing at all
+  // (tests/dashboard/reportBlocks.test.ts). The line stays defined for v6.
+  it('is not printed while the headings are hidden, and the claim is nowhere in the window', () => {
     const source = readFileSync(join(process.cwd(), 'components/SessionReports.tsx'), 'utf8');
-    expect(source).toMatch(/lines\.length === 0 \?[\s\S]{0,400}\{EMPTY_SECTION_LINE\}/);
+    expect(source).not.toContain('EMPTY_SECTION_LINE');
     expect(source).not.toContain(NOTHING_LINE);
     expect(source).not.toMatch(/Nothing in our sources/);
   });

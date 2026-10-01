@@ -20,6 +20,7 @@ import {
   type SessionReport,
   type SessionReportsPayload,
 } from '../desk/reports/contract';
+import { NOTHING_LINE } from '../desk/reports/writer';
 import { assessmentLabel } from '../desk/schedule';
 import { formatEtMinute, formatPrice } from '../format';
 
@@ -160,25 +161,201 @@ export function pathText(
   path: ReportPath | null | undefined,
   report: Pick<SessionReport, 'checkpoints'>,
 ): string | null {
-  if (!path) return null;
-  const points = [path.from, path.high, path.now];
-  if (!points.every((value) => typeof value === 'number' && Number.isFinite(value) && value > 0)) return null;
-  const money = (value: number) => `$${formatPrice(value)}`;
-  const from = `${money(path.from)} prior close`;
-
-  if (path.fromBasis === 'TODAY_CLOSE') {
-    return `${from} → ${money(path.high)} AH high → ${money(path.now)} AH close`;
-  }
-  if (path.fromBasis !== 'PRIOR_CLOSE') return null;
-
-  const newest = report.checkpoints
-    .map((checkpoint) => checkpoint.completedAt)
-    .filter((at) => Number.isFinite(Date.parse(at)))
-    .sort((a, b) => Date.parse(a) - Date.parse(b))
-    .at(-1);
-  const at = formatEtMinute(newest);
-  return `${from} → ${money(path.high)} high → ${money(path.now)} ${at ? `at ${at}` : 'at the checkpoint'}`;
+  const view = pathView(path, report);
+  if (!view) return null;
+  return view.points.map((point) => `${point.price} ${point.label}`).join(' → ');
 }
+
+export interface PathPoint {
+  /** "$3.59" */
+  price: string;
+  /** "prior close" / "high" / "at 09:27 ET"; the same words `pathText` prints. */
+  label: string;
+}
+
+export interface PathView {
+  /** Prior close, high, last: always three, in that order. */
+  points: [PathPoint, PathPoint, PathPoint];
+  /** Where the last point sits against the prior close. Colours the last point only. */
+  direction: 'UP' | 'DOWN' | 'FLAT';
+  /** "+85.5% vs prior close" */
+  change: string;
+  /** "18.9% under the high", or "at the high". */
+  fromHigh: string;
+}
+
+/**
+ * The path as three labelled points (row A, his pick "a now, then b"; the mock's
+ * artboard "A"). The labels are `pathText`'s, so the card and the one-line form
+ * can never disagree; see `pathText` for why no label is relative to the
+ * moment of reading.
+ *
+ * The two figures beside it are COMPUTED from the three values printed, so they
+ * cannot disagree with the points (his complaint: "now 15% under what?"). Both
+ * are rounded to one decimal; a change that rounds to zero is "flat", never
+ * "+0.0%". Null wherever `pathText` is null.
+ */
+export function pathView(
+  path: ReportPath | null | undefined,
+  report: Pick<SessionReport, 'checkpoints'>,
+): PathView | null {
+  if (!path) return null;
+  const values = [path.from, path.high, path.now];
+  if (!values.every((value) => typeof value === 'number' && Number.isFinite(value) && value > 0)) return null;
+
+  let highLabel: string;
+  let lastLabel: string;
+  if (path.fromBasis === 'TODAY_CLOSE') {
+    highLabel = 'AH high';
+    lastLabel = 'AH close';
+  } else if (path.fromBasis === 'PRIOR_CLOSE') {
+    const newest = report.checkpoints
+      .map((checkpoint) => checkpoint.completedAt)
+      .filter((at) => Number.isFinite(Date.parse(at)))
+      .sort((a, b) => Date.parse(a) - Date.parse(b))
+      .at(-1);
+    const at = formatEtMinute(newest);
+    highLabel = 'high';
+    lastLabel = at ? `at ${at}` : 'at the checkpoint';
+  } else {
+    return null;
+  }
+
+  const money = (value: number) => `$${formatPrice(value)}`;
+  const changePct = Math.round(((path.now - path.from) / path.from) * 1000) / 10;
+  const underPct = Math.round(((path.high - path.now) / path.high) * 1000) / 10;
+  const direction = changePct > 0 ? 'UP' : changePct < 0 ? 'DOWN' : 'FLAT';
+
+  return {
+    points: [
+      { price: money(path.from), label: 'prior close' },
+      { price: money(path.high), label: highLabel },
+      { price: money(path.now), label: lastLabel },
+    ],
+    direction,
+    change:
+      direction === 'FLAT'
+        ? 'flat vs prior close'
+        : `${changePct > 0 ? '+' : '−'}${Math.abs(changePct).toFixed(1)}% vs prior close`,
+    fromHigh: underPct > 0 ? `${underPct.toFixed(1)}% under the ${highLabel}` : `at the ${highLabel}`,
+  };
+}
+
+/**
+ * One block of the report body as row A prints it: a card per NAME, or a
+ * sentence about no name.
+ */
+export type ReportBlock =
+  | {
+      kind: 'NAME';
+      ticker: string;
+      company: ReportCompany | null;
+      path: ReportPath | null;
+      /** The name's one feed state, the same answer the header counts (`feedByName`). */
+      liveFeed: boolean | null;
+      /** The name's sentences, in the writer's order. */
+      texts: string[];
+    }
+  | { kind: 'PROSE'; text: string };
+
+/**
+ * The report body with the model-written section HEADINGS HIDDEN.
+ *
+ * HIS RULING (Integration transcript 434df034, typed "b" 2026-10-01T02:24:33Z):
+ * reports keep running and the display hides the section headings until
+ * Research's v6 computes them from stored status and grade. The checker never
+ * reads `section.heading`, and live names sat under false headings (GOW, stale
+ * and dilutive, under "Fresh and material news"). So nothing here may stand in
+ * for a heading: no group label, no inferred order.
+ *
+ * - One list in the writer's order, across sections.
+ * - A CARD PER NAME (the mock): a name's later lines join its card at its
+ *   first position, so its company line and path print once.
+ * - An EMPTY section contributes nothing. Its neutral line would point at a
+ *   heading the reader can no longer see.
+ * - The writer's NOTHING_LINE is dropped too: whether "nothing in our sources
+ *   for this section" is true is judged against that hidden, unchecked heading.
+ * - Any other line with no ticker is a sentence in its place.
+ *
+ * Display only: the stored report, the writer and the checker are untouched.
+ */
+export function reportBlocks(report: Pick<SessionReport, 'sections'>): ReportBlock[] {
+  const blocks: ReportBlock[] = [];
+  const cards = new Map<string, Extract<ReportBlock, { kind: 'NAME' }>>();
+
+  for (const section of report.sections) {
+    for (const line of section.lines) {
+      const text = line.text.trim();
+      if (line.ticker === null) {
+        if (text.length > 0 && text !== NOTHING_LINE) blocks.push({ kind: 'PROSE', text: line.text });
+        continue;
+      }
+      let card = cards.get(line.ticker);
+      if (!card) {
+        card = { kind: 'NAME', ticker: line.ticker, company: null, path: null, liveFeed: null, texts: [] };
+        cards.set(line.ticker, card);
+        blocks.push(card);
+      }
+      if (text.length > 0) card.texts.push(line.text);
+      card.company ??= line.company ?? null;
+      card.path ??= line.path ?? null;
+    }
+  }
+  const feed = feedByName(report);
+  for (const card of cards.values()) card.liveFeed = feed.get(card.ticker) ?? null;
+  return blocks;
+}
+
+/**
+ * What the body says when it holds no block. A v5 report already leads with
+ * "Nothing on watch ..." when its count is zero, which says it; anything else
+ * (a v4 report, or a v5 count that disagrees with an empty body) gets one
+ * neutral line about the REPORT, never about our sources or the market
+ * (Marketing's section wording, `EMPTY_SECTION_LINE`, scoped to the report).
+ */
+export const EMPTY_REPORT_LINE = 'No line in this report.';
+
+export function emptyReportLine(
+  report: Pick<SessionReport, 'sections' | 'watchCount'>,
+  blocks: ReportBlock[] = reportBlocks(report),
+): string | null {
+  if (blocks.length > 0) return null;
+  if (report.watchCount === 0) return null;
+  return EMPTY_REPORT_LINE;
+}
+
+/**
+ * The prose split so its FIGURES can be set apart (the mock: figures in white
+ * on lighter prose). A figure is a number that carries a unit or a separator:
+ * a currency sign ("$1.50", "US$22.8 million"), a percent or a multiple
+ * ("366.7%", "9.44x"), thousands commas ("57,401,944"), or a decimal point,
+ * with an optional magnitude after it ("M", "million"). A bare whole number is
+ * left alone, so dates, years, clock times and counts in words ("June 3, 2026",
+ * "Week 4") read as prose. A number touching a letter is part of a name
+ * ("8-K", "Q4", "424B5"), the checker's rule for the same tokens.
+ *
+ * Display only: the segments rejoin to exactly the input.
+ */
+export function figureSegments(text: string): Array<{ text: string; figure: boolean }> {
+  const out: Array<{ text: string; figure: boolean }> = [];
+  let last = 0;
+  for (const match of text.matchAll(FIGURE)) {
+    const start = match.index;
+    const end = start + match[0].length;
+    const before = text[start - 1] ?? '';
+    const after = text[end] ?? '';
+    // The sign is part of a match, so "F-3" starts at its hyphen and fails here too.
+    if (/[A-Za-z0-9]/.test(before) || /[A-Za-z0-9]/.test(after)) continue;
+    if (start > last) out.push({ text: text.slice(last, start), figure: false });
+    out.push({ text: match[0], figure: true });
+    last = end;
+  }
+  if (last < text.length) out.push({ text: text.slice(last), figure: false });
+  return out;
+}
+
+const FIGURE =
+  /(?:[+−-])?(?:(?:US|C|A)?\$)?\d{1,3}(?:,\d{3})+(?:\.\d+)?(?:\s?(?:million|billion|thousand)|[MBK])?%?|(?:[+−-])?(?:(?:US|C|A)?\$)\d+(?:\.\d+)?(?:\s?(?:million|billion|thousand)|[MBK])?|(?:[+−-])?\d+\.\d+(?:\s?(?:million|billion|thousand)|[MBK]|%|x)?|(?:[+−-])?\d+(?:%|x)/g;
 
 /**
  * Slot states for one report range.
@@ -358,9 +535,24 @@ export interface ReportCoverage {
  * of its lines had the feed.
  */
 export function reportCoverage(report: Pick<SessionReport, 'sections'>): ReportCoverage {
-  // Per name: live if ANY line says so; otherwise unknown if any line could
-  // not say; otherwise without. A null is an absence of OBSERVATION and must
-  // never be folded into "no live data", which is an observation.
+  const state = feedByName(report);
+  let withLiveFeed = 0;
+  let unknown = 0;
+  for (const value of state.values()) {
+    if (value === true) withLiveFeed += 1;
+    else if (value === null) unknown += 1;
+  }
+  return { named: state.size, withLiveFeed, unknown };
+}
+
+/**
+ * Each named ticker's feed state, ONE answer per name, read by the header count
+ * (`reportCoverage`) and by each name's card (`reportBlocks`), so the two can
+ * never disagree. Per name: live if ANY line says so; otherwise unknown if any
+ * line could not say; otherwise without. A null is an absence of OBSERVATION
+ * and must never be folded into "no live data", which is an observation.
+ */
+export function feedByName(report: Pick<SessionReport, 'sections'>): Map<string, boolean | null> {
   const state = new Map<string, boolean | null>();
   for (const section of report.sections) {
     for (const line of section.lines) {
@@ -371,13 +563,7 @@ export function reportCoverage(report: Pick<SessionReport, 'sections'>): ReportC
       else state.set(line.ticker, false);
     }
   }
-  let withLiveFeed = 0;
-  let unknown = 0;
-  for (const value of state.values()) {
-    if (value === true) withLiveFeed += 1;
-    else if (value === null) unknown += 1;
-  }
-  return { named: state.size, withLiveFeed, unknown };
+  return state;
 }
 
 /**

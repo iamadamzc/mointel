@@ -12,8 +12,10 @@ import {
   checkpointText,
   companyText,
   coverageText,
-  EMPTY_SECTION_LINE,
-  pathText,
+  emptyReportLine,
+  figureSegments,
+  pathView,
+  reportBlocks,
   reportCoverage,
   outsideBoardRange,
   reportLead,
@@ -21,6 +23,7 @@ import {
   sessionText,
   type BoardRange,
   type RangeChoice,
+  type ReportBlock,
   type ReportTimeline,
   type SlotView,
 } from '@/lib/dashboard/sessionReports';
@@ -336,6 +339,8 @@ function ReportBody({
   const ago = agoText(report.publishedAt, nowMs);
   const coverage = coverageText(reportCoverage(report));
   const lead = reportLead(report);
+  const blocks = reportBlocks(report);
+  const empty = emptyReportLine(report, blocks);
 
   return (
     <article>
@@ -402,73 +407,31 @@ function ReportBody({
         <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{report.overall}</p>
       ) : null}
 
-      {report.sections.map((section) => (
-        <section key={section.heading} className="mt-4">
-          <h3 className="mb-1 text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase">
-            {section.heading}
-          </h3>
-          {section.lines.length === 0 ? (
-            // Empty for ANY reason reads the same, and claims nothing: "nothing
-            // in our sources" exists only as the writer's checked line.
-            <p className="text-[13px] text-ink-3">{EMPTY_SECTION_LINE}</p>
-          ) : (
-            <ul className="space-y-1.5">
-              {section.lines.map((line, index) => {
-                const company = companyText(line.company);
-                const path = pathText(line.path, report);
-                const block = Boolean(company || path);
-                return (
-                <li key={`${line.ticker ?? '-'}:${index}`} className="text-[14px] leading-relaxed text-ink-1 print:text-black">
-                  {/* v5 block: the ticker lead with its company line, then the
-                      path, then the writer's sentences. Both computed lines are
-                      absent on v4 rows, which keep the one-line form. */}
-                  {line.ticker && block ? (
-                    <div className="text-[13px] text-ink-2 print:text-black">
-                      <button
-                        type="button"
-                        onClick={() => onSelectTicker(line.ticker as string)}
-                        className="mr-1.5 font-mono text-[14px] font-bold text-ink hover:text-accent print:text-black"
-                      >
-                        {line.ticker}
-                      </button>
-                      {company}
-                    </div>
-                  ) : null}
-                  {path ? (
-                    <div className="font-mono text-[13px] text-ink-2 tabular-nums print:text-black">{path}</div>
-                  ) : null}
-                  {line.ticker && !block ? (
-                    <button
-                      type="button"
-                      onClick={() => onSelectTicker(line.ticker as string)}
-                      className="mr-1.5 font-mono text-[14px] font-bold text-ink hover:text-accent print:text-black"
-                    >
-                      {line.ticker}
-                    </button>
-                  ) : null}
-                  {line.text}
-                  {line.ticker && line.liveFeed === false ? (
-                    <Qualifier title="This name had no live trade feed, so the report used minute bars for it. A quiet sentence about it may mean we did not see its trades, not that there were none.">
-                      minute data
-                    </Qualifier>
-                  ) : null}
-                  {line.ticker && line.liveFeed === null ? (
-                    <Qualifier title="This report could not record whether this name had a live trade feed. It does not mean the name had none.">
-                      feed not recorded
-                    </Qualifier>
-                  ) : null}
-                  {line.ticker && outsideBoardRange(priceOf(line.ticker), board, report.range) ? (
-                    <Qualifier title="This name is in the briefing's range but outside the range your board is showing.">
-                      not in your range
-                    </Qualifier>
-                  ) : null}
-                </li>
-                );
-              })}
-            </ul>
+      {/* The section headings are HIDDEN (his "b", 2026-10-01T02:24:33Z): they
+          are model-written and unchecked. One list in the writer's order, a
+          card per name; `reportBlocks` holds the rules. */}
+      {blocks.length > 0 ? (
+        <ul className="mt-5 space-y-3 print:space-y-4">
+          {blocks.map((block, index) =>
+            block.kind === 'NAME' ? (
+              <li key={`name:${block.ticker}`}>
+                <NameCard
+                  block={block}
+                  report={report}
+                  outsideRange={outsideBoardRange(priceOf(block.ticker), board, report.range)}
+                  onSelectTicker={onSelectTicker}
+                />
+              </li>
+            ) : (
+              <li key={`prose:${index}`}>
+                <Prose text={block.text} />
+              </li>
+            ),
           )}
-        </section>
-      ))}
+        </ul>
+      ) : empty ? (
+        <p className="mt-5 text-[13px] text-ink-3">{empty}</p>
+      ) : null}
 
       {view.superseded.length > 0 ? (
         <p className="mt-5 text-[11px] text-ink-3">
@@ -477,6 +440,116 @@ function ReportBody({
         </p>
       ) : null}
     </article>
+  );
+}
+
+/**
+ * One name, as the mock's artboard "A" draws it: ticker, company line and the
+ * feed qualifier on one header row; the path as three labelled points, the
+ * last coloured by its direction against the prior close, with the two figures
+ * computed from those points; then the writer's sentences.
+ */
+function NameCard({
+  block,
+  report,
+  outsideRange,
+  onSelectTicker,
+}: {
+  block: Extract<ReportBlock, { kind: 'NAME' }>;
+  report: SessionReport;
+  outsideRange: boolean;
+  onSelectTicker: (ticker: string) => void;
+}) {
+  const company = companyText(block.company);
+  const path = pathView(block.path, report);
+  const tone =
+    path?.direction === 'UP' ? 'text-pos' : path?.direction === 'DOWN' ? 'text-neg' : 'text-ink';
+
+  return (
+    <article className="rounded-md border border-line bg-panel-2 px-5 py-4 print:border-black/30 print:bg-white">
+      <div className="flex items-baseline gap-2.5">
+        <button
+          type="button"
+          onClick={() => onSelectTicker(block.ticker)}
+          className="shrink-0 font-mono text-[17px] font-bold text-ink hover:text-accent print:text-black"
+        >
+          {block.ticker}
+        </button>
+        <span className="min-w-0 flex-1 text-[13px] text-ink-2 print:text-black">{company}</span>
+        {block.liveFeed === false ? (
+          <Qualifier title="This name had no live trade feed, so the report used minute bars for it. A quiet sentence about it may mean we did not see its trades, not that there were none.">
+            minute data
+          </Qualifier>
+        ) : null}
+        {block.liveFeed === null ? (
+          <Qualifier title="This report could not record whether this name had a live trade feed. It does not mean the name had none.">
+            feed not recorded
+          </Qualifier>
+        ) : null}
+        {outsideRange ? (
+          <Qualifier title="This name is in the briefing's range but outside the range your board is showing.">
+            not in your range
+          </Qualifier>
+        ) : null}
+      </div>
+
+      {path ? (
+        <div className="mt-3 flex flex-wrap items-end gap-x-3.5 gap-y-2 print:text-black">
+          {path.points.map((point, index) => (
+            <span key={index} className="flex items-end gap-3.5">
+              {index > 0 ? (
+                <span aria-hidden="true" className="pb-4 font-mono text-ink-4">
+                  →
+                </span>
+              ) : null}
+              <span className="flex flex-col gap-0.5">
+                <span
+                  className={`font-mono text-[15px] tabular-nums print:text-black ${
+                    index === 2 ? `font-semibold ${tone}` : 'text-ink'
+                  }`}
+                >
+                  {point.price}
+                </span>
+                <span className="text-[10px] tracking-[0.08em] text-ink-3 uppercase print:text-black">
+                  {point.label}
+                </span>
+              </span>
+            </span>
+          ))}
+          <span className="ml-auto flex flex-col items-end gap-0.5 text-[12px] tabular-nums">
+            <span className={`${tone} print:text-black`}>{path.change}</span>
+            <span className="text-ink-2 print:text-black">{path.fromHigh}</span>
+          </span>
+        </div>
+      ) : null}
+
+      {block.texts.length > 0 ? (
+        <div
+          className={`space-y-2 ${path || company ? 'mt-3 border-t border-line pt-3 print:border-black/20' : 'mt-2'}`}
+        >
+          {block.texts.map((text, index) => (
+            <Prose key={index} text={text} />
+          ))}
+        </div>
+      ) : null}
+    </article>
+  );
+}
+
+/** The writer's sentences at a reading measure, figures set apart (the mock). */
+function Prose({ text }: { text: string }) {
+  return (
+    <p className="max-w-[680px] text-[15px] leading-[1.7] text-ink-2 print:text-black">
+      {figureSegments(text).map((segment, index) =>
+        segment.figure ? (
+          <span key={index} className="font-medium text-ink print:text-black">
+            {segment.text}
+          </span>
+        ) : (
+          segment.text
+        ),
+      )}
+    </p>
   );
 }
 
