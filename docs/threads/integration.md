@@ -3058,6 +3058,8 @@ error                                                  TYPE                     
   read by me as origin-side. Reached a peer's work,                                                verified back)
   not the app. LESSON: a guard compares to the sha you EXPECT, never to a value read in the same run.
   AND (Ops's): announce a reset of shared main to every seat FIRST, so nobody commits into the window.
+  CLOSED: on HIS "yes, push them" (Ops's chat) + my yes for my four, Ops fast-forwarded origin d321c5f3..3671951a;
+  main = origin/main, 0 / 0 (read). Normal flow resumed: commit --only, fetch, merge, push. No cherry-pick route.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
