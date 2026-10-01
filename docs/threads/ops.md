@@ -13194,3 +13194,10 @@ Until he answers on my pushing, seats push only through a worktree from origin/m
 Citation strip (third release): Research's **fc22dbcb** on origin/main (from cad7e8d0, suite 212/212, 3,185 tests, Git Bash,
 no memory signature). Cut it FROM /proc after (A) is live (840741d3 + fc22dbcb), declare, gate here, Integration replays,
 ask him separately.
+**Pushed** (his "yes, push them", 2026-10-01 in this chat; Integration agreed to its four riding): `git push origin main`
+fast-forward d321c5f3..3671951a; main = origin. From now: commit --only, fetch, merge, push from a clean state.
+**CITATION CUT (third release), Integration's list:** base 840741d3 (A) + fc22dbcb + 6fb483a0 (census) + d478adde (test only) +
+5f7fd3fe (Design's wiring, local branch design/citations-wiring). Research cuts and sends the literal sha; MY release gate after
+10:00 ET is the ONLY full suite for it. Ships after (A), on his yes; re-cut if levels or (A) don't ship Thursday.
+**Live citation census:** scheduled once at 14:01Z from a /tmp archive of 6fb483a0 (readonly, SELECTs only); output to
+docs/ops/citation-census-live-2026-10-01.txt, sha to Integration. Local 09-29 copy said 946 of 1,122 current versions carry a token.
