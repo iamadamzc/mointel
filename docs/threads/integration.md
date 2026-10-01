@@ -2512,6 +2512,10 @@ LEVELS BOX TEST  FAIL (Ops): n=25, p50 221.18, p95 1,062.61, max 2,042.41 ms vs 
 V28 LAUNCHED     2bcf1cf 00:36Z (base 89d39053 x3). Ops read: the v27 market worker's mode clear runs only at construction
                  (runtime.ts:310) and only on a mode change, so it cannot hit the v28 FK path tonight; re-pin after /proc.
                  Then reports e8822583 after 22:10.
+LEVELS GRADED    Research d98643bb: FAIL AS REGISTERED both clauses (p95 1,062.61 LESL; max 2,042.41 CNTB; 2/25 < 100 ms,
+                 11/25 > 250 ms; recomputed from Ops's 25 times); run matched registration (once, 20:34 ET, 8dfacf4, first
+                 pass, read-only). Not re-run. Backup's refresh bar for tomorrow registered from these box timings,
+                 before its run (a different path).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
