@@ -7,6 +7,7 @@ import {
   dashboardResponseParts,
   etagMatches,
 } from '@/lib/data/etag';
+import { readableSheet } from '@/lib/data/readable';
 
 // Always evaluated per request; freshness is governed by the server-side cache
 // in lib/data, not by Next.js route caching.
@@ -34,7 +35,7 @@ export async function GET(request: Request) {
    * RESEARCH record the sheet held, on every four-second poll.
    */
   const { body, etag, fetchedAt, cacheAgeMs } = dashboardResponseParts(
-    scopeResearch(state, extraSymbols(url)),
+    readableSheet(scopeResearch(state, extraSymbols(url))),
   );
 
   const freshness = {
