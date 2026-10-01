@@ -3191,6 +3191,12 @@ FLOOR RESULT     b3c13ce6 (read; prereg 7492e845 ancestor). Replay $1-$20, 40 ch
                  62 rows, max 10, cap never binds, 82% still >= floor 60 min later vs 60% for 15% alone); second choice
                  15% no volume floor. Today: 10%+500k = 5 counted + up to 5 unread. Doc's "under $1 outside the band"
                  line wrong for the live $0.25 band: Research asked to fix. My earlier block REPLACED to him.
+HIS RULING       typed to me (answering "separate moving group?"): "if something is labeled as moving it should just be
+                 ranked based on all other parameters normally  not placed in a separate group. it wont show on RVOL
+                 which is fine, but it will show on gap and now, etc." -> movers are NORMAL board rows with a moving
+                 label; sort like any row. Reverses 558f5cb5's out-of-ranked design. Research to list every reader of
+                 the board rows and what changes (Top N cut, counts, rank column, reports/capture/checkpoints must still
+                 exclude). Threshold still open with him. Design seat (not open) builds the label.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
