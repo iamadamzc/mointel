@@ -3064,6 +3064,13 @@ error                                                  TYPE                     
   one tool-and-habit cause, not saturation; a fresh seat inherits the habit, not a cure. Cure applied: the scratch
   push/reconcile scripts DELETED (the repeat was one keystroke away), and this seat never rewrites or cherry-picks
   shared main history again. Recommended CONTINUE; hand-off offer withdrawn pending his word.
+5 told HIM VEEA is off the board because the board  a cited path read, its sibling     YES      owner
+  is the top 50 by RVOL rank; I read Ops's cited     branch at the SAME line not        (family  (his screenshot:
+  lines, but readModel.ts:551 `rangeRanking?.states  followed (the family of #1:        of #1)   INGN 0.0x in
+  ??` was in front of me and I did not open the      passed on before the whole                  the top five;
+  range path (:532-548, rankInRange). His screen     site was read)                              VEEA 5x on his
+  contradicts it. Correction to him in the same reply; Ops + Research asked which path serves him.     platform)
+  LESSON: when a cited line is the right side of `??` or an else, read the left side before relaying.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
