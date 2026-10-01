@@ -13227,3 +13227,11 @@ line lacks). 29/29, mutants 2/2, 2/2, 1/1. Research wires readModel on top and h
 VEEA 12:22:48Z: rvol 1.072, rank 82 (from 0.581 / 120 at 12:10Z). RVOL = cumulative / FULL-DAY 20-session mean, checked by
 arithmetic at both reads (7,801,924 / 13,426,228.25 = 0.5811; 14,396,154 / 13,426,228.25 = 1.0722), not time-of-day matched.
 INGN on his board at rank 955 can only be a Sheet/Focus extra (repo.ts:1025-1034); band 0.25-20 = served, so inRange false.
+VEEA 12:26:42Z (his "pull all stats"): +56%, 17.4M sh, rvol 1.30 / rank 67, capture live (last trade 0.4 s old, flush 0.2 s);
+**#1 of 10,102 tracked by trades in the last minute (5,630; next EZRA 894)**. NOW is attached only to payload rows
+(readModel.ts:426-444, nowBuckets.ts:96). Raw output: scratchpad veea-now.out (sent in full to Integration).
+**MOVERS CUT HELD** (Integration, 2026-10-01): he asked for a cost analysis (system, compatibility, design) and whether it makes
+the desk a scanner; "most active" withdrawn as a recommendation. Research prepares a side-by-side (movers rule vs a robust RVOL
+baseline). Ops's part when asked: time readTopMovers per poll ON A COPY (and the poll rate), and the cost of recomputing a
+median/trimmed baseline. Research's research/movers aaebfc42 repo.ts + test = my 944c300e blobs (verified). No movers question tonight.
+The 14:03Z registered VEEA read stays (Research's SQL + VEEA's row); its live timing lines were removed per Integration.
