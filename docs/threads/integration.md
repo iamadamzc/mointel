@@ -2516,6 +2516,12 @@ LEVELS GRADED    Research d98643bb: FAIL AS REGISTERED both clauses (p95 1,062.6
                  11/25 > 250 ms; recomputed from Ops's 25 times); run matched registration (once, 20:34 ET, 8dfacf4, first
                  pass, read-only). Not re-run. Backup's refresh bar for tomorrow registered from these box timings,
                  before its run (a different path).
+CANVAS DONE      Web 8de08ddf: 55 prose em dashes swept (6 artboards + canvas.json), 4 bare placeholders kept; stamped
+                 89d39053; republished as Version 22 (landed, checked on the rebuilt page). Stamp's staleness test fixed
+                 to name only mirrored pages (an /api route had made it fire falsely). OPEN, LOW, for the next seat to
+                 put to him when convenient (not tonight): the canvas page refers to an undeclared "comments"
+                 capability (pre-existing, editor code neither he nor Web wrote), so that editor feature does not work;
+                 declaring it is his call.
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
