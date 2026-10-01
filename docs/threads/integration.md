@@ -3204,6 +3204,12 @@ INVENTORY        61dd61a0 (read build section + NOW row): movers last in ranked;
                  READ HERE engine.ts:2182-2213: high-res = top internalRank alive + LATCHED alive, cap 250. VEEA was latched
                  + high_res (Ops). So the NOW gap is only for never-latched movers: asked Research for the latched share
                  of added rows + cap headroom before it goes to him. NOW point HELD from him until then.
+LIVE-BAND RESULT b66ca4e5 (read; prereg 1314ae7b ancestor). Engine latches at any rank in band (engine.ts:1781-1791 per
+                 Research), so the live set is ~top 250 by rank. Live band ($0.25-$20) gate passes on only 2 sessions
+                 (thin; inference: production ranked on ~$1 until 09-25). 10%+500k: cap needed 13 -> CAP 15; 76% live on
+                 NOW (82% on $1 sessions); 15% alone: cap 10, 56% on NOW. UPDATED rec: 10% + 500k, cap 15. NOW gap ~1 in
+                 4-5 movers, worker change only for those. Block to him updated. Research correcting its own NOW
+                 question to him directly.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
