@@ -3046,6 +3046,19 @@ error                                                  TYPE                     
   origin/main + cherry-pick 49be03b1 04fefaa7 (Ops's held two) = 70b963f3, superset of local main (tree
   diff shows only Design's origin commits); `git reset --keep X` REFUSED by the permission classifier
   (shared resource). Put to him. My notes now committed locally only, not pushed.
+3 the reconcile's second reset DROPPED Ops's 3b1f90fb  a guard compared against the wrong  no       peer
+  (ops.md, 3 lines, committed between my two resets).  reference (it read main at script  (new)    (Ops,
+  The script's "main moved?" guard compared main to    start and compared main to that,            re-applied as
+  its own value read at script start, not to the       so it could not fail)                       18521781;
+  expected e821b2d1; the ops.md diff it printed was                                                all 3 lines
+  read by me as origin-side. Reached a peer's work,                                                verified back)
+  not the app. LESSON: a guard compares to the sha you EXPECT, never to a value read in the same run.
+4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
+  route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
+  local main diverged again (5 ahead / 2 behind).                                                   push output)
+  Repaired by a clean `git merge origin/main` (6 ahead / 0 behind; the 6 = Ops's four held + my duplicate
+  bcb0c6a7 + merge). From now: my notes commit LOCALLY ONLY until Ops's held commits are published.
+  -> hygiene §2: first REPEAT of a corrected class. Warned him in the block; hand-off proposed, his call.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
