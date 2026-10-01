@@ -1,17 +1,19 @@
 /**
  * The levels refresh: computes the board's rows at the latest 5m close and
- * writes them to the precomputed store (`levelsFiles.ts`), which is all the
- * web route reads. The minute read happens HERE, in a worker process, never on
- * the web tier's request path (his ruling after the per-request cost gate
- * failed disk-cold).
+ * writes them to history.db's `resistance_levels` table (spec section 2),
+ * which is all the web route reads. The minute read happens HERE, in a
+ * short-lived child process the research worker spawns, never on the web
+ * tier's request path (his ruling after the per-request cost gate failed
+ * disk-cold).
  *
- * Meant to run on a 5-minute timer in a worker Ops chooses; nothing here wires
- * it in. Run it a little after each 5m close (the close's last 1m bar reaches
- * the store a few seconds late), e.g. at close + 20 s.
+ * Run by `worker/levels-refresh.ts` (one refresh, then exit), which the
+ * research worker spawns at each 5m close + 20 s
+ * (`lib/research/levelsRefreshJob.ts`): the close's last 1m bar reaches the
+ * store a few seconds late.
  *
  * Names: the day and evening boards' ranked names in `ticker_session` for the
- * trading date of t, rank <= 90 on either, plus every symbol in that date's
- * `requested.txt` (appended by the route when it had no row).
+ * trading date of t, rank <= 90 on either. Nothing else is computed: a name
+ * off the board has no row, and the route serves it as absent.
  *
  * PRE-REGISTERED 2026-09-30, BEFORE THIS RUNNER WAS TIMED (coordinator's order,
  * backup to the failed per-request cost gate): on the production copy
@@ -20,13 +22,15 @@
  * TOTAL on this desktop, COLD (the first run in a fresh process), reported with
  * n and the per-name p95. The budget keeps the refresh inside its 5-minute
  * cadence; it is not a poll-latency budget. Script: `scripts/levels-refresh-cost.ts`.
+ * The box test (the refresh and the route's read, on the server):
+ * `scripts/levels-box-cost.ts`.
  */
 
 import { latestFiveMinuteClose } from './levels';
-import { isSafeSymbol, pruneLevelsDates, readRequested, writeLevelsRow } from './levelsFiles';
 import { computeBoardLevels } from './levelsStore';
 import { etDateString } from './session';
 import type { MarketDatabase } from './store/db';
+import { writeResistanceLevels, type HistoryDatabase, type StoredLevels } from './store/historyStore';
 import { readBoardRankedSymbols } from './store/repo';
 
 /** Board names at this rank or better, on either board, are refreshed. */
@@ -36,51 +40,53 @@ export interface LevelsRefreshSummary {
   tradingDate: string;
   /** The 5m close the rows were computed at (ISO, UTC). */
   computedAt: string;
-  /** Names considered: ranked, then requested. */
+  /** Names considered: the ranked names on either board. */
   symbols: string[];
   written: number;
-  /** Names with nothing stored to take L from: no file is written, so the route stays absent. */
+  /** Names with nothing stored to take L from: no row is written, so the route stays absent. */
   absent: string[];
-  /** Names whose symbol cannot be a file name; not computed. */
-  unstorable: string[];
   timings: Array<{ symbol: string; ms: number }>;
-  prunedDates: string[];
   totalMs: number;
 }
 
-export function refreshBoardLevels(db: MarketDatabase, dir: string, now: number): LevelsRefreshSummary {
+/**
+ * One refresh. Reads market.db (the caller opens it read-only) and writes
+ * history.db in ONE transaction, every computed row at once. A name whose
+ * compute is null (no 1m bar) is ABSENT: nothing is written for it, not an
+ * empty row. An empty row (`levels: []`, `aboveAllStored`) is a computed row
+ * and is written.
+ */
+export function refreshBoardLevels(
+  marketDb: MarketDatabase,
+  historyDb: HistoryDatabase,
+  now: number,
+): LevelsRefreshSummary {
   const started = performance.now();
   const t = latestFiveMinuteClose(now);
   const tradingDate = etDateString(new Date(t));
+  const computedAt = new Date(t).toISOString();
 
-  const ranked = readBoardRankedSymbols(db, tradingDate, BOARD_MAX_RANK);
-  // A symbol that cannot be a file name cannot be served either; skipped, not thrown.
-  const all = [...new Set([...ranked, ...readRequested(dir, tradingDate)])];
-  const symbols = all.filter(isSafeSymbol);
-  const unstorable = all.filter((symbol) => !isSafeSymbol(symbol));
+  const symbols = readBoardRankedSymbols(marketDb, tradingDate, BOARD_MAX_RANK);
+  const { rows, timings } = computeBoardLevels(marketDb, t, symbols);
 
-  const { rows, timings } = computeBoardLevels(db, t, symbols);
-  let written = 0;
+  const stored: StoredLevels[] = [];
   const absent: string[] = [];
   for (const [symbol, row] of rows) {
     if (!row) {
       absent.push(symbol);
       continue;
     }
-    writeLevelsRow(dir, row);
-    written += 1;
+    stored.push({ symbol, tradingDate, computedAt, payload: JSON.stringify(row) });
   }
-  const prunedDates = pruneLevelsDates(dir, tradingDate);
+  writeResistanceLevels(historyDb, stored);
 
   return {
     tradingDate,
-    computedAt: new Date(t).toISOString(),
+    computedAt,
     symbols,
-    written,
+    written: stored.length,
     absent,
-    unstorable,
     timings,
-    prunedDates,
     totalMs: performance.now() - started,
   };
 }

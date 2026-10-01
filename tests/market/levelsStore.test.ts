@@ -1,18 +1,19 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { upsertDailyBars } from '@/lib/research/history';
-import { computeResistanceLevels, type ResistanceLevels } from '@/lib/market/levels';
+import { computeResistanceLevels, latestFiveMinuteClose } from '@/lib/market/levels';
 import { computeLevelsFromStore, readLevelsInput } from '@/lib/market/levelsStore';
-import { createLevelsMemo, latestFiveMinuteClose, MEMO_SETTLE_MS } from '@/lib/market/levelsService';
 import { openDatabase, type MarketDatabase } from '@/lib/market/store/db';
 import { upsertMinuteBars } from '@/lib/market/store/repo';
 
 /*
- * The store adapter, the memo and the route, on a real SQLite store built in a
- * temp directory. 2026-09-29 is EDT: 12:00 ET is 16:00Z.
+ * The store adapter the refresh child computes through, on a real SQLite store
+ * built in a temp directory. The route's read of the stored rows is covered in
+ * levelsRoute.test.ts and levelsPrecomputed.test.ts. 2026-09-29 is EDT: 12:00
+ * ET is 16:00Z.
  */
 const TODAY = '2026-09-29';
 const NOW = Date.parse(`${TODAY}T16:02:30.000Z`);
@@ -22,8 +23,6 @@ beforeEach(() => {
   dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-levels-'));
 });
 afterEach(() => {
-  vi.useRealTimers();
-  vi.unstubAllEnvs();
   try {
     fs.rmSync(dir, { recursive: true, force: true });
   } catch {
@@ -127,93 +126,9 @@ describe('levels store adapter', () => {
     expect(computeLevelsFromStore(db, 'NOPE', t)).toBeNull();
     db.close();
   });
-});
 
-describe('levels memo: per (symbol, latest completed 5m close)', () => {
-  const fakeRow = (symbol: string, t: number) =>
-    ({ symbol, computedAt: new Date(t).toISOString() }) as unknown as ResistanceLevels;
-
-  it('computes once per symbol per 5m close, and again at the next close', () => {
-    const compute = vi.fn(fakeRow);
-    const memo = createLevelsMemo(compute);
-    const close = latestFiveMinuteClose(NOW);
-    const settled = close + MEMO_SETTLE_MS;
-
-    memo.get('ABCD', settled);
-    memo.get('ABCD', settled + 60_000);
-    memo.get('WXYZ', settled);
-    expect(compute).toHaveBeenCalledTimes(2);
-    expect(compute).toHaveBeenCalledWith('ABCD', close);
-
-    memo.get('ABCD', close + 300_000 + MEMO_SETTLE_MS);
-    expect(compute).toHaveBeenCalledTimes(3);
-    expect(compute).toHaveBeenLastCalledWith('ABCD', close + 300_000);
-    expect(memo.size()).toBe(1);
-  });
-
-  it('does not memoize inside the settle gap after a close, nor an ABSENT result differently', () => {
-    const compute = vi.fn((symbol: string) => (symbol === 'NOPE' ? null : fakeRow(symbol, 0)));
-    const memo = createLevelsMemo(compute);
-    const close = latestFiveMinuteClose(NOW);
-
-    memo.get('ABCD', close + 1_000);
-    memo.get('ABCD', close + 2_000);
-    expect(compute).toHaveBeenCalledTimes(2);
-
-    expect(memo.get('NOPE', close + MEMO_SETTLE_MS)).toBeNull();
-    expect(memo.get('NOPE', close + MEMO_SETTLE_MS + 1)).toBeNull();
-    expect(compute).toHaveBeenCalledTimes(3);
-  });
-});
-
-describe('/api/levels', () => {
-  async function call(query: string) {
-    const { GET } = await import('@/app/api/levels/route');
-    const response = await GET(new Request(`http://localhost/api/levels${query}`));
-    return { status: response.status, body: await response.json() };
-  }
-
-  beforeEach(() => {
-    const file = path.join(dir, 'market.db');
-    seed(file).close();
-    vi.stubEnv('MARKET_DB_PATH', file);
-    vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(NOW);
-  });
-
-  it('200 with the row for a computed name', async () => {
-    const { status, body } = await call('?symbol=abcd');
-    expect(status).toBe(200);
-    expect(body.symbol).toBe('ABCD');
-    expect(body.computedAt).toBe(`${TODAY}T16:00:00.000Z`);
-    expect(body.levels.length).toBeGreaterThan(0);
-  });
-
-  it('EMPTY is 200 + levels [] with aboveAllStored; ABSENT is 200 + a null body, never 404', async () => {
-    const empty = await call('?symbol=HIGH');
-    expect(empty.status).toBe(200);
-    expect(empty.body.levels).toEqual([]);
-    expect(empty.body.aboveAllStored).toBe(true);
-
-    const absent = await call('?symbol=NOPE');
-    expect(absent.status).toBe(200);
-    expect(absent.body).toBeNull();
-  });
-
-  it('a store failure is 200 + null, never a 500: no store on disk, and a file that is not a database', async () => {
-    vi.stubEnv('MARKET_DB_PATH', path.join(dir, 'missing', 'market.db'));
-    const missing = await call('?symbol=ABCD');
-    expect(missing).toEqual({ status: 200, body: null });
-
-    const broken = path.join(dir, 'broken.db');
-    fs.writeFileSync(broken, 'this is not a sqlite database, it is only long enough to be read as a header');
-    vi.stubEnv('MARKET_DB_PATH', broken);
-    const unreadable = await call('?symbol=ABCD');
-    expect(unreadable).toEqual({ status: 200, body: null });
-  });
-
-  it('400 without a usable symbol', async () => {
-    expect((await call('')).status).toBe(400);
-    expect((await call('?symbol=%20')).status).toBe(400);
+  it('the compute moment is the latest completed 5m close', () => {
+    expect(new Date(latestFiveMinuteClose(NOW)).toISOString()).toBe(`${TODAY}T16:00:00.000Z`);
+    expect(latestFiveMinuteClose(Date.parse(`${TODAY}T16:05:00.000Z`))).toBe(Date.parse(`${TODAY}T16:05:00.000Z`));
   });
 });

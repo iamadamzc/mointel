@@ -10,8 +10,9 @@
  *
  *   npx tsx scripts/levels-refresh-cost.ts <store.db>
  *
- * The store is opened readonly with fileMustExist. Rows are written to a fresh
- * temp directory, never beside the store, and the directory is removed after.
+ * The store is opened readonly with fileMustExist. Rows are written to a
+ * scratch history.db in a fresh temp directory, never beside the store, and
+ * the directory is removed after.
  * The ranks are the copy's `ticker_session` as it stood when the copy was
  * taken; the store keeps no rank history to read them at exactly 16:00.
  */
@@ -23,6 +24,7 @@ import Database from 'better-sqlite3';
 
 import { BOARD_MAX_RANK, refreshBoardLevels } from '../lib/market/levelsRefresh';
 import { etWallClockToUtc } from '../lib/market/session';
+import { openHistoryStore } from '../lib/market/store/historyStore';
 
 const DATE = '2026-09-29';
 const NOW = etWallClockToUtc(DATE, 16, 0).getTime();
@@ -35,15 +37,16 @@ if (!file) {
 }
 const db = new Database(file, { readonly: true, fileMustExist: true });
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-levels-refresh-cost-'));
+const history = openHistoryStore(path.join(dir, 'history.db'));
 
 try {
-  const summary = refreshBoardLevels(db, dir, NOW);
+  const summary = refreshBoardLevels(db, history, NOW);
   const times = summary.timings.map((x) => x.ms).sort((a, b) => a - b);
   const pct = (p: number) => times[Math.max(1, Math.ceil(p * times.length)) - 1] ?? NaN;
   const slowest = [...summary.timings].sort((a, b) => b.ms - a.ms).slice(0, 5);
   console.log(
     `t=${summary.computedAt} (16:00 ET) board rank <= ${BOARD_MAX_RANK}: n=${summary.symbols.length} ` +
-      `written=${summary.written} absent=${summary.absent.length} unstorable=${summary.unstorable.length}`,
+      `written=${summary.written} absent=${summary.absent.length}`,
   );
   console.log(
     `per name: p50=${pct(0.5).toFixed(1)} ms  p95=${pct(0.95).toFixed(1)} ms  max=${(times.at(-1) ?? NaN).toFixed(1)} ms; ` +
@@ -55,6 +58,7 @@ try {
       `${pass ? 'PASS' : 'FAIL'}`,
   );
 } finally {
+  history.close();
   db.close();
   fs.rmSync(dir, { recursive: true, force: true });
 }
