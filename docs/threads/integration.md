@@ -3182,6 +3182,11 @@ HIS QUESTION     "the question i have is is 20% the right number and what does i
                  by 10:00, named examples), definition committed first; Ops for today's counts at those floors.
                  Ops f1c0628d (11:32 ET, one RTH moment): off-top-50 in band >=10% 22, >=15% 11, >=20% 5, >=25% 2, >=30% 1;
                  thin names at 10-20% (WFCF 5,756 sh). Research asked to add a volume-floor cross. One table to him.
+FLOOR RESULT     b3c13ce6 (read; prereg 7492e845 ancestor). Replay $1-$20, 40 checkpoints: 15% = median 1 row, max 8, 63
+                 rows, cap never bound, catches pre-open; 20% = 19 rows, 0 at 09:00; 10% = cap hides 51 / gainers list;
+                 60-min persistence 47-60% at every floor. REC 15%, K=10. MISMATCH I found: live band is $0.25-$20
+                 (f1c0628d), so (1) "under $1 no floor can show" overstated; (2) today 11:32 ET 11 names >= 15% off board
+                 > K=10. Research asked to re-run on the live band + volume cross after his answer. PUT TO HIM.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
