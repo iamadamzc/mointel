@@ -2961,6 +2961,10 @@ LEVELS RENDER    MET. Design-tmi transcript 3faefae2 (opened 02:28:32Z on design
 APPROVED-NOT-BUILT ADD  Design, after levels ships, own commit, no re-cut: same-price span "4.62 to 4.62" (compare
                  formatted values); distance column overrun from +1000%; stale "route memoizes per close" comment in
                  ResistanceLevels.tsx.
+DESIGN 4 ASKS    Design's message (crossed my ack; also in design.md d80d208c): all four already answered in the 21st's
+                 notes; replied (cd8725e6, queued): levels accepted; Sheet em dashes = own commit riding in (A) (21st's
+                 order call); review reports route = his "1 yes", built d427dd0e, rides in (A); row A APPROVED as proposed
+                 incl. NOTHING_LINE dropped at render. Asked for the (A) cut's literal sha when it exists.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
