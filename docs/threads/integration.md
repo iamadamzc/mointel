@@ -2976,6 +2976,11 @@ ORDER CALL       (A) cut NOW on b5a35fda (= /proc if levels ships): picks d427dd
                  does not ship, re-cut from e8822583, not pre-approved. Design 2c2c4d75, Ops 020e4c50 (both delivered).
 SHARED TREE      local main 1 ahead / 3 behind origin; the 1 = Ops's 49be03b1 (ops.md, not on origin). My commits
                  stay local until Ops pushes it, so I do not carry a peer's commit.
+OPS ACK          Ops gates (A) when Design hands it over; his question names FOUR changes (headings hidden; Sheet labels
+                 without em dashes; reports on review links; card minute-data mark agrees with header count). Ops does not
+                 push 49be03b1 without HIS word (asked him). PUSH ROUTE MEANWHILE: my commits cherry-picked onto
+                 origin/main in a temp worktree and pushed HEAD:main (5115086b = local 4d900c2c). Never rebase/autostash
+                 the shared tree (peers' uncommitted files).
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
