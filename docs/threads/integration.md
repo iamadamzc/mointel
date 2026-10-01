@@ -2807,6 +2807,15 @@ NEW DESIGN       local_c29a82bd (title Design-tmi, cwd A:\mointel, not archived,
                  nothing shipped after e8822583, levels cut b5a35fda approved + gated, HIS RENDER = ship condition, row A
                  + his "b" (hide headings; all-struck section behaviour to me before building), order levels then A.
                  Corrected one line of mine (ledger 2).
+DESIGN R1 LIVE   ec1215d2 (read): board text 0 em dashes; OLD rows correct. FINDING VERIFIED HERE: Sheet-sourced labels
+                 (grade, priority, cycle, structure; PRI tooltip, aria-labels) still show em dashes on his screen;
+                 merge.ts readableIntelligence :309-318 cleans the auto side only. ORDER CALL: own display-only commit,
+                 rides in A's cut Thursday after levels (one yes naming both); ships alone if A is not ready.
+                 Reports NOT readable on a review link (404; review routes = assessments/dashboard/diagnostics/market):
+                 R1's report half unread; A has no live post-ship render check. Research asked to size a read-only
+                 review mirror; if built, showing reports on review links = HIS question.
+ROW A DESIGN     APPROVED (order call): card per name in writer order, multi-section names joined, emptied section +
+                 NOTHING_LINE render nothing, v4 empty body "No line in this report.", overall + watch lines stay.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
