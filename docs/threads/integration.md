@@ -3002,13 +3002,24 @@ TGE CITATION CONF  Research: REAL; the INTERPRETER writes citation tokens into d
                  both forms + a non-citation bracket control; drawer strip only once its render is opened (Design wires,
                  Research owns the pattern). (3) checker bracketed-id strike ADDED TO v6. Research c794b742, Ops
                  2da48396 (both queued). TOLD HIM once: the verified #591 instance + the fix's order.
+CITATION COUNT   Ops 04fefaa7 (read; 2026-10-01T10:53:26Z): all versions since 00:00Z 61, with business 57, bracket in
+                 business 28 (LIKE '%[%', upper bound), any "[Source" 3 vs 120 BEFORE 00:00Z. Current versions (1,173
+                 tickers): since 00:00Z 46, business 42, bracket 20, "[Source" 2. CORRECTS "started with the newest":
+                 the "[Source N]" form is long-standing in other dossier text. Correction told to him. Drawer render
+                 asked of Design (b25fa589, local fixture from e8822583); Research to grade the 28/20 brackets
+                 (dcfdb58f); Ops: nothing more from the box (02cf2964). (A) gate on 840741d3 restarted after the PC slept.
 APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
                  ungraded name (screen readers only). Own commit, after the ship.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
 error                                                  TYPE                               repeat?  caught by
-(none yet)
+1 told HIM the citation tags "look like they started   a sample's framing relayed as a    no       peer
+  with the newest research write-ups" (hedged, count   pattern (the family: passed on     (first)  (Research's
+  pending) from Research's 40-dossier sample; the      before the population was read)            own count,
+  production count shows "[Source N]" in 120 older                                                via Ops)
+  versions. Correction sent to him in the next message.
+  LESSON: a hedge does not make a sample's framing safe; say only what the read row shows until the count lands.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
