@@ -3020,6 +3020,14 @@ error                                                  TYPE                     
   production count shows "[Source N]" in 120 older                                                via Ops)
   versions. Correction sent to him in the next message.
   LESSON: a hedge does not make a sample's framing safe; say only what the read row shows until the count lands.
+2 pushed my notes by cherry-picking local commits     a shared-state side effect not     no       peer
+  onto origin/main in a temp worktree; did not see     examined before adopting a route   (new)    (Research,
+  that the copies diverge from the local originals,    (the family: acted before reading           hit the merge
+  so local main went 8 ahead / 10 behind and a plain   what the route does to the shared           conflict)
+  merge conflicts in integration.md. RECONCILE: X =    tree)
+  origin/main + cherry-pick 49be03b1 04fefaa7 (Ops's held two) = 70b963f3, superset of local main (tree
+  diff shows only Design's origin commits); `git reset --keep X` REFUSED by the permission classifier
+  (shared resource). Put to him. My notes now committed locally only, not pushed.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
