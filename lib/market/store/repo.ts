@@ -1127,15 +1127,15 @@ export function readRangeCandidates(
 /**
  * Today's biggest % gainers priced inside [min, max], at or above `minPct`,
  * biggest first, ties by symbol (docs/research/board-movers-spec.md, his VEEA
- * ruling: a large % mover reaches the board whatever its RVOL rank).
+ * ruling: a large % mover reaches the board whatever its RVOL rank). The order
+ * must match boardMovers.ts selectMovers exactly.
  *
  * Its own read because the default board takes readDemandStates' top-N path,
  * which never sees a name ranked below the limit; a full band read on every
  * poll would cost more than this bounded one. Eligibility is NOT EXISTS on
  * universe's primary key, written last, so it is only evaluated for rows that
- * already passed the cheap filters: joining universe per row was most of the
- * range read's cost (readIneligibleSymbols). A symbol with no universe row is
- * kept, as readRangeCandidates keeps it.
+ * already passed the cheap filters, rather than a join per row. A symbol with
+ * no universe row is kept, as readRangeCandidates keeps it.
  */
 export function readTopMovers(
   db: MarketDatabase,
