@@ -13248,3 +13248,9 @@ source ids (282 occurrences) because the year rule keeps "[dddd]". Integration: 
 **His citation question names it:** board, research panel and report company lines stop showing source numbers; 996 of 1,178
 current write-ups carry them today (98ef4acd); nothing is re-analysed; about 5% of write-ups will still show a short source
 number until a follow-up fix (Research).
+Citation residual follow-up (Research, d11a59f5) re-counted on production at b2fc64b6: current lone-id residual 293 in 66
+versions -> 6 in 5; ships after tonight from /proc. Movers floors at f1c0628d (11:32 ET: off top 50 >=10% 22, >=20% 5).
+**MOVERS RULING (his, to Integration): "10% with 500k shares, cap 15"**, normal board rows with a moving label. Ops's part:
+readTopMovers gains `cumulative_volume >= 500,000` (Research sends the spec). Cut from /proc after tonight's three; Friday
+night earliest. Housekeeping: Research reports 60 lint errors from .claude/worktrees/agent-acfba7ff0c32d6e90/.next (an old
+levels worktree eslint scans); not Ops's worktree; owner removes it or eslint ignores .claude/.
