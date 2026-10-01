@@ -3008,6 +3008,9 @@ CITATION COUNT   Ops 04fefaa7 (read; 2026-10-01T10:53:26Z): all versions since 0
                  the "[Source N]" form is long-standing in other dossier text. Correction told to him. Drawer render
                  asked of Design (b25fa589, local fixture from e8822583); Research to grade the 28/20 brackets
                  (dcfdb58f); Ops: nothing more from the box (02cf2964). (A) gate on 840741d3 restarted after the PC slept.
+(A) GATED        Ops: 840741d3 ALL GREEN 214/214 declared and met, 3,202 tests (lockfile, types, typecheck, lint, suite);
+                 next build in A:\mointel-build pending. Ops's word, not re-run here (one suite at a time on this PC).
+                 Shared main: Ops will not touch it; reconcile only on HIS word in Ops's chat.
 APPROVED-NOT-BUILT ADD  Design follow-up: Discovery row aria-label drops the lone empty glyph into a sentence for an
                  ungraded name (screen readers only). Own commit, after the ship.
 ```
