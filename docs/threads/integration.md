@@ -3092,6 +3092,16 @@ MOVERS BUILT     research/movers 558f5cb5 on 2a625a5b (light check here: 3 commi
                  origin-only reader carry-over before push. FINAL SHA HELD for his most-active answer + Design's pick.
                  research/movers now aaebfc42 (doc comment only, repo.ts = Ops's 944c300e). Research has asked HIM
                  whether its seat hands off (its ask; not repeated by me); if yes, successor reads research.md.
+HIS QUESTION     "we went pretty fast on that. was there a cost analysis? (not $, system cost, compatibility, design,e tc,
+                 etc.) does it make sense? we're slowly becoming a scanner doing that." ANSWERED: no full cost analysis
+                 (measured: firing rate + payload; unverified: compat claims; not done: query cost, design, product fit;
+                 most-active not analysed). Most-active recommendation WITHDRAWN. MOVERS CUT HELD. Research to build a
+                 side-by-side: (A) movers aaebfc42 vs (B) robust RVOL baseline, system/compat/design/product + replay
+                 overlap (would B have ranked VEEA, NCPL, FTFT, SVRN, AEHL, CMND into the top 50), pre-registered (80ef0b34);
+                 Ops times queries on a copy (36a98925); Design one paragraph on two principles vs one (19630dc3).
+                 Tonight: levels -> (A) -> citations only. LESSON (mine): I approved a build order on a board-behaviour
+                 change without asking for its cost; a ruling's requirement ("show it somewhere") is not a ruling on
+                 the mechanism.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
