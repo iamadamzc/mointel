@@ -15,7 +15,7 @@ Rows are in-band movers added under the RVOL top 50, over 40 checkpoints.
 | 30% | 0 | 1 | 0 / 0 / 0 | never | 5 (4) | 60% (n = 5) |
 
 **Reading it:**
-- **Lowering 20% to 15% triples the movers rows** (19 to 63 over 40 checkpoints). It also starts catching them before the open (up to 2 at 09:00 and 3 at 09:25, where 20% catches none at 09:00 and 1 at 09:25), and it never needs the cap.
+- **Lowering 20% to 15% triples the movers rows** (19 to 63 over 40 checkpoints). It also starts catching them before the open (up to 2 at 09:00 and 3 at 09:25, where 20% catches none at 09:00 and 1 at 09:25). It never needed the cap on the replay; **today's live read put it at the cap** (see "Today, live").
 - **10% is a different product.** About 5 rows on a typical checkpoint and up to 29 at 10:00. With the cap of 10 it hides 51 movers, so it breaks "no mover off the board"; without the cap it is a gainers list.
 - **The 60-minute check does not favour any floor** (47% to 60%, small samples at 25% and 30%). On this data a lower floor does not add more fleeting names. This describes the names; it is not a claim about trades.
 
@@ -60,8 +60,55 @@ The board shows only the served price band. At every floor some movers are outsi
 
 **No floor puts these on the board; only the band setting does.** That is a separate choice of his.
 
-## Recommendation, from the measurement
+## Volume floor x percent floor (registered `4ab690ae`, script `floors-vol.js`)
 
-**15%, keeping the cap of 10.** It is the lowest floor here that never needed the cap, so no qualifying mover is hidden. It typically adds about one row, and catches movers before the open that 20% misses. 10% either hides movers behind the cap or turns the group into a gainers list. Whether 15% reads as "a mover" is his call.
+*Integration's request after today's thin names. Volume is shares traded from 04:00 ET to the checkpoint. The instrument check passed: with no volume floor, every cell equals the table above. Uncapped; "cap hides" is with K = 10.*
+
+| Floor | Volume floor | Rows per checkpoint (median / max) | Cap of 10 hides | Total rows (distinct) | Still at or above the floor 60 min later |
+|---|---|---|---|---|---|
+| 10% | none | 5 / 29 | 51 | 273 (167) | 56% |
+| 10% | 100k | 1 / 15 | 6 | 101 (65) | 74% |
+| **10%** | **500k** | **1 / 10** | **0** | **62 (42)** | **82%** |
+| 10% | 1M | 0 / 7 | 0 | 44 (27) | 86% |
+| **15%** | **none** | **1 / 8** | **0** | **63 (41)** | **60%** |
+| 15% | 100k | 0 / 5 | 0 | 32 (21) | 69% |
+| 15% | 500k | 0 / 4 | 0 | 23 (15) | 78% |
+| 15% | 1M | 0 / 3 | 0 | 19 (12) | 79% |
+| 20% | none | 0 / 3 | 0 | 19 (15) | 47% |
+| 20% | 100k | 0 / 3 | 0 | 15 (11) | 53% |
+| 20% | 500k | 0 / 2 | 0 | 11 (9) | 64% |
+| 20% | 1M | 0 / 2 | 0 | 9 (7) | 78% |
+| 25% / 30% | any | 0 / 1 to 3 | 0 | 4 to 8 | 50% to 75% (n of 8 or fewer) |
+
+**Reading it:**
+- **Within a percent floor, a volume floor sharply raises how many names are still moving an hour later** (at 10%: 56%, then 74%, 82%, 86%).
+- **The percent floor alone does not** (47% to 60% across 10% to 30%, first table).
+- **10% with 500k shares adds the same number of rows as 15% with no volume floor** (62 vs 63), and 82% of them hold against 60%.
+- What a volume floor costs: thin names with a big percent move (today WFCF, +15.8% on 5,756 shares) are left off. Whether those count as "a mover in the market" is his call.
+
+## Today, live (Ops `f1c0628d`, ONE moment, 11:32 ET, served band $0.25 to $20)
+
+In-band names off the top 50 at each percent floor: **10%: 22; 15%: 11; 20%: 5; 25%: 2; 30%: 1.**
+
+- **At 15%, today's count (11) is over the cap of 10.** One of the 11 is under $1 (TEAD, $0.61), so in the replay's $1 to $20 band it is at most 10. The replay's "the cap never binds at 15%" held on its ten days; today it would have sat at the cap.
+- **By volume floor.** The file gives volumes only for the 17 names at 10 to 20%, so each count below is that part, plus up to 5 names at 20% or more whose volumes were not read:
+
+| Floor | 100k | 500k | 1M |
+|---|---|---|---|
+| 10% | 14 | 5 | 1 |
+| 15% | 4 | 2 | 0 |
+
+## Recommendation, from the measurement (revised with the volume cross and today's read)
+
+**10%, with a 500k-share volume floor, keeping the cap of 10.**
+- On the replay it never needed the cap (the most at once was 10).
+- It typically adds about one row, the same size as 15% alone.
+- Its names hold far better an hour later (82% vs 60%).
+- It shows moves from 10% up once they trade 500k shares; without a volume floor, 10% is too many rows.
+- Today it would show at most 10 (5 counted, plus up to 5 unread).
+
+**Second choice: 15% with no volume floor**, if he wants every in-band move to count however thin. The cost: on a day like today it reaches the cap, and the cap then hides the smallest move.
+
+**Either way, a mover under $1 or over $20 is outside the served band and no floor shows it.** That is the band setting, his separate choice.
 
 **What this does not show:** ten sessions only; no claim about trades; the latch and after-hours are not replayed; the band was fixed at $1 to $20 for the replay.
