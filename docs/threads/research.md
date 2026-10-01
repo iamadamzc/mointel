@@ -183,9 +183,10 @@ record. He has it from this seat directly as well.
 
   Evidence: `docs/research/movers-vs-robust-baseline/` (`floor-result.md`, `liveband-result.md`, `movers-in-ranked-inventory.md`).
 
+  **✅ GATE PASSED at `e0f18bbb`** (`825b1eac` plus a test-only typing fix): `tsc` 0; full suite 220 of 220 files, 3,250 tests (Ops's slot).
+
   **Waits on:**
-  - `tsc` and the full suite (Ops's slot, asked).
-  - Design's "moving" label: no Design seat open yet; until it exists, movers show unlabelled under non-RVOL sorts.
+  - **Integration's order call: NO SHIP WITHOUT THE LABEL** ("labeled as moving" is in his ruling). Design's "moving" label commit and Design's render of the combined tree are ship conditions. No Design seat open yet.
   - Integration's cut, after tonight's three ships, Friday night at the earliest.
   - His yes.
 
