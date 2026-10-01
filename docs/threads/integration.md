@@ -2798,6 +2798,10 @@ HIS RULING       THIS SESSION (434df034, typed "b" 2026-10-01T02:24:33.560Z, ans
                  running with titles that can be wrong until the fix ships?"): (b) KEEP RUNNING + Thursday's display
                  change (A) HIDES THE SECTION HEADINGS until v6 computes them. Fallback if not display-only: (a). Written
                  into design.md row A (no Design seat open). Told Research + Ops.
+FALSE CLOCK CONF Ops 84b2d760 (22:24:03 ET, read): 118584 (CMCT's cited source) published_precision DATE_ONLY at 12:00:00Z
+                 -> published #588 "at 08:00 ET, September 29" is FALSE. CHGA, FRGT noon sources DATE_ONLY; DKI 120192
+                 EXACT at 12:00:00Z (a genuine 08:00 ET release: why the fix follows precision, never a noon rule).
+                 SECOND DEFECT told to him; fix (c) in v6 (research.md). His (b) stands; no new decision.
 ```
 **THE TWENTY-FIRST SEAT'S LEDGER:**
 ```
