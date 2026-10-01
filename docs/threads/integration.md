@@ -2522,6 +2522,11 @@ CANVAS DONE      Web 8de08ddf: 55 prose em dashes swept (6 artboards + canvas.js
                  put to him when convenient (not tonight): the canvas page refers to an undeclared "comments"
                  capability (pre-existing, editor code neither he nor Web wrote), so that editor feature does not work;
                  declaring it is his call.
+#3 LIVE (v28)    2bcf1cf: Ops /proc 01:08Z web 1687456 / research 1687520 / assess 1687590 (start 01:07:37-38Z), NR 0;
+                 schema 28/28, RECORDING, discarded 0; tmitrader.com 200. DOWN 1,062 s (17.7 min): quick_check 772.7 s,
+                 stop 00:49:56Z, backup market-v27-2026-10-01T00-49-57-142Z.db 4.31 GB ok, DDL to ~01:07:37Z. market-floor
+                 RE-PINNED -> 2bcf1cf; 1b5ead6 unpinned but kept by prune.sh's in-use rule (read here, lines 19-21/48-81;
+                 I asked Ops before reading, withdrew it). REPORTS e8822583 LAUNCHED 01:09Z; stop ~01:23Z (21:23 ET).
 COMMERCIAL       Reports: review STAYS in the chain (Research step 4) before ship; he sees no sample first (named to
                  him). Levels: CLEARED; check: empty list must not imply clear air -> Design. Billing: NOT shipping
                  (scope docs only; sign-in Friday); terms-of-sale draft 21865ca6 held, refund line his, no decision now.
