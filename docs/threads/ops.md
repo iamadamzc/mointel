@@ -12973,6 +12973,7 @@ reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
 | - | - | - | - |
 | Told Integration the cut is "b5a35fda1"; true sha b5a35fda (060eda6e...) | sha-transcribed-by-hand | no (first) | self, corrected in the next message |
 | Told him reports cost "~20x the estimate"; the $0.003 was the writer alone, the full estimate was ~$0.02, so ~3x | compared-against-an-unverified-baseline | no (first) | Research; corrected to him |
+| Ran 3 mutants via Windows python writing /tmp, which Git Bash's cp could not see: all "survived" on unchanged code | mutant-never-applied (memory's known trap) | no (first this session) | self, from the cp error; rerun with a shared path and an applied-check |
 
 **17:3xZ Report runner BUILT:** ops/report-runner 4f428748 (worktree A:\mointel-runner; main 3bb59a2f + v28 256badaf,
 b4d1f132). Research worker derives the queue from the store (research_jobs cannot carry it: ticker NOT NULL + live unique
@@ -13217,3 +13218,6 @@ absolutely show on the board somewhere." Research proposes the rule (e.g. top 50
 record band); **the store query in repo.ts readDemandStates is Ops's to change with it.** RVOL_INTERNAL_RANK=150 stays his
 call, asked in this chat (it would catch rank 120, not a gainer at rank 300). Root cause for Research: a mean baseline
 carries one past spike for 20 sessions; a median or outlier-trimmed baseline would not.
+**readTopMovers BUILT: ops/top-movers 0462df04** (worktree A:\mointel-movers, on origin/main d02cfb36). Research's SQL with
+NOT EXISTS for eligibility; 4 tests; mutants 1/2, 2/2, 1/1. Research composes it into readModel (top 50 UNION top 10 at >= +20%,
+DAILY board only). Registered VEEA read + timing scheduled 14:03Z -> docs/ops/board-movers-veea-read-2026-10-01.txt.
