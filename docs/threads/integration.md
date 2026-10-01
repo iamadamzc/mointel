@@ -2835,6 +2835,13 @@ error                                                  TYPE                     
   Corrected to Design. Did not reach him.                                                         any use)
   -> hygiene §2: first family repeat; warned him in the block (his call whether to hand off).
   -> HIS RULING (434df034, typed "a" after the block): CONTINUE. Every claim to a seat is read at source first.
+3 put to HIM "review links already show the board    a peer's comparison relayed        YES      peer
+  and each ticker's research" from Research's sizing  unopened (the family, a THIRD     (family, (Research,
+  before opening it; Research then struck it as       time, minutes after promising     after his own
+  unverified. Checked after: review dashboard route   him I would read first)           'a')     strike)
+  serves scopeResearch (board names + 50 extras),
+  Design saw 11 dossiers on link 60. TRUE, but
+  unchecked when sent. Told him; hand-off re-offered.
 ```
 
 ## ARCHIVE — THE SIXTEENTH'S LIVE STATE (his "handoff", 2026-09-29T04:11:46Z) — SUPERSEDED BY THE SEVENTEENTH'S
