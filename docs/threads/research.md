@@ -171,6 +171,25 @@ record. He has it from this seat directly as well.
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
 - **✅ HIS COMPARISON DONE (seat `local_5f4bfcf8`, 2026-10-01): `docs/research/movers-vs-robust-baseline/side-by-side.md`.** B was pre-registered at `09d33239`. A's VEEA clause 2: PASS (`a5178ac1`). Ops's timing `539ae024`; Design's paragraph is `design.md` M2. Recommendation: A as a separate labelled group, not B. **Waits on: HIS decision, carried by Integration.** Nothing ships.
+- **🔴 MOVERS: HIS RULINGS 2026-10-01, verified at his turns in Integration's `1bfab363`:**
+  - 15:36:50.813Z: "if something is labeled as moving it should just be ranked based on all other parameters normally not placed in a separate group. it wont show on RVOL which is fine, but it will show on gap and now, etc."
+  - 15:53:57.897Z: "10% with 500k shares, cap 15".
+
+  **▶ BUILT on `research/movers` at `825b1eac` (pushed):** Ops's `735491b5` (patch-id equal to `499f7a30`, the volume floor in `readTopMovers`) plus mine.
+  - Defaults 10% / 500,000 / 15.
+  - Movers appended to `discovery.ranked` after the ranked rows; `discovery.movers` removed.
+  - Exclusion tests for capture, checkpoints and reports.
+  - 6 mutants killed as predicted.
+
+  Evidence: `docs/research/movers-vs-robust-baseline/` (`floor-result.md`, `liveband-result.md`, `movers-in-ranked-inventory.md`).
+
+  **Waits on:**
+  - `tsc` and the full suite (Ops's slot, asked).
+  - Design's "moving" label: no Design seat open yet; until it exists, movers show unlabelled under non-RVOL sorts.
+  - Integration's cut, after tonight's three ships, Friday night at the earliest.
+  - His yes.
+
+  **Not built, his call:** NOW for the roughly 1 in 4-5 movers ranked worse than about 250 (a worker change and a restart), and research for movers (a queue change, model bill).
 - **🔴 CITATION RESIDUAL FOLLOW-UP, OPEN, NOT STARTED (owner Research; Integration's order call `313a2485`; trigger: after the side-by-side, which is now done).** The cut `2a625a5b` ships as gated, but its year rule keeps lone `[dddd]`. Ops `6a6d6a8a`: 65 of 1,178 current versions carry one; 59 hold values outside 1900 to 2099 (282 occurrences), so they are source ids, e.g. SLE [3660], FSHP [1030], XOS [2833]. **6 hold ONLY 1900 to 2099 values (21 occurrences): AMBIGUOUS under a year rule.** Only `evidenceSourceIds` membership separates them, so those 6 are the rule's control cases (read 14:17:10Z, 303 occurrences in all). **Integration's spec for the rule:**
 - Membership in the version's own `evidenceSourceIds` (or the sources table) is the strongest test; the 1900 to 2099 range is only a fallback.
 - Controls: `[2026]` in prose must SURVIVE, and an in-range id like `[1999]` that IS a source id must GO.
