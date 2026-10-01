@@ -36,6 +36,30 @@ describe('withoutCitations: the two production forms', () => {
     expect(withoutCitations('A [source 7].')).toBe('A.');
     expect(withoutCitations('One [Source 1] two [Source 2].')).toBe('One two.');
   });
+
+  it('leaves ONE stop when the token sits between two (Design, the live TGE line)', () => {
+    expect(withoutCitations('a SPAC sponsor manager. [Source 115982].')).toBe('a SPAC sponsor manager.');
+    expect(withoutCitations('First. [Source 1] Second.')).toBe('First. Second.');
+    expect(withoutCitations('Is it? [Source 1]?')).toBe('Is it?');
+  });
+
+  it('removes a comma list of bare ids at any width, and one bare id of 5+ digits', () => {
+    expect(withoutCitations('The August read [4473,4498] holds.')).toBe('The August read holds.');
+    expect(withoutCitations('Early ids [812, 845].')).toBe('Early ids.');
+    expect(withoutCitations('One id [115982].')).toBe('One id.');
+  });
+
+  it('DELIBERATE: a comma list of years or footnotes is removed too, because the list shape cannot tell them from ids', () => {
+    /*
+     * The cost of catching "[4473,4498]" (Integration's edge, 2026-10-01): a
+     * bracketed list of years or footnote numbers reads the same and goes with
+     * it. Accepted because interpreter prose does not write such lists, while
+     * it writes id lists on most rows (local 09-29 census). A LONE year or
+     * footnote is kept (above).
+     */
+    expect(withoutCitations('Fiscal years [2025, 2026] compared.')).toBe('Fiscal years compared.');
+    expect(withoutCitations('See notes [1, 2].')).toBe('See notes.');
+  });
 });
 
 describe('withoutCitations: brackets that are NOT citations are kept', () => {
@@ -47,7 +71,7 @@ describe('withoutCitations: brackets that are NOT citations are kept', () => {
     'The [2026] plan.',
     'A [$1.2M] raise.',
     'Steps [1-3] apply.',
-    'A four-digit list [1234, 5678] stays.',
+    'A lone short id [4460] stays, because a year reads the same.',
   ])('%s', (text) => {
     expect(withoutCitations(text)).toBe(text);
   });
