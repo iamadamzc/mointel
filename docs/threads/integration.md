@@ -3101,6 +3101,12 @@ HIS RULING       typed to me after 12:10Z 10-01: "VEEA is up 43% from close. it 
                  band; K, floor, payload size, pre-registered local check where VEEA must appear) 99ab1244; Ops owns the
                  repo.ts query change aa81da56; Design decides where/how the rows read 7cc5dc16. Ship = his yes via Ops;
                  aim: buildable for a cut tonight. Separate from the baseline study.
+MOVERS SPEC      Research d02cfb36 (read, on origin), PRE-REGISTERED: DAILY board = top 50 rvol_rank (or rankInRange
+                 when a range is set) UNION top K=10 off-board in-band names with percent_change >= +20%, by move desc;
+                 boardReason 'MOVER'; never in rangeCapture/reports. Ops: readTopMovers in repo.ts. Instrument gate (22
+                 of 25 at 09:25/10:00) then sort-property PASS; VEEA-today PASS via Ops read after 10:00 ET. BUILD ORDER
+                 APPROVED; K/floor are HIS at ship. Cut on 2a625a5b: levels -> (A) -> citations -> movers.
+                 OPEN TO HIM: why INGN 0.0x is in his top five; desk RVOL vs his 5x (asked Ops 44ae9c3a + Research).
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
