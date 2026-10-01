@@ -2965,6 +2965,17 @@ DESIGN 4 ASKS    Design's message (crossed my ack; also in design.md d80d208c): 
                  notes; replied (cd8725e6, queued): levels accepted; Sheet em dashes = own commit riding in (A) (21st's
                  order call); review reports route = his "1 yes", built d427dd0e, rides in (A); row A APPROVED as proposed
                  incl. NOTHING_LINE dropped at render. Asked for the (A) cut's literal sha when it exists.
+(A) BUILT        READ: 01017f6a (row A: SessionReports.tsx, sessionReports.ts, 2 tests) + 89e6c111 (5c: readable.ts, both
+                 dashboard routes, 1 test) + d427dd0e (review reports route, 2 tests) all on origin/main; record 57c772d0.
+                 Design's gate over d80d208c: 211/211, 3,170, lint/build/typecheck 0 (Design's word, not re-run).
+                 Zero code-file overlap with e8822583..b5a35fda (diff --stat, read). Design found + fixed inside A, product
+                 visible: card "minute data" mark vs header "N of M names had live trade data" could disagree; now one
+                 per-name answer. ACCEPTED as part of row A; named for his question.
+ORDER CALL       (A) cut NOW on b5a35fda (= /proc if levels ships): picks d427dd0e + 01017f6a + 89e6c111; Design renders,
+                 gates once after Ops clears, sends literal sha + patch-ids + test count; Integration replays. If levels
+                 does not ship, re-cut from e8822583, not pre-approved. Design 2c2c4d75, Ops 020e4c50 (both delivered).
+SHARED TREE      local main 1 ahead / 3 behind origin; the 1 = Ops's 49be03b1 (ops.md, not on origin). My commits
+                 stay local until Ops pushes it, so I do not carry a peer's commit.
 ```
 **THE TWENTY-SECOND SEAT'S LEDGER:**
 ```
