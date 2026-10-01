@@ -3109,6 +3109,11 @@ HIS QUESTION     "we went pretty fast on that. was there a cost analysis? (not $
 HIS RULING       typed to me: "yes, wait for the comparison" (answering: should the movers change wait for the
                  side-by-side?). Movers cut aaebfc42 does NOT ship tonight; no board-selection change until he chooses
                  A or B from the side-by-side. Tonight: levels -> (A) -> citations. VEEA-type names: his Sheet meanwhile.
+RESEARCH HANDOFF On HIS word to Research ("hand off, write the opening prompt"); prompt + LIVE STATE 8b3621e0 (read).
+                 HAZARD: two Research-tmi titles until the old renames to "Research-tmi (retired 2026-10-01)"; route to
+                 the NEW id (createdAt after 13:11Z) once it messages; nothing to local_f6fa4717 after. Successor asks
+                 me for live state first: give /proc (from Ops), 2a625a5b gate, citation census (Ops 14:01Z, NOT yet
+                 received here), VEEA read, his "wait for the comparison".
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
   Research); live census ordered from Ops once after 10:00 ET (5bb8e4a9); the "most rows for weeks" claim (local 09-29
   copy: 946 of 1,122 current) HELD from him until the live number exists.
