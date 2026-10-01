@@ -3073,6 +3073,13 @@ CITATION CUT     ORDER CALL: Research cuts on 840741d3 (A): fc22dbcb, 6fb483a0, 
                  after 10:00 ET; Design renders the cut tree ([Source N], [4473,4498], lone [2026] kept). Ships after (A)
                  on his yes; re-cut if levels or (A) slips. Census: Ops 14:01Z from a git-archive of 6fb483a0, readonly.
                  Research 3b9dece5, Ops b9113e26, Design 82e240b9.
+                 CUT 2a625a5bc806d923856c52e46a3bf74710bc383a (tag research/citation-cut-on-840741d3, on origin) REPLAYED +
+                 APPROVED BY LITERAL SHA (scratchpad replay-c.ps1): merge-base 840741d3; 4 linear, 0 merges; patch-ids
+                 equal 35da6b4e=fc22dbcb, 5a36d833=6fb483a0, 6be6dd24=d478adde, 2a625a5b=5f7fd3fe; 10 files +442/-2; no
+                 deploy/ lib/db worker/ package*; 0 added U+2014; 217 test files; merge.ts imports withoutCitationsDeep.
+                 SHIP: Ops gate 217/217 + build after 10:00 ET; Design render; /proc = 840741d3 at launch; his yes (Ops
+                 asks, with the live census figure). Write strip lives in lib/research/interpret/guardrails.ts: takes
+                 effect at the research-worker restart the deploy performs.
 4 pushed d321c5f3 with the cherry-pick worktree        REPEAT OF #2 (same route, minutes  YES      self
   route right after recording #2 and reconciling:      after recording it)                (#2)     (on the
   local main diverged again (5 ahead / 2 behind).                                                   push output)
