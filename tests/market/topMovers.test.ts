@@ -38,7 +38,14 @@ function temporaryDb() {
 }
 
 /** A row as the engine leaves it; only price, % change and RVOL rank vary here. */
-function state(ticker: string, price: number | null, percentChange: number | null, rvolRank: number | null, tradingDate = DATE): DemandState {
+function state(
+  ticker: string,
+  price: number | null,
+  percentChange: number | null,
+  rvolRank: number | null,
+  tradingDate = DATE,
+  cumulativeVolume: number | null = 1_000_000,
+): DemandState {
   return {
     ticker,
     tradingDate,
@@ -54,7 +61,7 @@ function state(ticker: string, price: number | null, percentChange: number | nul
     referenceRthCloseSource: 'alpaca-daily-bar-rth-close',
     referenceRthCloseBasis: 'PRIOR_SESSION',
     percentChange,
-    cumulativeVolume: 1_000_000,
+    cumulativeVolume,
     volumeSource: 'minute-bars',
     volumeBase: 0,
     volumeBaseThrough: null,
@@ -121,7 +128,7 @@ describe('readTopMovers', () => {
   it('returns in-band gainers at or above minPct, biggest first, ties by symbol, eligibility applied', () => {
     const db = temporaryDb();
     seed(db);
-    const movers = readTopMovers(db, DATE, BAND, 20, 50).map((s) => [s.ticker, s.percentChange]);
+    const movers = readTopMovers(db, DATE, BAND, 20, 0, 50).map((s) => [s.ticker, s.percentChange]);
     db.close();
     expect(movers).toEqual([
       ['BIG', 80],
@@ -137,7 +144,7 @@ describe('readTopMovers', () => {
   it('reaches a name the RVOL top-N never would (VEEA at rank 120)', () => {
     const db = temporaryDb();
     seed(db);
-    const veea = readTopMovers(db, DATE, BAND, 20, 50).find((s) => s.ticker === 'VEEA');
+    const veea = readTopMovers(db, DATE, BAND, 20, 0, 50).find((s) => s.ticker === 'VEEA');
     db.close();
     expect(veea?.rvolRank).toBe(120);
     expect(veea?.price).toBe(3.09);
@@ -146,15 +153,49 @@ describe('readTopMovers', () => {
   it('honours the limit after the order, and returns nothing for a limit of 0', () => {
     const db = temporaryDb();
     seed(db);
-    expect(readTopMovers(db, DATE, BAND, 20, 2).map((s) => s.ticker)).toEqual(['BIG', 'TIEA']);
-    expect(readTopMovers(db, DATE, BAND, 20, 0)).toEqual([]);
+    expect(readTopMovers(db, DATE, BAND, 20, 0, 2).map((s) => s.ticker)).toEqual(['BIG', 'TIEA']);
+    expect(readTopMovers(db, DATE, BAND, 20, 0, 0)).toEqual([]);
     db.close();
   });
 
   it('the band edges are inclusive', () => {
     const db = temporaryDb();
     seed(db);
-    expect(readTopMovers(db, DATE, { min: 3.09, max: 3.09 }, 20, 10).map((s) => s.ticker)).toEqual(['VEEA']);
+    expect(readTopMovers(db, DATE, { min: 3.09, max: 3.09 }, 20, 0, 10).map((s) => s.ticker)).toEqual(['VEEA']);
     db.close();
+  });
+});
+
+describe('readTopMovers, the volume floor (his "10% with 500k shares")', () => {
+  function seedVolumes(db: ReturnType<typeof temporaryDb>) {
+    upsertTickerSessions(
+      db,
+      [
+        state('THIN', 5, 60, 900, DATE, 499_999), // over the % floor, one share under the volume floor: out
+        state('ATFLOOR', 4, 15, 800, DATE, 500_000), // exactly at 500,000: in
+        state('HEAVY', 6, 12, 700, DATE, 9_000_000), // in
+        state('NOVOL', 3, 40, 600, DATE, null), // no cumulative volume: out
+        state('SMALLPCT', 7, 9.99, 500, DATE, 5_000_000), // heavy but under 10%: out
+      ].map(toRow),
+    );
+  }
+
+  it('excludes a name over the % floor but under the volume floor, keeps one exactly at it, and drops a NULL volume', () => {
+    const db = temporaryDb();
+    seedVolumes(db);
+    const movers = readTopMovers(db, DATE, BAND, 10, 500_000, 15).map((s) => [s.ticker, s.cumulativeVolume]);
+    db.close();
+    expect(movers).toEqual([
+      ['ATFLOOR', 500_000],
+      ['HEAVY', 9_000_000],
+    ]);
+  });
+
+  it('a floor of 0 keeps every row with a volume, and still drops a NULL volume', () => {
+    const db = temporaryDb();
+    seedVolumes(db);
+    const tickers = readTopMovers(db, DATE, BAND, 10, 0, 15).map((s) => s.ticker);
+    db.close();
+    expect(tickers).toEqual(['THIN', 'ATFLOOR', 'HEAVY']);
   });
 });

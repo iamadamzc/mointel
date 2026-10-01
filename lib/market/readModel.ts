@@ -571,7 +571,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         ? []
         : rangeRanking
           ? selectMovers(rangeRanking.all, served, config.boardMoversMinPct, moverLimit)
-          : readTopMovers(db, tradingDate, served, config.boardMoversMinPct, moverLimit);
+          : readTopMovers(db, tradingDate, served, config.boardMoversMinPct, 0, moverLimit);
     const states = addBoardMovers(boardStates, movers, config.boardMoversK);
 
     // Ticker freshness is judged per ticker, never from the connection alone.
