@@ -12971,6 +12971,8 @@ reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
 **Error ledger (this seat):**
 | error (asserted vs true) | TYPE | already logged? | caught by |
 | - | - | - | - |
+| Told Integration the cut is "b5a35fda1"; true sha b5a35fda (060eda6e...) | sha-transcribed-by-hand | no (first) | self, corrected in the next message |
+| Told him reports cost "~20x the estimate"; the $0.003 was the writer alone, the full estimate was ~$0.02, so ~3x | compared-against-an-unverified-baseline | no (first) | Research; corrected to him |
 
 **17:3xZ Report runner BUILT:** ops/report-runner 4f428748 (worktree A:\mointel-runner; main 3bb59a2f + v28 256badaf,
 b4d1f132). Research worker derives the queue from the store (research_jobs cannot carry it: ticker NOT NULL + live unique
@@ -13123,3 +13125,12 @@ refresh keeps a child busy ~107 s of each 300 s: Research's post-ship [flush] co
 + 8bdedb95 + history store + Research's five) + 9813ec55. Declared 211; gate running. **Ships OFF unless
 LEVELS_REFRESH_ENABLED=1 is set in /etc/mointel/mointel.env**: the release AND that env change are both his word, asked
 TOMORROW (Thu), ship after 20:00 ET. HISTORY_STORE_ENABLED stays unset (no backfill/rollup).
+Full sha **b5a35fda060eda6e23953d7dc8b0ecace5e2be4b**. Research graded the box test PASS AS REGISTERED (ed3084e6).
+**INTEGRATION'S CONDITIONS ON HIS THURSDAY QUESTION (put in it, plainly):** (1) it names turning LEVELS_REFRESH_ENABLED on
+and the research-worker restart that comes with the deploy; market worker untouched; (2) the history-store code ships INERT
+(HISTORY_STORE_ENABLED off, no backfill) and a history.db file is created beside market.db; turning the store on is a separate
+yes; (3) the registered post-ship check: first session with the flag on, 09:30-10:30 ET [flush] p50 and max vs 09-30's same
+window, +50% reported to him same day, turning it off his call; also capture the first few "[levels] refresh ... totalMs="
+lines that morning (Research: warm vs cold unmeasured); (4) Design re-renders the cut tree before ship; no render by Thu 20:00
+ET = no levels that night, tell Integration. Logging verified at b5a35fda: refresh totalMs, exit code/ms, 270 s kill, skipped
+tick, spawn failure, disabled-at-start all reach the research journal (levelsRefreshJob.ts:92-198, levels-refresh.ts:49).
