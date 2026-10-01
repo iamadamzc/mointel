@@ -3187,6 +3187,10 @@ FLOOR RESULT     b3c13ce6 (read; prereg 7492e845 ancestor). Replay $1-$20, 40 ch
                  60-min persistence 47-60% at every floor. REC 15%, K=10. MISMATCH I found: live band is $0.25-$20
                  (f1c0628d), so (1) "under $1 no floor can show" overstated; (2) today 11:32 ET 11 names >= 15% off board
                  > K=10. Research asked to re-run on the live band + volume cross after his answer. PUT TO HIM.
+                 REVISED 2fce3d4d (read; prereg 4ab690ae ancestor): volume cross. REC NOW 10% + 500k shares, K=10 (replay:
+                 62 rows, max 10, cap never binds, 82% still >= floor 60 min later vs 60% for 15% alone); second choice
+                 15% no volume floor. Today: 10%+500k = 5 counted + up to 5 unread. Doc's "under $1 outside the band"
+                 line wrong for the live $0.25 band: Research asked to fix. My earlier block REPLACED to him.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
