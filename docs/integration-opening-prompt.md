@@ -46,11 +46,13 @@ agent, `trade-researcher` (`A:\trade_research`), was briefed 09-30 on the desk's
 1. **ASK OPS FOR /proc AND THE PREMARKET REPORT'S OUTCOME.** Production at hand-off was e8822583 (web/research/assess)
    and 1b5ead6 (market). The premarket report from the 09-30 22:00 recap is the first of its kind: Ops reads it, Research
    checks every line against the store. If it missed, he hears why, in plain words.
-2. **KEEP REPORTS v6 MOVING** (Research): one re-freeze covering the stability probe (cap $10, inside his "3 yes") and
-   a checker input-cost trim, then registration, a fresh Marketing set, N=3, a reports release. Pre-fix every outcome
+2. **LEVELS FIRST, TARGET THURSDAY 2026-10-01 AFTER 20:00 ET** (he asked when; order call by the twentieth): Research
+   + Ops, the stored-rows path, a NEW registration on production hardware before it runs, a cut from /proc, Design's
+   re-render, his yes. His 09-30 levels yes was for the request path, which failed. A box-test fail means Friday at
+   the earliest, and he hears the numbers.
+3. **THEN REPORTS v6** (Research): one re-freeze covering the stability probe (cap $10, inside his "3 yes") and a
+   checker input-cost trim, then registration, a fresh Marketing set, N=3, a reports release. Pre-fix every outcome
    BEFORE the run exists.
-3. **KEEP LEVELS MOVING** (Research + Ops): the stored-rows path, a NEW registration on production hardware before it
-   runs. His 09-30 levels yes was for the request path, which failed; the new path needs his yes.
 4. **THURSDAY 2026-10-01: THE SIGN-IN ASKS** for Friday evening (Google client id + secret to Ops, seed confirmation, a
    throwaway uninvited account, ~10 min of his time Friday). You are the one seat asking; Web stands down.
 5. **THE FLUSH FINDING**: once Ops classifies the minute gaps (no-trade vs lost), bring him the finding about slow

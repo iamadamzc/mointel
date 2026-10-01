@@ -1057,8 +1057,11 @@ limit, off 07-10 ET. His Benzinga quote ($1,000/mo) is in Commercial's register 
 
 ### HAND-OFF LINE
 ```
-First: ask Ops for /proc and the premarket report's outcome (Research's line-by-line check). Then keep REPORTS v6 and
-the LEVELS stored-rows path moving (both need a registration before any run). Thursday: the sign-in asks. Bring him
+HE ASKED (after the hand-off) when levels can ship -> ORDER CALL: LEVELS FIRST on 10-01, ahead of reports v6, target
+THURSDAY after 20:00 ET (stored-rows path, one storage, non-blocking host, registered box test, cut from /proc, Design
+re-render, his yes); a box-test fail -> Friday at the earliest, numbers to him. Research + Ops told.
+First: ask Ops for /proc and the premarket report's outcome (Research's line-by-line check). Then keep LEVELS (first)
+and REPORTS v6 moving (both need a registration before any run). Thursday: the sign-in asks. Bring him
 the flush finding once Ops classifies the minute gaps.
 ```
 
