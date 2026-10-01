@@ -24,11 +24,31 @@ Evidence: A's replay (`docs/research/board-movers-replay-2026-10-01/`), and B's 
 - **SVRN** (09-18, +35.3%) just misses (B1 52nd).
 - **NCPL** (09-24, +35.6%) ranks LOWER under B1 (75th) than today (56th).
 - **FTFT** UNTESTED (its proxy is off by 21%).
-- **VEEA:** PENDING, see section 1a.
+- **VEEA:** in under both A and B1 (estimate), see section 1a.
 
 ### 1a. VEEA today (an estimate, as registered)
 
-VEEA's B1 denominator on the copy is **249,061 shares** (median of 20 copy dates, 09-01 to 09-29; 09-30 is not in the copy). The same 20 proxy days' mean is 13,416,864, matching the hand-off's 13.4M. *The hand-off's "median 346k" was from a window this seat has not checked; 249k is the registered one.* At 10:00 ET the 50th-place B1 RVOL on the nine tested replay days ran **2.24 to 4.16** (median 2.56). So VEEA clears every replay day's cut under B1 with about **1.04M shares by 10:00 ET**, and none of them below about 0.56M. **PENDING: Ops's read of VEEA's 04:00 to 10:00 ET volume (scheduled 14:03Z).**
+VEEA's B1 denominator on the copy is **249,061 shares** (median of 20 copy dates, 09-01 to 09-29; 09-30 is not in the copy). The same 20 proxy days' mean is 13,416,864, matching the hand-off's 13.4M. *The hand-off's "median 346k" was from a window this seat has not checked; 249k is the registered one.* At 10:00 ET the 50th-place B1 RVOL on the nine tested replay days ran **2.24 to 4.16** (median 2.56). So VEEA clears every replay day's cut under B1 with about **1.04M shares by 10:00 ET**, and none of them below about 0.56M.
+
+**RESULT, as registered** (Ops `a5178ac1`, `docs/ops/board-movers-veea-read-2026-10-01.txt`): VEEA traded **50,067,518 shares from 04:00 to 10:00 ET** (124 minute rows). Its B1 RVOL is therefore **about 201**, above every replay day's cut: **"would have ranked on every replay day."**
+
+**A's own VEEA clause (d02cfb36, clause 2): PASS.** The rule's SELECT returned VEEA at +48.39% at 14:03:32Z.
+
+**But by 10:00 ET today's board already had VEEA**, at 34th by RVOL 3.79 (the mean). **The miss he saw was an EARLY-MORNING miss.** Ops's reads (`ops.md:13228-13231`) show VEEA's rank climbing as volume accumulated against the 13.4M mean:
+
+| Time (ET) | Shares | RVOL (mean) | Rank |
+|---|---|---|---|
+| 08:10 | 7,801,924 | 0.581 | 120 |
+| 08:22 | 14,396,154 | 1.072 | 82 |
+| 08:26 | 17.4M | 1.30 | 67 |
+| 10:03 | 50.1M | 3.79 | 34 |
+
+*POST HOC, labelled, not registered:*
+- Under B1, VEEA's RVOL at 08:10 ET was about **31** (7,801,924 / 249,061).
+- On the replay days the B1 cut at 08:00 was 0.23 to 0.51. Today's board is hotter than those days: 50th place under the MEAN was above 0.581 at 08:10, against 0.08 to 0.14 at 08:00 on the replay days. Even scaled up by that ratio (about 4 to 8 times), 31 clears it.
+- **So both A and B would have put VEEA on the board when he looked; the replay is what separates them.**
+
+**Today's movers read also returned MEDS** (+32.5%, rank 83 under the mean), a name A would add today. On 09-17 MEDS was a B1 newcomer at -22.9%.
 
 ## 2. What else it does to the board
 
@@ -42,7 +62,21 @@ Under B the typical newcomer is a name that had one huge day inside its last 20 
 
 ## 3. System cost
 
-- **A:** one extra query per `/api/market` build (`readTopMovers`, `repo.ts:1140-1164` on the branch: one date's rows, band, `percent_change >= 20`, `LIMIT 60`). Web tier only (`readModel` is imported only by the app routes, `lib/mcp/tools.ts` and `lib/review/diagnostics.ts`). **No market-worker restart.** Payload: at most 10 extra rows. **PENDING: Ops's timing on a copy (scheduled 14:10Z): cold, p50, p95, max, query plan.**
+- **A:** one extra query per `/api/market` build (`readTopMovers`, `repo.ts:1140-1164` on the branch: one date's rows, band, `percent_change >= 20`, `LIMIT 60`). Web tier only (`readModel` is imported only by the app routes, `lib/mcp/tools.ts` and `lib/review/diagnostics.ts`). **No market-worker restart.** Payload: at most 10 extra rows.
+
+**MEASURED by Ops on a copy of today's live store** (`539ae024`, `docs/ops/movers-timing-copy-2026-10-01.txt`, 14:11Z; 298,324 `ticker_session` rows):
+
+| Run | Time |
+|---|---|
+| Cold | 30.9 ms |
+| Warm, 50 runs, p50 | 4.3 ms |
+| Warm, p95 | 6.2 ms |
+| Warm, max | 7.9 ms |
+
+- **Plan:** it scans today's rows through the `trading_date` index (about 10k), checks universe eligibility on its primary key, and sorts the survivors in a temp tree. The live store's plan is IDENTICAL (EXPLAIN only).
+- **Scale:** for reference only, on DIFFERENT hardware, the whole `/api/market` build measured a median of 787 ms on this desktop on 09-29 (research.md, the `/api/market` profile).
+- **Rate:** one call per build, by code reading. The build rate itself was not measured.
+- **Rows today:** at 14:11Z eight in-band names were up 20% or more. Four of them (NXL, SDEV, VEEA, AISP) were already in the top 50 at the 14:03 read; the other four's ranks were not read.
 - **B:** no extra fetch. The baseline is rebuilt once per trading date from daily bars already fetched (`worker/runtime.ts:795-847`), and B changes one reduce (`rvol.ts:93-97`). **But it runs in the market worker** (Ops, verified here: `MarketRuntime`, `runtime.ts:202`, is what `worker/alpaca.ts` runs). So:
   - **Shipping B means a market-worker restart** on his word with no session in progress. That drops and reconnects the one SIP connection, and every release since 09-30 has avoided it.
   - **It applies only from the next baseline build:** existing rows for a date are never rebuilt (`runtime.ts:773-791`), and `worker/baseline.ts` builds for the current date only.
