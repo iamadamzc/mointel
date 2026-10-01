@@ -13243,3 +13243,8 @@ restart, applies only at the next rebuild, the "average_volume" label. Citation 
 memory: suite printed nothing, build OOM); **he set the page file to system-managed** (was manual 2,000/5,000 MB); rerun running.
 **2a625a5b GATED HERE ALL GREEN 217/217, 3,225 tests; next build 0** (rerun 14:09Z). All three of Thursday's cuts are gated here:
 b5a35fda 211/211, 840741d3 214/214, 2a625a5b 217/217, each build 0, each approved by Integration by literal sha.
+Citation cut: Design render PASS (f51e3215). Residual counted at 6a6d6a8a: 59 of 1,178 current versions keep lone 4-digit
+source ids (282 occurrences) because the year rule keeps "[dddd]". Integration: RESIDUAL, NOT A RE-CUT; ships as gated.
+**His citation question names it:** board, research panel and report company lines stop showing source numbers; 996 of 1,178
+current write-ups carry them today (98ef4acd); nothing is re-analysed; about 5% of write-ups will still show a short source
+number until a follow-up fix (Research).
