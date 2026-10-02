@@ -1093,6 +1093,14 @@ ORDER CALL       Main's cone over 28c66f14: 1,974 commits, 114 non-doc files, +5
                  replay literal tip. store.ts must equal main's. a4a06168 sync-env.sh lacks sign-in lines (Ops's call).
                  Proposed sequence to Ops (Ops puts asks to him): snapshot -> sync-env -> ONE release at cut tip (else
                  a4a06168 alone) -> flag on -> his two sign-ins + curl -> Web gate wiring. Ops 8c19fa2a, Web 9ddc8c78.
+SIGNIN CUT       Ops had already built it: ops/signin-cut 5d1c494304a3b716b1a64d6ec5f2209e904fe228. Web told to STAND
+                 DOWN (ef76a721). REPLAYED + APPROVED BY LITERAL SHA (scratchpad replay-signin.sh): base a4a06168
+                 ancestor; 14 linear, 0 merges; patch-ids EQUAL x12; 23b5a756 = 49efcafa minus its doc; 2624b200 hunks
+                 only; surface paths vs 27c81ae8 EMPTY; 22 files +2318/-4, no market/db/worker/package; sync-env.sh
+                 hunk (moot, dev-tree run); added U+2014 all comments/test names, 0 rendered; tests 223 -> 231; @/
+                 imports resolve. Conditions: Ops gate 231/231 + tsc + lint + build on this sha; sync-env (identity
+                 path) BEFORE the restart; after snapshot; his yes naming contents. Fail -> a4a06168 alone.
+                 Ops: AUTH_PROBE_ENABLED on/off = web-only restart each.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
