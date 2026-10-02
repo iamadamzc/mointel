@@ -3201,6 +3201,9 @@ HIS, TO COMMERCIAL "registered. accepted exposure" (Commercial 88f2b7c9 §10.5):
                  + its classification, sample to Commercial §8 + Marketing, BUILD waits on coverage (52a8a8c7); Ops runs
                  the coverage check once HE places the credential (556a6b6f); Web drafts end-user terms wording for HIS
                  adoption (00a2adcd). Credential placement asked of him.
+LEVELS FLUSH     Research 114f22ef: registered post-ship check NOT TRIGGERED (per-minute p50 median 179.0 vs 181.7 ms,
+                 -1.5%; max 7.4 vs 11.4 s; >250 ms 212 vs 424). Observation: cold refresh ~1.18 s/name (90 names 106.5 s);
+                 270 s kill at ~228 names: re-measure before the covered set passes ~150. Copied to Ops. Nothing to him.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
