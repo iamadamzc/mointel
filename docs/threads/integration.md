@@ -3397,6 +3397,8 @@ SHIP NIGHT       HIS "yes, all six" in Ops's chat (to the six named changes, sto
 DESIGN P2 PASS   design.md 87bf8a0e: (A) live on review link 61 (revoked after): premarket Fri 11 cards, no model heading,
                  0 em dashes rendered, 1,024 fits. Expected residue: source ids in the briefing (4) + SORA dossier (21)
                  until citations cut (board/dossier) and v6 (d) (report briefing). 7 requests.
+STEP 2 LIVE      2a625a5b on web/research/assess NR 0; market untouched; down 3 s; quick_check 820.8 s; rc 0 04:39:17Z; min
+                 MemAvailable 973 MB. Step 3 0e883fec launching.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
