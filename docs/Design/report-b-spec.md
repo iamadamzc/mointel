@@ -66,7 +66,7 @@ Marketing's tag words (`docs/research/reports-v6/step3-narrative-voice.md`, `6cc
 
 **Taken from Marketing, as written:**
 - **Float footer:** "The desk cannot independently verify float for these names." (replaces Design's proposed wording).
-- **The recap's F9 line is the seam** between the narrative and the cards ("Into the next session the desk is carrying these {N} names"). **On the recap it REPLACES the watch line**, so N is never stated twice in two voices. On the three intraday kinds the watch line stays as the lead-in.
+- ~~**The recap's F9 line is the seam** between the narrative and the cards ("Into the next session the desk is carrying these {N} names"). **On the recap it REPLACES the watch line**, so N is never stated twice in two voices. On the three intraday kinds the watch line stays as the lead-in.~~ **SUPERSEDED 2026-10-02 (Research): checker v6 does not require the F9 line and the narrative can be null on any kind, so the watch sentence stays on EVERY report, recap included; N may be stated twice. Built at 301ac033.**
 
 **Open, for Integration (Design and Marketing disagree; facts first):**
 
