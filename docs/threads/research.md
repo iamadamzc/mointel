@@ -218,7 +218,7 @@ record. He has it from this seat directly as well.
     | 9 | `b8719e7c` | Pipeline switch: runReport, runner, worker on v6; `narrative` replaces `overall` |
 
     **CUT BLOCKER:** `components/SessionReports.tsx` renders `overall`, not `narrative` (nor tags). That is Design's option B, rendered in step 5. A v6 cut without it publishes reports with no visible narrative.
-    **▶ NEXT: step 5**, the voice-run harness on stored data, committed before any model call; samples to Marketing and Design (the sample states where tags can differ from the board, and the "entire move" definition).
+    **▶ STEP 5: HARNESS COMMITTED `3abf9bfb`** (`scripts/report-voice-run-v6.ts`, before any model call): the four reports of 2026-10-01, $1 to $20, hard stop at $1, `--dry` stub mode first. The samples carry the two required statements (where tags can differ from the board; the "entire move" definition). **WAITING ON a post-10-01 production copy:** the 09-29 copy has no `desk_assessment_ranges` (pre-v28) and the reads throw. Ops is putting the snapshot to HIM (it writes ~4.9 GB on the box; the 09-29 one stalled `/api/health`). Then samples go to Marketing and Design.
 
     The checker-input trim gets its own measurement (not in this build).
   - **Integration's order calls, 2026-10-02:**
