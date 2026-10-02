@@ -142,6 +142,17 @@ export interface BlueSkyThreshold {
   deepCeiling: { price: number; date: string; splitFactor: number | null } | null;
   /** True when `price` is the comparable ceiling because the deep one sits behind a consolidation. */
   consolidated: boolean;
+  /**
+   * The LAST split before today's share basis: its ratio (the factor on the
+   * final session before it) and the first session on today's basis. Null
+   * unless `consolidated`.
+   *
+   * Not the deep ceiling's factor: that is CUMULATIVE over every split since
+   * the ceiling (GNPX's 44,000 may be several), so naming it as one
+   * consolidation could be false. The comparable ceiling is bounded by the
+   * last split only, and this is that split.
+   */
+  lastSplit: { ratio: number; firstSessionOnBasis: string } | null;
 }
 
 export interface BlueSkyState {
@@ -162,6 +173,7 @@ export const UNAVAILABLE_THRESHOLD: BlueSkyThreshold = {
   comparableCeilingDate: null,
   deepCeiling: null,
   consolidated: false,
+  lastSplit: null,
   price: null,
   date: null,
   sessionsObserved: 0,
@@ -254,6 +266,18 @@ export function resolveBlueSkyThreshold(
    */
   const behindConsolidation = ceiling.splitFactor !== null && ceiling.splitFactor !== 1;
   const subject = behindConsolidation ? comparable : ceiling;
+
+  // The last split before today's basis: the final session carrying a known factor other than 1.
+  let lastSplit: BlueSkyThreshold['lastSplit'] = null;
+  if (behindConsolidation && subject !== null) {
+    for (let i = prior.length - 1; i > 0; i -= 1) {
+      const before = prior[i - 1]!.splitFactor;
+      if (prior[i]!.splitFactor === 1 && before !== null && before !== 1) {
+        lastSplit = { ratio: before, firstSessionOnBasis: prior[i]!.tradingDate };
+        break;
+      }
+    }
+  }
   const base: BlueSkyThreshold = {
     ceilingSessionComplete: subject?.sessionComplete ?? null,
     ceilingSplitFactor: ceiling.splitFactor,
@@ -262,6 +286,7 @@ export function resolveBlueSkyThreshold(
     ceilingComparable: ceiling.splitFactor === null ? null : ceiling.splitFactor === 1,
     deepCeiling: { price: ceiling.high as number, date: ceiling.tradingDate, splitFactor: ceiling.splitFactor },
     consolidated: behindConsolidation && subject !== null,
+    lastSplit,
     verified: false,
     price: (subject?.high as number | undefined) ?? null,
     date: subject?.tradingDate ?? null,
@@ -401,6 +426,20 @@ export function resolveBlueSky(
   };
 }
 
+/**
+ * A split ratio in words, or null when the factor is not within 1% of a whole
+ * ratio. The factor is measured (raw against adjusted), so it carries rounding;
+ * a ratio that is not whole is not stated as one.
+ */
+function splitWords(ratio: number): string | null {
+  if (!Number.isFinite(ratio) || ratio <= 0 || ratio === 1) return null;
+  const big = ratio > 1 ? ratio : 1 / ratio;
+  const whole = Math.round(big);
+  if (whole < 2 || Math.abs(big - whole) / big > 0.01) return null;
+  const n = whole.toLocaleString('en-US');
+  return ratio > 1 ? `1-for-${n} reverse split` : `${n}-for-1 split`;
+}
+
 /** How the retained window should be described wherever the level is shown. */
 export function describeBlueSkyWindow(threshold: BlueSkyThreshold): string | null {
   if (threshold.sessionsObserved === 0 || !threshold.windowFrom || !threshold.windowTo) return null;
@@ -411,6 +450,10 @@ export function describeBlueSkyWindow(threshold: BlueSkyThreshold): string | nul
    * could be false. Revised 2026-10-02; Marketing reads it before the cut.
    */
   if (threshold.consolidated) {
+    const split = threshold.lastSplit ? splitWords(threshold.lastSplit.ratio) : null;
+    if (split && threshold.lastSplit) {
+      return `Highest prior-session high since the ${split} effective ${threshold.lastSplit.firstSessionOnBasis}. Older highs, back to ${threshold.windowFrom}, are not compared with today's price.`;
+    }
     return `Highest prior-session high on today's share basis. Older highs, back to ${threshold.windowFrom}, sit behind a share consolidation and are not compared with today's price.`;
   }
   return `Highest prior-session high across ${threshold.sessionsObserved} split-adjusted sessions, ${threshold.windowFrom} to ${threshold.windowTo}. Not necessarily an all-time high.`;

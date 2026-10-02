@@ -463,8 +463,9 @@ describe('a ceiling behind a consolidation (GNPX shape)', () => {
     const state = resolveBlueSky(t, 2.81);
     expect(state.status).toBe('NOT_BLUE_SKY');
     expect(state.label).toBe('NOT BLUE SKY · OVERHEAD AT $9.99');
+    expect(t.lastSplit).toEqual({ ratio: 44_000, firstSessionOnBasis: day(50) });
     const window = describeBlueSkyWindow(t)!;
-    expect(window).toContain("on today's share basis");
+    expect(window).toBe(`Highest prior-session high since the 1-for-44,000 reverse split effective ${day(50)}. Older highs, back to ${day(0)}, are not compared with today's price.`);
     expect(`${state.label} ${window}`).not.toMatch(/855|800,?000/);
   });
 
@@ -493,5 +494,32 @@ describe('a ceiling behind a consolidation (GNPX shape)', () => {
     expect(t.price).toBe(9.99);
     expect(t.consolidated).toBe(false);
     expect(describeBlueSkyWindow(t)).toContain('Not necessarily an all-time high.');
+  });
+});
+
+describe('naming the last split, not the cumulative factor', () => {
+  const day = (index: number) => new Date(Date.UTC(2024, 0, 1) + index * 86_400_000).toISOString().slice(0, 10);
+  const bar = (index: number, high: number, splitFactor: number | null) => ({
+    tradingDate: day(index), open: high * 0.9, high, low: high * 0.8, close: high * 0.95,
+    volume: 1_000_000, sessionComplete: true, splitFactor,
+  });
+
+  it('two reverse splits (1-for-20 then 1-for-40): names the LAST one, never the cumulative 800', () => {
+    const bars = [];
+    for (let i = 0; i < 10; i += 1) bars.push(bar(i, 4_000, 800)); // before both splits
+    for (let i = 10; i < 20; i += 1) bars.push(bar(i, 200, 40)); // between them
+    for (let i = 20; i < 70; i += 1) bars.push(bar(i, i === 30 ? 6 : 5.8, 1));
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-12-31', adjustment: 'split' });
+    expect(t.lastSplit).toEqual({ ratio: 40, firstSessionOnBasis: day(20) });
+    expect(describeBlueSkyWindow(t)).toContain('since the 1-for-40 reverse split effective');
+    expect(describeBlueSkyWindow(t)).not.toContain('800');
+  });
+
+  it('a measured factor that is not a whole ratio is not stated as one', () => {
+    const bars = [];
+    for (let i = 0; i < 10; i += 1) bars.push(bar(i, 4_000, 37.5)); // 1.3% from 37 and from 38: outside the 1% rule
+    for (let i = 10; i < 60; i += 1) bars.push(bar(i, i === 30 ? 6 : 5.8, 1));
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-12-31', adjustment: 'split' });
+    expect(describeBlueSkyWindow(t)).toContain('sit behind a share consolidation');
   });
 });
