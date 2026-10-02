@@ -13385,3 +13385,9 @@ deploy cut's gate). Judge window: option (b), prereg amended before ship at 7773
 ET, child pid RSS); nothing to him, no on-box sampler. Read here: sound; added guard: every sample logs child pid, its start
 time and NRestarts; any change in the day (esp. across 07-10) = NOT JUDGEABLE + same-day report, never PASS. Research KEEPS
 the heavy slot for the review-link levels mirror gate (branch from b5a35fda), done before 07:00 ET.
+
+**Heavy slot RETURNED by Research (~03:3xZ), verified: 0 vitest/tsc processes on the PC.** Gates in it (Research's checks,
+not deploy-cut gates): leak fix on main f8025aad (tsc 0, 213/213); review-levels mirror research/review-levels
+9f084c9e0debb83c0811acba759008baa72560be (base b5a35fda; tsc 0 after `npx next typegen`, 212/212). NOT JUDGEABLE guard is in
+prereg-ship.md:25 on origin/main. Cut-gate note: a fresh worktree needs `npx next typegen` before tsc (LayoutProps in
+app/layout.tsx); Research calls it environment; verify on the cut by running tsc both before and after typegen.
