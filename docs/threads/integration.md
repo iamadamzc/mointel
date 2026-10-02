@@ -1195,6 +1195,14 @@ PUSH STATE       Ops offered the temp-worktree cherry-pick route for 65dcc9d8; D
 NEW WEB SEAT     local_46c15fbe (Web-tmi, A:\mointel, created 17:45:51Z; get_session). Old local_2c0e391a renamed
                  "Web-tmi-retired" (list_sessions), not archived. Sent live state (af8bad38): night not run; release
                  3b9c0a70; step 4 unwritten, pick rule; no Web rulings; e125a066 its to clear.
+                 New Web cleared e125a066 ONLY with its 28ddbda7 (README "shipped 2026-10-02" was false; corrected).
+MERGE BLOCKED    `git merge origin/main` CONFLICTED in docs/threads/ops.md: dc3bff07/038ce171 identical (3015e272) but
+                 Ops's local 7f7b3963 edits beside them. ABORTED (tree back to 28ddbda7 + CLAUDE.md edit). Ops resolves
+                 its own file (asked). Research f035ab7d = ca11c25e by patch-id (another side-worktree duplicate).
+HIS QUESTION     "don't we compute [the share count] ourselves?" READ lib/research/float.ts:1-80: the desk derives the
+                 FILED share count (dei:EntityCommonStockSharesOutstanding, filing cover page) and does not compute
+                 float; board float = Sheet vendor (no methodology; Scanz pull 08-24: float > SO on 8 or 9 of 46 non-ADR
+                 names, selected sample). Answered him from that.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
