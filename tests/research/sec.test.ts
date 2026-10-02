@@ -4,6 +4,9 @@ import { readResearchConfig, secAvailability } from '@/lib/research/config';
 import { RateLimiter } from '@/lib/research/sec/limiter';
 import {
   backoffDelayMs,
+  CACHE_MAX_BYTES,
+  CACHE_TTL_MS,
+  cachedBytes,
   parseRetryAfter,
   SecClient,
   SecRequestError,
@@ -181,6 +184,70 @@ describe('SEC client', () => {
     expect(second.cached).toBe(true);
     expect(second.body).toBe(first.body);
     expect(client.requestCount).toBe(1);
+  });
+
+  /* The bounded cache (his ruling 2026-10-02T03:12:39Z, "yeah fix the leak"). */
+  function counting(bodies: Record<string, string>) {
+    const calls: string[] = [];
+    let clock = 0;
+    const make = (options: { cacheMaxBytes?: number; cacheTtlMs?: number }) =>
+      new SecClient({
+        config: CONFIG,
+        sleep: async () => undefined,
+        now: () => clock,
+        fetchImpl: async (input) => {
+          const url = String(input);
+          calls.push(url);
+          return response(bodies[url] ?? '');
+        },
+        ...options,
+      });
+    return { calls, make, advance: (ms: number) => (clock += ms) };
+  }
+  const A = 'https://data.sec.gov/a.json';
+  const B = 'https://data.sec.gov/b.json';
+  const C = 'https://data.sec.gov/c.json';
+  const TEN = '0123456789'; // 10 chars = 20 bytes as counted
+
+  it('evicts the LEAST RECENTLY USED entry once the byte cap is passed, and a hit refreshes recency', async () => {
+    const f = counting({ [A]: TEN, [B]: TEN, [C]: TEN });
+    const client = f.make({ cacheMaxBytes: 50 }); // room for two 20-byte bodies
+    await client.get(A);
+    await client.get(B);
+    await client.get(A); // hit: A becomes most recent
+    await client.get(C); // over the cap: B (least recent) goes
+    expect(client.cacheBytes).toBe(40);
+    await client.get(A); // still cached
+    await client.get(B); // evicted, so fetched again
+    expect(f.calls).toEqual([A, B, C, B]);
+  });
+
+  it('never holds more than the cap, and never caches a body larger than the whole cap', async () => {
+    const f = counting({ [A]: TEN, [B]: TEN.repeat(3) });
+    const client = f.make({ cacheMaxBytes: 50 });
+    await client.get(A);
+    await client.get(B); // 60 bytes > 50: not cached, and A is kept
+    expect(client.cacheBytes).toBe(20);
+    expect((await client.get(B)).cached).toBe(false);
+    expect((await client.get(A)).cached).toBe(true);
+    expect(f.calls).toEqual([A, B, B]);
+  });
+
+  it('a re-research inside the lifetime is a cache hit; past it, the document is fetched fresh (no more stale submissions)', async () => {
+    const f = counting({ [A]: TEN });
+    const client = f.make({ cacheTtlMs: 1000 });
+    await client.get(A);
+    f.advance(999);
+    expect((await client.get(A)).cached).toBe(true);
+    f.advance(1);
+    expect((await client.get(A)).cached).toBe(false);
+    expect(f.calls).toEqual([A, A]);
+    expect(client.cacheBytes).toBe(20);
+  });
+
+  it('the defaults bound the cache: 64 MiB and 30 minutes', () => {
+    expect([CACHE_MAX_BYTES, CACHE_TTL_MS]).toEqual([64 * 1024 * 1024, 30 * 60_000]);
+    expect(cachedBytes(TEN)).toBe(20);
   });
 
   it('backs off and retries a 429', async () => {

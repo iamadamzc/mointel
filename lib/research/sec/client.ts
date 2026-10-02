@@ -52,6 +52,41 @@ export interface SecClientOptions {
   now?: () => number;
   /** Per-request ceiling. See REQUEST_TIMEOUT_MS. */
   timeoutMs?: number;
+  /** Cache bound in bytes. See CACHE_MAX_BYTES. */
+  cacheMaxBytes?: number;
+  /** Cache entry lifetime. See CACHE_TTL_MS. */
+  cacheTtlMs?: number;
+}
+
+/**
+ * THE DOCUMENT CACHE IS BOUNDED, by bytes and by age (his ruling 2026-10-02T03:12:39Z,
+ * "yeah fix the leak").
+ *
+ * It was a process-lifetime Map holding the WHOLE body of every SEC document
+ * fetched, never evicted (`clearCache` had no caller). The research worker that
+ * the OOM killer took at 2026-10-02T02:39:45Z had run about 25 h over 76
+ * distinct tickers and stood at 1,383 MB; one ticker's documents measured 8.6
+ * and 22.4 MB (`docs/research/research-worker-memory-2026-10-02.md`). The same
+ * cache also kept submissions and companyfacts STALE for the life of the
+ * process.
+ *
+ * Now: least-recently-used entries go first once the total passes the cap; an
+ * entry older than the lifetime is refetched; a body larger than the whole cap
+ * is never cached. Bytes are counted at 2 per char, V8's worst case for a
+ * string, so the bound is an upper bound.
+ */
+export const CACHE_MAX_BYTES = 64 * 1024 * 1024;
+export const CACHE_TTL_MS = 30 * 60_000;
+
+/** V8 stores a string at 1 or 2 bytes per char; counted at 2 so the cap is never undercounted. */
+export function cachedBytes(body: string): number {
+  return body.length * 2;
+}
+
+interface CacheEntry {
+  result: SecFetchResult;
+  bytes: number;
+  storedAt: number;
 }
 
 /**
@@ -146,7 +181,9 @@ export function describeReachability(r: SecReachability): string {
 
 export class SecClient {
   private readonly limiter: RateLimiter;
-  private readonly cache = new Map<string, SecFetchResult>();
+  /** Insertion order is recency order: a hit is re-inserted, so the first key is the least recently used. */
+  private readonly cache = new Map<string, CacheEntry>();
+  private cacheTotal = 0;
   private readonly fetchImpl: typeof fetch;
   private readonly sleep: (ms: number) => Promise<void>;
   private readonly now: () => number;
@@ -195,12 +232,49 @@ export class SecClient {
 
   clearCache(): void {
     this.cache.clear();
+    this.cacheTotal = 0;
+  }
+
+  /** Bytes held by the document cache, counted as `cachedBytes` counts them. */
+  get cacheBytes(): number {
+    return this.cacheTotal;
+  }
+
+  private cacheLookup(url: string): SecFetchResult | null {
+    const entry = this.cache.get(url);
+    if (!entry) return null;
+    this.cache.delete(url);
+    if (this.now() - entry.storedAt >= (this.options.cacheTtlMs ?? CACHE_TTL_MS)) {
+      this.cacheTotal -= entry.bytes;
+      return null;
+    }
+    this.cache.set(url, entry);
+    return entry.result;
+  }
+
+  private cacheStore(result: SecFetchResult): void {
+    const max = this.options.cacheMaxBytes ?? CACHE_MAX_BYTES;
+    const bytes = cachedBytes(result.body);
+    const previous = this.cache.get(result.url);
+    if (previous) {
+      this.cache.delete(result.url);
+      this.cacheTotal -= previous.bytes;
+    }
+    if (bytes > max) return;
+    this.cache.set(result.url, { result, bytes, storedAt: this.now() });
+    this.cacheTotal += bytes;
+    for (const [key, entry] of this.cache) {
+      if (this.cacheTotal <= max) break;
+      this.cache.delete(key);
+      this.cacheTotal -= entry.bytes;
+    }
   }
 
   /**
    * Fetches a SEC URL, or returns the cached body from an earlier fetch in this
-   * process. The cache is what stops one job's filing set from being re-fetched
-   * by the next job that needs the same document.
+   * process, if it is still within the cache's age and byte bounds. The cache is
+   * what stops one job's filing set from being re-fetched by the next job that
+   * needs the same document.
    */
   async get(url: string): Promise<SecFetchResult> {
     const availability = secAvailability(this.options.config);
@@ -210,7 +284,7 @@ export class SecClient {
       throw new SecUnavailableError(availability.detail);
     }
 
-    const cached = this.cache.get(url);
+    const cached = this.cacheLookup(url);
     if (cached) return { ...cached, cached: true };
 
     let lastError: Error | null = null;
@@ -241,7 +315,7 @@ export class SecClient {
         this.recordReachable();
         const body = await response.text();
         const result: SecFetchResult = { url, body, status: response.status, cached: false };
-        this.cache.set(url, result);
+        this.cacheStore(result);
         return result;
       }
 
