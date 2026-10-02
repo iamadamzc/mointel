@@ -39,14 +39,28 @@
 
 **Size: short interest as at least N% of shares outstanding.** Short interest is divided by the filed share count, which is a floor on % of float.
 
-| Floor | Word | Why this line |
-|---|---|---|
-| under 5% | **Light** | Below the academic 5% portfolio |
-| 5% to under 10% | **Moderate** | The academic 5% to 10% band |
-| 10% to under 20% | **Heavy** | 10% is the academic top fixed line and where practitioner "elevated" starts |
-| 20% or more | **Very heavy** | Practitioner "high" starts here. In the 2002 data, about the top 1% of all stocks (an old figure, shown for scale only) |
+**REVISED 2026-10-02, on his question "is 14% considered HEAVY?"** The first version of this table called 10% to 20% "Heavy". It was set from the academic and practitioner lines without checking where today's market actually sits, so it was too generous.
 
-Because this is a floor on shares outstanding, a name the practitioner float scale would call "High" can appear here as Heavy. That is the price of never overstating.
+**Where the market sits today.** Short Interest & Squeeze Watch (thetrading.tools/short-interest, read today) computes these from FINRA's file for the Sep 15, 2026 settlement, across 5,447 US common stocks:
+
+- the median stock: **3.4%** of its shares sold short;
+- **17%** of stocks above 10%;
+- **5.7%** above 20%;
+- median days to cover **4.0**.
+
+These are a third party's computation from FINRA's file. This seat has not reproduced them, and they are market-wide, not his names. They are the only recent distribution read.
+
+| Floor | Word | Where that sits in the market (Sep 15, 2026, third-party figures above) |
+|---|---|---|
+| under 5% | **Normal** | Around the median (3.4%) |
+| 5% to under 10% | **Above normal** | Above the median, below the top sixth |
+| 10% to under 20% | **Elevated** | The top 17% of stocks, but not the top 6%. Practitioner "elevated" is the same band |
+| 20% or more | **Heavy** | The top 5.7% of stocks. Practitioner "high" starts here |
+
+- **So 14% reads "Elevated"**: about four times the typical stock, and in roughly the top sixth of the market, but not in the rare group.
+- "Heavy" is kept for the top few percent, so the word stays rare enough to mean something.
+- A separate "Very heavy" line (for example 30%) is not proposed: no figure was read for how many stocks sit above it.
+- **The floor caveat stands.** This is a floor on % of float, and on a small-float name the true % of float can be well above it. So a name shown Elevated can really be Heavy by float. The word can understate; it never overstates.
 
 **Depth: FINRA's days to cover**, as FINRA prints it, on the prior cycle's average volume.
 
@@ -58,6 +72,7 @@ Because this is a floor on shares outstanding, a name the practitioner float sca
 | 10 or more | **Very deep** |
 
 - These lines follow the one practitioner scale read in full (3, 5, 10), and 5 and 10 recur in the others.
+- **Against the market (added with the revision above):** the median stock's days to cover was 4.0 on Sep 15, 2026 (third-party figure). "Moderate depth" (3 to 5) therefore holds the typical stock, and "Deep" starts just above it. Only "Very deep" (10+) is clearly unusual. No percentile for 5 or 10 days was read, so these lines stay provisional until the calibration check in section 5.
 - FINRA prints 1.00 for any value at or below 1 (its glossary). So "1.00" means "at most a day", and stays Shallow.
 - **The depth word describes the stock's NORMAL trading, not today's.** On a name trading many times its usual volume, the shares short are a small fraction of today's flow even when the word says Deep. The line must say "on normal volume" (section 4). Recomputing days to cover on today's volume stays ruled out: it divides a weeks-old position by today's flow, and calls the result something FINRA never published.
 
@@ -70,12 +85,12 @@ Because this is a floor on shares outstanding, a name the practitioner float sca
 | otherwise | **Steady** |
 
 - **No source gives these lines. They are this seat's proposal**, chosen so that one cycle's noise does not flip the word.
-- A trend word is shown only when size is Moderate or above. On a small base, a few thousand shares make a large percentage change and the word would mean nothing.
+- A trend word is shown only when size is Above normal or higher. On a small base, a few thousand shares make a large percentage change and the word would mean nothing.
 
 **Pairing with borrow status** (only if Alpaca's borrow status may be displayed; Commercial section 8 says it needs notice to Alpaca):
 
-- **"Light, hard to borrow at Alpaca"** tells the reader the low number may be limited supply, not limited demand to short (Asquith, Pathak and Ritter's demand-and-supply framing, above).
-- Without the pairing, "Light" on a hard-to-borrow name would read as "few shorts want this stock", which the data does not show.
+- **"Normal, hard to borrow at Alpaca"** tells the reader the low number may be limited supply, not limited demand to short (Asquith, Pathak and Ritter's demand-and-supply framing, above).
+- Without the pairing, "Normal" on a hard-to-borrow name would read as "few shorts want this stock", which the data does not show.
 
 **Freshness:**
 
@@ -87,16 +102,16 @@ Because this is a floor on shares outstanding, a name the practitioner float sca
 
 **Drawer: one line, always shown when a report is held.** Examples with illustrative numbers:
 
-> Short interest: **Heavy** (at least 14% of float), **Deep** (6.2 days on normal volume), **Building** (up 40%). FINRA, as of Sep 15, 17 days old.
+> Short interest: **Elevated** (at least 14% of float), **Deep** (6.2 days on normal volume), **Building** (up 40%). FINRA, as of Sep 15, 17 days old.
 
-> Short interest: **Light** (at least 3% of float), hard to borrow at Alpaca 08:31 ET. FINRA, as of Sep 15, 17 days old.
+> Short interest: **Normal** (at least 3% of float), hard to borrow at Alpaca 08:31 ET. FINRA, as of Sep 15, 17 days old.
 
 > Short interest: 2.1M shares, **Deep** (6.2 days on normal volume). Size not stated: shares issued since the last filed count. FINRA, as of Sep 15.
 
 **Board and report tag: only when there is something to say.**
 
-- A chip appears only at Heavy or Very heavy, or at Deep or Very deep: for example "SHORTS: HEAVY" or "SHORTS: VERY DEEP".
-- No chip is not the same as Light, so the chip must never be the only place the read appears. The drawer always carries it.
+- A chip appears only at Heavy, or at Very deep: for example "SHORTS: HEAVY" or "SHORTS: VERY DEEP". (Revised: Elevated and Deep are too common, in the market figures above, for a chip to single them out.)
+- No chip is not the same as Normal, so the chip must never be the only place the read appears. The drawer always carries it.
 - Where the chip sits among the Risk outcomes is the ordering question in the first doc (section 3), a product call for Design and him.
 
 ## 5. Checking the lines against his names (proposed, needs a source first)
