@@ -3291,6 +3291,11 @@ V6 STEP 3        Marketing 6cca5549 (read): voice/length/templates, tag words (e
                  "doesn't fit the move" / "fit not established"), float footer, seeds N9-N11. ORDER CALLS: report uses
                  the three states; BOARD wording unchanged inside v6 (Design may bring alignment after). Step 4 may start
                  on Research's step-2 probe result, base = /proc when it starts.
+OOM CORRECTED    Ops (journal): kill at 02:39:45Z was during `next build` (npm ci done 02:39:24Z), NOT npm ci. Research
+                 worker (e8822583) at 1,383 MB RSS anon after ~75 min (110-127 MB after restart): GROWTH, likely a leak.
+                 Risk to his window with no deploy at all. Ops sampling RSS every 10 min x 1 h from 02:58Z (b5a35fda).
+                 Research asked to prepare code-side candidates; nothing to him until the rate is measured. My words to
+                 him ("each release uses a lot of memory") still true (build max-old-space 1.5 GB); no retraction owed.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
