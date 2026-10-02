@@ -3314,6 +3314,11 @@ V6.1 LANE        His direction to Marketing (Marketing verified at its turn): mo
                  owns checker fencing + seeds; with F8. Starts after v6 live unless he tells Marketing to fold it in.
                  Marketing re-locked step 3 at 8842ee0d on one vocabulary; adapter guard: risk.ts:249 "{N} float" when
                  displayedFloat non-null -> keep null in reports (to Research). Relayed to Design.
+MEMORY CANDIDATE Research c08400dd (read): leading = SecClient process-lifetime cache (client.ts:149, bodies :242-244,
+                 clearCache no caller, one instance worker/research.ts:126); predicts RSS ~ new distinct tickers; NOT
+                 measured; doesn't explain "why tonight" alone. Ops asked: measurement 1 (distinct tickers vs RSS) now,
+                 and a pre-07:00 ET projection; if it threatens his window, Ops brings HIM a research-worker-only restart
+                 decision. Fix if confirmed: bounded LRU / drop large bodies, research worker only (not built).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
