@@ -43,6 +43,8 @@ import {
   DISCOVERY_DEFAULT_SORT,
   discoveryMissingCount,
   baselineLabel,
+  movingCaption,
+  movingNote,
   retentionNote,
   sortDiscoveryRows,
   type DiscoverySortKey,
@@ -386,6 +388,9 @@ export function DiscoveryBoard({
    */
   const afterHours = discovery?.board === 'AFTER_HOURS';
   const frozen = discovery?.sessionPhase === 'POST_MARKET';
+  // Counted over the rows the board holds (filters applied), not the Top N:
+  // the point is to say a mover exists when the cut is hiding it.
+  const movers = afterHours ? null : movingCaption(rows);
 
   return (
     <section className="border-b border-line bg-desk px-4 py-2">
@@ -399,6 +404,12 @@ export function DiscoveryBoard({
               ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
               : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`
             : 'Ranking not loaded'}
+          {movers ? (
+            <span className="text-accent" title={movers.title}>
+              {' '}
+              · {movers.text}
+            </span>
+          ) : null}
         </span>
 
         {frozen ? (
@@ -972,6 +983,7 @@ function DiscoveryRow({
     priceMin,
     priceMax,
   });
+  const moving = movingNote(row);
 
   /*
    * One saturated colour per row, by precedence.
@@ -996,7 +1008,7 @@ function DiscoveryRow({
   return (
     <tr
       {...rowKeyboardProps(
-        `${row.ticker}, ${afterHours ? 'after-hours participation' : 'RVOL'} ${formatMultiple(
+        `${row.ticker}${moving ? ', moving' : ''}, ${afterHours ? 'after-hours participation' : 'RVOL'} ${formatMultiple(
           afterHours ? (ah?.participation ?? null) : t.rvol,
         )}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
         () => onSelect(row.ticker),
@@ -1019,6 +1031,23 @@ function DiscoveryRow({
           ageSeconds={t.ageSeconds}
           retention={retention}
         />
+        {moving ? (
+          /*
+           * ITS OWN LINE, UNDER THE TICKER. Beside it, "HDSN MOVING" measured
+           * 101 px in a 96 px cell at the 1,024 floor and a wide four-letter
+           * ticker reached 118, into the price column. A mover row is shorter
+           * than a ranked one (no catalyst line), so the line costs no height.
+           *
+           * NEUTRAL, NOT GREEN: the word says why the row is here; direction is
+           * the price cell's job. Plain text, so it never reads as a chip.
+           */
+          <span
+            className="block text-[9px] leading-tight font-semibold tracking-wide whitespace-nowrap text-accent uppercase"
+            title={moving.title}
+          >
+            {moving.label}
+          </span>
+        ) : null}
         {afterHours ? (
           // One line: a wrapped second line here made every row in the evening
           // board taller than the same row during the day.

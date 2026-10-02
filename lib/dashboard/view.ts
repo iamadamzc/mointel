@@ -7,6 +7,7 @@ import { resolveRisk } from '@/lib/dashboard/risk';
 import { nowReadingOf, nowSortTier, nowSortValue } from '@/lib/dashboard/nowReading';
 import { resolveWhy } from '@/lib/dashboard/why';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { formatCount } from '@/lib/format';
 import type { CyclePhase } from '@/lib/market/cycle';
 import type { DiscoveryBoard } from '@/lib/market/types';
 import type { MomentumTicker, PriorityBucket } from '@/lib/data/types';
@@ -279,6 +280,70 @@ export function retentionNote(options: {
   if (price > priceMax) return `retained > $${priceMax}`;
   if (price < priceMin) return `retained < $${priceMin}`;
   return null;
+}
+
+/* ------------------------------------------------------------------------- *
+ * Movers: rows on the board for their move, not their RVOL rank
+ *
+ * His ruling, 2026-10-01T15:36:50Z: "if something is labeled as moving it
+ * should just be ranked based on all other parameters normally not placed in a
+ * separate group. it wont show on RVOL which is fine, but it will show on gap
+ * and now, etc." So a mover is an ordinary row with one word on it, and the
+ * word must never let the row read as RVOL-ranked.
+ *
+ * THE HOVER IS BUILT FROM THE ROW'S OWN NUMBERS, NOT FROM THE RULE'S. The
+ * floors (10%, 500K, cap 15) are server config the payload does not carry, so
+ * a hover quoting them would go stale silently the day one is changed. The
+ * row's own move and volume are true by construction, and they are what
+ * qualified it.
+ *
+ * Present tense is earned: the producer re-selects movers on every read from
+ * the current move (`readModel`), so a name whose move falls under the floor
+ * leaves the board rather than keeping a stale label.
+ * ------------------------------------------------------------------------- */
+
+export function isMover(row: Pick<DeskRow, 'demand'>): boolean {
+  return row.demand?.boardReason === 'MOVER';
+}
+
+export function movingNote(
+  row: Pick<DeskRow, 'demand' | 'telemetry'>,
+): { label: 'moving'; title: string } | null {
+  if (!isMover(row)) return null;
+  const pct = row.demand?.percentChange ?? null;
+  const volume = row.demand?.cumulativeVolume ?? null;
+  const rank = row.telemetry.rvolRank;
+
+  const parts = ['On the board for its move, not its RVOL rank.'];
+  if (pct !== null && Number.isFinite(pct)) {
+    const shares =
+      volume !== null && Number.isFinite(volume) ? ` on ${formatCount(volume)} shares since 04:00 ET` : '';
+    parts.push(`${pct >= 0 ? 'Up' : 'Down'} ${Math.abs(pct).toFixed(1)}% from the prior close${shares}.`);
+  }
+  parts.push(rank !== null ? `RVOL rank ${rank}, outside the ranking.` : 'No RVOL rank.');
+  return { label: 'moving', title: parts.join(' ') };
+}
+
+/**
+ * The caption's count. Movers follow the ranked rows under the Rank and RVOL
+ * sorts, so the default Top 12 never shows one: without a count on screen a
+ * mover is invisible until he changes the sort, and nothing says it is there.
+ */
+export function movingCaption(
+  rows: readonly Pick<DeskRow, 'demand'>[],
+): { text: string; title: string } | null {
+  const count = rows.filter(isMover).length;
+  if (count === 0) return null;
+  const one = count === 1;
+  const its = one ? 'its' : 'their';
+  const it = one ? 'it' : 'them';
+  return {
+    text: `${count} moving`,
+    title:
+      `${count} ${one ? 'name is' : 'names are'} on the board for ${its} move from the prior close, not ${its} RVOL rank. ` +
+      `Under the Rank and RVOL sorts ${one ? 'it follows' : 'they follow'} the ranked names, so Top 12, 25 or 50 can leave ${it} off. ` +
+      `Any other sort places ${it} by ${its} own value.`,
+  };
 }
 
 /* ------------------------------------------------------------------------- *
