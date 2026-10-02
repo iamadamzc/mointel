@@ -99,7 +99,7 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 - Clause 2.3(a) requires FINRA to be identified "as the owner and source" of the data, derived data included. "Source: FINRA" on each line names only one of the two, so the legend carries both.
 - The word "squeeze" appears nowhere in the label, the hover, the chip or the legend.
 
-**Board chip: only at Heavy or Very deep, and ALWAYS with the settlement age** (Commercial R5, 13c): e.g. "SHORTS: HEAVY · 17d" / "SHORTS: VERY DEEP · 17d" (days since settlement, the same number as the drawer; no denominator on the chip; touch has no hover, so the age cannot live only there). A bare chip reads as current. No chip is not the same as a low grade, so the drawer always carries the full line.
+**Board chip: SIZE ONLY, at Heavy only, and ALWAYS with the settlement age** (Commercial R5, 13c; R6 via Marketing): "SHORTS: HEAVY · 17d" (days since settlement, the same number as the drawer; no denominator on the chip; touch has no hover, so the age cannot live only there). A bare chip reads as current. **No depth chip (R6):** days to cover divides by the PRIOR cycle's volume, so "Very deep" can overstate on a fresh high-volume mover, and a chip cannot carry the "on normal volume" basis the drawer carries. Very deep stays in the drawer's depth grade. No chip is not the same as a low grade, so the drawer always carries the full line.
 
 **Report tag:** the same words as the drawer line, via the v6 tags, if Design wants it. Not in the first build. **When it enters the report layer, the settlement date and its age ("17 days ago") must survive any truncation** (Commercial, non-blocking).
 
