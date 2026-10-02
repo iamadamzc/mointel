@@ -23,7 +23,7 @@ import Link from 'next/link';
  */
 
 export const metadata: Metadata = {
-  title: 'Sign in — The Momentum Intelligence Trading Desk',
+  title: 'Sign in | The Momentum Intelligence Trading Desk',
   description:
     'Sign in to the desk with Google. One identity provider, no password to set and none for us to store.',
   robots: { index: false, follow: false },
@@ -102,7 +102,7 @@ export default async function SignInPage({
               role="status"
               className="rounded border border-line-2 bg-panel px-4 py-3.5 text-sm leading-relaxed text-ink-1"
             >
-              You didn&rsquo;t finish signing in. Nothing was shared with the desk &mdash; sign in below
+              You didn&rsquo;t finish signing in. Nothing was shared with the desk. Sign in below
               when you&rsquo;re ready.
             </div>
           )}
@@ -140,7 +140,7 @@ export default async function SignInPage({
               <span aria-hidden className="w-4 text-center font-mono text-[15px] text-ink-3">
                 &minus;
               </span>
-              <span className="text-[15px] text-ink-3">Nothing else &mdash; no mail, no files, no brokerage</span>
+              <span className="text-[15px] text-ink-3">Nothing else: no mail, no files, no brokerage</span>
             </div>
           </div>
 
