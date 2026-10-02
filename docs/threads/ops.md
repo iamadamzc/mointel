@@ -13445,3 +13445,13 @@ Reading tools: board API answers on :3000 locally; history.db needs `sudo -u moi
 "attempt to write a readonly database"); never plain sudo.
 **Open:** market.db snapshot for Research's v6 voice run: ASKED HIM, no answer yet; only after step 6 and before 04:00 ET.
 Heavy slot: free (Research v6 gate and Design 1ba42292 gate both done, green, by their reports).
+
+**2026-10-02T12:03Z (08:03 ET, his window; no box reads):** this session restarted; both background jobs died. Judge sampler
+had logged every 10 min 05:45Z..10:56:37Z (04:00-07:00 ET COMPLETE; pid 1864116, start 05:44:29Z, NR 0 throughout; RSS
+141 MB pre-04:00 ET -> 254 MB at 10:56Z with 43 distinct tickers). RESTARTED 12:03Z appending to the same log; skips
+11:00-14:00Z without connecting. Design poll ran 08:00-10:51Z: 2026-10-02 levels rows from 08:10Z (137 non-empty by 10:51Z),
+but boardReason MOVER rows = 0 at EVERY poll. UNEXPLAINED: quiet premarket, movers already ranked (unlabelled), or a check
+that cannot see them. Verify after 10:00 ET with a positive control before telling anyone it works or doesn't.
+Snapshot for Research: no answer before the 03:30 ET cutoff -> after 20:00 ET tonight, still on his yes.
+Wake 14:01Z: movers verification; Design's heavy slot (levels-box-cost on a local copy, next dev :3100, gate 2afd15bc);
+levels post-ship [flush] check (09:30-10:30 ET vs 2026-09-30) after 14:30Z.
