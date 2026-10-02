@@ -68,3 +68,8 @@
 | N6 | A theme or sector claim (F8, not given in v6) |
 | N7 | A ticker in the narrative that no fact names |
 | N8 | An adjective no fact defines ("a busy session") |
+| N9 | A wrong F9 tracking count, or a tracked ticker not in the covered set |
+| N10 | An F1 window label that does not match the fact's basis. Recap: the regular session (16:00 latched values, per the adopted amendment). Intraday: the frozen row's `count_window`. |
+| N11 | G > 0 and the narrative omits G. **Checked by a DETERMINISTIC rule**, not the model: when the computed facts carry G > 0, line `N` must state G's number, or it is struck as an omission. A new checker rule, owned by Research, with its own test and mutant. |
+
+*N9 to N11 were added on Marketing's proposal (Marketing-tmi, after `6cca5549`), before any freeze or seed. The pass bar's class list is now N1 to N11, plus the v5 line classes.*
