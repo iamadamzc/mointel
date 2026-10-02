@@ -13260,6 +13260,14 @@ levels worktree eslint scans); not Ops's worktree; owner removes it or eslint ig
 **HIS YES IN THIS SESSION, 2026-10-02T02:37:49Z, "yes"** to levels with the four conditions. LEVELS_REFRESH_ENABLED=1 appended
 to /etc/mointel/mointel.env 02:38:14Z (backup mointel.env.bak-20261002T023814Z, 25 -> 26 keys, HISTORY_STORE_ENABLED absent).
 Levels b5a35fda launched ~02:39Z.
+**LEVELS b5a35fda LIVE** /proc 02:54:30Z (web 1773442 / research 1773503 / assess 1773574, start 02:54:27-29Z), NR 0, market
+untouched; follower "NOT confirmed" as usual. First refresh 02:56:35Z: 147 written, 75.5 s, exit 0; history.db created.
+/api/levels NXL 02:56:52Z: 200, 0.031 s, 66 levels: VERIFIED (Integration's rule).
+**INCIDENT: deploy-time OOM.** 02:39:45Z, 40 s into the deploy unit (npm ci), the kernel GLOBAL OOM killer killed the OLD
+research worker (pid 1696433, e8822583, 1.4G peak); systemd restarted it 10 s later. Box 3,832 MB, NO swap. Market worker
+untouched. Only OOM since 09-25. After the restart the market worker (743 MB RSS) is the largest process, so a repeat would
+likely take IT. **(A) 840741d3 and citations 2a625a5b HELD**, put to him with a recommendation to WAIT until the deploy's
+memory use is fixed (npm ci off the box, or a prebuilt node_modules). Open item for Ops: why research reached 1.4 GB in 75 min.
 **MOVERS CUT (next ship night, NOT tonight): 98905b08352ba8681ae6cf4b7816bfda731e8325** (tag design/moving-on-e0f18bbb) =
 2a625a5b + 8 (Research's rule + my readTopMovers + Design's "moving" label); Integration APPROVED BY LITERAL SHA; Design gated it
 221/221. Conditions: MY gate on this sha; /proc = 2a625a5b at launch (else re-cut); his yes naming: big movers (up 10%+ on 500k+
