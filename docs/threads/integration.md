@@ -3256,6 +3256,11 @@ NARRATIVE SPEC   He told MARKETING directly (Marketing's relay, not read at his 
                  sector cluster (e.g. biotech) as a theme, names carried into the next session. Marketing checking with
                  Research which are STORED (session-wide 50% mover count, sector tag, forward watchlist unconfirmed);
                  unbacked items go back to him by Marketing, not guessed. Marketing answers him in its own session.
+STEP 1B          83db9d75 (read; his words verified at Marketing's 2bb33112 02:41:33.543Z). ORDER CALLS: F6/F7 recap
+                 range-wide APPROVED (population = F1's; "entire move" = close <= prior close, shown in step-5 sample);
+                 intraday = OPTION 1 covered-only labelled (option 2 store change NOT in v6); F8 biotech NOT in v6 (needs
+                 SIC write a4a92a8f behind v28 main twin + mapping Marketing proposes, HE approves) -> v6.1; F9 = recap's
+                 covered names, honest wording. Marketing tells him the unbacked items (its commitment).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
