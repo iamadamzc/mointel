@@ -178,6 +178,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 4. A positioning fact he states is not an instruction to publish it.
 5. A paid report narrates the float **verdict**, never a float **number** — standing default, ruled by Integration under order-and-process 2026-09-17.
 6. The registered plain statement (naming document §2e item 2) is the only description of the product; it rests on the board rendering not-researched as a state (verified by type, Design `ba13d79`).
+7. The FINRA short interest label has no price of its own (Equity Data terms 2.3(b), landscape §10.6): part of the subscription, never an add-on, and in every tier equally if tiers ever exist.
 
 ### Open items — owner and what each waits on
 

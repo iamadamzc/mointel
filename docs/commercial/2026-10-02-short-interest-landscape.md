@@ -689,3 +689,43 @@ live tape. Asking FINRA is optional, not a precondition.
   label to the conditions in §10.2 and 11b (label, not FINRA's numbers; settlement date and
   "Source: FINRA" shown; shares short over filed shares outstanding, a lower bound, never
   "of float"). (3) Web drafts the end-user wording for his adoption.
+
+### 10.6 REVIEW 2026-10-02 of Web's end-user wording (`docs/web/2026-10-02-finra-terms-draft.md`, `2e8ded5f`), checked against the clause text, which was re-read live the same day
+
+**Does 2.3's cap attach to the derived label? On the text, yes.** The lead-in of 2.3 is
+*"Developer may redistribute the Equity Data and any derivative data or Resultant Data to
+third party end users ... for such End Users' non-commercial personal or professional use
+only."* The cap modifies the redistribution of all three objects, derived data and
+Resultant Data included. A counter-reading exists (5.2 gives the Developer ownership of
+Resultant Data "unless otherwise specified in the Specific Terms," and 2.3 could be read
+as only permitting it), but 2.3 naming Resultant Data inside its own cap is the better
+fit for "otherwise specified." **So Web's sentence is needed, not stricter than FINRA
+requires.** Its phrase "non-commercial personal or professional use" is FINRA's verbatim.
+**Verdict: the sentence passes against the clause language.**
+
+**One required change, in the attribution strings (Web's section 3), not the terms
+sentence.** 2.3(a) requires FINRA identified *"as the owner and source."* Web's two
+strings ("Short interest: FINRA, settled ..." and "Short interest data: FINRA. Shown as our
+own derived label...") name FINRA but not as owner and source. Research's legend already
+carries it ("Short interest data: FINRA (owner and source)..."), and one persistent
+placement of that legend satisfies the clause. Use the approved legend, or add the words.
+
+**Non-blocking.** (1) Web's note that a user trading in a business is "professional use" is
+an inference about an undefined FINRA phrase. Keep it out of user-facing text. The draft's
+own examples ("trading your own account," "running a service on it for other people") are
+conservative glosses that may be stricter than FINRA, for example for an adviser deciding
+trades for clients; that is acceptable and should be known. (2) Web's section 5 says a
+clause 2.2 answer "may remove the need for this text." It would not: a "yes" leaves the
+text needed, and a "no" would end the label on this route (Massive Business is the
+fallback). The text is needed whenever the label ships under 2.3. (3) Ordering: agreed,
+the terms edit, his adoption, the attribution and the label ride one change.
+
+**Pricing obligation, recorded here as Web asked so it sits with the seat that can breach
+it.** 2.3(b): no fee for the Equity Data, with the carve-out for distribution *"in
+conjunction with other fee-liable data ... provided that there is no additional or
+incremental fee charged for the Equity Data."* On the careful reading, which applies the
+condition to the label: **the label is part of the subscription, never a line item, an
+add-on, or a feature that only a higher tier unlocks.** A tier that adds the label among
+other things at a higher price is the risk case, so if tiers are ever introduced (the
+tier measure is open) every tier carries the label equally. Gate 1's "everything together"
+already satisfies it today.
