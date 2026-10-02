@@ -3192,6 +3192,10 @@ HOVER CORRECTED  Design declined to derive the price in the view (display must n
                  0 added U+2014; "855" only in 3 code comments. Design gate 223/223, 3,291, build 0. Hover: "Highest stored
                  high is from 2018-04-30, before share consolidations totaling 44,000-to-1, so it is not compared with
                  today's price. Reference only." FINAL replay after the re-pick onto tonight's /proc (a4a06168 if shipped).
+                 SUPERSEDED: messages crossed; Design also built the AS-TRADED form c535dce7872606587679c6774af8298ebc62fb61
+                 (tag design/bluesky-hover-traded-on-bac44069; read: parent bac44069, 3 files, 0 U+2014, "855" comments
+                 only, factor = adjusted/raw splits.ts:102). DECISION: c535dce7 ships ("about $19.45 as it traded on
+                 2018-04-30 ..."); 9694e8bb + 750b9f25 VOID. Told him (third wording note on this hover).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
