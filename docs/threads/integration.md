@@ -3308,6 +3308,10 @@ ONE VOCABULARY   Design 8233d809 reconciliation: Marketing's tag words vs board 
                  (send-limited) to Marketing + Research.
 MEMORY (RES)     Research started the research-worker memory read at e8822583 (the grown version); levels refresh is not in
                  e8822583 so not tonight's cause. v6 step 4 placed AFTER the memory answer (agreed).
+V6.1 LANE        His direction to Marketing (Marketing verified at its turn): model reads full fact set, suggests what to
+                 watch, finds correlations. ORDER: v6 unchanged; v6.1 = marked, hedged "what to watch" block below the
+                 verified narrative, dossier-sourced only (no open web in live report); Marketing specs words, Research
+                 owns checker fencing + seeds; with F8. Starts after v6 live unless he tells Marketing to fold it in.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
