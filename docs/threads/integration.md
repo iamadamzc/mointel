@@ -3361,6 +3361,11 @@ LEAK GATED       main f8025aad (contains 50196f0b; read): tsc 0, 213/213, 3,198 
 LEVELS MIRROR    research/review-levels 9f084c9e (read): 1 commit on b5a35fda, route + 2 tests; readOnly.test.ts also
                  edited by d427dd0e -> expect a conflict when cut on the chain. Research cuts leak (on 2a625a5b) and the
                  mirror (on the chain tip); I replay both.
+CUTS APPROVED    (scratchpad replay-lk.ps1) LEAK 0e883fec8058c3473a06c9fa97998571a485f134: parent 2a625a5b, 1 commit, pid
+                 995d0eab = 50196f0b, code/tests identical, 217 tests. LEVELS MIRROR 19f9d7215e0dea86b3954f544a03d6119c1bd245:
+                 parent 0e883fec, added lines = 9f084c9e, 0 removed, readOnly hunk keeps both, 218 tests. No deploy/db/
+                 worker/package; 0 U+2014. Ops: gate each + his yes. CHAIN: research restart -> (A) -> citations -> leak ->
+                 levels mirror -> movers (Research re-cuts on 19f9d721).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
