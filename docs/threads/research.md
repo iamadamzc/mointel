@@ -176,6 +176,13 @@ record. He has it from this seat directly as well.
   - **Integration's order calls, 2026-10-02:**
     - (1) v6 builds on the PRODUCTION line: base = /proc after tonight (`2a625a5b` if levels, (A) and citations all ship); Integration names it.
     - (2) APPROVED: the narrative replaces the premarket-only `overall` line for all four kinds, reading the frozen row.
+  - **HIS NARRATIVE SHAPE, verified at his turn** (Marketing's `2bb33112`, 2026-10-02T02:41:33.543Z): "there were x stocks that moved over 50%, x of them gave the entire move back. The cohort included 2 fresh news catalyst. x of x were bio tech companies, so that may be a theme. Looking ahead at the next session we are tracking these x stocks ... not verbatim, but understand the gist." Checkability: `step1b-checkability.md` (`83db9d75`).
+  - **Integration's scope order calls (after `83db9d75`):**
+    - F6/F7 on the RECAP, range-wide: `rth_final_high >= 1.5x previous_close`; gave back = `rth_final_close <= previous_close`; population = F1's. "Entire move" is shown to him in the step-5 sample.
+    - Intraday kinds: covered names only, labelled.
+    - F8 biotech: NOT in v6; a v6.1 after the SIC write and a mapping he approves.
+    - F9: the recap's covered names, worded honestly.
+    - Marketing writes all the words.
   - Then Marketing and Design (step 3), build, a voice run (his first sight), pass bar, Commercial, ship.
 - **✅ HIS COMPARISON DONE (seat `local_5f4bfcf8`, 2026-10-01): `docs/research/movers-vs-robust-baseline/side-by-side.md`.** B was pre-registered at `09d33239`. A's VEEA clause 2: PASS (`a5178ac1`). Ops's timing `539ae024`; Design's paragraph is `design.md` M2. Recommendation: A as a separate labelled group, not B. **Waits on: HIS decision, carried by Integration.** Nothing ships.
 - **🔴 MOVERS: HIS RULINGS 2026-10-01, verified at his turns in Integration's `1bfab363`:**
