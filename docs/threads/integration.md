@@ -1141,6 +1141,12 @@ REFUSAL SCREEN   Web 01455d93 (LOCAL main, not pushed; asked Web): components/No
                  refusal reason: a store design question, and a product call of his when it is raised. Email sentence
                  optional (authenticate returns no address).
                  Web's gate wiring: cut ON 3b9c0a70, imports NotAdmitted, sha to me after the three probe reads.
+FINRA COVERAGE   Ops 91caa2f3 docs/ops/finra-coverage-2026-10-02.md (read): 49/50 of today's top-50 board names have
+                 consolidatedShortInterest rows (NASDAQ 36/37, NYSE 11/11, AMEX 2/2); GOW missing, unexplained. Newest
+                 settlement 09-15. His secret was "KEY: value" in .env.local; Ops fixed to "=". SI LABEL GATES NOW:
+                 coverage MET, Commercial §8 PASS, Marketing words FINAL; LEFT: Research §5 calibration (precondition
+                 met; Research told fe69fe1f, queued), his adoption of Web 204d42c6, his yes; one change with
+                 attribution. Ops says Commercial §10 terms questions stand (2.2 is his accepted exposure).
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
