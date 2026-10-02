@@ -80,6 +80,16 @@ describe('review response headers', () => {
     expect(response.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
   });
 
+  it('sets no-store on the review levels read too', () => {
+    const response = proxy(request('GET', 'https://desk.example/review/abc123/api/levels?symbol=VEEA'));
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
+  });
+
+  it('refuses a mutation to the review levels path', () => {
+    const response = proxy(request('POST', 'https://desk.example/review/abc123/api/levels'));
+    expect(response.status).toBe(403);
+  });
+
   it('sets no-store and no-referrer on the refusal too', () => {
     const response = proxy(request('POST', 'https://desk.example/review/abc123/api/focus'));
     expect(response.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
