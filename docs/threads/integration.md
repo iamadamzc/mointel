@@ -3330,6 +3330,9 @@ MEASUREMENT 1    Ops 30448f8c (read): killed run was ~25 h 15 min (01:24:28Z 10-
                  restart. Threatens EVERY next ship night: fix (restart research before deploy / evict SEC cache /
                  swap) = his decision after premarket RSS confirms the rate (Ops brings it). I had told HIM "75 minutes"
                  (Ops's number, relayed unopened): corrected to him. Ledger 7.
+HIS QUESTION     "why not just increase server size?" Told him: an option, does not stop the leak (SEC cache fix does);
+                 Lightsail resize likely snapshot -> new instance -> static IP (UNVERIFIED, said so). Ops asked to cost it
+                 (plan, price, steps, downtime, what changes) inside the one fix decision for him.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
