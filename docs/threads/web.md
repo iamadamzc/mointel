@@ -448,55 +448,106 @@ that as a rejection.**
 
 ---
 
-## LIVE STATE — rewrite or delete this section, never let it go stale
+## LIVE STATE: rewrite or delete this section, never let it go stale
 
-**AS OF 2026-09-25. The public site is live behind nginx Basic Auth; the
-in-app OAuth gate is BUILT but NOT WIRED and NOT LIVE.** Production sha last
-reported by Integration as `34414f4` (2026-09-22, the builder-copy fix); the
-box-read of `/opt/mointel/current/RELEASE_SHA` is Ops's, not this seat's.
+**SNAPSHOT 2026-10-02 17:34 UTC, at `01455d93`. Written as a hand-off; every line
+was true at that moment and nothing below is a diary.** *Where this disagrees
+with anything above it, this wins.*
 
-**THE PUBLIC SURFACE IS COMPLETE AND VERIFIED**, unchanged since. *Web's run
-2026-09-22, curl from an actor with no cached state, negative control first:*
+### What is live on tmitrader.com
 
-```
-/desk  /signin  /api/market  /privacy-x                    -> 401
-/  /privacy  /terms  /favicon.ico  /robots.txt             -> 200
-/icon.svg  /apple-icon.png                                 -> 200
-```
+**The public site is complete and verified, still behind nginx Basic Auth, which
+is still the whole of what protects the desk.** *Last live read by this seat
+2026-10-02: `/ /privacy /terms /favicon.ico /icon.svg /apple-icon.png
+/robots.txt` return 200; `/desk /signin /api/market /privacy-x` return 401, the
+negative control first.* **Both legal texts are ADOPTED (`adopted: 2026-09-11`)
+and render from source markdown at request time.** *The product is `The Momentum
+Intelligence Trading Desk`; the old name `TMI Trader` survives on purpose in the
+domain and in one history line per legal document.*
 
-- **The product is `The Momentum Intelligence Trading Desk`, TMI.** *The old
-  name `TMI Trader` survives in exactly two places on purpose: the domain, and
-  one history line in each legal document.*
-- **The landing page is `/`, the board is `/desk`.** Basic Auth is still the
-  whole of what protects the desk.
-- **Both legal texts are ADOPTED** (`adopted: 2026-09-11`) and render from
-  source markdown at request time.
-- **`info@andromedagenius.com` receives**, on Google Workspace.
-- **The mark renders twice on `/` and is the favicon.**
+**NO EM DASH ANYWHERE A STRANGER READS.** *His hard rule, 2026-09-30. Swept and
+live. Two of his rulings define the edges: the bare glyph standing in for an
+empty value stays ("keep it. fine for that, not writing"), and punctuation that
+preserves meaning is NOT a material redraft, so `adopted` survived a 27-mark
+sweep.* **The guard is `tests/web/emDash.test.ts`: it checks U+2014 AND the
+entity forms, treats a glyph with nothing on one side as a placeholder and words
+on both sides as prose, and gives markdown no placeholder exception.** *Add any
+new user-visible surface to its `SURFACES` array. The list is strict on purpose
+and a missing file throws; do not make it lenient.*
 
-**THE OAUTH GATE — WEB SURFACE COMPLETE, NOT WIRED, NOT LIVE (built 2026-09-24/25).**
-*His approved model: Google sign-in + an invited-email allowlist (invite = add
-an email, revoke = remove; user admin by an AGENT, not a CLI or UI).* Every Web
-piece is built, gate-green (111 auth tests), and sits behind Basic Auth. **The
-authoritative build record — commits, the callback design, the outcome→status
-table, why the placeholder waits — is the build log in
-[`../web/2026-09-24-oauth-gate-plan.md`](../web/2026-09-24-oauth-gate-plan.md);
-read it, do not re-derive it here.** In one line: `config`, `/auth/start`,
-`/auth/callback`, `/auth/signout`, the point-of-use gate, `/signin`, and the
-callback error pages all exist under `app/auth/`, `app/signin/` and `lib/auth/`;
-the allowlist store and `isUserInvited` are Ops's and built; **the gate is
-deliberately NOT wired into `/desk` — that is part of the cut-over, not before.**
+### TONIGHT, in flight as this is written
 
-### OPEN — each with its owner and what it waits on
+**He approved the sign-in night: ship, seed, probe on, his two reads, Ops's
+anonymous read, probe off. From about 20:36 ET 2026-10-02.**
+
+| step | what | owner | state |
+| --- | --- | --- | --- |
+| 1 | ship `ops/signin-cut` tip `3b9c0a70`: the whole sign-in surface plus Ops's probe, flag OFF, **nothing enforced** | Ops ships, Integration replayed | approved by him |
+| 2 | Google client id and secret, `IDENTITY_DB_PATH`, seed `iamadamzc@gmail.com`, then `AUTH_PROBE_ENABLED=1` | him and Ops | his items, today |
+| 3 | three probe reads: admitted on the seeded address, **refused on a throwaway account**, anonymous from a credentialed `curl` with no cookie | Ops reads, sends them to Web | waiting on step 2 |
+| 4 | **WEB: wire `authenticate()` into `/desk` and `/api/*`, and fill `[FLOW COOKIE NAME]`** | **Web** | **NOT WRITTEN, deliberately** |
+| 5 | flag off, probe removed, **Basic Auth off** | Ops | **its own night, never tonight** |
+
+> **STEP 4 IS NOT WRITTEN ON PURPOSE AND A SUCCESSOR SHOULD KEEP IT THAT WAY
+> UNTIL STEP 3 READS CORRECTLY.** *A deploy ships its ancestry, so a wiring
+> commit sitting on `main` can ride any release; a desk gated with no client id
+> refuses everyone, him included, at 07:00.* **Nor leave it uncommitted in the
+> shared tree: several seats share one index.**
+
+**Tonight makes NO nginx change.** *`^~ /auth/` and `= /signin` are still
+unexempted and belong to step 5. Basic Auth and the in-app gate are independent
+layers: `location /` (`nginx-locations.conf:357`) proxies everything unexempted
+to the app, so every probe read carries the Basic-Auth credential and exercises
+the inner gate anyway.*
+
+**`[FLOW COOKIE NAME]` is the last placeholder on the public site and it fills
+with step 4, not step 1.** *The code sets `mointel_oauth`, but until the Google
+env is on the box `loadAuthConfig` throws, so the live site sets no cookie and
+naming it would name one a user cannot find.* **`python docs/web/placeholder-scan.py`
+exits non-zero while it remains, and that one hit is its own positive control.**
+
+### What tonight CANNOT prove, and it must not be claimed
+
+**The probe proves the gate ADMITS the invited, REFUSES the uninvited, and treats
+a session-less request as ANONYMOUS. It cannot prove a person with no Basic-Auth
+password can complete a sign-in, because nginx refuses them before the app sees
+them.** *That claim first becomes testable in the change that removes Basic Auth.*
+**If any report says "sign-in works" after tonight it is claiming more than was
+measured.** *And the refusal read is the one that gets dropped when a night runs
+late: a gate that admits correctly and refuses nobody looks identical to a
+working gate from his own account.*
+
+### OPEN, each with its owner and what it waits on
 
 | what | owner | waits on |
 | --- | --- | --- |
-| **the step-2 cut-over (take the gate live)** | **him to schedule; Integration orchestrates** | his **Google client id + secret** (to the box via Ops — NEVER this seat) and confirmation to **seed `iamadamzc@gmail.com`** as the first invite. Then, in order: nginx exempt `= /signin` and `^~ /auth/`; box env (`GOOGLE_CLIENT_ID/SECRET`, `OAUTH_REDIRECT_URI`, `IDENTITY_DB_PATH=/var/lib/mointel/identity.db`); **Web wires the gate into `/desk` + `/api/*`**; **live-proof against a client with NO cached Basic-Auth password** (the testing trap); **Basic-Auth-off LAST, its own change.** |
-| `[FLOW COOKIE NAME]` in the privacy policy | Web | the cut-over. *Fill from the live cookie name `mointel_oauth` (now set by `/auth/start`) on the deploy that ships sign-in — never before the live site sets it, or the policy names a cookie a user cannot find.* |
-| consent-screen display name | him | the day he uploads the mark. *Brand verification compares consent screen, site and privacy policy.* |
-| deploy gate must refuse a red suite | **not Web's — with Integration** | recorded here only as provenance; a peer built `deploy/aws/test-gate.sh`. Status is Integration's to confirm, not this seat's to track. |
+| **step 4 wiring** | **Web** | Ops's three probe reads |
+| **Basic Auth removal** | Ops, his yes | its own night, after step 4 is proven |
+| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final at `204d42c6`) | **him to approve the wording; Web applies it** | **must NOT be adopted before the short-interest label exists.** Adoption sets `adopted` to null and renders a public DRAFT banner; the label is not in the code. Terms edit, adoption, attribution and label ride ONE change |
+| **FINRA attribution strings** `Short interest: FINRA (owner and source), settled <date>` and the board-footer legend | Web owns the words, **Design builds them** | the label |
+| **clause 2.2** (our own use non-commercial, against a paid product) | him or counsel, **Commercial holds it** | an enquiry nobody has made. A yes leaves the wording needed; a no ends the label on this route |
+| **the three-way refusal split** | Web, when a reason exists | **a store question, not a copy one** (below) |
+| **self-serve sign-up and the `app/page.tsx:432` copy change** | him | he ruled first paying users are invited and billed by hand, so both WAIT. *"There are no public sign-ups..." stays true and stays live* |
+| **consent-screen display name** | him | the day he uploads the mark |
 
----
+### Two things built this week that a successor will misread
+
+**`components/NotAdmitted.tsx` (`01455d93`) is ONE screen where
+`docs/web/canvas/Admitted.dc.html` draws THREE. That is deliberate.** *The
+artboard keys three screens on waiting-on-a-decision, answered-no, and
+had-access-and-lost-it.* **`authenticate()` returns `refused` with no reason and
+cannot return one: `isEmailInvited` folds never-invited and revoked into one
+`false` so the store never becomes an oracle for which addresses were once
+invited.** *Each of the artboard's three headline sentences is false in two cases
+out of three, so the built screen says only what is true under all three.* **It
+is not unfinished work. The split ships when a reason does.** *Same shape for the
+email: the gate returns `{state, userId}` and no address, so the prop is optional.*
+
+**The example board on `app/page.tsx` keeps `&middot;` while the rest of the page
+uses a colon.** *That block depicts the product, and the board's own separator is
+the middot (Design, `1dacc16`).* **The boundary is site prose versus depicted
+board, not site versus board.** *Do not tidy it into a colon; the reason is in a
+comment at the illustration.*
 
 ## Opening message for a new chat
 

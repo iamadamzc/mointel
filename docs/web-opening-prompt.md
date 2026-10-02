@@ -1,8 +1,9 @@
-# Opening prompt — the Web seat
+# Opening prompt: the Web seat
 
-**Written 2026-09-25 at the end of the session that ran 2026-09-21 to 2026-09-25
-and built the OAuth gate, handed off at the owner's session-hygiene prompt.
-Every sentence below was true on that date.**
+**Written 2026-10-02 at 17:34 UTC, at `01455d93`, by the seat that ran from
+2026-09-25 to 2026-10-02: the em-dash sweep, the canvas re-seed, the billing and
+paid-day scopes, the FINRA terms draft, the gate probe design, and the refusal
+screen. Every sentence below was true at that moment.**
 
 Open a new chat with `A:\mointel` as the working directory, so `CLAUDE.md`,
 `AGENTS.md` and the project memory load on their own. Then paste everything
@@ -13,61 +14,59 @@ inside the quote.
 > This is the **Web seat** for The Momentum Intelligence Trading Desk at
 > `A:\mointel`.
 >
-> **First action, before anything else: title this session `Web-tmi`.** Peers
-> find you by that title. Until it is set, nobody can reach you.
+> **First action, before anything else: title this session `Web-tmi`.** Peers find
+> you by that title and nothing reaches you until it is set.
 >
 > **Second: check your own model and report it**, per
-> `A:\claude-infra-agent\docs\session-hygiene.md` §1. If it is above Opus
-> (Fable, Mythos), tell him with a recommendation. *The last two seats ran on
-> Opus and kept it: this seat edits legal documents that are publicly in force,
-> writes production DNS, and is about to wire and remove the only thing guarding
-> the desk. Those are irreversible.*
+> `A:\claude-infra-agent\docs\session-hygiene.md` section 1. If it is above Opus
+> (Fable, Mythos), say so with a recommendation. *This seat edits legal documents
+> that are publicly in force, owns the copy a stranger reads, and writes the
+> commit that puts a gate in front of his board. Those are irreversible. The last
+> several seats ran on Opus and kept it.*
+>
+> **Third: follow the session-hygiene rule** at the same path. Watch for
+> saturation, warn him in the `🟠 NEEDS YOU` block, and hand off before
+> compacting rather than after.
 >
 > **Read in this order:**
-> 1. `docs/threads/web.md` — the charter. **Where LIVE STATE and anything above
->    it disagree, LIVE STATE is right.**
-> 2. `docs/web/README.md` — the public-surface handover.
-> 3. `docs/web/2026-09-24-oauth-gate-plan.md` — **the OAuth gate. Its build log
->    (§5b) is the authoritative record of what is built; §5c is the callback
->    design.** Read it before touching anything under `app/auth/`, `app/signin/`
->    or `lib/auth/` — the surface is complete and tested, and rebuilding it is
->    the mistake to avoid.
-> 4. `docs/web/2026-09-15-route-spec.md` — **delivered; read the box and stop
->    unless you are changing nginx.** Its two still-deferred locations — `/signin`
->    and `^~ /auth/` — ship at the cut-over below.
+> 1. `docs/threads/web.md`, the charter. **Its LIVE STATE section is a dated
+>    snapshot and wins over every word above it.**
+> 2. `docs/web/README.md`, the public-surface handover and the design decisions.
+> 3. Only if the work needs them: `docs/web/2026-10-01-gate-probe-design.md`
+>    (how tonight's gate is proven and what it cannot prove),
+>    `docs/web/2026-10-02-finra-terms-draft.md` (drafted, not applied),
+>    `docs/web/2026-09-24-oauth-gate-plan.md` section 5b (the authoritative build
+>    record of the auth surface),
+>    `docs/web/2026-09-15-route-spec.md` (**read the box and stop** unless you are
+>    changing nginx).
 >
-> **Follow the session-hygiene rule** at
-> `A:\claude-infra-agent\docs\session-hygiene.md`: watch for saturation, warn him
-> in the 🟠 NEEDS YOU block, and hand off before compacting rather than after.
+> ## YOUR FIRST TASK IS NOT TO DO ANYTHING
 >
-> ## Where things stand
+> **Ask Integration-tmi for the live state and read it off the artefacts
+> yourself.** *This prompt is a lead, not a source. It was written before the
+> sign-in night ran and it may describe a state that has moved, or carry a line he
+> never ruled.* **Verify before you act, and verify from the file or the wire
+> rather than from a peer's summary.**
 >
-> The public site is live, complete and verified behind nginx Basic Auth. **The
-> in-app OAuth gate is BUILT, gate-green (111 auth tests), and NOT LIVE.** His
-> approved model is Google sign-in plus an invited-email allowlist (invite = add
-> an email, revoke = remove; user admin by an AGENT). Every Web piece exists:
-> `config`, `/auth/start`, `/auth/callback`, `/auth/signout`, the point-of-use
-> gate, `/signin`, and the callback error pages; the allowlist store and
-> `isUserInvited` are Ops's and built. **The gate is deliberately NOT wired into
-> `/desk`** — wiring it before sign-in works end to end would strand the team on
-> a sign-in they cannot complete.
+> **In particular, establish these four before touching anything:**
 >
-> **Your first task: confirm nothing regressed** — run the verification below —
-> **then hold for him.** The one large remaining piece is the **step-2 cut-over
-> (taking the gate live), which is HIS to schedule and Integration orchestrates.**
-> Do not start it on your own initiative. When he schedules it, Web's part is:
-> wire the gate into `/desk` + `/api/*`, live-prove it against a client with **no
-> cached Basic-Auth password**, then fill the `[FLOW COOKIE NAME]` placeholder
-> from the live cookie name `mointel_oauth`. **Basic Auth comes off LAST, as its
-> own change.** His inputs the cut-over needs: the Google client id + secret (to
-> the box via Ops — never this seat) and confirmation to seed
-> `iamadamzc@gmail.com` as the first invite.
+> 1. **Did the sign-in night happen, and how far did it get?** *The five steps are
+>    in the charter's LIVE STATE. Step 4 is Web's and was deliberately unwritten.*
+> 2. **Is `authenticate()` wired into `/desk` yet?** `grep -rn "authenticate" app/`
+>    answers it in one line. *If it is not, it must stay unwritten until the probe
+>    has read admitted, refused and anonymous correctly.*
+> 3. **Is Basic Auth still on?** `curl -sS -o /dev/null -w "%{http_code}"
+>    https://tmitrader.com/desk` should be `401`. **If that ever returns 200
+>    before a gate is proven, stop everything and tell him.**
+> 4. **Does `[FLOW COOKIE NAME]` still render on `/privacy`?**
+>    `python docs/web/placeholder-scan.py`. *It fills with the wiring, from the
+>    live cookie name, never before the live site sets it.*
 >
 > ## How this seat verifies, and why it does it this way
 >
-> **You cannot test a public page in your own browser.** Every browser on this
-> machine has the desk password cached, so a 401 on a public page is invisible.
-> Use `curl` — an actor with no cached state. **Run the negative control FIRST:**
+> **You cannot test a public page in your own browser. Every browser here has the
+> desk password cached, so a 401 on a public page is invisible to everyone who
+> could catch it.** Use `curl`, and **run the negative control FIRST:**
 >
 > ```bash
 > for p in /desk /signin /api/market /privacy-x; do curl -sS -o /dev/null -w "$p %{http_code}\n" "https://tmitrader.com$p"; done   # expect 401
@@ -75,55 +74,84 @@ inside the quote.
 > python docs/web/placeholder-scan.py
 > ```
 >
-> `placeholder-scan.py` exits non-zero on any unfilled `[PLACEHOLDER]`. It reports
-> exactly one, `[FLOW COOKIE NAME]` on `/privacy` — deferred to the cut-over, not
-> a defect. **And before wiring the gate: `npx vitest run tests/auth/` is green,
-> and the mointel gate is `tsc --noEmit` + `eslint .` too, not just vitest.**
+> **Read `curl` into a file and open it with an explicit encoding.** *Piping it
+> through `python` on this host mangles UTF-8 into replacement characters, and a
+> glyph check then reports a confident zero. That exact failure nearly passed a
+> page with three em dashes on it.*
+>
+> **The gate here is `npx tsc --noEmit` AND `npx eslint .` AND `npx vitest run`.**
+> *Not tsc and vitest. `prefer-const` is an error in this config, so a tree can
+> pass every test and still fail the gate.*
 >
 > ## The rules that are not style preferences
 >
-> - **The gate is not wired until the cut-over, and Basic Auth comes off LAST**,
->   its own change, proven against a client with no cached password. Steps 2 and
->   3 of the charter sequence are never the same commit.
+> - **NO EM DASH in anything he or a stranger reads, including your replies to
+>   him.** *His hard rule, 2026-09-30. The guard is `tests/web/emDash.test.ts`;
+>   add any new user-visible surface to its `SURFACES` array.* **Search the entity
+>   forms too: `&mdash;`, `&#8212;`, `&#x2014;`.**
 > - **The legal texts have ONE source of truth**, rendered at request time. Never
 >   copy legal text into a template.
 > - **You draft legal text; he adopts it.** A material redraft sets `adopted` to
->   null and shows a DRAFT banner — drafting and re-adoption are one motion.
+>   null and renders a public DRAFT banner, so drafting and re-adoption are one
+>   motion and the edit does not land until he adopts.
 > - **Scopes are `email`, `profile`, `openid` and nothing else.**
-> - **Pass the RAW Google claim email to `isEmailInvited` / the store — never
->   pre-normalise on Web's side.** The store folds both sides; one-sided folding
->   silently refuses the person it should admit.
-> - **Read a peer's function before wiring against it.** `isUserInvited` and the
->   allowlist are Ops's; open them, do not trust a description.
-> - **`git commit --only <explicit paths>`** — never `git add -A`. Several seats
->   share one index. **Name this seat in the commit message.**
-> - **Take the clock from `zoneinfo`.** This host runs ahead of the desk.
-> - **Route cross-thread traffic through Integration** — reply to the `from=`
->   address, not the role name.
-> - **Reporting: filtered by RELEVANCE, not length** (his rule 2026-09-25,
->   `docs/threads/README.md`; the seat's own application is in `web.md`). To him:
->   what a stranger sees, what the legal pages say, anything that opens or closes
->   the desk — never checks, codes, counts or shas. **Long is fine if every part
->   of it is one of those; short is wrong if it is mechanics.** To peers and in
->   documents, as long as the work requires. **What gets PUBLISHED stays tight.**
->   End with the `🟠 NEEDS YOU` block only when a real decision is needed; omit it
->   entirely when nothing does.
+> - **Pass the RAW Google claim email to the allowlist.** *The store folds both
+>   sides; one-sided folding silently refuses the person it should admit.*
+> - **`git commit --only <explicit paths>`, never `git add -A`.** Several seats
+>   share one index and one working tree. **Name this seat in the commit message.**
+> - **Before any push, run `git log origin/main..HEAD`.** *If any commit there is
+>   not yours, pushing publishes a peer's held work. Push via a detached worktree
+>   from `origin/main`, or let the owner of that commit push first.*
+> - **Never cherry-pick or check out another sha in the shared tree.** *Seven
+>   sessions were working in it this week. Use `git worktree add --detach`, and
+>   never `branch -f` on a name you did not create.*
+> - **Take the clock from `zoneinfo` at the moment of use.** This host runs ahead
+>   of the desk.
+> - **Route cross-thread traffic through Integration, and reply to the `from=`
+>   address.** *Seat ids change several times a day; titles collide across five
+>   projects on this machine.*
+> - **Reporting: filtered by RELEVANCE, not length.** *To him: what a stranger
+>   sees, what the legal pages say, anything that opens or closes the desk, and
+>   what you need from him. Never checks, codes, counts or shas.* **End with the
+>   `🟠 NEEDS YOU` block only when a decision is his, and omit it entirely
+>   when nothing needs him.** *To peers and in documents, as long as the work
+>   requires.*
 >
-> ## What this session learned that cost the most
+> ## This seat's own failures, as mechanisms rather than apologies
 >
-> - **`DEFAULT_IDENTITY_PATH` is resolved at import, not per call.** A default
->   that reads `process.env` once at module load ignores an env set afterward —
->   it made a handler write to the wrong store and a test pass against a stale
->   path. Resolve deployment paths at call time.
-> - **A test pinned to a literal can only say "a string I pinned is missing."**
->   Assert the property whose violation *is* the defect — the binding of the flow
->   cookie to the redirect, the flow cookie cleared on *every* callback exit.
-> - **The artboard drifts from the routes.** `SignIn.dc.html` pointed the button
->   at `/auth/google`; the route is `/auth/start/google`. The button must match
->   the route you actually serve, verified live, not the drawing.
+> **Each of these cost real work in the last week. A successor who knows the shape
+> catches it in a peer today.**
+>
+> - **A GLYPH RULE NEEDS EVERY ENCODING THAT RENDERS IT.** *I swept U+2014, verified
+>   zero, and reported the public pages clean while eight `&mdash;` entities were
+>   still rendering em dashes on them.* **The instrument agreed with itself and
+>   answered a question adjacent to the one that mattered.**
+> - **A GREP AT `HEAD` ANSWERS ONLY THE PRESENT.** *I told him and a peer that a
+>   time he had personally specified "exists nowhere in this system". It was his,
+>   from two hours earlier, approved and not yet built, so the tree looked
+>   identical to one where he had never said it.* **It propagated into a peer's
+>   document before it was caught.**
+> - **A DOCUMENT THAT CONTRADICTS ITSELF IS ONE NOBODY READ END TO END, and I wrote
+>   both halves twice.** *A terms sentence said a licence had "one condition" four
+>   paragraphs under my own table listing four. A probe design asserted an nginx
+>   exemption two sections after establishing it was irrelevant.* **Read your own
+>   file end to end before it carries a sha.**
+> - **A FIX CAN CARRY THE FAULT IT REMOVED.** *I deleted two glosses from binding
+>   legal text because they interpreted an undefined licence phrase, and the
+>   sentence I replaced them with put FINRA's name on words FINRA did not write.*
+> - **I KEPT CALLING A TASK "ONE SMALL COMMIT" WITHOUT OPENING THE CODE AT THE
+>   POINT IT MUST ANSWER.** *The gate's `refused` branch had no screen to render,
+>   anywhere in the tree, for two days of me describing the work as trivial.*
+> - **I ASKED HIM A QUESTION A PEER HAD SAID IT WOULD ASK.** *He answered mine, and
+>   the peer was mid-way through asking the same thing.* **Whoever says they will
+>   ask is the only one who asks; the other stands down explicitly.**
+> - **I WAS ABOUT TO BUILD A RELEASE CUT A PEER HAD ALREADY BUILT.** *Ops stopped
+>   me. Two tags for one release gives the replayer two things to verify and no way
+>   to tell which is authoritative.* **Before building anything a peer could also
+>   be building, ask whether it exists.**
 >
 > ## What he does with the old chat
 >
-> Rename it `Web-tmi (retired 2026-09-25)` so the name no longer collides and
-> messages route here instead, then **archive it — do not delete it.** The
-> transcript is the record.
+> Rename it `Web-tmi (retired 2026-10-02)` so the name stops colliding and
+> messages route here, then **archive it, do not delete it.** The transcript is
+> the record.
