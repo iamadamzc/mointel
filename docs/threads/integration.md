@@ -1131,6 +1131,16 @@ HIS YES (Ops)    Per Ops: "yes to all three" + "Seed iamadamzc@gmail.com as the 
                  TONIGHT: snapshot 20:12 -> sync-env (names readback) -> ship 3b9c0a70 -> seed -> probe on (web restart)
                  -> his two sign-ins + Ops no-cookie curl -u -> probe off -> /proc to me. Then Web's gate wiring cut +
                  replay here + his yes. Ops corrected on "FINRA gave no secret" (he sets it via activation email).
+REFUSAL SCREEN   Web 01455d93 (LOCAL main, not pushed; asked Web): components/NotAdmitted.tsx, INERT (no importer at
+                 main, read), 0 U+2014, brand matches signin/landing. The gate's "refused" state had NO screen; wiring
+                 could not have shipped without it.
+                 REGISTER LINE (deliberate narrowing, not unfinished work): docs/web/canvas/Admitted.dc.html draws THREE
+                 refusal screens (awaiting a decision / declined / access ended). authenticate() returns refused with NO
+                 reason, and isEmailInvited folds never-invited and revoked into one false ON PURPOSE (no oracle for
+                 past invites). So ONE screen, true in all three cases. The split ships only when the store records a
+                 refusal reason: a store design question, and a product call of his when it is raised. Email sentence
+                 optional (authenticate returns no address).
+                 Web's gate wiring: cut ON 3b9c0a70, imports NotAdmitted, sha to me after the three probe reads.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
