@@ -134,6 +134,8 @@ async function main() {
 
     if (result.status === 'PUBLISHED') {
       const r = result.report;
+      // For Design: the report exactly as /api/reports serves it (stored as JSON.stringify(run.report), job.ts; served parsed, api.ts).
+      if (!dry) fs.writeFileSync(path.join(out, `v6-${run.kind}-report.json`), `${JSON.stringify(r, null, 2)}\n`);
       const text: string[] = [`${run.label} · $1 to $20 · built from checkpoint #${r.checkpoints[0]?.id} (${r.checkpoints[0]?.completedAt})`];
       text.push(`[opening, printed by the surface from watchCount = ${r.watchCount}]`);
       text.push('', 'THE SESSION', r.narrative ?? '(no narrative: struck, or nothing to say)');
