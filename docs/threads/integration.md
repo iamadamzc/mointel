@@ -3119,6 +3119,9 @@ SI LABELS        Research 9b1b1ec4 (per Research; doc on origin): Size Light <5 
                  no "concentrated" word; position words only, dated + sourced; chip only at Heavy+/Deep+. Calibration
                  BLOCKED on a research-licensed source (Commercial, then his). Snapshot: Ops wants his yes repeated in
                  Ops's chat (Research told him).
+MOVERS VERIFIED  Ops 14:02Z (10:02 ET): 3 MOVER rows after the 50 (ORBS rank 56, IBRX 111, NAUT 82) = exactly the eligible
+                 candidates (>=10%, >=500k, $0.25-$20) off the top 50; ranked movers unlabelled; ineligible excluded.
+                 Premarket polls showed 0: real (no qualifying names then), per Ops. Design has the heavy slot (one-ladder).
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
