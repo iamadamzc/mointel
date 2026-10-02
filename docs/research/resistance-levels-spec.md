@@ -245,3 +245,31 @@ row per board name.** The minute read must use the bounded query
 - **📌 AMENDMENT, committed BEFORE the box run (seat `local_f6fa4717`): the code is `research/levels-stored` at `287561be`** (pushed). Nothing above changes. **Gate:** full suite 211 / 211 files, 3,170 / 3,170 tests (Git Bash, 2026-10-01T02:00:18Z to 02:02:26Z). A first run from PowerShell had 41 failures in `releaseBootstrap` and `releaseRetention` only, all with the spawn signature `execvpe(/bin/bash) failed` (PowerShell's `bash` is the WSL launcher); both files passed alone (44 / 44) and the whole suite passed on the rerun. **Desktop dry run, NOT counted** (the 09-29 prod copy, `--now 2026-09-29T23:55:20Z`, same bars): 160 names, refresh 48.3 s, per-name p50 281 ms / p95 721 ms / max 1,042 ms; read p50 2.0 ms, p95 3.6 ms, max 7.7 ms. It shows the script runs end to end; it is no evidence about the box. **Exact command for Ops**, from the `/tmp` checkout of `287561be`: `node node_modules/tsx/dist/cli.mjs scripts/levels-box-cost.ts --db "$MARKET_DB_PATH" --history /tmp/levels-box/history.db --now 2026-09-30T23:55:20Z --refresh-max-ms 150000 --read-p95-ms 100 --read-max-ms 250` (the script refuses a `--history` FILE that already exists, so `/tmp/levels-box/history.db` must not exist yet; `openHistoryStore` creates the directory).
 
 **§8 RESULT (box, run ONCE by Ops 2026-10-01T02:15:26Z = 22:15 ET 09-30; `287561be` staged at `/tmp/levels-287561be`, node_modules from the live `e8822583` with identical package.json and lockfile; scratch history.db absent beforehand; no deploy unit, no levels or vitest process; verbatim log `docs/ops/levels-box-stored-rows-2026-10-01T0215Z.log`, `f57b86b4`): PASS AS REGISTERED, all three clauses.** Graded by seat `local_f6fa4717` from the committed log. **REFRESH: n = 143 names, written 143, absent 0, total 107,292 ms** against < 150,000. **READ: n = 143, p50 0.4 ms, p95 0.7 ms, max 1.4 ms** against p95 < 100 and max < 250. Exit 0. The log prints summary statistics only (no per-name times), so the grader could not recompute the percentiles as in §7; the pass clauses rest on the refresh total and the read statistics as printed. **THE PREDICTION WAS WRONG, stated with the pass:** 63 to 76 s predicted, 107 s measured, so the headroom is about 1.4x, not 2x. Per-name compute p50 343 ms, p95 2,626 ms, max 3,303 ms (§7's cold p95 was 1,063 ms over 25 names). **What it means for the ship, and his yes should carry it:** a COLD refresh keeps one child busy about 107 s of every 300 s cycle, reading the minute store from disk. Whether that load slows the market worker during regular hours is NOT measured (the test ran off-hours by necessity); the post-ship flush comparison registered above is the only check. The page cache should make later refreshes warm, but that is also unmeasured on the box. **Consequence, as pre-registered: the stored-rows path may ship Thursday on his yes**, cut from `287561be` + Design's `9813ec55`.
+
+**POST-SHIP OBSERVATION (line 244), graded 2026-10-02 by seat `local_5f4bfcf8` from Ops-tmi's read at 14:4xZ (first session with the refresh live; research pid 1864116): NOT TRIGGERED.**
+
+- **Market `[flush]`, 09:30 to 10:30 ET, 2026-09-30 vs 2026-10-02:**
+
+  | Measure | 09-30 | 10-02 |
+  |---|---|---|
+  | Median of per-minute p50 | 181.7 ms | 179.0 ms (down 1.5%) |
+  | Median of per-minute max | 2,490.6 ms | 2,398.9 ms |
+  | Window max | 11,353.5 ms | 7,416.8 ms |
+  | Flushes over 250 ms | 424 | 212 |
+  | Flushes | 3,512 | 3,467 |
+
+  Nothing rose, so nothing goes to him as a regression. Two different days, so no cause is attributed either way.
+- **Caveat on the measure:** the registration says "whole-flush p50", and Ops reported the median of the per-minute p50 summaries, the nearest figure the summaries offer. At -1.5% against a +50% line, the difference cannot change the outcome.
+- **First refreshes** (`[levels] refresh` lines, all UTC, 2026-10-02):
+
+  | Time | Names | Total |
+  |---|---|---|
+  | 07:55Z | 0 | 2 ms |
+  | 08:00Z | 6 | 8,108 ms |
+  | 08:05Z | 90 | 106,503 ms (the cold one) |
+  | 08:10Z | 90 | 11,170 ms |
+  | 08:15Z | 90 | 10,158 ms |
+  | 08:20Z | 90 | 3,493 ms |
+
+  Warm refreshes are 3.5 to 11 s.
+- **One observation, not a breach:** the cold refresh cost about **1.18 s per name** (106.5 s over 90). The §8 box test cost about **0.75 s per name** (107 s over 143). At 1.18 s per name, a cold refresh would reach the 270 s kill at about 228 names. Today's 90 names left about 2.5x headroom. If the board's covered set grows well past 150 names, the cold refresh is the first thing to re-measure.
