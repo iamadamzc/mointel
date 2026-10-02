@@ -62,8 +62,8 @@ The crowding label is our own calculation. The data behind it is owned and
 published by FINRA, which is its owner and source. Where the desk shows the
 label it names FINRA and the settlement date the underlying figures belong to.
 
-FINRA licenses it to us to show you on one condition, in FINRA's own words: you
-may use it for your own non-commercial personal or professional use only.
+FINRA's terms allow us to show you the label for your own non-commercial
+personal or professional use only.
 
 The limits in this section apply to the label as they apply to everything else,
 and you may not pass it on.
@@ -96,6 +96,18 @@ and you may not pass it on.
   non-commercial is still a gloss on an undefined term.* **Both are gone and the
   phrase stands alone, attributed to FINRA so a reader can see it is a licence
   term rather than our rule.**
+- **AND THE REPLACEMENT FOR THE GLOSSES WAS ITSELF WRONG, FIXED 2026-10-02 on
+  Commercial's second check (landscape 10.6b, `7fd4ae88`).** *It read "FINRA
+  licenses it to us to show you on one condition, in FINRA's own words: ...".*
+  **Two statements in that sentence were untrue of the contract: 2.3 has FOUR
+  conditions, not one, and only the phrase "non-commercial personal or
+  professional use" is FINRA's, so "in FINRA's own words" put FINRA's name on a
+  sentence FINRA did not write.** *That is the gloss fault again, aimed at FINRA
+  rather than at the user, and I introduced it while removing the first one.*
+  **Worse, the count contradicted this document's own table four paragraphs
+  above, which lists all four conditions.** *A draft that disagrees with itself
+  about a number is a draft nobody re-read end to end, and I was the one who
+  wrote both halves.*
 - **The third paragraph adds no obligation. It points at section 5.** *Without it
   a reader could infer that the FINRA paragraph is the complete set of limits on
   the label.* **It also now carries the prohibition the deleted gloss used to
