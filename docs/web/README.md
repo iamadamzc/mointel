@@ -9,12 +9,13 @@ describe a canvas re-seeded 2026-10-02 against the live release.* **The live
 snapshot that wins over everything here is LIVE STATE in
 [`../threads/web.md`](../threads/web.md).**
 
-**One line in here IS now stale and is corrected rather than annotated: section 3's
-"AS OF 2026-09-25 EXACTLY ONE `[BRACKET]` RENDERS" still holds as a count, but the
-em-dash sweep has since changed the surrounding copy, and the only remaining
-placeholder fills with the gate wiring rather than "the deploy that ships
-sign-in".** *The sign-in surface shipped 2026-10-02 with no Google env on the box,
-so the live site still sets no cookie.*
+**Section 3's placeholder timing is corrected in place, in row 4 and in the note
+under the table.** *The count still holds: exactly one `[BRACKET]` renders,
+`[FLOW COOKIE NAME]`. What moved is when it fills: with the gate wiring (step 4
+of the charter's LIVE STATE), not with the deploy that ships the sign-in surface.*
+**Corrected 2026-10-02 at 17:46 UTC by the successor seat:** *the hand-off's
+version of this paragraph said the sign-in surface "shipped 2026-10-02". It had
+not; it ships on the sign-in night, which had not run at that time.*
 
 **Originally written by Web, 2026-09-10 (17:00 ET), against `927641c`.** Owner of
 this file: **Web**. Design canvas:
@@ -381,17 +382,18 @@ backstop for someone who signs in without an invite.*
 | ~~2~~ | **CLOSED 2026-09-18/21, every value measured from the box or decided by him.** Region `us-east-1`; hosting `Amazon Web Services, Inc.`; server logs **14 days** (nginx logrotate and journald agree, and the 512M cap is not binding); backups written as the **mechanism** — a full-server snapshot kept 7 days, a log entry living 14, so ~21 days at the outside — rather than as an audit of what is currently stored, *because a sentence justified by "the backup contains no personal data" expires the day sign-in ships and one justified by "a snapshot is kept 7 days" does not*; account and email retention say plainly that **no period is set**, on his adoption; email provider is **Google LLC**, because `info@` now reaches users on Workspace even though the service itself still sends no email. | closed |
 | ~~2b~~ | **SATISFIED, and built stronger than asked.** Ops made it structural rather than two calls: the callback has **no bare `return`** — every exit goes through one helper that attaches the cleared flow cookie, so a failure mode added later inherits it. Tests assert the header **on the failure paths by name**, not only on success. *That is the assertion the sentence actually needed.* | closed |
 | ~~3~~ | **ANSWERED BY MECHANISM, not by a number, and verified in code.** There is no duration: `createSession` takes an **absolute expiry** (`store.ts:293`) and `sessionExpiry` (`lib/auth/expiry.ts`) returns 20:00 ET, reusing `sessionEndUtc` from `lib/market/session` — **no second definition of the one number this desk keeps getting wrong.** *Published as the rule rather than as "30 days", because a rule is something a person can reason about instead of trust.* | closed |
-| ~~4~~ | **SETTLED 2026-09-24: the flow cookie is `mointel_oauth`**, defined once in `lib/auth/config.ts` (`OAUTH_FLOW_COOKIE`) and set by `/auth/start/google`. The placeholder is filled from that name — not a relay — on the deploy that ships sign-in, never before the live site sets it. | Web, at the cut-over |
+| ~~4~~ | **SETTLED 2026-09-24: the flow cookie is `mointel_oauth`**, defined once in `lib/auth/config.ts` (`OAUTH_FLOW_COOKIE`) and set by `/auth/start/google`. The placeholder is filled from that name, not a relay, in the gate-wiring commit (charter LIVE STATE step 4), never before the live site sets it. *Was "on the deploy that ships sign-in"; corrected 2026-10-02.* | Web, with step 4 |
 | ~~5~~ | **ANSWERED BY HIM 2026-09-10:** *"anyone that trades US market i suppose, but i dont want any overhang on interinational regs."* US market, US company, offered nowhere to the public — §8 says so, and §7 promises to honour a foreign right rather than argue about which law applies. | closed |
 | 6 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
 | ~~7~~ | **DRAFTED AND ADOPTED**, both decisions settled on his "your rec." — see §2b. | closed |
 
 **AS OF 2026-09-25 EXACTLY ONE `[BRACKET]` RENDERS ON THE PUBLIC SITE:**
-`[FLOW COOKIE NAME]`, row 4 — **deferred to the cut-over, not blocked.** *The
-code now sets `mointel_oauth` (`/auth/start/google`), but the live site does not
-yet — `/auth/*` is unexempted and undeployed — so filling the policy now would
-name a cookie a user cannot find in their inspector. Fill it on the deploy that
-ships sign-in, from `OAUTH_FLOW_COOKIE`.* **Verify with
+`[FLOW COOKIE NAME]`, row 4, **deferred to the gate wiring, not blocked.** *The
+code sets `mointel_oauth` (`/auth/start/google`), but the live site does not
+yet, so filling the policy now would name a cookie a user cannot find in their
+inspector. Fill it in the gate-wiring commit (charter LIVE STATE step 4), from
+`OAUTH_FLOW_COOKIE`. Was "on the deploy that ships sign-in"; corrected
+2026-10-02, and the count was re-read live that day: still exactly one.* **Verify with
 `python docs/web/placeholder-scan.py`, which exits non-zero while any remain.**
 
 ---
