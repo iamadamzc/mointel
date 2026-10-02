@@ -553,6 +553,16 @@ the middot (Design, `1dacc16`).* **The boundary is site prose versus depicted
 board, not site versus board.** *Do not tidy it into a colon; the reason is in a
 comment at the illustration.*
 
+### ERROR LEDGER, this seat (opened 2026-10-02 by the successor)
+
+*Hygiene section 2: a REPEAT of a class already logged this session is the
+saturation trigger. Who caught it matters: him catching it is the signal.*
+
+| # | asserted vs true | TYPE | already logged this session? | caught by |
+| --- | --- | --- | --- | --- |
+| 1 | `c97899b8` said production "never" carried the sign-in surface; releases are cherry-pick cuts, so `main`'s ancestry cannot answer that. Only the trees at `46d9f9d` and `a4a06168` were read. Narrowed at `2b73f6a3` | **never-without-a-query** (grep at HEAD answers only the present) | no | self |
+| 2 | wrote "17:50 UTC" into an as-of line from my head; zoneinfo read 17:48. Caught before commit | **generated clock time** | no | self |
+
 ## Opening message for a new chat
 
 **MOVED 2026-09-21 to [`../web-opening-prompt.md`](../web-opening-prompt.md),
