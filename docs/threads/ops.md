@@ -13391,3 +13391,9 @@ not deploy-cut gates): leak fix on main f8025aad (tsc 0, 213/213); review-levels
 9f084c9e0debb83c0811acba759008baa72560be (base b5a35fda; tsc 0 after `npx next typegen`, 212/212). NOT JUDGEABLE guard is in
 prereg-ship.md:25 on origin/main. Cut-gate note: a fresh worktree needs `npx next typegen` before tsc (LayoutProps in
 app/layout.tsx); Research calls it environment; verify on the cut by running tsc both before and after typegen.
+
+**Cut gates, PRE-REGISTERED 2026-10-02 before running (this seat holds the heavy slot):** test-gate.sh in Git Bash, run
+sequentially, one at a time. Chain verified (ancestry, one commit per new cut; leak cut code == 50196f0b code; mirror cut code
+== 9f084c9e code): b5a35fda <- (A) 840741d3 (+3) <- citations 2a625a5b (+4) <- leak 0e883fec (+1) <- review-levels mirror
+19f9d721 (+1). Expected ALL GREEN with test FILES passed/total: 840741d3 214/214; 2a625a5b 217/217; 0e883fec 217/217;
+19f9d721 218/218. Any other count is a finding, not a pass.
