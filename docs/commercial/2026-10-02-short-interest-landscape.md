@@ -230,6 +230,63 @@ Research's and his, not sized here.
 
 ---
 
+## 6b. ANSWERED 2026-10-02, RESEARCH'S FLAG — "NON-COMMERCIAL USE" AND "FREE OF CHARGE" ARE NOT A CONTRADICTION; A PAID PRODUCT MAY NOT DISPLAY FINRA SHORT INTEREST
+
+*Research's doc flagged two FINRA statements that look like they might
+disagree: the data catalogue says "non-commercial use," and a FINRA rule
+filing (SR-FINRA-2026-012, the withdrawn proposal, text not re-located in
+this pass — Research extracted it, this seat did not re-open the same PDF)
+describes the short interest data as published "free of charge, on
+finra.org." Integration asked which governs. It isn't a contradiction, and
+this seat's own standing rule (report a contradiction, don't resolve it) does
+not apply here because there is nothing to resolve — the two sentences
+answer different questions.*
+
+**"Free of charge" is an access-cost statement, from a regulatory filing
+describing FINRA's existing dissemination practice to the SEC** — it says
+you don't need to pay to reach the data, which is true and is exactly the
+kind of fact a rule filing states to justify or contextualize a proposed
+change (here, a proposal to publish more often, not to change who may use
+it commercially). **It is not a sentence in a contract with FINRA, and it
+grants no rights to anyone.**
+
+**"Non-commercial use" is the contract.** It's the operative sentence on the
+actual Terms of Use governing whoever accesses finra.org, already quoted in
+full in §3 above: *"the content and material provided through the FINRA
+Website shall be used ONLY for your own non-commercial personal or
+professional use."* **That is the document that answers Integration's
+question, and the answer is no — not display, redistribution, or use in a
+paid product of any kind.** Free of charge to look at and non-commercial to
+use are not in tension; a public library's reading room is free to enter and
+still doesn't let you republish the book.
+
+**So, directly: a paid product may not display FINRA short interest, sourced
+directly from FINRA, under FINRA's own published terms — full stop, before
+even reaching the software/AI-use bar in §3 which closes the door a second,
+independent way.** This is unchanged from §3's finding; this section exists
+because the question was asked a second way and deserves a second, equally
+direct answer rather than a pointer back.
+
+## 6c. ANSWERED 2026-10-02 — NO ALPACA PRODUCT CARRIES SHORT INTEREST
+
+*Research's doc checked `/v2/assets` specifically and found only
+`shortable`/`borrow_status` (borrow availability, not short interest),
+correctly naming "whether any OTHER Alpaca product carries it" as this
+seat's question to answer.*
+
+**No. Checked beyond the two endpoints §2 already named**, against Alpaca's
+full documentation site navigation (`docs.alpaca.markets`, every section
+under Trading API, Market Data API, Broker API and Connect API, captured in
+full in this session) — **"short interest" appears nowhere in it, under any
+product line.** The only short-selling-adjacent surfaces anywhere on the
+site are the ones §2 already covers: `shortable`/`borrow_status` on the
+assets endpoint, and the locate-quote/fee workflow for hard-to-borrow names.
+Both are borrow supply and cost, not a reported position count, and neither
+is a short-interest product under a different name. **Confirmed negative
+across the whole site, not just the two pages most likely to carry it.**
+
+---
+
 ## 7. Sources
 
 `docs.alpaca.markets/us/docs/about-market-data-api`;
