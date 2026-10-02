@@ -3086,6 +3086,9 @@ error                                                  TYPE                     
   Commercial"; my message 8a68728e asked FINRA terms   my own send without reading it)
   + Alpaca products only. Asked for real after
   Commercial's 58f2500b; told him. LESSON: before saying "I've asked X", read the sent message.
+  ANSWERED (Commercial f2fd76f1 §8): Alpaca borrow/locate data falls under the same Terms "Content" clause as the live
+  tape (personal/non-commercial default; 30 days' notice to make it available to others). Locate quotes are
+  ACCOUNT-SPECIFIC (Alpaca's words); shortable/borrow_status reads as a symbol attribute (one source). Told him.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
