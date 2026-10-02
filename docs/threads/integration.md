@@ -3237,6 +3237,11 @@ HIS QUESTION     "what about the session report updates? there's still no openin
                  v6 is Research's NEXT task (plan + first-seen date asked, b86fd790); Design: movers label then row B
                  surface spec fixed against Marketing's guardrails (76c0ba0e). Marketing (narrative voice) to be briefed
                  when Research's plan names its step.
+V6 PLAN          e144d87c (read): N narrative + B tags + a-d fixes + checker trim + stability probe; 8 steps. Step 1
+                 (Research proposal, reading only) Friday morning; step 2 probe ($10 cap) beside it; step 3 Marketing +
+                 Design; step 5 = FIRST SIGHT (sample on stored data, no gate); step 6 pass bar (uncertain; v5 took 4
+                 runs); step 8 live on his yes. No clock times (depends on two seats + a pass bar). Marketing heads-up
+                 sent. Told him.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
