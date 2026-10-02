@@ -56,6 +56,11 @@ every time.** Research-tmi is at the app's 10-message peer cap until he writes i
    - **About 10 minutes after 20:00 ET** to sign in himself once refusal passes.
    - **The FINRA Query API credential** (he registered at the FINRA API Console): into `.env.local` by him, then tell
      Ops; Ops runs the small-cap coverage check (Commercial landscape §10).
+   **Web's three ordering constraints go in the guide as facts, not preferences:** Basic Auth STAYS ON through the
+   whole sign-in night; the probe proves admit / refuse / anonymous but CANNOT prove a password-less person completes
+   sign-in (nginx refuses them first), so the guide must not say "sign-in works" after tonight; Basic-Auth removal is a
+   separate night. **And one line for the short-interest label: the SI chip never ships alone; the FINRA attribution
+   strings, the terms sentence (204d42c6) and his adoption ship in the same release.**
    **Read every console step at source (Google's and FINRA's current docs, in the in-app browser) before writing it;
    never write a UI step from memory.** Name the key NAMES to use (ask Ops/Web which names the code reads: ops.md:12033-
    12043 lists GOOGLE_CLIENT_ID/SECRET). Plain words, numbered, no em dashes.

@@ -3326,6 +3326,10 @@ AFTER HAND-OFF   Commercial (for the successor): SI label wording the build carr
                  Marketing: R6 chip "SHORTS: HEAVY · 17d" confirmed; depth bands (drawer/hover) are Research's table:
                  Shallow <3, Moderate depth 3 to under 5, Deep 5 to under 10, Very deep 10+ days of normal volume to
                  cover (Marketing's earlier prose mis-stated Very deep; ignore it).
+                 Web (verified): terms.md on origin still "adopted: 2026-09-11", 0 FINRA references; label code absent.
+                 Guide constraints (added to the opening prompt): Basic Auth stays on; probe cannot prove password-less
+                 sign-in; Basic-Auth removal a separate night; the SI chip never ships without attribution + terms
+                 sentence + his adoption in the same release.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
