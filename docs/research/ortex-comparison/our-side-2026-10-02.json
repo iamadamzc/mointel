@@ -1,0 +1,1118 @@
+[
+  {
+    "ticker": "ZNB",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 63572,
+      "previous": 67858,
+      "changePercent": -6.32,
+      "daysToCover": 1.75,
+      "avgDailyVolume": 36375,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 16191012,
+      "asOf": "2023-06-30",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.39263759424055766,
+    "ourSize": "not graded: filed count too old (2023-06-30)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-19T11:55:40.521Z"
+  },
+  {
+    "ticker": "FLUX",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 529266,
+      "previous": 635984,
+      "changePercent": -16.78,
+      "daysToCover": 4.06,
+      "avgDailyVolume": 130407,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 21621642,
+      "asOf": "2026-08-14",
+      "form": "10-K",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 2.447852942898601,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Moderate depth",
+    "dossierAt": null
+  },
+  {
+    "ticker": "CYCU",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 278673,
+      "previous": 348350,
+      "changePercent": -20,
+      "daysToCover": 1,
+      "avgDailyVolume": 283079,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 25840335,
+      "asOf": "2026-08-10",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 1.0784419010047663,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "AMOD",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 35626,
+      "previous": 39544,
+      "changePercent": -9.91,
+      "daysToCover": 1,
+      "avgDailyVolume": 474627,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 4966818,
+      "asOf": "2026-08-14",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.7172801580408221,
+    "ourSize": "not graded: active ATM or equity line",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-02T10:12:34.001Z"
+  },
+  {
+    "ticker": "AIXI",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 30700,
+      "previous": 296222,
+      "changePercent": -89.64,
+      "daysToCover": 1,
+      "avgDailyVolume": 436314,
+      "splitFlag": "S"
+    },
+    "count": {
+      "shares": 55235284,
+      "asOf": "2025-12-31",
+      "form": "20-F/A",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.05558041486670006,
+    "ourSize": "not graded: filed count too old (2025-12-31)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-16T10:27:01.813Z"
+  },
+  {
+    "ticker": "QTEX",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 3789926,
+      "previous": 3835792,
+      "changePercent": -1.2,
+      "daysToCover": 2.96,
+      "avgDailyVolume": 1278615,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 35949247,
+      "asOf": "2025-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 10.54243500566229,
+    "ourSize": "not graded: filed count too old (2025-12-31)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-19T16:01:41.449Z"
+  },
+  {
+    "ticker": "SMX",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 38391,
+      "previous": 49037,
+      "changePercent": -21.71,
+      "daysToCover": 1.77,
+      "avgDailyVolume": 21747,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 1088608,
+      "asOf": "2026-07-23",
+      "form": "dossier",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 3.5266138040506774,
+    "ourSize": "not graded: active ATM or equity line",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-22T10:31:37.189Z"
+  },
+  {
+    "ticker": "INAC",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 40,
+      "previous": 136,
+      "changePercent": -70.59,
+      "daysToCover": 1,
+      "avgDailyVolume": 1359,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 14755000,
+      "asOf": "2026-08-05",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.00027109454422229753,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "FACT",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 23481,
+      "previous": 22036,
+      "changePercent": 6.56,
+      "daysToCover": 3.55,
+      "avgDailyVolume": 6616,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Moderate depth",
+    "dossierAt": null
+  },
+  {
+    "ticker": "AMIX",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 61425,
+      "previous": 58624,
+      "changePercent": 4.78,
+      "daysToCover": 1,
+      "avgDailyVolume": 96613,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 971043,
+      "asOf": "2026-08-06",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 6.325672498540229,
+    "ourSize": "not graded: active ATM or equity line",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-25T10:23:51.226Z"
+  },
+  {
+    "ticker": "HXHX",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 28128,
+      "previous": 19266,
+      "changePercent": 46,
+      "daysToCover": 1,
+      "avgDailyVolume": 61672,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 6671444,
+      "asOf": "2023-01-19",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.4216178686353359,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "SGRX",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 29321,
+      "previous": 36567,
+      "changePercent": -19.82,
+      "daysToCover": 1,
+      "avgDailyVolume": 1778415,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 1476900,
+      "asOf": "2025-12-31",
+      "form": "6-K",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 1.9853070620895117,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "SCKT",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 33298,
+      "previous": 143975,
+      "changePercent": -76.87,
+      "daysToCover": 1,
+      "avgDailyVolume": 93124,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 8291681,
+      "asOf": "2026-08-10",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.40158322540387165,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "QADR",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 12998,
+      "previous": 13217,
+      "changePercent": -1.66,
+      "daysToCover": 1,
+      "avgDailyVolume": 20440,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-26T08:05:58.873Z"
+  },
+  {
+    "ticker": "THCH",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 32796,
+      "previous": 34514,
+      "changePercent": -4.98,
+      "daysToCover": 8.65,
+      "avgDailyVolume": 3791,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 33243582,
+      "asOf": "2025-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.0986536288418017,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Deep",
+    "dossierAt": null
+  },
+  {
+    "ticker": "GOW",
+    "finra": null,
+    "note": "no FINRA row"
+  },
+  {
+    "ticker": "WTG",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 2140,
+      "previous": 662,
+      "changePercent": 223.26,
+      "daysToCover": 1,
+      "avgDailyVolume": 17044,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 1708575,
+      "asOf": "2026-06-30",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.1252505743090002,
+    "ourSize": "under 5%",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-20T22:05:23.572Z"
+  },
+  {
+    "ticker": "QUMS",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 2508,
+      "previous": 3681,
+      "changePercent": -31.87,
+      "daysToCover": 1,
+      "avgDailyVolume": 15998,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 11406650,
+      "asOf": "2026-08-14",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.021987174148413426,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "LKSP",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 5872,
+      "previous": 5523,
+      "changePercent": 6.32,
+      "daysToCover": 1,
+      "avgDailyVolume": 9448,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 15693333,
+      "asOf": "2026-08-13",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.037417163071732436,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "ITHA",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 2215,
+      "previous": 2178,
+      "changePercent": 1.7,
+      "daysToCover": 1,
+      "avgDailyVolume": 16256,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-25T15:22:02.355Z"
+  },
+  {
+    "ticker": "BGM",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 60294,
+      "previous": 170511,
+      "changePercent": -64.64,
+      "daysToCover": 1.07,
+      "avgDailyVolume": 56580,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 200623358,
+      "asOf": "2025-09-30",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.030053330081335792,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "OCG",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 106699,
+      "previous": 122336,
+      "changePercent": -12.78,
+      "daysToCover": 1.98,
+      "avgDailyVolume": 53962,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 98313864,
+      "asOf": "2025-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.10852894562256245,
+    "ourSize": "not graded: filed count too old (2025-12-31)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-02T08:31:26.119Z"
+  },
+  {
+    "ticker": "ICU",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 121686,
+      "previous": 110622,
+      "changePercent": 10,
+      "daysToCover": 2.73,
+      "avgDailyVolume": 44628,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 4406841,
+      "asOf": "2026-08-05",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 2.761297718705985,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "STFS",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 13143,
+      "previous": 50402,
+      "changePercent": -73.92,
+      "daysToCover": 1,
+      "avgDailyVolume": 36205,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 12650000,
+      "asOf": "2025-06-30",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.10389723320158102,
+    "ourSize": "not graded: filed count too old (2025-06-30)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-21T21:00:19.658Z"
+  },
+  {
+    "ticker": "SSM",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 46127,
+      "previous": 27729,
+      "changePercent": 66.35,
+      "daysToCover": 1,
+      "avgDailyVolume": 3692180,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 1424834,
+      "asOf": "2026-08-01",
+      "form": "10-Q",
+      "addedFromOfferings": 141916
+    },
+    "pctOfFiledCount": 2.944119993617361,
+    "ourSize": "under 5%",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-18T08:07:31.706Z"
+  },
+  {
+    "ticker": "MRM",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 13001,
+      "previous": 18094,
+      "changePercent": -28.15,
+      "daysToCover": 1.92,
+      "avgDailyVolume": 6768,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 7901950,
+      "asOf": "2024-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.16452900866241876,
+    "ourSize": "not graded: filed count too old (2024-12-31)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-28T10:16:22.191Z"
+  },
+  {
+    "ticker": "CRAC",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 2606,
+      "previous": 3030,
+      "changePercent": -13.99,
+      "daysToCover": 1.06,
+      "avgDailyVolume": 2447,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "OACC",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 208,
+      "previous": 1269,
+      "changePercent": -83.61,
+      "daysToCover": 1,
+      "avgDailyVolume": 43916,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "TNMG",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 7073,
+      "previous": 312540,
+      "changePercent": -97.74,
+      "daysToCover": 1,
+      "avgDailyVolume": 96301,
+      "splitFlag": "S"
+    },
+    "count": {
+      "shares": 2556405,
+      "asOf": "2025-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.2766775999890471,
+    "ourSize": "not graded: filed count too old (2025-12-31)",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-18T12:01:24.140Z"
+  },
+  {
+    "ticker": "SORA",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 10926,
+      "previous": 18431,
+      "changePercent": -40.72,
+      "daysToCover": 1,
+      "avgDailyVolume": 27902,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 24864000,
+      "asOf": "2025-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.04394305019305019,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "FNGR",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 3694448,
+      "previous": 8754925,
+      "changePercent": -57.8,
+      "daysToCover": 1,
+      "avgDailyVolume": 8263058,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 61310361,
+      "asOf": "2026-07-10",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 6.025813483629626,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "CEPO",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 9761,
+      "previous": 7609,
+      "changePercent": 28.28,
+      "daysToCover": 1,
+      "avgDailyVolume": 60801,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-08-20T20:49:30.898Z"
+  },
+  {
+    "ticker": "ONCH",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 2364,
+      "previous": 1833,
+      "changePercent": 28.97,
+      "daysToCover": 1,
+      "avgDailyVolume": 38304,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "KCHV",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 430,
+      "previous": 503,
+      "changePercent": -14.51,
+      "daysToCover": 1,
+      "avgDailyVolume": 31494,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-02T14:28:23.415Z"
+  },
+  {
+    "ticker": "PFAI",
+    "foreign": true,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 9077,
+      "previous": 10890,
+      "changePercent": -16.65,
+      "daysToCover": 9.11,
+      "avgDailyVolume": 996,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 950000,
+      "asOf": "2024-05-21",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.9554736842105264,
+    "ourSize": "not graded: filed count too old (2024-05-21)",
+    "ourDepth": "Deep",
+    "dossierAt": "2026-08-26T08:13:22.701Z"
+  },
+  {
+    "ticker": "SPKL",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 5089,
+      "previous": 5531,
+      "changePercent": -7.99,
+      "daysToCover": 1,
+      "avgDailyVolume": 25860,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": "2026-09-21T10:29:36.157Z"
+  },
+  {
+    "ticker": "FGII",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 1358,
+      "previous": 2128,
+      "changePercent": -36.18,
+      "daysToCover": 1,
+      "avgDailyVolume": 2800,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 28940000,
+      "asOf": "2026-07-23",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.004692467173462335,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "TRAD",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 5635,
+      "previous": 5371,
+      "changePercent": 4.92,
+      "daysToCover": 5.92,
+      "avgDailyVolume": 952,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 14637000,
+      "asOf": "2026-07-15",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.038498326159732185,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Deep",
+    "dossierAt": null
+  },
+  {
+    "ticker": "GLED",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 145,
+      "previous": 1713,
+      "changePercent": -91.54,
+      "daysToCover": 1,
+      "avgDailyVolume": 17370,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 15982500,
+      "asOf": "2026-08-14",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.000907242296261536,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "WENC",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 47973,
+      "previous": 38982,
+      "changePercent": 23.06,
+      "daysToCover": 4.59,
+      "avgDailyVolume": 10462,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 16049583,
+      "asOf": "2026-08-07",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.2989049622036909,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Moderate depth",
+    "dossierAt": null
+  },
+  {
+    "ticker": "BCSS",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 4072,
+      "previous": 4430,
+      "changePercent": -8.08,
+      "daysToCover": 1,
+      "avgDailyVolume": 15278,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "XFLH",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 3506,
+      "previous": 3944,
+      "changePercent": -11.11,
+      "daysToCover": 1,
+      "avgDailyVolume": 4991,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 13888303,
+      "asOf": "2026-07-09",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.025244264904070716,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "QLEP",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 2424,
+      "previous": 1730,
+      "changePercent": 40.12,
+      "daysToCover": 1,
+      "avgDailyVolume": 2577,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "SRL",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 5160,
+      "previous": 4063,
+      "changePercent": 27,
+      "daysToCover": 1,
+      "avgDailyVolume": 7733,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 14822251,
+      "asOf": "2024-12-31",
+      "form": "20-F",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.03481252611361122,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "CTVA",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 20671603,
+      "previous": 17896006,
+      "changePercent": 15.51,
+      "daysToCover": 4.06,
+      "avgDailyVolume": 5092325,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 667196000,
+      "asOf": "2026-07-24",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 3.098280415350212,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Moderate depth",
+    "dossierAt": null
+  },
+  {
+    "ticker": "PLUN",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 512,
+      "previous": 1036,
+      "changePercent": -50.58,
+      "daysToCover": 1,
+      "avgDailyVolume": 32657,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 14071337,
+      "asOf": "2026-07-15",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.0036386023588234717,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "SOUL",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 501,
+      "previous": 501,
+      "changePercent": 0,
+      "daysToCover": 1,
+      "avgDailyVolume": 29877,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 25620000,
+      "asOf": "2026-03-23",
+      "form": "10-K",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 0.001955503512880562,
+    "ourSize": "not graded: no research on the desk",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "GHG",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 25389,
+      "previous": 43856,
+      "changePercent": -42.11,
+      "daysToCover": 2.64,
+      "avgDailyVolume": 9629,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  },
+  {
+    "ticker": "SDEV",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 1212152,
+      "previous": 1177802,
+      "changePercent": 2.92,
+      "daysToCover": 4.4,
+      "avgDailyVolume": 275285,
+      "splitFlag": null
+    },
+    "count": {
+      "shares": 50615437,
+      "asOf": "2026-07-27",
+      "form": "10-Q",
+      "addedFromOfferings": 0
+    },
+    "pctOfFiledCount": 2.3948267007948583,
+    "ourSize": "under 5%",
+    "ourDepth": "Moderate depth",
+    "dossierAt": "2026-09-29T19:08:54.093Z"
+  },
+  {
+    "ticker": "DDC",
+    "foreign": false,
+    "finra": {
+      "settlement": "2026-09-15",
+      "published": "2026-09-24",
+      "sharesShort": 629496,
+      "previous": 892035,
+      "changePercent": -29.43,
+      "daysToCover": 1,
+      "avgDailyVolume": 2705113,
+      "splitFlag": null
+    },
+    "count": null,
+    "pctOfFiledCount": null,
+    "ourSize": "not graded: no filed share count",
+    "ourDepth": "Shallow",
+    "dossierAt": null
+  }
+]
