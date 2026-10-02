@@ -3158,6 +3158,10 @@ BLUE-SKY BUILT   research/bluesky-comparable 70c534f4 (light check: 1 commit on 
                  known non-1 factor -> today's-basis ceiling; none -> UNVERIFIED price NULL; deepCeiling + consolidated
                  fields; unknown factor unchanged. Sentences to Marketing; hover/sub-line to Design on top; then gate +
                  my replay. Scale count pre-registered (258624e2) on tonight's snapshot.
+ARIA CUT         a4a0616892a6f303f4312d6d4546ad05423b17af (tag design/aria-catalyst-on-9189b569) REPLAYED + APPROVED:
+                 parent 9189b569, 3 over 28c66f14, 4 files, 223 tests; one U+2014 in a code comment (glyph quote, out of
+                 scope). Design gate 223/223, 3,283, build 0. ORDER: tonight Ops may ship tip a4a06168 as ONE release
+                 (one-ladder + aria), his yes naming both, Ops gate on a4a06168; or two steps. Blue-sky re-cut on /proc after.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
