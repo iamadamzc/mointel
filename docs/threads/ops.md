@@ -13407,3 +13407,6 @@ citation residual 28c66f14 (patch == a58aa866). Verified here: 558d07a5 = 8 comm
 2a625a5b..98905b08, diff vs 98905b08 is only the leak + mirror files, 222 files; 28c66f14 parent 558d07a5, code+tests
 identical to a58aa866, 222 files.
 **PRE-REGISTERED next:** 558d07a5 222/222 files; 28c66f14 222/222 files.
+**Result:** 558d07a5 ALL GREEN 222/222 files, 3268 tests (03:43:19Z-03:46:45Z), lint 0/5; 28c66f14 ALL GREEN 222/222, 3273
+(03:46:46Z-03:50:19Z), lint 0 errors / 6 warnings (the 6th: unused `i` at docs/research/citation-residual/count.ts:13, a
+research script, not shipped behaviour). DEPLOY_TESTS_SKIP allowed for all six chain shas. Heavy slot RELEASED 03:50Z.
