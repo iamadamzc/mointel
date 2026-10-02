@@ -18,14 +18,18 @@ pages, not written from memory. Sources are listed at the bottom.*
 Google says a change to the redirect address **"may take 5 minutes to a few hours to take effect."** So do this part
 well before tonight.
 
-1. Open **https://console.developers.google.com/auth/overview**, signed in as `iamadamzc@gmail.com`.
+1. Open **https://console.developers.google.com/auth/overview**, signed in as **your tmitrader.com Workspace
+   account** (so the sign-in app belongs to the business, not your personal Gmail).
 2. If it asks you to pick a project, **create a new one** named `TMI Trader`. (Keeps sign-in separate from the Google
    Sheet robot account.)
 3. Click **Get Started** and fill in:
    - **App name:** `TMI Trader`
-   - **User support email:** `iamadamzc@gmail.com`
-   - **Audience:** **External**
-   - **Contact information:** `iamadamzc@gmail.com`
+   - **User support email:** your tmitrader.com address (Google allows the signed-in account's address, or a Google
+     Group it manages, such as a support@ group).
+   - **Audience:** **External.** *Not Internal.* A Workspace account is offered "Internal", and Google says Internal
+     refuses everyone outside the organization with an `org_internal` error. That would lock out every customer and
+     your own Gmail, and the throwaway test would be refused by Google instead of by the desk, proving nothing.
+   - **Contact information:** your tmitrader.com address.
    - Agree to Google's policy and finish.
 
    *Google shows the app name on its sign-in screen only after a verification review. Until then people see the domain
@@ -65,6 +69,9 @@ well before tonight.
 
    **Tonight you must sign in with exactly this address.** If you sign in with any other Google account, the correct
    answer is "refused", and that is not a bug.
+
+   *Which account owns the Google project (Part 1) and which address is allowed in are separate things. If you would
+   rather sign in to the desk with your tmitrader.com address, tell Ops to seed that one instead, and use it tonight.*
 
 ## Part 3. A throwaway Google account
 
