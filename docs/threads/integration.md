@@ -1112,6 +1112,17 @@ WEB              Stood down before my message (removed its a4a06168 worktree). A
                  "Sign-in is temporarily unavailable." when Google env absent): open /signin only after Ops says keys are
                  on the server. Not re-sent to him: it is a tonight line, and Ops sequences sync-env before the release.
 PUSHED           bc31a4ac..c763a72f (my six + Web's c12745ac on Web's word). origin/main..main checked before push.
+HIS QUESTION     "new google workspace, own tmitrader.com, domain verified; set up the project there instead of my
+                 personal email?" ANSWERED yes + guide 09f6aca6: Workspace account owns the project; Audience EXTERNAL
+                 (Google: Internal -> org_internal for outsiders, would lock out customers and make the throwaway test
+                 Google's refusal); owner account != seeded address (still iamadamzc@gmail.com unless he tells Ops).
+                 NOT checked: whether a new Workspace's admin policy blocks Cloud project creation; told him so.
+OPS GATE         3b9c0a70 ALL GREEN 231/231, 3,358, lint 0, build rc 0 (/auth/probe, /signin in route table) (Ops's
+                 word, 15:41:46Z). 5d1c4943 red on one releaseRetention timeout (moot, not shipping). Box env ALREADY
+                 has IDENTITY_DB_PATH/TRADES_DB_PATH/OAUTH_REDIRECT_URI (Ops read names), so my sync-env-before-release
+                 condition is moot; sync-env only after his Google keys. Ops found sync-env would ERASE
+                 LEVELS_REFRESH_ENABLED (typed on the box, his levels ruling); fixed 4b0a03dc on main (read: +7, one
+                 key + comment). Ops is putting the one-release ask (3b9c0a70) to him, replacing the a4a06168 ask.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
