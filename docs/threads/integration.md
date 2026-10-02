@@ -3076,6 +3076,11 @@ error                                                  TYPE                     
   only the 10:03 read (a5178ac1), not the 08:10-      checked one number in the                  own
   09:5x claim. Neither option was measured then.      message and relayed the rest)              correction)
   Corrected to him next message. LESSON: verifying one number in a message does not verify its sentences.
+7 told HIM the worker "grew to 1.4 GB in about 75    a peer's number relayed unopened   YES      peer
+  minutes" from Ops's message; Ops had dropped the   (the family; a duration computed   (family) (Ops's own
+  date (25 h). I could have read the start time in   from two times I never compared)            correction,
+  the 21st's /proc (01:24:28Z 10-01) vs 02:39Z 10-02.                                             30448f8c)
+  Corrected to him next message. LESSON: a duration from two clock times needs both DATES read.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
@@ -3319,6 +3324,12 @@ MEMORY CANDIDATE Research c08400dd (read): leading = SecClient process-lifetime 
                  measured; doesn't explain "why tonight" alone. Ops asked: measurement 1 (distinct tickers vs RSS) now,
                  and a pre-07:00 ET projection; if it threatens his window, Ops brings HIM a research-worker-only restart
                  decision. Fix if confirmed: bounded LRU / drop large bodies, research worker only (not built).
+MEASUREMENT 1    Ops 30448f8c (read): killed run was ~25 h 15 min (01:24:28Z 10-01 to 02:39:45Z 10-02), NOT 75 min; 219
+                 jobs, 76 distinct tickers. Inference (Ops): ~17 MB/ticker -> research ~0.9-1.1 GB by 10:00 ET, box
+                 ~2.0-2.2 GB: NO threat to his window without a deploy (preflight blocks 04:00-20:00 ET). No pre-07:00
+                 restart. Threatens EVERY next ship night: fix (restart research before deploy / evict SEC cache /
+                 swap) = his decision after premarket RSS confirms the rate (Ops brings it). I had told HIM "75 minutes"
+                 (Ops's number, relayed unopened): corrected to him. Ledger 7.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
