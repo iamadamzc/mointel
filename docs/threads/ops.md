@@ -13460,3 +13460,16 @@ both died at 12:33Z; samples 12:03-12:33Z were SKIPPED by design, no box contact
 session): judge-once.sh every 10 min 10:05-19:55 ET + 20:05 ET final (commit log to docs/ops/leak-judge-2026-10-02.log,
 sha to Research + Integration); 10:02 ET movers verification + Design's slot; 10:37 ET levels [flush] check.
 If this session dies again, the successor re-creates these from this paragraph.
+
+**2026-10-02 10:0x-10:18 ET:**
+- MOVERS VERIFIED on 28c66f14 at 14:02Z: 3 boardReason MOVER rows after the 50 ranked (ORBS 56, IBRX 111, NAUT 82) = the
+  store's eligible >=10%/>=500k $0.25-$20 names outside the top 50; ranked ones unlabelled, discovery_eligible=0 excluded.
+  Premarket zeros were real (poll grep returns 10 now). Not a defect.
+- His "yes, snapshot" IN THIS CHAT (his relayed yes in Research 60c64b0a 13:59:32Z verified first; classifier refused a
+  relayed yes). Cron 20:12 ET, after the 20:05 ET judge final. Target data/market-prod-2026-10-02.db.
+- GNPX blue sky (Integration's ask): production daily_bars max high 855,795.60 on 2018-04-30, split_factor 44000,
+  adjustment split, alpaca-daily-deep fetched 2026-09-23; same as Design's local copy. Integration: defect real, fix by
+  Research + Design on top of 9189b569.
+- ONE LADDER 9189b569e9577dc578b14b00a856a3dd0bd69b4c (annotated tag 7defb225 -> it; on 28c66f14, 2 commits, 5 files):
+  release gate ALL GREEN 222/222 files (pre-registered 222), 3,278 tests, lint 0 errors / 6 warnings, 14:18:06Z; local
+  build rc 0 (14:18:38Z). DEPLOY_TESTS_SKIP allowed for this sha. Ships on his yes, /proc = 28c66f14 at launch, after 20:00 ET.
