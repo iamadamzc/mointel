@@ -13455,3 +13455,8 @@ that cannot see them. Verify after 10:00 ET with a positive control before telli
 Snapshot for Research: no answer before the 03:30 ET cutoff -> after 20:00 ET tonight, still on his yes.
 Wake 14:01Z: movers verification; Design's heavy slot (levels-box-cost on a local copy, next dev :3100, gate 2afd15bc);
 levels post-ship [flush] check (09:30-10:30 ET vs 2026-09-30) after 14:30Z.
+**12:33Z:** after the session restart, background shells are killed at ~30 min (the restarted sampler and the wake timer
+both died at 12:33Z; samples 12:03-12:33Z were SKIPPED by design, no box contact). Replaced by session cron (dies with this
+session): judge-once.sh every 10 min 10:05-19:55 ET + 20:05 ET final (commit log to docs/ops/leak-judge-2026-10-02.log,
+sha to Research + Integration); 10:02 ET movers verification + Design's slot; 10:37 ET levels [flush] check.
+If this session dies again, the successor re-creates these from this paragraph.
