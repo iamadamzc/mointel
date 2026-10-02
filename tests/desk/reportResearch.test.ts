@@ -151,6 +151,25 @@ describe('the research a report may use, as of its checkpoint', () => {
     expect(research.company.business).toBe('Cloud communications software.');
   });
 
+  it('v6 fix (d): strips citation tokens from model text, a lone id only when the dossier cited it', () => {
+    const research = reportResearch(
+      version({
+        businessDescription: 'Cloud communications software. [Source 115982]',
+        catalyst: {
+          ...dossier().catalyst,
+          summary: 'Results announced [96174, 96176]. Shares rose [9] premarket. The [2026] plan stands.',
+          whyTradersMayCare: 'A miss that conflicts with the run. [7]',
+          unknowns: ['Guidance not in what we have [Source 9].'],
+        },
+      }),
+      SOURCES,
+    );
+    expect(research.company.business).toBe('Cloud communications software.');
+    expect(research.catalyst.summary).toBe('Results announced. Shares rose premarket. The [2026] plan stands.');
+    expect(research.catalyst.whyTradersMayCare).toBe('A miss that conflicts with the run.');
+    expect(research.catalyst.unknowns).toEqual(['Guidance not in what we have.']);
+  });
+
   it('never carries the float number, whatever the dossier holds', () => {
     const research = reportResearch(version(), SOURCES);
     const text = JSON.stringify(research);

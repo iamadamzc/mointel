@@ -20,6 +20,7 @@
  */
 
 import { withoutEmDash } from '../../dashboard/prose';
+import { citedSourceIds, withoutCitations } from '../../research/citations';
 import { countryName } from '../../research/sec/stateCountry';
 import type {
   CatalystGrade,
@@ -101,12 +102,26 @@ function clean(text: string | null | undefined): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+/**
+ * Model-written text, cleaned of citation tokens as well (reports v6 fix (d);
+ * queue item (1)(d)): "[Source 115982]", "[96174, 96176]", and a lone short id
+ * the dossier itself cited ("[2040]"), by the one shared rule
+ * (`lib/research/citations.ts`). Source TITLES are not model text and keep
+ * `clean` alone.
+ */
+function cleanProse(text: string | null | undefined, citedIds: ReadonlySet<number>): string | null {
+  if (text === null || text === undefined) return null;
+  return clean(withoutCitations(text, citedIds));
+}
+
 export function reportResearch(
   version: ResearchAnalysisVersion,
   sourcesById: ReadonlyMap<number, ResearchSource>,
 ): ReportResearch {
   const { dossier } = version;
   const { catalyst, structure } = dossier;
+  const cited = citedSourceIds(dossier);
+  const prose = (text: string | null | undefined) => cleanProse(text, cited);
   const shares =
     structure.sharesOutstanding !== null && structure.sharesOutstandingDate
       ? { count: structure.sharesOutstanding, asOf: structure.sharesOutstandingDate }
@@ -116,20 +131,20 @@ export function reportResearch(
     analysisVersionId: version.id,
     generatedAt: version.generatedAt,
     company: {
-      name: clean(dossier.companyName),
+      name: prose(dossier.companyName),
       country: countryName(dossier.country),
-      business: clean(dossier.businessDescription),
+      business: prose(dossier.businessDescription),
     },
     catalyst: {
       grade: catalyst.catalystGrade,
       type: catalyst.catalystType,
       status: catalyst.catalystStatus,
       confidence: catalyst.confidence,
-      summary: clean(catalyst.summary),
+      summary: prose(catalyst.summary),
       eventTimestamp: catalyst.eventTimestamp,
-      whyTradersMayCare: clean(catalyst.whyTradersMayCare),
+      whyTradersMayCare: prose(catalyst.whyTradersMayCare),
       plausiblyExplainsMove: catalyst.plausiblyExplainsMove,
-      unknowns: catalyst.unknowns.map(clean).filter((item): item is string => item !== null),
+      unknowns: catalyst.unknowns.map(prose).filter((item): item is string => item !== null),
       sources: [...new Set(catalyst.evidenceSourceIds)]
         .map((id) => sourcesById.get(id))
         .filter((source): source is ResearchSource => source !== undefined)
@@ -149,12 +164,12 @@ export function reportResearch(
         status: block.status,
         effectiveDate: block.effectiveDate,
         amountShares: block.amountShares,
-        sourceFiling: clean(block.sourceFiling),
-        registrationStatus: clean(block.registrationStatus),
+        sourceFiling: prose(block.sourceFiling),
+        registrationStatus: prose(block.registrationStatus),
         dollarCapacity: block.dollarCapacity,
-        terms: clean(block.terms),
-        holderRestrictions: clean(block.holderRestrictions),
-        eligibilityAssessment: clean(block.eligibilityAssessment),
+        terms: prose(block.terms),
+        holderRestrictions: prose(block.holderRestrictions),
+        eligibilityAssessment: prose(block.eligibilityAssessment),
         confidence: block.confidence,
       })),
     },
