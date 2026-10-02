@@ -1,4 +1,4 @@
-# The gate probe — design, and what it cannot prove
+# The gate probe: design, and what it cannot prove
 
 **Web, 2026-09-30, against `69bafba`.** Owner of this file: **Web**. *Written to
 Integration's order call: Web designs, Ops builds after tonight's releases,
@@ -14,7 +14,7 @@ was built.*
 ## 1. THE PROBLEM, STATED EXACTLY
 
 **The in-app gate cannot be exercised from outside the box, and that is not an
-oversight — it is what Basic Auth does.**
+oversight. It is what Basic Auth does.**
 
 ```
 Basic Auth ON   an outside client is refused 401 AT NGINX and never reaches the app,
@@ -43,7 +43,7 @@ wearing one name, and the probe answers three of them.**
 | **D** | **a person with NO Basic-Auth password can complete sign-in end to end** | **NO. Not Friday, not by any probe.** |
 
 > **D IS NOT PROVABLE WHILE BASIC AUTH IS ON, BY CONSTRUCTION.** *Such a person
-> cannot reach `/signin` or `/desk` at all — nginx refuses them first.* **D
+> cannot reach `/signin` or `/desk` at all, because nginx refuses them first.* **D
 > becomes testable only in the change that removes Basic Auth, which is why that
 > is its own night and why a green probe must never be read as permission to
 > drop the password.**
@@ -56,16 +56,51 @@ what was measured.*
 
 ## 3. THE DESIGN
 
-### 3a. It needs NO new nginx exemption, and that is deliberate
+### 3a. CORRECTED 2026-10-02: it needs no nginx change AT ALL, and the original reason was wrong
 
-**Put the probe under `/auth/`.** *Friday already grants `^~ /auth/` for the
-OAuth flow, and a prefix location covers `/auth/probe`.*
+> **WHAT THIS SECTION SAID, AND WHY IT WAS WRONG.** *It said the probe needs no new
+> exemption because "Friday already grants `^~ /auth/`".* **That premise does not
+> hold: `deploy/aws/nginx-locations.conf` at `bc31a4ac` states plainly that
+> "`/signin` and `/auth/` are deliberately NOT here either, they arrive with
+> in-app auth", and its negative control expects `/signin` to return 401.** *So
+> the exemption is planned, not granted, and I wrote a dependency on something
+> that does not exist.* **Caught by the 23rd Integration seat, which read the conf
+> rather than my sentence.**
 
-> **THE CHARTER'S RULE IS THAT EACH EXEMPTION IS A HOLE IN A UNIFORM RULE,
-> GRANTED ONCE AND SPENT FOREVER.** *A probe needing its own exemption would
-> spend a fifth hole to test the fourth.* **Living inside an exemption already
-> being granted costs nothing and leaves nothing behind in `nginx.conf` to
-> forget to remove.**
+**THE CONCLUSION SURVIVES AND THE REASON IS BETTER: no nginx change is needed
+tonight, because BASIC AUTH AND THE IN-APP GATE ARE INDEPENDENT LAYERS.**
+
+*Read from the conf: `location /` (line 357) proxies everything unexempted to the
+app, with the server-level `auth_basic` in front of it.* **So `/auth/probe`
+returns 401 only to a client WITHOUT the password. A client that supplies it
+reaches the app and exercises `authenticate()` normally.**
+
+```
+client without the password   ->  401 at nginx, never reaches the app
+client WITH the password      ->  reaches /auth/probe, gate decides, state returned
+```
+
+**AND ALL THREE MEASURABLE CLAIMS ONLY NEED THE SECOND KIND OF CLIENT:**
+
+| claim | client | why no exemption is needed |
+| --- | --- | --- |
+| **A admitted** | his browser, password cached, signed in on the seeded address | the session cookie is what the gate reads; Basic Auth is upstream of it |
+| **B refused** | same browser, signed in on the throwaway account | same |
+| **C anonymous** | any credentialed client with NO session cookie | the gate reads no cookie and answers anonymous; the outer layer is irrelevant to that answer |
+
+> **THIS IS WHAT SECTION 1 ALREADY SAID AND SECTION 3a CONTRADICTED.** *Section 1:
+> "it is the OUTER gate that is untestable from here. The INNER gate is a different
+> question and this document is only about the inner one."* **Having established
+> that, I then wrote an outer-gate dependency into the design.** *Second
+> self-contradiction of the week in my own documents, after a sentence that said
+> "one condition" four paragraphs under a table listing four.*
+
+**SO THE `^~ /auth/` EXEMPTION BELONGS TO STEP 5, WITH BASIC-AUTH REMOVAL, WHICH IS
+WHERE THE ROUTE SPEC ALWAYS PUT IT.** *It is needed by a person who cannot pass
+Basic Auth, and tonight has no such person: he has the password cached and so does
+every client any seat can run.* **Tonight therefore makes NO nginx edit and
+performs NO reload, which removes a class of risk from the night rather than
+adding one.**
 
 ### 3b. What it does, and the list of what it must NOT do is longer
 
@@ -123,19 +158,30 @@ curl -sS -o /dev/null -w "%{http_code}\n" https://tmitrader.com/auth/probe   # e
 ```
 
 > **AND IT NEEDS A POSITIVE CONTROL, or a 404 proves nothing:** *`/auth/probe`
-> returns 404 when the route is absent, when the flag is off, AND when nginx
-> never exempted `/auth/` in the first place.* **Before trusting the 404, confirm
-> the same client gets a non-404 from `/signin`** — *which proves the exemption
-> is live and the client is reaching the app at all.* **A 404 from a client that
-> cannot reach the app is the same failed check this desk keeps rediscovering.**
+> returns 404 when the route is absent, when the flag is off, and when the client
+> simply cannot reach the app.* **CORRECTED 2026-10-02: the control is a 200 from
+> `/` on the same client, NOT a non-404 from `/signin`.** *Two reasons the original
+> was wrong. `/signin` is not exempt, so an uncredentialed client gets 401 there,
+> which is non-404 and would have passed a control that proves the opposite of what
+> it claims. And `/signin` may not even be deployed: it was absent from production
+> at `46d9f9d` and its hunks were dropped from the em-dash cut for that reason, so
+> a 404 there could be the truth about `/signin` rather than about the client.*
+> **`/` is exempt, app-served and has existed since release `1c23322`, so a 200
+> from it proves the client reached Next.** *Then a 404 from the probe means the
+> route or the flag is absent, which is the only thing the control needs to
+> isolate.*
 
 ---
 
 ## 4. HOW EACH CLAIM IS ACTUALLY MEASURED ON FRIDAY
 
-**All three from a client with NO cached Basic-Auth password** — *the probe is
-reachable to such a client because `^~ /auth/` is exempt, which is exactly why it
-is worth having.*
+**All three from a client that CAN pass Basic Auth, which is every client he or a
+seat can run tonight.** *CORRECTED 2026-10-02: this read "a client with NO cached
+Basic-Auth password", on the same wrong premise as the old section 3a. The probe
+sits behind `location /`, so an uncredentialed client is refused at nginx and never
+reaches it. What the gate decides does not depend on the outer layer, which is why
+no exemption is needed tonight. The `curl` for claim C therefore carries the
+Basic-Auth credential and no session cookie.*
 
 | claim | how | expected |
 | --- | --- | --- |
@@ -164,7 +210,7 @@ and a deletion commit.** *Ops's build is well under an hour; the flag and the
 no-parameters rule are the only parts that need care.*
 
 **The alternative that was considered and rejected: prove the gate by unit tests
-alone.** *The suite already does that — 145 green — and it is why the gate is
+alone.** *The suite already does that (145 green) and it is why the gate is
 believed to be correct.* **What it cannot do is prove that THIS box, with THIS
 identity database, THIS env and THIS nginx in front of it, decides the same way.**
 *Every failure this desk has had in the last month has been in that gap: a
