@@ -142,6 +142,13 @@ DISCOVERY_PRICE_MIN=0.25
 CAPTURE_PRICE_MIN=0.25
 CAPTURE_PRICE_MAX=50
 
+# HIS WORD 2026-10-02 (the levels release): the research worker refreshes
+# resistance levels at each 5m close. It was typed onto the box at 02:38:14Z and
+# first ran that morning; set HERE for the same reason as the two above, or the
+# first sync after it (the Google keys) erases it and the next restart turns
+# levels off with nothing reporting it.
+LEVELS_REFRESH_ENABLED=1
+
 # --- carried over from .env.local ----------------------------------------
 $LOCAL_ENV
 EOF
