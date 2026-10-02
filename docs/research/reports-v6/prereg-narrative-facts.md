@@ -47,7 +47,7 @@
 | F6 | Traded, `previous_close > 0`, `rth_final_high >= 1.5 * previous_close` |
 | F7 | F6 and `rth_final_close <= previous_close` |
 
-- **Every value is latched at the bell and never overwritten:** `repo.ts:969-974` on the production line (close, high, low, volume, rvol, rank: COALESCE first write). `rth_final_frozen_at` reads 20:00Z, which is 16:00 ET, on every local date checked.
+- **Every value is latched at the bell and never overwritten:** `repo.ts:969-974` on the production line (close, high, low, volume, rvol, rank: COALESCE first write). `rth_final_frozen_at` was READ only as the earliest value among the no-close rows: 20:00:00Z (16:00 ET) on each date 09-22 to 09-29. Not checked on every row.
 - **MEASURED GAP, on the local copy (09-22 to 09-29):** names with a price but NO 16:00 close are outside this population. In range and traded: 6, 0, 2, 2, 3, 1 per day. On 09-22 one of them moved 50% or more by `session_high`. In-range rows with a close but no 16:00 high all had zero regular-session volume, so they cannot be movers.
 - **So the recap's computed facts carry one more number, G**, the count of in-range traded names with no 16:00 close. It is shown to the writer as a footnote fact and never hidden.
 - **The population check then becomes this POSITIVE control:** before the first run, on a local copy, G and the population count are printed for every date, and F6 must find at least one 50% mover on at least one date. Otherwise the instrument is broken.
