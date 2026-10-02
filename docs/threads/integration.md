@@ -3126,6 +3126,12 @@ SI LABELS REV    Research 24613e8c on his question to Research ("is 14% consider
                  Squeeze Watch (third party, FINRA-derived, Sep 15 2026, 5,447 stocks: median 3.4%, 17% > 10%, 5.7% > 20%,
                  median DTC 4.0; not reproduced). Size: Normal <5 / Above normal 5-10 / Elevated 10-20 / Heavy 20%+; chip
                  only at Heavy or Very deep. I had relayed the FIRST table to him: corrected to him in the next message.
+ONE LADDER CUT   9189b569e9577dc578b14b00a856a3dd0bd69b4c (tag design/one-ladder-on-28c66f14) REPLAYED + APPROVED BY
+                 LITERAL SHA: on /proc 28c66f14, 2 linear (2afd15bc, 9189b569), 5 files +334/-145, no deploy/db/worker/
+                 package, 0 U+2014, 222 tests; Design gate 222/222, 3,278, build 0; rendered on real rows. Ops: gate + his
+                 yes, next ship night. Design P1 + MOVERS PASS live (review link 63). AR commit ordered on top of 9189b569.
+BLUE-SKY LEAD    Design: local GNPX blue-sky row 855795.60 (2018 price) "split-adjusted sessions". lib/market/blueSky.ts =
+                 Research. Ops: one light production read; Research: cause from code. Nothing to him until both land.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
