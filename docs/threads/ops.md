@@ -13379,3 +13379,9 @@ Integration): measured live on the first build of the next ship night, MemAvaila
 **Orphans killed on his word in this chat ("kill the orphan processes"):** pids 20200/22704/24128 (vitest, created
 2026-09-30 12:50 local, re-verified by pid + creation time + command line just before) stopped; 0 remain. Housekeeping item 5
 orphan line CLOSED. Free commit after: 3,435 MB (not comparable to 03:17:51Z's 3,354: Research's gate may be running).
+
+**Research, ~03:2xZ:** leak fix gate PASSED on main f8025aad (contains 50196f0b): tsc 0, 213/213 (Research's check, not the
+deploy cut's gate). Judge window: option (b), prereg amended before ship at 7773b562 (samples 04:00-07:00 and 10:00-20:00
+ET, child pid RSS); nothing to him, no on-box sampler. Read here: sound; added guard: every sample logs child pid, its start
+time and NRestarts; any change in the day (esp. across 07-10) = NOT JUDGEABLE + same-day report, never PASS. Research KEEPS
+the heavy slot for the review-link levels mirror gate (branch from b5a35fda), done before 07:00 ET.
