@@ -3248,6 +3248,9 @@ V6 PLAN          e144d87c (read): N narrative + B tags + a-d fixes + checker tri
 LEVELS SHIPPING  Ops: HIS "yes" in Ops's session 2026-10-02T02:37:49Z to the four-condition question. /proc 02:32:23Z =
                  e8822583 x3, market 1b5ead6. LEVELS_REFRESH_ENABLED=1 appended 02:38:14Z (backup .bak-20261002T023814Z;
                  25 -> 26 keys; HISTORY_STORE_ENABLED absent). b5a35fda launched (Ops). Awaiting /proc + /api/levels read.
+V6 STEP 1        771898f4 (proposal; sent to Marketing + Design). ORDER CALLS: v6 base = PRODUCTION line /proc after
+                 tonight (computeRangeCounts on 2a625a5b; main only a comment at totals.ts:18, read); narrative REPLACES
+                 the premarket-only overall line for all four kinds, reading the frozen row (approved; he sees it step 5).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
