@@ -44,7 +44,11 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state: 2026-10-01 14:16 UTC / 10:16 ET (sixth seat `local_c29a82bd`, RETIRING on his "yes hand over"; clock read via zoneinfo)
+## Live state: 2026-10-02 02:52 UTC / 2026-10-01 22:52 ET (seventh seat `local_dfce21d4`, opened 02:32:40Z; clock read via zoneinfo)
+
+**Seventh seat, first entries.** Ops /proc 02:32:23Z (box clock): web/research/assess on `e8822583`, market on `1b5ead6`; NOTHING of tonight's three had shipped; levels put to him ~22:33 ET, his answer not in at that read. **/desk on production is behind Basic Auth that Ops does not hand out: Design cannot read /desk unless he opens it himself (P1).** **Movers label BUILT: tag `design/moving-on-e0f18bbb` -> `98905b08`** (row M). **His new complaint on the reports, via Integration 2026-10-02: "there's still no opening narrative and no design element, its hard to read, this was brought up." Row B is next after the label; Research started v6.**
+
+*Sixth seat's header, kept for its rows:* 2026-10-01 14:16 UTC / 10:16 ET (`local_c29a82bd`, retired and archived).
 
 **Nothing uncommitted. Nothing of Design's in flight.** The previous live table (every row's full history, including row A's and row B's specs, row 5b's casing rule and the levels picks) moved verbatim to [`design-archive-2026-09.md`](design-archive-2026-09.md), section "design.md live state at the sixth seat's hand-off". Read it for any row below that says "spec in the archive".
 
@@ -60,13 +64,13 @@ for design documents.
 
 | # | Item | State | Trigger / next step |
 | --- | --- | --- | --- |
-| P1 | **Levels on `/desk` after the ship** | Owed | Trigger: Ops says the levels cut is live. Review links have NO levels route, so this is a `/desk` read (ask him or Ops how; it has not been done before). A real computed row, collapsed and expanded, 1,024 |
+| P1 | **Levels on `/desk` after the ship** | Owed, BLOCKED on access | Trigger: Ops says the levels cut is live. Review links have NO levels route. **Ops (02:32Z): /desk is behind Basic Auth; Ops does not hand out or type it, so a visual read is not Design's unless he opens it. Ops's own ordered check is one server-side curl of /api/levels for a top-5 name after the first refresh; Ops sends the body.** Ask him only if a visual read is still wanted after that |
 | P2 | **(A) live on a review link after the ship** | Owed | Trigger: Ops says 840741d3 (or 2a625a5b) is live; never 07:00-10:00 ET. Review links now carry `/api/reports` (35f45d3c). Read: cards in writer order, no section heading, figures set apart, path with three labels; Sheet labels in comma form in table, tooltips, aria-labels, dossier; no citation tokens on board or dossier. Revoke, confirm dead by content, close the tab |
 | C | **Citation tokens** | Render of 2a625a5b PASS, 2026-10-01 from 10:12 ET (method and numbers: commit f51e3215's row text, kept in the archive). OPEN FINDING: lone 4-digit ids ("[5188]") survive by the pattern's year rule; matters only if production's current dossiers cite ids below 10,000 | **COUNTED (Integration, 313a2485): 59 of 1,178; ships as is; the follow-up is Research's** (docs/ops/citation-lone-4digit-2026-10-01.txt). Nothing for Design |
 | L-cos | **Levels cosmetics** (Integration: after the levels ship, own commit, no re-cut) | Not built | (1) a span that rounds to one price prints "4.62 to 4.62": compare formatted values; (2) distance column is 56 px, text from +1000% runs into the gap (a six-digit percent would collide); (3) stale "memoizes per close" comment in ResistanceLevels.tsx |
 | AR | **Discovery row aria-label says "[em dash] catalyst."** when a name has no grade (screen readers only) | Not built | Own commit on main (Integration's call) |
-| M | **Big movers** (his VEEA ruling) | **HELD on his question** ("we're slowly becoming a scanner"). Design's built display parked as tag `design/movers-on-558f5cb5` -> `aee14900` (on Research's research/movers 558f5cb5). Design's two-principles paragraph sent to Research (local_5f4bfcf8) for its side-by-side | Do nothing unless he rules for the movers group. If he does: render it (0, 1, 3 movers; a filter hiding one; evening board none; 1,280 and 1,024), gate, send Research the sha |
-| B | **Report window option B** (tags + his session narrative) | After (A) ships. Spec in the archive (row B): chips from Research's computed fields, opening block reserved for his session narrative, Marketing's guardrails (never "sell"/"selling", float only a verdict, shares outstanding always dated, cycle in comma form); the current B mock breaks three of them | Research + Marketing lead data and words; Design the surface |
+| M | **Movers: the "moving" label** | **RULED** (verified at his turns in Integration's 1bfab363: 15:36:50Z queued input "if something is labeled as moving it should just be ranked based on all other parameters normally not placed in a separate group"; 15:53:57Z "10% with 500k shares, cap 15"). Research built rows at e0f18bbb. **Design's label BUILT: tag `design/moving-on-e0f18bbb` -> `98905b08`** (1 over e0f18bbb): "moving" on its own line under the ticker (beside it overflowed the 96 px cell at 1,024), hover from the row's own move/volume/RVOL rank, row aria "moving", caption "N moving" on the day board. Rendered on a store copy (0/1/3 movers, filter, evening board, Top 50 under Rank, Gap sort, 1,280/1,024). Gate (Ops cleared the slot): 221/221, 3,257; lint 0 errors; build 0; typecheck 0. `design/movers-on-558f5cb5` is VOID (Integration) | Integration replays; ships on his yes via Ops after tonight's three. Then read it live |
+| B | **Report window option B** (tags + his session narrative) | **NEXT (Integration's order, after the label): bring Integration B's surface spec fixed against Marketing's guardrails so Research's v6 writer can target it.** His words 2026-10-02 via Integration: "there's still no opening narrative and no design element, its hard to read". Was: after (A) ships. Spec in the archive (row B): chips from Research's computed fields, opening block reserved for his session narrative, Marketing's guardrails (never "sell"/"selling", float only a verdict, shares outstanding always dated, cycle in comma form); the current B mock breaks three of them | Research + Marketing lead data and words; Design the surface |
 | 5b | **Company-name casing** | Not built; spec in the archive (row 5b) | After (A) |
 | N | **One Now-cell observation** (09-30 15:07 ET, every row in the /min form) | Ops's logs | If it recurs, it is the column flickering to per-minute for a poll |
 | 5 | Follow-ups, not built | | Poll: a visible "not updating" state; the same abort pattern in `useDashboard`; the sorted `Now` header renders on three lines |
@@ -581,6 +585,15 @@ probe came before any edit, as the ledger says it must.**
 | Wrote "~10:20 ET" for the citation render into row C; it was an estimate, the checkout clock said 10:12 ET. Corrected at hand-off | TIME-BEFORE-CLOCK (the first seat's class, in this charter) | Yes, a charter class; first time this seat | Self, at hand-off |
 
 **Not an error, a limit: the Now-cell live read.** The auto-mode permission classifier refused reading the review link's token (twice; link 57 created, revoked unused). Not worked around. Put to him.
+
+**Seventh seat, opened 2026-10-02 02:32 UTC.**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Put "moving" beside the ticker; it was 101 px in a 96 px cell at the 1,024 floor (a wide four-letter ticker reached 118, into the price column). Built and unit-tested before any width was measured | BUILT-BEFORE-MEASURING (the 1,024 floor is a stated commitment; a label added to a fixed cell needs its width before the code) | No | Self, in the render, before commit; moved to its own line |
+| A clock shim for the local render subclassed Date; Next rebuilt Date without the inherited statics and the server threw `Date.parse is not a function` on every request | (tooling, render only; no product code) | No | Self, from the server log; statics copied as own properties |
+
+**Render method that worked (for the next seat):** a `--require` clock shim in `NODE_OPTIONS` (`DESIGN_FAKE_NOW`) on the temporary `design-local` launch entry puts the local store's 2026-08-18 session on the DAY board at 14:45Z and on the evening board at 22:00Z; the hidden pane stops the poll, so for a local render only override `document.hidden`/`visibilityState` and dispatch `visibilitychange`.
 
 ## Where the rest of the record is
 
