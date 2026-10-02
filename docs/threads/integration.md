@@ -3086,6 +3086,12 @@ error                                                  TYPE                     
   Commercial"; my message 8a68728e asked FINRA terms   my own send without reading it)
   + Alpaca products only. Asked for real after
   Commercial's 58f2500b; told him. LESSON: before saying "I've asked X", read the sent message.
+9 told HIM the ladder "would show not blue sky,      a peer's claim relayed unopened    YES      peer
+  overhead at $855,795.60"; I verified that the       (family: I checked two facts in   (family) (Research's
+  safeguard fields have no reader and the stored      the message, the code-read and            own run)
+  row exists, NOT the label the code produces. Run:   the row, and relayed the sentence
+  GNPX shows UNVERIFIED (two vintages). Corrected.    that joined them)
+  LESSON: two verified premises do not verify the conclusion that joins them; ask whether it was RUN.
   ANSWERED (Commercial f2fd76f1 §8): Alpaca borrow/locate data falls under the same Terms "Content" clause as the live
   tape (personal/non-commercial default; 30 days' notice to make it available to others). Locate quotes are
   ACCOUNT-SPECIFIC (Alpaca's words); shortable/borrow_status reads as a symbol attribute (one source). Told him.
@@ -3137,6 +3143,11 @@ BLUE-SKY LEAD    Design: local GNPX blue-sky row 855795.60 (2018 price) "split-a
                  but read nowhere else, read here). Ops: production GNPX 855,795.60 2018-04-30 factor 44000 (not on board
                  today). ORDER: Design picks (a)/(b) [(b) UNVERIFIED default] + window-line fix; Research blueSky.ts +
                  Design LevelLadder on top of 9189b569, one cut; scale count via Ops. TOLD HIM as a defect + fix.
+                 CORRECTED (Research RAN the code on the local 09-29 copy): GNPX has two vintages -> UNRECONCILED ->
+                 "BLUE-SKY LEVEL UNVERIFIED" (not the absurd label); BTCT refused as isolated spike. Defect REAL BUT
+                 CONDITIONAL: absurd label when rows vouched (single fetch date, e.g. after a deep pass) AND ceiling
+                 corroborated. I had told HIM the absurd label "would show" (Research's unrun claim, relayed): corrected
+                 to him. Ledger 9. Scale = real functions over every symbol on tonight's snapshot (approved).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
