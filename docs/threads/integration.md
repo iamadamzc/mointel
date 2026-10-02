@@ -3106,6 +3106,13 @@ HIS, TO RESEARCH (Research's transcript 60c64b0a, per Research): (1) "yes to the
                  around what the paramters should be on short interest classification ... informative and helpful." ->
                  Research method doc (published conventions + calibration plan, no data pulled: FINRA terms bar software
                  development use; Commercial asked about a research-licensed source). Pauses when the copy lands.
+CROWDING SOURCES Commercial 38a1f9c3 §9 (spot-read): no source is market-wide for $1-$20, timely AND displayable at a
+                 published price. Ortex has CTB + SI ($49/$149/mo; API $49/$149/$499) but consumer terms bar display/
+                 redistribution/ML (cl. 4.4, 6.4); redistribution licence = sales-priced; CTB universe "US-S 500" (small-cap
+                 coverage NOT established). Massive: no fee/utilization endpoint. Alpaca: account-specific only. Others
+                 unread/institutional. Rec: don't plan fee/utilization now; displayable path = FINRA SI via Massive
+                 Business (positions, 2-3 weeks stale). Vendor enquiries (Ortex universe + redistribution price; Alpaca
+                 business product) are HIS. Flag: a personal Ortex plan to evaluate may breach its terms (counsel). Told him.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
