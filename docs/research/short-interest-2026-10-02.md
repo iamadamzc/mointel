@@ -39,7 +39,7 @@
 - The desk has no float of its own. Every float on the board is the Sheet vendor's number, which the desk does not vouch for (`lib/research/float.ts:4-9`).
 - The supply copy's rule is "The denominator is SHARES OUTSTANDING, never float" (`lib/dashboard/supply.ts:8-12`). Float can never exceed shares outstanding, so dividing by the filed count can only understate the true ratio. Calling that "of float" would turn a guaranteed lower bound into a false point estimate.
 
-The honest form uses the same rule: **short interest divided by the dated, filed shares outstanding**, printed as a lower bound ("at least N% of float", or "N% of shares outstanding"), with both dates shown.
+The honest form uses the same rule: **short interest divided by the dated, filed shares outstanding**, printed as a lower bound ("at least N% of float", or "N% of shares outstanding"), with both dates shown. **Corrected in the addendum below:** it is a lower bound ONLY when no shares were issued, and no split happened, between the count's date and the settlement date. The addendum gives the gate; when the gate fails, no percentage is printed.
 
 **Two things that look like short interest and are not:**
 
@@ -57,7 +57,7 @@ The honest form uses the same rule: **short interest divided by the dated, filed
 
 1. **Always print the settlement date beside the number**, for example "Short interest 2.1M sh as of Sep 15", and never call it current. A number with no date reads as today's.
 2. **Print FINRA's days to cover only as FINRA's,** with its date. Do not recompute it against today's volume: that divides a stale numerator by a live denominator and yields a number that never existed.
-3. **% of float only as the lower bound** from the filed share count, with both dates, per `supply.ts`.
+3. **% of float only as the lower bound** from the filed share count, with both dates, per `supply.ts`, and only under the addendum's gate (no issuance and no split between the two dates).
 4. **Show the change from the previous cycle** with both dates, because a direction is less damaged by age than a level.
 
 ## 3. Where it would fit, if he wants it
