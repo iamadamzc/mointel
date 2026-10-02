@@ -171,13 +171,50 @@ export function etDayAndClock(raw: string | null | undefined): { date: string | 
   return { date, clock: Number.isFinite(ms) ? etClock(new Date(ms)).slice(0, 5) : null };
 }
 
-function datesOf(raw: string | null): string[] {
-  const { date } = etDayAndClock(raw);
-  return date ? [date] : [];
+/**
+ * A DATE-ONLY value as the calendar date it was STORED as, never shifted by a
+ * time zone (reports v6 fix (b)): "2026-03-27T00:00:00Z" is March 27, not the
+ * March 26 an ET conversion makes of a midnight-UTC value (HIT), and a date-only
+ * source's noon placeholder (`lib/research/time.ts`) is its own UTC date. A
+ * value with no leading ISO date falls back to `etDayAndClock`.
+ */
+export function calendarDate(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const match = /^(\d{4}-\d{2}-\d{2})/.exec(raw.trim());
+  return match ? match[1]! : etDayAndClock(raw).date;
 }
 
-function clockOf(raw: string | null): string | null {
-  return etDayAndClock(raw).clock;
+type WhenSource = Pick<ReportResearch['catalyst']['sources'][number], 'publishedAt' | 'precision'>;
+
+/** A cited source's date and clock: an EXACT or INFERRED instant is read in ET; anything else is a calendar date with no clock. */
+export function sourceWhen(source: WhenSource): { date: string | null; clock: string | null } {
+  if (!source.publishedAt) return { date: null, clock: null };
+  if (source.precision === 'EXACT') return etDayAndClock(source.publishedAt);
+  if (source.precision === 'INFERRED') return { date: etDayAndClock(source.publishedAt).date, clock: null };
+  return { date: calendarDate(source.publishedAt), clock: null };
+}
+
+/**
+ * The catalyst event's date and clock (reports v6 fix (c)). The model writes
+ * `eventTimestamp` with no precision, so its clock is trusted ONLY when a cited
+ * EXACT or INFERRED source carries that same instant: DKI's 12:00:00Z is genuine
+ * (source 120192 is EXACT), CMCT's identical value is a date-only placeholder
+ * (source 118584 is DATE_ONLY). Otherwise the event is a calendar date with no
+ * clock. The rule follows source precision, never "noon means date-only".
+ */
+export function eventWhen(catalyst: Pick<ReportResearch['catalyst'], 'eventTimestamp' | 'sources'>): {
+  date: string | null;
+  clock: string | null;
+} {
+  const raw = catalyst.eventTimestamp;
+  if (!raw) return { date: null, clock: null };
+  const at = Date.parse(raw);
+  const exact =
+    Number.isFinite(at) &&
+    catalyst.sources.some(
+      (s) => (s.precision === 'EXACT' || s.precision === 'INFERRED') && s.publishedAt !== null && Date.parse(s.publishedAt) === at,
+    );
+  return exact ? etDayAndClock(raw) : { date: calendarDate(raw), clock: null };
 }
 
 export function researchAllowance(research: ReportResearch | null): ResearchAllowance {
@@ -194,13 +231,15 @@ export function researchAllowance(research: ReportResearch | null): ResearchAllo
   harvest(catalyst.summary);
   for (const source of catalyst.sources) {
     harvest(source.title);
-    for (const day of datesOf(source.publishedAt)) allowance.dates.add(day);
-    const clock = source.precision === 'EXACT' ? clockOf(source.publishedAt) : null;
-    if (clock) allowance.clocks.add(clock);
+    const when = sourceWhen(source);
+    if (when.date) allowance.dates.add(when.date);
+    if (when.clock) allowance.clocks.add(when.clock);
   }
-  for (const day of datesOf(catalyst.eventTimestamp)) allowance.dates.add(day);
-  const eventClock = clockOf(catalyst.eventTimestamp);
-  if (eventClock) allowance.clocks.add(eventClock);
+  // The event's clock only when a cited EXACT/INFERRED source carries it (fix c);
+  // a date-only value at its stored calendar date (fix b). Same rule as the writer.
+  const event = eventWhen(catalyst);
+  if (event.date) allowance.dates.add(event.date);
+  if (event.clock) allowance.clocks.add(event.clock);
 
   if (structure.sharesOutstanding) {
     allowance.shares = structure.sharesOutstanding;
@@ -216,7 +255,8 @@ export function researchAllowance(research: ReportResearch | null): ResearchAllo
     harvest(block.eligibilityAssessment);
     if (block.dollarCapacity !== null) allowance.magnitudes.push(block.dollarCapacity);
     if (block.amountShares !== null) allowance.magnitudes.push(block.amountShares);
-    for (const day of datesOf(block.effectiveDate)) allowance.dates.add(day);
+    const effective = calendarDate(block.effectiveDate);
+    if (effective) allowance.dates.add(effective);
   }
   return allowance;
 }

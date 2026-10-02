@@ -104,14 +104,49 @@ describe('stored dates are model-written, so they are read tolerantly and never 
   it('a dossier with free-text and ET-wall dates is traced, not crashed on', () => {
     const odd: ReportResearch = {
       ...RESEARCH,
-      // No cited source, so 17:26 can ONLY trace to the ET-wall event time.
+      // No cited source: the ET-wall event time traces its DATE only.
       catalyst: { ...RESEARCH.catalyst, eventTimestamp: '2026-09-28 17:26:00 ET', sources: [] },
       structure: {
         ...RESEARCH.structure,
         supply: [{ type: 'ATM', status: 'POSSIBLY_ACTIVE', effectiveDate: 'effective upon filing', amountShares: null, sourceFiling: null, registrationStatus: null, dollarCapacity: null, terms: null, holderRestrictions: null, eligibilityAssessment: null, confidence: 'UNKNOWN' }],
       },
     };
-    expect(traceLine('The headline crossed at 17:26 ET on September 28, 2026.', ROW, odd, AT)).toEqual([]);
+    expect(traceLine('The headline crossed on September 28, 2026.', ROW, odd, AT)).toEqual([]);
+    // v6 fix (c), DELIBERATE CHANGE: a model-written clock with no cited EXACT or
+    // INFERRED source carrying that instant is not traced (it used to be).
+    expect(traceLine('The headline crossed at 17:26 ET on September 28, 2026.', ROW, odd, AT).map((f) => f.reason)).toEqual([
+      'TIME_NOT_TRACED',
+    ]);
+  });
+
+  it('v6 fix (b): a midnight-UTC date-only value is its stored calendar date, never the day before (HIT)', () => {
+    const hit: ReportResearch = {
+      ...RESEARCH,
+      catalyst: {
+        ...RESEARCH.catalyst,
+        eventTimestamp: '2026-03-27T00:00:00Z',
+        sources: [{ id: 1, title: 'A dated release', publishedAt: '2026-03-27T00:00:00Z', precision: 'DATE_ONLY' }],
+      },
+    };
+    expect(traceLine('The release came on March 27, 2026.', ROW, hit, AT)).toEqual([]);
+    expect(traceLine('The release came on March 26, 2026.', ROW, hit, AT).map((f) => f.reason)).toEqual(['DATE_NOT_TRACED']);
+  });
+
+  it('v6 fix (c): the same noon value is a clock only when an EXACT source carries it (DKI), a date when DATE_ONLY (CMCT)', () => {
+    const noon = '2026-09-30T12:00:00Z'; // 08:00 ET
+    const exact: ReportResearch = {
+      ...RESEARCH,
+      catalyst: { ...RESEARCH.catalyst, eventTimestamp: noon, sources: [{ id: 120192, title: 'A timed release', publishedAt: noon, precision: 'EXACT' }] },
+    };
+    const dateOnly: ReportResearch = {
+      ...RESEARCH,
+      catalyst: { ...RESEARCH.catalyst, eventTimestamp: noon, sources: [{ id: 118584, title: 'A dated filing', publishedAt: noon, precision: 'DATE_ONLY' }] },
+    };
+    expect(traceLine('It was announced at 08:00 ET on September 30, 2026.', ROW, exact, AT)).toEqual([]);
+    expect(traceLine('It was announced at 08:00 ET on September 30, 2026.', ROW, dateOnly, AT).map((f) => f.reason)).toEqual([
+      'TIME_NOT_TRACED',
+    ]);
+    expect(traceLine('It was announced on September 30, 2026.', ROW, dateOnly, AT)).toEqual([]);
   });
 });
 
