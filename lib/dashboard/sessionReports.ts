@@ -20,6 +20,7 @@ import {
   type SessionReport,
   type SessionReportsPayload,
 } from '../desk/reports/contract';
+import type { ReportTags } from '../desk/reports/tags';
 import { NOTHING_LINE } from '../desk/reports/writer';
 import { assessmentLabel } from '../desk/schedule';
 import { formatEtMinute, formatPrice } from '../format';
@@ -117,6 +118,48 @@ export function watchLine(kind: ReportKind, count: number): string | null {
 export function reportLead(report: Pick<SessionReport, 'kind' | 'headline' | 'watchCount'>): string | null {
   if (typeof report.watchCount === 'number') return watchLine(report.kind, report.watchCount);
   return report.headline;
+}
+
+/* --------------------------------------------------------------------- v6 */
+
+/**
+ * A v6 report carries the `narrative` KEY, null when struck or when the store
+ * held nothing to say (`contract.ts`); v5 rows never carry it. Option B's
+ * surface (`docs/Design/report-b-spec.md`) applies only to v6: a stored v5
+ * report keeps (A)'s rendering, since its headings are model text and its
+ * lines carry no tags.
+ */
+export function isV6(report: Pick<SessionReport, 'narrative'>): boolean {
+  return report.narrative !== undefined;
+}
+
+/**
+ * Whether the window prints the watch sentence under the narrative.
+ *
+ * On the RECAP the narrative ends with the F9 line ("Into the next session the
+ * desk is carrying these N names", Marketing's step 3), which is the seam into
+ * the cards; a watch sentence under it would state N twice in two voices. So a
+ * v6 premarket report with a narrative drops it. A struck narrative (null)
+ * brings it back, so the count is never lost. The three intraday kinds keep it
+ * as the cards' lead-in. The briefing LINE on the board is not this: it always
+ * leads with the watch sentence (`reportLead`).
+ */
+export function windowShowsWatchLine(report: Pick<SessionReport, 'kind' | 'narrative'>): boolean {
+  if (!isV6(report)) return true;
+  return !(report.kind === 'PREMARKET' && typeof report.narrative === 'string' && report.narrative.trim() !== '');
+}
+
+/**
+ * The float statement, once per report and never per name (Marketing, final
+ * wording; `report-b-spec.md`): a verdict, never a number.
+ */
+export const FLOAT_FOOTER = 'The desk cannot independently verify a float for any name in this report.';
+
+/** A computed section's label, "LABEL · count" (names in it). The loose group's empty heading prints nothing. */
+export function sectionLabel(heading: string, names: number): string | null {
+  const label = heading.trim();
+  if (label === '') return null;
+  return `${label} · ${names}`;
 }
 
 /**
@@ -331,6 +374,8 @@ export type ReportBlock =
       liveFeed: boolean | null;
       /** The name's sentences, in the writer's order. */
       texts: string[];
+      /** v6: the board's own Why and Risk on the as-of research (`tags.ts`); null on v5 or when absent. */
+      tags: ReportTags | null;
     }
   | { kind: 'PROSE'; text: string };
 
@@ -368,18 +413,40 @@ export function reportBlocks(report: Pick<SessionReport, 'sections'>): ReportBlo
       }
       let card = cards.get(line.ticker);
       if (!card) {
-        card = { kind: 'NAME', ticker: line.ticker, company: null, path: null, liveFeed: null, texts: [] };
+        card = { kind: 'NAME', ticker: line.ticker, company: null, path: null, liveFeed: null, texts: [], tags: null };
         cards.set(line.ticker, card);
         blocks.push(card);
       }
       if (text.length > 0) card.texts.push(line.text);
       card.company ??= line.company ?? null;
       card.path ??= line.path ?? null;
+      card.tags ??= line.tags ?? null;
     }
   }
   const feed = feedByName(report);
   for (const card of cards.values()) card.liveFeed = feed.get(card.ticker) ?? null;
   return blocks;
+}
+
+/**
+ * v6's body: the COMPUTED sections (reports v6 fix (a), `sections.ts`), each
+ * with its "LABEL · count" label and its cards, by the same card rules as
+ * `reportBlocks` within the group. The headings are now computed from the
+ * as-of catalyst status, not model text, so they show again (his "b" hid only
+ * the model's). The loose group (empty heading) prints no label. A group left
+ * with no block is dropped, so no label ever stands over nothing.
+ */
+export function reportGroups(
+  report: Pick<SessionReport, 'sections'>,
+): Array<{ label: string | null; blocks: ReportBlock[] }> {
+  const groups: Array<{ label: string | null; blocks: ReportBlock[] }> = [];
+  for (const section of report.sections) {
+    const blocks = reportBlocks({ sections: [section] });
+    if (blocks.length === 0) continue;
+    const names = blocks.filter((block) => block.kind === 'NAME').length;
+    groups.push({ label: names > 0 ? sectionLabel(section.heading, names) : null, blocks });
+  }
+  return groups;
 }
 
 /**
