@@ -132,6 +132,10 @@ never shipped, so Ops confirms the sign-in page answers before trusting anything
 
 If a browser asks for the desk password at any point, enter it as usual. **The desk password stays on all night.**
 
+**Wait for Ops to say the Google keys are on the server before you open `/signin`.** If you click the Google button
+before that, you get a plain page reading "Sign-in is temporarily unavailable." That means the keys are not on the
+server yet, not that the release is broken.
+
 **What tonight proves, and what it does not:**
 - **Proves:** the desk admits someone invited, refuses someone not invited, and treats someone not signed in as a
   stranger.
