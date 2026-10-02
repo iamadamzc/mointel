@@ -1039,6 +1039,43 @@ First: ask Ops for /proc. Then write HIM the sign-in (+ FINRA credential) step-b
 reading or RUNNING its source (ledger in the running notes).
 ```
 
+## THE TWENTY-THIRD SEAT'S RUNNING NOTES (opened 2026-10-02T15:25:43Z, `local_54f1341f`, Opus 5.5, effort high)
+
+*Newer than the twenty-second's live state where they disagree.*
+```
+START            Titled Integration-tmi. get_session self: claude-opus-5-5, nothing to report.
+OLD CHAT         local_697b69cc-d827: list_sessions (include_archived) read title "Integration-tmi", isArchived false,
+                 not running. TWO sessions answer to Integration-tmi until he renames it. (Short id local_697b69cc not
+                 found by get_session; the full id resolves.) Peers told to route to local_54f1341f.
+OPS ASKED        1fcddb2e (queued): /proc; FINRA key names (no FINRA env var read anywhere in lib/app/scripts/worker/
+                 deploy, grep); probe built?; anything else needed from him.
+                 97bb1eb9: RETRACTED my own claim in 1fcddb2e that a Testing-status consent screen would make Google
+                 refuse the throwaway. Google's Audience page (support.google.com/cloud/answer/15549945) says the
+                 test-user limit does not apply to openid/email/profile-only apps = our SCOPES (lib/auth/oauth.ts:46).
+                 Ledger 1.
+WEB              Probe NOT built (Ops checked; Ops building from a4a06168 per bb4e14a8). Sequence: probe ships flag OFF
+                 (deploy) -> AUTH_PROBE_ENABLED=1 (env, separate yes) -> he signs in, probe read 3x -> Web gate wiring
+                 (deploy, unwritten) -> flag off + probe removed + Basic Auth off LATER, own night.
+                 READ HERE: callback gives ANY Google signer a session + 303 /desk (lib/auth/callback.ts:133-151); gate
+                 refused for a live un-invited session (gate.ts:76). Probe test reads "refused" as designed.
+SEAM FOUND       bb4e14a8 §3a assumes "^~ /auth/" exempt; nginx-locations.conf:172-173 at bc31a4ac says /signin and
+                 /auth/ are NOT exempt (:177 expects /signin -> 401). Asked Web (24a63acf) + Ops (bb52eb5e) which cut
+                 carries the exemption. Without it claim C (no-cookie curl) reads nginx 401, not "anonymous".
+GUIDE            docs/ops/2026-10-02-sign-in-and-finra-setup.md. Every console step read today at source (Google
+                 web-server OAuth page; Google Auth Platform help 15544987/15549049/15549945/15549257; FINRA
+                 developer.finra.org/docs). Google key names from lib/auth/config.ts:44-51. FINRA names PENDING Ops.
+                 0 U+2014/U+2013/entities. .env.local key NAMES read (values never printed): no GOOGLE_CLIENT_* or FINRA_*.
+                 docs/finra.txt: 20 bytes, git-excluded (.git/info/exclude:18), NOT OPENED (may hold a FINRA value).
+```
+**THE TWENTY-THIRD SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+1 told OPS "the consent screen must be PUBLISHED or    asserted a vendor behaviour        no       self (read
+  Google refuses non-test accounts" before reading     before reading the vendor's page            Google's page
+  Google's Audience page; false for our three scopes.  (the family: passed on unread)              minutes later)
+  Retracted to Ops next message; never reached him.
+```
+
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
 
 *A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION before
