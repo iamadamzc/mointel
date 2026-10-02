@@ -3132,6 +3132,13 @@ ONE LADDER CUT   9189b569e9577dc578b14b00a856a3dd0bd69b4c (tag design/one-ladder
                  yes, next ship night. Design P1 + MOVERS PASS live (review link 63). AR commit ordered on top of 9189b569.
 BLUE-SKY LEAD    Design: local GNPX blue-sky row 855795.60 (2018 price) "split-adjusted sessions". lib/market/blueSky.ts =
                  Research. Ops: one light production read; Research: cause from code. Nothing to him until both land.
+                 CONFIRMED: Research's cause (all-depth window readModel.ts:406 ALL_STORED_SESSIONS=100,000, read; max
+                 high across reverse splits; comparableCeiling/ceilingComparable/ceilingSplitFactor computed in blueSky.ts
+                 but read nowhere else, read here). Ops: production GNPX 855,795.60 2018-04-30 factor 44000 (not on board
+                 today). ORDER: Design picks (a)/(b) [(b) UNVERIFIED default] + window-line fix; Research blueSky.ts +
+                 Design LevelLadder on top of 9189b569, one cut; scale count via Ops. TOLD HIM as a defect + fix.
+TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
+                 running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
