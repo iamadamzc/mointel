@@ -3338,6 +3338,10 @@ HIS RULING       typed to me: "yeah fix the leak". BUILD ORDER to Research (ahea
                  prediction, tests. Ops: upgrade costing not needed. Proposed next ship night: (0) research-worker
                  restart first (his yes) -> (A) -> citations -> leak fix -> movers/residual; Ops to measure headroom for
                  several builds per night.
+OPS RETIRED      local_8a0801c2 on his "yes, hand off" (755e08a6; ops.md:13288). Its ADDENDUM (ops.md:13330-13338, read)
+                 carries his "fix the leak", the next-ship-night order (research restart first) and the build-peak
+                 measurement owed to me. No successor yet; retired seat still titled "Ops-tmi" (route by NEW createdAt).
+                 Research told to build the leak fix now (c7ba38af; 655d235d: cache size matches growth).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
