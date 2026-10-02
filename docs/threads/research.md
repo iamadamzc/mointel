@@ -181,6 +181,10 @@ record. He has it from this seat directly as well.
   - `research/review-levels` at `9f084c9e`: ONE commit on the production line `b5a35fda` (`/api/levels` is not on main).
   - Gated: `tsc` 0 after `next typegen`; 212/212 files, 3,178 tests. 4 mutants killed.
   - **Waits on:** Integration's cut, his yes, Design's live read.
+- **✅ CUTS for Integration's chain** (b5a35fda -> (A) 840741d3 -> citations 2a625a5b -> LEAK -> mirror -> movers re-cut):
+  - **`research/leak-cut` `0e883fec`:** ONE pick of `50196f0b` on `2a625a5b`. Patch-id equal; diff identical. Only the cache bound: `f6915c44` is already in `2a625a5b`'s content (the `client.ts`/test diff is empty). 217 test files.
+  - **`research/review-levels-cut` `19f9d721`:** on the leak cut. Route and test identical to `9f084c9e`. `readOnly.test.ts` was resolved against `d427dd0e` by keeping both test pairs; the added lines are identical and nothing is removed. 218 test files.
+  - **Waits on:** Ops's release gate; then his yes.
   - **v6.1 lane (Integration, after `afc7755b`):** a hedged "what to watch" block from the names' own dossiers. NOT started until v6 is live, unless he tells Marketing to fold it in.
 - **🔴 NEXT TASK, FIRST: REPORTS v6** (Integration's order, 2026-10-02, on his words at 02:34:22Z: "what about the session report updates? there's still no opening narrative and no design element, its hard to read, this was brought up"). **Plan: `docs/research/reports-v6/plan.md` (`e144d87c`).**
   - **Step 1 (Research's proposal: narrative facts with stored sources, B's tag fields, the a-d fixes) is the first thing on 2026-10-02.** Reading and writing only.
