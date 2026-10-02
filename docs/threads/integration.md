@@ -3212,6 +3212,11 @@ SI LABEL DESIGN  Research 979c75a7 (docs/research/short-interest-label-design.md
                  Commercial §8 PASS with 3 required changes (692ce434, commercial.md §13): denominator inline + no "Normal"
                  on the lowest band; FINRA named as "owner and source" (2.3(a)); one legend sentence against the squeeze
                  reading. Sent to Research + Marketing.
+                 Research applied R1-R3 (0acc4bcb): lowest band literal "under 5% of shares outstanding", "Moderate"
+                 replaces "Above normal", denominator inline; legend names FINRA "owner and source"; legend: dated fact,
+                 not a prediction, no "squeeze". Research is at the 10-message peer cap until he writes in its session:
+                 tonight's results (leak verdict, v6 step 5, blue-sky count) go to research.md LIVE STATE with shas:
+                 READ THE FILE for them, do not wait for a message.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
