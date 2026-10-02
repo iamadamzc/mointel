@@ -13369,3 +13369,9 @@ STRUCTURAL_REFRESH     SESSION_TO_DATE  1   2026-10-01  2026-10-01
 
 **Next triggers:** research child RSS after 10:00 ET 2026-10-02 (and before tonight's window) -> projection -> his
 memory-fix question; levels [flush] p50/max 09:30-10:30 ET vs 2026-09-30, read after 10:00 ET.
+
+**03:18Z:** heavy slot GRANTED to Research for 50196f0b (tsc + full suite), until Research says done, before 07:00 ET. PC at
+2026-10-02T03:17:51Z: no live gate; orphan suite pids 20200/22704/24128 idle, ~570 MB private; free commit 3,354 MB.
+Judge reads (prereg-ship.md) owned here; its 04:00-20:00 ET 10-min series crosses his 07:00-10:00 window: asked Research to
+choose an on-box sampler (his word, goes in the ship-night question) or a prereg amendment before ship. Build peak (owed to
+Integration): measured live on the first build of the next ship night, MemAvailable + build RSS every 2 s, before build 2.
