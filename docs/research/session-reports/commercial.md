@@ -542,3 +542,64 @@ seat's to state: **DECLINE must actually withhold the platform** for the gate to
 be the "unavoidable" thing this ruling calls for — a DECLINE that still lets
 someone through by another route (back button, direct link) is the old "one click
 away" shape wearing a gate's costume, not the gate his instruction asked for.
+
+---
+
+## 13. REVIEWED 2026-10-02: THE SHORT INTEREST LABEL DESIGN (`short-interest-label-design.md`, `979c75a7`): PASS WITH THREE REQUIRED CHANGES
+
+*Research's request, before any build. Read in full against §3, §6, §8, §9 and the
+landscape doc's §10.2 and 11b. A design and a mock only; nothing was built and no FINRA
+data was pulled.*
+
+**What passes as designed.**
+
+1. **Grades and bands, never FINRA's numbers.** A band cannot be traced back to a figure,
+   which is the "substantially different" reading of §10.2. The hover question: **showing
+   a grade's band definition ("at least 10% and under 20% of shares outstanding") stays
+   inside "the label, not FINRA's numbers."** A band definition is identical for every
+   name and says nothing about where inside the band a name sits. **Conditions:** the same
+   static definitions for all names; never show a position within a band; never show a
+   band beside FINRA's number.
+2. **Dating and staleness.** "Source: FINRA, settlement Sep 15 (17 days ago)," the filed
+   count's date in the hover, and "not current" when a newer report is published and not
+   held. Never called current.
+3. **No separate price, no float, no prediction verbs.** The size words say "of shares
+   outstanding," the label is a state and not an action, and the borrow pairing is held
+   out of the first build (it needs Alpaca notice, §8 of the landscape doc).
+4. **Placeholder tickers with invented inputs in the mock.** Correct: an invented figure
+   on a real ticker would be a false record if the sample left the desk.
+
+**Three changes required before it ships.**
+
+**R1. The lowest size grade reads as reassurance in the one direction the floor cannot
+cover.** The size grade is a floor over shares outstanding, so it can understate and
+never overstate. For a low-float name that is the dangerous direction: shorts of 4% of
+shares outstanding can be most of the float, and "Normal" tells a long reader the short
+side is unremarkable. This product's reader asked for the label to judge how crowded the
+short side is for a long, and for his names the denominator is often the wrong one.
+**Change:** the size grade must carry its denominator inline on the drawer line, not only
+on hover (for example "Size vs shares outstanding: Normal"), and the lowest band must not
+be the word "Normal." Use a literal ("Under 5% of shares outstanding") or a word that does
+not claim an absence of crowding. Wording is Marketing's; the constraint is this seat's.
+
+**R2. "Source: FINRA" may not meet the attribution condition.** Clause 2.3(a) of the
+Specific Terms requires FINRA to be identified *"as the owner and source"* of the data,
+including derived data. "Source" alone names one of the two. **Change:** the hover or
+legend carries "owner and source" wording once, for example "Short interest data: FINRA
+(owner and source). Grades are this desk's own."
+
+**R3. One standing sentence, once, against the squeeze reading.** §6's point applies: a
+neutral label in a long-only product can be read as an untested trade. "SHORTS: HEAVY"
+beside a mover will be read by some as a squeeze setup and by others as a bearish tell.
+**Change:** a single sentence in the label's legend, not on every line: the grades are a
+dated fact about positions, not a prediction and not a recommendation. No "squeeze" word
+anywhere in the label, hover or chip.
+
+**Non-blocking.** (a) §5's calibration commits raw output that contains FINRA's numbers;
+that file stays internal and must never reach a customer-visible surface or a public
+document. (b) The report tag follows the drawer words; when it enters the report layer the
+§8 and §9 rules apply to the report line, and the dated "(17 days ago)" must survive any
+truncation (§4's push-banner point).
+
+**Not reviewed:** Marketing's words, Web's end-user wording, the chip's place among the
+Risk outcomes (Design and his), and any build.
