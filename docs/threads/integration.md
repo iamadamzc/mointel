@@ -3152,6 +3152,8 @@ BLUE-SKY LEAD    Design: local GNPX blue-sky row 855795.60 (2018 price) "split-a
                  (a) + (b) fallback: headline = comparable ceiling + sub-line naming the consolidation; deep ceiling only in
                  hover beside its factor; (b) UNVERIFIED when none established; window line fixed. Research builds
                  (resolveBlueSky, lib-only if possible) on 9189b569; Marketing sees sentences before the cut.
+ONE LADDER GATED Ops 75e0f0df: 9189b569 222/222, 3,278, lint 0 errors, build rc 0. ORDER: ships ALONE tonight after the
+                 snapshot on his yes; blue-sky fix follows as its own step (already a production defect; cut on 9189b569).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
