@@ -13260,6 +13260,11 @@ levels worktree eslint scans); not Ops's worktree; owner removes it or eslint ig
 **HIS YES IN THIS SESSION, 2026-10-02T02:37:49Z, "yes"** to levels with the four conditions. LEVELS_REFRESH_ENABLED=1 appended
 to /etc/mointel/mointel.env 02:38:14Z (backup mointel.env.bak-20261002T023814Z, 25 -> 26 keys, HISTORY_STORE_ENABLED absent).
 Levels b5a35fda launched ~02:39Z.
+**MOVERS CUT (next ship night, NOT tonight): 98905b08352ba8681ae6cf4b7816bfda731e8325** (tag design/moving-on-e0f18bbb) =
+2a625a5b + 8 (Research's rule + my readTopMovers + Design's "moving" label); Integration APPROVED BY LITERAL SHA; Design gated it
+221/221. Conditions: MY gate on this sha; /proc = 2a625a5b at launch (else re-cut); his yes naming: big movers (up 10%+ on 500k+
+shares, up to 15) join the board as normal rows labelled "moving"; they sort like any row under Gap/PM Move/Now and sit after
+the ranked 50 under Rank/RVOL; reports and checkpoints unchanged.
 Ruling verified by Research as his user turn 2026-10-01T15:53:57Z in Integration's 1bfab363. **Volume floor built:
 ops/top-movers-volume 499f7a30** (on aaebfc42): readTopMovers(db, tradingDate, band, minPct, minVolume, limit), cumulative_volume
 >= minVolume, NULL fails; readModel.ts:574 passes 0 so it compiles alone (Research replaces with config). 6 tests; mutants 2/2, 1/1.
