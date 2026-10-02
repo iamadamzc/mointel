@@ -23,7 +23,7 @@ import {
   startedLabel,
 } from '@/lib/dashboard/cycle';
 import { resolveRisk } from '@/lib/dashboard/risk';
-import { resolveWhy } from '@/lib/dashboard/why';
+import { resolveWhy, whySpoken } from '@/lib/dashboard/why';
 import { COLUMN_TITLE, priceColumnTitle } from '@/lib/dashboard/columnTitles';
 import { baselineLabel } from '@/lib/dashboard/view';
 import type { SessionPhase } from '@/lib/market/types';
@@ -309,7 +309,7 @@ function TableRow({
   return (
     <tr
       {...rowKeyboardProps(
-        `${ticker.ticker}, priority ${ticker.priority.raw || 'unset'}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
+        `${ticker.ticker}, priority ${ticker.priority.raw || 'unset'}. ${whySpoken(why)}. ${risk.label}. Open dossier.`,
         () => onSelect(ticker.ticker),
       )}
       onClick={() => onSelect(ticker.ticker)}
