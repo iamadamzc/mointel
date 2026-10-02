@@ -111,3 +111,55 @@ Wording constraints already in the reports:
 - FINRA, Understanding Short Sale Volume Data (Information Notice 051019): finra.org/rules-guidance/notices/information-notice-051019
 - SEC, Release 34-104303 (Dec 3, 2025), Rule 13f-2 / Form SHO and Rule 10c-1a exemptions: sec.gov/files/rules/exorders/2025/34-104303.pdf, text extracted locally
 - Alpaca, Get Assets reference: docs.alpaca.markets/reference/get-v2-assets-1
+
+---
+
+## Addendum, 2026-10-02: measures for "heavy / deep / concentrated"
+
+- **His words** (typed to Integration-tmi 22nd, relayed 2026-10-02): "i dont want borrow data for the sake of having it. understanding short interest is a read for longs. if its heavy/deep/concentrated it makes long plays more volatile."
+- **Integration's ask:** which measures express each of the three words; how fresh each can be in the 07:00 to 10:00 ET window; which can be stated as a fact and which only as a dated estimate; and how one compact read could appear, drawer first.
+- **Scope:** method only, no build. This describes what each measure shows, not whether the read is right.
+- **Sources:** Commercial's `docs/commercial/2026-10-02-short-interest-landscape.md` (`d5da7c08`) for what each source carries and may be shown; this doc's sections 1 and 2 above for FINRA's numbers.
+
+### The measures, word by word
+
+| His word | Measure | What it shows | Source and freshness at 07:00 to 10:00 ET | Statable as |
+|---|---|---|---|---|
+| **heavy** | **Short interest as % of shares outstanding** | Shares short against the share count | FINRA short interest is 7 business days to about 3.5 weeks old (section 2). Filed shares outstanding is dated and counts as current for 45 days (`float.ts:92`) | A **dated fact** in the form "at least N% of float", but **only under the gate below**. Otherwise not stated |
+| **heavy** | **Shares short, and the change since the previous report** | The size, and whether shorts built or covered between two settlement dates | FINRA, the same two dates | A **dated fact**, with both dates |
+| **deep** | **Days to cover (FINRA's)** | How many days of the PRIOR cycle's average volume the short position equals | FINRA, same age as short interest; its divisor is the cycle before the settlement date | A **dated fact, labelled as FINRA's**. Never recomputed on today's volume (section 2, rule 2) |
+| **concentrated** | **No public measure exists** | Who holds the shorts, and how few holders hold how much | FINRA publishes one aggregate per security. Form SHO is exempt until 2 January 2028, and even it is aggregated per security. Securities-lending dissemination (Rule 10c-1a) is exempt until 29 March 2029 | **Not statable.** Nothing available measures concentration among holders |
+| (scarcity of lendable shares, often read as a proxy for "concentrated") | **Alpaca `borrow_status`** (easy or hard to borrow) and `shortable` | Alpaca's own classification of the symbol, live | Alpaca, live at read time. Commercial: not described as account-specific anywhere read, unconfirmed by a second source | A **fact about Alpaca at a time** ("hard to borrow at Alpaca, 08:31 ET"), never a market-wide fact |
+| (same) | **Borrow fee / locate quote** | The cost and quantity to borrow | Alpaca's locate quote, live, hard-to-borrow names only. **Alpaca's own words: "account-specific"** (Commercial section 8) | Only as **this account's quote at a time**. Never "the borrow fee" |
+| (same) | **Utilization** (shares on loan divided by lendable supply) | How much of the lendable pool is already lent | Vendor-defined and vendor-computed. No regulatory public source (10c-1a above). Commercial could not read Ortex or S3 terms | Only as **a named vendor's estimate, with its definition**. Unsourced today |
+
+### The gate on "% of float" (a correction to section 1's lower bound)
+
+Section 1 said that short interest divided by the filed shares outstanding is a lower bound on % of float. **That holds only if the share count did not grow, and did not split, between the count's date and the short-interest settlement date.** The two failures:
+
+- **Issuance after the count's date** (an ATM, an offering, a warrant exercise): the true float can exceed the old count. Dividing by the old count can then OVERSTATE % of float, so the figure is no longer a bound.
+- **A split between the two dates:** FINRA reports positions in post-split shares, while the count is pre-split. A 1-for-20 reverse split makes the ratio about 20 times wrong. `float.ts:226-235` already rules on this exact case for floats: "a denominator that may be wrong in an unknown direction cannot support any arithmetic about it". It declines to split-adjust, because `reverseSplitHistory` is model-extracted prose.
+
+**The gate, in the desk's existing terms.** State "at least N% of float" only when all three hold:
+
+1. the filed count is current under `FILED_SHARES_CURRENT_DAYS` (45 days);
+2. the count is dated ON OR AFTER the short-interest settlement date, or the supply ledger shows no KNOWN_ACTIVE or POSSIBLY_ACTIVE issuance between the two dates;
+3. no split is recorded after the count's date.
+
+**Otherwise print shares short and days to cover alone, with no percentage.** Condition 2's ledger test relies on model-extracted ledger entries; a count dated on or after the settlement date avoids that dependence.
+
+### One compact read, drawer first
+
+One line in the structure section, every number dated, built by code from stored fields and never written by the model. An example of the shape (all numbers illustrative):
+
+> Short interest 2.1M sh as of Sep 15 (FINRA, 17 days old), at least 14% of float (shares out Sep 30 10-Q), 3.2 days to cover (FINRA, on Aug 29 to Sep 15 volume), up 40% since Aug 29. Hard to borrow at Alpaca, 08:31 ET.
+
+- **When the gate fails:** "Short interest 2.1M sh as of Sep 15 (FINRA, 17 days old), 3.2 days to cover (FINRA). Not stated as % of float: shares issued since the last filed count."
+- **The age goes in the line itself.** A short interest figure read without its date reads as today's.
+- **Borrow fee and utilization stay out of the line** until a source that may be displayed carries a market-wide figure. The account-specific locate quote is not that.
+- **Board chip and report tag come after the drawer, if ever.** The ordering question in section 3 stands. A chip saying "heavy short interest" would need a threshold, and choosing it is a product call. The data does not supply one.
+
+### What the data cannot answer
+
+- **Whether heavy or deep short interest makes long plays more volatile** is not shown by any of these measures on its own. They describe the short position, not the price behaviour that follows it.
+- If that is ever wanted as a measurement, it is a separate pre-registered study, his call. It is not proposed here.
