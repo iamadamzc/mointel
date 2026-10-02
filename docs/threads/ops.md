@@ -13534,3 +13534,8 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   FINRA keys, names-only readback), (3) AUTH_PROBE_ENABLED on after the seed for his test sign-ins, then off (web-only
   restarts). Seed word given separately above. Session cron 20:36 ET runs the sequence; snapshot cron 20:12 ET; judge final
   20:05 ET. If this session dies, the successor re-reads these lines and asks him before acting (crons die with it).
+- FINRA secret: he added it as "FINRA_API_CLIENT_SECRET: value" (colon): fixed to "=" by script. Research then found it
+  holds '#' and '$' (lengths/booleans only): Node --env-file truncated it 13 -> 11. Now SINGLE-QUOTED in .env.local;
+  verified node --env-file and @next/env both load len 13 with '#' and '$'. After tonight's sync-env, confirm on the box
+  that a process with EnvironmentFile=/etc/mointel/mointel.env sees len 13 (length only). FINRA coverage check DONE:
+  docs/ops/finra-coverage-2026-10-02.md at 91caa2f3 (49/50 board names; NASDAQ 36/37, NYSE 11/11, AMEX 2/2; GOW absent).
