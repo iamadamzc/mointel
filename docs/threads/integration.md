@@ -3217,6 +3217,13 @@ SI LABEL DESIGN  Research 979c75a7 (docs/research/short-interest-label-design.md
                  not a prediction, no "squeeze". Research is at the 10-message peer cap until he writes in its session:
                  tonight's results (leak verdict, v6 step 5, blue-sky count) go to research.md LIVE STATE with shas:
                  READ THE FILE for them, do not wait for a message.
+SI TERMS DRAFT   Web 2e8ded5f (docs/web/2026-10-02-finra-terms-draft.md); terms.md UNTOUCHED (adopted 2026-09-11 stands).
+                 One new user obligation: FINRA's "non-commercial personal or professional use", scoped to the label, 4
+                 sentences in §5. Attribution strings (Design builds): label detail "Short interest: FINRA, settled
+                 <date>"; footer "Short interest data: FINRA. Shown as our own derived label, not FINRA's figures."
+                 ORDER CALL (Web's rec): NOT put to him now; the terms.md edit, his adoption, attribution and the label
+                 ship as ONE change (a terms edit on main would ship a public DRAFT banner via any deploy). Commercial
+                 checks the wording against the clauses first. 2.2 still unresolved (accepted-exposure posture).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
