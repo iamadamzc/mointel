@@ -1,5 +1,5 @@
 /**
- * GET /auth/probe — what the gate decides for THIS browser, and nothing else.
+ * GET /auth/probe: what the gate decides for THIS browser, and nothing else.
  *
  * OPS builds this to Web's design (`docs/web/2026-10-01-gate-probe-design.md`).
  * It exists to close one gap: the suite proves `authenticate()` decides
