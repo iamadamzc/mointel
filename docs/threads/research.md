@@ -170,6 +170,10 @@ record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
+- **🔴 NEXT TASK, FIRST: REPORTS v6** (Integration's order, 2026-10-02, on his words at 02:34:22Z: "what about the session report updates? there's still no opening narrative and no design element, its hard to read, this was brought up"). **Plan: `docs/research/reports-v6/plan.md` (`e144d87c`).**
+  - **Step 1 (Research's proposal: narrative facts with stored sources, B's tag fields, the a-d fixes) is the first thing on 2026-10-02.** Reading and writing only.
+  - **Step 2** (stability probe, cap $10) is pre-registered before any call.
+  - Then Marketing and Design (step 3), build, a voice run (his first sight), pass bar, Commercial, ship.
 - **✅ HIS COMPARISON DONE (seat `local_5f4bfcf8`, 2026-10-01): `docs/research/movers-vs-robust-baseline/side-by-side.md`.** B was pre-registered at `09d33239`. A's VEEA clause 2: PASS (`a5178ac1`). Ops's timing `539ae024`; Design's paragraph is `design.md` M2. Recommendation: A as a separate labelled group, not B. **Waits on: HIS decision, carried by Integration.** Nothing ships.
 - **🔴 MOVERS: HIS RULINGS 2026-10-01, verified at his turns in Integration's `1bfab363`:**
   - 15:36:50.813Z: "if something is labeled as moving it should just be ranked based on all other parameters normally not placed in a separate group. it wont show on RVOL which is fine, but it will show on gap and now, etc."
