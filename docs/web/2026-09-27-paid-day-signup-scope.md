@@ -1,5 +1,16 @@
 # The path to a card on file — SCOPE
 
+**AS OF 2026-10-02 17:48 UTC: re-read end to end by the successor Web seat.
+Accurate as a record; three things to know:**
+
+- **The billing build's precondition, "after the sign-in cut-over proves the gate
+  REFUSES" (§8), is tonight's probe claim B** (the throwaway account reading
+  `refused`). *Tonight proves the gate decides correctly; it does not prove a
+  stranger can sign in, so it satisfies this precondition and nothing wider.*
+- **The live sentence in §6 and §8 is now at `app/page.tsx:443`**, not `:432`.
+- **§8 cited "the §6 recommendation" of the 2026-09-26 scope; it is that file's
+  §4.** *Corrected in place.*
+
 **Web, 2026-09-27 20:39 ET, against `21d4534`.** Owner of this file: **Web**.
 Written on Integration's relay of his billing rulings. **Beside Commercial's lead
 document at
@@ -339,7 +350,7 @@ have twice.**
 ### What is now approved, and what still waits
 
 - **FIRST PAYING USERS ARE INVITED AND BILLED BY HAND. Self-serve comes later.**
-  *His ruling, and it is the §6 recommendation of
+  *His ruling, and it is the §4 recommendation of
   [`2026-09-26-signup-flow-scope.md`](2026-09-26-signup-flow-scope.md) adopted.*
 - **SO THE PUBLIC SAVE-CARD PAGE AND THE `app/page.tsx:432` COPY CHANGE BOTH
   WAIT.** *"There are no public sign-ups. An invite request goes to the operator by

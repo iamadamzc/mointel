@@ -562,6 +562,7 @@ saturation trigger. Who caught it matters: him catching it is the signal.*
 | --- | --- | --- | --- | --- |
 | 1 | `c97899b8` said production "never" carried the sign-in surface; releases are cherry-pick cuts, so `main`'s ancestry cannot answer that. Only the trees at `46d9f9d` and `a4a06168` were read. Narrowed at `2b73f6a3` | **never-without-a-query** (grep at HEAD answers only the present) | no | self |
 | 2 | wrote "17:50 UTC" into an as-of line from my head; zoneinfo read 17:48. Caught before commit | **generated clock time** | no | self |
+| 3 | the sign-up scope's as-of note said no ruling on the non-payment grace question was found (hedged: "not proof there is none"); he ruled it 2026-09-27, "1 hour. regardless of time", recorded in this seat's own paid-day scope. I had grepped "grace" in two thread files only. Committed at `2d164272`, corrected in the next commit | **a search scoped narrower than the claim** | **near-repeat of #1** (both: an absence read off an instrument that could not see the present case). Diagnosed as search scope, not saturation: session under two hours, both caught by self within minutes. **A third of this family means warn him** | self |
 
 ## Opening message for a new chat
 

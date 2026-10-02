@@ -13,9 +13,12 @@ dated scope; what has moved since it was written:**
   true for every person who reaches `refused`, so it no longer reads as a broken
   purchase. The three-way split waits on a refusal reason the store does not
   carry (charter LIVE STATE).*
-- **§3's grace-period question (is non-payment revocation immediate?) is not
-  re-checked here.** *It was put to him 2026-09-26; I found no ruling in the
-  registers I searched, which is not proof there is none.*
+- **§3's grace-period question (is non-payment revocation immediate?) was
+  ANSWERED by him 2026-09-27: "1 hour. regardless of time."** *The hour is the
+  grace and `revokeEmail` is immediate at its end; recorded in
+  [`2026-09-27-paid-day-signup-scope.md`](2026-09-27-paid-day-signup-scope.md) §1
+  and §3. The first version of this bullet said no ruling was found; it was in
+  this seat's own next file.*
 - **§5's terms-of-sale item: Commercial drafted a SEPARATE terms of sale on
   2026-09-30 (`21865ca6`, route 2 below) and HOLDS it** until billing is about to
   ship; it has not been put to him. *Route 2 being drafted is not his choosing
