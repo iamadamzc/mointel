@@ -1207,6 +1207,13 @@ PROBE-OFF READ   Web 33c90c8f (local, cleared with e125a066 + 28ddbda7): design 
                  tell on from off (401 either way). Route header 3b9c0a70:route.ts:41-45 (read) is right: credentialed,
                  no cookie, /auth/probe 404 + / 200. Ops told to use it. My guide only CITES the design (sources list);
                  no guide change.
+PUSHED           ca11c25e..05e73046 after reading every line cleared. Uncommitted docs/web/2026-10-02-finra-terms-
+                 draft.md in the tree: asked new Web whose.
+SI REOPENED      His screenshot (desk STRUCTURAL WARNING: 55,406,688 shares as of 06-30, predates an 11,111,111-share
+                 August offering). Calibration used companyfacts dei only; dossier structure.sharesOutstanding never
+                 measured. Asked Research (e94aa033) for a pre-registered re-run with the dossier count as a second
+                 source + reconciliation rule (count + completed offerings since), foreign-filer pairs, agreement with
+                 dei. The label decision WAITS on it; my exception-only recommendation withdrawn until then. Ledger 3.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
