@@ -3221,6 +3221,13 @@ HIS RULING       typed to me, answering "What gets a mover onto the board?": "10
                  LABEL (his ruling names it); cut = branch + Design label, Design render a ship condition.
                  GATE (Research, Ops's slot): e0f18bbb = 825b1eac + one test file (read); tsc 0, 220/220, 3,250. Research
                  half DONE; waits on a Design seat for the label + render.
+THU 22:31 ET     HIS "what needs to be done". FOUND: no commit since 12:04 ET; Ops idle since 16:04Z: tonight's releases
+                 NOT started. Woke Ops (1eb89b78): /proc, then levels -> (A) -> citations questions to him. Gave him the
+                 full live / built / approved list. SIGN-IN ASKS SENT (my task 4, from ops.md:12038-12049 + 22nd notes
+                 :2224-2239): Google OAuth client (redirect https://tmitrader.com/auth/callback/google; id/secret into
+                 .env.local by HIM, never a chat), seed iamadamzc@gmail.com, throwaway UNINVITED Google account (his to
+                 create), ~10 min Fri evening. Also asked: open a Design seat + rename old local_c29a82bd (still titled
+                 "Design-tmi", NOT renamed: routing hazard).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
