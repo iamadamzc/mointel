@@ -4,9 +4,11 @@
  * OPS builds this to Web's design (`docs/web/2026-10-01-gate-probe-design.md`).
  * It exists to close one gap: the suite proves `authenticate()` decides
  * correctly, but not that THIS box, with THIS identity store, THIS env and THIS
- * nginx in front, decides the same way. While Basic Auth is on, an outside
- * client never reaches the app except under `^~ /auth/`, so the probe lives
- * there and needs no exemption of its own.
+ * nginx in front, decides the same way. It lives under `/auth/` so that the
+ * exemption planned for the OAuth flow will cover it with no exemption of its
+ * own. Until that exemption exists, Basic Auth guards it like everything else,
+ * so every probe read sends the Basic-Auth credential; the gate it tests is the
+ * INNER one either way.
  *
  * A GREEN PROBE MEANS "THE GATE DECIDES CORRECTLY". IT DOES NOT MEAN "A PERSON
  * WITH NO BASIC-AUTH PASSWORD CAN SIGN IN". That claim is untestable while Basic
@@ -35,10 +37,14 @@
  * state for a check that never ran.
  *
  * REMOVAL (design 3d), two acts, the same night, in this order:
- *   1. unset AUTH_PROBE_ENABLED on the box, restart web, and from a client with
- *      no cached state confirm `/auth/probe` -> 404 AND `/signin` -> non-404
- *      (the positive control: a 404 from a client that cannot reach the app
- *      proves nothing);
+ *   1. unset AUTH_PROBE_ENABLED on the box, restart web (the env file is read
+ *      at process start), and from an outside client sending the Basic-Auth
+ *      credential and NO session cookie confirm `/auth/probe` -> 404 AND
+ *      `/` -> 200. While Basic Auth is on, `/auth/` is NOT exempt, so a client
+ *      without the credential sees 401 everywhere and proves nothing. `/` is
+ *      the positive control (exempt and app-served): a 404 from a client that
+ *      cannot reach the app proves nothing, and `/signin` is a bad control
+ *      because its 401 also reads as "non-404";
  *   2. delete this file and its test in a commit named as the removal.
  */
 
