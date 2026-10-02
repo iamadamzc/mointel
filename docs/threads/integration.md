@@ -1147,6 +1147,11 @@ FINRA COVERAGE   Ops 91caa2f3 docs/ops/finra-coverage-2026-10-02.md (read): 49/5
                  coverage MET, Commercial §8 PASS, Marketing words FINAL; LEFT: Research §5 calibration (precondition
                  met; Research told fe69fe1f, queued), his adoption of Web 204d42c6, his yes; one change with
                  attribution. Ops says Commercial §10 terms questions stand (2.2 is his accepted exposure).
+WEB HANDS OFF    At his direction. d329a691 (web.md LIVE STATE 17:34Z + web-opening-prompt.md; LOCAL main, push asked).
+                 HAZARD: two Web-tmi titles until local_2c0e391a is renamed; route to the NEW id (createdAt after
+                 17:37Z) once it messages. Wiring (step 4) UNWRITTEN by design; successor writes it only after Ops's
+                 three probe reads, which come to THIS seat. Web retracts its "transport rate limit" claim (he says no
+                 such limit): treat Web silences tonight as unexplained, ask rather than assume.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
