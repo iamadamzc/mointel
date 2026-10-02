@@ -3283,6 +3283,10 @@ ROW B SPEC       Design a6867865 docs/Design/report-b-spec.md: tags = board Why/
                  SESSION" narrative under title replacing overall; no cycle tag; float once in footer; no mock before step
                  5. Routed to Marketing (words + explains-the-move three states on both surfaces). Design P1: /desk is
                  behind Basic Auth (Design must not enter it); Design asks HIM itself; else relies on Ops's /api/levels.
+LEVELS VERIFIED  Ops: first refresh 02:55:00Z names=147 written=147 absent=0 totalMs=75,485, exit 0; history.db created
+                 (610,304 B); /api/levels NXL 200 in 0.031 s, 66 levels, computedAt 02:55:00Z. (A) + citations: Ops
+                 recommends WAIT (OOM) to him. Asked Ops to bring him the OOM FIX as his decision (swap / off-box build /
+                 capped install / stop workers during install), since it now gates every ship.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
