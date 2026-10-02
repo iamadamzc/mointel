@@ -59,16 +59,14 @@ section is touched.*
 ### Short interest, which comes from FINRA
 
 The crowding label is our own calculation. The data behind it is owned and
-published by FINRA, and FINRA is its source. Where the desk shows the label it
-names FINRA and the settlement date the underlying figures belong to.
+published by FINRA, which is its owner and source. Where the desk shows the
+label it names FINRA and the settlement date the underlying figures belong to.
 
-One limit is specific to it: you may use it for your own non-commercial personal
-or professional use, and for nothing else. Trading your own account is that.
-Building it into something you sell, or running a service on it for other
-people, is not.
+FINRA licenses it to us to show you on one condition, in FINRA's own words: you
+may use it for your own non-commercial personal or professional use only.
 
-You also may not pass it on. That is this section already, and it applies to this
-label exactly as it applies to everything else.
+The limits in this section apply to the label as they apply to everything else,
+and you may not pass it on.
 ```
 
 ### Why it is worded this way
@@ -79,12 +77,30 @@ label exactly as it applies to everything else.
   and less is the dangerous direction.*
 - **It is scoped to the label alone, not to the whole desk.** *Applying a
   non-commercial limit to everything would be a far larger change to what a
-  paying user may do, and FINRA does not ask for it.* **A user paying to use the
-  desk in their trading business is "professional use" and stays inside the
-  phrase either way, which is worth knowing before anyone widens it.**
+  paying user may do, and FINRA does not ask for it.* **INFERENCE, NOT A FINDING, AND IT MUST NOT REACH USER-FACING TEXT:** *a user
+  paying to use the desk in their trading business probably reads as "professional
+  use" and stays inside the phrase either way.* **Commercial's caution applies to
+  it as much as to the deleted glosses: the phrase is undefined, so this is a
+  conservative guess and not a licence reading.** *Useful for judging how wide the
+  limit is before anyone proposes widening it; not usable as a sentence in the
+  terms, in a marketing page, or in an answer to a customer asking whether they
+  qualify.*
+- **NO EXAMPLES, AND THAT IS A CORRECTION. The first draft glossed the phrase
+  with "trading your own account is that" and "building it into something you
+  sell is not".** *Commercial's check, `cd9e68a5`: FINRA's phrase is UNDEFINED,
+  so any example is us interpreting a contractual term in binding text, and my
+  exclusion may have been stricter than FINRA.* **An adviser deciding client
+  trades could read as "running a service for other people" and might be
+  permitted by FINRA, so the gloss would have barred a customer the licence does
+  not bar.** *The inclusive example was no safer: calling own-account trading
+  non-commercial is still a gloss on an undefined term.* **Both are gone and the
+  phrase stands alone, attributed to FINRA so a reader can see it is a licence
+  term rather than our rule.**
 - **The third paragraph adds no obligation. It points at section 5.** *Without it
   a reader could infer that the FINRA paragraph is the complete set of limits on
-  the label.*
+  the label.* **It also now carries the prohibition the deleted gloss used to
+  carry, which section 5 already stated anyway, so nothing was lost by removing
+  it.**
 - **It says the label is ours and the data is FINRA's**, which is what 2.4 and
   5.2 describe, and it does not claim the desk shows FINRA's figures, because
   his preference is the label only.
@@ -112,8 +128,8 @@ the label rather than live only in the terms.**
 
 | surface | string | owner |
 | --- | --- | --- |
-| **the label's own detail**, wherever a row's short interest is expanded | `Short interest: FINRA, settled <YYYY-MM-DD>.` | **Design** builds it, Web owns the words |
-| **the board's persistent footer**, once | `Short interest data: FINRA. Shown as our own derived label, not FINRA's figures.` | **Design** builds it, Web owns the words |
+| **the label's own detail**, wherever a row's short interest is expanded | `Short interest: FINRA (owner and source), settled <YYYY-MM-DD>.` | **Design** builds it, Web owns the words |
+| **the board's persistent footer**, once | `Short interest data: FINRA (owner and source). Shown as our own derived label, not FINRA's figures.` | **Design** builds it, Web owns the words |
 | **terms section 5** | the subsection in part 2 | Web, on his adoption |
 
 **THE SETTLEMENT DATE IS PART OF THE ATTRIBUTION, NOT DECORATION.** *Short
@@ -164,8 +180,16 @@ label is arguably a commercial use by us.** *2.3(b) expressly contemplates
 distributing the data inside a fee-liable product, which is the reading that
 favours us, and no sentence resolves it.*
 
-**That question decides whether this wording is ever needed, and it is his or
-counsel's, not a seat's.** *This draft assumes the favourable reading, under the
-accepted-exposure posture he already set for the feed licence.* **Recorded so
-nobody reads an approved wording as evidence that the underlying question was
-answered.**
+**It is his or counsel's, not a seat's.** *This draft assumes the favourable
+reading, under the accepted-exposure posture he already set for the feed licence.*
+**Recorded so nobody reads an approved wording as evidence that the underlying
+question was answered.**
+
+> **AND AN EARLIER VERSION OF THIS SECTION SAID THE 2.2 ANSWER "DECIDES WHETHER
+> THIS WORDING IS EVER NEEDED". THAT WAS WRONG, corrected on Commercial's check
+> (`cd9e68a5`):** *a yes leaves the wording needed exactly as drafted; a no does
+> not retire the wording, it ends the LABEL on this route and sends it to the
+> Massive Business fallback.* **So the 2.2 answer decides whether the feature
+> happens, not whether the text is required if it does.** *The distinction
+> matters because the first reading invites waiting for FINRA before settling the
+> wording, and there is nothing to wait for.*
