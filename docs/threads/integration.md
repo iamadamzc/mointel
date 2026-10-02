@@ -3408,6 +3408,10 @@ STEP 4 LIVE      19f9d721 (levels on review links) NR 0; market untouched; quick
 DESIGN P1 PART   design.md 7ca82129: review-link levels route 200/400 correct, section mounts; all null (past midnight ET,
                  no 10-02 rows yet; route.ts:50 reads today's ET date): expected. Populated row + "moving" label read
                  waits for rows + a mover, 04:00-07:00 or after 10:00 ET; Ops asked to ping Design.
+V6 STEP 4 BUILT  research/reports-v6 b8719e7c (Research gate: tsc 0, lint 0, 228 files, 3,313): c8793767 checker v6
+                 (narrative traced, G omission struck, window phrase, P1 = prompt v4, citation token struck); b8719e7c
+                 pipeline to writer v6 / checker v4-stamp, publishes `narrative` not `overall`. CUT BLOCKER: SessionReports
+                 renders `overall`: Design builds option B render on research/reports-v6 (ordered). Next: step 5 harness.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
