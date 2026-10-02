@@ -37,9 +37,20 @@
 5. **Cost to borrow and availability carry the "concentrated" read FINRA cannot.** Three of the five show a borrow cost of 27% or more; SDEV shows 195% with 1.6% availability. No FINRA field shows this.
 6. **Days to cover diverges on movers** (FLUX 4.06 vs 1.23; SDEV 4.40 vs 0.44). Ortex appears to use recent volume, FINRA the prior cycle's. This confirms Commercial's R6 (no depth chip).
 
+## Answered after the first write-up (2026-10-02)
+
+- **When pulled (his word):** Friday 2026-10-02, 15:48 ET. The panels still read "Updated: Monday - Data as per previous close". So the overview figures appear to be Ortex's estimate as of early this week, not this afternoon's.
+  - Ortex says its estimate is published before the US open and updated intraday for about 15,800 US securities. The live figure is presumably on the "Live Short Interest" tab, not the overview.
+  - Either way, about 9 to 10 days fresher than FINRA's Sep 15 settlement.
+- **What Ortex's figures are (Ortex's public page `public.ortex.com/short-interest`, read 2026-10-02 in this seat's own browser, not signed in):**
+  - its OFFICIAL data is "Exchange short interest for the US", and its example compares its estimate "against every official FINRA figure". **So Ortex's exchange-reported figure is FINRA's, the source our label uses;**
+  - the overview "Short Interest" is Ortex's MODEL: estimated "from securities-lending data", and in Ortex's words "ORTEX estimates produced by our models, not exchange or regulatory filings";
+  - Ortex's own accuracy claim: 95% of estimates within one percentage point of free float of the official figure, across 2.1 million official prints since August 2023 (Ortex's claim, unverified);
+  - days to cover is reported "over four volume windows".
+- **Not checked:** CTVA's Official Reports value against FINRA's 20.67M. That tab needs his login, which this seat does not use; he can read it, or it stays open.
+
 ## Open
 
-- **Ortex's "Official Reports" tab for CTVA**, to check that its exchange-reported figure equals FINRA's 20.67M (predicted equal; untested).
 - **Ortex's methodology** for its estimate and its free float (not read).
 - **Its licence for display** (Commercial; unread).
 - **Five names is a look.** A measurement would pre-register a name set and compare at matched dates.
