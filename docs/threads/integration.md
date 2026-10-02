@@ -3346,6 +3346,11 @@ HIS RULING       Design's transcript 51f52927 user record 2026-10-02T03:14:33Z (
                  links, so I can check this release and future ones myself. It's a small change and would ship later."
                  Widens review-link exposure: HIS, ruled. ORDER to Research: leak fix -> review-link /api/levels mirror
                  (reports-mirror pattern) -> v6 step 4. Design P1 = levels read on a review link after it ships.
+LEAK FIX BUILT   Research 50196f0b on main (read): SecClient cache LRU 64 MiB, 30-min lifetime, oversize never cached;
+                 tests; prereg-ship.md in the same commit (PASS: research max RSS <= 450 MB AND < 2 MB per new ticker
+                 after 20). Waits: gate (new Ops slot), cut, replay, his yes.
+NEW OPS          local_d8a2a445 (created 03:14:54Z; get_session read); old local_8a0801c2 "Ops-tmi-retired", ARCHIVED.
+                 Briefed: addendum = live state, leak fix + levels-mirror ruling, ship order, build-peak measurement owed.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
