@@ -13473,3 +13473,10 @@ If this session dies again, the successor re-creates these from this paragraph.
 - ONE LADDER 9189b569e9577dc578b14b00a856a3dd0bd69b4c (annotated tag 7defb225 -> it; on 28c66f14, 2 commits, 5 files):
   release gate ALL GREEN 222/222 files (pre-registered 222), 3,278 tests, lint 0 errors / 6 warnings, 14:18:06Z; local
   build rc 0 (14:18:38Z). DEPLOY_TESTS_SKIP allowed for this sha. Ships on his yes, /proc = 28c66f14 at launch, after 20:00 ET.
+
+**Error ledger (this seat):**
+| error (asserted vs true) | TYPE | already logged? | caught by |
+|---|---|---|---|
+| push of 75e0f0df carried Research's 258624e2: `git log origin/main..main` ran in one command, `git push` in the next; Research committed between them | check-then-act-race (shared-push) | no | peer (Research), harmless |
+| told Integration the judge pid was 1821896 with three deploys still to restart research | stated-before-final | no | self, corrected before use |
+Cure for the first: the unpushed-commits check and the push run in ONE command, aborting unless every commit is mine.
