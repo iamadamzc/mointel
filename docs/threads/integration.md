@@ -3385,6 +3385,10 @@ CHAIN GATED      Ops (ops.md f83fda0d): 840741d3 214/3,202; 2a625a5b 217/3,225; 
                  first, build peak measured on build 1.
                  TIP BUILT (Ops 3c9dd99b): 28c66f14 next build rc=0 03:51:26-03:52:16Z, /review/[token]/api/levels present;
                  package.json + lockfile identical to 2a625a5b. CHAIN READY pending his yes per step.
+HIS WORDS        ~04:03Z 10-02 (00:03 ET): "i'll restart so there's fresh memory (if youre referring to my machine) and you
+                 can ship them tonitght." Told him: do NOT restart the PC (stops Ops mid-deploy); fresh memory = research
+                 worker on the box. NOT a per-step yes (restart + ships are his in Ops's chat; relay authority covers
+                 neither restarts nor this). Ops asked to put step 0 to him now; window to 04:00 ET.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
