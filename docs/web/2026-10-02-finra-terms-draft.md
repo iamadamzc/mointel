@@ -1,5 +1,18 @@
 # FINRA short interest: the end-user terms wording, and where the attribution goes
 
+**AS OF 2026-10-02 17:48 UTC: re-read end to end by the successor Web seat. Still
+accurate, still unapplied, and section 4's premise re-checked at `05e73046`: the
+label is not in `lib/`, `components/`, `app/` or `worker/` (the one `crowding`
+hit is an English word in a `MarketStatus.tsx` comment).** *What has moved
+around it: Research's calibration (`a0f880c0`) put display options to him, and
+the leading one, exception-only, adds a board legend line about silence whose
+words are Marketing's (`f035ab7d`), beside the footer attribution string here,
+which stays Web's. Once he rules, re-read two things against what he picked:
+the terms text's name for the thing ("the crowding label") against what the
+board calls it, and section 3's "label's own detail" row against wherever the
+line actually renders (with Commercial's R6 the board chip is size-only and the
+drawer's depth line carries most of it).*
+
 **Web, 2026-10-02 11:14 ET, against `692ce434`.** Owner of this file: **Web**.
 Written on Integration's ask, from Commercial's finding at
 [`../commercial/2026-10-02-short-interest-landscape.md`](../commercial/2026-10-02-short-interest-landscape.md)
