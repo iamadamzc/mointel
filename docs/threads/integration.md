@@ -3266,6 +3266,10 @@ MOVERS CUT       98905b08352ba8681ae6cf4b7816bfda731e8325 (tag design/moving-on-
                  worker/package, no capture/report files; 0 added U+2014; 221 tests; defaults K=15, 10%, 500k. Design
                  gate 221/221, 3,257 + build/lint/typecheck 0. Label: "moving" under ticker, hover from row numbers,
                  caption "N moving". SHIP: Ops release gate, /proc = 2a625a5b, his yes; next ship night.
+BREADTH BASIS    ORDER CALL: recap F1 breadth = REGULAR SESSION (16:00 freeze), one set with F6/F7; flips if he tells
+                 Marketing "after-hours" (Marketing asked him in-session). Contingent on Research confirming the 22:00
+                 report can read frozen 16:00 counts without a store change. Watchlist seam line = Marketing's wording.
+                 Marketing told him the two limits (no sector theme in v6; no stored pins) itself.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
