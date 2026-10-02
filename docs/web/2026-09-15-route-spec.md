@@ -15,10 +15,25 @@
 > everything else             :  auth_basic, including /desk and /api/*
 > ```
 >
-> **STILL DEFERRED AND STILL DELIBERATE: `/signin` and `^~ /auth/`.** *They wait
+> **STILL DEFERRED AND STILL DELIBERATE: `/signin` and `^~ /auth/`.** ~~*They wait
 > on the authority field. Opening `/signin` before a first-admin grant exists is
-> how the authority to spend his money goes to whoever knocks first. §3c has the
-> reasoning; do not paste them in because a check said a path was missing.*
+> how the authority to spend his money goes to whoever knocks first.*~~ **RE-READ
+> 2026-10-02 by the successor Web seat: the reason moved, the deferral did not.**
+> *The first-admin question was answered by the allowlist (his D5, 2026-09-24: his
+> address is seeded before anyone signs in, and nothing infers authority from
+> being early). They now ship with Basic-Auth removal, LIVE STATE step 5 in
+> `docs/threads/web.md`, after the gate is wired and proven; the sign-in night of
+> 2026-10-02 makes no nginx change.* *Do not paste them in because a check said a
+> path was missing.*
+>
+> **§4 IS STILL OPEN AND IT IS A PRECONDITION FOR STEP 5.** *Re-read 2026-10-02:
+> `POST /api/research/retry` still has no identity check and no rate limit. The
+> gate wiring (step 4) gives it the status check; the per-user rate limit does not
+> exist anywhere, and Basic Auth on `/api/` is still its only protection.* **It
+> must exist before Basic Auth comes off `/api/`.**
+>
+> *§8's latent table fault is FIXED: `lib/legal/document.ts` wraps every rendered
+> table in its own scroll container.*
 >
 > **THE THREE THINGS IN HERE THAT ARE STILL TRUE AND STILL BITE:**
 > *§2's negative control — a sweep that only checks for 200s passes while the
