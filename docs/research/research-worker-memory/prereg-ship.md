@@ -20,7 +20,12 @@
 
 **Judged on the FIRST FULL TRADING DAY after the ship** (04:00 to 20:00 ET).
 
-**Samples:** the research worker's RSS (the main process only; the levels refresh child is a separate process and is reported separately), every 10 minutes. Beside them, the count of DISTINCT tickers first collected in that run (`research_jobs`, first-seen per ticker, by hour).
+**Samples:** the research worker's RSS, every 10 minutes.
+
+- **Which process (amended before ship, on the new Ops seat's reading at `858c149b`):** the worker's CHILD node process, which holds the memory (pid 1773565, 134,780 KB at 03:16:41Z).
+- **NOT** the unit's MainPID: that is the tsx wrapper, about 52 MB.
+- **NOT** the unit's `MemoryCurrent`: that includes page cache, about 719 MB.
+- The levels refresh child is a separate process and is reported separately. Beside them, the count of DISTINCT tickers first collected in that run (`research_jobs`, first-seen per ticker, by hour).
 
 | Reading | Rule |
 |---|---|
