@@ -966,7 +966,80 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; the commit that lands this is its time)
+## LIVE STATE: AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; the commit that lands this is its time)
+
+*A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION before
+acting (ask Ops-tmi for /proc). The 22nd's running notes (search "THE TWENTY-SECOND SEAT'S RUNNING NOTES") carry every
+verification; where they disagree with this, the later note wins. NO EM DASHES in anything he reads.*
+
+### PRODUCTION (Ops, after the 10-02 ship night; re-read)
+```
+WEB/RESEARCH/ASSESS  28c66f14b33a9835c9eb0b171577bf03a2073ed8 (rc 0 05:44:44Z 10-02). MARKET 1b5ead66 untouched since 09-30.
+LIVE SINCE 10-02     levels (b5a35fda), (A) report cards 840741d3, citations 2a625a5b, LEAK FIX 0e883fec, levels on review
+                     links 19f9d721, MOVERS 558d07a5 (verified 3 rows 10:02 ET), citation residual 28c66f14.
+MEMORY               Box 3,832 MB, no swap. Build peak measured: next build RSS max 1,288 MB, min MemAvailable ~1,034 MB with
+                     a fresh research worker; each deploy restarts research. Deploy guard: weekday ships 20:00-04:00 ET only.
+LEAK JUDGE           research child pid 1864116 (start 05:44:29Z); Ops samples every 10 min to 20:05 ET; Research grades after
+                     20:00 ET against prereg-ship.md (PASS: max RSS <= 450 MB AND < 2 MB per new ticker after 20).
+```
+
+### TONIGHT, FRI 2026-10-02 (Ops runs; each step his yes in OPS's chat)
+```
+20:12 ET   market.db snapshot for Research (his "yes, snapshot" in Ops's chat) -> v6 step 5 samples + blue-sky scale count.
+THEN       ONE release a4a0616892a6f303f4312d6d4546ad05423b17af = one-ladder (2afd15bc, 9189b569) + aria fix (a4a06168);
+           Ops gate 223/223 + build 0; approved here by literal sha; his yes naming both.
+SIGN-IN    HIS: "i'll do this today". He does the setup items; the new seat FIRST writes him a step-by-step MD (see the
+           opening prompt). The cut-over order is ops.md:12038-12049; Web's gate wiring is NOT in the repo yet (Web
+           writes it on the day); Ops + Web run it after his items, one deploy at a time.
+```
+
+### BUILT, NOT LIVE (owner -> trigger)
+```
+BLUE-SKY FIX   Research + Design: 70c534f4, ded2274a, bac44069 (Research) + c535dce7 (Design hover, AS-TRADED "about
+               $19.45 as it traded on 2018-04-30 ..."; 9694e8bb/750b9f25 VOID). Re-pick onto /proc after tonight
+               (a4a06168 if shipped) -> FINAL literal-sha replay here -> Ops gate -> his yes. Scale count on tonight's
+               snapshot (prereg 258624e2).
+REPORTS v6     Research + Design: research/reports-v6 b8719e7c (writer v6, checker v6/prompt v4, narrative replaces overall)
+               + Design surface 1ba42292 (+301ac033). Step 5 = samples on tonight's snapshot = HIS FIRST LOOK; then step 6
+               pass bar (Marketing's blind seeds), step 7 Commercial sample, step 8 cut. Base = chain tip (28c66f14 line).
+```
+
+### APPROVED, NOT BUILT (owner -> trigger)
+```
+SI LABEL       Research design 979c75a7 + R1-R5 (0acc4bcb, 330aed73); Commercial §8 PASS; Marketing words in review
+               (Commercial 46f61c55 two changes). Web terms draft 2e8ded5f/58bd606d (one sentence in §5, FINRA "owner and
+               source"); terms edit + HIS adoption + attribution + label ship as ONE change. Gate: HIS FINRA credential in
+               .env.local (he registered; "accepted exposure") -> Ops coverage check (Nasdaq/NYSE small caps) -> build.
+               Label is part of the subscription, never an add-on (FINRA 2.3). Clause 2.2 unresolved (accepted exposure).
+v6.1           F8 sector theme (needs SIC write a4a92a8f + mapping he approves) + hedged "what to watch" block (Marketing).
+BOTH-SURFACES  Marketing's clearer tag words (incl. explains-the-move three states) on board AND report, after v6.
+LEVELS NOTE    cold refresh ~1.18 s/name; 270 s kill at ~228 names: re-measure before the covered set passes ~150.
+```
+
+### HIS RULINGS THIS SEAT (each read at his typed turn; transcript 1bfab363 unless named)
+```
+movers: requirement "it should absolutely show on the board"; "yes, wait for the comparison"; normal rows labelled moving,
+        not a separate group; "10% with 500k shares, cap 15".   reports: narrative + design element (v6).
+"yeah fix the leak".  levels on review links (Design 51f52927 03:14:33Z).  one ladder ("incorporate the two").
+short interest: a read for longs (heavy/deep/concentrated); to Commercial "registered. accepted exposure".
+shared-main reconcile ("yes, switch the shared copy over").  Friday sign-in: "i'll do this today".
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_d8a2a445   Research-tmi local_5f4bfcf8 (AT THE 10-MESSAGE PEER CAP until he writes in its chat: READ
+research.md LIVE STATE for its results)   Design-tmi local_dfce21d4   Marketing-tmi local_fdc0aa9a   Web-tmi local_2c0e391a
+Commercial-tmi local_2ce868d2 (Sonnet).  THIS seat local_697b69cc retires once he renames it Integration-tmi-retired.
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc. Then write HIM the sign-in (+ FINRA credential) step-by-step MD. Tonight: snapshot -> a4a06168
+-> blue-sky re-pick replay -> v6 step 5 samples to him. This seat's failure, nine times: passing a claim on before
+reading or RUNNING its source (ledger in the running notes).
+```
+
+## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
 
 *A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION before
 acting (ask Ops-tmi for /proc). The twenty-first's running notes (below the twentieth's) carry every verification; where
@@ -3232,6 +3305,11 @@ SI TERMS DRAFT   Web 2e8ded5f (docs/web/2026-10-02-finra-terms-draft.md); terms.
                  "is the ship hold on?": ANSWERED cleared (leak fix live, build peak measured, six deploys clean).
 HANDOFF ASKED    11:19 ET his "what needs to be done? should you hand off?": gave the full list; recommended YES (ledger 9,
                  six in one family; ~13 h session). NEEDS YOU: hand off now? + Friday sign-in tonight (four items)?
+HAND-OFF         HIS: "no, i'll do this today. add it to the new chat prompt to give me the step by step in an MD on how
+                 to do that." Read as: hand off; he does the sign-in set-up today; successor's task 2 = the step-by-step
+                 MD (Google OAuth client, .env.local, seed, throwaway account, 10 min, + FINRA credential), every console
+                 step read at source. LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF written; 21st's archived; opening
+                 prompt rewritten. Ledger closed at 9.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
