@@ -1063,7 +1063,9 @@ SEAM FOUND       bb4e14a8 §3a assumes "^~ /auth/" exempt; nginx-locations.conf:
                  carries the exemption. Without it claim C (no-cookie curl) reads nginx 401, not "anonymous".
 GUIDE            docs/ops/2026-10-02-sign-in-and-finra-setup.md. Every console step read today at source (Google
                  web-server OAuth page; Google Auth Platform help 15544987/15549049/15549945/15549257; FINRA
-                 developer.finra.org/docs). Google key names from lib/auth/config.ts:44-51. FINRA names PENDING Ops.
+                 developer.finra.org/docs). Google key names from lib/auth/config.ts:44-51. FINRA names FIXED here as a
+                 convention (no code reads any): FINRA_CLIENT_ID / FINRA_CLIENT_SECRET; Ops told to read them (c07bce26);
+                 sync-env.sh:35 carries them to the box unless Ops strips them (Ops's call).
                  0 U+2014/U+2013/entities. .env.local key NAMES read (values never printed): no GOOGLE_CLIENT_* or FINRA_*.
                  docs/finra.txt: 20 bytes, git-excluded (.git/info/exclude:18), NOT OPENED (may hold a FINRA value).
 ```
