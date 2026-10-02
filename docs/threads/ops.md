@@ -13484,3 +13484,9 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   is in a code comment quoting the glyph, checked): release gate ALL GREEN 223/223 (pre-registered 223), 3,283 tests, lint
   0 errors / 6 warnings, 14:28:40Z; local build rc 0. Integration's order: ship the TIP a4a06168 as ONE release tonight after
   the snapshot (carries the one-ladder), on his yes naming both. Question put to him in this chat.
+- LEVELS POST-SHIP CHECK (registered), read 14:4xZ, first session with LEVELS_REFRESH_ENABLED=1. Market [flush] 09:30-10:30 ET,
+  2026-09-30 vs 2026-10-02 (60 vs 59 minute lines): per-minute p50 median 181.7 vs 179.0 ms; per-minute max median 2,490.6 vs
+  2,398.9 ms; window max 11,353.5 vs 7,416.8 ms; over250 424 vs 212; flushes 3,512 vs 3,467; dirty p50 median 94 vs 91.
+  NOT +50%: nothing to him as a regression. Two different days; no cause attributed. First levels refreshes (research
+  1864116): 07:55Z 0 names 2 ms; 08:00Z 6/8,108 ms; 08:05Z 90/106,503 ms (cold); then 11,170 / 10,158 / 3,493 ms. To Research.
+- Heavy slot traffic: Research bac44069 green (222/3,285); Design 750b9f25 green (223/3,289). Neither approved to ship yet.
