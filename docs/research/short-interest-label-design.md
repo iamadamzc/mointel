@@ -24,18 +24,18 @@
 
 **Size: shares short as a share of FILED shares outstanding.** This is a floor, so the grade can understate, never overstate.
 
-| Grade | Band |
+| Shown as (FINAL wording, Marketing 2026-10-02, Commercial-approved R1 to R5) | Band |
 |---|---|
-| *(no word)* **Under 5% of shares outstanding** | under 5% |
-| Moderate | 5 to under 10% |
-| Elevated | 10 to under 20% |
-| Heavy | 20% or more |
+| "under 5% of shares outstanding" | under 5% |
+| "5% to under 10% of shares outstanding" | 5 to under 10% |
+| "Elevated (10% to under 20% of shares outstanding)" | 10 to under 20% |
+| "Heavy (20% or more of shares outstanding)" | 20% or more |
 
 **Changed on Commercial's review (R1, `692ce434`):**
 
 - The lowest grade had a word, "Normal". This measure can only understate: on a low-float name, 4% of shares outstanding can be most of the float. So "Normal" told a long reader the short side was unremarkable, in exactly the direction the floor cannot cover.
 - The lowest grade is now the literal band, with no word.
-- "Above normal" became "Moderate", because it leaned on the dropped "Normal".
+- "Above normal" became "Moderate", because it leaned on the dropped "Normal". **Then dropped too** (Marketing, final): size "Moderate" collided with depth "Moderate depth" on one line, so the 5 to 10% grade shows its band with no word. Words remain only at the crowded end (Elevated, Heavy).
 - Every size grade carries its band and its denominator INLINE on the drawer line, not only on hover.
 - The words are Marketing's to tighten; the constraint is Commercial's.
 
@@ -56,7 +56,7 @@
 | Covering | down 25% or more |
 | Steady | otherwise |
 
-A trend grade is shown only at Moderate or higher.
+A trend grade is shown only at 5% of shares outstanding or more.
 
 **The gate on size.** The size grade is computed only when all of these hold:
 
@@ -72,7 +72,7 @@ Otherwise size is "not graded", with the reason.
 
 **Drawer: one line, always shown when a current report is held.** The size grade carries its band and denominator inline (R1):
 
-> **Short interest: Elevated (10 to 20% of shares outstanding) · Deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago).
+> **Short interest: Elevated (10% to under 20% of shares outstanding) · Deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago).
 
 > **Short interest: under 5% of shares outstanding · Shallow.** Source: FINRA, settlement Sep 15 (17 days ago).
 
@@ -82,7 +82,9 @@ Otherwise size is "not graded", with the reason.
 - never a position inside a band;
 - never a band beside FINRA's number.
 
-> Elevated: at least 10% and under 20% of shares outstanding sold short (filed count dated Aug 8). Shares outstanding include shares that do not trade, so the share of the float sold short can be higher. Deep: 5 to under 10 days of normal volume to cover. Building: up at least 25% since the previous report.
+> Filed share count dated Aug 8. Shares outstanding include shares that do not trade, so the share of float sold short can be higher. Deep: 5 to under 10 days of normal volume to cover. Building: up at least 25% since the previous report.
+
+(FINAL, Marketing: the size band is inline on the drawer line, so the hover does not repeat it; it keeps the floor caveat and the depth and trend bands.)
 
 Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very deep), fixed to "5 to under 10"; the filed-count clause folded into brackets. The drawer line joins only the grades present and says "1 day ago" when the age is one day. **Open, his call:** "Covering" names a mechanism (shorts buying back); "Easing" or "Falling" would describe only the position. Marketing flagged it to him; "Covering" is the trader-standard word.
 
@@ -92,12 +94,12 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 
 **Legend, shown ONCE (R2 and R3, Commercial `692ce434`)**, wherever the label first appears (drawer section footer):
 
-> Short interest data: FINRA (owner and source). Grades are this desk's own, computed from FINRA's reports and the company's filed share count. They describe short positions on the settlement date shown. They are not a prediction or a recommendation.
+> Short interest data: FINRA (owner and source). The grades are this desk's own, computed from FINRA's reports and the company's filed share count. They describe short positions on the settlement date shown, not a prediction or a recommendation.
 
 - Clause 2.3(a) requires FINRA to be identified "as the owner and source" of the data, derived data included. "Source: FINRA" on each line names only one of the two, so the legend carries both.
 - The word "squeeze" appears nowhere in the label, the hover, the chip or the legend.
 
-**Board chip: only at Heavy or Very deep, and ALWAYS with the settlement age** (Commercial R5, 13c): e.g. "SHORTS: HEAVY, 17d". A bare chip reads as current. No chip is not the same as a low grade, so the drawer always carries the full line.
+**Board chip: only at Heavy or Very deep, and ALWAYS with the settlement age** (Commercial R5, 13c): e.g. "SHORTS: HEAVY · 17d" / "SHORTS: VERY DEEP · 17d" (days since settlement, the same number as the drawer; no denominator on the chip; touch has no hover, so the age cannot live only there). A bare chip reads as current. No chip is not the same as a low grade, so the drawer always carries the full line.
 
 **Report tag:** the same words as the drawer line, via the v6 tags, if Design wants it. Not in the first build. **When it enters the report layer, the settlement date and its age ("17 days ago") must survive any truncation** (Commercial, non-blocking).
 
@@ -109,14 +111,14 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 
 | Placeholder | Invented inputs (never shown) | Drawer line | Board chip |
 |---|---|---|---|
-| AAAA | floor 26%, 12.4 days, +41% | **Short interest: Heavy (20% or more of shares outstanding) · Very deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | SHORTS: HEAVY, 17d |
-| BBBB | floor 14%, 6.2 days, +40% | **Short interest: Elevated (10 to 20% of shares outstanding) · Deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
+| AAAA | floor 26%, 12.4 days, +41% | **Short interest: Heavy (20% or more of shares outstanding) · Very deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | SHORTS: HEAVY · 17d |
+| BBBB | floor 14%, 6.2 days, +40% | **Short interest: Elevated (10% to under 20% of shares outstanding) · Deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | CCCC | floor 3%, 1.4 days, -8% | **Short interest: under 5% of shares outstanding · Shallow.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | DDDD | ATM active since the filed count; 6.8 days; +5% | **Short interest: size not graded (shares issued since the last filed count) · Deep.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | EEEE | newest report held is the Aug 29 settlement, while Sep 15 is published | **Short interest: not current** (a newer FINRA report has been published and is not yet held). | none |
 | FFFF | 1-for-20 reverse split after the filed count; 3.1 days | **Short interest: size not graded (a reverse split since the last filed count) · Moderate depth.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 
-- On DDDD and FFFF, no trend grade appears, because size is not graded and the trend rule needs size at Moderate or higher.
+- On DDDD and FFFF, no trend grade appears, because size is not graded and the trend rule needs size at 5% or more.
 - CCCC shows no trend grade for the same reason: it is under 5%.
 
 ## 5. Calibration on his names, PRE-REGISTERED now (runs only once the credential exists and coverage is confirmed)
