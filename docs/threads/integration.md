@@ -3081,6 +3081,11 @@ error                                                  TYPE                     
   date (25 h). I could have read the start time in   from two times I never compared)            correction,
   the 21st's /proc (01:24:28Z 10-01) vs 02:39Z 10-02.                                             30448f8c)
   Corrected to him next message. LESSON: a duration from two clock times needs both DATES read.
+8 told HIM "whether we're allowed to show Alpaca's   an action claimed as done that    no (new) self
+  borrow data to paying users ... I've asked          was only in my notes (asserted
+  Commercial"; my message 8a68728e asked FINRA terms   my own send without reading it)
+  + Alpaca products only. Asked for real after
+  Commercial's 58f2500b; told him. LESSON: before saying "I've asked X", read the sent message.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
