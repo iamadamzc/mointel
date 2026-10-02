@@ -3228,6 +3228,15 @@ THU 22:31 ET     HIS "what needs to be done". FOUND: no commit since 12:04 ET; O
                  .env.local by HIM, never a chat), seed iamadamzc@gmail.com, throwaway UNINVITED Google account (his to
                  create), ~10 min Fri evening. Also asked: open a Design seat + rename old local_c29a82bd (still titled
                  "Design-tmi", NOT renamed: routing hazard).
+NEW DESIGN       local_dfce21d4 (created 02:32:40Z 10-02, cwd A:\mointel; get_session read). Old local_c29a82bd renamed
+                 "Design-tmi-reitred", ARCHIVED (read). Plan approved: movers label on e0f18bbb as a design/ tag; label
+                 spec = his words only, Design's call, must not read as RVOL-ranked; design/movers-on-558f5cb5 VOID.
+HIS QUESTION     "what about the session report updates? there's still no opening narrative and no design element, its
+                 hard to read, this was brought up." = REPORTS v6 + Design row B (design.md:69) + opening narrative,
+                 approved-not-built, trigger "after (A) ships" (tonight). It sat behind movers/citations today. ORDER:
+                 v6 is Research's NEXT task (plan + first-seen date asked, b86fd790); Design: movers label then row B
+                 surface spec fixed against Marketing's guardrails (76c0ba0e). Marketing (narrative voice) to be briefed
+                 when Research's plan names its step.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
