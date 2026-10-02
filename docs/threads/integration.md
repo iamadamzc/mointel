@@ -3425,6 +3425,11 @@ CHAIN COMPLETE   STEP 6 LIVE 28c66f14 (residual): web 1863983 / research 1864048
                  1b5ead66 untouched all night; quick_check 808.2 s; rc 0 05:44:44Z; health ok, schema 28 (ops.md
                  742e6b8c). PRODUCTION NOW: web/research/assess 28c66f14, market 1b5ead6. JUDGE PID research child
                  1864116 (start 05:44:29Z), sampler every 10 min to 20:05 ET. Design poll 04:00-06:55 ET for P1/movers.
+HIS RULING       typed to me with screenshot (scratchpad images\2.png): "the way the resistance levels are written is
+                 unhelpful. they are inverted. find a way to diesig them like the level ladder. incorporate the two.
+                 doesn't make sensee to have them in two places." ORDER to Design: ONE ladder (resistance merged into the
+                 level ladder's design/order), separate section removed; branch from /proc 28c66f14; render on real rows
+                 outside his window; gate; tag + sha to me; any genuinely-his choice comes back first.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
