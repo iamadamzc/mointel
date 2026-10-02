@@ -78,9 +78,9 @@ import {
 import type { ResearchHealth } from '../lib/research/types';
 import { startReportLoop } from '../lib/desk/reports/job';
 import { reportRanges } from '../lib/desk/reports/ranges';
-import { createReportModelsV5 } from '../lib/desk/reports/runner';
-import { REPORT_WRITER_PROMPT_VERSION_V5 } from '../lib/desk/reports/writerV5';
-import { REPORT_CHECKER_PROMPT_VERSION_V5 } from '../lib/desk/reports/check';
+import { createReportModelsV6 } from '../lib/desk/reports/runner';
+import { REPORT_WRITER_PROMPT_VERSION_V6 } from '../lib/desk/reports/writerV6';
+import { REPORT_CHECKER_PROMPT_VERSION_V6 } from '../lib/desk/reports/check';
 
 const POLL_MS = Number(process.env.RESEARCH_POLL_MS ?? 5000);
 /** News re-check cadence. One data request per poll, no model. */
@@ -372,11 +372,11 @@ async function main(): Promise<void> {
     db,
     ranges: reportRanges().ranges,
     createModels: reportModelConfig.apiKey
-      ? (onUsage) => createReportModelsV5(reportModelConfig, onUsage)
+      ? (onUsage) => createReportModelsV6(reportModelConfig, onUsage)
       : null,
     versions: {
-      writerPrompt: REPORT_WRITER_PROMPT_VERSION_V5,
-      checkerPrompt: REPORT_CHECKER_PROMPT_VERSION_V5,
+      writerPrompt: REPORT_WRITER_PROMPT_VERSION_V6,
+      checkerPrompt: REPORT_CHECKER_PROMPT_VERSION_V6,
       writerModel: reportModelConfig.writerModel,
       checkerModel: reportModelConfig.checkerModel,
     },

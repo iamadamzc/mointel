@@ -56,7 +56,7 @@ const INTO_RTH_AT = '2026-09-29T13:25:00.000Z'; // 09:25 ET, OPEN_SPIKE_ASSESSME
 const TEN_AM = '2026-09-29T14:00:00.000Z'; // an RTH_INTERVAL no report reads
 const NOW = new Date('2026-09-29T13:40:00.000Z');
 const RANGE = DEFAULT_REPORT_RANGES[0]!;
-const VERSIONS = { writerPrompt: 5, checkerPrompt: 3, writerModel: 'w', checkerModel: 'c' };
+const VERSIONS = { writerPrompt: 6, checkerPrompt: 4, writerModel: 'w', checkerModel: 'c' };
 
 function checkpoint(db: Db, type: string, scheduledFor: string, status: 'COMPLETE' | 'FAILED' | 'RUNNING') {
   const id = claimAssessmentSlot(db, {
@@ -307,10 +307,7 @@ function scriptedModels(calls: { writer: number; checker: number }) {
     writer: {
       complete: async () => {
         calls.writer += 1;
-        return JSON.stringify({
-          overall: null,
-          sections: [{ heading: 'Names', lines: [{ ticker: 'IVF', text: 'Where it sits: on file.' }] }],
-        });
+        return JSON.stringify({ narrative: null, lines: [{ ticker: 'IVF', text: 'Where it sits: on file.' }] });
       },
     },
     checker: {

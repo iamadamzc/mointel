@@ -4,6 +4,10 @@
  * 09-29 checkpoints the v3/v4 voice runs used (#551 premarket from the 09-28
  * recap, #556 09:25, #566 14:30, #569 16:00), $1-$20, one run each.
  *
+ * HISTORICAL SINCE v6: `runReport` now runs writer v6 and checker v6, so the
+ * v5 models here would get v6 prompts through the v5 schema and fail. To
+ * reproduce v5, run this from a checkout before the v6 pipeline switch.
+ *
  * NOT THE PASS BAR. It sizes v5 (tokens, cost, latency, strike rate) and
  * produces the sample Commercial reviews before he sees one. The pass bar
  * runs on Marketing's blind set, after the checker freeze.

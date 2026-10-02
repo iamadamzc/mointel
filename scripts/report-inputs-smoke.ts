@@ -55,10 +55,7 @@ async function endToEnd() {
     if (!read.ok) continue;
     const writer = {
       complete: async () =>
-        JSON.stringify({
-          overall: null,
-          sections: [{ heading: 'Names', lines: read.inputs.facts.map((f) => ({ ticker: f.ticker, text: 'Where it sits: on file.' })) }],
-        }),
+        JSON.stringify({ narrative: null, lines: read.inputs.facts.map((f) => ({ ticker: f.ticker, text: 'Where it sits: on file.' })) }),
     };
     const checker = {
       complete: async (prompt: { user: string }) => {

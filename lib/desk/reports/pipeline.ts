@@ -1,12 +1,12 @@
 /**
- * A v5 session report, end to end from the store: the one function the
+ * A v6 session report, end to end from the store: the one function the
  * runner calls after a checkpoint completes (Ops's assess worker; the model
  * key stays worker-side, `tests/security.test.ts`).
  *
  *   checkpoint -> facts (in range, the board's latch) -> the research each
- *   row saw (analysis_version_id) -> computed paths and, for the premarket
- *   report, the after-hours totals -> writer v5 -> checker (rules + model,
- *   reading the store again) -> applyStrikes -> a PUBLISHED report or a
+ *   row saw (analysis_version_id) -> computed paths, tags and narrative
+ *   facts, and for the premarket report the after-hours totals -> writer v6
+ *   -> checker v6 (rules + model, reading the store again) -> applyStrikes -> a PUBLISHED report or a
  *   MISSED cause, with diagnostics.
  *
  * ONE CHECKPOINT PER REPORT (design.md §3): premarket from the 22:00 recap,
@@ -37,7 +37,7 @@ import { computedSections } from './sections';
 import { reportTags, type ReportTags } from './tags';
 import { readAfterHoursTotals, type AfterHoursTotals } from './totals';
 import type { ReportDraft, ReportModel } from './writer';
-import { writeReportV5 } from './writerV5';
+import { writeReportV6 } from './writerV6';
 
 type Database = Parameters<typeof readAssessments>[0];
 
@@ -251,7 +251,7 @@ export async function runReport(
   const { inputs } = read;
 
   const writerStart = Date.now();
-  const written = await writeReportV5(
+  const written = await writeReportV6(
     {
       kind: slot.kind,
       range: slot.range,
@@ -260,6 +260,7 @@ export async function runReport(
       research: inputs.research,
       paths: inputs.paths,
       afterHoursTotals: inputs.afterHoursTotals,
+      narrative: inputs.narrative,
     },
     models.writer,
     now,
@@ -279,6 +280,8 @@ export async function runReport(
       draft,
       research: inputs.research,
       afterHoursTotals: inputs.afterHoursTotals,
+      // v6: present, so the narrative (id O) is traced against its computed facts.
+      narrative: inputs.narrative,
     },
     models.checker,
     now,
@@ -328,7 +331,8 @@ export async function runReport(
       inputs.research,
     ),
     watchCount: applied.watchCount,
-    overall: applied.overall,
+    // v6: the opening narrative REPLACES overall (contract.ts); the checker read it as id O.
+    narrative: applied.overall,
   };
   return { status: 'PUBLISHED', report, diagnostics };
 }

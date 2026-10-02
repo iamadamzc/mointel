@@ -106,27 +106,37 @@ function fixture(): MarketDatabase {
   return db;
 }
 
-const writer = {
-  complete: async () =>
-    JSON.stringify({
-      overall: null,
-      sections: [
-        {
-          heading: 'A model heading the checker never sees',
-          lines: [
-            { ticker: 'BBB', text: 'Not researched yet.' },
-            { ticker: 'AAA', text: 'Our sources found a contract award.' },
-          ],
-        },
-      ],
-    }),
-};
+// Worded from the fixture's computed facts: 2,700 traded so far today, AAA leads at +12.5%, 1 of 2 covered fresh.
+const NARRATIVE = 'Across $1 to $20, 2,700 traded so far today, 1,500 up and 1,100 down. AAA tops the board, up 12.5 percent from the prior close. One of the 2 names the desk covers had fresh news in our sources.';
+const prompts: Array<{ role: 'writer' | 'checker'; system: string; user: string }> = [];
+function writerWith(narrative: string | null, aaa = 'Our sources found a contract award.') {
+  return {
+    complete: async (prompt: { system: string; user: string }) => {
+      prompts.push({ role: 'writer', ...prompt });
+      return JSON.stringify({
+        narrative,
+        lines: [
+          { ticker: 'BBB', text: 'Not researched yet.' },
+          { ticker: 'AAA', text: aaa },
+        ],
+      });
+    },
+  };
+}
+const writer = writerWith(null);
+// Supports every line it is shown (the narrative is id O), so any strike below is a RULE's.
 const checker = {
-  complete: async (prompt: { system: string; user: string }) =>
-    JSON.stringify({
-      verdicts: [...new Set(prompt.user.match(/\bS\d+L\d+\b/g) ?? [])].map((id) => ({ id, supported: true, note: '' })),
-    }),
+  complete: async (prompt: { system: string; user: string }) => {
+    prompts.push({ role: 'checker', ...prompt });
+    return JSON.stringify({
+      verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: true, note: '' })),
+    });
+  },
 };
+const SLOT = { kind: 'INTO_POWER_HOUR' as const, rangeId: '1-20', tradingDate: DATE, range: { min: 1, max: 20 } };
+afterEach(() => {
+  prompts.length = 0;
+});
 
 describe('the report pipeline, v6 wiring', () => {
   it('reads the inputs with the computed tags per name and the narrative facts', () => {
@@ -141,7 +151,7 @@ describe('the report pipeline, v6 wiring', () => {
     expect(read.inputs.narrative.fresh).toEqual({ count: 1, covered: 2 });
   });
 
-  it('publishes lines under COMPUTED headings (fresh first), each carrying its tags; the model heading is gone', async () => {
+  it('publishes lines under COMPUTED headings (fresh first), each carrying its tags', async () => {
     const db = fixture();
     const run = await runReport(db, { kind: 'INTO_POWER_HOUR', rangeId: '1-20', tradingDate: DATE, range: { min: 1, max: 20 } }, { writer, checker }, () => new Date(COMPLETED));
     expect(run.status).toBe('PUBLISHED');
@@ -153,6 +163,36 @@ describe('the report pipeline, v6 wiring', () => {
     const lines = run.report.sections.flatMap((s) => s.lines);
     expect(lines.find((l) => l.ticker === 'BBB')?.tags?.risk.code).toBe('NOT_RESEARCHED');
     expect(lines.find((l) => l.ticker === 'AAA')?.tags?.why.explainsMove).toBe(true);
-    expect(JSON.stringify(run.report)).not.toContain('A model heading');
+  });
+
+  it('runs writer v6 and checker v6 on the narrative facts, and publishes the narrative in place of overall', async () => {
+    const db = fixture();
+    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE), checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(prompts.find((p) => p.role === 'writer')?.user).toContain('NARRATIVE FACTS (word these and nothing else):');
+    expect(prompts.find((p) => p.role === 'checker')?.system).toContain('v6: THE NARRATIVE (id O)');
+    expect(run.diagnostics.strikes).toEqual([]);
+    expect(run.report.narrative).toBe(NARRATIVE);
+    expect('overall' in run.report).toBe(false);
+  });
+
+  it('a narrative number that is no computed fact is struck by rule; the names still publish', async () => {
+    const db = fixture();
+    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE.replace('2,700', '2,710')), checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(run.diagnostics.strikes.map((s) => [s.id, s.reason])).toEqual([['O', 'NUMBER_WITHOUT_ROW']]);
+    expect(run.report.narrative).toBeNull();
+    expect(run.report.sections.flatMap((s) => s.lines.map((l) => l.ticker))).toEqual(['AAA', 'BBB']);
+  });
+
+  it('a citation token in a name line is struck end to end', async () => {
+    const db = fixture();
+    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE, 'Our sources found a contract award [Source 7].'), checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(run.diagnostics.strikes.map((s) => s.reason)).toContain('CITATION_TOKEN');
+    expect(JSON.stringify(run.report)).not.toContain('[Source 7]');
   });
 });
