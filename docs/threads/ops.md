@@ -13326,3 +13326,13 @@ HISTORY_STORE_ENABLED absent. Levels refresh: cold 75.5 s, warm 7.2 s and 3.3 s 
    errors; not mine); box pid 146984 (2026-09-11 sleep loop); worker em-dash strings ride the next market restart.
 6. Routing today: Integration-tmi = local_697b69cc (22nd); Research-tmi = local_5f4bfcf8; Design-tmi = local_dfce21d4.
    Find by title before every send.
+
+**ADDENDUM after the hand-off (arrived ~03:2xZ, recorded by the retired seat for the successor; verify at his turn):**
+- His question to Integration: "why not just increase server size?" Then his ruling to Integration: "yeah fix the leak".
+  Research builds the SEC-cache bound (research worker only). The bigger-server costing is no longer needed for the decision.
+- Integration's proposed order for the NEXT SHIP NIGHT, for YOUR question to him: (0) restart the research worker FIRST
+  (fresh RSS; a restart is HIS yes, in your chat), then (A) 840741d3, then citations 2a625a5b, then the leak fix (a cut on
+  top; Integration replays), then movers / residual as their cuts allow; /proc between each.
+- OWED to Integration: does the headroom after a fresh research worker support MORE THAN ONE build in a night? Measure it:
+  available MB right after a research restart (it was ~2,330 MB at 03:11Z with research ~123 MB and market ~743 MB) against
+  the build's actual peak, which nobody has measured (heap cap 1,536 MB is a cap, not a peak). Don't answer from the cap.
