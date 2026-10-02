@@ -34,9 +34,11 @@
 
 **The conflict to settle (Design and Marketing):**
 
-- `resolveRisk`'s DIRTY FLOAT branch prints a FLOAT NUMBER as its value: `` `${formatShares(row.displayedFloat)} float` `` (`risk.ts:249`).
+- ~~`resolveRisk`'s DIRTY FLOAT branch prints a FLOAT NUMBER as its value.~~ **CORRECTED** (this seat, while building the adapter; the branch around the line was not opened when this was first written):
+  - `` `${formatShares(row.displayedFloat)} float` `` (`risk.ts:249`) is the value of the **STRUCTURE_CLEAN ("NO FLAG FOUND")** branch, the last return of `resolveRisk`.
+  - **The DIRTY FLOAT branch** prints the supply share count (`` `${formatShares(supplyShares)} sh supply` ``), never a float.
 - The report's guardrail is float ONLY as a verdict, never a number (Marketing; Design's own spec drops the float tag).
-- With `displayedFloat` passed as null, that value is null in the report, which is safe. **But it means the report chip and the board chip read differently on a dirty-float name.**
+- With `displayedFloat` passed as null, that value is null in the report, which is safe. **What actually differs from the board: a CLEAN name shows "NO FLAG FOUND" with no float figure in the report, where the board can show "{N} float".** The DIRTY FLOAT chip reads the same on both.
 - Proposal: keep it null in reports. Design says whether the chip then needs different words.
 
 **The alternative, not proposed:** freezing the sheet's research onto each checkpoint, so the report could match the board exactly. That is a store change, Ops's, a scope call for Integration.
