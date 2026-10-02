@@ -58,6 +58,8 @@
 
 A trend grade is shown only at 5% of shares outstanding or more.
 
+**Trend is NOT graded across a split (added 2026-10-02, before any data, from FINRA's field list in Ops's `docs/ops/finra-coverage-2026-10-02.md`).** FINRA's `changePercent` compares the previous and current positions UNADJUSTED. After a 1-for-20 reverse split, a short position drops about 95% in shares with no change in shorting, and the label would read "Falling". So when the current cycle carries `stockSplitFlag = 'S'`, no trend grade is shown. The same flag on any cycle between the filed count's date and the settlement date also fails the size gate's split condition.
+
 **The gate on size.** The size grade is computed only when all of these hold:
 
 - the filed share count is current (within 45 days, `FILED_SHARES_CURRENT_DAYS`);
@@ -134,6 +136,22 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
   - for each of size, depth and trend, the count and share of names in each grade.
 - **The rule, fixed now:** any grade holding **more than half** of the graded names in its dimension has its lines re-drawn. Re-drawn lines are proposed to him with the counts; they are not applied by this seat. No grade is judged on returns or price behaviour: this is a spread check only.
 - **Positive control:** the run must grade at least one name in each size grade OR report which grades are empty. An empty grade is a finding, not a failure. A run that grades zero names is withheld and the instrument examined (a check that cannot see a present case is not evidence of absence).
+- **AMENDMENTS, committed before any FINRA or SEC data is pulled (2026-10-02, after Ops's coverage check `91caa2f3`):**
+  1. **Unit:** a distinct (ticker, settlement) pair. A name in the top 12 on several days that map to the same settlement is graded once for that settlement.
+  2. **Settlement for a checkpoint date d:** the latest settlement on or before d.
+  3. **Which checkpoints:** the four report checkpoint types (`pipeline.ts` SOURCE): NEXT_DAY_RECAP, OPEN_SPIKE_ASSESSMENT, RTH_INTERVAL scheduled 14:30 ET, and RTH_CLOSE; status COMPLETE.
+  4. **"In range":** checkpoint row price in [$1, $20]; top 12 by `assessment_rank` among those rows.
+  5. **The six settlements:** the six most recent with data at run time.
+  6. **The window:** the 20 trading days (distinct checkpoint dates) up to and including the latest settlement date.
+  7. **Store:** the local 2026-09-29 production copy, read-only.
+  8. **Filed count as of settlement S (no look-ahead):** the newest-period share fact (`extractSharesOutstanding` order) whose `filed` date is on or before S. Gate condition 1: S minus its `asOf` is at most 45 days.
+  9. **Gate condition 2 as of S:** the latest `research_analysis_versions` row for the ticker with `generated_at` on or before S.
+     - No such row: not graded, reason "no research as of settlement".
+     - Any supply-ledger block with status KNOWN_ACTIVE or POSSIBLY_ACTIVE: not graded, reason "possible issuance since the filed count", unless the count's `asOf` is on or after S.
+  10. **Gate condition 3:** FINRA `stockSplitFlag = 'S'` on any pulled cycle with settlement after the count's `asOf` and on or before S.
+  11. **Depth:** `daysToCoverQuantity` of 0 (FINRA's default when volume is zero) is not graded.
+  12. **No FINRA row** for a pair: counted as "no FINRA row", not graded.
+  13. **CIK:** from the as-of dossier when present, else SEC's current ticker map.
 - **Raw output committed before it is read.** It contains FINRA's numbers, so it stays INTERNAL (Commercial, non-blocking): committed only to this private repository (verified private 2026-10-02), never copied to a customer surface, a public doc or a published artifact.
 
 ## 6. What this design does not decide
