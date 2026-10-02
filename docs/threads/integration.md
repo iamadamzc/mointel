@@ -3330,6 +3330,9 @@ AFTER HAND-OFF   Commercial (for the successor): SI label wording the build carr
                  Guide constraints (added to the opening prompt): Basic Auth stays on; probe cannot prove password-less
                  sign-in; Basic-Auth removal a separate night; the SI chip never ships without attribution + terms
                  sentence + his adoption in the same release.
+                 HIS RULING to Research (per Research, at his turn): trend word "Falling" ("Interst is falling, not
+                 covering"), 3bd91095. SI LABEL WORDING FINAL (short-interest-label-design.md). Build waits: coverage check
+                 (his credential), Web wording adopted by him, his yes; calibration after coverage.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
