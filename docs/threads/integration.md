@@ -3389,6 +3389,11 @@ HIS WORDS        ~04:03Z 10-02 (00:03 ET): "i'll restart so there's fresh memory
                  can ship them tonitght." Told him: do NOT restart the PC (stops Ops mid-deploy); fresh memory = research
                  worker on the box. NOT a per-step yes (restart + ships are his in Ops's chat; relay authority covers
                  neither restarts nor this). Ops asked to put step 0 to him now; window to 04:00 ET.
+SHIP NIGHT       HIS "yes, all six" in Ops's chat (to the six named changes, stop conditions stated; per Ops). STEP 1 LIVE:
+                 840741d3 on web/research/assess, NR 0, market 1b5ead66 untouched, down 2 s, quick_check 764.5 s, rc 0
+                 04:22:24Z. BUILD PEAK (owed): next build RSS max 1,288 MB; MemAvailable 2,300 -> min 1,034 MB; after
+                 deploy 2,310 MB, research 111 MB. Each deploy restarts research -> chain fits. Step 2 2a625a5b started.
+                 Design P2 asked (A on a review link).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
