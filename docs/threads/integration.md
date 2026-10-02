@@ -3402,6 +3402,9 @@ STEP 2 LIVE      2a625a5b on web/research/assess NR 0; market untouched; down 3 
 STEP 3 LIVE      0e883fec (LEAK FIX) on web/research/assess NR 0; market untouched; quick_check 838.0 s; follower timed out
                  "NOT confirmed" but /proc + journal "deployed 0e883fec" confirm (Ops); min avail 992 MB. Research pid
                  1821896; judge day Fri 10-02 (Research told). Step 4 19f9d721 launching.
+STEP 4 LIVE      19f9d721 (levels on review links) NR 0; market untouched; quick_check 816.1 s; rc 0 05:12:21Z; min avail
+                 873 MB. Step 5 558d07a5 launching. Judge sampler after step 6 on the final pid (1821896 superseded).
+                 Design P1 due (asked).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
