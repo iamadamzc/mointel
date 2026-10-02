@@ -29,8 +29,12 @@ import type { AssessmentType } from '../schedule';
 import { applyStrikes, checkReport, type CheckerModel, type Strike } from './check';
 import type { MissedCause, ReportKind, ReportPath, SessionReport } from './contract';
 import { REPORT_NAME_CAP, reportFacts, type ReportFact } from './facts';
+import { catalystFreshFromUtc } from '../../research/freshFrom';
+import { narrativeFacts, type NarrativeFacts } from './narrative';
 import { reportPath } from './path';
 import { reportResearch, type ReportResearch } from './research';
+import { computedSections } from './sections';
+import { reportTags, type ReportTags } from './tags';
 import { readAfterHoursTotals, type AfterHoursTotals } from './totals';
 import type { ReportDraft, ReportModel } from './writer';
 import { writeReportV5 } from './writerV5';
@@ -113,6 +117,10 @@ export interface ReportInputs {
   paths: Map<string, ReportPath | null>;
   afterHoursTotals: AfterHoursTotals | null;
   checkpoint: { id: number; type: AssessmentType; completedAt: string };
+  /** v6: each covered name's tags, the board's own Why/Risk on its as-of research (`tags.ts`). */
+  tags: Map<string, ReportTags>;
+  /** v6: the opening narrative's computed facts (`narrative.ts`), shown to writer and checker alike. */
+  narrative: NarrativeFacts;
 }
 
 /** Everything a v5 report is written and checked from, or the observable reason there is nothing. */
@@ -159,10 +167,22 @@ export function readReportInputs(
 
   const research = new Map<string, ReportResearch>();
   const paths = new Map<string, ReportPath | null>();
+  const tags = new Map<string, ReportTags>();
+  const freshFrom = catalystFreshFromUtc(db, tradingDate);
   for (const fact of built.facts) {
     const row = byTicker.get(fact.ticker);
     const version = row?.analysisVersionId != null ? versions.get(row.analysisVersionId) : undefined;
     if (version) research.set(fact.ticker, researchForReport(db, fact.ticker, version, sources));
+    tags.set(
+      fact.ticker,
+      reportTags({
+        status: row?.intelligenceStatus ?? null,
+        dossier: version?.dossier ?? null,
+        coverageIncomplete: version?.metadata.coverageIncomplete === true,
+        at: built.checkpoint.completedAt,
+        catalystFreshFrom: freshFrom,
+      }),
+    );
     const session = sessions.get(fact.ticker);
     paths.set(
       fact.ticker,
@@ -190,6 +210,15 @@ export function readReportInputs(
       paths,
       afterHoursTotals: kind === 'PREMARKET' ? readAfterHoursTotals(db, tradingDate, range) : null,
       checkpoint: { id: built.checkpoint.id, type: source.type, completedAt: built.checkpoint.completedAt },
+      tags,
+      narrative: narrativeFacts(db, {
+        kind,
+        tradingDate,
+        range,
+        checkpointId: built.checkpoint.id,
+        facts: built.facts,
+        research,
+      }),
     },
   };
 }
@@ -278,20 +307,26 @@ export async function runReport(
     publishedAt: publishedAt.toISOString(),
     late: publishedAt.getTime() > servesBy(slot.kind, inputs.stored).getTime(),
     headline: null,
-    sections: applied.sections.map((section) => ({
-      heading: section.heading,
-      lines: section.lines.map((line) => ({
-        ticker: line.ticker,
-        liveFeed: line.ticker === null ? null : (facts.get(line.ticker)?.liveFeed ?? null),
-        text: line.text,
-        ...(line.ticker === null
-          ? {}
-          : {
-              company: inputs.research.get(line.ticker)?.company ?? null,
-              path: inputs.paths.get(line.ticker) ?? null,
-            }),
+    // v6 fix (a): the surviving lines regrouped under COMPUTED headings (`sections.ts`),
+    // after the strikes, so the checker's line ids never moved.
+    sections: computedSections(
+      applied.sections.map((section) => ({
+        heading: section.heading,
+        lines: section.lines.map((line) => ({
+          ticker: line.ticker,
+          liveFeed: line.ticker === null ? null : (facts.get(line.ticker)?.liveFeed ?? null),
+          text: line.text,
+          ...(line.ticker === null
+            ? {}
+            : {
+                company: inputs.research.get(line.ticker)?.company ?? null,
+                path: inputs.paths.get(line.ticker) ?? null,
+                tags: inputs.tags.get(line.ticker) ?? null,
+              }),
+        })),
       })),
-    })),
+      inputs.research,
+    ),
     watchCount: applied.watchCount,
     overall: applied.overall,
   };
