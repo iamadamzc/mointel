@@ -91,8 +91,8 @@ only reaches sample data.
     - Click **SAVE**. The credential is now active.
 15. Put both into `A:\mointel\.env.local`:
     ```
-    FINRA_CLIENT_ID=<the API Client ID>
-    FINRA_CLIENT_SECRET=<the secret you chose>
+    FINRA_API_CLIENT_ID=<the API Client ID>
+    FINRA_API_CLIENT_SECRET=<the secret you chose>
     ```
 16. Tell Ops: **"FINRA keys are in .env.local."** Ops then checks whether FINRA's short-interest data actually covers
     Nasdaq and NYSE small caps. If it does not, this source is closed for those names.
@@ -113,7 +113,7 @@ The 20:12 ET snapshot and the ladder release come first. Then sign-in, in this o
 
 | Step | What happens | Needs |
 | --- | --- | --- |
-| a | Ops ships a small check page, `https://tmitrader.com/auth/probe`, **switched off** | a deploy, your yes |
+| a | Ops ships the sign-in pages (not live on the site yet) plus a small check page, `https://tmitrader.com/auth/probe`, **switched off** | a deploy, your yes |
 | b | Ops **switches it on** | a separate yes |
 | c | **You sign in twice** (below) | about 10 minutes of you |
 | d | Web's change that makes the desk use sign-in ships | a second deploy, your yes |

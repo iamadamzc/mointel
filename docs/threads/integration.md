@@ -1068,6 +1068,31 @@ GUIDE            docs/ops/2026-10-02-sign-in-and-finra-setup.md. Every console s
                  sync-env.sh:35 carries them to the box unless Ops strips them (Ops's call).
                  0 U+2014/U+2013/entities. .env.local key NAMES read (values never printed): no GOOGLE_CLIENT_* or FINRA_*.
                  docs/finra.txt: 20 bytes, git-excluded (.git/info/exclude:18), NOT OPENED (may hold a FINRA value).
+                 SENT to him (SendUserFile) after 8c43387d.
+NGINX SETTLED    Web c12745ac (local main, NOT pushed, Web's): no nginx change tonight; every client tonight has the
+                 Basic-Auth password, location / (:357) proxies to the app, so the probe is reachable; positive control
+                 = 200 from / (exempt). ^~ /auth/ exemption belongs to the Basic-Auth-removal night. Read + accepted.
+AUTH SURFACE     READ (git ls-tree): 28c66f14 AND a4a06168 carry only lib/auth/{cookie,expiry,oauth,store}.ts. NO
+                 app/signin, app/auth/*, lib/auth/{gate,callback,config,db,authErrorPage}.ts, scripts/allowlist.ts.
+                 On main: 14 files, 13 commits not reachable from a4a06168 (a4a06168 not an ancestor of main). A probe
+                 built on a4a06168 has no authenticate() and he has no /signin unless the cut carries the surface
+                 (ops.md step 3, "on Integration's enumeration": NONE EXISTS YET). Asked Ops (df91720b) for probe tip
+                 sha + surface pick list; Web (c2a2b7c6) for which of its commits are final. Guide step (a) reworded.
+PUSH HELD        origin/main..main = 8c43387d, c12745ac (WEB's), d847439c. Not pushing: c12745ac is a peer's. Asked Web.
+OPS /proc        2026-10-02T15:31:39Z (Ops): web 1863983 / research 1864048 / assess 1864125 on 28c66f14b33a, NR 0, since
+                 05:44:29-30Z; market 1574400 on 1b5ead66bb7e, NR 0, since 2026-09-30T00:15:40Z. = the 22nd's snapshot.
+FINRA NAMES      Ops had ALREADY told him FINRA_API_CLIENT_ID / FINRA_API_CLIENT_SECRET; mine (d847439c) withdrawn, guide
+                 changed to Ops's. Ops: coverage check runs from this PC (.env.local only); sync-env lands them on the box
+                 too, harmless. Ops put docs/finra.txt in .git/info/exclude and asked him to move it.
+PROBE BUILT      ops/gate-probe 27c81ae860c4aaf4fd0e2536c3dfee24f0cfa4dc = ee48fa0c (route+test) + 27c81ae8 (em dash) on
+                 bc31a4ac (main), read: 2 files +237. Ops release gate running (pre-reg 214/214).
+ORDER CALL       Main's cone over 28c66f14: 1,974 commits, 114 non-doc files, +5,683/-8,704 (read). MUST NOT SHIP.
+                 Sign-in cut = picks ON a4a06168: 1a8c3242 d9e759ba 672ecce8 60d4f69f 6acc4c31 978f2f26 f26352a3
+                 e03b7ef6 51dcca68 09f5fa48 49efcafa + signin/authErrorPage hunks only of 5f3a272d 1703390a (page/
+                 layout/privacy/terms identical a4a06168 vs main, read) + ee48fa0c 27c81ae8. Web cuts, Ops gates, I
+                 replay literal tip. store.ts must equal main's. a4a06168 sync-env.sh lacks sign-in lines (Ops's call).
+                 Proposed sequence to Ops (Ops puts asks to him): snapshot -> sync-env -> ONE release at cut tip (else
+                 a4a06168 alone) -> flag on -> his two sign-ins + curl -> Web gate wiring. Ops 8c19fa2a, Web 9ddc8c78.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
