@@ -1,0 +1,30 @@
+registration docs/research/reports-v6/prereg-stability.md; checker lib/desk/reports at 8c52506d; arms CURRENT vs P1 (design.md:94)
+480-C CURRENT: S1L1(named) model 1/10 rule 0/10; S1L2 model 0/10 rule 0/10
+  480-C CURRENT S1L1: Unsupported: “no fresh catalyst” omits the supported qualifier that no sufficient fresh positive catalyst was identified; the research identifies recent structural events.
+480-C P1: S1L1(named) model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+490-C CURRENT: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+490-C P1: S1L1 model 0/10 rule 0/10; S1L2 model 1/10 rule 0/10
+  490-C P1 S1L2: “No fresh catalyst” is broader than the research support, which says no sufficient fresh positive catalyst was identified; recent structural company events are identified.
+493-C CURRENT: S1L1(named) model 1/10 rule 0/10; S1L2 model 0/10 rule 0/10
+  493-C CURRENT S1L1: Unsupported claim: “no share count is on file.” The research does not state that; it only has no shares-outstanding figure.
+493-C P1: S1L1(named) model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+494-C CURRENT: O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+494-C P1: O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+494-04 CURRENT (class-4 keyed S1L2): O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 10/10 rule 0/10
+  494-04 CURRENT S1L2: “has dropped off the board” is unsupported. | “has dropped off the board” is unsupported. | The claim that XXII “has dropped off the board” is unsupported. | “has dropped off the board” is unsupported. | The claim that XXII “has dropped off the board” is unsupported; it is ranked #6 at this checkpoint. | “has dropped off the board” is unsupported; the stored row only records its current in-range rank and prior-checkpoint notes. | The claim that XXII “has dropped off the board” is unsupported. | Unsupported claim: XXII has dropped off the board. | The claim that XXII “has dropped off the board” is unsupported; it is ranked #6 at this checkpoint. | “has dropped off the board” is unsupported; board membership across checkpoints cannot be inferred from the stored row.
+494-04 P1 (class-4 keyed S1L2): O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 10/10 rule 0/10
+  494-04 P1 S1L2: The claim that XXII has dropped off the board is unsupported. | The claim that XXII has dropped off the board is unsupported. | “has dropped off the board” is unsupported; board entry/exit claims are not supported by these rows. | The claim that XXII “has dropped off the board” is unsupported. | The claim that XXII has dropped off the board is unsupported. | The claim that XXII has dropped off the board is unsupported. | The claim that XXII “has dropped off the board” is unsupported. | “has dropped off the board” is unsupported. | “has dropped off the board” is unsupported; the stored row only gives its current in-range rank and prior-checkpoint note. | The claim that XXII “has dropped off the board” is unsupported.
+442-C CURRENT: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+442-C P1: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+452-C CURRENT: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+452-C P1: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+455-C CURRENT: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+455-C P1: S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+456-C CURRENT: O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+456-C P1: O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 0/10 rule 0/10
+456-04 CURRENT (class-4 keyed S1L2): O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 10/10 rule 0/10
+  456-04 CURRENT S1L2: Unsupported claim: VEEE “has dropped off the board.” | Unsupported claim: VEEE “has dropped off the board”; board entry/exit requires another checkpoint and is not supported. | Unsupported claim: VEEE “has dropped off the board”; it remains stored at in-range rank #5 at this checkpoint, and board-entry/exit claims require another checkpoint. | Unsupported claim: VEEE “has dropped off the board.” | Unsupported claim: VEEE “has dropped off the board.” | The claim that VEEE “has dropped off the board” is unsupported; it refers to another checkpoint. | Unsupported claim: VEEE “has dropped off the board.” | Unsupported claim: VEEE “has dropped off the board.” | Unsupported claim: VEEE “has dropped off the board”; board entry/exit cannot be inferred from this checkpoint. | The claim that VEEE “has dropped off the board” is unsupported; it requires another checkpoint.
+456-04 P1 (class-4 keyed S1L2): O model 0/10 rule 0/10; S1L1 model 0/10 rule 0/10; S1L2 model 10/10 rule 0/10
+  456-04 P1 S1L2: Unsupported claim: VEEE “has dropped off the board.” The stored row only gives its current in-range rank and a wider-list rank change in the notes. | Unsupported claim: VEEE “has dropped off the board.” | Unsupported claim: VEEE “has dropped off the board.” | Unsupported claim: VEEE “has dropped off the board”; the stored row cannot establish board membership at another checkpoint. | Unsupported claim: VEEE “has dropped off the board”; the stored rows do not support board entry/exit status across checkpoints. | Unsupported claim: VEEE “has dropped off the board”; the stored rows do not support board entry/exit across checkpoints. | Unsupported claim: VEEE “has dropped off the board”; board membership/change cannot be inferred from this checkpoint. | The claim that VEEE “has dropped off the board” is unsupported; the stored row only gives its current in-range rank. | Unsupported claim: VEEE “has dropped off the board”; the stored row only gives its current rank and a prior-checkpoint rank note. | Unsupported claim: VEEE “has dropped off the board”; the stored row instead shows it ranked #5 at this checkpoint, and board-status comparison is not supported.
+FALSE STRIKES on control lines: CURRENT 2, P1 1; CHECKER_FAILED: CURRENT 0, P1 0
+spend $8.7587 (terra at $2.00 in / $12.00 out per Mtok)

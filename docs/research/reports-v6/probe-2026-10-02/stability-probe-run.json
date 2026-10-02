@@ -1,0 +1,4105 @@
+{
+  "results": [
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 236,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 187,
+        "durationMs": 3909
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 223,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 174,
+        "durationMs": 2965
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 216,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 167,
+        "durationMs": 3066
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 197,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 148,
+        "durationMs": 3086
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 262,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 186,
+        "durationMs": 4950
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported: “no fresh catalyst” omits the supported qualifier that no sufficient fresh positive catalyst was identified; the research identifies recent structural events."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 261,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 212,
+        "durationMs": 3244
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 254,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 205,
+        "durationMs": 4671
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 226,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 177,
+        "durationMs": 3027
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 199,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 150,
+        "durationMs": 3304
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 167,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 118,
+        "durationMs": 2194
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 278,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 229,
+        "durationMs": 3294
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 195,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 146,
+        "durationMs": 2689
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 236,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 187,
+        "durationMs": 3081
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 229,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 180,
+        "durationMs": 2561
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 170,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 121,
+        "durationMs": 2167
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 285,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 236,
+        "durationMs": 3133
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 181,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 132,
+        "durationMs": 2473
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 197,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 148,
+        "durationMs": 2454
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 21970,
+        "outputTokens": 202,
+        "cachedInputTokens": 21967,
+        "reasoningTokens": 153,
+        "durationMs": 3117
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "480-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22047,
+        "outputTokens": 259,
+        "cachedInputTokens": 22044,
+        "reasoningTokens": 210,
+        "durationMs": 3651
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 374,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 325,
+        "durationMs": 5096
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 358,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 309,
+        "durationMs": 4631
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 289,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 240,
+        "durationMs": 3796
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 329,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 280,
+        "durationMs": 3694
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 419,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 370,
+        "durationMs": 5986
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 348,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 299,
+        "durationMs": 3905
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 298,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 249,
+        "durationMs": 3934
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 277,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 228,
+        "durationMs": 4551
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 216,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 167,
+        "durationMs": 3015
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 305,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 256,
+        "durationMs": 3669
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 183,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 134,
+        "durationMs": 3027
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 182,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 133,
+        "durationMs": 2779
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 250,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 201,
+        "durationMs": 3510
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 200,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 151,
+        "durationMs": 2552
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 281,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 232,
+        "durationMs": 3629
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 398,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 321,
+        "durationMs": 5357
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“No fresh catalyst” is broader than the research support, which says no sufficient fresh positive catalyst was identified; recent structural company events are identified."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 336,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 261,
+        "durationMs": 4935
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 359,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 310,
+        "durationMs": 4527
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19751,
+        "outputTokens": 329,
+        "cachedInputTokens": 19748,
+        "reasoningTokens": 280,
+        "durationMs": 4116
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "490-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19828,
+        "outputTokens": 275,
+        "cachedInputTokens": 19825,
+        "reasoningTokens": 226,
+        "durationMs": 3321
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 216,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 167,
+        "durationMs": 2991
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 359,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 310,
+        "durationMs": 4243
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 333,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 284,
+        "durationMs": 3786
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 309,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 260,
+        "durationMs": 3639
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 219,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 170,
+        "durationMs": 2935
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 279,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 230,
+        "durationMs": 3628
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 512,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 463,
+        "durationMs": 5845
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 242,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 193,
+        "durationMs": 2778
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 232,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 183,
+        "durationMs": 3091
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 331,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 282,
+        "durationMs": 3526
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 387,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 338,
+        "durationMs": 4629
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 219,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 170,
+        "durationMs": 2430
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 378,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 329,
+        "durationMs": 5235
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 299,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 250,
+        "durationMs": 3812
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 256,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 207,
+        "durationMs": 3117
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 405,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 356,
+        "durationMs": 5478
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 495,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 410,
+        "durationMs": 5976
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L1",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: “no share count is on file.” The research does not state that; it only has no shares-outstanding figure."
+          }
+        ],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 284,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 235,
+        "durationMs": 3593
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22270,
+        "outputTokens": 334,
+        "cachedInputTokens": 22267,
+        "reasoningTokens": 285,
+        "durationMs": 3725
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "493-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 22347,
+        "outputTokens": 313,
+        "cachedInputTokens": 22344,
+        "reasoningTokens": 264,
+        "durationMs": 4017
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 301,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 240,
+        "durationMs": 3651
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 294,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 233,
+        "durationMs": 3449
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 382,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 321,
+        "durationMs": 4966
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 208,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 147,
+        "durationMs": 3046
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 179,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 118,
+        "durationMs": 3623
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 154,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 93,
+        "durationMs": 2204
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 281,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 220,
+        "durationMs": 3033
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 350,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 289,
+        "durationMs": 4760
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 486,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 425,
+        "durationMs": 6360
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 345,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 284,
+        "durationMs": 4125
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 248,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 187,
+        "durationMs": 2886
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 246,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 185,
+        "durationMs": 2923
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 505,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 444,
+        "durationMs": 5348
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 304,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 243,
+        "durationMs": 3309
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 510,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 449,
+        "durationMs": 5857
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 329,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 268,
+        "durationMs": 4113
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 551,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 490,
+        "durationMs": 6517
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 164,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 103,
+        "durationMs": 2252
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20423,
+        "outputTokens": 246,
+        "cachedInputTokens": 20420,
+        "reasoningTokens": 185,
+        "durationMs": 3027
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 245,
+        "cachedInputTokens": 20497,
+        "reasoningTokens": 184,
+        "durationMs": 2990
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 212,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 142,
+        "durationMs": 3146
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 155,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 82,
+        "durationMs": 2813
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII has dropped off the board is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 217,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 147,
+        "durationMs": 2472
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 179,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 106,
+        "durationMs": 2594
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII has dropped off the board is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 233,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 158,
+        "durationMs": 4070
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 181,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 99,
+        "durationMs": 2907
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported; board entry/exit claims are not supported by these rows."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 203,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 133,
+        "durationMs": 3614
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 186,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 111,
+        "durationMs": 2667
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 200,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 116,
+        "durationMs": 3007
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported; it is ranked #6 at this checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 199,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 126,
+        "durationMs": 2667
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII has dropped off the board is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 197,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 111,
+        "durationMs": 2692
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported; the stored row only records its current in-range rank and prior-checkpoint notes."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 213,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 140,
+        "durationMs": 2907
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII has dropped off the board is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 170,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 95,
+        "durationMs": 2410
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 190,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 115,
+        "durationMs": 2404
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 224,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 153,
+        "durationMs": 2596
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: XXII has dropped off the board."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 211,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 141,
+        "durationMs": 2766
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 158,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 74,
+        "durationMs": 2245
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported; it is ranked #6 at this checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 173,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 87,
+        "durationMs": 2247
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported; the stored row only gives its current in-range rank and prior-checkpoint note."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20417,
+        "outputTokens": 198,
+        "cachedInputTokens": 20414,
+        "reasoningTokens": 116,
+        "durationMs": 2922
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "“has dropped off the board” is unsupported; board membership across checkpoints cannot be inferred from the stored row."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "494-04",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20494,
+        "outputTokens": 219,
+        "cachedInputTokens": 20491,
+        "reasoningTokens": 144,
+        "durationMs": 3033
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that XXII “has dropped off the board” is unsupported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 130,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 81,
+        "durationMs": 1944
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 209,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 160,
+        "durationMs": 2712
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 171,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 122,
+        "durationMs": 2232
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 173,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 124,
+        "durationMs": 2687
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 110,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 61,
+        "durationMs": 1580
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 148,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 99,
+        "durationMs": 2041
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 155,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 106,
+        "durationMs": 2490
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 188,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 139,
+        "durationMs": 2523
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 193,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 144,
+        "durationMs": 2329
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 140,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 91,
+        "durationMs": 2448
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 132,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 83,
+        "durationMs": 2024
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 118,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 69,
+        "durationMs": 1985
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 167,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 118,
+        "durationMs": 2200
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 154,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 105,
+        "durationMs": 2414
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 141,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 92,
+        "durationMs": 1955
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 120,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 71,
+        "durationMs": 2475
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 156,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 107,
+        "durationMs": 2193
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 91,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 42,
+        "durationMs": 2713
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19182,
+        "outputTokens": 185,
+        "cachedInputTokens": 19179,
+        "reasoningTokens": 136,
+        "durationMs": 2318
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "442-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19259,
+        "outputTokens": 117,
+        "cachedInputTokens": 19256,
+        "reasoningTokens": 68,
+        "durationMs": 1989
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 172,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 123,
+        "durationMs": 2224
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 160,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 111,
+        "durationMs": 2139
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 209,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 160,
+        "durationMs": 3307
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 288,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 239,
+        "durationMs": 3551
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 281,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 232,
+        "durationMs": 3194
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 297,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 248,
+        "durationMs": 3498
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 188,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 139,
+        "durationMs": 2530
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 236,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 187,
+        "durationMs": 3202
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 160,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 111,
+        "durationMs": 2253
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 184,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 135,
+        "durationMs": 2610
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 165,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 116,
+        "durationMs": 3569
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 251,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 202,
+        "durationMs": 3244
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 256,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 207,
+        "durationMs": 3894
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 240,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 191,
+        "durationMs": 3161
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 226,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 177,
+        "durationMs": 2966
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 246,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 197,
+        "durationMs": 3210
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 304,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 255,
+        "durationMs": 3624
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 325,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 276,
+        "durationMs": 4313
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20217,
+        "outputTokens": 291,
+        "cachedInputTokens": 20214,
+        "reasoningTokens": 242,
+        "durationMs": 3226
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "452-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20294,
+        "outputTokens": 273,
+        "cachedInputTokens": 20291,
+        "reasoningTokens": 224,
+        "durationMs": 3531
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 162,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 113,
+        "durationMs": 2442
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 288,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 239,
+        "durationMs": 4058
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 219,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 170,
+        "durationMs": 2681
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 218,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 169,
+        "durationMs": 2870
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 208,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 159,
+        "durationMs": 2925
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 166,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 117,
+        "durationMs": 2605
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 195,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 146,
+        "durationMs": 2614
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 200,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 151,
+        "durationMs": 2952
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 220,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 171,
+        "durationMs": 2834
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 193,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 144,
+        "durationMs": 2194
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 200,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 151,
+        "durationMs": 2672
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 141,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 92,
+        "durationMs": 1951
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 242,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 193,
+        "durationMs": 2938
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 189,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 140,
+        "durationMs": 2915
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 163,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 114,
+        "durationMs": 2298
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 484,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 435,
+        "durationMs": 6607
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 221,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 172,
+        "durationMs": 2421
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 323,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 274,
+        "durationMs": 4191
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19841,
+        "outputTokens": 252,
+        "cachedInputTokens": 19838,
+        "reasoningTokens": 203,
+        "durationMs": 3137
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "455-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19918,
+        "outputTokens": 243,
+        "cachedInputTokens": 19915,
+        "reasoningTokens": 194,
+        "durationMs": 3332
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 2
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 171,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 110,
+        "durationMs": 2254
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 177,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 116,
+        "durationMs": 2283
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 175,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 114,
+        "durationMs": 2420
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 231,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 170,
+        "durationMs": 2705
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 193,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 132,
+        "durationMs": 2417
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 270,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 209,
+        "durationMs": 3630
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 192,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 131,
+        "durationMs": 2900
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 250,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 189,
+        "durationMs": 2952
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 175,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 114,
+        "durationMs": 2110
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 170,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 109,
+        "durationMs": 2219
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 222,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 161,
+        "durationMs": 2747
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 216,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 155,
+        "durationMs": 2656
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 216,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 155,
+        "durationMs": 2612
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 169,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 108,
+        "durationMs": 2215
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 159,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 98,
+        "durationMs": 2377
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 202,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 141,
+        "durationMs": 2470
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 201,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 140,
+        "durationMs": 2447
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 189,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 128,
+        "durationMs": 2733
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20200,
+        "outputTokens": 175,
+        "cachedInputTokens": 20197,
+        "reasoningTokens": 114,
+        "durationMs": 2195
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-C",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20277,
+        "outputTokens": 178,
+        "cachedInputTokens": 20274,
+        "reasoningTokens": 117,
+        "durationMs": 2263
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 181,
+        "cachedInputTokens": 1410,
+        "reasoningTokens": 109,
+        "durationMs": 2371
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 1,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 208,
+        "cachedInputTokens": 1487,
+        "reasoningTokens": 116,
+        "durationMs": 2927
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.” The stored row only gives its current in-range rank and a wider-list rank change in the notes."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 207,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 123,
+        "durationMs": 2821
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; board entry/exit requires another checkpoint and is not supported."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 2,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 170,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 98,
+        "durationMs": 2506
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 165,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 70,
+        "durationMs": 2564
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; it remains stored at in-range rank #5 at this checkpoint, and board-entry/exit claims require another checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 3,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 221,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 149,
+        "durationMs": 2975
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 224,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 152,
+        "durationMs": 2819
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 4,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 110,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 27,
+        "durationMs": 1700
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; the stored row cannot establish board membership at another checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 200,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 128,
+        "durationMs": 2301
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 5,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 134,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 48,
+        "durationMs": 2112
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; the stored rows do not support board entry/exit status across checkpoints."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 182,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 101,
+        "durationMs": 2639
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that VEEE “has dropped off the board” is unsupported; it refers to another checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 6,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 199,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 114,
+        "durationMs": 2719
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; the stored rows do not support board entry/exit across checkpoints."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 212,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 140,
+        "durationMs": 3386
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 7,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 191,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 109,
+        "durationMs": 2660
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; board membership/change cannot be inferred from this checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 159,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 87,
+        "durationMs": 2167
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board.”"
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 8,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 180,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 94,
+        "durationMs": 2395
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that VEEE “has dropped off the board” is unsupported; the stored row only gives its current in-range rank."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 208,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 125,
+        "durationMs": 2784
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; board entry/exit cannot be inferred from this checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 9,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 197,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 109,
+        "durationMs": 2600
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; the stored row only gives its current rank and a prior-checkpoint rank note."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "CURRENT",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20199,
+        "outputTokens": 171,
+        "cachedInputTokens": 20196,
+        "reasoningTokens": 91,
+        "durationMs": 2338
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "The claim that VEEE “has dropped off the board” is unsupported; it requires another checkpoint."
+          }
+        ],
+        "lines": 3
+      }
+    },
+    {
+      "name": "456-04",
+      "arm": "P1",
+      "run": 10,
+      "model": "gpt-5.6-terra",
+      "usage": {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20276,
+        "outputTokens": 185,
+        "cachedInputTokens": 20273,
+        "reasoningTokens": 92,
+        "durationMs": 2724
+      },
+      "checked": {
+        "ok": true,
+        "strikes": [
+          {
+            "id": "S1L2",
+            "reason": "UNSUPPORTED",
+            "by": "model",
+            "detail": "Unsupported claim: VEEE “has dropped off the board”; the stored row instead shows it ranked #5 at this checkpoint, and board-status comparison is not supported."
+          }
+        ],
+        "lines": 3
+      }
+    }
+  ]
+}
