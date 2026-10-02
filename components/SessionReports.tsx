@@ -14,9 +14,12 @@ import {
   coverageText,
   emptyReportLine,
   figureSegments,
+  FLOAT_FOOTER,
+  isV6,
   pathView,
   reportBlocks,
   reportCoverage,
+  reportGroups,
   outsideBoardRange,
   reportLead,
   reportTitle,
@@ -26,7 +29,9 @@ import {
   type ReportBlock,
   type ReportTimeline,
   type SlotView,
+  windowShowsWatchLine,
 } from '@/lib/dashboard/sessionReports';
+import { RISK_TONE, WHY_TONE, WhyMarks } from '@/components/DecisionCells';
 import { formatEtMinute } from '@/lib/format';
 import { useModalFocus } from '@/lib/hooks/useModalFocus';
 
@@ -347,9 +352,13 @@ function ReportBody({
   const written = formatEtMinute(report.publishedAt);
   const ago = agoText(report.publishedAt, nowMs);
   const coverage = coverageText(reportCoverage(report));
-  const lead = reportLead(report);
+  const v6 = isV6(report);
+  const lead = windowShowsWatchLine(report) ? reportLead(report) : null;
   const blocks = reportBlocks(report);
   const empty = emptyReportLine(report, blocks);
+  // v6: computed sections with labels; v5 keeps (A)'s single list (its headings are model text).
+  const groups = v6 ? reportGroups(report) : [{ label: null, blocks }];
+  const hasNames = blocks.some((block) => block.kind === 'NAME');
 
   return (
     <article>
@@ -409,37 +418,72 @@ function ReportBody({
         </div>
       </dl>
 
-      {/* v5 opens with the watch sentence, then the after-hours picture when the
-          report has one; v4 with its headline. `reportLead` decides which. */}
+      {/*
+        * v6, THE SESSION (option B, `docs/Design/report-b-spec.md`): the opening
+        * narrative directly under the title, above everything else. Absent, not
+        * empty: a null narrative prints no block and no label. The slot under it
+        * is reserved for a v6.1 "what to watch" read (Marketing); nothing sits
+        * there today.
+        */}
+      {v6 && typeof report.narrative === 'string' && report.narrative.trim() !== '' ? (
+        <section aria-label="The session" className="mt-5">
+          <h3 className="text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase print:text-black">
+            The session
+          </h3>
+          <p className="mt-1.5 max-w-[680px] text-[16px] leading-[1.6] text-ink-2 print:text-black">
+            <Figures text={report.narrative} />
+          </p>
+        </section>
+      ) : null}
+
+      {/* The watch sentence (dropped on a v6 recap whose narrative ends with
+          the F9 line, `windowShowsWatchLine`); v5 then the after-hours picture;
+          v4 its headline. */}
       {lead ? <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{lead}</p> : null}
-      {typeof report.watchCount === 'number' && report.overall ? (
+      {!v6 && typeof report.watchCount === 'number' && report.overall ? (
         <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{report.overall}</p>
       ) : null}
 
-      {/* The section headings are HIDDEN (his "b", 2026-10-01T02:24:33Z): they
-          are model-written and unchecked. One list in the writer's order, a
-          card per name; `reportBlocks` holds the rules. */}
+      {/* v5: the model's section headings stay HIDDEN (his "b", 2026-10-01T02:24:33Z),
+          one list in the writer's order. v6: the COMPUTED headings show as
+          "LABEL · count" (`reportGroups`). A card per name either way. */}
       {blocks.length > 0 ? (
-        <ul className="mt-5 space-y-3 print:space-y-4">
-          {blocks.map((block, index) =>
-            block.kind === 'NAME' ? (
-              <li key={`name:${block.ticker}`}>
-                <NameCard
-                  block={block}
-                  report={report}
-                  outsideRange={outsideBoardRange(priceOf(block.ticker), board, report.range)}
-                  onSelectTicker={onSelectTicker}
-                />
-              </li>
-            ) : (
-              <li key={`prose:${index}`}>
-                <Prose text={block.text} />
-              </li>
-            ),
-          )}
-        </ul>
+        <div className="mt-5 space-y-5 print:space-y-6">
+          {groups.map((group, groupIndex) => (
+            <section key={`group:${groupIndex}`} aria-label={group.label ?? undefined}>
+              {group.label ? (
+                <h3 className="mb-2 text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase print:text-black">
+                  {group.label}
+                </h3>
+              ) : null}
+              <ul className="space-y-3 print:space-y-4">
+                {group.blocks.map((block, index) =>
+                  block.kind === 'NAME' ? (
+                    <li key={`name:${block.ticker}`}>
+                      <NameCard
+                        block={block}
+                        report={report}
+                        outsideRange={outsideBoardRange(priceOf(block.ticker), board, report.range)}
+                        onSelectTicker={onSelectTicker}
+                      />
+                    </li>
+                  ) : (
+                    <li key={`prose:${index}`}>
+                      <Prose text={block.text} />
+                    </li>
+                  ),
+                )}
+              </ul>
+            </section>
+          ))}
+        </div>
       ) : empty ? (
         <p className="mt-5 text-[13px] text-ink-3">{empty}</p>
+      ) : null}
+
+      {/* v6: float said ONCE, a verdict never a number (Marketing's final words). */}
+      {v6 && hasNames ? (
+        <p className="mt-5 text-[12px] text-ink-3 print:text-black">{FLOAT_FOOTER}</p>
       ) : null}
 
       {view.superseded.length > 0 ? (
@@ -502,6 +546,8 @@ function NameCard({
         ) : null}
       </div>
 
+      {block.tags ? <TagRow tags={block.tags} /> : null}
+
       {path ? (
         <div className="mt-3 flex flex-wrap items-end gap-x-3.5 gap-y-2 print:text-black">
           {path.points.map((point, index) => (
@@ -549,6 +595,15 @@ function NameCard({
 function Prose({ text }: { text: string }) {
   return (
     <p className="max-w-[680px] text-[15px] leading-[1.7] text-ink-2 print:text-black">
+      <Figures text={text} />
+    </p>
+  );
+}
+
+/** Figures set apart from the prose around them (`figureSegments`). */
+function Figures({ text }: { text: string }) {
+  return (
+    <>
       {figureSegments(text).map((segment, index) =>
         segment.figure ? (
           <span key={index} className="font-medium text-ink print:text-black">
@@ -558,7 +613,37 @@ function Prose({ text }: { text: string }) {
           segment.text
         ),
       )}
-    </p>
+    </>
+  );
+}
+
+/**
+ * v6's tags: the BOARD'S OWN Why and Risk, as the board prints them (one
+ * vocabulary; `report-b-spec.md`). The grade letter in the board's tone with
+ * the board's hover, the board's warn marks (`WhyMarks`, shared code), and the
+ * Risk chip's label and value with its left border. No age (the prose carries
+ * the event date), no headline (the prose is the story), no Risk detail line
+ * (it is the chip's hover). At most one saturated element: the chip.
+ */
+function TagRow({ tags }: { tags: NonNullable<Extract<ReportBlock, { kind: 'NAME' }>['tags']> }) {
+  const { why, risk } = tags;
+  return (
+    <div className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1.5 print:text-black">
+      <span className="flex items-baseline gap-1.5">
+        <span className="text-[10px] tracking-[0.08em] text-ink-3 uppercase print:text-black">Catalyst</span>
+        <span className={`num text-[13px] font-bold ${WHY_TONE[why.tone]} print:text-black`} title={why.title}>
+          {why.grade}
+        </span>
+        <WhyMarks why={why} />
+      </span>
+      <span
+        className={`flex items-baseline gap-1.5 border-l-2 pl-2 leading-tight ${RISK_TONE[risk.tone]} print:text-black`}
+        title={risk.detail ?? undefined}
+      >
+        <span className="text-[11px] font-semibold tracking-wide uppercase">{risk.label}</span>
+        {risk.value ? <span className="num text-[11px] text-ink-2 print:text-black">{risk.value}</span> : null}
+      </span>
+    </div>
   );
 }
 
