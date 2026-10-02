@@ -3351,6 +3351,9 @@ LEAK FIX BUILT   Research 50196f0b on main (read): SecClient cache LRU 64 MiB, 3
                  after 20). Waits: gate (new Ops slot), cut, replay, his yes.
 NEW OPS          local_d8a2a445 (created 03:14:54Z; get_session read); old local_8a0801c2 "Ops-tmi-retired", ARCHIVED.
                  Briefed: addendum = live state, leak fix + levels-mirror ruling, ship order, build-peak measurement owed.
+                 Ops ack: /proc 03:16:32Z matches hand-off (ops.md 858c149b); worker RSS read on the CHILD pid. Build peak
+                 measured live on next ship night's first build (2 s sampler of MemAvailable + build RSS after the research
+                 restart); a second build only if fresh available minus peak leaves margin; number to me before step 2.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
