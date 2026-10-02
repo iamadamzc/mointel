@@ -3173,6 +3173,9 @@ BLUE-SKY READY   Research gate on bac44069: tsc 0, eslint 0 errors, 222 files / 
                  design/bluesky-hover-on-bac44069; one commit on bac44069; 3c7eaa67 superseded; gate 223/223, 3,289,
                  build 0). Hover sentence routed to Marketing with lines (2) + named-split. Cone excludes a4a06168: re-pick
                  after tonight's ship, then my replay of the final sha.
+                 Marketing: drop the rescaled $855,795.60 (never traded); window (2) + named-split sub-line approved as
+                 built. ORDER CALL: hover shows AS-TRADED price = deepCeiling.price / splitFactor (855,795.60/44,000 =
+                 19.45), computed in blueSkyView.ts; Marketing locks words; Design replaces 750b9f25 on bac44069.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
