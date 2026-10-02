@@ -3261,6 +3261,11 @@ STEP 1B          83db9d75 (read; his words verified at Marketing's 2bb33112 02:4
                  intraday = OPTION 1 covered-only labelled (option 2 store change NOT in v6); F8 biotech NOT in v6 (needs
                  SIC write a4a92a8f behind v28 main twin + mapping Marketing proposes, HE approves) -> v6.1; F9 = recap's
                  covered names, honest wording. Marketing tells him the unbacked items (its commitment).
+MOVERS CUT       98905b08352ba8681ae6cf4b7816bfda731e8325 (tag design/moving-on-e0f18bbb) REPLAYED + APPROVED BY LITERAL
+                 SHA (scratchpad replay-m.ps1): merge-base 2a625a5b; 8 linear, 0 merges; 12 files +948/-6; no deploy/db/
+                 worker/package, no capture/report files; 0 added U+2014; 221 tests; defaults K=15, 10%, 500k. Design
+                 gate 221/221, 3,257 + build/lint/typecheck 0. Label: "moving" under ticker, hover from row numbers,
+                 caption "N moving". SHIP: Ops release gate, /proc = 2a625a5b, his yes; next ship night.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
