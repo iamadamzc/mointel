@@ -13480,3 +13480,7 @@ If this session dies again, the successor re-creates these from this paragraph.
 | push of 75e0f0df carried Research's 258624e2: `git log origin/main..main` ran in one command, `git push` in the next; Research committed between them | check-then-act-race (shared-push) | no | peer (Research), harmless |
 | told Integration the judge pid was 1821896 with three deploys still to restart research | stated-before-final | no | self, corrected before use |
 Cure for the first: the unpushed-commits check and the push run in ONE command, aborting unless every commit is mine.
+- ARIA FIX a4a0616892a6f303f4312d6d4546ad05423b17af (on 9189b569; Integration approved by literal sha; its one added U+2014
+  is in a code comment quoting the glyph, checked): release gate ALL GREEN 223/223 (pre-registered 223), 3,283 tests, lint
+  0 errors / 6 warnings, 14:28:40Z; local build rc 0. Integration's order: ship the TIP a4a06168 as ONE release tonight after
+  the snapshot (carries the one-ladder), on his yes naming both. Question put to him in this chat.
