@@ -59,3 +59,28 @@ One line on what is unresolved, 13 px ink-3.
 
 - Whether a revised mock goes to him before step 5. Design's view: no. Step 5 IS the first sight, on real output, and a mock with invented text is what made "B" carry three guardrail breaks last time.
 - Colour of the grade letter in the report: the board's tone is used as is. Changing it is a board decision.
+
+## Reconciled with Marketing's step 3 and Research's step 1c (added 2026-10-02, clock 02:59:15 UTC)
+
+Marketing's tag words (`docs/research/reports-v6/step3-narrative-voice.md`, `6cca5549`, "Per-line tags") were written at the same minute as this spec and without it. Research's step 1c (`49ebf469`) confirms the board's `resolveWhy`/`resolveRisk` run on the as-of dossier through one adapter.
+
+**Taken from Marketing, as written:**
+- **Float footer:** "The desk cannot independently verify float for these names." (replaces Design's proposed wording).
+- **The recap's F9 line is the seam** between the narrative and the cards ("Into the next session the desk is carrying these {N} names"). **On the recap it REPLACES the watch line**, so N is never stated twice in two voices. On the three intraday kinds the watch line stays as the lead-in.
+
+**Open, for Integration (Design and Marketing disagree; facts first):**
+
+| Tag | Board prints today | Marketing's report words | The difference |
+|---|---|---|---|
+| Grade | A letter: STRONG and LEGITIMATE_POSITIVE both "A", MODERATE "B", WEAK and NONE both "C" (`why.ts:484-486`) | four words ("strong", "legitimate / positive", ...); NONE and UNKNOWN no chip | finer than the board; on NONE the board says "C" and the report says nothing |
+| Explains the move | "not the move" when false; nothing for true or null | "fits the move" / "doesn't fit the move" / "fit not established" | three states and different words for the same false |
+| Cycle | a computed badge from price arithmetic (OFF HIGH, DAY 1) | the dossier's classification, comma form | two cycle vocabularies; Design's spec has no cycle tag (the path is the cycle) |
+| Supply | one chip, SUPPLY OVERHEAD or DIRTY FLOAT + total shares (`resolveRisk`) | one chip per block, typed: "{type} {amount or $capacity} ({form})" | several chips per card against one aggregate; audit section 8's one-saturated-element rule |
+
+**RULED by Integration (order call, 2026-10-02):** explains-the-move in the REPORT uses Marketing's three states, "fits the move" / "doesn't fit the move" / "fit not established", in v6; the BOARD keeps "not the move" inside v6. One vocabulary on both surfaces, if wanted, is Design's own small board change AFTER v6 (owed: Design, trigger v6 live). Grade, cycle and supply: still open with Integration.
+
+**Design's recommendation:** the tags render THROUGH the board's functions (Research's adapter), so any wording change is made in those functions and both surfaces change together. Where Marketing's words are better (they are clearer than a bare letter), adopt them on BOTH surfaces as one change, checked against the board's 1,024 floor (the Why cell has no room for "legitimate / positive"; its hover does). What Design argues against is a report-only vocabulary: a reader who sees "A" on the board and "legitimate / positive" in the report for the same name at the same moment has to reconcile two systems, which is the defect audit section 10 names.
+
+**Research's step 1c question (dirty float):** keep `displayedFloat` null in reports, as proposed. The chip then reads "DIRTY FLOAT" with no float number, which is the verdict-only form the guardrail asks for; no different words needed. The report and board can differ on a dirty-float name only in that value, and the footer already says the float is unverified.
+
+**Research's step 1c differences (sheet inputs absent in reports):** accepted. The report's grade and headline are the desk dossier's; on a name the Sheet grades differently, the report's letter can differ from the board's. That is a true difference of source, and the Sheet is a migration artefact (audit section 11, item 1); it is not a reason to freeze the Sheet onto checkpoints.
