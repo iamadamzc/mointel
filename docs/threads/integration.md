@@ -3176,6 +3176,13 @@ BLUE-SKY READY   Research gate on bac44069: tsc 0, eslint 0 errors, 222 files / 
                  Marketing: drop the rescaled $855,795.60 (never traded); window (2) + named-split sub-line approved as
                  built. ORDER CALL: hover shows AS-TRADED price = deepCeiling.price / splitFactor (855,795.60/44,000 =
                  19.45), computed in blueSkyView.ts; Marketing locks words; Design replaces 750b9f25 on bac44069.
+SI CORRECTION    Commercial 94e9687e §10 (spot-read), on his follow-up to Commercial ("do our own assessment and present a
+                 label"): FINRA's QUERY API is a separate contract from the website: no AI bar; Equity Data 2.4 permits
+                 derived data, 2.3 permits showing derived data to end users for THEIR non-commercial use if FINRA named and
+                 no incremental fee (bundling allowed); public credential $0 (organization $1,650/mo). OPEN: 2.2 limits OUR
+                 use to "non-commercial personal or professional" (FINRA/counsel, HIS ask); small-cap listed coverage
+                 unconfirmed; console registration HIS; end-user terms redraft. Replaces Massive-first for this purpose.
+                 I had told HIM FINRA was closed: corrected to him.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
