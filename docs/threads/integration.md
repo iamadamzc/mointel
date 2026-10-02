@@ -3323,6 +3323,9 @@ AFTER HAND-OFF   Commercial (for the successor): SI label wording the build carr
                  non-commercial personal or professional use only."); on origin (read). Web's sign-in wiring (authenticate()
                  into /desk + /api/*, privacy cookie name) is written ON THE NIGHT after his items + Ops's probe
                  (bb4e14a8 design) exist. OPEN for the successor: has Ops built the probe? (not read here).
+                 Marketing: R6 chip "SHORTS: HEAVY · 17d" confirmed; depth bands (drawer/hover) are Research's table:
+                 Shallow <3, Moderate depth 3 to under 5, Deep 5 to under 10, Very deep 10+ days of normal volume to
+                 cover (Marketing's earlier prose mis-stated Very deep; ignore it).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
