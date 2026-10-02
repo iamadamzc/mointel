@@ -13375,3 +13375,7 @@ memory-fix question; levels [flush] p50/max 09:30-10:30 ET vs 2026-09-30, read a
 Judge reads (prereg-ship.md) owned here; its 04:00-20:00 ET 10-min series crosses his 07:00-10:00 window: asked Research to
 choose an on-box sampler (his word, goes in the ship-night question) or a prereg amendment before ship. Build peak (owed to
 Integration): measured live on the first build of the next ship night, MemAvailable + build RSS every 2 s, before build 2.
+
+**Orphans killed on his word in this chat ("kill the orphan processes"):** pids 20200/22704/24128 (vitest, created
+2026-09-30 12:50 local, re-verified by pid + creation time + command line just before) stopped; 0 remain. Housekeeping item 5
+orphan line CLOSED. Free commit after: 3,435 MB (not comparable to 03:17:51Z's 3,354: Research's gate may be running).
