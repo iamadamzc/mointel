@@ -82,7 +82,9 @@ Otherwise size is "not graded", with the reason.
 - never a position inside a band;
 - never a band beside FINRA's number.
 
-> Elevated: at least 10% and under 20% of shares outstanding sold short, against the company's filed share count (dated Aug 8). Shares outstanding include shares that do not trade, so the share of the float sold short can be higher. Deep: 5 to 10 days of normal volume to cover. Building: up at least 25% since the previous report.
+> Elevated: at least 10% and under 20% of shares outstanding sold short (filed count dated Aug 8). Shares outstanding include shares that do not trade, so the share of the float sold short can be higher. Deep: 5 to under 10 days of normal volume to cover. Building: up at least 25% since the previous report.
+
+Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very deep), fixed to "5 to under 10"; the filed-count clause folded into brackets. The drawer line joins only the grades present and says "1 day ago" when the age is one day. **Open, his call:** "Covering" names a mechanism (shorts buying back); "Easing" or "Falling" would describe only the position. Marketing flagged it to him; "Covering" is the trader-standard word.
 
 **Legend, shown ONCE (R2 and R3, Commercial `692ce434`)**, wherever the label first appears (drawer section footer):
 
@@ -107,7 +109,7 @@ Otherwise size is "not graded", with the reason.
 | BBBB | floor 14%, 6.2 days, +40% | **Short interest: Elevated (10 to 20% of shares outstanding) · Deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | CCCC | floor 3%, 1.4 days, -8% | **Short interest: under 5% of shares outstanding · Shallow.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | DDDD | ATM active since the filed count; 6.8 days; +5% | **Short interest: size not graded (shares issued since the last filed count) · Deep.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
-| EEEE | newest report held is the Aug 29 settlement, while Sep 15 is published | **Short interest: not current** (a newer FINRA report is published and not yet held). | none |
+| EEEE | newest report held is the Aug 29 settlement, while Sep 15 is published | **Short interest: not current** (a newer FINRA report has been published and is not yet held). | none |
 | FFFF | 1-for-20 reverse split after the filed count; 3.1 days | **Short interest: size not graded (a reverse split since the last filed count) · Moderate depth.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 
 - On DDDD and FFFF, no trend grade appears, because size is not graded and the trend rule needs size at Moderate or higher.
