@@ -13397,3 +13397,13 @@ sequentially, one at a time. Chain verified (ancestry, one commit per new cut; l
 == 9f084c9e code): b5a35fda <- (A) 840741d3 (+3) <- citations 2a625a5b (+4) <- leak 0e883fec (+1) <- review-levels mirror
 19f9d721 (+1). Expected ALL GREEN with test FILES passed/total: 840741d3 214/214; 2a625a5b 217/217; 0e883fec 217/217;
 19f9d721 218/218. Any other count is a finding, not a pass.
+
+**Cut gates RESULT (this session, test-gate.sh, Git Bash), all ALL GREEN at the pre-registered count, lint 0 errors / 5 warnings:**
+840741d3 214/214 files, 3202 tests (03:29:38Z-03:33:20Z; Research's light 10-file run may have overlapped its first seconds;
+result is green at count, so no re-run); 2a625a5b 217/217, 3225 (03:33:20Z-03:36:29Z); 0e883fec 217/217, 3229
+(03:36:29Z-03:39:45Z); 19f9d721 218/218, 3236 (03:39:46Z-03:42:54Z). DEPLOY_TESTS_SKIP is allowed for exactly these four.
+Integration approved by literal sha: leak 0e883fec, levels mirror 19f9d721, movers re-cut 558d07a5 (SUPERSEDES 98905b08),
+citation residual 28c66f14 (patch == a58aa866). Verified here: 558d07a5 = 8 commits, patch-ids equal in order to
+2a625a5b..98905b08, diff vs 98905b08 is only the leak + mirror files, 222 files; 28c66f14 parent 558d07a5, code+tests
+identical to a58aa866, 222 files.
+**PRE-REGISTERED next:** 558d07a5 222/222 files; 28c66f14 222/222 files.
