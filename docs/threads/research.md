@@ -203,7 +203,7 @@ record. He has it from this seat directly as well.
     - Freezing the sheet per checkpoint is NOT in v6. **The step-5 sample must say report tags can differ from the board where the three sheet inputs are not as-of.**
   - **Step 3 DONE** (Marketing `6cca5549`; Design `a6867865`). Classes N1-N11 final (`afc7755b`).
   - **Step 4 (build) is next, AFTER the research-worker memory question** (Integration's priority, 2026-10-02 ~03:00Z).
-  - **▶ STEP 4 IN PROGRESS** on `research/reports-v6` (A:\mointel-v6), base = chain tip `558d07a5` (Integration: no veto). First commit `28c66f14` = the citation residual cut (its own ship, `research/residual-cut`). Pieces so far, each with tests and mutants killed as predicted:
+  - **✅ STEP 4 BUILT AND GATED, head `b8719e7c`** on `research/reports-v6` (A:\mointel-v6), base = chain tip `558d07a5` (Integration: no veto). Gate in Ops's heavy slot 2026-10-02 (granted 05:1xZ per Ops): tsc 0, eslint 0 errors (6 warnings, none in files this branch touched), full suite 228 files / 3,313 tests. First commit `28c66f14` = the citation residual cut (its own ship, `research/residual-cut`). Every piece has tests and mutants killed as predicted:
 
     | Piece | Commit | What |
     |---|---|---|
@@ -212,13 +212,13 @@ record. He has it from this seat directly as well.
     | 3 | `afade0e3` | Fix (d), citations in `reportResearch` |
     | 4 | `5d926717` | Fixes (b)(c), dates and clocks by one shared rule |
     | 5 | `cb0f04cd` | Fix (a), computed headings |
+    | 6 | `683795c3` | Contract + inputs (tags on lines, computed headings, narrative facts) |
+    | 7 | `dffb0bfe` | Writer v6 (prompt 6; Marketing's templates; no restating of tags) |
+    | 8 | `c8793767` | Checker v6 (prompt 4 = P1; narrative traced; G omission; window words; citation guard) |
+    | 9 | `b8719e7c` | Pipeline switch: runReport, runner, worker on v6; `narrative` replaces `overall` |
 
-    **NOT YET BUILT:**
-    - the contract (`narrative` replacing `overall`; tags on `ReportLine`);
-    - writer v6 (Marketing's templates; no restating of tags);
-    - checker v6 (narrative rule N with the G-omission rule; P1 as prompt v4; a citation guard);
-    - pipeline wiring;
-    - then the step-5 voice run.
+    **CUT BLOCKER:** `components/SessionReports.tsx` renders `overall`, not `narrative` (nor tags). That is Design's option B, rendered in step 5. A v6 cut without it publishes reports with no visible narrative.
+    **▶ NEXT: step 5**, the voice-run harness on stored data, committed before any model call; samples to Marketing and Design (the sample states where tags can differ from the board, and the "entire move" definition).
 
     The checker-input trim gets its own measurement (not in this build).
   - **Integration's order calls, 2026-10-02:**
