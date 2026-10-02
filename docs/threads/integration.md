@@ -3358,6 +3358,9 @@ LEAK GATED       main f8025aad (contains 50196f0b; read): tsc 0, 213/213, 3,198 
                  to sample outside his window (7773b562). ORDER CALL: leak cut on 2a625a5b (chain b5a35fda -> (A) ->
                  citations -> LEAK -> movers re-cut on it). client.ts has 2 main commits since 2a625a5b: cut must carry
                  only the bound. Levels mirror: branch from b5a35fda (/api/levels is production-line only), cut later.
+LEVELS MIRROR    research/review-levels 9f084c9e (read): 1 commit on b5a35fda, route + 2 tests; readOnly.test.ts also
+                 edited by d427dd0e -> expect a conflict when cut on the chain. Research cuts leak (on 2a625a5b) and the
+                 mirror (on the chain tip); I replay both.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
