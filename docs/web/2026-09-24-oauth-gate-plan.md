@@ -1,5 +1,26 @@
 # OAuth gate — build plan and estimate
 
+**AS OF 2026-10-02 17:48 UTC: re-read end to end by the successor Web seat.
+Sections 1 to 4 are the plan as written on 2026-09-24 and are history; section
+5b is the build record and wins over them.** *What has moved since, so a reader
+does not act on the older text:*
+
+- **The gate is `authenticate(db, sessionId, now)` in `lib/auth/gate.ts`**,
+  returning `anonymous | refused | admitted`. *Sections 2 to 4 call it
+  `requireSession()`; no symbol of that name exists.*
+- **The live proof is the probe in
+  [`2026-10-01-gate-probe-design.md`](2026-10-01-gate-probe-design.md), read with
+  the Basic-Auth credential, with NO nginx exemption.** *Section 3's "a throwaway
+  probe path ... exempted just long enough to test" is superseded.* **The
+  `/signin` and `^~ /auth/` exemptions move to Basic-Auth removal (LIVE STATE step
+  5), not the wiring.**
+- **The sign-in surface (routes, gate, `/signin`) is on `main` and NOT on
+  production.** *It ships on the sign-in night in `ops/signin-cut`. So 5b's
+  "verified live" means a running dev server: production did not carry the
+  surface then and does not now.*
+- **`[FLOW COOKIE NAME]` fills in the gate-wiring commit (LIVE STATE step 4), not
+  on the deploy that ships sign-in.** *Corrected in place in 5b.*
+
 **Web, 2026-09-24 17:59 UTC, against `1740448`.** Owner of this file: **Web**.
 Written on Integration's relay of his approved auth model: **Google sign-in +
 an allowlist of invited emails; passwordless; invite = add-email, revoke =
@@ -270,13 +291,16 @@ What remains is coordination and two polish items, not new surface:
   carrying the honest status (`/auth/callback/google` → 500 with a real page,
   confirmed on the wire); `/signin?e=cancelled` shows a calm note and the
   callback redirects cancelled there. 111 auth tests.
-- **The privacy placeholder** — filled at the ship, from the live cookie name. **The placeholder stays `[FLOW COOKIE
-NAME]` until sign-in reaches production:** the code sets `mointel_oauth`, but the
-live site does not yet (not deployed, `/auth/` not exempted, Basic Auth on), and
-the policy must not name a cookie the live service does not set — a user can
-check it in their own inspector. Fill it in the deploy that ships sign-in. The
-gate is blocked only on an Ops store read (`isUserInvited(db, userId)`,
-verified-emails-only) — requested.
+- **The privacy placeholder:** ~~filled at the ship, from the live cookie name.~~
+  **Filled in the gate-wiring commit (LIVE STATE step 4), from the live cookie
+  name** *(corrected 2026-10-02)*. **The placeholder stays `[FLOW COOKIE NAME]`
+  until the live site sets the cookie:** the code sets `mointel_oauth`, but the
+  live site does not yet, and the policy must not name a cookie the live service
+  does not set: a user can check it in their own inspector. ~~Fill it in the
+  deploy that ships sign-in. The gate is blocked only on an Ops store read
+  (`isUserInvited(db, userId)`, verified-emails-only) — requested.~~ *The store
+  read landed (`978f2f2`) and the gate composes it (`e03b7ef`); nothing about
+  the gate is blocked on Ops any more.*
 
 ## 5c. THE CALLBACK DESIGN, recorded before it is code
 
