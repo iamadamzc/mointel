@@ -88,6 +88,8 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 
 **Commercial PASS (13b, 2026-10-02, on 0acc4bcb):** R1 to R3 applied as required, no further change. **Open, cosmetic, for Marketing:** size "Moderate" and depth "Moderate depth" can share one drawer line ("Moderate (5 to 10% of shares outstanding) · Moderate depth"), so one of the two words may need to differ.
 
+**Commercial 13c (on Marketing's words):** R4, the legend must say the grades are this desk's own, so FINRA is not read as their author. It is already met by the legend above ("Grades are this desk's own"); keep it in any rewording. R5, the chip carries the age: applied above. **The build wording for the drawer line is THIS design's, with the size band inline** (R1, Commercial's constraint). Marketing's main line, read before R1, dropped the band; any tightening must keep it.
+
 **Legend, shown ONCE (R2 and R3, Commercial `692ce434`)**, wherever the label first appears (drawer section footer):
 
 > Short interest data: FINRA (owner and source). Grades are this desk's own, computed from FINRA's reports and the company's filed share count. They describe short positions on the settlement date shown. They are not a prediction or a recommendation.
@@ -95,7 +97,7 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 - Clause 2.3(a) requires FINRA to be identified "as the owner and source" of the data, derived data included. "Source: FINRA" on each line names only one of the two, so the legend carries both.
 - The word "squeeze" appears nowhere in the label, the hover, the chip or the legend.
 
-**Board chip: only at Heavy or Very deep**, e.g. "SHORTS: HEAVY". No chip is not the same as a low grade, so the drawer always carries the full line.
+**Board chip: only at Heavy or Very deep, and ALWAYS with the settlement age** (Commercial R5, 13c): e.g. "SHORTS: HEAVY, 17d". A bare chip reads as current. No chip is not the same as a low grade, so the drawer always carries the full line.
 
 **Report tag:** the same words as the drawer line, via the v6 tags, if Design wants it. Not in the first build. **When it enters the report layer, the settlement date and its age ("17 days ago") must survive any truncation** (Commercial, non-blocking).
 
@@ -107,7 +109,7 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 
 | Placeholder | Invented inputs (never shown) | Drawer line | Board chip |
 |---|---|---|---|
-| AAAA | floor 26%, 12.4 days, +41% | **Short interest: Heavy (20% or more of shares outstanding) · Very deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | SHORTS: HEAVY |
+| AAAA | floor 26%, 12.4 days, +41% | **Short interest: Heavy (20% or more of shares outstanding) · Very deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | SHORTS: HEAVY, 17d |
 | BBBB | floor 14%, 6.2 days, +40% | **Short interest: Elevated (10 to 20% of shares outstanding) · Deep · Building.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | CCCC | floor 3%, 1.4 days, -8% | **Short interest: under 5% of shares outstanding · Shallow.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
 | DDDD | ATM active since the filed count; 6.8 days; +5% | **Short interest: size not graded (shares issued since the last filed count) · Deep.** Source: FINRA, settlement Sep 15 (17 days ago). | none |
