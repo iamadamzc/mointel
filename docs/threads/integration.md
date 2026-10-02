@@ -3312,6 +3312,8 @@ V6.1 LANE        His direction to Marketing (Marketing verified at its turn): mo
                  watch, finds correlations. ORDER: v6 unchanged; v6.1 = marked, hedged "what to watch" block below the
                  verified narrative, dossier-sourced only (no open web in live report); Marketing specs words, Research
                  owns checker fencing + seeds; with F8. Starts after v6 live unless he tells Marketing to fold it in.
+                 Marketing re-locked step 3 at 8842ee0d on one vocabulary; adapter guard: risk.ts:249 "{N} float" when
+                 displayedFloat non-null -> keep null in reports (to Research). Relayed to Design.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
