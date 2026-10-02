@@ -57,13 +57,24 @@ Variants (the writer picks by the given numbers):
 - `ntrack` = 1: "Into the next session the desk is carrying one name."
 - **G footnote**, shown only when `G` > 0, as a quiet trailing sentence, never hidden (prereg): "{G} in-range names had no regular-session close and are not in these counts." When `G` = 0, omit.
 
-## Per-line tags (Design option B), from the stored enums (verified first-hand)
+## Per-line tags (Design option B): ONE VOCABULARY in v6 (Integration order call, reversing the earlier three-state call)
 
-- **Cycle** (comma form): `GREEN_FRESH_FRONTSIDE` -> "green, fresh / frontside"; `YELLOW_FRONTSIDE_WARNING` -> "yellow, frontside warning"; `RED_BACKSIDE` -> "red, backside"; `UNKNOWN` -> no chip.
-- **Grade** (`catalyst.grade`): `STRONG` -> "strong"; `LEGITIMATE_POSITIVE` -> "legitimate / positive"; `MODERATE_MIXED_SECONDARY` -> "moderate / mixed / secondary"; `WEAK_NEGATIVE_DILUTIVE` -> "weak / negative / dilutive"; `NONE` -> no grade chip; `UNKNOWN` -> no grade chip.
-- **Explains the move** (`plausiblyExplainsMove`): true -> "fits the move"; false -> "doesn't fit the move"; null -> "fit not established".
-- **Supply** (`structure.supply[]`), chip = {type} {amount or $capacity} ({form}), never "sell"/"selling". Types: `SHELF_CAPACITY` -> "shelf"; `ATM` -> "ATM"; `REGISTERED_RESALE` -> "registered resale"; `RECENT_OFFERING` -> "recent offering"; `WARRANTS` -> "warrants"; `CONVERTIBLES` -> "convertibles"; `EQUITY_PURCHASE_AGREEMENT` -> "equity line"; `PIPE` -> "PIPE"; `PREFERRED_CONVERSION` -> "preferred conversion"; `ACQUISITION_SHARES` -> "acquisition shares"; `OTHER_ISSUED_SHARES` -> "other issued shares". `registrationStatus` is free-text hedged prose, NOT chip material.
-- **Float footer** (once, not per row): "The desk cannot independently verify float for these names." A verdict, never a number. Design places it.
+**In v6 the report's per-line tags render through the BOARD's own functions (`lib/dashboard/why.ts`, `lib/dashboard/risk.ts`) via Research's adapter, exactly as the board says them today, so no two surfaces show the same field in different words.** The report does not introduce its own tag wording in v6:
+
+- **Grade:** the board's Why letter and tone (`WHY_TONE`), not a four-word form.
+- **Explains the move:** the board's form, "not the move" on `plausiblyExplainsMove` false only; true and null print nothing (board parity).
+- **Cycle:** NO tag. The path line already carries the cycle arithmetic; a dossier `cycleClassification` tag would be a second cycle vocabulary. If the classification is wanted it goes in the prose, comma form, never as a tag.
+- **Supply:** the board's single aggregate chip (e.g. "SUPPLY OVERHEAD 6.13M sh", `risk.ts:165`), capacity language, never "sell"/"selling". One chip, not one per ledger block.
+- **Dirty float:** `displayedFloat` stays null in reports; "DIRTY FLOAT" with no number is the verdict form (`risk.ts:152-154`).
+- **Float footer** (once, not per row, TAKEN as written): "The desk cannot independently verify a float for any name in this report." A verdict, never a number. Design places it.
+
+**Guardrail check on inheriting the board vocabulary (verified first-hand).** The board's risk/why strings clear the hard rules: no "sell"/"selling" (only the admitted hedge "Capacity, not proof of selling", `risk.ts:167`); dirty float is a numberless verdict. **One guard the adapter MUST honor:** `risk.ts:249` renders `"{N} float"` when `row.displayedFloat` is non-null, a bare float number. The report must NOT take that path: `displayedFloat` is null in reports and the per-row float chip is dropped (footer only). If the adapter ever carries a non-null `row.displayedFloat`, a float number reaches the report and breaks the float-verdict rule.
+
+**My clearer words are NOT dropped, they are DEFERRED.** The enum-to-words mapping below becomes ONE follow-up change that updates BOTH surfaces at once (Integration), checked by Design at the board's 1,024 floor, after v6. Kept here for that change:
+- Cycle (comma form): `GREEN_FRESH_FRONTSIDE` -> "green, fresh / frontside"; `YELLOW_FRONTSIDE_WARNING` -> "yellow, frontside warning"; `RED_BACKSIDE` -> "red, backside"; `UNKNOWN` -> no chip.
+- Grade: `STRONG` -> "strong"; `LEGITIMATE_POSITIVE` -> "legitimate / positive"; `MODERATE_MIXED_SECONDARY` -> "moderate / mixed / secondary"; `WEAK_NEGATIVE_DILUTIVE` -> "weak / negative / dilutive"; `NONE` / `UNKNOWN` -> no chip.
+- Explains the move (`plausiblyExplainsMove`): true -> "fits the move"; false -> "doesn't fit the move"; null -> "fit not established" (the three-state form, which tells null apart from true; my standing recommendation for the follow-up).
+- Supply type words: `SHELF_CAPACITY` "shelf"; `ATM` "ATM"; `REGISTERED_RESALE` "registered resale"; `RECENT_OFFERING` "recent offering"; `WARRANTS` "warrants"; `CONVERTIBLES` "convertibles"; `EQUITY_PURCHASE_AGREEMENT` "equity line"; `PIPE` "PIPE"; `PREFERRED_CONVERSION` "preferred conversion"; `ACQUISITION_SHARES` "acquisition shares"; `OTHER_ISSUED_SHARES` "other issued shares".
 
 ## Seed-class review (N1 to N8), and proposed additions before the freeze
 
