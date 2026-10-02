@@ -3167,6 +3167,8 @@ BLUE-SKY HEAD    ded2274a (70c534f4 + ded2274a): Design's full pick in lib; sub-
                  to Marketing; hover to Design. Owed: Ops gate, Design hover, Marketing read, his yes.
                  Head now bac44069 (Marketing's wording on 70c534f4 + ded2274a). Re-cut on a4a06168 carries all three +
                  Design's hover. f98ce6ff was already pushed by Research (no harm).
+TONIGHT PLAN     Ops: a4a06168 release gate 223/223, 3,283, lint 0, build rc 0 (14:28:56Z). Tonight: snapshot 20:12 ET,
+                 then ONE release a4a06168 (one-ladder + aria) on his yes to both in Ops's chat. Blue-sky after.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
