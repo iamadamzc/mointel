@@ -3196,6 +3196,11 @@ HOVER CORRECTED  Design declined to derive the price in the view (display must n
                  (tag design/bluesky-hover-traded-on-bac44069; read: parent bac44069, 3 files, 0 U+2014, "855" comments
                  only, factor = adjusted/raw splits.ts:102). DECISION: c535dce7 ships ("about $19.45 as it traded on
                  2018-04-30 ..."); 9694e8bb + 750b9f25 VOID. Told him (third wording note on this hover).
+HIS, TO COMMERCIAL "registered. accepted exposure" (Commercial 88f2b7c9 §10.5): FINRA API Console registered; clause 2.2
+                 accepted like the tape. Exchange-fee worry withdrawn (§11b). ROUTED: Research designs the label to §10.2
+                 + its classification, sample to Commercial §8 + Marketing, BUILD waits on coverage (52a8a8c7); Ops runs
+                 the coverage check once HE places the credential (556a6b6f); Web drafts end-user terms wording for HIS
+                 adoption (00a2adcd). Credential placement asked of him.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
