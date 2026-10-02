@@ -13516,3 +13516,7 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
 - ENV: box already has IDENTITY_DB_PATH, TRADES_DB_PATH, OAUTH_REDIRECT_URI (key names, 15:5xZ), so the release does NOT
   need a sync-env first. No Google or FINRA keys on the box or in .env.local yet. FOUND: sync-env would have erased
   LEVELS_REFRESH_ENABLED (box-only since 02:38Z); fixed in sync-env.sh at 4b0a03dc; key-name diff now erases nothing.
+- CORRECTION to the 12:33Z note: the restarted judge sampler was NOT killed. The harness stopped tracking it, but its
+  bash loop (local pid 23180, started 08:03:20 ET) is still running and logging at :03/:13/:23 ET; the session cron logs at
+  :05-:06/:15-:16. Both append to the same log; kept as redundancy (the cron missed 11:35 while the session was busy;
+  the loop covered it). Both read-only and both skip 11:00-14:00Z. The loop ends itself at 00:05Z.
