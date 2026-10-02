@@ -3101,6 +3101,11 @@ HIS DIRECTION    "would the numbers be different with a commercial licesnse?" ->
                  no issuance/split between dates (gate: FILED_SHARES_CURRENT_DAYS 45, float.ts:226-235), else no %. Drawer
                  line in structure section; board chip needs a "heavy" threshold = product call. Em dashes in Commercial's
                  internal doc: out of his rule's scope (internal docs), no fix ordered. Waiting on Commercial's sources.
+HIS, TO RESEARCH (Research's transcript 60c64b0a, per Research): (1) "yes to the snapshot after 20:00" -> sent to Ops
+                 verbatim for verification at his turn; v6 step 5 runs once the copy lands (tonight). (2) "Do some reseach
+                 around what the paramters should be on short interest classification ... informative and helpful." ->
+                 Research method doc (published conventions + calibration plan, no data pulled: FINRA terms bar software
+                 development use; Commercial asked about a research-licensed source). Pauses when the copy lands.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
