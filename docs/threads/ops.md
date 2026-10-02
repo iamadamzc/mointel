@@ -13267,7 +13267,12 @@ untouched; follower "NOT confirmed" as usual. First refresh 02:56:35Z: 147 writt
 research worker (pid 1696433, e8822583, 1.4G peak); systemd restarted it 10 s later. Box 3,832 MB, NO swap. Market worker
 untouched. Only OOM since 09-25. After the restart the market worker (743 MB RSS) is the largest process, so a repeat would
 likely take IT. **(A) 840741d3 and citations 2a625a5b HELD**, put to him with a recommendation to WAIT until the deploy's
-memory use is fixed (npm ci off the box, or a prebuilt node_modules). Open item for Ops: why research reached 1.4 GB in 75 min.
+memory use is fixed. Open item for Ops: why research reached 1.4 GB in 75 min.
+CORRECTION from the journal (my "npm ci" was wrong): npm ci finished 02:39:24 ("added 471 packages in 19s"); the OOM at 02:39:45
+was DURING `next build` (started 02:39:24, heap capped 1,536 MB, compiled 02:39:52). Kernel table at the kill: research node
+1,383 MB RSS (1,381 anon), market node 702 MB, then 67 / 58 MB; Mem-Info anon 3.55 GB of 3,832 MB; Free swap 0. After the
+restart research was ~110-127 MB, so its 1.4 GB was growth over ~75 min of running (since 01:24:28Z). RSS sampling every
+10 min for an hour started 02:58Z (scratchpad research-rss.log) to measure the growth rate.
 **MOVERS CUT (next ship night, NOT tonight): 98905b08352ba8681ae6cf4b7816bfda731e8325** (tag design/moving-on-e0f18bbb) =
 2a625a5b + 8 (Research's rule + my readTopMovers + Design's "moving" label); Integration APPROVED BY LITERAL SHA; Design gated it
 221/221. Conditions: MY gate on this sha; /proc = 2a625a5b at launch (else re-cut); his yes naming: big movers (up 10%+ on 500k+
