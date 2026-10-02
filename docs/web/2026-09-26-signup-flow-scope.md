@@ -1,5 +1,27 @@
 # The stranger-facing flow, if the desk charges — SCOPE
 
+**AS OF 2026-10-02 17:48 UTC: re-read end to end by the successor Web seat. A
+dated scope; what has moved since it was written:**
+
+- **§4's recommendation was RULED, 2026-09-28: first paying users are invited and
+  billed by hand, self-serve later** (`docs/commercial/daily-billing-design/commercial.md`
+  §8 and §9; struck in place in Commercial's lead scope). *So §3's paid-but-not-yet-invited
+  case does not arise while the hand route holds: a person is on the allowlist
+  before they first sign in.*
+- **§3's "today's screen" is now built, unwired: `components/NotAdmitted.tsx`.**
+  *It says "You are signed in. This account does not open the board.", which is
+  true for every person who reaches `refused`, so it no longer reads as a broken
+  purchase. The three-way split waits on a refusal reason the store does not
+  carry (charter LIVE STATE).*
+- **§3's grace-period question (is non-payment revocation immediate?) is not
+  re-checked here.** *It was put to him 2026-09-26; I found no ruling in the
+  registers I searched, which is not proof there is none.*
+- **§5's terms-of-sale item: Commercial drafted a SEPARATE terms of sale on
+  2026-09-30 (`21865ca6`, route 2 below) and HOLDS it** until billing is about to
+  ship; it has not been put to him. *Route 2 being drafted is not his choosing
+  route 2.*
+- **The live sentence in §4 is now at `app/page.tsx:443`**, not `:432`.
+
 **Web, 2026-09-26 09:58 ET, against `cfb054d`.** Owner of this file: **Web**.
 Written on Integration's relay of his *"scope it"* — the third section of a
 three-part scope that **Commercial leads and holds**; Ops holds the infra half.
