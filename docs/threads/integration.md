@@ -3095,6 +3095,12 @@ HIS DIRECTION    "would the numbers be different with a commercial licesnse?" ->
                  more volatile." Routed: Commercial = market-wide fee/utilization/availability sources + display terms
                  (bd092de0); Research = addendum to 46d08738, which measures express heavy/deep/concentrated, freshness,
                  honest form, compact read (78270d70). No build.
+                 Research addendum e4658432 + fcc6f7af (spot-read): HEAVY = SI % shares outstanding + change (FINRA, dated);
+                 DEEP = FINRA days to cover (prior-cycle ADV); CONCENTRATED = no public measure (FINRA one aggregate; Form
+                 SHO exempt to 2028; sec-lending to 2029); proxies only attributed + timed. CORRECTION: % lower bound only if
+                 no issuance/split between dates (gate: FILED_SHARES_CURRENT_DAYS 45, float.ts:226-235), else no %. Drawer
+                 line in structure section; board chip needs a "heavy" threshold = product call. Em dashes in Commercial's
+                 internal doc: out of his rule's scope (internal docs), no fix ordered. Waiting on Commercial's sources.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
