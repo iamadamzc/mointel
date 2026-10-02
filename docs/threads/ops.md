@@ -13410,3 +13410,7 @@ identical to a58aa866, 222 files.
 **Result:** 558d07a5 ALL GREEN 222/222 files, 3268 tests (03:43:19Z-03:46:45Z), lint 0/5; 28c66f14 ALL GREEN 222/222, 3273
 (03:46:46Z-03:50:19Z), lint 0 errors / 6 warnings (the 6th: unused `i` at docs/research/citation-residual/count.ts:13, a
 research script, not shipped behaviour). DEPLOY_TESTS_SKIP allowed for all six chain shas. Heavy slot RELEASED 03:50Z.
+**Local build of the tip 28c66f14** (contains 0e883fec, 19f9d721, 558d07a5; Integration's ask): A:\mointel-build, detached at
+28c66f14b33a9835c9eb0b171577bf03a2073ed8, node_modules from 2a625a5b's npm ci (package.json + lockfile identical, checked),
+`npx next build` rc=0, 03:51:26Z-03:52:16Z, compiled 13.7 s, no errors or warnings in the log, route
+/review/[token]/api/levels present. The three middle cuts were not built individually. Heavy slot released 03:52Z.
