@@ -177,6 +177,15 @@ record. He has it from this seat directly as well.
   - **✅ GATED** on main `f8025aad`: `tsc` 0, 213/213 files, 3,198 tests.
   - **The judge, amended before ship:** samples outside 07:00-10:00 ET, the CHILD node pid's RSS; a restart or new pid means NOT JUDGEABLE, never a pass (Ops's catches).
   - **Waits on:** Integration's cut and order. Research worker only.
+  - **✅ LIVE** (Integration, 2026-10-02): /proc web/research/assess = `0e883fec`, deployed about 04:5xZ; research worker pid 1821896. (A) `840741d3` and citations `2a625a5b` are live too.
+  - **🔴 JUDGE DAY = TODAY, Fri 2026-10-02.** Owner: Research grades; Ops samples.
+    - **Trigger:** after 20:00 ET today, from Ops's samples (the child pid's RSS every 10 min, 04:00-07:00 and 10:00-20:00 ET, plus pid, start time and `NRestarts` each sample, plus first-seen distinct tickers per hour).
+    - **Grade EXACTLY as `prereg-ship.md`:**
+      - PASS: max RSS at most 450 MB AND under 2 MB per new ticker after the first 20.
+      - UNTESTED: under 40 tickers.
+      - NOT JUDGEABLE: any pid, start-time or restart change.
+      - FAIL otherwise.
+    - **Verdict to Integration.** Fallback if this seat is gone: the next Research seat grades it from the same prereg.
 - **✅ REVIEW-LINK LEVELS MIRROR BUILT** (his ruling, verified in Design's `51f52927`, 2026-10-02T03:14:33Z: "Research adds levels to review links, so I can check this release and future ones myself").
   - `research/review-levels` at `9f084c9e`: ONE commit on the production line `b5a35fda` (`/api/levels` is not on main).
   - Gated: `tsc` 0 after `next typegen`; 212/212 files, 3,178 tests. 4 mutants killed.
