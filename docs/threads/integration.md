@@ -1159,6 +1159,17 @@ STEP-4 PICK RULE (read: git cat-file, 3b9c0a70 has NO components/NotAdmitted.tsx
                  to ride a push; both are on origin.
 PUSHED BY PEER   Research 64814411 records that its chained push published 78db8f49 (mine) and d329a691 (Web's). Both
                  were cleared to go; no revert. Told Research.
+SI CALIBRATION   Research a0f880c0 (result) on 822fcdb5 (raw, ancestor, committed before read) READ IN FULL. Registered:
+                 size graded 8 of 426 pairs (gate: count >45 d 214 [124 20-F], no dei count 97, no research 79,
+                 issuance 27, split 1); depth Shallow 77%, 55% at FINRA's 1.00 floor; trend 1. Exploratory: ungated
+                 median 0.68% of shares outstanding (81% under 5%) vs market ~3.4%; Deep+ 65/426 (15%); 120-day age
+                 rule grades <= ~12%. Options to him: exception-only (Research's + mine), other share count (none),
+                 relax gate, drop size, park. MY CORRECTION to option 1 (Research b-msg): legend must NOT say silence
+                 = "nothing notable" (false where size ungraded, ~98%); silence = "not shown", true both ways. With
+                 Commercial R6 (board chip size-only, commit 01ffb3b3 subject), exception-only means the board chip
+                 almost never shows; the drawer depth line carries it. PUT TO HIM (NEEDS YOU).
+                 Research note for Ops: Node --env-file truncates his FINRA secret at an unquoted '#'; loaders need it
+                 single-quoted (Research -> Ops).
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
