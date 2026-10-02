@@ -3287,6 +3287,10 @@ LEVELS VERIFIED  Ops: first refresh 02:55:00Z names=147 written=147 absent=0 tot
                  (610,304 B); /api/levels NXL 200 in 0.031 s, 66 levels, computedAt 02:55:00Z. (A) + citations: Ops
                  recommends WAIT (OOM) to him. Asked Ops to bring him the OOM FIX as his decision (swap / off-box build /
                  capped install / stop workers during install), since it now gates every ship.
+V6 STEP 3        Marketing 6cca5549 (read): voice/length/templates, tag words (explains-the-move: "fits the move" /
+                 "doesn't fit the move" / "fit not established"), float footer, seeds N9-N11. ORDER CALLS: report uses
+                 the three states; BOARD wording unchanged inside v6 (Design may bring alignment after). Step 4 may start
+                 on Research's step-2 probe result, base = /proc when it starts.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
