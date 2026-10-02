@@ -672,3 +672,20 @@ data exists in the API, checkable only with a credential.
 Public credential, the first task is to pull a few exchange-listed tickers and confirm
 coverage, and clause 2.2 is recorded as an accepted exposure of the same kind as the
 live tape. Asking FINRA is optional, not a precondition.
+
+### 10.5 STATUS 2026-10-02, his word direct to this seat: "registered. accepted exposure"
+
+- **He registered for the FINRA API Console** (the account, the terms acceptance and the
+  credential are his; this seat holds no credential and made no call).
+- **Accepted exposure, recorded in his words:** clause 2.2 (our own use limited to
+  non-commercial personal or professional use) is accepted as an exposure, the same kind
+  as the live tape (gates map, Gate 0 ruling). Asking FINRA is not a precondition.
+- **What this does not authorise:** the label is not approved to ship. It still needs
+  Research's design and this seat's §8 review, the end-user wording is a redraft of the
+  adopted terms and needs his adoption, and FINRA attribution must appear beside it.
+- **Next, by owner:** (1) a seat holding the credential confirms the consolidated short
+  interest dataset includes Nasdaq and NYSE-listed small caps; if it does not, this route
+  is closed for those names and Massive Business is the fallback. (2) Research designs the
+  label to the conditions in §10.2 and 11b (label, not FINRA's numbers; settlement date and
+  "Source: FINRA" shown; shares short over filed shares outstanding, a lower bound, never
+  "of float"). (3) Web drafts the end-user wording for his adoption.
