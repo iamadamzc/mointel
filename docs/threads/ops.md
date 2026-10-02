@@ -13529,3 +13529,8 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   --authority "Seed iamadamzc@gmail.com as the first allowed address."` via systemd-run as mointel (script header).
   Order tonight, each on his yes: snapshot 20:12 -> sync-env (Google keys) -> ship 3b9c0a70 -> seed -> probe on (web
   restart) -> his two sign-ins + curl -u no-cookie -> probe off.
+- HIS "yes to all three" IN THIS CHAT (2026-10-02 ~13:3x ET), to the question naming: (1) ship 3b9c0a70 after the 20:12
+  snapshot (ladder + aria + sign-in pages behind the desk password + probe off), (2) sync-env right before it (Google +
+  FINRA keys, names-only readback), (3) AUTH_PROBE_ENABLED on after the seed for his test sign-ins, then off (web-only
+  restarts). Seed word given separately above. Session cron 20:36 ET runs the sequence; snapshot cron 20:12 ET; judge final
+  20:05 ET. If this session dies, the successor re-reads these lines and asks him before acting (crons die with it).
