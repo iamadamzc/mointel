@@ -3251,6 +3251,11 @@ LEVELS SHIPPING  Ops: HIS "yes" in Ops's session 2026-10-02T02:37:49Z to the fou
 V6 STEP 1        771898f4 (proposal; sent to Marketing + Design). ORDER CALLS: v6 base = PRODUCTION line /proc after
                  tonight (computeRangeCounts on 2a625a5b; main only a comment at totals.ts:18, read); narrative REPLACES
                  the premarket-only overall line for all four kinds, reading the frozen row (approved; he sees it step 5).
+NARRATIVE SPEC   He told MARKETING directly (Marketing's relay, not read at his turn; content input, not authority):
+                 premarket recap = how many ran big, how many gave the whole move back, how many had fresh news, any
+                 sector cluster (e.g. biotech) as a theme, names carried into the next session. Marketing checking with
+                 Research which are STORED (session-wide 50% mover count, sector tag, forward watchlist unconfirmed);
+                 unbacked items go back to him by Marketing, not guessed. Marketing answers him in its own session.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
