@@ -3394,6 +3394,9 @@ SHIP NIGHT       HIS "yes, all six" in Ops's chat (to the six named changes, sto
                  04:22:24Z. BUILD PEAK (owed): next build RSS max 1,288 MB; MemAvailable 2,300 -> min 1,034 MB; after
                  deploy 2,310 MB, research 111 MB. Each deploy restarts research -> chain fits. Step 2 2a625a5b started.
                  Design P2 asked (A on a review link).
+DESIGN P2 PASS   design.md 87bf8a0e: (A) live on review link 61 (revoked after): premarket Fri 11 cards, no model heading,
+                 0 em dashes rendered, 1,024 fits. Expected residue: source ids in the briefing (4) + SORA dossier (21)
+                 until citations cut (board/dossier) and v6 (d) (report briefing). 7 requests.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
