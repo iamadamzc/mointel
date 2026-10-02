@@ -50,6 +50,7 @@ const SURFACES = [
   'app/privacy/page.tsx',
   'app/terms/page.tsx',
   'components/LegalPage.tsx',
+  'components/NotAdmitted.tsx',
   'lib/auth/authErrorPage.ts',
   'docs/legal/privacy-policy.md',
   'docs/legal/terms.md',
