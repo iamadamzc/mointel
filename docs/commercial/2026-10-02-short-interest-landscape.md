@@ -299,3 +299,55 @@ short-interest`; `massive.com/docs/rest/stocks/fundamentals/short-volume`;
 `massive.com/legal/terms`. All read directly in this session, 2026-10-02.
 Attempted and unread, named in §5: `ortex.com/pricing`, `ortex.com/api`,
 `fintel.io/pricing`, `s3partners.com`.
+
+---
+
+## 8. ADDED 2026-10-02 — MAY WE DISPLAY ALPACA'S OWN BORROW DATA (SHORTABLE / BORROW_STATUS / LOCATE QUOTES) TO PAYING USERS?
+
+*Integration's third option, after §2's finding that this is what Alpaca
+actually has instead of short interest. Two questions: the licence, and
+whether a locate quote is a general market fact or something narrower.*
+
+**Licence: no separate carve-out found. Same personal/non-commercial clause
+as everything else on Alpaca, same trigger as everything else already
+mapped.** Checked the governing Terms and Conditions (already read in full
+for the feed-licence landscape, re-checked here for this specific question)
+and the Customer Agreement (`AcctAppMarginAndCustAgmt.pdf`, downloaded and
+read in full for this question — no hits for "short interest,"
+"shortable," or "redistribut[e]"; the only "borrow" hit is the ordinary
+short-sale-fee disclosure, nothing about display rights). **The Customer
+Agreement doesn't speak to this at all — it governs the brokerage
+relationship, not API display rights.** The governing document is the
+Terms and Conditions, whose definition of **"Content"** is broad enough to
+reach this data without strain — item 7 of the definition is *"any other
+information, content, services, or software,"* a catch-all with nothing
+excluding borrow status or locate data from it. **So the same clause
+already quoted for the live tape governs this too:** personal and
+non-commercial use by default; *"making the Services and Content available
+to others through your own application"* requires 30 days' advance written
+notice to Alpaca, the same trigger already on file, not a block by itself
+but not a free pass either.
+
+**Factual, separate from licence, and this one matters regardless of what
+the licence answer turns out to be: a locate quote is not a general market
+fact, and showing it as one would misrepresent what it is.** Alpaca's own
+documentation, already quoted in §2, describes the locate-quotes endpoint
+as returning *"real-time, account-specific availability and pricing."*
+**Account-specific, in Alpaca's own words** — the `available_qty` and
+`price` a locate quote returns reflect this desk's own account's access to
+Alpaca's borrow inventory at that moment, not a market-wide quote every
+trader would see. Presenting it to subscribers as "shares available to
+short" without that qualification would overstate what the number means,
+the same shape of problem this desk already polices elsewhere (a vendor
+float shown as fact rather than as this desk's own instance of it).
+**`shortable`/`borrow_status`, by contrast, is not described as
+account-specific anywhere read** — it reads as a general attribute of the
+symbol at Alpaca (easy-to-borrow vs hard-to-borrow), closer to a fact about
+the security than a fact about this account, though this was not confirmed
+by a second source.
+
+**So: licensable the same way the live tape is (a notice-triggering
+default, not a flat no), but the locate-price half would need to be
+labelled as this account's own access, not a market quote — a wording
+constraint for Design/Research if this is ever built, not a legal
+blocker.**
