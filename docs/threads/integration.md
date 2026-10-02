@@ -1251,6 +1251,8 @@ MARKETING        Size wording revised to "of the filed share count", date inline
                  3 pending Commercial); hover floor caveat aligned; owns its R6 "can only understate" premise error.
                  Legend proposed "... not that it is low": I flagged the clause (a measured silent name IS below
                  threshold); suggested dropping it. Ready for either display mode.
+                 SETTLED: exception-only legend = "No short interest line means nothing large was found, or the size
+                 could not be measured." (Marketing). Gate reasons 2-3 with Commercial.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
