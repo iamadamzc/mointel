@@ -4,13 +4,15 @@ import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
 import {
+  airPocketAboveHolds,
   computedText,
   horizonText,
   LEVELS_ABSENT_TEXT,
   levelLines,
   levelsNote,
   NEAREST_LEVELS,
-  shownLevels,
+  shownStoredRows,
+  storedLadderRows,
 } from '@/lib/dashboard/resistance';
 import type { ResistanceLevel, ResistanceLevels } from '@/lib/market/resistance';
 
@@ -86,35 +88,78 @@ describe('every level, nearest first', () => {
   });
 });
 
-describe('the nearest 10, then a link (his "2 b", 2026-09-30T17:03:54Z)', () => {
-  const many = (n: number) => levelLines(row({ levels: Array.from({ length: n }, (_, i) => level(4.01 + i * 0.05)) }));
+describe('one ladder: the stored levels on the price axis (his ruling 2026-10-02T11:51:56Z)', () => {
+  it('places each level against the LIVE price: above it, or below once the price has crossed it', () => {
+    const rows = storedLadderRows(row({ price: 4, levels: [level(4.1), level(4.6), level(5)] }), 4.5);
+    expect(rows.map((r) => [r.priceText, r.side])).toEqual([
+      ['4.10', 'BELOW'],
+      ['4.60', 'ABOVE'],
+      ['5.00', 'ABOVE'],
+    ]);
+  });
 
-  it('11 levels show the nearest 10 and a link to the eleventh', () => {
-    const lines = many(11);
-    const view = shownLevels(lines, false);
+  it('measures the distance from the live price in the ladder form, and falls back to its own price', () => {
+    const [live] = storedLadderRows(row({ price: 4, levels: [level(5)] }), 4.5);
+    expect(live.distanceAbs).toBeCloseTo(0.5, 6);
+    expect(live.distancePct).toBeCloseTo((0.5 / 4.5) * 100, 6);
+    const [own] = storedLadderRows(row({ price: 4, levels: [level(5)] }), null);
+    expect(own.side).toBe('ABOVE');
+    expect(own.distancePct).toBeCloseTo(25, 6);
+  });
+
+  it("prints prices in the ladder's own format, three decimals under $1", () => {
+    const rows = storedLadderRows(row({ price: 0.5, levels: [level(0.5612), level(1.2)] }), 0.5);
+    expect(rows.map((r) => r.priceText)).toEqual(['0.561', '1.20']);
+  });
+
+  it('shows a span only when it does not round to one price', () => {
+    const rows = storedLadderRows(
+      row({ levels: [level(4.62, { low: 4.618, high: 4.621 }), level(5, { low: 4.98, high: 5.03, tops: 3 })] }),
+      4,
+    );
+    expect(rows[0].span).toBeNull();
+    expect(rows[1].span).toBe('4.98 to 5.03');
+  });
+
+  it('carries the timeframe tags and the candle tops, and marks the far-back peak', () => {
+    const rows = storedLadderRows(
+      row({ levels: [level(5, { timeframes: ['daily', '5m'], tops: 1 }), level(9, { tops: 3, beyondHorizon: true })] }),
+      4,
+    );
+    expect(rows.map((r) => [r.tags, r.topsText, r.farBack])).toEqual([
+      ['daily · 5m', '1 candle top', false],
+      ['5m', '3 candle tops', true],
+    ]);
+  });
+
+  const many = (n: number) =>
+    storedLadderRows(row({ price: 4, levels: Array.from({ length: n }, (_, i) => level(4.01 + i * 0.05)) }), 4);
+
+  it('shows the nearest 10 above and a link to the rest; 10 or fewer show all with no link', () => {
     expect(NEAREST_LEVELS).toBe(10);
-    expect(view.shown).toEqual(lines.slice(0, 10));
-    expect(view.hidden).toBe(1);
-    expect(view.toggle).toBe('Show all 11 levels');
+    const rows = many(11);
+    const collapsed = shownStoredRows(rows, false);
+    expect(collapsed.shown.map((r) => r.priceText)).toEqual(rows.slice(0, 10).map((r) => r.priceText));
+    expect(collapsed.toggle).toBe('Show all 11 levels above');
+    for (const n of [0, 1, 10]) expect(shownStoredRows(many(n), false)).toEqual({ shown: many(n), toggle: null });
   });
 
-  it('10 or fewer show every level and no link', () => {
-    for (const n of [0, 1, 10]) {
-      const view = shownLevels(many(n), false);
-      expect(view.shown).toHaveLength(n);
-      expect(view.toggle).toBeNull();
-    }
+  it('140 levels expand to all 140, and a crossed level always shows', () => {
+    const rows = many(140);
+    expect(shownStoredRows(rows, true).shown).toHaveLength(140);
+    expect(shownStoredRows(rows, true).toggle).toBe('Show the nearest 10');
+    const crossed = storedLadderRows(row({ price: 4, levels: [level(3.9), ...Array.from({ length: 12 }, (_, i) => level(4.1 + i))] }), 4);
+    const view = shownStoredRows(crossed, false);
+    expect(view.shown).toHaveLength(11);
+    expect(view.shown.some((r) => r.side === 'BELOW')).toBe(true);
   });
 
-  it('140 levels collapse to the nearest 10 and expand to all 140', () => {
-    const lines = many(140);
-    const collapsed = shownLevels(lines, false);
-    expect(collapsed.shown.map((line) => line.price)).toEqual(lines.slice(0, 10).map((line) => line.price));
-    expect(collapsed.toggle).toBe('Show all 140 levels');
-    const expanded = shownLevels(lines, true);
-    expect(expanded.shown).toHaveLength(140);
-    expect(expanded.hidden).toBe(0);
-    expect(expanded.toggle).toBe('Show the nearest 10');
+  it("keeps the ladder's open-air note only while no stored level sits nearer above", () => {
+    const rows = storedLadderRows(row({ price: 4, levels: [level(4.2)] }), 4);
+    expect(airPocketAboveHolds(12, [])).toBe(true);
+    expect(airPocketAboveHolds(12, rows)).toBe(false);
+    expect(airPocketAboveHolds(2, rows)).toBe(true);
+    expect(airPocketAboveHolds(null, rows)).toBe(false);
   });
 });
 
@@ -209,7 +254,7 @@ describe('his label, not a measurement', () => {
 
   it('nor does any string or JSX text in the section component or its view', () => {
     // Comments may explain the ruling; only what can render is checked.
-    for (const file of ['components/ResistanceLevels.tsx', 'lib/dashboard/resistance.ts']) {
+    for (const file of ['components/ResistanceLevels.tsx', 'components/LevelLadder.tsx', 'lib/dashboard/resistance.ts']) {
       const source = readFileSync(file, 'utf8');
       const tree = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
       const texts: string[] = [];
