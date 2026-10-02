@@ -391,12 +391,51 @@ function VwapLine({ telemetry }: { telemetry: MarketTelemetry }) {
 
 /* --------------------------------------------------------------------- why */
 
-const WHY_TONE: Record<DeskWhy['tone'], string> = {
+export const WHY_TONE: Record<DeskWhy['tone'], string> = {
   pos: 'text-pos',
   warn: 'text-warn',
   neg: 'text-neg',
   dim: 'text-ink-3',
 };
+
+/**
+ * The catalyst's warn marks, ONE source for the board's Why cell and the
+ * session report's tag row (Integration's one-vocabulary call, 2026-10-02;
+ * `docs/Design/report-b-spec.md`). A wording change here changes both.
+ */
+export function WhyMarks({ why }: { why: DeskWhy }) {
+  return (
+    <>
+      {why.explainsMove === false ? (
+        <span className="text-[9px] font-semibold tracking-wide text-warn uppercase">
+          not the move
+        </span>
+      ) : null}
+      {/*
+        * TWO CAUSES, TWO WORDS. This badge said `no fresh news` both when
+        * the desk found NO catalyst and when it found an OLD one — the same
+        * mark for "nothing happened" and "something did, a while ago". His
+        * band word for the second is OLD.
+        */}
+      {why.code === 'NO_FRESH_CATALYST' ? (
+        <span
+          className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+          title="The desk searched its sources and found no catalyst for this move."
+        >
+          no catalyst found
+        </span>
+      ) : null}
+      {why.code === 'OLD_CATALYST' ? (
+        <span
+          className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+          title="A catalyst exists but it is older than yesterday, and the desk does not think it explains today's move."
+        >
+          old
+        </span>
+      ) : null}
+    </>
+  );
+}
 
 /**
  * Why the stock is moving: the grade, its age, and the headline.
@@ -454,33 +493,7 @@ export function WhyCell({ why }: { why: DeskWhy }) {
             {why.age}
           </span>
         ) : null}
-        {why.explainsMove === false ? (
-          <span className="text-[9px] font-semibold tracking-wide text-warn uppercase">
-            not the move
-          </span>
-        ) : null}
-        {/*
-          * TWO CAUSES, TWO WORDS. This badge said `no fresh news` both when
-          * the desk found NO catalyst and when it found an OLD one — the same
-          * mark for "nothing happened" and "something did, a while ago". His
-          * band word for the second is OLD.
-          */}
-        {why.code === 'NO_FRESH_CATALYST' ? (
-          <span
-            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
-            title="The desk searched its sources and found no catalyst for this move."
-          >
-            no catalyst found
-          </span>
-        ) : null}
-        {why.code === 'OLD_CATALYST' ? (
-          <span
-            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
-            title="A catalyst exists but it is older than yesterday, and the desk does not think it explains today's move."
-          >
-            old
-          </span>
-        ) : null}
+        <WhyMarks why={why} />
         {/*
           * THE SHEET AND THE DESK DISAGREE (his ruling 2026-09-29T14:46:55Z:
           * mark it). The letter beside this is the Sheet's; this says what the
@@ -508,7 +521,7 @@ export function WhyCell({ why }: { why: DeskWhy }) {
 
 /* -------------------------------------------------------------------- risk */
 
-const RISK_TONE: Record<DeskRisk['tone'], string> = {
+export const RISK_TONE: Record<DeskRisk['tone'], string> = {
   neg: 'border-neg/50 text-neg',
   warn: 'border-warn/50 text-warn',
   pos: 'border-pos/45 text-pos',
