@@ -3113,6 +3113,12 @@ CROWDING SOURCES Commercial 38a1f9c3 §9 (spot-read): no source is market-wide f
                  unread/institutional. Rec: don't plan fee/utilization now; displayable path = FINRA SI via Massive
                  Business (positions, 2-3 weeks stale). Vendor enquiries (Ortex universe + redistribution price; Alpaca
                  business product) are HIS. Flag: a personal Ortex plan to evaluate may breach its terms (counsel). Told him.
+SI LABELS        Research 9b1b1ec4 (per Research; doc on origin): Size Light <5 / Moderate 5-10 / Heavy 10-20 / Very heavy
+                 20%+ (gated floor of shares outstanding; Asquith-Pathak-Ritter 2005 + practitioner lines); Depth Shallow <3 /
+                 Moderate 3-5 / Deep 5-10 / Very deep 10+ (FINRA DTC); Trend Building/Covering at +-25% (UNSOURCED, own);
+                 no "concentrated" word; position words only, dated + sourced; chip only at Heavy+/Deep+. Calibration
+                 BLOCKED on a research-licensed source (Commercial, then his). Snapshot: Ops wants his yes repeated in
+                 Ops's chat (Research told him).
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
