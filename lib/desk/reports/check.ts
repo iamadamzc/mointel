@@ -24,7 +24,9 @@
 import { humanise } from '../../dashboard/language';
 import { etClock, etDateString } from '../../market/session';
 import type { MissedCause, ReportCheckpointRef, ReportKind } from './contract';
+import { withoutCitations } from '../../research/citations';
 import type { ReportFact } from './facts';
+import type { BreadthWindow, NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
 import { etDayAndClock, traceLine } from './traced';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
@@ -51,6 +53,10 @@ export type StrikeReason =
   | 'HEDGED_EXACT_TIME'
   | 'SHARES_UNDATED'
   | 'SHARES_AS_FLOAT'
+  /* deterministic, v6: the narrative against its computed facts, and citation tokens */
+  | 'OMITTED_FACT'
+  | 'WINDOW_CONTRADICTED'
+  | 'CITATION_TOKEN'
   /* model */
   | 'UNSUPPORTED';
 
@@ -82,6 +88,14 @@ export interface CheckInput {
    * one of these (or the range's bounds). Absent = every number in 'O' is struck.
    */
   afterHoursTotals?: { eligible: number; traded: number; up: number; down: number } | null;
+  /**
+   * v6: the opening narrative's COMPUTED facts (`narrative.ts`), the same block
+   * the writer was given. Present = a v6 check: the 'O' line is the narrative,
+   * traced against these (numbers, the one ticker it may name, the window words,
+   * G never omitted), every line is checked for citation tokens, and the model
+   * reads the v6 prompt. Absent = v5, unchanged.
+   */
+  narrative?: NarrativeFacts | null;
 }
 
 /** The checker's model: same seam as the writer's, a different reply shape. */
@@ -177,6 +191,85 @@ const CLOCK = /\b(\d{1,2}):(\d{2})\b/g;
 /** A percent framed from the prior session, said on a row whose basis is not that. */
 const PRIOR_FRAME = /\b(?:prior|previous) (?:close|session)\b/i;
 
+/** v6: the phrase a breadth count must carry, per its window (seed N10; `WINDOW_WORDS` in writerV6.ts). */
+const WINDOW_PHRASE: Record<BreadthWindow, RegExp> = {
+  SESSION_TO_DATE: /\bso far today\b/i,
+  AFTER_HOURS: /\bafter[- ]hours\b/i,
+  REGULAR_SESSION: /\bon the day\b/i,
+};
+
+/** The label of the FORBIDDEN rule the v6 narrative is exempt from: it states GIVEN counts of names. */
+const NAME_COUNT_LABEL = 'a count of names (computed, never written)';
+
+/**
+ * v6: the narrative ('O') against its computed facts (`prereg-narrative-facts.md`).
+ * Every number is a given one (N1-N4, N9); the only ticker it may name is the
+ * given leader (N7); a stated breadth carries its window's phrase (N10); and G
+ * is never omitted when above zero (N11). The model half reads causation (N5),
+ * themes (N6) and undefined adjectives (N8).
+ */
+export function narrativeFindings(
+  text: string,
+  facts: NarrativeFacts,
+  range: { min: number; max: number },
+  tickers: readonly string[],
+): Array<{ reason: StrikeReason; detail: string }> {
+  const out: Array<{ reason: StrikeReason; detail: string }> = [];
+  const allowed = new Set<number>([range.min, range.max, 50, facts.fresh.count, facts.fresh.covered]);
+  const b = facts.breadth;
+  if (b) for (const value of [b.eligible, b.traded, b.up, b.down]) allowed.add(value);
+  for (const value of [facts.movers50, facts.gaveBack, facts.noClose, facts.tracking?.length ?? null]) {
+    if (value !== null) allowed.add(value);
+  }
+  if (facts.leader) allowed.add(Math.round(Math.abs(facts.leader.percentChange) * 10) / 10);
+  const stated = numbersIn(stripTimestamps(text)).map((value) => Math.abs(value));
+  for (const value of stated) {
+    if (!allowed.has(value)) out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${value} is not a narrative fact` });
+  }
+  const named = tickers.filter((t) => t !== facts.leader?.ticker && tickerRe(t).test(text));
+  if (named.length > 0) out.push({ reason: 'NOT_SELF_CONTAINED', detail: `names ${named.join(', ')} in the narrative` });
+  if (b && stated.includes(b.traded) && !WINDOW_PHRASE[b.window].test(text)) {
+    out.push({ reason: 'WINDOW_CONTRADICTED', detail: `breadth stated without "${WINDOW_PHRASE[b.window].source}" (${b.window})` });
+  }
+  // ANCHORED, not just "in the allowed set": set membership alone admits a swap
+  // to another fact's value (11 movers written as 12 when 12 names are covered;
+  // the G sentence dropped while the carried count happens to equal G).
+  if (facts.movers50 !== null) {
+    const said = countBefore(text, /\bran past 50 percent\b/i);
+    if (said !== undefined && said !== facts.movers50) {
+      out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ran past 50 percent vs ${facts.movers50}` });
+    }
+  }
+  if (facts.noClose !== null && facts.noClose > 0) {
+    const said = countBefore(text, /\bno regular[- ]session close\b/i);
+    if (said === undefined) {
+      out.push({ reason: 'OMITTED_FACT', detail: `G = ${facts.noClose} in-range names with no 16:00 close, not stated` });
+    } else if (said !== facts.noClose) {
+      out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} with no regular-session close vs ${facts.noClose}` });
+    }
+  }
+  return out;
+}
+
+const WORD_COUNTS: Record<string, number> = {
+  no: 0, none: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12,
+};
+
+/**
+ * The count stated in the same clause before `anchor`: the LAST number or count
+ * word before it, back to the clause's start. `undefined` when the anchor is
+ * absent; `null` when the anchor has no count before it.
+ */
+function countBefore(text: string, anchor: RegExp): number | null | undefined {
+  const match = anchor.exec(text);
+  if (!match) return undefined;
+  const clause = text.slice(0, match.index).split(/[.;]\s/).pop() ?? '';
+  const tokens = [...clause.matchAll(/\b(\d[\d,]*|no|none|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b/gi)];
+  const last = tokens.at(-1)?.[1];
+  if (last === undefined) return null;
+  return /^\d/.test(last) ? Number(last.replace(/,/g, '')) : WORD_COUNTS[last.toLowerCase()]!;
+}
+
 function tickerRe(ticker: string): RegExp {
   return new RegExp(`(?<![A-Za-z0-9.])${ticker.replace(/[.\-]/g, '\\$&')}(?![A-Za-z0-9])`);
 }
@@ -191,10 +284,15 @@ export function ruleStrikes(input: CheckInput): Strike[] {
       strikes.push({ id: line.id, reason, by: 'rule', detail });
     const row = line.ticker === null ? null : input.rows.find((r) => r.ticker === line.ticker) ?? null;
 
+    const v6Narrative = line.id === 'O' && input.narrative ? input.narrative : null;
     for (const [shape, label] of FORBIDDEN) {
+      // The v6 narrative states GIVEN counts of names ("the 12 names the desk covers"); its numbers are traced below instead.
+      if (v6Narrative && label === NAME_COUNT_LABEL) continue;
       const match = line.text.match(shape);
       if (match) hit('FORBIDDEN_WORDING', `${label}: "${match[0]}"`);
     }
+    // v6: a citation token in any line is struck (queue item (1)(d)'s checker guard).
+    if (input.narrative && withoutCitations(line.text) !== line.text) hit('CITATION_TOKEN', 'a source id in the prose');
     if (HALT.test(line.text) && !(row && (row.haltState === 'HALTED' || row.haltState === 'RESUMING'))) {
       hit('FORBIDDEN_WORDING', 'a halt with no halt observed');
     }
@@ -207,6 +305,10 @@ export function ruleStrikes(input: CheckInput): Strike[] {
       }
     }
 
+    if (v6Narrative) {
+      for (const finding of narrativeFindings(line.text, v6Narrative, input.range, tickers)) hit(finding.reason, finding.detail);
+      continue;
+    }
     if (line.id === 'O') {
       // The overall sentence: every number is a stored after-hours total or a range bound.
       const totals = input.afterHoursTotals;
@@ -356,6 +458,28 @@ const CHECKER_SYSTEM_V5 = [
   'CATALYST STATUS: NONE_FOUND supports "no catalyst found in our sources"; UNKNOWN supports only that the analysis reached no conclusion (never that nothing was found); SECONDARY_STALE supports that only older or secondary news was found and that it is not a fresh catalyst; FRESH_FOUND supports a fresh catalyst.',
 ].join('\n');
 
+/**
+ * v6's checker prompt version: P1 (the stability probe's passing arm,
+ * `docs/research/reports-v6/probe-2026-10-02/result.md`, approved path
+ * `design.md:98`) plus the narrative's model-read rules.
+ */
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 4;
+
+/**
+ * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
+ * ran them), then what the model reads in the narrative. The narrative's numbers,
+ * ticker, window and G are decided deterministically (`narrativeFindings`); the
+ * model judges what a rule cannot: causation, themes and undefined adjectives.
+ */
+const CHECKER_SYSTEM_V6 = [
+  CHECKER_SYSTEM_V5,
+  "A catalyst status is the desk's own verdict on freshness under its rules; do not re-judge freshness from the dates in the research. A line matching its status's supported wording is supported even when the research names an older dated event.",
+  "A null `sharesOutstanding` supports 'no share count is on file' (or 'no dated share count'); it never supports a number.",
+  '',
+  'v6: THE NARRATIVE (id O) replaces the overall line. It may state ONLY the narrative facts given below: their counts, the given leader and its move, the window words. It is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move"), any theme, sector or industry, a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), or any claim the facts do not give.',
+  'v6: each name line is the catalyst story only. Grade, fit to the move, structure, float, shares outstanding and supply are printed as tags beside it; a line that restates them must still be supported by the research like any other claim.',
+].join('\n');
+
 /** Each time with its ET reading beside the raw UTC: voice run v5's checker read 09:40Z as 09:40 ET. */
 function etReading(raw: string | null): string | null {
   const { date, clock } = etDayAndClock(raw);
@@ -421,16 +545,19 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
           '',
           `Stored research per name, as of this checkpoint (${input.research.size}):`,
           storedResearch(input.research),
-          input.afterHoursTotals
-            ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
-            : 'After-hours totals: none given, so any count in an overall line is unsupported.',
+          input.narrative
+            ? `Narrative facts for the narrative line (id O), the same block the writer was given: ${JSON.stringify(input.narrative)}`
+            : input.afterHoursTotals
+              ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
+              : 'After-hours totals: none given, so any count in an overall line is unsupported.',
         ]
       : []),
     '',
     'Lines to check:',
     numbered,
   ].join('\n');
-  return { system: input.research ? CHECKER_SYSTEM_V5 : CHECKER_SYSTEM, user };
+  const system = input.narrative ? CHECKER_SYSTEM_V6 : input.research ? CHECKER_SYSTEM_V5 : CHECKER_SYSTEM;
+  return { system, user };
 }
 
 type ParsedVerdicts = { ok: true; unsupported: Array<{ id: LineId; note: string }> } | { ok: false; error: string };
