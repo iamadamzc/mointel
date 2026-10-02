@@ -119,9 +119,9 @@ clause restricts *use in software at all*, for a purpose this desk's own
 board (a ranking and research process) reads as squarely inside. A direct
 FINRA pull, free or not, is **not a clean path for this product even before
 asking whether it may be shown to a paying subscriber.** The Query API's own
-developer terms were not separately located in this read (the developer
-portal's documentation pages returned not-found): if a path exists there
-that differs from the website terms above, it is unconfirmed, not ruled out.
+terms were not located when this section was written. **They are located and
+read in §10, they differ, and §10 supersedes this paragraph's conclusion for the
+API route.**
 
 ---
 
@@ -206,11 +206,10 @@ work, not a fresh search.** Three findings, in the order that matters:
    free on the account: worth having Research look at on its own merits,
    but it is not a substitute for short interest and should never be
    labelled as one.
-2. **The free FINRA source is not a clean build path**, not primarily because
-   of cost but because its terms bar use "in conjunction with" software,
-   algorithms or AI: a restriction this product's own architecture sits
-   inside by construction, before the display-to-subscribers question is
-   even reached.
+2. **The free FINRA website data is not a clean build path**, because the
+   website's terms bar use "in conjunction with" software, algorithms or AI.
+   **SUPERSEDED IN PART by §10: the FINRA Query API is a separate contract with no
+   such bar, and its Equity Data terms permit derived data shown to end users.**
 3. **Massive already carries both numbers, on the same plans this desk has
    already priced for the live tape, under the same Individual/Business
    licence split already mapped.** If the vendor decision for the live feed
@@ -258,9 +257,9 @@ use are not in tension; a public library's reading room is free to enter and
 still doesn't let you republish the book.
 
 **So, directly: a paid product may not display FINRA short interest, sourced
-directly from FINRA, under FINRA's own published terms: full stop, before
+from the FINRA website, under the website's published terms: full stop, before
 even reaching the software/AI-use bar in §3 which closes the door a second,
-independent way.** This is unchanged from §3's finding; this section exists
+independent way. (Website only. The Query API is covered in §10.)** This is unchanged from §3's finding; this section exists
 because the question was asked a second way and deserves a second, equally
 direct answer rather than a pointer back.
 
@@ -479,3 +478,122 @@ and asking is an enquiry, which is his.**
    Orbisa redistribution licence costs. **Both are enquiries to a vendor, so both
    are his;** nothing here asks for one. Whether the read predicts anything for long
    entries is Research's question and is not studied here.
+
+---
+
+## 10. ADDED 2026-10-02: THE FINRA QUERY API IS A DIFFERENT CONTRACT FROM THE FINRA WEBSITE, AND ITS TERMS PERMIT A DERIVED LABEL
+
+*His question, typed to this seat: "they have the data we need right? how can we get
+around it? we don't need to publish the details they provide, just do our own
+assessment and present a label." Public pages only, read 2026-10-02. Nothing was
+registered, no credential was requested, no call was made to any FINRA API.*
+
+**Corrections to this document first.** §3, §6 item 2 and §6b treated "direct from
+FINRA" as closed two ways, by the non-commercial clause and by the software, AI and
+prediction bar. **Both clauses come from the FINRA website's Terms of Use
+(finra.org/terms-of-use), and they govern the website and what is downloaded from
+it.** FINRA offers the same data through a separate programmatic route, the Query
+API, under a different contract. §3 said the API's terms had not been located. They
+are now located, read in full, and they differ in the ways that matter below. **The
+AI bar, the no-database rule and the flat "no commercial use" rule do not appear in
+the API terms.** Read §3, §6 item 2 and §6b as statements about the website only.
+
+### 10.1 What the API terms say
+
+Sources: FINRA API Terms of Service (03/2026, PDF, text extracted and searched in full),
+and Specific Terms for Equity Data (`developer.finra.org/specific-terms-equity-data`,
+last updated 20 December 2022).
+
+- **Coverage.** The Equity Data terms cover *"All datasets in the 'otcMarket' dataset
+  group."* FINRA's API pages place the Consolidated Short Interest dataset and the Reg
+  SHO daily short sale volume dataset in that group.
+- **Who may use it.** Developers with *"Public, Firm or Organization"* credentials.
+  FINRA's fee page lists Public credentials at **$0 per month** and Firm and
+  Organization credentials at $1,650 per month, all with "Limited" Query API access.
+  Creating an API Console account and credentials is a registration and a terms
+  acceptance, which this seat does not do. It is his.
+- **Our own use (2.2).** *"Developer and its Authorized Users may access and use the
+  Equity Data only for Developer's non-commercial personal or professional use."*
+- **Showing it to others (2.3).** *"Developer may redistribute the Equity Data and any
+  derivative data or Resultant Data to third party end users ... for such End Users'
+  non-commercial personal or professional use only,"* subject to four conditions:
+  (a) FINRA named *"as the owner and source of that Equity Data including any
+  derivative or Resultant Data derived therefrom"*; (b) no fee for the Equity Data,
+  with this carve-out: *"Developer may distribute Equity Data in conjunction with
+  other fee-liable data distributed by Developer provided that there is no additional
+  or incremental fee charged for the Equity Data"*; (c) end users may not redistribute
+  it further; (d) *"commercially reasonable efforts"* to make end users comply,
+  *"for example, by requiring End Users to enter into agreements."*
+- **Derived data (2.4).** *"Developer is permitted to create derivative data and
+  Resultant Data."*
+- **Resultant Data defined (general terms 1.6).** Data *"substantially different from
+  the original Licensed Data"* and processed so that third parties *"are unable to
+  identify ... the Licensed Data from which the Resultant Data was derived."* Under 5.2
+  the Developer owns it unless the Specific Terms say otherwise.
+- **General restrictions that remain (3.3).** No derivative works of the Licensed
+  Materials themselves, no algorithm, product or service that *"competes with FINRA's
+  products or services,"* no bulk copying outside the API, no use *"typically
+  categorized as a bulk distributor or a service bureau."* The Specific Terms list no
+  data-retention rule, no additional restrictions and no AI or machine learning clause.
+
+### 10.2 Can we show a label that we derive from it? On the text, yes, within conditions
+
+A label computed by this desk (for example a heavy, moderate or light crowding grade
+from FINRA's shares short against the filed shares outstanding, with the as-of date)
+is derivative data, and probably Resultant Data, because a threshold grade is
+substantially different from the numbers and cannot be traced back to them. Clause 2.4
+permits making it and clause 2.3 permits showing it to end users. **It is not a way
+around the terms. It is a route the terms name.** The conditions we would have to meet,
+on the careful reading that 2.3 governs derived data too:
+
+1. **Name FINRA as the source** beside the label, with the settlement date.
+2. **No separate price for it.** It rides inside the existing subscription as part of
+   the board, never a line item or an add-on. Gate 1's "everything together" already
+   fits that.
+3. **End users bound to non-commercial personal or professional use and no
+   redistribution.** Terms §5 already bars redistribution. A non-commercial-use sentence
+   is new text, and the adopted terms' own banner rule treats new binding text as a
+   redraft that needs his adoption.
+4. **Show the label and not FINRA's numbers.** Not required by 2.3, but it is his
+   preference and it also keeps us furthest from 3.3's bulk distributor clause.
+
+### 10.3 What is not settled
+
+1. **Clause 2.2 against clause 2.3.** 2.2 limits our own use to *"non-commercial
+   personal or professional use."* A paid product computing a label is arguably a
+   commercial use by us. 2.3(b) expressly contemplates distributing the data inside a
+   fee-liable product, which would make no sense if our internal processing for that
+   purpose were barred, so the better reading favours us. **No sentence resolves it.**
+   Only FINRA can, and asking is an enquiry, which is his (FINRA's page lists its
+   Support Center). Counsel is the other route.
+2. **Exchange-listed coverage in the API.** The dataset's own description says *"OTC
+   short interest positions submissions across all exchanges,"* while FINRA's website
+   page says short interest is published for *"all exchange-listed and over-the-counter
+   (OTC) equity securities."* The only API metadata read was a 2018 OTC-only file, and
+   the dataset explorer page returned 503. **Whether Nasdaq and NYSE-listed small caps
+   are in the API dataset is unconfirmed** until it is read or tested with credentials.
+3. **Exchange licensing history.** FINRA's Regulatory Notice 21-19 said *"some
+   exchanges currently charge fees for access to or licensing for short interest data
+   on their listed securities"* and proposed that FINRA publish it all free. The Equity
+   Data terms cover only the otcMarket group. Whether any exchange-side licence still
+   attaches to exchange-listed tickers served through the API was not found.
+4. **API Program Terms, rate limits and the Individual-account note.** The console
+   documentation says Individual accounts are *"not intended for commercial purposes
+   at this time."* The Public credential type is the one the Equity terms name, and
+   the API Program Terms were not read.
+5. **A label is still a published claim.** It is bound by §3 and §8 of the session
+   reports ruling: it states a dated position, never a prediction, and Research's rule
+   applies (shares short divided by filed shares outstanding is a lower bound, never
+   "of float").
+
+### 10.4 Recommendation
+
+**Yes, this is the route, and it is better than Massive for this purpose.** It is
+free at the Public credential, it comes straight from the source, and its terms
+explicitly allow derived data shown to paying users inside a bundled product. Massive
+stays as the fallback if FINRA's answer on 2.2 is no. Steps, all his except the
+reading: (1) decide whether to proceed on the reading above under the accepted-exposure
+posture, or ask FINRA first about clause 2.2 and exchange-listed coverage; (2) register
+the API Console and the Public credential; (3) approve the end-user wording (a
+redraft of the adopted terms, so adoption goes with it). The label itself stays
+subject to Research's design and this seat's §8 review.
