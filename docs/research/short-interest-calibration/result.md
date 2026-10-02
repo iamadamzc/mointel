@@ -1,5 +1,13 @@
 # Short interest grades on his names: RESULT
 
+> **SUPERSEDED HEADLINE (2026-10-02, the same day): read RUN 3 at the end first.**
+>
+> This run's "size graded on 8 of 426 (about 98% not graded)" took every input as of FINRA's SETTLEMENT date, and paired each checkpoint with a report not yet published on that date.
+>
+> The label is shown at a later VIEW time, so that framing was too strict. It was the seat's error.
+>
+> Run 3 measures at view time and finds size gradable on **18% (strict) to 34% (reconciled)** of pairs. The rest of this section is kept as the record of what ran.
+
 *Seat `local_5f4bfcf8` (Research-tmi), 2026-10-02. Registration: `docs/research/short-interest-label-design.md` section 5 and amendments (`e09750ab`). Harness `43170c3d` + `390aedfc` (credential read fix, before any data). Raw output `822fcdb5`, committed before it was read. INTERNAL: aggregates of FINRA numbers, private repository only.*
 
 ## What ran
@@ -102,3 +110,61 @@ The data shows why. His names mostly carry little short interest relative to sha
 5. **Park the label.** On his names it says little today.
 
 The re-draw rule fires for depth (Shallow at 77%), but the main cause is FINRA's 1.00 floor, which no re-drawn line can split. So the proposed re-draw is option 1, not new depth lines.
+
+---
+
+## RUN 3, 2026-10-02: as of the label's VIEW time (the corrected measurement)
+
+*Pre-registered in `prereg-rerun.md` "RUN 3" (`7947f51f`) before its data. Harness `c4169952`. Raw `01fe7fcf`, committed before it was read.*
+
+**The intermediate re-run** (`24df1ca2`, source B plus reconciliation, still as of the settlement) **is superseded by this run.**
+
+- It is kept for the record.
+- Its finding that mattered: 245 of 426 pairs failed ONLY because no dossier existed as of the settlement. The name was typically first researched after the settlement, on the day it reached the board. That is what exposed the wrong as-of point.
+
+**What ran:** 436 pairs, of which 422 have a FINRA row and 180 are foreign. Each settlement is the latest PUBLISHED by the view date (07-31, 08-14 or 08-31). All inputs are as of that date.
+
+**Pairs graded for size, out of 422 (foreign out of 180 in brackets):**
+
+| Count source | STRICT (45 days, any active supply blocks) | RECONCILED (120 days, only continuous issuance blocks) |
+|---|---|---|
+| A, SEC companyfacts | 63 (1) | 111 (9) |
+| B, dossier | 51 (13) | 123 (31) |
+| **COMBINED (later as-of date)** | **77 (13)** | **144 (33)** |
+
+**First-failing reasons, COMBINED RECONCILED:**
+
+| Reason | Pairs |
+|---|---|
+| Count older than 120 days | 122 |
+| No count from either source | 74 |
+| Continuous issuance (ATM or equity line) active | 51 |
+| No research as of the view date | 19 |
+| Split since the count | 12 |
+
+**Findings:**
+
+- **Source B against source A:** where both exist with as-of dates within 3 days, they agree EXACTLY on 193 of 193. The dossier's count appears to be the filed figure.
+- **Source B is fresher:** median count age 45 days, against 107 for A. It reaches more foreign issuers (31 graded against A's 9, reconciled).
+- **Reconciliation (his screenshot's case)** changed the count on 6 graded pairs.
+- **Exercise risk:** 4 graded pairs carry a KNOWN_ACTIVE warrant, convertible or preferred block. For those, exercises since the count could make "at least" overstate.
+- **Size spread where graded (COMBINED RECONCILED, 144):**
+
+  | Grade | Pairs |
+  |---|---|
+  | under 5% | 115 (80%) |
+  | 5% to under 10% | 19 |
+  | Elevated | 5 |
+  | Heavy | 5 |
+
+  The over-half rule fires on "under 5%". His names mostly carry little short interest relative to shares outstanding, as the exploratory figure in the first run also showed.
+- **Pairs whose count is dated on or after the settlement:** 66.
+
+## Options re-scored (for him; no change made here)
+
+1. **Exception-only display (still recommended).** A line only at Elevated or Heavy size (graded), or Deep or Very deep depth. Size exceptions appear on about 10 of 422 pairs (2.4%); depth exceptions, Deep or worse, on about 15% (first run). The legend must hold in both silent cases, per Integration's correction: no line means either nothing large OR not measurable, never "nothing notable".
+2. **COMBINED RECONCILED as the size source** (dossier count when fresher, plus completed offerings, 120 days, refusing only on active ATMs or equity lines): size gradable on about a third of his names, 18% of foreign issuers. If a grade is shown, this is the measured best of the variants tried.
+3. **STRICT:** gradable on 18%. Safer for "at least", much less coverage.
+4. **Park the label.**
+
+**Not decided here:** whether the RECONCILED variant's 120 days and its four exercise-risk pairs are acceptable for an "at least" claim. That is Commercial's and his reading of the floor guarantee.
