@@ -194,6 +194,24 @@ record. He has it from this seat directly as well.
     - Freezing the sheet per checkpoint is NOT in v6. **The step-5 sample must say report tags can differ from the board where the three sheet inputs are not as-of.**
   - **Step 3 DONE** (Marketing `6cca5549`; Design `a6867865`). Classes N1-N11 final (`afc7755b`).
   - **Step 4 (build) is next, AFTER the research-worker memory question** (Integration's priority, 2026-10-02 ~03:00Z).
+  - **▶ STEP 4 IN PROGRESS** on `research/reports-v6` (A:\mointel-v6), base = chain tip `558d07a5` (Integration: no veto). First commit `28c66f14` = the citation residual cut (its own ship, `research/residual-cut`). Pieces so far, each with tests and mutants killed as predicted:
+
+    | Piece | Commit | What |
+    |---|---|---|
+    | 1 | `24ac8dfd` | Narrative facts (positive control PASS) |
+    | 2 | `560a8207` | Tags = the board's Why/Risk on the as-of research |
+    | 3 | `afade0e3` | Fix (d), citations in `reportResearch` |
+    | 4 | `5d926717` | Fixes (b)(c), dates and clocks by one shared rule |
+    | 5 | `cb0f04cd` | Fix (a), computed headings |
+
+    **NOT YET BUILT:**
+    - the contract (`narrative` replacing `overall`; tags on `ReportLine`);
+    - writer v6 (Marketing's templates; no restating of tags);
+    - checker v6 (narrative rule N with the G-omission rule; P1 as prompt v4; a citation guard);
+    - pipeline wiring;
+    - then the step-5 voice run.
+
+    The checker-input trim gets its own measurement (not in this build).
   - **Integration's order calls, 2026-10-02:**
     - (1) v6 builds on the PRODUCTION line: base = /proc after tonight (`2a625a5b` if levels, (A) and citations all ship); Integration names it.
     - (2) APPROVED: the narrative replaces the premarket-only `overall` line for all four kinds, reading the frozen row.
