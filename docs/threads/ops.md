@@ -13499,3 +13499,20 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   "credential in"; key names only.
 - ROUTING: Integration local_697b69cc handing off (~15:2xZ); send to the NEW Integration-tmi by title (createdAt after
   15:2xZ 10-02). Its live state: integration.md "LIVE STATE: AT THE TWENTY-SECOND SEAT'S HAND-OFF".
+
+**2026-10-02 ~11:30-12:00 ET: gate probe + sign-in cut**
+- GATE PROBE built (Web's design bb4e14a8, Ops builds): branch ops/gate-probe, tip f52da6a056358e75a9e6a2c4b09f947276535945
+  (route + test, em-dash fix, header fix: no /auth/ exemption exists so probe reads carry Basic Auth; removal control is
+  `/` -> 200, not /signin). GET /auth/probe; AUTH_PROBE_ENABLED exactly "1", per request (flag change = web-only restart);
+  off = 404 empty; store unopenable = 500 empty. 11 tests; mutants 2/2, 3 (predicted 4; anonymous cases carry no userId),
+  1/1, 1/1, 1/1. Gate 27c81ae8 ALL GREEN 214/214.
+- SIGN-IN CUT ops/signin-cut on a4a06168 (Integration's exact pick list; 49efcafa minus its absent doc; 5f3a272d/1703390a
+  sign-in hunks only; probe on top): tip 3b9c0a70ef050be3261107bc70956d9daba62e4a, APPROVED by Integration (local_54f1341f) by
+  literal sha (supersedes 5d1c4943, which must not ship). Surface == main + probe. Release gate ALL GREEN 231/231 (pre-
+  registered), 3,358 tests, 15:41:46Z; build rc 0 with /auth/probe and /signin. Web read it: nothing enforces; nginx unchanged.
+- 5d1c4943's gate was RED: 1 test, tests/desk/releaseRetention.test.ts "refuses every weekday start ... 07:00-10:00 ET"
+  timed out at 30 s. Byte-identical test + preflight.sh to the base; alone it takes 9.6 s (7 bash spawns). A latent load
+  flake: 1 of the last 8 gates. Not the cut. Flagged for a separate fix.
+- ENV: box already has IDENTITY_DB_PATH, TRADES_DB_PATH, OAUTH_REDIRECT_URI (key names, 15:5xZ), so the release does NOT
+  need a sync-env first. No Google or FINRA keys on the box or in .env.local yet. FOUND: sync-env would have erased
+  LEVELS_REFRESH_ENABLED (box-only since 02:38Z); fixed in sync-env.sh at 4b0a03dc; key-name diff now erases nothing.
