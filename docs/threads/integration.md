@@ -1222,6 +1222,11 @@ SI REOPENED      His screenshot (desk STRUCTURAL WARNING: 55,406,688 shares as o
                  measured. Asked Research (e94aa033) for a pre-registered re-run with the dossier count as a second
                  source + reconciliation rule (count + completed offerings since), foreign-filer pairs, agreement with
                  dei. The label decision WAITS on it; my exception-only recommendation withdrawn until then. Ledger 3.
+BASIC-AUTH-OFF PRECONDITION (Web's open row, read here): POST /api/research/retry has NO rate limit (grep: none in
+                 app/api/research/retry, nginx-locations.conf, nginx.conf; location /api/ at :339 is a plain proxy).
+                 Step 4 gives it the status check only. A limit must exist BEFORE Basic Auth comes off /api/. Owner Ops +
+                 Web jointly, UNASSIGNED; trigger = the Basic-Auth-removal night first being scheduled. Not exposed today
+                 (behind Basic Auth). Web cleared 10 docs commits to ride (e125a066 ... a4c2b027).
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
