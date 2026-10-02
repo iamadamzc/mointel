@@ -55,3 +55,21 @@
 **Discipline:** harness committed before the pull; raw output committed before it is read; FINRA numbers stay in this private repository.
 
 **Then:** the options go to him again, re-scored on these counts. No grade lines change in this run.
+
+## RUN 3, PRE-REGISTERED after the re-run's result and BEFORE its own data: the as-of point is the LABEL'S VIEW TIME
+
+**Why.** Both earlier runs took every input as of the SETTLEMENT date S. But the label is shown at a later VIEW time, after FINRA publishes, when the name has been researched and newer counts may be filed. The no-look-ahead point is therefore the view time, not S. The re-run showed what that costs: 245 of 426 pairs failed only because no dossier existed as of S, typically because the name was first researched after S, on the day it reached the board.
+
+Both runs also paired a checkpoint date d with the latest settlement ON OR BEFORE d. FINRA publishes 7 business days after settlement, so that pairing used a report not yet public on d. That is look-ahead in the other direction. **Both runs were the seat's error, not a rule anyone set.** Integration's "dossier as of the settlement only" follows from my framing, and run 3 corrects it.
+
+**Fixed now:**
+
+- **View time v:** the checkpoint date d on which the name was in a report's top 12 (same window, checkpoints, range and top 12 as before).
+- **Settlement for v:** the latest settlement whose FINRA PUBLICATION date is on or before v. Publication dates are from FINRA's 2026 schedule, read 2026-10-02 (`docs/research/short-interest-2026-10-02.md`): 07-31 published 08-11; 08-14 published 08-25; 08-31 published 09-10. A settlement whose publication date was not read is not used.
+- **Unit:** a distinct (ticker, settlement) pair. Its view time is the EARLIEST d that maps to it, the most conservative availability.
+- **Inputs as of v:**
+  - the dossier is the latest version with `generated_at` on or before the end of v;
+  - source A is the newest-period fact with `filed` on or before v;
+  - source B is from that dossier, with a date on or before v.
+- **Gates, sources, variants and reconciliation:** exactly as above, with the count's as-of date compared to S. A count dated ON OR AFTER S has age 0 or less and passes the age and issuance checks, because nothing could be issued between S and a later count without that count including it.
+- **Reported:** the same tables as the re-run, per source and variant, all pairs and foreign pairs, plus the number of pairs whose count is dated on or after S.
