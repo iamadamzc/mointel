@@ -1234,6 +1234,14 @@ BASIC-AUTH-OFF PRECONDITION (Web's open row, read here): POST /api/research/retr
                  Step 4 gives it the status check only. A limit must exist BEFORE Basic Auth comes off /api/. Owner Ops +
                  Web jointly, UNASSIGNED; trigger = the Basic-Auth-removal night first being scheduled. Not exposed today
                  (behind Basic Auth). Web cleared 10 docs commits to ride (e125a066 ... a4c2b027).
+SI RUN 3         Research 51312b83 (read; prereg 7947f51f -> raw 01fe7fcf -> result, ancestry checked). As-of = VIEW time,
+                 settlement = latest PUBLISHED (both earlier runs wrong on this; my "dossier as of settlement" order
+                 followed Research's framing). 422 pairs (180 foreign): size gradable COMBINED STRICT 77 (18%), COMBINED
+                 RECONCILED 144 (34%; foreign 33). Dossier count = filed count 193/193 exact; fresher (median 45 d vs
+                 107). Reconciliation changed 6; exercise risk on 4 graded. Graded: under 5% 115 (80%), 5-10% 19,
+                 Elevated 5, Heavy 5 => size exceptions ~2.4%. The "98% ungraded" headline WITHDRAWN (Research's).
+                 Commercial asked (RECONCILED's 120 d + 4 exercise-risk pairs vs the "at least" floor). Put to him:
+                 display mode, recommending exception-only on the COMBINED RECONCILED source, subject to Commercial.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
