@@ -13336,3 +13336,36 @@ HISTORY_STORE_ENABLED absent. Levels refresh: cold 75.5 s, warm 7.2 s and 3.3 s 
 - OWED to Integration: does the headroom after a fresh research worker support MORE THAN ONE build in a night? Measure it:
   available MB right after a research restart (it was ~2,330 MB at 03:11Z with research ~123 MB and market ~743 MB) against
   the build's actual peak, which nobody has measured (heap cap 1,536 MB is a cap, not a peak). Don't answer from the cap.
+
+## SUCCESSOR OPS SEAT OPENS, 2026-10-02T03:16:32Z (local_d8a2a445, title Ops-tmi, model claude-opus-5-5)
+His word in this chat: "yes, read-only reads are allowed" (the classifier refused the first box read until he said it).
+
+**Production, read 2026-10-02T03:16:32Z, matches the hand-off:** web 1773442 / research 1773503 / assess 1773574 cwd
+b5a35fda060eda6e23953d7dc8b0ecace5e2be4b, NR 0; market 1574400 cwd 1b5ead66bb7e72c244437378fa244e07c7ade5b3, NR 0, since
+2026-09-30 00:15:40Z; no deploy unit; pins market-floor 2bcf1cfe (v28), rollback-baseline 372f5eb9 (v18); health ok, schema
+28/28; market.db 4,864,843,776 B; 57G free; 3,832 MB total, 2,316 MB available, no swap.
+
+**HOW TO READ WORKER MEMORY (a trap for the 10:00 ET read):** MainPID is the tsx wrapper. `ps -o rss -p <MainPID>` printed
+market 9 MB and research 52 MB: plausible, wrong. The worker is the CHILD node process: research 1773565 = 134,780 KB, market
+1574419 = 742,920 KB (03:16:41Z). Unit MemoryCurrent (research 719 MB) includes page cache: not the leak measure either.
+Read `ps -o pid,rss --ppid <MainPID>` and track the child.
+
+**Research's queued read (item 4), 2026-10-02T03:17:01Z, sqlite3 -readonly, 0.017 s:**
+```
+assessment_type        count_window     n   min_date    max_date
+AFTER_HOURS_CLOSE      AFTER_HOURS      2   2026-09-30  2026-10-01
+NEXT_DAY_RECAP         AFTER_HOURS      2   2026-09-30  2026-10-01
+OPEN_SPIKE_ASSESSMENT  SESSION_TO_DATE  1   2026-10-01  2026-10-01
+PREMARKET_0625         SESSION_TO_DATE  1   2026-10-01  2026-10-01
+PREMARKET_0645         SESSION_TO_DATE  1   2026-10-01  2026-10-01
+PREMARKET_0700         SESSION_TO_DATE  1   2026-10-01  2026-10-01
+RTH_CLOSE              SESSION_TO_DATE  1   2026-10-01  2026-10-01
+RTH_INTERVAL           SESSION_TO_DATE  12  2026-10-01  2026-10-01
+STRUCTURAL_REFRESH     SESSION_TO_DATE  1   2026-10-01  2026-10-01
+```
+
+**Error ledger (this seat):** error | TYPE | already logged? | caught by
+(none yet)
+
+**Next triggers:** research child RSS after 10:00 ET 2026-10-02 (and before tonight's window) -> projection -> his
+memory-fix question; levels [flush] p50/max 09:30-10:30 ET vs 2026-09-30, read after 10:00 ET.
