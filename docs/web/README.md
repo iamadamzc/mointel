@@ -1,7 +1,23 @@
 # The public surface — what Web owns, and what it needs from others
 
-**Written by Web, 2026-09-10 (17:00 ET), against `927641c`.** Owner of this
-file: **Web**. Design canvas:
+**AS OF 2026-10-02 17:34 UTC, at `01455d93`.** *What that review covered and what
+it did not: the design decisions in section 1, the prefix list and status codes in
+section 2, the rulings in section 2b and the fixed-and-recorded list in section 5
+were re-read and are accurate. Sections 3 and 4 carry dated answers that were not
+re-verified against the live site at hand-off, and the canvas notes in section 0
+describe a canvas re-seeded 2026-10-02 against the live release.* **The live
+snapshot that wins over everything here is LIVE STATE in
+[`../threads/web.md`](../threads/web.md).**
+
+**One line in here IS now stale and is corrected rather than annotated: section 3's
+"AS OF 2026-09-25 EXACTLY ONE `[BRACKET]` RENDERS" still holds as a count, but the
+em-dash sweep has since changed the surrounding copy, and the only remaining
+placeholder fills with the gate wiring rather than "the deploy that ships
+sign-in".** *The sign-in surface shipped 2026-10-02 with no Google env on the box,
+so the live site still sets no cookie.*
+
+**Originally written by Web, 2026-09-10 (17:00 ET), against `927641c`.** Owner of
+this file: **Web**. Design canvas:
 [`canvas/`](canvas/) — seven artboards, published for the trader to edit directly.
 
 ---

@@ -517,18 +517,22 @@ measured.** *And the refusal read is the one that gets dropped when a night runs
 late: a gate that admits correctly and refuses nobody looks identical to a
 working gate from his own account.*
 
-### OPEN, each with its owner and what it waits on
+### OPEN: owner, trigger, and what happens if the trigger never fires
 
-| what | owner | waits on |
-| --- | --- | --- |
-| **step 4 wiring** | **Web** | Ops's three probe reads |
-| **Basic Auth removal** | Ops, his yes | its own night, after step 4 is proven |
-| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final at `204d42c6`) | **him to approve the wording; Web applies it** | **must NOT be adopted before the short-interest label exists.** Adoption sets `adopted` to null and renders a public DRAFT banner; the label is not in the code. Terms edit, adoption, attribution and label ride ONE change |
-| **FINRA attribution strings** `Short interest: FINRA (owner and source), settled <date>` and the board-footer legend | Web owns the words, **Design builds them** | the label |
-| **clause 2.2** (our own use non-commercial, against a paid product) | him or counsel, **Commercial holds it** | an enquiry nobody has made. A yes leaves the wording needed; a no ends the label on this route |
-| **the three-way refusal split** | Web, when a reason exists | **a store question, not a copy one** (below) |
-| **self-serve sign-up and the `app/page.tsx:432` copy change** | him | he ruled first paying users are invited and billed by hand, so both WAIT. *"There are no public sign-ups..." stays true and stays live* |
-| **consent-screen display name** | him | the day he uploads the mark |
+**Each row carries a FALLBACK on purpose. Section 5 of the hygiene rule: "it rides
+the next X" is indistinguishable from a hold that was forgotten.** *The prior
+snapshot of this section is at `d329a691`'s parent and is not repeated here.*
+
+| what | owner | trigger | if the trigger never fires |
+| --- | --- | --- | --- |
+| **step 4 wiring** | **Web** | Ops's three probe reads, 2026-10-02 evening | **by 2026-10-06 with no reads, ask Integration whether the night ran. Do NOT wire on the assumption it did** |
+| **Basic Auth removal** | Ops, his yes | step 4 proven live, then its own night | **no date, and that is correct: it waits on a person with no password completing a sign-in, which nothing before step 4 can show. If anyone proposes it without that, refuse and say why** |
+| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final at `204d42c6`) | **him to approve the wording; Web applies it** | **must NOT be adopted before the short-interest label exists.** Adoption sets `adopted` to null and renders a public DRAFT banner; the label is not in the code. Terms edit, adoption, attribution and label ride ONE change | **if he approves the wording but the label stalls, do NOT apply the terms edit. An adopted-null banner on a live page for a feature that does not exist is the worse outcome** |
+| **FINRA attribution strings** `Short interest: FINRA (owner and source), settled <date>` and the board-footer legend | Web owns the words, **Design builds them** | the label | **if the label ships without them, that is a licence breach, not a tidy-up. Say so to Integration the day it appears** |
+| **clause 2.2** (our own use non-commercial, against a paid product) | him or counsel, **Commercial holds it** | an enquiry nobody has made | **the label can ship under his accepted-exposure posture without it. Do not let a seat park the label waiting for FINRA, and do not let one claim an approved wording settled this** |
+| **the three-way refusal split** | Web, when a reason exists | a refusal REASON in the store | **never, quite possibly, and that is fine. One honest screen beats three guessed ones** |
+| **self-serve sign-up and the `app/page.tsx:432` copy change** | him | he ruled first paying users are invited and billed by hand, so both WAIT. *"There are no public sign-ups..." stays true and stays live* | **nothing waits on it. If anyone ships a public save-card page, that sentence must change in the same commit or the live page becomes false** |
+| **consent-screen display name** | him | the day he uploads the mark | **blocks Google brand verification only; nothing else waits on it** |
 
 ### Two things built this week that a successor will misread
 

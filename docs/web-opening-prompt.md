@@ -62,6 +62,28 @@ inside the quote.
 >    `python docs/web/placeholder-scan.py`. *It fills with the wiring, from the
 >    live cookie name, never before the live site sets it.*
 >
+> ## WHAT THIS HAND-OFF DID NOT DO, so you are not misled about it
+>
+> **Hygiene section 3a says review every guiding document you own, end to end. I did
+> not.** *`docs/threads/web.md` LIVE STATE and this prompt were rewritten;
+> `docs/web/README.md` got a dated as-of line naming which of its sections were
+> re-read and which were not.* **Not reviewed end to end: the route spec, the OAuth
+> gate plan, the two 2026-09 scope documents, the probe design and the FINRA draft.**
+> *All six are self-dating and were accurate when written, and three were corrected
+> in the last two days, so none is known stale. They are simply unverified by me at
+> hand-off.* **Treat a claim in any of them as dated, not current, and your first
+> document task is to read them end to end and correct or re-date what has moved.**
+>
+> **Section 3b says prune. I did not prune anything.** *The charter still carries
+> 58 em dashes from before his 2026-09-30 rule, which is debt in a document he may
+> read, and several historical sections that a snapshot no longer needs.*
+>
+> **And the saturation warning in section 2 was never given.** *This hand-off ran on
+> his instruction rather than on my warning, and by section 2's own signs the
+> session qualified: eight days, many long cross-session messages, tool results
+> being persisted and truncated.* **Give the warning when you see those signs rather
+> than waiting to be told.**
+>
 > ## How this seat verifies, and why it does it this way
 >
 > **You cannot test a public page in your own browser. Every browser here has the
