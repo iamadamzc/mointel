@@ -3342,6 +3342,10 @@ OPS RETIRED      local_8a0801c2 on his "yes, hand off" (755e08a6; ops.md:13288).
                  carries his "fix the leak", the next-ship-night order (research restart first) and the build-peak
                  measurement owed to me. No successor yet; retired seat still titled "Ops-tmi" (route by NEW createdAt).
                  Research told to build the leak fix now (c7ba38af; 655d235d: cache size matches growth).
+HIS RULING       Design's transcript 51f52927 user record 2026-10-02T03:14:33Z (read): "Research adds levels to review
+                 links, so I can check this release and future ones myself. It's a small change and would ship later."
+                 Widens review-link exposure: HIS, ruled. ORDER to Research: leak fix -> review-link /api/levels mirror
+                 (reports-mirror pattern) -> v6 step 4. Design P1 = levels read on a review link after it ships.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
