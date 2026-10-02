@@ -1189,6 +1189,12 @@ PUSH STATE       Ops offered the temp-worktree cherry-pick route for 65dcc9d8; D
                  side worktree). Ops's own dc3bff07 (local) = 038ce171 (origin), a duplicate pair; told Ops. My notes
                  (65dcc9d8, 5443f5f3, and after) wait on local main until Research (d717add1, 18e9f8b0 = a0f880c0 by
                  patch-id) and Web (e125a066, retiring seat) push or clear theirs.
+                 CLEARED to ride: Research (18e9f8b0 = a0f880c0, d717add1 = 30fe0da8 on origin), Ops (dc3bff07 =
+                 038ce171, 1f6feddd = 91caa2f3; Ops now holds docs commits for the normal route). WAITING: e125a066
+                 (Web), asked of the new Web seat.
+NEW WEB SEAT     local_46c15fbe (Web-tmi, A:\mointel, created 17:45:51Z; get_session). Old local_2c0e391a renamed
+                 "Web-tmi-retired" (list_sessions), not archived. Sent live state (af8bad38): night not run; release
+                 3b9c0a70; step 4 unwritten, pick rule; no Web rulings; e125a066 its to clear.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
