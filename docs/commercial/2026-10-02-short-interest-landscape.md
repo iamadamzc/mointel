@@ -597,3 +597,44 @@ posture, or ask FINRA first about clause 2.2 and exchange-listed coverage; (2) r
 the API Console and the Public credential; (3) approve the end-user wording (a
 redraft of the adopted terms, so adoption goes with it). The label itself stays
 subject to Research's design and this seat's §8 review.
+
+---
+
+## 11. ADDED 2026-10-02: WHO ELSE USES FINRA-REPORTED SHORT INTEREST, AND HOW (PUBLIC EVIDENCE ONLY)
+
+*His question: "can you find out who else is using FINRA and how?" Method: web search,
+then reading what could be read at source. **Precedent is not a licence.** Almost no
+page states the agreement behind the display, so this section shows what is done in the
+market, not what is permitted.*
+
+| who | what they do with it | what they say about rights | read at source? |
+| --- | --- | --- | --- |
+| **Massive** (formerly Polygon) | Resells FINRA-reported short interest (shares short, days to cover, settlement date) and daily short sale volume by venue as raw API fields, on every plan | Nothing on the endpoint pages; plan-level Individual versus Business terms apply (§4) | yes |
+| **Nasdaq** | Sells its own "Short Interest" product by distribution tier (price list effective 1 Jan 2025): distributor access $520 a month; internal distribution $1,040; **external distribution $2,600 for 1 to 499 subscribers, $5,200 for 500 to 9,999, $7,800 for 10,000 or more**; $1,560 for external distribution by distributors with $5,000 or more spend on certain Nasdaq products or an enterprise licence (access fees still apply); also a "Short Sale Volume Reports" line. The list says its fees are SEC-regulated. | Published fee schedule | yes (price list PDF). Which securities the product covers was not confirmed; 2026 rates not read |
+| **Cboe** | Sells a Short Interest Report on its LiveVol DataShop with usage tiers *"External Redistribution," "Internal Usage - More than one user," "Internal Usage - Just Me"* (prices not shown). Its SEC rule filing (SR-CboeBZX-2023-102) says the report covers BZX-listed securities *"only as reported by FINRA"* and that its fields are *"substantially similar"* to those Nasdaq and NYSE publish in their short interest reports | Published product tiers and filing | yes (product page, filing). NYSE's product not read |
+| **Equibles** | API of FINRA short interest and short volume (free tier of 100 requests a day) plus a **derived "composite short-squeeze score"** | Names FINRA as the source; the page states no licence terms and defers to its own terms | page read, terms not |
+| **QuantQuote** | Historical bi-monthly FINRA short interest API | Search description only | no |
+| **Fintel, Schwab (Short Interest Monitor), IEX** | Each has a short interest page or tool | Source and terms unknown | pages blocked or unreadable |
+| **Apify marketplace scrapers** | Scrape FINRA's site into sellable feeds | The FINRA website terms bar scraping, so this is not precedent for permission | search listing only |
+| **Tidal Markets** | Sells "real-time" short interest every 15 minutes | Its launch release mentions FINRA only for the twice-monthly mandate and does not say the feed is FINRA data. Treat as a different, non-FINRA source | release read |
+
+**What it shows.**
+
+1. **Commercial display of FINRA-reported short interest is ordinary**, in raw form
+   (Massive, Equibles) and in derived form (Equibles' score), from small vendors up to
+   the exchanges themselves.
+2. **The exchanges charge for it.** Nasdaq and Cboe both price external redistribution of
+   short interest on their listed securities, in tiers that rise with subscriber count,
+   and Cboe's filing says NYSE publishes a similar report. That is the residual in §10.3
+   item 3, now with numbers. **FINRA's API terms permit derived redistribution of FINRA's
+   own data; Nasdaq's schedule prices Nasdaq's report. Whether the schedule reaches a
+   label we derive from FINRA's API data, for a Nasdaq-listed name, cannot be told from
+   public text.** Most of the $1 to $20 names are exchange-listed, so this is the real
+   open question, not the clause 2.2 question alone.
+3. **No page said what licence the display runs on.** A vendor may hold exchange
+   licences, a FINRA API agreement, or neither. None can be inferred from the display.
+
+**Effect on §10.4.** The recommendation to ask FINRA first stands and widens: the
+enquiry should also ask whether exchange fee schedules apply to a derived label built
+from FINRA API data for exchange-listed securities. Nasdaq and the other exchanges are
+the other parties who could answer that, and asking them is also an enquiry, which is his.
