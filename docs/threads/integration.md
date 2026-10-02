@@ -1123,6 +1123,14 @@ OPS GATE         3b9c0a70 ALL GREEN 231/231, 3,358, lint 0, build rc 0 (/auth/pr
                  condition is moot; sync-env only after his Google keys. Ops found sync-env would ERASE
                  LEVELS_REFRESH_ENABLED (typed on the box, his levels ruling); fixed 4b0a03dc on main (read: +7, one
                  key + comment). Ops is putting the one-release ask (3b9c0a70) to him, replacing the a4a06168 ask.
+HIS ASK          Pasted Ops's three asks to me ("are these correct?"): confirmed all three (tip still 3b9c0a70, read);
+                 named the gap: .env.local key names (read, no values) = GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
+                 FINRA_API_CLIENT_ID; NO FINRA_API_CLIENT_SECRET (activation email not done; link expires 24 h). Named
+                 what the list does not include: Web's gate wiring (own yes) and probe removal (later night).
+HIS YES (Ops)    Per Ops: "yes to all three" + "Seed iamadamzc@gmail.com as the first allowed address." in Ops's chat.
+                 TONIGHT: snapshot 20:12 -> sync-env (names readback) -> ship 3b9c0a70 -> seed -> probe on (web restart)
+                 -> his two sign-ins + Ops no-cookie curl -u -> probe off -> /proc to me. Then Web's gate wiring cut +
+                 replay here + his yes. Ops corrected on "FINRA gave no secret" (he sets it via activation email).
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
