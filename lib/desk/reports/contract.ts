@@ -17,6 +17,7 @@
  */
 
 import type { AssessmentType } from '../schedule';
+import type { ReportTags } from './tags';
 
 export type ReportKind = 'PREMARKET' | 'INTO_RTH' | 'INTO_POWER_HOUR' | 'AFTER_HOURS';
 
@@ -65,6 +66,12 @@ export interface ReportLine {
    */
   company?: ReportCompany | null;
   path?: ReportPath | null;
+  /**
+   * v6, COMPUTED: the BOARD's own Why and Risk outputs on the research as of the
+   * checkpoint (`tags.ts`; Integration's one-vocabulary call). Never model text,
+   * so never struck. Absent on v5 rows and on lines with no ticker.
+   */
+  tags?: ReportTags | null;
   /**
    * Whether this ticker had a live trades/quotes feed. False means minute data
    * only. NULL MEANS NOT RECORDED -- a catch-up report cannot establish feed
@@ -170,6 +177,14 @@ export interface SessionReport {
    * and null when struck. Absent on v4 rows.
    */
   overall?: string | null;
+  /**
+   * v6, "THE SESSION": the opening narrative, REPLACING `overall` on every kind
+   * (Integration's order call). The model words ONLY the computed facts
+   * (`narrative.ts`); the checker traces every number and ticker against the
+   * same facts. Null when struck or when the store held nothing to say; absent
+   * on v5 rows (which keep `overall`).
+   */
+  narrative?: string | null;
 }
 
 export interface SessionReportsPayload {
