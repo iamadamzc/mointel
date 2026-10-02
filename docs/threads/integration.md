@@ -3245,6 +3245,9 @@ V6 PLAN          e144d87c (read): N narrative + B tags + a-d fixes + checker tri
                  Marketing ack: holds step 3 for Research's step 1; step 6 blind seed set ready after step 5 (19 classes +
                  false narrative fact + wrong tag, N=3). Its two step-1 constraints (no session-level object; non-premarket
                  totals from Ops's frozen v28 counts) forwarded to Research as Marketing's, unverified here.
+LEVELS SHIPPING  Ops: HIS "yes" in Ops's session 2026-10-02T02:37:49Z to the four-condition question. /proc 02:32:23Z =
+                 e8822583 x3, market 1b5ead6. LEVELS_REFRESH_ENABLED=1 appended 02:38:14Z (backup .bak-20261002T023814Z;
+                 25 -> 26 keys; HISTORY_STORE_ENABLED absent). b5a35fda launched (Ops). Awaiting /proc + /api/levels read.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
