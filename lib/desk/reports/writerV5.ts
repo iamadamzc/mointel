@@ -73,7 +73,7 @@ export function calendarLongDate(value: string | null | undefined): string | nul
 }
 
 /** "2026-06-30" as "June 30, 2026". */
-function dayWords(day: string | null): string | null {
+export function dayWords(day: string | null): string | null {
   if (!day) return null;
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day);
   if (!match) return null;
@@ -89,7 +89,7 @@ const shares = (count: number) => Math.round(count).toLocaleString('en-US');
  * run v5: an UNKNOWN written as "no catalyst found" (KMRK) and a NONE_FOUND the
  * checker could not map (SDEV).
  */
-const STATUS_WORDS: Record<string, string> = {
+export const STATUS_WORDS: Record<string, string> = {
   FRESH_FOUND: 'a fresh catalyst was found in our sources',
   SECONDARY_STALE: 'only older or secondary news was found in our sources (say it is not a fresh catalyst)',
   NONE_FOUND: 'no catalyst found in our sources (say exactly this)',
