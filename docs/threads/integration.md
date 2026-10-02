@@ -3309,7 +3309,10 @@ ONE VOCABULARY   Design 8233d809 reconciliation: Marketing's tag words vs board 
                  cycle, supply). ORDER CALL REVERSES my V6 STEP 3 call: ONE vocabulary; v6 tags via the board's
                  functions (Research's adapter) as the board says them today; no cycle tag; supply aggregate chip;
                  Marketing's clearer words = one later change to BOTH surfaces (Design checks 1,024). Kept from Marketing:
-                 float footer, recap F9 seam line. displayedFloat null; "DIRTY FLOAT" verdict. Relayed for Design
+                 float footer, recap F9 seam line. displayedFloat null; ~~"DIRTY FLOAT" verdict~~ CORRECTED (Research
+                 7e0b9436; read risk.ts:246-253 at 558d07a5): :249 is the STRUCTURE_CLEAN "NO FLAG FOUND" chip, which
+                 prints "{N} float" when displayedFloat is set; DIRTY FLOAT prints the supply share count. The null rule
+                 stands; the chip that differs from the board is the CLEAN one. Relayed for Design
                  (send-limited) to Marketing + Research.
 MEMORY (RES)     Research started the research-worker memory read at e8822583 (the grown version); levels refresh is not in
                  e8822583 so not tonight's cause. v6 step 4 placed AFTER the memory answer (agreed).
