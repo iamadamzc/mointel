@@ -29,7 +29,6 @@ import {
   type ReportBlock,
   type ReportTimeline,
   type SlotView,
-  windowShowsWatchLine,
 } from '@/lib/dashboard/sessionReports';
 import { RISK_TONE, WHY_TONE, WhyMarks } from '@/components/DecisionCells';
 import { formatEtMinute } from '@/lib/format';
@@ -353,7 +352,7 @@ function ReportBody({
   const ago = agoText(report.publishedAt, nowMs);
   const coverage = coverageText(reportCoverage(report));
   const v6 = isV6(report);
-  const lead = windowShowsWatchLine(report) ? reportLead(report) : null;
+  const lead = reportLead(report);
   const blocks = reportBlocks(report);
   const empty = emptyReportLine(report, blocks);
   // v6: computed sections with labels; v5 keeps (A)'s single list (its headings are model text).
@@ -436,9 +435,11 @@ function ReportBody({
         </section>
       ) : null}
 
-      {/* The watch sentence (dropped on a v6 recap whose narrative ends with
-          the F9 line, `windowShowsWatchLine`); v5 then the after-hours picture;
-          v4 its headline. */}
+      {/* The watch sentence on EVERY v5 and v6 report, recap included: the
+          checker does not require the narrative's F9 line, and the narrative
+          can be null on any kind, so this is the only place N is certain to
+          appear (Research, 2026-10-02). v5 then the after-hours picture; v4
+          its headline. */}
       {lead ? <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{lead}</p> : null}
       {!v6 && typeof report.watchCount === 'number' && report.overall ? (
         <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{report.overall}</p>

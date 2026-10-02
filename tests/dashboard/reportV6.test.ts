@@ -8,7 +8,6 @@ import {
   isV6,
   reportGroups,
   sectionLabel,
-  windowShowsWatchLine,
 } from '@/lib/dashboard/sessionReports';
 
 /*
@@ -16,8 +15,6 @@ import {
  * final call, one vocabulary). Written from those rules, not from the code:
  *
  * - v6 is the report carrying the `narrative` KEY (null included); v5 never has it;
- * - on the recap the narrative ends with the F9 seam, so the window drops the
- *   watch sentence there, and only there, and only while the narrative stands;
  * - computed sections show as "LABEL · count" (names in the group); the loose
  *   group shows no label; a group left with nothing is dropped;
  * - a card carries its name's tags (the board's own Why/Risk);
@@ -39,30 +36,6 @@ describe('which reports are v6', () => {
     expect(isV6({ narrative: 'Across $1 to $20, 2,440 names traded.' })).toBe(true);
     expect(isV6({ narrative: null })).toBe(true);
     expect(isV6({})).toBe(false);
-  });
-});
-
-describe('the watch sentence in the window', () => {
-  const v6 = (kind: SessionReport['kind'], narrative: string | null) =>
-    windowShowsWatchLine({ kind, narrative } as Pick<SessionReport, 'kind' | 'narrative'>);
-
-  it('drops it on a v6 recap whose narrative stands, so the count is not said twice', () => {
-    expect(v6('PREMARKET', 'Into the next session the desk is carrying these 11 names.')).toBe(false);
-  });
-
-  it('keeps it when the recap narrative was struck or is blank', () => {
-    expect(v6('PREMARKET', null)).toBe(true);
-    expect(v6('PREMARKET', '   ')).toBe(true);
-  });
-
-  it('keeps it on every intraday kind, narrative or not', () => {
-    for (const kind of ['INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'] as const) {
-      expect(v6(kind, 'XYZ tops the board, up 40 percent.')).toBe(true);
-    }
-  });
-
-  it('keeps it on every v5 report', () => {
-    expect(windowShowsWatchLine({ kind: 'PREMARKET' } as Pick<SessionReport, 'kind' | 'narrative'>)).toBe(true);
   });
 });
 

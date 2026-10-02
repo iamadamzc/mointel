@@ -134,22 +134,6 @@ export function isV6(report: Pick<SessionReport, 'narrative'>): boolean {
 }
 
 /**
- * Whether the window prints the watch sentence under the narrative.
- *
- * On the RECAP the narrative ends with the F9 line ("Into the next session the
- * desk is carrying these N names", Marketing's step 3), which is the seam into
- * the cards; a watch sentence under it would state N twice in two voices. So a
- * v6 premarket report with a narrative drops it. A struck narrative (null)
- * brings it back, so the count is never lost. The three intraday kinds keep it
- * as the cards' lead-in. The briefing LINE on the board is not this: it always
- * leads with the watch sentence (`reportLead`).
- */
-export function windowShowsWatchLine(report: Pick<SessionReport, 'kind' | 'narrative'>): boolean {
-  if (!isV6(report)) return true;
-  return !(report.kind === 'PREMARKET' && typeof report.narrative === 'string' && report.narrative.trim() !== '');
-}
-
-/**
  * The float statement, once per report and never per name (Marketing, final
  * wording; `report-b-spec.md`): a verdict, never a number.
  */
