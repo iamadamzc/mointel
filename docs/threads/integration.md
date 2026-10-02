@@ -3276,6 +3276,8 @@ LEVELS LIVE      Ops /proc 02:54:30Z: web/research/assess on b5a35fda (start 02:
                  for (A)/citations: next OOM likely picks the MARKET worker (743 MB) -> restart from /opt/mointel/current
                  = unplanned market version change. Ops put continue/stop to HIM (Ops's ask; not duplicated). Pending:
                  first refresh read + /api/levels. Design P1 (levels on /desk) now due.
+BREADTH AMEND    Research 09b76248 PROPOSED AMENDMENT read + APPROVED: recap F1/F6/F7 from 16:00 latched ticker_session
+                 values (no store change), G footnote for traded names with no 16:00 close, positive control pre-run.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
