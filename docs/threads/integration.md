@@ -1101,6 +1101,10 @@ SIGNIN CUT       Ops had already built it: ops/signin-cut 5d1c494304a3b716b1a64d
                  imports resolve. Conditions: Ops gate 231/231 + tsc + lint + build on this sha; sync-env (identity
                  path) BEFORE the restart; after snapshot; his yes naming contents. Fail -> a4a06168 alone.
                  Ops: AUTH_PROBE_ENABLED on/off = web-only restart each.
+TIP MOVED        ops/signin-cut now 3b9c0a70ef050be3261107bc70956d9daba62e4a = 5d1c4943 + 1 comment-only pick of f52da6a0
+                 (probe header: reads carry Basic Auth; removal control / -> 200). REPLAYED + APPROVED: parent 5d1c4943,
+                 route.ts only +13/-7 all comment lines, patch-id 4b51c8f516b5 equal, 0 U+2014, surface vs f52da6a0
+                 EMPTY. SUPERSEDES 5d1c4943 (must not ship). Ops gates 3b9c0a70 only. Ops told (same conditions).
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
