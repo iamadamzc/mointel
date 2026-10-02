@@ -16,8 +16,12 @@ does not act on the older text:*
   5), not the wiring.**
 - **The sign-in surface (routes, gate, `/signin`) is on `main` and NOT on
   production.** *It ships on the sign-in night in `ops/signin-cut`. So 5b's
-  "verified live" means a running dev server: production did not carry the
-  surface then and does not now.*
+  "verified live" most likely means a running dev server, an inference rather
+  than a reading: neither the tree at `46d9f9d` (2026-09-30) nor at `a4a06168`,
+  the base of tonight's cut, contains `app/signin/`.*
+  *Narrowed the same day: the first version of this line said production did not
+  carry it "then", which no artefact read here establishes. Releases are
+  cherry-pick cuts, so `main`'s ancestry cannot answer it.*
 - **`[FLOW COOKIE NAME]` fills in the gate-wiring commit (LIVE STATE step 4), not
   on the deploy that ships sign-in.** *Corrected in place in 5b.*
 
