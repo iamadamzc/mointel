@@ -170,6 +170,12 @@ record. He has it from this seat directly as well.
 
 ### OPEN, MINE, AND WHAT EACH WAITS ON
 
+- **🔴 RESEARCH-WORKER MEMORY LEAK: FIX BUILT, main `50196f0b`** (his "yeah fix the leak", verified at Integration's `1bfab363`, 2026-10-02T03:12:39.671Z).
+  - **Evidence:** `docs/research/research-worker-memory-2026-10-02.md` (`655d235d`). `SecClient`'s whole-document cache never evicted. The OOM-killed worker ran ~25 h over 76 tickers to 1,383 MB; measured documents were 8.6 and 22.4 MB per ticker.
+  - **Fix:** LRU by bytes, 64 MiB; a 30-min lifetime; oversize never cached. 6 mutants killed.
+  - **Live judge pre-registered before ship:** `docs/research/research-worker-memory/prereg-ship.md`. Max RSS 450 MB and under 2 MB per new ticker on the first full day; UNTESTED under 40 tickers.
+  - **Waits on:** `tsc` and the full suite (heavy slot, new Ops-tmi `local_d8a2a445`); then Integration's cut and order. Research worker only.
+  - **v6.1 lane (Integration, after `afc7755b`):** a hedged "what to watch" block from the names' own dossiers. NOT started until v6 is live, unless he tells Marketing to fold it in.
 - **🔴 NEXT TASK, FIRST: REPORTS v6** (Integration's order, 2026-10-02, on his words at 02:34:22Z: "what about the session report updates? there's still no opening narrative and no design element, its hard to read, this was brought up"). **Plan: `docs/research/reports-v6/plan.md` (`e144d87c`).**
   - **Step 1 (Research's proposal: narrative facts with stored sources, B's tag fields, the a-d fixes) is the first thing on 2026-10-02.** Reading and writing only.
   - **Step 2** (stability probe, cap $10) is pre-registered before any call. **▶ Step 1 DONE `771898f4`** (sent to Marketing and Design; Ops reads the count windows after tonight's deploys). **▶ Step 2 REGISTERED `8efb1a6f`** (the approved P2 design: CURRENT vs P1). **✅ RESULT `e1e7d4f3`** (raw `cbec4095`, $8.76): P1 reduces splits (named lines 1/10 to 0/10; false strikes 2 vs 1 in 180 line-runs) and admits no defect (class-4 10/10 in both arms). **P1 becomes checker prompt v4 in v6.** Small difference; the same habit reappeared once on 490-C. **▶ Step 1c `49ebf469`:** the board's Why/Risk rules run on the as-of dossier with the checkpoint's time; three SHEET inputs are not as-of; `risk.ts:249` prints a float number, so it is null in reports.
