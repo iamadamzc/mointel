@@ -3224,6 +3224,9 @@ SI TERMS DRAFT   Web 2e8ded5f (docs/web/2026-10-02-finra-terms-draft.md); terms.
                  ORDER CALL (Web's rec): NOT put to him now; the terms.md edit, his adoption, attribution and the label
                  ship as ONE change (a terms edit on main would ship a public DRAFT banner via any deploy). Commercial
                  checks the wording against the clauses first. 2.2 still unresolved (accepted-exposure posture).
+                 Commercial cd9e68a5 §10.6: end-user sentence PASSES; attribution strings must name FINRA as "owner and
+                 source" (2.3(a)) -> Web revises (asked). PRICING OBLIGATION: the SI label is part of the subscription,
+                 never an add-on or higher-tier-only feature (carry into any pricing question to him).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
