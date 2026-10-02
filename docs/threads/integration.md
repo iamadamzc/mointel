@@ -3421,6 +3421,10 @@ V6 SURFACE       Design tag design/reports-v6-surface-on-b8719e7c -> 1ba42292 (1
                  CHECK AT REPLAY), reportV6.test.ts). Gate 229/229, 3,322, lint/build/typecheck 0. Not yet rendered on real
                  v6 output (step-5 samples pending). Open: does checker v6 enforce the recap F9 line (Design keeps the
                  watch sentence if not).
+CHAIN COMPLETE   STEP 6 LIVE 28c66f14 (residual): web 1863983 / research 1864048 / assess 1864125, NR 0; market 1574400 on
+                 1b5ead66 untouched all night; quick_check 808.2 s; rc 0 05:44:44Z; health ok, schema 28 (ops.md
+                 742e6b8c). PRODUCTION NOW: web/research/assess 28c66f14, market 1b5ead6. JUDGE PID research child
+                 1864116 (start 05:44:29Z), sampler every 10 min to 20:05 ET. Design poll 04:00-06:55 ET for P1/movers.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
