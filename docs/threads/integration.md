@@ -1178,6 +1178,13 @@ error                                                  TYPE                     
   Google refuses non-test accounts" before reading     before reading the vendor's page            Google's page
   Google's Audience page; false for our three scopes.  (the family: passed on unread)              minutes later)
   Retracted to Ops next message; never reached him.
+2 chained `git log origin/main..main && git push`    acted before reading the listing  YES      luck (push
+  in ONE command, minutes after Research reported   (the family: passed on unread;    (family; rejected non-
+  doing exactly this; the listing showed 3 peer     the class Research had JUST       same as  fast-forward,
+  commits (Web e125a066, Research 18e9f8b0,         named to me)                      a peer's origin had
+  d717add1) that would have been published.                                          today)   moved)
+  Never reached origin. CURE (procedure, not care): the listing and the push are SEPARATE tool calls, always;
+  push only when the listing is all mine or each other line is cleared by its owner in writing.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
