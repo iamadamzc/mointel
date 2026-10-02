@@ -13490,3 +13490,12 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   NOT +50%: nothing to him as a regression. Two different days; no cause attributed. First levels refreshes (research
   1864116): 07:55Z 0 names 2 ms; 08:00Z 6/8,108 ms; 08:05Z 90/106,503 ms (cold); then 11,170 / 10,158 / 3,493 ms. To Research.
 - Heavy slot traffic: Research bac44069 green (222/3,285); Design 750b9f25 green (223/3,289). Neither approved to ship yet.
+- Levels post-ship graded NOT TRIGGERED by Integration (114f22ef). STANDING FLAG for this seat: cold refresh ~1.18 s/name
+  (106.5 s, 90 names); the 270 s kill lands near ~228 names: if the covered set grows well past 150, re-measure the cold
+  refresh first.
+- FINRA: his file A:\mointel\docs\finra.txt (one 20-char token, VALUE NOT READ) was untracked and NOT gitignored in a shared
+  index; added `docs/finra.txt` to .git/info/exclude (local, all worktrees). Asked him to move it to .env.local
+  (FINRA_API_CLIENT_ID / _SECRET suggested; no code reads a FINRA var yet) and delete the file. Coverage check waits on his
+  "credential in"; key names only.
+- ROUTING: Integration local_697b69cc handing off (~15:2xZ); send to the NEW Integration-tmi by title (createdAt after
+  15:2xZ 10-02). Its live state: integration.md "LIVE STATE: AT THE TWENTY-SECOND SEAT'S HAND-OFF".
