@@ -1247,6 +1247,10 @@ COMMERCIAL 13f   b08f849a (on origin, read heading :628): RECONCILED ACCEPTED on
                  convertible/preferred blocks (4 of 144) as well as active ATM/equity line; 120 d only with condition 1.
                  Own correction: "or more" grades can overstate on a stale count + issuance; "under 5%" survives.
                  Sent to Research + Marketing. Display mode = his, open.
+MARKETING        Size wording revised to "of the filed share count", date inline > 45 d; three gate-fail reasons (2 and
+                 3 pending Commercial); hover floor caveat aligned; owns its R6 "can only understate" premise error.
+                 Legend proposed "... not that it is low": I flagged the clause (a measured silent name IS below
+                 threshold); suggested dropping it. Ready for either display mode.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
