@@ -81,6 +81,26 @@ describe('the v5 fact sheet', () => {
     expect(JSON.stringify(sheet)).not.toContain('4321987'); // no float number can reach it: the block has none
   });
 
+  it('v6 fixes (b) and (c): a date-only source gives the writer a calendar date and NO clock (CMCT), never the day before (HIT)', () => {
+    const cmct = {
+      ...RESEARCH,
+      catalyst: {
+        ...RESEARCH.catalyst,
+        eventTimestamp: '2026-09-30T12:00:00Z',
+        sources: [{ id: 118584, title: 'A dated filing', publishedAt: '2026-09-30T12:00:00Z', precision: 'DATE_ONLY' as const }],
+      },
+    };
+    const lines = factSheetV5(FACT, cmct, PATH);
+    expect(lines).toContain('event time: September 30, 2026 (date only, give no time of day)');
+    expect(lines).toContain('cited source: "A dated filing", September 30, 2026');
+    expect(JSON.stringify(lines)).not.toContain('08:00');
+    const hit = {
+      ...RESEARCH,
+      catalyst: { ...RESEARCH.catalyst, eventTimestamp: '2026-03-27T00:00:00Z', sources: [] },
+    };
+    expect(factSheetV5(FACT, hit, PATH)).toContain('event time: March 27, 2026 (date only, give no time of day)');
+  });
+
   it('tells the writer to state the price itself when no path is printed (Design’s ask)', () => {
     const lines = factSheetV5(FACT, RESEARCH, null);
     expect(lines).toContain('no path is printed for this name: state its price yourself, $5.10');

@@ -26,7 +26,7 @@ import { etClock } from '../../market/session';
 import type { ReportKind, ReportPath } from './contract';
 import type { ReportFact } from './facts';
 import type { ReportResearch } from './research';
-import { etDayAndClock } from './traced';
+import { calendarDate, etDayAndClock, eventWhen, sourceWhen } from './traced';
 import type { AfterHoursTotals } from './totals';
 import { roundTo } from './verify';
 import {
@@ -64,17 +64,20 @@ const MONTH_NAMES = [
 
 /** "2026-06-30" (or an instant, read in ET) as "June 30, 2026": the form the checker parses. */
 export function longDate(value: string): string | null {
-  const day = etDayAndClock(value).date;
+  return dayWords(etDayAndClock(value).date);
+}
+
+/** A DATE-ONLY value as the calendar date it was stored as (v6 fix (b); `calendarDate`). */
+export function calendarLongDate(value: string | null | undefined): string | null {
+  return dayWords(calendarDate(value));
+}
+
+/** "2026-06-30" as "June 30, 2026". */
+function dayWords(day: string | null): string | null {
   if (!day) return null;
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day);
   if (!match) return null;
   return `${MONTH_NAMES[Number(match[2]) - 1]} ${Number(match[3])}, ${match[1]}`;
-}
-
-/** An instant's ET clock to the minute, or null for a bare date. */
-function clock(value: string | null): string | null {
-  const found = etDayAndClock(value).clock;
-  return found ? `${found} ET` : null;
 }
 
 const shares = (count: number) => Math.round(count).toLocaleString('en-US');
@@ -102,13 +105,15 @@ function researchSheet(research: ReportResearch): string[] {
     `catalyst: ${STATUS_WORDS[catalyst.status] ?? humanise(catalyst.status)}; grade: ${humanise(catalyst.grade)}; type: ${humanise(catalyst.type)}; confidence: ${humanise(catalyst.confidence)}`,
   );
   if (catalyst.summary) lines.push(`catalyst summary (restate in your own words, never quote): ${catalyst.summary}`);
-  const eventClock = clock(catalyst.eventTimestamp);
-  const eventDate = catalyst.eventTimestamp ? longDate(catalyst.eventTimestamp) : null;
-  if (eventDate) lines.push(`event time: ${eventClock ? `${eventClock}, ` : ''}${eventDate}${eventClock ? ' (exact)' : ' (date only)'}`);
+  // v6 fixes (b) and (c): the shared rule (`eventWhen`, `sourceWhen` in traced.ts),
+  // so the sheet and the checker can never disagree about a date or a clock.
+  const event = eventWhen(catalyst);
+  const eventClock = event.clock ? `${event.clock} ET` : null;
+  const eventDate = dayWords(event.date);
+  if (eventDate) lines.push(`event time: ${eventClock ? `${eventClock}, ` : ''}${eventDate}${eventClock ? ' (exact)' : ' (date only, give no time of day)'}`);
   for (const source of catalyst.sources) {
-    const when = source.publishedAt
-      ? `${source.precision === 'EXACT' ? `${clock(source.publishedAt) ?? ''} ` : ''}${longDate(source.publishedAt) ?? ''}`.trim()
-      : 'undated';
+    const at = sourceWhen(source);
+    const when = at.date ? `${at.clock ? `${at.clock} ET ` : ''}${dayWords(at.date) ?? ''}`.trim() : 'undated';
     lines.push(`cited source: "${source.title ?? 'untitled'}", ${when}`);
   }
   if (catalyst.plausiblyExplainsMove === true) lines.push('fit: the desk reads it as plausibly explaining the move that has happened');
@@ -121,13 +126,13 @@ function researchSheet(research: ReportResearch): string[] {
   lines.push('float: no float the desk can independently verify (say only this about float; never a number, never "small")');
   if (structure.sharesOutstanding) {
     lines.push(
-      `shares outstanding: ${shares(structure.sharesOutstanding.count)} as of ${longDate(structure.sharesOutstanding.asOf)} (the outstanding count, not a float: always give the date, and say "not a float" beside any float words)`,
+      `shares outstanding: ${shares(structure.sharesOutstanding.count)} as of ${calendarLongDate(structure.sharesOutstanding.asOf)} (the outstanding count, not a float: always give the date, and say "not a float" beside any float words)`,
     );
   }
   for (const block of structure.supply) {
     const parts = [humanise(block.type), humanise(block.status)];
     if (block.amountShares !== null) parts.push(`${shares(block.amountShares)} shares`);
-    if (block.effectiveDate) parts.push(`effective ${longDate(block.effectiveDate)}`);
+    if (block.effectiveDate) parts.push(`effective ${calendarLongDate(block.effectiveDate)}`);
     lines.push(`supply: ${parts.join(', ')} (capacity, not proof of selling; give its status exactly as written, and "possibly active" is never "active")`);
   }
   return lines;
