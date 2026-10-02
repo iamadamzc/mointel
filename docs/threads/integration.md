@@ -3315,6 +3315,10 @@ AFTER HAND-OFF   Commercial (for the successor): SI label wording the build carr
                  displays band-only below Elevated with "to under" boundaries + denominator inline; one merged legend.
                  Web's end-user paragraph: one required fix pending (Commercial 10.6b: "one condition" / "in FINRA's own
                  words" misdescribe the contract). Nothing to him.
+                 Commercial 13e: R4 + R5 confirmed (legend sentence; chip shows settlement age). NEW R6: the board chip is
+                 SIZE-ONLY (e.g. HEAVY); "Very deep" stays in the drawer ("on normal volume"), since FINRA's DTC divides by
+                 the prior cycle's volume and overstates on a fresh mover; a depth chip would have to state its basis.
+                 Sent to Marketing. Research (capped) must pick it up from commercial.md 13e: successor to confirm.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
