@@ -13539,3 +13539,5 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   verified node --env-file and @next/env both load len 13 with '#' and '$'. After tonight's sync-env, confirm on the box
   that a process with EnvironmentFile=/etc/mointel/mointel.env sees len 13 (length only). FINRA coverage check DONE:
   docs/ops/finra-coverage-2026-10-02.md at 91caa2f3 (49/50 board names; NASDAQ 36/37, NYSE 11/11, AMEX 2/2; GOW absent).
+| pushed my commits via a side worktree from origin/main when peers' commits sat on local main; each left a duplicate on local main (dc3bff07 = 038ce171, 1f6feddd = 91caa2f3) that the next plain push carries | side-route-push-duplicates | no | peer (Integration), harmless (content-identical) |
+Cure: docs-only commits wait on local main and go up by the normal route when `git log origin/main..main` is only mine (or after peers push). A side worktree only for something that cannot wait, and then say so.
