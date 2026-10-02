@@ -3416,6 +3416,11 @@ V6 STEP 4 BUILT  research/reports-v6 b8719e7c (Research gate: tsc 0, lint 0, 228
                  renders `overall`: Design builds option B render on research/reports-v6 (ordered). Next: step 5 harness.
 STEP 5 LIVE      558d07a5 (MOVERS) NR 0; market untouched; quick_check 824.8 s; rc 0 05:28:42Z; min avail 1,218 MB. Step 6
                  28c66f14 launching (Ops est. lands before 08:00Z).
+V6 SURFACE       Design tag design/reports-v6-surface-on-b8719e7c -> 1ba42292 (1 over b8719e7c: SessionReports.tsx,
+                 sessionReports.ts, DecisionCells.tsx (WhyMarks shared with board; Design says board renders identically:
+                 CHECK AT REPLAY), reportV6.test.ts). Gate 229/229, 3,322, lint/build/typecheck 0. Not yet rendered on real
+                 v6 output (step-5 samples pending). Open: does checker v6 enforce the recap F9 line (Design keeps the
+                 watch sentence if not).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
