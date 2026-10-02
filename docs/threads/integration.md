@@ -3399,6 +3399,9 @@ DESIGN P2 PASS   design.md 87bf8a0e: (A) live on review link 61 (revoked after):
                  until citations cut (board/dossier) and v6 (d) (report briefing). 7 requests.
 STEP 2 LIVE      2a625a5b on web/research/assess NR 0; market untouched; down 3 s; quick_check 820.8 s; rc 0 04:39:17Z; min
                  MemAvailable 973 MB. Step 3 0e883fec launching.
+STEP 3 LIVE      0e883fec (LEAK FIX) on web/research/assess NR 0; market untouched; quick_check 838.0 s; follower timed out
+                 "NOT confirmed" but /proc + journal "deployed 0e883fec" confirm (Ops); min avail 992 MB. Research pid
+                 1821896; judge day Fri 10-02 (Research told). Step 4 19f9d721 launching.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
