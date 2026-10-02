@@ -129,7 +129,7 @@ function ZoneRow({ zone, side }: { zone: LevelZone; side: 'ABOVE' | 'BELOW' }) {
       </span>
 
       <span
-        className={`num w-[76px] shrink-0 text-[11px] ${side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
+        className={`num w-[112px] shrink-0 whitespace-nowrap text-[11px] ${side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
       >
         {zone.distanceAbs === null ? '—' : `${sign}${zone.distanceAbs.toFixed(2)}`}
         {zone.distancePct === null ? '' : ` / ${zone.distancePct.toFixed(1)}%`}
@@ -201,7 +201,7 @@ function StoredRow({ level }: { level: StoredLadderRow }) {
       <span className="w-[110px] shrink-0 text-[10px] uppercase tracking-wide text-ink-2">resistance</span>
       <span className="w-[92px] shrink-0 truncate text-[10px] text-ink-3">{level.tags}</span>
       <span
-        className={`num w-[76px] shrink-0 text-[11px] ${level.side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
+        className={`num w-[112px] shrink-0 whitespace-nowrap text-[11px] ${level.side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
       >
         {level.distanceAbs === null ? '' : `${sign}${level.distanceAbs.toFixed(2)}`}
         {level.distancePct === null ? '' : ` / ${level.distancePct.toFixed(1)}%`}
@@ -323,7 +323,7 @@ export function LevelLadder({
           <span className="w-[110px] shrink-0 text-[10px] uppercase tracking-wide text-ink-2">
             current price
           </span>
-          <span className="num w-[76px] shrink-0 text-[11px] text-ink-3">
+          <span className="num w-[112px] shrink-0 whitespace-nowrap text-[11px] text-ink-3">
             {map.spreadPct === null ? '' : `${map.spreadPct.toFixed(2)}% sprd`}
           </span>
           <ClampedText
