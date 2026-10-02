@@ -3383,6 +3383,8 @@ CHAIN GATED      Ops (ops.md f83fda0d): 840741d3 214/3,202; 2a625a5b 217/3,225; 
                  558d07a5 222/3,268; 28c66f14 222/3,273; lint 0 errors. `next build` not stated for the last four: asked
                  Ops for one build of the tip 28c66f14. Remaining per step: /proc = parent, his yes, research restart
                  first, build peak measured on build 1.
+                 TIP BUILT (Ops 3c9dd99b): 28c66f14 next build rc=0 03:51:26-03:52:16Z, /review/[token]/api/levels present;
+                 package.json + lockfile identical to 2a625a5b. CHAIN READY pending his yes per step.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
