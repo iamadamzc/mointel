@@ -13284,3 +13284,45 @@ the ranked 50 under Rank/RVOL; reports and checkpoints unchanged.
 Ruling verified by Research as his user turn 2026-10-01T15:53:57Z in Integration's 1bfab363. **Volume floor built:
 ops/top-movers-volume 499f7a30** (on aaebfc42): readTopMovers(db, tradingDate, band, minPct, minVolume, limit), cumulative_volume
 >= minVolume, NULL fails; readModel.ts:574 passes 0 so it compiles alone (Research replaces with config). 6 tests; mutants 2/2, 1/1.
+
+## HAND-OFF, 2026-10-02 03:1xZ (23:1x ET Thu): this seat (local_8a0801c2) RETIRES on his word ("yes, hand off")
+Reason: repeated factual slips in his channel during the OOM incident (step named before opening the journal; a 25 h run
+reported as 75 min); ledger above. Session ran ~2 days.
+
+**Production, read 2026-10-02T03:11:19Z:** web 1773442 / research 1773503 / assess 1773574 on
+b5a35fda060eda6e23953d7dc8b0ecace5e2be4b (start 02:54:27-29Z), NR 0; market 1574400 on 1b5ead66 (since 2026-09-30
+00:15:40Z), NR 0; no deploy unit. Pins: market-floor 2bcf1cfe (v28), rollback-baseline 372f5eb (v18). Schema 28. market.db
+4.86 GB; history.db 610 KB (created by the first levels refresh). 57G free. Memory: 3,832 MB total, NO swap, ~2,330 MB
+available. Env: LEVELS_REFRESH_ENABLED=1 (added 02:38:14Z, backup /etc/mointel/mointel.env.bak-20261002T023814Z);
+HISTORY_STORE_ENABLED absent. Levels refresh: cold 75.5 s, warm 7.2 s and 3.3 s (147 names each).
+
+**Shipped this seat (all on his word in this chat):** 46d9f9d speed fix + weekday deploy guard; 89d39053 em-dash cut;
+2bcf1cf v28 (down 17.7 min) + market-floor re-pin; e8822583 session reports (runner in the research worker); b5a35fda levels
+(verified: /api/levels NXL 200, 66 levels).
+
+**OPEN, owner = successor Ops seat, each with its trigger:**
+1. THE OOM FIX IS THE GATE ON EVERY SHIP. 02:39:45Z the kernel OOM-killed the old research worker during `next build`
+   (research RSS 1,383 MB after ~25 h; market 702 MB; build heap cap 1,536 MB; no swap). Research's leading candidate
+   (c08400dd): SecClient's process-lifetime cache never evicts. Trigger: read research RSS at 10:00 ET today (after his
+   window; it was 123 MB at 03:08Z) and again before tonight's window; project; then bring HIM one decision: restart the
+   research worker before each deploy / swap file on the box / SEC cache eviction (Research) / build off-box. Recommend with
+   cost and risk. No deploy until he rules.
+2. HELD RELEASES, each gated here and approved by Integration by literal sha; each needs HIS yes in your chat, /proc between:
+   (A) 840741d399fed79dc05540dea9c9b81007875fa2 (base b5a35fda = /proc now; 214/214; four changes, question drafted above);
+   citations 2a625a5bc806d923856c52e46a3bf74710bc383a (base 840741d3; 217/217; question drafted above, 996/1,178 + ~5% residual);
+   movers 98905b08352ba8681ae6cf4b7816bfda731e8325 (base 2a625a5b; YOUR gate owed; question wording in Integration's note above);
+   citation residual follow-up d11a59f5 (main; needs a cut from /proc). Build each in A:\mointel-build (fresh npm ci;
+   Turbopack refuses the node_modules junction).
+3. POST-SHIP LEVELS CHECK (registered): first session with the flag on, 09:30-10:30 ET [flush] whole p50 and max vs
+   2026-09-30's window; +50% -> he hears it the same day; off is his call. Read AFTER 10:00 ET. Research wants the morning's
+   first "[levels] refresh ... totalMs=" lines too.
+4. Research's queued read (asked ~02:4xZ): SELECT a.assessment_type, r.count_window, COUNT(*) AS n, MIN(a.trading_date),
+   MAX(a.trading_date) FROM desk_assessment_ranges r JOIN desk_assessments a ON a.id = r.assessment_id GROUP BY 1, 2
+   ORDER BY 1, 2; read-only, outside 07:00-10:00 ET, commit, sha to Research.
+5. Housekeeping (no trigger, his or the owner's word): orphan local suite pids 20200/22704/24128 (hung since 09-30 12:50
+   local; classifier refused my kill); my worktrees to remove with `git worktree remove` (junction node_modules, never a
+   recursive delete): A:\mointel-runner, -reportscut, -build, -levelscut, -levelspre, -levelsthu, -movers, -moverstry, plus
+   the older -ops, -hist, -v28main, -chk1, -chk2; .claude/worktrees/agent-acfba7ff0c32d6e90 (.next is scanned by eslint: 60
+   errors; not mine); box pid 146984 (2026-09-11 sleep loop); worker em-dash strings ride the next market restart.
+6. Routing today: Integration-tmi = local_697b69cc (22nd); Research-tmi = local_5f4bfcf8; Design-tmi = local_dfce21d4.
+   Find by title before every send.
