@@ -50,6 +50,8 @@
 
 These are a third party's computation from FINRA's file. This seat has not reproduced them, and they are market-wide, not his names. They are the only recent distribution read.
 
+**Words revised again in `docs/research/short-interest-label-design.md` on Commercial's review (R1):** the lowest grade is shown as the literal band "under 5% of shares outstanding" with no word, and "Above normal" is "Moderate". "Normal" claimed an absence of crowding that a floor measure cannot support. The lines below are unchanged.
+
 | Floor | Word | Where that sits in the market (Sep 15, 2026, third-party figures above) |
 |---|---|---|
 | under 5% | **Normal** | Around the median (3.4%) |
