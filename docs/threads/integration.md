@@ -3300,6 +3300,12 @@ V6 STEP 2        Probe e1e7d4f3 (raw cbec4095 ancestor; read): $8.76 of $10; CUR
                  lines; P1 removes its two named misreadings; same class persists elsewhere. ORDER: P1 = checker prompt v4
                  in v6; residual strictness its own measured proposal after v6. Step1c (49ebf469): Sheet-research freeze
                  per checkpoint NOT in v6 (store change); boundary stated in the step-5 sample. Step 4 cleared.
+ONE VOCABULARY   Design 8233d809 reconciliation: Marketing's tag words vs board vocabulary disagree (grade, explains,
+                 cycle, supply). ORDER CALL REVERSES my V6 STEP 3 call: ONE vocabulary; v6 tags via the board's
+                 functions (Research's adapter) as the board says them today; no cycle tag; supply aggregate chip;
+                 Marketing's clearer words = one later change to BOTH surfaces (Design checks 1,024). Kept from Marketing:
+                 float footer, recap F9 seam line. displayedFloat null; "DIRTY FLOAT" verdict. Relayed for Design
+                 (send-limited) to Marketing + Research.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
