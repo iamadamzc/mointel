@@ -305,7 +305,7 @@ export function resolveBlueSkyThreshold(
     return {
       ...base,
       unverifiedReason:
-        "A share consolidation stands between the highest stored price and today, and no high on today's share basis is established, so no ceiling is compared with today's price.",
+        "A share consolidation stands between the highest stored price and today. With no high established on today's share basis, no ceiling is compared with today's price.",
     };
   }
 
@@ -314,7 +314,7 @@ export function resolveBlueSkyThreshold(
     return {
       ...base,
       unverifiedReason: behindConsolidation
-        ? `Only ${pool.length} prior session(s) on today's share basis are retained; at least ${MIN_SESSIONS} are needed before a ceiling means anything.`
+        ? `Only ${pool.length} prior ${pool.length === 1 ? "session on today's share basis is" : "sessions on today's share basis are"} retained; at least ${MIN_SESSIONS} are needed to set a ceiling.`
         : `Only ${pool.length} prior session(s) are retained; at least ${MIN_SESSIONS} are needed before a ceiling means anything.`,
     };
   }
@@ -452,9 +452,9 @@ export function describeBlueSkyWindow(threshold: BlueSkyThreshold): string | nul
   if (threshold.consolidated) {
     const split = threshold.lastSplit ? splitWords(threshold.lastSplit.ratio) : null;
     if (split && threshold.lastSplit) {
-      return `Highest prior-session high since the ${split} effective ${threshold.lastSplit.firstSessionOnBasis}. Older highs, back to ${threshold.windowFrom}, are not compared with today's price.`;
+      return `Highest prior-session high since the ${split} effective ${threshold.lastSplit.firstSessionOnBasis}. Older highs back to ${threshold.windowFrom} are not compared with today's price.`;
     }
-    return `Highest prior-session high on today's share basis. Older highs, back to ${threshold.windowFrom}, sit behind a share consolidation and are not compared with today's price.`;
+    return `Highest prior-session high on today's share basis. Older highs back to ${threshold.windowFrom} sit behind a share consolidation, so they are not compared with today's price.`;
   }
-  return `Highest prior-session high across ${threshold.sessionsObserved} split-adjusted sessions, ${threshold.windowFrom} to ${threshold.windowTo}. Not necessarily an all-time high.`;
+  return `Highest prior-session high across ${threshold.sessionsObserved} split-adjusted sessions, ${threshold.windowFrom} to ${threshold.windowTo}. May not be an all-time high.`;
 }
