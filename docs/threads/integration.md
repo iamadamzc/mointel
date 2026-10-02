@@ -1242,6 +1242,11 @@ SI RUN 3         Research 51312b83 (read; prereg 7947f51f -> raw 01fe7fcf -> res
                  Elevated 5, Heavy 5 => size exceptions ~2.4%. The "98% ungraded" headline WITHDRAWN (Research's).
                  Commercial asked (RECONCILED's 120 d + 4 exercise-risk pairs vs the "at least" floor). Put to him:
                  display mode, recommending exception-only on the COMBINED RECONCILED source, subject to Commercial.
+COMMERCIAL 13f   b08f849a (on origin, read heading :628): RECONCILED ACCEPTED on 3 conditions: grade stated against "the
+                 filed share count (dated {date})", date inline when > 45 d; REFUSE names with KNOWN_ACTIVE warrant/
+                 convertible/preferred blocks (4 of 144) as well as active ATM/equity line; 120 d only with condition 1.
+                 Own correction: "or more" grades can overstate on a stale count + issuance; "under 5%" survives.
+                 Sent to Research + Marketing. Display mode = his, open.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
