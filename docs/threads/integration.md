@@ -1185,6 +1185,14 @@ error                                                  TYPE                     
   d717add1) that would have been published.                                          today)   moved)
   Never reached origin. CURE (procedure, not care): the listing and the push are SEPARATE tool calls, always;
   push only when the listing is all mine or each other line is cleared by its owner in writing.
+3 told HIM the share count "can't be worked out       asserted an absence (no other     no       OWNER (his
+  from trading data" and "the calibration counted     source) from one module read     (new;    screenshot of
+  the one source we can stand behind", having read    (float.ts), without opening the   family)  a desk STRUCTURAL
+  only lib/research/float.ts. The dossier schema      research side that holds one                WARNING citing
+  carries structure.sharesOutstanding + date                                                      a filed count)
+  (schema.ts:125-126), interpreter-extracted from filings; the calibration never used it
+  (calibrate.ts:7, :158-184). Corrected to him in the next message; recommendation WITHDRAWN pending a re-run.
+  LESSON: before telling him a source does not exist, grep the field name across lib/, not one module.
 PUSH STATE       Ops offered the temp-worktree cherry-pick route for 65dcc9d8; DECLINED (charter: never push through a
                  side worktree). Ops's own dc3bff07 (local) = 038ce171 (origin), a duplicate pair; told Ops. My notes
                  (65dcc9d8, 5443f5f3, and after) wait on local main until Research (d717add1, 18e9f8b0 = a0f880c0 by
