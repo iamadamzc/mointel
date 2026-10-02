@@ -18,7 +18,10 @@
 
 ## The prediction, fixed before ship
 
-**Judged on the FIRST FULL TRADING DAY after the ship** (04:00 to 20:00 ET).
+**Judged on the FIRST FULL TRADING DAY after the ship.** Samples are taken **04:00 to 07:00 and 10:00 to 20:00 ET only**.
+
+- **Amended before ship** (Ops-tmi `local_d8a2a445`): no box reads in his 07:00 to 10:00 ET window, and an on-box sampler would be a new production process needing his word.
+- **What the gap can hide:** a transient peak inside 07:00 to 10:00 that recedes by 10:00. A LEAK cannot hide there: its growth is cumulative, so it is in the 10:00 reading. The max-RSS bound is judged on the samples taken.
 
 **Samples:** the research worker's RSS, every 10 minutes.
 
