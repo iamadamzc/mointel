@@ -86,3 +86,11 @@ Marketing's tag words (`docs/research/reports-v6/step3-narrative-voice.md`, `6cc
 **Research's step 1c question (dirty float):** keep `displayedFloat` null in reports, as proposed. The chip then reads "DIRTY FLOAT" with no float number, which is the verdict-only form the guardrail asks for; no different words needed. The report and board can differ on a dirty-float name only in that value, and the footer already says the float is unverified.
 
 **Research's step 1c differences (sheet inputs absent in reports):** accepted. The report's grade and headline are the desk dossier's; on a name the Sheet grades differently, the report's letter can differ from the board's. That is a true difference of source, and the Sheet is a migration artefact (audit section 11, item 1); it is not a reason to freeze the Sheet onto checkpoints.
+
+## Marketing's words, received after the final call (2026-10-02)
+
+- **Label:** "THE SESSION", kept.
+- **Float footer, FINAL (Marketing's later message supersedes its step-3 line):** "The desk cannot independently verify a float for any name in this report."
+- **Computed section headings, grouped by catalyst status, "LABEL · count":** FRESH_FOUND "FRESH NEWS"; SECONDARY_STALE "OLDER NEWS"; NONE_FOUND "NO CATALYST FOUND"; CONFLICTING "MIXED SIGNALS"; NOT_ANALYZED "NOT YET RESEARCHED"; UNKNOWN "UNCLEAR". Order: fresh first (Marketing: the grouping that serves him most). The order of the rest is Research's mapping to state.
+- **Explains the move:** Marketing's message still cites the three-state call; Integration's final call (above) reverses it, so the board's "not the move" stands in v6. Integration relayed the reversal to Marketing.
+- **Seam for v6.1:** he floated a "what to watch" block (the model's hedged themes from the dossiers). If it is scoped it sits DIRECTLY UNDER "THE SESSION", above the F9 line / watch line, visibly marked as a read, not a verified fact. v6's layout leaves that slot empty: nothing between the narrative and the seam line today.
