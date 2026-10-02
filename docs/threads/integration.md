@@ -3204,6 +3204,11 @@ HIS, TO COMMERCIAL "registered. accepted exposure" (Commercial 88f2b7c9 §10.5):
 LEVELS FLUSH     Research 114f22ef: registered post-ship check NOT TRIGGERED (per-minute p50 median 179.0 vs 181.7 ms,
                  -1.5%; max 7.4 vs 11.4 s; >250 ms 212 vs 424). Observation: cold refresh ~1.18 s/name (90 names 106.5 s);
                  270 s kill at ~228 names: re-measure before the covered set passes ~150. Copied to Ops. Nothing to him.
+SI LABEL DESIGN  Research 979c75a7 (docs/research/short-interest-label-design.md): grade words/bands only, "Source:
+                 FINRA" + settlement date per line, gated floor of filed shares outstanding, never "of float"; mock with
+                 placeholder tickers; calibration pre-registered §5 (6 settlements, top-12 names x 20 sessions, re-draw
+                 bands holding > half; spread only). Old classification examples superseded (e1083043). Build waits on:
+                 coverage check (his credential), Commercial §8, Marketing words, Web terms adopted by him, his yes.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
