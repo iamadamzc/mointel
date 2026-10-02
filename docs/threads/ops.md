@@ -12975,6 +12975,8 @@ reminder set for 16:13 ET (cron 7f7446c4), one gate at a time.
 | Told him reports cost "~20x the estimate"; the $0.003 was the writer alone, the full estimate was ~$0.02, so ~3x | compared-against-an-unverified-baseline | no (first) | Research; corrected to him |
 | Ran 3 mutants via Windows python writing /tmp, which Git Bash's cp could not see: all "survived" on unchanged code | mutant-never-applied (memory's known trap) | no (first this session) | self, from the cp error; rerun with a shared path and an applied-check |
 | Ran a count(*) over ticker_session (298k rows, index count) at 13:18Z = 09:18 ET, inside his window, after agreeing "after 10:00 only" | time-gate-not-checked-before-a-box-read | no (first) | self, from the box clock in the output; rule: read the clock before any box read |
+| Told peers and him the OOM was during npm ci; the journal says during next build | asserted-before-opening | no (first this session) | self, from the deploy journal; corrected to Integration and him |
+| Told peers and him the killed research worker ran ~75 min; it ran ~25 h (dropped the date 10-01 vs 10-02) | timestamp-arithmetic-without-the-date | no (first) | self, from a research_jobs query; corrected to peers and him |
 
 **17:3xZ Report runner BUILT:** ops/report-runner 4f428748 (worktree A:\mointel-runner; main 3bb59a2f + v28 256badaf,
 b4d1f132). Research worker derives the queue from the store (research_jobs cannot carry it: ticker NOT NULL + live unique
@@ -13271,7 +13273,8 @@ memory use is fixed. Open item for Ops: why research reached 1.4 GB in 75 min.
 CORRECTION from the journal (my "npm ci" was wrong): npm ci finished 02:39:24 ("added 471 packages in 19s"); the OOM at 02:39:45
 was DURING `next build` (started 02:39:24, heap capped 1,536 MB, compiled 02:39:52). Kernel table at the kill: research node
 1,383 MB RSS (1,381 anon), market node 702 MB, then 67 / 58 MB; Mem-Info anon 3.55 GB of 3,832 MB; Free swap 0. After the
-restart research was ~110-127 MB, so its 1.4 GB was growth over ~75 min of running (since 01:24:28Z). RSS sampling every
+restart research was ~110-127 MB, so its 1.4 GB was growth over ~25 h 15 min of running (2026-10-01T01:24:28Z to
+2026-10-02T02:39:45Z; I first wrote "75 min", dropping the date: corrected to peers at 30448f8c). RSS sampling every
 10 min for an hour started 02:58Z (scratchpad research-rss.log) to measure the growth rate.
 **MOVERS CUT (next ship night, NOT tonight): 98905b08352ba8681ae6cf4b7816bfda731e8325** (tag design/moving-on-e0f18bbb) =
 2a625a5b + 8 (Research's rule + my readTopMovers + Design's "moving" label); Integration APPROVED BY LITERAL SHA; Design gated it
