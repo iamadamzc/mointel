@@ -1,0 +1,86 @@
+{
+  "settlements": [
+    "2026-06-30",
+    "2026-07-15",
+    "2026-07-31",
+    "2026-08-14",
+    "2026-08-31",
+    "2026-09-15"
+  ],
+  "windowDates": [
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-31",
+    "2026-09-01",
+    "2026-09-02",
+    "2026-09-03",
+    "2026-09-04",
+    "2026-09-08",
+    "2026-09-09",
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-14",
+    "2026-09-15"
+  ],
+  "pairs": 434,
+  "tickers": 407,
+  "finraRows": 2345,
+  "noFinraRow": 8,
+  "sizeNotGraded": {
+    "counts": {
+      "NO_FILED_COUNT": 97,
+      "NO_RESEARCH_AS_OF_SETTLEMENT": 79,
+      "FILED_COUNT_NOT_CURRENT": 214,
+      "POSSIBLE_ISSUANCE_SINCE_COUNT": 27,
+      "SPLIT_SINCE_COUNT": 1
+    },
+    "total": 418,
+    "overHalf": [
+      "FILED_COUNT_NOT_CURRENT"
+    ]
+  },
+  "size": {
+    "counts": {
+      "under 5%": 7,
+      "Elevated": 1
+    },
+    "total": 8,
+    "overHalf": [
+      "under 5%"
+    ]
+  },
+  "depth": {
+    "counts": {
+      "Shallow": 326,
+      "Deep": 37,
+      "Moderate depth": 35,
+      "Very deep": 28
+    },
+    "total": 426,
+    "overHalf": [
+      "Shallow"
+    ]
+  },
+  "trend": {
+    "counts": {
+      "Building": 1
+    },
+    "total": 1,
+    "overHalf": [
+      "Building"
+    ]
+  },
+  "secRequests": 394,
+  "emptySizeGrades": [
+    "5% to under 10%",
+    "Heavy"
+  ],
+  "positiveControl": "SIZE GRADED FOR AT LEAST ONE PAIR"
+}
