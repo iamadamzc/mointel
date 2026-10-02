@@ -83,7 +83,7 @@ These are a third party's computation from FINRA's file. This seat has not repro
 | Change | Word |
 |---|---|
 | up 25% or more | **Building** |
-| down 25% or more | **Covering** |
+| down 25% or more | **Falling** (his ruling 2026-10-02; was "Covering") |
 | otherwise | **Steady** |
 
 - **No source gives these lines. They are this seat's proposal**, chosen so that one cycle's noise does not flip the word.

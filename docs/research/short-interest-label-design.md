@@ -53,7 +53,7 @@
 | Grade | Band |
 |---|---|
 | Building | up 25% or more |
-| Covering | down 25% or more |
+| Falling | down 25% or more |
 | Steady | otherwise |
 
 A trend grade is shown only at 5% of shares outstanding or more.
@@ -86,7 +86,7 @@ Otherwise size is "not graded", with the reason.
 
 (FINAL, Marketing: the size band is inline on the drawer line, so the hover does not repeat it; it keeps the floor caveat and the depth and trend bands.)
 
-Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very deep), fixed to "5 to under 10"; the filed-count clause folded into brackets. The drawer line joins only the grades present and says "1 day ago" when the age is one day. **Open, his call:** "Covering" names a mechanism (shorts buying back); "Easing" or "Falling" would describe only the position. Marketing flagged it to him; "Covering" is the trader-standard word.
+Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very deep), fixed to "5 to under 10"; the filed-count clause folded into brackets. The drawer line joins only the grades present and says "1 day ago" when the age is one day. **HIS RULING (typed to this seat, 2026-10-02): "Falling", not "Covering": "i like falling, because it's more congruent in the context of "interest". Interst is falling, not covering."** It names the position, not a mechanism: a drop in reported short interest can also come from positions moving into arranged-financing loans, which FINRA does not count (SR-FINRA-2026-012), so "Covering" would claim buying the data cannot show.
 
 **Commercial PASS (13b, 2026-10-02, on 0acc4bcb):** R1 to R3 applied as required, no further change. **Open, cosmetic, for Marketing:** size "Moderate" and depth "Moderate depth" can share one drawer line ("Moderate (5 to 10% of shares outstanding) · Moderate depth"), so one of the two words may need to differ.
 
