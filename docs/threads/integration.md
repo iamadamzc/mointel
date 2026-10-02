@@ -1105,6 +1105,13 @@ TIP MOVED        ops/signin-cut now 3b9c0a70ef050be3261107bc70956d9daba62e4a = 5
                  (probe header: reads carry Basic Auth; removal control / -> 200). REPLAYED + APPROVED: parent 5d1c4943,
                  route.ts only +13/-7 all comment lines, patch-id 4b51c8f516b5 equal, 0 U+2014, surface vs f52da6a0
                  EMPTY. SUPERSEDES 5d1c4943 (must not ship). Ops gates 3b9c0a70 only. Ops told (same conditions).
+WEB              Stood down before my message (removed its a4a06168 worktree). ALL 15 auth commits FINAL. c12745ac may
+                 ride my push. Web reviewed 3b9c0a70: does NOT enforce (no authenticate() caller outside app/auth;
+                 app/desk/page.tsx no session ref), nginx unchanged, legal text untouched.
+                 Guide line added on Web's catch (read: app/auth/start/google/route.ts:32 at 3b9c0a70, plain 500
+                 "Sign-in is temporarily unavailable." when Google env absent): open /signin only after Ops says keys are
+                 on the server. Not re-sent to him: it is a tonight line, and Ops sequences sync-env before the release.
+PUSHED           bc31a4ac..c763a72f (my six + Web's c12745ac on Web's word). origin/main..main checked before push.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
