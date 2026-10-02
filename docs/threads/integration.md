@@ -3187,6 +3187,11 @@ HOVER CORRECTED  Design declined to derive the price in the view (display must n
                  (no dollar figure: date + cumulative factor + not comparable + reference only) at 9694e8bb. My "Design
                  computes, no Research change" call was wrong for this desk's rule. ORDER: ship the fallback; no new
                  field. I had told HIM the hover shows $19.45: corrected to him.
+                 Tip 9694e8bb8cb6d27bd3a9f6683322d78329f4ae34 (tag design/bluesky-hover-v2-on-bac44069) PRE-CHECKED: 7 linear
+                 over 28c66f14 (2afd15bc, 9189b569, 70c534f4, ded2274a, bac44069, 750b9f25, 9694e8bb); no deploy/db/worker;
+                 0 added U+2014; "855" only in 3 code comments. Design gate 223/223, 3,291, build 0. Hover: "Highest stored
+                 high is from 2018-04-30, before share consolidations totaling 44,000-to-1, so it is not compared with
+                 today's price. Reference only." FINAL replay after the re-pick onto tonight's /proc (a4a06168 if shipped).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
