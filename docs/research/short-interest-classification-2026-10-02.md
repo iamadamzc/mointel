@@ -100,7 +100,9 @@ These are a third party's computation from FINRA's file. This seat has not repro
 
 ## 4. How it reads
 
-**Drawer: one line, always shown when a report is held.** Examples with illustrative numbers:
+**SUPERSEDED for the shipped form by `docs/research/short-interest-label-design.md` (2026-10-02).** Under FINRA's API terms (Commercial §10.2 and §11b, on his registration), the label shows grade words and their bands only, never FINRA's numbers. The size words say "of shares outstanding", never "of float". The examples below, which print figures and "of float", are kept as the first draft only and are NOT the form to build.
+
+**Drawer: one line, always shown when a report is held.** Examples with illustrative numbers (first draft, superseded):
 
 > Short interest: **Elevated** (at least 14% of float), **Deep** (6.2 days on normal volume), **Building** (up 40%). FINRA, as of Sep 15, 17 days old.
 
