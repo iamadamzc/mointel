@@ -1152,6 +1152,13 @@ WEB HANDS OFF    At his direction. d329a691 (web.md LIVE STATE 17:34Z + web-open
                  17:37Z) once it messages. Wiring (step 4) UNWRITTEN by design; successor writes it only after Ops's
                  three probe reads, which come to THIS seat. Web retracts its "transport rate limit" claim (he says no
                  such limit): treat Web silences tonight as unexplained, ask rather than assume.
+STEP-4 PICK RULE (read: git cat-file, 3b9c0a70 has NO components/NotAdmitted.tsx; 01455d93 adds it AND adds it to
+                 tests/web/emDash.test.ts SURFACES, which throws ENOENT on a missing file). The gate-wiring cut ON
+                 3b9c0a70 = TWO picks in order: 01455d93 WHOLE, then the wiring commit. Never split 01455d93 (the guard
+                 line without the component reproduces Design's em-dash-cut ENOENT). Web cleared 01455d93 + d329a691
+                 to ride a push; both are on origin.
+PUSHED BY PEER   Research 64814411 records that its chained push published 78db8f49 (mine) and d329a691 (Web's). Both
+                 were cleared to go; no revert. Told Research.
 ```
 **THE TWENTY-THIRD SEAT'S LEDGER:**
 ```
