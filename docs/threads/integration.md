@@ -3451,6 +3451,12 @@ SHORT INT (COM)  d5da7c08 (read in full): Alpaca = no SI; has shortable/borrow_s
                  non-commercial use": inverted; the doc is right; not relayed.) ANSWER GIVEN TO HIM + NEEDS YOU: borrow
                  status (Alpaca) / SI via Massive in drawer / neither; rec decide after v6 live. Open with Commercial:
                  may Alpaca borrow data be displayed to paying users.
+ONE LADDER       Design 2afd15bc on 28c66f14 (local tag design/one-ladder-wip; design.md efdc4ded): "inverted" = the
+                 resistance list ran nearest-first downward while LevelLadder is a price axis high-to-low. Built: section
+                 removed; stored levels as ladder rows placed by price vs live price, RESISTANCE + timeframe tags; crossed
+                 levels below the price row; nearest 10 above; states kept; open-air note suppressed when a stored level
+                 is nearer; L-cos (1)(3) folded in. Mutants 6/6, typecheck clean. NOT rendered/gated (his window): after
+                 10:00 ET. Both this and the v6 surface descend from 28c66f14; whichever ships second is re-cut on the first.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
