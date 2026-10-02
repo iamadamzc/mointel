@@ -18,6 +18,7 @@ import type { CompactLevel, LevelMap, LevelZone } from '@/lib/data/priceLevels';
 import { levelTypeLabel, toCompactRow } from '@/lib/data/priceLevels';
 import { ClampedText } from '@/components/ClampedText';
 import { describeBlueSkyWindow, type BlueSkyState } from '@/lib/market/blueSky';
+import { deepCeilingTitle } from '@/lib/dashboard/blueSkyView';
 import {
   airPocketAboveHolds,
   computedText,
@@ -176,7 +177,10 @@ function BlueSkyLine({ state }: { state: BlueSkyState }) {
     : (state.threshold.unverifiedReason ?? window);
 
   return (
-    <div className={`mb-3 border-l-2 pl-2 ${BLUE_SKY_TONE[state.status]}`}>
+    <div
+      className={`mb-3 border-l-2 pl-2 ${BLUE_SKY_TONE[state.status]}`}
+      title={deepCeilingTitle(state.threshold) ?? undefined}
+    >
       <p className="text-[12px] font-semibold tracking-wide uppercase">{state.label}</p>
       {detail ? <p className="mt-0.5 text-[11px] text-ink-3">{detail}</p> : null}
     </div>
