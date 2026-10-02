@@ -3310,6 +3310,11 @@ HAND-OFF         HIS: "no, i'll do this today. add it to the new chat prompt to 
                  MD (Google OAuth client, .env.local, seed, throwaway account, 10 min, + FINRA credential), every console
                  step read at source. LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF written; 21st's archived; opening
                  prompt rewritten. Ledger closed at 9.
+AFTER HAND-OFF   Commercial (for the successor): SI label wording the build carries = Marketing's reconciled version
+                 (commercial.md 13d, PASS) + R5 still OPEN: board chip shows settlement age ("SHORTS: HEAVY, 17d"); size
+                 displays band-only below Elevated with "to under" boundaries + denominator inline; one merged legend.
+                 Web's end-user paragraph: one required fix pending (Commercial 10.6b: "one condition" / "in FINRA's own
+                 words" misdescribe the contract). Nothing to him.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
