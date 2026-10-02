@@ -33,7 +33,6 @@ import {
   type ReportOpening,
   type ReportTimeline,
   type SlotView,
-  windowShowsWatchLine,
 } from '@/lib/dashboard/sessionReports';
 import { RISK_TONE, WHY_TONE, WhyMarks } from '@/components/DecisionCells';
 import { formatEtMinute } from '@/lib/format';
@@ -547,8 +546,11 @@ function ReportBody({
         <ReportOpeningBlock opening={opening} footnotes={footnotes} />
       ) : null}
 
-      {/* v5 opens with the watch sentence, then the after-hours picture when the
-          report has one; v4 with its headline. `reportLead` decides which. */}
+      {/* The watch sentence on EVERY v5 and v6 report, recap included: the
+          checker does not require the narrative's F9 line, and the narrative
+          can be null on any kind, so this is the only place N is certain to
+          appear (Research, 2026-10-02). v5 then the after-hours picture; v4
+          its headline. */}
       {lead ? <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{lead}</p> : null}
       {opening?.kind === 'V5_OVERALL' ? (
         <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{opening.text}</p>
