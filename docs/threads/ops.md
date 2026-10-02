@@ -13414,3 +13414,34 @@ research script, not shipped behaviour). DEPLOY_TESTS_SKIP allowed for all six c
 28c66f14b33a9835c9eb0b171577bf03a2073ed8, node_modules from 2a625a5b's npm ci (package.json + lockfile identical, checked),
 `npx next build` rc=0, 03:51:26Z-03:52:16Z, compiled 13.7 s, no errors or warnings in the log, route
 /review/[token]/api/levels present. The three middle cuts were not built individually. Heavy slot released 03:52Z.
+
+## SHIP NIGHT 2026-10-02 (Fri 00:07-01:45 ET): all six held releases LIVE, on his "yes, all six" in this chat
+His turn to Integration 04:03:25Z ("i'll restart so there's fresh memory ... and you can ship them tonitght") verified in
+1bfab363.jsonl; his per-chain yes was given HERE to the six named changes in order, with stop conditions (failed/rolled-back
+deploy, /proc not as expected, market restart, MemAvailable < 300 MB during build 1). No separate research restart (each
+deploy restarts it; he was told). Each: scratchpad ship.sh = /proc base-check x3 + market 1b5ead66 + no deploy unit, ABORT on
+mismatch, then `DEPLOY_TESTS_SKIP=1 RESTART_MARKET=no push-release.sh mointel-ssm <key> <full sha>` (gated in this session).
+
+| step | sha | quick_check | down | min MemAvailable | rc / confirmed |
+|---|---|---|---|---|---|
+| 1 (A) | 840741d3 | 764.5 s | 2 s | 1,034 MB | rc 0 04:22:24Z |
+| 2 citations | 2a625a5b | 820.8 s | 3 s | 973 MB | rc 0 04:39:17Z |
+| 3 leak fix | 0e883fec | 838.0 s | 3 s | 992 MB | follower "NOT confirmed" 04:55:54Z; /proc + journal "deployed", unit deactivated |
+| 4 levels mirror | 19f9d721 | 816.1 s | 2 s | 873 MB | rc 0 05:12:21Z |
+| 5 movers | 558d07a5 | 824.8 s | 2 s | 1,218 MB | rc 0 05:28:42Z |
+| 6 residual | 28c66f14 | 808.2 s | 2 s | 1,201 MB | rc 0 05:44:44Z |
+
+**BUILD PEAK (owed to Integration):** build 1, `next build` RSS max 1,288 MB; MemAvailable 2,300 -> min 1,034 MB (04:08:56Z);
+systemd deploy-unit memory peak 1.5-2.0G (includes cache). Each deploy restarts research, so builds start fresh: 6 fit.
+**Production 2026-10-02T05:44:54Z:** web 1863983 / research 1864048 (child 1864116, start 05:44:29Z) / assess 1864125 on
+28c66f14b33a9835c9eb0b171577bf03a2073ed8, NR 0; market 1574400 (child 1574419) on 1b5ead66 since 2026-09-30 00:15:40Z, NR 0,
+untouched all night. Schema 28. Pins unchanged (market-floor 2bcf1cf, rollback-baseline 372f5eb). 2,283 MB available.
+
+**Running from this session (background, die with it):** (1) leak judge sampler, every 10 min to 2026-10-03T00:05Z, skips
+11:00-14:00Z, log scratchpad/judge-2026-10-02.log (child pid, start, RSS, NR, distinct tickers since child start); first
+sample 05:45:09Z: 1864116, 118,756 KB, NR 0, 0 tickers. Commit the log at day's end, sha to Research + Integration.
+(2) Design poll 08:00-10:55Z: pings Design-tmi when a boardReason MOVER row AND a non-empty 2026-10-02 levels row exist.
+Reading tools: board API answers on :3000 locally; history.db needs `sudo -u mointel sqlite3 -readonly` (ubuntu gets
+"attempt to write a readonly database"); never plain sudo.
+**Open:** market.db snapshot for Research's v6 voice run: ASKED HIM, no answer yet; only after step 6 and before 04:00 ET.
+Heavy slot: free (Research v6 gate and Design 1ba42292 gate both done, green, by their reports).
