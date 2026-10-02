@@ -3227,6 +3227,11 @@ SI TERMS DRAFT   Web 2e8ded5f (docs/web/2026-10-02-finra-terms-draft.md); terms.
                  Commercial cd9e68a5 §10.6: end-user sentence PASSES; attribution strings must name FINRA as "owner and
                  source" (2.3(a)) -> Web revises (asked). PRICING OBLIGATION: the SI label is part of the subscription,
                  never an add-on or higher-tier-only feature (carry into any pricing question to him).
+                 Web 58bd606d: strings read "FINRA (owner and source)"; removed its own two glosses from the binding
+                 sentence (would have barred customers FINRA does not); 2.2 decides the feature, not the text. Web asked
+                 "is the ship hold on?": ANSWERED cleared (leak fix live, build peak measured, six deploys clean).
+HANDOFF ASKED    11:19 ET his "what needs to be done? should you hand off?": gave the full list; recommended YES (ledger 9,
+                 six in one family; ~13 h session). NEEDS YOU: hand off now? + Friday sign-in tonight (four items)?
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
