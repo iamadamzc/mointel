@@ -629,12 +629,46 @@ market, not what is permitted.*
    item 3, now with numbers. **FINRA's API terms permit derived redistribution of FINRA's
    own data; Nasdaq's schedule prices Nasdaq's report. Whether the schedule reaches a
    label we derive from FINRA's API data, for a Nasdaq-listed name, cannot be told from
-   public text.** Most of the $1 to $20 names are exchange-listed, so this is the real
-   open question, not the clause 2.2 question alone.
+   public text.** [CORRECTED the same day, see 11b: this overstated the risk. The
+   Equity Data terms list "Third Party Terms: Not applicable," and no source read
+   shows an exchange claiming rights over data taken from FINRA.]
 3. **No page said what licence the display runs on.** A vendor may hold exchange
    licences, a FINRA API agreement, or neither. None can be inferred from the display.
 
-**Effect on §10.4.** The recommendation to ask FINRA first stands and widens: the
-enquiry should also ask whether exchange fee schedules apply to a derived label built
-from FINRA API data for exchange-listed securities. Nasdaq and the other exchanges are
-the other parties who could answer that, and asking them is also an enquiry, which is his.
+**Effect on §10.4.** Withdrawn, see 11b.
+
+### 11b. CORRECTION, 2026-10-02, on his challenge: the exchange-fee worry was not supported
+
+*His challenge: the FINRA terms say derivative data is fair game, so exchange fee
+schedules do not apply to a label derived from FINRA API data. He is right on the
+substance, and the evidence for it was already in the Specific Terms read for §10.*
+
+- **The Specific Terms for Equity Data say, in their own numbered sections, "7. Third
+  Party Terms. Not applicable" and "8. Other FINRA Terms. Not applicable."** The general
+  terms (3.2) make the Developer comply with third-party data provider terms *"which
+  terms may be made available ... in the applicable Specific Terms."* FINRA listed none
+  for this data. I read those lines for §10 and did not use them here.
+- **The exchange schedules price the exchange's own report.** Nasdaq's and Cboe's
+  schedules are fees for receiving and redistributing the report the exchange compiles.
+  Data taken from FINRA's API is not that product. No source I read shows an exchange
+  claiming rights over FINRA-published data, and FINRA's own notice (21-19) proposed
+  publishing exchange-listed short interest free.
+- **So the exchange-fee exposure is withdrawn as a blocker.** What §11 found is that
+  exchanges sell their own versions. It is not evidence that a derived label from FINRA's
+  API owes them anything.
+
+**What "fair game" does and does not mean, so it is not read wider than the text.**
+Clause 2.4 permits creating derivative and Resultant Data. Clause 2.3 permits showing
+it to end users **on four conditions**: FINRA named as the source, no separate fee for
+it (bundling in the subscription is expressly allowed), end users limited to
+non-commercial personal or professional use, and no further redistribution by them.
+**Still open after this correction, and only these two:** (1) clause 2.2 limits our own
+use to non-commercial personal or professional use, and no sentence reconciles it with
+2.3; the reading favours us, more so given the point above; (2) whether the API's
+consolidated dataset includes Nasdaq and NYSE-listed names, which is a question of what
+data exists in the API, checkable only with a credential.
+
+**Revised §10.4 recommendation:** proceed. He registers the API Console and the free
+Public credential, the first task is to pull a few exchange-listed tickers and confirm
+coverage, and clause 2.2 is recorded as an accepted exposure of the same kind as the
+live tape. Asking FINRA is optional, not a precondition.
