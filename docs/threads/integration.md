@@ -3443,6 +3443,14 @@ SHORT INT (RES)  46d08738 (spot-read): FINRA Rule 4560 twice monthly, published 
                  stale in his window; fit = dated dossier field by code, drawer cheapest, Risk chip = product call;
                  Alpaca has shortable/borrow_status only; FINRA daily short VOLUME and Form SHO (exempt to 2028-01-02) are
                  not SI. Commercial: FINRA display terms + Alpaca products (forwarded). Answer to him when Commercial lands.
+SHORT INT (COM)  d5da7c08 (read in full): Alpaca = no SI; has shortable/borrow_status + /v1/locates quotes (available_qty,
+                 fee), live. FINRA free but terms: ONLY non-commercial personal use, AND bars use with any software/
+                 algorithm/AI (finra.org/terms-of-use, 2023-11-09). Massive carries SI + short volume on all Stocks plans
+                 (Individual = personal only; display to subscribers = Business $2,499/mo; Business-terms coverage of
+                 these endpoints NOT re-read). Ortex/Fintel/S3 unread. (Commercial's chat summary said FINRA "bar
+                 non-commercial use": inverted; the doc is right; not relayed.) ANSWER GIVEN TO HIM + NEEDS YOU: borrow
+                 status (Alpaca) / SI via Massive in drawer / neither; rec decide after v6 live. Open with Commercial:
+                 may Alpaca borrow data be displayed to paying users.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
