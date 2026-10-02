@@ -3135,6 +3135,8 @@ SIDE-BY-SIDE     DRAFT d951f238 (docs/research/movers-vs-robust-baseline/side-by
                  baseline build; moves AH participation + FLOW_DOMINANT rvol>=5 gate. A = web tier, no existing reader
                  changes. cycle.ts already uses its own median. Owed: Ops VEEA 04:00-10:00 volume, readTopMovers timing,
                  Design paragraph. Nothing to him until final.
+                 [Leak judge condition, Research: pid/start/NRestarts unchanged 04:00-20:00 ET Fri 10-02, else NOT
+                 JUDGEABLE and the judge moves to Mon 10-05. Last ship must land before 04:00 ET; Ops told.]
 LIVE CENSUS      Ops 98ef4acd (read): 14:01:36Z, read-only, 4.3 s. CURRENT 996 of 1,178 versions carry a token (84.5%);
                  structure 993, catalyst 827, cycle 454, business 23; ALL 2,341 of 2,702. TOLD HIM (the held claim, now
                  live). Citation cut gate on 2a625a5b running (Ops).
