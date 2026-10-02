@@ -159,3 +159,24 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 - **Where the chip sits among the Risk outcomes:** the ordering question in `docs/research/short-interest-2026-10-02.md` section 3; Design's and his.
 - **The end-user non-commercial wording:** Web's draft, for his adoption.
 - **Whether short interest predicts anything for his names:** not studied here; his call if ever.
+
+## 7. BUILD SPEC ADDITIONS after the calibration (2026-10-02)
+
+**Size source: COMBINED RECONCILED** (`docs/research/short-interest-calibration/result.md`, RUN 3), ACCEPTED by Commercial 13f (`b08f849a`) on three conditions. They are carried here verbatim in substance:
+
+1. **The drawer line grades against "the filed share count (dated {date})", not "shares outstanding".** The date is inline whenever the count is older than 45 days. Example: "Short interest: Elevated (10% to under 20% of the filed share count, dated Jun 30) · ...".
+2. **REFUSE (not graded):**
+   - any name whose as-of ledger has a KNOWN_ACTIVE WARRANTS, CONVERTIBLES or PREFERRED_CONVERSION block (the 4 exercise-risk pairs of 144 in run 3);
+   - any name with an active ATM or EQUITY_PURCHASE_AGREEMENT block (already the RECONCILED gate).
+3. **120 days stays the pre-registered limit,** acceptable ONLY together with condition 1.
+
+**Commercial's corrected premise, kept with the spec:** against a stale count, a grade of "or more" can overstate when shares were issued since; "under 5%" survives dilution. That is why conditions 1 and 2 exist.
+
+**Count source rule:**
+
+- COMBINED takes the dossier count (B) when its as-of date is later than the SEC companyfacts count (A), else A.
+- Then add completed discrete issuances (RECENT_OFFERING, PIPE, ACQUISITION_SHARES, OTHER_ISSUED_SHARES with share amounts) dated after the count and on or before the settlement.
+- All inputs as of the label's VIEW time.
+- The settlement is the latest FINRA report PUBLISHED by then.
+
+**Display mode is HIS and still open:** exception-only is recommended by Research, Commercial and Integration. Nothing is built until his answer.
