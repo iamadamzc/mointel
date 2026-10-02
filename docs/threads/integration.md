@@ -1193,6 +1193,13 @@ error                                                  TYPE                     
   (schema.ts:125-126), interpreter-extracted from filings; the calibration never used it
   (calibrate.ts:7, :158-184). Corrected to him in the next message; recommendation WITHDRAWN pending a re-run.
   LESSON: before telling him a source does not exist, grep the field name across lib/, not one module.
+  HIS RULING on the hand-off question: "keep this chat." With: "that was a huge fuckup and im a bit befuddled as to
+  how you missed such a fundamental aspect of our system." MECHANISM, for the successor: Research's result said "no
+  other source the desk can cite has been measured"; I read "measured" as "exists", then opened float.ts (whose
+  header says the desk "has never had a float source of its own"), took the module that answers FLOAT as the one
+  that answers SHARE COUNT, and stopped. The interpreter's sharesOutstanding is the desk's most visible share count
+  (it prints in every structural warning on his screen). A peer's scoped negative ("not measured") relayed as a
+  general one ("doesn't exist") is the 22nd's ledger 5/6 shape.
 PUSH STATE       Ops offered the temp-worktree cherry-pick route for 65dcc9d8; DECLINED (charter: never push through a
                  side worktree). Ops's own dc3bff07 (local) = 038ce171 (origin), a duplicate pair; told Ops. My notes
                  (65dcc9d8, 5443f5f3, and after) wait on local main until Research (d717add1, 18e9f8b0 = a0f880c0 by
