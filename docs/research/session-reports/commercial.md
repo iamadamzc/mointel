@@ -603,3 +603,5 @@ truncation (§4's push-banner point).
 
 **Not reviewed:** Marketing's words, Web's end-user wording, the chip's place among the
 Risk outcomes (Design and his), and any build.
+
+**13b. VERIFIED 2026-10-02 at `0acc4bcb` (read in the file, not taken from the relay): R1, R2 and R3 applied. PASS, no further change required.** The lowest size grade is the literal band with no word and every size grade carries its band and denominator inline (R1); the legend carries "FINRA (owner and source)" and "not a prediction or a recommendation" once, and "squeeze" appears nowhere (R2, R3). The new hover sentence ("the share of the float sold short can be higher") is true by construction, since float cannot exceed shares outstanding, and carries no number. One cosmetic note for Marketing, not a compliance finding: the size grade "Moderate" and the depth grade "Moderate depth" can sit on one line, so their words may need to differ. The build gates are unchanged: the coverage check, Web's end-user wording adopted by him, his yes.
