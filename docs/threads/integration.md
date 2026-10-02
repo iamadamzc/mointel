@@ -3148,6 +3148,10 @@ BLUE-SKY LEAD    Design: local GNPX blue-sky row 855795.60 (2018 price) "split-a
                  CONDITIONAL: absurd label when rows vouched (single fetch date, e.g. after a deep pass) AND ceiling
                  corroborated. I had told HIM the absurd label "would show" (Research's unrun claim, relayed): corrected
                  to him. Ledger 9. Scale = real functions over every symbol on tonight's snapshot (approved).
+                 Design: 855795.60 came from the LOCAL desk store copy (newest 2026-08-18), vintages unread. DESIGN'S PICK
+                 (a) + (b) fallback: headline = comparable ceiling + sub-line naming the consolidation; deep ceiling only in
+                 hover beside its factor; (b) UNVERIFIED when none established; window line fixed. Research builds
+                 (resolveBlueSky, lib-only if possible) on 9189b569; Marketing sees sentences before the cut.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
