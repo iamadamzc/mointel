@@ -3270,6 +3270,12 @@ BREADTH BASIS    ORDER CALL: recap F1 breadth = REGULAR SESSION (16:00 freeze), 
                  Marketing "after-hours" (Marketing asked him in-session). Contingent on Research confirming the 22:00
                  report can read frozen 16:00 counts without a store change. Watchlist seam line = Marketing's wording.
                  Marketing told him the two limits (no sector theme in v6; no stored pins) itself.
+LEVELS LIVE      Ops /proc 02:54:30Z: web/research/assess on b5a35fda (start 02:54:27-29Z), NR 0; market 1b5ead6 untouched;
+                 schema 28; refresh enabled; history-store disabled. INCIDENT (Ops, journal): 02:39:45Z global OOM killed
+                 OLD research worker (e8822583, 1.4G peak) during npm ci; systemd restarted it. Box 3,832 MB, no swap. Risk
+                 for (A)/citations: next OOM likely picks the MARKET worker (743 MB) -> restart from /opt/mointel/current
+                 = unplanned market version change. Ops put continue/stop to HIM (Ops's ask; not duplicated). Pending:
+                 first refresh read + /api/levels. Design P1 (levels on /desk) now due.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
