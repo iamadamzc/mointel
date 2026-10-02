@@ -13520,3 +13520,12 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   bash loop (local pid 23180, started 08:03:20 ET) is still running and logging at :03/:13/:23 ET; the session cron logs at
   :05-:06/:15-:16. Both append to the same log; kept as redundancy (the cron missed 11:35 while the session was busy;
   the loop covered it). Both read-only and both skip 11:00-14:00Z. The loop ends itself at 00:05Z.
+- 2026-10-02 ~13:2x ET, HIS WORDS IN THIS CHAT: "you edit the .env" and "Seed iamadamzc@gmail.com as the first allowed
+  address." DONE: .env.local backed up to .env.local.bak-20261002 (gitignored by .env*), then GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET (from docs/tmitraderauth.json, web client; redirect_uris == OAUTH_REDIRECT_URI exactly) and
+  FINRA_API_CLIENT_ID (docs/finra.txt; FINRA gave no secret) appended by script; no value printed. Both source files are in
+  .git/info/exclude; he was asked to delete them. SEED: pending; scripts/allowlist.ts and /var/lib/mointel/identity.db do
+  not exist on the box until the sign-in release (3b9c0a70) is live. Then: `allowlist.ts invite iamadamzc@gmail.com
+  --authority "Seed iamadamzc@gmail.com as the first allowed address."` via systemd-run as mointel (script header).
+  Order tonight, each on his yes: snapshot 20:12 -> sync-env (Google keys) -> ship 3b9c0a70 -> seed -> probe on (web
+  restart) -> his two sign-ins + curl -u no-cookie -> probe off.
