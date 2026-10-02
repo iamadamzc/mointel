@@ -86,6 +86,8 @@ Otherwise size is "not graded", with the reason.
 
 Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very deep), fixed to "5 to under 10"; the filed-count clause folded into brackets. The drawer line joins only the grades present and says "1 day ago" when the age is one day. **Open, his call:** "Covering" names a mechanism (shorts buying back); "Easing" or "Falling" would describe only the position. Marketing flagged it to him; "Covering" is the trader-standard word.
 
+**Commercial PASS (13b, 2026-10-02, on 0acc4bcb):** R1 to R3 applied as required, no further change. **Open, cosmetic, for Marketing:** size "Moderate" and depth "Moderate depth" can share one drawer line ("Moderate (5 to 10% of shares outstanding) · Moderate depth"), so one of the two words may need to differ.
+
 **Legend, shown ONCE (R2 and R3, Commercial `692ce434`)**, wherever the label first appears (drawer section footer):
 
 > Short interest data: FINRA (owner and source). Grades are this desk's own, computed from FINRA's reports and the company's filed share count. They describe short positions on the settlement date shown. They are not a prediction or a recommendation.
