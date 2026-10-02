@@ -7,11 +7,33 @@
 
 *Context from Ops (relayed by Integration):*
 
-- *The research worker on `e8822583` was at 1,383 MB RSS, all anonymous, about 75 min after its 01:24:28Z start, when the 02:39:45Z OOM kill took it during `next build`.*
+- *The research worker on `e8822583` was at 1,383 MB RSS, all anonymous, ~~about 75 min after its 01:24:28Z start~~ **CORRECTED by Ops (`30448f8c`): about 25 h 15 min after its start, 2026-10-01T01:24:28Z to 2026-10-02T02:39:45Z**, when the 02:39:45Z OOM kill took it during `next build`.*
 - *It was 110 to 127 MB after the restart.*
 - *Ops is sampling its RSS every 10 min from 02:58Z.*
 
 **No cause is stated as established here; this is a ranked candidate list and the measurement that would decide it.**
+
+## MEASURED after the first version of this file (it changes the reading)
+
+**Ops `30448f8c`** (read-only, `docs/ops/research-worker-jobs-2026-10-02.txt`):
+- The killed run started 219 research jobs on **76 DISTINCT tickers** over about 25 h, most of them from 08:00Z to 00:07Z.
+- The current run (since 02:54:28Z) has started 0 jobs.
+
+**Implied, if the SEC cache were the whole growth:** (1,383 - about 120) MB / 76 tickers is **about 16.6 MB per ticker**. That is an implication, not a measurement.
+
+**Measured by this seat**, the desk's own `SecClient` against SEC, raw bodies as the cache holds them (scripts in `docs/research/research-worker-memory/`):
+
+| Measured | Size |
+|---|---|
+| The ticker file | 0.52 MB, once per process |
+| Submissions plus companyfacts JSON, 8 tickers researched 09-29 | **mean 0.92 MB per ticker** (0.09 to 2.85) |
+| SDEV's stored filing and exhibit documents (22 URLs) | **5.74 MB** (largest 1.51 MB, a 10-Q) |
+| ILLR's stored filing and exhibit documents (14 URLs) | **21.05 MB** (largest 7.55 MB, an S-1) |
+
+- **Per ticker:** SDEV about 8.6 MB and ILLR about 22.4 MB, JSON plus documents. **Their mean, about 15.5 MB, is the same size as the implied 16.6 MB.**
+- **The SEC cache is therefore large enough to account for the growth.** It is not yet shown to BE it: two tickers; their stored URLs span their whole research history; filing index pages not measured.
+- **Why tonight:** the process ran about 25 h without a restart, and the OOM came during a deploy's `next build`.
+- **The remaining check is Ops's RSS series:** flat while the current run has 0 jobs, then rising with new distinct tickers.
 
 ## The leading candidate: `SecClient`'s document cache. Every line below opened by this seat at `e8822583`
 
