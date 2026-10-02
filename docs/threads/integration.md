@@ -1185,6 +1185,10 @@ error                                                  TYPE                     
   d717add1) that would have been published.                                          today)   moved)
   Never reached origin. CURE (procedure, not care): the listing and the push are SEPARATE tool calls, always;
   push only when the listing is all mine or each other line is cleared by its owner in writing.
+PUSH STATE       Ops offered the temp-worktree cherry-pick route for 65dcc9d8; DECLINED (charter: never push through a
+                 side worktree). Ops's own dc3bff07 (local) = 038ce171 (origin), a duplicate pair; told Ops. My notes
+                 (65dcc9d8, 5443f5f3, and after) wait on local main until Research (d717add1, 18e9f8b0 = a0f880c0 by
+                 patch-id) and Web (e125a066, retiring seat) push or clear theirs.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
