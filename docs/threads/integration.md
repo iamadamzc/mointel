@@ -3371,6 +3371,9 @@ MOVERS RE-CUT    558d07a5197efafe184c21228ed6d07bf37d7c87 (research/movers-cut) 
                  mirror files only; 222 tests; supersedes 98905b08. FULL CHAIN: research restart -> 840741d3 -> 2a625a5b
                  -> 0e883fec -> 19f9d721 -> 558d07a5. All approved here; gates: Ops (A 214 done, citations 217 done,
                  leak/mirror/movers owed).
+V6 BASE          Research builds v6 on 558d07a5 (chain tip; no veto). Its first commit 28c66f14b33a9835c9eb0b171577bf03a2073ed8
+                 = RESIDUAL CUT (read: parent 558d07a5, pid = a58aa866, citations.ts + test + docs, 222 tests). Ships alone
+                 after movers; approved here once pushed (research/residual-cut). Chain now ends -> 28c66f14.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
