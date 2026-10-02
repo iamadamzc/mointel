@@ -32,6 +32,26 @@
 
 **Population check, before the first run:** on a local copy, F6's population count must equal F1's `eligible` for the same checkpoint. If it does not, the population differs and nothing is reported until it does.
 
+### PROPOSED AMENDMENT (Marketing's ask; awaiting Integration's order call; still BEFORE anything is computed)
+
+**Marketing (after `83db9d75`):** the recap narrates the regular session just closed. So F1 breadth must share F6/F7's 16:00 basis, not the 22:00 after-hours snapshot, and F6/F7 must not be filtered by 22:00 band membership. Marketing is confirming the change of the premarket opening, from after-hours totals to the day's totals, with him.
+
+**Research's proposal for the RECAP: F1, F6 and F7 all from ONE source, the 16:00 latched values on `ticker_session`.** Not the RTH_CLOSE checkpoint's range row: that row's `count_window` is unknown until Ops's read, and may be the after-hours one.
+
+| Id | Recap definition, 16:00 basis |
+|---|---|
+| Population | `ticker_session` for the date; board eligibility (`universe.discovery_eligible` NULL or 1); `rth_final_close` between the range bounds |
+| F1 eligible | Count of the population |
+| F1 traded | `rth_final_volume > 0` |
+| F1 up / down | Among traded, `rth_final_close` above / below `previous_close` |
+| F6 | Traded, `previous_close > 0`, `rth_final_high >= 1.5 * previous_close` |
+| F7 | F6 and `rth_final_close <= previous_close` |
+
+- **Every value is latched at the bell and never overwritten:** `repo.ts:969-974` on the production line (close, high, low, volume, rvol, rank: COALESCE first write). `rth_final_frozen_at` reads 20:00Z, which is 16:00 ET, on every local date checked.
+- **MEASURED GAP, on the local copy (09-22 to 09-29):** names with a price but NO 16:00 close are outside this population. In range and traded: 6, 0, 2, 2, 3, 1 per day. On 09-22 one of them moved 50% or more by `session_high`. In-range rows with a close but no 16:00 high all had zero regular-session volume, so they cannot be movers.
+- **So the recap's computed facts carry one more number, G**, the count of in-range traded names with no 16:00 close. It is shown to the writer as a footnote fact and never hidden.
+- **The population check then becomes this POSITIVE control:** before the first run, on a local copy, G and the population count are printed for every date, and F6 must find at least one 50% mover on at least one date. Otherwise the instrument is broken.
+
 **Not in v6:** F8 (theme, v6.1). Range-wide F6 and F7 on the intraday kinds (option 2, after v6).
 
 ## Seeds this commits the pass bar to (classes promised to Marketing before the freeze)
