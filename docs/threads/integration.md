@@ -3354,6 +3354,10 @@ NEW OPS          local_d8a2a445 (created 03:14:54Z; get_session read); old local
                  Ops ack: /proc 03:16:32Z matches hand-off (ops.md 858c149b); worker RSS read on the CHILD pid. Build peak
                  measured live on next ship night's first build (2 s sampler of MemAvailable + build RSS after the research
                  restart); a second build only if fresh available minus peak leaves margin; number to me before step 2.
+LEAK GATED       main f8025aad (contains 50196f0b; read): tsc 0, 213/213, 3,198 (Research, Ops's slot); judge amended
+                 to sample outside his window (7773b562). ORDER CALL: leak cut on 2a625a5b (chain b5a35fda -> (A) ->
+                 citations -> LEAK -> movers re-cut on it). client.ts has 2 main commits since 2a625a5b: cut must carry
+                 only the bound. Levels mirror: branch from b5a35fda (/api/levels is production-line only), cut later.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
