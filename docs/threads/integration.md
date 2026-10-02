@@ -3165,6 +3165,8 @@ ARIA CUT         a4a0616892a6f303f4312d6d4546ad05423b17af (tag design/aria-catal
 BLUE-SKY HEAD    ded2274a (70c534f4 + ded2274a): Design's full pick in lib; sub-line names the LAST split (lastSplit field),
                  not the cumulative factor (could be false as one consolidation); no-ratio fallback. Sentence (1) revised
                  to Marketing; hover to Design. Owed: Ops gate, Design hover, Marketing read, his yes.
+                 Head now bac44069 (Marketing's wording on 70c534f4 + ded2274a). Re-cut on a4a06168 carries all three +
+                 Design's hover. f98ce6ff was already pushed by Research (no harm).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
