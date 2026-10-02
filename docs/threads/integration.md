@@ -3154,6 +3154,10 @@ BLUE-SKY LEAD    Design: local GNPX blue-sky row 855795.60 (2018 price) "split-a
                  (resolveBlueSky, lib-only if possible) on 9189b569; Marketing sees sentences before the cut.
 ONE LADDER GATED Ops 75e0f0df: 9189b569 222/222, 3,278, lint 0 errors, build rc 0. ORDER: ships ALONE tonight after the
                  snapshot on his yes; blue-sky fix follows as its own step (already a production defect; cut on 9189b569).
+BLUE-SKY BUILT   research/bluesky-comparable 70c534f4 (light check: 1 commit on 9189b569, blueSky.ts + test, 0 U+2014):
+                 known non-1 factor -> today's-basis ceiling; none -> UNVERIFIED price NULL; deepCeiling + consolidated
+                 fields; unknown factor unchanged. Sentences to Marketing; hover/sub-line to Design on top; then gate +
+                 my replay. Scale count pre-registered (258624e2) on tonight's snapshot.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
