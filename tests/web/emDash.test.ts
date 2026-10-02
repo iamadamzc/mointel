@@ -23,17 +23,35 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 
-/** Everything a signed-out visitor can reach, plus the metadata search shows. */
-// CUT-ONLY (Design, the em-dash release on 46d9f9d): app/signin/page.tsx and
-// lib/auth/authErrorPage.ts are not in production, so this release cannot
-// carry them and the guard cannot read them. main's copy lists both and
-// guards them from the release that ships sign-in.
+/**
+ * Everything a signed-out visitor can reach, plus the metadata search shows.
+ *
+ * THIS LIST IS STRICT ON PURPOSE: a missing file throws rather than skips. Do
+ * NOT "fix" that by making it lenient. A guard that skips what it cannot find
+ * passes silently the day a surface is renamed, which is the failure this file
+ * exists to prevent, one level up.
+ *
+ * TWO ENTRIES ARE BUILT BUT NOT YET DEPLOYED -- `app/signin/page.tsx` and
+ * `lib/auth/authErrorPage.ts` ship with sign-in. So a RELEASE CUT from a
+ * production older than that will not contain them and this guard will throw
+ * ENOENT on the cut. That is correct behaviour and it happened on the em-dash
+ * cut of 2026-09-30 (base 46d9f9d), where Design carried a cut-only commit
+ * narrowing this list.
+ *
+ * IF YOU ARE MERGING A RELEASE BRANCH BACK AND IT SHORTENS THIS ARRAY, STOP.
+ * That commit belongs to the cut and nowhere else; landing it on main removes
+ * two public surfaces from the guard permanently, and nothing about a green
+ * suite afterwards would say so.
+ */
 const SURFACES = [
   'app/page.tsx',
   'app/layout.tsx',
+  'app/signin/page.tsx',
   'app/privacy/page.tsx',
   'app/terms/page.tsx',
   'components/LegalPage.tsx',
+  'components/NotAdmitted.tsx',
+  'lib/auth/authErrorPage.ts',
   'docs/legal/privacy-policy.md',
   'docs/legal/terms.md',
 ];
