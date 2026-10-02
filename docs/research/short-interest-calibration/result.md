@@ -93,7 +93,7 @@ The data shows why. His names mostly carry little short interest relative to sha
 
 **Options:**
 
-1. **Exception-only display.** Show the line only when it says something unusual: Elevated or Heavy size (under the gate), or Deep or Very deep depth. Otherwise show nothing, and say once in the legend that silence means nothing notable on FINRA's latest report.
+1. **Exception-only display.** Show the line only when it says something unusual: Elevated or Heavy size (under the gate), or Deep or Very deep depth. Otherwise show nothing, with a legend line that is true in BOTH silent cases. **CORRECTED (Integration, local_54f1341f):** the first version said silence means "nothing notable on FINRA's latest report". That is false for the ~98% of pairs where size was NOT GRADED: there, silence means "not measurable", not "nothing notable". The constraint: the legend must not imply an absence, e.g. "No line does not mean no short interest: a line appears only when FINRA's latest report shows a large or slow-to-cover position we can measure." The words are Marketing's. **In practice, with Commercial R6 (board chip SIZE ONLY):** size almost never grades, so the board chip almost never shows, and the drawer's depth line (Deep or worse, about 15%) carries the read.
    - Exploratory scale: depth Deep or worse on 65 of 426 (15%).
    - Size 10% or more on 26 of 329 ungated, far fewer gated.
 2. **Size from a different share count.** No other source the desk can cite has been measured; the vendor float stays desktop-only.
