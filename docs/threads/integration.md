@@ -3296,6 +3296,10 @@ OOM CORRECTED    Ops (journal): kill at 02:39:45Z was during `next build` (npm c
                  Risk to his window with no deploy at all. Ops sampling RSS every 10 min x 1 h from 02:58Z (b5a35fda).
                  Research asked to prepare code-side candidates; nothing to him until the rate is measured. My words to
                  him ("each release uses a lot of memory") still true (build max-old-space 1.5 GB); no retraction owed.
+V6 STEP 2        Probe e1e7d4f3 (raw cbec4095 ancestor; read): $8.76 of $10; CURRENT 2/180 vs P1 1/180 strikes on true
+                 lines; P1 removes its two named misreadings; same class persists elsewhere. ORDER: P1 = checker prompt v4
+                 in v6; residual strictness its own measured proposal after v6. Step1c (49ebf469): Sheet-research freeze
+                 per checkpoint NOT in v6 (store change); boundary stated in the step-5 sample. Step 4 cleared.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
