@@ -13254,6 +13254,12 @@ versions -> 6 in 5; ships after tonight from /proc. Movers floors at f1c0628d (1
 readTopMovers gains `cumulative_volume >= 500,000` (Research sends the spec). Cut from /proc after tonight's three; Friday
 night earliest. Housekeeping: Research reports 60 lint errors from .claude/worktrees/agent-acfba7ff0c32d6e90/.next (an old
 levels worktree eslint scans); not Ops's worktree; owner removes it or eslint ignores .claude/.
+
+**THURSDAY NIGHT SHIP (2026-10-01 ET).** /proc 02:32:23Z = e8822583 x3, market 1b5ead6, no deploy unit, 57G free. (Git Bash
+`TZ=America/New_York date` prints a wrong clock on this PC; use the box's `date -u`.)
+**HIS YES IN THIS SESSION, 2026-10-02T02:37:49Z, "yes"** to levels with the four conditions. LEVELS_REFRESH_ENABLED=1 appended
+to /etc/mointel/mointel.env 02:38:14Z (backup mointel.env.bak-20261002T023814Z, 25 -> 26 keys, HISTORY_STORE_ENABLED absent).
+Levels b5a35fda launched ~02:39Z.
 Ruling verified by Research as his user turn 2026-10-01T15:53:57Z in Integration's 1bfab363. **Volume floor built:
 ops/top-movers-volume 499f7a30** (on aaebfc42): readTopMovers(db, tradingDate, band, minPct, minVolume, limit), cumulative_volume
 >= minVolume, NULL fails; readModel.ts:574 passes 0 so it compiles alone (Research replaces with config). 6 tests; mutants 2/2, 1/1.
