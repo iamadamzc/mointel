@@ -1,0 +1,61 @@
+# Report window, option B: the surface (Design's step 3 answer for reports v6)
+
+*Design seat `local_dfce21d4`, 2026-10-02 (clock read via zoneinfo before commit: 02:55:55 UTC). Answers Design's three questions in Research's step 1 (`docs/research/reports-v6/step1-proposal.md` section 5) and Integration's order: B's surface, fixed against Marketing's guardrails, so the v6 writer can target it. Code read on the production line `2a625a5b`. Words in quotes below are PROPOSED; Marketing owns every word a reader sees and may replace any of them.*
+
+**His words** (verified by Research at his turn, Integration's `1bfab363`, 2026-10-02T02:34:22Z): "there's still no opening narrative and no design element, its hard to read, this was brought up." And 2026-10-01T01:44:16Z: "an opening with a general narrative of the session which is being reported on, then down to the details of the tickers."
+
+**What already answers part of "hard to read":** option (A), in tonight's second release (`840741d3`): a card per name, the path as three labelled prices, figures set apart, model-written headings hidden. B builds on A's cards; nothing below undoes them.
+
+## The one principle: the report speaks the board's language
+
+**Every tag is the board's own Why or Risk output, computed from the AS-OF dossier.** A name must read the same on the board and in the report (audit §10, Trust: "No two surfaces show a different value for the same field at the same moment without an explicit reconciliation"). The board's words already pass Marketing's guardrails: supply is capacity ("SUPPLY OVERHEAD 6.13M sh", `risk.ts:165`), never "sell"/"selling"; float is only ever a verdict. So the mock's "FREE TO SELL" and "SELLING" chips go, and with them the need for a second vocabulary.
+
+**For Research:** compute the tags onto `ReportLine` from the as-of dossier with the same rules the board uses (`lib/dashboard/why.ts`, `lib/dashboard/risk.ts`), exported or shared, not re-implemented. If a rule cannot run on the as-of dossier as is, say which, and Design adapts the surface rather than inventing a third wording.
+
+## Page order, top to bottom
+
+1. **Title row**, as today: kind and date ("After-hours briefing · for Wed, Sep 30").
+2. **THE SESSION: the opening narrative.** Directly under the title, above everything else. Replaces today's `overall` line for all four kinds (Research's order call). A small label "THE SESSION" (11 px, uppercase, ink-3, as the board's labels), then the paragraph: 16 px, line height 1.6, ink-2, measure 680 px, figures in white semibold with the same figure rule the cards use (`figureSegments`). At most three sentences (Research's "one breath"). **Absent, not empty:** no narrative from the store means no block and no label, never a placeholder sentence.
+3. **The watch line**, as today ("We're watching 11 names into after-hours."), now the lead-in to the cards, 14 px ink. It is not a heading and stays.
+4. **Sections, now COMPUTED** (Research's fix (a)): a section label above its cards, 11 px uppercase ink-3 with its count ("FRESH NEWS · 4"; words Marketing's, mapping Research's). An emptied section renders nothing, as in (A). Until (a) ships, (A)'s single list stands.
+5. **Cards**, one per name (below).
+6. **Footer:** one line, 12 px ink-3, the float statement once for the whole report (below).
+
+## A card
+
+```
+TGE   Generation Essentials Group. Cayman Islands.            feed not recorded
+Catalyst A   not the move   SUPPLY OVERHEAD 73.6M sh
+$0.8300 PRIOR CLOSE  ->  $1.90 HIGH  ->  $1.54 AT 16:00 ET      +85.5% vs prior close
+                                                               18.9% under the high
+-----------------------------------------------------------------------------
+The catalyst story, one or two sentences, figures in white.
+One line on what is unresolved, 13 px ink-3.
+```
+
+- **Header row:** unchanged from (A).
+- **Tag row (new), left to right, at most three marks:**
+  1. **Catalyst grade**, as the board's Why cell prints it: "Catalyst" + the letter, the letter in the board's tone (`WHY_TONE`). The grade's age is left out: the story carries the event date, and an age measured from the checkpoint would disagree with the board's age the next morning.
+  2. **"not the move"**, only when `plausiblyExplainsMove` is false, in the board's warn style (`DecisionCells.tsx:456`). True and null print nothing, **exactly as the board does today.** If Marketing wants null told apart from true (the house rule: N states, not a value and an absence), that changes the board and the report together, one decision, never the report alone. And "no catalyst found" where the board prints it.
+  3. **The Risk chip**, the board's (`resolveRisk`): label + value + tone. One chip only. This is the card's one saturated element (audit §8: one saturated element per row, by precedence).
+- **Path:** unchanged from (A).
+- **Prose:** the writer stops restating what the tags show (grade, explains, supply, float). What is left: the catalyst story (15 px, ink-2, figures white) and one unresolved line (13 px, ink-3). This is mock B's cut, and it shrinks the checker's scope (Marketing's fresh defect set; Research's re-freeze).
+
+## Research's three questions, answered
+
+1. **Where the narrative and the tags sit:** narrative under the title as "THE SESSION", replacing `overall`; tags in one row between the card's header and its path. Above.
+2. **Which tags:** catalyst grade (with "not the move" / "no catalyst found" as the board prints them) and the Risk chip. **No cycle tag.** The path already shows the computed cycle facts (prior close, high, at the checkpoint, percent under the high), the same arithmetic the board's Cycle column prints ("OFF HIGH $1.90 -> $1.54"). A tag from the dossier's `cycleClassification` ("yellow, frontside warning") would be a second, model-written cycle vocabulary beside the board's computed one, which is the disagreement audit §10 forbids; the board's own cycle filter dropped the model classes for arithmetic (`view.ts`, the Cycle filters comment). **If Marketing or he wants the classification kept, it goes in the prose in the comma form, never as a tag.** No shares-outstanding tag either: the guardrail (always dated, never near "float") is easiest kept by not printing it in a tag at all.
+3. **Float:** **drop the per-row tag; say it once in the footer.** A mark identical on every row says nothing and costs a slot on each (the board removed its FLOAT UNKNOWN chip for exactly this, `risk.ts`, the comment above STRUCTURE CAUTION). Proposed footer: "Float: the desk cannot independently verify a float for any name in this report." If one day a name HAS a verified float, it becomes that card's tag and the footer drops that name from "any".
+
+## What this asks of whom
+
+| Seat | Ask |
+|---|---|
+| **Research** | Tag fields on `ReportLine` computed with the board's rules (shared code); `narrative` replacing `overall`; computed section headings; the writer prompt without grade/explains/supply/float restatements |
+| **Marketing** | The words: the "THE SESSION" label, the narrative's voice, section heading names, the footer line; and whether null vs true on "explains the move" should become three states on BOTH surfaces |
+| **Design** | Build the surface on the contract once Research's fields exist; render it on the step-5 sample (real output, stored data) at 1,280 and 1,024; then the cut |
+
+## Not decided here
+
+- Whether a revised mock goes to him before step 5. Design's view: no. Step 5 IS the first sight, on real output, and a mock with invented text is what made "B" carry three guardrail breaks last time.
+- Colour of the grade letter in the report: the board's tone is used as is. Changing it is a board decision.
