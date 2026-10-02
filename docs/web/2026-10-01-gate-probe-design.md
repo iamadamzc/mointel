@@ -1,5 +1,11 @@
 # The gate probe: design, and what it cannot prove
 
+**AS OF 2026-10-02 17:48 UTC: re-read end to end by the successor Web seat.**
+*Corrected in that pass: section 3d's removal check (it could not tell probe-on
+from probe-off) and section 5's nginx line. The route is built on
+`ops/signin-cut` and not yet live; "Friday" below is 2026-10-02, the sign-in
+night. The suite count in section 5 is as of writing, not current.*
+
 **Web, 2026-09-30, against `69bafba`.** Owner of this file: **Web**. *Written to
 Integration's order call: Web designs, Ops builds after tonight's releases,
 Integration replays both. Due Thursday 2026-10-01 20:00 ET; delivered early
@@ -146,16 +152,29 @@ from a route that was never built.*
 
 **Two independent acts, in this order, the same night:**
 
-1. **Unset `AUTH_PROBE_ENABLED` on the box** and confirm `GET /auth/probe` → `404`
-   from outside. *This is the one that matters; it closes the surface.*
+1. **Unset `AUTH_PROBE_ENABLED` on the box**, restart web (the env file is read at
+   process start), and confirm `GET /auth/probe` → `404` from a client that sends
+   the Basic-Auth credential and no session cookie. *This is the one that
+   matters; it closes the surface.*
 2. **Delete the route** in a commit of its own, named as the removal.
 
-**THE VERIFICATION IS A `curl` FROM A CLIENT WITH NO CACHED STATE, NOT A CODE
-READ:**
+**THE VERIFICATION IS A `curl` CARRYING THE BASIC-AUTH CREDENTIAL AND NO SESSION
+COOKIE, NOT A CODE READ:**
 
 ```bash
-curl -sS -o /dev/null -w "%{http_code}\n" https://tmitrader.com/auth/probe   # expect 404
+curl -sS -u "$DESK_USER:$DESK_PASS" -o /dev/null -w "%{http_code}\n" https://tmitrader.com/auth/probe   # expect 404
 ```
+
+> **CORRECTED 2026-10-02 by the successor Web seat, the same wrong premise as the
+> old 3a surviving one section further down.** *This block said "from outside" and
+> "a client with NO cached state", with a `curl` carrying no credential and
+> expecting 404. While Basic Auth is on, `/auth/` is not exempt, so that client
+> gets 401 from nginx whether the probe is on or off: the check could not tell the
+> two apart, and its expected 404 would never arrive.* **The built route
+> (`app/auth/probe/route.ts` on `ops/signin-cut`) already carries the corrected
+> procedure; this brings the design into line with it.** *`$DESK_USER` and
+> `$DESK_PASS` are placeholders for however the operator supplies the credential;
+> never paste it into a document or a transcript.*
 
 > **AND IT NEEDS A POSITIVE CONTROL, or a 404 proves nothing:** *`/auth/probe`
 > returns 404 when the route is absent, when the flag is off, and when the client
@@ -205,8 +224,9 @@ outcome.*
 
 ## 5. WHAT THIS COSTS, AND WHY IT IS SMALL
 
-**One route file, one env var, one nginx location that is already being added,
-and a deletion commit.** *Ops's build is well under an hour; the flag and the
+**One route file, one env var and a deletion commit. No nginx location:** *this
+read "one nginx location that is already being added", the premise section 3a
+withdrew; corrected 2026-10-02.* *Ops's build is well under an hour; the flag and the
 no-parameters rule are the only parts that need care.*
 
 **The alternative that was considered and rejected: prove the gate by unit tests
