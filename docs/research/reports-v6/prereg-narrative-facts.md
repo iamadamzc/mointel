@@ -32,7 +32,9 @@
 
 **Population check, before the first run:** on a local copy, F6's population count must equal F1's `eligible` for the same checkpoint. If it does not, the population differs and nothing is reported until it does.
 
-### PROPOSED AMENDMENT (Marketing's ask; awaiting Integration's order call; still BEFORE anything is computed)
+### AMENDMENT, ADOPTED (Marketing's ask; Integration's order call 2026-10-02: recap F1 = the regular-session counts, the same set as F6/F7, unless he tells Marketing "after-hours"; registered BEFORE anything is computed)
+
+**Store change needed: NONE.** The 22:00 report reads the 16:00 values from `ticker_session` (the row for the trading date), latched at the bell (`repo.ts:969-974`, production line). The checker re-reads the same latched values.
 
 **Marketing (after `83db9d75`):** the recap narrates the regular session just closed. So F1 breadth must share F6/F7's 16:00 basis, not the 22:00 after-hours snapshot, and F6/F7 must not be filtered by 22:00 band membership. Marketing is confirming the change of the premarket opening, from after-hours totals to the day's totals, with him.
 
