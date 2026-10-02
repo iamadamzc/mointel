@@ -3306,6 +3306,8 @@ ONE VOCABULARY   Design 8233d809 reconciliation: Marketing's tag words vs board 
                  Marketing's clearer words = one later change to BOTH surfaces (Design checks 1,024). Kept from Marketing:
                  float footer, recap F9 seam line. displayedFloat null; "DIRTY FLOAT" verdict. Relayed for Design
                  (send-limited) to Marketing + Research.
+MEMORY (RES)     Research started the research-worker memory read at e8822583 (the grown version); levels refresh is not in
+                 e8822583 so not tonight's cause. v6 step 4 placed AFTER the memory answer (agreed).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
