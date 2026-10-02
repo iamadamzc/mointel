@@ -3319,6 +3319,10 @@ AFTER HAND-OFF   Commercial (for the successor): SI label wording the build carr
                  SIZE-ONLY (e.g. HEAVY); "Very deep" stays in the drawer ("on normal volume"), since FINRA's DTC divides by
                  the prior cycle's volume and overstates on a fresh mover; a depth chip would have to state its basis.
                  Sent to Marketing. Research (capped) must pick it up from commercial.md 13e: successor to confirm.
+                 Web: FINRA wording FINAL 204d42c6 ("FINRA's terms allow us to show you the label for your own
+                 non-commercial personal or professional use only."); on origin (read). Web's sign-in wiring (authenticate()
+                 into /desk + /api/*, privacy cookie name) is written ON THE NIGHT after his items + Ops's probe
+                 (bb4e14a8 design) exist. OPEN for the successor: has Ops built the probe? (not read here).
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
