@@ -174,7 +174,13 @@ record. He has it from this seat directly as well.
   - **Evidence:** `docs/research/research-worker-memory-2026-10-02.md` (`655d235d`). `SecClient`'s whole-document cache never evicted. The OOM-killed worker ran ~25 h over 76 tickers to 1,383 MB; measured documents were 8.6 and 22.4 MB per ticker.
   - **Fix:** LRU by bytes, 64 MiB; a 30-min lifetime; oversize never cached. 6 mutants killed.
   - **Live judge pre-registered before ship:** `docs/research/research-worker-memory/prereg-ship.md`. Max RSS 450 MB and under 2 MB per new ticker on the first full day; UNTESTED under 40 tickers.
-  - **Waits on:** `tsc` and the full suite (heavy slot, new Ops-tmi `local_d8a2a445`); then Integration's cut and order. Research worker only.
+  - **✅ GATED** on main `f8025aad`: `tsc` 0, 213/213 files, 3,198 tests.
+  - **The judge, amended before ship:** samples outside 07:00-10:00 ET, the CHILD node pid's RSS; a restart or new pid means NOT JUDGEABLE, never a pass (Ops's catches).
+  - **Waits on:** Integration's cut and order. Research worker only.
+- **✅ REVIEW-LINK LEVELS MIRROR BUILT** (his ruling, verified in Design's `51f52927`, 2026-10-02T03:14:33Z: "Research adds levels to review links, so I can check this release and future ones myself").
+  - `research/review-levels` at `9f084c9e`: ONE commit on the production line `b5a35fda` (`/api/levels` is not on main).
+  - Gated: `tsc` 0 after `next typegen`; 212/212 files, 3,178 tests. 4 mutants killed.
+  - **Waits on:** Integration's cut, his yes, Design's live read.
   - **v6.1 lane (Integration, after `afc7755b`):** a hedged "what to watch" block from the names' own dossiers. NOT started until v6 is live, unless he tells Marketing to fold it in.
 - **🔴 NEXT TASK, FIRST: REPORTS v6** (Integration's order, 2026-10-02, on his words at 02:34:22Z: "what about the session report updates? there's still no opening narrative and no design element, its hard to read, this was brought up"). **Plan: `docs/research/reports-v6/plan.md` (`e144d87c`).**
   - **Step 1 (Research's proposal: narrative facts with stored sources, B's tag fields, the a-d fixes) is the first thing on 2026-10-02.** Reading and writing only.
