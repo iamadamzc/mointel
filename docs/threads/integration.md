@@ -3209,6 +3209,9 @@ SI LABEL DESIGN  Research 979c75a7 (docs/research/short-interest-label-design.md
                  placeholder tickers; calibration pre-registered §5 (6 settlements, top-12 names x 20 sessions, re-draw
                  bands holding > half; spread only). Old classification examples superseded (e1083043). Build waits on:
                  coverage check (his credential), Commercial §8, Marketing words, Web terms adopted by him, his yes.
+                 Commercial §8 PASS with 3 required changes (692ce434, commercial.md §13): denominator inline + no "Normal"
+                 on the lowest band; FINRA named as "owner and source" (2.3(a)); one legend sentence against the squeeze
+                 reading. Sent to Research + Marketing.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
