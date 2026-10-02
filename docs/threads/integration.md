@@ -3183,6 +3183,10 @@ SI CORRECTION    Commercial 94e9687e §10 (spot-read), on his follow-up to Comme
                  use to "non-commercial personal or professional" (FINRA/counsel, HIS ask); small-cap listed coverage
                  unconfirmed; console registration HIS; end-user terms redraft. Replaces Massive-first for this purpose.
                  I had told HIM FINRA was closed: corrected to him.
+HOVER CORRECTED  Design declined to derive the price in the view (display must not compute); built Marketing's FALLBACK
+                 (no dollar figure: date + cumulative factor + not comparable + reference only) at 9694e8bb. My "Design
+                 computes, no Research change" call was wrong for this desk's rule. ORDER: ship the fallback; no new
+                 field. I had told HIM the hover shows $19.45: corrected to him.
 TONIGHT          Ops: market.db snapshot for Research at 20:12 ET (his "yes, snapshot" in Ops's chat); one-ladder gate
                  running; any ship after the snapshot on his yes.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
