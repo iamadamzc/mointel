@@ -3366,6 +3366,11 @@ CUTS APPROVED    (scratchpad replay-lk.ps1) LEAK 0e883fec8058c3473a06c9fa9799857
                  parent 0e883fec, added lines = 9f084c9e, 0 removed, readOnly hunk keeps both, 218 tests. No deploy/db/
                  worker/package; 0 U+2014. Ops: gate each + his yes. CHAIN: research restart -> (A) -> citations -> leak ->
                  levels mirror -> movers (Research re-cuts on 19f9d721).
+MOVERS RE-CUT    558d07a5197efafe184c21228ed6d07bf37d7c87 (research/movers-cut) REPLAYED + APPROVED (scratchpad
+                 replay-mc.ps1): on 19f9d721, 8 linear, all patch-ids equal to 2a625a5b..98905b08; diff vs 98905b08 = leak +
+                 mirror files only; 222 tests; supersedes 98905b08. FULL CHAIN: research restart -> 840741d3 -> 2a625a5b
+                 -> 0e883fec -> 19f9d721 -> 558d07a5. All approved here; gates: Ops (A 214 done, citations 217 done,
+                 leak/mirror/movers owed).
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
