@@ -1,0 +1,229 @@
+{
+  "settlements": [
+    "2026-06-30",
+    "2026-07-15",
+    "2026-07-31",
+    "2026-08-14",
+    "2026-08-31",
+    "2026-09-15"
+  ],
+  "pairs": 434,
+  "evaluated": 426,
+  "foreignPairs": 158,
+  "all": {
+    "A_STRICT": {
+      "n": 426,
+      "graded": 2,
+      "reasons": {
+        "NO_COUNT": 97,
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 245,
+        "COUNT_NOT_CURRENT": 54,
+        "POSSIBLE_ISSUANCE_SINCE_COUNT": 27,
+        "SPLIT_SINCE_COUNT": 1
+      },
+      "sizes": {
+        "Elevated": 1,
+        "under 5%": 1
+      },
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "A_RECONCILED": {
+      "n": 426,
+      "graded": 18,
+      "reasons": {
+        "NO_COUNT": 97,
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 245,
+        "COUNT_NOT_CURRENT": 44,
+        "CONTINUOUS_ISSUANCE_ACTIVE": 19,
+        "SPLIT_SINCE_COUNT": 3
+      },
+      "sizes": {
+        "5% to under 10%": 2,
+        "under 5%": 14,
+        "Elevated": 2
+      },
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 1
+    },
+    "B_STRICT": {
+      "n": 426,
+      "graded": 1,
+      "reasons": {
+        "NO_COUNT": 359,
+        "COUNT_NOT_CURRENT": 39,
+        "POSSIBLE_ISSUANCE_SINCE_COUNT": 26,
+        "SPLIT_SINCE_COUNT": 1
+      },
+      "sizes": {
+        "Elevated": 1
+      },
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "B_RECONCILED": {
+      "n": 426,
+      "graded": 20,
+      "reasons": {
+        "NO_COUNT": 359,
+        "COUNT_NOT_CURRENT": 22,
+        "CONTINUOUS_ISSUANCE_ACTIVE": 20,
+        "SPLIT_SINCE_COUNT": 5
+      },
+      "sizes": {
+        "5% to under 10%": 2,
+        "under 5%": 16,
+        "Elevated": 2
+      },
+      "reconciledByOffering": 3,
+      "exerciseRiskAmongGraded": 1
+    },
+    "COMBINED_STRICT": {
+      "n": 426,
+      "graded": 2,
+      "reasons": {
+        "NO_COUNT": 96,
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 245,
+        "COUNT_NOT_CURRENT": 51,
+        "POSSIBLE_ISSUANCE_SINCE_COUNT": 31,
+        "SPLIT_SINCE_COUNT": 1
+      },
+      "sizes": {
+        "Elevated": 1,
+        "under 5%": 1
+      },
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "COMBINED_RECONCILED": {
+      "n": 426,
+      "graded": 22,
+      "reasons": {
+        "NO_COUNT": 96,
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 245,
+        "COUNT_NOT_CURRENT": 34,
+        "CONTINUOUS_ISSUANCE_ACTIVE": 24,
+        "SPLIT_SINCE_COUNT": 5
+      },
+      "sizes": {
+        "5% to under 10%": 2,
+        "under 5%": 18,
+        "Elevated": 2
+      },
+      "reconciledByOffering": 2,
+      "exerciseRiskAmongGraded": 1
+    }
+  },
+  "foreign": {
+    "A_STRICT": {
+      "n": 158,
+      "graded": 0,
+      "reasons": {
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 109,
+        "COUNT_NOT_CURRENT": 41,
+        "NO_COUNT": 7,
+        "POSSIBLE_ISSUANCE_SINCE_COUNT": 1
+      },
+      "sizes": {},
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "A_RECONCILED": {
+      "n": 158,
+      "graded": 2,
+      "reasons": {
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 109,
+        "COUNT_NOT_CURRENT": 40,
+        "NO_COUNT": 7
+      },
+      "sizes": {
+        "under 5%": 2
+      },
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "B_STRICT": {
+      "n": 158,
+      "graded": 0,
+      "reasons": {
+        "NO_COUNT": 126,
+        "COUNT_NOT_CURRENT": 28,
+        "POSSIBLE_ISSUANCE_SINCE_COUNT": 4
+      },
+      "sizes": {},
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "B_RECONCILED": {
+      "n": 158,
+      "graded": 5,
+      "reasons": {
+        "NO_COUNT": 126,
+        "COUNT_NOT_CURRENT": 21,
+        "CONTINUOUS_ISSUANCE_ACTIVE": 4,
+        "SPLIT_SINCE_COUNT": 2
+      },
+      "sizes": {
+        "under 5%": 5
+      },
+      "reconciledByOffering": 2,
+      "exerciseRiskAmongGraded": 0
+    },
+    "COMBINED_STRICT": {
+      "n": 158,
+      "graded": 0,
+      "reasons": {
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 109,
+        "COUNT_NOT_CURRENT": 39,
+        "POSSIBLE_ISSUANCE_SINCE_COUNT": 4,
+        "NO_COUNT": 6
+      },
+      "sizes": {},
+      "reconciledByOffering": 0,
+      "exerciseRiskAmongGraded": 0
+    },
+    "COMBINED_RECONCILED": {
+      "n": 158,
+      "graded": 5,
+      "reasons": {
+        "NO_RESEARCH_AS_OF_SETTLEMENT": 109,
+        "COUNT_NOT_CURRENT": 32,
+        "CONTINUOUS_ISSUANCE_ACTIVE": 4,
+        "NO_COUNT": 6,
+        "SPLIT_SINCE_COUNT": 2
+      },
+      "sizes": {
+        "under 5%": 5
+      },
+      "reconciledByOffering": 2,
+      "exerciseRiskAmongGraded": 0
+    }
+  },
+  "ageDays": {
+    "A": {
+      "n": 329,
+      "p10": 7,
+      "p25": 21,
+      "p50": 126,
+      "p75": 258,
+      "p90": 608
+    },
+    "B": {
+      "n": 67,
+      "p10": 17,
+      "p25": 25,
+      "p50": 62,
+      "p75": 243,
+      "p90": 258
+    }
+  },
+  "agreementBvsA": {
+    "n": 47,
+    "median": 0,
+    "p90": 0,
+    "within1pct": 47,
+    "within5pct": 47,
+    "over20pct": 0
+  },
+  "secRequests": 394
+}
