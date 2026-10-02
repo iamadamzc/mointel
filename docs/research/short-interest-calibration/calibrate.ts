@@ -42,9 +42,26 @@ interface FinraRow {
   revisionFlag: string | null;
 }
 
+/**
+ * The value exactly as written in .env.local, no comment stripping and no `$`
+ * expansion. Node's --env-file treats an unquoted `#` as a comment, and the
+ * FINRA secret contains one, so process.env holds a TRUNCATED secret (FINRA:
+ * invalid_client). Never printed.
+ */
+function rawEnvValue(name: string): string | undefined {
+  try {
+    const line = fs.readFileSync('.env.local', 'utf8').split(/\r?\n/).find((l) => l.startsWith(`${name}=`));
+    if (!line) return undefined;
+    const value = line.slice(name.length + 1).trim();
+    return /^(["']).*\1$/.test(value) ? value.slice(1, -1) : value;
+  } catch {
+    return undefined;
+  }
+}
+
 async function finraToken(): Promise<string> {
-  const id = process.env.FINRA_API_CLIENT_ID?.trim();
-  const secret = process.env.FINRA_API_CLIENT_SECRET?.trim();
+  const id = (rawEnvValue('FINRA_API_CLIENT_ID') ?? process.env.FINRA_API_CLIENT_ID)?.trim();
+  const secret = (rawEnvValue('FINRA_API_CLIENT_SECRET') ?? process.env.FINRA_API_CLIENT_SECRET)?.trim();
   if (!id || !secret) throw new Error('FINRA credentials are not in the environment (run with --env-file=.env.local)');
   const response = await fetch(TOKEN_URL, {
     method: 'POST',
