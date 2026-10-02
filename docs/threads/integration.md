@@ -3430,6 +3430,11 @@ HIS RULING       typed to me with screenshot (scratchpad images\2.png): "the way
                  doesn't make sensee to have them in two places." ORDER to Design: ONE ladder (resistance merged into the
                  level ladder's design/order), separate section removed; branch from /proc 28c66f14; render on real rows
                  outside his window; gate; tag + sha to me; any genuinely-his choice comes back first.
+HIS QUESTION     "i want to do some research around short interest. wonderin if we shoul dinclude it. where could we
+                 get it from. how is it dervied. is there any free source (does alpaca have?)." Routed: Commercial
+                 (local_2ce868d2, Sonnet, idle since 09-30): sources, Alpaca, FINRA/exchanges, vendors, display/redistribution
+                 terms, one doc + rec (3c9572c8). Research: derivation, staleness vs his window, where it would fit,
+                 related stored data; after v6 step 5 (3a8424ed). One answer to him when both land.
 DESIGN HANDOFF   On HIS "yes hand over" (to Design). Fresh Design seat does tonight's post-ship reads (levels on /desk,
                  (A) on a review link). Route by the NEW id once it messages; nothing to local_c29a82bd after.
   CENSUS: 6fb483a0 read (comma lists of bare ids at any width; single bare id 5+ digits; year-list edge noted to
