@@ -73,3 +73,14 @@
 | N11 | G > 0 and the narrative omits G. **Checked by a DETERMINISTIC rule**, not the model: when the computed facts carry G > 0, line `N` must state G's number, or it is struck as an omission. A new checker rule, owned by Research, with its own test and mutant. |
 
 *N9 to N11 were added on Marketing's proposal (Marketing-tmi, after `6cca5549`), before any freeze or seed. The pass bar's class list is now N1 to N11, plus the v5 line classes.*
+
+**Line classes in v6 (the card prose shrinks because tags carry grade, explains, supply and float).**
+
+- **Marketing proposes dropping the v5 classes about supply, grade and cycle PROSE.**
+- **Research keeps THREE of them anyway, because the writer can still restate a tag's field against its instructions, and the checker must catch it when it does:**
+  - **L-float:** a float written as a number.
+  - **L-SO:** shares outstanding called float, or undated.
+  - **L-sell:** "sell"/"selling" in supply wording.
+- Each is an absolute guardrail (Commercial's and Marketing's rules), and each is a deterministic or traced rule the checker already has.
+- **The rest drop as Marketing says.**
+- **The surviving v5 line classes apply to the card prose:** a number not in the store, a date not held, a clock with no source, causation, a company or country contradiction, an em dash, a buy/sell word.
