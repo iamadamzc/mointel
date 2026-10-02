@@ -3089,6 +3089,12 @@ error                                                  TYPE                     
   ANSWERED (Commercial f2fd76f1 §8): Alpaca borrow/locate data falls under the same Terms "Content" clause as the live
   tape (personal/non-commercial default; 30 days' notice to make it available to others). Locate quotes are
   ACCOUNT-SPECIFIC (Alpaca's words); shortable/borrow_status reads as a symbol attribute (one source). Told him.
+HIS DIRECTION    "would the numbers be different with a commercial licesnse?" -> told him: no, licence = display rights;
+                 market-wide borrow unknown. Then: "yeah let's do that. but i dont want borrow data for the sake of having
+                 it. understanding short interest is a read for longs. if its heavy/deep/concentrated it makes long plays
+                 more volatile." Routed: Commercial = market-wide fee/utilization/availability sources + display terms
+                 (bd092de0); Research = addendum to 46d08738, which measures express heavy/deep/concentrated, freshness,
+                 honest form, compact read (78270d70). No build.
   SETTLED (Ops 12:22:48Z + read here repo.ts:1026-1034): the range path is NOT active (no range control shipped;
   band = served, inRange false), so Ops's top-50 path WAS right for his board; my "incomplete" correction to him
   over-corrected and is itself corrected in the next message. INGN rvol 0.0037, rank 955: on the board only as a
