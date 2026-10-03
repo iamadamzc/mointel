@@ -1449,6 +1449,8 @@ HIS RULINGS (Research's chat, 15:44:11Z, per Research, verbatim): "intraday defi
                  low effort (~$3, proposal 9b41a12d). My build question unanswered in my chat; TOLD HIM I read "do the claude
                  comparison" as yes to the build, starting unless he says stop; Research holds until I confirm he saw it.
                  ANTHROPIC_API_KEY needed in .env.local (his); exact var name and the scratch-copy path asked of Research.
+                 Research: var name ANTHROPIC_API_KEY (SDK default, via dotenv from .env.local). Scratch copy A:\mointel-scratch\n                 market-scratch-2026-10-02.db (verified, only file); HIS to delete (Claude Code safety check blocked Research;
+                 not run from any seat). Build released to Research (no spend, reversible; stops if he says stop).
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
