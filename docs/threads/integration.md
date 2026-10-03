@@ -1338,6 +1338,13 @@ HIS RULING      (typed to me): "we need to deal with this sheet once and for all
 RESEARCH QUEUE   Stopped its in-flight test run on his rule. Asks HIM (its chat): desk test run, one v6 voice run (~$0.20),
                  blue-sky count (~10 s). v6 step 5 samples with Design + Marketing (e6d20f55); writer fix a1e47632; raw
                  801efe6e.
+DESIGN           Stopped its v6 surface gate on his rule (tip 54e2a407, tag design/reports-v6-wip): partial, NOT a pass (6
+                 releaseRetention 30 s timeouts under load; lint/build/typecheck not run). Asks him for a slot in its chat.
+                 v6 STEP 5 RENDER: all four e6d20f55 samples, surface PASS; one content finding to Research (INTO_RTH
+                 narrative "4 of the 12 names" vs page "watching 10" / "FRESH NEWS · 2": counted before vs after
+                 strikes). Samples go to HIM (his first look) once Research settles that finding.
+OPS              Ack; his Sheet ruling verified at his turn (03:11:38.793Z); header hold b9adcf8c. Plan must name env keys
+                 that go + whether a market restart is in the sequence.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
