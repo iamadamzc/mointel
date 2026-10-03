@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { gateApiRequest } from '@/lib/auth/requestGate';
 import { retryResearch } from '@/lib/research/control';
 
 // A user action, never cached.
@@ -7,6 +8,9 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
+  const refused = gateApiRequest(request);
+  if (refused) return refused;
+
   let body: unknown;
   try {
     body = await request.json();
