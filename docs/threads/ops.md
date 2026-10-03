@@ -13656,3 +13656,9 @@ yes. The post-ship live read: refused session on /desk = 403 + NotAdmitted scree
 Internal-caller design offered to Web (later cut, needs no worker restart): Next binds 127.0.0.1:3000 only
 (mointel-web.service); all 14 proxy_pass blocks set X-Real-IP at 3b9c0a70; so no X-Real-IP and no XFF means a box-local
 caller. It fails open if a location ever drops the header, so it needs a structural test over the nginx confs.
+**03:18Z, with Web:** header-absence design WITHDRAWN (it fails open: a dropped header, a bind change, nginx drift, any
+local process). The /api/dashboard fix is a shared-secret header the worker sends (fails closed), riding the already
+pending market restart; the secret is box-only, so it goes in sync-env.sh. The step-4 GATE ADDS a pre-ship 403 read in the
+same slot: after the build, next start on a spare port with a temp IDENTITY_DB_PATH seeded with one uninvited user and
+session (shape: tests/auth/requestGate.test.ts); /desk with that cookie = 403 + "You are signed in. This account does not
+open the board."; no cookie = 307 /signin. This seat runs it.
