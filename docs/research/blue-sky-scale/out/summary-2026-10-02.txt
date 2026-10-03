@@ -1,0 +1,7 @@
+store data/market-prod-2026-10-02.db: 4892807168 bytes, mtime 2026-10-03T02:53:38.868Z
+tradingDate 2026-10-02; board sessions 2026-10-02, 2026-10-01, 2026-09-30, 2026-09-29, 2026-09-28 (330 tickers)
+N symbols with daily_bars: 1214; errors: 0
+A SHOWN NOW (verified, ceilingComparable false): 79 (on board in last 5 sessions: 22)
+B SHOWN, BASIS UNKNOWN (verified, ceilingComparable null): 207 (on board in last 5 sessions: 8)
+C LATENT (refused now, verified if basis vouched, comparable false): 104 (on board in last 5 sessions: 34)
+positive control GNPX in C: YES
