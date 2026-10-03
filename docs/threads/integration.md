@@ -1322,6 +1322,10 @@ HIS RULE (typed to me, 2026-10-03 ~03:1xZ by transcript): "ive got some other he
                  Web, Research, Marketing, Commercial: no gate/build/test/script on this PC without asking him first.
                  LIFTED (his word, typed to me 2026-10-03): "tell everyone if they need to run anything its open." Sent to all
                  six seats; one full-suite gate/build at a time still, Ops's queue.
+                 Ops: lift verified at his turn 14:04:15.842Z; a50f5948 gate holds the heavy slot.
+STRUCK CARD BUILT research/reports-v6 @ 4cc5f5ca: empty-text card kept; desk 29 files / 397 tests, tsc 0, mutants as
+                 predicted (Research). NEXT: samples re-applied through it -> Design renders -> to HIM (first look).
+                 Sheet step 2 waits on his yes to Research (4.9 GB copy, $15).
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
