@@ -13662,3 +13662,13 @@ pending market restart; the secret is box-only, so it goes in sync-env.sh. The s
 same slot: after the build, next start on a spare port with a temp IDENTITY_DB_PATH seeded with one uninvited user and
 session (shape: tests/auth/requestGate.test.ts); /desk with that cookie = 403 + "You are signed in. This account does not
 open the board."; no cookie = 307 /signin. This seat runs it.
+**03:2xZ STEP-4 CUT APPROVED by Integration (local_54f1341f) by literal sha 32db0d7e6169170a3f708da45f13f9f73e0a1eda.**
+Gated at tip: /desk, /api/{assessments,levels,market,reports,research/retry}; UNGATED: /api/health, /api/dashboard.
+No deploy/lib/db/worker/package changes, so no market restart. SHIP CONDITIONS: (1) his yes before the local gate;
+(2) gate 232/232 + lint 0 errors + build rc 0 + the pre-ship 403 read, on this sha; (3) after deploy, from his browser:
+/desk as iamadamzc@gmail.com = board; /desk incognito as his Workspace address = 403 + NotAdmitted (not 500); /desk
+signed out = redirect /signin; board live data loads (/api/market 200 with his session); (4) the market worker still pins
+the TODAY sheet (loopback /api/dashboard 200 or its log line). Expiry opened here (lib/auth/expiry.ts at 32db0d7e): every
+session ends 20:00 ET on its ET calendar day; a sign-in after 20:00 rolls to 20:00 next day. Desk password stays on.
+Memory: each deploy restarts research, so the build starts fresh; last night's build 1 bottomed at 1,034 MB available
+from ~2,300 (tonight's read 2,231). Stop condition kept: MemAvailable < 300 MB during the build.
