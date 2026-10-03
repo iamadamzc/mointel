@@ -182,6 +182,14 @@ describe('firstPrintBasis', () => {
     expect(firstPrintBasis(2.1, 8, 1.6)).toBe('RESTATED');
   });
 
+  it('scales the band with the ratio: a 1-for-2 that gaps down 37.5% stays restated (Research, review of dff3fb0a)', () => {
+    // Old close 1.44, restated 2.88. 1.80 is +25% from the old close: a flat
+    // 25% band would call it OLD_BASIS and show +25% instead of -37.5%.
+    expect(firstPrintBasis(1.8, 2.88, 1.44)).toBe('RESTATED');
+    // Within a quarter of log 2 (about 19%) it is still the old basis.
+    expect(firstPrintBasis(1.5, 2.88, 1.44)).toBe('OLD_BASIS');
+  });
+
   it('treats a forward split the same way', () => {
     expect(firstPrintBasis(101, 50, 100)).toBe('OLD_BASIS');
     expect(firstPrintBasis(51, 50, 100)).toBe('RESTATED');
@@ -266,6 +274,25 @@ describe('engine: a restated baseline and the first-print check', () => {
     expect(state?.percentChange).toBeCloseTo(3.125, 6);
     const [verdict] = engine.drainSplitVerdicts();
     expect(verdict).toMatchObject({ symbol: 'WCT', verdict: 'OLD_BASIS', price: 1.65, oldBasis: OLD });
+  });
+
+  it('a price carried over from before the session does not decide; the first session print does', () => {
+    const engine = engineWith(OLD);
+    engine.setBaseline('WCT', RESTATED, { replaceClose: true });
+    engine.armSplitBasisCheck('WCT', CHECK);
+    // 03:00 ET: a pre-split print from before the 04:00 session opened.
+    engine.seedSession('WCT', {
+      volumeBase: 0,
+      volumeBaseThrough: null,
+      volumeBaseSource: 'test',
+      price: 1.6,
+      priceAt: '2026-09-08T07:00:00.000Z',
+    });
+    expect(engine.drainSplitVerdicts()).toHaveLength(0);
+    expect(engine.getDemandState('WCT')?.previousClose).toBe(8);
+
+    engine.ingest(trade(8.21));
+    expect(engine.drainSplitVerdicts().map((verdict) => verdict.verdict)).toEqual(['RESTATED']);
   });
 
   it('decides once: a later print back near the old close does not revert a confirmed restatement', () => {

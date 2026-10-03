@@ -194,7 +194,7 @@ export async function buildSplitBaselines(input: BuildSplitBaselinesInput): Prom
   return result;
 }
 
-/** How far from the old close a first print may sit and still count as on it. */
+/** The widest a first print may sit from the old close and still count as on it. */
 export const OLD_BASIS_TOLERANCE = 0.25;
 
 /**
@@ -202,14 +202,21 @@ export const OLD_BASIS_TOLERANCE = 0.25;
  *
  * A listed split can be postponed or cancelled after it was published, and
  * then the restatement would CREATE the false move it exists to remove. So the
- * first print decides: within 25% of the old close AND nearer to it than to the
- * restated one (on a log scale, so a 1-for-5 and a 5-for-1 are treated alike)
- * means the split did not happen. Anything else keeps the restatement, which
- * leaves a genuine big move on the new basis measured against the right close.
+ * first print decides: within a quarter of the split's log distance from the
+ * old close (capped at 25%) means the split did not happen. Anything else
+ * keeps the restatement, which leaves a genuine big move on the new basis
+ * measured against the right close.
+ *
+ * WHY THE BAND SCALES WITH THE RATIO (Research's review of dff3fb0a). A flat
+ * 25% misreads a gap-down on a small ratio: a 1-for-2 from $1.44 restates to
+ * $2.88, and a dilutive open at $1.80 (-37.5% on the new basis) sits only +25%
+ * from the old close. A quarter of log 2 is about +/-19%, which leaves it
+ * RESTATED. Large ratios are unchanged: a 1-for-5's quarter is wider than 25%,
+ * so the cap applies, and a print would need a -75% open to be misread. Log
+ * scale so a 1-for-5 and a 5-for-1 are treated alike.
  */
 export function firstPrintBasis(price: number, restatedClose: number, oldClose: number): 'RESTATED' | 'OLD_BASIS' {
   if (!(price > 0) || !(restatedClose > 0) || !(oldClose > 0)) return 'RESTATED';
-  const fromOld = Math.abs(Math.log(price / oldClose));
-  const fromRestated = Math.abs(Math.log(price / restatedClose));
-  return Math.abs(price / oldClose - 1) <= OLD_BASIS_TOLERANCE && fromOld < fromRestated ? 'OLD_BASIS' : 'RESTATED';
+  const band = Math.min(Math.abs(Math.log(restatedClose / oldClose)) / 4, Math.log(1 + OLD_BASIS_TOLERANCE));
+  return Math.abs(Math.log(price / oldClose)) < band ? 'OLD_BASIS' : 'RESTATED';
 }
