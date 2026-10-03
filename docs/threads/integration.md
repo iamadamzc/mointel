@@ -1427,6 +1427,11 @@ HIS RULINGS (Research's chat, 15:31:54Z, per Research, verbatim): "yes to both. 
                  themes via checked per-name labels; session-pattern opening; peak vs close retention; cycle label; "Context
                  for the next session"); (2) a SEPARATE labeled after-hours line on the premarket. NOT ruled: spend, my build
                  nod (package v2 changing). Marketing redoing examples; package v2 comes to me, then to him.
+PACKAGE v2      Proposal :78-116 (12f85306 local), Marketing's v2 examples fact-checked by Research (retention 4 of 9; NXL
+                 +156.5/+76.4; SSM +130.3/+96.9; AMOD +61.5 AH; 7 of 12; NXL $4.90/$10.98/$19.20 historicalResistance).
+                 Build condition: older-high clause only when blue-sky basis vouches. PUT TO HIM: both examples + "Build the
+                 summaries in this shape?" (I had promised him a look before build). Research's two readability asks stay in
+                 its chat.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
