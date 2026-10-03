@@ -1291,7 +1291,7 @@ APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts)
                  (allowlist.ts invocation user unknown). Asked Web: confirm owner-or-root openers or skip/catch + test.
                  NOT a pick for step 4 (Web: wiring cut stays 01455d93 + wiring).
 GATE REDS AT HEAD (Web found, routed): (a) releaseRetention.test.ts 2 fails, clock-dependent? -> Ops; (b) tsc 2 errors
-                 calibrate.ts:147/201 implicit any (read) -> Research; (c) eslint 60 errors all in leftover worktree
+                 calibrate.ts:147/201 implicit any (read) -> Research, FIXED 514fc78d (on origin; tsc 0 per Research); (c) eslint 60 errors all in leftover worktree
                  .claude/worktrees/agent-acfba7ff0c32d6e90 (levels-request-path 8dfacf4c, 09-30, clean, on origin) ->
                  Ops housekeeping. tsconfig include **/*.ts, exclude only node_modules.
 ```
