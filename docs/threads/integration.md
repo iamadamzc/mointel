@@ -1027,6 +1027,11 @@ Marketing-tmi local_fdc0aa9a   Commercial-tmi local_2ce868d2.  THIS seat local_5
 His rule today: local runs open again, ONE heavy run at a time in Ops's queue; seats ask Ops for the slot before any test.
 ```
 
+**SHARED MAIN AT HAND-OFF (read 2026-10-03 ~16:1xZ by git, not pushed):** local main is 23 BEHIND origin and holds many
+unpushed commits from Ops, Research and Web (several likely patch-identical to origin copies made through side worktrees).
+The 23rd's own notes are local only. Do NOT push blind: list `origin/main..main` as its own step, get each owner's clearance
+or match by patch-id, and if `git merge origin/main` conflicts in a peer's file, abort and hand it to the owner.
+
 ### HAND-OFF LINE
 ```
 First: ask Ops for /proc after the 16:34Z market restart (f5746a84); confirm the [splits] line. Then his two Sheet decisions,
