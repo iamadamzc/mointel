@@ -75,6 +75,34 @@ Rules diff (`NARRATIVE_RULES`):
 - Recap: four to five short sentences; lead with the session (breadth and the 50 percent movers), then the leaders and what their news was, then the grade mix and fit, then what changed.
 - The checker's prompt gains the new facts WORDED as the writer gets them (checker prompt 5's rule), and the forbidden-wording list is unchanged.
 
+## v2: HIS RULING, his example prompt's approach folded in (2026-10-03T15:31:54Z)
+
+He shared an example research-editor prompt and ruled "yes" to folding its approach in, and "yes" to a separate labeled after-hours line on the premarket. This section supersedes the rules diff above where they differ.
+
+**Taken now (all inputs stored or computed; nothing asks the writer to research or to calculate):**
+
+| From his prompt | What the sheet / rules carry | Source |
+|---|---|---|
+| A purpose, not only limits | System prompt opens: explain what happened in the session and which developments remain relevant into the next one, for readers following small-cap momentum; documentation and analysis, never a recommendation | rules |
+| Facts, supported interpretations, unresolved questions kept separate | Replaces "never add a fact, a theme, a sector or a reason". The writer MAY derive a pattern or theme, labeled as interpretation, naming the facts it rests on; the checker verifies those facts, and an interpretation resting on none is struck | rules + checker |
+| Derived themes (his earlier question) | The writer labels each covered name from its own summary and business line with a FIXED list (deal or contract, financing, results, clinical, filing or stake, corporate action, none found); code counts the labels; the checker verifies each label | F14, new |
+| Opening: the session's defining behaviour | The narrative opens with the pattern the computed facts support (e.g. how many 50 percent movers kept most of the move vs faded), as interpretation tied to the counts | F6, F7, F15 |
+| Peak vs close, retention | Per covered mover: high and close percent on the day and RETENTION = (close - prior close) / (high - prior close), computed in code | F15, new (`rth_final_high`, `rth_final_close`, `previous_close`) |
+| Momentum-cycle label | The dossier's cycle classification at the checkpoint, humanised (fresh frontside, frontside with warning, backside, unclear) | stored (`desk_assessment_tickers.cycle`) |
+| Catalyst quality apart from price and structure | Kept as today: the catalyst clause from the summary; grade and structure stay in the tags | unchanged |
+| "Context for the next session" | A short closing block: per named mover, the session high, the close, the stored support / resistance and historical resistance, and open supply items (ledger entries KNOWN_ACTIVE or POSSIBLY_ACTIVE, by type). Described, never predicted ("financing capacity remains open", never "will hold") | stored (`level_summary`, `cycle.historicalResistance`, `structure.supplyLedger`) |
+| After-hours developments | The labeled after-hours line (F10b); 3 named tickers in all, split 2 regular session + 1 after hours by default | F10b |
+| No em dash | The prompt text itself carries none (his example has two; models mirror punctuation) | rules |
+
+**Waits (not in this build):**
+
+- The intraday sequence (expansion, pullbacks, reclaims, continuation attempts): needs a computed event summary from the minute bars; a build of its own.
+- Split normalisation in prose: the reverse-split check (queued) comes first.
+- The universe filter ($2 to $10, float under 20M): conflicts with the board's band and with his open float decision; his ruling, not a prompt line.
+- Research verification by the writer: the writer has no tools; it is told its inputs are the desk's checked research.
+
+**Models:** he is open to other models if the output is better, with cost evaluated first. The side-by-side below therefore becomes a model comparison on the v2 sheet, priced before any run; it still needs his spend yes on a stated number.
+
 ## Marketing's target examples (final, checked against the store by this seat)
 
 PREMARKET, the 10-01 recap (checkpoint 611; moves on the day from `rth_final_*`):
