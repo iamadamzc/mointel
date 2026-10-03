@@ -1337,6 +1337,9 @@ DESIGN HANDS OFF On his yes. LIVE STATE origin 9a880961; prompt 75101d18. Succes
                  (1) HOLD renders for him until Research fixes the CAMP tag defect (my 4f5b6823 to the old seat, likely
                  dropped); (2) design.md rows LL 9189b569 and AR a4a06168 say READY but are LIVE in 3b9c0a70 (Ops /proc);
                  (3) blue-sky hover c535dce7 rides a50f5948 (approved). Nothing to local_dfce21d4 after now.
+                 (4) Design's last read (verified here): why.headline NOT rendered on the report surface, BUT the risk chip
+                 hover is (SessionReports.tsx:645 title={risk.detail}; risk.ts:136-140 raw structural warning). Research
+                 told to clean the as-of dossier once before reportTags; new Design seat must check HOVER text in renders.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
