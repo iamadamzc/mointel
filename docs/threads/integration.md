@@ -1320,6 +1320,14 @@ NEW OPS          local_7fac8dfc (Ops-tmi, A:\mointel, created 03:05:21Z; get_ses
 HIS RULE (typed to me, 2026-10-03 ~03:1xZ by transcript): "ive got some other heavy stuff running on teh computer right
                  now. so if any one needs to run anuythign locally lmk first". Sent to Ops, Design (holds heavy slot),
                  Web, Research, Marketing, Commercial: no gate/build/test/script on this PC without asking him first.
+STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
+                 only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
+                 levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
+                 this sha; live reads (admitted board, refused 403 NotAdmitted not 500, anonymous -> /signin, /api/market
+                 200 for him); worker still pins. ASK MUST SAY: sessions end 20:00 ET daily (his 09-10 ruling,
+                 lib/auth/expiry.ts), so every trading morning starts with a Google sign-in; desk password stays on.
+BASIC-AUTH-OFF PRECONDITION ADD: /api/dashboard must be gated with a worker internal credential first (Web row
+                 cda8f734). Silent `if (!response.ok) return;` in worker/runtime.ts refreshSheetSymbols should log (owner).
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
