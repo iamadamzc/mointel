@@ -1060,6 +1060,16 @@ STEP 1 APPROVED  6e7fff846a573e2692deb8fcb7982c7b375e6f08 (tag design/sheet-step
                  DataFreshness reads meta.provider; added U+2014 0, entities 0, U+2013 0 (Python, control finds 1 lone
                  glyph in context). Unchanged while Sheet keys set. Conditions to Ops (1f6d356c): gate on sha, his yes,
                  no market restart, outside 07-10 ET, /proc after; Sheet key NAMES on box read first. Design told.
+OPS /proc        17:06:06Z: web 2013406 / research 2013463 / assess 2013537 / market 2013616, all f5746a84, NR 0; health ok
+                 schema 28, IDLE / STREAMING, trading date 10-05. Reached the RETIRED seat (title collision) and was
+                 forwarded; MATCHED against Ops's own transcript jsonl. Old chat now titled Integration-tmi-retired
+                 (get_session), NOT archived. Ops: unpushed lines = ops.md + scripts/ops/server-only-trace.cjs, clear to ride.
+STEP 1 SHIP      Ops: box keys GOOGLE_SHEET_ID / _SERVICE_ACCOUNT_EMAIL / _PRIVATE_KEY present (names + lengths); prediction
+                 "board unchanged". Ships 6e7fff84 ALONE (61e2f777 / identity pair / citation fix later cut). Gate running,
+                 pre-reg 235; then his yes in Ops's chat.
+DESIGN ROW B     v6 report surface tag design/reports-v6-surface-gated-5c95c92e -> 5c95c92e (on research/reports-v6 b8719e7c,
+                 NOT production), Design-gated 229 / 3,319. MY REPLAY OWED before any cut; trigger = his reaction to the
+                 four first-look renders (sent by the 23rd) / the v2 narrative. Not urgent.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
