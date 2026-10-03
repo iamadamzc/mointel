@@ -13810,3 +13810,4 @@ f5746a84: restart the market worker today to ship the split-day fix, once its ga
 RESTART_MARKET=yes in the 12:33-12:43 ET preflight slot (16:34Z), base check (web/research/assess 0b92c309, market 1b5ead66)
 first. After: /proc, a [splits] log line, SIP live, health; Monday spot check on one listed split name.
 **GATE f5746a84: ALL GREEN 234/234 (pre-registered 234)**, 3,395 tests, tsc 0, lint 0 errors / 6 warnings, rc 0 at 16:06:02Z; watcher: no foreign node process. Waiter confirmed it 16:06:03Z; restart deploy (RESTART_MARKET=yes) starts 16:34:00Z.
+**16:07Z Integration (23rd, local_54f1341f) RETIRING on his yes.** Post-restart report goes to the NEW Integration-tmi (find by title). Local main: 23 behind origin, 120 unpushed (Integration 50, Research 38, Ops 25, Web 7): NOBODY pushes it blind; the next push is the new Integration's, after a merge.
