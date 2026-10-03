@@ -162,7 +162,9 @@ The re-draw rule fires for depth (Shallow at 77%), but the main cause is FINRA's
 
 ## Options re-scored (for him; no change made here)
 
-1. **Exception-only display (still recommended).** A line only at Elevated or Heavy size (graded), or Deep or Very deep depth. Size exceptions appear on about 10 of 422 pairs (2.4%); depth exceptions, Deep or worse, on about 15% (first run). The legend must hold in both silent cases, per Integration's correction: no line means either nothing large OR not measurable, never "nothing notable".
+**RECOMMENDATION CHANGED 2026-10-02, after the Ortex look (`docs/research/ortex-comparison/comparison-2026-10-02.md`): HOLD the display decision.** Exception-only on FINRA alone shows NO line on SDEV, the most crowded of the five (Ortex: 12% of float, 195% borrow, 1.6% available; FINRA Sep 15: 2.39% of the filed count). What would decide it: a pre-registered matched-date FINRA vs Ortex comparison on a fixed name set, after Commercial reads Ortex's terms for research use.
+
+1. **Exception-only display (WITHDRAWN as a recommendation, see above).** A line only at Elevated or Heavy size (graded), or Deep or Very deep depth. Size exceptions appear on about 10 of 422 pairs (2.4%); depth exceptions, Deep or worse, on about 15% (first run). The legend must hold in both silent cases, per Integration's correction: no line means either nothing large OR not measurable, never "nothing notable".
 2. **COMBINED RECONCILED as the size source** (dossier count when fresher, plus completed offerings, 120 days, refusing only on active ATMs or equity lines): size gradable on about a third of his names, 18% of foreign issuers. If a grade is shown, this is the measured best of the variants tried.
 3. **STRICT:** gradable on 18%. Safer for "at least", much less coverage.
 4. **Park the label.**

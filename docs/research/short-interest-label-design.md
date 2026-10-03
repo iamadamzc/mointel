@@ -179,4 +179,4 @@ Marketing's read (2026-10-02): "5 to 10 days" was a content error (10 is Very de
 - All inputs as of the label's VIEW time.
 - The settlement is the latest FINRA report PUBLISHED by then.
 
-**Display mode is HIS and still open:** exception-only is recommended by Research, Commercial and Integration. Nothing is built until his answer.
+**Display mode is HIS and still open.** Research's recommendation is now HOLD (after the Ortex look; see the calibration result.md). Exception-only on FINRA alone would show nothing on the crowded fresh movers. Nothing is built until his answer.
