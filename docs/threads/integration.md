@@ -1261,6 +1261,9 @@ ORTEX LOOK       Research 7abc3d20 + 4a31e4af (read; arithmetic checked): his fr
                  "under 5%" vs Ortex 12.1% of float, 195% CTB, 1.6% availability). A LOOK, not a measurement. Ortex terms
                  unread by Commercial. MY RECOMMENDATION (exception-only) WITHDRAWN to him: hold the display decision.
                  Asked Research for its updated recommendation + push clearance on its 5.
+LEAK VERDICT     PASS AS REGISTERED (Research 479d3cfc, read; log 7c689e7b read ends 05:45:08Z -> 2026-10-03T00:05:13Z, one
+                 child 1864116, NRestarts 0). Max RSS 275.2 MB vs 450; -0.18 MB/ticker (31 -> 65) vs < 2. Clock read
+                 2026-10-03T00:06:42Z. Told him in one line; Ops copied.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
