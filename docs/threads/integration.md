@@ -1384,6 +1384,11 @@ HIS YES (Research) "yes to both" (Research's session local_98e3e9a1, his turn ju
                  14:48:38Z, but the BOX PREFLIGHT REFUSED: weekend checkpoint guard (live preflight lacks 61e2f777),
                  RTH_INTERVAL 12 m away. Nothing shipped. Re-run 15:06:00Z (11:06 ET), no override. The 61e2f777 gap
                  recorded earlier is what bit; it rides the NEXT ordinary release.
+v6 RENDERS (3)   Design: INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS at 1,280 + 1,024, surface tag design/reports-v6-surface-ungated-
+                 5c95c92e (54e2a407 + no-grade card change, NOT gated). Copied to my scratchpad v6-renders/ (Design's is temp).
+                 LOOKED HERE at INTO_RTH-1280: FRESH 4 / OLDER 2 / UNCLEAR 1 / NOT YET RESEARCHED 5 = 12; narrative "4 of the
+                 12" matches. Sample artefacts to name to him: header "written 23:32 ET (11h ago) LATE" and "SESSION OVER"
+                 come from replaying 10-01 samples against today's clock. Held for PREMARKET; all four go together.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
