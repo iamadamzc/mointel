@@ -168,6 +168,8 @@ export function readReportInputs(
   const research = new Map<string, ReportResearch>();
   const paths = new Map<string, ReportPath | null>();
   const tags = new Map<string, ReportTags>();
+  /** The narrative's older high (v2 context), as of the checkpoint's dossier. Gated by the basis check in `narrative.ts`. */
+  const olderHighs = new Map<string, number | null>();
   const freshFrom = catalystFreshFromUtc(db, tradingDate);
   for (const fact of built.facts) {
     const row = byTicker.get(fact.ticker);
@@ -181,6 +183,7 @@ export function readReportInputs(
     });
     tags.set(fact.ticker, tag);
     if (version) {
+      olderHighs.set(fact.ticker, version.dossier.cycle?.historicalResistance ?? null);
       const found = researchForReport(db, fact.ticker, version, sources);
       /*
        * ONE freshness verdict, the board's, AS OF THE CHECKPOINT (Design's catch,
@@ -229,6 +232,8 @@ export function readReportInputs(
         checkpointId: built.checkpoint.id,
         facts: built.facts,
         research,
+        tickers,
+        olderHighs,
       }),
     },
   };

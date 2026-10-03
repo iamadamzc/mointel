@@ -8,7 +8,13 @@ import type { ReportResearch } from '@/lib/desk/reports/research';
 /* Reports v6 writer: the narrative from computed facts only, and the catalyst story per name. */
 
 const RANGE = { min: 1, max: 20 };
+/** The v2 facts (build step 1), none given: this sheet does not read them until step 2. */
+const NO_V2 = {
+  splitExcluded: null, keptHalf: null, coveredMovers: null, recapLeaders: null, afterHours: null,
+  moversWithoutFresh: null, context: null, intradayNamed: null,
+} as const;
 const intraday: NarrativeFacts = {
+  ...NO_V2,
   kind: 'INTO_RTH',
   range: RANGE,
   breadth: { window: 'SESSION_TO_DATE', eligible: 2800, traded: 2700, up: 1500, down: 1100 },
@@ -20,6 +26,7 @@ const intraday: NarrativeFacts = {
   tracking: null,
 };
 const recap: NarrativeFacts = {
+  ...NO_V2,
   kind: 'PREMARKET',
   range: RANGE,
   breadth: { window: 'REGULAR_SESSION', eligible: 2865, traded: 2862, up: 1207, down: 1513 },
