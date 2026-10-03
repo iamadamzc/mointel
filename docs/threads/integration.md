@@ -1328,6 +1328,16 @@ STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/
                  lib/auth/expiry.ts), so every trading morning starts with a Google sign-in; desk password stays on.
 BASIC-AUTH-OFF PRECONDITION ADD: /api/dashboard must be gated with a worker internal credential first (Web row
                  cda8f734). Silent `if (!response.ok) return;` in worker/runtime.ts refreshSheetSymbols should log (owner).
+                 CORRECTION (Web, read): sessions end at the NEXT 20:00 ET (roll-forward). Ask wording now Web's: "You'll sign
+                 in with Google once a day. A sign-in lasts until 8pm New York time, or until 8pm the next day if you
+                 sign in after 8pm." Sent to Ops. My "every trading morning" was an over-simplification of a clause I read.
+HIS RULING      (typed to me): "we need to deal with this sheet once and for all. the google sheet needs to be removed as
+                 part of this system. period. draw it up." Integration drafting the removal plan (reader inventory via
+                 Explore agent + my reads). Web/Ops shared-secret header for /api/dashboard (9b6d88fb) HELD: its caller
+                 (TODAY-sheet pins) likely disappears with the Sheet. Step 4 unaffected.
+RESEARCH QUEUE   Stopped its in-flight test run on his rule. Asks HIM (its chat): desk test run, one v6 voice run (~$0.20),
+                 blue-sky count (~10 s). v6 step 5 samples with Design + Marketing (e6d20f55); writer fix a1e47632; raw
+                 801efe6e.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
