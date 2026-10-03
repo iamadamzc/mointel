@@ -42,7 +42,7 @@ For the 10-01 recap (checkpoint 611, 12 covered names, 11 with a dossier):
   - Catalyst-type themes: `catalystType` is coarse; all 7 fresh names on 10-01 are `NEWS_DRIVEN`.
   - A theme from the summaries would be a model judgment the checker cannot trace, so it is not proposed.
 
-**A data note found here, not for this build:** WCT's 10-01 close reads -79.9% against a high of +2.0%, which looks like an unadjusted reverse split in `previous_close`; it counts in the recap's "down" breadth. Not measured further.
+**A data note found here, not for this build:** ~~WCT's 10-01 close reads -79.9% against a high of +2.0%, which looks like an unadjusted reverse split in `previous_close`~~ **MEASURED, and wrong:** WCT traded up to $8.25 on 10-01 against a prior close of $8.09 and closed at $1.625, a genuine crash on one basis; its 1-for-5 reverse split was 09-08. The split-day prior-close defect is real on other dates (at least 12 rows, none on the board): `docs/research/split-day-previous-close/result-2026-10-03.md`.
 
 ## Proposed sheet (the facts), for Marketing's examples to confirm
 
