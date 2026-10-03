@@ -1459,6 +1459,10 @@ SPLIT FIX DESIGN Ops measured: Alpaca /v1/corporate-actions lists 11 of 12 confi
                  rebuild those baselines from RAW bars by ratio (previousClose + RVOL denominator), no double adjustment (NIVF
                  09-01 control). MY "UNVERIFIED on standard ratio" fallback WITHDRAWN (Ops: hides genuine 2x-5x runners =
                  board behaviour, his). Residual: unlisted splits (RFAI) uncovered, to be stated. Research reviews; restart his.
+SPLIT FIX BUILT  Ops dff3fb0a6f5a7dabc87ff504d98ce2feac86445c (ops/split-day-close, parent 0b92c309); gate pre-reg 234/234; Research
+                 predicting mutants. RESTART CONE: market worker 1b5ead66 -> dff3fb0a = 129 commits, 30 in worker/ lib/market
+                 lib/db (read), code SCHEMA 27 -> 28 (store already v28). Asked Ops for a BY-SURFACE enumeration from the market
+                 worker's entry (what it will DO differently; flags; bootstrap/pins). Then my replay, then to him in plain words.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
