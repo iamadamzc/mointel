@@ -1,0 +1,2386 @@
+{
+  "preregistration": "docs/research/split-day-previous-close/prereg.md (87bb743b)",
+  "store": {
+    "path": "A:/mointel/data/market-prod-2026-10-02.db",
+    "bytes": 4892807168
+  },
+  "windowDates": 35,
+  "datesWithRthFinal": 34,
+  "firstRthFinalDate": "2026-08-17",
+  "rows": 308380,
+  "excluded": {
+    "noFinalToday": 49081,
+    "noPriorRow": 13136
+  },
+  "checked": 246163,
+  "candidates": 84,
+  "split": 49,
+  "gap": 35,
+  "defect": 17,
+  "adjusted": 23,
+  "other": 9,
+  "controls": {
+    "positiveWCT": [
+      {
+        "date": "2026-09-08",
+        "class": "SPLIT",
+        "basis": "DEFECT"
+      }
+    ],
+    "positivePass": true,
+    "negativeOrdinaryWithin2pct": 0.9812905611612531,
+    "negativePass": true
+  },
+  "splitEvidenceSources": {
+    "dailyBarsFactorRows": 477915,
+    "researchSourceTextColumns": [
+      "title",
+      "excerpt"
+    ]
+  },
+  "candidatesListed": [
+    {
+      "symbol": "GLMD",
+      "trading_date": "2026-08-19",
+      "previous_close": 4.482,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 5.85,
+      "l": 4.1,
+      "c": 4.3,
+      "priorDate": "2026-08-18",
+      "P_raw": 0.5634,
+      "R": 7.632232871849485,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "daily_bars split_factor 8.000382336073407 on 2026-08-14",
+        "text names a split and \"August 19\"",
+        "R 7.632 within 5% of 8"
+      ]
+    },
+    {
+      "symbol": "NRDY",
+      "trading_date": "2026-08-19",
+      "previous_close": 9.809,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 11.13,
+      "l": 9.15,
+      "c": 10.17,
+      "priorDate": "2026-08-18",
+      "P_raw": 0.6579,
+      "R": 15.458276333789328,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 15.458 within 5% of 15"
+      ]
+    },
+    {
+      "symbol": "MRNX",
+      "trading_date": "2026-08-19",
+      "previous_close": 31.33,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 143.84,
+      "l": 77,
+      "c": 141.321,
+      "priorDate": "2026-08-18",
+      "P_raw": 31.15,
+      "R": 4.536789727126806,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "MI",
+      "trading_date": "2026-08-21",
+      "previous_close": 7.23,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4,
+      "l": 2.79,
+      "c": 3,
+      "priorDate": "2026-08-20",
+      "P_raw": 7.23,
+      "R": 0.41493775933609955,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-08-21\""
+      ]
+    },
+    {
+      "symbol": "RFAI",
+      "trading_date": "2026-08-21",
+      "previous_close": 12.73,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 73,
+      "l": 24.02,
+      "c": 62.7,
+      "priorDate": "2026-08-20",
+      "P_raw": 12.73,
+      "R": 4.925373134328359,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 4.925 within 5% of 5"
+      ]
+    },
+    {
+      "symbol": "TEUP",
+      "trading_date": "2026-08-24",
+      "previous_close": 2.625,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 26.3,
+      "l": 24.4798,
+      "c": 25.18,
+      "priorDate": "2026-08-21",
+      "P_raw": 2.625,
+      "R": 9.592380952380953,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 9.592 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "BIAF",
+      "trading_date": "2026-08-24",
+      "previous_close": 0.4,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.47,
+      "l": 5.725,
+      "c": 5.78,
+      "priorDate": "2026-08-21",
+      "P_raw": 0.3935,
+      "R": 14.688691232528589,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 15 on 2026-08-19",
+        "text names a split and \"August 24\"",
+        "R 14.689 within 5% of 15"
+      ]
+    },
+    {
+      "symbol": "INCR",
+      "trading_date": "2026-08-24",
+      "previous_close": 0.8515,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.28,
+      "l": 4.01,
+      "c": 5.48,
+      "priorDate": "2026-08-21",
+      "P_raw": 0.8515,
+      "R": 6.435701702877275,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-08-24\""
+      ]
+    },
+    {
+      "symbol": "AXTU",
+      "trading_date": "2026-08-24",
+      "previous_close": 4.52,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 41,
+      "l": 33.8201,
+      "c": 37.905,
+      "priorDate": "2026-08-21",
+      "P_raw": 4.53,
+      "R": 8.367549668874172,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 8.368 within 5% of 8"
+      ]
+    },
+    {
+      "symbol": "CRWU",
+      "trading_date": "2026-08-24",
+      "previous_close": 3.77,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 37.17,
+      "l": 33.7698,
+      "c": 36.23,
+      "priorDate": "2026-08-21",
+      "P_raw": 3.775,
+      "R": 9.597350993377482,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 9.597 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "GAME",
+      "trading_date": "2026-08-24",
+      "previous_close": 0.4223,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.641,
+      "l": 2.98,
+      "c": 3.1839,
+      "priorDate": "2026-08-21",
+      "P_raw": 0.4244,
+      "R": 7.502120640904807,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "TTDU",
+      "trading_date": "2026-08-24",
+      "previous_close": 1.23,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.71,
+      "l": 12.25,
+      "c": 12.44,
+      "priorDate": "2026-08-21",
+      "P_raw": 1.225,
+      "R": 10.155102040816326,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 10.155 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "CCUP",
+      "trading_date": "2026-08-24",
+      "previous_close": 2.65,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 29,
+      "l": 25.75,
+      "c": 26.38,
+      "priorDate": "2026-08-21",
+      "P_raw": 2.645,
+      "R": 9.973534971644613,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 9.974 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "SBTU",
+      "trading_date": "2026-08-24",
+      "previous_close": 3.74,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 43.158,
+      "l": 38.7,
+      "c": 40.55,
+      "priorDate": "2026-08-21",
+      "P_raw": 3.74,
+      "R": 10.84224598930481,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "BRCC",
+      "trading_date": "2026-08-24",
+      "previous_close": 0.8799,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 10.66,
+      "l": 8.76,
+      "c": 9.38,
+      "priorDate": "2026-08-21",
+      "P_raw": 0.8796,
+      "R": 10.66393815370623,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "MSTU",
+      "trading_date": "2026-08-24",
+      "previous_close": 2.73,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 31.215,
+      "l": 26.16,
+      "c": 28.84,
+      "priorDate": "2026-08-21",
+      "P_raw": 2.725,
+      "R": 10.58348623853211,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "ZVZZT",
+      "trading_date": "2026-08-25",
+      "previous_close": 68.46,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 14.05,
+      "l": 12.12,
+      "c": 14.05,
+      "priorDate": "2026-08-24",
+      "P_raw": 31,
+      "R": 0.4532258064516129,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "VMAR",
+      "trading_date": "2026-08-26",
+      "previous_close": 7.182,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.96,
+      "l": 7.0011,
+      "c": 9.3,
+      "priorDate": "2026-08-25",
+      "P_raw": 0.7008,
+      "R": 13.27054794520548,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "LGVN",
+      "trading_date": "2026-08-27",
+      "previous_close": 7.033,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 7.4,
+      "l": 6.5604,
+      "c": 6.8,
+      "priorDate": "2026-08-26",
+      "P_raw": 0.703,
+      "R": 9.672830725462305,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "daily_bars split_factor 10 on 2026-08-24",
+        "text names a split and \"August 27\"",
+        "R 9.673 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "NVX",
+      "trading_date": "2026-08-27",
+      "previous_close": 4.094,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4.6,
+      "l": 3.5,
+      "c": 3.61,
+      "priorDate": "2026-08-26",
+      "P_raw": 0.4036,
+      "R": 8.944499504459861,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 10 on 2026-08-24",
+        "text names a split and \"August 27\""
+      ]
+    },
+    {
+      "symbol": "CYCU",
+      "trading_date": "2026-08-28",
+      "previous_close": 3.872,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4.3,
+      "l": 3.6401,
+      "c": 3.835,
+      "priorDate": "2026-08-27",
+      "P_raw": 0.4866,
+      "R": 7.8812166050143855,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "daily_bars split_factor 7.999384899277257 on 2026-08-25",
+        "text names a split and \"2026-08-28\"",
+        "R 7.881 within 5% of 8"
+      ]
+    },
+    {
+      "symbol": "BKHAR",
+      "trading_date": "2026-08-31",
+      "previous_close": 0.695,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 1.32,
+      "l": 1.28,
+      "c": 1.28,
+      "priorDate": "2026-08-28",
+      "P_raw": 0.695,
+      "R": 1.841726618705036,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "WZRD",
+      "trading_date": "2026-08-31",
+      "previous_close": 0.86,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.43,
+      "l": 11.16,
+      "c": 11.16,
+      "priorDate": "2026-08-28",
+      "P_raw": 0.881,
+      "R": 12.667423382519864,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "FTFT",
+      "trading_date": "2026-08-31",
+      "previous_close": 2.219,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 2.7826,
+      "l": 1.59,
+      "c": 1.9,
+      "priorDate": "2026-08-28",
+      "P_raw": 0.551,
+      "R": 3.448275862068965,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 4.000589188392989 on 2026-08-26",
+        "text names a split and \"August 31\""
+      ]
+    },
+    {
+      "symbol": "ARTL",
+      "trading_date": "2026-08-31",
+      "previous_close": 5.964,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 10,
+      "l": 5.34,
+      "c": 6.431,
+      "priorDate": "2026-08-28",
+      "P_raw": 0.6626,
+      "R": 9.705704799275582,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 8.999437095412327 on 2026-08-26",
+        "text names a split and \"August 31\"",
+        "R 9.706 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "CALC",
+      "trading_date": "2026-08-31",
+      "previous_close": 2.322,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 2.4727,
+      "l": 2.12,
+      "c": 2.135,
+      "priorDate": "2026-08-28",
+      "P_raw": 0.4644,
+      "R": 4.597329888027562,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "ALMS",
+      "trading_date": "2026-09-01",
+      "previous_close": 21.81,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 11.56,
+      "l": 8.75,
+      "c": 9.42,
+      "priorDate": "2026-08-31",
+      "P_raw": 21.82,
+      "R": 0.4317140238313474,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-09-01\""
+      ]
+    },
+    {
+      "symbol": "NIVF",
+      "trading_date": "2026-09-01",
+      "previous_close": 1.349,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 1.43,
+      "l": 1.3,
+      "c": 1.33,
+      "priorDate": "2026-08-31",
+      "P_raw": 0.4476,
+      "R": 2.9714030384271672,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "daily_bars split_factor 3.00064116264159 on 2026-08-27",
+        "text names a split and \"September 1\"",
+        "R 2.971 within 5% of 3"
+      ]
+    },
+    {
+      "symbol": "FCUV",
+      "trading_date": "2026-09-08",
+      "previous_close": 17,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 9.23,
+      "l": 5.75,
+      "c": 5.84,
+      "priorDate": "2026-09-04",
+      "P_raw": 18.28,
+      "R": 0.3194748358862144,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "R 0.319 within 5% of 1/3"
+      ]
+    },
+    {
+      "symbol": "LRHC",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.4828,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.09,
+      "l": 2.78,
+      "c": 2.93,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.4744,
+      "R": 6.176222596964587,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 6 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 6.176 within 5% of 6"
+      ]
+    },
+    {
+      "symbol": "AIXI",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.4715,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.45,
+      "l": 2.98,
+      "c": 3.19,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.4517,
+      "R": 7.0622094310382995,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 7.000636807471874 on 2026-09-02",
+        "text names a split and \"September 8\""
+      ]
+    },
+    {
+      "symbol": "WCT",
+      "trading_date": "2026-09-08",
+      "previous_close": 1.44,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 8.4,
+      "l": 6.27,
+      "c": 7.31,
+      "priorDate": "2026-09-04",
+      "P_raw": 1.44,
+      "R": 5.076388888888888,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 5 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 5.076 within 5% of 5"
+      ]
+    },
+    {
+      "symbol": "TXXD",
+      "trading_date": "2026-09-08",
+      "previous_close": 4.0534,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 46.11,
+      "l": 43.4701,
+      "c": 45.03,
+      "priorDate": "2026-09-04",
+      "P_raw": 4.05,
+      "R": 11.118518518518519,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "TNMG",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.4374,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.5933,
+      "l": 3.32,
+      "c": 3.48,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.441,
+      "R": 7.891156462585034,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 8.000426803243705 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 7.891 within 5% of 8"
+      ]
+    },
+    {
+      "symbol": "SFWL",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.9497,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.32,
+      "l": 10.8418,
+      "c": 11.425,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.9497,
+      "R": 12.030114773086238,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 15 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 12.030 within 5% of 12"
+      ]
+    },
+    {
+      "symbol": "IGR",
+      "trading_date": "2026-09-08",
+      "previous_close": 4.49,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 13.665,
+      "l": 13.1901,
+      "c": 13.41,
+      "priorDate": "2026-09-04",
+      "P_raw": 4.49,
+      "R": 2.9866369710467704,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 2.987 within 5% of 3"
+      ]
+    },
+    {
+      "symbol": "LNOK",
+      "trading_date": "2026-09-09",
+      "previous_close": 18.66,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 20.65,
+      "l": 19,
+      "c": 19.055,
+      "priorDate": "2026-09-08",
+      "P_raw": 37.31,
+      "R": 0.5107209863307424,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 0.511 within 5% of 1/2"
+      ]
+    },
+    {
+      "symbol": "KEEX",
+      "trading_date": "2026-09-09",
+      "previous_close": 8.008,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 8.59,
+      "l": 7.7,
+      "c": 7.94,
+      "priorDate": "2026-09-08",
+      "P_raw": 32.03,
+      "R": 0.24789260068685606,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 0.248 within 5% of 1/4"
+      ]
+    },
+    {
+      "symbol": "RKLZ",
+      "trading_date": "2026-09-09",
+      "previous_close": 19.15,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 20.9,
+      "l": 18.03,
+      "c": 20.58,
+      "priorDate": "2026-09-08",
+      "P_raw": 3.88,
+      "R": 5.304123711340206,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "RCAX",
+      "trading_date": "2026-09-09",
+      "previous_close": 16.15,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 15.96,
+      "l": 13.97,
+      "c": 14.02,
+      "priorDate": "2026-09-08",
+      "P_raw": 3.21,
+      "R": 4.367601246105919,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "UCAR",
+      "trading_date": "2026-09-09",
+      "previous_close": 8.656,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 8.99,
+      "l": 6.05,
+      "c": 8.36,
+      "priorDate": "2026-09-08",
+      "P_raw": 0.4328,
+      "R": 19.31608133086876,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 19.316 within 5% of 20"
+      ]
+    },
+    {
+      "symbol": "LFT",
+      "trading_date": "2026-09-10",
+      "previous_close": 6.923,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.92,
+      "l": 6.45,
+      "c": 6.85,
+      "priorDate": "2026-09-09",
+      "P_raw": 0.696,
+      "R": 9.841954022988507,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 9.842 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "OKLL",
+      "trading_date": "2026-09-10",
+      "previous_close": 13.3,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.8,
+      "l": 11.56,
+      "c": 11.65,
+      "priorDate": "2026-09-09",
+      "P_raw": 2.6662,
+      "R": 4.3695146650663865,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "DAMD",
+      "trading_date": "2026-09-10",
+      "previous_close": 13.1,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 14.03,
+      "l": 13.41,
+      "c": 14,
+      "priorDate": "2026-09-09",
+      "P_raw": 1.315,
+      "R": 10.64638783269962,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "ASTN",
+      "trading_date": "2026-09-10",
+      "previous_close": 17.86,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 19.33,
+      "l": 16.661,
+      "c": 19.31,
+      "priorDate": "2026-09-09",
+      "P_raw": 4.47,
+      "R": 4.319910514541387,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "QBTZ",
+      "trading_date": "2026-09-10",
+      "previous_close": 16.9,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 17.9099,
+      "l": 16.838,
+      "c": 17.7,
+      "priorDate": "2026-09-09",
+      "P_raw": 3.38,
+      "R": 5.236686390532545,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 5.237 within 5% of 5"
+      ]
+    },
+    {
+      "symbol": "STSM",
+      "trading_date": "2026-09-10",
+      "previous_close": 32.9,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 34.31,
+      "l": 33.39,
+      "c": 33.96,
+      "priorDate": "2026-09-09",
+      "P_raw": 16.46,
+      "R": 2.06318347509113,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 2.063 within 5% of 2"
+      ]
+    },
+    {
+      "symbol": "SMCZ",
+      "trading_date": "2026-09-10",
+      "previous_close": 5.7,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.14,
+      "l": 5.6,
+      "c": 6.14,
+      "priorDate": "2026-09-09",
+      "P_raw": 2.85,
+      "R": 2.1543859649122807,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "RGTZ",
+      "trading_date": "2026-09-10",
+      "previous_close": 17.6,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 18.61,
+      "l": 17.09,
+      "c": 17.76,
+      "priorDate": "2026-09-09",
+      "P_raw": 3.53,
+      "R": 5.03116147308782,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 5.031 within 5% of 5"
+      ]
+    },
+    {
+      "symbol": "HUBC",
+      "trading_date": "2026-09-14",
+      "previous_close": 8.513,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 8.675,
+      "l": 6.6171,
+      "c": 7.635,
+      "priorDate": "2026-09-11",
+      "P_raw": 0.3423,
+      "R": 22.304995617879054,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 24.995834027662056 on 2026-09-09",
+        "text names a split and \"September 14\""
+      ]
+    },
+    {
+      "symbol": "LGVN",
+      "trading_date": "2026-09-17",
+      "previous_close": 6.68,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.6,
+      "l": 2.52,
+      "c": 2.71,
+      "priorDate": "2026-09-16",
+      "P_raw": 6.6,
+      "R": 0.41060606060606064,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "GLND",
+      "trading_date": "2026-09-21",
+      "previous_close": 1.2,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.85,
+      "l": 2.65,
+      "c": 2.87,
+      "priorDate": "2026-09-18",
+      "P_raw": 1.2,
+      "R": 2.391666666666667,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-09-21\""
+      ]
+    },
+    {
+      "symbol": "LITZ",
+      "trading_date": "2026-09-22",
+      "previous_close": 25.2,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 26.045,
+      "l": 22.7,
+      "c": 25.655,
+      "priorDate": "2026-09-21",
+      "P_raw": 6.3,
+      "R": 4.072222222222223,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 4.072 within 5% of 4"
+      ]
+    },
+    {
+      "symbol": "AXTX",
+      "trading_date": "2026-09-22",
+      "previous_close": 37.64,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 37.16,
+      "l": 33,
+      "c": 35.555,
+      "priorDate": "2026-09-21",
+      "P_raw": 9.405,
+      "R": 3.7804359383306756,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "CRMX",
+      "trading_date": "2026-09-22",
+      "previous_close": 32.16,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 31.5,
+      "l": 26.75,
+      "c": 26.75,
+      "priorDate": "2026-09-21",
+      "P_raw": 8.07,
+      "R": 3.3147459727385375,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "QBTX",
+      "trading_date": "2026-09-22",
+      "previous_close": 26.2,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 26.7,
+      "l": 24.74,
+      "c": 25.74,
+      "priorDate": "2026-09-21",
+      "P_raw": 6.53,
+      "R": 3.941807044410413,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 3.942 within 5% of 4"
+      ]
+    },
+    {
+      "symbol": "SMU",
+      "trading_date": "2026-09-22",
+      "previous_close": 20.12,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 21.05,
+      "l": 19.381,
+      "c": 20.42,
+      "priorDate": "2026-09-21",
+      "P_raw": 5.02,
+      "R": 4.0677290836653395,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 4.068 within 5% of 4"
+      ]
+    },
+    {
+      "symbol": "QUBX",
+      "trading_date": "2026-09-22",
+      "previous_close": 31.88,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 32.82,
+      "l": 31.3,
+      "c": 32.69,
+      "priorDate": "2026-09-21",
+      "P_raw": 8,
+      "R": 4.08625,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 4.086 within 5% of 4"
+      ]
+    },
+    {
+      "symbol": "ONDU",
+      "trading_date": "2026-09-22",
+      "previous_close": 14.08,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 15.44,
+      "l": 14.11,
+      "c": 15.44,
+      "priorDate": "2026-09-21",
+      "P_raw": 3.51,
+      "R": 4.398860398860399,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "NBIZ",
+      "trading_date": "2026-09-22",
+      "previous_close": 21.76,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 22.15,
+      "l": 19.25,
+      "c": 21.24,
+      "priorDate": "2026-09-21",
+      "P_raw": 5.455,
+      "R": 3.893675527039413,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 3.894 within 5% of 4"
+      ]
+    },
+    {
+      "symbol": "IBO",
+      "trading_date": "2026-09-23",
+      "previous_close": 6.658,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 7.11,
+      "l": 5.62,
+      "c": 6.92,
+      "priorDate": "2026-09-22",
+      "P_raw": 0.5337,
+      "R": 12.9660858160015,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "NTRBW",
+      "trading_date": "2026-09-24",
+      "previous_close": 0.7408,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 2.5,
+      "l": 1.51,
+      "c": 2.5,
+      "priorDate": "2026-09-23",
+      "P_raw": 0.7408,
+      "R": 3.374730021598272,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "KITT",
+      "trading_date": "2026-09-25",
+      "previous_close": 2.949,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 8.39,
+      "l": 2.18,
+      "c": 2.33,
+      "priorDate": "2026-09-24",
+      "P_raw": 0.4878,
+      "R": 4.7765477654776545,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 5.999360920274804 on 2026-09-22",
+        "text names a split and \"September 25\"",
+        "R 4.777 within 5% of 5"
+      ]
+    },
+    {
+      "symbol": "RPGL",
+      "trading_date": "2026-09-25",
+      "previous_close": 14.69,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 14.24,
+      "l": 12.5,
+      "c": 13,
+      "priorDate": "2026-09-24",
+      "P_raw": 0.9179,
+      "R": 14.162762828194792,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 16 on 2026-09-22",
+        "text names a split and \"September 25\""
+      ]
+    },
+    {
+      "symbol": "DCX",
+      "trading_date": "2026-09-28",
+      "previous_close": 7.904,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 7.4544,
+      "l": 5.73,
+      "c": 6.2,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.0491,
+      "R": 126.27291242362526,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "DLXY",
+      "trading_date": "2026-09-28",
+      "previous_close": 2.5,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4.25,
+      "l": 2.36,
+      "c": 2.43,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.5,
+      "R": 4.86,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 4.860 within 5% of 5"
+      ]
+    },
+    {
+      "symbol": "MTNB",
+      "trading_date": "2026-09-28",
+      "previous_close": 2.4,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 2.6597,
+      "l": 2.34,
+      "c": 2.53,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.16,
+      "R": 15.812499999999998,
+      "class": "SPLIT",
+      "basis": "OTHER",
+      "evidence": [
+        "daily_bars split_factor 15.000000000000002 on 2026-09-23",
+        "text names a split and \"September 28\""
+      ]
+    },
+    {
+      "symbol": "GMEX",
+      "trading_date": "2026-09-28",
+      "previous_close": 3.29,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.595,
+      "l": 3.07,
+      "c": 3.205,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.3656,
+      "R": 8.7664113785558,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "FBGL",
+      "trading_date": "2026-09-28",
+      "previous_close": 3.839,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4.25,
+      "l": 3.42,
+      "c": 4.25,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.3839,
+      "R": 11.07059129981766,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "BTLN",
+      "trading_date": "2026-09-28",
+      "previous_close": 5.119,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.56,
+      "l": 4,
+      "c": 5.3,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.6398,
+      "R": 8.283838699593622,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 8.284 within 5% of 8"
+      ]
+    },
+    {
+      "symbol": "IMMP",
+      "trading_date": "2026-09-28",
+      "previous_close": 5.27,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 5.36,
+      "l": 4.67,
+      "c": 4.835,
+      "priorDate": "2026-09-25",
+      "P_raw": 0.2635,
+      "R": 18.349146110056925,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "AGRZ",
+      "trading_date": "2026-09-29",
+      "previous_close": 3.78,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.8587,
+      "l": 3.21,
+      "c": 3.28,
+      "priorDate": "2026-09-28",
+      "P_raw": 0.1857,
+      "R": 17.662897145934302,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "VRME",
+      "trading_date": "2026-09-29",
+      "previous_close": 9.9,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 9.41,
+      "l": 7.35,
+      "c": 8.4748,
+      "priorDate": "2026-09-28",
+      "P_raw": 0.96,
+      "R": 8.827916666666667,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "ONMD",
+      "trading_date": "2026-09-29",
+      "previous_close": 6.33,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.96,
+      "l": 5.25,
+      "c": 5.4,
+      "priorDate": "2026-09-28",
+      "P_raw": 0.6382,
+      "R": 8.461297398934503,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "TRUG",
+      "trading_date": "2026-09-29",
+      "previous_close": 2.658,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.59,
+      "l": 2.47,
+      "c": 2.915,
+      "priorDate": "2026-09-28",
+      "P_raw": 0.2593,
+      "R": 11.241804859236407,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "NIVF",
+      "trading_date": "2026-09-30",
+      "previous_close": 0.072,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 0.2805,
+      "l": 0.1358,
+      "c": 0.165,
+      "priorDate": "2026-09-29",
+      "P_raw": 0.0719,
+      "R": 2.2948539638386647,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"September 30\""
+      ]
+    },
+    {
+      "symbol": "SHFS",
+      "trading_date": "2026-09-30",
+      "previous_close": 1.421,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 1.4999,
+      "l": 1.3,
+      "c": 1.45,
+      "priorDate": "2026-09-29",
+      "P_raw": 0.1182,
+      "R": 12.267343485617596,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "daily_bars split_factor 11.997455470737913 on 2026-09-25",
+        "text names a split and \"September 30\"",
+        "R 12.267 within 5% of 12"
+      ]
+    },
+    {
+      "symbol": "DHY",
+      "trading_date": "2026-09-30",
+      "previous_close": 16.1,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 16.67,
+      "l": 15,
+      "c": 16.075,
+      "priorDate": "2026-09-29",
+      "P_raw": 1.635,
+      "R": 9.831804281345565,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 9.832 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "MI",
+      "trading_date": "2026-10-01",
+      "previous_close": 2.16,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 1.16,
+      "l": 0.5143,
+      "c": 0.874,
+      "priorDate": "2026-09-30",
+      "P_raw": 2.23,
+      "R": 0.3919282511210762,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "COLAU",
+      "trading_date": "2026-10-01",
+      "previous_close": 9.6,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.78,
+      "l": 3.78,
+      "c": 3.78,
+      "priorDate": "2026-09-30",
+      "P_raw": 9.6,
+      "R": 0.39375,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "KUST",
+      "trading_date": "2026-10-01",
+      "previous_close": 4.232,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4.9599,
+      "l": 4.093,
+      "c": 4.51,
+      "priorDate": "2026-09-30",
+      "P_raw": 0.4224,
+      "R": 10.677083333333332,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    },
+    {
+      "symbol": "BGM",
+      "trading_date": "2026-10-01",
+      "previous_close": 7.554,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 10.8,
+      "l": 6.45,
+      "c": 7.82,
+      "priorDate": "2026-09-30",
+      "P_raw": 0.2599,
+      "R": 30.088495575221238,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 30.088 within 5% of 30"
+      ]
+    },
+    {
+      "symbol": "MYPS",
+      "trading_date": "2026-10-01",
+      "previous_close": 4.749,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4.79,
+      "l": 4.37,
+      "c": 4.715,
+      "priorDate": "2026-09-30",
+      "P_raw": 0.4738,
+      "R": 9.951456310679612,
+      "class": "SPLIT",
+      "basis": "ADJUSTED",
+      "evidence": [
+        "R 9.951 within 5% of 10"
+      ]
+    },
+    {
+      "symbol": "ZCMD",
+      "trading_date": "2026-10-02",
+      "previous_close": 1.753,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 2.47,
+      "l": 1.74,
+      "c": 1.85,
+      "priorDate": "2026-10-01",
+      "P_raw": 0.8686,
+      "R": 2.129864149205618,
+      "class": "GAP",
+      "basis": null,
+      "evidence": []
+    }
+  ],
+  "defects": [
+    {
+      "symbol": "MI",
+      "trading_date": "2026-08-21",
+      "previous_close": 7.23,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 4,
+      "l": 2.79,
+      "c": 3,
+      "priorDate": "2026-08-20",
+      "P_raw": 7.23,
+      "R": 0.41493775933609955,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-08-21\""
+      ],
+      "reach": {
+        "board": [
+          {
+            "id": 65,
+            "t": "RTH_INTERVAL",
+            "at": "2026-08-21T15:00:08.216Z",
+            "pc": -55.04840940525588,
+            "b": "PRIOR_SESSION",
+            "r": 23
+          },
+          {
+            "id": 66,
+            "t": "RTH_INTERVAL",
+            "at": "2026-08-21T15:30:09.873Z",
+            "pc": -55.3941908713693,
+            "b": "PRIOR_SESSION",
+            "r": 21
+          },
+          {
+            "id": 67,
+            "t": "RTH_INTERVAL",
+            "at": "2026-08-21T16:00:11.574Z",
+            "pc": -56.96403872752421,
+            "b": "PRIOR_SESSION",
+            "r": 21
+          },
+          {
+            "id": 68,
+            "t": "RTH_INTERVAL",
+            "at": "2026-08-21T16:30:13.265Z",
+            "pc": -57.123098201936386,
+            "b": "PRIOR_SESSION",
+            "r": 22
+          },
+          {
+            "id": 69,
+            "t": "RTH_INTERVAL",
+            "at": "2026-08-21T17:00:14.830Z",
+            "pc": -56.98478561549102,
+            "b": "PRIOR_SESSION",
+            "r": 23
+          },
+          {
+            "id": 70,
+            "t": "RTH_INTERVAL",
+            "at": "2026-08-21T17:30:16.426Z",
+            "pc": -59.19778699861688,
+            "b": "PRIOR_SESSION",
+            "r": 25
+          }
+        ],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "RFAI",
+      "trading_date": "2026-08-21",
+      "previous_close": 12.73,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 73,
+      "l": 24.02,
+      "c": 62.7,
+      "priorDate": "2026-08-20",
+      "P_raw": 12.73,
+      "R": 4.925373134328359,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 4.925 within 5% of 5"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "TEUP",
+      "trading_date": "2026-08-24",
+      "previous_close": 2.625,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 26.3,
+      "l": 24.4798,
+      "c": 25.18,
+      "priorDate": "2026-08-21",
+      "P_raw": 2.625,
+      "R": 9.592380952380953,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 9.592 within 5% of 10"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "BIAF",
+      "trading_date": "2026-08-24",
+      "previous_close": 0.4,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.47,
+      "l": 5.725,
+      "c": 5.78,
+      "priorDate": "2026-08-21",
+      "P_raw": 0.3935,
+      "R": 14.688691232528589,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 15 on 2026-08-19",
+        "text names a split and \"August 24\"",
+        "R 14.689 within 5% of 15"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "INCR",
+      "trading_date": "2026-08-24",
+      "previous_close": 0.8515,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 6.28,
+      "l": 4.01,
+      "c": 5.48,
+      "priorDate": "2026-08-21",
+      "P_raw": 0.8515,
+      "R": 6.435701702877275,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-08-24\""
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "AXTU",
+      "trading_date": "2026-08-24",
+      "previous_close": 4.52,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 41,
+      "l": 33.8201,
+      "c": 37.905,
+      "priorDate": "2026-08-21",
+      "P_raw": 4.53,
+      "R": 8.367549668874172,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 8.368 within 5% of 8"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "CRWU",
+      "trading_date": "2026-08-24",
+      "previous_close": 3.77,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 37.17,
+      "l": 33.7698,
+      "c": 36.23,
+      "priorDate": "2026-08-21",
+      "P_raw": 3.775,
+      "R": 9.597350993377482,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 9.597 within 5% of 10"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "TTDU",
+      "trading_date": "2026-08-24",
+      "previous_close": 1.23,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.71,
+      "l": 12.25,
+      "c": 12.44,
+      "priorDate": "2026-08-21",
+      "P_raw": 1.225,
+      "R": 10.155102040816326,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 10.155 within 5% of 10"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "CCUP",
+      "trading_date": "2026-08-24",
+      "previous_close": 2.65,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 29,
+      "l": 25.75,
+      "c": 26.38,
+      "priorDate": "2026-08-21",
+      "P_raw": 2.645,
+      "R": 9.973534971644613,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 9.974 within 5% of 10"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "ALMS",
+      "trading_date": "2026-09-01",
+      "previous_close": 21.81,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 11.56,
+      "l": 8.75,
+      "c": 9.42,
+      "priorDate": "2026-08-31",
+      "P_raw": 21.82,
+      "R": 0.4317140238313474,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-09-01\""
+      ],
+      "reach": {
+        "board": [
+          {
+            "id": 195,
+            "t": "OPEN_SPIKE_ASSESSMENT",
+            "at": "2026-09-01T13:25:12.062Z",
+            "pc": -55.93764328289775,
+            "b": "PRIOR_SESSION",
+            "r": 19
+          },
+          {
+            "id": 196,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T14:00:14.165Z",
+            "pc": -52.86565795506648,
+            "b": "PRIOR_SESSION",
+            "r": 11
+          },
+          {
+            "id": 197,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T14:30:15.985Z",
+            "pc": -53.82851902796881,
+            "b": "PRIOR_SESSION",
+            "r": 12
+          },
+          {
+            "id": 198,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T15:00:17.636Z",
+            "pc": -54.33287482806052,
+            "b": "PRIOR_SESSION",
+            "r": 11
+          },
+          {
+            "id": 199,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T15:30:19.363Z",
+            "pc": -58.3920220082531,
+            "b": "PRIOR_SESSION",
+            "r": 13
+          },
+          {
+            "id": 200,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T16:00:01.556Z",
+            "pc": -58.872077028885826,
+            "b": "PRIOR_SESSION",
+            "r": 14
+          },
+          {
+            "id": 201,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T16:30:03.386Z",
+            "pc": -58.253094910591464,
+            "b": "PRIOR_SESSION",
+            "r": 14
+          },
+          {
+            "id": 202,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T17:00:04.969Z",
+            "pc": -57.72581384685923,
+            "b": "PRIOR_SESSION",
+            "r": 14
+          },
+          {
+            "id": 203,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T17:30:06.763Z",
+            "pc": -58.02384227418615,
+            "b": "PRIOR_SESSION",
+            "r": 14
+          },
+          {
+            "id": 204,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T18:00:08.508Z",
+            "pc": -58.45208619899128,
+            "b": "PRIOR_SESSION",
+            "r": 13
+          },
+          {
+            "id": 205,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T18:30:10.091Z",
+            "pc": -58.253094910591464,
+            "b": "PRIOR_SESSION",
+            "r": 13
+          },
+          {
+            "id": 206,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T19:00:11.710Z",
+            "pc": -56.464924346629985,
+            "b": "PRIOR_SESSION",
+            "r": 11
+          },
+          {
+            "id": 207,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-01T19:30:13.383Z",
+            "pc": -56.87757909215956,
+            "b": "PRIOR_SESSION",
+            "r": 11
+          },
+          {
+            "id": 208,
+            "t": "RTH_CLOSE",
+            "at": "2026-09-01T20:00:15.160Z",
+            "pc": -56.579550664832645,
+            "b": "PRIOR_SESSION",
+            "r": 11
+          },
+          {
+            "id": 209,
+            "t": "NEXT_DAY_RECAP",
+            "at": "2026-09-02T02:00:15.752Z",
+            "pc": 1.2671594508975628,
+            "b": "CURRENT_SESSION",
+            "r": 20
+          }
+        ],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "LRHC",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.4828,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.09,
+      "l": 2.78,
+      "c": 2.93,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.4744,
+      "R": 6.176222596964587,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 6 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 6.176 within 5% of 6"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "WCT",
+      "trading_date": "2026-09-08",
+      "previous_close": 1.44,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 8.4,
+      "l": 6.27,
+      "c": 7.31,
+      "priorDate": "2026-09-04",
+      "P_raw": 1.44,
+      "R": 5.076388888888888,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 5 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 5.076 within 5% of 5"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "TNMG",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.4374,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.5933,
+      "l": 3.32,
+      "c": 3.48,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.441,
+      "R": 7.891156462585034,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 8.000426803243705 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 7.891 within 5% of 8"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "SFWL",
+      "trading_date": "2026-09-08",
+      "previous_close": 0.9497,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 12.32,
+      "l": 10.8418,
+      "c": 11.425,
+      "priorDate": "2026-09-04",
+      "P_raw": 0.9497,
+      "R": 12.030114773086238,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "daily_bars split_factor 15 on 2026-09-02",
+        "text names a split and \"September 8\"",
+        "R 12.030 within 5% of 12"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "IGR",
+      "trading_date": "2026-09-08",
+      "previous_close": 4.49,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 13.665,
+      "l": 13.1901,
+      "c": 13.41,
+      "priorDate": "2026-09-04",
+      "P_raw": 4.49,
+      "R": 2.9866369710467704,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "R 2.987 within 5% of 3"
+      ],
+      "reach": {
+        "board": [],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "GLND",
+      "trading_date": "2026-09-21",
+      "previous_close": 1.2,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 3.85,
+      "l": 2.65,
+      "c": 2.87,
+      "priorDate": "2026-09-18",
+      "P_raw": 1.2,
+      "R": 2.391666666666667,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"2026-09-21\""
+      ],
+      "reach": {
+        "board": [
+          {
+            "id": 438,
+            "t": "STRUCTURAL_REFRESH",
+            "at": "2026-09-21T10:10:14.588Z",
+            "pc": 150.83333333333334,
+            "b": "PRIOR_SESSION",
+            "r": 1
+          },
+          {
+            "id": 439,
+            "t": "PREMARKET_0625",
+            "at": "2026-09-21T10:25:15.489Z",
+            "pc": 160,
+            "b": "PRIOR_SESSION",
+            "r": 1
+          },
+          {
+            "id": 440,
+            "t": "PREMARKET_0645",
+            "at": "2026-09-21T10:45:16.786Z",
+            "pc": 144.16666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 1
+          },
+          {
+            "id": 441,
+            "t": "PREMARKET_0700",
+            "at": "2026-09-21T11:00:17.668Z",
+            "pc": 148.33333333333334,
+            "b": "PRIOR_SESSION",
+            "r": 1
+          },
+          {
+            "id": 442,
+            "t": "OPEN_SPIKE_ASSESSMENT",
+            "at": "2026-09-21T13:25:06.202Z",
+            "pc": 156.66666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 443,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T14:00:09.565Z",
+            "pc": 125.00000000000003,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 444,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T14:30:11.391Z",
+            "pc": 160.41666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 445,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T15:00:13.141Z",
+            "pc": 154.16666666666666,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 446,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T15:30:15.110Z",
+            "pc": 166.66666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 447,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T16:00:16.965Z",
+            "pc": 142.50000000000003,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 448,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T16:30:19.035Z",
+            "pc": 144.58333333333334,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 449,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T17:00:01.290Z",
+            "pc": 147.79166666666669,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 450,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T17:30:03.623Z",
+            "pc": 145.82500000000002,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 451,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T18:00:05.489Z",
+            "pc": 134.16666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 452,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T18:30:07.358Z",
+            "pc": 132.08333333333334,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 453,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T19:00:09.278Z",
+            "pc": 141.66666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 454,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-21T19:30:11.181Z",
+            "pc": 140.84166666666667,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 455,
+            "t": "RTH_CLOSE",
+            "at": "2026-09-21T20:00:13.082Z",
+            "pc": 140.83333333333334,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 456,
+            "t": "NEXT_DAY_RECAP",
+            "at": "2026-09-22T02:00:01.260Z",
+            "pc": 1.2745673724569153,
+            "b": "CURRENT_SESSION",
+            "r": 11
+          }
+        ],
+        "reports": 0,
+        "baseline": []
+      }
+    },
+    {
+      "symbol": "NIVF",
+      "trading_date": "2026-09-30",
+      "previous_close": 0.072,
+      "previous_close_source": "alpaca-daily-bar",
+      "baseline_adjustment": "split",
+      "h": 0.2805,
+      "l": 0.1358,
+      "c": 0.165,
+      "priorDate": "2026-09-29",
+      "P_raw": 0.0719,
+      "R": 2.2948539638386647,
+      "class": "SPLIT",
+      "basis": "DEFECT",
+      "evidence": [
+        "text names a split and \"September 30\""
+      ],
+      "reach": {
+        "board": [
+          {
+            "id": 571,
+            "t": "STRUCTURAL_REFRESH",
+            "at": "2026-09-30T10:10:04.316Z",
+            "pc": 133.05555555555557,
+            "b": "PRIOR_SESSION",
+            "r": 1
+          },
+          {
+            "id": 572,
+            "t": "PREMARKET_0625",
+            "at": "2026-09-30T10:25:05.262Z",
+            "pc": 135.27777777777777,
+            "b": "PRIOR_SESSION",
+            "r": 1
+          },
+          {
+            "id": 573,
+            "t": "PREMARKET_0645",
+            "at": "2026-09-30T10:45:06.469Z",
+            "pc": 123.47222222222223,
+            "b": "PRIOR_SESSION",
+            "r": 2
+          },
+          {
+            "id": 574,
+            "t": "PREMARKET_0700",
+            "at": "2026-09-30T11:00:07.376Z",
+            "pc": 120.69444444444449,
+            "b": "PRIOR_SESSION",
+            "r": 2
+          },
+          {
+            "id": 575,
+            "t": "OPEN_SPIKE_ASSESSMENT",
+            "at": "2026-09-30T13:25:16.114Z",
+            "pc": 131.80555555555554,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 576,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T14:00:18.296Z",
+            "pc": 225.55555555555554,
+            "b": "PRIOR_SESSION",
+            "r": 2
+          },
+          {
+            "id": 577,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T14:30:00.274Z",
+            "pc": 152.6388888888889,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 578,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T15:00:13.485Z",
+            "pc": 169.02777777777783,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 579,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T15:30:15.333Z",
+            "pc": 139.16666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 580,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T16:00:17.227Z",
+            "pc": 121.66666666666669,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 581,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T16:30:19.204Z",
+            "pc": 123.88888888888891,
+            "b": "PRIOR_SESSION",
+            "r": 3
+          },
+          {
+            "id": 582,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T17:00:01.635Z",
+            "pc": 121.52777777777779,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 583,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T17:30:04.776Z",
+            "pc": 125.2777777777778,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 584,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T18:00:06.691Z",
+            "pc": 126.3888888888889,
+            "b": "PRIOR_SESSION",
+            "r": 4
+          },
+          {
+            "id": 585,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T18:30:08.519Z",
+            "pc": 116.80555555555556,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 586,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T19:00:10.236Z",
+            "pc": 118.47222222222223,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 587,
+            "t": "RTH_INTERVAL",
+            "at": "2026-09-30T19:30:12.090Z",
+            "pc": 116.66666666666667,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          },
+          {
+            "id": 588,
+            "t": "RTH_CLOSE",
+            "at": "2026-09-30T20:00:13.914Z",
+            "pc": 130,
+            "b": "PRIOR_SESSION",
+            "r": 5
+          }
+        ],
+        "reports": 0,
+        "baseline": []
+      }
+    }
+  ]
+}
