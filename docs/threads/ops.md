@@ -13629,3 +13629,17 @@ ET; use the box's clock or PowerShell. On the box, pass scripts to `systemd-run 
 than nesting quotes; a quoting failure printed blank values that looked like a result.
 **Routing at hand-off:** Integration-tmi = local_54f1341f (23rd); Research-tmi = local_5f4bfcf8; Design-tmi = local_dfce21d4;
 Web-tmi = local_46c15fbe (successor); Commercial-tmi = local_2ce868d2. Find by title + cwd + not archived before sending.
+
+## SUCCESSOR OPS SEAT OPENS, 2026-10-03T03:06:40Z (box clock; 23:06 ET Fri): local_7fac8dfc, model claude-opus-5-5
+Opened from docs/ops-opening-prompt.md. Read production off the box myself at 2026-10-03T03:06:40Z (clock guard in the
+command: weekday 07:00-10:00 ET aborts; it read Fri 23:06 EDT and proceeded):
+web 1952351 (no child) since 02:50:55Z; research 1944955 (child 1945023) and assess 1945033 (child 1945060) since 00:53:36Z;
+all three cwd 3b9c0a70ef050be3261107bc70956d9daba62e4a, NR 0. market 1574400 (child 1574419) cwd 1b5ead66bb7e..., since
+2026-09-30 00:15:40Z, NR 0. mointel-migrate active (exited); no deploy or snapshot unit. current -> 3b9c0a70. Pins
+unchanged (market-floor 2bcf1cfe v28, rollback-baseline 372f5eb9 v18). Health ok, schema 28/28, capture RECORDING,
+discarded 0. 3,832 MB, 2,231 available, no swap. 56G free. market.db 5,160,222,720 B (+ WAL 840,352,312 B at the read);
+trades.db 124,194,816 B; identity.db 49,152 B. Every value matches the hand-off above; nothing appended after it.
+Heavy-slot queue now held here: Design holds it, Web next.
+
+**Error ledger (this seat):** | error (asserted vs true) | TYPE | already logged this session? | caught by |
+(none yet)
