@@ -1,0 +1,14 @@
+store A:/mointel/data/market-prod-2026-10-02.db: 4892807168 bytes, mtime 2026-10-03T02:53:38.868Z
+writer gpt-5.6-luna, checker gpt-5.6-terra
+INTO_RTH 2026-10-01: PUBLISHED; 1 of 13 lines struck; $0.0395; writer 20952 ms, checker 4302 ms; tokens gpt-5.6-luna:4376/2094 gpt-5.6-terra:15263/464
+  S1L2 rule:SHARES_UNDATED: 1002998
+INTO_POWER_HOUR 2026-10-01: PUBLISHED; 2 of 13 lines struck; $0.0521; writer 28568 ms, checker 5730 ms; tokens gpt-5.6-luna:5229/3076 gpt-5.6-terra:19799/645
+  S1L6 rule:SHARES_UNDATED: 1002998
+  S1L10 rule:FORBIDDEN_WORDING: prediction or certainty: "confirmed"
+AFTER_HOURS 2026-10-01: PUBLISHED; 1 of 13 lines struck; $0.0578; writer 26302 ms, checker 11028 ms; tokens gpt-5.6-luna:5322/2954 gpt-5.6-terra:19550/1178
+  S1L6 rule:SHARES_UNDATED: 1002998
+  S1L6 model:UNSUPPORTED: The research says the sale could potentially improve liquidity and financial flexibility; it does not support stating that it definitively provides both.
+PREMARKET 2026-10-01: PUBLISHED; 2 of 13 lines struck; $0.0503; writer 25502 ms, checker 4683 ms; tokens gpt-5.6-luna:5802/2750 gpt-5.6-terra:19769/527
+  S1L2 rule:SHARES_UNDATED: 4986264
+  S1L9 model:UNSUPPORTED: “No dossier has been collected” is not supported by a stored field; the null labels support only that ALPX is not researched.
+TOTAL spend $0.1997

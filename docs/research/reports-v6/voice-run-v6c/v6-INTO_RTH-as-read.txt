@@ -1,0 +1,72 @@
+Into the open · $1 to $20 · built from checkpoint #596 (2026-10-01T13:25:17.573Z)
+[opening, printed by the surface from watchCount = 11]
+
+THE SESSION
+In the $1.00 to $20.00 range, 1,729 traded, 828 up and 609 down so far today. NXL is up 102.2 percent from the prior close, and fresh news was found in our sources for 4 of the 12 names the desk covers.
+
+FRESH NEWS
+  NXL: Nexalin Technology, Inc.. United States.
+  $4.28 → $8.8 → $8.6532 (PRIOR_CLOSE)
+  [Why: GRADED A, 55m, explains move: true] [Risk: SUPPLY OVERHEAD 9.23M sh]
+  Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America, with secondary coverage describing seven Latin American markets; no deal value, minimum purchase commitment, or revenue forecast was supplied. The desk reads this as a company-specific commercial-distribution development that coincided with the observed high-volume price move, although the evidence does not establish causation.
+
+  EJH: E-Home Household Service Holdings Ltd. Cayman Islands. E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance, housekeeping and property-cleaning services..
+  $1.42 → $1.8499 → $1.44 (PRIOR_CLOSE)
+  [Why: GRADED C, since Wed close, explains move: true] [Risk: DIRTY FLOAT 101.8M sh supply]
+  EJH agreed to a private placement of 71,800,000 ordinary shares at $0.60 per share for $43.08 million gross proceeds, comprising $1.0 million cash and 2,104,000 MFT tokens valued at $20 each; closing was expected on or about October 15, 2026. The desk reads the placement as substantial relative to the last reported shares outstanding and as a potential material dilution and future-supply concern if it closes.
+
+  LRHC: La Rosa Holdings Corp.. United States. La Rosa provides residential and commercial real estate brokerage services and technology-driven products and support for agents and franchise partners, while expanding into AI infrastructure..
+  $2.36 → $3.25 → $2.06 (PRIOR_CLOSE)
+  [Why: GRADED B, 4h, explains move: true] [Risk: DIRTY FLOAT]
+  La Rosa announced the acquisition of NVIDIA GPUs, said it is exploring real estate asset divestitures, and disclosed an exchange of outstanding securities for 3,410 newly issued Series F convertible preferred shares. The desk reads the event as a company-specific AI infrastructure narrative alongside potential future common-share supply.
+
+
+OLDER NEWS
+  RPGL: Republic Power Group Ltd. Singapore. Republic Power Group provides project-based customized ERP products and is adding SaaS ERP products..
+  $16.39 → $25 → $18 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST C, 8d, explains move: unknown] [Risk: DIRTY FLOAT 15.1M sh supply]
+  The latest item was not a fresh catalyst: secondary coverage described a 1-for-16 reverse share split effective September 25, alongside an August 4 closing of 15,000,000 Class A ordinary shares at $1.00 per share and a July 24 convertible note priced at 80% of the average of the three lowest Nasdaq trading prices. The desk reads this as a change in trading-share structure with potential additional share supply, not evidence of a fresh operating catalyst.
+
+  NAMM: Namib Minerals. Namib Minerals is a gold producer, developer and explorer operating in Zimbabwe, including the How Mine and planned restarts of two assets..
+  $0.9583 → $1.25 → $0.9824 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST A, 2d, explains move: false] [Risk: DIRTY FLOAT 193.8M sh supply]
+  The latest item was not a fresh catalyst: Namib announced that its wholly owned subsidiary secured a US$6.5 million term loan facility from African Banking Corporation to partially fund resource definition and bankability work for the Redwing restart plan. The desk reads the facility as debt funding for a stated restart milestone without a stated equity issuance in the announcement.
+
+
+UNCLEAR
+  ISNR: Snow Rothschild Acquisition Corp.. Cayman Islands.
+  $9.83 → $9.84 → $9.84 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST —, 66d, explains move: unknown] [Risk: SUPPLY OVERHEAD 35.8M sh]
+  The latest identified company-specific event was the July 27, 2026 announcement that Class A shares and warrants would begin separate trading on July 30, with Class A shares expected to trade as ISNR and warrants as ISNRW. The event does not, on this evidence alone, establish a fresh company catalyst or the reason for the current move.
+
+
+NOT YET RESEARCHED
+  CEPV
+  $10.3 → $10.3 → $10.3 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  LTGR
+  $9.99 → $9.95 → $9.95 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  CCAQ
+  $10.69 → $10.67 → $10.67 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  MTNE
+  $9.92 → $9.92 → $9.92 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  PALO
+  $9.97 → $9.98 → $9.98 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+
+Sample notes:
+- Tags are the board's own Why and Risk rules run on the research as of the checkpoint. Where the board reads the outside sheet (its grade bucket, its latest line, its disagreement marker, its displayed float), the report cannot, so on a name the sheet covers, a report tag can differ from the board at the same moment.
+- "Gave the entire move back" means the name closed the regular session at or below the prior close.
