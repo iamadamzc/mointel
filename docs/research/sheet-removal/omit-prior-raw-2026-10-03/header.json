@@ -1,0 +1,34 @@
+{
+  "preregistration": "docs/research/sheet-removal/prereg-omit-prior.md (4a0f65c1)",
+  "head": "789e7e986bed7bb6f2ae41ef561fdea3200fe49e",
+  "store": {
+    "path": "A:/mointel-scratch/market-scratch-2026-10-02.db",
+    "bytes": 4892807168,
+    "mtime": "2026-10-03T15:04:12.367Z"
+  },
+  "tradingDate": "2026-10-02",
+  "dry": false,
+  "models": {
+    "research": "gpt-5.6-terra",
+    "escalation": "gpt-5.6-sol",
+    "promptVariant": "A"
+  },
+  "envDir": "A:/mointel",
+  "keyPresent": true,
+  "sheet": {
+    "priors": 4,
+    "error": null
+  },
+  "rankedWithSources": 1132,
+  "sample": [
+    "NAUT",
+    "RETO",
+    "VEEA"
+  ],
+  "sampleNote": "only 3 ranked names with sources have a Sheet prior",
+  "chipsAt": "2026-10-03T00:05:10.736Z",
+  "catalystFreshFrom": "2026-10-01T20:00:00.000Z",
+  "capUsd": 15,
+  "pricing": "rate card 2026-09-07, input at cache-write rate, no cached discount, long rates above 272K input",
+  "historyFetch": "none (stored bars only)"
+}

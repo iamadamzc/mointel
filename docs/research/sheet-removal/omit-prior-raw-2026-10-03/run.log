@@ -1,0 +1,48 @@
+{
+  "preregistration": "docs/research/sheet-removal/prereg-omit-prior.md (4a0f65c1)",
+  "head": "789e7e986bed7bb6f2ae41ef561fdea3200fe49e",
+  "store": {
+    "path": "A:/mointel-scratch/market-scratch-2026-10-02.db",
+    "bytes": 4892807168,
+    "mtime": "2026-10-03T15:04:12.367Z"
+  },
+  "tradingDate": "2026-10-02",
+  "dry": false,
+  "models": {
+    "research": "gpt-5.6-terra",
+    "escalation": "gpt-5.6-sol",
+    "promptVariant": "A"
+  },
+  "envDir": "A:/mointel",
+  "keyPresent": true,
+  "sheet": {
+    "priors": 4,
+    "error": null
+  },
+  "rankedWithSources": 1132,
+  "sample": [
+    "NAUT",
+    "RETO",
+    "VEEA"
+  ],
+  "sampleNote": "only 3 ranked names with sources have a Sheet prior",
+  "chipsAt": "2026-10-03T00:05:10.736Z",
+  "catalystFreshFrom": "2026-10-01T20:00:00.000Z",
+  "capUsd": 15,
+  "pricing": "rate card 2026-09-07, input at cache-write rate, no cached discount, long rates above 272K input",
+  "historyFetch": "none (stored bars only)"
+}
+NAUT WITH-1 PARTIAL $0.0624 (total $0.0624)
+NAUT WITHOUT-1 ACCEPTED $0.0597 (total $0.1221)
+NAUT WITH-2 ACCEPTED $0.0568 (total $0.1789)
+NAUT WITHOUT-2 PARTIAL $0.0612 (total $0.2401)
+RETO WITH-1 ACCEPTED $0.2130 (total $0.4532)
+RETO WITHOUT-1 ACCEPTED $0.1933 (total $0.6465)
+RETO WITH-2 PARTIAL $0.0697 (total $0.7162)
+RETO WITHOUT-2 ACCEPTED $0.2346 (total $0.9508)
+VEEA WITH-1 ACCEPTED $0.2324 (total $1.1832)
+VEEA WITHOUT-1 ACCEPTED $0.2209 (total $1.4040)
+VEEA WITH-2 ACCEPTED $0.0526 (total $1.4567)
+VEEA WITHOUT-2 ACCEPTED $0.2220 (total $1.6787)
+wrote docs/research/sheet-removal/omit-prior-raw-2026-10-03; spent $1.6787
+exit 0
