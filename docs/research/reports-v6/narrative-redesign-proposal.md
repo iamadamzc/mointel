@@ -65,7 +65,7 @@ Added (all computed from stored values, each traceable by the checker):
 | ~~F11 grade mix~~ | ~~Counts of covered names by grade~~ **OUT (Marketing's voice call, agreed): grade stays in the tags; back only if he asks for grade colour** | | |
 | ~~F12 fit~~ | ~~How many covered names' news fits the move~~ **OUT, same reason** | | |
 | F12b movers without fresh news | Recap: how many covered 50 percent movers have no fresh news found (status none or older); a COUNT, never names; the clause drops at 0 (0 on 10-01) | recap | count to the fact |
-| F13 change | Names new to coverage and names dropped since the reference checkpoint (recap: since the 07:00 premarket checkpoint; intraday: since the previous checkpoint) | all | tickers to the fact |
+| F13 change | Intraday: specific `change_summary` entries SINCE THE PREVIOUS CHECKPOINT (entered or left the top 12, new high of day, a stated move), humanised, preferring entries for names F10 already names (the 3-ticker cap); never a roster-level claim ("the rest held"). Recap: none in the examples; a computed new/dropped comparison only if he asks | intraday | entry to the stored `change_summary` |
 
 Rules diff (`NARRATIVE_RULES`):
 
@@ -73,6 +73,18 @@ Rules diff (`NARRATIVE_RULES`):
 - Keep: no cause words ("drove", "sparked"), no advice, no forecast, no adjective the facts do not define, never count.
 - Recap: four to five short sentences; lead with the session (breadth and the 50 percent movers), then the leaders and what their news was, then the grade mix and fit, then what changed.
 - The checker's prompt gains the new facts WORDED as the writer gets them (checker prompt 5's rule), and the forbidden-wording list is unchanged.
+
+## Marketing's target examples (final, checked against the store by this seat)
+
+PREMARKET, the 10-01 recap (checkpoint 611; moves on the day from `rth_final_*`):
+
+> Nine names ran at least 50 percent above the prior close, and none gave the entire move back. The three biggest the desk covered carried fresh news: NXL, a 10-year Brazil and South America distribution agreement; SSM, a Schedule 13D filing, with a 21.5 percent stake reported in secondary coverage; NAMM, first-half results and revised production guidance. Of the twelve the desk covered, seven had fresh news in our sources. The desk carries twelve names into today.
+
+POWER HOUR, checkpoint 606 (14:30 ET; moves from the prior close):
+
+> NXL leads, up 68.5 percent from the prior close; its catalyst is a 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. The next covered movers: NAMM, first-half results and production guidance revised to 26,500 to 27,000 ounces; EJH, an AI service-robot launch with a September 29 private placement. Of the twelve the desk covers, six had fresh news in our sources. Since the previous checkpoint, NAMM entered the top 12 at a new high of day.
+
+Checked: the 9 movers and the 5 covered (NXL, SSM, NAMM top 3 by the day's high); fresh 7 of 12 (after `04ca7496`) and 6 of 12 at 606; each catalyst clause against its dossier summary (SSM's stake is secondary coverage, the 13D excerpt gives no terms); NAMM's change entry ("entered Top 12; new HOD") at 606. Named tickers: 3 in each.
 
 ## The model question: a side-by-side, cost stated before any run
 
@@ -92,7 +104,7 @@ The richer sheet adds roughly 1,000 input and 150 output tokens per report: unde
 
 ## Sequence and what each step waits on
 
-1. Marketing's target examples (PREMARKET and one intraday) against the list above. Waits on Marketing.
+1. ~~Marketing's target examples~~ DONE, above. **Now waits on Integration's pre-build nod.**
 2. This seat finalises the sheet and rules to the examples; Integration reviews the diff. Then build, tests and mutants in an Ops slot (no model call).
 3. The side-by-side. **Waits on HIS spend yes** (about $1.20, or $2.20 with sol).
 4. Samples to Design and Marketing, then to him. The STEP-6 BUNDLE items 1 to 6 fold into step 2.
