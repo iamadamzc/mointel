@@ -1362,6 +1362,9 @@ v6c              Research d5c928e5 (writer 7 + checker 5 at bf13125e): premarket
 STRUCK CARD      Marketing catch A (struck line drops its card; "of the 12" over 10). APPROVED IN PRINCIPLE: struck line
                  keeps its card with a computed sentence (Research builds, Marketing words, Design confirms surface).
                  Samples go to him after this lands.
+                 REVISED (Design, design-seat.md §3a read: no count and no mark of removed sentences reaches the reader;
+                 Design's spec, not his ruling): struck card keeps computed company/tags/path, NO prose. Marketing stood
+                 down. Blue-sky re-pick onto 32db0d7e dry-run clean (Design).
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
