@@ -1389,6 +1389,9 @@ v6 RENDERS (3)   Design: INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS at 1,280 + 1,024
                  LOOKED HERE at INTO_RTH-1280: FRESH 4 / OLDER 2 / UNCLEAR 1 / NOT YET RESEARCHED 5 = 12; narrative "4 of the
                  12" matches. Sample artefacts to name to him: header "written 23:32 ET (11h ago) LATE" and "SESSION OVER"
                  come from replaying 10-01 samples against today's clock. Held for PREMARKET; all four go together.
+PREMARKET v6d    Research 0ae09059 (raw before read; $0.0494, his spend yes). MY SCAN: 233 strings, 12 cards / watchCount 12,
+                 sections [7,3,1,1], narrative "covered 7 of the 12", COLA in section 1 (older), 0 U+2014 bar lone, 0
+                 citations. 1 of 13 lines struck (HTCR card kept empty). Design renders; then all four to him.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
