@@ -136,13 +136,20 @@ describe('reportTags cleans the dossier as the board does (Integration, 2026-10-
   it('no tag string carries an em dash (except the lone empty-cell glyph) or a citation token', () => {
     const tags = reportTags({
       status: 'INTELLIGENCE_AVAILABLE',
-      dossier: dossier({ catalyst: { summary: CAMP }, structure: { structureClassification: 'DIRTY_FLOAT', structuralWarnings: [`Shares outstanding are not float. [19709] Supply${EM}heavy.`] } }),
+      dossier: dossier({
+        catalyst: { summary: CAMP },
+        structure: { structureClassification: 'DIRTY_FLOAT', structuralWarnings: [`Resale registrations exceed the share count${EM}a supply overhang. [30265,30266]`] },
+      }),
       coverageIncomplete: false,
       at: '2026-10-01T20:00:00.000Z',
       catalystFreshFrom: null,
     });
     const all = strings(tags);
     expect(all.some((s) => s.includes('CMP-002'))).toBe(true); // the summary did reach a tag
+    // The risk chip's HOVER (SessionReports.tsx title={risk.detail}) is the structural warning, cleaned.
+    expect(tags.risk.detail ?? '').toContain('Resale registrations exceed the share count');
+    expect(tags.risk.detail ?? '').not.toContain(EM);
+    expect(tags.risk.detail ?? '').not.toContain('30265');
     expect(all.filter((s) => s !== EM && s.includes(EM))).toEqual([]);
     expect(all.filter((s) => /\[(?:Source\s*)?\d[\d,\s]*\]/.test(s))).toEqual([]);
   });
