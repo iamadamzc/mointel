@@ -13735,3 +13735,6 @@ SLOT: Research replaced (local_5f4bfcf8 -> local_98e3e9a1); new Research offered
 -x f869ee0d; patch-id 921d4757f803 equal; diff vs fb50e2ff = tests/desk/releaseRetention.test.ts +5/-1 only. Sent for
 replay. Gate pre-registered: 233/233, tsc 0, lint 0 errors, build rc 0, pre-ship 403 read; watcher on.
 Integration recorded separately (not this ship): release line's preflight.sh lacks 61e2f777, a next-ordinary-release candidate.
+**0b92c309 APPROVED by Integration by literal sha (ship candidate; a50f5948 and fb50e2ff must not ship).** Cone read here:
+3b9c0a70..0b92c309 = 10 commits, 0 merges, production is ancestor; 29 files +960/-317; nothing under deploy/, worker/,
+lib/db, lib/market/store or package*: no schema change, no market restart. Gate waits on Research's slot (local_98e3e9a1).
