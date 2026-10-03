@@ -1,0 +1,5 @@
+replay of docs/research/reports-v6/voice-run-v6c on A:/mointel/data/market-prod-2026-10-02.db; no model calls
+INTO_RTH: strikes reproduced (S1L2|SHARES_UNDATED|rule); watchCount 12; cards 12 (1 with no prose); narrative present
+INTO_POWER_HOUR: strikes reproduced (S1L10|FORBIDDEN_WORDING|rule,S1L6|SHARES_UNDATED|rule); watchCount 12; cards 12 (2 with no prose); narrative present
+AFTER_HOURS: strikes reproduced (S1L6|SHARES_UNDATED|rule,S1L6|UNSUPPORTED|model); watchCount 12; cards 12 (1 with no prose); narrative present
+PREMARKET: strikes reproduced (S1L2|SHARES_UNDATED|rule,S1L9|UNSUPPORTED|model); watchCount 12; cards 12 (2 with no prose); narrative present
