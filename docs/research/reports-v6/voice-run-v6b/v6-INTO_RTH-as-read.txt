@@ -1,0 +1,67 @@
+Into the open · $1 to $20 · built from checkpoint #596 (2026-10-01T13:25:17.573Z)
+[opening, printed by the surface from watchCount = 10]
+
+THE SESSION
+In the $1.00 to $20.00 range, 1,729 traded, 828 up and 609 down so far today. NXL is up 102.2 percent from the prior close, and fresh news was found for 4 of the 12 names the desk covers.
+
+FRESH NEWS
+  NXL: Nexalin Technology, Inc.. United States.
+  $4.28 → $8.8 → $8.6532 (PRIOR_CLOSE)
+  [Why: GRADED A, 55m, explains move: true] [Risk: SUPPLY OVERHEAD 9.23M sh]
+  Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America at 08:30 ET, October 1, 2026; secondary coverage described seven Latin American markets. No deal value, minimum purchase commitment, or revenue forecast was supplied, and the desk reads this as company-specific commercial-distribution development that coincided with the observed high-volume price move without evidence establishing causation.
+
+  LRHC: La Rosa Holdings Corp.. United States. La Rosa provides residential and commercial real estate brokerage services and technology-driven products and support for agents and franchise partners, while expanding into AI infrastructure..
+  $2.36 → $3.25 → $2.06 (PRIOR_CLOSE)
+  [Why: GRADED B, 4h, explains move: true] [Risk: DIRTY FLOAT]
+  At 05:00 ET, October 1, 2026, La Rosa announced an NVIDIA GPU acquisition, explored real estate asset divestitures, and disclosed an exchange of outstanding securities for 3,410 newly issued Series F convertible preferred shares. The desk reads the event as a company-specific AI-infrastructure narrative alongside potential future common-share dilution.
+
+
+OLDER NEWS
+  RPGL: Republic Power Group Ltd. Singapore. Republic Power Group provides project-based customized ERP products and is adding SaaS ERP products..
+  $16.39 → $25 → $18 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST C, 8d, explains move: unknown] [Risk: DIRTY FLOAT 15.1M sh supply]
+  The latest item in the sources is not a fresh catalyst: secondary coverage at 10:30 ET, September 23, 2026 described a 1-for-16 reverse share split effective September 25, alongside an August 4 closing of 15,000,000 Class A ordinary shares at $1.00 per share and a July 24 variable-price convertible note. The desk reads the split as changing the trading-share structure, with the offering, resale registration, and note adding potential issuance.
+
+  NAMM: Namib Minerals. Namib Minerals is a gold producer, developer and explorer operating in Zimbabwe, including the How Mine and planned restarts of two assets..
+  $0.9583 → $1.25 → $0.9824 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST A, 2d, explains move: false] [Risk: DIRTY FLOAT 193.8M sh supply]
+  The latest item in the sources is not a fresh catalyst: Namib disclosed a US$6.5 million term loan facility at 19:26 ET, September 29, 2026, for resource-definition and bankability work tied to its Redwing restart plan. The desk reads the facility as debt funding for a stated restart milestone, but the supplied market data do not support attributing a large price move to the loan announcement.
+
+
+UNCLEAR
+  ISNR: Snow Rothschild Acquisition Corp.. Cayman Islands.
+  $9.83 → $9.84 → $9.84 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST —, 66d, explains move: unknown] [Risk: SUPPLY OVERHEAD 35.8M sh]
+  The latest identified company-specific event was the July 27, 2026 announcement that Class A shares and warrants would trade separately as ISNR and ISNRW. The sources do not establish a fresh company catalyst for the current move, and the desk does not treat that event as establishing its reason.
+
+
+NOT YET RESEARCHED
+  CEPV
+  $10.3 → $10.3 → $10.3 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  LTGR
+  $9.99 → $9.95 → $9.95 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  CCAQ
+  $10.69 → $10.67 → $10.67 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  MTNE
+  $9.92 → $9.92 → $9.92 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+  PALO
+  $9.97 → $9.98 → $9.98 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  No research dossier is on file at this checkpoint.
+
+
+Sample notes:
+- Tags are the board's own Why and Risk rules run on the research as of the checkpoint. Where the board reads the outside sheet (its grade bucket, its latest line, its disagreement marker, its displayed float), the report cannot, so on a name the sheet covers, a report tag can differ from the board at the same moment.
+- "Gave the entire move back" means the name closed the regular session at or below the prior close.

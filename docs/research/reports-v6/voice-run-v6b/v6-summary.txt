@@ -1,0 +1,18 @@
+store A:/mointel/data/market-prod-2026-10-02.db: 4892807168 bytes, mtime 2026-10-03T02:53:38.868Z
+writer gpt-5.6-luna, checker gpt-5.6-terra
+INTO_RTH 2026-10-01: PUBLISHED; 2 of 13 lines struck; $0.0418; writer 23008 ms, checker 6120 ms; tokens gpt-5.6-luna:4376/2259 gpt-5.6-terra:15333/630
+  S1L2 rule:SHARES_UNDATED: 1002998
+  S1L5 rule:FORBIDDEN_WORDING: prediction or certainty: "confirmed"
+INTO_POWER_HOUR 2026-10-01: PUBLISHED; 1 of 13 lines struck; $0.0501; writer 24454 ms, checker 4978 ms; tokens gpt-5.6-luna:5229/2553 gpt-5.6-terra:19697/548
+  S1L6 rule:SHARES_UNDATED: 1002998
+AFTER_HOURS 2026-10-01: PUBLISHED; 4 of 13 lines struck; $0.0566; writer 24438 ms, checker 10042 ms; tokens gpt-5.6-luna:5322/2721 gpt-5.6-terra:19736/1066
+  S1L6 rule:SHARES_UNDATED: 1002998
+  S1L5 model:UNSUPPORTED: “Research is not complete” and “no dossier was available” are not supported wording; the rows support only that APAC has no research on file.
+  S1L9 model:UNSUPPORTED: “Research is not complete” and “no dossier was available” are not supported wording; the rows support only that BHAV has no research on file.
+  S1L10 model:UNSUPPORTED: The warrant event occurred on September 18, but the stored source filing is dated September 22; a September 18 filing is unsupported.
+PREMARKET 2026-10-01: PUBLISHED; 4 of 13 lines struck; $0.0547; writer 29024 ms, checker 8000 ms; tokens gpt-5.6-luna:5802/3003 gpt-5.6-terra:19877/851
+  S1L2 rule:SHARES_UNDATED: 4986264
+  S1L3 rule:NUMBER_NOT_IN_ROW: 80
+  O model:UNSUPPORTED: “9 ran past 50 percent off the prior close,” “the desk carries 12 names,” and the claim that the 3 no-close names are excluded from these counts are not stated by the narrative facts.
+  S1L9 model:UNSUPPORTED: “No dossier is available” is not supported; the absence of research supports only that ALPX is not researched/not on file.
+TOTAL spend $0.2032

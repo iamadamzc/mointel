@@ -1,0 +1,60 @@
+Into the premarket (from the 10-01 recap) · $1 to $20 · built from checkpoint #611 (2026-10-02T02:00:16.028Z)
+[opening, printed by the surface from watchCount = 9]
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  SORA: AsiaStrategy. AsiaStrategy is a Hong Kong-headquartered luxury-watch trading company that has diversified into Bitcoin and digital-asset treasury activities, including digital-asset-collateralized lending and compute infrastructure..
+  $2.4 → $3.64 → $3.0703 (TODAY_CLOSE)
+  [Why: GRADED A, 10h, explains move: true] [Risk: STRUCTURE CAUTION]
+  On October 1, 2026 at 12:06 ET, AsiaStrategy announced a non-binding MOU with Plume to explore an Asian joint venture for structuring, issuing and distributing tokenized financial products. The desk reads this as a connection to tokenized-financial-product activity alongside the observed high-volume price strength, but the MOU gives no deal value, revenue contribution, closing condition or timetable.
+
+  SSM: Sono Group N.V.. Netherlands. Sono Group N.V. is a Netherlands-incorporated holding company whose subsidiary is Sono Motors GmbH, referred to as Sono Solar..
+  $2.21 → $2.63 → $2.62 (TODAY_CLOSE)
+  [Why: GRADED B, 14h, explains move: true] [Risk: SUPPLY OVERHEAD 284K sh]
+  On October 1, 2026, a Schedule 13D was filed while secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The desk reads the disclosure as an attention event, but the available evidence does not establish the purchase dates, intentions, voting arrangements or whether it caused the observed move.
+
+  EJH: E-Home Household Service Holdings Ltd. Cayman Islands. E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services..
+  $1.79 → $1.87 → $1.53 (TODAY_CLOSE)
+  [Why: GRADED B, 15h, explains move: true] [Risk: DIRTY FLOAT 71.8M sh supply]
+  At 07:15 ET on October 1, 2026, E-Home announced a dedicated AI service robot for China’s household-services market, alongside a September 29 private-placement agreement with stated gross proceeds of $43.08 million. The desk reads the launch as a possible momentum-interest event, while the supplied record does not establish product specifications, customer commitments, revenue expectations or whether the placement has closed.
+
+  AISP: Airship AI Holdings, Inc.. United States. Airship AI provides AI-driven video, sensor and data-management surveillance solutions for public safety and operational efficiency..
+  $2.22 → $2.4 → $2.3607 (TODAY_CLOSE)
+  [Why: GRADED A, 13h, explains move: true] [Risk: SUPPLY OVERHEAD 34.3M sh]
+  At 09:00 ET on October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The desk reads the awards as a company-specific revenue and execution catalyst, but the supplied release does not establish the performance period, delivery schedule, revenue-recognition timing or profit contribution.
+
+  COLA: Columbus Acquisition Corp/Cayman Islands. Cayman Islands.
+  $2.86 → $3 → $2.714 (TODAY_CLOSE)
+  [Why: OLD_CATALYST B, 20d, explains move: unknown] [Risk: STRUCTURE CAUTION]
+  At 04:01 ET on September 11, 2026, Columbus announced that it convened and adjourned its extraordinary general meeting of shareholders. The desk reads this as a current SPAC corporate-process event, but the supplied material does not state the adjournment outcome, reconvened meeting date, voting results or any change to transaction terms.
+
+  NAMM: Namib Minerals. Namib Minerals is a gold producer, developer and explorer operating the How Mine and pursuing restarts of other mining assets in Zimbabwe..
+  $1.3 → $1.38 → $1.36 (TODAY_CLOSE)
+  [Why: GRADED B, 14h, explains move: true] [Risk: DIRTY FLOAT 128.0M sh supply]
+  At 08:00 ET on October 1, 2026, Namib reported first-half 2026 results and revised production guidance to 26,500 to 27,000 ounces, with all-in sustaining cost at $3,078 per ounce and $11.3 million of non-cash earnout and warrant fair-value losses; it also announced a $6.5 million term loan on September 29. The desk reads the update as mixed operating and cost information, with the facility described as non-dilutive and intended to support Redwing restart milestones.
+
+
+OLDER NEWS
+  WCT: Wellchange Holdings Co Ltd. China. Wellchange is a Hong Kong-headquartered enterprise software solution services provider..
+  $1.67 → $2.34 → $1.42 (TODAY_CLOSE)
+  [Why: OLD_CATALYST C, 28d, explains move: false] [Risk: DIRTY FLOAT 51.5M sh supply]
+  The latest identified company event was a September 3 announcement of a 1-for-5 reverse split effective September 8, following an August 31 public offering of 50,000,000 Class A shares for approximately $7.5 million at $0.15 per pre-split share. This is not a fresh catalyst, and the evidence identifies no newer company-specific positive event.
+
+  CAMP: Camp4 Therapeutics Corp. United States.
+  $3.84 → $3.9 → $3.9 (TODAY_CLOSE)
+  [Why: OLD_CATALYST B, 49d, explains move: false] [Risk: DIRTY FLOAT 72.2M sh supply]
+  The August 13, 2026 Q2 update reported regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch, and the August 4 financing closing added capital. This is not a fresh catalyst in the supplied research.
+
+
+UNCLEAR
+  HTCR: HeartCore Enterprises, Inc..
+  $1.925 → $2.466 → $2.16 (TODAY_CLOSE)
+  [Why: GRADED —, explains move: unknown] [Risk: SUPPLY OVERHEAD 20.8M sh]
+  The supplied research does not support a catalyst determination, and the substantive event in the September 25, 2026 8-K is not disclosed in the supplied excerpt.
+
+
+Sample notes:
+- Tags are the board's own Why and Risk rules run on the research as of the checkpoint. Where the board reads the outside sheet (its grade bucket, its latest line, its disagreement marker, its displayed float), the report cannot, so on a name the sheet covers, a report tag can differ from the board at the same moment.
+- "Gave the entire move back" means the name closed the regular session at or below the prior close.
