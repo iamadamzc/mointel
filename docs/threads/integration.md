@@ -1287,6 +1287,9 @@ SIGN-IN LIVE     Ops: sync-env 00:38Z (backup first; nothing erased; Google + FI
                  window, desk password, before sign-in); Ops does not type the Basic-Auth password.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
+                 LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
+                 (allowlist.ts invocation user unknown). Asked Web: confirm owner-or-root openers or skip/catch + test.
+                 NOT a pick for step 4 (Web: wiring cut stays 01455d93 + wiring).
 GATE REDS AT HEAD (Web found, routed): (a) releaseRetention.test.ts 2 fails, clock-dependent? -> Ops; (b) tsc 2 errors
                  calibrate.ts:147/201 implicit any (read) -> Research; (c) eslint 60 errors all in leftover worktree
                  .claude/worktrees/agent-acfba7ff0c32d6e90 (levels-request-path 8dfacf4c, 09-30, clean, on origin) ->
