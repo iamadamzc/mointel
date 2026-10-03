@@ -1451,6 +1451,9 @@ HIS RULINGS (Research's chat, 15:44:11Z, per Research, verbatim): "intraday defi
                  ANTHROPIC_API_KEY needed in .env.local (his); exact var name and the scratch-copy path asked of Research.
                  Research: var name ANTHROPIC_API_KEY (SDK default, via dotenv from .env.local). Scratch copy A:\mointel-scratch\n                 market-scratch-2026-10-02.db (verified, only file); HIS to delete (Claude Code safety check blocked Research;
                  not run from any seat). Build released to Research (no spend, reversible; stops if he says stop).
+CLAUDE ADAPTER   ORDER CALL: comparison uses a raw HTTP Messages API call inside the harness only (no package.json/lockfile
+                 change, no shared node_modules install, nothing production imports). SDK (@anthropic-ai/sdk) only if he
+                 adopts a Claude writer, as its own reviewed cut. Research's build plan: proposal main ccceafa2, six steps.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
