@@ -1392,6 +1392,10 @@ v6 RENDERS (3)   Design: INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS at 1,280 + 1,024
 PREMARKET v6d    Research 0ae09059 (raw before read; $0.0494, his spend yes). MY SCAN: 233 strings, 12 cards / watchCount 12,
                  sections [7,3,1,1], narrative "covered 7 of the 12", COLA in section 1 (older), 0 U+2014 bar lone, 0
                  citations. 1 of 13 lines struck (HTCR card kept empty). Design renders; then all four to him.
+v6 FIRST LOOK    SENT TO HIM: four 1,280 renders (scratchpad v6-renders/; 1,024 versions kept). Design: surface GATED at tag
+                 design/reports-v6-surface-gated-5c95c92e (229 files, 3,319 tests, lint/build/typecheck 0, mutant 1/1); my
+                 replay of that surface owed before any cut. Wording note "ran past 50 percent off the prior close" (reads
+                 as down) -> Marketing for step 6. Sample artefacts named to him (LATE / SESSION OVER).
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
