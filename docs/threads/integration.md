@@ -1354,6 +1354,14 @@ SHEET PLAN       docs/sheet-removal-plan-2026-10-03.md (0009301e). Inventory: Ex
                  DESIGN OWNS step 1 (lib/data/, no-demo-rows) and step 3's surface; NOT STARTED. Design has put a hand-off
                  of its seat to him (its repeat class: generated-backslash), after the report-window gate. Step 1 needs no
                  decision of his; needs his yes for local tests.
+BLUE-SKY SCALE   Research 15071d45 (raw 69e812a8 first; snapshot sha256 9f0efa03; read): A shown now 79 (22 on board last 5
+                 sessions; EZRA $106,996.98 factor 10,200), C latent 104 (34), B unknown factor 207 (8, deliberately not
+                 fixed). GNPX in C (control PASS). ORDER CALL: re-pick 70c534f4 ded2274a bac44069 + Design c535dce7 ON TOP
+                 of step-4 32db0d7e, ONE gate (his PC), one ship yes naming both; fallback re-pick onto 3b9c0a70 alone.
+v6c              Research d5c928e5 (writer 7 + checker 5 at bf13125e): premarket narrative publishes; all four kinds; $0.20.
+STRUCK CARD      Marketing catch A (struck line drops its card; "of the 12" over 10). APPROVED IN PRINCIPLE: struck line
+                 keeps its card with a computed sentence (Research builds, Marketing words, Design confirms surface).
+                 Samples go to him after this lands.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
