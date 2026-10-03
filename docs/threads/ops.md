@@ -13643,6 +13643,7 @@ Heavy-slot queue now held here: Design holds it, Web next.
 
 **Error ledger (this seat):** | error (asserted vs true) | TYPE | already logged this session? | caught by |
 | 1. Ran two small node scripts on this PC (import trace + package check, 03:2xZ) after his rule "if any one needs to run anuythign locally lmk first", reading it as heavy runs only | ruling narrowed by its reason | no (first) | peer (Integration) |
+| 2. Counted added U+2014 in a50f5948 with Git Bash $'—' and read "0"; Git Bash printed the literal \u2014, so the check could not fire (redone in Python: 0 of 334 added lines, control 2,021 in research.md) | check that cannot fire read as a result | no (first for this seat; the hand-off named the class) | self (control), before it reached anyone |
 
 **2026-10-03 03:07-03:15Z.** HIS RULE (verified at his own turn: Integration transcript 24ec00be, queued_command,
 origin human, 2026-10-03T03:07:44.647Z): "if any one needs to run anuythign locally lmk first". So every gate, build, full
@@ -13689,3 +13690,11 @@ via lib/research/merge/sheetPrior.ts -> lib/data/providers/googleSheets.ts, and 
 present cases. Tool: scripts/ops/server-only-trace.cjs; RE-RUN on the removal cut's tip before it ships.
 Plan's box items for this seat: env keys GOOGLE_SHEET_ID, GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY,
 MOINTEL_DASHBOARD_URL go (plan step 5, via sync-env.sh); a market-worker restart is in the sequence (plan step 4, his word).
+**03:3xZ COMBINED RELEASE a50f59487ac666280e88d47677face81c74e6093 approved by Integration by literal sha** (on origin,
+research/bluesky-cut-on-32db0d7e). Read here: 32db0d7e is its ancestor; 4 linear commits, patch-ids equal to 70c534f4,
+ded2274a, bac44069, c535dce7; 5 files (lib/market/blueSky.ts, lib/dashboard/blueSkyView.ts, components/LevelLadder.tsx, 2
+tests), nothing in deploy/lib-db/worker/package; 0 U+2014 in 334 added lines (Python; control 2,021). Scale per Research
+15071d45 (integration.md:1357): 79 names in group A shown now, 22 on the board in the last 5 sessions (EZRA $106,996.98);
+group B, 207 names with an unknown factor (8 on board), deliberately not fixed. PRE-REGISTERED GATE ON a50f5948: 233/233
+test files, tsc 0 errors, lint 0 errors, next build rc 0, then the pre-ship 403 read (03:18Z entry). Waits on his yes.
+Fallback: step 4 fails -> the four picks re-pick onto 3b9c0a70 alone.
