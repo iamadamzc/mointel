@@ -101,6 +101,18 @@ He shared an example research-editor prompt and ruled "yes" to folding its appro
 - The universe filter ($2 to $10, float under 20M): conflicts with the board's band and with his open float decision; his ruling, not a prompt line.
 - Research verification by the writer: the writer has no tools; it is told its inputs are the desk's checked research.
 
+**Marketing's v2 examples (checked against the store by this seat):**
+
+PREMARKET, 10-01 recap (2 regular-session names + 1 after hours):
+
+> Nine names ran at least 50 percent above the prior close, then faded: none round-tripped entirely, but only four of the nine held even half their peak gain by the close. The two biggest the desk covered: NXL ran to 156.5 percent above the prior close and closed up 76.4, carrying a 10-year Brazil and South America distribution agreement; SSM ran to 130.3 and closed up 96.9, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the close, AMOD added 61.5 percent. Of the twelve the desk covered, seven had fresh news; three were deals or contracts. Into today, NXL sits between $4.90 support and its $10.98 high, with an older high at $19.20 overhead; a recent offering is active, and warrants, convertibles and an ATM are possibly active. The desk carries twelve names forward.
+
+POWER HOUR, checkpoint 606:
+
+> NXL leads, up 68.5 percent from the prior close, carrying a 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. Behind it, NAMM is up 51.5 percent with first-half results and production guidance revised to 26,500 to 27,000 ounces, and EJH up 28.2 percent with an AI service-robot launch and a September 29 private placement. Six of the twelve the desk covers have fresh news. Since the previous checkpoint, NAMM entered the top 12 at a new high of day.
+
+Checked: retention 4 of 9 at least half; NXL and SSM highs and closes; AMOD after hours; 7 of 12 fresh; NXL's last print $6.50 between $4.90 support and the $10.98 session high (= its stored resistance); $19.20 is `cycle.historicalResistance`. **Build condition:** the older-high clause prints only when the blue-sky basis check vouches for its split basis; otherwise it drops. "Three were deals or contracts" is illustrative until the F14 labels exist.
+
 **Models:** he is open to other models if the output is better, with cost evaluated first. The side-by-side below therefore becomes a model comparison on the v2 sheet, priced before any run; it still needs his spend yes on a stated number.
 
 ## Marketing's target examples (final, checked against the store by this seat)
