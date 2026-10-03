@@ -37,3 +37,22 @@ Verified in the diff: the band is `min(|ln(restated/old)|/4, ln 1.25)`, OLD_BASI
 | M4 | 2 | 4 (old-basis unit, forward split, the 1-for-2 test's 1.50 case, the engine revert) |
 | M5 | 1 (then, on reading the titles, expected 0: no test covered the guard) | 1 |
 | M6 | 1 | 1 |
+
+## Results on `f5746a84`, run in a detached worktree (A:\mointel-splitrev, removed after) in Ops's slot
+
+Baseline green, 21/21. Each mutation matched its source text exactly once.
+
+| # | Predicted | Killed | Tests that died |
+|---|---|---|---|
+| M1 | 1 | **0, SURVIVED** | none |
+| M2 | 1 | 1 | earlier window splits restated through both |
+| M3 | 1 | 5 | the three `restateBars` cases, WCT, earlier window splits |
+| M4 | 4 | 4 | old-basis unit, the 1-for-2 band test, forward split, the engine revert |
+| M5 | 1 | 1 | the pre-session guard test |
+| M6 | 1 | 3 | restatement replaces a daily-bar close, the pre-session guard test, decides once |
+
+**M1 survives: a test gap, not a code defect.** The code is right (`bar.date < split.exDate`: a bar ON an earlier ex-date already traded on that split's new basis). But no fixture has a bar dated exactly on an earlier split's ex-date, so restating it would pass. Consequence if the boundary slipped: that one bar's close is off by the split ratio and its volume too, which matters for the prior close only when the earlier ex-date was yesterday, and slightly skews the RVOL average otherwise. One fixture closes it: in the cumulative case, a bar dated on the 1-for-3's ex-date restated only by today's split.
+
+M3 and M6 killed more tests than predicted: those guards are covered more widely than I assumed, which is no fault in the suite.
+
+**Verdict:** approve `f5746a84`, with the one-fixture follow-up for M1 (it does not block a ship).
