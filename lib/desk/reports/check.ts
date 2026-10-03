@@ -652,15 +652,31 @@ export function applyStrikes(
   draft: ReportDraft,
   strikes: readonly Strike[],
   now: () => Date = () => new Date(),
+  /**
+   * v6 (Marketing's catch A; Integration's call; design-seat.md §3a): a struck NAME
+   * line keeps its card with EMPTY text. Its company line, path and tags are computed
+   * and true; only the model's sentence goes, and no mark of the removal reaches the
+   * reader. The narrative is checked before strikes land and counts the covered
+   * names, so the cards must stay equal to it ("4 of the 12" over 10 cards in voice
+   * run v6). A line struck for naming a ticker the report does not cover
+   * (NO_ROW_FOR_TICKER) is NOT kept: that would invent a card.
+   */
+  options: { keepStruckCards?: boolean } = {},
 ): CheckedReport {
   const struck = new Set<string>(strikes.map((strike) => strike.id));
+  const uncovered = new Set<string>(strikes.filter((strike) => strike.reason === 'NO_ROW_FOR_TICKER').map((strike) => strike.id));
   const body = draftLines(draft).filter((line) => line.id !== 'O');
   if (body.every((line) => struck.has(line.id))) {
     return { ok: false, cause: { kind: 'ALL_STRUCK', at: now().toISOString() } };
   }
   const sections = draft.sections.map((section, s) => ({
     heading: section.heading,
-    lines: section.lines.filter((_, l) => !struck.has(`S${s + 1}L${l + 1}`)),
+    lines: section.lines.flatMap((line, l) => {
+      const id = `S${s + 1}L${l + 1}`;
+      if (!struck.has(id)) return [line];
+      if (options.keepStruckCards && line.ticker !== null && !uncovered.has(id)) return [{ ...line, text: '' }];
+      return [];
+    }),
   }));
   const watched = new Set(
     sections.flatMap((section) => section.lines.map((line) => line.ticker)).filter((ticker) => ticker !== null),

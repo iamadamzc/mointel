@@ -295,7 +295,8 @@ export async function runReport(
     writerMs,
     checkerMs,
   };
-  const applied = applyStrikes(draft, checked.strikes, now);
+  // v6: a struck name keeps its computed card with no prose, so cards = the narrative's covered names.
+  const applied = applyStrikes(draft, checked.strikes, now, { keepStruckCards: true });
   if (!applied.ok) return { status: 'MISSED', cause: applied.cause, diagnostics };
 
   const facts = new Map(inputs.facts.map((fact) => [fact.ticker, fact]));
