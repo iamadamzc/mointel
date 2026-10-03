@@ -1432,6 +1432,11 @@ PACKAGE v2      Proposal :78-116 (12f85306 local), Marketing's v2 examples fact-
                  Build condition: older-high clause only when blue-sky basis vouches. PUT TO HIM: both examples + "Build the
                  summaries in this shape?" (I had promised him a look before build). Research's two readability asks stay in
                  its chat.
+SPLIT-DAY CLOSE  Research measured (prereg 87bb743b, script 41309655, raw 37886b7b, result b381ea6e): REAL, >= 12 split
+                 effective dates carried the PRE-split previous_close (source alpaca-daily-bar, baseline_adjustment 'split';
+                 fits fetch-before-adjustment, fetch time unread). NONE reached board/report in the window; 4 registered rows
+                 that did are genuine moves. WCT 10-01 was a genuine crash (split 09-08): original note wrong, corrected.
+                 Controls pass. OPEN: guard or luck? Research to read the code path. Not to him until that is known.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
