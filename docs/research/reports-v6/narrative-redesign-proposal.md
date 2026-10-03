@@ -156,6 +156,24 @@ Caveats, before any number is relied on: Claude's tokenizer counts differently, 
 
 **Recommendation:** luna vs terra first. The fault is mostly the sheet, so the side-by-side should run AFTER the sheet changes; otherwise it measures two models wording the same thin facts.
 
+## Build plan (started 2026-10-03 on Integration's "read as yes, starts unless he says stop"; branch `research/reports-v6`, A:\mointel-v6)
+
+Each step is its own commit, tested in an Ops slot, with mutant kill counts predicted before the tests are read.
+
+1. **`narrative.ts`, the facts (no model):**
+   - recap counts read a SPLIT-CHECKED prior close: a row whose session trades 1.8x or more away from `previous_close` at a standard split ratio (or with a stored split factor within 3 days) is left out of F1/F6/F7 and counted in a footnote (interim; switches to Ops's `lib/market/splits.ts` restatement when it lands);
+   - F15: per 50 percent mover, high and close percent on the day and retention; the count keeping at least half;
+   - F10: recap, the covered movers by the day's high, top 2; intraday, the leader plus the next 2 covered names by move, each with its catalyst summary, status and cycle;
+   - F10b: recap, the top covered after-hours mover (1);
+   - F12b: recap, covered movers without fresh news (count);
+   - F13: intraday, the `change_summary` entries of the named names, humanised;
+   - context (recap, first named mover): session high, close, stored support and resistance, open supply items by type; the older high only when the blue-sky basis check vouches for it.
+2. **`writerV6.ts`:** his prompt's purpose; facts / supported interpretation / unresolved kept separate; whole-number percents computed in code from exact values (Marketing's half-case note); reply adds per-name theme labels from the fixed list (F14); intraday kept light.
+3. **`check.ts`:** deterministic: allowed numbers widen to the new facts (rounded moves, retention count, prices, the named names' summary numbers), allowed tickers = the named set, anchors for "ran at least 50 percent above" and "gave the entire move back", G leaves the prose; model: interpretation must name the facts it rests on; each F14 label checked against its name's summary.
+4. **Contract and surface:** the G footnote as its own computed field; Design renders it.
+5. **Claude writer adapter** beside the OpenAI one, reading `ANTHROPIC_API_KEY`; needs a dependency decision (the Anthropic SDK in `package.json` touches the shared `node_modules` and the box) with Integration and Ops before it is added.
+6. **The comparison:** harness committed before any call; luna, terra, Claude Sonnet 5.5, Claude Opus 5.5 (low effort); about $3; raw output committed before it is read.
+
 ## Sequence and what each step waits on
 
 1. ~~Marketing's target examples~~ DONE, above. **Now waits on Integration's pre-build nod.**
