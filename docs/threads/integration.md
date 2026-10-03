@@ -1269,6 +1269,14 @@ SI LABEL HELD    Research withdraws exception-only too: HOLD the display decisio
                  settlement), which needs Ortex data his trial can show and Commercial's read of Ortex's terms for
                  research use. Research puts that option to him directly (its ask, not repeated by me). Research's 5
                  cleared (each = an origin commit by patch-id).
+SIGN-IN LIVE     Ops: sync-env 00:38Z (backup first; nothing erased; Google + FINRA keys added; LEVELS_REFRESH_ENABLED
+                 kept). 3b9c0a70 DEPLOYED, unit deactivated 00:54Z, health ok schema 28. /proc 00:54Z: web 1944898 /
+                 research 1944955 / assess 1945033 on 3b9c0a70ef05, NR 0; market 1574400 on 1b5ead66, NR 0, untouched.
+                 SEEDED iamadamzc@gmail.com (his words as --authority). PROBE ON 00:54:34Z (web-only restart).
+                 CLAIM C MET: no-cookie read {"state":"anonymous"} 200, control / 200 (read from 127.0.0.1:3000 on the
+                 box, i.e. the app without nginx; his A/B reads come through nginx). A + B wait on his two sign-ins.
+                 OPEN (Ops/Web, his yes for the box change): /var/lib/mointel/identity.db is mode 644 (world-readable on
+                 the box: emails + session hashes); should be 640.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
