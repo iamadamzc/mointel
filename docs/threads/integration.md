@@ -1356,6 +1356,9 @@ v6 TAG FIX      Research 0d4f797e (reportTags cleans the dossier at input like r
                  citation "[1043]" (INTO_RTH sections[1].lines[0].tags.risk.detail/.full; RPGL; also on the live board).
                  CALLS: no hand edit; full fix (ticker's own research_sources ids count as cited, both surfaces) approved
                  as its own cut, not tonight. Hold lifted: new Design renders d6d5d5dc for him.
+                 Research CONFIRMED the A:\mointel-v6 releaseRetention runs during Ops's gate were its own; its flagged
+                 timeout likely its own load. Correction sent to Ops. Research now asks Ops for the slot before ANY test.
+                 Hover scope already covered by 0d4f797e (whole dossier cleaned once); explicit risk.detail fixture coming.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
