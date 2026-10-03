@@ -82,7 +82,9 @@ happen.
    the Google keys from `.env.local`.
 6. **You:** export the Sheet, switch off the ChatGPT recap, delete the service-account key in Google Cloud.
 7. **Delete the Sheet code and its tests** (provider, parser, Sheet-only tests, the `google-auth-library` package if
-   nothing else needs it, the research worker's special start-up flag for the Sheet).
+   nothing else needs it, the research worker's special start-up flag for the Sheet). Ops traced it: the flag
+   (`--conditions=react-server`) is needed only by the Sheet code in the research service, and is already unused in the
+   assess service, so it comes out of both; Ops re-runs the trace on the removal cut before it ships. No extra restart.
 
 ---
 
