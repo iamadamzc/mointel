@@ -13714,3 +13714,4 @@ passed of 3374; it waited behind a desk vitest started 14:04:36Z). Nothing shipp
    other programs, and a releaseRetention run from A:\mointel-v6 started 14:16:43Z (not this seat). Not attributable.
 SLOT: handed to Design (new seat local_82749387; local_dfce21d4 retired ~14:15Z) for its predecessor's three items; this
 seat re-gates the fixed tip after Design releases and Integration approves it.
+SLOT, 14:2xZ: the retiring Design seat (local_dfce21d4) DROPPED its queued request; the new Design (local_82749387) was told it holds nothing by default and may ask. Slot free; this seat re-gates on Web's fixed tip unless Design asks first.
