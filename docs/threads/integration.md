@@ -1281,6 +1281,11 @@ SIGN-IN LIVE     Ops: sync-env 00:38Z (backup first; nothing erased; Google + FI
                  exposure; fix = code commit (explicit mode on create, incl. -wal/-shm) riding the next ship. Others can
                  read -> chmod 640 tonight as a box change put to him. (I told him "Ops will ask your yes": correct him
                  if it becomes the code route.) Ops also asked for claim C THROUGH nginx (credentialed, no cookie).
+                 RESOLVED CASE 2 (Ops read): /var/lib/mointel 750 mointel:mointel; logins ubuntu (mointel + sudo),
+                 ssm-user (sudo NOPASSWD); only root-capable can traverse. NO EXPOSURE. Fix = Web code commit (mode on
+                 create, identity.db + -wal/-shm), next ship. Corrected to him. C through nginx: HE reads it (private
+                 window, desk password, before sign-in); Ops does not type the Basic-Auth password.
+APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
