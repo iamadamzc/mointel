@@ -450,6 +450,19 @@ that as a rejection.**
 
 ## LIVE STATE: rewrite or delete this section, never let it go stale
 
+> **UPDATE 2026-10-03, read by the successor Web seat: STEP 4 IS LIVE.** *Production
+> web runs `0b92c309` (per Integration's hand-off LIVE STATE, start 15:22:51Z): the live
+> base `3b9c0a70` + the refusal screen + the gate wiring + probe removal + the
+> `/api/dashboard` hold + Design's blue-sky fix + two test-only fixes
+> (`git log 3b9c0a70..0b92c309`). Read from outside after the ship: `/desk /signin
+> /api/market /api/dashboard /privacy-x` 401 (Basic Auth still on), `/ /privacy /terms`
+> and the icons 200, `placeholder-scan.py` clean for the first time, `mointel_oauth`
+> renders on `/privacy`, 0 em dashes in prose on `/ /privacy /terms` (the three on `/`
+> are the example board's empty cells, his exception).* **Steps 1 to 4 below are
+> done; step 5 is its own night with the preconditions in the OPEN table.** *What
+> was NOT read by this seat: an admitted or refused session on the live `/desk`;
+> that needs his browser.*
+
 **SNAPSHOT 2026-10-02 17:34 UTC, at `01455d93`. Written as a hand-off; every line
 was true at that moment and nothing below is a diary.** *Where this disagrees
 with anything above it, this wins.*
@@ -485,7 +498,7 @@ anonymous read, probe off. From about 20:36 ET 2026-10-02.**
 | 1 | ship `ops/signin-cut` tip `3b9c0a70`: the whole sign-in surface plus Ops's probe, flag OFF, **nothing enforced** | Ops ships, Integration replayed | approved by him |
 | 2 | Google client id and secret, `IDENTITY_DB_PATH`, seed `iamadamzc@gmail.com`, then `AUTH_PROBE_ENABLED=1` | him and Ops | his items, today |
 | 3 | three probe reads: admitted on the seeded address, **refused on a throwaway account**, anonymous from a credentialed `curl` with no cookie | Ops reads, sends them to Web | waiting on step 2 |
-| 4 | **WEB: wire `authenticate()` into `/desk` and `/api/*`, and fill `[FLOW COOKIE NAME]`** | **Web** | **NOT WRITTEN, deliberately** |
+| 4 | **WEB: wire `authenticate()` into `/desk` and `/api/*`, and fill `[FLOW COOKIE NAME]`** | **Web** | ~~NOT WRITTEN, deliberately~~ **LIVE 2026-10-03 at `0b92c309`; `/api/dashboard` held out (OPEN table)** |
 | 5 | flag off, probe removed, **Basic Auth off** | Ops | **its own night, never tonight** |
 
 > **STEP 4 IS NOT WRITTEN ON PURPOSE AND A SUCCESSOR SHOULD KEEP IT THAT WAY
@@ -525,7 +538,7 @@ snapshot of this section is at `d329a691`'s parent and is not repeated here.*
 
 | what | owner | trigger | if the trigger never fires |
 | --- | --- | --- | --- |
-| **step 4 wiring** | **Web** | Ops's three probe reads, 2026-10-02 evening | **by 2026-10-06 with no reads, ask Integration whether the night ran. Do NOT wire on the assumption it did** |
+| ~~**step 4 wiring**~~ | ~~Web~~ | **CLOSED: live 2026-10-03 at `0b92c309`** | |
 | **Basic Auth removal** | Ops, his yes | step 4 proven live, then its own night | **no date, and that is correct: it waits on a person with no password completing a sign-in, which nothing before step 4 can show. If anyone proposes it without that, refuse and say why** |
 | **`/api/dashboard` is NOT session-gated** (held out of step 4 at `32db0d7e`, 2026-10-03): the market worker reads it over loopback with no cookie to pin his TODAY-sheet tickers (`worker/runtime.ts` refreshSheetSymbols, `worker/diagnose.ts`), and drops a non-OK silently. **ORDERED 2026-10-03 (Integration, `docs/sheet-removal-plan-2026-10-03.md`): Web gates `/api/dashboard` IN STEP 4's RELEASE, the one that removes the worker's call. Re-grep callers first, then drop it from the test's UNGATED set. No worker credential is built.** *Background: his ruling 2026-10-03 removes the Google Sheet from the system.* *The worker's read exists for TODAY-sheet pins and likely goes with the Sheet. If it does, gate `/api/dashboard` like every other route with no credential at all, after re-grepping its callers; if it survives, (a) below stands.* **Earlier the same day, decided by Web and Ops (local_7fac8dfc): (a).** Two designs were on file. **(a) a shared-secret header the worker sends** (env secret, worker change, rides a market restart he does anyway); fails CLOSED. **(b) Ops's (local_7fac8dfc), no worker change: admit when the request carries neither X-Real-IP nor X-Forwarded-For**, since Next binds 127.0.0.1:3000 and all 14 proxy_pass blocks set X-Real-IP at `3b9c0a70`; fails OPEN if a location, the bind, or the box's live nginx drifts, so it needs a structural test over every proxy_pass block. *Withdrawn by Ops in favour of (a).* **The secret is box-only, so it must be written by `deploy/aws/sync-env.sh` or the next wholesale env rewrite drops it**; it rides the pending market restart (worker em-dash strings). A bare loopback-address exemption is unsafe: nginx proxies from 127.0.0.1 | **Web (gate side) + the worker's owner, via Integration** | before Basic Auth comes off `/api/` | **if step 5 is proposed with this row open, it is not ready: the route would be public. The structural test's UNGATED set names it, so lifting the hold needs a test change** |
 | **a per-user rate limit on `POST /api/research/retry`** (route spec §4, re-read 2026-10-02: none exists) | **Ops and Web jointly, unassigned** | before Basic Auth comes off `/api/` | **if step 5 is proposed without it, it is not ready: that endpoint spends model budget, and one admitted user in a loop costs what a stranger would. Raise it to Integration when step 5 is first scheduled** |
