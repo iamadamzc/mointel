@@ -1326,6 +1326,11 @@ HIS RULE (typed to me, 2026-10-03 ~03:1xZ by transcript): "ive got some other he
 STRUCK CARD BUILT research/reports-v6 @ 4cc5f5ca: empty-text card kept; desk 29 files / 397 tests, tsc 0, mutants as
                  predicted (Research). NEXT: samples re-applied through it -> Design renders -> to HIM (first look).
                  Sheet step 2 waits on his yes to Research (4.9 GB copy, $15).
+v6 SAMPLES       Research 66d51856 replay (no model call): 12 cards + watchCount 12 each; FRESH 6/6/4/8 (READ HERE). DEFECT:
+                 PREMARKET CAMP tags.why.headline carries 2x U+2014 + citation token [30265,30266] from the raw dossier
+                 catalyst summary; report tag path skips readableIntelligence (merge.ts:316-322 cleans the board, read).
+                 Board fine; report-only, not live. Sent to Research (fix + guard over all tag strings) and Design (hold
+                 renders). grade "—" lone = his exception. Samples to him AFTER the fix.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
