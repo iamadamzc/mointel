@@ -1370,6 +1370,8 @@ COLA             Research: grouping fix 04ca7496 (board's freshness verdict take
 RESEARCH HANDS OFF On his word. New seat local_98e3e9a1 (Research-tmi, created 14:29:43Z; get_session). Old local_5f4bfcf8
                  renamed "Research-tmi (retired 2026-10-03)", archived. Briefed (8fec1df7): spend not given; ship candidate
                  moved; Sheet decisions open; SI hold; slot via Ops.
+HIS SHIP YES     0b92c309: "yes, ship it." (Ops's session, 2026-10-03T14:35:39.738Z, origin human; per Ops), answering the item
+                 naming both changes. Conditional on a clean gate (watcher). Gate starts after Research's desk run.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
