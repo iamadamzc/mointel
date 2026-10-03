@@ -13758,3 +13758,13 @@ inside its 5m protected window." On a SATURDAY, because the live release's prefl
 re-run scheduled for 2026-10-03T15:06:00Z (11:06 ET; admissible span ~11:04-11:12 between the 11:00 and 11:30
 checkpoints, by preflight's own rule), base check first, fresh 5 s memory watcher alongside.
 SLOT 15:03Z: Design (local_82749387) released, reporting: reportV6 + releaseRetention alone on 5c95c92e 2 files / 35 tests green (141.6 s); full gate on 5c95c92e (tag design/reports-v6-surface-gated-5c95c92e) 229/229 declared and met, 3,319 tests, lint 0 errors / 7 warnings, build 0, typecheck 0 (Design's report, not re-run here). Research (local_98e3e9a1) next: tsc + eslint, 4.9 GB scratch copy to A:\mointel-scratch (A: 120.7 GB free), dry run in the slot; its API-bound model run (his yes, $15 cap, per Research) continues outside the slot.
+**0b92c309 LIVE. Deploy unit mointel-deploy-0b92c309-150646 launched 15:06:46Z; journal "[deploy] deployed 0b92c309...",
+"services were down for 2s".** push-release's follower timed out at 15:21:53Z (rc 8, "NOT confirmed"), as expected;
+confirmed from /proc instead. Read 15:23:44Z: web 1999484 / research 1999542 / assess 1999611, all cwd
+0b92c30980bded5c70b62e4035aaa609210760a1, started 15:22:51-52Z, NR 0; current -> 0b92c309. market 1574400 on 1b5ead66 since
+2026-09-30 00:15:40Z, NR 0 (untouched). Health ok, schema 28/28. Pins unchanged. Box MemAvailable min 1,017 MB during the
+build (5 s log), 2,321 MB after. Gate from the box, direct to next on 127.0.0.1:3000: /api/dashboard no cookie 200 (the
+worker's TODAY-sheet path, condition 4); /desk no cookie 307 -> /signin; /api/market 401; /api/levels 401; /signin 200.
+The market worker logs no sheet/dashboard line in 30 min (it logs nothing on success), so condition 4 rests on the 200.
+OPEN: his browser reads (admitted board, refused 403 screen via his Workspace address, signed-out redirect, EZRA drawer).
+Rollback if a read fails: re-deploy 3b9c0a70 (present in releases), his word.
