@@ -62,8 +62,9 @@ Added (all computed from stored values, each traceable by the checker):
 | Fact | Content | Kinds | Checker trace |
 |---|---|---|---|
 | F10 leaders | Recap: the covered names among the day's 50 percent movers, ordered by the day's high, up to 3, each with its high and close percent ON THE DAY (`rth_final_*`, never the checkpoint's `percent_change`, which at the recap is the after-hours move) and its catalyst summary to restate in one clause; plus how many of the movers the desk covers. Intraday: the leader plus up to 2 by rank, on the checkpoint's stated basis | all | number to the fact; clause to that name's dossier summary, as lines are traced today |
-| F11 grade mix | Counts of covered names by grade, in the tag's words (positive / mixed / negative / strong / unknown) | all | count to the fact |
-| F12 fit | How many covered names' news fits the move, and how many it does not | all | count to the fact |
+| ~~F11 grade mix~~ | ~~Counts of covered names by grade~~ **OUT (Marketing's voice call, agreed): grade stays in the tags; back only if he asks for grade colour** | | |
+| ~~F12 fit~~ | ~~How many covered names' news fits the move~~ **OUT, same reason** | | |
+| F12b movers without fresh news | Recap: how many covered 50 percent movers have no fresh news found (status none or older); a COUNT, never names; the clause drops at 0 (0 on 10-01) | recap | count to the fact |
 | F13 change | Names new to coverage and names dropped since the reference checkpoint (recap: since the 07:00 premarket checkpoint; intraday: since the previous checkpoint) | all | tickers to the fact |
 
 Rules diff (`NARRATIVE_RULES`):
