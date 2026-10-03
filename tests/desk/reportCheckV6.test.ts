@@ -99,6 +99,11 @@ describe('ruleStrikes, v6', () => {
     expect(v6.system).toContain("A catalyst status is the desk's own verdict on freshness under its rules");
     expect(v6.system).toContain('v6: THE NARRATIVE (id O)');
     expect(v6.user).toContain('Narrative facts for the narrative line (id O)');
+    // The checker sees the writer's WORDED facts, never raw JSON (voice run v6b struck a true recap narrative).
+    const recapPrompt = buildCheckerPrompt({ ...input(GOOD_RECAP, 'x', recap), kind: 'PREMARKET' as const });
+    expect(recapPrompt.user).toContain('ran past 50 percent off the prior close: 11');
+    expect(recapPrompt.user).toContain('names the desk carries into the next session: 3');
+    expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
   });

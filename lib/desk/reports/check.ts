@@ -29,6 +29,7 @@ import type { ReportFact } from './facts';
 import type { BreadthWindow, NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
 import { etDayAndClock, traceLine } from './traced';
+import { narrativeSheet } from './writerV6';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
 
@@ -463,7 +464,7 @@ const CHECKER_SYSTEM_V5 = [
  * `docs/research/reports-v6/probe-2026-10-02/result.md`, approved path
  * `design.md:98`) plus the narrative's model-read rules.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 4;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 5;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -546,7 +547,9 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
           `Stored research per name, as of this checkpoint (${input.research.size}):`,
           storedResearch(input.research),
           input.narrative
-            ? `Narrative facts for the narrative line (id O), the same block the writer was given: ${JSON.stringify(input.narrative)}`
+            ? // Worded EXACTLY as the writer was given them. Voice run v6b (801efe6e): shown as raw JSON, the model could not map "9 ran past
+            // 50 percent" to movers50 or "the desk carries 12" to tracking, and struck a narrative that stated only given facts.
+            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${narrativeSheet(input.narrative, input.range).join('\n  ')}`
             : input.afterHoursTotals
               ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
               : 'After-hours totals: none given, so any count in an overall line is unsupported.',
