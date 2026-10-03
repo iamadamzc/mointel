@@ -1,0 +1,65 @@
+Into power hour · $1 to $20 · built from checkpoint #606 (2026-10-01T18:30:05.368Z)
+[opening, printed by the surface from watchCount = 10]
+
+THE SESSION
+In the $1.00 to $20.00 range, 2,921 traded so far today, with 1,247 up and 1,512 down. NXL is up 68.5 percent from the prior close, and fresh news was found in our sources for 6 of the 12 names the desk covers.
+
+FRESH NEWS
+  NXL: Nexalin Technology, Inc.. United States.
+  $4.28 → $10.98 → $7.21 (PRIOR_CLOSE)
+  [Why: GRADED A, 6h, explains move: true] [Risk: DIRTY FLOAT 9.23M sh supply]
+  On October 1, 2026 at 08:30 ET, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America, describing it as a step toward commercial revenue generation. The desk reads it as a company-specific commercialization framework, while contract value, minimum purchases, expected revenue, financial commitments and conditions before revenue are not in the supplied primary-source excerpt.
+
+  AISP: Airship AI Holdings, Inc.. United States. Airship AI provides an AI-driven video, sensor and data-management surveillance platform for public-safety and operational-efficiency uses..
+  $1.86 → $2.86 → $2.3491 (PRIOR_CLOSE)
+  [Why: GRADED A, 6h, explains move: true] [Risk: DIRTY FLOAT 34.3M sh supply]
+  At 09:00 ET on October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price brand-name-only contract awards from an agency within the U.S. Department of Homeland Security. The desk reads the stated award as a concrete government-contract revenue catalyst; delivery timing, revenue-recognition timing and the specific DHS agency are not established.
+
+  WFCF: Where Food Comes From, Inc.. United States. The company provides independent third-party verification of food production practices in North America..
+  $11.05 → $18.79 → $13.1216 (PRIOR_CLOSE)
+  [Why: GRADED B, since Wed close, explains move: false] [Risk: STRUCTURE CAUTION]
+  On September 30, 2026, the company’s Form S-3 registration statement covering up to $50.0 million of common stock, preferred stock and warrants became effective. The desk reads this as immediately usable financing capacity, not evidence of a completed financing, and WFCF is down 17.4% since the previous checkpoint.
+
+  EJH: E-Home Household Service Holdings Ltd. Cayman Islands. E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services..
+  $1.42 → $2.17 → $1.82 (PRIOR_CLOSE)
+  [Why: GRADED B, 7h, explains move: true] [Risk: DIRTY FLOAT 71.8M sh supply]
+  At 07:15 ET on October 1, 2026, E-Home announced a dedicated AI service robot for China’s household-services market, alongside a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million. The desk reads the product headline alongside prospective supply from the placement, but the record does not establish that the placement closed or that its consideration was realized as cash.
+
+  NAMM: Namib Minerals. Namib Minerals is a gold producer, developer and explorer operating in Zimbabwe, including the producing How Mine and planned restarts of other assets..
+  $0.9583 → $1.5 → $1.4515 (PRIOR_CLOSE)
+  [Why: GRADED B, 7h, explains move: true] [Risk: DIRTY FLOAT 188.5M sh supply]
+  At 08:00 ET on October 1, 2026, the company reported first-half 2026 results and revised production guidance to 26,500 to 27,000 ounces while maintaining C1 cost guidance, with group AISC of $3,078 per ounce versus $2,462 per ounce in the comparative period and $11.3 million of non-cash losses from earnout and warrant-liability revaluations; the September 29 update also reported a $6.5 million non-dilutive term loan for Redwing restart work. The desk reads the update as mixed, with adverse production and cost elements alongside non-equity restart funding, and NAMM printed a new high of day since the previous checkpoint.
+
+  FHTX: Foghorn Therapeutics Inc.. United States. Foghorn Therapeutics is a clinical-stage biotechnology company developing medicines intended to treat serious diseases by correcting abnormal gene expression, with an initial focus on oncology..
+  $3.57 → $2.84 → $2.815 (PRIOR_CLOSE)
+  [Why: GRADED C, 11h, explains move: true] [Risk: DIRTY FLOAT 22.1M sh supply]
+  At 03:01 ET on October 1, 2026, Foghorn and Lilly decided not to advance FHD-909 beyond Phase 1 dose escalation or the selective SMARCA2 degrader program, and Foghorn announced pipeline prioritization with an approximately 40% workforce reduction expected to extend its cash runway into the second half of 2029. The desk reads this as a major strategic retrenchment, with the workforce reduction and longer projected runway partly offsetting cash concerns, and FHTX printed a new high of day since the previous checkpoint.
+
+
+OLDER NEWS
+  STKH: Steakholder Foods Ltd.. Israel. Steakholder Foods develops 3D-printing technology for producing whole cuts of plant-based meat..
+  $1.57 → $2.3 → $0.8608 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST A, 28d, explains move: false] [Risk: DIRTY FLOAT 2368.6M sh supply]
+  This is not a fresh catalyst: on September 3, 2026 at 08:32 ET, Steakholder Foods announced that Perfecta Premium Plant-Based Meat had launched at retail outlets in the Northeastern U.S., its first U.S. store-shelf placement. The desk reads it as a reported U.S. retail placement, but sales, revenue, retail-door count, purchase-order value and margin contribution were not disclosed.
+
+  LONA: LeonaBio, Inc.. United States. LeonaBio is a clinical-stage biopharmaceutical company developing lasofoxifene for metastatic breast cancer and ATH-1105 for ALS..
+  $3.57 → $5.34 → $4.41 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST C, 13d, explains move: false] [Risk: DIRTY FLOAT 95.8M sh supply]
+  This is not a fresh catalyst: on September 18, 2026, 23,031,494 Series A warrants with a $6.35 exercise price became exercisable through October 19, 2026; the last favorable clinical update was enrollment of the 500th subject in ELAINE-3 on August 26, 2026. The latest filing concerns potential warrant supply rather than favorable clinical data, and no new favorable company announcement corresponding to the move is identified.
+
+
+NOT YET RESEARCHED
+  APAC
+  $10.27 → $10.27 → $10.27 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  Research is not on file yet; there is no dossier at this checkpoint.
+
+  DTSQ
+  $11.58 → $11.64 → $11.58 (PRIOR_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  Research is not on file yet; there is no dossier at this checkpoint.
+
+
+Sample notes:
+- Tags are the board's own Why and Risk rules run on the research as of the checkpoint. Where the board reads the outside sheet (its grade bucket, its latest line, its disagreement marker, its displayed float), the report cannot, so on a name the sheet covers, a report tag can differ from the board at the same moment.
+- "Gave the entire move back" means the name closed the regular session at or below the prior close.
