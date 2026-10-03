@@ -72,6 +72,9 @@ happen.
 2. **Measure the research without the Sheet.** Research reruns a sample of research write-ups with the Sheet's input
    switched off (the switch already exists: `RESEARCH_OMIT_SHEET_PRIOR`, `lib/research/config.ts:209`) and reports what
    changes. No build.
+   **DONE 2026-10-03** (`docs/research/sheet-removal/omit-prior-result-2026-10-03.md`, $1.68): the Sheet only reaches
+   the research for that day's handful of TODAY names (4 that day). On the 3 that could be tested, no field changed
+   beyond the model's own run-to-run variation. With 3 names that is a weak test, not proof of no effect.
 3. **Build the replacements** (one release): the board and drawer read the desk's own research first for job 4; the
    float decision for job 1; the table decision for job 2; the "Sheet sync" chip and Sheet sections removed from the
    drawer, review diagnostics and the AI tools.

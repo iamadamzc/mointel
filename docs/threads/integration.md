@@ -1411,6 +1411,10 @@ NARRATIVE PROP.  Research 427d635c (proposal) + bb43909c (own correction: AMOD/S
                  fact-checked by Research (5 corrections), being tightened. Bring to him when examples land.
 WCT DATA NOTE    10-01 close -79.9% vs +2.0% high: possible unadjusted reverse split in previous_close (could print a false
                  move live). Research to size read-only, pre-registered, AFTER the narrative proposal. Nothing to him yet.
+SHEET STEP 2     DONE (Research 32eda8d4; harness a1a8ac66; raw 100a92a4 before result, read): only 4 Sheet priors exist at run
+                 time (TODAY rows), 3 testable (NAUT, RETO, VEEA), 12 interpretations, $1.68. No field flagged; Risk chip
+                 closest (8/12 across vs 2/3, 1/3 within). n=3: "not flagged" is not "no effect". Plan updated. 4.9 GB scratch
+                 copy kept until he says delete.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
