@@ -112,6 +112,16 @@ export function isFilterActive(filters: FilterState): boolean {
   );
 }
 
+/**
+ * What the researched table says when it shows no rows, by WHY it is empty.
+ * Blaming the filters for an empty list is only true when the list had names
+ * before filtering; with no names at all (no outside source, Sheet removal
+ * step 1) it is an ordinary state and must not read as a fault or a filter.
+ */
+export function researchedEmptyText(listed: number): string {
+  return listed > 0 ? 'No names match the current filters.' : 'No researched names on file.';
+}
+
 /*
  * `applyFilters` WAS HERE AND IS DELETED, WHICH CLOSES A HAZARD I CREATED.
  *
