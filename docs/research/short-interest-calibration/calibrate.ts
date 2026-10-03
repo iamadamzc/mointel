@@ -144,7 +144,7 @@ async function main() {
   const map = parseTickerMap(JSON.parse((await sec.get(TICKER_MAP_URL)).body) as TickerExchangeFile);
   const factsByCik = new Map<string, ReturnType<typeof extractSharesOutstanding>>();
 
-  const results = [];
+  const results: Array<Record<string, unknown> & { status: string }> = [];
   for (const pair of pairs.values()) {
     const row = rowOf.get(`${pair.ticker}|${pair.settlement}`) ?? null;
     const result: Record<string, unknown> = { ...pair, finra: row };
