@@ -1253,6 +1253,14 @@ MARKETING        Size wording revised to "of the filed share count", date inline
                  threshold); suggested dropping it. Ready for either display mode.
                  SETTLED: exception-only legend = "No short interest line means nothing large was found, or the size
                  could not be measured." (Marketing). Gate reasons 2-3 with Commercial.
+LEAK JUDGE LOG   Ops 7c689e7b (local, cleared): 152 samples, research child 1864116 unchanged, NRestarts 0: judgeable.
+                 Research grades after 20:00 ET.
+ORTEX LOOK       Research 7abc3d20 + 4a31e4af (read; arithmetic checked): his free Ortex trial, 5 hand-picked names. Controls
+                 (CTVA, FLUX) agree within 5%; on movers FINRA Sep 15 is 36 to 195% BELOW Ortex's lending-model estimate,
+                 and filed count vs Ortex float compounds it (SDEV 0.44). Label would read LOW on the crowded names (SDEV
+                 "under 5%" vs Ortex 12.1% of float, 195% CTB, 1.6% availability). A LOOK, not a measurement. Ortex terms
+                 unread by Commercial. MY RECOMMENDATION (exception-only) WITHDRAWN to him: hold the display decision.
+                 Asked Research for its updated recommendation + push clearance on its 5.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
