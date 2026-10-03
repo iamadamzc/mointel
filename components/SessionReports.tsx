@@ -705,9 +705,10 @@ function NameCard({
 
 /**
  * THE SESSION (report-b-spec.md, page order 2): a small label, then the narrative at 16 px, line
- * height 1.6, ink-2, a 680 px measure, figures in ink semibold; or, with no narrative, the designed
- * absence in 13 px ink-3, so the block never reads as a page that failed to load. The recap's
- * footnotes sit under either, 12 px ink-3.
+ * height 1.6, a 680 px measure, PLAIN in ink (54e2a407, seen on Research's step-5 samples: the figure
+ * rule set "1,729" apart and left "828 up" as prose, so a sentence of counts read unevenly); or, with
+ * no narrative, the designed absence in 13 px ink-3, so the block never reads as a page that failed
+ * to load. The recap's footnotes sit under either, 12 px ink-3.
  */
 export function ReportOpeningBlock({ opening, footnotes }: { opening: Exclude<ReportOpening, { kind: 'V5_OVERALL' }>; footnotes: string[] }) {
   const labelId = useId();
@@ -715,22 +716,12 @@ export function ReportOpeningBlock({ opening, footnotes }: { opening: Exclude<Re
     <section aria-labelledby={labelId} className="mt-4 max-w-[680px]">
       <h3
         id={labelId}
-        className="text-[11px] font-semibold tracking-[0.08em] text-ink-3 uppercase print:text-black"
+        className="text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase print:text-black"
       >
         {OPENING_WORDS.label}
       </h3>
       {opening.kind === 'NARRATIVE' ? (
-        <p className="mt-1.5 text-[16px] leading-[1.6] text-ink-2 print:text-black">
-          {figureSegments(opening.text).map((segment, index) =>
-            segment.figure ? (
-              <span key={index} className="font-semibold text-ink print:text-black">
-                {segment.text}
-              </span>
-            ) : (
-              segment.text
-            ),
-          )}
-        </p>
+        <p className="mt-1.5 text-[16px] leading-[1.6] text-ink print:text-black">{opening.text}</p>
       ) : (
         <p className="mt-1.5 text-[13px] text-ink-3 print:text-black">{OPENING_WORDS.none}</p>
       )}

@@ -80,7 +80,7 @@ describe('the block, server-rendered', () => {
   const render = (props: Parameters<typeof ReportOpeningBlock>[0]) =>
     renderToStaticMarkup(createElement(ReportOpeningBlock, props));
 
-  it('a narrative: the label, the paragraph with its figures set apart, the footnotes under it', () => {
+  it('a narrative: the label, the paragraph as plain text, the footnotes under it', () => {
     const html = render({
       opening: { kind: 'NARRATIVE', text: 'ABCD, up 85.5% from the prior close.' },
       footnotes: narrativeFootnoteLines({ noClose: 0, splitExcluded: 2 }),
@@ -88,7 +88,8 @@ describe('the block, server-rendered', () => {
     expect(html).toContain(`>${OPENING_WORDS.label}<`);
     expect(html).toContain('aria-labelledby=');
     expect(html).toContain('text-[16px]');
-    expect(html).toContain('<span class="font-semibold text-ink print:text-black">85.5%</span>');
+    // Plain text (54e2a407): no figure emphasis inside the narrative.
+    expect(html).toContain('>ABCD, up 85.5% from the prior close.</p>');
     expect(html).toContain('No names had volume but no recorded regular-session close.');
     expect(html).toContain('2 rows were left out');
     expect(html).not.toContain(OPENING_WORDS.none);
