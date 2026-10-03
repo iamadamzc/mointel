@@ -1348,6 +1348,9 @@ a50f5948 GATE   RED 230/233 (Ops, 14:07:57-14:12:43Z; tsc 0, lint 0). Nothing sh
                  needs my literal-sha replay. (2) migrationConcurrency EPERM: 6/6 alone, load. (3) releaseRetention timeout;
                  "alone" run not clean (his CPU ~60%; someone ran releaseRetention from A:\mointel-v6 at 14:16:43Z
                  during it). Slot to Design meanwhile; Ops re-gates the new tip after.
+SHIP CANDIDATE   fb50e2ff96b734510284ebd0eadd086e701ca26e (web/step4-cut, local) = a50f5948 + test-only CRLF normalise in
+                 requestGate.test.ts (+3/-1, read). REPLAYED + APPROVED BY LITERAL SHA. a50f5948 must not ship alone.
+                 Conditions carry over. Research asked about its releaseRetention run from A:\mointel-v6 during Ops's gate.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
