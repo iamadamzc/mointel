@@ -35,7 +35,17 @@ policy and terms never mention the Sheet (Web checked).
 
 ## Your decisions
 
-### Decision 1: what replaces the Sheet's float?
+**RULED 2026-10-03T17:20:45Z (typed to Integration), verbatim:** *"we need to reproduce what the sheet does in the app.
+its that simple. the sheet is nothing more than a repository of model outputs. its not a holy grail."*
+
+So both decisions are answered by one rule: **the desk produces, itself, every output the desk reads from the Sheet today.**
+The spec is the recap prompt (`docs/After-Hours Momentum Recap.md`) and the field list is appendix C. Float comes from the
+desk's own research, sourced and dated as the recap prompt requires (verified float, Float Quality, Overhang / Float; never
+fabricated). The second table and the Priority grades stay, produced by the desk. Jobs 1, 2 and 5 below are no longer
+"dropped" or "replaced by a proxy": they are reproduced. Options (a) to (c) below are kept, struck, as the record of what
+was considered.
+
+### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
 The desk has never had a float of its own (`lib/research/float.ts:4-9`). The Sheet's float comes from the ChatGPT task's
 web research, with no stated method.
@@ -55,7 +65,7 @@ web research, with no stated method.
 On (a), Research and Design build it. On (b), Commercial prices it first and brings it back to you. (a) and (b) can both
 happen.
 
-### Decision 2: what happens to the second table and the Priority grades?
+### ~~Decision 2: what happens to the second table and the Priority grades?~~ (ruled above: kept, desk-produced)
 
 - **(a) Remove the table and the Priority column (recommended).** The main board already ranks names by the desk's own
   measure, including after hours, and your Focus list is yours to set. The A/B/C/AVOID grades go with the Sheet; that also
@@ -99,8 +109,8 @@ happen.
 | --- | --- | --- |
 | 1 No fake data | Design (owns `lib/data/`; Web offered to write it under Design's review) | nothing |
 | 2 Research without the Sheet | Research | your yes for the local run |
-| 3 Replacements | Research (research reads, float source) + Design (board, drawer, table) | your decisions 1 and 2 |
-| 3b Float vendor pricing, if you choose (b) | Commercial | your decision 1 |
+| 3 Reproduction | Research (the desk's own recap: every Sheet field incl. float, Priority, the researched list) + Design (board, drawer, table) | decisions RULED 17:20Z; Research's design and price first (model spend is yours) |
+| ~~3b Float vendor pricing, if you choose (b)~~ | ~~Commercial~~ | not chosen |
 | 4 Worker pins | Ops + whoever owns `worker/runtime.ts` | step 3 shipped; your yes for the restart |
 | 5 Server settings | Ops | step 4 |
 | 6 Export, switch-off, key deletion | You | step 5 |

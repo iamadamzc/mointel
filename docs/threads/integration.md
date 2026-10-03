@@ -1078,6 +1078,19 @@ RESEARCH START   Research (local_ab66f9f3) was blocked on "wait for the new Inte
 HIS STATUS ASK   Answered (live / shipping / built-not-live / approved-not-built / hold). NEEDS YOU: Sheet decisions 1 + 2,
                  delete A:\mointel-scratch (READ: still present, 4,892,938,240 bytes). 61e2f777, f1b8b716, 6ac43025 NOT
                  ancestors of f5746a84 (read).
+HIS SHEET RULING 2026-10-03T17:20:45.439Z (typed to me; this session's jsonl): "we need to reproduce what the sheet does in the app.
+                 its that simple. the sheet is nothing more than a repository of model outputs. its not a holy grail. yes
+                 delete it." BOTH decisions answered: desk produces every Sheet output itself (float sourced + dated; second
+                 table + Priority KEPT). Recorded in the plan (RULED block, options struck, owners table). No decisions
+                 register exists in the tree (git ls-files); the plan + this charter carry it.
+                 "yes delete it" = A:\mointel-scratch (my item 3). NOT deleted by me (permanent deletion stays his; a safety
+                 check already blocked Research); steps given to him.
+                 ORDER CALL: Research finishes v6 step 1, then DESIGN + PRICE proposal for the reproduction BEFORE v6 step 2;
+                 no build until it has been to him (recurring model spend his). Sent Research (spec = recap prompt; fields
+                 rows.ts:33-102 + appendix C; float honesty, displayedFloat null since v237; learning layer scope question;
+                 schedule, cost, box memory; storage + step 4 pins). Design (surface keeps table/Priority/float; waits on
+                 field contract). Commercial (Priority A-AVOID vs "not a recommendation"; model float). Ops (step 4 pins
+                 source changes; FYI).
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
