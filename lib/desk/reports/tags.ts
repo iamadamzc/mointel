@@ -18,6 +18,8 @@
  */
 
 import { resolveIntelligenceState } from '../../dashboard/intelligence';
+import { withoutEmDashDeep } from '../../dashboard/prose';
+import { withoutCitationsDeep } from '../../research/citations';
 import type { DeskRow } from '../../dashboard/merge';
 import { resolveRisk, type DeskRisk } from '../../dashboard/risk';
 import { resolveWhy, type DeskWhy } from '../../dashboard/why';
@@ -43,10 +45,20 @@ export interface ReportTagInput {
 }
 
 export function reportTags(input: ReportTagInput): ReportTags {
+  /*
+   * Cleaned EXACTLY as the board cleans it (`readableIntelligence`, merge.ts):
+   * citation tokens out, then em dashes, BEFORE why.ts and risk.ts read it.
+   * Integration's catch, 2026-10-03: fed the raw dossier, nearly every tag
+   * headline and risk detail in the step-5 samples carried "[30265,30266]"-style
+   * tokens and U+2014 (CAMP's catalyst summary was the first seen). Cleaned at the
+   * INPUT, never the output, because why.ts prints a lone em-dash glyph for an
+   * empty grade, his named exception, which an output-side clean would erase.
+   */
+  const dossier = input.dossier ? withoutEmDashDeep(withoutCitationsDeep(input.dossier)) : null;
   const intelligence = {
     status: input.status,
     coverageIncomplete: input.coverageIncomplete,
-    analysis: input.dossier ? { dossier: input.dossier } : null,
+    analysis: dossier ? { dossier } : null,
   } as unknown as AutoIntelligence;
   const intelligenceState = resolveIntelligenceState({ sheet: null, intelligence, comparison: null });
   const row = {
