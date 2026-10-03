@@ -1331,6 +1331,12 @@ v6 SAMPLES       Research 66d51856 replay (no model call): 12 cards + watchCount
                  catalyst summary; report tag path skips readableIntelligence (merge.ts:316-322 cleans the board, read).
                  Board fine; report-only, not live. Sent to Research (fix + guard over all tag strings) and Design (hold
                  renders). grade "—" lone = his exception. Samples to him AFTER the fix.
+DESIGN HANDS OFF On his yes. LIVE STATE origin 9a880961; prompt 75101d18. Successor's FIRST task = render 66d51856 samples
+                 (docs/Design/tools/v6_render_payload.py), then v6 surface gate (tag design/reports-v6-surface-ungated-
+                 54e2a407, NOT gated). Also inherits Sheet plan step 1 + step 3 surface. TELL THE NEW SEAT ON ARRIVAL:
+                 (1) HOLD renders for him until Research fixes the CAMP tag defect (my 4f5b6823 to the old seat, likely
+                 dropped); (2) design.md rows LL 9189b569 and AR a4a06168 say READY but are LIVE in 3b9c0a70 (Ops /proc);
+                 (3) blue-sky hover c535dce7 rides a50f5948 (approved). Nothing to local_dfce21d4 after now.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
