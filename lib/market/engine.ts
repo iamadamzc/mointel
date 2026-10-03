@@ -59,6 +59,7 @@ import {
 } from './derive';
 import { normalizeHaltState } from './alpaca/messages';
 import { afterHoursStartUtc, RTH_END_MIN, sessionEndUtc, sessionStartUtc } from './session';
+import { firstPrintBasis, type SplitAction } from './splitRestate';
 
 /**
  * The `volumeBaseSource` the bootstrap's historical backfill stamps on a symbol
@@ -191,6 +192,27 @@ export interface AfterHoursSeed {
   source: string;
   high?: number | null;
   low?: number | null;
+}
+
+/** What the first-print check compares, for one restated symbol. */
+export interface SplitBasisCheck {
+  restatedClose: number;
+  oldClose: number;
+  /** Attached instead of the restated baseline if the split did not happen. */
+  oldBasis: RvolBaseline;
+  split: SplitAction;
+}
+
+export interface SplitBasisVerdict {
+  symbol: string;
+  verdict: 'RESTATED' | 'OLD_BASIS';
+  price: number;
+  priceAt: string;
+  restatedClose: number;
+  oldClose: number;
+  split: SplitAction;
+  /** What is attached on OLD_BASIS, for the runtime to persist. */
+  oldBasis: RvolBaseline;
 }
 
 export interface SessionSeed {
@@ -482,6 +504,9 @@ export class DemandEngine {
   private baselines = new Map<string, RvolBaseline>();
   private previousRanks = new Map<string, number>();
   private previousAhRanks = new Map<string, number>();
+  /** Restated split baselines awaiting the day's first print (splitRestate.ts). */
+  private readonly splitChecks = new Map<string, SplitBasisCheck>();
+  private readonly splitVerdicts: SplitBasisVerdict[] = [];
   /** True once the current trading date's regular session has ended. */
   private rthClosed = false;
   /** Symbols pinned into the high-resolution set (TODAY sheet names). */
@@ -555,6 +580,7 @@ export class DemandEngine {
     this.previousRanks.clear();
     this.previousAhRanks.clear();
     this.rthClosed = false;
+    this.splitChecks.clear();
   }
 
   setBaselines(baselines: Map<string, RvolBaseline>): void {
@@ -564,10 +590,58 @@ export class DemandEngine {
     }
   }
 
-  setBaseline(symbol: string, baseline: RvolBaseline): void {
+  /**
+   * `replaceClose` lets a baseline overwrite a previous close that already came
+   * from a daily bar. Only a split restatement (or its revert) needs it: the
+   * ordinary rule is that the first Alpaca daily-bar close wins.
+   */
+  setBaseline(symbol: string, baseline: RvolBaseline, options: { replaceClose?: boolean } = {}): void {
     this.baselines.set(symbol, baseline);
     const runtime = this.tickers.get(symbol);
-    if (runtime) this.attachBaseline(runtime);
+    if (runtime) this.attachBaseline(runtime, options.replaceClose === true);
+  }
+
+  /**
+   * Arms the first-print basis check for a symbol whose baseline was restated
+   * for a split listed for today (lib/market/splitRestate.ts). The first price
+   * the session sees decides whether the split happened; if it did not, the
+   * old-basis baseline goes back on and the verdict says why.
+   */
+  armSplitBasisCheck(symbol: string, check: SplitBasisCheck): void {
+    this.splitChecks.set(symbol.toUpperCase(), check);
+    const runtime = this.tickers.get(symbol.toUpperCase());
+    if (runtime) this.checkSplitBasis(runtime);
+  }
+
+  /** Verdicts since the last drain, for the runtime to log and persist. */
+  drainSplitVerdicts(): SplitBasisVerdict[] {
+    return this.splitVerdicts.splice(0);
+  }
+
+  private checkSplitBasis(runtime: TickerRuntime): void {
+    const check = this.splitChecks.get(runtime.symbol);
+    if (!check || runtime.price === null || !(runtime.price > 0) || !runtime.priceAt) return;
+    // A price from before the session (a carried-over snapshot) proves nothing.
+    if (Date.parse(runtime.priceAt) < this.sessionStartMs) return;
+
+    this.splitChecks.delete(runtime.symbol);
+    const verdict = firstPrintBasis(runtime.price, check.restatedClose, check.oldClose);
+    this.splitVerdicts.push({
+      symbol: runtime.symbol,
+      verdict,
+      price: runtime.price,
+      priceAt: runtime.priceAt,
+      restatedClose: check.restatedClose,
+      oldClose: check.oldClose,
+      split: check.split,
+      oldBasis: check.oldBasis,
+    });
+
+    if (verdict === 'OLD_BASIS') {
+      this.baselines.set(runtime.symbol, check.oldBasis);
+      this.attachBaseline(runtime, true);
+      this.refreshDerived(runtime);
+    }
   }
 
   hasBaseline(symbol: string): boolean {
@@ -728,14 +802,16 @@ export class DemandEngine {
     return runtime;
   }
 
-  private attachBaseline(runtime: TickerRuntime): void {
+  private attachBaseline(runtime: TickerRuntime, replaceClose = false): void {
     const baseline = this.baselines.get(runtime.symbol) ?? null;
     runtime.baseline = baseline;
     runtime.rvolConfidence = rvolConfidenceFor(baseline, this.options.baselineSessions);
 
     if (baseline?.previousClose !== null && baseline?.previousClose !== undefined) {
-      // Alpaca's previous close always wins over a sheet-sourced close.
-      if (runtime.previousCloseSource !== 'alpaca-daily-bar') {
+      // Alpaca's previous close always wins over a sheet-sourced close. A split
+      // restatement (or its revert) replaces even a daily-bar close: the one it
+      // replaces is on the wrong basis.
+      if (runtime.previousCloseSource !== 'alpaca-daily-bar' || replaceClose) {
         runtime.previousClose = baseline.previousClose;
         runtime.previousCloseSource = 'alpaca-daily-bar';
         runtime.dirty = true;
@@ -1019,6 +1095,8 @@ export class DemandEngine {
       }
     }
 
+    // LAST, after the seeded closes: a revert must not be overwritten by them.
+    this.checkSplitBasis(runtime);
     this.refreshDerived(runtime);
     runtime.dirty = true;
   }
@@ -1151,6 +1229,7 @@ export class DemandEngine {
       runtime.price = bar.close;
       runtime.priceAt = bar.ts;
       runtime.priceSource = bar.source === 'historical' ? 'sip-historical-bar' : 'sip-bar';
+      this.checkSplitBasis(runtime);
     }
 
     runtime.volumeSource = runtime.volumeBaseSource
@@ -1540,6 +1619,7 @@ export class DemandEngine {
     runtime.price = price;
     runtime.priceAt = observation.ts;
     runtime.priceSource = observation.feed === 'simulator' ? 'simulator' : 'sip-trade';
+    this.checkSplitBasis(runtime);
 
     // Trades extend the displayed session range; cumulative volume stays
     // bar-derived so corrections cannot double count.

@@ -12,7 +12,16 @@
 
 import { ALPACA_ENDPOINTS } from '../config';
 import { redact, type AlpacaCredentials } from '../credentials';
+import type { SplitAction } from '../splitRestate';
 import type { MarketFeed } from '../types';
+
+/** One split row from `/v1/corporate-actions`, as published. */
+interface AlpacaSplitRow {
+  symbol?: string;
+  ex_date?: string;
+  old_rate?: number;
+  new_rate?: number;
+}
 
 export interface AlpacaDailyBar {
   t: string;
@@ -244,6 +253,53 @@ export class AlpacaRestClient {
         pageToken = payload.next_page_token ?? undefined;
       } while (pageToken);
     });
+
+    return results;
+  }
+
+  /**
+   * Reverse and forward splits from `/v1/corporate-actions`, ex-dates inside
+   * [start, end]. Omit `symbols` for every symbol. A row with a missing or
+   * non-positive rate is dropped: a ratio built from it would be a number where
+   * there is no information. See lib/market/splitRestate.ts for why.
+   */
+  async getSplits(params: { symbols?: string[]; start: string; end: string }): Promise<SplitAction[]> {
+    const results: SplitAction[] = [];
+    const batches: Array<string[] | null> = params.symbols ? chunk(params.symbols, this.batchSize) : [null];
+
+    for (const batch of batches) {
+      if (batch && batch.length === 0) continue;
+      let pageToken: string | undefined;
+
+      do {
+        const query = new URLSearchParams({
+          types: 'reverse_split,forward_split',
+          start: params.start,
+          end: params.end,
+          limit: '1000',
+        });
+        if (batch) query.set('symbols', batch.join(','));
+        if (pageToken) query.set('page_token', pageToken);
+
+        const payload = await this.request<{
+          corporate_actions?: {
+            reverse_splits?: AlpacaSplitRow[] | null;
+            forward_splits?: AlpacaSplitRow[] | null;
+          } | null;
+          next_page_token?: string | null;
+        }>(`${ALPACA_ENDPOINTS.dataRest}/v1/corporate-actions?${query.toString()}`);
+
+        const actions = payload.corporate_actions ?? {};
+        for (const row of [...(actions.reverse_splits ?? []), ...(actions.forward_splits ?? [])]) {
+          const oldRate = Number(row.old_rate);
+          const newRate = Number(row.new_rate);
+          if (!row.symbol || !row.ex_date || !(oldRate > 0) || !(newRate > 0)) continue;
+          results.push({ symbol: row.symbol.toUpperCase(), exDate: row.ex_date, oldRate, newRate });
+        }
+
+        pageToken = payload.next_page_token ?? undefined;
+      } while (pageToken);
+    }
 
     return results;
   }
