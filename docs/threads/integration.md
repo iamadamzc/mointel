@@ -1200,6 +1200,11 @@ error                                                  TYPE                     
   that answers SHARE COUNT, and stopped. The interpreter's sharesOutstanding is the desk's most visible share count
   (it prints in every structural warning on his screen). A peer's scoped negative ("not measured") relayed as a
   general one ("doesn't exist") is the 22nd's ledger 5/6 shape.
+4 told HIM the market restart pauses data "a few   a duration asserted without       YES      peer (Ops,
+  seconds"; measured last restart (09-29) = 2m41s  reading the record (ops.md had    (family) from its own
+  to SIP live (75 s replaying bars). Also in my     the measurement)                           measured record)
+  approval to Ops. Corrected to him next message.
+  LESSON: a duration in an ask to him comes from a measured record, never my estimate.
 PUSH STATE       Ops offered the temp-worktree cherry-pick route for 65dcc9d8; DECLINED (charter: never push through a
                  side worktree). Ops's own dc3bff07 (local) = 038ce171 (origin), a duplicate pair; told Ops. My notes
                  (65dcc9d8, 5443f5f3, and after) wait on local main until Research (d717add1, 18e9f8b0 = a0f880c0 by
