@@ -13677,3 +13677,7 @@ from ~2,300 (tonight's read 2,231). Stop condition kept: MemAvailable < 300 MB d
 Integration is drawing up the removal plan. The /api/dashboard shared-secret worker header is ON HOLD (no build) until
 that plan says what replaces the TODAY-sheet pins; the worker's loopback read may disappear with the Sheet. Step 4
 (32db0d7e) unaffected. Sign-in wording for him: once a day, lasts until 8pm New York time, or 8pm next day if after 8pm.
+**03:16Z HEAVY SLOT: Design RELEASED it** (its gate on 54e2a407 stopped under his rule). Still running then: ONE vitest
+(tests/desk, A:\mointel-v6, pid 38484 with worker 40828, started 03:13:02Z) = Research's (transcript 60c64b0a), on HIS
+"go all 3" (origin human, 03:12:45.879Z) to Research's ask ("A desk test run for the checker fix. About a minute of CPU").
+Authorized; not touched. Next in the slot: this seat's step-4 gate (Web's run folded in), on his yes, after Research's run ends.
