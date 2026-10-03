@@ -13738,3 +13738,7 @@ Integration recorded separately (not this ship): release line's preflight.sh lac
 **0b92c309 APPROVED by Integration by literal sha (ship candidate; a50f5948 and fb50e2ff must not ship).** Cone read here:
 3b9c0a70..0b92c309 = 10 commits, 0 merges, production is ancestor; 29 files +960/-317; nothing under deploy/, worker/,
 lib/db, lib/market/store or package*: no schema change, no market restart. Gate waits on Research's slot (local_98e3e9a1).
+**HIS SHIP YES, in THIS session, 2026-10-03T14:35:39.738Z (origin human): "yes, ship it."** Given to the NEEDS YOU item naming
+0b92c309: sign-in (Web's wording, desk password stays on, market worker untouched) + blue sky (22 board names), shipped
+only after a clean gate on 0b92c309. Stop conditions: red gate, failed or rolled-back deploy, /proc not as expected,
+any market restart, MemAvailable < 300 MB during the build, a failed live read (then roll back to 3b9c0a70).
