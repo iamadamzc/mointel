@@ -13573,3 +13573,7 @@ release, verify sha256, then delete the box copy. Stray judge loop stopped itsel
   code (Web). Stray agent worktree housekeeping (.claude/worktrees/agent-acfba7ff..., eslint sees its .next).
 | told him "a throwaway Google account" with no explanation; he did not know what it meant (02:40Z) | jargon-in-instructions-to-him | no | owner |
 | told Web "he got there by URL" without reading how | asserted-not-opened | no | self, corrected in the next message |
+| told HIM the download was "about 3.5 GB of 4.9 GB" without reading the size; it was already complete (4,892,807,168) | asserted-not-opened | YES, logged minutes earlier ("got there by URL") | self, before he acted on it |
+**REPEAT of a corrected class in this session -> per session-hygiene section 2, warned him and proposed the hand-off.**
+- Snapshot download COMPLETE: data/market-prod-2026-10-02.db 4,892,807,168 B, sha256 9f0efa03...1eef == box; box copy
+  deleted 02:5xZ (56G free). Sent to Research with the instant 2026-10-03T00:12:20Z.
