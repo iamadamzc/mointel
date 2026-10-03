@@ -131,7 +131,9 @@ describe('no API route ships ungated', () => {
     expect(files.length).toBeGreaterThanOrEqual(7);
     for (const file of files) {
       if (UNGATED.has(file)) continue;
-      const source = fs.readFileSync(file, 'utf8');
+      // Normalised first: this PC checks out CRLF (core.autocrlf=true), and the
+      // patterns below are written with a bare LF. Found by Ops's gate on a50f5948.
+      const source = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
       const handlers = source.match(/export async function (GET|POST|PUT|PATCH|DELETE)\(request: Request\) \{\n/g) ?? [];
       const exported = source.match(/export (async )?function (GET|POST|PUT|PATCH|DELETE)\b/g) ?? [];
       expect(exported.length, `${file} exports a handler`).toBeGreaterThan(0);
