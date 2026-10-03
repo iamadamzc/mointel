@@ -217,6 +217,19 @@ export function narrativeFootnoteLines(footnotes: SessionReport['narrativeFootno
 }
 
 /**
+ * Whether a card prints its "Catalyst" grade. Only when there is a grade: the
+ * board's Why cell holds the empty-cell glyph for a name with none (a column
+ * needs a value in every row), but a card has no column, and "Catalyst" beside
+ * that glyph reads as writing, which his no-em-dash rule forbids. The section
+ * label already says why there is no grade (NOT YET RESEARCHED, UNCLEAR), and
+ * the board's marks (old, not the move) still print.
+ */
+export function cardShowsGrade(grade: string): boolean {
+  const value = grade.trim();
+  return value !== '' && value !== String.fromCharCode(0x2014);
+}
+
+/**
  * The company line: "{name}. {country}. {business}." with an absent part
  * dropped along with its full stop, never guessed (Marketing, d35e1bba). A
  * part that already ends a sentence ("Sangoma Technologies Corp.") takes no
