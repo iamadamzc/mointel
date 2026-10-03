@@ -4,6 +4,7 @@ import type { ReportLine, ReportSection, SessionReport } from '@/lib/desk/report
 import type { ReportTags } from '@/lib/desk/reports/tags';
 import { NOTHING_LINE } from '@/lib/desk/reports/writer';
 import {
+  cardShowsGrade,
   FLOAT_FOOTER,
   isV6,
   reportGroups,
@@ -72,6 +73,15 @@ describe('the computed sections', () => {
     expect(gow.kind === 'NAME' ? gow.texts : null).toEqual(['GOW one.', 'GOW two.']);
     expect(gow.kind === 'NAME' ? gow.tags?.why.grade : null).toBe('A');
     expect(abc.kind === 'NAME' ? abc.tags : 'no card').toBeNull();
+  });
+});
+
+describe('a card with no grade', () => {
+  it('prints the grade only when there is one, never the empty-cell glyph beside "Catalyst"', () => {
+    expect(['A', 'B', 'C'].map(cardShowsGrade)).toEqual([true, true, true]);
+    expect(cardShowsGrade(EM_DASH)).toBe(false);
+    expect(cardShowsGrade(` ${EM_DASH} `)).toBe(false);
+    expect(cardShowsGrade('')).toBe(false);
   });
 });
 
