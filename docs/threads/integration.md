@@ -1415,6 +1415,12 @@ SHEET STEP 2     DONE (Research 32eda8d4; harness a1a8ac66; raw 100a92a4 before 
                  time (TODAY rows), 3 testable (NAUT, RETO, VEEA), 12 interpretations, $1.68. No field flagged; Risk chip
                  closest (8/12 across vs 2/3, 1/3 within). n=3: "not flagged" is not "no effect". Plan updated. 4.9 GB scratch
                  copy kept until he says delete.
+0b92c309 LIVE   Ops /proc 15:23:44Z: web 1999484 / research 1999542 / assess 1999611 on 0b92c309 (start 15:22:51-52Z), NR 0;
+                 market 1574400 on 1b5ead66 NR 0 untouched. Health ok schema 28; MemAvailable min 1,017 MB. Loopback: /api/
+                 dashboard no cookie 200 (worker path); /desk 307 -> /signin; /api/market 401; /api/levels 401. His browser
+                 reads (admitted board, refused 403 NotAdmitted, EZRA blue sky) in progress via Ops.
+                 SIGN-IN ENFORCED ON /desk + data APIs (desk password still on). Blue-sky fix live. NEXT ORDINARY RELEASE
+                 candidates: 61e2f777 (weekend preflight), identity mode pair f1b8b716+6ac43025, ticker-source citation fix.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
