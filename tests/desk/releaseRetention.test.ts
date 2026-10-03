@@ -215,9 +215,14 @@ describe('pruning', () => {
 
 describe('deployment preflight', () => {
   it('blocks inside the protected window around a checkpoint', () => {
-    // 06:10 ET is the structural refresh. Pretend now is 06:12 by widening the
-    // window to something that must contain whatever the real clock says.
-    expect(() => sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '2000' })).toThrow();
+    // 06:10 ET is the structural refresh; now is pinned to Tuesday 06:12. The
+    // weekday must be pinned too: checkpoints are guarded on weekdays only, and
+    // Git Bash on the Windows desk ignores TZ=America/New_York and answers in
+    // UTC, so after 20:00 ET the unpinned "day" is already tomorrow (Saturday on
+    // a Friday night) and this test failed with nothing wrong in preflight.
+    expect(() =>
+      sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '2000', PREFLIGHT_NOW_DOW: '2', PREFLIGHT_NOW_MINUTES: '372' }),
+    ).toThrow();
   });
 
   it('proceeds with an override and records the reason', () => {
@@ -271,7 +276,8 @@ describe('deployment preflight', () => {
 
   it('still blocks on that same minute when a window is actually set', () => {
     expect(() =>
-      sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '5', PREFLIGHT_NOW_MINUTES: '960' }),
+      // Tuesday pinned for the same reason as the first test in this block.
+      sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '5', PREFLIGHT_NOW_MINUTES: '960', PREFLIGHT_NOW_DOW: '2' }),
     ).toThrow();
   });
 
