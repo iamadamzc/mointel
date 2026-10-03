@@ -13837,3 +13837,4 @@ market restart. Box key NAMES (17:1xZ, names + lengths only): GOOGLE_SHEET_ID, G
 GOOGLE_PRIVATE_KEY present; controls APCA_API_KEY_ID present, AUTH_PROBE_ENABLED absent: prediction "board unchanged".
 Shipped ALONE (61e2f777 / identity pair / citation fix stay for a later cut). Gate pre-registered 235/235, tsc 0, lint 0
 errors, local build rc 0; running.
+**HIS SHIP YES for 6e7fff84, in THIS session, 2026-10-03T17:08:23.659Z (origin human): "yes"**, to the item naming Sheet removal step 1 (nothing visible while the Sheet is connected; market untouched; ~15 min deploy, ~2-3 s down), after a clean gate. Plan: RESTART_MARKET=no, base check web/research/assess/market all f5746a84, in the 13:33-13:43 ET preflight slot (17:34Z).
