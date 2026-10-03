@@ -13794,3 +13794,13 @@ tests/market 59/59 files, 748 tests; eslint clean on changed files. LIVE CROSS-C
 returns 12 splits for 2026-09-08 and 7 for 2026-10-05; restated 09-04 closes WCT 7.2000 / LRHC 2.8968 / TNMG 3.4992 /
 SFWL 14.2455 equal Alpaca's now-adjusted 7.2 / 2.897 / 3.499 / 14.25 (ratio 0.99968-1.00006). RESIDUAL: unlisted splits
 (RFAI) uncovered; no price-ratio fallback (his ruling). Gate pre-registered 234/234, tsc 0, lint 0 errors.
+**SPLIT FIX, Research's review (main b0f1dcf4) folded in: f5746a84974cb9dcd9badb6158813b21fe5e84fa** (on dff3fb0a). Band scales
+with the ratio (OLD_BASIS only within min(|ln ratio|/4, ln 1.25) of the old close; 1:2 gap-down -37.5% stays RESTATED) and
+a pre-session guard test. 21 tests; m7 guard removed 1/1, m8 flat band restored 1/1. dff3fb0a gate ALL GREEN 234/234
+(15:5x-16:01:57Z) but my test/mutant runs OVERLAPPED it: not a clean gate; superseded. f5746a84 gate running 16:02Z.
+**MARKET RESTART CONE, by surface (to Integration):** value-import trace from worker/alpaca.ts = 26 files (14 more reached only
+by `import type`, erased at runtime). Of 21 commits since 1b5ead66 touching the full cone, only dff3fb0a + f5746a84 change
+what the market worker does (corporate-actions read at baseline load before the bootstrap, 03:40 ET re-read, promotions,
+first-print verdicts; writes rvol_baseline rows only; fails open). v28 DDL idempotent; the mode clear runs only on a mode
+change (LIVE->LIVE does not). Repo reads changed have no caller in the value cone; upsertMinuteBars byte-identical. Movers
+config parsed but never read by the worker. Pins and sheet code untouched. No flags in the market cone.
