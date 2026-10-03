@@ -44,6 +44,7 @@ import { DemandEngine, type EngineEvent } from '../lib/market/engine';
 import { replaySession } from '../lib/market/replay';
 import { DEFAULT_ACTIVITY_CONFIG } from '../lib/market/activity';
 import { buildBaseline, computeDailyRvol } from '../lib/market/rvol';
+import { buildSplitBaselines, type SplitAction } from '../lib/market/splitRestate';
 import {
   addDays,
   afterHoursStartUtc,
@@ -168,6 +169,12 @@ const CLASSIFIER_VERSION_KEY = 'classifier_version';
 /** When the roll that established the current trading date began. */
 const TRADING_DATE_ROLLED_AT_KEY = 'trading_date_rolled_at';
 const TRADING_DATE_ROLLED_FOR_KEY = 'trading_date_rolled_for';
+/**
+ * 03:40 ET: the pre-open re-read of today's splits. Twenty minutes ahead of the
+ * 04:00 session, so a split announced after last night's baselines is restated
+ * before the first premarket print rather than after it.
+ */
+const SPLIT_PRE_OPEN_MINUTES = 3 * 60 + 40;
 
 export interface RuntimeLogger {
   info: (message: string) => void;
@@ -242,6 +249,14 @@ export class MarketRuntime {
   private sheetTimer: NodeJS.Timeout | null = null;
   private promotionQueue = new Set<string>();
   private promotionInFlight = false;
+  /** Splits with ex-date = `todaySplitsFor`, from Alpaca's corporate actions. */
+  private todaySplits = new Map<string, SplitAction>();
+  private todaySplitsFor: string | null = null;
+  /** Per trading date: restated and awaiting the first print, or decided by it. */
+  private splitHandled = new Map<string, 'ARMED' | 'RESTATED' | 'OLD_BASIS'>();
+  private splitPreOpenFor: string | null = null;
+  private splitCheckInFlight = false;
+  private splitAttemptAt = 0;
   private pendingBars: MarketMinuteBar[] = [];
   private backfill: BackfillSummary | null = null;
   private sheetSymbols: string[] = [];
@@ -781,14 +796,133 @@ export class MarketRuntime {
 
     if (missing.length === 0 || !this.rest) {
       this.engine.setBaselines(existing);
+      // Before the bootstrap reads them back: it seeds every prior close from
+      // the stored baseline, so a restatement made later would be overwritten.
+      await this.applySplits({ refresh: true });
       return { loaded: existing.size, built: 0 };
     }
 
     const built = await this.buildBaselinesFor(missing);
     const refreshed = loadBaselines(this.db, this.tradingDate);
     this.engine.setBaselines(refreshed);
+    await this.applySplits({ refresh: true });
 
     return { loaded: existing.size, built };
+  }
+
+  /* ----------------------------------------------------------- split days */
+
+  /**
+   * Restates the baselines of symbols whose split takes effect on this trading
+   * date (lib/market/splitRestate.ts has the defect and the measurement).
+   * `refresh` re-reads today's list from Alpaca; without it the list read last
+   * is reused, for symbols whose baseline was just built mid-session.
+   *
+   * A symbol already handled today is left alone: re-arming the first-print
+   * check after the first print would let a later crash back towards the old
+   * close read as "the split did not happen".
+   *
+   * FAILS OPEN TO TODAY'S BEHAVIOUR. Any error leaves the ordinary baselines in
+   * place and is logged: a split day measured against the old close is the
+   * defect this fixes, not a new one, and a worker that would not start because
+   * a corporate-actions read failed would be a worse one.
+   */
+  async applySplits(options: { refresh: boolean; symbols?: string[] }): Promise<{ ok: boolean; restated: number }> {
+    if (!this.rest) return { ok: false, restated: 0 };
+    try {
+      if (options.refresh || this.todaySplitsFor !== this.tradingDate) {
+        const listed = await this.rest.getSplits({ start: this.tradingDate, end: this.tradingDate });
+        if (this.todaySplitsFor !== this.tradingDate) this.splitHandled.clear();
+        this.todaySplits = new Map(
+          listed.filter((split) => split.exDate === this.tradingDate).map((split) => [split.symbol, split]),
+        );
+        this.todaySplitsFor = this.tradingDate;
+        this.logger.info(`[splits] ${this.todaySplits.size} split(s) listed for ${this.tradingDate}`);
+      }
+
+      const scope = options.symbols ? options.symbols.map((symbol) => symbol.toUpperCase()) : [...this.todaySplits.keys()];
+      const due = new Map<string, SplitAction>();
+      for (const symbol of scope) {
+        const split = this.todaySplits.get(symbol);
+        // Untracked symbols have no baseline to restate (most listed splits are
+        // ADRs and funds the desk never watches). Named symbols are a promotion
+        // whose baseline was just built and is not in the engine yet.
+        if (!split || this.splitHandled.has(symbol)) continue;
+        if (!options.symbols && !this.engine.hasBaseline(symbol)) continue;
+        due.set(symbol, split);
+      }
+      if (due.size === 0) return { ok: true, restated: 0 };
+
+      const fullSessions = this.fullSessionDates();
+      const built = await buildSplitBaselines({
+        client: this.rest,
+        todaySplits: due,
+        tradingDate: this.tradingDate,
+        start: addDays(this.tradingDate, -60),
+        end: addDays(this.tradingDate, -1),
+        fullSessionDates: fullSessions.size > 0 ? fullSessions : undefined,
+        targetSessions: this.config.baselineSessions,
+        feed: this.feed,
+      });
+
+      if (built.size > 0) upsertBaselines(this.db, [...built.values()].map((entry) => entry.restated), this.mode);
+      for (const [symbol, entry] of built) {
+        this.engine.setBaseline(symbol, entry.restated, { replaceClose: true });
+        this.splitHandled.set(symbol, 'ARMED');
+        const restatedClose = entry.restated.previousClose;
+        const oldClose = entry.oldBasis.previousClose;
+        if (restatedClose !== null && oldClose !== null) {
+          this.engine.armSplitBasisCheck(symbol, { restatedClose, oldClose, oldBasis: entry.oldBasis, split: entry.split });
+        }
+        this.logger.info(
+          `[splits] ${symbol} ${entry.split.oldRate}:${entry.split.newRate} ex ${entry.split.exDate}: ` +
+            `prior close ${oldClose ?? 'none'} restated to ${restatedClose ?? 'none'}`,
+        );
+      }
+      return { ok: true, restated: built.size };
+    } catch (error) {
+      this.logger.error(`[splits] restatement failed, ordinary baselines kept: ${this.redactError(error)}`);
+      return { ok: false, restated: 0 };
+    }
+  }
+
+  /**
+   * One more read of today's splits shortly before the session opens, for one
+   * announced after the baselines were built the evening before. Retried at
+   * most every five minutes until a read succeeds.
+   */
+  private async preOpenSplitCheckIfDue(now = new Date()): Promise<void> {
+    if (this.splitPreOpenFor === this.tradingDate || this.splitCheckInFlight) return;
+    if (etDateString(now) !== this.tradingDate || etMinutesOfDay(now) < SPLIT_PRE_OPEN_MINUTES) return;
+    if (now.getTime() - this.splitAttemptAt < 5 * 60_000) return;
+
+    this.splitCheckInFlight = true;
+    this.splitAttemptAt = now.getTime();
+    try {
+      const result = await this.applySplits({ refresh: true });
+      if (result.ok) this.splitPreOpenFor = this.tradingDate;
+    } finally {
+      this.splitCheckInFlight = false;
+    }
+  }
+
+  /** Logs each first-print verdict, and stores the old-basis baseline when the split did not happen. */
+  private recordSplitVerdicts(): void {
+    for (const verdict of this.engine.drainSplitVerdicts()) {
+      this.splitHandled.set(verdict.symbol, verdict.verdict);
+      if (verdict.verdict === 'OLD_BASIS') {
+        upsertBaselines(this.db, [verdict.oldBasis], this.mode);
+        this.logger.warn(
+          `[splits] ${verdict.symbol}: first print ${verdict.price} at ${verdict.priceAt} is on the OLD basis ` +
+            `(old close ${verdict.oldClose}, restated ${verdict.restatedClose}); the listed ` +
+            `${verdict.split.oldRate}:${verdict.split.newRate} did not happen, restatement dropped`,
+        );
+      } else {
+        this.logger.info(
+          `[splits] ${verdict.symbol}: first print ${verdict.price} confirms the restated close ${verdict.restatedClose}`,
+        );
+      }
+    }
   }
 
   /** Fetches split-adjusted daily bars and derives the fixed RVOL denominator. */
@@ -1270,6 +1404,8 @@ export class MarketRuntime {
 
     try {
       await this.buildBaselinesFor(batch);
+      // Before the reload below: the snapshot seed reads these baselines' closes.
+      await this.applySplits({ refresh: false, symbols: batch });
       const baselines = loadBaselines(this.db, this.tradingDate);
       for (const symbol of batch) {
         const baseline = baselines.get(symbol);
@@ -1412,6 +1548,8 @@ export class MarketRuntime {
         this.logger.error(`[demand] flush failed: ${this.redactError(error)}`);
       }
       this.recordFlushTiming(performance.now() - started);
+      this.recordSplitVerdicts();
+      void this.preOpenSplitCheckIfDue();
       void this.drainPromotions();
       void this.captureTodayRthClose();
     }, this.config.flushIntervalMs);
