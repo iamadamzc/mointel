@@ -13768,3 +13768,18 @@ worker's TODAY-sheet path, condition 4); /desk no cookie 307 -> /signin; /api/ma
 The market worker logs no sheet/dashboard line in 30 min (it logs nothing on success), so condition 4 rests on the 200.
 OPEN: his browser reads (admitted board, refused 403 screen via his Workspace address, signed-out redirect, EZRA drawer).
 Rollback if a read fails: re-deploy 3b9c0a70 (present in releases), his word.
+
+**2026-10-03 ~15:30Z SPLIT-DAY PREVIOUS-CLOSE FIX, assigned to this seat by Integration** (Research's result, main
+975eb3fd: on a reverse split's ex-date the baseline's prior close is pre-split; WCT 09-08 would read ~+408%; 12 confirmed,
+none on the board by luck; the movers rule d1677f07 raises the exposure). engine.ts previous-close selection is identical at
+1b5ead66 and 0b92c309 (attachBaseline, :736-750). Baselines are built once per trading date, the evening before
+(worker/runtime.ts buildBaselinesFor, adjustment 'split'), i.e. before Alpaca applies the ex-date adjustment.
+MEASURED (read-only Alpaca REST with the desk's keys, scratchpad probes): /v1/corporate-actions lists 11 of the 12
+confirmed cases ON their ex_date with old:new rates (WCT 5:1, BIAF 15:1, LRHC 6:1, TNMG 8:1, SFWL 15:1, IGR 3:1, six ETFs
+10:1); RFAI 08-21 absent under every type. Negative control: MI 08-21, ALMS 09-01, GLND 09-21, NIVF 09-30 not listed on
+those dates (NIVF lists only its 09-01 3:1). Published ahead: Monday 10-05 reverse splits listed on Saturday 10-03.
+DESIGN sent to Research for review: read splits for the trading date at baseline load and before 04:00 ET; rebuild those
+symbols' baselines from RAW bars restated by old/new (close x old/new, volume x new/old), covering previousClose,
+priorRthClose and the RVOL denominator, with no double adjustment on already-adjusted days. NOT building the
+"standard ratio -> UNVERIFIED" fallback without his ruling (it would hide genuine 2x-5x runners). Ships as a market
+restart: his word at the time. Target before Monday 04:00 ET.
