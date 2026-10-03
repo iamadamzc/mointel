@@ -1404,6 +1404,13 @@ HIS VERDICT v6   (typed to me) "first one is VERY hard to unerstand. very confus
                  "Word ONLY the given facts ... never add a fact, a theme, a sector or a reason"). Thinness = rules. ORDERS to
                  Research + Marketing: range out of narrative; redesigned fact sheet + rules for substance (no cause/advice/
                  forecast); plain premarket; luna vs stronger model side-by-side, cost first (his spend). Proposal before build.
+NARRATIVE PROP.  Research 427d635c (proposal) + bb43909c (own correction: AMOD/SORA % were AH moves; F10 now from rth_final_*).
+                 Facts F10 leaders + catalyst, F11 grade mix, F12 fits-the-move count, F13 new/dropped. NOT available:
+                 catalyst TYPES (all NEWS_DRIVEN on 10-01), sector (sic_description empty for all 1,215). Side-by-side
+                 ~$1.20 (luna $0.049 / terra $0.091 / sol $0.126 per report), after the sheet change. Marketing's examples
+                 fact-checked by Research (5 corrections), being tightened. Bring to him when examples land.
+WCT DATA NOTE    10-01 close -79.9% vs +2.0% high: possible unadjusted reverse split in previous_close (could print a false
+                 move live). Research to size read-only, pre-registered, AFTER the narrative proposal. Nothing to him yet.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
