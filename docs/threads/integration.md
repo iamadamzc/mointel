@@ -1442,6 +1442,13 @@ SPLIT-DAY CLOSE  Research measured (prereg 87bb743b, script 41309655, raw 37886b
                  at movers volume joins the board on a false gain (WCT 09-08 ~+408%). Also the v6 recap counts. ORDER: Ops
                  builds the engine fix (restate by known split factor via lib/market/splits.ts, else UNVERIFIED), Research
                  reviews; ships as a market-worker restart (HIS yes); target before Mon 04:00 ET. TOLD HIM as a risk.
+                 ("TOLD HIM" was written one message before I actually told him; corrected in the same turn: the 22nd's
+                 ledger-7 shape, caught by me before it mattered.)
+HIS RULINGS (Research's chat, 15:44:11Z, per Research, verbatim): "intraday definitely lighter. whole percentages fine. yeah
+                 do the claude compariosn. delete the goods." Comparison arms: luna, terra, Claude Sonnet 5.5, Claude Opus 5.5
+                 low effort (~$3, proposal 9b41a12d). My build question unanswered in my chat; TOLD HIM I read "do the claude
+                 comparison" as yes to the build, starting unless he says stop; Research holds until I confirm he saw it.
+                 ANTHROPIC_API_KEY needed in .env.local (his); exact var name and the scratch-copy path asked of Research.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
