@@ -13715,3 +13715,9 @@ passed of 3374; it waited behind a desk vitest started 14:04:36Z). Nothing shipp
 SLOT: handed to Design (new seat local_82749387; local_dfce21d4 retired ~14:15Z) for its predecessor's three items; this
 seat re-gates the fixed tip after Design releases and Integration approves it.
 SLOT, 14:2xZ: the retiring Design seat (local_dfce21d4) DROPPED its queued request; the new Design (local_82749387) was told it holds nothing by default and may ask. Slot free; this seat re-gates on Web's fixed tip unless Design asks first.
+**14:18:54Z box re-read (Sat 10:18 ET):** unchanged from 03:06Z (web 1952351 / research 1944955 / assess 1945033 on 3b9c0a70,
+NR 0; market 1574400 on 1b5ead66, NR 0; pins unchanged; health ok, schema 28). Ladder 9189b569 and AR a4a06168 are
+ancestors of 3b9c0a70 (live); blue sky is not live (lib/market/blueSky.ts differs 3b9c0a70 vs a50f5948). Answered to Design.
+**WEB'S FIX fb50e2ff96b734510284ebd0eadd086e701ca26e** verified: one commit on a50f5948, tests/auth/requestGate.test.ts only
+(CRLF normalize). Re-gate pre-registered 233/233, tsc 0, lint 0 errors, build rc 0, pre-ship 403 read; waits on
+Integration's approval by literal sha and on the v6 releaseRetention run (pids 36808/38148/29100, alive 14:19Z) ending.
