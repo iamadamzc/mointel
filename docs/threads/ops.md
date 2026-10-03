@@ -13643,3 +13643,16 @@ Heavy-slot queue now held here: Design holds it, Web next.
 
 **Error ledger (this seat):** | error (asserted vs true) | TYPE | already logged this session? | caught by |
 (none yet)
+
+**2026-10-03 03:07-03:15Z.** HIS RULE (verified at his own turn: Integration transcript 24ec00be, queued_command,
+origin human, 2026-10-03T03:07:44.647Z): "if any one needs to run anuythign locally lmk first". So every gate, build, full
+vitest, tsc or npm ci on this PC needs his yes first; the heavy-slot queue still orders who goes.
+STEP-4 CUT: tip 32db0d7e (web/step4-cut, A:\mointel-step4), 4 linear commits on 3b9c0a70 (ancestor checked).
+32db0d7e holds /api/dashboard out of the gate (Basic Auth only, as before) because the market worker reads it with no
+cookie (worker/runtime.ts:1798-1803 and diagnose.ts:150-152 on 1b5ead66, opened here). TRIGGER: gate it before Basic
+Auth comes off /api/ (Web's charter row; test-enforced UNGATED set). PRE-REGISTERED: 232/232 test files (ls-tree: 231
+base, +deskGate +requestGate, -probeRoute), lint 0 errors, next build rc 0. Waits on Design releasing the slot, then his
+yes. The post-ship live read: refused session on /desk = 403 + NotAdmitted screen, not 500.
+Internal-caller design offered to Web (later cut, needs no worker restart): Next binds 127.0.0.1:3000 only
+(mointel-web.service); all 14 proxy_pass blocks set X-Real-IP at 3b9c0a70; so no X-Real-IP and no XFF means a box-local
+caller. It fails open if a location ever drops the header, so it needs a structural test over the nginx confs.
