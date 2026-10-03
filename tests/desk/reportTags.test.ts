@@ -121,3 +121,29 @@ describe('reportTags: the board functions on the as-of research', () => {
     expect(dirty.risk.value ?? '').not.toMatch(/float/i);
   });
 });
+
+describe('reportTags cleans the dossier as the board does (Integration, 2026-10-03)', () => {
+  const EM = String.fromCharCode(0x2014); // built in code: tools resolve escapes into the literal glyph
+  // CAMP's catalyst summary as stored, the exact string that reached a v6 sample's Why headline.
+  const CAMP =
+    'The latest substantive company developments in the supplied sources were the August 13 Q2 update' + EM + 'reporting regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch' + EM + 'and the August 4 completion of the second private-placement closing. These are legitimate developments, but they predate the supplied August 26 market state; no newer substantive company catalyst is identified in the adequately covered bundle. [30265,30266]';
+  const strings = (value: unknown, out: string[] = []): string[] => {
+    if (typeof value === 'string') out.push(value);
+    else if (value && typeof value === 'object') for (const v of Object.values(value)) strings(v, out);
+    return out;
+  };
+
+  it('no tag string carries an em dash (except the lone empty-cell glyph) or a citation token', () => {
+    const tags = reportTags({
+      status: 'INTELLIGENCE_AVAILABLE',
+      dossier: dossier({ catalyst: { summary: CAMP }, structure: { structureClassification: 'DIRTY_FLOAT', structuralWarnings: [`Shares outstanding are not float. [19709] Supply${EM}heavy.`] } }),
+      coverageIncomplete: false,
+      at: '2026-10-01T20:00:00.000Z',
+      catalystFreshFrom: null,
+    });
+    const all = strings(tags);
+    expect(all.some((s) => s.includes('CMP-002'))).toBe(true); // the summary did reach a tag
+    expect(all.filter((s) => s !== EM && s.includes(EM))).toEqual([]);
+    expect(all.filter((s) => /\[(?:Source\s*)?\d[\d,\s]*\]/.test(s))).toEqual([]);
+  });
+});
