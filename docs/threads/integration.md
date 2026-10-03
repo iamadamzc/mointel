@@ -1264,6 +1264,11 @@ ORTEX LOOK       Research 7abc3d20 + 4a31e4af (read; arithmetic checked): his fr
 LEAK VERDICT     PASS AS REGISTERED (Research 479d3cfc, read; log 7c689e7b read ends 05:45:08Z -> 2026-10-03T00:05:13Z, one
                  child 1864116, NRestarts 0). Max RSS 275.2 MB vs 450; -0.18 MB/ticker (31 -> 65) vs < 2. Clock read
                  2026-10-03T00:06:42Z. Told him in one line; Ops copied.
+SI LABEL HELD    Research withdraws exception-only too: HOLD the display decision; NO SI label on the product until a
+                 pre-registered matched-date comparison (fixed set, FINRA grade vs Ortex estimate + float at each
+                 settlement), which needs Ortex data his trial can show and Commercial's read of Ortex's terms for
+                 research use. Research puts that option to him directly (its ask, not repeated by me). Research's 5
+                 cleared (each = an origin commit by patch-id).
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
