@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+// The session gate is tested in tests/auth/requestGate.test.ts. These tests are
+// about what the route SERVES, so they run as an admitted caller.
+vi.mock('@/lib/auth/requestGate', () => ({ gateApiRequest: () => null }));
+
 /*
  * The review mirror of /api/levels (his ruling 2026-10-02T03:14:33Z, "Research
  * adds levels to review links"). The guard is the real `guardReviewApi`,

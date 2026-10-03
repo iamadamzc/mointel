@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { gateApiRequest } from '@/lib/auth/requestGate';
 import { getDashboardState, scopeResearch } from '@/lib/data';
 import {
   CACHE_AGE_HEADER,
@@ -26,6 +27,9 @@ function extraSymbols(url: URL): string[] {
 }
 
 export async function GET(request: Request) {
+  const refused = gateApiRequest(request);
+  if (refused) return refused;
+
   const url = new URL(request.url);
   const force = url.searchParams.get('force') === '1';
 

@@ -1,4 +1,9 @@
+import { cookies } from 'next/headers';
+import { forbidden, redirect } from 'next/navigation';
+
 import { DashboardShell } from '@/components/DashboardShell';
+import { SESSION_COOKIE } from '@/lib/auth/cookie';
+import { admissionForSession } from '@/lib/auth/requestGate';
 import { getDashboardState } from '@/lib/data';
 
 // The desk always reflects the current sheet state, so nothing is prerendered
@@ -6,6 +11,19 @@ import { getDashboardState } from '@/lib/data';
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
+  /*
+   * THE GATE, before any desk data is read (step 4, wired 2026-10-03).
+   * anonymous -> /signin, which is also how a person at the desk finds the
+   *   Google button: nothing else on the desk links to it.
+   * refused   -> forbidden(): a 403 rendering `app/forbidden.tsx`, the one
+   *   NotAdmitted screen. Never a 200: a denial that rendered 200 has already
+   *   happened on this desk once (README section 2).
+   * A store that cannot open throws here and the page is a 500, never the board.
+   */
+  const admission = admissionForSession((await cookies()).get(SESSION_COOKIE)?.value);
+  if (admission.state === 'anonymous') redirect('/signin');
+  if (admission.state === 'refused') forbidden();
+
   // Server-rendered first paint; the client then polls /api/dashboard.
   const initialState = await getDashboardState();
 

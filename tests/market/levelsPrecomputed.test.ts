@@ -15,6 +15,10 @@ import {
 } from '@/lib/market/store/historyStore';
 import { readBoardRankedSymbols, upsertMinuteBars } from '@/lib/market/store/repo';
 
+// The session gate is tested in tests/auth/requestGate.test.ts. These tests are
+// about what the route SERVES, so they run as an admitted caller.
+vi.mock('@/lib/auth/requestGate', () => ({ gateApiRequest: () => null }));
+
 /*
  * The batch compute and the worker-side refresh into history.db's
  * `resistance_levels`, then the route's read of what it wrote, on real SQLite

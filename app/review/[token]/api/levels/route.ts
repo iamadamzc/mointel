@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { GET as ownerLevels } from '@/app/api/levels/route';
+import { levelsResponse } from '@/lib/market/levelsResponse';
 import { guardReviewApi, REVIEW_HEADERS } from '@/lib/review/access';
 
 /**
@@ -11,7 +11,8 @@ import { guardReviewApi, REVIEW_HEADERS } from '@/lib/review/access';
  * So the drawer's levels section, which fetches `${apiBase}/levels`
  * (`components/ResistanceLevels.tsx`), mounts on a review link too.
  *
- * The SAME read as the owner's `/api/levels`: its handler is called after the
+ * The SAME read as the owner's `/api/levels` (`lib/market/levelsResponse.ts`,
+ * shared since the owner's route gained the session gate), called after the
  * unchanged review guard, so the contract cannot drift (200 + the row; 200 +
  * `null` when absent; 400 for a bad symbol; never a 404 or a 500 from the read).
  * Only the headers become the review set. Only GET exists here, which is what
@@ -24,7 +25,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ toke
   const guard = guardReviewApi((await params).token);
   if (!guard.ok) return guard.response;
 
-  const owner = await ownerLevels(request);
+  const owner = levelsResponse(request);
   return new NextResponse(owner.body, {
     status: owner.status,
     headers: { ...REVIEW_HEADERS, 'Content-Type': owner.headers.get('Content-Type') ?? 'application/json' },

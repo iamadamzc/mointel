@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["better-sqlite3"],
 
   /*
+   * `forbidden()` (experimental in Next 16.3) is how /desk answers a refused
+   * session with a real 403 and the NotAdmitted screen (`app/forbidden.tsx`).
+   * Next's bundled docs require this flag before forbidden() may be used.
+   */
+  experimental: {
+    authInterrupts: true,
+  },
+
+  /*
    * Keep the file tracer out of the local data directory.
    *
    * `data/` is gitignored and never ships -- `push-release.sh` uses `git

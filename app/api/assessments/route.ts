@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { gateApiRequest } from '@/lib/auth/requestGate';
 import { getAssessmentSnapshot, listAssessments } from '@/lib/market/readModel';
 
 // Assessment history is append-only in the store, but the LIST changes as new
@@ -8,6 +9,9 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
+  const refused = gateApiRequest(request);
+  if (refused) return refused;
+
   const params = new URL(request.url).searchParams;
   const id = params.get('id');
 

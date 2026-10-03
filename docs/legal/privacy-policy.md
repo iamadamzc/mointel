@@ -3,7 +3,7 @@ title: Privacy policy
 status: adopted
 adopted: 2026-09-11
 drafted: 2026-09-10
-last_changed: 2026-09-18
+last_changed: 2026-10-02
 ---
 
 <!--
@@ -121,7 +121,7 @@ user-agent string, and the time.
   after 20:00 runs until 20:00 the following day, because a session that has
   already expired is not a session. It follows the calendar day rather than the
   trading day, so a Saturday sign-in ends at 20:00 that Saturday.
-- `[FLOW COOKIE NAME]`: set when sign-in *starts*, before you have approved
+- `mointel_oauth`: set when sign-in *starts*, before you have approved
   anything at Google. It holds two single-use random values that let us check
   that the reply coming back from Google belongs to the request you actually
   made. It lasts at most ten minutes, and it is discarded when the sign-in

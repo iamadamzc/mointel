@@ -3,6 +3,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+// The session gate is tested in tests/auth/requestGate.test.ts. These tests are
+// about what the route SERVES, so they run as an admitted caller.
+vi.mock('@/lib/auth/requestGate', () => ({ gateApiRequest: () => null }));
+
 /*
  * HIS RULING: the web tier NEVER performs the minute read. The route serves
  * only the rows the research worker's refresh child stored in history.db's
