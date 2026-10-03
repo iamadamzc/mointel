@@ -462,8 +462,8 @@ describe('isUserInvited', () => {
 describe('file mode', () => {
   it('restricts the store and both WAL sidecars to 0640, and only files that exist', () => {
     const calls: Array<[string, number]> = [];
-    const present = new Set(['/x/identity.db', '/x/identity.db-wal', '/x/identity.db-shm']);
-    restrictIdentityFileMode('/x/identity.db', (f, m) => calls.push([f, m]), (f) => present.has(f));
+    const modes: Record<string, number> = { '/x/identity.db': 0o644, '/x/identity.db-wal': 0o644, '/x/identity.db-shm': 0o644 };
+    restrictIdentityFileMode('/x/identity.db', (f, m) => calls.push([f, m]), (f) => modes[f] ?? null);
     expect(IDENTITY_FILE_MODE).toBe(0o640);
     expect(calls).toEqual([
       ['/x/identity.db', 0o640],
@@ -472,8 +472,35 @@ describe('file mode', () => {
     ]);
 
     calls.length = 0;
-    restrictIdentityFileMode('/y/identity.db', (f, m) => calls.push([f, m]), (f) => f === '/y/identity.db');
+    restrictIdentityFileMode('/y/identity.db', (f, m) => calls.push([f, m]), (f) => (f === '/y/identity.db' ? 0o644 : null));
     expect(calls).toEqual([['/y/identity.db', 0o640]]);
+  });
+
+  it('attempts no chmod on a file already at 0640, so an owner check never comes into it', () => {
+    const calls: string[] = [];
+    restrictIdentityFileMode('/z/identity.db', (f) => calls.push(f), () => 0o640);
+    expect(calls).toEqual([]);
+  });
+
+  it('a chmod that fails (EPERM: not the owner) warns, skips, and never throws out of the open', () => {
+    const tried: string[] = [];
+    const warnings: string[] = [];
+    const eperm = Object.assign(new Error('operation not permitted'), { code: 'EPERM' });
+    expect(() =>
+      restrictIdentityFileMode(
+        '/w/identity.db',
+        (f) => {
+          tried.push(f);
+          if (f === '/w/identity.db') throw eperm;
+        },
+        () => 0o644,
+        (m) => warnings.push(m),
+      ),
+    ).not.toThrow();
+    expect(tried).toEqual(['/w/identity.db', '/w/identity.db-wal', '/w/identity.db-shm']);
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]).toContain('EPERM');
+    expect(warnings[0]).toContain('0644');
   });
 
   it('openIdentityStore applies the mode to the store it opens', () => {
@@ -481,7 +508,9 @@ describe('file mode', () => {
     try {
       const db = temporaryStore();
       const file = path.resolve(temporaryFiles[temporaryFiles.length - 1]);
-      expect(spy).toHaveBeenCalledWith(file, 0o640);
+      // A host whose umask already yields 0640 correctly attempts no chmod.
+      const already = (fs.statSync(file).mode & 0o777) === 0o640;
+      expect(already || spy.mock.calls.some(([f, m]) => f === file && m === 0o640)).toBe(true);
       db.close();
     } finally {
       spy.mockRestore();
