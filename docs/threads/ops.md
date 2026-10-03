@@ -13751,3 +13751,4 @@ Discovery / Desk Events); /api/market refused 403, anonymous 401. CAUGHT: the No
 forbidden boundary ships in each page's flight data, admitted board included), so string presence proves nothing. Decider
 was a BROWSER RENDER (in-app browser, refused cookie): page text = "You are signed in. This account does not open the
 board."; control, cookie cleared: /desk -> /signin, refusal not shown. Server stopped, temp store deleted. Slot -> Design.
+**SHIP 0b92c309 STARTED 2026-10-03T14:48:38Z** (Sat 10:48 ET) on his 14:35:39Z yes: base check 5/5 ok (web/research/assess 3b9c0a70, market 1b5ead66 pid 1574400 NR 0, no deploy unit); DEPLOY_TESTS_SKIP=1 (this session gated 0b92c309 ALL GREEN 233/233) RESTART_MARKET=no; box MemAvailable 2,199 MB at start, logged every 5 s.
