@@ -1375,6 +1375,11 @@ COMBINED CUT     a50f59487ac666280e88d47677face81c74e6093 (research/bluesky-cut-
                  worker/package; 0 U+2014; "855" only comments/tests. Conditions to Ops: his yes before the ONE gate; step-4
                  live reads; blue-sky live read (EZRA no pre-split overhead); ship yes names both. Fallback: blue-sky picks
                  onto 3b9c0a70 alone.
+                 Ops verified a50f5948 independently; pre-registered ONE gate (233/233, tsc 0, lint 0, build rc 0, pre-ship
+                 403 read); his ask names both; waiting on him.
+GLYPH COUNT HOLE (Ops): in Git Bash, $'<literal U+2014>' never matches. My replays used the BYTE escape $'â':
+                 POSITIVE CONTROL run: research.md 2,059 lines matched (Python 2,319 occurrences). My 0-counts stand. Any seat
+                 counting glyphs in Git Bash: run a control on a file known to contain one, or count in Python.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
