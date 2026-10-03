@@ -1277,6 +1277,10 @@ SIGN-IN LIVE     Ops: sync-env 00:38Z (backup first; nothing erased; Google + FI
                  box, i.e. the app without nginx; his A/B reads come through nginx). A + B wait on his two sign-ins.
                  OPEN (Ops/Web, his yes for the box change): /var/lib/mointel/identity.db is mode 644 (world-readable on
                  the box: emails + session hashes); should be 640.
+                 ORDER CALL (with Web's input): Ops reads parent dir mode + box logins first. Dir blocks others -> no
+                 exposure; fix = code commit (explicit mode on create, incl. -wal/-shm) riding the next ship. Others can
+                 read -> chmod 640 tonight as a box change put to him. (I told him "Ops will ask your yes": correct him
+                 if it becomes the code route.) Ops also asked for claim C THROUGH nginx (credentialed, no cookie).
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
