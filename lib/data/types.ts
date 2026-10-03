@@ -271,7 +271,12 @@ export interface MarketSummary {
   strongCatalysts: number;
 }
 
-export type ProviderKind = 'google-sheets' | 'mock';
+/**
+ * `none`: no outside research source is configured. Not a fault: the Sheet is
+ * being removed (his ruling, `docs/sheet-removal-plan-2026-10-03.md`), and a
+ * desk without it serves an empty list rather than demo rows.
+ */
+export type ProviderKind = 'google-sheets' | 'mock' | 'none';
 
 /** Freshness / provenance metadata attached to every dashboard payload. */
 export interface DataSourceMeta {

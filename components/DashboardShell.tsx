@@ -621,6 +621,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           // trader click to reveal it is what left the desk showing a screen of
           // controls above an empty board.
           defaultOpen={merged.discovery.length === 0}
+          listedCount={tickers.length}
         />
 
         {/*
