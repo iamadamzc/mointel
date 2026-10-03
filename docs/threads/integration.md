@@ -1039,6 +1039,29 @@ the v6 narrative samples when Research has them. This seat's failure, four times
 record it describes (vendor behaviour, a git listing, a code search, a measured duration).
 ```
 
+## THE TWENTY-FOURTH SEAT'S RUNNING NOTES (opened 2026-10-03T17:04:49Z, `local_f26376f1`, Opus 5.5, effort high)
+
+*Newer than the twenty-third's live state where they disagree.*
+```
+START            Titled Integration-tmi. get_session self: claude-opus-5-5, nothing to report.
+OLD CHAT         local_54f1341f-beb0-46d7-ae68-91c36d8ca235: list_sessions (include_archived) reads title "Integration-tmi",
+                 isArchived false, idle. TWO sessions answer to Integration-tmi until he renames it. Asked him.
+                 It kept working after its hand-off: its last turn told him (13:00 ET) f5746a84 live, step 1 waits on a
+                 replay. Research rotated again: Research-tmi is now local_ab66f9f3 (local_98e3e9a1 archived, retired).
+f5746a84 LIVE    READ in Ops 03ac080e (ops.md): /proc 16:51:21Z web 2013406 / research 2013463 / assess 2013537 / market
+                 2013616, all cwd f5746a84, started 16:50:20-21Z, NR 0; [splits] 7 listed for 10-05, 5 restated (CMND GUTS
+                 SCNX VIVK VTAK; 2 not in universe) BEFORE the bootstrap; SIP live 70 s; health ok schema 28. The prompt's
+                 "7 reverse splits" = 7 LISTED; 5 on the desk. Monday spot check already Ops's (after 10:00 ET).
+                 Fresh /proc asked of Ops (e852a41c).
+STEP 1 APPROVED  6e7fff846a573e2692deb8fcb7982c7b375e6f08 (tag design/sheet-step1-on-f5746a84, annotated -> this). REPLAYED +
+                 APPROVED BY LITERAL SHA: 185cea37 -> f5746a84, 2 commits, 0 merges, cone over prod = 2; patch-ids EQUAL
+                 a4f75aab / 4cea086f; 8 files +175/-11, no worker/lib/market/deploy/db/package; importers of changed modules
+                 = app/api/dashboard, app/desk, app/review/[token], 6 components (web only, no market restart); only
+                 DataFreshness reads meta.provider; added U+2014 0, entities 0, U+2013 0 (Python, control finds 1 lone
+                 glyph in context). Unchanged while Sheet keys set. Conditions to Ops (1f6d356c): gate on sha, his yes,
+                 no market restart, outside 07-10 ET, /proc after; Sheet key NAMES on box read first. Design told.
+```
+
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
 
 *A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION before
