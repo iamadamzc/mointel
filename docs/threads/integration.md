@@ -1370,6 +1370,11 @@ SHEET PLAN UPD   Research corrected appendix C (no Report Date in dossier; displ
                  (run 3, no new run): 82% have a filed count (74/422 none, consistent); <=45 d 34%, <=90 d 46%, <=120 d
                  50%; foreign 167/180 have one, 47 <=120 d. Plan b83e72cb, re-sent to him. Step 2 pre-registered 4a0f65c1
                  (4 arms incl. noise; scratch copy; $15 cap); Research asks HIM (4.9 GB copy, CPU, up to $15).
+COMBINED CUT     a50f59487ac666280e88d47677face81c74e6093 (research/bluesky-cut-on-32db0d7e) = 32db0d7e + 70c534f4 ded2274a
+                 bac44069 c535dce7 (patch-ids EQUAL, read). REPLAYED + APPROVED BY LITERAL SHA. 5 files, no deploy/db/
+                 worker/package; 0 U+2014; "855" only comments/tests. Conditions to Ops: his yes before the ONE gate; step-4
+                 live reads; blue-sky live read (EZRA no pre-split overhead); ship yes names both. Fallback: blue-sky picks
+                 onto 3b9c0a70 alone.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
