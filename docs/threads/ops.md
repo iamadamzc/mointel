@@ -13831,3 +13831,9 @@ MONDAY SPOT CHECK (owner Ops, after 10:00 ET, read-only): one of CMND/GUTS/SCNX/
 SLOT 16:52Z: Design holds it for the full gate on 6e7fff84 (a4f75aab + 4cea086f re-picked onto f5746a84; f5746a84 is its ancestor, declared 235). Read here: f5746a84..6e7fff84 = 8 files (components/*, lib/dashboard/view.ts, lib/data/*, one test); none in the market worker's value cone (lib/data absent), so it ships as an ordinary release, no market restart.
 ROUTING 16:52Z: Research-tmi is now local_ab66f9f3 (replaces local_98e3e9a1). Design-tmi local_82749387; Web-tmi local_46c15fbe; Integration-tmi: the 23rd (local_54f1341f) is retiring, successor not yet open.
 SLOT 16:55Z: Design released. Sheet step 1 candidate = 6e7fff84 (tag design/sheet-step1-on-f5746a84; 2 commits on production f5746a84): Design's gate 235/235 declared and met, 3,399 tests, lint 0 errors, build 0, typecheck 0 (Design's report). design/sheet-step1-on-0b92c309 SUPERSEDED. Waits on the new Integration seat's replay, then this seat's own gate on the literal sha and his yes; ordinary release, no market restart. Slot free.
+**SHEET STEP 1 6e7fff846a573e2692deb8fcb7982c7b375e6f08 APPROVED by Integration (24th, local_f26376f1) by literal sha**: 2
+commits over production f5746a84, 8 files (components, lib/dashboard/view.ts, lib/data/*, one test), web-process only, no
+market restart. Box key NAMES (17:1xZ, names + lengths only): GOOGLE_SHEET_ID, GOOGLE_SERVICE_ACCOUNT_EMAIL,
+GOOGLE_PRIVATE_KEY present; controls APCA_API_KEY_ID present, AUTH_PROBE_ENABLED absent: prediction "board unchanged".
+Shipped ALONE (61e2f777 / identity pair / citation fix stay for a later cut). Gate pre-registered 235/235, tsc 0, lint 0
+errors, local build rc 0; running.
