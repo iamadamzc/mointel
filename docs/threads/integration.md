@@ -1303,6 +1303,10 @@ PROBE OFF        Ops 02:50:54Z (his reads verified at his turns in 24ec00be: 02:
                  404 empty, / 200. /proc 02:51Z: web 1952351 / research 1944955 / assess 1945033 on 3b9c0a70, NR 0;
                  market 1574400 on 1b5ead66, NR 0. His browser 404 read asked. NEXT: probe-removal commit + Web's gate
                  wiring cut, each own gate + his yes.
+OPS HANDS OFF    On his "yes, hand off" (Ops's repeat class). Hand-off 22b870ec (ops.md end + ops-opening-prompt.md), local
+                 main, cleared with 8a47e1cf 2e10c92f 2fb73397 90e0ccf2 8a8c24b7. Production 03:01:55Z (Ops): web/research/
+                 assess 3b9c0a70 NR 0, market 1b5ead66 NR 0, probe flag absent. Heavy slot: Design holds, Web queued.
+                 NOTHING to local_d8a2a445 after now (dropped). Route to the new Ops-tmi by title once he opens it.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
