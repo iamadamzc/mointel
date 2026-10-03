@@ -13783,3 +13783,14 @@ symbols' baselines from RAW bars restated by old/new (close x old/new, volume x 
 priorRthClose and the RVOL denominator, with no double adjustment on already-adjusted days. NOT building the
 "standard ratio -> UNVERIFIED" fallback without his ruling (it would hide genuine 2x-5x runners). Ships as a market
 restart: his word at the time. Target before Monday 04:00 ET.
+**SPLIT FIX BUILT: dff3fb0a6f5a7dabc87ff504d98ce2feac86445c** (branch ops/split-day-close, worktree A:\mointel-split, node_modules
+junction; parent 0b92c309). lib/market/splitRestate.ts (new), engine.ts (replaceClose, first-print check), rest.ts
+(getSplits), worker/runtime.ts (applySplits at baseline load before the bootstrap, 03:40 ET pre-open re-read, promotions;
+fails open). Research's review folded in: cumulative window splits; listed-but-not-happened revert. 19 new tests;
+mutants predicted/killed: m1 raw->split 2/2, m2 window splits ignored 1/1 (my first prediction of 2 was a miscount: the
+restateBars unit test cannot see a call-site mutant), m3 replaceClose ignored 2/2, m4 trade-path check removed 3/3 (the
+first applier missed it on CRLF and refused, then fixed), m5 tolerance removed 1/1, m6 volume not restated 5 (>=4).
+tests/market 59/59 files, 748 tests; eslint clean on changed files. LIVE CROSS-CHECK (read-only Alpaca): single-day query
+returns 12 splits for 2026-09-08 and 7 for 2026-10-05; restated 09-04 closes WCT 7.2000 / LRHC 2.8968 / TNMG 3.4992 /
+SFWL 14.2455 equal Alpaca's now-adjusted 7.2 / 2.897 / 3.499 / 14.25 (ratio 0.99968-1.00006). RESIDUAL: unlisted splits
+(RFAI) uncovered; no price-ratio fallback (his ruling). Gate pre-registered 234/234, tsc 0, lint 0 errors.
