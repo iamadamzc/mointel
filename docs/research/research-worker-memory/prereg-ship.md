@@ -45,3 +45,24 @@
 
 - Whether something OTHER than the cache also grows more slowly. A slow leak under 2 MB per ticker would pass this and show on a longer run.
 - The levels refresh child, which runs in its own process.
+
+## RESULT, graded 2026-10-02 (after 20:05 ET) by seat `local_5f4bfcf8`: **PASS AS REGISTERED**
+
+**Log:** `docs/ops/leak-judge-2026-10-02.log` at `7c689e7bbcb8f78fed09882ae70547f139ba5be7` (Ops-tmi), read from the commit, not from the summary. It has 152 samples, 05:45Z to 2026-10-03T00:05Z, and 12 SKIPPED lines.
+
+**Grading rule:** fixed before any sample was read (sent to Ops; research.md LIVE STATE `d41d0f2b`, `97f9b8b1`).
+
+| Clause | Result |
+|---|---|
+| **Continuity (every sample, all series)** | ONE identity across all 152: child 1864116, start 2026-10-02T05:44:29, NRestarts 0. Every SKIPPED line is inside 11:00 to 14:00Z (no box contact). Judgeable. |
+| **Max RSS at most 450 MB (in-window samples, 137 of them, 08:05Z to 23:56Z)** | **275,240 KB = 275.2 MB (268.8 MiB)** at 18:55Z. PASS under either unit. |
+| **Under 2 MB per new distinct ticker after the first 20** | First in-window sample at 20 or more tickers: 10:26Z, 253,440 KB, 31 tickers. Last in-window sample: 23:56Z, 247,432 KB, 65 tickers. **-177 KB per ticker (-0.18 MB).** PASS. |
+| **UNTESTED below 40 tickers** | 65 tickers at the last in-window sample: TESTED. |
+
+**For scale:** the killed run reached 1,383 MB at about 16.6 MB per ticker. Here, RSS rose from 119 MB to about 250 MB over the first ~30 tickers (the 64 MiB cache filling, plus per-job working memory), then held flat to slightly falling while 34 more tickers were researched.
+
+**What this does not show (as registered):**
+
+- a slower leak under 2 MB per ticker, which would need a longer run;
+- the levels refresh child (a separate process);
+- whether the 07:00 to 10:00 ET gap held a transient peak (the same process survived it, so nothing cumulative was hidden).
