@@ -13562,3 +13562,14 @@ release, verify sha256, then delete the box copy. Stray judge loop stopped itsel
   untouched). Claim C read on the box at 127.0.0.1:3000 (the app behind nginx, no Basic Auth there): {"state":"anonymous"}
   200; control / 200. A (admitted) and B (refused) wait on his sign-ins in his browser.
 - Snapshot download to data/market-prod-2026-10-02.db (gitignored by /data/) started 00:5xZ, resumable by tail -c +N.
+- PROBE RESULTS, his own browser through nginx (verified at his turns in 24ec00be, human): C anonymous 02:40:41Z (incognito,
+  no sign-in); B refused 02:47:44Z (his tmitrader.com Workspace address, not seeded); A admitted 02:49:59Z
+  (iamadamzc@gmail.com). All three claims met. Claim D (a person with no Basic-Auth password) remains unprovable until
+  Basic Auth comes off.
+- PROBE OFF 02:50:54Z (his "yes to all three"): backup -preprobeoff, flag removed, web-only restart (NR 0, up ~1 s);
+  box read /auth/probe 404 empty, / 200; env back to 7408 B. /proc 02:51Z: web 1952351 / research 1944955 / assess 1945033
+  on 3b9c0a70, NR 0; market 1574400 on 1b5ead66, NR 0. 23:31 ET fallback cron cancelled.
+- Next, each its own gate + his yes: probe-removal commit (route + test), Web's gate wiring cut. identity.db mode fix in
+  code (Web). Stray agent worktree housekeeping (.claude/worktrees/agent-acfba7ff..., eslint sees its .next).
+| told him "a throwaway Google account" with no explanation; he did not know what it meant (02:40Z) | jargon-in-instructions-to-him | no | owner |
+| told Web "he got there by URL" without reading how | asserted-not-opened | no | self, corrected in the next message |
