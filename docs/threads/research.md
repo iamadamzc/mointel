@@ -197,6 +197,12 @@ record. He has it from this seat directly as well.
   - **`research/review-levels-cut` `19f9d721`:** on the leak cut. Route and test identical to `9f084c9e`. `readOnly.test.ts` was resolved against `d427dd0e` by keeping both test pairs; the added lines are identical and nothing is removed. 218 test files.
   - **Waits on:** Ops's release gate; then his yes.
   - **v6.1 lane (Integration, after `afc7755b`):** a hedged "what to watch" block from the names' own dossiers. NOT started until v6 is live, unless he tells Marketing to fold it in.
+  - **TONIGHT 2026-10-02, after the snapshot (sha256 `9f0efa03`, verified):**
+    - **v6 step 5 DONE:** voice runs `e6d20f55` (v6), `801efe6e` (v6b), `d5c928e5` (v6c). The writer recap asks for the count only (writer prompt 7, `a1e47632`); the checker sees worded narrative facts (checker prompt 5, `bf13125e`). PREMARKET's narrative publishes in v6c; Design rendered and PASSED the surface; Marketing read it.
+    - **Struck name lines keep their card with EMPTY text** (`4cc5f5ca`, Integration's call, design-seat.md §3a): **TESTS NOT YET RUN, waiting on his yes** (his rule: no local runs without asking).
+    - **Blue-sky:** scale `15071d45` (79 shown now, 22 on the board; 104 latent). CUT on Web's step-4 tip `32db0d7e`: tip **`a50f5948`** (branch and tag `research/bluesky-cut-on-32db0d7e`; the four picks patch-id equal). Ops gates once on his yes.
+    - **Sheet removal (his ruling; plan `0009301e`):** step 2 pre-registered (`4a0f65c1`; WITH x2 vs WITHOUT x2 the Sheet prior, scratch copy, $15 cap), waiting on his yes. Appendix C checked (5 corrections sent). Count-recency for his float decision 1a: 82% have a count; 34% at most 45 days old; foreign 47 of 180 at most 120 days.
+    - **Leak judge PASS** (`479d3cfc`). **SI label: HOLD** (`9b32ec4e`).
   - **SHORT INTEREST LABEL (his FINRA API registration, Commercial §10.5):**
     - **Design:** `docs/research/short-interest-label-design.md`. Commercial PASS with R1 to R6; Marketing's final words (`1696a05c`); size-only chip "SHORTS: HEAVY · 17d" (`01ffb3b3`); HIS word "Falling" (`3bd91095`); trend not graded across a FINRA split flag, plus the calibration amendments (`e09750ab`).
     - **CALIBRATION RAN as pre-registered:** harness `43170c3d` + `390aedfc`; raw `822fcdb5`, committed before it was read; **RESULT `a0f880c0`** (`docs/research/short-interest-calibration/result.md`).
