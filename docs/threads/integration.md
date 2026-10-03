@@ -1290,6 +1290,8 @@ APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts)
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
                  (allowlist.ts invocation user unknown). Asked Web: confirm owner-or-root openers or skip/catch + test.
                  NOT a pick for step 4 (Web: wiring cut stays 01455d93 + wiring).
+                 RESOLVED 6ac43025 (skip at 0640/absent; chmod failure warns, never throws; tests). PAIR f1b8b716 +
+                 6ac43025 REPLAYED + APPROVED for the next ordinary release cut (picked onto /proc then, gated there).
 GATE REDS AT HEAD (Web found, routed): (a) releaseRetention.test.ts 2 fails -> Ops, CAUSE: Git Bash on this PC ignores
                  TZ=America/New_York and answers UTC (Ops measured; I saw the same at session start: +0000), so after
                  20:00 ET the two tests without a pinned weekday read Saturday. Test-only fix (DOW pinned), local main.
