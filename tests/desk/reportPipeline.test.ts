@@ -35,7 +35,7 @@ afterEach(() => {
   while (dirs.length) fs.rmSync(dirs.pop()!, { recursive: true, force: true });
 });
 
-function dossier(status: 'FRESH_FOUND' | 'NONE_FOUND'): ResearchDossier {
+function dossier(status: 'FRESH_FOUND' | 'NONE_FOUND', catalyst: Partial<ResearchDossier['catalyst']> = {}): ResearchDossier {
   return {
     ticker: 'AAA',
     companyName: 'Alpha Corp',
@@ -54,6 +54,7 @@ function dossier(status: 'FRESH_FOUND' | 'NONE_FOUND'): ResearchDossier {
       confidence: 'MEDIUM',
       evidenceSourceIds: [],
       unknowns: [],
+      ...catalyst,
     },
     structure: {
       sharesOutstanding: null, sharesOutstandingDate: null, displayedFloat: null, displayedFloatDate: null,
@@ -81,14 +82,14 @@ function ticker(t: string, rank: number, versionId: number | null, status: strin
   };
 }
 
-function fixture(): MarketDatabase {
+function fixture(catalyst: Partial<ResearchDossier['catalyst']> = {}): MarketDatabase {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-pipeline-'));
   dirs.push(dir);
   const db = openDatabase(path.join(dir, 'market.db'));
   open.push(db);
   const version = saveAnalysisVersion(db, {
     ticker: 'AAA', generatedAt: '2026-09-23T15:00:00Z', evidenceFingerprint: 'fp', model: 'test',
-    dossier: dossier('FRESH_FOUND'), sourceIds: [], metadata: { coverageIncomplete: false },
+    dossier: dossier('FRESH_FOUND', catalyst), sourceIds: [], metadata: { coverageIncomplete: false },
   });
   const id = claimAssessmentSlot(db, {
     tradingDate: DATE, targetTradingDate: null, assessmentType: 'RTH_INTERVAL', scheduledFor: SCHEDULED,
@@ -194,5 +195,23 @@ describe('the report pipeline, v6 wiring', () => {
     if (run.status !== 'PUBLISHED') return;
     expect(run.diagnostics.strikes.map((s) => s.reason)).toContain('CITATION_TOKEN');
     expect(JSON.stringify(run.report)).not.toContain('[Source 7]');
+  });
+
+  it('a FRESH_FOUND catalyst the board calls OLD at the checkpoint is filed under OLDER NEWS and not counted fresh (Design, COLA)', async () => {
+    // Researched as fresh, but the event is weeks before the checkpoint and the research does not say it explains the move.
+    const db = fixture({ eventTimestamp: '2026-08-20', freshness: 'STALE', plausiblyExplainsMove: false });
+    const read = readReportInputs(db, 'INTO_POWER_HOUR', DATE, { min: 1, max: 20 });
+    expect(read.ok).toBe(true);
+    if (!read.ok) return;
+    expect(read.inputs.tags.get('AAA')?.why.code).toBe('OLD_CATALYST');
+    expect(read.inputs.research.get('AAA')?.catalyst.status).toBe('SECONDARY_STALE');
+    expect(read.inputs.narrative.fresh).toEqual({ count: 0, covered: 2 });
+    const run = await runReport(db, SLOT, { writer, checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(run.report.sections.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
+      ['OLDER NEWS', ['AAA']],
+      ['NOT YET RESEARCHED', ['BBB']],
+    ]);
   });
 });
