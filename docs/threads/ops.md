@@ -13672,3 +13672,8 @@ the TODAY sheet (loopback /api/dashboard 200 or its log line). Expiry opened her
 session ends 20:00 ET on its ET calendar day; a sign-in after 20:00 rolls to 20:00 next day. Desk password stays on.
 Memory: each deploy restarts research, so the build starts fresh; last night's build 1 bottomed at 1,034 MB available
 from ~2,300 (tonight's read 2,231). Stop condition kept: MemAvailable < 300 MB during the build.
+**03:2xZ HIS RULING (verified at his own turn: Integration transcript 24ec00be, queued_command, origin human,
+2026-10-03T03:11:38.793Z): "the google sheet needs to be removed as part of this system. period. draw it up."**
+Integration is drawing up the removal plan. The /api/dashboard shared-secret worker header is ON HOLD (no build) until
+that plan says what replaces the TODAY-sheet pins; the worker's loopback read may disappear with the Sheet. Step 4
+(32db0d7e) unaffected. Sign-in wording for him: once a day, lasts until 8pm New York time, or 8pm next day if after 8pm.
