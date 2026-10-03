@@ -109,8 +109,14 @@ describe('apiRefusal', () => {
 });
 
 describe('no API route ships ungated', () => {
-  // health is loopback-only at nginx and is how Ops checks the box.
-  const UNGATED = new Set(['app/api/health/route.ts']);
+  const UNGATED = new Set([
+    // Loopback-only at nginx; how Ops and deploy.sh check the box.
+    'app/api/health/route.ts',
+    // HELD: the market worker reads it over loopback with no cookie. Must be
+    // gated, with an internal credential for the worker, BEFORE Basic Auth
+    // comes off /api/. See the comment in the route.
+    'app/api/dashboard/route.ts',
+  ]);
 
   function routes(dir: string): string[] {
     return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

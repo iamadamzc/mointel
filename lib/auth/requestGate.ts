@@ -14,6 +14,10 @@
  * WHAT IS NOT GATED HERE, deliberately:
  * - `/api/health` is loopback-only at nginx and is how Ops checks the box;
  *   gating it would make a healthy app read as down.
+ * - `/api/dashboard`, HELD: the market worker reads it over loopback with no
+ *   cookie (`worker/runtime.ts` refreshSheetSymbols). It must be gated, with an
+ *   internal credential for the worker, before Basic Auth comes off `/api/`.
+ *   The reason is in the route.
  * - `/review/[token]/*` and `/mcp/[token]` carry their own token guard
  *   (`lib/review/access.ts`). A reviewer holds a token, not a session.
  * `tests/auth/requestGate.test.ts` enumerates `app/api/` so a new route cannot
