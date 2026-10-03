@@ -13827,3 +13827,4 @@ STREAMING / capture RECORDING. Mem avail 2,874 MB after.
 COSMETIC (log only, stored value right): "restated to 3.9699999999999998"; round the [splits] log line in the follow-up.
 MONDAY SPOT CHECK (owner Ops, after 10:00 ET, read-only): one of CMND/GUTS/SCNX/VIVK/VTAK on the board or store: its
 [splits] first-print verdict line and percent_change against the restated close.
+SLOT 16:52Z: Design holds it for the full gate on 6e7fff84 (a4f75aab + 4cea086f re-picked onto f5746a84; f5746a84 is its ancestor, declared 235). Read here: f5746a84..6e7fff84 = 8 files (components/*, lib/dashboard/view.ts, lib/data/*, one test); none in the market worker's value cone (lib/data absent), so it ships as an ordinary release, no market restart.
