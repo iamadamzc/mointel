@@ -24,3 +24,16 @@ Suggested: scale the band with the ratio, e.g. OLD_BASIS only when the log dista
 | M6 | `attachBaseline` ignores `replaceClose` (the old daily-bar gate) | 1 |
 
 Runs wait on Ops's slot.
+
+## Addendum: the candidate is now `f5746a84` (both points taken), predictions restated BEFORE the run
+
+Verified in the diff: the band is `min(|ln(restated/old)|/4, ln 1.25)`, OLD_BASIS only inside it (the "nearer the old close" condition is implied by the band); new tests for the 1-for-2 gap-down (1.80 stays RESTATED, 1.50 reverts) and for the pre-session guard. The suite grew from 19 to 21, so the predictions for M4 and M5 change; the others stand. Written after reading the new test titles, before any run:
+
+| # | On `dff3fb0a` (committed above) | On `f5746a84` |
+|---|---|---|
+| M1 | 1 | 1 |
+| M2 | 1 | 1 |
+| M3 | 1 | 1 |
+| M4 | 2 | 4 (old-basis unit, forward split, the 1-for-2 test's 1.50 case, the engine revert) |
+| M5 | 1 (then, on reading the titles, expected 0: no test covered the guard) | 1 |
+| M6 | 1 | 1 |
