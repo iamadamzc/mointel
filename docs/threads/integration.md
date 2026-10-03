@@ -1437,6 +1437,11 @@ SPLIT-DAY CLOSE  Research measured (prereg 87bb743b, script 41309655, raw 37886b
                  fits fetch-before-adjustment, fetch time unread). NONE reached board/report in the window; 4 registered rows
                  that did are genuine moves. WCT 10-01 was a genuine crash (split 09-08): original note wrong, corrected.
                  Controls pass. OPEN: guard or luck? Research to read the code path. Not to him until that is known.
+                 ANSWERED: LUCK (Research addendum 975eb3fd). VERIFIED HERE: engine.ts:736-750 at live market 1b5ead66 takes
+                 baseline previousClose as-is; movers rule d1677f07 IS in production. Exposure: an in-band reverse-split name
+                 at movers volume joins the board on a false gain (WCT 09-08 ~+408%). Also the v6 recap counts. ORDER: Ops
+                 builds the engine fix (restate by known split factor via lib/market/splits.ts, else UNVERIFIED), Research
+                 reviews; ships as a market-worker restart (HIS yes); target before Mon 04:00 ET. TOLD HIM as a risk.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
