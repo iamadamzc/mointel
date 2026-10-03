@@ -228,6 +228,7 @@ export function openIdentityStore(file: string = DEFAULT_IDENTITY_PATH): Identit
 
   const db = new Database(resolved);
   db.pragma('journal_mode = WAL');
+  restrictIdentityFileMode(resolved);
   db.pragma('busy_timeout = 5000');
   db.pragma('foreign_keys = ON');
 
@@ -243,6 +244,38 @@ export function openIdentityStore(file: string = DEFAULT_IDENTITY_PATH): Identit
   db.exec(SCHEMA);
   db.pragma(`user_version = ${IDENTITY_SCHEMA_VERSION}`);
   return db;
+}
+
+/*
+ * THE STORE HOLDS EMAILS AND SESSION HASHES, SO IT IS NOT WORLD-READABLE.
+ *
+ * Found by Ops on the first live open, 2026-10-03: `identity.db`, `-wal` and
+ * `-shm` were created 0644 because nothing set a mode and the process umask is
+ * 022. Moot on that box (the parent directory is 0750 and every other local
+ * account already has sudo), but the file should not depend on its directory
+ * for its privacy. 0640 matches the env file.
+ *
+ * The main file is the one that matters going forward: SQLite's unix VFS
+ * creates `-wal` and `-shm` with the main database file's permissions (read in
+ * the bundled `better-sqlite3/deps/sqlite3/sqlite3.c`: `findCreateFileMode` for
+ * the WAL, the fstat in `unixOpenSharedMemory` for the shm), so a WAL file
+ * recreated after a checkpoint inherits 0640. The two sidecars are
+ * also chmodded here because they already exist by the time this runs, created
+ * under the old mode by the `journal_mode = WAL` pragma.
+ *
+ * chmod is close to a no-op on Windows; the test asserts the calls, not the
+ * resulting bits, so it is meaningful on the dev host too.
+ */
+export const IDENTITY_FILE_MODE = 0o640;
+
+export function restrictIdentityFileMode(
+  dbFile: string,
+  chmod: (file: string, mode: number) => void = fs.chmodSync,
+  exists: (file: string) => boolean = fs.existsSync,
+): void {
+  for (const file of [dbFile, `${dbFile}-wal`, `${dbFile}-shm`]) {
+    if (exists(file)) chmod(file, IDENTITY_FILE_MODE);
+  }
 }
 
 export interface ProviderIdentity {

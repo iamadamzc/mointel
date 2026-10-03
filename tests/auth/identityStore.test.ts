@@ -2,10 +2,11 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { sessionExpiry } from '@/lib/auth/expiry';
 import {
+  IDENTITY_FILE_MODE,
   IDENTITY_SCHEMA_VERSION,
   createSession,
   inviteEmail,
@@ -15,6 +16,7 @@ import {
   linkIdentity,
   openIdentityStore,
   resolveSession,
+  restrictIdentityFileMode,
   revokeEmail,
   revokeSession,
 } from '@/lib/auth/store';
@@ -453,6 +455,46 @@ describe('isUserInvited', () => {
     const db = temporaryStore();
     inviteEmail(db, 'adam@example.com', 'his word');
     expect(isUserInvited(db, userWith(db, 'Adam@Example.COM', true))).toBe(true);
+    db.close();
+  });
+});
+
+describe('file mode', () => {
+  it('restricts the store and both WAL sidecars to 0640, and only files that exist', () => {
+    const calls: Array<[string, number]> = [];
+    const present = new Set(['/x/identity.db', '/x/identity.db-wal', '/x/identity.db-shm']);
+    restrictIdentityFileMode('/x/identity.db', (f, m) => calls.push([f, m]), (f) => present.has(f));
+    expect(IDENTITY_FILE_MODE).toBe(0o640);
+    expect(calls).toEqual([
+      ['/x/identity.db', 0o640],
+      ['/x/identity.db-wal', 0o640],
+      ['/x/identity.db-shm', 0o640],
+    ]);
+
+    calls.length = 0;
+    restrictIdentityFileMode('/y/identity.db', (f, m) => calls.push([f, m]), (f) => f === '/y/identity.db');
+    expect(calls).toEqual([['/y/identity.db', 0o640]]);
+  });
+
+  it('openIdentityStore applies the mode to the store it opens', () => {
+    const spy = vi.spyOn(fs, 'chmodSync').mockImplementation(() => undefined);
+    try {
+      const db = temporaryStore();
+      const file = path.resolve(temporaryFiles[temporaryFiles.length - 1]);
+      expect(spy).toHaveBeenCalledWith(file, 0o640);
+      db.close();
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  // The bits themselves are only real on POSIX; chmod on Windows toggles read-only and nothing else.
+  it.skipIf(process.platform === 'win32')('a freshly opened store is not world-readable', () => {
+    const db = temporaryStore();
+    const file = temporaryFiles[temporaryFiles.length - 1];
+    for (const f of [file, `${file}-wal`, `${file}-shm`]) {
+      if (fs.existsSync(f)) expect(fs.statSync(f).mode & 0o777).toBe(0o640);
+    }
     db.close();
   });
 });
