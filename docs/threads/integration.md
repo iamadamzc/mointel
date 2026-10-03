@@ -1307,6 +1307,14 @@ OPS HANDS OFF    On his "yes, hand off" (Ops's repeat class). Hand-off 22b870ec 
                  main, cleared with 8a47e1cf 2e10c92f 2fb73397 90e0ccf2 8a8c24b7. Production 03:01:55Z (Ops): web/research/
                  assess 3b9c0a70 NR 0, market 1b5ead66 NR 0, probe flag absent. Heavy slot: Design holds, Web queued.
                  NOTHING to local_d8a2a445 after now (dropped). Route to the new Ops-tmi by title once he opens it.
+PROBE-OFF (HIS)  His browser: https://tmitrader.com/auth/probe -> "HTTP ERROR 404" (screenshot). Through-nginx half MET.
+STEP-4 CUT       Web web/step4-cut 7cbb79e3c887fac77182c4cd478a72cae497e408 (= b865e0b2 [01455d93 whole] + d7079581 wiring +
+                 7cbb79e3 probe removal) on 3b9c0a70. REPLAYED (scratchpad replay-step4.sh): structure clean. NOT APPROVED:
+                 BLOCKER, the market worker reads /api/dashboard over loopback with NO cookie (worker/runtime.ts:1798-1803,
+                 same on live 1b5ead66) and returns silently on !ok; the cut gates /api/dashboard with no internal path ->
+                 401 -> TODAY-sheet pins stop silently. worker/diagnose.ts same. Socket loopback exemption unsafe (nginx
+                 proxies from 127.0.0.1). Sent to Web; new Ops to co-design. Also: forbidden() experimental -> gate needs a
+                 build + live 403 read. Silent return in runtime.ts should log (separate).
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
