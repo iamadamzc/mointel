@@ -9,6 +9,7 @@ import type {
 import {
   agoText,
   briefingLineText,
+  cardShowsGrade,
   checkpointText,
   companyText,
   coverageText,
@@ -764,7 +765,7 @@ function Figures({ text }: { text: string }) {
 
 /**
  * v6's tags: the BOARD'S OWN Why and Risk, as the board prints them (one
- * vocabulary; `report-b-spec.md`). The grade letter in the board's tone with
+ * vocabulary; `report-b-spec.md`). The grade letter, when there is one, in the board's tone with
  * the board's hover, the board's warn marks (`WhyMarks`, shared code), and the
  * Risk chip's label and value with its left border. No age (the prose carries
  * the event date), no headline (the prose is the story), no Risk detail line
@@ -774,11 +775,16 @@ function TagRow({ tags }: { tags: NonNullable<Extract<ReportBlock, { kind: 'NAME
   const { why, risk } = tags;
   return (
     <div className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1.5 print:text-black">
-      <span className="flex items-baseline gap-1.5">
-        <span className="text-[10px] tracking-[0.08em] text-ink-3 uppercase print:text-black">Catalyst</span>
-        <span className={`num text-[13px] font-bold ${WHY_TONE[why.tone]} print:text-black`} title={why.title}>
-          {why.grade}
-        </span>
+      {/* empty:hidden: a name with no grade and no mark leaves no gap before the chip. */}
+      <span className="flex items-baseline gap-1.5 empty:hidden">
+        {cardShowsGrade(why.grade) ? (
+          <>
+            <span className="text-[10px] tracking-[0.08em] text-ink-3 uppercase print:text-black">Catalyst</span>
+            <span className={`num text-[13px] font-bold ${WHY_TONE[why.tone]} print:text-black`} title={why.title}>
+              {why.grade}
+            </span>
+          </>
+        ) : null}
         <WhyMarks why={why} />
       </span>
       <span
