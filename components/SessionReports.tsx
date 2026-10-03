@@ -429,8 +429,11 @@ function ReportBody({
           <h3 className="text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase print:text-black">
             The session
           </h3>
-          <p className="mt-1.5 max-w-[680px] text-[16px] leading-[1.6] text-ink-2 print:text-black">
-            <Figures text={report.narrative} />
+          {/* Plain text: the figure rule leaves bare counts ("828 up") as prose
+              and sets "1,729" apart, so a sentence of counts read unevenly
+              (seen on Research's step-5 samples). */}
+          <p className="mt-1.5 max-w-[680px] text-[16px] leading-[1.6] text-ink print:text-black">
+            {report.narrative}
           </p>
         </section>
       ) : null}
