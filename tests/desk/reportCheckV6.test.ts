@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildCheckerPrompt, narrativeFindings, ruleStrikes } from '@/lib/desk/reports/check';
+import { applyStrikes, buildCheckerPrompt, narrativeFindings, ruleStrikes, type Strike } from '@/lib/desk/reports/check';
+import type { ReportDraft } from '@/lib/desk/reports/writer';
 import type { NarrativeFacts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 
@@ -106,5 +107,40 @@ describe('ruleStrikes, v6', () => {
     expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
+  });
+});
+
+describe('applyStrikes, v6 keepStruckCards (struck name lines keep their card, no prose)', () => {
+  const at = () => new Date('2026-10-02T13:26:00.000Z');
+  const strike = (id: string, reason: Strike['reason'] = 'UNSUPPORTED'): Strike => ({ id: id as Strike['id'], reason, by: 'rule', detail: '' });
+  const draft: ReportDraft = {
+    headline: '',
+    overall: 'Narrative.',
+    sections: [{ heading: '', lines: [{ ticker: 'AAA', text: 'A line.' }, { ticker: 'BBB', text: 'B line.' }, { ticker: null, text: 'No ticker.' }] }],
+  };
+
+  it('a struck name line stays as a card with EMPTY text and still counts in watchCount', () => {
+    const out = applyStrikes(draft, [strike('S1L1')], at, { keepStruckCards: true });
+    expect(out.ok && out.sections[0]!.lines).toEqual([{ ticker: 'AAA', text: '' }, { ticker: 'BBB', text: 'B line.' }, { ticker: null, text: 'No ticker.' }]);
+    expect(out.ok && out.watchCount).toBe(2);
+  });
+
+  it('a struck ticker-less line is dropped; a line struck for naming an UNCOVERED ticker is dropped (no invented card)', () => {
+    const out = applyStrikes(draft, [strike('S1L3'), strike('S1L2', 'NO_ROW_FOR_TICKER')], at, { keepStruckCards: true });
+    expect(out.ok && out.sections[0]!.lines).toEqual([{ ticker: 'AAA', text: 'A line.' }]);
+    expect(out.ok && out.watchCount).toBe(1);
+  });
+
+  it('without the option (v5) a struck line is removed, as before', () => {
+    const out = applyStrikes(draft, [strike('S1L1')], at);
+    expect(out.ok && out.sections[0]!.lines.map((l) => l.ticker)).toEqual(['BBB', null]);
+    expect(out.ok && out.watchCount).toBe(1);
+  });
+
+  it('every body line struck is still ALL_STRUCK, cards or not', () => {
+    expect(applyStrikes(draft, ['S1L1', 'S1L2', 'S1L3'].map((id) => strike(id)), at, { keepStruckCards: true })).toEqual({
+      ok: false,
+      cause: { kind: 'ALL_STRUCK', at: '2026-10-02T13:26:00.000Z' },
+    });
   });
 });
