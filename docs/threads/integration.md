@@ -1315,6 +1315,11 @@ STEP-4 CUT       Web web/step4-cut 7cbb79e3c887fac77182c4cd478a72cae497e408 (= b
                  401 -> TODAY-sheet pins stop silently. worker/diagnose.ts same. Socket loopback exemption unsafe (nginx
                  proxies from 127.0.0.1). Sent to Web; new Ops to co-design. Also: forbidden() experimental -> gate needs a
                  build + live 403 read. Silent return in runtime.ts should log (separate).
+NEW OPS          local_7fac8dfc (Ops-tmi, A:\mointel, created 03:05:21Z; get_session). Box 03:06:40Z = hand-off (3b9c0a70
+                 NR 0; market 1b5ead66 NR 0). Holds the heavy-slot queue. Told the blocker.
+HIS RULE (typed to me, 2026-10-03 ~03:1xZ by transcript): "ive got some other heavy stuff running on teh computer right
+                 now. so if any one needs to run anuythign locally lmk first". Sent to Ops, Design (holds heavy slot),
+                 Web, Research, Marketing, Commercial: no gate/build/test/script on this PC without asking him first.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
