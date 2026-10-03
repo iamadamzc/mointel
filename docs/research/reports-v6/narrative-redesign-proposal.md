@@ -139,6 +139,19 @@ Measured on v6d PREMARKET (`v6-summary.txt`): writer 5,812 in / 2,894 out tokens
 
 The richer sheet adds roughly 1,000 input and 150 output tokens per report: under $0.004 on terra.
 
+**Anthropic models (his word, 2026-10-03: "we're open to other llms, if an anthropic model would get better/more efficient results").** List prices per million tokens from the Claude API reference (cached 2026-09-25), applied to the same 5,812 in / 2,894 out:
+
+| Writer | $/M in / out | Writer cost | + checker (terra) | Per report |
+|---|---|---|---|---|
+| Claude Haiku 4.5 | $1 / $5 | $0.0203 | $0.0448 | **$0.065** |
+| Claude Sonnet 5.5 | $2 / $10 | $0.0405 | $0.0448 | **$0.085** |
+| Claude Opus 5.5 | $4 / $20 | $0.0811 | $0.0448 | **$0.126**, plus thinking |
+| Claude Fable 5.1 | $10 / $50 | $0.2028 | $0.0448 | **$0.248**, plus thinking |
+
+Caveats, before any number is relied on: Claude's tokenizer counts differently, so these are estimates until measured; Opus 5.5 and Fable 5.1 always think, and thinking is billed as output (lower effort reduces it); the desk has no Anthropic SDK or key today (`.env.local` holds no `ANTHROPIC_API_KEY`; he adds a key himself), so a Claude arm needs a small writer adapter beside the OpenAI one.
+
+**Proposed comparison:** on the v2 sheet, 4 kinds x 2 runs, writer arms luna, terra, Claude Sonnet 5.5 and Claude Opus 5.5 (low effort), checker terra throughout: **about $3**, measured tokens and cost reported per arm. Judged by Marketing and Design on the rendered samples, then by him.
+
 **Proposed side-by-side:** the new sheet and rules, the same stored facts (10-02 snapshot), all four kinds, writer luna vs writer terra, two runs each (to see run-to-run noise), checker terra throughout. 16 reports: **about $1.20.** Adding sol as a third arm: about $2.20. Harness committed before any call, raw output committed before it is read, as every run on this desk.
 
 **Recommendation:** luna vs terra first. The fault is mostly the sheet, so the side-by-side should run AFTER the sheet changes; otherwise it measures two models wording the same thin facts.
