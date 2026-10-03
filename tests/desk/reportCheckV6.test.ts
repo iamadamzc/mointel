@@ -13,13 +13,20 @@ import type { ReportFact } from '@/lib/desk/reports/facts';
 
 const RANGE = { min: 1, max: 20 };
 const TICKERS = ['AAA', 'BBB'];
+/** The v2 facts (build step 1), none given: the checker does not read them until step 3. */
+const NO_V2 = {
+  splitExcluded: null, keptHalf: null, coveredMovers: null, recapLeaders: null, afterHours: null,
+  moversWithoutFresh: null, context: null, intradayNamed: null,
+} as const;
 const intraday: NarrativeFacts = {
+  ...NO_V2,
   kind: 'INTO_RTH', range: RANGE,
   breadth: { window: 'SESSION_TO_DATE', eligible: 2800, traded: 2700, up: 1500, down: 1100 },
   leader: { ticker: 'AAA', percentChange: -12.46, basis: 'PRIOR_SESSION' },
   fresh: { count: 1, covered: 12 }, movers50: null, gaveBack: null, noClose: null, tracking: null,
 };
 const recap: NarrativeFacts = {
+  ...NO_V2,
   kind: 'PREMARKET', range: RANGE,
   breadth: { window: 'REGULAR_SESSION', eligible: 2865, traded: 2862, up: 1207, down: 1513 },
   leader: null, fresh: { count: 2, covered: 12 }, movers50: 11, gaveBack: 0, noClose: 3, tracking: ['A', 'B', 'C'],

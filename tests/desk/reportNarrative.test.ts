@@ -4,7 +4,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { openDatabase, type MarketDatabase } from '@/lib/market/store/db';
-import { insertAssessmentRanges } from '@/lib/market/store/assessmentRepo';
+import { insertAssessmentRanges, type AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
 import { narrativeFacts, readFrozenBreadth, readRecapCounts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
@@ -42,19 +42,20 @@ type Row = {
   vol?: number | null;
   close?: number | null;
   high?: number | null;
+  low?: number | null;
   rthVol?: number | null;
   eligible?: 0 | 1;
 };
 function seed(db: MarketDatabase, rows: Row[]) {
   const ts = db.prepare(
-    `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_volume)
-     VALUES (@symbol, @date, 'sip', '2026-09-23T20:00:00Z', @price, @prev, @vol, @close, @high, @rthVol)`,
+    `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_low, rth_final_volume)
+     VALUES (@symbol, @date, 'sip', '2026-09-23T20:00:00Z', @price, @prev, @vol, @close, @high, @low, @rthVol)`,
   );
   const uni = db.prepare(
     `INSERT INTO universe (symbol, source, updated_at, discovery_eligible) VALUES (?, 'test', '2026-09-23T00:00:00Z', ?)`,
   );
   for (const r of rows) {
-    ts.run({ date: DATE, price: null, prev: null, vol: null, close: null, high: null, rthVol: null, ...r });
+    ts.run({ date: DATE, price: null, prev: null, vol: null, close: null, high: null, low: null, rthVol: null, ...r });
     if (r.eligible !== undefined) uni.run(r.symbol, r.eligible);
   }
 }
@@ -153,5 +154,178 @@ describe('narrativeFacts', () => {
     expect(out.breadth?.window).toBe('REGULAR_SESSION');
     expect([out.movers50, out.gaveBack, out.noClose]).toEqual([1, 1, 0]);
     db.close();
+  });
+});
+
+/* ------------------------------------------------------------------ v2 (narrative-redesign-proposal.md, Build plan step 1) */
+
+function bars(db: MarketDatabase, symbol: string, rows: Array<{ date: string; factor: number | null; fetched?: string }>) {
+  const ins = db.prepare(
+    `INSERT INTO daily_bars (symbol, trading_date, open, high, low, close, volume, adjustment, split_factor, source, fetched_at)
+     VALUES (?, ?, 1, 1, 1, 1, 100, 'split', ?, 'test', ?)`,
+  );
+  for (const r of rows) ins.run(symbol, r.date, r.factor, r.fetched ?? '2026-09-23T21:00:00Z');
+}
+
+describe('readRecapCounts: the split check keeps a false basis jump out of F1, F6 and F7', () => {
+  it('leaves out a jump at a standard ratio or with a factor change near the date; keeps a genuine gap and a ratio without a jump', () => {
+    const db = store();
+    seed(db, [
+      // reverse split carried onto the day: whole session ~5x the prior close
+      { symbol: 'REV', prev: 0.5, low: 2.4, high: 2.7, close: 2.5, rthVol: 900, price: 2.5, vol: 900 },
+      // forward split: whole session under prior / 1.8, R 0.48 within 5% of 1/2
+      { symbol: 'FWD', prev: 10, low: 4.6, high: 4.9, close: 4.8, rthVol: 900, price: 4.8, vol: 900 },
+      // a genuine gap: jumped, R 2.7 is no standard ratio, no bars
+      { symbol: 'GAP', prev: 1, low: 2.3, high: 3, close: 2.7, rthVol: 900, price: 2.7, vol: 900 },
+      // R exactly 2, but the session traded back under 1.8x: not a jump
+      { symbol: 'NOJUMP', prev: 1, low: 1.5, high: 2.2, close: 2, rthVol: 900, price: 2, vol: 900 },
+      // jumped, R 2.7, and the daily bars change factor the day before
+      { symbol: 'FACT', prev: 1, low: 2.2, high: 2.9, close: 2.7, rthVol: 900, price: 2.7, vol: 900 },
+      // jumped, R 2.7; its bars near the date all carry the SAME factor (its split is weeks later)
+      { symbol: 'FACTFAR', prev: 1, low: 2.2, high: 2.9, close: 2.7, rthVol: 900, price: 2.7, vol: 900 },
+    ]);
+    bars(db, 'FACT', [{ date: '2026-09-22', factor: 4 }, { date: DATE, factor: 1 }]);
+    bars(db, 'FACTFAR', [{ date: '2026-09-22', factor: 4 }, { date: DATE, factor: 4 }, { date: '2026-10-15', factor: 1 }]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.splitExcluded).toBe(3);
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 3, traded: 3, up: 3, down: 0 });
+    expect(r.movers.map((m) => m.symbol).sort()).toEqual(['FACTFAR', 'GAP', 'NOJUMP']);
+    expect([r.movers50, r.gaveBack]).toEqual([3, 0]);
+  });
+});
+
+describe('readRecapCounts: F15, peak against close', () => {
+  it('retention is (close - prior) / (high - prior); exactly half counts as kept; a close at or under the prior gave it all back', () => {
+    const db = store();
+    seed(db, [
+      { symbol: 'HALF', prev: 2, low: 2.5, high: 4, close: 3, rthVol: 900, price: 3, vol: 900 },
+      { symbol: 'UNDER', prev: 2, low: 2.1, high: 4, close: 2.98, rthVol: 900, price: 2.98, vol: 900 },
+      { symbol: 'RT', prev: 2, low: 1.9, high: 3, close: 2, rthVol: 900, price: 2, vol: 900 },
+      { symbol: 'NEG', prev: 2, low: 1.7, high: 3.2, close: 1.8, rthVol: 900, price: 1.8, vol: 900 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect([r.movers50, r.keptHalf, r.gaveBack]).toEqual([4, 1, 2]);
+    const half = r.movers.find((m) => m.symbol === 'HALF')!;
+    expect([half.highPct, half.closePct, half.retention]).toEqual([100, 50, 0.5]);
+    expect(r.movers.find((m) => m.symbol === 'UNDER')!.retention).toBeCloseTo(0.49, 10);
+  });
+});
+
+const named = (over: Partial<ReportFact> & { ticker: string; assessmentRank: number }) =>
+  ({ percentChange: null, referenceBasis: 'CURRENT_SESSION', referenceClose: null, cycle: null, changeSummary: '', ...over }) as unknown as ReportFact;
+const dossier = (status: string, summary: string | null, supply: Array<{ type: string; status: string }> = []) =>
+  ({ catalyst: { status, summary }, structure: { supply } }) as unknown as ReportResearch;
+const levelRow = (ticker: string, support: number, resistance: number) =>
+  ({ ticker, levelSummary: JSON.stringify({ support, resistance, label: 'x' }) }) as unknown as AssessmentTickerRecord;
+
+function recapStore(withBars: boolean): MarketDatabase {
+  const db = store();
+  seed(db, [
+    { symbol: 'NXL', prev: 2, low: 2.5, high: 5.13, close: 3.528, rthVol: 900, price: 3.5, vol: 900 },
+    { symbol: 'SSM', prev: 2, low: 2.2, high: 4.606, close: 3.938, rthVol: 900, price: 3.9, vol: 900 },
+    { symbol: 'NAMM', prev: 2, low: 2, high: 3.234, close: 2.702, rthVol: 900, price: 2.7, vol: 900 },
+    // the day's biggest mover, NOT covered: never named
+    { symbol: 'BIG', prev: 1, low: 1.1, high: 4, close: 2, rthVol: 900, price: 2, vol: 900 },
+  ]);
+  if (withBars) bars(db, 'NXL', [{ date: '2026-09-21', factor: 1 }, { date: '2026-09-22', factor: 1 }]);
+  return db;
+}
+
+function recapInput(olderHigh: number) {
+  return {
+    kind: 'PREMARKET' as const,
+    tradingDate: DATE,
+    range: RANGE,
+    checkpointId: 611,
+    facts: [
+      named({ ticker: 'NXL', assessmentRank: 1, percentChange: 70, cycle: 'YELLOW_FRONTSIDE_WARNING' }),
+      named({ ticker: 'SSM', assessmentRank: 2, percentChange: 3 }),
+      named({ ticker: 'NAMM', assessmentRank: 3, percentChange: -1 }),
+      named({ ticker: 'AMOD', assessmentRank: 4, percentChange: 61.5, referenceClose: 1.17, cycle: 'GREEN_FRESH_FRONTSIDE' }),
+      // bigger, but on the prior-session basis: not an after-hours move
+      named({ ticker: 'PRIOR', assessmentRank: 5, percentChange: 90, referenceBasis: 'PRIOR_SESSION' }),
+    ],
+    research: new Map([
+      [
+        'NXL',
+        dossier('FRESH_FOUND', 'a distribution agreement', [
+          { type: 'RECENT_OFFERING', status: 'KNOWN_ACTIVE' },
+          { type: 'WARRANTS', status: 'POSSIBLY_ACTIVE' },
+          { type: 'WARRANTS', status: 'POSSIBLY_ACTIVE' },
+          { type: 'ATM', status: 'NOT_YET_ACTIVE' },
+        ]),
+      ],
+      ['SSM', dossier('FRESH_FOUND', 'a 13D')],
+      ['NAMM', dossier('SECONDARY_STALE', 'results')],
+      ['AMOD', dossier('FRESH_FOUND', 'an MOU')],
+    ]),
+    tickers: [levelRow('NXL', 4.9, 10.98)],
+    olderHighs: new Map([['NXL', olderHigh]]),
+  };
+}
+
+describe('narrativeFacts recap v2: F10, F10b, F12b and the context', () => {
+  it('names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context', () => {
+    const db = recapStore(true);
+    const out = narrativeFacts(db, recapInput(19.2));
+    expect(out.coveredMovers).toBe(3);
+    expect(out.recapLeaders!.map((l) => l.ticker)).toEqual(['NXL', 'SSM']);
+    const nxl = out.recapLeaders![0]!;
+    expect(nxl.highPct).toBeCloseTo(156.5, 6);
+    expect(nxl.closePct).toBeCloseTo(76.4, 6);
+    expect(nxl.retention).toBeCloseTo(76.4 / 156.5, 6);
+    expect([nxl.status, nxl.summary, nxl.cycle]).toEqual(['FRESH_FOUND', 'a distribution agreement', 'YELLOW_FRONTSIDE_WARNING']);
+    expect(out.afterHours).toEqual({
+      ticker: 'AMOD',
+      percentChange: 61.5,
+      referenceClose: 1.17,
+      cycle: 'GREEN_FRESH_FRONTSIDE',
+      status: 'FRESH_FOUND',
+      summary: 'an MOU',
+    });
+    expect(out.moversWithoutFresh).toBe(1);
+    expect(out.context).toEqual({
+      ticker: 'NXL',
+      sessionHigh: 5.13,
+      close: 3.528,
+      support: 4.9,
+      resistance: 10.98,
+      olderHigh: 19.2,
+      openSupply: [
+        { type: 'RECENT_OFFERING', status: 'KNOWN_ACTIVE' },
+        { type: 'WARRANTS', status: 'POSSIBLY_ACTIVE' },
+      ],
+    });
+    expect(out.intradayNamed).toBeNull();
+  });
+
+  it('drops the older high when the daily-bar basis is not vouched, and when it is not above the session high', () => {
+    expect(narrativeFacts(recapStore(false), recapInput(19.2)).context?.olderHigh).toBeNull();
+    expect(narrativeFacts(recapStore(true), recapInput(4)).context?.olderHigh).toBeNull();
+  });
+});
+
+describe('narrativeFacts intraday v2: F10 and F13', () => {
+  it('names the leader (in-range rank 1), then the next two covered gainers by move, with allowlisted change notes only', () => {
+    const db = store();
+    const out = narrativeFacts(db, {
+      kind: 'INTO_POWER_HOUR',
+      tradingDate: DATE,
+      range: RANGE,
+      checkpointId: 606,
+      facts: [
+        named({ ticker: 'A', assessmentRank: 1, percentChange: 12, referenceBasis: 'PRIOR_SESSION', changeSummary: 'A: entered Top 12; new HOD.' }),
+        named({ ticker: 'B', assessmentRank: 2, percentChange: 30, referenceBasis: 'PRIOR_SESSION' }),
+        named({ ticker: 'C', assessmentRank: 3, percentChange: 50, referenceBasis: 'PRIOR_SESSION' }),
+        named({ ticker: 'D', assessmentRank: 4, percentChange: -60, referenceBasis: 'PRIOR_SESSION' }),
+        named({ ticker: 'E', assessmentRank: 5, percentChange: 40, referenceBasis: 'PRIOR_SESSION' }),
+      ],
+      research: new Map([['C', dossier('FRESH_FOUND', 'results')]]),
+    });
+    expect(out.intradayNamed!.map((n) => n.ticker)).toEqual(['A', 'C', 'E']);
+    expect(out.intradayNamed![0]!.changeNotes).toEqual(['printed a new high of day']);
+    expect(out.intradayNamed![1]).toMatchObject({ status: 'FRESH_FOUND', summary: 'results', basis: 'PRIOR_SESSION' });
+    expect(out.intradayNamed![2]).toMatchObject({ status: null, summary: null });
+    expect([out.recapLeaders, out.afterHours, out.context, out.splitExcluded]).toEqual([null, null, null, null]);
   });
 });
