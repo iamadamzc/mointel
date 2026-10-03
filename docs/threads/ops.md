@@ -13752,3 +13752,8 @@ forbidden boundary ships in each page's flight data, admitted board included), s
 was a BROWSER RENDER (in-app browser, refused cookie): page text = "You are signed in. This account does not open the
 board."; control, cookie cleared: /desk -> /signin, refusal not shown. Server stopped, temp store deleted. Slot -> Design.
 **SHIP 0b92c309 STARTED 2026-10-03T14:48:38Z** (Sat 10:48 ET) on his 14:35:39Z yes: base check 5/5 ok (web/research/assess 3b9c0a70, market 1b5ead66 pid 1574400 NR 0, no deploy unit); DEPLOY_TESTS_SKIP=1 (this session gated 0b92c309 ALL GREEN 233/233) RESTART_MARKET=no; box MemAvailable 2,199 MB at start, logged every 5 s.
+**14:48:43Z PREFLIGHT REFUSED, nothing shipped:** "RTH_INTERVAL is 12m away, and the services stop 2-12m after a start --
+inside its 5m protected window." On a SATURDAY, because the live release's preflight (3b9c0a70) lacks 61e2f777
+(checkpoints not guarded on weekends). Box re-read 14:49:10Z: unchanged (3b9c0a70 x3, market 1b5ead66 NR 0). No override:
+re-run scheduled for 2026-10-03T15:06:00Z (11:06 ET; admissible span ~11:04-11:12 between the 11:00 and 11:30
+checkpoints, by preflight's own rule), base check first, fresh 5 s memory watcher alongside.
