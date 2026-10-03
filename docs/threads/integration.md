@@ -1285,6 +1285,10 @@ SIGN-IN LIVE     Ops: sync-env 00:38Z (backup first; nothing erased; Google + FI
                  ssm-user (sudo NOPASSWD); only root-capable can traverse. NO EXPOSURE. Fix = Web code commit (mode on
                  create, identity.db + -wal/-shm), next ship. Corrected to him. C through nginx: HE reads it (private
                  window, desk password, before sign-in); Ops does not type the Basic-Auth password.
+CLAIM C VIA NGINX MET: HIS read, incognito + desk password, no sign-in: {"state":"anonymous"} (typed to me).
+                 He had no throwaway account and did not know the term: told him to use his tmitrader.com Workspace
+                 address (NOT seeded; only iamadamzc@gmail.com is) for B. Full steps re-sent in one block; warned /desk
+                 is not gated yet so he will see the board after the uninvited sign-in. A + B pending.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
