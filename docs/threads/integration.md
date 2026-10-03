@@ -1289,6 +1289,11 @@ CLAIM C VIA NGINX MET: HIS read, incognito + desk password, no sign-in: {"state"
                  He had no throwaway account and did not know the term: told him to use his tmitrader.com Workspace
                  address (NOT seeded; only iamadamzc@gmail.com is) for B. Full steps re-sent in one block; warned /desk
                  is not gated yet so he will see the board after the uninvited sign-in. A + B pending.
+CLAIM B MET:     HIS read, incognito, signed in with his tmitrader.com Workspace address (uninvited): {"state":"refused"}.
+                 Claim A: in his normal browser /signin "logs me in on the desk login and the dashboard shows"; signin
+                 page has NO redirect (3b9c0a70:app/signin/page.tsx, read), likely browser autocomplete. Sent him the
+                 direct link /auth/start/google (the button's href, page.tsx:116). A pending.
+NOTICED (Web, not tonight): signin page footer mails info@andromedagenius.com (page.tsx:172). Ask Web if intended.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
