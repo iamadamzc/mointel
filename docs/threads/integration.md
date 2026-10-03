@@ -1070,6 +1070,14 @@ STEP 1 SHIP      Ops: box keys GOOGLE_SHEET_ID / _SERVICE_ACCOUNT_EMAIL / _PRIVA
 DESIGN ROW B     v6 report surface tag design/reports-v6-surface-gated-5c95c92e -> 5c95c92e (on research/reports-v6 b8719e7c,
                  NOT production), Design-gated 229 / 3,319. MY REPLAY OWED before any cut; trigger = his reaction to the
                  four first-look renders (sent by the 23rd) / the v2 narrative. Not urgent.
+STEP 1 SHIP YES  His yes 17:08:23Z (Ops 1bb7c763); gate ALL GREEN 235/235 + build (cc27b5da); deploy 13:34 ET. /proc after owed.
+RESEARCH START   Research (local_ab66f9f3) was blocked on "wait for the new Integration chat" (its NEEDS YOU to him). Sent live
+                 state (9bf0e009) + process call: start step 1 (released by the 23rd; no spend; stop if he says stop).
+                 Started: research/reports-v6 @ 32eda8d4 in A:/mointel-v6; diff to me before step 2. Corrected its "Sheet
+                 steps 3+ not mine": plan Owners table gives it step 3 research reads + float source, and step 7.
+HIS STATUS ASK   Answered (live / shipping / built-not-live / approved-not-built / hold). NEEDS YOU: Sheet decisions 1 + 2,
+                 delete A:\mointel-scratch (READ: still present, 4,892,938,240 bytes). 61e2f777, f1b8b716, 6ac43025 NOT
+                 ancestors of f5746a84 (read).
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
