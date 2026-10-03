@@ -966,7 +966,75 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; the commit that lands this is its time)
+## LIVE STATE: AT THE TWENTY-THIRD SEAT'S HAND-OFF (2026-10-03, on his "yes" to the hand-off after ledger 4; snapshot read 2026-10-03T16:05:39Z)
+
+*A SNAPSHOT. RE-READ PRODUCTION before acting (ask Ops-tmi for /proc). The 23rd's running notes (search "THE TWENTY-THIRD
+SEAT'S RUNNING NOTES") carry every verification; where they disagree with this, the later note wins. NO EM DASHES in
+anything he reads.*
+
+### PRODUCTION (Ops /proc 2026-10-03T15:23:44Z; re-read)
+```
+WEB/RESEARCH/ASSESS  0b92c30980bded5c70b62e4035aaa609210760a1 (web 1999484 / research 1999542 / assess 1999611, start 15:22:51-52Z, NR 0)
+                     = 3b9c0a70 + Google sign-in ENFORCED on /desk and data APIs (refusal screen NotAdmitted, 403) + blue-sky fix
+                     + two test-only fixes. Desk password (Basic Auth) STILL ON. /api/dashboard deliberately ungated (market
+                     worker reads it over loopback). His ship yes 14:35:39Z in Ops's chat.
+MARKET               1574400 on 1b5ead66 (since 2026-09-30T00:15:40Z), NR 0. Restart pending (below).
+SIGN-IN              seeded iamadamzc@gmail.com only. Sessions end at the next 20:00 ET (lib/auth/expiry.ts).
+```
+
+### WAITING ON HIM
+```
+MARKET RESTART   f5746a84974cb9dcd9badb6158813b21fe5e84fa (Ops ops/split-day-close): split-day prior close restated from Alpaca's
+                 corporate-actions list (11 of 12 measured cases; unlisted splits uncovered). Cone from 1b5ead66 = 129 commits,
+                 ONLY dff3fb0a + f5746a84 change market-worker behaviour (Ops by-surface trace, verified here). Approved by literal
+                 sha here. Ops gate ALL GREEN 234/234 (16:06:02Z, watcher clean). HIS YES 16:05:20.302Z (Ops's chat). Deploy is
+                 full (web etc. restart ~2 s); market ~3 min to SIP live (measured 09-29: 2m41s). Weekend slot :03-:13 / :33-:43
+                 (box preflight lacks 61e2f777). SCHEDULED 16:34:00Z (12:34 ET). Ops reports /proc, a [splits] line, SIP live.
+SHEET PLAN       docs/sheet-removal-plan-2026-10-03.md. HIS TWO DECISIONS OPEN: (1) float source (a: filed share count labelled,
+                 recommended; b: vendor; c: own float); (2) second table + Priority (a: remove, recommended; b: keep w/o grades).
+                 Step 2 DONE (no field flagged, n=3). Step 1 (Design: no demo rows when Sheet absent) needs no decision.
+DELETE COPY      A:\mointel-scratch\ (4.9 GB scratch db); his to delete (a Claude Code safety check blocked Research).
+ANTHROPIC KEY    ANTHROPIC_API_KEY in .env.local for the Claude arm of the writer comparison (his).
+```
+
+### IN FLIGHT (owner -> next)
+```
+v6 NARRATIVE     Research (local_98e3e9a1) building the v2 narrative (proposal docs/research/reports-v6/narrative-redesign-
+                 proposal.md; his rulings: fold his editor-prompt approach; separate labeled AH line on premarket; intraday
+                 lighter; whole % in narrative; Claude comparison yes). Build released by me (his "do the claude comparison"
+                 read as yes; he said yes to hand-off after, no stop). Comparison arms luna / terra / Claude Sonnet 5.5 /
+                 Claude Opus 5.5 low effort, ~$3, priced before run; Claude adapter = raw HTTP in the harness ONLY (no package).
+                 Then samples to him again (Design renders; check hover text; scan every string for U+2014 + citation tokens).
+SPLIT FIX        above (restart). Research reviewed. v6 recap's raw previous_close read gets the same fix inside the narrative build.
+```
+
+### APPROVED, NOT BUILT / NOT SHIPPED (owner -> trigger)
+```
+NEXT ORDINARY RELEASE (Ops cuts on /proc, replay here): 61e2f777 (weekend preflight guard), identity-store mode pair
+                 f1b8b716 + 6ac43025 (Web; approved), ticker-source-id citation fix (Research; approved; RPGL "[1043]" on board).
+SHEET STEPS      3-7 after his decisions (plan doc owners). /api/dashboard gated in step 4's release (Web).
+BASIC-AUTH-OFF   own night, preconditions: /api/research/retry rate limit (Ops+Web, unassigned); /api/dashboard gated
+                 (after Sheet step 4); ^~ /auth/ exemption; claim D test.
+SI LABEL         HOLD (Ortex look: FINRA label reads low on crowded movers). Pre-registered matched-date comparison is the
+                 only path back; needs Commercial's read of Ortex terms + his yes.
+WORKER LOG       worker/runtime.ts refreshSheetSymbols silent `if (!response.ok) return;` should log (moot after Sheet step 4).
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_7fac8dfc   Research-tmi local_98e3e9a1   Design-tmi local_82749387   Web-tmi local_46c15fbe
+Marketing-tmi local_fdc0aa9a   Commercial-tmi local_2ce868d2.  THIS seat local_54f1341f retires on his rename.
+His rule today: local runs open again, ONE heavy run at a time in Ops's queue; seats ask Ops for the slot before any test.
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc after the 16:34Z market restart (f5746a84); confirm the [splits] line. Then his two Sheet decisions,
+the v6 narrative samples when Research has them. This seat's failure, four times: a value passed on before READING the
+record it describes (vendor behaviour, a git listing, a code search, a measured duration).
+```
+
+## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
 
 *A SNAPSHOT. Every time is a transcript timestamp, a commit time, or a peer's stated reading. RE-READ PRODUCTION before
 acting (ask Ops-tmi for /proc). The 22nd's running notes (search "THE TWENTY-SECOND SEAT'S RUNNING NOTES") carry every
@@ -1475,6 +1543,11 @@ RESTART APPROVED f5746a84974cb9dcd9badb6158813b21fe5e84fa (dff3fb0a + Research's
                  alpaca.ts 0 commits; runtime.ts + engine.ts only dff3fb0a; f5746a84 splitRestate only; claimStoreForMode no
                  clear on LIVE->LIVE. Conditions: clean gate on this sha; HIS yes in Ops's chat (plain-word ask sent); outside
                  07-10 ET; after: /proc, [splits] log, Monday spot check. dff3fb0a's gate void (Ops's own overlap).
+                 Ops f5746a84 gate ALL GREEN 234/234, 3,395 tests, tsc 0, lint 0, watcher clean (16:06:02Z). HIS RESTART YES
+                 16:05:20.302Z in Ops's chat ("yes"), to the ask naming f5746a84 with the measured ~3 min. Deploy
+                 RESTART_MARKET=yes scheduled 16:34:00Z.
+HAND-OFF         HIS "yes" (typed to me) to the hand-off after ledger 4. LIVE STATE AT THE TWENTY-THIRD SEAT'S HAND-OFF written;
+                 22nd's archived; opening prompt rewritten. Ledger closed at 4.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
