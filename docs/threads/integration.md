@@ -1378,6 +1378,12 @@ v6 COLA TESTED   Research (new seat) 04ca7496 + e074521a: desk 29 files / 399 pa
 HIS YES (Research) "yes to both" (Research's session local_98e3e9a1, his turn just after 14:44Z, per Research): ~$0.05
                  PREMARKET v6 re-run (harness c035cddc first) AND Sheet step 2 (4.9 GB scratch copy, $15 cap, prereg
                  4a0f65c1). Both wait on Ops's slot (Ops's ship gate first).
+0b92c309 GATE   ALL GREEN 233/233, tsc 0, lint 0, watcher clean; build rc 0; pre-ship read met (403 digest
+                 NEXT_HTTP_ERROR_FALLBACK;403, anon 307 /signin, admitted 200; decided by in-app browser render with a
+                 cleared-cookie control, since NotAdmitted text sits in every body's flight data). Ship base check 5/5
+                 14:48:38Z, but the BOX PREFLIGHT REFUSED: weekend checkpoint guard (live preflight lacks 61e2f777),
+                 RTH_INTERVAL 12 m away. Nothing shipped. Re-run 15:06:00Z (11:06 ET), no override. The 61e2f777 gap
+                 recorded earlier is what bit; it rides the NEXT ordinary release.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
