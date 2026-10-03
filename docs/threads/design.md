@@ -587,6 +587,12 @@ probe came before any edit, as the ledger says it must.**
 | Sent a Sheet-removal note to Web by its id from earlier in this session; that seat had retired ("Web-tmi-retired"). The opening prompt's own rule: find seats by TITLE each time, never reuse an id | STALE-ID-ROUTING (opening prompt rule) | Yes, a written rule; first time this seat | Self, from the delivery line naming the retired title; resent to local_46c15fbe |
 | At hand-off, a Write to docs/design-opening-prompt.md was refused (not read this session) in the same batch as the commit, so the OLD prompt was committed (a151128a) | TOOL-RESULT-UNREAD-IN-BATCH | No, first this seat | Self, reading the batch results before telling anyone; rewritten at 75101d18 |
 
+**Eighth seat (`local_82749387`), opened 2026-10-03 14:16 UTC (zoneinfo read 14:16:22Z).**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Began from the opening prompt in the shared `A:\mointel` tree, which is 15 commits behind origin and held the SIXTH seat's 10-01 prompt; origin held the seventh seat's 10-03 rewrite (75101d18). Steps 1 and 2 were the same in both, so nothing was acted on from the stale copy | STALE-LEAD-AS-SOURCE (the first seat's class, in this charter) | Yes, a charter class; first time this seat | Self, from `git log origin/main` before step 3. **He pastes a path into the shared tree; that copy can lag origin. Read the prompt from `origin/main` first** |
+
 **Render method that worked (for the next seat):** a `--require` clock shim in `NODE_OPTIONS` (`DESIGN_FAKE_NOW`) on the temporary `design-local` launch entry puts the local store's 2026-08-18 session on the DAY board at 14:45Z and on the evening board at 22:00Z; the hidden pane stops the poll, so for a local render only override `document.hidden`/`visibilityState` and dispatch `visibilitychange`.
 
 ## Where the rest of the record is
