@@ -13549,3 +13549,16 @@ snapshot instant); file written 00:19Z; finished 00:36:37Z; 1,456.7 s; integrity
 sha256 9f0efa03bc926f778806abc18a6cbe5a4f361aa0d6e726c433012e4dd5961eef. io pressure ~51% during the integrity phase.
 Box copy /var/lib/mointel/backups/manual-research-20261003.db; download to data/market-prod-2026-10-02.db AFTER tonight's
 release, verify sha256, then delete the box copy. Stray judge loop stopped itself 00:06:40Z.
+**SIGN-IN NIGHT, 2026-10-03 00:38-00:55Z (20:38-20:55 ET Fri), on his "yes to all three" + seed word, both in this chat:**
+- sync-env 00:38Z: box env backed up first (mointel.env.bak-20261003T003833Z); key names none erased, added
+  FINRA_API_CLIENT_ID/_SECRET, GOOGLE_CLIENT_ID/_SECRET. Loaded lengths via EnvironmentFile (stdin script; an unset-var
+  control reads 0; my first quoting attempt printed blanks and was discarded): 13/20/35/72; LEVELS_REFRESH_ENABLED=1 kept.
+- SHIP 3b9c0a70ef050be3261107bc70956d9daba62e4a (gated 231/231 this session; Integration-approved by literal sha): base-check
+  28c66f14 x3 + market 1b5ead66, launched 00:39:12Z, quick_check 746.6 s, down 2 s, unit deactivated, mem peak 1.5G.
+  /proc 00:54Z: web 1944898 / research 1944955 / assess 1945033 on 3b9c0a70, NR 0; market 1574400 on 1b5ead66, NR 0.
+- SEED 00:54:16Z: allowlist.ts invite iamadamzc@gmail.com --authority "Seed iamadamzc@gmail.com as the first allowed
+  address." -> list: 1 row, 1 can sign in. identity.db owner mointel, MODE 644 (world-readable: finding, to Web).
+- PROBE ON 00:54:34Z: env backup -preprobe, AUTH_PROBE_ENABLED=1 appended, web-only restart (up in ~1 s, NR 0, market
+  untouched). Claim C read on the box at 127.0.0.1:3000 (the app behind nginx, no Basic Auth there): {"state":"anonymous"}
+  200; control / 200. A (admitted) and B (refused) wait on his sign-ins in his browser.
+- Snapshot download to data/market-prod-2026-10-02.db (gitignored by /data/) started 00:5xZ, resumable by tail -c +N.
