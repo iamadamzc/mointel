@@ -1298,6 +1298,11 @@ CLAIM A MET:     HIS read, normal browser, iamadamzc@gmail.com via /auth/start/g
                  ALL THREE (A admitted, B refused, C anonymous) MET through nginx from his browser. Ops: probe OFF due
                  (box read from 127.0.0.1 + his one browser read). Web: step 4 may be WRITTEN (01455d93 + wiring on
                  3b9c0a70), sha to me. CLAIM D (password-less stranger) NOT tested, by construction.
+PROBE OFF        Ops 02:50:54Z (his reads verified at his turns in 24ec00be: 02:40:41Z / 02:47:44Z / 02:49:59Z): env
+                 line removed (backup -preprobeoff), web-only restart 02:50:55Z. Box read 127.0.0.1:3000: /auth/probe
+                 404 empty, / 200. /proc 02:51Z: web 1952351 / research 1944955 / assess 1945033 on 3b9c0a70, NR 0;
+                 market 1574400 on 1b5ead66, NR 0. His browser 404 read asked. NEXT: probe-removal commit + Web's gate
+                 wiring cut, each own gate + his yes.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
