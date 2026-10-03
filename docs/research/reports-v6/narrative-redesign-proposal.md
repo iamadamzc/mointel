@@ -34,12 +34,15 @@ For the 10-01 recap (checkpoint 611, 12 covered names, 11 with a dossier):
 - **Per covered name, stored:** move (percent change), catalyst summary (text), grade (`catalystGrade`), whether the news fits the move (`plausiblyExplainsMove`), fresh / older / none found, event time.
   - Grades: 1 STRONG, 2 LEGITIMATE_POSITIVE, 5 MODERATE_MIXED_SECONDARY, 2 WEAK_NEGATIVE_DILUTIVE, 1 UNKNOWN.
   - Fits the move: 7 yes, 2 no, 2 unknown.
-  - Top movers among covered: AMOD +61.5%, SORA +27.9% (a non-binding MOU with Plume on an Asian joint venture), SSM +18.6%.
+  - ~~Top movers among covered: AMOD +61.5%, SORA +27.9% (a non-binding MOU with Plume on an Asian joint venture), SSM +18.6%.~~ **WRONG FRAME, struck:** those are checkpoint 611's `percent_change`, whose basis at the 22:00 recap is TODAY'S CLOSE (the after-hours move), not the day. On the day (`rth_final_*` vs `previous_close`) AMOD closed -23.9%.
+  - **The day's 50 percent movers (high at least 1.5x the prior close), in range, 9:** NXL (high +156.5%, close +76.4%), SSM (+130.3, +96.9), VEEA (+88.0, +59.9), SDEV (+75.3, +41.2), MEDS (+71.6, +27.4), WFCF (+70.0, +17.6), NAMM (+61.7, +35.1), AISP (+53.8, +19.4), EJH (+52.8, +26.1). **Covered by the desk: 5 of the 9** (NXL, SSM, NAMM, AISP, EJH), all with fresh news found.
 - **Across checkpoints, stored:** the day's earlier checkpoints (592 to 610), so "new since this morning" and "dropped since this morning" are computable.
 - **NOT available:**
   - Sector: `issuer_registry.sic_description` is empty for all 1,215 issuers (the SIC writer is unshipped, branch `research/sic-write`).
   - Catalyst-type themes: `catalystType` is coarse; all 7 fresh names on 10-01 are `NEWS_DRIVEN`.
   - A theme from the summaries would be a model judgment the checker cannot trace, so it is not proposed.
+
+**A data note found here, not for this build:** WCT's 10-01 close reads -79.9% against a high of +2.0%, which looks like an unadjusted reverse split in `previous_close`; it counts in the recap's "down" breadth. Not measured further.
 
 ## Proposed sheet (the facts), for Marketing's examples to confirm
 
@@ -58,7 +61,7 @@ Added (all computed from stored values, each traceable by the checker):
 
 | Fact | Content | Kinds | Checker trace |
 |---|---|---|---|
-| F10 leaders | Up to 3 covered names by move: ticker, move, and the catalyst summary to restate in one clause (or "no catalyst found in our sources") | all (intraday: the leader plus up to 2) | number to the fact; clause to that name's dossier summary, as lines are traced today |
+| F10 leaders | Recap: the covered names among the day's 50 percent movers, ordered by the day's high, up to 3, each with its high and close percent ON THE DAY (`rth_final_*`, never the checkpoint's `percent_change`, which at the recap is the after-hours move) and its catalyst summary to restate in one clause; plus how many of the movers the desk covers. Intraday: the leader plus up to 2 by rank, on the checkpoint's stated basis | all | number to the fact; clause to that name's dossier summary, as lines are traced today |
 | F11 grade mix | Counts of covered names by grade, in the tag's words (positive / mixed / negative / strong / unknown) | all | count to the fact |
 | F12 fit | How many covered names' news fits the move, and how many it does not | all | count to the fact |
 | F13 change | Names new to coverage and names dropped since the reference checkpoint (recap: since the 07:00 premarket checkpoint; intraday: since the previous checkpoint) | all | tickers to the fact |
