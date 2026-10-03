@@ -1359,6 +1359,17 @@ v6 TAG FIX      Research 0d4f797e (reportTags cleans the dossier at input like r
                  Research CONFIRMED the A:\mointel-v6 releaseRetention runs during Ops's gate were its own; its flagged
                  timeout likely its own load. Correction sent to Ops. Research now asks Ops for the slot before ANY test.
                  Hover scope already covered by 0d4f797e (whole dossier cleaned once); explicit risk.detail fixture coming.
+OPS TIMING FIX   a50f5948 gate ran 14:07:57-14:12:43Z after 20 s idle; Research's 14:16:43Z run overlapped Ops's SOLO rerun,
+                 not the gate (Ops logs). fb50e2ff gate RED 232/233: only releaseRetention :323 30 s timeout; clean solo rerun
+                 PASSES in 24.95 s (budget 30). Root: main's f869ee0d (09-28, test-only) never reached the release line.
+FINAL CANDIDATE  0b92c30980bded5c70b62e4035aaa609210760a1 (ops/step4-ship, Ops cut) = fb50e2ff + f869ee0d (patch-id 921d4757f803,
+                 read). FULL CONE over 3b9c0a70 = 10 approved commits, 0 merges (read). REPLAYED + APPROVED. Conditions carry.
+                 GAP (not this ship): release line's preflight.sh lacks 61e2f777 (weekend checkpoint guard) -> next ordinary.
+COLA             Research: grouping fix 04ca7496 (board's freshness verdict taken once at input; COLA -> OLDER NEWS). PREMARKET
+                 needs one model run (~$0.05; his yes, asked by Research, NOT given as of the old seat's last turn).
+RESEARCH HANDS OFF On his word. New seat local_98e3e9a1 (Research-tmi, created 14:29:43Z; get_session). Old local_5f4bfcf8
+                 renamed "Research-tmi (retired 2026-10-03)", archived. Briefed (8fec1df7): spend not given; ship candidate
+                 moved; Sheet decisions open; SI hold; slot via Ops.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
