@@ -1,0 +1,78 @@
+{
+  "spentUsd": 1.6787,
+  "largestUsd": 0.2346,
+  "rows": [
+    {
+      "ticker": "NAUT",
+      "arm": "WITH-1",
+      "outcome": "PARTIAL",
+      "costUsd": 0.0624
+    },
+    {
+      "ticker": "NAUT",
+      "arm": "WITHOUT-1",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.0597
+    },
+    {
+      "ticker": "NAUT",
+      "arm": "WITH-2",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.0568
+    },
+    {
+      "ticker": "NAUT",
+      "arm": "WITHOUT-2",
+      "outcome": "PARTIAL",
+      "costUsd": 0.0612
+    },
+    {
+      "ticker": "RETO",
+      "arm": "WITH-1",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.213
+    },
+    {
+      "ticker": "RETO",
+      "arm": "WITHOUT-1",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.1933
+    },
+    {
+      "ticker": "RETO",
+      "arm": "WITH-2",
+      "outcome": "PARTIAL",
+      "costUsd": 0.0697
+    },
+    {
+      "ticker": "RETO",
+      "arm": "WITHOUT-2",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.2346
+    },
+    {
+      "ticker": "VEEA",
+      "arm": "WITH-1",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.2324
+    },
+    {
+      "ticker": "VEEA",
+      "arm": "WITHOUT-1",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.2209
+    },
+    {
+      "ticker": "VEEA",
+      "arm": "WITH-2",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.0526
+    },
+    {
+      "ticker": "VEEA",
+      "arm": "WITHOUT-2",
+      "outcome": "ACCEPTED",
+      "costUsd": 0.222
+    }
+  ]
+}
