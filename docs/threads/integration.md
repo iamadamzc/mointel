@@ -1343,6 +1343,11 @@ DESIGN HANDS OFF On his yes. LIVE STATE origin 9a880961; prompt 75101d18. Succes
 NEW DESIGN SEAT  local_82749387 (Design-tmi, created 14:15:58Z; get_session). Sent: AR approved (22nd) + LIVE; ladder LIVE
                  (both ancestors of 3b9c0a70, read); blue sky NOT shipped, rides a50f5948; v6 hold stands; render only
                  Research's post-fix sha; 54e2a407 is the predecessor's ungated surface tip; Sheet plan steps 1 + 3.
+a50f5948 GATE   RED 230/233 (Ops, 14:07:57-14:12:43Z; tsc 0, lint 0). Nothing shipped. (1) requestGate structural test fails
+                 on this PC's CRLF checkout (proven: 7/7 with LF; blob LF): TEST defect, Web fixes as one commit on top;
+                 needs my literal-sha replay. (2) migrationConcurrency EPERM: 6/6 alone, load. (3) releaseRetention timeout;
+                 "alone" run not clean (his CPU ~60%; someone ran releaseRetention from A:\mointel-v6 at 14:16:43Z
+                 during it). Slot to Design meanwhile; Ops re-gates the new tip after.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
