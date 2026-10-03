@@ -13742,3 +13742,12 @@ lib/db, lib/market/store or package*: no schema change, no market restart. Gate 
 0b92c309: sign-in (Web's wording, desk password stays on, market worker untouched) + blue sky (22 board names), shipped
 only after a clean gate on 0b92c309. Stop conditions: red gate, failed or rolled-back deploy, /proc not as expected,
 any market restart, MemAvailable < 300 MB during the build, a failed live read (then roll back to 3b9c0a70).
+**GATE 0b92c309: ALL GREEN 233/233 (pre-registered 233)**, 3,374 tests, tsc 0, lint 0 errors / 6 warnings, 14:43:07-14:45:45Z
+suite (test-gate.sh rc 0). Watcher: no foreign node process during it; CPU 7-100%.
+**BUILD** `next build` in A:\mointel-build at 0b92c309: rc 0, 14:45:55-14:46:38Z.
+**PRE-SHIP 403 READ** (next start 127.0.0.1:3107, temp identity store seeded with one uninvited + one invited session):
+/desk refused = 403, digest NEXT_HTTP_ERROR_FALLBACK;403; anonymous = 307 -> /signin; admitted = 200 (board headings Focus /
+Discovery / Desk Events); /api/market refused 403, anonymous 401. CAUGHT: the NotAdmitted headline is in EVERY body (the
+forbidden boundary ships in each page's flight data, admitted board included), so string presence proves nothing. Decider
+was a BROWSER RENDER (in-app browser, refused cookie): page text = "You are signed in. This account does not open the
+board."; control, cookie cleared: /desk -> /signin, refusal not shown. Server stopped, temp store deleted. Slot -> Design.
