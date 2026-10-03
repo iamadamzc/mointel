@@ -1454,6 +1454,11 @@ HIS RULINGS (Research's chat, 15:44:11Z, per Research, verbatim): "intraday defi
 CLAUDE ADAPTER   ORDER CALL: comparison uses a raw HTTP Messages API call inside the harness only (no package.json/lockfile
                  change, no shared node_modules install, nothing production imports). SDK (@anthropic-ai/sdk) only if he
                  adopts a Claude writer, as its own reviewed cut. Research's build plan: proposal main ccceafa2, six steps.
+SPLIT FIX DESIGN Ops measured: Alpaca /v1/corporate-actions lists 11 of 12 confirmed cases on ex_date with ratios, published
+                 ahead (Mon 10-05 splits listed today); RFAI absent. Design: read splits at baseline load + before 04:00 ET;
+                 rebuild those baselines from RAW bars by ratio (previousClose + RVOL denominator), no double adjustment (NIVF
+                 09-01 control). MY "UNVERIFIED on standard ratio" fallback WITHDRAWN (Ops: hides genuine 2x-5x runners =
+                 board behaviour, his). Residual: unlisted splits (RFAI) uncovered, to be stated. Research reviews; restart his.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
