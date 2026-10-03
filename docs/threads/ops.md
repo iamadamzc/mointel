@@ -13541,3 +13541,11 @@ Cure for the first: the unpushed-commits check and the push run in ONE command, 
   docs/ops/finra-coverage-2026-10-02.md at 91caa2f3 (49/50 board names; NASDAQ 36/37, NYSE 11/11, AMEX 2/2; GOW absent).
 | pushed my commits via a side worktree from origin/main when peers' commits sat on local main; each left a duplicate on local main (dc3bff07 = 038ce171, 1f6feddd = 91caa2f3) that the next plain push carries | side-route-push-duplicates | no | peer (Integration), harmless (content-identical) |
 Cure: docs-only commits wait on local main and go up by the normal route when `git log origin/main..main` is only mine (or after peers push). A side worktree only for something that cannot wait, and then say so.
+
+**2026-10-03 00:12-00:38Z (20:12-20:38 ET Fri): market.db snapshot for Research, on his "yes, snapshot" in this chat.**
+Judge final logged first (00:05:13Z); committed 7c689e7b; graded PASS AS REGISTERED by Research/Integration (479d3cfc).
+snapshot-db.mjs (VACUUM INTO) as a detached unit mointel-snapshot-research, User=mointel: started 2026-10-03T00:12:20Z (the
+snapshot instant); file written 00:19Z; finished 00:36:37Z; 1,456.7 s; integrity ok; schema 28; 4,892,807,168 B;
+sha256 9f0efa03bc926f778806abc18a6cbe5a4f361aa0d6e726c433012e4dd5961eef. io pressure ~51% during the integrity phase.
+Box copy /var/lib/mointel/backups/manual-research-20261003.db; download to data/market-prod-2026-10-02.db AFTER tonight's
+release, verify sha256, then delete the box copy. Stray judge loop stopped itself 00:06:40Z.
