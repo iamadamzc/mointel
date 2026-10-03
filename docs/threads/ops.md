@@ -13698,3 +13698,19 @@ tests), nothing in deploy/lib-db/worker/package; 0 U+2014 in 334 added lines (Py
 group B, 207 names with an unknown factor (8 on board), deliberately not fixed. PRE-REGISTERED GATE ON a50f5948: 233/233
 test files, tsc 0 errors, lint 0 errors, next build rc 0, then the pre-ship 403 read (03:18Z entry). Waits on his yes.
 Fallback: step 4 fails -> the four picks re-pick onto 3b9c0a70 alone.
+
+**2026-10-03 14:04-14:20Z (Sat 10:04 ET).** HIS LIFT (verified: Integration transcript 24ec00be, queued_command, origin
+human, 14:04:15.842Z): "tell everyone if they need to run anything its open." One full gate or build at a time still holds.
+**GATE a50f5948: RED 230/233** (test-gate.sh 14:07:57-14:12:43Z; typegen ok, tsc 0, lint 0 errors; suite 3 failed / 3371
+passed of 3374; it waited behind a desk vitest started 14:04:36Z). Nothing shipped. Pre-registered was 233/233.
+1. tests/auth/requestGate.test.ts "every handler in app/api/ except health calls the gate first": TEST DEFECT, proven.
+   Its regexes need `{` then LF; this PC checks out CRLF (core.autocrlf=true; .gitattributes text=auto). Python: blob 0 CR /
+   47 LF, working copy 47/47. In A:\mointel-build at a50f5948: fails as checked out; 7 route.ts files converted to LF ->
+   7/7 pass; restored (0 changed). Fix to Web: normalize CRLF before matching, one commit on a50f5948, new literal sha.
+   (A grep -c of CR on the blob read 47 once and 0 once; Python is the instrument of record here.)
+2. tests/market/migrationConcurrency.test.ts EPERM on market.db.migrate.lock: alone 6/6 in 2.20 s (14:17Z). Load.
+3. tests/desk/releaseRetention.test.ts: suite = "keeps the active and pinned releases" timed out at 30 s; alone (14:14:03-
+   ~14:17Z) the pruning test passed and the :323 weekday-window test timed out. That run was NOT clean: CPU ~59% from
+   other programs, and a releaseRetention run from A:\mointel-v6 started 14:16:43Z (not this seat). Not attributable.
+SLOT: handed to Design (new seat local_82749387; local_dfce21d4 retired ~14:15Z) for its predecessor's three items; this
+seat re-gates the fixed tip after Design releases and Integration approves it.
