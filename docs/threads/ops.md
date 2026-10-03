@@ -13731,3 +13731,7 @@ absent from 3b9c0a70 history). f869ee0d applies cleanly on fb50e2ff (test-only).
 fb50e2ff + f869ee0d. 8a47e1cf not needed on this line (its preflight lacks 61e2f777; those tests passed Saturday).
 FACT: deploy/aws/preflight.sh on the release line differs from main by 39 lines (61e2f777 absent): the older preflight ships.
 SLOT: Research replaced (local_5f4bfcf8 -> local_98e3e9a1); new Research offered the slot in the gap before approval.
+**CUT 0b92c30980bded5c70b62e4035aaa609210760a1** (branch ops/step4-ship, on Integration's order call): fb50e2ff + cherry-pick
+-x f869ee0d; patch-id 921d4757f803 equal; diff vs fb50e2ff = tests/desk/releaseRetention.test.ts +5/-1 only. Sent for
+replay. Gate pre-registered: 233/233, tsc 0, lint 0 errors, build rc 0, pre-ship 403 read; watcher on.
+Integration recorded separately (not this ship): release line's preflight.sh lacks 61e2f777, a next-ordinary-release candidate.
