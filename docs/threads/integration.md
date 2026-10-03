@@ -1320,6 +1320,8 @@ NEW OPS          local_7fac8dfc (Ops-tmi, A:\mointel, created 03:05:21Z; get_ses
 HIS RULE (typed to me, 2026-10-03 ~03:1xZ by transcript): "ive got some other heavy stuff running on teh computer right
                  now. so if any one needs to run anuythign locally lmk first". Sent to Ops, Design (holds heavy slot),
                  Web, Research, Marketing, Commercial: no gate/build/test/script on this PC without asking him first.
+                 LIFTED (his word, typed to me 2026-10-03): "tell everyone if they need to run anything its open." Sent to all
+                 six seats; one full-suite gate/build at a time still, Ops's queue.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
