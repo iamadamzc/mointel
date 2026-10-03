@@ -1351,6 +1351,9 @@ SHEET PLAN       docs/sheet-removal-plan-2026-10-03.md (0009301e). Inventory: Ex
                  (c) own float. Second table + Priority: (a) remove, rec; (b) keep without Priority). Steps 1-7 with owners;
                  step 1 (no demo rows) can start now (Web/Design settle lib/data owner). Sent him the file; seats pointed.
                  His recap prompt = docs/After-Hours Momentum Recap.md (untracked, his).
+                 DESIGN OWNS step 1 (lib/data/, no-demo-rows) and step 3's surface; NOT STARTED. Design has put a hand-off
+                 of its seat to him (its repeat class: generated-backslash), after the report-window gate. Step 1 needs no
+                 decision of his; needs his yes for local tests.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
