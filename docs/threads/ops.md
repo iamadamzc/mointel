@@ -13804,3 +13804,8 @@ what the market worker does (corporate-actions read at baseline load before the 
 first-print verdicts; writes rvol_baseline rows only; fails open). v28 DDL idempotent; the mode clear runs only on a mode
 change (LIVE->LIVE does not). Repo reads changed have no caller in the value cone; upsertMinuteBars byte-identical. Movers
 config parsed but never read by the worker. Pins and sheet code untouched. No flags in the market cone.
+**HIS MARKET-RESTART YES, in THIS session, 2026-10-03T16:05:20.302Z (origin human): "yes"**, to the NEEDS YOU item naming
+f5746a84: restart the market worker today to ship the split-day fix, once its gate passes clean; ~3 min to live (measured
+2m41s at the last restart), Saturday so nothing missed; site ~2 s; deploy ~15 min. Plan: full deploy of f5746a84 with
+RESTART_MARKET=yes in the 12:33-12:43 ET preflight slot (16:34Z), base check (web/research/assess 0b92c309, market 1b5ead66)
+first. After: /proc, a [splits] log line, SIP live, health; Monday spot check on one listed split name.
