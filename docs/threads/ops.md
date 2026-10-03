@@ -13813,3 +13813,17 @@ first. After: /proc, a [splits] log line, SIP live, health; Monday spot check on
 **16:07Z Integration (23rd, local_54f1341f) RETIRING on his yes.** Post-restart report goes to the NEW Integration-tmi (find by title). Local main: 23 behind origin, 120 unpushed (Integration 50, Research 38, Ops 25, Web 7): NOBODY pushes it blind; the next push is the new Integration's, after a merge.
 **Research's mutants on f5746a84** (detached A:\mointel-splitrev, removed): predicted/killed M1 1/0 SURVIVED, M2 1/1, M3 1/5, M4 4/4, M5 1/1, M6 1/3. M1 (restate a bar ON an earlier split's ex-date, <= vs <) = TEST GAP, code right. VERDICT: approve f5746a84. FOLLOW-UP, owner Ops, trigger: after today's restart is verified: one fixture (cumulative case, a bar dated on the 1:3's ex-date gets only today's ratio); rides the next ordinary release, no restart of its own.
 SLOT 16:14Z: Design released. Sheet step 1 = a4f75aab (tag design/sheet-step1-on-0b92c309, 1 commit on 0b92c309): Design's gate 234/234 declared and met, 3,377 tests, lint 0 errors, build 0, typecheck 0 (Design's report, not re-run here). Next ordinary release after Integration's replay; no restart. NOTE for that release: it is on 0b92c309, production will be f5746a84 after today's restart, so the next cut must carry both.
+**f5746a84 LIVE ON ALL FOUR, MARKET WORKER RESTARTED (his 16:05:20Z yes).** Deploy unit mointel-deploy-f5746a84-163448
+(launched ~16:34:48Z after base check 5/5 and preflight "clear of every checkpoint" at 12:34 ET); follower timed out rc 8
+16:49:53Z as usual; journal "[deploy] deployed f5746a84...", "services were down for 3s". /proc 16:51:21Z: web 2013406 /
+research 2013463 / assess 2013537 / market 2013616 (child 2013636), all cwd f5746a84974cb9dcd9badb6158813b21fe5e84fa,
+started 16:50:20-21Z, NR 0. Market was 1574400 on 1b5ead66 since 2026-09-30 00:15:40Z. Pins unchanged. Health ok, schema 28.
+MARKET STARTUP: "[demand] 13196 baselines loaded for 2026-10-05, 241 to build" / "235 built"; "[splits] 7 split(s) listed
+for 2026-10-05"; restated: CMND 8:1 0.715 -> 5.72, GUTS 12:1 0.4066 -> 4.8792, SCNX 25:1 0.1588 -> 3.97, VIVK 15:1 0.3096 ->
+4.644, VTAK 10:1 0.151 -> 1.51 (2 of 7 not in the universe); rvol_baseline rows persisted with data_source
+alpaca-raw-daily-split-restated, BEFORE "[demand] replayed 0 stored minute bars" (the bootstrap). SIP authenticated
+16:51:31Z: start-to-live 70 s (2m41s on 09-29 had 1.14M bars to replay; Saturday has none). Health 16:51:33Z: IDLE /
+STREAMING / capture RECORDING. Mem avail 2,874 MB after.
+COSMETIC (log only, stored value right): "restated to 3.9699999999999998"; round the [splits] log line in the follow-up.
+MONDAY SPOT CHECK (owner Ops, after 10:00 ET, read-only): one of CMND/GUTS/SCNX/VIVK/VTAK on the board or store: its
+[splits] first-print verdict line and percent_change against the restated close.
