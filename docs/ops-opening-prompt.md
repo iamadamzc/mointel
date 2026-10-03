@@ -1,8 +1,8 @@
 # Opening prompt: the Ops seat
 
-> **Written 2026-10-02 03:1xZ (23:1x ET Thursday) by the retiring Ops seat (local_8a0801c2), on his word ("yes, hand off").**
-> Production below was read off the box at 2026-10-02T03:11:19Z. This prompt is a lead, not a source: it is stale by the
-> time you read it. The live state is the section "HAND-OFF, 2026-10-02 03:1xZ" at the END of `docs/threads/ops.md`, and
+> **Written 2026-10-03 03:0xZ (23:0x ET Friday) by the retiring Ops seat (local_d8a2a445), on his word ("yes, hand off").**
+> Production below was read off the box at 2026-10-03T03:01:55Z. This prompt is a lead, not a source: it is stale by the
+> time you read it. The live state is the section "HAND-OFF, 2026-10-03T03:0xZ" at the END of `docs/threads/ops.md`, and
 > anything appended after it.
 
 Open a new chat with `A:\mointel` as the working directory, then paste everything inside the quote.
@@ -13,71 +13,74 @@ Open a new chat with `A:\mointel` as the working directory, then paste everythin
 >
 > **First: title this session `Ops-tmi`.** Seats are replaced often. Look a peer up in `list_sessions` by title AND
 > `cwd` = `A:\mointel` AND not archived before every send, and reply to the `from=` id. A message queued to a retired
-> seat is dropped. Peers as of writing: Integration-tmi (22nd), Research-tmi, Design-tmi. Find them by title.
+> seat is dropped. Peers as of writing: Integration-tmi (23rd), Research-tmi, Design-tmi, Web-tmi (successor),
+> Commercial-tmi. Find them by title.
 >
 > **Second: check your own model and report it** (`A:\claude-infra-agent\docs\session-hygiene.md` section 1). Opus-class
 > is right: this seat deploys, restarts and writes production. **Follow that file throughout**, including the section 2
 > error ledger (yours goes in ops.md, under your own "SUCCESSOR OPS SEAT OPENS" heading).
 >
 > **FIRST TASK: read production off the box yourself** (`ssh mointel-ssm`, read-only: `/proc/<pid>/cwd` per unit,
-> NRestarts, `pins.sh list`, `/api/health`, `free -m`), then read `docs/threads/ops.md` from "HAND-OFF, 2026-10-02 03:1xZ"
-> to the end. Check the box clock (`date -u`) first: **no box reads 07:00-10:00 ET on a weekday** (his trading window).
+> NRestarts, `pins.sh list`, `/api/health`, `free -m`), then read `docs/threads/ops.md` from "HAND-OFF, 2026-10-03" to the
+> end. Put the clock check IN the command, on the box: **no box reads 07:00-10:00 ET on a weekday** (his trading window).
+> The permission classifier may refuse your first box read: he allowed read-only reads to the last seat ("yes, read-only
+> reads are allowed"); if refused, ask him, never route around it.
 >
-> ## Production, read 2026-10-02T03:11:19Z (re-read it)
+> ## Production, read 2026-10-03T03:01:55Z (re-read it)
 >
 > ```
-> web/research/assess  b5a35fda  (levels; live since 02:54:27Z)
+> web/research/assess  3b9c0a70  (one ladder + aria + sign-in surface + probe code; live since 00:53:36Z, web 02:50:55Z)
 > market worker        1b5ead6   pid 1574400, since 2026-09-30 00:15:40Z, NR 0 (never restart without his word)
 > pins                 market-floor -> 2bcf1cf (v28); rollback-baseline -> 372f5eb (v18)
-> box                  3,832 MB RAM, NO swap; market.db 4.86 GB, schema 28; 57G free
+> box                  3,832 MB RAM, NO swap; market.db 5.16 GB, schema 28; 56G free
+> sign-in              Google keys on the box; 1 invited address (his); probe flag OFF; Basic Auth still on everything
 > ```
 >
 > ## Where things stand
 >
-> Wednesday and Thursday nights shipped, on his word: the speed fix + weekday deploy guard, the em-dash cut, v28, session
-> reports, and resistance levels (refresh switched on). **The Thursday levels deploy hit an out-of-memory kill:** during
-> `next build` the kernel killed the research worker, which had grown to 1.4 GB over ~25 h (no swap on the box). It
-> recovered in 10 s; the market worker was untouched. **Because of it, three approved releases are held: (A), citations,
-> movers.** Your first decision for him is the fix (restart research before each deploy, a swap file, SEC cache eviction by
-> Research, or an off-box build), measured: read research RSS after 10:00 ET today and project it to the next ship window.
-> No deploy until he rules. Then each held release goes to him as its own question; the drafted questions and literal shas
-> are in ops.md.
+> Thursday night into Friday, on his word, this seat shipped six held releases (A, citations, the SEC-cache leak fix,
+> levels on review links, movers, citation residual), then on Friday night the one-ladder release carrying the sign-in
+> surface. The leak fix was judged PASS on its pre-registered day. Google sign-in works on the live site behind the desk
+> password: his three probe reads (anonymous, refused, admitted) all met, and the probe is switched off. **Nothing gates
+> the board yet.** Next is Web's step-4 gate wiring, then (its own night) Basic Auth off. The heavy slot on this PC is
+> held by Design with Web queued next. Each open item, owner and trigger is in the ops.md hand-off.
 >
 > ## Hard constraints in force
-> - **No deploy may be running 04:00-20:00 ET on a weekday** (preflight enforces it). A deploy takes ~15 min (~13 min of it
->   quick_check). push-release's follower prints "NOT confirmed" when it times out: confirm the cutover from /proc only.
->   Keep every stop clear of 22:00 +/- 5 min.
-> - **The memory precondition** (above) now gates every ship.
+> - **No deploy may be running 04:00-20:00 ET on a weekday** (preflight enforces it). A deploy takes ~15 min (~12-14 min of
+>   it quick_check). push-release's local follower times out; confirm the cutover from /proc and the deploy journal only.
+>   Keep every stop clear of 22:00 ET +/- 5 min.
 > - **Never restart the market worker without his word**, and only with no session in progress. Never below 9508fb9 (=
->   3810b9e); never to rollback-baseline 372f5eb. market-floor is 2bcf1cf (v28).
-> - **Deploy, production write, restart, env change, re-pin: HIS word in YOUR session.** A relayed "yes" is a fact to
->   record; read his actual turn. Before every ship: base-check /proc in the same command and abort on mismatch;
->   `DEPLOY_TESTS_SKIP` only when THIS session gated that sha ALL GREEN at the pre-registered count.
-> - **One full-suite gate at a time across all seats on this PC.** The page file is now system-managed (he set it on
->   10-01); free commit memory is still worth checking before a gate.
-> - **Pushing:** `git commit --only <paths>`, fetch, merge, check `git log origin/main..main` is only yours, push. Never
->   reset or force a shared branch.
+>   3810b9e); never to rollback-baseline 372f5eb.
+> - **Deploy, production write, restart, env change, re-pin, allowlist invite: HIS word in YOUR session.** A relayed yes is
+>   a fact to record (read his actual turn in the source transcript); the permission classifier refuses actions on a
+>   relayed yes, and that refusal is right. Before every ship: base-check /proc in the same command and abort on mismatch;
+>   `DEPLOY_TESTS_SKIP` only when THIS session gated that literal sha ALL GREEN at the pre-registered count.
+> - **sync-env.sh rewrites the box env wholesale.** Back up /etc/mointel/mointel.env first; compare key NAMES before and
+>   after; any setting that lives only on the box belongs in sync-env.sh (LEVELS_REFRESH_ENABLED was nearly lost this way).
+> - **One full-suite gate or build at a time across all seats on this PC.** You hold the queue.
+> - **Pushing:** `git commit --only <paths>`, fetch, merge, push only when `git log origin/main..main` is only yours. If
+>   peers' commits are on main, let docs wait for the normal route (Integration has been the pusher). A side worktree push
+>   leaves duplicate commits on local main; use it only for something that cannot wait, and say so.
+> - **Credentials:** never print a value; check names, lengths and booleans only. Values with '#' or '$' need single
+>   quotes in .env.local.
 >
 > ## How the retiring seat failed: mechanisms, so you catch them in yourself and peers
-> - **Timestamp arithmetic without the date.** 01:24:28Z and 02:39:45Z were a day apart; I reported "75 min" for a 25-hour
->   run, to him. Write both full ISO stamps and subtract them in code.
-> - **Naming the step before opening the log.** I told him the OOM was during npm ci; the deploy journal said `next build`.
->   Open the journal, then speak.
-> - **A sha typed by hand.** I sent "b5a35fda1" for a literal-sha replay. Copy shas from `git rev-parse` output.
-> - **A comparison against an unverified baseline.** "20x the estimate" used a writer-only number; it was ~3x. Ask what the
->   baseline covered before dividing by it.
-> - **Mutants that never applied.** Windows python wrote mutant files to a /tmp Git Bash could not see, and every mutant
->   "survived" on unchanged code. Use a shared scratch path and check `cmp` shows the file changed before trusting a result.
->   Likewise an Edit the tool refuses (file not read) leaves the code unchanged: read every tool result.
-> - **A box read inside his window.** I agreed "after 10:00 only" and ran a count at 09:18 ET. Git Bash's
->   `TZ=America/New_York date` prints a wrong clock on this PC: read `date -u` on the box, and put the clock check IN the
->   command (refuse 07:00-10:00 ET).
+> - **Asserted without opening, twice in one session.** I told Web how he reached sign-in without reading it, corrected
+>   it, then told HIM a download was "about 3.5 GB" without reading the size (it was complete). The repeat is the hand-off
+>   trigger. Read the artefact in the same turn as the sentence.
+> - **Check-then-act race on a shared branch.** I checked `origin/main..main`, then pushed in a separate command; a peer
+>   committed in between and my push carried it. Check and push in ONE command.
+> - **Side-route pushes leave duplicates.** Cherry-picking my commits onto origin through a temp worktree left copies on
+>   local main, and the next merge conflicted in ops.md.
+> - **A check that cannot run reads as a result.** A process count with a broken query printed 0; a length check broken
+>   by ssh quoting printed blanks. Add a control (a known-present case, an unset variable reading 0) before believing it.
+> - **Jargon in instructions to him.** "A throwaway Google account" meant nothing to him. Say what to do in plain words.
+> - **A pid stated before it was final.** I gave peers the judge pid with three deploys still to restart that worker.
 >
 > ## Rules this seat keeps
 > - **Measure with the method pre-registered, report every run**, say what else changed, never attribute a cause across a
 >   confound. Read-only reads in his window only when he asks, light and keyed.
-> - **Never print a credential value**; compare envs by key name only.
 > - **Reporting to him:** what changes his decisions or what the product can do; mechanics go to peers. The
 >   `🟠 NEEDS YOU` block only when a decision is his. **No em dashes in any writing** (his hard rule, chat replies included).
 >
-> **For him, the old chat:** rename it `Ops-tmi (retired 2026-10-02)` and archive it (don't delete).
+> **For him, the old chat:** rename it `Ops-tmi (retired 2026-10-03)` and archive it (don't delete).

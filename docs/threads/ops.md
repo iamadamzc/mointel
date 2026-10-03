@@ -13577,3 +13577,55 @@ release, verify sha256, then delete the box copy. Stray judge loop stopped itsel
 **REPEAT of a corrected class in this session -> per session-hygiene section 2, warned him and proposed the hand-off.**
 - Snapshot download COMPLETE: data/market-prod-2026-10-02.db 4,892,807,168 B, sha256 9f0efa03...1eef == box; box copy
   deleted 02:5xZ (56G free). Sent to Research with the instant 2026-10-03T00:12:20Z.
+
+## HAND-OFF, 2026-10-03T03:0xZ (23:0x ET Fri): this seat (local_d8a2a445) RETIRES on his word ("yes, hand off")
+Reason: a repeat of a corrected error class in one session (asserted-not-opened, twice, the second to him); ~24 h session.
+Ledger above (search "Error ledger (this seat)").
+
+**Production, read 2026-10-03T03:01:55Z:** web 1952351 (no child; since 02:50:55Z) / research 1944955 (child 1945023) /
+assess 1945033 (child 1945060), both since 00:53:36Z, all cwd 3b9c0a70ef050be3261107bc70956d9daba62e4a, NR 0. market 1574400
+(child 1574419) on 1b5ead66bb7e72c244437378fa244e07c7ade5b3 since 2026-09-30 00:15:40Z, NR 0 (never restarted by this seat).
+No deploy/snapshot unit. Pins: market-floor 2bcf1cfe (v28), rollback-baseline 372f5eb9 (v18). Health ok, schema 28.
+3,832 MB, 2,238 available, no swap. market.db 5,160,222,720 B; trades.db 124 MB; history.db 2.5 MB; identity.db 49 KB
+(1 invited: iamadamzc@gmail.com). 56G free. Box env: Google + FINRA keys present (lengths verified), LEVELS_REFRESH_ENABLED=1,
+AUTH_PROBE_ENABLED absent. Env backups on the box: mointel.env.bak-20261003T003833Z, -005433Z-preprobe, -025054Z-preprobeoff.
+
+**Shipped by this seat, all on his word in this chat:** 840741d3 (A), 2a625a5b citations, 0e883fec leak fix (judged PASS,
+479d3cfc), 19f9d721 levels on review links, 558d07a5 movers (verified live), 28c66f14 citation residual (2026-10-02 04:07-
+05:44Z); 3b9c0a70 = one ladder + aria + sign-in surface + probe (2026-10-03 00:39-00:54Z). Seeded his address. Probe on,
+claims A/B/C met in his browser, probe off. Research's market.db snapshot delivered (data/market-prod-2026-10-02.db, sha
+9f0efa03...1eef, instant 2026-10-03T00:12:20Z). FINRA coverage check done (91caa2f3).
+
+**OPEN, owner = successor Ops seat unless named, each with its trigger:**
+1. HEAVY SLOT: Design holds it (granted 23:00 ET 10-02: next dev on :3100 + gate on its v6 surface tip). Web is QUEUED NEXT
+   (full suite + build for its step-4 gate-wiring cut in A:\mointel-step4). One heavy job at a time on this PC; light
+   single-file runs need no slot. Ping Web when Design releases.
+2. STEP-4 SHIP (Web's gate wiring, which makes /desk require sign-in): Web cuts; this seat gates (pre-register the count)
+   and builds; Integration replays by literal sha; his yes. The PROBE-REMOVAL commit (delete app/auth/probe/route.ts + its
+   test) and the IDENTITY MODE FIX (f1b8b716 + 6ac43025, approved by Integration) ride a cut on /proc 3b9c0a70. Basic Auth
+   off is later and its own night (claim D is unprovable until then). Nothing on the desk links to /signin yet (he could
+   not find it from the desk; Web knows).
+3. BLUE-SKY FIX: Research bac44069 + Design c535dce7 (as-traded hover). Gated by their seats only; not approved or gated
+   here. Integration composes on /proc 3b9c0a70; then this seat's gate + his yes.
+4. RELEASE-GATE FLAKE: tests/desk/releaseRetention.test.ts:323 ("refuses every weekday start ... 07:00-10:00 ET") times out
+   at 30 s under full-suite load (7 bash spawns; 9.6 s alone). Seen in 5d1c4943's gate and in Web's step-4 run. Task chip
+   offered to him. Different from 8a47e1cf (TZ fix for two OTHER tests, on local main, not yet on origin).
+5. STANDING FLAG: levels cold refresh ~1.18 s/name (106.5 s for 90 names); the 270 s kill lands near ~228 names. If the
+   covered set grows well past 150, re-measure the cold refresh first.
+6. HIS FILES: docs/finra.txt and docs/tmitraderauth.json still exist (both in .git/info/exclude; he was asked to delete
+   them). .env.local.backup (his) and .env.local.bak-20261002 (mine) hold secrets; gitignored by .env*.
+7. HOUSEKEEPING (no trigger; his or the owner's word): my worktrees A:\mointel-probe (node_modules is a JUNCTION: unlink it
+   first, never a recursive delete), A:\mointel-signin, A:\mointel-build (detached at 3b9c0a70; real node_modules); the
+   stray .claude/worktrees/agent-acfba7ff0c32d6e90 (branch levels-request-path 8dfacf4c, clean, on origin; eslint sees its
+   .next: 60 errors) plus the predecessor's list in its hand-off.
+8. LOCAL MAIN holds my unpushed docs commits (8a47e1cf, 2e10c92f, 2fb73397, 90e0ccf2, 8a8c24b7 and this one) among peers';
+   they ride the next normal push (Integration has been the pusher; clearances recorded there).
+9. Market worker: still 1b5ead66; worker em-dash strings ride the next market restart (his word, no session in progress).
+
+**Harness facts this seat learned (for the successor):** background shells are killed at their timeout (10 min max) or
+~30 min after a session restart, and a "stopped" background loop can keep running untracked; session cron fires only
+when the session is idle and dies with it. Git Bash on this PC ignores TZ=America/New_York (answers UTC): never use it for
+ET; use the box's clock or PowerShell. On the box, pass scripts to `systemd-run --pipe ... /bin/sh -s` via stdin rather
+than nesting quotes; a quoting failure printed blank values that looked like a result.
+**Routing at hand-off:** Integration-tmi = local_54f1341f (23rd); Research-tmi = local_5f4bfcf8; Design-tmi = local_dfce21d4;
+Web-tmi = local_46c15fbe (successor); Commercial-tmi = local_2ce868d2. Find by title + cwd + not archived before sending.
