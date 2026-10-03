@@ -24,6 +24,8 @@
  * Run: node --env-file=.env.local --import tsx scripts/report-voice-run-v6.ts <db> <out-dir> [--dry]
  * --dry: stub models (no key, no spend) to prove the reads and the rendering on
  * the copy before the paid run; its output is not the run's.
+ * --only=KIND: run one kind alone (2026-10-03: PREMARKET re-run after 04ca7496
+ * changed its fresh count; his spend yes, ~$0.05).
  * The store must be v28 or later: the narrative's breadth reads
  * `desk_assessment_ranges`, which an older copy does not have (it throws).
  * Spend: ~$0.10 (writer luna, checker terra; v5 measured ~$0.003 + ~$0.017 a
@@ -83,9 +85,12 @@ function stubModels() {
 }
 
 async function main() {
-  const [dbPath, out, flag] = process.argv.slice(2);
-  if (!dbPath || !out) throw new Error('usage: report-voice-run-v6.ts <db> <out-dir> [--dry]');
-  const dry = flag === '--dry';
+  const [dbPath, out, ...flags] = process.argv.slice(2);
+  if (!dbPath || !out) throw new Error('usage: report-voice-run-v6.ts <db> <out-dir> [--dry] [--only=KIND]');
+  const dry = flags.includes('--dry');
+  const only = flags.find((f) => f.startsWith('--only='))?.slice('--only='.length);
+  const runs = only ? RUNS.filter((r) => r.kind === only) : RUNS;
+  if (runs.length === 0) throw new Error(`--only=${only} names no kind in this run`);
   fs.mkdirSync(out, { recursive: true });
   const config = readReportModelConfig();
   if (!dry && !config.apiKey) throw new Error('no model key in the environment (run with --env-file=.env.local)');
@@ -97,7 +102,7 @@ async function main() {
     `writer ${config.writerModel}, checker ${config.checkerModel}`,
   ];
   let spend = 0;
-  for (const run of RUNS) {
+  for (const run of runs) {
     if (!(spend < STOP_AT)) {
       summary.push(`${run.kind}: NOT RUN, spend $${spend.toFixed(4)} reached the $${STOP_AT} stop`);
       continue;
