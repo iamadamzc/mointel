@@ -137,6 +137,10 @@ never shipped, so Ops confirms the sign-in page answers before trusting anything
    one from your own account. This is the only test that tells them apart.
 3. Ops checks the third case itself (no sign-in at all should read `anonymous`).
 
+**"The desk password"** in this guide means the username and password box your browser shows before tmitrader.com
+loads, titled "Momentum Intelligence Trading Desk". Your normal browser has probably saved it; an incognito window
+will ask for it. If you do not remember it, look in your normal browser's saved passwords for tmitrader.com.
+
 If a browser asks for the desk password at any point, enter it as usual. **The desk password stays on all night.**
 
 **Wait for Ops to say the Google keys are on the server before you open `/signin`.** If you click the Google button
