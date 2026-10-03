@@ -68,7 +68,23 @@ export function resolveProvider(): DashboardDataProvider {
   }
 
   const credentials = readCredentialsFromEnv();
-  runtime.provider = credentials ? new GoogleSheetsProvider(credentials) : new NoSourceProvider();
+  if (credentials) {
+    runtime.provider = new GoogleSheetsProvider(credentials);
+    return runtime.provider;
+  }
+
+  /*
+   * Once per process (the provider is memoized). The board shows nothing for
+   * `none` on purpose, so until the planned removal (step 5) this line is the
+   * only place an ACCIDENTAL loss of the keys, a settings rewrite, say, is
+   * told apart from the deliberate one: it lands in the service journal.
+   * Web's review, 2026-10-03.
+   */
+  console.warn(
+    '[data] no outside research source: the Google Sheet credentials are not set, so the researched ' +
+      'list is served empty (no demo rows). Expected only after the Sheet is removed on purpose.',
+  );
+  runtime.provider = new NoSourceProvider();
   return runtime.provider;
 }
 
