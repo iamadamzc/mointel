@@ -1,0 +1,15 @@
+store A:/mointel/data/market-prod-2026-10-02.db: 4892807168 bytes, mtime 2026-10-03T02:53:38.868Z
+writer gpt-5.6-luna, checker gpt-5.6-terra
+INTO_RTH 2026-10-01: PUBLISHED; 2 of 13 lines struck; $0.0417; writer 28917 ms, checker 6269 ms; tokens gpt-5.6-luna:4341/2358 gpt-5.6-terra:15256/627
+  S1L2 rule:NUMBER_NOT_IN_ROW: 3.097 million
+  S1L2 rule:SHARES_UNDATED: 1002998
+  S1L5 rule:FORBIDDEN_WORDING: prediction or certainty: "confirmed"
+INTO_POWER_HOUR 2026-10-01: PUBLISHED; 2 of 13 lines struck; $0.0508; writer 29323 ms, checker 5750 ms; tokens gpt-5.6-luna:5194/2553 gpt-5.6-terra:19746/604
+  S1L6 rule:SHARES_UNDATED: 1002998
+  S1L10 rule:FORBIDDEN_WORDING: prediction or certainty: "confirmed"
+AFTER_HOURS 2026-10-01: PUBLISHED; 1 of 13 lines struck; $0.0495; writer 34055 ms, checker 4478 ms; tokens gpt-5.6-luna:5287/2945 gpt-5.6-terra:19748/452
+  S1L6 rule:SHARES_UNDATED: 1002998
+PREMARKET 2026-10-01: PUBLISHED; 1 of 13 lines struck; $0.0545; writer 34386 ms, checker 8456 ms; tokens gpt-5.6-luna:5767/2767 gpt-5.6-terra:19904/850
+  O rule:NOT_SELF_CONTAINED: names SORA, AMOD, NXL, HTCR, SSM, WCT, EJH, AISP, ALPX, CAMP, COLA, NAMM in the narrative
+  O model:UNSUPPORTED: The narrative line names the 12 tracked tickers and says the desk covers them, which is not permitted narrative-fact content.
+TOTAL spend $0.1966

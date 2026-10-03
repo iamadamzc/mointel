@@ -1,0 +1,77 @@
+Into the premarket (from the 10-01 recap) · $1 to $20 · built from checkpoint #611 (2026-10-02T02:00:16.028Z)
+[opening, printed by the surface from watchCount = 12]
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  SORA: AsiaStrategy. AsiaStrategy is a Hong Kong-headquartered luxury-watch trading company that has diversified into Bitcoin and digital-asset treasury activities, including digital-asset-collateralized lending and compute infrastructure..
+  $2.4 → $3.64 → $3.0703 (TODAY_CLOSE)
+  [Why: GRADED A, 10h, explains move: true] [Risk: STRUCTURE CAUTION]
+  On October 1, 2026, AsiaStrategy announced a non-binding MOU with Plume to explore an Asian joint venture for structuring, issuing and distributing tokenized financial products. The announcement connects the company to tokenized-financial-product activity, but it does not disclose deal value, revenue contribution, closing conditions or a timetable.
+
+  AMOD: ALPHA MODUS HOLDINGS, INC.. United States. Alpha Modus develops retail technology related to personalized marketing and advertising based on shoppers' in-store behavior..
+  $1.17 → $2.0999 → $1.89 (TODAY_CLOSE)
+  [Why: GRADED C, 1d, explains move: true] [Risk: DIRTY FLOAT 51.6M sh supply]
+  Alpha Modus reported completion of an asset transaction on September 30, while secondary coverage reported that a closed PIPE delivered 3,170 Bitcoin valued above $250 million; the agreement contemplated 51.6 million new Class A shares. The asset addition is material, but the supplied excerpts do not provide complete final closing terms, resale eligibility or a post-closing shares-outstanding figure.
+
+  NXL: Nexalin Technology, Inc.. United States.
+  $7.55 → $8.09 → $6.5003 (TODAY_CLOSE)
+  [Why: GRADED A, 13h, explains move: true] [Risk: DIRTY FLOAT 9.23M sh supply]
+  On October 1, 2026, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. It provides a stated commercial distribution and manufacturing framework, but contract value, minimum purchases, expected revenue and financial commitments are not disclosed.
+
+  SSM: Sono Group N.V.. Netherlands. Sono Group N.V. is a Netherlands-incorporated holding company whose subsidiary is Sono Motors GmbH, referred to as Sono Solar..
+  $2.21 → $2.63 → $2.62 (TODAY_CLOSE)
+  [Why: GRADED B, 14h, explains move: true] [Risk: SUPPLY OVERHEAD 284K sh]
+  A Schedule 13D filed on October 1, 2026, was accompanied by secondary coverage reporting that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The disclosure can focus attention on the issuer, but the supplied evidence does not establish purchase dates, intentions, voting arrangements or whether the stake involved a company transaction.
+
+  EJH: E-Home Household Service Holdings Ltd. Cayman Islands. E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services..
+  $1.79 → $1.87 → $1.53 (TODAY_CLOSE)
+  [Why: GRADED B, 15h, explains move: true] [Risk: DIRTY FLOAT 71.8M sh supply]
+  On October 1, 2026, E-Home announced a dedicated AI service robot for China's household-services market, alongside a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million. The launch is paired with prospective placement supply, while product specifications, customer commitments, revenue expectations and a development timeline are not provided.
+
+  AISP: Airship AI Holdings, Inc.. United States. Airship AI provides AI-driven video, sensor and data-management surveillance solutions for public safety and operational efficiency..
+  $2.22 → $2.4 → $2.3607 (TODAY_CLOSE)
+  [Why: GRADED A, 13h, explains move: true] [Risk: SUPPLY OVERHEAD 34.3M sh]
+  On October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The awards provide a company-specific revenue and execution catalyst, but the supplied release does not establish the performance period, delivery schedule, revenue-recognition timing or profit contribution.
+
+  COLA: Columbus Acquisition Corp/Cayman Islands. Cayman Islands.
+  $2.86 → $3 → $2.714 (TODAY_CLOSE)
+  [Why: OLD_CATALYST B, 20d, explains move: unknown] [Risk: STRUCTURE CAUTION]
+  On September 11, 2026, Columbus announced that it convened and adjourned its extraordinary general meeting of shareholders; the cited release identifies Columbus as a SPAC. The supplied material does not state the adjournment reason, reconvened meeting date, voting results, transaction-term changes or a completed business combination.
+
+  NAMM: Namib Minerals. Namib Minerals is a gold producer, developer and explorer operating the How Mine and pursuing restarts of other mining assets in Zimbabwe..
+  $1.3 → $1.38 → $1.36 (TODAY_CLOSE)
+  [Why: GRADED B, 14h, explains move: true] [Risk: DIRTY FLOAT 128.0M sh supply]
+  On October 1, 2026, Namib reported first-half 2026 results and revised production guidance of 26,500 to 27,000 ounces while maintaining C1 cost guidance; it also reported all-in sustaining cost of $3,078 per ounce and $11.3 million of non-cash earnout and warrant fair-value losses. The company separately announced a $6.5 million non-dilutive term loan on September 29, leaving the update with mixed operating, cost, financing and reported-earnings information; the full prior production-guidance range is not provided.
+
+
+OLDER NEWS
+  WCT: Wellchange Holdings Co Ltd. China. Wellchange is a Hong Kong-headquartered enterprise software solution services provider..
+  $1.67 → $2.34 → $1.42 (TODAY_CLOSE)
+  [Why: OLD_CATALYST C, 28d, explains move: false] [Risk: DIRTY FLOAT 51.5M sh supply]
+  This is not a fresh catalyst: the latest identified company event was a 1-for-5 reverse split announced September 3, effective September 8, following an August 31 offering of 50,000,000 Class A shares for approximately $7.5 million at $0.15 per pre-split share. The financing added substantial share supply and the reverse split altered the per-share trading structure, with no newer company-specific positive event identified.
+
+  CAMP: Camp4 Therapeutics Corp. United States.
+  $3.84 → $3.9 → $3.9 (TODAY_CLOSE)
+  [Why: OLD_CATALYST B, 49d, explains move: false] [Risk: DIRTY FLOAT 72.2M sh supply]
+  This is not a fresh catalyst: the latest substantive developments were an August 13 Q2 update reporting regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch and the August 4 completion of a second private-placement closing. The update is a clinical-development milestone, while the financing added capital and common-stock and pre-funded-warrant resale supply.
+
+
+UNCLEAR
+  HTCR: HeartCore Enterprises, Inc..
+  $1.925 → $2.466 → $2.16 (TODAY_CLOSE)
+  [Why: GRADED —, explains move: unknown] [Risk: SUPPLY OVERHEAD 20.8M sh]
+  The analysis does not support a catalyst conclusion: the latest collected SEC item is an 8-K filed September 25, 2026, but its substantive event is not in the supplied excerpt. No company IR, newsroom or non-SEC newswire coverage was collected.
+
+
+NOT YET RESEARCHED
+  ALPX
+  $9.96 → $9.95 → $9.95 (TODAY_CLOSE)
+  [Why: NOT_RESEARCHED —, explains move: unknown] [Risk: NOT RESEARCHED]
+  Research is not on file at this checkpoint, and there is no dossier.
+
+
+Sample notes:
+- Tags are the board's own Why and Risk rules run on the research as of the checkpoint. Where the board reads the outside sheet (its grade bucket, its latest line, its disagreement marker, its displayed float), the report cannot, so on a name the sheet covers, a report tag can differ from the board at the same moment.
+- "Gave the entire move back" means the name closed the regular session at or below the prior close.
