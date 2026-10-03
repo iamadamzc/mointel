@@ -13681,3 +13681,11 @@ that plan says what replaces the TODAY-sheet pins; the worker's loopback read ma
 (tests/desk, A:\mointel-v6, pid 38484 with worker 40828, started 03:13:02Z) = Research's (transcript 60c64b0a), on HIS
 "go all 3" (origin human, 03:12:45.879Z) to Research's ask ("A desk test run for the checker fix. About a minute of CPU").
 Authorized; not touched. Next in the slot: this seat's step-4 gate (Web's run folded in), on his yes, after Research's run ends.
+**03:2xZ Sheet plan step 7 answered (Integration's plan docs/sheet-removal-plan-2026-10-03.md, 0009301e):** research's
+--conditions=react-server is needed ONLY by the Sheet code: at HEAD, worker/research.ts reaches one server-only module,
+via lib/research/merge/sheetPrior.ts -> lib/data/providers/googleSheets.ts, and one react-server-export package
+(`server-only`, same file). mointel-assess.service carries the flag with 0 server-only modules and no such package
+(already vestigial). Controls: tracer found the positive; non-literal require/import grep found none while matching
+present cases. Tool: scripts/ops/server-only-trace.cjs; RE-RUN on the removal cut's tip before it ships.
+Plan's box items for this seat: env keys GOOGLE_SHEET_ID, GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY,
+MOINTEL_DASHBOARD_URL go (plan step 5, via sync-env.sh); a market-worker restart is in the sequence (plan step 4, his word).
