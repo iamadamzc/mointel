@@ -13721,3 +13721,13 @@ ancestors of 3b9c0a70 (live); blue sky is not live (lib/market/blueSky.ts differ
 **WEB'S FIX fb50e2ff96b734510284ebd0eadd086e701ca26e** verified: one commit on a50f5948, tests/auth/requestGate.test.ts only
 (CRLF normalize). Re-gate pre-registered 233/233, tsc 0, lint 0 errors, build rc 0, pre-ship 403 read; waits on
 Integration's approval by literal sha and on the v6 releaseRetention run (pids 36808/38148/29100, alive 14:19Z) ending.
+**14:22-14:30Z GATE fb50e2ff (approved by Integration): RED 232/233.** test-gate.sh 14:22:56-14:26:57Z; typegen ok, tsc 0,
+lint 0 errors / 6 warnings; 3373/3374 tests. requestGate (CRLF fix) and migrationConcurrency pass. Only red:
+releaseRetention :323 "refuses every weekday start ... 07:00-10:00 ET", 30 s timeout. Watcher (15 s): Research's eslint at
+14:24:48Z inside the suite (it reported it); CPU 54-100% during the suite. CLEAN SOLO RERUN 14:27:22Z (CPU ~10%, 0 other
+node processes, testTimeout 120 s): PASS in 24.95 s, so correct assertions, budget too tight (the predecessor measured
+9.6 s). ROOT: main fixed it in f869ee0d (2026-09-28, 7 samples -> 3, 9.5 s) but the release line never took it (patch-id
+absent from 3b9c0a70 history). f869ee0d applies cleanly on fb50e2ff (test-only). PROPOSED to Integration: candidate =
+fb50e2ff + f869ee0d. 8a47e1cf not needed on this line (its preflight lacks 61e2f777; those tests passed Saturday).
+FACT: deploy/aws/preflight.sh on the release line differs from main by 39 lines (61e2f777 absent): the older preflight ships.
+SLOT: Research replaced (local_5f4bfcf8 -> local_98e3e9a1); new Research offered the slot in the gap before approval.
