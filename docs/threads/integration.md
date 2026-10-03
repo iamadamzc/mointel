@@ -1286,6 +1286,11 @@ SIGN-IN LIVE     Ops: sync-env 00:38Z (backup first; nothing erased; Google + FI
                  create, identity.db + -wal/-shm), next ship. Corrected to him. C through nginx: HE reads it (private
                  window, desk password, before sign-in); Ops does not type the Basic-Auth password.
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
+                 BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
+GATE REDS AT HEAD (Web found, routed): (a) releaseRetention.test.ts 2 fails, clock-dependent? -> Ops; (b) tsc 2 errors
+                 calibrate.ts:147/201 implicit any (read) -> Research; (c) eslint 60 errors all in leftover worktree
+                 .claude/worktrees/agent-acfba7ff0c32d6e90 (levels-request-path 8dfacf4c, 09-30, clean, on origin) ->
+                 Ops housekeeping. tsconfig include **/*.ts, exclude only node_modules.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIRST SEAT'S HAND-OFF (on his "2 b", typed 2026-10-01T02:36:53.972Z; SUPERSEDED BY THE TWENTY-SECOND'S)
