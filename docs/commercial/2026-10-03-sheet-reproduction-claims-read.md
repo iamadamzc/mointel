@@ -81,8 +81,9 @@ a report. That is the line to hold.
    from the same date, which float cannot do.** Report that rate beside the label, as a
    count and not a threshold. Until it exists, the report-layer default (verdict, not
    number) stands unchanged; this read does not lift it.
-2. **Label it as what it is, and let UNKNOWN stay unknown.** No filing carries a float; every
-   float is somebody's computation (naming document 2f item 3). So the cell reads as the
+2. **Label it as what it is, and let UNKNOWN stay unknown.** No filing reports the current
+   number of tradable shares; every float is somebody's computation (naming document 2f
+   item 3; see section 4 for a correction to the shorter form used there). So the cell reads as the
    desk's research estimate, with the source it cites and its as-of date, never bare
    "Float." The recap prompt's own rules carry over unchanged: Float Quality is CLEAN,
    DIRTY or UNKNOWN, *"never call an unverified tiny float clean,"* and when it cannot be
@@ -107,3 +108,13 @@ exposures already on file (the tape, Alpaca News, clause 2.2 of FINRA's terms).
 It did not review the wording of the grades or the float cell (Marketing's, after this
 read), the cost of the model research (Research's and his), or whether the grades predict
 anything (not studied; his call if ever).
+
+## 4. Marketing's wording, reviewed 2026-10-03: PASS with two required changes and one correction of mine
+
+**Passes.** Renaming the column "Setup grade" (or "Desk reading"); the four grades as readings of the five criteria at the checkpoint with no forward tense; D, "risk outweighs the setup," in place of AVOID (it names the problem and gives no instruction); the once-only legend carrying the rubric; the header "Float (research estimate)"; "Unknown" where unverified. Two notes for Research and Design: D replaces a stored value, so every place that holds or filters on AVOID or "Priority" changes; and the legend's "have not been tested against outcomes" is a factual claim that expires the day any test of the grades is run, so whoever runs one updates the sentence in the same change.
+
+**Required change 1: the float cell must not say "per {source}."** "{figure}, per {source}" reads as the source stating the figure. The source is what the estimate was computed from. Use "{figure}, estimated from {source}, as of {date}." Attributing a number to a document that does not contain it is the same fault as "in FINRA's own words."
+
+**Required change 2: "No filing reports a float" is overbroad.** A 10-K's cover reports the aggregate market value of shares held by non-affiliates, which XBRL tags `dei:EntityPublicFloat` (Research read it in the SEC data for CATO, `short-interest-calibration/result.md`). It is a dollar value, annual, as of the second fiscal quarter's end, and it is a filed public float. What no filing reports is **the current number of tradable shares.** Use that: "No filing reports the current number of tradable shares, so this is a computed estimate." The legend's "not a filed or vendor figure" stays only if the source allow-list in section 2 item 3 is enforced and the stored source field can be audited; if it cannot, drop "or vendor."
+
+**Correction of mine, and it is on the public site.** The landing page (`app/page.tsx` line 280) says *"Every float is somebody's computation. No filing carries one."* This seat cleared that form in the naming document (2f item 3) without checking the counterexample above. The sentence is defensible read as "no filing carries the current tradable share count," and a sceptic can answer it with the 10-K cover. **Recommend Web change it at the next copy touch to "No filing reports the current number of tradable shares."** Not urgent and not a licence or advice issue; it is a claim stated wider than its evidence.
