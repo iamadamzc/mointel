@@ -15,6 +15,10 @@ interface DataFreshnessProps {
 }
 
 export function DataFreshness({ meta, now, mounted, failure }: DataFreshnessProps) {
+  // No outside source configured (Sheet removal, step 1): nothing to be
+  // current or stale about, so no chip and no "Sheet sync" time. A light that
+  // says "Sheet" on a desk without one would read as a fault.
+  if (meta.provider === 'none') return null;
   const isMock = meta.provider === 'mock';
   const syncedAt = formatEtTimestamp(meta.fetchedAt) ?? '—';
   const age = mounted ? secondsSince(meta.fetchedAt, now) : null;

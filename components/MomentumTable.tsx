@@ -25,7 +25,7 @@ import {
 import { resolveRisk } from '@/lib/dashboard/risk';
 import { resolveWhy, whySpoken } from '@/lib/dashboard/why';
 import { COLUMN_TITLE, priceColumnTitle } from '@/lib/dashboard/columnTitles';
-import { baselineLabel } from '@/lib/dashboard/view';
+import { baselineLabel, researchedEmptyText } from '@/lib/dashboard/view';
 import type { SessionPhase } from '@/lib/market/types';
 import type { SortKey, SortState } from '@/lib/dashboard/view';
 import type { MomentumTicker } from '@/lib/data/types';
@@ -45,6 +45,8 @@ interface MomentumTableProps {
   defaultOpen?: boolean;
   /** Names the baseline the move is measured from, so both lists say one word. */
   sessionPhase?: SessionPhase | null;
+  /** Names on the list BEFORE the filters, so an empty table says why it is empty. */
+  listedCount: number;
 }
 
 interface ColumnDefinition {
@@ -117,6 +119,7 @@ export function MomentumTable({
   onToggleFocus,
   defaultOpen = false,
   sessionPhase = null,
+  listedCount,
 }: MomentumTableProps) {
   const [open, setOpen] = useState(defaultOpen);
   const columns = columnsFor(sessionPhase);
@@ -195,7 +198,7 @@ export function MomentumTable({
                   colSpan={columns.length}
                   className="px-4 py-8 text-center text-[12px] text-ink-2"
                 >
-                  No names match the current filters.
+                  {researchedEmptyText(listedCount)}
                 </td>
               </tr>
             ) : (
