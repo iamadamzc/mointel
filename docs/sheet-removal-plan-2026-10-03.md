@@ -74,7 +74,9 @@ happen.
    float decision for job 1; the table decision for job 2; the "Sheet sync" chip and Sheet sections removed from the
    drawer, review diagnostics and the AI tools.
 4. **The market worker stops reading the Sheet's tickers** and takes your Focus list plus the desk's own after-hours
-   movers instead (job 3). This needs a **market-worker restart, which is yours** to approve at the time.
+   movers instead (job 3). This needs a **market-worker restart, which is yours** to approve at the time. In the same
+   release, the board's data feed (`/api/dashboard`, which the board itself keeps using) starts requiring sign-in like
+   the rest of the desk's data, since the worker no longer reads it (Web; callers re-checked first).
 5. **Switch the Sheet off on the server.** Ops removes `GOOGLE_SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`,
    `GOOGLE_PRIVATE_KEY` and `MOINTEL_DASHBOARD_URL` from the server settings (`deploy/aws/sync-env.sh`), after you remove
    the Google keys from `.env.local`.
@@ -88,7 +90,7 @@ happen.
 
 | Step | Owner | Waits on |
 | --- | --- | --- |
-| 1 No fake data | Web or Design (owner of `lib/data/` to be confirmed by them) | nothing |
+| 1 No fake data | Design (owns `lib/data/`; Web offered to write it under Design's review) | nothing |
 | 2 Research without the Sheet | Research | your yes for the local run |
 | 3 Replacements | Research (research reads, float source) + Design (board, drawer, table) | your decisions 1 and 2 |
 | 3b Float vendor pricing, if you choose (b) | Commercial | your decision 1 |
