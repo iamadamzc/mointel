@@ -1463,6 +1463,13 @@ SPLIT FIX BUILT  Ops dff3fb0a6f5a7dabc87ff504d98ce2feac86445c (ops/split-day-clo
                  predicting mutants. RESTART CONE: market worker 1b5ead66 -> dff3fb0a = 129 commits, 30 in worker/ lib/market
                  lib/db (read), code SCHEMA 27 -> 28 (store already v28). Asked Ops for a BY-SURFACE enumeration from the market
                  worker's entry (what it will DO differently; flags; bootstrap/pins). Then my replay, then to him in plain words.
+RESTART APPROVED f5746a84974cb9dcd9badb6158813b21fe5e84fa (dff3fb0a + Research's review: first-print band scales with ratio, pre-session
+                 guard test). Ops BY-SURFACE (value-import trace from worker/alpaca.ts, 26 files): only dff3fb0a + f5746a84
+                 change behaviour (corporate-actions read at baseline load + 03:40 ET re-read; restated rvol_baseline rows;
+                 fails open); v28 DDL only; no flags; pins + bootstrap unchanged except the restatement. VERIFIED HERE:
+                 alpaca.ts 0 commits; runtime.ts + engine.ts only dff3fb0a; f5746a84 splitRestate only; claimStoreForMode no
+                 clear on LIVE->LIVE. Conditions: clean gate on this sha; HIS yes in Ops's chat (plain-word ask sent); outside
+                 07-10 ET; after: /proc, [splits] log, Monday spot check. dff3fb0a's gate void (Ops's own overlap).
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
