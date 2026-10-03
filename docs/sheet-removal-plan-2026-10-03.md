@@ -43,8 +43,10 @@ web research, with no stated method.
 - **(a) Show the filed share count instead, labelled as such (recommended).** From the company's own SEC filings, with
   completed offerings added back in (Research built and checked this today for the short-interest work: the research
   write-ups' count matched SEC's figure 193 times out of 193). It is not float: it includes insiders' shares, so it reads
-  higher than float, and the label says so. No vendor, no new cost. How many of your names would have a recent count is
-  measured before the build.
+  higher than float, and the label says so. No vendor, no new cost. **Measured (Research, run 3, your top-12 names,
+  Aug 18 to Sep 15, 422 name-dates):** 82% have a filed share count; it is at most 45 days old for 34%, at most 90 days
+  for 46%, at most 120 days for 50%. Foreign companies: 167 of 180 have one, but only 47 are at most 120 days old. So
+  (a) covers most names, often with an old date that must be shown beside it.
 - **(b) Buy float data from a licensed vendor.** Commercial prices it and checks whether it may be shown to customers. A
   spend, so yours. Can run alongside (a).
 - **(c) Build the desk's own float from insider and large-holder filings.** A large build the desk deliberately has not
@@ -108,7 +110,7 @@ disappears in step 4, so it is not built.
 
 ## Appendix: the inventory (for the seats)
 
-*From a read-only sweep of the tree on 2026-10-03, spot-checked by Integration (float resolution
+*From a read-only sweep of the tree on 2026-10-03, corrected by Research against `lib/research/types.ts`, spot-checked by Integration (float resolution
 `lib/dashboard/merge.ts:265-301`, mock fallback `lib/data/index.ts:60-67`, Priority filter `lib/dashboard/view.ts:606`).
 The earlier canonical audit is `docs/sheet-coverage-audit.md` (2026-08-24, 64 fields, PRODUCED / PRODUCIBLE / NEW WORK);
 where they differ, re-read the code.*
@@ -141,15 +143,17 @@ where they differ, re-read the code.*
 | --- | --- | --- |
 | Ticker list (TODAY) | Second table; extra symbols to `/api/market`; worker pins; `namesTracked` | Engine ranking (`repo.ts:982-988`); Focus list. No hand-picked list. |
 | Priority / Revised / Overall | Second table sort + column; Priority filter on both boards (`view.ts:606`); drawer badge | None |
-| Float (TODAY, RESEARCH) | `resolveDisplayedFloat` (`merge.ts:270-301`); Discovery float cell + sort; turnover; float check; risk chip | None for float. Filed share count: SEC companyfacts + dossier `structure.sharesOutstanding` (`schema.ts:125-126`) |
-| Catalyst grade / text / time | Why cell (Sheet first, `why.ts:218-227`); Desk Read; comparison; prior; summary count; drawer | Dossier `catalyst.catalystGrade`, `summary`, `eventTimestamp` |
-| Cycle | Comparison; research status; prior; drawer | Dossier `computedCycle`; `lib/market/cycle.ts` |
+| Float (TODAY, RESEARCH) | `resolveDisplayedFloat` (`merge.ts:270-301`); Discovery float cell + sort; turnover; float check; risk chip | None for float. The dossier's `structure.displayedFloat` (`types.ts:507`) admits only a sourced float and has been null since version 237 (`risk.ts:174-192`): NOT a source. Filed share count: SEC companyfacts + dossier `structure.sharesOutstanding` (`schema.ts:125-126`) |
+| Catalyst grade / text / time | Why cell (Sheet first, `why.ts:218-227`); Desk Read; comparison; prior; summary count; drawer | Dossier `catalyst.catalystGrade`, `summary`, `eventTimestamp` (caveat: `eventTimestamp` carries no precision; a date-only event prints a false clock unless traced to an exact or inferred source) |
+| Cycle | Comparison; research status; prior; drawer | Dossier `computedCycle` (optional, `types.ts:595`; absent until cycle history is fetched); `lib/market/cycle.ts` |
 | Structure Flags / Warning Shot / Warning Flags | Risk chips DIRTY FLOAT, STRUCTURE UNKNOWN, STRUCTURE CAUTION (`risk.ts:137-146`, `:210`); Desk Read; drawer | Dossier `structureClassification`, `structuralWarnings`, `cycleWarnings` |
 | RTH/AH/PM price, %, volume | Telemetry fallback labelled SHEET (`telemetry.ts:170-203`); drawer | Market engine (`lib/market/types.ts:318-544`) |
 | Recent Run High / Cycle High / Flush % / Prior Runner / Major Runs | Drawer cycle panel (`cycleLevels.ts`); ladder historical level | Dossier cycle fields; `computedCycle`; `findRuns` |
 | Key Levels / Daily Resistance | Ladder `SHEET_KEY_LEVELS` (`priceLevels.ts:518-537`); Desk Read next up/down | `lib/market/resistance.ts`; session/VWAP/blue-sky levels |
 | Daily Support | Ladder; drawer | None |
-| Country / Company / Report Date / Shares Outstanding / Split History / supply filings | Drawer | Dossier fields (appendix of the sweep) |
+| Country / Company / Shares Outstanding / supply filings | Drawer | Dossier fields |
+| Split History | Drawer | Dossier `reverseSplitHistory` is model-written prose (`float.ts:232`): text, not numbers; numbers from `lib/market/splits.ts` |
+| Report Date | Choosing the latest Sheet record; drawer | None (the dossier has no report date; would need the latest filing date from SEC submissions) |
 | Notes / Analyst Notes / Confirmation | Drawer | None |
 | meta (sync time, errors) | "Sheet sync" chip; header error; diagnostics; AI tools | Not applicable |
 
