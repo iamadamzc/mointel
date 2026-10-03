@@ -1,0 +1,544 @@
+{
+  "run": {
+    "kind": "PREMARKET",
+    "tradingDate": "2026-10-01",
+    "label": "Into the premarket (from the 10-01 recap)"
+  },
+  "narrativeFacts": {
+    "kind": "PREMARKET",
+    "range": {
+      "min": 1,
+      "max": 20
+    },
+    "breadth": {
+      "window": "REGULAR_SESSION",
+      "eligible": 2941,
+      "traded": 2935,
+      "up": 1214,
+      "down": 1577
+    },
+    "leader": null,
+    "fresh": {
+      "count": 8,
+      "covered": 12
+    },
+    "movers50": 9,
+    "gaveBack": 0,
+    "noClose": 3,
+    "tracking": [
+      "SORA",
+      "AMOD",
+      "NXL",
+      "HTCR",
+      "SSM",
+      "WCT",
+      "EJH",
+      "AISP",
+      "ALPX",
+      "CAMP",
+      "COLA",
+      "NAMM"
+    ]
+  },
+  "draft": {
+    "headline": "",
+    "overall": "In the $1.00 to $20.00 range, 2,935 traded on the day: 1,214 up and 1,577 down. 9 ran past 50 percent off the prior close, and 0 of those closed the regular session at or below the prior close. Fresh news was found in our sources for 8 of the 12 names the desk covers. The desk carries 12 names into the next session; 3 in-range names had no regular-session close and are not in these counts.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "SORA",
+            "text": "On October 1, 2026 at 12:06 ET, AsiaStrategy announced a non-binding MOU with Plume to explore an Asian joint venture for structuring, issuing and distributing tokenized financial products. The desk reads this as a connection to tokenized-financial-product activity alongside the observed high-volume price strength, but the MOU gives no deal value, revenue contribution, closing condition or timetable."
+          },
+          {
+            "ticker": "AMOD",
+            "text": "On September 30, 2026, Alpha Modus reported completion of an asset transaction, while secondary coverage reported that a closed PIPE delivered 3,170 Bitcoin valued above $250 million; the agreement contemplated 51,621,560 new Class A shares against 4,986,264 shares outstanding before closing. The asset addition is material and could attract momentum demand, but the provided excerpts do not give complete final closing terms or a post-closing shares-outstanding figure."
+          },
+          {
+            "ticker": "NXL",
+            "text": "At 08:30 ET on October 1, 2026, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. The desk reads it as a stated commercial distribution and manufacturing framework, while secondary coverage linked the announcement to an approximately 80% stock surge on heavy volume."
+          },
+          {
+            "ticker": "HTCR",
+            "text": "The supplied research does not support a catalyst determination, and the substantive event in the September 25, 2026 8-K is not disclosed in the supplied excerpt."
+          },
+          {
+            "ticker": "SSM",
+            "text": "On October 1, 2026, a Schedule 13D was filed while secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The desk reads the disclosure as an attention event, but the available evidence does not establish the purchase dates, intentions, voting arrangements or whether it caused the observed move."
+          },
+          {
+            "ticker": "WCT",
+            "text": "The latest identified company event was a September 3 announcement of a 1-for-5 reverse split effective September 8, following an August 31 public offering of 50,000,000 Class A shares for approximately $7.5 million at $0.15 per pre-split share. This is not a fresh catalyst, and the evidence identifies no newer company-specific positive event."
+          },
+          {
+            "ticker": "EJH",
+            "text": "At 07:15 ET on October 1, 2026, E-Home announced a dedicated AI service robot for China’s household-services market, alongside a September 29 private-placement agreement with stated gross proceeds of $43.08 million. The desk reads the launch as a possible momentum-interest event, while the supplied record does not establish product specifications, customer commitments, revenue expectations or whether the placement has closed."
+          },
+          {
+            "ticker": "AISP",
+            "text": "At 09:00 ET on October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The desk reads the awards as a company-specific revenue and execution catalyst, but the supplied release does not establish the performance period, delivery schedule, revenue-recognition timing or profit contribution."
+          },
+          {
+            "ticker": "ALPX",
+            "text": "Research is not on file for ALPX at this checkpoint, and no dossier is available."
+          },
+          {
+            "ticker": "CAMP",
+            "text": "The August 13, 2026 Q2 update reported regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch, and the August 4 financing closing added capital. This is not a fresh catalyst in the supplied research."
+          },
+          {
+            "ticker": "COLA",
+            "text": "At 04:01 ET on September 11, 2026, Columbus announced that it convened and adjourned its extraordinary general meeting of shareholders. The desk reads this as a current SPAC corporate-process event, but the supplied material does not state the adjournment outcome, reconvened meeting date, voting results or any change to transaction terms."
+          },
+          {
+            "ticker": "NAMM",
+            "text": "At 08:00 ET on October 1, 2026, Namib reported first-half 2026 results and revised production guidance to 26,500 to 27,000 ounces, with all-in sustaining cost at $3,078 per ounce and $11.3 million of non-cash earnout and warrant fair-value losses; it also announced a $6.5 million term loan on September 29. The desk reads the update as mixed operating and cost information, with the facility described as non-dilutive and intended to support Redwing restart milestones."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "PREMARKET",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-01",
+      "targetTradingDate": "2026-10-02",
+      "checkpoints": [
+        {
+          "id": 611,
+          "type": "NEXT_DAY_RECAP",
+          "completedAt": "2026-10-02T02:00:16.028Z"
+        }
+      ],
+      "publishedAt": "2026-10-03T03:05:00.974Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS",
+          "lines": [
+            {
+              "ticker": "SORA",
+              "liveFeed": null,
+              "text": "On October 1, 2026 at 12:06 ET, AsiaStrategy announced a non-binding MOU with Plume to explore an Asian joint venture for structuring, issuing and distributing tokenized financial products. The desk reads this as a connection to tokenized-financial-product activity alongside the observed high-volume price strength, but the MOU gives no deal value, revenue contribution, closing condition or timetable.",
+              "company": {
+                "name": "AsiaStrategy",
+                "country": null,
+                "business": "AsiaStrategy is a Hong Kong-headquartered luxury-watch trading company that has diversified into Bitcoin and digital-asset treasury activities, including digital-asset-collateralized lending and compute infrastructure."
+              },
+              "path": {
+                "from": 2.4,
+                "high": 3.64,
+                "now": 3.0703,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "10h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 12:06 PM ET",
+                  "headline": "On October 1, 2026, AsiaStrategy filed a release announcing a non-binding MOU with Plume to explore forming an Asian joint venture for structuring, issuing and distributing tokenized financial products. The release describes an exploration agreement, not a completed joint venture, contract award, financing, or quantified transaction. [125187,125165]",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Reported shares outstanding were 24,864,000 as of December 31, 2025.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 24,864,000 as of December 31, 2025. This is not a reported public float. [125178]"
+                }
+              }
+            },
+            {
+              "ticker": "SSM",
+              "liveFeed": null,
+              "text": "On October 1, 2026, a Schedule 13D was filed while secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The desk reads the disclosure as an attention event, but the available evidence does not establish the purchase dates, intentions, voting arrangements or whether it caused the observed move.",
+              "company": {
+                "name": "Sono Group N.V.",
+                "country": "Netherlands",
+                "business": "Sono Group N.V. is a Netherlands-incorporated holding company whose subsidiary is Sono Motors GmbH, referred to as Sono Solar."
+              },
+              "path": {
+                "from": 2.21,
+                "high": 2.63,
+                "now": 2.62,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "14h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "A Schedule 13D was filed on October 1, 2026, while secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The primary filing excerpt does not provide the ownership terms, acquisition date, or investment rationale, so the reported stake is treated as a secondary-confirmed attention event rather than a fully characterized company catalyst. [125193,125194,125195]",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "284K sh",
+                  "detail": "A registered direct offering issued 283,500 ordinary shares, stated to equal 19.9% of outstanding ordinary shares. [37131,37117,78620]",
+                  "tone": "warn",
+                  "full": "A registered direct offering issued 283,500 ordinary shares, stated to equal 19.9% of outstanding ordinary shares. [37131,37117,78620]"
+                }
+              }
+            },
+            {
+              "ticker": "EJH",
+              "liveFeed": null,
+              "text": "At 07:15 ET on October 1, 2026, E-Home announced a dedicated AI service robot for China’s household-services market, alongside a September 29 private-placement agreement with stated gross proceeds of $43.08 million. The desk reads the launch as a possible momentum-interest event, while the supplied record does not establish product specifications, customer commitments, revenue expectations or whether the placement has closed.",
+              "company": {
+                "name": "E-Home Household Service Holdings Ltd",
+                "country": "Cayman Islands",
+                "business": "E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services."
+              },
+              "path": {
+                "from": 1.79,
+                "high": 1.87,
+                "now": 1.53,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "15h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 7:15 AM ET",
+                  "headline": "E-Home announced the launch of a dedicated AI service robot for China's household-services market, but the positive product headline is paired with a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million [123865, 122419].",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "71.8M sh supply",
+                  "detail": "A pending private placement covers 71.8 million shares at $0.60, but current shares outstanding and float are not established, so its proportional dilution cannot be calculated [122419].",
+                  "tone": "neg",
+                  "full": "A pending private placement covers 71.8 million shares at $0.60, but current shares outstanding and float are not established, so its proportional dilution cannot be calculated [122419]."
+                }
+              }
+            },
+            {
+              "ticker": "AISP",
+              "liveFeed": null,
+              "text": "At 09:00 ET on October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The desk reads the awards as a company-specific revenue and execution catalyst, but the supplied release does not establish the performance period, delivery schedule, revenue-recognition timing or profit contribution.",
+              "company": {
+                "name": "Airship AI Holdings, Inc.",
+                "country": "United States",
+                "business": "Airship AI provides AI-driven video, sensor and data-management surveillance solutions for public safety and operational efficiency."
+              },
+              "path": {
+                "from": 2.22,
+                "high": 2.4,
+                "now": 2.3607,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "13h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 9:00 AM ET",
+                  "headline": "On October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. [123588]",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "34.3M sh",
+                  "detail": "No float is reported in the supplied evidence.",
+                  "tone": "warn",
+                  "full": "No float is reported in the supplied evidence. The reported 34,439,562 shares outstanding must not be treated as float. [123584]"
+                }
+              }
+            },
+            {
+              "ticker": "COLA",
+              "liveFeed": null,
+              "text": "At 04:01 ET on September 11, 2026, Columbus announced that it convened and adjourned its extraordinary general meeting of shareholders. The desk reads this as a current SPAC corporate-process event, but the supplied material does not state the adjournment outcome, reconvened meeting date, voting results or any change to transaction terms.",
+              "company": {
+                "name": "Columbus Acquisition Corp/Cayman Islands",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 2.86,
+                "high": 3,
+                "now": 2.714,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "20d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 11, 4:01 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 11 · Columbus announced on September 11, 2026 that it convened and adjourned its extraordinary general meeting of shareholders. The cited release identifies Columbus as a SPAC; the available excerpt does not establish a completed business combination, financing, or other definitive value-creating development. [63152]",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Reported shares outstanding are 4,494,439 as of August 4, 2026; this is not a reported public float. [48633]",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding are 4,494,439 as of August 4, 2026; this is not a reported public float. [48633]"
+                }
+              }
+            },
+            {
+              "ticker": "NAMM",
+              "liveFeed": null,
+              "text": "At 08:00 ET on October 1, 2026, Namib reported first-half 2026 results and revised production guidance to 26,500 to 27,000 ounces, with all-in sustaining cost at $3,078 per ounce and $11.3 million of non-cash earnout and warrant fair-value losses; it also announced a $6.5 million term loan on September 29. The desk reads the update as mixed operating and cost information, with the facility described as non-dilutive and intended to support Redwing restart milestones.",
+              "company": {
+                "name": "Namib Minerals",
+                "country": null,
+                "business": "Namib Minerals is a gold producer, developer and explorer operating the How Mine and pursuing restarts of other mining assets in Zimbabwe."
+              },
+              "path": {
+                "from": 1.3,
+                "high": 1.38,
+                "now": 1.36,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "14h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "Namib released first-half 2026 results and a business update on October 1, including revised production guidance of 26,500 to 27,000 ounces while maintaining C1 cost guidance. The release also disclosed that all-in sustaining cost rose to $3,078 per ounce and that $11.3 million of non-cash earnout and warrant fair-value losses affected reported earnings. Separately, the company announced a $6.5 million non-dilutive term loan on September 29 to partly fund Redwing Mine resource definition and bankability work. The evidence therefore contains both constructive operational and financing developments and adverse cost and reported-earnings elements. [123377,122305]",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "128.0M sh supply",
+                  "detail": "An effective F-3 registration covers resale of up to 80,646,036 ordinary shares.",
+                  "tone": "neg",
+                  "full": "An effective F-3 registration covers resale of up to 80,646,036 ordinary shares. This is legal resale capacity, not evidence of completed sales. [121921,121923]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER NEWS",
+          "lines": [
+            {
+              "ticker": "WCT",
+              "liveFeed": null,
+              "text": "The latest identified company event was a September 3 announcement of a 1-for-5 reverse split effective September 8, following an August 31 public offering of 50,000,000 Class A shares for approximately $7.5 million at $0.15 per pre-split share. This is not a fresh catalyst, and the evidence identifies no newer company-specific positive event.",
+              "company": {
+                "name": "Wellchange Holdings Co Ltd",
+                "country": "China",
+                "business": "Wellchange is a Hong Kong-headquartered enterprise software solution services provider."
+              },
+              "path": {
+                "from": 1.67,
+                "high": 2.34,
+                "now": 1.42,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "28d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 3, 4:50 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 3 · The latest identified company event is the September 3 announcement of a 1-for-5 reverse split, effective September 8. It followed a completed August 31 public offering of 50,000,000 Class A shares for approximately $7.5 million at $0.15 per pre-split share. In this context, the reverse split is paired with confirmed new equity issuance and is graded weak negative/dilutive. [125086, 125071, 125088]",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "51.5M sh supply",
+                  "detail": "A completed 50,000,000-share Class A public offering preceded the September 8, 1-for-5 reverse split.",
+                  "tone": "neg",
+                  "full": "A completed 50,000,000-share Class A public offering preceded the September 8, 1-for-5 reverse split. The disclosed offering count is pre-split and cannot be used as a current share count without reconciliation. [125071, 125086]"
+                }
+              }
+            },
+            {
+              "ticker": "CAMP",
+              "liveFeed": null,
+              "text": "The August 13, 2026 Q2 update reported regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch, and the August 4 financing closing added capital. This is not a fresh catalyst in the supplied research.",
+              "company": {
+                "name": "Camp4 Therapeutics Corp",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 3.84,
+                "high": 3.9,
+                "now": 3.9,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "49d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 12, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 12 · The latest substantive company developments in the supplied sources were the August 13 Q2 update—reporting regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch—and the August 4 completion of the second private-placement closing. These are legitimate developments, but they predate the supplied August 26 market state; no newer substantive company catalyst is identified in the adequately covered bundle. [30265,30266]",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "72.2M sh supply",
+                  "detail": "No source in the bundle states a public float; the reported 62,753,200 shares outstanding must not be treated as float. [30258]",
+                  "tone": "neg",
+                  "full": "No source in the bundle states a public float; the reported 62,753,200 shares outstanding must not be treated as float. [30258]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "UNCLEAR",
+          "lines": [
+            {
+              "ticker": "HTCR",
+              "liveFeed": null,
+              "text": "The supplied research does not support a catalyst determination, and the substantive event in the September 25, 2026 8-K is not disclosed in the supplied excerpt.",
+              "company": {
+                "name": "HeartCore Enterprises, Inc.",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 1.925,
+                "high": 2.466,
+                "now": 2.16,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No catalyst determination is supportable. The latest collected SEC item is an 8-K filed September 25, 2026, but the supplied excerpt does not disclose its substantive event. The latest clearly described company announcements in the bundle concern second-quarter results (August 13), the proposed HCLV divestiture (August 7), and the completed Sigmaways divestiture (June 25). Catalyst coverage is SEC-only and explicitly incomplete, so an external company/newswire announcement could have been missed. [103739, 103755, 103756, 103758]",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "20.8M sh",
+                  "detail": "Reported shares outstanding were 1,515,328 as of August 13, 2026; this is not a public-float figure. [103754]",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 1,515,328 as of August 13, 2026; this is not a public-float figure. [103754]"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 9,
+      "narrative": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "SHARES_UNDATED",
+          "by": "rule",
+          "detail": "4986264"
+        },
+        {
+          "id": "S1L3",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "80"
+        },
+        {
+          "id": "O",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“9 ran past 50 percent off the prior close,” “the desk carries 12 names,” and the claim that the 3 no-close names are excluded from these counts are not stated by the narrative facts."
+        },
+        {
+          "id": "S1L9",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "“No dossier is available” is not supported; the absence of research supports only that ALPX is not researched/not on file."
+        }
+      ],
+      "writerMs": 29024,
+      "checkerMs": 8000
+    }
+  },
+  "usage": [
+    {
+      "model": "gpt-5.6-luna",
+      "inputTokens": 5802,
+      "outputTokens": 3003,
+      "cachedInputTokens": 1157,
+      "reasoningTokens": 1922,
+      "durationMs": 29019
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 19877,
+      "outputTokens": 851,
+      "cachedInputTokens": 1641,
+      "reasoningTokens": 573,
+      "durationMs": 7966
+    }
+  ]
+}

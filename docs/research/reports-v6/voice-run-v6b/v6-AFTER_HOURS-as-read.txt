@@ -1,0 +1,53 @@
+Into after-hours · $1 to $20 · built from checkpoint #609 (2026-10-01T20:00:12.330Z)
+[opening, printed by the surface from watchCount = 8]
+
+THE SESSION
+In the $1.00 to $20.00 range, 2,937 traded, 1,199 up and 1,574 down so far today. NXL was up 75.7 percent from the prior close, and fresh news was found in our sources for 6 of the 12 names the desk covers.
+
+FRESH NEWS
+  NXL: Nexalin Technology, Inc.. United States.
+  $4.28 → $10.98 → $7.52 (PRIOR_CLOSE)
+  [Why: GRADED A, 7h, explains move: true] [Risk: DIRTY FLOAT 9.23M sh supply]
+  On October 1, 2026 at 08:30 ET, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America. The agreement provides a commercial distribution and manufacturing framework in South American markets, creating a company-specific commercialization narrative; the supplied primary-source excerpt does not state contract value, minimum purchases, expected revenue, or financial commitments.
+
+  AISP: Airship AI Holdings, Inc.. Airship AI provides AI-driven video, sensor and data-management surveillance solutions for public safety and operational efficiency..
+  $1.86 → $2.86 → $2.25 (PRIOR_CLOSE)
+  [Why: GRADED A, 7h, explains move: true] [Risk: DIRTY FLOAT 34.3M sh supply]
+  On October 1, 2026 at 09:00 ET, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The award amount is a company-specific revenue opportunity, while the evidence does not state the performance period, delivery schedule, revenue-recognition timing, or expected margin.
+
+  WFCF: Where Food Comes From, Inc.. United States. The company provides independent third-party verification of food production practices in North America..
+  $11.05 → $18.79 → $12.76 (PRIOR_CLOSE)
+  [Why: GRADED B, since Wed close, explains move: false] [Risk: STRUCTURE CAUTION]
+  The company’s Form S-3 registration statement became effective on September 30, 2026, covering up to $50.0 million of common stock, preferred stock and warrants. The filing creates financing capacity, but the evidence does not show a prospectus supplement, takedown notice, pricing, purchaser information, or completed sale.
+
+  EJH: E-Home Household Service Holdings Ltd. Cayman Islands. E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services..
+  $1.42 → $2.17 → $1.79 (PRIOR_CLOSE)
+  [Why: GRADED B, 9h, explains move: true] [Risk: DIRTY FLOAT 71.8M sh supply]
+  On October 1, 2026 at 07:15 ET, E-Home announced a dedicated AI service robot for China’s household-services market, alongside a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million. The product launch and prospective placement supply are both part of the checkpoint, but the evidence does not establish product specifications, customer commitments, revenue expectations, development timing, or whether the placement has closed.
+
+  NAMM: Namib Minerals. Namib Minerals is a gold producer, developer and explorer operating in Zimbabwe, including the producing How Mine and planned mine restarts..
+  $0.9583 → $1.55 → $1.29 (PRIOR_CLOSE)
+  [Why: GRADED B, 8h, explains move: true] [Risk: DIRTY FLOAT 188.5M sh supply]
+  On October 1, 2026 at 08:00 ET, Namib reported first-half 2026 results and revised 2026 production guidance to 26,500 to 27,000 ounces while maintaining C1 cost guidance; it also described higher all-in sustaining costs and $11.3 million of combined non-cash losses from earnout and warrant-liability revaluations. The update contains mixed operating and cost information, and the supplied excerpts do not provide the prior production-guidance range.
+
+  FHTX: Foghorn Therapeutics Inc.. United States. Foghorn Therapeutics is a clinical-stage biotechnology company developing medicines intended to treat serious diseases by correcting abnormal gene expression, with an initial focus on oncology..
+  $3.57 → $3.21 → $2.9101 (PRIOR_CLOSE)
+  [Why: GRADED C, 13h, explains move: true] [Risk: DIRTY FLOAT 22.1M sh supply]
+  At 03:01 ET on October 1, 2026, Foghorn and Lilly decided not to advance FHD-909 beyond Phase 1 dose escalation, did not advance the selective SMARCA2 degrader program, and did not anticipate further collaboration activity; Foghorn also announced pipeline prioritization and an approximately 40% workforce reduction expected to extend its cash runway into the second half of 2029. The decisions change the clinical pipeline and collaboration outlook, while the workforce reduction and projected runway partly offset cash concerns and show a major strategic retrenchment.
+
+
+OLDER NEWS
+  STKH: Steakholder Foods Ltd.. Israel. Steakholder Foods develops 3D-printing technology for producing whole cuts of plant-based meat..
+  $1.57 → $2.3 → $0.7613 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST A, 28d, explains move: false] [Risk: DIRTY FLOAT 2368.6M sh supply]
+  The September 3, 2026 announcement at 08:32 ET covered the launch of Perfecta Premium Plant-Based Meat at retail outlets in the Northeastern U.S., its first U.S. store-shelf placement, with no sales, revenue, retail-door count, purchase-order value, or margin contribution disclosed. This is not a fresh catalyst, and since the previous checkpoint, the name was down 18.1% and lost $0.83 support.
+
+  STFS: Star Fashion Culture Holdings Ltd. Star Fashion Culture provides content marketing services, including marketing campaign planning and execution, offline advertising, and online precision marketing services..
+  $3.6101 → $3.905 → $3.52 (PRIOR_CLOSE)
+  [Why: OLD_CATALYST C, 3d, explains move: false] [Risk: DIRTY FLOAT 16.0M sh supply]
+  The company closed a best-efforts public offering at 16:00 ET on September 28, 2026, issuing 12,000,000 Class A ordinary shares at $0.80 per share for approximately $9.6 million in gross proceeds. This is not a fresh catalyst, and the evidence does not establish a separate fresh positive company-specific event explaining the current session move.
+
+
+Sample notes:
+- Tags are the board's own Why and Risk rules run on the research as of the checkpoint. Where the board reads the outside sheet (its grade bucket, its latest line, its disagreement marker, its displayed float), the report cannot, so on a name the sheet covers, a report tag can differ from the board at the same moment.
+- "Gave the entire move back" means the name closed the regular session at or below the prior close.
