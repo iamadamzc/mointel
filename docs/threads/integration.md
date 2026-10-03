@@ -1345,6 +1345,12 @@ DESIGN           Stopped its v6 surface gate on his rule (tip 54e2a407, tag desi
                  strikes). Samples go to HIM (his first look) once Research settles that finding.
 OPS              Ack; his Sheet ruling verified at his turn (03:11:38.793Z); header hold b9adcf8c. Plan must name env keys
                  that go + whether a market restart is in the sequence.
+SHEET PLAN       docs/sheet-removal-plan-2026-10-03.md (0009301e). Inventory: Explore sweep (read-only), spot-checked here
+                 (merge.ts:265-301 float Sheet-only; index.ts:60-67 MOCK fallback; view.ts:606 Priority filter; repo.ts:980
+                 ah_rank after hours). Five jobs; two HIS decisions (float: (a) filed share count labelled, rec; (b) vendor;
+                 (c) own float. Second table + Priority: (a) remove, rec; (b) keep without Priority). Steps 1-7 with owners;
+                 step 1 (no demo rows) can start now (Web/Design settle lib/data owner). Sent him the file; seats pointed.
+                 His recap prompt = docs/After-Hours Momentum Recap.md (untracked, his).
 APPROVED-NOT-BUILT ADD  identity.db file mode on create (Web, lib/auth/store.ts) -> next ship after gate + replay.
                  BUILT: f1b8b716 (local main, cleared to ride; code on main, ships only in a picked cut). Replay owed.
                  LIGHT REPLAY: approach ok; HELD on EPERM: chmodSync on every open throws for a non-owner non-root opener
