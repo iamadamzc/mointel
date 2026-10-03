@@ -39,7 +39,7 @@ import {
 import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 
 /** Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 6;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 7;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -87,7 +87,7 @@ const NARRATIVE_RULES = [
   '- The leader: "up" or "down" exactly as given; never "leads up" on a fall.',
   '- Fresh news is news FOUND in our sources, never a cause: never "drove", "sparked", "behind the move".',
   '- No adjective the facts do not define ("busy", "quiet", "hot", "strong").',
-  '- Intraday report: about two short sentences. Recap report (premarket): three or four short sentences, ending with the names the desk carries, framed as what the desk covers, never "your watchlist".',
+  '- Intraday report: about two short sentences. Recap report (premarket): three or four short sentences, ending with HOW MANY names the desk carries into the next session, framed as what the desk covers, never "your watchlist". State the COUNT only and never list those tickers: the cards below list them, and the only ticker the narrative may name is the given leader.',
   '- When a count is zero, say so plainly ("No name ran past 50 percent off the prior close.") and drop the clause that depends on it. Number agreement throughout ("1 traded").',
   '- Where the facts give an in-range count with no regular-session close, state it in one short closing sentence. Never leave it out.',
 ];

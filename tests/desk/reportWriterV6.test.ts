@@ -68,6 +68,9 @@ describe('factSheetV6: the catalyst story only; tag fields are gone', () => {
   it('a name with no research says so; the prompt forbids restating the tags', () => {
     expect(factSheetV6(fact, null, null).join('\n')).toContain('research: not researched yet');
     expect(SYSTEM_V6).toContain('NEVER restate any of them');
+    // Voice run v6 (e6d20f55): 'ending with the names the desk carries' made the model LIST the 12 tickers, and the checker struck the recap narrative.
+    expect(SYSTEM_V6).toContain('State the COUNT only and never list those tickers');
+    expect(SYSTEM_V6).not.toContain('ending with the names the desk carries');
   });
 });
 
