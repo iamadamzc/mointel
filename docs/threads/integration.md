@@ -1351,6 +1351,11 @@ a50f5948 GATE   RED 230/233 (Ops, 14:07:57-14:12:43Z; tsc 0, lint 0). Nothing sh
 SHIP CANDIDATE   fb50e2ff96b734510284ebd0eadd086e701ca26e (web/step4-cut, local) = a50f5948 + test-only CRLF normalise in
                  requestGate.test.ts (+3/-1, read). REPLAYED + APPROVED BY LITERAL SHA. a50f5948 must not ship alone.
                  Conditions carry over. Research asked about its releaseRetention run from A:\mointel-v6 during Ops's gate.
+v6 TAG FIX      Research 0d4f797e (reportTags cleans the dossier at input like readableIntelligence; CAMP fixture; mutant
+                 killed). Samples re-replayed d6d5d5dc. MY SCAN: 899 strings, 12/12 each, 0 U+2014 bar lone glyph, ONE
+                 citation "[1043]" (INTO_RTH sections[1].lines[0].tags.risk.detail/.full; RPGL; also on the live board).
+                 CALLS: no hand edit; full fix (ticker's own research_sources ids count as cited, both surfaces) approved
+                 as its own cut, not tonight. Hold lifted: new Design renders d6d5d5dc for him.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
