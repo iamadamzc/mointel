@@ -36,9 +36,14 @@
  * committed before it is read.
  *
  * Run (from the repository root, after his yes and in Ops's slot):
- *   node --import tsx docs/research/sheet-removal/omit-prior-run.ts <scratch-copy.db> <out-dir> [--dry]
+ *   node --conditions=react-server --import tsx docs/research/sheet-removal/omit-prior-run.ts <scratch-copy.db> <out-dir> [--dry] [--env-dir=DIR]
+ * --conditions=react-server: as every worker script runs; without it the Sheet
+ * provider's `server-only` guard throws and no prior loads (the first dry run).
  * --dry: stub interpreter (no key, no spend) to prove the reads, the sample and
  * the chips on the copy; its output is not the run's.
+ * --env-dir: where `.env.local` lives (default the working directory). A
+ * worktree has none: pass the main checkout, loaded by the worker's own dotenv
+ * loader (Node's --env-file cuts a value at its first "#").
  */
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -92,14 +97,15 @@ function statusFor(report: InterpretationReport, dossier: unknown): string {
 }
 
 async function main() {
-  const [dbPath, out, flag] = process.argv.slice(2);
-  if (!dbPath || !out) throw new Error('usage: omit-prior-run.ts <scratch-copy.db> <out-dir> [--dry]');
-  const dry = flag === '--dry';
+  const [dbPath, out, ...flags] = process.argv.slice(2);
+  if (!dbPath || !out) throw new Error('usage: omit-prior-run.ts <scratch-copy.db> <out-dir> [--dry] [--env-dir=DIR]');
+  const dry = flags.includes('--dry');
+  const envDir = flags.find((f) => f.startsWith('--env-dir='))?.slice('--env-dir='.length) ?? process.cwd();
   if (FORBIDDEN.includes(path.basename(dbPath)) || !path.basename(dbPath).includes('scratch')) {
     throw new Error(`refusing ${dbPath}: the run writes versions, so it takes only a scratch copy whose name says "scratch"`);
   }
 
-  loadWorkerEnv();
+  loadWorkerEnv(envDir);
   const config = readResearchConfig();
   if (config.model.omitSheetPrior) throw new Error('RESEARCH_OMIT_SHEET_PRIOR is set; this harness controls the prior itself, so unset it');
   if (!dry && !config.model.apiKey) throw new Error('no model key in the environment');
@@ -141,6 +147,8 @@ async function main() {
     tradingDate: TRADING_DATE,
     dry,
     models: { research: config.model.researchModel, escalation: config.model.escalationModel, promptVariant: config.model.promptVariant },
+    envDir,
+    keyPresent: Boolean(config.model.apiKey),
     sheet: { priors: sheet.priors.size, error: sheet.error ?? null },
     rankedWithSources: ranked.length,
     sample: sample.map((s) => s.symbol),
