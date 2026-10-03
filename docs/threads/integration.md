@@ -1396,6 +1396,14 @@ v6 FIRST LOOK    SENT TO HIM: four 1,280 renders (scratchpad v6-renders/; 1,024 
                  design/reports-v6-surface-gated-5c95c92e (229 files, 3,319 tests, lint/build/typecheck 0, mutant 1/1); my
                  replay of that surface owed before any cut. Wording note "ran past 50 percent off the prior close" (reads
                  as down) -> Marketing for step 6. Sample artefacts named to him (LATE / SESSION OVER).
+HIS VERDICT v6   (typed to me) "first one is VERY hard to unerstand. very confusing. this does not read well. what model are you
+                 using? No need to put $1-20 range everytime. if you're going to do that dont make it part of the narrative.
+                 just put it somewhere. the narrative summary is still drastically lacking. what are the prompts being used
+                 and what models." ANSWERED from code (0ae09059): writer gpt-5.6-luna (OPENAI_REPORT_WRITER_MODEL || change-
+                 detect model, config.ts:183), checker gpt-5.6-terra; prompts SYSTEM_V6 + NARRATIVE_RULES (writerV6.ts:83:
+                 "Word ONLY the given facts ... never add a fact, a theme, a sector or a reason"). Thinness = rules. ORDERS to
+                 Research + Marketing: range out of narrative; redesigned fact sheet + rules for substance (no cause/advice/
+                 forecast); plain premarket; luna vs stronger model side-by-side, cost first (his spend). Proposal before build.
 STEP-4 APPROVED  Web 32db0d7e6169170a3f708da45f13f9f73e0a1eda = 7cbb79e3 + /api/dashboard held OUT of the gate (keeps Basic Auth
                  only, as before; market worker untouched). REPLAYED + APPROVED BY LITERAL SHA. Gated: /desk + assessments,
                  levels, market, reports, research/retry. Conditions to Ops: his yes before any local run; gate + build on
