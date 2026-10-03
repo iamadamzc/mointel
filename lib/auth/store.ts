@@ -268,13 +268,39 @@ export function openIdentityStore(file: string = DEFAULT_IDENTITY_PATH): Identit
  */
 export const IDENTITY_FILE_MODE = 0o640;
 
+/*
+ * TIGHTENING THE MODE MUST NEVER BREAK THE OPEN. Integration's replay question:
+ * chmod by a process that neither owns the file nor is root throws EPERM, and
+ * this runs on every open, so a non-owner opener (an admin script run as a
+ * group member, say) would turn a hygiene fix into a sign-in that fails closed
+ * or a seed that cannot run. A world-readable file inside a 0750 directory is
+ * a far smaller harm than that. So: a file already at the mode is left alone
+ * (the normal case after the first open, which also means no chmod is
+ * attempted at all), and a chmod that fails is reported and skipped.
+ */
+function modeOrNull(file: string): number | null {
+  try {
+    return fs.statSync(file).mode & 0o777;
+  } catch {
+    return null;
+  }
+}
+
 export function restrictIdentityFileMode(
   dbFile: string,
   chmod: (file: string, mode: number) => void = fs.chmodSync,
-  exists: (file: string) => boolean = fs.existsSync,
+  modeOf: (file: string) => number | null = modeOrNull,
+  warn: (message: string) => void = console.warn,
 ): void {
   for (const file of [dbFile, `${dbFile}-wal`, `${dbFile}-shm`]) {
-    if (exists(file)) chmod(file, IDENTITY_FILE_MODE);
+    const mode = modeOf(file);
+    if (mode === null || mode === IDENTITY_FILE_MODE) continue;
+    try {
+      chmod(file, IDENTITY_FILE_MODE);
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code ?? String(error);
+      warn(`identity store: could not set ${file} to 0640 (${code}); left at 0${mode.toString(8)}`);
+    }
   }
 }
 
