@@ -41,9 +41,20 @@ its that simple. the sheet is nothing more than a repository of model outputs. i
 So both decisions are answered by one rule: **the desk produces, itself, every output the desk reads from the Sheet today.**
 The spec is the recap prompt (`docs/After-Hours Momentum Recap.md`) and the field list is appendix C. Float comes from the
 desk's own research, sourced and dated as the recap prompt requires (verified float, Float Quality, Overhang / Float; never
-fabricated). The second table and the Priority grades stay, produced by the desk. Jobs 1, 2 and 5 below are no longer
+fabricated). ~~The second table and the Priority grades stay, produced by the desk.~~ (My reading, superseded 2026-10-04:
+he ruled the second table removed and Priority computed; see below.) Jobs 1, 2 and 5 below are no longer
 "dropped" or "replaced by a proxy": they are reproduced. Options (a) to (c) below are kept, struck, as the record of what
 was considered.
+
+**RULED 2026-10-04, on Research's proposal (`docs/research/sheet-reproduction/proposal-2026-10-04.md`), typed to
+Integration:**
+- 23:49:48Z, verbatim: *"1, take 10 stocks and do both a and b and report results. 2, a. 3, we need to keep that for
+  analysis on how we did. it's purpose is analysis on the desks performance."* So: **float** is decided after a 10-stock
+  head-to-head of the SEC upper bound and a model-researched float; **Priority** is computed from the recap prompt's five
+  criteria (rubric approved by him once); **the history tabs are kept**, rebuilt as the desk's record of its own calls and
+  their outcomes, for analysis of the desk's performance.
+- 23:53:44Z, on the "Researched Names" table (the second table), verbatim: *"remove it"*. **This replaces the 2026-10-03
+  reading above that the second table stays.** Priority, which he kept, needs a home on the main board (Design proposes).
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
