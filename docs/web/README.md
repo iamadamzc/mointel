@@ -1,5 +1,7 @@
 # The public surface — what Web owns, and what it needs from others
 
+**RE-READ 2026-10-04 23:29 UTC by the successor Web seat, at hand-off: section 3's placeholder row is CLOSED (filled with the gate wiring, live 2026-10-03; the public site now renders no `[BRACKET]` at all, read by `placeholder-scan.py`). Sections 1, 2, 2b, 4 and 5 were not re-read end to end in that pass.**
+
 **AS OF 2026-10-02 17:34 UTC, at `01455d93`.** *What that review covered and what
 it did not: the design decisions in section 1, the prefix list and status codes in
 section 2, the rulings in section 2b and the fixed-and-recorded list in section 5
@@ -382,12 +384,12 @@ backstop for someone who signs in without an invite.*
 | ~~2~~ | **CLOSED 2026-09-18/21, every value measured from the box or decided by him.** Region `us-east-1`; hosting `Amazon Web Services, Inc.`; server logs **14 days** (nginx logrotate and journald agree, and the 512M cap is not binding); backups written as the **mechanism** — a full-server snapshot kept 7 days, a log entry living 14, so ~21 days at the outside — rather than as an audit of what is currently stored, *because a sentence justified by "the backup contains no personal data" expires the day sign-in ships and one justified by "a snapshot is kept 7 days" does not*; account and email retention say plainly that **no period is set**, on his adoption; email provider is **Google LLC**, because `info@` now reaches users on Workspace even though the service itself still sends no email. | closed |
 | ~~2b~~ | **SATISFIED, and built stronger than asked.** Ops made it structural rather than two calls: the callback has **no bare `return`** — every exit goes through one helper that attaches the cleared flow cookie, so a failure mode added later inherits it. Tests assert the header **on the failure paths by name**, not only on success. *That is the assertion the sentence actually needed.* | closed |
 | ~~3~~ | **ANSWERED BY MECHANISM, not by a number, and verified in code.** There is no duration: `createSession` takes an **absolute expiry** (`store.ts:293`) and `sessionExpiry` (`lib/auth/expiry.ts`) returns 20:00 ET, reusing `sessionEndUtc` from `lib/market/session` — **no second definition of the one number this desk keeps getting wrong.** *Published as the rule rather than as "30 days", because a rule is something a person can reason about instead of trust.* | closed |
-| ~~4~~ | **SETTLED 2026-09-24: the flow cookie is `mointel_oauth`**, defined once in `lib/auth/config.ts` (`OAUTH_FLOW_COOKIE`) and set by `/auth/start/google`. The placeholder is filled from that name, not a relay, in the gate-wiring commit (charter LIVE STATE step 4), never before the live site sets it. *Was "on the deploy that ships sign-in"; corrected 2026-10-02.* | Web, with step 4 |
+| ~~4~~ | **SETTLED 2026-09-24: the flow cookie is `mointel_oauth`**, defined once in `lib/auth/config.ts` (`OAUTH_FLOW_COOKIE`) and set by `/auth/start/google`. The placeholder is filled from that name, not a relay, in the gate-wiring commit (charter LIVE STATE step 4), never before the live site sets it. *Was "on the deploy that ships sign-in"; corrected 2026-10-02.* | **closed 2026-10-03: filled with `mointel_oauth` in the step-4 release, live and read** |
 | ~~5~~ | **ANSWERED BY HIM 2026-09-10:** *"anyone that trades US market i suppose, but i dont want any overhang on interinational regs."* US market, US company, offered nowhere to the public — §8 says so, and §7 promises to honour a foreign right rather than argue about which law applies. | closed |
 | 6 | Whether Google's "home page" must be `tmitrader.com` itself, or whether a page elsewhere on the domain satisfies it | nobody has confirmed; **do not guess** |
 | ~~7~~ | **DRAFTED AND ADOPTED**, both decisions settled on his "your rec." — see §2b. | closed |
 
-**AS OF 2026-09-25 EXACTLY ONE `[BRACKET]` RENDERS ON THE PUBLIC SITE:**
+~~**AS OF 2026-09-25 EXACTLY ONE `[BRACKET]` RENDERS ON THE PUBLIC SITE:**~~ **SUPERSEDED 2026-10-03: none renders; the paragraph below is the history of the last one.**
 `[FLOW COOKIE NAME]`, row 4, **deferred to the gate wiring, not blocked.** *The
 code sets `mointel_oauth` (`/auth/start/google`), but the live site does not
 yet, so filling the policy now would name a cookie a user cannot find in their
