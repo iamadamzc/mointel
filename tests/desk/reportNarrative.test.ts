@@ -226,6 +226,9 @@ function recapStore(withBars: boolean): MarketDatabase {
     { symbol: 'NAMM', prev: 2, low: 2, high: 3.234, close: 2.702, rthVol: 900, price: 2.7, vol: 900 },
     // the day's biggest mover, NOT covered: never named
     { symbol: 'BIG', prev: 1, low: 1.1, high: 4, close: 2, rthVol: 900, price: 2, vol: 900 },
+    // covered movers below the leaders: one with NO dossier, one whose research could not tell
+    { symbol: 'NEW', prev: 2, low: 2.2, high: 3.1, close: 2.6, rthVol: 900, price: 2.6, vol: 900 },
+    { symbol: 'UNC', prev: 2, low: 2.1, high: 3.05, close: 2.5, rthVol: 900, price: 2.5, vol: 900 },
   ]);
   if (withBars) bars(db, 'NXL', [{ date: '2026-09-21', factor: 1 }, { date: '2026-09-22', factor: 1 }]);
   return db;
@@ -244,6 +247,8 @@ function recapInput(olderHigh: number) {
       named({ ticker: 'AMOD', assessmentRank: 4, percentChange: 61.5, referenceClose: 1.17, cycle: 'GREEN_FRESH_FRONTSIDE' }),
       // bigger, but on the prior-session basis: not an after-hours move
       named({ ticker: 'PRIOR', assessmentRank: 5, percentChange: 90, referenceBasis: 'PRIOR_SESSION' }),
+      named({ ticker: 'NEW', assessmentRank: 6, percentChange: -2 }),
+      named({ ticker: 'UNC', assessmentRank: 7, percentChange: -3 }),
     ],
     research: new Map([
       [
@@ -258,6 +263,8 @@ function recapInput(olderHigh: number) {
       ['SSM', dossier('FRESH_FOUND', 'a 13D')],
       ['NAMM', dossier('SECONDARY_STALE', 'results')],
       ['AMOD', dossier('FRESH_FOUND', 'an MOU')],
+      ['UNC', dossier('UNKNOWN', null)],
+      // NEW has no dossier: NOT YET RESEARCHED, never "no fresh news found"
     ]),
     tickers: [levelRow('NXL', 4.9, 10.98)],
     olderHighs: new Map([['NXL', olderHigh]]),
@@ -268,7 +275,7 @@ describe('narrativeFacts recap v2: F10, F10b, F12b and the context', () => {
   it('names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context', () => {
     const db = recapStore(true);
     const out = narrativeFacts(db, recapInput(19.2));
-    expect(out.coveredMovers).toBe(3);
+    expect(out.coveredMovers).toBe(5);
     expect(out.recapLeaders!.map((l) => l.ticker)).toEqual(['NXL', 'SSM']);
     const nxl = out.recapLeaders![0]!;
     expect(nxl.highPct).toBeCloseTo(156.5, 6);
@@ -283,7 +290,8 @@ describe('narrativeFacts recap v2: F10, F10b, F12b and the context', () => {
       status: 'FRESH_FOUND',
       summary: 'an MOU',
     });
-    expect(out.moversWithoutFresh).toBe(1);
+    // F12b in three states: NAMM looked and found none; NEW not researched; UNC could not tell
+    expect([out.moversWithoutFresh, out.moversNotResearched, out.moversUnclear]).toEqual([1, 1, 1]);
     expect(out.context).toEqual({
       ticker: 'NXL',
       sessionHigh: 5.13,

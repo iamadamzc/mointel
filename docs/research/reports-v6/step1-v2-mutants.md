@@ -24,4 +24,16 @@
 
 Gate in Ops's slot (2026-10-03): `tsc --noEmit` 0; `eslint` on the 5 changed files 0; `vitest tests/desk/` 29 files, 404 passed.
 
+## Fix round: F12b in three states (Integration's review, 2026-10-04), predictions written BEFORE the run
+
+**Defect (Integration's catch):** `moversWithoutFresh` counted every covered mover whose status was not FRESH_FOUND, so a mover with NO dossier (not yet researched) counted as "no fresh news found". Fixed: no fresh = `NONE_FOUND` or `SECONDARY_STALE`; plus `moversNotResearched` (no dossier) and `moversUnclear` (`CONFLICTING`, `UNKNOWN`). The recap v2 fixture gains NEW (covered mover, no dossier) and UNC (covered mover, UNKNOWN). File now 9 tests (unchanged count).
+
+| # | Mutant | Predicted failing tests | Which |
+|---|---|---|---|
+| M12 | F12b back to "status is not FRESH_FOUND" | 1 | recap v2 (moversWithoutFresh 3, not 1) |
+| M13 | `moversNotResearched` reads 0 | 1 | recap v2 |
+| M14 | UNCLEAR set empty | 1 | recap v2 |
+
+M1 to M11 are re-run unchanged; each prediction above stands (the new fixture rows sit below the leaders, are not split candidates, and are not after-hours gainers).
+
 Known weakness, stated before the run: the older-high test's two assertions also pass when `context` is null, so a mutant that drops the context entirely is caught only by the recap v2 test.

@@ -11,7 +11,7 @@ const RANGE = { min: 1, max: 20 };
 /** The v2 facts (build step 1), none given: this sheet does not read them until step 2. */
 const NO_V2 = {
   splitExcluded: null, keptHalf: null, coveredMovers: null, recapLeaders: null, afterHours: null,
-  moversWithoutFresh: null, context: null, intradayNamed: null,
+  moversWithoutFresh: null, moversNotResearched: null, moversUnclear: null, context: null, intradayNamed: null,
 } as const;
 const intraday: NarrativeFacts = {
   ...NO_V2,

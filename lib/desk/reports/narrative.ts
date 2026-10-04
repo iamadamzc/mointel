@@ -151,8 +151,18 @@ export interface NarrativeFacts {
   recapLeaders: RecapMover[] | null;
   /** F10b, recap: the top covered after-hours gainer not already named. */
   afterHours: AfterHoursMover | null;
-  /** F12b, recap: covered 50 percent movers with no fresh news found. A count, never names. */
+  /**
+   * F12b, recap: covered 50 percent movers whose research LOOKED and found no
+   * fresh news (`NONE_FOUND` or `SECONDARY_STALE`). A count, never names.
+   * Three states, not one (house rule): a mover with no dossier is NOT YET
+   * RESEARCHED, never "no fresh news found" (Integration's review of step 1);
+   * `CONFLICTING` / `UNKNOWN` looked and could not tell.
+   */
   moversWithoutFresh: number | null;
+  /** F12b, recap: covered 50 percent movers with no research at this checkpoint. */
+  moversNotResearched: number | null;
+  /** F12b, recap: covered 50 percent movers whose research could not tell (`CONFLICTING`, `UNKNOWN`). */
+  moversUnclear: number | null;
   /** Recap: the context for the first named mover. */
   context: NextSessionContext | null;
   /** F10 + F13, intraday: the leader, then the next two covered names by move. */
@@ -341,6 +351,11 @@ export const RECAP_LEADERS = 2;
 /** How many covered names an intraday narrative names after the leader. */
 export const INTRADAY_NEXT = 2;
 
+/** F12b: the research looked and found no fresh news. */
+const NO_FRESH: ReadonlySet<CatalystStatus> = new Set(['NONE_FOUND', 'SECONDARY_STALE']);
+/** F12b: the research looked and could not tell. */
+const UNCLEAR: ReadonlySet<CatalystStatus> = new Set(['CONFLICTING', 'UNKNOWN']);
+
 function catalystOf(research: ReportResearch | undefined): NamedCatalyst {
   return { status: research?.catalyst.status ?? null, summary: research?.catalyst.summary ?? null };
 }
@@ -403,7 +418,10 @@ function recapNamed(db: MarketDatabase, input: NarrativeInput, recap: RecapCount
       }
     : null;
 
-  const moversWithoutFresh = coveredMovers.filter((mover) => input.research.get(mover.symbol)?.catalyst.status !== 'FRESH_FOUND').length;
+  const statusOf = (symbol: string) => input.research.get(symbol)?.catalyst.status;
+  const moversWithoutFresh = coveredMovers.filter((mover) => NO_FRESH.has(statusOf(mover.symbol) as CatalystStatus)).length;
+  const moversNotResearched = coveredMovers.filter((mover) => !input.research.has(mover.symbol)).length;
+  const moversUnclear = coveredMovers.filter((mover) => UNCLEAR.has(statusOf(mover.symbol) as CatalystStatus)).length;
 
   const first = recapLeaders[0];
   let context: NextSessionContext | null = null;
@@ -423,7 +441,7 @@ function recapNamed(db: MarketDatabase, input: NarrativeInput, recap: RecapCount
     };
   }
 
-  return { coveredMovers: coveredMovers.length, recapLeaders, afterHours, moversWithoutFresh, context };
+  return { coveredMovers: coveredMovers.length, recapLeaders, afterHours, moversWithoutFresh, moversNotResearched, moversUnclear, context };
 }
 
 function intradayNamed(input: NarrativeInput, leader: ReportFact | undefined): IntradayMover[] {
@@ -467,6 +485,8 @@ export function narrativeFacts(db: MarketDatabase, input: NarrativeInput): Narra
       recapLeaders: named.recapLeaders,
       afterHours: named.afterHours,
       moversWithoutFresh: named.moversWithoutFresh,
+      moversNotResearched: named.moversNotResearched,
+      moversUnclear: named.moversUnclear,
       context: named.context,
       intradayNamed: null,
     };
@@ -491,6 +511,8 @@ export function narrativeFacts(db: MarketDatabase, input: NarrativeInput): Narra
     recapLeaders: null,
     afterHours: null,
     moversWithoutFresh: null,
+    moversNotResearched: null,
+    moversUnclear: null,
     context: null,
     intradayNamed: intradayNamed(input, first),
   };
