@@ -13880,3 +13880,8 @@ counts_available, tool_config; 8,552 rows 2026-08-19..10-02). 09-28..10-02 analy
 of 1,620 window calls and 41.4M of 48.2M input tokens, and is absent from research_analysis_versions.
 NEXT ORDINARY RELEASE pick list (Integration 24th): 61e2f777, f1b8b716 + 6ac43025, Research's citation-id fix (unbuilt),
 Ops split follow-up (unbuilt), Web 2fe136ac (landing copy; his yes in Web's chat). Cut on /proc 6e7fff84 when ready.
+**PRODUCTION REF ON ORIGIN (Integration 24th's "push", refspec-limited, main untouched):** refs/heads/production ->
+6e7fff846a573e2692deb8fcb7982c7b375e6f08; annotated tag release/2026-10-03-6e7fff84 (da816266) -> 6e7fff84. ls-remote
+read back. Zero new objects (origin already held 6e7fff84). STANDING RULE for this seat: after /proc confirms each ship,
+fast-forward `production` to the shipped sha and push one release/<date>-<sha8> tag, both refspec-limited. Split-to-main
+(ops/split-to-main) nodded by Integration: build after Monday's spot check.
