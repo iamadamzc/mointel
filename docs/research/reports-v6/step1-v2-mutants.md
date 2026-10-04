@@ -16,4 +16,12 @@
 | M10 | intraday next names by rank instead of by move | 1 | intraday v2 (A, B, C instead of A, C, E) |
 | M11 | open supply not de-duplicated | 1 | recap v2 (WARRANTS twice) |
 
+## Result (runner `cf74003f`, raw `eafe0608`, read after its commit)
+
+**11 of 11 killed, every count as predicted** (M1: 2, all others: 1, the same tests named above). Source restored (`restored: true`). Control M0 (no edit): 0 failed.
+
+**One miscount of mine, in this doc's header and the runner's comment:** the file holds **9** tests (4 existing + **5** new), not 10 (4 + 6). The control read 9; the predictions are per mutant and unaffected.
+
+Gate in Ops's slot (2026-10-03): `tsc --noEmit` 0; `eslint` on the 5 changed files 0; `vitest tests/desk/` 29 files, 404 passed.
+
 Known weakness, stated before the run: the older-high test's two assertions also pass when `context` is null, so a mutant that drops the context entirely is caught only by the recap v2 test.
