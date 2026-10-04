@@ -13872,3 +13872,11 @@ SPLIT FIX ON MAIN: dff3fb0a + f5746a84 cherry-pick clean onto origin/main (5 fil
 runtime.ts byte-identical to production's base. PROPOSED: ops/split-to-main (+ M1 fixture + log rounding), after Monday's
 spot check, on Integration's nod. STABLE REF PROPOSED: tag release/2026-10-03-6e7fff84 + branch `production` (ff-only,
 moved on every ship); zero new objects on origin; push only on Integration's "push", refspec-limited.
+**2026-10-04 ~19:3x ET: production research-volume count for Research (Sheet reproduction pricing), read-only.** Tables:
+research_analysis_versions (generated_at UTC ISO -> ET date via '-4 hours', EDT; model gpt-5.6-terra 2,505 / gpt-5.6-sol 330
+all time) and model_usage (per-call ledger: trading_date, stage, trigger, calls, input/cached/output tokens,
+counts_available, tool_config; 8,552 rows 2026-08-19..10-02). 09-28..10-02 analyses/day 89-124 (tickers 47-71); 16-20 ET
+7-15/day. Ledger calls/day 258-369, web_search 155-260; tokens/day input 7.7-11.3M, output 0.50-0.71M. gpt-5.6-luna = 1,035
+of 1,620 window calls and 41.4M of 48.2M input tokens, and is absent from research_analysis_versions.
+NEXT ORDINARY RELEASE pick list (Integration 24th): 61e2f777, f1b8b716 + 6ac43025, Research's citation-id fix (unbuilt),
+Ops split follow-up (unbuilt), Web 2fe136ac (landing copy; his yes in Web's chat). Cut on /proc 6e7fff84 when ready.
