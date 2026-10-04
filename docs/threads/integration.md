@@ -1091,6 +1091,89 @@ HIS SHEET RULING 2026-10-03T17:20:45.439Z (typed to me; this session's jsonl): "
                  schedule, cost, box memory; storage + step 4 pins). Design (surface keeps table/Priority/float; waits on
                  field contract). Commercial (Priority A-AVOID vs "not a recommendation"; model float). Ops (step 4 pins
                  source changes; FYI).
+DESIGN CONTRACT  Design's 4 needs relayed to Research (dd691a9d, queued): PriorityBucket set (types.ts:14, read), N states,
+                 float number+source+date+UNKNOWN (board vs report-b-spec.md:11 "float only ever a verdict": Research
+                 proposes, Marketing words, to him only if genuinely his), one as-of per row.
+SCRATCH          His "Try again" (after my refusal to delete). File still present; exclusive-open test: NOT locked. I do
+                 not permanently delete files; told him again with steps.
+STALLED MERGE    Commercial (session b9ad4eb2, jsonl) ran `git fetch -q && git pull -q --no-edit | tail -1` in the SHARED tree
+                 at 17:22:53Z (acting on my Priority message); it CONFLICTED in research.md + research-opening-prompt.md
+                 (Research's; markers 2 + 4, unresolved) pulling Design's side-worktree push 5f18458c; tail hid it. Shared
+                 tree sat mid-merge, blocking every seat's `commit --only`. Design out of usage until Oct 4 7pm ET. I backed
+                 up both unstaged edits (scratchpad merge-backup/), ran `git merge --abort`: HEAD fd0fd4a2, edits intact.
+                 Commercial + Research told. Syncing shared main with origin (142 ahead / 10 behind) stays MINE, done as
+                 its own task with owners' clearance.
+COMMIT DENIED    My commit of this charter (notes above) refused by the auto-mode classifier, no reason given. NOT retried;
+                 told him. These notes sit uncommitted in the tree until he decides.
+COMMERCIAL READ  docs/commercial/2026-10-03-sheet-reproduction-claims-read.md (origin 66d59213, READ in full, 0 U+2014).
+                 Priority: conflict with own rules/terms s7/"not a signal service" as WORDED; fix = readings of 5 criteria,
+                 no "opportunity"/"next-session"/"AVOID", one legend, same for all, rubric published. Float: measure
+                 researched float > filed count rate; label as research estimate + source + date; source allow-list + ban
+                 vendor aggregators + stored cited source. Says verdict-not-number stands until measured: COLLIDES with
+                 his "reproduce" (Sheet printed a number) -> to him inside Research's proposal. Relayed Research + Marketing.
+                 Commercial confirms it will not pull in the shared tree again. Its ledger 7 (own root cause: tail -1 hid
+                 the conflict). Commercial pushes its own files from a temp worktree off origin/main (memory rule
+                 a-push-publishes-peers-held-commits allows that for a seat's OWN commits); they arrive on local main at my sync.
+MARKETING        Claims-safety pre-pass of grade/legend/float words already sent to Commercial (and the retired 23rd): A/B/C/D,
+                 AVOID gone. Final after Research's contract, to him with the proposal. Told Marketing: "D" must be a stated
+                 display mapping onto PriorityBucket AVOID (types.ts:14), plus words for EXCLUDED/UNCLASSIFIED.
+COMMERCIAL s4    (origin c2b50127) Marketing words PASS with 2 changes ("estimated from {source}"; "no filing reports the
+                 current number of tradable shares"). Says "D replaces the stored AVOID": stored-vs-display put to Research
+                 to state in the contract. Legend "not tested" expires at first outcome test (trigger to contract).
+                 PUBLIC COPY: "No filing carries one." READ on origin at app/page.tsx:280 AND canvas Main.dc.html:193,
+                 LandingMobile.dc.html:159. Web told all three; rides its next copy cut (replay here). Not to him.
+PRIORITY DISPLAY SETTLED: stored PriorityBucket unchanged; display A/B/C, AVOID -> "D" (Marketing). HELD: Marketing's one
+                 "—" for EXCLUDED + UNCLASSIFIED vs Design's N-states need (not-yet-produced must differ from unknown);
+                 waits on Research's contract naming the states a Priority cell can take. Legend must not open with
+                 the glyph (writing, not his cell exception). Marketing + Design told.
+                 Marketing AGREED: dash only for not-yet-produced; produced-UNKNOWN gets a word; EXCLUDED its own word if it
+                 can occur; final after Research's contract names the states. Legend "A dash in this column means ...".
+FLOAT COPY 4TH   Web: also docs/web/canvas/tmi-trader-public-site.html x2 (READ on disk); UNTRACKED, so my `git grep` over refs
+                 could not see it (ledger-worthy shape: a ref grep answers only for tracked files; use rg on the tree too).
+                 Web put the wording to HIM in its chat; on his yes one commit, next copy cut, replay here.
+                 Bundle IGNORED on purpose (canvas/.gitignore:1, check-ignore read), stale 09-18 export: commit = 3 tracked
+                 files. Asked Web whether the bundle is served anywhere a stranger reaches. ANSWER (Web, read from the
+                 artifact service): artifact "TMI Public Site" is PRIVATE to him, no share/review link; carries the old
+                 sentence x2. No exposure. Web republishes it from the fixed .dc.html after his yes.
+STEP 1 LIVE      Ops /proc 2026-10-04T23:20:09Z: web 2025357 / research 2025415 / assess 2025490 on 6e7fff84 (start 10-03
+                 17:50:15-17Z), NR 0; market 2013616 f5746a84 untouched; meta.provider google-sheets, 4 tickers; keyless warn 0.
+v6 STEP 1 REVIEW Research 37853816 (code) .. e3e83fee (mutants 11/11; gate tsc 0 / eslint 0 / desk 404). READ in full. ACCEPTED
+                 + ONE DEFECT before step 2: F12b moversWithoutFresh counts covered movers with NO dossier as "no fresh"
+                 (research.set only if version; READ pipeline.ts) = N-states breach; fix + notResearched count + fixture.
+                 Calls: keep change-note allowlist (Marketing example changes; told); older high ok, replay look-ahead of
+                 dailyBarBasis = sample artefact to name; gainers-only named picks ok; split cost ok.
+PROD NOT ON MAIN f5746a84 / 0b92c309 not ancestors of main or origin/main (read); 69 prod commits without patch-id twin on
+                 origin/main incl. dff3fb0a + f5746a84; ops/split-day-close local only; f5746a84 on origin only via Design's
+                 tag. Asked Ops: stable origin ref for production, route for the split fix to main, list release-only vs owed.
+MARKETING EX.    Power-hour example last line now "Since the previous checkpoint, NAMM printed a new high of day." (allowed
+                 change note); premarket example untouched. Read: no U+2014.
+FLOAT COPY DONE  HIS YES in Web's chat ("yes, use the new wording", per Web). 2fe136ac (local main, READ): 3 files, 3 lines,
+                 0 U+2014; no tracked "No filing carries" left on main. Private canvas artifact republished v23. ADDED to the
+                 NEXT ORDINARY RELEASE list (61e2f777, f1b8b716+6ac43025, citation fix, Ops split follow-up, 2fe136ac).
+PROD LINE SEAM   Ops: 71 prod commits w/o patch twin on origin/main (19 re-cuts by subject; 52 tested alone: 2 present, 18
+                 apply, 32 conflict). Release-only + owed-to-main lists in ops.md. MY CALLS: (1) PUSH two refs only:
+                 tag release/2026-10-03-6e7fff84 + branch `production` @ 6e7fff84 (verified reachable from Design's tag;
+                 names free); `production` ff-only by Ops after each ship's /proc. (2) ops/split-to-main nod, after Monday's
+                 spot check, literal sha to me. (3) OPEN, owner INTEGRATION, trigger Monday after the spot check: put
+                 owed-to-main items to owners (equivalent on main / owed / release-only). Not to him (releases cut on /proc,
+                 so live features are not at risk).
+NEXT RELEASE     Ops: cut on /proc 6e7fff84 once the citation fix (Research, unbuilt) and Ops's split follow-up (unbuilt)
+                 exist, after Monday's spot check; literal tip to me. 61e2f777 (preflight.sh) takes effect for deploys AFTER
+                 the one that ships it.
+PROD REFS LIVE   READ (ls-remote): origin refs/heads/production = 6e7fff84; tag release/2026-10-03-6e7fff84 (da816266) ->
+                 6e7fff84. Production source now has a stable origin ref. Ops moves `production` ff-only after each /proc.
+WEB HANDS OFF    On his "hand off" (Web's chat, 2026-10-04, per Web). local_46c15fbe retiring; NOTHING to it after now.
+                 CLEARED to ride my push: all 14 Web commits on local main (--grep '^Web', latest 2e64a520) incl. 2fe136ac.
+                 Web open items in web.md LIVE STATE 2026-10-04T23:29Z. Successor titles itself Web-tmi: TWO Web-tmi until
+                 he renames the old one; route to the newer createdAt.
+```
+**THE TWENTY-FOURTH SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+1 told WEB the sentence was in "THREE places"         asserted a complete list from a     no       peer (Web,
+  (git grep over origin/main); a 4th, UNTRACKED copy   search that cannot see part of      (new)    grep -o on
+  (canvas tmi-trader-public-site.html) was on disk.    the set (refs miss untracked)                the tree)
+  Never reached him. CURE: an "all copies" claim searches the working tree too (rg), not only refs.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
