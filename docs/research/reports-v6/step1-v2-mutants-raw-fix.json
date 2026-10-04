@@ -1,0 +1,139 @@
+{
+  "restored": true,
+  "results": [
+    {
+      "id": "M0",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 0,
+      "failed": []
+    },
+    {
+      "id": "M1",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 2,
+      "failed": [
+        "readRecapCounts: the split check keeps a false basis jump out of F1, F6 and F7 leaves out a jump at a standard ratio or with a factor change near the date; keeps a genuine gap and a ratio without a jump",
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M2",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "readRecapCounts: the split check keeps a false basis jump out of F1, F6 and F7 leaves out a jump at a standard ratio or with a factor change near the date; keeps a genuine gap and a ratio without a jump"
+      ]
+    },
+    {
+      "id": "M3",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "readRecapCounts: the split check keeps a false basis jump out of F1, F6 and F7 leaves out a jump at a standard ratio or with a factor change near the date; keeps a genuine gap and a ratio without a jump"
+      ]
+    },
+    {
+      "id": "M4",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "readRecapCounts: F15, peak against close retention is (close - prior) / (high - prior); exactly half counts as kept; a close at or under the prior gave it all back"
+      ]
+    },
+    {
+      "id": "M5",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M6",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context drops the older high when the daily-bar basis is not vouched, and when it is not above the session high"
+      ]
+    },
+    {
+      "id": "M7",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context drops the older high when the daily-bar basis is not vouched, and when it is not above the session high"
+      ]
+    },
+    {
+      "id": "M8",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M9",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M10",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts intraday v2: F10 and F13 names the leader (in-range rank 1), then the next two covered gainers by move, with allowlisted change notes only"
+      ]
+    },
+    {
+      "id": "M11",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M12",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M13",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    },
+    {
+      "id": "M14",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeFacts recap v2: F10, F10b, F12b and the context names the covered movers by the day high (top 2), the after-hours gainer not already named, and the first name context"
+      ]
+    }
+  ]
+}
