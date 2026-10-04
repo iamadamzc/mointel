@@ -36,4 +36,6 @@ Gate in Ops's slot (2026-10-03): `tsc --noEmit` 0; `eslint` on the 5 changed fil
 
 M1 to M11 are re-run unchanged; each prediction above stands (the new fixture rows sit below the leaders, are not split candidates, and are not after-hours gainers).
 
+**Result (raw `0c8b8035`, read after its commit): 14 of 14 killed, every count as predicted** (M1: 2; M2 to M14: 1 each). Control M0: 9 tests, 0 failed. Source restored. Gate at `25c366e2` in Ops's slot 2026-10-04: `tsc` 0; `eslint` 0 on 4 files; `vitest tests/desk/` 403 of 404, **the one failure is `releaseRetention.test.ts` "refuses every weekday start that would run inside 07:00-10:00 ET"**, Ops's deploy-preflight test: it imports nothing from `lib/` (it execs the preflight script), the diff `e3e83fee..25c366e2` touches only the narrative files, and the same file passed in the 2026-10-03 run. Failed twice on 2026-10-04 (in the suite, and alone). Cause not measured; reported to Ops.
+
 Known weakness, stated before the run: the older-high test's two assertions also pass when `context` is null, so a mutant that drops the context entirely is caught only by the recap v2 test.
