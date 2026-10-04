@@ -450,123 +450,100 @@ that as a rejection.**
 
 ## LIVE STATE: rewrite or delete this section, never let it go stale
 
-> **UPDATE 2026-10-03, read by the successor Web seat: STEP 4 IS LIVE.** *Production
-> web runs `0b92c309` (per Integration's hand-off LIVE STATE, start 15:22:51Z): the live
-> base `3b9c0a70` + the refusal screen + the gate wiring + probe removal + the
-> `/api/dashboard` hold + Design's blue-sky fix + two test-only fixes
-> (`git log 3b9c0a70..0b92c309`). Read from outside after the ship: `/desk /signin
-> /api/market /api/dashboard /privacy-x` 401 (Basic Auth still on), `/ /privacy /terms`
-> and the icons 200, `placeholder-scan.py` clean for the first time, `mointel_oauth`
-> renders on `/privacy`, 0 em dashes in prose on `/ /privacy /terms` (the three on `/`
-> are the example board's empty cells, his exception).* **Steps 1 to 4 below are
-> done; step 5 is its own night with the preconditions in the OPEN table.** *What
-> was NOT read by this seat: an admitted or refused session on the live `/desk`;
-> that needs his browser.*
-
-**SNAPSHOT 2026-10-02 17:34 UTC, at `01455d93`. Written as a hand-off; every line
-was true at that moment and nothing below is a diary.** *Where this disagrees
-with anything above it, this wins.*
+**SNAPSHOT 2026-10-04 23:29 UTC (19:29 ET), at `98d25f3f` on local main. Written as a
+hand-off on his "hand off"; every line was true at that moment and nothing below is a
+diary.** *Where this disagrees with anything above it, this wins. The previous
+snapshot (the sign-in night, 2026-10-02) is in this file at `526bed0b`.*
 
 ### What is live on tmitrader.com
 
-**The public site is complete and verified, still behind nginx Basic Auth, which
-is still the whole of what protects the desk.** *Last live read by this seat
-2026-10-02: `/ /privacy /terms /favicon.ico /icon.svg /apple-icon.png
-/robots.txt` return 200; `/desk /signin /api/market /privacy-x` return 401, the
-negative control first.* **Both legal texts are ADOPTED (`adopted: 2026-09-11`)
-and render from source markdown at request time.** *The product is `The Momentum
-Intelligence Trading Desk`; the old name `TMI Trader` survives on purpose in the
-domain and in one history line per legal document.*
+**The desk is behind TWO layers now: nginx Basic Auth (unchanged, still the outer
+wall) and Google sign-in enforced in the app (step 4, shipped 2026-10-03).** *Web ran
+`0b92c309` per Integration's 2026-10-03 snapshot (start 15:22:51Z): `3b9c0a70` +
+refusal screen + gate wiring + probe removal + the `/api/dashboard` hold + Design's
+blue-sky fix + two test-only fixes. `f5746a84` (= `0b92c309` + Ops's split-day fix)
+was named by Design on 2026-10-04 as the base of the next tag; this seat did NOT
+read which sha is live now. Ask Integration.*
 
-**NO EM DASH ANYWHERE A STRANGER READS.** *His hard rule, 2026-09-30. Swept and
-live. Two of his rulings define the edges: the bare glyph standing in for an
-empty value stays ("keep it. fine for that, not writing"), and punctuation that
-preserves meaning is NOT a material redraft, so `adopted` survived a 27-mark
-sweep.* **The guard is `tests/web/emDash.test.ts`: it checks U+2014 AND the
-entity forms, treats a glyph with nothing on one side as a placeholder and words
-on both sides as prose, and gives markdown no placeholder exception.** *Add any
-new user-visible surface to its `SURFACES` array. The list is strict on purpose
-and a missing file throws; do not make it lenient.*
+*Behaviour as the code at `0b92c309` defines it (live reads are the last bullet):*
+- `/desk`: anonymous -> redirect to `/signin`; refused -> 403 + `NotAdmitted` via
+  `forbidden()` (`experimental.authInterrupts` in `next.config.ts`); admitted -> board.
+- `/api/{assessments,levels,market,reports,research/retry}`: 401 anonymous, 403
+  refused, identical no-detail body. **`/api/dashboard` is NOT session-gated** (OPEN).
+  `/api/health` is ungated on purpose (loopback-only, Ops's liveness check).
+- The one place a request becomes an admission: `lib/auth/requestGate.ts`.
+  `tests/auth/requestGate.test.ts` enumerates `app/api/` so no route ships ungated
+  without a test change.
+- **Sessions end at the NEXT 20:00 ET by calendar day** (`lib/auth/expiry.ts`): a
+  sign-in at or after 20:00 runs to 20:00 the following day.
+- Read from outside after the ship (2026-10-03): `/desk /signin /api/market
+  /api/dashboard /privacy-x` 401, `/ /privacy /terms` and the icons 200,
+  `placeholder-scan.py` clean (first time ever), `mointel_oauth` renders on
+  `/privacy`. **Not read by this seat: an admitted or refused session on the live
+  `/desk`; that needs his browser.**
 
-### TONIGHT, in flight as this is written
+**Both legal texts are ADOPTED (`adopted: 2026-09-11`)** and render from source at
+request time. The privacy fill of `mointel_oauth` kept `adopted` (a value fill, not a
+redraft, under the file's own test); `last_changed: 2026-10-02`.
 
-**He approved the sign-in night: ship, seed, probe on, his two reads, Ops's
-anonymous read, probe off. From about 20:36 ET 2026-10-02.**
+**NO EM DASH ANYWHERE A STRANGER READS.** *His hard rule, 2026-09-30. The guard is
+`tests/web/emDash.test.ts` (U+2014 AND entity forms; strict `SURFACES`, a missing file
+throws). The three bare dashes on `/` are the example board's empty cells, his named
+exception.*
 
-| step | what | owner | state |
-| --- | --- | --- | --- |
-| 1 | ship `ops/signin-cut` tip `3b9c0a70`: the whole sign-in surface plus Ops's probe, flag OFF, **nothing enforced** | Ops ships, Integration replayed | approved by him |
-| 2 | Google client id and secret, `IDENTITY_DB_PATH`, seed `iamadamzc@gmail.com`, then `AUTH_PROBE_ENABLED=1` | him and Ops | his items, today |
-| 3 | three probe reads: admitted on the seeded address, **refused on a throwaway account**, anonymous from a credentialed `curl` with no cookie | Ops reads, sends them to Web | waiting on step 2 |
-| 4 | **WEB: wire `authenticate()` into `/desk` and `/api/*`, and fill `[FLOW COOKIE NAME]`** | **Web** | ~~NOT WRITTEN, deliberately~~ **LIVE 2026-10-03 at `0b92c309`; `/api/dashboard` held out (OPEN table)** |
-| 5 | flag off, probe removed, **Basic Auth off** | Ops | **its own night, never tonight** |
+### Built, approved, NOT yet live
 
-> **STEP 4 IS NOT WRITTEN ON PURPOSE AND A SUCCESSOR SHOULD KEEP IT THAT WAY
-> UNTIL STEP 3 READS CORRECTLY.** *A deploy ships its ancestry, so a wiring
-> commit sitting on `main` can ride any release; a desk gated with no client id
-> refuses everyone, him included, at 07:00.* **Nor leave it uncommitted in the
-> shared tree: several seats share one index.**
+- **`2fe136ac`: landing copy, his yes 2026-10-04.** "Every float is somebody's
+  computation. No filing reports the current number of tradable shares." (was "No
+  filing carries one", Commercial's correction). In `app/page.tsx`, `Main.dc.html`,
+  `LandingMobile.dc.html`. Rides the next release; Integration replays.
+- **Identity-store mode pair `f1b8b716` + `6ac43025`** (0640, never breaks the open):
+  approved by Integration for the next ordinary release cut.
+- **His private canvas artifact** (claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs, "TMI
+  Public Site") was republished as v23 with the new sentence, stamped at `2fe136ac`.
+  It is private. `docs/web/canvas/tmi-trader-public-site.html` is a gitignored
+  2026-09-18 export and is NOT the source; the `.dc.html` files are.
 
-**Tonight makes NO nginx change.** *`^~ /auth/` and `= /signin` are still
-unexempted and belong to step 5. Basic Auth and the in-app gate are independent
-layers: `location /` (`nginx-locations.conf:357`) proxies everything unexempted
-to the app, so every probe read carries the Basic-Auth credential and exercises
-the inner gate anyway.*
+### The Google Sheet is being removed (his ruling, 2026-10-03)
 
-**`[FLOW COOKIE NAME]` is the last placeholder on the public site and it fills
-with step 4, not step 1.** *The code sets `mointel_oauth`, but until the Google
-env is on the box `loadAuthConfig` throws, so the live site sets no cookie and
-naming it would name one a user cannot find.* **`python docs/web/placeholder-scan.py`
-exits non-zero while it remains, and that one hit is its own positive control.**
-
-### What tonight CANNOT prove, and it must not be claimed
-
-**The probe proves the gate ADMITS the invited, REFUSES the uninvited, and treats
-a session-less request as ANONYMOUS. It cannot prove a person with no Basic-Auth
-password can complete a sign-in, because nginx refuses them before the app sees
-them.** *That claim first becomes testable in the change that removes Basic Auth.*
-**If any report says "sign-in works" after tonight it is claiming more than was
-measured.** *And the refusal read is the one that gets dropped when a night runs
-late: a gate that admits correctly and refuses nobody looks identical to a
-working gate from his own account.*
+**Plan: `docs/sheet-removal-plan-2026-10-03.md` (Integration).** *Web's only part:
+gate `/api/dashboard` in the plan's STEP 4 release, the one that removes the market
+worker's call. Step 1 (no demo rows when the Sheet is absent) is Design's and built
+(`4cea086f`, with a one-line server warning when no source is configured). Public
+copy and legal texts never mention the Sheet (checked).*
 
 ### OPEN: owner, trigger, and what happens if the trigger never fires
 
-**Each row carries a FALLBACK on purpose. Section 5 of the hygiene rule: "it rides
-the next X" is indistinguishable from a hold that was forgotten.** *The prior
-snapshot of this section is at `d329a691`'s parent and is not repeated here.*
-
 | what | owner | trigger | if the trigger never fires |
 | --- | --- | --- | --- |
-| ~~**step 4 wiring**~~ | ~~Web~~ | **CLOSED: live 2026-10-03 at `0b92c309`** | |
-| **Basic Auth removal** | Ops, his yes | step 4 proven live, then its own night | **no date, and that is correct: it waits on a person with no password completing a sign-in, which nothing before step 4 can show. If anyone proposes it without that, refuse and say why** |
-| **`/api/dashboard` is NOT session-gated** (held out of step 4 at `32db0d7e`, 2026-10-03): the market worker reads it over loopback with no cookie to pin his TODAY-sheet tickers (`worker/runtime.ts` refreshSheetSymbols, `worker/diagnose.ts`), and drops a non-OK silently. **ORDERED 2026-10-03 (Integration, `docs/sheet-removal-plan-2026-10-03.md`): Web gates `/api/dashboard` IN STEP 4's RELEASE, the one that removes the worker's call. Re-grep callers first, then drop it from the test's UNGATED set. No worker credential is built.** *Background: his ruling 2026-10-03 removes the Google Sheet from the system.* *The worker's read exists for TODAY-sheet pins and likely goes with the Sheet. If it does, gate `/api/dashboard` like every other route with no credential at all, after re-grepping its callers; if it survives, (a) below stands.* **Earlier the same day, decided by Web and Ops (local_7fac8dfc): (a).** Two designs were on file. **(a) a shared-secret header the worker sends** (env secret, worker change, rides a market restart he does anyway); fails CLOSED. **(b) Ops's (local_7fac8dfc), no worker change: admit when the request carries neither X-Real-IP nor X-Forwarded-For**, since Next binds 127.0.0.1:3000 and all 14 proxy_pass blocks set X-Real-IP at `3b9c0a70`; fails OPEN if a location, the bind, or the box's live nginx drifts, so it needs a structural test over every proxy_pass block. *Withdrawn by Ops in favour of (a).* **The secret is box-only, so it must be written by `deploy/aws/sync-env.sh` or the next wholesale env rewrite drops it**; it rides the pending market restart (worker em-dash strings). A bare loopback-address exemption is unsafe: nginx proxies from 127.0.0.1 | **Web (gate side) + the worker's owner, via Integration** | before Basic Auth comes off `/api/` | **if step 5 is proposed with this row open, it is not ready: the route would be public. The structural test's UNGATED set names it, so lifting the hold needs a test change** |
-| **a per-user rate limit on `POST /api/research/retry`** (route spec §4, re-read 2026-10-02: none exists) | **Ops and Web jointly, unassigned** | before Basic Auth comes off `/api/` | **if step 5 is proposed without it, it is not ready: that endpoint spends model budget, and one admitted user in a loop costs what a stranger would. Raise it to Integration when step 5 is first scheduled** |
-| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final at `204d42c6`) | **him to approve the wording; Web applies it** | **must NOT be adopted before the short-interest label exists.** Adoption sets `adopted` to null and renders a public DRAFT banner; the label is not in the code. Terms edit, adoption, attribution and label ride ONE change | **if he approves the wording but the label stalls, do NOT apply the terms edit. An adopted-null banner on a live page for a feature that does not exist is the worse outcome** |
-| **FINRA attribution strings** `Short interest: FINRA (owner and source), settled <date>` and the board-footer legend | Web owns the words, **Design builds them** | the label | **if the label ships without them, that is a licence breach, not a tidy-up. Say so to Integration the day it appears** |
-| **clause 2.2** (our own use non-commercial, against a paid product) | him or counsel, **Commercial holds it** | an enquiry nobody has made | **the label can ship under his accepted-exposure posture without it. Do not let a seat park the label waiting for FINRA, and do not let one claim an approved wording settled this** |
-| **the three-way refusal split** | Web, when a reason exists | a refusal REASON in the store | **never, quite possibly, and that is fine. One honest screen beats three guessed ones** |
-| **self-serve sign-up and the `app/page.tsx` "no public sign-ups" copy change** (line 443 on 2026-10-02; cite the sentence, line numbers drift) | him | he ruled first paying users are invited and billed by hand, so both WAIT. *"There are no public sign-ups..." stays true and stays live* | **nothing waits on it. If anyone ships a public save-card page, that sentence must change in the same commit or the live page becomes false** |
-| **consent-screen display name** | him | the day he uploads the mark | **blocks Google brand verification only; nothing else waits on it** |
+| **gate `/api/dashboard`** (held out at `32db0d7e`: the market worker reads it over loopback with no cookie for TODAY-sheet pins, `worker/runtime.ts` refreshSheetSymbols, and drops a non-OK silently) | **Web** | **Sheet plan step 4's release** (ordered by Integration 2026-10-03). Re-grep callers first (`fetch(`, `curl`, env URLs), then drop it from the test's UNGATED set | **if Basic Auth removal is proposed with this open, it is not ready: the route would be public.** *If the Sheet plan stalls, the fallback design is a shared-secret header the worker sends (fails closed; written by `sync-env.sh`; rides a market restart, his). Ops withdrew its header-absence design (fails open).* |
+| **per-user rate limit on `POST /api/research/retry`** | **Ops and Web jointly, unassigned** | before Basic Auth comes off `/api/` | **if step 5 is proposed without it, it is not ready: the endpoint spends model budget** |
+| **Basic Auth removal** (step 5) | Ops, his yes | the two rows above closed, plus `^~ /auth/` and `= /signin` exemptions, then its own night | **no date, correctly: it waits on a person with no password completing a sign-in, which nothing before it can show (claim D)** |
+| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final `204d42c6`) | him to approve; Web applies | **NOT before the short-interest label exists**; terms edit, adoption, attribution and label ride ONE change | **if he approves the wording but the label stalls, do NOT apply the terms edit** |
+| **FINRA attribution strings** | Web owns the words, Design builds | the label | **a label without them is a licence breach; say so to Integration the day it appears** |
+| **clause 2.2** (our own use non-commercial) | him or counsel; Commercial holds | an enquiry nobody has made | **the label can ship under his accepted-exposure posture without it** |
+| **three-way refusal split** | Web | a refusal REASON in the store | **possibly never; one honest screen beats three guessed ones** |
+| **self-serve sign-up and the "There are no public sign-ups" sentence** in `app/page.tsx` | him | first paying users are invited and billed by hand (his ruling), so both wait | **if anyone ships a public save-card page, that sentence changes in the same commit** |
+| **consent-screen display name** | him | the day he uploads the mark | **blocks Google brand verification only** |
 
-### Two things built this week that a successor will misread
+### Things a successor will misread
 
-**`components/NotAdmitted.tsx` (`01455d93`) is ONE screen where
-`docs/web/canvas/Admitted.dc.html` draws THREE. That is deliberate.** *The
-artboard keys three screens on waiting-on-a-decision, answered-no, and
-had-access-and-lost-it.* **`authenticate()` returns `refused` with no reason and
-cannot return one: `isEmailInvited` folds never-invited and revoked into one
-`false` so the store never becomes an oracle for which addresses were once
-invited.** *Each of the artboard's three headline sentences is false in two cases
-out of three, so the built screen says only what is true under all three.* **It
-is not unfinished work. The split ships when a reason does.** *Same shape for the
-email: the gate returns `{state, userId}` and no address, so the prop is optional.*
+**`components/NotAdmitted.tsx` is ONE screen where `docs/web/canvas/Admitted.dc.html`
+draws THREE. Deliberate:** `authenticate()` returns `refused` with no reason
+(`isEmailInvited` folds never-invited and revoked into one `false`), so the built
+screen says only what is true in all three cases.
 
-**The example board on `app/page.tsx` keeps `&middot;` while the rest of the page
-uses a colon.** *That block depicts the product, and the board's own separator is
-the middot (Design, `1dacc16`).* **The boundary is site prose versus depicted
-board, not site versus board.** *Do not tidy it into a colon; the reason is in a
-comment at the illustration.*
+**The example board on `app/page.tsx` keeps `&middot;` while site prose uses a
+colon.** *The boundary is site prose versus depicted board; the reason is commented at
+the illustration.*
+
+**`web/step4-cut` is a LOCAL branch only**, the step-4 cut as shipped plus Design's
+blue-sky commits (`fb50e2ff`). Releases ship by `git archive` from this PC
+(`deploy/aws/push-release.sh`), so nothing needed it on origin. It is history, not
+work in flight.
+
+**This PC checks out CRLF.** *A test that reads source text must normalise line
+endings; re-check files out (delete and `git checkout`) before trusting one.*
 
 ### ERROR LEDGER, this seat (opened 2026-10-02 by the successor)
 
