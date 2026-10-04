@@ -20,10 +20,9 @@ import { humanise } from '../../dashboard/language';
 import { etClock } from '../../market/session';
 import type { ReportKind, ReportPath } from './contract';
 import type { ReportFact } from './facts';
-import type { BreadthWindow, NarrativeFacts } from './narrative';
+import { isRecap, type BreadthWindow, type NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
 import { eventWhen, sourceWhen } from './traced';
-import { roundTo } from './verify';
 import {
   NOTHING_LINE,
   framedChange,
@@ -39,7 +38,7 @@ import {
 import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 
 /** Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 7;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 8;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -56,40 +55,137 @@ export const WINDOW_WORDS: Record<BreadthWindow, string> = {
 
 const n = (value: number) => value.toLocaleString('en-US');
 
-/** The narrative's given facts, one per line, as the model must word them. */
-export function narrativeSheet(facts: NarrativeFacts, range: { min: number; max: number }): string[] {
-  const lines = [`range: ${price(range.min)} to ${price(range.max)}`];
-  if (facts.breadth) {
-    const b = facts.breadth;
-    lines.push(`breadth (${WINDOW_WORDS[b.window]}): ${n(b.traded)} traded, ${n(b.up)} up, ${n(b.down)} down`);
-  } else {
-    lines.push('breadth: none on file (say nothing about how many traded)');
+/**
+ * A narrative percent: a WHOLE number, rounded here from the EXACT value (his
+ * ruling 2026-10-03T15:44:11Z, "whole percentages fine"; the cards keep exact).
+ * Never from the one-decimal display: NXL's 68.46 is "68", and rounding its
+ * display "68.5" would print 69 (Marketing's half case). Under one percent is
+ * "less than 1", never "0".
+ */
+export function wholePercent(exact: number): string {
+  const whole = Math.round(Math.abs(exact));
+  return whole === 0 ? 'less than 1' : String(whole);
+}
+
+/** "up 68 percent" / "down 12 percent", the sign as a word. */
+function movedWords(exact: number): string {
+  return `${exact < 0 ? 'down' : 'up'} ${wholePercent(exact)} percent`;
+}
+
+/** The checkpoint row's cycle, humanised (v2 table: "the cycle label"). */
+const CYCLE_WORDS: Record<string, string> = {
+  GREEN_FRESH_FRONTSIDE: 'fresh frontside',
+  YELLOW_FRONTSIDE_WARNING: 'frontside with a warning',
+  RED_BACKSIDE: 'backside',
+  UNKNOWN: 'unclear',
+};
+
+const NEWS_WORDS: Record<string, string> = {
+  FRESH_FOUND: 'fresh news found in our sources',
+  SECONDARY_STALE: 'only older or secondary news found in our sources',
+  NONE_FOUND: 'no catalyst found in our sources',
+  CONFLICTING: 'the sources conflict',
+  UNKNOWN: 'the research could not tell',
+};
+
+/** One named name's catalyst clause and labels, as the model may word them. */
+function namedClauses(name: { status: string | null; summary: string | null; cycle: string | null }): string {
+  const parts: string[] = [];
+  if (name.status === null) parts.push('research: not researched yet (say so, add nothing)');
+  else {
+    parts.push(`news: ${NEWS_WORDS[name.status] ?? humanise(name.status)}`);
+    if (name.summary) parts.push(`catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): ${name.summary}`);
   }
-  if (facts.leader) {
-    const pct = roundTo(Math.abs(facts.leader.percentChange), 1).toFixed(1);
-    const basis = facts.leader.basis === 'CURRENT_SESSION' ? "from today's close" : 'from the prior close';
-    lines.push(`leader: ${facts.leader.ticker}, ${facts.leader.percentChange < 0 ? 'down' : 'up'} ${pct} percent ${basis}`);
+  parts.push(`cycle: ${CYCLE_WORDS[name.cycle ?? 'UNKNOWN'] ?? 'unclear'}`);
+  return parts.join('; ');
+}
+
+function supplyWords(supply: NonNullable<NarrativeFacts['context']>['openSupply']): string {
+  return supply
+    .map((item) => `${humanise(item.type)} (${item.status === 'KNOWN_ACTIVE' ? 'active' : 'possibly active'})`)
+    .join(', ');
+}
+
+/** The recap's given facts (premarket), v2. */
+function recapSheet(facts: NarrativeFacts): string[] {
+  const lines: string[] = [];
+  if (facts.movers50 !== null) {
+    lines.push(`ran at least 50 percent above the prior close, on the day: ${n(facts.movers50)}`);
+    if (facts.movers50 > 0) {
+      if (facts.gaveBack !== null) lines.push(`of those, gave the entire move back (closed at or below the prior close): ${n(facts.gaveBack)}`);
+      if (facts.keptHalf !== null) lines.push(`of those, kept at least half of the peak gain at the close: ${n(facts.keptHalf)}`);
+      if (facts.coveredMovers !== null) lines.push(`of those, the desk covers: ${n(facts.coveredMovers)}`);
+    }
   }
-  if (facts.movers50 !== null) lines.push(`ran past 50 percent off the prior close: ${n(facts.movers50)}`);
-  if (facts.gaveBack !== null) lines.push(`of those, closed the regular session at or below the prior close: ${n(facts.gaveBack)}`);
+  for (const [i, m] of (facts.recapLeaders ?? []).entries()) {
+    lines.push(
+      `named mover ${i + 1} (a covered 50 percent mover, by the day's high): ${m.ticker}, ran to ${wholePercent(m.highPct)} percent above the prior close and closed ${movedWords(m.closePct)} on the day; ${namedClauses(m)}`,
+    );
+  }
+  if (facts.afterHours) {
+    const a = facts.afterHours;
+    lines.push(
+      `after the close (from the 16:00 close to the last after-hours print; ALWAYS say "after the close" or "after hours", never mix it with the day's figures): ${a.ticker}, ${movedWords(a.percentChange)}; ${namedClauses(a)}`,
+    );
+  }
+  const counts: Array<[number | null, string]> = [
+    [facts.moversWithoutFresh, 'had no fresh news found'],
+    [facts.moversNotResearched, 'were not yet researched'],
+    [facts.moversUnclear, 'had research that could not tell'],
+  ];
+  for (const [count, words] of counts) {
+    if (count !== null && count > 0) lines.push(`of the covered 50 percent movers, ${words}: ${n(count)} (a count, never names)`);
+  }
   lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
-  if (facts.tracking !== null) lines.push(`names the desk carries into the next session: ${n(facts.tracking.length)}`);
-  if (facts.noClose !== null && facts.noClose > 0) {
-    lines.push(`in-range names with no regular-session close, not in these counts: ${n(facts.noClose)} (state this number in a short closing sentence)`);
+  if (facts.context) {
+    const c = facts.context;
+    const parts = [`${c.ticker} closed at ${price(c.close)}`, `its session high was ${price(c.sessionHigh)}`];
+    if (c.support !== null) parts.push(`stored support ${price(c.support)}`);
+    if (c.resistance !== null) parts.push(`stored resistance ${price(c.resistance)}`);
+    if (c.olderHigh !== null) parts.push(`an older high at ${price(c.olderHigh)} sits above the session high`);
+    if (c.openSupply.length > 0) parts.push(`open supply: ${supplyWords(c.openSupply)}`);
+    lines.push(`context into the next session (describe, never predict): ${parts.join('; ')}`);
   }
+  if (facts.tracking !== null) lines.push(`names the desk carries into the next session: ${n(facts.tracking.length)} (state the count only, never list them)`);
   return lines;
+}
+
+/** An intraday kind's given facts, v2: lighter than the recap (his ruling). */
+function intradaySheet(facts: NarrativeFacts): string[] {
+  const lines: string[] = [];
+  const basisWords = (basis: string | null) =>
+    basis === 'CURRENT_SESSION' ? 'after hours, from the regular-session close' : 'from the prior close';
+  for (const [i, m] of (facts.intradayNamed ?? []).entries()) {
+    const label = i === 0 ? 'leader (ranked first in this range)' : 'next covered gainer (by move)';
+    lines.push(`${label}: ${m.ticker}, ${movedWords(m.percentChange)} ${basisWords(m.basis)}; ${namedClauses(m)}`);
+    if (m.changeNotes.length > 0) lines.push(`since the previous checkpoint, ${m.ticker}: ${m.changeNotes.join('; ')}`);
+  }
+  lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
+  return lines;
+}
+
+/**
+ * The narrative's given facts, one per line, as the model must word them (v2,
+ * build step 2). OUT of the sheet, by his rulings and Marketing's final
+ * examples: the price range (the header carries it), breadth (the examples
+ * omit it), the no-close and split counts (computed footnotes, step 4), and the
+ * carried names as a list. The `range` argument is kept for the checker's call.
+ */
+export function narrativeSheet(facts: NarrativeFacts, _range: { min: number; max: number }): string[] {
+  return isRecap(facts.kind) ? recapSheet(facts) : intradaySheet(facts);
 }
 
 const NARRATIVE_RULES = [
   'THE NARRATIVE ("narrative"): the opening read of the session, above the names.',
-  '- Word ONLY the given facts. Every number in it is a given number, written exactly; every ticker is the given leader. Never count, never add a fact, a theme, a sector or a reason.',
-  '- Use the breadth window words exactly as given ("so far today", "after hours", "on the day").',
-  '- The leader: "up" or "down" exactly as given; never "leads up" on a fall.',
-  '- Fresh news is news FOUND in our sources, never a cause: never "drove", "sparked", "behind the move".',
-  '- No adjective the facts do not define ("busy", "quiet", "hot", "strong").',
-  '- Intraday report: about two short sentences. Recap report (premarket): three or four short sentences, ending with HOW MANY names the desk carries into the next session, framed as what the desk covers, never "your watchlist". State the COUNT only and never list those tickers: the cards below list them, and the only ticker the narrative may name is the given leader.',
-  '- When a count is zero, say so plainly ("No name ran past 50 percent off the prior close.") and drop the clause that depends on it. Number agreement throughout ("1 traded").',
-  '- Where the facts give an in-range count with no regular-session close, state it in one short closing sentence. Never leave it out.',
+  '- PURPOSE: explain what happened in the session and which developments remain relevant into the next one, for readers following small-cap momentum. It is documentation and analysis, never a recommendation.',
+  '- FACTS, INTERPRETATION AND OPEN QUESTIONS stay separate. Facts: word only the given narrative facts. Interpretation: you may name the pattern the given counts support (for example how many 50 percent movers kept half their peak gain against how many gave it back), and it must rest on the given counts and say so; nothing may rest on nothing. Open questions: what the facts say is not known stays not known.',
+  '- Every number is a given number, written exactly as given. Percents are whole numbers as given; never add decimals, never round, never compute. Counts may be spelled out ("nine") or written as digits.',
+  '- Name ONLY the tickers the narrative facts name. They are GAINERS, chosen by the day\'s high on the recap and by the move intraday: never call them the biggest movers in both directions, never "every mover" or "all the runners".',
+  '- After-hours figures are ALWAYS labeled "after the close" or "after hours" and never mixed with the day\'s figures.',
+  '- A catalyst is news FOUND in our sources, never a cause: never "drove", "sparked", "fueled", "behind the move", "on the news".',
+  '- No adjective the facts do not define ("busy", "quiet", "hot", "strong"). No forecast: support, resistance and supply are described, never "will hold", "should break" or "expect".',
+  '- Intraday report: two or three short sentences, the leader first. Recap report (premarket): five or six short sentences: open with the session\'s pattern, then the named movers and their news, then the after-hours name, then the context into the next session, and end with HOW MANY names the desk carries into the next session, framed as what the desk covers, never "your watchlist". State the COUNT only and never list those tickers: the cards below list them.',
+  '- When a count is zero, say so plainly ("none of them gave the entire move back") and drop the clause that depends on it. Number agreement throughout.',
 ];
 
 /* ------------------------------------------------------------- name sheet */
