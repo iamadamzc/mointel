@@ -13840,3 +13840,18 @@ errors, local build rc 0; running.
 **HIS SHIP YES for 6e7fff84, in THIS session, 2026-10-03T17:08:23.659Z (origin human): "yes"**, to the item naming Sheet removal step 1 (nothing visible while the Sheet is connected; market untouched; ~15 min deploy, ~2-3 s down), after a clean gate. Plan: RESTART_MARKET=no, base check web/research/assess/market all f5746a84, in the 13:33-13:43 ET preflight slot (17:34Z).
 **GATE 6e7fff84: ALL GREEN 235/235 (pre-registered 235)**, 3,399 tests, rc 0 17:12:06Z; local next build rc 0 17:12:06-17:12:50Z; watcher clean. Ships at 17:34Z (waiter).
 RELAYED (Integration 24th, not verified here; nothing for Ops to act on): his ruling 17:20:45Z "we need to reproduce what the sheet does in the app." Sheet plan step 4 pins will come from the desk's own researched list; Research designs first. Ops's steps 4-5 (market restart, env key removal) wait on that design.
+
+**6e7fff84 LIVE (Sheet removal step 1), confirmed late: this session restarted before the post-ship read.** Ship: base
+check 5/5 at 17:34:11Z (all four on f5746a84), preflight clear, unit mointel-deploy-6e7fff84-173440; follower rc 8 at
+17:49:46Z as usual; journal "[deploy] deployed 6e7fff84...". READ 2026-10-04T23:20:09Z (Sun 19:20 ET): web 2025357 /
+research 2025415 / assess 2025490 on 6e7fff846a573e2692deb8fcb7982c7b375e6f08, started 2026-10-03 17:50:15-17Z, NR 0;
+market 2013616 on f5746a84 since 16:50:21Z, NR 0 (untouched, as approved). current -> 6e7fff84. Health ok, schema 28,
+market STREAMING, trading date 2026-10-05. Mem avail 2,684 MB, 57G free. PREDICTION MET: loopback /api/dashboard
+meta.provider = google-sheets, 4 tickers; "no outside research source" logged 0 times since the start (fires only when keyless).
+COSMETIC: the market-floor pin's reason text still says "market worker still runs 1b5ead6" (now f5746a84); re-word on the
+next pin touch, his word not needed for text.
+OPEN for this seat: (1) Monday 2026-10-05 spot check after 10:00 ET, read-only, one of CMND/GUTS/SCNX/VIVK/VTAK, to
+Integration local_f26376f1. (2) Follow-up commit, next ordinary release: Research's M1 ex-date fixture + round the
+[splits] log line. (3) 61e2f777 (weekend preflight) / identity mode pair / citation fix: a later cut. (4) Sheet steps 4-5
+wait on Research's design ("reproduce what the sheet does in the app"). (5) /api/dashboard gate before Basic Auth comes
+off. (6) His four browser reads of the sign-in release: not yet reported by him.
