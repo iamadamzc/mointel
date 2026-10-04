@@ -13856,3 +13856,19 @@ Integration local_f26376f1. (2) Follow-up commit, next ordinary release: Researc
 wait on Research's design ("reproduce what the sheet does in the app"). (5) /api/dashboard gate before Basic Auth comes
 off. (6) His four browser reads of the sign-in release: not yet reported by him.
 SLOT 2026-10-04T23:21Z: Research (local_ab66f9f3) released (v6 narrative step 1 at 37853816: tsc 0, eslint 0 on 5 files, tests/desk 29 files / 404 pass, 11 mutants run and restored; Research's report). Slot free.
+
+**PRODUCTION-LINE SEAM (Integration 24th's ask, 2026-10-04 Sun evening).** Verified: 0b92c309 / f5746a84 / 6e7fff84 are
+not ancestors of origin/main; 6e7fff84 reaches origin only via Design's tag design/sheet-step1-on-f5746a84; `git cherry
+origin/main 6e7fff84` = 71 unmatched. Method: subject match on origin/main = 19 re-cuts (owed nothing); the other 52 each
+cherry-picked ALONE onto origin/main in a scratch worktree: 2 PRESENT, 18 APPLY, 32 CONFLICT (a conflict alone is not a
+verdict: many depend on an earlier production-only commit). RELEASE-ONLY: 1c3c5379, 5d1c4943, 3b9c0a70 (probe, net zero
+after 7cbb79e3), 1fde525b, 89d39053, e01b836f (cut-only), 2ab12089 (pick repair), 2bcf1cfe (v28 stack test), 2624b200
+(hunk pick, PRESENT). OWED TO MAIN by feature (owners confirm equivalents): sign-in step 4 (d7079581, 32db0d7e, fb50e2ff);
+blue sky (d8c4e5f1, 3653f814, 9ee3b50b, a50f5948); movers (d1677f07, 74d941f8, b1a8bb8f, f75ec7e3, d1017381, 6eaff6e5,
+c01dedc5, 558d07a5); levels/history (53142f5b, 9186cc7c, d9f15f50, efdb8339, fd27fae6, e80feaa9, 3321cc84, 067335a6,
+287561be, c5050577, 2afd15bc, 9189b569, 19f9d721); v28 (b0de76e1, b8002fa5); reports runner (a7389325, 68b2a9af);
+Now/evening (121f97c3, 8fd78879); singles 46d9f9d3, 84b00991, 2a625a5b, a4a06168, 185cea37, 6e7fff84, dff3fb0a, f5746a84.
+SPLIT FIX ON MAIN: dff3fb0a + f5746a84 cherry-pick clean onto origin/main (5 files +861/-5); main's engine.ts and
+runtime.ts byte-identical to production's base. PROPOSED: ops/split-to-main (+ M1 fixture + log rounding), after Monday's
+spot check, on Integration's nod. STABLE REF PROPOSED: tag release/2026-10-03-6e7fff84 + branch `production` (ff-only,
+moved on every ship); zero new objects on origin; push only on Integration's "push", refspec-limited.
