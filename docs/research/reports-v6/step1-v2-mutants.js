@@ -12,7 +12,7 @@ const SRC = path.join('lib', 'desk', 'reports', 'narrative.ts');
 const original = fs.readFileSync(SRC, 'utf8');
 
 const MUTANTS = [
-  // Control: no edit. Must read 10 tests, 0 failed, or the reader is not measuring.
+  // Control: no edit. Must read 9 tests, 0 failed, or the reader is not measuring.
   ['M0', []],
   ['M1', [['const jumped = row.low > SPLIT_JUMP * p || row.high < p / SPLIT_JUMP;', 'const jumped = true;']]],
   ['M2', [['return SPLIT_RATIOS.some(', 'return false && SPLIT_RATIOS.some(']]],
@@ -25,6 +25,10 @@ const MUTANTS = [
   ['M9', [["fact.referenceBasis === 'CURRENT_SESSION' && ", '']]],
   ['M10', [['.slice(0, INTRADAY_NEXT);', '.sort((a, b) => a.assessmentRank - b.assessmentRank).slice(0, INTRADAY_NEXT);']]],
   ['M11', [['if (seen.has(key)) continue;', '']]],
+  // Fix round (F12b three states), predictions in step1-v2-mutants.md "Fix round".
+  ['M12', [['coveredMovers.filter((mover) => NO_FRESH.has(statusOf(mover.symbol) as CatalystStatus)).length', "coveredMovers.filter((mover) => statusOf(mover.symbol) !== 'FRESH_FOUND').length"]]],
+  ['M13', [['coveredMovers.filter((mover) => !input.research.has(mover.symbol)).length', '0']]],
+  ['M14', [["new Set(['CONFLICTING', 'UNKNOWN'])", 'new Set([])']]],
 ];
 
 function count(haystack, needle) {
