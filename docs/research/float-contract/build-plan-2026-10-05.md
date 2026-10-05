@@ -29,7 +29,7 @@ The contract says the state is read from the row alone and the age is measured t
 
 Until this is answered I build only what both share: the selector, R0, the bar reader, the job function, the table and its repo.
 
-## 3a. A question for Ops about the bars the split proofs read (not a finding)
+## 3a. The bars the split proofs read (ANSWERED by Ops 2026-10-05: older bars are not reliably restated after a split; registered as rule R-A in `split-source-registration-2026-10-05.md`)
 
 `readSplitFactors` (`lib/research/history.ts:195-201`) says a factor "is still to apply as of its fetch". If a split happens and the bars stored BEFORE it are never re-fetched, both sides of the split could carry factor 1, and neither R0 nor R1 would see it (R1's price guard covers only the unfactored checkpoint bar). The validation saw no real-split name read as clean in 65 names, which is evidence it does not happen often, not that it cannot. The question: after a split, does ingestion restate the symbol's stored history? I have not read the ingestion code.
 
