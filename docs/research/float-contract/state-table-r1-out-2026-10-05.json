@@ -1,0 +1,81 @@
+{
+  "docs/research/float-contract/validation-out-2026-10-05/names": {
+    "names": 36,
+    "counted": 30,
+    "libraryR1Counts": {
+      "NONE": 6,
+      "FOUND": 6,
+      "UNPROVEN": 18
+    },
+    "r0FoundNamesReadNone": [],
+    "tables": {
+      "KNOWN_ACTIVE | 45d": {
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 3,
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 14,
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 12,
+        "UNKNOWN:NO_FILED_COUNT": 6,
+        "PRODUCED": 1
+      },
+      "KNOWN_ACTIVE | 90d": {
+        "PRODUCED": 3,
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 14,
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 12,
+        "UNKNOWN:NO_FILED_COUNT": 6,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+      },
+      "KNOWN_OR_POSSIBLY_ACTIVE | 45d": {
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 21,
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 7,
+        "UNKNOWN:NO_FILED_COUNT": 6,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+      },
+      "KNOWN_OR_POSSIBLY_ACTIVE | 90d": {
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 21,
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 7,
+        "UNKNOWN:NO_FILED_COUNT": 6,
+        "PRODUCED": 1,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+      }
+    }
+  },
+  "docs/research/float-contract/validation-out-fresh-2026-10-05/names": {
+    "names": 35,
+    "counted": 30,
+    "libraryR1Counts": {
+      "NONE": 6,
+      "FOUND": 3,
+      "UNPROVEN": 21
+    },
+    "r0FoundNamesReadNone": [],
+    "tables": {
+      "KNOWN_ACTIVE | 45d": {
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 14,
+        "UNKNOWN:NO_FILED_COUNT": 5,
+        "PRODUCED": 2,
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+      },
+      "KNOWN_ACTIVE | 90d": {
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 14,
+        "UNKNOWN:NO_FILED_COUNT": 5,
+        "PRODUCED": 2,
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+      },
+      "KNOWN_OR_POSSIBLY_ACTIVE | 45d": {
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+        "UNKNOWN:NO_FILED_COUNT": 5,
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 2,
+        "PRODUCED": 2,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+      },
+      "KNOWN_OR_POSSIBLY_ACTIVE | 90d": {
+        "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+        "UNKNOWN:NO_FILED_COUNT": 5,
+        "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 2,
+        "PRODUCED": 2,
+        "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+      }
+    }
+  }
+}
