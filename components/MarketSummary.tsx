@@ -1,13 +1,14 @@
 'use client';
 
-import type { MarketSummary as MarketSummaryData } from '@/lib/data/types';
-import type { CyclePhase } from '@/lib/market/cycle';
+import type { BoardCounts } from '@/lib/dashboard/boardCounts';
 import type { CycleFilter, FilterState, StructureFilter } from '@/lib/dashboard/view';
 
 interface MarketSummaryProps {
-  summary: MarketSummaryData;
-  /** Rows in each computed cycle phase. Same source as the cycle filter. */
-  cycleCounts: Record<CyclePhase, number>;
+  /**
+   * Each number is the rows on the main board its chip keeps when clicked,
+   * counted over the whole board (`lib/dashboard/boardCounts.ts`).
+   */
+  counts: BoardCounts;
   /** Number of names currently visible after filtering. */
   visibleCount: number;
   filtered: boolean;
@@ -39,8 +40,7 @@ interface Segment {
  * slot so nothing reflows when it appears.
  */
 export function MarketSummary({
-  summary,
-  cycleCounts,
+  counts,
   visibleCount,
   filtered,
   filters,
@@ -50,24 +50,22 @@ export function MarketSummary({
   const segments: Segment[] = [
     {
       key: 'tracked',
-      label: 'tracked',
-      value: summary.namesTracked,
+      label: 'ranked',
+      value: counts.onBoard,
       tone: 'text-ink',
-      hint: 'Researched names the desk is carrying today',
+      // The board shows the top 12, 25 or 50 of this list; the number is the
+      // whole ranked list, so it is not worded as "on the board".
+      hint: 'Names in the ranking right now. The board shows the top 12, 25 or 50 of them',
     },
     /*
-     * Cycle counts come from `cycleCounts`, not from `summary`.
-     *
-     * The summary's freshFrontside / frontsideWarning / backside are counts of
-     * the Sheet's cycle string (lib/data/rows.ts:428). The filter these
-     * segments apply is now the computed phase. A sheet-derived count on a
-     * phase-derived filter shows "fresh · 4" and returns zero rows, so both
-     * sides read one source.
+     * EVERY NUMBER HERE IS WHAT ITS CLICK KEEPS. They are computed by running
+     * the click's own predicate over the whole board, so a count and the filter
+     * it describes cannot read different populations or different meanings.
      */
     {
       key: 'day-one',
       label: 'day 1',
-      value: cycleCounts.DAY_ONE,
+      value: counts.dayOne,
       tone: 'text-pos',
       hint: 'The move began today',
       apply: (current) => ({ ...current, cycle: toggle(current.cycle, 'DAY_1') as CycleFilter }),
@@ -76,7 +74,7 @@ export function MarketSummary({
     {
       key: 'frontside',
       label: 'frontside',
-      value: cycleCounts.FRONTSIDE,
+      value: counts.frontside,
       tone: 'text-pos',
       hint: 'Still making the cycle high',
       apply: (current) => ({
@@ -88,7 +86,7 @@ export function MarketSummary({
     {
       key: 'backside',
       label: 'backside',
-      value: cycleCounts.BACKSIDE,
+      value: counts.backside,
       tone: 'text-neg',
       hint: 'Half the move or more given back, still in play',
       apply: (current) => ({
@@ -100,7 +98,7 @@ export function MarketSummary({
     {
       key: 'dirty',
       label: 'dirty float',
-      value: summary.dirtyFloat,
+      value: counts.dirtyFloat,
       tone: 'text-neg',
       hint: 'Structure or float reads DIRTY FLOAT',
       apply: (current) => ({
@@ -112,7 +110,7 @@ export function MarketSummary({
     {
       key: 'catalyst',
       label: 'fresh catalyst',
-      value: summary.strongCatalysts,
+      value: counts.freshCatalyst,
       tone: 'text-pos',
       /*
        * THE HINT SAID `Catalyst graded A` AND THE CHIP SAID `fresh catalyst`.
@@ -157,7 +155,7 @@ export function MarketSummary({
             key={segment.key}
             type="button"
             aria-pressed={active}
-            title={`${segment.hint}. Click to filter the researched list.`}
+            title={`${segment.hint}. Click to filter the board.`}
             onClick={() => onChange(segment.apply!(filters))}
             className={`inline-flex min-h-[24px] shrink-0 items-baseline gap-1 rounded-sm px-1.5 py-0.5 transition-colors hover:bg-panel-3 ${
               active ? 'bg-accent/15 ring-1 ring-accent/40' : ''

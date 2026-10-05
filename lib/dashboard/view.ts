@@ -11,7 +11,6 @@ import type { DeskRow } from '@/lib/dashboard/merge';
 import { formatCount } from '@/lib/format';
 import type { CyclePhase } from '@/lib/market/cycle';
 import type { DiscoveryBoard } from '@/lib/market/types';
-import type { MomentumTicker, PriorityBucket } from '@/lib/data/types';
 import type { SessionPhase } from '@/lib/market/types';
 
 export type { SetupGradeFilter };
@@ -85,24 +84,7 @@ export const DEFAULT_FILTERS: FilterState = {
   grade: 'ALL',
 };
 
-export type SortKey = 'priority' | 'ticker' | 'price' | 'changePct' | 'volume' | 'float';
 export type SortDirection = 'asc' | 'desc';
-
-export interface SortState {
-  key: SortKey;
-  direction: SortDirection;
-}
-
-export const DEFAULT_SORT: SortState = { key: 'priority', direction: 'asc' };
-
-const PRIORITY_RANK: Record<PriorityBucket, number> = {
-  A: 0,
-  B: 1,
-  C: 2,
-  AVOID: 3,
-  EXCLUDED: 4,
-  UNCLASSIFIED: 5,
-};
 
 export function isFilterActive(filters: FilterState): boolean {
   return (
@@ -113,16 +95,6 @@ export function isFilterActive(filters: FilterState): boolean {
     filters.catalyst !== 'ALL' ||
     filters.grade !== 'ALL'
   );
-}
-
-/**
- * What the researched table says when it shows no rows, by WHY it is empty.
- * Blaming the filters for an empty list is only true when the list had names
- * before filtering; with no names at all (no outside source, Sheet removal
- * step 1) it is an ordinary state and must not read as a fault or a filter.
- */
-export function researchedEmptyText(listed: number): string {
-  return listed > 0 ? 'No names match the current filters.' : 'No researched names on file.';
 }
 
 /*
@@ -146,85 +118,6 @@ function compareNumeric(a: number | null, b: number | null, direction: SortDirec
   if (a === null) return 1;
   if (b === null) return -1;
   return direction === 'asc' ? a - b : b - a;
-}
-
-/**
- * Live market state for a ticker, when the caller has it.
- *
- * The watchlist displays live price, change and volume; sorting on the sheet's
- * older numbers would order the table by values nobody can see on it.
- */
-export type TelemetryLookup = (
-  ticker: string,
-) => { price: number | null; percentChange: number | null; volume: number | null } | null;
-
-function numericFor(
-  ticker: MomentumTicker,
-  key: SortKey,
-  telemetry?: TelemetryLookup,
-): number | null {
-  const live = telemetry?.(ticker.ticker) ?? null;
-
-  switch (key) {
-    case 'price':
-      return live?.price ?? ticker.price.value;
-    case 'changePct':
-      return live?.percentChange ?? ticker.changePct.value;
-    case 'volume':
-      return live?.volume ?? ticker.volume.value;
-    case 'float':
-      // Float is research, not market state; it has no live counterpart.
-      return ticker.float.value;
-    default:
-      return null;
-  }
-}
-
-export function sortTickers(
-  tickers: MomentumTicker[],
-  sort: SortState,
-  telemetry?: TelemetryLookup,
-): MomentumTicker[] {
-  const rows = [...tickers];
-
-  rows.sort((a, b) => {
-    if (sort.key === 'ticker') {
-      const result = a.ticker.localeCompare(b.ticker);
-      return sort.direction === 'asc' ? result : -result;
-    }
-
-    if (sort.key === 'priority') {
-      const rank = PRIORITY_RANK[a.priority.bucket] - PRIORITY_RANK[b.priority.bucket];
-      const primary = sort.direction === 'asc' ? rank : -rank;
-      if (primary !== 0) return primary;
-      // Within a priority band, the biggest current move leads.
-      const byMove = compareNumeric(
-        numericFor(a, 'changePct', telemetry),
-        numericFor(b, 'changePct', telemetry),
-        'desc',
-      );
-      if (byMove !== 0) return byMove;
-      return a.ticker.localeCompare(b.ticker);
-    }
-
-    const result = compareNumeric(
-      numericFor(a, sort.key, telemetry),
-      numericFor(b, sort.key, telemetry),
-      sort.direction,
-    );
-    if (result !== 0) return result;
-    return a.ticker.localeCompare(b.ticker);
-  });
-
-  return rows;
-}
-
-/** Primary Focus: names whose CURRENT priority is in the A band. */
-export function selectPrimaryFocus(tickers: MomentumTicker[]): MomentumTicker[] {
-  return sortTickers(
-    tickers.filter((ticker) => ticker.priority.bucket === 'A'),
-    { key: 'priority', direction: 'asc' },
-  );
 }
 
 /**

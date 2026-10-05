@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+import { boardCounts } from '@/lib/dashboard/boardCounts';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { relativeAge, resolveWhy } from '@/lib/dashboard/why';
 import { DEFAULT_FILTERS, rowMatchesFilters, type FilterState } from '@/lib/dashboard/view';
@@ -740,5 +741,44 @@ describe('the accent marks the active ordering, and only that', () => {
     const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
     expect(code).not.toMatch(/sort\.key === '(sessionMove|changePct|now|rvol)'/);
     expect(code).toContain('activeColumn');
+  });
+});
+
+describe('the counts strip counts what the click keeps, over the whole board', () => {
+  const named = (row: ReturnType<typeof discoveryRow>, ticker: string) => ({ ...row, ticker });
+
+  it('fresh catalyst counts FRESH rows, not strong ones: a stale A does not count, a fresh C does', () => {
+    // The defect fixed: the chip's number was the count of A-graded Sheet rows
+    // while its label and click were FRESH.
+    const rows = [
+      named(discoveryRow('STALE', 'STRONG'), 'AAA'),
+      named(discoveryRow('FRESH', 'WEAK'), 'BBB'),
+      named(discoveryRow('FRESH', 'STRONG'), 'CCC'),
+    ];
+    const counts = boardCounts(rows, () => null);
+    expect(counts.freshCatalyst).toBe(2);
+    expect(counts.freshCatalyst).toBe(rows.filter((r) => rowMatchesFilters(r, filters({ catalyst: 'FRESH' }))).length);
+  });
+
+  it('counts the cycle phases from the lookup the click uses', () => {
+    const rows = ['AAA', 'BBB', 'CCC', 'DDD'].map((t) => named(discoveryRow('FRESH'), t));
+    const phase = { AAA: 'BACKSIDE', BBB: 'BACKSIDE', CCC: 'DAY_ONE', DDD: null } as const;
+    const counts = boardCounts(rows, (t) => phase[t as keyof typeof phase]);
+    expect(counts.backside).toBe(2);
+    expect(counts.dayOne).toBe(1);
+    expect(counts.frontside).toBe(0);
+  });
+
+  it('onBoard is the number of rows, and an empty board counts zero everywhere', () => {
+    const rows = [named(discoveryRow('FRESH'), 'AAA'), named(discoveryRow('STALE'), 'BBB')];
+    expect(boardCounts(rows, () => null).onBoard).toBe(2);
+    expect(boardCounts([], () => null)).toEqual({
+      onBoard: 0,
+      dayOne: 0,
+      frontside: 0,
+      backside: 0,
+      dirtyFloat: 0,
+      freshCatalyst: 0,
+    });
   });
 });

@@ -161,8 +161,8 @@ describe('the prior-high disclosure, after the frame was ruled whole', () => {
     expect(PRIOR_HIGH_ONLY_TITLE).toContain('can only be understated');
   });
 
-  it('is one string, so the two tables cannot word it differently', () => {
-    const files = ['components/DiscoveryBoard.tsx', 'components/MomentumTable.tsx'].map((file) =>
+  it('is one string on the board, not a literal typed into the component', () => {
+    const files = ['components/DiscoveryBoard.tsx'].map((file) =>
       readFileSync(join(process.cwd(), file), 'utf8'),
     );
     for (const source of files) {

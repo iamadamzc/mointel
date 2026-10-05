@@ -38,8 +38,8 @@ describe('the catalyst, spoken', () => {
     }
   });
 
-  it('both tables build their row label from it, not from the raw grade', () => {
-    for (const file of ['components/DiscoveryBoard.tsx', 'components/MomentumTable.tsx']) {
+  it('the board builds its row label from it, not from the raw grade', () => {
+    for (const file of ['components/DiscoveryBoard.tsx']) {
       const source = readFileSync(file, 'utf8');
       expect(source).toContain('${whySpoken(why)}');
       expect(source).not.toContain('${why.grade} catalyst');

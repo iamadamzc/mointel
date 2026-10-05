@@ -9,25 +9,20 @@ import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
 import { MarketSummary } from '@/components/MarketSummary';
-import { countCyclePhases, cyclePhaseOf } from '@/lib/dashboard/cycle';
+import { boardCounts } from '@/lib/dashboard/boardCounts';
+import { cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { Graveyard } from '@/components/Graveyard';
-import { MomentumTable } from '@/components/MomentumTable';
 import { FocusStrip } from '@/components/FocusStrip';
 import { BriefingLine, ReportWindow } from '@/components/SessionReports';
 import { TickerDrawer } from '@/components/TickerDrawer';
-import { dedupeSheetRows, mergeDesk } from '@/lib/dashboard/merge';
+import { mergeDesk } from '@/lib/dashboard/merge';
 import {
   DEFAULT_FILTERS,
-  DEFAULT_SORT,
   rowMatchesFilters,
   isFilterActive,
   selectFocusRows,
-  sortTickers,
   type FilterState,
-  type SortKey,
-  type SortState,
 } from '@/lib/dashboard/view';
-import { buildSummary } from '@/lib/data/rows';
 import type { DashboardState } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
 import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
@@ -61,16 +56,6 @@ function writeStored(key: string, value: string): void {
     // Storage blocked: the choice lasts for this page, which is still correct.
   }
 }
-
-/** Numeric columns are most useful largest-first on the first click. */
-const DEFAULT_DIRECTIONS: Record<SortKey, 'asc' | 'desc'> = {
-  priority: 'asc',
-  ticker: 'asc',
-  price: 'desc',
-  changePct: 'desc',
-  volume: 'desc',
-  float: 'desc',
-};
 
 const OFFLINE_HEALTH: MarketFeedHealth = {
   mode: 'OFFLINE',
@@ -220,7 +205,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const market = useMarket(sheetSymbols);
 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
-  const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
   /**
    * Which assessment the Discovery area is showing. Null is LIVE, and LIVE is
    * the default — the history is for review, not for trading from.
@@ -245,38 +229,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   }, []);
   const { now, mounted } = useClock();
 
-  /*
-   * Collapsed to one row per ticker before anything filters or sorts it.
-   *
-   * The TODAY sheet legitimately carries a name twice — a researched row and a
-   * later placeholder — and `mergeDesk` already collapses that internally. The
-   * shell was still handing the raw list to the filters, so the watchlist
-   * rendered the same ticker twice under the same React key, and a duplicated
-   * A-priority name would have produced two identical Primary cards.
-   */
-  const tickers = useMemo(() => dedupeSheetRows(data?.tickers ?? []), [data]);
-
-  /*
-   * Recounted over the collapsed list.
-   *
-   * The provider counts sheet ROWS, so the strip read "27 names tracked" above
-   * a watchlist of 16 names. A metric labelled Names Tracked has to count
-   * names, and every classification count under it has to agree.
-   */
-  const summary = useMemo(() => buildSummary(tickers), [tickers]);
-
   const merged = useMemo(() => mergeDesk(data, market.snapshot), [data, market.snapshot]);
-
-  /*
-   * One telemetry lookup, shared by every list on the page.
-   *
-   * The watchlist shows live price and change, so it must also SORT on them —
-   * ordering a table by numbers it is not displaying is its own small lie.
-   */
-  const telemetry = useCallback(
-    (ticker: string) => merged.rows.get(ticker)?.telemetry ?? null,
-    [merged],
-  );
 
   /*
    * The cycle a row is actually in, resolved from the computed history.
@@ -290,48 +243,11 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     [merged],
   );
   /*
-   * Counted over the SAME population the filter acts on.
-   *
-   * This counted `merged.rows` — every merged row, Discovery and watchlist
-   * together — while `applyFilters` runs only over the sheet-derived watchlist.
-   * On a live premarket board that read "10 backside" and returned four rows:
-   * six of the ten were Discovery names the filter never touches.
-   *
-   * That is the exact failure the cycle segments were moved off
-   * `summary.freshFrontside` to avoid — a count from one population labelling a
-   * filter over another — reintroduced in a different costume by the change
-   * that fixed it. A count and the filter it describes read one source or they
-   * disagree in front of the trader.
+   * The strip's numbers: what each chip's click keeps, over the whole main board
+   * before any other filter (`lib/dashboard/boardCounts.ts`). One predicate, so a
+   * number and its click cannot read different populations.
    */
-  const cycleCounts = useMemo(
-    () =>
-      countCyclePhases(
-        tickers.map((ticker) => merged.rows.get(ticker.ticker)).filter((row) => row !== undefined),
-      ),
-    [tickers, merged],
-  );
-
-  /*
-   * ONE PREDICATE, BOTH TABLES, NO SECOND OPINION.
-   *
-   * This used to run `applyFilters` over the sheet tickers AND
-   * `rowMatchesFilters` over their rows — the Discovery fix layered the new
-   * predicate on the old one instead of replacing it. The two disagreed about
-   * structure (sheet field versus the risk cell), so the watchlist quietly
-   * showed the INTERSECTION and a row could be visible above and hidden below.
-   * `applyFilters` is gone; every filter decision is now one function.
-   */
-  const filtered = useMemo(
-    () =>
-      tickers.filter((ticker) => {
-        const row = merged.rows.get(ticker.ticker);
-        // `mergeDesk` builds a row for every sheet ticker, so this is a
-        // guarantee rather than a fallback — and excluding on its absence
-        // would hide a row the trader can see listed.
-        return row ? rowMatchesFilters(row, filters, cyclePhase) : true;
-      }),
-    [tickers, filters, cyclePhase, merged],
-  );
+  const counts = useMemo(() => boardCounts(merged.discovery, cyclePhase), [merged, cyclePhase]);
 
   /*
    * THE FILTERS REACH DISCOVERY, WHICH THEY NEVER DID BEFORE `09593a0`.
@@ -345,10 +261,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     [merged, filters, cyclePhase],
   );
 
-  const sorted = useMemo(
-    () => sortTickers(filtered, sort, telemetry),
-    [filtered, sort, telemetry],
-  );
   // The user's list, resolved to rows. Never recomputed from priority.
   const focusRows = useMemo(
     () => selectFocusRows(focus.tickers, merged.rows),
@@ -376,14 +288,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     () => (selectedTicker ? (merged.rows.get(selectedTicker) ?? null) : null),
     [merged, selectedTicker],
   );
-
-  const handleSortChange = useCallback((key: SortKey) => {
-    setSort((current) =>
-      current.key === key
-        ? { key, direction: current.direction === 'asc' ? 'desc' : 'asc' }
-        : { key, direction: DEFAULT_DIRECTIONS[key] },
-    );
-  }, []);
 
   if (!data) {
     return (
@@ -478,9 +382,8 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
 
       {/* Counts and filters are one control surface, so they are one line. */}
       <MarketSummary
-        summary={summary}
-        cycleCounts={cycleCounts}
-        visibleCount={filtered.length}
+        counts={counts}
+        visibleCount={discoveryRows.length}
         filtered={isFilterActive(filters)}
         filters={filters}
         onChange={setFilters}
@@ -601,27 +504,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           events={market.snapshot?.events ?? null}
           universe={eventUniverse}
           onSelect={setSelectedTicker}
-        />
-
-        <MomentumTable
-          isFocused={focus.isFocused}
-          onToggleFocus={focus.toggle}
-          tickers={sorted}
-          sort={sort}
-          onSortChange={handleSortChange}
-          onSelect={setSelectedTicker}
-          selectedTicker={selectedTicker}
-          changedTickers={feed.changedTickers}
-          deskRows={merged.rows}
-          // One grammar across both lists: this table names the same baseline
-          // Discovery does, from the same source, rather than a typed word.
-          sessionPhase={discovery?.sessionPhase ?? null}
-          // Premarket before 04:00, after 20:00, at the weekend: Discovery has
-          // nothing to rank and this is the only list worth reading. Making the
-          // trader click to reveal it is what left the desk showing a screen of
-          // controls above an empty board.
-          defaultOpen={merged.discovery.length === 0}
-          listedCount={tickers.length}
         />
 
         {/*

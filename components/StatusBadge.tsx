@@ -1,6 +1,5 @@
 import type {
   CatalystGradeBucket,
-  PriorityBucket,
   SessionKind,
   StructureState,
 } from '@/lib/data/types';
@@ -40,21 +39,6 @@ export function StatusBadge({ label, tone = 'neutral', title, className = '' }: 
   );
 }
 
-
-export function priorityTone(bucket: PriorityBucket): Tone {
-  switch (bucket) {
-    case 'A':
-      return 'accent';
-    case 'B':
-      return 'neutral';
-    case 'C':
-      return 'dim';
-    case 'AVOID':
-      return 'neg';
-    default:
-      return 'dim';
-  }
-}
 
 export function catalystTone(bucket: CatalystGradeBucket): Tone {
   switch (bucket) {
@@ -101,38 +85,6 @@ export function changeTone(value: number | null): string {
   if (value > 0) return 'text-pos';
   if (value < 0) return 'text-neg';
   return 'text-ink-2';
-}
-
-/** Priority chip: short bucket letter, full source text on hover. */
-export function PriorityBadge({
-  bucket,
-  raw,
-  isRevised,
-}: {
-  bucket: PriorityBucket;
-  raw: string;
-  isRevised: boolean;
-}) {
-  const label =
-    bucket === 'AVOID' || bucket === 'EXCLUDED'
-      ? bucket
-      : bucket === 'UNCLASSIFIED'
-        ? '—'
-        : bucket;
-
-  return (
-    <span className="inline-flex items-center gap-1">
-      <StatusBadge label={label} tone={priorityTone(bucket)} title={raw || 'No priority set'} />
-      {isRevised ? (
-        <span
-          title="Revised Priority is overriding the original Priority"
-          className="text-[9px] font-semibold tracking-wide text-accent uppercase"
-        >
-          rev
-        </span>
-      ) : null}
-    </span>
-  );
 }
 
 /** Structure chip: only ever states what the source text explicitly says. */

@@ -196,7 +196,6 @@ describe('no surface renders the Sheet cycle directly', () => {
   it('has no component reading ticker.cycle for display', async () => {
     const { promises: fs } = await import('node:fs');
     const files = [
-      'components/MomentumTable.tsx',
       'components/TickerDrawer.tsx',
       'components/DiscoveryBoard.tsx',
     ];
@@ -245,12 +244,13 @@ describe('cycle segment counts match what the filter returns', () => {
     expect(countCyclePhases([...watchlist, ...discoveryOnly]).BACKSIDE).toBe(5);
   });
 
-  it('is not fed the whole merged map by the shell', async () => {
+  it('is counted by the clicks own predicate over the main board, not the whole merged map', async () => {
     const { promises: fs } = await import('node:fs');
     const source = await fs.readFile('components/DashboardShell.tsx', 'utf8');
-    // merged.rows is the union; the filter's population is `tickers`.
+    // merged.rows is the union of every tracked name; the board the filter acts
+    // on is merged.discovery, and the strip counts that through boardCounts.
     expect(source).not.toContain('countCyclePhases(merged.rows.values())');
-    expect(source).toMatch(/countCyclePhases\(\s*\n?\s*tickers\.map/);
+    expect(source).toMatch(/boardCounts\(\s*merged\.discovery/);
   });
 });
 
