@@ -32,6 +32,11 @@ are his. Production at writing: web/research/assess `6e7fff84`, market `f5746a84
    turn): *"leave it out"*: the sentence "Past movement in any security indicates nothing about what it will do next"
    stays OUT of the entry gate (Commercial 12b and Marketing both recommended it). It remains in `terms.md` section 7.
    `lib/legal/entryGate.ts` and `components/EntryGate.tsx` need no change.
+8. **RULED 2026-10-05T20:01:39.293Z** (his turn to Integration, transcript 125cfd6b, human origin): *"text me. yes to
+   both."* (a) The desk-down alert (T2) goes to him by **text message**. (b) He approves the PLAN for two box env writes
+   (`DESK_OWNER_EMAIL`, and the shared secret the market worker sends to a gated `/api/dashboard`) and one market worker
+   restart outside his window, riding the next release. As put to him, Ops still asks for the go on the night; this is
+   not that go.
 6. **Integration's call, inside his rulings:** for the beta, no review or MCP token goes to any tester or anyone outside
    him and the seats; token holders never meet the entry gate (Web placement doc 7fb6411c, gap 2).
 
