@@ -1342,6 +1342,12 @@ THE CUT          RULED to Ops: production 6e7fff84 + 28 picks, order and full sh
                  refuses without .env.local, which only A:\mointel has; run it from main and read back by name.
                  NEXT: Ops builds + full-gates; I replay its literal tip (patch-ids, tree) and approve the order. His go
                  is Ops's to ask. Remove scratchpad/prodwt (git worktree remove) after that replay.
+CUT APPROVED     Ops built ops/cut-2026-10-05 (A:\mointel-cut), literal tip d1e7ba9d2ab07d92df3614168cf381c241fdbcd8, tree
+                 2e93f991 = my replay. Replayed: base ok, 28 commits, 0 merges, -x sources in my order; patch-id equal on
+                 25, the rest context-only (pick 1 offsets + production's LIVE_STORE_CHECK_OVERRIDE context line; pick 25
+                 same +/- lines in all ten files). Gate clean slot: 242 files / 3512 passed / 1 skipped, eslint/build/tsc 0.
+                 ORDER APPROVED to Ops. Ship, env writes, market restart = his go in Ops's session. Scratch worktree removed.
+                 NEXT: Ops's /proc after the night; then the nginx three-prefix batch; main tip gate after the night.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
