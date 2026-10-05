@@ -72,6 +72,15 @@ Integration:**
   webpage."* The float WORDING (cell faces "≤ X" / "Unknown" / "Cannot verify" / "Not computed", popovers, legend, the page
   text) is approved; Web renders a private preview of the page for him. Not live: the validation sample, his strictness
   choice on Research's table (max age 45 days until then) and the one-release rule still gate it.
+- 2026-10-05T21:22:37.844Z, typed to Integration (transcript 125cfd6b, human origin), verbatim: *"90 days, approve the
+  badge draft, yes hand off"*. (1) **Float maximum count age = 90 days**, with the filed count's date on the cell face
+  (Commercial 5i, `b757236d`: six sentences change, Marketing rewrites, Design fits the 102 px column). Put to him with the
+  untested risk stated (a longer window for an unflagged issuance). Validation PASSED on the fresh draw (`af660d29`); the
+  column still reads "Cannot verify" for most names until the split proof is loosened (Research's replays R1 to R3, not a
+  rule yet). (2) **Priority rubric APPROVED as drafted** (`docs/research/priority-rubric/rubric-draft-2026-10-05.md` at
+  `3ca325bd`: Structure = the cycle; A = all five readable with Structure, Catalyst, Volume, Liquidity STRONG; the section 1
+  thresholds; catalyst KIND only, no age cap; AVOID on Liquidity OR Supply RISK alone; rule 0 NOT_YET). Words: Marketing
+  v3 `5855bf61` + `a9ea26a4`, Commercial-passed (`067dae18`). (3) Integration hand-off.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
