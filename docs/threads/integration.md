@@ -1404,7 +1404,17 @@ OPS /proc        Ops, read off the box 2026-10-05T22:22:17Z: web 2025357 / resea
                  "we'll wait" to its ask for a yes and a time (Ops's words, NOT read at his turn by me); Ops plans after
                  20:00 ET, his go still to come in Ops's session. No env read-back, no market restart yet. Box change since
                  the 27th: 4 GB swap (b1398aaa). Ops will send the post-ship readout.
-CLEARED          Ops b1398aaa (reply); Marketing 11dbdc04 (reply). Still NOT cleared: Research 09d262b9.
+CLEARED          Ops b1398aaa (reply); Marketing 11dbdc04 (reply); Research 09d262b9 d47b26ca 53502953 (reply, docs only,
+                 file lists read). ALL of local main is now owner-cleared; push waits only on Ops's main-tip gate after the ship.
+FLOAT 5k ITEM 4  Research ANSWERED: docs/research/float-contract/insider-sale-registration-2026-10-05.md (d47b26ca 53502953),
+                 READ in full; insiderBound.ts:110 OPENED (rows after the cutoff skipped: defect confirmed). Rule S1 (subtract
+                 min(count-date holding, D holding) per owner and class; argued, not tested) recommended over S0 (drop any
+                 owner who traded since). Conditions on B met: 4-day reuse span, then CANNOT_VERIFY with NEW reason
+                 FILINGS_NOT_REREAD (needs Marketing words + Commercial pass before the reader); D fixed per checkpoint.
+                 Research: no "at most" in the present tense until S1 lands. $0 measurement bd20d42c (not on main) waits on
+                 an Ops slot. Float job steps 1-5 on research/float-job 79d5f84d (A:/mointel-float), UNGATED, off by env.
+                 ROUTED: Commercial (claims read of S1 vs S0, the new reason, D) queued; Marketing TRIGGERED with the sha.
+                 CONTRACT TEXT S1/S0 = MINE after Commercial's read + the measurement. Coverage moving materially -> him.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           (none yet)
