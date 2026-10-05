@@ -5,7 +5,23 @@ read from a file in this repo (cited) or marked as a recommendation. A plan, not
 are his. Production at writing: web/research/assess `6e7fff84`, market `f5746a84` (Ops, read off the box
 2026-10-05T16:06:07Z).*
 
-## 0. "Beta" has never been defined
+## RULED 2026-10-05T18:51:26.857Z (his turn, transcript 125cfd6b, read at his own turn)
+
+> *"disable retry research for users. leave that for just me, if i click it, it triggers and populates and changes to
+> everyone. i'm assuming i have a different level of role already?"*
+> *"free beta, limited invites. 2, these will be considered testers, so its covered. 3, no."*
+
+1. **Beta = FREE, LIMITED INVITES.** Section 5 (paid) is off the critical path.
+2. **Licence: the invitees are TESTERS, and he rules the 2026-09-08 accepted exposure covers them.** The risk
+   conversation for the beta is held. Whether a paying user is "something moving" stays undefined (not asked again now).
+3. **No lawyer before the beta.**
+4. **Retry research is OWNER-ONLY.** Replaces A2 (a per-user rate limit). The retry already serves everyone: it clears
+   the ticker's retry state in the one shared market store (`lib/research/control.ts:59-84`), and the board is the same
+   for every user. **His question, answered from the code: NO, there is no role today.** Every admitted user is equal;
+   `gateApiRequest` checks admission only (`lib/auth/requestGate.ts:77-79`), and the users table has only a `status`
+   column (default `pending`) that nothing reads (`lib/auth/store.ts:39-61`). So the owner distinction must be built.
+
+## 0. "Beta" has never been defined *(answered above: free, limited invites)*
 
 No file defines beta or launch (`integration.md:806-808`: "ASK WHAT LAUNCH MEANS. He has never defined it"). Two
 products hide in the word:
@@ -35,7 +51,7 @@ In order; each step's owner and trigger.
 | # | step | owner | waits on |
 | --- | --- | --- | --- |
 | A1 | **Gate `/api/dashboard`.** Ungated today because the market worker reads it with no cookie for Sheet pins. | Web | Sheet plan step 4 release, or a separate fix that gives the worker another path (`threads/web.md:526`) |
-| A2 | **Per-user rate limit on `POST /api/research/retry`** (it spends model budget). | Ops + Web, **unassigned** | an owner (`threads/web.md:527`) |
+| A2 | ~~Per-user rate limit on `POST /api/research/retry`~~ **OWNER-ONLY retry (his ruling 18:51:26Z):** the route refuses anyone but him (server-side, not just a hidden button), and the Retry control is not shown to anyone else. | Web (route + owner check), Design (the control) | build |
 | A3 | **`= /signin` and `^~ /auth/` exemptions** in nginx. | Ops | A1, A2 |
 | A4 | **Entry disclaimer:** his ruling 2026-09-30, "this is required before you can enter the platform". Build status unverified; DECLINE must withhold the desk. | Web + Design | build (`threads/commercial.md:166,195`) |
 | A5 | **Basic Auth off**, its own night. | Ops, **his yes** | A1 to A4 (`threads/web.md:528`) |
