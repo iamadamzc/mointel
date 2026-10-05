@@ -84,9 +84,9 @@ describe('the Sheet as the board shows it', () => {
     expect(dashed.length).toBeGreaterThanOrEqual(10);
   });
 
-  it('removes it from every label family: priority, grade, cycle, structure, float, warning', () => {
-    expect(ticker.priority.raw).toBe('B, SECONDARY');
-    expect(ticker.priority.originalRaw).toBe('C, BACKSIDE / OPPORTUNISTIC');
+  // The Sheet's priority family left the payload on 2026-10-05 (lib/data/types.ts):
+  // the desk shows its own Setup grade, so there is no priority label to clean.
+  it('removes it from every label family: grade, cycle, structure, float, warning', () => {
     expect(ticker.catalyst.gradeRaw).toBe('C, WEAK/NONE');
     expect(ticker.cycle.raw).toBe('🟡 FRONTSIDE, WARNING');
     expect(ticker.structure.raw).toBe('HIGH-RISK DIRTY FLOAT, 9.44x registered resale vs displayed float.');
@@ -119,14 +119,13 @@ describe('the Sheet as the board shows it', () => {
     const shape = (s: DashboardState) =>
       JSON.stringify(s, (_key, value) => (typeof value === 'string' ? 'S' : value));
     expect(shape(after)).toBe(shape(before));
-    expect(ticker.priority.bucket).toBe(before.tickers[0]!.priority.bucket);
     expect(ticker.cycle.state).toBe(before.tickers[0]!.cycle.state);
     expect(ticker.structure.state).toBe(before.tickers[0]!.structure.state);
     expect(ticker.catalyst.gradeBucket).toBe(before.tickers[0]!.catalyst.gradeBucket);
   });
 
   it('does not change the payload it was given', () => {
-    expect(before.tickers[0]!.priority.raw).toContain(EM);
+    expect(before.tickers[0]!.cycle.raw).toContain(EM);
   });
 });
 

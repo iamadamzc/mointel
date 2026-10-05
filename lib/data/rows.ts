@@ -16,7 +16,6 @@ import {
   numericField,
   parseDateValue,
   pickSessionValue,
-  priorityBucket,
   proseCell,
   structureBadges,
   structureState,
@@ -209,9 +208,9 @@ export function mapTodayRow(
   // until the canonical universe recognises it.
   if (!ticker || !plausibleSymbol(ticker)) return null;
 
-  const originalPriority = cell(row, T.priority);
-  const revisedPriority = cell(row, T.revisedPriority);
-  const effectivePriority = revisedPriority || originalPriority;
+  // The Priority and Revised Priority columns are no longer read (2026-10-05):
+  // the desk shows its own Setup grade, and the Sheet's verdict reaches no
+  // reader, the change signature included (see below).
 
   const cycleRaw = cell(row, T.cycle);
   const structureFlags = proseCell(row, T.structureFlags);
@@ -247,13 +246,6 @@ export function mapTodayRow(
     sourceRow,
     country: cell(row, T.country),
 
-    priority: {
-      raw: effectivePriority,
-      display: effectivePriority || '—',
-      bucket: priorityBucket(effectivePriority),
-      isRevised: Boolean(revisedPriority) && revisedPriority !== originalPriority,
-      originalRaw: originalPriority,
-    },
     cycle: {
       raw: cycleRaw,
       // The badge already carries the state in its colour and its word.
@@ -311,7 +303,10 @@ export function mapTodayRow(
     ticker_.price.raw,
     ticker_.changePct.raw,
     ticker_.volume.raw,
-    ticker_.priority.raw,
+    // No priority (2026-10-05). The signature marks a row whose DISPLAYED values
+    // changed (lib/hooks/useDashboard.ts), and the Sheet's priority is no longer
+    // displayed; it was also raw text, so keeping it would have carried
+    // "AVOID" to every reader of the payload inside a fingerprint.
     ticker_.cycle.raw,
     ticker_.warning.current,
     ticker_.catalyst.latest,
@@ -332,7 +327,6 @@ export function mapResearchRow(
   const reportDate = cell(row, R.reportDate);
   const cycleRaw = cell(row, R.cycleClassification);
   const catalystGrade = cell(row, R.catalystGrade);
-  const overallPriority = proseCell(row, R.overallPriority);
   const floatQuality = proseCell(row, R.floatQuality);
 
   return {
@@ -381,8 +375,6 @@ export function mapResearchRow(
     structureSourceUrls: extractUrls(proseCell(row, R.structureSourceUrls)),
     warningFlags: proseCell(row, R.warningFlags),
 
-    overallPriorityRaw: overallPriority,
-    overallPriorityBucket: priorityBucket(overallPriority),
     analystNotes: proseCell(row, R.analystNotes),
 
     floatQualityRaw: floatQuality,

@@ -2,22 +2,16 @@ import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import { setupGradeView, type SetupGrade } from '@/lib/dashboard/setupGrade';
-import type { MomentumTicker } from '@/lib/data/types';
-import { setupGradeForTools, sheetWithoutPriority } from '@/lib/mcp/sheetProjection';
+import { setupGradeForTools } from '@/lib/mcp/sheetProjection';
 
 /*
- * The MCP tools stop emitting the Sheet's priority and emit the desk's Setup
- * grade (his ruling 2026-10-05T22:04:14.942Z; assigned to Web by Integration).
- * The grade's display is Design's setupGradeView, never a mapping of ours.
+ * The MCP tools emit the desk's Setup grade (his ruling 2026-10-05T22:04:14.942Z;
+ * assigned to Web by Integration). The grade's display is Design's
+ * setupGradeView, never a mapping of ours. That the Sheet's priority is absent
+ * is checked at the producer: tests/data/sheetPriorityGone.test.ts.
  */
 
 const NOW = '2026-10-06T14:30:00.000Z';
-
-const sheetRow = {
-  ticker: 'ABCD',
-  priority: { raw: 'AVOID', bucket: 'AVOID', isRevised: false, original: 'AVOID' },
-  catalyst: 'Offering priced',
-} as unknown as MomentumTicker;
 
 const grade = (g: SetupGrade['grade']): SetupGrade => ({
   grade: g,
@@ -26,22 +20,8 @@ const grade = (g: SetupGrade['grade']): SetupGrade => ({
   checkpointCompletedAt: '2026-10-06T13:00:00.000Z',
 });
 
-describe('sheetWithoutPriority', () => {
-  it('drops the Sheet priority and keeps every other field (control: a field survives)', () => {
-    const out = sheetWithoutPriority(sheetRow) as Record<string, unknown>;
-    expect(out).not.toHaveProperty('priority');
-    expect(JSON.stringify(out)).not.toContain('AVOID');
-    expect(out.ticker).toBe('ABCD');
-    expect(out.catalyst).toBe('Offering priced');
-  });
-
-  it('passes a missing row through as null', () => {
-    expect(sheetWithoutPriority(null)).toBeNull();
-  });
-});
-
 describe('setupGradeForTools', () => {
-  it("shows AVOID as D, exactly as the badge does, with the stored enum untouched", () => {
+  it('shows AVOID as D, exactly as the badge does, with the stored enum untouched', () => {
     const stored = grade('AVOID');
     const out = setupGradeForTools(stored, NOW);
     const badge = setupGradeView(stored, NOW);
@@ -67,12 +47,9 @@ describe('setupGradeForTools', () => {
   });
 });
 
-describe('the tools never emit the raw Sheet object again', () => {
-  it('lib/mcp/tools.ts has no `sheet: row.research`', () => {
+describe('both tools emit the grade', () => {
+  it('lib/mcp/tools.ts emits setupGrade in get_discovery and get_ticker', () => {
     const source = fs.readFileSync('lib/mcp/tools.ts', 'utf8');
-    expect(source).not.toMatch(/sheet:\s*row\.research\b/);
-    // Control: the projection is what is there instead, in both tools.
-    expect(source.match(/sheet:\s*sheetWithoutPriority\(row\.research\)/g)?.length).toBe(2);
     expect(source.match(/setupGrade:\s*setupGradeForTools\(/g)?.length).toBe(2);
   });
 });

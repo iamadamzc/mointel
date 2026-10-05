@@ -1,5 +1,4 @@
 import { setupGradeView, type SetupGrade, type SetupGradeLetter } from '../dashboard/setupGrade';
-import type { MomentumTicker } from '../data/types';
 
 /*
  * WHAT THE MCP TOOLS SAY ABOUT PRIORITY, after the Setup grade (2026-10-05).
@@ -7,20 +6,13 @@ import type { MomentumTicker } from '../data/types';
  * His ruling 22:04:14.942Z (transcript 1b01d57c), "yes, keep building the badge
  * as approved": the desk shows its OWN Setup grade and stops showing the
  * Sheet's Current/Original Priority. The MCP tools are a second road to the same
- * reader, so they follow: the Sheet's `priority` (A/B/C/AVOID, stored text) is
- * no longer emitted, and the desk's grade is, in the same words the badge uses.
- * Assigned to Web by Integration (27th).
+ * reader, so they follow, in the same words the badge uses. Assigned to Web by
+ * Integration (27th).
+ *
+ * The Sheet's priority is not stripped here: it no longer exists on
+ * MomentumTicker at all (lib/data/types.ts), so `sheet: row.research` cannot
+ * carry it.
  */
-
-export type SheetWithoutPriority = Omit<MomentumTicker, 'priority'>;
-
-/** The Sheet row as the tools emit it: everything except its priority. */
-export function sheetWithoutPriority(research: MomentumTicker | null): SheetWithoutPriority | null {
-  if (!research) return null;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { priority, ...rest } = research;
-  return rest;
-}
 
 export interface SetupGradeForTools {
   /** The stored grade and per-criterion basis, untouched; null when the desk has none yet. */

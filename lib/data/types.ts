@@ -114,7 +114,14 @@ export interface MomentumTicker {
   sourceRow: number;
   country: string;
 
-  priority: PriorityField;
+  /*
+   * NO `priority` (removed 2026-10-05, Web). The desk shows its own Setup grade
+   * (his ruling 22:04:14.942Z, transcript 1b01d57c) and nothing reads the
+   * Sheet's A/B/C/AVOID any more (Design, f9110751). Absent from the type, it
+   * cannot reach /api/dashboard, the review API, either page's first paint or
+   * the MCP tools, and a new reader fails to compile. rows.ts still reads the
+   * column for the change signature only.
+   */
   cycle: CycleField;
   catalyst: CatalystField;
   structure: StructureField;
@@ -251,8 +258,8 @@ export interface StructuralResearch {
   structureSourceUrls: string[];
   warningFlags: string;
 
-  overallPriorityRaw: string;
-  overallPriorityBucket: PriorityBucket;
+  // No overallPriorityRaw/Bucket (removed 2026-10-05, Web): the Sheet's
+  // priority verdict, read by nothing since the Researched Names table went.
   analystNotes: string;
 
   floatQualityRaw: string;

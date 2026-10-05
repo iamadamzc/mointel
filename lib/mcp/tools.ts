@@ -35,7 +35,7 @@ import {
   listAssessments,
 } from '../market/readModel';
 import { buildDiagnostics } from '../review/diagnostics';
-import { setupGradeForTools, sheetWithoutPriority } from './sheetProjection';
+import { setupGradeForTools } from './sheetProjection';
 
 /* --------------------------------------------------------------- registry */
 
@@ -222,7 +222,7 @@ export const TOOLS: McpTool[] = [
           provenance: row.provenance,
           deskRead: buildDeskRead(row),
           setupGrade: setupGradeForTools(row.setupGrade, nowIso),
-          sheet: sheetWithoutPriority(row.research),
+          sheet: row.research,
         })),
       };
     },
@@ -277,7 +277,7 @@ export const TOOLS: McpTool[] = [
         provenance: row.provenance,
         comparison: row.comparison,
         setupGrade: setupGradeForTools(row.setupGrade, new Date().toISOString()),
-        sheet: sheetWithoutPriority(row.research),
+        sheet: row.research,
         supplyLedger: row.researchRecord,
         intelligence: withHonestTimestamps(row.intelligence),
         researchStatus: dashboard.research[ticker] ? 'RESEARCH_RECORD_PRESENT' : 'NO_RESEARCH_RECORD',
