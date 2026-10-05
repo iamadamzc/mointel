@@ -1203,6 +1203,14 @@ NEW COMMERCIAL   Commercial-tmi local_2aab5a77 (get_session: A:\mointel, created
                  VERIFIED at his turn (transcript 267e4fe2, 2026-10-05T00:40:36.034Z, read by me). New: float cell claims
                  questions (in-cell date per item 7; shortened "Cannot verify"; conditional vs bare "≤"), release pairing.
                  Marketing told s5d's two items (queued).
+COMMERCIAL ACK   Re-verified 1-3 at the transcripts itself (enqueue records: 81e25ab4 23:20:42.913Z; 267e4fe2 00:40:36.015Z,
+                 00:43:25.883Z; the 267e4fe2 copy at 23:23:40 is Web's relay). Fixing its own charter rows. Cell claims
+                 questions NOT ruled until it has Marketing's strings AND RESEARCH'S MAXIMUM FILED-COUNT AGE the cell can
+                 ever show (the "Cannot verify" gate age). Test: what a trader who never opens the popover reads, and
+                 whether it is false for a stale or diluted count. Shortened "Cannot verify" acceptable in principle if
+                 distinct from "Unknown" and the popover carries the issuance reason in full.
+                 OWED BY THE NEXT RESEARCH SEAT (add to its first-ask): the max filed-count age before "Cannot verify",
+                 stated in the float contract, to Commercial.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
