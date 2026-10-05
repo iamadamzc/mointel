@@ -13900,3 +13900,59 @@ SLOT 00:58Z: Design released (measurement only, nothing committed, :3100 stopped
 ROUTING 01:06Z: Research-tmi is now local_f6ef479a (replaces local_ab66f9f3); will ask before any run.
 CLEARANCE 01:09Z to Integration 25th: all 55 ^Ops commits on local main (as of this fetch) may ride its push; paths ops.md (55) + server-only-trace.cjs (1); secret scan of 328 added lines 0 hits (control found a planted fake). Later Ops commits not cleared until named.
 PUSH 01:11Z: Integration 25th pushed main to origin (63c19007..e71dc7b3, fast-forward); all 56 cleared Ops commits on origin; main = origin/main. Production line still separate (refs/heads/production = 6e7fff84); split-to-main after Monday's spot check.
+
+## HAND-OFF, 2026-10-05T01:14:34Z (Sun 21:14 ET): this seat (local_7fac8dfc) RETIRES on his word ("yes hand off")
+Reason: his call at a clean boundary (nothing in flight; ~46 h session). Ledger: 3 entries, 3 distinct types, no repeat
+(search "Error ledger (this seat)" above).
+
+**Production, read 2026-10-05T01:14:34Z (box clock):** web 2025357 (no child) / research 2025415 (child 2025472) / assess
+2025490 (child 2025514), all cwd 6e7fff846a573e2692deb8fcb7982c7b375e6f08, started 2026-10-03 17:50:15-17Z, NR 0. market
+2013616 (child 2013636) cwd f5746a84974cb9dcd9badb6158813b21fe5e84fa, started 2026-10-03 16:50:21Z, NR 0. current -> 6e7fff84.
+No deploy unit. Pins unchanged (market-floor 2bcf1cfe v28, rollback-baseline 372f5eb9 v18). Health ok, schema 28/28, market
+IDLE / STREAMING, trading date 2026-10-05. 3,832 MB, 2,699 available, no swap; 57G free. market.db 5,160,316,928 B;
+trades.db 124 MB; identity.db 49 KB. Box env: 30 keys; Google Sheet keys present (names + lengths only); AUTH_PROBE_ENABLED absent.
+**Origin:** main = e71dc7b3 (Integration 25th pushed 2026-10-05; local main 2 ahead, peers'). refs/heads/production and tag
+release/2026-10-03-6e7fff84 at 6e7fff84. Production line is NOT on main (71 commits; lists above, "PRODUCTION-LINE SEAM").
+
+**Shipped by this seat, each on his word in this chat:** 0b92c309 (sign-in gate + blue sky; his yes 2026-10-03T14:35:39Z;
+live 15:22:51Z); f5746a84 (split-day prior close, with a MARKET RESTART; his yes 16:05:20Z; live 16:50:20Z; 5 of Monday's 7
+listed splits restated before the bootstrap: CMND, GUTS, SCNX, VIVK, VTAK); 6e7fff84 (Sheet removal step 1; his yes
+17:08:23Z; live 17:50:15Z; board unchanged, provider google-sheets). Built: dff3fb0a + f5746a84 (split fix, Research-reviewed).
+
+**OPEN, owner = successor Ops seat unless named, each with its trigger:**
+1. MONDAY SPOT CHECK, 2026-10-05 after 10:00 ET, read-only: one of CMND / GUTS / SCNX / VIVK / VTAK in the store: its
+   "[splits] ... first print ... confirms" (or OLD_BASIS) journal line on mointel-market and percent_change vs the restated
+   close (rvol_baseline data_source alpaca-raw-daily-split-restated). Result to Integration 25th (local_ef410868); a WRONG
+   prior close goes to HIM at once. Clock guard in every box command (no reads 07:00-10:00 ET weekdays).
+2. ops/split-to-main, after the spot check, Integration nodded: origin/main + cherry-pick -x dff3fb0a, f5746a84 (both apply
+   clean onto origin/main, checked) + follow-up (Research's M1 fixture: in the cumulative case a bar dated ON the earlier
+   split's ex-date gets only today's ratio; round the "[splits] ... restated to" log number). Gate, literal sha to Integration.
+3. NEXT ORDINARY RELEASE, cut on /proc 6e7fff84 after the spot check: 61e2f777 (weekend preflight), f1b8b716 + 6ac43025
+   (identity.db mode), Research's citation-id fix (UNBUILT), the split follow-up (UNBUILT), Web 2fe136ac (landing copy; his
+   yes in Web's chat). Integration replays the literal tip; his ship yes in Ops's chat.
+4. STANDING RULE: after /proc confirms each ship, fast-forward refs/heads/production to it and push one release/<date>-<sha8>
+   tag, refspec-limited (never main). Integration authorised the first push; ask it before the next if in doubt.
+5. OWED-TO-MAIN list: Integration puts it to owners Monday after the spot check. Ops owns: movers, levels/history, v28,
+   preflight 46d9f9d3, loadMinuteBars 84b00991, Now/evening.
+6. /api/dashboard is ungated (Basic Auth only) for the market worker's TODAY-sheet read; gate it before Basic Auth comes off
+   /api/. The Sheet plan (his ruling "reproduce what the sheet does in the app") may remove that caller; Sheet steps 4-5
+   (market restart, env keys GOOGLE_SHEET_ID / GOOGLE_SERVICE_ACCOUNT_EMAIL / GOOGLE_PRIVATE_KEY / MOINTEL_DASHBOARD_URL) wait
+   on Research's design.
+7. HIS BROWSER READS of the sign-in release (admitted board, refused 403 screen via his Workspace address, signed-out
+   redirect, EZRA drawer): asked 2026-10-03, not reported by him. Ask once, plainly; do not chase.
+8. COSMETIC: market-floor pin reason text says "market worker still runs 1b5ead6" (now f5746a84); re-word on the next pin touch.
+9. HOUSEKEEPING (his word, no trigger): my worktrees A:\mointel-split (node_modules is a JUNCTION: unlink it first, never a
+   recursive delete; branch ops/split-day-close at f5746a84, local only) and A:\mointel-build (detached at 6e7fff84, real
+   node_modules, untracked .ops-seed-gate.ts = the pre-ship 403 seed script, keep it). ~30 other worktrees listed by `git
+   worktree list`, most from earlier cuts; the predecessor's list is in its hand-off.
+
+**Hazards learned this session (for the successor):**
+- releaseRetention's preflight tests exec bash; ~3 s per preflight call on a quiet PC, 8-14 s when his pm2 daemon (pid 6860,
+  his, leave it) saturates the CPU. Timeout-only reds are load until a quiet solo run says otherwise; never override a red gate.
+- This PC checks out CRLF: tests matching source text must normalise (fb50e2ff); mutant scripts must match CRLF or refuse.
+- Box preflight on the live release (lacks 61e2f777) still guards checkpoints on WEEKENDS: start deploys at :03-:13 or :33-:43 ET.
+- push-release's follower times out (rc 8) before quick_check ends; confirm the cutover from /proc only.
+- The NotAdmitted headline is in every /desk body's flight data; prove the refusal screen by a browser render, not a string.
+- A session restart kills background shells and app restarts change ListAgents refs: verify a peer by get_session, send by ref.
+**Routing at hand-off:** Integration-tmi = local_ef410868 (25th); Research-tmi = local_f6ef479a; Design-tmi = local_82749387;
+Web-tmi = local_46c15fbe; Marketing-tmi = local_fdc0aa9a; Commercial-tmi = local_2ce868d2. Find by title + cwd + not archived.
