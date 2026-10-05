@@ -239,11 +239,34 @@ function parseSection16(xml: string) {
 }
 
 /**
- * 13D / 13G cover pages. FITTED AFTER the list run (prereg): until then every one is
- * logged and NOT subtracted, which keeps the bound a true upper bound.
+ * 13D / 13G structured cover pages, FITTED AFTER the list run (prereg "Fitted after the
+ * list run"): a filing's amount is the LARGEST of its reporting persons' (group members
+ * each report the group's aggregate), never their sum.
  */
-function parseLargeHolder(_xml: string, _filing: Filing) {
-  return { ok: false as const, reason: 'cover-page parse not yet fitted (list run first)' };
+function parseLargeHolder(xml: string) {
+  const is13D = /<reportingPersonInfo>/.test(xml);
+  const blockTag = is13D ? 'reportingPersonInfo' : 'coverPageHeaderReportingPersonDetails';
+  const amountTag = is13D ? 'aggregateAmountOwned' : 'reportingPersonBeneficiallyOwnedAggregateNumberOfShares';
+  const percentTag = is13D ? 'percentOfClass' : 'classPercent';
+  const persons = [...xml.matchAll(new RegExp(`<${blockTag}>([\\s\\S]*?)</${blockTag}>`, 'g'))].map((m) => {
+    const block = m[1]!;
+    return {
+      name: (field(block, 'reportingPersonName') ?? '').trim(),
+      amount: Number((field(block, amountTag) ?? '').replace(/,/g, '')),
+      percent: Number((field(block, percentTag) ?? '').replace(/[,%]/g, '')),
+    };
+  });
+  const usable = persons.filter((p) => Number.isFinite(p.amount));
+  if (usable.length === 0) return { ok: false as const, reason: `no ${amountTag} in ${persons.length} reporting persons` };
+  const top = usable.reduce((a, b) => (b.amount > a.amount ? b : a));
+  return {
+    ok: true as const,
+    kind: is13D ? ('13D' as const) : ('13G' as const),
+    filerCik: (field(inner(xml, 'filerCredentials') ?? '', 'cik') ?? '').replace(/^0+/, ''),
+    names: persons.map((p) => p.name.toUpperCase().replace(/\s+/g, ' ')).filter((n) => n.length > 0),
+    amount: top.amount,
+    percent: Number.isFinite(top.percent) ? top.percent : null,
+  };
 }
 
 /* ------------------------------------------------------------------ basis */
@@ -298,11 +321,42 @@ async function armA(db: MarketDatabase, pick: Pick, since: string) {
       filingDate: held.filing.filingDate, shares: held.shares, used, why: used ? 'latest direct holding, basis proven' : basis.reason,
     });
   }
-  // A sum once the cover-page parse is fitted after the list run; zero until then (nothing subtracted).
-  const large = 0;
+  // Large holders: groups linked by a shared reporting-person name; per group the LATEST filing's amount.
+  type Parsed = Extract<ReturnType<typeof parseLargeHolder>, { ok: true }> & { filing: Filing };
+  const parsedLarge: Parsed[] = [];
   for (const filing of ordered.filter((f) => isLargeHolderForm(f.form))) {
-    const parsed = parseLargeHolder('', filing);
-    holdings.push({ family: 'LARGE', form: filing.form, accession: filing.accession, filingDate: filing.filingDate, primaryDocument: filing.primaryDocument, used: false, why: parsed.reason });
+    try {
+      const { body } = await sec.get(documentUrl(pick.cik, filing));
+      const parsed = parseLargeHolder(body);
+      if (!parsed.ok) {
+        holdings.push({ family: 'LARGE', form: filing.form, accession: filing.accession, filingDate: filing.filingDate, used: false, why: parsed.reason });
+        continue;
+      }
+      parsedLarge.push({ ...parsed, filing });
+    } catch (error) {
+      holdings.push({ family: 'LARGE', form: filing.form, accession: filing.accession, filingDate: filing.filingDate, used: false, why: `fetch: ${(error as Error).message}` });
+    }
+  }
+  const groups: Parsed[][] = [];
+  for (const p of parsedLarge) {
+    const linked = groups.filter((g) => g.some((q) => q.names.some((n) => p.names.includes(n))));
+    const merged = [p, ...linked.flat()];
+    for (const g of linked) groups.splice(groups.indexOf(g), 1);
+    groups.push(merged);
+  }
+  let large = 0;
+  for (const group of groups) {
+    const latest = [...group].sort((a, b) => (a.filing.filingDate + a.filing.accession).localeCompare(b.filing.filingDate + b.filing.accession)).at(-1)!;
+    const qualifies = latest.kind === '13D' || (latest.percent !== null && latest.percent >= 10);
+    const basis = so.state === 'PRODUCED' ? basisProven(db, pick.ticker, latest.filing.filingDate, so.asOf) : { proven: false, reason: 'no share count' };
+    const used = qualifies && basis.proven;
+    if (used) large += latest.amount;
+    holdings.push({
+      family: 'LARGE', kind: latest.kind, filerCik: latest.filerCik, persons: latest.names, form: latest.filing.form,
+      accession: latest.filing.accession, filingDate: latest.filing.filingDate, shares: latest.amount, percent: latest.percent,
+      groupFilings: group.map((g) => g.filing.accession), used,
+      why: !qualifies ? '13G under 10 percent stays in the float' : basis.proven ? 'latest in its group, basis proven' : basis.reason,
+    });
   }
   const subtracted = Math.max(s16, large);
   const bound = so.state === 'PRODUCED' ? so.shares - subtracted : null;
