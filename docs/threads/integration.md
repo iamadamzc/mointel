@@ -1349,6 +1349,11 @@ AGE RE-DERIVED   Research 3fcb1f2a: age-rederive.mjs + age-rederive-out-2026-10-
                  settlement (invisible to a board checkpoint, so 45 d share is a little high for the board). 34/46/50 DID NOT
                  REPRODUCE; struck in the Sheet plan (Decision 1, corrected inline) and marked SUPERSEDED in my archive note.
                  Corrected numbers to HIM.
+MARKETING v5     b6484909 (local main) docs/marketing/float-page-draft.md: applies 5e + contract (4 faces, per-cause reasons,
+                 legend + aria conditional, inline as-of off-popover, "nothing flagged may still have issued shares").
+                 NOT YET READ BY ME (read before it goes to him). Routed: Commercial re-read; Research asked how a split
+                 between holding and count is treated (v4's split cause dropped vs prereg check 5); Design to measure "not
+                 researched yet" at 84 px.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
