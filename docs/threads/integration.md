@@ -1386,6 +1386,8 @@ RESEARCH SEAT    local_f6ef479a retitled "Research-tmi (retired 2026-10-05)" (re
                  by pointing to adae1e89 (code, rides a gate). Sheet plan line 86 (mine) annotated + result added.
                  Research hand-off 842023cc (HAND-OFF block + ledger in research.md, new docs/research-opening-prompt.md);
                  it does NOT carry the priorityGrade.ts:7 fix, so that stays owed here. Research cleared 842023cc eec8c68d.
+                 CLOSED: the retiring Research seat fixed it anyway, 8a933358 (comment only, read: points to adae1e89, no
+                 restated result), cleared; rides the next gate. Nothing owed to the new Research seat from this item.
 MARKETING        Cleared by reply: e1220516 (legend, Commercial PASS 5j), 65603d38 (float v14, 5j change applied: "at most
                  90 days before the checkpoint"), plus 13458dc8 3fd16f82 earlier. Float still ships nothing until Web's
                  render is approved and the float build exists.
