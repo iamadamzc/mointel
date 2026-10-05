@@ -52,7 +52,7 @@ export interface SetupGradeView {
 }
 
 /** Criterion names as a reader sees them. The cycle is "cycle", not "Structure". */
-const NAME: Record<Criterion, string> = {
+export const CRITERION_NAME: Record<Criterion, string> = {
   structure: 'cycle',
   catalyst: 'catalyst',
   volume: 'relative volume',
@@ -168,7 +168,7 @@ const GROUPS: ReadonlyArray<{ title: string; match: (r: StoredReading) => boolea
 export function basisLine(basis: Record<Criterion, StoredReading>): string {
   const parts: string[] = [];
   for (const group of GROUPS) {
-    const names = CRITERIA.filter((c) => group.match(basis[c])).map((c) => NAME[c]);
+    const names = CRITERIA.filter((c) => group.match(basis[c])).map((c) => CRITERION_NAME[c]);
     if (names.length > 0) parts.push(`${group.title}: ${names.join(', ')}.`);
   }
   return parts.join(' ');

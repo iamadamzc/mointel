@@ -16,8 +16,10 @@
 
 import { ClampedText } from '@/components/ClampedText';
 import { FocusToggle } from '@/components/FocusToggle';
+import { SetupGradeBadge } from '@/components/SetupGradeBadge';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { DeskRisk } from '@/lib/dashboard/risk';
+import type { SetupGrade } from '@/lib/dashboard/setupGrade';
 import type { DeskWhy } from '@/lib/dashboard/why';
 import type { MarketTelemetry } from '@/lib/dashboard/telemetry';
 import { baselineLabel } from '@/lib/dashboard/view';
@@ -596,6 +598,7 @@ export function TickerCell({
   stale,
   ageSeconds,
   retention,
+  setupGrade,
 }: {
   ticker: string;
   focused: boolean;
@@ -603,12 +606,19 @@ export function TickerCell({
   stale?: boolean;
   ageSeconds?: number | null;
   retention?: string | null;
+  /** The stored setup grade (null or absent is NOT_YET: the dash). */
+  setupGrade?: SetupGrade | null;
 }) {
   return (
     <span className="flex flex-col items-start">
-      <span className="flex items-center gap-1">
+      {/* Wraps instead of overflowing: star 14 + ticker + "Not graded" 47.9 + gaps is
+          over the 112 px content box for any ticker wider than 42 px (a W-heavy
+          five letters is 74), and "stale" adds 28 more. The badge drops to its own
+          line only when it has to; a letter badge (18 px) fits every ticker. */}
+      <span className="flex flex-wrap items-center gap-x-1">
         <FocusToggle ticker={ticker} focused={focused} onToggle={onToggleFocus} />
         <span className="text-[15px] font-bold tracking-tight text-ink">{ticker}</span>
+        {setupGrade !== undefined ? <SetupGradeBadge grade={setupGrade} /> : null}
         {stale ? (
           <span
             className="text-[9px] font-semibold tracking-wide text-warn uppercase"
