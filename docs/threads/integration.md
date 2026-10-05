@@ -1448,6 +1448,13 @@ COMMERCIAL 5m    68175ef6 (origin; merged bc8219fb), READ: FILINGS_NOT_REREAD st
                  shares ARE still subtracted. Sent to Marketing by Commercial. HIS LINE WAITS on Marketing's fix and I
                  reword it myself from 5m's corrected sentence. Commercial's 5m still says Form B waits on my choice: my
                  S1 ruling was queued to it; re-told.
+MARKETING 22bc856f  5m's three changes applied (diff READ, em 0). CLEARED by Marketing by sha: 415abee3 22bc856f (ledger 1
+                 closed).
+COMMERCIAL 5n    9e9c7c20 (origin; merged 3c71fad9), READ: PASS on FORM A at 22bc856f, FILINGS_NOT_REREAD string + bullet,
+                 legend, aria-label, off-popover string, date label, his line. No objection to S1. FORM B needs a pass
+                 when S1 is built and measured.
+TO HIM           The float wording line, in my words from 22bc856f section 6 and 5m(3): informational, no block (a change
+                 to text he approved, before it ships; not a decision). Float itself: not built on main, ungated, no ship.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
