@@ -455,6 +455,13 @@ hand-off on his "hand off"; every line was true at that moment and nothing below
 diary.** *Where this disagrees with anything above it, this wins. The previous
 snapshot (the sign-in night, 2026-10-02) is in this file at `526bed0b`.*
 
+**ADDENDUM 2026-10-05 00:55Z, successor seat (local_a4c618a8), on opening:** *production is
+`6e7fff84` (= `f5746a84` + Sheet step 1) for web/research/assess, market on `f5746a84` (Ops `/proc`
+00:54:24Z, relayed by Integration 25th; `0b92c309` is two ships old). Read from outside by this
+seat at 00:55Z: private paths 401, public paths 200, and the live `/` still says "No filing carries
+one", so `2fe136ac` is NOT live (not cut either; next ordinary release, after Ops's Monday 10-05
+spot check). Sheet plan step 3 is not built, so step 4 is not reached. Three rows added to OPEN.*
+
 ### What is live on tmitrader.com
 
 **The desk is behind TWO layers now: nginx Basic Auth (unchanged, still the outer
@@ -525,6 +532,9 @@ copy and legal texts never mention the Sheet (checked).*
 | **three-way refusal split** | Web | a refusal REASON in the store | **possibly never; one honest screen beats three guessed ones** |
 | **self-serve sign-up and the "There are no public sign-ups" sentence** in `app/page.tsx` | him | first paying users are invited and billed by hand (his ruling), so both wait | **if anyone ships a public save-card page, that sentence changes in the same commit** |
 | **consent-screen display name** | him | the day he uploads the mark | **blocks Google brand verification only** |
+| **public page "Are float quotes real?"** (his ruling 2026-10-05T00:40:36Z, verbatim in the Sheet plan's RULED block; linked from the float cell's tooltip) | **Web builds**; Marketing words, Commercial re-reads | Marketing's copy past Commercial (d9a79a30: 8 of 9 pass), then his look, AND Research's insider-only validation sample passing. **A NEW public route: needs its own exact-match nginx exemption from Ops, and joins the sweep's expect-200 list (`/desk` stays in the expect-401 list)** | **if the tooltip's link ships before the page is public, a stranger's click is a 401; the link and the page ride one release** |
+| **owed-to-main audit, sign-in step 4** (`d7079581`, `32db0d7e`, `fb50e2ff`: production-only, ops.md "PRODUCTION-LINE SEAM") | **Web** answers per commit: equivalent on main / owed / release-only | Integration puts it to this seat after Monday 10-05's spot check | **if main has no equivalent (not yet checked by this seat), a release cut from main would drop the sign-in gate** |
+| **Sheet step 3 surfaces with no owner**: `lib/mcp/tools.ts` (:220/:272 emits the raw Sheet object incl. stored AVOID) and the review-link API `readableSheet` (route.ts:42) | unassigned; possibly Web | named when step 3 is assigned | **left unowned, step 6's switch-off breaks them silently** |
 
 ### Things a successor will misread
 
