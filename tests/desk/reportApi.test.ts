@@ -102,6 +102,61 @@ describe('reading the store', () => {
   });
 });
 
+describe('a stored report reads without the model citation tokens it was written with (RPGL "[1043]")', () => {
+  const NOW = new Date('2026-09-29T03:00:00Z');
+
+  /** A store with one stored premarket report whose RPGL company line carries `business`, and RPGL's source ids 1..2 (the other ticker owns 3). */
+  function storeWith(business: string | null, withSources = true) {
+    const db = new Database(':memory:');
+    db.exec(`CREATE TABLE desk_assessments (id INTEGER PRIMARY KEY, trading_date TEXT, target_trading_date TEXT,
+      assessment_type TEXT, scheduled_for TEXT)`);
+    db.prepare('INSERT INTO desk_assessments (trading_date, target_trading_date, assessment_type, scheduled_for) VALUES (?, ?, ?, ?)')
+      .run('2026-09-28', '2026-09-29', 'NEXT_DAY_RECAP', '2026-09-29T02:00:00.000Z');
+    db.exec(`CREATE TABLE session_reports (id INTEGER PRIMARY KEY, kind TEXT, range_key TEXT, trading_date TEXT,
+      status TEXT, payload TEXT, missed_cause TEXT)`);
+    const row = published('PREMARKET', '2026-09-28');
+    const report = JSON.parse(row.payload!) as SessionReport;
+    report.sections = [
+      {
+        heading: 'Moved',
+        lines: [
+          { ticker: 'RPGL', liveFeed: null, text: 'Kept as stored [2].', company: { name: 'Republic Power', country: 'United States', business } },
+          { ticker: 'OTHR', liveFeed: null, text: 'y.', company: { name: 'Other Co', country: null, business: 'Other business [1].' } },
+        ],
+      },
+    ];
+    db.prepare('INSERT INTO session_reports (kind, range_key, trading_date, status, payload, missed_cause) VALUES (?, ?, ?, ?, ?, ?)')
+      .run(row.kind, row.range_key, row.trading_date, row.status, JSON.stringify(report), row.missed_cause);
+    if (withSources) {
+      db.exec('CREATE TABLE research_sources (id INTEGER PRIMARY KEY, ticker TEXT)');
+      for (const [id, ticker] of [[1, 'RPGL'], [2, 'RPGL'], [3, 'OTHR']] as const) {
+        db.prepare('INSERT INTO research_sources (id, ticker) VALUES (?, ?)').run(id, ticker);
+      }
+    }
+    return db;
+  }
+
+  const lines = (db: ReturnType<typeof storeWith>) => readReportsPayload(db, NOW, RANGES, '1-20')!.reports[0]!.sections[0]!.lines;
+
+  it('removes a lone short bracket that is one of the ticker source ids from company.business, and keeps a year it does not own', () => {
+    const [rpgl] = lines(storeWith('Power services [1] listed in [2026].'));
+    expect(rpgl!.company!.business).toBe('Power services listed in [2026].');
+  });
+
+  it('uses each ticker\'s OWN ids: another ticker\'s id leaves the bracket, and the writer\'s sentence is untouched', () => {
+    const [rpgl, othr] = lines(storeWith('Power services [3].'));
+    expect(rpgl!.company!.business).toBe('Power services [3].');
+    expect(rpgl!.text).toBe('Kept as stored [2].');
+    // OTHR owns source 3, not 1: its "[1]" stays.
+    expect(othr!.company!.business).toBe('Other business [1].');
+  });
+
+  it('leaves everything as stored when the store has no research_sources table, and a null business stays null', () => {
+    expect(lines(storeWith('Power services [1].', false))[0]!.company!.business).toBe('Power services [1].');
+    expect(lines(storeWith(null))[0]!.company!.business).toBeNull();
+  });
+});
+
 describe('the range config', () => {
   it('defaults to $1-$20, reads REPORT_RANGES, and skips an entry that does not parse', () => {
     expect(reportRanges({})).toEqual({ ranges: [{ id: '1-20', label: '$1–$20', min: 1, max: 20 }], defaultRangeId: '1-20' });
