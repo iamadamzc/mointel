@@ -1029,6 +1029,10 @@ All predecessors renamed -retired and archived (read 10-05), except old Ops loca
 POST-HAND-OFF: Design local_82749387 RETIRING on his "yes hand over" (per Design); hand-off on origin 4d5c2a0a (design.md
 live state: S3 = approved step-3 spec, OM = owed-to-main chain merged locally c0d57723, not on origin; 558d07a5 held).
 Successor NOT open: route nothing to local_82749387; give the next Design seat this live state on its first ask.
+POST-HAND-OFF: Web sent HIM the float page PREVIEW (per Web): private artifact claude.ai/artifact/PjmvzavJrNS2WvxHpDR1gC,
+source docs/web/previews/are-float-quotes-real.html (63f9c251, local main, cleared by Web); text = draft v12 section 3
+verbatim (Web diffed 56cdc9dc..HEAD: section 3 unchanged from the v11 he approved); not a route, not deployed. Marketing's
+v12 commit: clearance by sha still owed. Not read by me.
 ```
 
 ### HAND-OFF LINE
