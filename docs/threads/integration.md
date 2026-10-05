@@ -1276,6 +1276,16 @@ NEW SEATS        He: "new ops and marketing are live". list_sessions: Ops-tmi lo
                  A:\mointel, not archived). Sent Ops (91876737, queued): correct routing ids, production, spot check + 2-5.
                  Sent Marketing (59ea0dfd): float page v4 state, Commercial's pending face ruling on Research's max age, rubric
                  words later. ALL SEVEN SEATS NOW HAVE ONE LIVE CHAT.
+HIS ASK          (Mon 10-05, screenshot of the 09:26 ET into-the-open briefing) "has the new session report not deployed?"
+                 Answered NO from refs (origin production 6e7fff84; research/reports-v6 759465bc, origin's v6 d6d5d5dc and
+                 Design's surface 5c95c92e NOT ancestors) + pending-builds list (his standing rule). Ops confirmed below.
+OPS /proc + SPOT Ops local_c71f613a, read 2026-10-05T15:06Z (11:06 ET): web 2025357 / research 2025415 / assess 2025490 on
+                 6e7fff84, market 2013616 on f5746a84, NR 0, same PIDs/starts as 01:14:34Z; nothing shipped. SPOT CHECK
+                 PASSED: [splits] confirms SCNX 4.4 vs 3.97, CMND 5.7 vs 5.72, VIVK 5.35 vs 4.644, GUTS 4.71 vs 4.8792; no
+                 OLD_BASIS; stored percent_change = price/previous_close-1 on all four. VTAK no print; previous_close 1.51 =
+                 the restated value in the 10-03 bootstrap log (ops.md:13825, "VTAK 10:1 0.151 -> 1.51", read by me).
+                 NOD sent: ops/split-to-main now, literal sha to me. Owed-to-main audit trigger (after the spot check) MET:
+                 mine to put to owners next.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
