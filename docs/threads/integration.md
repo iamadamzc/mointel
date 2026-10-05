@@ -1228,6 +1228,15 @@ MARKETING v4     Marketing (local_fdc0aa9a, HANDING OFF; successor carries float
                  bound (page: cell reads "no more than X shares, from SEC filings as of"; cell: "≤ 12.3M"). Commercial's
                  open judgments: item 7 (date in popover) AND item 3 (conditional only in popover), both on Research's age
                  gate. Commercial told.
+NEW RESEARCH     Research-tmi local_f6ef479a (get_session: A:\mointel, created 2026-10-05T01:05:45Z, Sonnet 5.5, effort medium).
+                 Old local_ab66f9f3 archived (per Research). Sent live state (60baff78): float RULED (both entries), Commercial's
+                 rules, validation sample gate, item 7 + MAX FILED-COUNT AGE owed to Commercial, cell faces. ORDER (mine):
+                 (a) shared-main: its written resolution of the 2 files + clearance of its 56; (b) float contract + pre-reg
+                 validation sample (price to me first); (c) Priority rubric draft (may run beside b); (d) v6 steps 3-6 with
+                 the 24th's conditions; (e) citation-id fix (next release waits on it), placement its call.
+                 MERGE EVIDENCE: all 7 origin-side commits touching research.md / research-opening-prompt.md (c75c8c37,
+                 c8467a64, 96da54cb, 5e909ca3, 81fbeec9, f04a56fa, 73e68705) have patch-id twins on local main, so "resolve
+                 to local" should lose nothing from origin. Owner's word still required.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
