@@ -1,5 +1,5 @@
 [Unit]
-Description=Momentum Intelligence — watchdog, every minute
+Description=Momentum Intelligence: watchdog, every minute
 
 [Timer]
 OnBootSec=2min

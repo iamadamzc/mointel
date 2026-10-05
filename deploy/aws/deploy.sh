@@ -146,7 +146,7 @@ install -m 0755 "$RELEASE/deploy/aws/status.sh" /usr/local/bin/mointel-status
 log "installing systemd units"
 install -m 0644 "$RELEASE"/deploy/aws/systemd/*.service /etc/systemd/system/
 install -m 0644 "$RELEASE"/deploy/aws/systemd/mointel.target /etc/systemd/system/
-install -m 0644 "$RELEASE"/deploy/aws/systemd/*.timer /etc/systemd/system/
+install -m 0644 "$RELEASE"/deploy/aws/systemd/*.timer /etc/systemd/system/ || log "WARNING: no watchdog timer unit was installed"
 systemctl daemon-reload
 
 # ----------------------------------------------------------------- switch ---
