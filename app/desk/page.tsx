@@ -3,8 +3,9 @@ import { forbidden, redirect } from 'next/navigation';
 
 import { DashboardShell } from '@/components/DashboardShell';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
-import { admissionForSession } from '@/lib/auth/requestGate';
+import { admissionForSession, isOwnerAdmission } from '@/lib/auth/requestGate';
 import { getDashboardState } from '@/lib/data';
+import { DeskModeProvider } from '@/lib/hooks/useDeskMode';
 
 // The desk always reflects the current sheet state, so nothing is prerendered
 // at build time. Upstream read frequency is governed by the server cache.
@@ -27,5 +28,13 @@ export default async function DashboardPage() {
   // Server-rendered first paint; the client then polls /api/dashboard.
   const initialState = await getDashboardState();
 
-  return <DashboardShell initialState={initialState} />;
+  // Owner-only controls (retry research, his ruling 2026-10-05) are offered to
+  // the owner alone. A boolean crosses to the client; the address never does.
+  const canRetryResearch = isOwnerAdmission(admission);
+
+  return (
+    <DeskModeProvider mode={{ apiBase: '/api', readOnly: false, expiresAt: null, canRetryResearch }}>
+      <DashboardShell initialState={initialState} />
+    </DeskModeProvider>
+  );
 }

@@ -24,9 +24,17 @@ export interface DeskMode {
   readOnly: boolean;
   /** When the review capability stops working. Null on the normal desk. */
   expiresAt: string | null;
+  /**
+   * True only for the owner on /desk (his ruling 2026-10-05: retry research is
+   * his alone). Set server-side from `isOwnerAdmission`; the server refuses
+   * everyone else regardless (`gateOwnerRequest`), so this only hides a button
+   * that would fail. FALSE BY DEFAULT: a desk rendered without saying who is
+   * looking offers no retry.
+   */
+  canRetryResearch: boolean;
 }
 
-const DEFAULT: DeskMode = { apiBase: '/api', readOnly: false, expiresAt: null };
+const DEFAULT: DeskMode = { apiBase: '/api', readOnly: false, expiresAt: null, canRetryResearch: false };
 
 const DeskModeContext = createContext<DeskMode>(DEFAULT);
 
@@ -37,11 +45,16 @@ export function DeskModeProvider({
   mode: DeskMode;
   children: ReactNode;
 }) {
-  // Memoised on the three primitives rather than on the object, so a server
+  // Memoised on the primitives rather than on the object, so a server
   // component re-render with an equivalent literal does not remount the desk.
   const value = useMemo(
-    () => ({ apiBase: mode.apiBase, readOnly: mode.readOnly, expiresAt: mode.expiresAt }),
-    [mode.apiBase, mode.readOnly, mode.expiresAt],
+    () => ({
+      apiBase: mode.apiBase,
+      readOnly: mode.readOnly,
+      expiresAt: mode.expiresAt,
+      canRetryResearch: mode.canRetryResearch,
+    }),
+    [mode.apiBase, mode.readOnly, mode.expiresAt, mode.canRetryResearch],
   );
 
   return <DeskModeContext.Provider value={value}>{children}</DeskModeContext.Provider>;
