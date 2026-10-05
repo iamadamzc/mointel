@@ -1475,7 +1475,7 @@ S3 FIRST READ    f9110751: base e0139dea, 8 commits, 0 merges, 27 files (compone
                  only with (or after) Ops's assess store of the grade columns + the setupGrades reader. Told Design (offered
                  a "map absent" vs "null grade" guard as its call) and Ops. selectPrimaryFocus removal: no callers, clean.
 COMMERCIAL 5o    6a7120e0 (merged): FORM B's "no sale filed since the count" clause is false under S1; delete. Marketing
-                 25fb0d7c applied it (diff read, em 0); sha NOT named by Marketing, asked.
+                 25fb0d7c applied it (diff read, em 0); CLEARED by Marketing by sha (reply).
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
