@@ -1,0 +1,98 @@
+{
+  "picks": [
+    {
+      "ticker": "SORA",
+      "cik": "2033515",
+      "company": "AsiaStrategy",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 1
+    },
+    {
+      "ticker": "AMOD",
+      "cik": "1862463",
+      "company": "ALPHA MODUS HOLDINGS, INC.",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 2
+    },
+    {
+      "ticker": "NXL",
+      "cik": "1527352",
+      "company": "Nexalin Technology, Inc.",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 3
+    },
+    {
+      "ticker": "HTCR",
+      "cik": "1892322",
+      "company": "HeartCore Enterprises, Inc.",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 4
+    },
+    {
+      "ticker": "SSM",
+      "cik": "1840416",
+      "company": "Sono Group N.V.",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 5
+    },
+    {
+      "ticker": "WCT",
+      "cik": "1990251",
+      "company": "Wellchange Holdings Co Ltd",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 6
+    },
+    {
+      "ticker": "EJH",
+      "cik": "1769768",
+      "company": "E-Home Household Service Holdings Ltd",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 7
+    },
+    {
+      "ticker": "AISP",
+      "cik": "1842566",
+      "company": "Airship AI Holdings, Inc.",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 8
+    },
+    {
+      "ticker": "CAMP",
+      "cik": "1736730",
+      "company": "Camp4 Therapeutics Corp",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 10
+    },
+    {
+      "ticker": "COLA",
+      "cik": "2028201",
+      "company": "Columbus Acquisition Corp/Cayman Islands",
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "inRangeRank": 11
+    }
+  ],
+  "skipped": [
+    {
+      "ticker": "ALPX",
+      "tradingDate": "2026-10-01",
+      "reason": "no checkpoint dossier"
+    }
+  ],
+  "checkpoints": [
+    {
+      "tradingDate": "2026-10-01",
+      "checkpointId": 611,
+      "cause": null
+    }
+  ]
+}
