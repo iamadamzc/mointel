@@ -17,8 +17,17 @@ import type { TradeCaptureHealth } from '@/lib/market/types';
  * It reuses the same read model the dashboard does, so a green light here means
  * the same thing a green light on the desk does rather than something adjacent
  * to it. Nothing secret is reported: no keys, no prompts, no filing text, no
- * paths beyond the schema version. The public route sits behind Basic Auth
- * anyway; server-side checks reach it over localhost, which does not.
+ * paths beyond the schema version.
+ *
+ * WHO CAN REACH IT is decided by nginx, not by this route, which has no gate of
+ * its own (the request gate leaves it outside deliberately): the location is
+ * `satisfy any` with `allow 127.0.0.1; allow ::1; deny all` and inherits the
+ * server-level `auth_basic`. So today a caller is admitted from loopback OR with
+ * the Basic Auth password. When Basic Auth comes off the server, only loopback
+ * remains. NEVER add `auth_basic off` to that location: under `satisfy any` a
+ * disabled auth check counts as satisfied and the route becomes public.
+ * The server-side watchdog (deploy/aws/watchdog.sh), the deploy script and the
+ * post-reboot probe all read it over loopback, so they depend on that staying so.
  */
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
