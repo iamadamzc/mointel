@@ -1163,6 +1163,16 @@ NEW WEB SEAT     Web-tmi local_a4c618a8 (get_session: A:\mointel, created 2026-1
                  sign-in step 4 (d7079581, 32db0d7e, fb50e2ff) after the spot check, Basic-auth-off preconditions, two
                  unowned step-3 surfaces (mcp tools.ts, review readableSheet), step 7. Old Web chat still titled -tmi.
 MARKETING        Told (355139a4, queued): Research's two confirms settled by 8530f442; item 7 open; v3 to me, then him.
+COMMERCIAL RETIRES local_2ce868d2 on his word (per Commercial), hand-off d37043af on origin (commercial.md live state 10-05 +
+                 docs/commercial-opening-prompt.md). NOTHING to it after now; successor will ask me for live state. Its
+                 open items: (1) float page v3 claims read (s5c corrections pending, new Commercial reads v3); (2) insider-
+                 only validation sample (Research, NOT run) gates surface + page; (3) Cannot verify after active issuance
+                 (next Research); (4) landing sentence: VERIFIED HIS YES at his own turn, transcript 81e25ab4 (Web's chat)
+                 2026-10-04T23:20:42.954Z "yes, use the new wording", put to him as "No filing reports the current number
+                 of tradable shares."; 2fe136ac carries exactly that in page.tsx + 2 canvas files (read); ships in the next
+                 ordinary release. (5) SI label HOLD stands (Web terms wording + s8 review with any build); (6) held, his:
+                 daily-billing terms of sale draft (docs/legal/terms-of-sale-daily-pass.md), Benzinga enquiry.
+                 Old Commercial chat still titled -tmi until he renames it.
 ```
 
 ## THE TWENTY-FOURTH SEAT'S RUNNING NOTES (opened 2026-10-03T17:04:49Z, `local_f26376f1`, Opus 5.5, effort high)
