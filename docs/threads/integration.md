@@ -1419,6 +1419,14 @@ LEDGER           1. Told new Research that Design proposed `floatBound` "on its 
                  Design's own wording without opening the tree; Design corrected itself: the shape came from the retired
                  Research seat and no file exists. TYPE: a sentence left before its source was read (the 26th's class,
                  named in my prompt). First this session. Caught by a peer (Design). Retracted to Research next message.
+                 2. Told Research "the popover ALREADY says 'Filings read on {fetch date}'... nothing needed", from
+                 Commercial's message, without reading 5k (e0139dea) item 3, which REQUIRES that clause as an addition; the
+                 draft lacks it. TYPE: a sentence left before its source was read. REPEAT of ledger 1's class this session.
+                 Caught by a peer (Marketing's wording, then I opened the file). Retracted to Research next message. Per
+                 session-hygiene s2: hand-off PROPOSED to him, not initiated.
+MARKETING v15    acd6cf0f cleared by reply: "the most recent filed share count" -> "the latest filed share count we have"
+                 (tooltip + page). CHANGES TEXT HE APPROVED 16:01:43Z: one line to him before the float ships, batched with
+                 the dated-claim change (b) once Research answers 5k item 4.
 FLOAT ROW DATE   Research 09d262b9 build-plan section 3: (A) row counts only on its own date (morning board dark) vs (B)
                  reuse newest row on or before D, recompute at D. RULED (B) in principle, two conditions: (1) insider SALE
                  after the fetch makes true float exceed the stored bound (count minus insiders): re-read holdings to D or
