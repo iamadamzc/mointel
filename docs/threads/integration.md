@@ -1227,7 +1227,19 @@ V28 SEAM         Ops: v28 (b0de76e1 + b8002fa5) fails the gate on main (rankInRa
                  Asked Design; Ops told to hold movers + levels/history (same files) and offer any independent group by sha.
 OPEN             Design's answer on the seam; Research's validation table (then his strictness choice, numbers from the
                  committed file); next release waits on Research's citation-id fix (UNBUILT); owed-to-main remainder.
-LEDGER           No error logged yet this seat.
+LEDGER           1. Relayed Design's DRAFT non-owner line to him with "when"; shipped line says "if" (Marketing). TYPE: a
+                 sentence left before its source was re-read. New this seat. Caught by Marketing; corrected to him.
+BETA (his 18:51:26Z + 19:09:04Z rulings, docs/beta-launch-path-2026-10-05.md RULED block): free, limited invites;
+                 testers = accepted exposure, not licensed; no lawyer; retry owner-only; disclaimer once per text version.
+PUSHED           7620dcd8..78c51d9d, 776f1415..8c422c4e (preflight+minuteBars, v28 79734ecc, retry owner-only 4418c741),
+                 8c422c4e..8a28dc04 (entry gate server 6497285a), 8a28dc04..4456512a (reports runner e0127453, Research
+                 citation board side 62dceecd, /enter screen d023bd94, guard 3e85557a). Each combined tip gated green by Ops.
+V28 SEAM         Closed for v28 (rebuilt onto main's rankInRange, latch test). MOVERS stay held: production's rankInRange
+                 returns `all` (movers' candidates), main's does not; a design for Design + Research.
+OPEN TO HIM      alert channel (T2); env writes (DESK_OWNER_EMAIL value fixed by his 19:09:04Z, /api/dashboard secret) and a
+                 market restart, his yes at the night in Ops's session.
+NEXT             Research: does production's live surface leak citation tokens beyond 62dceecd (gates the release cut).
+                 Ops: DESK_OWNER_EMAIL preflight, /api/dashboard secret header, T1 follower fix, T2 check.
 ```
 
 ## THE TWENTY-FIFTH SEAT'S RUNNING NOTES (opened 2026-10-05T00:53:31Z, `local_ef410868`, Opus 5.5, effort high)
