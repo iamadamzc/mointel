@@ -1384,6 +1384,9 @@ CLEARANCES 2     Design (written): its 10 chain commits. Marketing (written): b6
 MARKETING v8     on local main: split-before-holding removed (holding left out, never lowers); SPLIT_SINCE_COUNT string;
                  issuance "have been issued since the count, or may be"; "in filings" out; ISSUANCE_NOT_CHECKED string.
                  NOT READ BY ME YET. Sent to Commercial with Research's three answer commits (f9b3c232).
+MARKETING v9     3549fff3: NOT_YET face "Not yet" (popover "Not yet: the desk has not computed this name."). Supersedes v8
+                 (d05141ad) for Commercial. Design MEASURED "Not yet" 46.2 px, one line, controls matching. Marketing cleared
+                 all 5 (b6484909, 198d47d2, 1fbb9414, d05141ad, 3549fff3). Push waits on Research's 7.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
