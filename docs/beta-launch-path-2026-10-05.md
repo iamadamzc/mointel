@@ -28,6 +28,10 @@ are his. Production at writing: web/research/assess `6e7fff84`, market `f5746a84
    address, and once"*, answering Web's two questions: the owner address is the one he is invited on
    (`DESK_OWNER_EMAIL`, written on the box by Ops on his word, before the ship), and the entry disclaimer is asked
    **once**, again only when its wording changes (the option as Web put it to him).
+7. **RULED 2026-10-05T20:00:12.077Z** (his turn in Marketing's chat, transcript 46f08289, human origin, read at his own
+   turn): *"leave it out"*: the sentence "Past movement in any security indicates nothing about what it will do next"
+   stays OUT of the entry gate (Commercial 12b and Marketing both recommended it). It remains in `terms.md` section 7.
+   `lib/legal/entryGate.ts` and `components/EntryGate.tsx` need no change.
 6. **Integration's call, inside his rulings:** for the beta, no review or MCP token goes to any tester or anyone outside
    him and the seats; token holders never meet the entry gate (Web placement doc 7fb6411c, gap 2).
 
