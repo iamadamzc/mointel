@@ -1,14 +1,14 @@
-# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v10
+# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v11
 
 *Marketing draft v10, 2026-10-05. Built on Commercial's claims reads 5e to 5h and Research's float contract (c624aeec and its answer commits). Read-order for Commercial: the diff of this file against the last pass (5h passed v8).*
 
-*Current change list (this draft against v8, the version 5h read):*
-1. *NOT_YET face is "Not yet" (7 characters, one line), not "not researched yet", which Design measured at three lines in the 68 px text room; the full statement is in the popover.*
+*Current change list (this draft against v8, the version 5h read; item 1 changed again in v11, see below):*
+1. *NOT_YET face is "Not computed" (two words, each 9 characters or fewer, two lines like "Cannot verify"), not "not researched yet", which Design measured at three lines in the 68 px text room. v9 had "Not yet", which Commercial passed with one note: it implies something is on its way, the same objection I had to "Pending". "Not computed" states what is true and promises nothing. Needs Design to re-measure two lines in the 84 px cell.*
 2. *ISSUANCE_NOT_CHECKED string is Commercial's (5h, required): "Cannot verify: we have not yet reviewed this company's share supply, so share issuance was not checked."*
 3. *"Left out ... before a share split" now reads "before a share split that fell between it and the count" (5h, recommended).*
 
 *What the draft states, in one place:*
-- *Four faces: "≤ 12.3M", "Unknown", "Cannot verify", "Not yet". Popover reasons are per stored cause (three for Unknown, five for Cannot verify, one for Not yet).*
+- *Four faces: "≤ 12.3M", "Unknown", "Cannot verify", "Not computed". Popover reasons are per stored cause (three for Unknown, five for Cannot verify, one for Not computed).*
 - *The conditional behind a bare "≤ X" lives in the legend, the aria-label and the popover's "lined up" clause. Off-popover surfaces carry "as of {date}" and "when the filings line up" inline.*
 - *A holding dated after the count, or before a split that fell between it and the count, is left out and never lowers our number; it is not a Cannot verify cause. A split between the count's date and the checkpoint is (SPLIT_SINCE_COUNT).*
 - *Issuance wording is true of a closed offering and of a may-be-issuing flag; "in the company's filings" stays out because a flag may cite any source type. A name with nothing found may still have issued shares.*
@@ -25,7 +25,7 @@ The cell face is compact; the full statement is in the popover. A trader sees on
 | **≤ 12.3M** (also "≤ 123.4M", "≤ 1.23B") | filed count present and recent, no issuance flagged, figure passes its check | "The float is no more than {X} shares when the filings line up. Computed from the company's filed share count as of {filed-count date}, less insider holdings filed on {holding dates}. Lined up means: a recent filed count, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count." |
 | **Unknown** | no filed count (see causes) | per cause, below |
 | **Cannot verify** (two lines) | a count exists but cannot be relied on today (see causes) | per cause, below |
-| **Not yet** (one line) | the desk has not computed this name | "Not yet: the desk has not computed this name." |
+| **Not computed** (two lines) | the desk has not computed this name | "The desk has not computed a float for this name." |
 
 **Unknown, one string per cause:**
 - No filed share count: "No filed share count."
@@ -39,7 +39,7 @@ The cell face is compact; the full statement is in the popover. A trader sees on
 - Issuance not checked: "Cannot verify: we have not yet reviewed this company's share supply, so share issuance was not checked."
 - Figure fails its check: "Cannot verify: the computed figure did not pass the desk's own sanity check, so it is not shown."
 
-Unknown and Cannot verify are distinct: Unknown is no usable single filed count; Cannot verify is a count that exists but cannot be relied on. The face "Not yet" is never printed as Unknown. Its aria-label is "float not yet computed for this name".
+Unknown and Cannot verify are distinct: Unknown is no usable single filed count; Cannot verify is a count that exists but cannot be relied on. The face "Not computed" is never printed as Unknown. Its aria-label is "float not computed for this name".
 
 **aria-label on the bound face:** "no more than {X} shares, computed from SEC filings, when the filings line up".
 
@@ -47,7 +47,7 @@ Unknown and Cannot verify are distinct: Unknown is no usable single filed count;
 
 **Anywhere the number appears without a popover** (report text, MCP tool output, exports, any stored copy): "no more than {X} shares when the filings line up, from SEC filings as of {filed-count date}". The popover is not a place a persisted number can lean on.
 
-Wherever the cell is described in words, "Not yet" and "Unknown" are not interchangeable.
+Wherever the cell is described in words, "Not computed" and "Unknown" are not interchangeable.
 
 ## 2. Float tooltip (ends with the page link)
 
@@ -78,7 +78,7 @@ The cell shows one of four things.
 - **≤ 12.3M** (the number varies). The float is no more than that, when the filings line up. The date of the filed count is in the detail.
 - **Unknown.** There is no single filed share count to start from: the company has none on file, we could not match it to an SEC filer, or its count is split across several filings.
 - **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, shares may have been issued since, a split may have changed the share units, we did not check for issuance, or the figure did not pass our own sanity check. The reason is in the detail.
-- **Not yet.** We have not computed this name. That is different from Unknown.
+- **Not computed.** We have not computed this name. That is different from Unknown.
 
 **What we do not subtract, and why**
 
@@ -95,6 +95,6 @@ This is a bound, not a measurement of the true float. Where we show a number, it
 ---
 
 **Open points**
-1. The boundary between "Not yet" (no bound computed) and "Cannot verify" with the issuance-not-checked reason (the bound ran, no dossier) is Research's to state when a name is each. Commercial's string for the second now says "we have not yet reviewed this company's share supply", which reads differently from "Not yet" because it names the company's supply; if Research's boundary changes which state a never-researched name takes, the strings stay and the mapping changes.
+1. The boundary between "Not computed" (no bound computed) and "Cannot verify" with the issuance-not-checked reason (the bound ran, no dossier) is Research's to state when a name is each. Commercial's string for the second now says "we have not yet reviewed this company's share supply", which reads differently from "Not computed" because it names the company's supply; if Research's boundary changes which state a never-researched name takes, the strings stay and the mapping changes.
 2. The wider rule (a may-be-issuing flag also reads Cannot verify) stays only if Research's table shows the column is still usable. If it narrows, the issuance string loses nothing, since "may have been issued" is true of both.
-3. Face choice for Design: "Not yet" fits one line and is distinct from "Unknown" and "Cannot verify". "Pending" was the alternative; it implies something is on its way, which the desk cannot promise.
+3. Face choice for Design: "Not computed" wraps to "Not" / "computed" (the longer word is 8 characters, about 53 px), two lines like "Cannot verify", inside today's row heights; it needs the measurement. "Not yet" (one line) and "Pending" both imply something is on its way; if two lines is unwanted, "Not run" (7 characters) is the one-line fallback.
