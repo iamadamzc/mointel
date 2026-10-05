@@ -1516,6 +1516,15 @@ REPORT PROPOSAL  Design: window = live board empty (22:00-04:00, non-trading day
                  the commit. If larger than UI, back to me before shipping without it.
                  Design e8685f77 (on 67da54f4): wired = setupGrades != null (seam 1), test added; rides the B gate.
                  Tooltip dash reword (DecisionCells.tsx:625, DeskRead.tsx:208) to "an unknown time": YES, same gate.
+WEB HAND-OFF     Web local_a4c618a8 handed off on his 'yes hand off' (web.md LIVE STATE 22:52Z, f9947172). Next Web seat
+                 titles itself Web-tmi. CLEARED: web.md:529-533 is a CLASS clearance (every Web commit touching only
+                 web.md, docs/web/*, web-opening-prompt.md); I checked each sha against it: b6e7cf4d e579d48c eb55a250
+                 bb1aa756 bd5c7b7c f9947172 all match (6, the owner's count). Branch NOT cleared: web/sheet-priority-out
+                 f8ed2917 (4 commits on Design's 67da54f4: lib/data/rows.ts, types.ts, lib/mcp/sheetProjection.ts,
+                 tools.ts + tests); Web states gate green 238/3508. Rides WITH the badge + Ops's reader. HAZARD: Design's
+                 tip will move (e8685f77 + B); f8ed2917 must be re-based/replayed onto the final Design tip, and the next
+                 Web seat owns that. Web's note: tonight's cut carries the entry gate, so every user (him too) meets the
+                 disclaimer once (his 19:09:04Z "once" ruling); expected, not news.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
