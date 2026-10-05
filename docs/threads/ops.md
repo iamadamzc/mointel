@@ -13898,3 +13898,4 @@ ROUTING + READ 00:54Z: Integration 25th = local_ef410868 (verified; ListAgents r
 SLOT 00:54Z: Design (local_82749387) holds it: next dev :3100 from A:\mointel-design at 6e7fff84, measurement only.
 SLOT 00:58Z: Design released (measurement only, nothing committed, :3100 stopped, store copy deleted). FREE. Design's note: a local /desk render now hits Google sign-in; render via a review token created in a SCRATCH store copy, never the real store. CORRECTION to Design's message: the pm2 daemon (pid 6860, since 2026-10-04T11:57:26Z) is NOT this seat's; it is his.
 ROUTING 01:06Z: Research-tmi is now local_f6ef479a (replaces local_ab66f9f3); will ask before any run.
+CLEARANCE 01:09Z to Integration 25th: all 55 ^Ops commits on local main (as of this fetch) may ride its push; paths ops.md (55) + server-only-trace.cjs (1); secret scan of 328 added lines 0 hits (control found a planted fake). Later Ops commits not cleared until named.
