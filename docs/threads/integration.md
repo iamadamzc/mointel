@@ -1401,6 +1401,10 @@ v10              f94c4a17 READ IN FULL (body) + diffed vs v9: 5h string verbatim
                  entities 0. Marketing cleared f94c4a17 (plus its earlier 5). Web cleared 7aa44620, a08b5a68, 8c15817f,
                  df2712c2, 56643693. PUT TO HIM FOR SIGHT (page + cell words); still gated on the validation sample and his
                  strictness choice on Research's table. Push waits on Research's clearance only.
+v11              56cdc9dc: NOT_YET face "Not computed" (fallback "Not run"); Commercial PASSES (claims done on faces + page).
+                 Design re-measuring two lines. Marketing asks v11 cleared (to confirm by sha). Told him the label changed.
+                 Remaining gates (not Commercial's): validation sample, as-of + split rules unbuilt, Research's effectiveDate
+                 answer, his sight, Design's measure, his strictness / age choice.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
