@@ -15,4 +15,8 @@
 | W9 | the carried-count line loses "(state the count only, never list them)" | 1 | recap sheet (its last line) |
 | W10 | the older-high clause never printed | 1 | recap sheet (context line) |
 
+## Result (raw `2d76b614`, read after its commit)
+
+**10 of 10 killed, every count as predicted** (W1: 3; W2 to W10: 1 each). Control W0: 9 tests, 0 failed. Source restored. Gate in Ops's slot 2026-10-04: `tsc` 0; `eslint` 0 errors, 1 warning (`_range` unused in `narrativeSheet`; `check.ts` still passes the range, and step 3 changes that call). `vitest tests/desk/`: the first run failed `reportRunner.test.ts`, which pins the writer prompt version (7); **I bumped it to 8 and had not opened that test**; fixed in `989875e7`, and the four report test files then passed 36 of 36. The same run failed 4 `releaseRetention.test.ts` tests (preflight and pruning) with the PC under the pm2 load Ops measured; outside this diff, reported to Ops with the duration.
+
 **Out of this step, raised with Integration rather than built:** F14 (per-name theme labels). The model cannot be handed a count of labels it writes in the same reply, and the narrative may not count; so "three were deals or contracts" needs the labels to exist BEFORE the narrative is written (a separate step or a stored field), or a computed line the surface prints. Breadth is also out of the sheet, following Marketing's final examples (neither uses it); its numbers stay allowed in the checker.
