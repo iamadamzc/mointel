@@ -545,6 +545,40 @@ away" shape wearing a gate's costume, not the gate his instruction asked for.
 
 ---
 
+## 12b. THE ENTRY GATE, FINAL TEXT AND WHAT DECLINE MUST DO, third tenure, 2026-10-05
+
+*Asked by Integration 26th and Design-tmi (`local_83b5b7ec`) because the gate is on the beta critical path, before Basic Auth comes off. This supersedes the short-form text in section 12; the ruling in section 12 (an entry gate, not a link; DECLINE must withhold the platform) stands. Read for this: `docs/legal/terms.md` at `origin/main` (status adopted 2026-09-11; sections 1, 2 and 7).*
+
+**Why the section 12 text is replaced.** Section 12 said the short form was drafted from section 7 of the terms with no new drafting. Read against the adopted text it is not: it adds "educational and informational purposes only" and "not tax, legal, or investment advice", words the terms do not contain, and it leaves out section 7's risk-of-loss sentence, which is the part a first-time reader most needs. A gate that says something the terms do not say is new text, and new text goes to him. Built from the adopted sentences it is not new text, so it needs no adoption and does not touch `adopted` (the banner rule in the file's own header concerns redrafted words).
+
+**FINAL TEXT** (every sentence is section 7 of `terms.md` verbatim, except the last line):
+
+> **Disclaimer**
+>
+> We are not a broker-dealer. We are not an investment adviser. We are not your fiduciary. Nothing the desk displays is a recommendation, an endorsement, a solicitation, or a suggestion to buy or sell any security.
+>
+> Every trading decision you make is yours. Trading low-float small-cap equities carries a substantial risk of loss, and you can lose more than you expect to.
+>
+> This is a summary of one section of our Terms of Service, not all of them. [Read the full terms.]
+>
+> [ACCEPT]  [DECLINE]
+
+**One sentence left out, and why.** Section 7 ends its second paragraph with "Past movement in any security indicates nothing about what it will do next." It is adopted text and stays in the terms. It is not in the gate because it is a universal about price movement beside a product that narrates movement, and the gate is the place a reader meets the product's own premise first. Whether the gate carries it is Marketing's and his call; it is not required for the gate to do its job. If it goes in, it goes in verbatim.
+
+**Nothing beta-specific goes on the gate.** No "beta", "tester", "licensed" or "covered by" wording (his 2026-10-05 beta ruling accepts an exposure; it is not a licence, and a surface must not say otherwise).
+
+**What DECLINE must do (the requirement, not the design).**
+1. **After DECLINE no desk content or desk data is reachable by any route a user can reach**: the desk pages, the data endpoints the browser calls, a direct URL, the back button, a reload, a second tab. A DECLINE that can be walked around is the section 12 "link wearing a gate's costume".
+2. **The public landing page stays reachable** (it is the public page); DECLINE returns there or to a plain "you need to accept to enter" state, Design's call. Whether DECLINE also signs the user out is Design's and Web's call; nothing in the legal position turns on it.
+3. **The gate reappears on the next entry attempt** until ACCEPT; DECLINE is not remembered as a permanent refusal.
+4. **Before gating a route, enumerate its callers** (the README rule, "enumerate the callers"): internal callers such as workers that read the same data APIs without a user session must keep working, and a gate that refuses them is a different defect. Ops's record holds which exist; this seat has not opened it.
+
+**Where it sits, and what to store (recommended; none of this is a legal ruling).** After sign-in and before any desk content, so acceptance can be tied to an account; a gate before sign-in has nobody to attach it to. Store the acceptance server-side on the account with the time and the text version, not in a cookie alone, and ask again when the text changes. The legal position does not turn on once versus every session (section 12 said so and it is unchanged); the record is cheap and is the only evidence that someone accepted.
+
+**What is still missing to call it final.** Marketing's voice check of the text above (wording changes go back to this seat, because every sentence is adopted text and a change makes it new text); his sight only if any sentence stops being verbatim. Nothing else. Design builds from this text now.
+
+---
+
 ## 13. REVIEWED 2026-10-02: THE SHORT INTEREST LABEL DESIGN (`short-interest-label-design.md`, `979c75a7`): PASS WITH THREE REQUIRED CHANGES
 
 *Research's request, before any build. Read in full against §3, §6, §8, §9 and the
