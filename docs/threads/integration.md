@@ -1384,6 +1384,12 @@ RESEARCH SEAT    local_f6ef479a retitled "Research-tmi (retired 2026-10-05)" (re
                  Research-tmi yet. OWED TO THE NEW RESEARCH SEAT, tell it on arrival (my queued message to the old one may
                  never be read): lib/research/priorityGrade.ts:7 still says "has not been tested against outcomes"; fix
                  by pointing to adae1e89 (code, rides a gate). Sheet plan line 86 (mine) annotated + result added.
+                 Research hand-off 842023cc (HAND-OFF block + ledger in research.md, new docs/research-opening-prompt.md);
+                 it does NOT carry the priorityGrade.ts:7 fix, so that stays owed here. Research cleared 842023cc eec8c68d.
+MARKETING        Cleared by reply: e1220516 (legend, Commercial PASS 5j), 65603d38 (float v14, 5j change applied: "at most
+                 90 days before the checkpoint"), plus 13458dc8 3fd16f82 earlier. Float still ships nothing until Web's
+                 render is approved and the float build exists.
+UNPUSHED         All cleared by owners; push waits on Ops's main-tip gate after tonight (docs/research .ts scripts inside).
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
