@@ -75,6 +75,27 @@ describe('layoutColumns: the default board is today\'s board', () => {
   });
 });
 
+describe('the Sheet reproduction layout, measured at the 1,024 px floor', () => {
+  it('pins Ticker 128, Float 102, Cycle 152 and a 130 px Why and Risk floor', () => {
+    expect(DEFAULT_WIDTHS.ticker).toBe(128);
+    expect(DEFAULT_WIDTHS.float).toBe(102);
+    expect(DEFAULT_WIDTHS.cycle).toBe(152);
+    expect(FLEX_FLOOR).toBe(130);
+  });
+
+  it('with Float shown at the floor, no fixed column is squeezed below its default and Why and Risk keep 130', () => {
+    // 982 px is the table itself at the 1,024 px window (the board measures 982 in 1,014).
+    const widths = layoutColumns(input({ available: 982, visible: WITH_FLOAT }));
+    expect(total(widths)).toBe(982);
+    for (const key of WITH_FLOAT) {
+      const fixed = DEFAULT_WIDTHS[key];
+      if (fixed !== null) expect(widths[key], key).toBe(fixed);
+    }
+    expect(widths.why).toBeGreaterThanOrEqual(130);
+    expect(widths.risk).toBeGreaterThanOrEqual(130);
+  });
+});
+
 describe('no horizontal scroll, ever', () => {
   const windows = [FLOOR, 1180, 1280, 1440, 1920];
   const storedCases: Record<string, LayoutInput['stored']> = {
