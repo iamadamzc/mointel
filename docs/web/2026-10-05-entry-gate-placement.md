@@ -67,6 +67,14 @@ The entry check touches neither.
 2. **`/review/<token>` and `/mcp/<token>` serve desk data to token holders.** Token holders are not users,
    so they never meet the gate. Commercial's question: must a reviewer accept?
 
+## Status of the two gaps (Integration, 2026-10-05)
+
+1. **`/api/dashboard`:** Ops is building its shared-secret header, which fails closed. It is not tied
+   to Sheet step 4, and it rides the next market restart.
+2. **The boundary for review and MCP tokens, during the beta:** no review or MCP token is issued to
+   any tester, or to anyone outside him and the seats. Before a token goes to anyone outside that set,
+   Commercial's question (must a reviewer accept?) has to be answered.
+
 ## Nginx, when the desk password comes off
 
 `= /enter` joins `= /signin` and `^~ /auth/` in the exemption list.
