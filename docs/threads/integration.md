@@ -1166,6 +1166,89 @@ WEB HANDS OFF    On his "hand off" (Web's chat, 2026-10-04, per Web). local_46c1
                  CLEARED to ride my push: all 14 Web commits on local main (--grep '^Web', latest 2e64a520) incl. 2fe136ac.
                  Web open items in web.md LIVE STATE 2026-10-04T23:29Z. Successor titles itself Web-tmi: TWO Web-tmi until
                  he renames the old one; route to the newer createdAt.
+STOP/RESUME      Seats stopped on token limits; he woke them 2026-10-04 ~23:3xZ. Nothing lost (read: commits, sessions). His
+                 "yes commit it" -> charter committed 6b79c06f (only that file).
+F12b FIXED       Research 25c366e2 (READ): NO_FRESH {NONE_FOUND, SECONDARY_STALE} / UNCLEAR {CONFLICTING, UNKNOWN} / not
+                 researched / FRESH_FOUND = full partition of CatalystStatus (read types.ts). 14/14 mutants. ACCEPTED.
+SHEET PROPOSAL   Research 7c345497 docs/research/sheet-reproduction/proposal-2026-10-04.md READ in full, 0 U+2014. Spot-checks
+                 all true (types.ts:592 46%; forms.ts no 3/4/5; client.ts:78 @f5746a84 64 MiB; pipeline.ts:42 22:00 recap;
+                 rows.ts:213-214; extra-cost arithmetic). "his 10M line" = LOW_FLOAT_CEILING float.ts:443 (reword asked).
+                 PUT TO HIM: float (a/b/c), Priority (a/b), learning layer, + second-table content line (board's range,
+                 up to 12, vs recap's $2-10 / <20M).
+HIS RULINGS      2026-10-04T23:49:48.587Z (typed to me, this session's jsonl): "1, take 10 stocks and do both a and b and report
+                 results. 2, a. 3, we need to keep that for analysis on how we did. it's purpose is analysis on the desks
+                 performance. 4, what second table?" -> Research: 10-name pre-registered float a-vs-b comparison (price to me
+                 first); Priority computed rubric; learning layer KEPT (addendum: desk records its calls + outcomes, desk
+                 performance, never his trading). Second table (MomentumTable "Researched Names", collapsed when Discovery has
+                 rows, read 6e7fff84) re-put to him in plain words. Plan doc to update when the second-table answer lands.
+v6 STEP 2        Research 80306806 (writer), gate pending Ops slot; 2fd13485 proposal edit (a); 0c0c2ff4 = f869ee0d pick on its
+                 branch. Calls: breadth out of narrative ok; spelled counts ok; F14 option (b) (computed theme line on the
+                 surface), (a) noted for the reproduction if a stored catalyst-type field arrives. Review owed after gate.
+HIS RULING       2026-10-04T23:53:44.859Z (typed to me): "remove it" (the Researched Names table, MomentumTable). Supersedes my
+                 10-03 reading "second table stays". Plan updated + committed 22c5576a (only that file). Design (remove table;
+                 propose Priority's home on main board, to me before build), Research (section 2 / row 1 change; list may stay
+                 as a pin input), Marketing told.
+MARKETING        Wording relocates to the main board. CORRECTED its "rubric-once he approved" (not approved; ruled computed,
+                 table to come). Its surface sweep (column, filter, URL value, aria/tooltip, drawer badge, MCP, API/export,
+                 report tags) sent to Design as the replay acceptance list. "Setup grade" display name goes to him with the rubric.
+DESIGN PRIORITY  Proposal: (B) badge in Ticker cell + drawer (rec) vs (A) "Pri" column (widths computed, not measured); filter
+                 keeps his 09-23 hide rule (READ view.ts:596 on main) so a letter hides post-09:25 movers; sort chip
+                 (non-default); counts strip recount over board; off-hours page loses the self-opening list. PUT TO HIM
+                 (badge vs column; two side effects + two defaults stated, silence = accept).
+                 Design's surface inventory (10 items, f5746a84) = replay checklist. OPEN, owner TO NAME at step 3 owners:
+                 (8) lib/mcp/tools.ts:220/:272 emits raw Sheet object incl. stored AVOID; (9) review-link API
+                 readableSheet (route.ts:42). Both reshape when the Sheet object goes. Web seat retired, successor not open.
+HIS RULING       2026-10-05T00:00:00.915Z (typed to me): "badge on the ticker - it needs a tooltip". Design (B) + tooltip (reading,
+                 driving criteria, as-of; N states; keyboard/touch access). Side effects put to him: no objection, stand.
+                 Defaults go: Priority sort chip (non-default); counts strip over board rows. Design + Marketing told.
+                 (He asked "remind me what priority is": answered from the recap prompt lines 20-24 + rows.ts:213-214 + view.ts:596.)
+TOOLTIP WORDS    Marketing draft A/B/C/D with {criteria} + {checkpoint ET}. It quoted "which of the five drove it" as HIS:
+                 CORRECTED (my spec; his words only "it needs a tooltip"). Research asked to expose per-criterion basis on the
+                 checkpoint row (strong / limited / risk / UNKNOWN / NOT_YET).
+FLOAT RUN ACK    Prereg e234e769 READ in full (committed before run; rule-picked 10 from the 10-02 snapshot's latest accepted
+                 recap; arm a = filed count minus max(Sec16 direct, 13D / 13G>=10% XML), basis-proven only; arm b = terra +
+                 web_search allow-list sec.gov + 5 newswires; verdict table; no pass line). Price recomputed $0.248/name,
+                 $2.48 / 10, hard stop $5. ACKED (within his "do both").
+v6 STEP 2 OK     80306806 + 989875e7 READ (writerV6.ts). ACCEPTED. Before samples to him: step-4 footnotes must print no-close +
+                 split-excluded counts (moved out of the sheet); gainers rule vs negative leader to reconcile; scan for
+                 citation tokens via raw catalyst summary. CYCLE_WORDS vs Marketing comma form: Marketing + Research.
+ADDENDUM         Research 69010a3e (shared main, local): learning layer = desk_call_outcomes; "scalp-useful" left out
+                 (undefined). TO READ before it goes to him with the float results.
+                 READ (69010a3e added text, 0 U+2014): rulings table verified; per-criterion basis; F14 option; base web-search
+                 fee $1.55-2.60/day floor (CORRECTED TO HIM: my "$9/day" was tokens only); desk_call_outcomes $0; spike/fade
+                 definition is Research's proposal; patterns as counts until his thresholds.
+FLOAT RESULT     759465bc READ in full; raw CHECKED (56e29036 arm a all 10 rows; b9eb4426 arm b all 10 answers, spent
+                 $0.866, outside-allow-list 0 + 2 blank URLs). CONSISTENT 1 / B_ABOVE_FILED 4 / ONLY_A 5. Large-holder half of
+                 (a) UNSAFE (WCT 102.8M vs 46.3M filed -> negative). Insider-only safe, = filed count on 6/10. (b) 4 of 5 above
+                 filed, dates a year older. Sheet's 5 floats below (a). Put to him: insider-only bound vs verdict only; (b) not
+                 recommended. Research asked HIM to hand off (its chat); rubric draft to the next Research seat.
+                 He asked "does anything anywhere measure the true float?": answered no (10-K cover = dollar non-affiliate
+                 value as of Q2; vendors compute; transfer agent / DTC not public). Float ruling STILL OPEN with him.
+RESEARCH HANDS OFF On his "yes hand off" (Research's chat, per Research). local_ab66f9f3 retiring; NOTHING to it after now.
+                 LIVE STATE + prompt 76f63c83 (local). v6 branch head 759465bc. Successor's first ask comes to me: give it
+                 his float ruling (or "open"), rubric draft next, v6 steps 3-6 + my four conditions, reproduction + learning
+                 layer after the float ruling. Shared main 174 ahead of origin: the sync is mine (own task, owners' clearance).
+                 TWO Research-tmi titles until he renames the old one; route to the newer createdAt.
+HIS FLOAT RULING 2026-10-05T00:40:36.034Z (typed to me): "a, go with the SEC calculation ... tooltip with brief helpful explanation,
+                 and a link if possible leading to a page "are float quotes real?" and a well written explanation of the
+                 proecss and our method." Plan 4a6d8b6e (only that file). = (a) INSIDERS ONLY (as put to him). Routed:
+                 Marketing (cell words, tooltip, page copy), Commercial (claims read of page before him), Design (cell +
+                 tooltip + link). OWED TO SUCCESSORS (no seat open): next RESEARCH builds the insider-only bound + validation
+                 sample (verdict only until it passes); next WEB builds the public page (NEW ROUTE MUST BE EXEMPT FROM BASIC
+                 AUTH in nginx, like /), from Marketing's copy after Commercial + his look.
+DESIGN FLOAT     Link opens new tab (noopener); float + Priority tooltips = one focusable popover component (click/focus/
+                 touch). FACT READ: Float column present only while sorted by float (DiscoveryBoard.tsx:310, :356;
+                 columnWidths.ts:88); drawer carries float for every name. Asked him: always-visible or as today (default today).
+HIS RULING       2026-10-05T00:43:25.901Z: "always show it, it's key." Float column ALWAYS on. Plan updated. Design told: measure
+                 at 1,024 with badge + always-on float (computed ~151 px each Why/Risk vs 120 floor, NOT measured); trade-off
+                 to me if it doesn't fit.
+FLOAT PAGE READ  Commercial s5 (origin 94c8ede9, READ): draft NOT READY, 9 changes. For the NEXT RESEARCH seat (contract): no
+                 number + "Cannot verify (shares may have been issued since the filed count)" for active ATM / equity line /
+                 KNOWN_ACTIVE warrant / convertible / preferred; Unknown = no filed count, Cannot verify = count too old;
+                 cell date = filed count's date, holdings' dates in the tooltip; confirm exactly whom Forms 3/4/5
+                 subtraction covers (incl. 10% holders); validation sample gates the surface AND the page going live.
+                 Next WEB: accession links in the tooltip/page or drop the "traces to a filing" sentence.
+                 MY ERRORS (ledger 2, 3) corrected to him and Marketing.
 ```
 **THE TWENTY-FOURTH SEAT'S LEDGER:**
 ```
@@ -1174,6 +1257,17 @@ error                                                  TYPE                     
   (git grep over origin/main); a 4th, UNTRACKED copy   search that cannot see part of      (new)    grep -o on
   (canvas tmi-trader-public-site.html) was on disk.    the set (refs miss untracked)                the tree)
   Never reached him. CURE: an "all copies" claim searches the working tree too (rg), not only refs.
+2 told HIM ("does anything measure the true float?")  asserted universal facts from      no       peer
+  and seeded Marketing's brief: "every float          general knowledge, no source       (new     (Commercial,
+  anywhere is a calculation", transfer agent /        read (the 23rd's family:           type;    claims read
+  clearing know the count, vendors disagree.          passed on unread)                  family)  of the page)
+  Commercial: no source supports them. CURE: a claim about the world goes to him only with a source I opened,
+  or labelled "general knowledge, not checked".
+3 told HIM the SEC bound reads "too high but never    compressed away a qualifier I      no       peer
+  too low" (twice: block + float answer), having     HAD READ (proposal s3 lists 3 ways  (new)    (Commercial)
+  read the proposal's three ways it goes too low      too low; result names WCT stale)
+  (stale count under dilution, pre-split holding, dated-after holding). CURE: re-read the conditions
+  in the source sentence before restating a guarantee.
 ```
 
 ## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SECOND SEAT'S HAND-OFF (2026-10-02, on his "should you hand off?" + "add it to the new chat prompt"; SUPERSEDED BY THE TWENTY-THIRD'S)
