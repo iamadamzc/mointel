@@ -37,6 +37,8 @@ const WANT = 10;
 const LOW_FLOAT_LINE = 10_000_000;
 const WINDOW_DAYS = 730;
 const CAP_USD = 5;
+/** Factor range at or above this across a span = a split in it (smallest split in use is 3-for-2, a 1.5 jump). */
+const SPLIT_JUMP_FACTOR = 1.25;
 /** Planned per-name ceiling for arm (b) (prereg): 60k in, 4k out, 8 searches. */
 const PLANNED_CALL_USD = (60_000 * 2 + 4_000 * 12) / 1e6 + 8 * 0.01;
 const TERRA = { input: 2.0, cached: 0.2, output: 12.0 };
@@ -277,15 +279,19 @@ function basisProven(db: MarketDatabase, ticker: string, from: string, to: strin
   const hi = from < to ? to : from;
   const reach = db.prepare('SELECT MIN(trading_date) AS first FROM daily_bars WHERE symbol = ?').get(ticker) as { first: string | null };
   if (!reach.first || reach.first > lo) return { proven: false, reason: `bars start ${reach.first ?? 'never'}, after ${lo}` };
+  // ONE BASIS = no factor jump of a split's size (prereg "After the full run"): the stored factor
+  // is a raw/adjusted ratio with rounding noise, so exact equality refused everything (run b9eb4426).
   const factors = db
     .prepare(
-      `SELECT COUNT(DISTINCT split_factor) AS n, SUM(split_factor IS NULL) AS nulls FROM daily_bars
+      `SELECT MIN(split_factor) AS lo, MAX(split_factor) AS hi, SUM(split_factor IS NULL) AS nulls FROM daily_bars
         WHERE symbol = ? AND trading_date BETWEEN (SELECT MAX(trading_date) FROM daily_bars WHERE symbol = ? AND trading_date <= ?) AND ?`,
     )
-    .get(ticker, ticker, lo, hi) as { n: number; nulls: number };
+    .get(ticker, ticker, lo, hi) as { lo: number | null; hi: number | null; nulls: number };
   if (factors.nulls > 0) return { proven: false, reason: 'a bar in the span has no split factor' };
-  if (factors.n !== 1) return { proven: false, reason: `${factors.n} split factors in ${lo}..${hi}` };
-  return { proven: true, reason: 'one split factor across the span' };
+  if (factors.lo === null || factors.hi === null || !(factors.lo > 0)) return { proven: false, reason: 'no usable split factor in the span' };
+  const jump = factors.hi / factors.lo;
+  if (jump >= SPLIT_JUMP_FACTOR) return { proven: false, reason: `split in ${lo}..${hi} (factor range x${jump.toFixed(3)})` };
+  return { proven: true, reason: `one basis across the span (factor range x${jump.toFixed(4)})` };
 }
 
 /* ------------------------------------------------------------------ arm a */
@@ -360,9 +366,13 @@ async function armA(db: MarketDatabase, pick: Pick, since: string) {
   }
   const subtracted = Math.max(s16, large);
   const bound = so.state === 'PRODUCED' ? so.shares - subtracted : null;
+  // Exploratory frame (prereg "After the full run"): is the share count on TODAY's basis?
+  const lastBar = (db.prepare('SELECT MAX(trading_date) AS d FROM daily_bars WHERE symbol = ?').get(pick.ticker) as { d: string | null }).d;
+  const shareCountBasisToNow = so.state === 'PRODUCED' && lastBar ? basisProven(db, pick.ticker, so.asOf, lastBar) : null;
   return {
     ticker: pick.ticker,
     shareCount: so,
+    shareCountBasisToNow,
     section16Total: s16,
     largeHolderTotal: large,
     subtracted,
@@ -436,7 +446,8 @@ async function armB(pick: Pick, key: string) {
   } catch {
     parsed = null;
   }
-  const outsideAllowList = sources.filter((url) => {
+  const sourcesWithoutUrl = sources.filter((url) => url === '').length;
+  const outsideAllowList = sources.filter((url) => url !== '').filter((url) => {
     try {
       const host = new URL(url).hostname;
       return !ALLOWED_DOMAINS.some((d) => host === d || host.endsWith(`.${d}`));
@@ -454,6 +465,7 @@ async function armB(pick: Pick, key: string) {
     usage: { input, cached, output: out, searches: searches.length },
     usd,
     sourcesRetrieved: sources,
+    sourcesWithoutUrl,
     sourcesOutsideAllowList: outsideAllowList,
   };
 }
@@ -508,6 +520,8 @@ async function main() {
     ownershipSince: since,
     allowList: ALLOWED_DOMAINS,
     capUsd: CAP_USD,
+    bFrom: flag('b-from') ?? null,
+    splitJumpFactor: SPLIT_JUMP_FACTOR,
     plannedCallUsd: PLANNED_CALL_USD,
     envDir,
     keysPresent: { sec: Boolean(secConfig.userAgent), openai: Boolean(process.env.OPENAI_API_KEY?.trim()) },
@@ -537,10 +551,20 @@ async function main() {
   let maxSeen = PLANNED_CALL_USD;
   const key = process.env.OPENAI_API_KEY?.trim() ?? '';
   const sheet = await sheetFloats(selection.picks.map((p) => p.ticker));
+  // --b-from=<results.json>: reuse a PRIOR run's arm (b) answers (no call, no spend), so a re-run of
+  // arm (a) is judged against the same (b) (prereg "After the full run").
+  const bFromPath = flag('b-from');
+  const bFrom = new Map<string, unknown>(
+    bFromPath
+      ? (JSON.parse(fs.readFileSync(bFromPath, 'utf8')) as { results: Array<{ pick: { ticker: string }; b: unknown }> }).results.map((r) => [r.pick.ticker, r.b])
+      : [],
+  );
   for (const pick of selection.picks) {
     const a = arm === 'b' ? null : await armA(db, pick, since);
     let b: Awaited<ReturnType<typeof armB>> | { skipped: string } | null = null;
-    if (arm !== 'a') {
+    if (bFrom.has(pick.ticker)) {
+      b = bFrom.get(pick.ticker) as Awaited<ReturnType<typeof armB>>;
+    } else if (arm !== 'a') {
       if (!key) b = { skipped: 'no OPENAI_API_KEY' };
       else if (spent + maxSeen > CAP_USD) b = { skipped: `cap: spent ${spent.toFixed(4)} + next up to ${maxSeen.toFixed(4)} > ${CAP_USD}` };
       else {
