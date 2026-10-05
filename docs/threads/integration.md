@@ -1435,7 +1435,9 @@ MARKETING BATCH  51e7dd52 docs/marketing/float-wording-batch-2026-10-05.md, READ
                  before the float ships.
 CLEARED          Marketing 51e7dd52; Research 663dec5d 7ce94a05 (all docs).
                  Marketing 891de4f7 (the 5l amendment; it is the version I read, header says so) and 415abee3 (section 7
-                 fixed to my ruling; diff read, em 0). Owner-cleared by reply; 415abee3 is the owner's own follow-up.
+                 fixed to my ruling; diff read, em 0). 891de4f7 owner-cleared by reply. 415abee3 NOT CLEARED: Marketing
+                 has not named it by sha (I first wrote it as cleared because it is the owner's own commit; that is not
+                 the rule). Asked.
 HELD FOR HIM     9b's coverage cost of the 4-day span (morning names with a read in the last 4 days): UNMEASURED. If a
                  material share of the morning board would read Cannot verify, that is his decision before the float ships.
                  Research asked to commit the number.
