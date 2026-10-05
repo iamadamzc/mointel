@@ -1,0 +1,12 @@
+{
+  "rowsWithAnOutcome": 370,
+  "comparedWithMinuteBars": 369,
+  "noMinuteBarsInWindow": 1,
+  "matchesRthOnly": 6,
+  "matchesExtended": 134,
+  "matchesBoth": 216,
+  "matchesNeither": 13,
+  "higherThanExtendedMax": 10,
+  "lowerThanBoth": 2,
+  "tolerance": "0.5 percent"
+}
