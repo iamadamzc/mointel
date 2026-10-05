@@ -1425,6 +1425,18 @@ COMMERCIAL 5l    b867a589 (origin; merged to local main 8cfb7221), READ in full:
                  S1/S0: HELD for the measurement (claims are indifferent; S1 keeps buyers subtracted, so by construction
                  its bounds are lower and tighter than S0's). He gets ONE line before the float ships: the three
                  broken sentences, the unfiled-sale sentence, the new Cannot verify reason, the v15 phrase.
+RULED (mine)     S1, S0 only if the registered measurement's controls fail. Matches Research's contract section 9a
+                 (663dec5d, READ: 9a S1, 9b D + 4-day reuse + FILINGS_NOT_REREAD, 9c popover fetch date, 9d not built).
+                 Told Commercial, Marketing, Research.
+MARKETING BATCH  51e7dd52 docs/marketing/float-wording-batch-2026-10-05.md, READ whole, em dash 0 (control 730 on this
+                 file). FORM A (dated, true today), FORM B (S1, later), FILINGS_NOT_REREAD string, D label. Section 6 = his
+                 line (I reword it: the cell never shipped, so not "no longer says"). Section 7 wrongly gives the rule choice
+                 to Commercial; Marketing told. ROUTED to Commercial for its pass. HIS LINE goes after Commercial passes,
+                 before the float ships.
+CLEARED          Marketing 51e7dd52; Research 663dec5d 7ce94a05 (all docs).
+HELD FOR HIM     9b's coverage cost of the 4-day span (morning names with a read in the last 4 days): UNMEASURED. If a
+                 material share of the morning board would read Cannot verify, that is his decision before the float ships.
+                 Research asked to commit the number.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           (none yet)
