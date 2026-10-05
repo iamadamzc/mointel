@@ -143,6 +143,14 @@ describe('a stored report reads without the model citation tokens it was written
     expect(rpgl!.company!.business).toBe('Power services listed in [2026].');
   });
 
+  it('removes a 5-digit bracket whether or not the ticker owns it (production\'s stored form: 2026-10-01, 7 strings)', () => {
+    const [rpgl] = lines(storeWith('Power services [30265] listed in [2026].'));
+    expect(rpgl!.company!.business).toBe('Power services listed in [2026].');
+    // No research_sources table, so no owned ids: the forms that need none (5-digit, comma lists) still go.
+    const noOwned = lines(storeWith('Power services [30265] and [30266, 30267].', false))[0]!;
+    expect(noOwned.company!.business).toBe('Power services and.');
+  });
+
   it('uses each ticker\'s OWN ids: another ticker\'s id leaves the bracket, and the writer\'s sentence is untouched', () => {
     const [rpgl, othr] = lines(storeWith('Power services [3].'));
     expect(rpgl!.company!.business).toBe('Power services [3].');
@@ -151,7 +159,7 @@ describe('a stored report reads without the model citation tokens it was written
     expect(othr!.company!.business).toBe('Other business [1].');
   });
 
-  it('leaves everything as stored when the store has no research_sources table, and a null business stays null', () => {
+  it('with no research_sources table a lone SHORT bracket stays (no owned ids), and a null business stays null', () => {
     expect(lines(storeWith('Power services [1].', false))[0]!.company!.business).toBe('Power services [1].');
     expect(lines(storeWith(null))[0]!.company!.business).toBeNull();
   });
