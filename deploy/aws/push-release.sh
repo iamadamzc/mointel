@@ -182,8 +182,13 @@ echo "[release] launching deploy.sh as $UNIT (detached; follows the journal)"
 # and reconnecting to poll is what makes a dropped transport recoverable.
 # Each poll is its own short ssh; a failed poll is retried, not fatal.
 # DEPLOY_FOLLOW_SECONDS bounds the wait; DEPLOY_POLL_SECONDS is the interval.
+# The default is 30 minutes. It was 15, which is the length of a deploy: every ship
+# ended rc 8 "NOT confirmed" and the cutover was read from /proc by hand. A deploy
+# spends up to ~13 min in quick_check alone (803.8 s measured 2026-09-30) plus the
+# build and restart; the deadline has to sit well beyond that, and a deploy that
+# still has not finished at 30 minutes is a deploy to look at, which rc 8 says.
 # Both exist so the suite can drive this path in milliseconds against a stub.
-DEADLINE=$(( $(date +%s) + ${DEPLOY_FOLLOW_SECONDS:-900} ))
+DEADLINE=$(( $(date +%s) + ${DEPLOY_FOLLOW_SECONDS:-1800} ))
 STATE=activating
 while [ "$(date +%s)" -lt "$DEADLINE" ]; do
   sleep "${DEPLOY_POLL_SECONDS:-6}"
