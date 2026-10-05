@@ -24,7 +24,7 @@ Where the cut sits, on the 719 rows: `rvol` p10 2.0, p25 3.2, p50 11.4, p75 73, 
 
 Read top to bottom; the first that applies:
 
-0. **No research row (no dossier) at this checkpoint:** stored NOT_YET, no letter. This is a statement about the RESEARCH, not the name: volume and liquidity read from market data on these rows anyway, but the four criteria that need the dossier cannot be read. Its words must not say the desk has not read the name; they say that no research had reached it at this checkpoint (Commercial be0bdaca section 6; Integration's seam).
+0. **No research row (no dossier) at this checkpoint:** stored NOT_YET, no letter. This is a statement about the RESEARCH, not the name: volume and liquidity read from market data on these rows anyway, but the three criteria that need the dossier (structure, catalyst, tradable supply) cannot be read. Its words must not say the desk has not read the name; they say that no research had reached it at this checkpoint (Commercial be0bdaca section 6; Integration's seam).
 1. **A dossier exists but fewer than three criteria are readable** (STRONG, LIMITED or RISK): stored UNKNOWN, no letter. A grade built on two criteria would be a guess.
 2. **Liquidity RISK or Tradable supply RISK:** AVOID, displayed D. These are the two the recap prompt names for it ("structural, liquidity, or supply risk").
 3. **Structure RISK (the cycle is a backside):** C. The recap prompt's C is "BACKSIDE / OPPORTUNISTIC".
