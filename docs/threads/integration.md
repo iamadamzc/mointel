@@ -1354,6 +1354,11 @@ MARKETING v5     b6484909 (local main) docs/marketing/float-page-draft.md: appli
                  NOT YET READ BY ME (read before it goes to him). Routed: Commercial re-read; Research asked how a split
                  between holding and count is treated (v4's split cause dropped vs prereg check 5); Design to measure "not
                  researched yet" at 84 px.
+COMMERCIAL 5f    origin 5bef01e3 (spot-read: the S-1 counterexample and point 5 as quoted): v5 NOT READY, five required wording
+                 changes (off-popover conditional; unconditional closing bound; comparison with others' floats; "no public
+                 source states a freely tradable count" contradicted by a 2006 S-1; "in the company's filings" unconfirmed)
+                 + Marketing's four. Live landing sentence unaffected ("current"). Routed: Marketing (v6), Research (ledger
+                 evidence sources; split rule).
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
