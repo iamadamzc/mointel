@@ -32,6 +32,7 @@ import { buildSchedule, nextAssessment } from '../desk/schedule';
 import {
   describeSession,
   emptyAssessmentPanel,
+  latestEarlierCheckpoint,
   projectSchedulerHealth,
   toNext,
   type AssessmentPanel,
@@ -314,6 +315,16 @@ function buildAssessmentPanel(
   const completed = records.filter((record) => record.status !== 'RUNNING');
   const today = completed.map(toAssessmentSummary);
   const last = today.length > 0 ? today[today.length - 1] : null;
+  // The rolled trading date has no checkpoint of its own yet (after the 22:00
+  // recap, over a weekend): carry the newest earlier one, so the recap that was
+  // filed under the day it closed out is still reachable. Only read when needed.
+  const carried =
+    today.length === 0
+      ? latestEarlierCheckpoint(
+          readRecentAssessments(db, 20).map(toAssessmentSummary),
+          options.tradingDate,
+        )
+      : null;
 
   const schedule = buildSchedule({
     tradingDate: options.tradingDate,
@@ -339,6 +350,7 @@ function buildAssessmentPanel(
     last,
     next,
     today,
+    carried,
     scheduler: projectSchedulerHealth({
       health: readAssessmentHealth(db),
       now: options.now.getTime(),

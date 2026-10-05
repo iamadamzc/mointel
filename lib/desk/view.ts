@@ -41,6 +41,20 @@ export interface AssessmentPanel {
   next: { type: AssessmentType; label: string; clock: string; scheduledFor: string } | null;
   /** Completed assessments for this trading date, oldest first. */
   today: AssessmentSummary[];
+  /**
+   * The newest completed assessment from an EARLIER trading date, present only
+   * when `today` is empty.
+   *
+   * THE 22:00 RECAP IS FILED UNDER THE DAY IT CLOSES OUT, but the desk's trading
+   * date rolls forward at 22:00 and over every weekend and holiday, so `today`
+   * (read for the rolled date) is empty in exactly the window the recap is the
+   * only thing worth opening: 22:00 to 04:00 ET and non-trading days. This is
+   * that recap (or the 20:00 after-hours checkpoint before it has run), read
+   * across dates, so the main area can open on it instead of an empty board.
+   * Absent, or null, means there is no earlier checkpoint to show.
+   * Optional: payloads and fixtures that predate it stay valid.
+   */
+  carried?: AssessmentSummary | null;
   scheduler: {
     state: 'OFFLINE' | 'IDLE' | 'WORKING' | 'ERROR' | 'UNKNOWN';
     label: string;
@@ -196,6 +210,17 @@ export function describeSession(options: {
           : 'No session scheduled',
       };
   }
+}
+
+/**
+ * The newest checkpoint from a date other than `tradingDate`, from a newest-first
+ * list. Null when there is none, so callers never invent one.
+ */
+export function latestEarlierCheckpoint(
+  recentNewestFirst: readonly AssessmentSummary[],
+  tradingDate: string,
+): AssessmentSummary | null {
+  return recentNewestFirst.find((summary) => summary.tradingDate !== tradingDate) ?? null;
 }
 
 /**
