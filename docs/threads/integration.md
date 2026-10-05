@@ -966,7 +966,78 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTY-FOURTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" after ledger 3; snapshot read 2026-10-05T00:49:49Z = Sun 2026-10-04 20:49 ET)
+## LIVE STATE: AT THE TWENTY-FIFTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T16:01:43.807Z after ledger 2; snapshot read 2026-10-05T16:02:22Z = Mon 2026-10-05 12:02 ET)
+
+*A SNAPSHOT. RE-READ PRODUCTION before acting (ask Ops-tmi for /proc). The 25th's running notes (search "THE TWENTY-FIFTH
+SEAT'S RUNNING NOTES") carry every verification; where they disagree with this, the later note wins. NO EM DASHES in
+anything he reads. His rulings below were each read at his own typed turn (transcript named).*
+
+### PRODUCTION (Ops /proc 2026-10-05T15:06Z, Ops local_c71f613a; origin refs/heads/production re-read 16:02Z = 6e7fff84)
+```
+WEB/RESEARCH/ASSESS  6e7fff84 (web 2025357 / research 2025415 / assess 2025490, started 2026-10-03 17:50Z, NR 0).
+MARKET               2013616 on f5746a84 (started 2026-10-03 16:50:21Z, NR 0).
+NOTHING SHIPPED since 2026-10-03. The new session report (v6) is NOT live (he asked 10-05; answered no, Ops confirmed).
+MONDAY SPOT CHECK    PASSED 10-05: CMND, GUTS, SCNX, VIVK confirm the restated close; VTAK no print, previous_close 1.51 =
+                     its restated value (ops.md:13825). No wrong prior close.
+```
+
+### HIS RULINGS THIS SEAT (verbatim in the plan's RULED block)
+```
+2026-10-05T16:01:43.807Z (transcript 019463d9): "yes hand off. float wording is fine but i want to see the webpage."
+  -> float WORDING approved (docs/marketing/float-page-draft.md v11 56cdc9dc); Web asked for a PRIVATE PREVIEW of the page
+     (6f095bf4), not a deploy. Recorded in docs/sheet-removal-plan-2026-10-03.md RULED block.
+OPEN WITH HIM: the float max age (put: start at 45 d; he did not answer = 45 stands) and the STRICTNESS choice, which comes
+  to him with Research's validation table (age 45/90/120; issuance KNOWN_ACTIVE only vs + POSSIBLY_ACTIVE; split proof).
+```
+
+### IN FLIGHT (owner -> next)
+```
+FLOAT              Research (local_f6ef479a): contract docs/research/float-contract/contract-2026-10-05.md (+ answer commits
+                   through 177f5619, effectiveDate and 55af05eb NOT_YET vs ISSUANCE_NOT_CHECKED: NOT YET READ BY INTEGRATION);
+                   next the as-of alignment parser change (mutants first), then the audit + validation sample ($0, Ops slot).
+                   Commercial (local_2aab5a77) passed every surface claim (5e-5h, origin). Marketing v11 = wording he approved.
+                   Design: layout APPROVED Ticker 128 / Float 102 / Why 130 / Risk 130 (all four faces one line, measured).
+                   Web: private preview of the page for him (asked). Ship gates: validation sample, his strictness choice,
+                   tooltip link + page in ONE release, nginx Basic Auth exemption for the new public route.
+PRIORITY RUBRIC    Research drafts beside the float work -> Marketing words -> HIM once. Not started.
+v6 REPORT          Research steps 3-6 after the float contract (24th's conditions in the archived live state below).
+NEXT RELEASE       Ops cuts on /proc 6e7fff84 once Research's citation-id fix exists (UNBUILT); the split follow-up exists
+                   (08d8d245 on main; for production a pick onto 6e7fff84). Picks: 61e2f777, f1b8b716 + 6ac43025, citation fix,
+                   split follow-up, Web 2fe136ac (landing sentence; his yes 2026-10-04T23:20:42Z). Integration replays the tip.
+OWED-TO-MAIN       DONE on main: split fix (00c0cdfa), Design's 10 (c0d57723), Web's step 4 (9418a18e). OPEN: Ops's share
+                   (movers d1677f07 74d941f8 b1a8bb8f f75ec7e3 d1017381 6eaff6e5 c01dedc5; levels/history minus 2afd15bc
+                   9189b569, AND the levels pick must gate /api/levels like production; v28 first; reports runner a7389325
+                   68b2a9af; Now/evening; 46d9f9d3; 84b00991); then Design's 558d07a5 (moving label) after the movers group.
+```
+
+### SHARED MAIN (read 2026-10-05T16:02Z): local main 59 AHEAD / 7 BEHIND origin (b8075eeb). NOT PUSHED.
+```
+Contains merges 9418a18e (Web step 4), c0d57723 (Design owed chain), a3249a55 (origin docs), all replayed.
+CLEARED in writing: Design's 10 chain commits; Web 7aa44620 a08b5a68 8c15817f df2712c2 56643693 349d051e; Marketing
+b6484909 198d47d2 1fbb9414 d05141ad 3549fff3 f94c4a17 (v11 56cdc9dc + any v12: ASK by sha); Integration's (mine).
+NOT CLEARED: Research's 9 (c624aeec 518f9f67 3fcb1f2a 33b2d781 19c8f964 eba2922b 4c02162d 55af05eb 177f5619; asked
+twice); 1 Ops commit (ask Ops by sha); any Design docs commit not in the 10.
+Procedure: fetch; merge origin/main (index empty, no MERGE_HEAD); `git log origin/main..main` AS ITS OWN STEP; every
+commit cleared; push fast-forward; tell the clearing seats.
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_c71f613a   Research-tmi local_f6ef479a   Design-tmi local_82749387   Web-tmi local_a4c618a8
+Marketing-tmi local_5ed7eb51   Commercial-tmi local_2aab5a77   THIS seat local_ef410868 retires on his rename.
+All predecessors renamed -retired and archived (read 10-05), except old Ops local_7fac8dfc ("Ops-tmi (retired 2026-10-05)").
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc. Then the shared-main push (Research's clearance by sha). Read Research's 55af05eb + 177f5619
+before relaying anything about them. When Web's preview link reaches him, nothing for you. When Research's validation
+table lands: the strictness choice goes to him in the NEEDS YOU block, with the numbers read from the committed output.
+This seat's failure, twice: a sentence left before its source was read or re-read (a stale session list; a percentage's
+denominator taken from a note, not the measuring file).
+```
+
+## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FOURTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" after ledger 3; snapshot read 2026-10-05T00:49:49Z = Sun 2026-10-04 20:49 ET; SUPERSEDED BY THE TWENTY-FIFTH'S)
 
 *A SNAPSHOT. RE-READ PRODUCTION before acting (ask Ops-tmi for /proc). The 24th's running notes (search "THE TWENTY-FOURTH
 SEAT'S RUNNING NOTES") carry every verification; where they disagree with this, the later note wins. NO EM DASHES in

@@ -67,6 +67,11 @@ Integration:**
   are produced anywhere and the desk's method, linked from the tooltip.
 - 2026-10-05T00:43:25.901Z, on whether the Float column shows only while sorted by float (today) or always, verbatim:
   *"always show it, it's key."* The Float column is always on the main board.
+- 2026-10-05T16:01:43.807Z, typed to Integration after reading the float cell and page draft
+  (`docs/marketing/float-page-draft.md` v11, Commercial-passed), verbatim: *"float wording is fine but i want to see the
+  webpage."* The float WORDING (cell faces "≤ X" / "Unknown" / "Cannot verify" / "Not computed", popovers, legend, the page
+  text) is approved; Web renders a private preview of the page for him. Not live: the validation sample, his strictness
+  choice on Research's table (max age 45 days until then) and the one-release rule still gate it.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
