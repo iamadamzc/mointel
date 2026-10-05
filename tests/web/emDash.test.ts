@@ -54,6 +54,7 @@ const SURFACES = [
   'lib/auth/authErrorPage.ts',
   'lib/legal/entryGate.ts',
   'app/enter/page.tsx',
+  'components/EntryGate.tsx',
   'docs/legal/privacy-policy.md',
   'docs/legal/terms.md',
 ];
