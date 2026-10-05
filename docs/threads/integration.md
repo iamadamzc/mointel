@@ -1406,6 +1406,10 @@ BADGE S3 (Design) Local in A:\mointel-design, not gated: layout, grade mapping (
                  review -> new Research (with the float job); report tags -> Research after the float job. OPEN: Design's
                  counts strip "recounts over main-board rows"; asked for before/after definitions; same idea relabeled =
                  mine with Design, different meaning under the same label = his.
+                 RULED by me: strip = rows on the main board each chip keeps if clicked, over the whole board before
+                 other filters; "tracked" relabeled "on the board". Fresh catalyst = DEFECT FIX (verified
+                 MarketSummary.tsx:113-128: value summary.strongCatalysts, label/hint/click FRESH). AT SHIP: tell him one
+                 line, the strip counts the whole board so every number moves that day.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
