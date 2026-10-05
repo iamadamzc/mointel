@@ -1342,6 +1342,13 @@ error                                                  TYPE                     
   from my 00:53Z list_sessions read; it was already   read without re-reading it         (new;
   Web-tmi-retired + archived by 00:55Z. Reached him.  (stale snapshot re-sent)           family:
   CURE: re-read titles (get_session) immediately before any ask about them.               24th's)
+2 told Research + Commercial "34% is OF ALL 422" and  stated a figure's denominator    no       self (on
+  put HIM a split (~a third number / ~a fifth        from its neighbour, unread;      (new;    Research's
+  Unknown / ~half Cannot verify) built on it. The    a relayed note treated as a      family:  "rests on
+  note (integration.md:2120) never names the         measurement                      24th's)  your note")
+  denominator; result.md has the 74/422 but not the 34/46/50 at all. Reached him.
+  CURE: a percentage goes on only with its denominator READ in the file that measured it; cite the measuring
+  file, never a note about it. Retracted to Research, Commercial and him; Research re-deriving from raw.
 ```
 
 ## THE TWENTY-FOURTH SEAT'S RUNNING NOTES (opened 2026-10-03T17:04:49Z, `local_f26376f1`, Opus 5.5, effort high)
