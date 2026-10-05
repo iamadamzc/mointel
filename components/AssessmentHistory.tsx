@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/StatusBadge';
 import { changeReading } from '@/lib/dashboard/changes';
 import { snapshotLabel } from '@/lib/dashboard/language';
 import type { AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
+import { selectorOptions } from '@/lib/dashboard/offHours';
 import type { AssessmentPanel, AssessmentSummary } from '@/lib/desk/view';
 import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
@@ -24,7 +25,7 @@ interface AssessmentHistoryProps {
  * not to become a second place to watch the market from.
  */
 export function AssessmentSelector({ panel, selectedId, onSelect }: AssessmentHistoryProps) {
-  const options = panel.today;
+  const options = selectorOptions(panel);
 
   /*
    * A control with one option is not a control.
