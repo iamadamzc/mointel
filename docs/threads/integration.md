@@ -1372,6 +1372,12 @@ OUTCOME RESULT   Research adae1e89 (result md), report.json 9fd9e06c; order veri
                  Marketing (sentence). To him: the result, plus a keep-building question with recommendation.
                  Research cleared by sha: 1113b940 43a926dc 0031136a 1d5f2d8b 18b14fd9 b15b72d0 9fd9e06c adae1e89 (push
                  waits on Ops's main-tip gate after the night; outcome-test.ts and label-control.ts are .ts under docs).
+LEGEND RULED     Commercial c26daa80 (on origin; claims read 6b): DELETE "not tested against outcomes", nothing in its
+                 place, out in the same commit that publishes the legend; no result in the legend; a published result
+                 would be a separate dated page, Commercial first, his call, Commercial recommends not now. Never say
+                 "tested", "validated", "do not predict", "did not work". Marketing sweeps every surface (13458dc8,
+                 3fd16f82 cleared by Marketing). I had told him the new sentence would state the test; CORRECTED to him in
+                 the next message (the line is removed). Open to him: keep building the badge (rec: yes, as approved).
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
