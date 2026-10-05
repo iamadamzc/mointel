@@ -19,9 +19,11 @@ Tooltip, one shape for all four: **"Setup grade {letter} as of {checkpoint time}
 
 *Notes.* A is the top of the scale and claims nothing about how many criteria are strong, so decision 2 (how hard A is) does not move the sentence, and it stays true while share supply cannot yet read strong. B covers an unreadable criterion as well as a limited one. D says what is wrong and does not say which single criterion forces it, so decision 5 does not move it. C names the cycle because the draft rule is exactly that; if decision 1 changes what "Structure" means, C's clause is the one line that changes.
 
-**{Basis}** lists criteria by their reading, in this order, omitting any group that is empty: "Strong: volume, catalyst. Limited: cycle. Risk: liquidity. Not readable: share supply." Criterion names on the surface: **cycle, catalyst, relative volume, liquidity, share supply.** The cycle is called "cycle", not "Structure", and supply "share supply", so the labels hold whichever way decision 1 goes (only the grouping logic would change, not the words). "Rests on", never "drove": the tooltip names the basis and claims no cause.
+**{Basis}** lists criteria by their reading, in this order, omitting any group that is empty, and inside each group in the legend's fixed order (cycle, catalyst, relative volume, liquidity, share supply): "Strong: volume, catalyst. Limited: cycle. Risk: liquidity. Not readable: share supply." Criterion names on the surface: **cycle, catalyst, relative volume, liquidity, share supply.** The cycle is called "cycle", not "Structure", and supply "share supply", so the labels hold whichever way decision 1 goes (only the grouping logic would change, not the words). "Rests on", never "drove": the tooltip names the basis and claims no cause.
 
-Example, whole tooltip: *Setup grade B as of 15:42 ET. One or more criteria read below the strongest, or could not be read. Strong: relative volume, catalyst. Limited: cycle. Not readable: share supply.*
+**{checkpoint time}** prints as "15:42 ET" when the checkpoint is the same ET day as the reader's now, and with its date ("Oct 3, 20:05 ET") when it is an earlier day, so a grade stored last night never reads as an hour ago. A date is a fact about when the reading was taken, not a claim; Commercial sees it in the diff.
+
+Example, whole tooltip: *Setup grade B as of 15:42 ET. One or more criteria read below the strongest, or could not be read. Strong: catalyst, relative volume. Limited: cycle. Not readable: share supply.*
 
 ## 2. The five readings, in words (drawer row or detail line, one per criterion)
 
