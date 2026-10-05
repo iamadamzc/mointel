@@ -1397,6 +1397,10 @@ COMMERCIAL 5h    origin 75b17929: contract 55af05eb + v8 PASS with ONE required 
                  recommended (split wording); header cleanup. v9 diff: "Not yet" PASSES (optional note: implies something is
                  coming, like Pending). For Research: effectiveDate is not issuance (say what the field holds); two internal
                  unconditional sentences must not reach a surface. Routed. After v10 (I diff it): to HIM for sight.
+v10              f94c4a17 READ IN FULL (body) + diffed vs v9: 5h string verbatim, split wording, ONE change list; U+2014 0,
+                 entities 0. Marketing cleared f94c4a17 (plus its earlier 5). Web cleared 7aa44620, a08b5a68, 8c15817f,
+                 df2712c2, 56643693. PUT TO HIM FOR SIGHT (page + cell words); still gated on the validation sample and his
+                 strictness choice on Research's table. Push waits on Research's clearance only.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
