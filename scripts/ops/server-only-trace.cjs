@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- standalone CommonJS script, run with node */
 // Which worker entry points reach a module that imports server-only (needs --conditions=react-server).
 // Usage: git grep -l -E "^import ['\"]server-only['\"]" HEAD -- "*.ts" "*.tsx" | sed "s/^HEAD://" > so.txt; node scripts/ops/server-only-trace.cjs so.txt worker/research.ts
 // Static imports only (relative and @/); it misses non-literal require/import, so grep for those too.
