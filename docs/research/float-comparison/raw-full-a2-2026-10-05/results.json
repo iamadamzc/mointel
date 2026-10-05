@@ -1,0 +1,3139 @@
+{
+  "spentUsd": 0,
+  "sheetReachable": true,
+  "sheetReason": null,
+  "finishedAt": "2026-10-05T00:30:31.545Z",
+  "results": [
+    {
+      "pick": {
+        "ticker": "SORA",
+        "cik": "2033515",
+        "company": "AsiaStrategy",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 1
+      },
+      "a": {
+        "ticker": "SORA",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 24864000,
+          "asOf": "2025-12-31",
+          "filed": "2026-04-30",
+          "accession": "0001213900-26-050019",
+          "form": "20-F",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 0,
+        "largeHolderTotal": 14450000,
+        "subtracted": 14450000,
+        "subtractedFamily": "LARGE",
+        "bound": 10414000,
+        "state": "PRODUCED",
+        "underLowFloatLine": false,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-029647",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-029654",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-029659",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-029662",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-029669",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-044303",
+            "filingDate": "2026-04-16",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-044901",
+            "filingDate": "2026-04-17",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2070153",
+            "persons": [
+              "SORA VENTURES GLOBAL LIMITED",
+              "JASON KIN HOI FANG",
+              "SORA VISION LIMITED",
+              "SORA VENTURES II MASTER FUND"
+            ],
+            "form": "SCHEDULE 13D/A",
+            "accession": "0001213900-26-011781",
+            "filingDate": "2026-02-04",
+            "shares": 14450000,
+            "percent": 58.1,
+            "groupFilings": [
+              "0001213900-26-011781",
+              "0001213900-25-121883",
+              "0001213900-25-110336",
+              "0001213900-25-107890",
+              "0001213900-25-074600"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "SORA",
+        "httpStatus": 200,
+        "ms": 10625,
+        "answer": {
+          "state": "UNKNOWN",
+          "floatShares": null,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/2033515/000121390026050019/ea0287145-20f_asiastrategy.htm",
+          "sourceTitle": "AsiaStrategy Annual Report on Form 20-F",
+          "asOf": null,
+          "method": null,
+          "reason": "AsiaStrategy’s SEC filings reviewed do not state a public-float share count or provide an admissible non-affiliate share figure from which to calculate one. The Form 20-F reports 24,864,000 ordinary shares issued and outstanding as of December 31, 2025, but shares outstanding are not public float."
+        },
+        "usage": {
+          "input": 21425,
+          "cached": 0,
+          "output": 593,
+          "searches": 2
+        },
+        "usd": 0.069966,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026050019/ea0287145-20f_asiastrategy.htm",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026050019/0001213900-26-050019-index.html",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026029647/xslF345X06/ownership.xml",
+          "https://www.sec.gov/edgar/browse/?CIK=2033515&owner=exclude",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390025086354/0001213900-25-086354-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390025086354/0001213900-25-086354-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390025093448/ea0259450-6k_asiastrat.htm",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026045850/ea028711801ex99-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026050019/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390025110336/xslSCHEDULE_13G_X01/primary_doc.xml",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026011781/xslSCHEDULE_13D_X01/primary_doc.xml",
+          "https://www.sec.gov/Archives/edgar/data/2033515/000121390026050019/ea028714501ex13-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1836875/000121390023030696/fars0423_nuvveholdingcorp.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1616262/000121390026073220/ea0295488-ars_rocky.pdf",
+          "https://www.sec.gov/files/investment/13flist2026q2.pdf",
+          "https://www.sec.gov/Archives/edgar/data/2017950/000149315225015306/formars.pdf",
+          "https://www.sec.gov/files/investment/13flist2025q3.pdf"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": {
+          "float": "4.86M displayed",
+          "value": 4860000,
+          "sourceDate": "2026-10-01",
+          "reportDate": "2026-10-01"
+        },
+        "today": null
+      },
+      "verdict": "ONLY_A"
+    },
+    {
+      "pick": {
+        "ticker": "AMOD",
+        "cik": "1862463",
+        "company": "ALPHA MODUS HOLDINGS, INC.",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 2
+      },
+      "a": {
+        "ticker": "AMOD",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 4966818,
+          "asOf": "2026-08-14",
+          "filed": "2026-08-14",
+          "accession": "0001493152-26-038220",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 0,
+        "largeHolderTotal": 0,
+        "subtracted": 0,
+        "subtractedFamily": "S16",
+        "bound": 4966818,
+        "state": "PRODUCED",
+        "underLowFloatLine": true,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001493152-24-051121",
+            "filingDate": "2024-12-20",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001493152-25-020364",
+            "filingDate": "2025-10-31",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001493152-25-020365",
+            "filingDate": "2025-10-31",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2048857",
+            "owner": "Garel Michael",
+            "form": "3",
+            "accession": "0001493152-24-050899",
+            "filingDate": "2024-12-20",
+            "shares": 20400,
+            "used": false,
+            "why": "split in 2024-12-20..2026-08-14 (factor range x40.012)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1768026",
+            "owner": "Chumas Christopher Phillip",
+            "form": "3",
+            "accession": "0001493152-25-020108",
+            "filingDate": "2025-10-29",
+            "shares": 75000,
+            "used": false,
+            "why": "split in 2025-10-29..2026-08-14 (factor range x40.012)"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1326389",
+            "persons": [
+              "POLAR ASSET MANAGEMENT PARTNERS INC."
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001326389-26-000019",
+            "filingDate": "2026-02-17",
+            "shares": 1003590,
+            "percent": 2.1,
+            "groupFilings": [
+              "0001326389-26-000019",
+              "0001326389-25-000226",
+              "0001326389-25-000125"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1851416",
+            "persons": [
+              "STREETERVILLE CAPITAL LLC",
+              "STREETERVILLE MANAGEMENT, LLC",
+              "JOHN M FIFE"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001851416-26-000024",
+            "filingDate": "2026-08-04",
+            "shares": 487171,
+            "percent": 9.9,
+            "groupFilings": [
+              "0001851416-26-000024",
+              "0001851416-26-000020",
+              "0001851416-25-000009"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "AMOD",
+        "httpStatus": 200,
+        "ms": 10734,
+        "answer": {
+          "state": "PRODUCED",
+          "floatShares": 10169016,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1862463/000149315226000852/forms-3.htm",
+          "sourceTitle": "Alpha Modus Holdings, Inc. Form S-3 Registration Statement",
+          "asOf": "2026-01-02",
+          "method": "The Form S-3 explicitly states that, as of 2026-01-02, the company's public float was based on 10,169,016 outstanding common shares held by non-affiliates. No calculation was required.",
+          "reason": null
+        },
+        "usage": {
+          "input": 27769,
+          "cached": 4707,
+          "output": 603,
+          "searches": 3
+        },
+        "usd": 0.0843014,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226014230/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/0001493152-26-014230-index.html",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226000852/forms-3.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315225005704/forms-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226022408",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226014230",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226031897",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315225029810",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226035003/form424b1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226003623",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226033808",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226016183",
+          "https://www.sec.gov/files/aqfsn_1.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1616262/000121390026073220/ea0295488-ars_rocky.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1836875/000121390023030696/fars0423_nuvveholdingcorp.pdf",
+          "https://www.sec.gov/files/edgar/filermanual/edgarfm-vol2-v77.pdf",
+          "https://www.sec.gov/file/34-88365",
+          "https://www.sec.gov/file/secegov2009pdf",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226000852/forms-3.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226014230/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226035003/form424b1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315225027210/forms-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226002591/form424b3.htm",
+          "https://www.sec.gov/Archives/edgar/data/1862463/000149315226002589/form424b3.htm",
+          "https://www.sec.gov/files/edgar/filer-information/specifications/xbrl-guide-2026-05-15.pdf",
+          "https://www.sec.gov/files/edgar/filer-information/specifications/xbrl-guide-2026-01-16.pdf",
+          "https://www.sec.gov/files/edgar/filer-information/specifications/xbrl-guide-2026-08-14.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1791706/000110465926041742/tm2611553d1_ex99-3.pdf",
+          "https://www.sec.gov/Archives/edgar/data/749647/000149315226021118/formars.pdf",
+          "https://www.sec.gov/file/xbrl-guide-2026-01-16",
+          "https://www.sec.gov/Archives/edgar/data/311337/000110465926021288/tm261271d4_ex99-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1279495/000106299326003379/exhibit99-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/895421/000183988226010505/ms14191_424b2-06578.htm",
+          "https://www.sec.gov/Archives/edgar/data/1045520/000191870426023947/form424b2.htm",
+          "https://www.sec.gov/Archives/edgar/data/70858/000191870426020597/bofa-424b2.htm",
+          "https://www.sec.gov/Archives/edgar/data/9631/000183988226017155/bns_fwp-10924.htm"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": {
+          "float": "593,869 displayed; stale after PIPE",
+          "value": null,
+          "sourceDate": "2026-10-01",
+          "reportDate": "2026-10-01"
+        },
+        "today": null
+      },
+      "verdict": "B_ABOVE_FILED"
+    },
+    {
+      "pick": {
+        "ticker": "NXL",
+        "cik": "1527352",
+        "company": "Nexalin Technology, Inc.",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 3
+      },
+      "a": {
+        "ticker": "NXL",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 22036402,
+          "asOf": "2026-08-10",
+          "filed": "2026-08-12",
+          "accession": "0001829126-26-008709",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 617347,
+        "largeHolderTotal": 0,
+        "subtracted": 617347,
+        "subtractedFamily": "S16",
+        "bound": 21419055,
+        "state": "PRODUCED",
+        "underLowFloatLine": false,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "5",
+            "accession": "0001829126-25-000543",
+            "filingDate": "2025-01-29",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-001254",
+            "filingDate": "2025-02-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-001256",
+            "filingDate": "2025-02-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-001766",
+            "filingDate": "2025-03-13",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-005220",
+            "filingDate": "2025-07-21",
+            "used": false,
+            "why": "2 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-007350",
+            "filingDate": "2025-09-12",
+            "used": false,
+            "why": "2 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-007373",
+            "filingDate": "2025-09-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-007374",
+            "filingDate": "2025-09-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-007775",
+            "filingDate": "2025-09-30",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-007778",
+            "filingDate": "2025-09-30",
+            "used": false,
+            "why": "2 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-010250",
+            "filingDate": "2025-12-23",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-010251",
+            "filingDate": "2025-12-23",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-010252",
+            "filingDate": "2025-12-23",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-010253",
+            "filingDate": "2025-12-23",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-010254",
+            "filingDate": "2025-12-23",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001829126-25-010255",
+            "filingDate": "2025-12-23",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1916664",
+            "owner": "Owens David",
+            "form": "4",
+            "accession": "0001829126-25-007777",
+            "filingDate": "2025-09-30",
+            "shares": 191252,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2053473",
+            "owner": "Shelton Carolyn Hamby",
+            "form": "5",
+            "accession": "0001829126-25-000849",
+            "filingDate": "2025-02-10",
+            "shares": 24000,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2080067",
+            "owner": "Van Fleet Justin",
+            "form": "3",
+            "accession": "0001829126-25-005929",
+            "filingDate": "2025-08-07",
+            "shares": 25000,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1916504",
+            "owner": "Hu Ben",
+            "form": "4",
+            "accession": "0001829126-25-007776",
+            "filingDate": "2025-09-30",
+            "shares": 377095,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1912606",
+            "persons": [
+              "ALUMNI CAPITAL LP",
+              "ALUMNI CAPITAL GP LLC",
+              "ASHKAN MAPAR"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0001213900-26-094115",
+            "filingDate": "2026-08-27",
+            "shares": 2493075,
+            "percent": 9.99,
+            "groupFilings": [
+              "0001213900-26-094115"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2152782",
+            "persons": [
+              "GREENLIGHT VENTURES, LLC"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0002152782-26-000002",
+            "filingDate": "2026-09-03",
+            "shares": 1385246,
+            "percent": 5.6,
+            "groupFilings": [
+              "0002152782-26-000002"
+            ],
+            "used": false,
+            "why": "split in 2026-08-10..2026-09-03 (factor range x30.014)"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "NXL",
+        "httpStatus": 200,
+        "ms": 13337,
+        "answer": {
+          "state": "PRODUCED",
+          "floatShares": 21359730,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1527352/000182912626009171/nexalintech_424b5.htm",
+          "sourceTitle": "Nexalin Technology, Inc. — Prospectus Supplement on Form 424B5",
+          "asOf": "2026-08-19",
+          "method": "The August 19, 2026 prospectus supplement expressly states that public float was based on 21,359,730 outstanding common shares held by non-affiliates as of the prospectus-supplement date. Reported directly as stated; not derived from total shares outstanding or market capitalization.",
+          "reason": null
+        },
+        "usage": {
+          "input": 27504,
+          "cached": 4707,
+          "output": 682,
+          "searches": 3
+        },
+        "usd": 0.0847194,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912625003351/nexalintech_424b5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626002673/nexalintech_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626002673/0001829126-26-002673-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912625003425/nexalintech_424b4.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626002673/0001829126-26-002673-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626007001/nexalintech_pre14a.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912625001794/nexalintech_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912624001935/nexalintech_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1719406/000143774926005124/nrxars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/836157/000119312524262557/d893716dars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626009723/nexalintech_s1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000000000025009853/filename1.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626000513/nexalintech_ex99-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626007515/nexalintechnology_ars.pdf",
+          "https://www.sec.gov/files/fsnds_1.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1616788/000107997419000238/legacy10k_6302018.htm",
+          "https://www.sec.gov/about/divisions-offices/division-corporation-finance/financial-reporting-manual/frm-topic-5",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626002673/nexalintech_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626009171/nexalintech_424b5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912625003351/nexalintech_424b5.htm",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912626002673/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/860748/000119312526124124/d78480dars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912625003425/nexalintech_424b4.htm",
+          "https://www.sec.gov/Archives/edgar/data/946673/000119312523104991/d469726dars.pdf",
+          "https://www.sec.gov/files/fsnds_1.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1719406/000143774926005124/nrxars.pdf",
+          "https://www.sec.gov/Archives/edgar/vprr/1202/12026040.pdf",
+          "https://www.sec.gov/Archives/edgar/data/836157/000119312524262557/d893716dars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1527352/000182912624001935/nexalintech_10k.htm",
+          "https://www.sec.gov/newsroom/speeches-statements/peirce-statement-proposing-releases-ror-051926",
+          "https://www.sec.gov/data-research/structured-data/2507-dqreminder-public-float-tagging-errors",
+          "https://www.sec.gov/resources-small-businesses/going-public/smaller-reporting-companies",
+          "https://www.sec.gov/Archives/edgar/data/2065397/000119312526115259/ck0002065397-20251231.htm",
+          "https://www.sec.gov/newsroom/press-releases/2018-116",
+          "https://www.sec.gov/newsroom/speeches-statements/uyeda-statement-proposing-registered-offering-reform-and-enhancement-of-emerging-growth-company-accommodations-and-simplification-of-filer-status-for-reporting-companies-051926"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": null,
+        "today": null
+      },
+      "verdict": "CONSISTENT"
+    },
+    {
+      "pick": {
+        "ticker": "HTCR",
+        "cik": "1892322",
+        "company": "HeartCore Enterprises, Inc.",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 4
+      },
+      "a": {
+        "ticker": "HTCR",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 1515328,
+          "asOf": "2026-08-13",
+          "filed": "2026-08-13",
+          "accession": "0001493152-26-037604",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 0,
+        "largeHolderTotal": 0,
+        "subtracted": 0,
+        "subtractedFamily": "S16",
+        "bound": 1515328,
+        "state": "PRODUCED",
+        "underLowFloatLine": true,
+        "holdings": [
+          {
+            "family": "S16",
+            "ownerCik": "1904516",
+            "owner": "Hosaka Kimio",
+            "form": "4",
+            "accession": "0001493152-24-048341",
+            "filingDate": "2024-12-02",
+            "shares": 115434,
+            "used": false,
+            "why": "split in 2024-12-02..2026-08-13 (factor range x20.007)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1904494",
+            "owner": "Gao Qizhi",
+            "form": "4",
+            "accession": "0001493152-24-048343",
+            "filingDate": "2024-12-02",
+            "shares": 32531,
+            "used": false,
+            "why": "split in 2024-12-02..2026-08-13 (factor range x20.007)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1904454",
+            "owner": "Kuno Keisuke",
+            "form": "4",
+            "accession": "0001493152-24-048369",
+            "filingDate": "2024-12-02",
+            "shares": 75785,
+            "used": false,
+            "why": "split in 2024-12-02..2026-08-13 (factor range x20.007)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1904502",
+            "owner": "Yamamoto Sumitaka",
+            "form": "4",
+            "accession": "0001493152-24-048363",
+            "filingDate": "2024-12-02",
+            "shares": 10677363,
+            "used": false,
+            "why": "split in 2024-12-02..2026-08-13 (factor range x20.007)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1905222",
+            "owner": "Yasui Daishin",
+            "form": "4",
+            "accession": "0001213900-25-050027",
+            "filingDate": "2025-06-02",
+            "shares": 2201756,
+            "used": false,
+            "why": "split in 2025-06-02..2026-08-13 (factor range x20.007)"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "2038151",
+            "persons": [
+              "CROM STRUCTURED OPPORTUNITIES FUND I, LP"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001213900-25-113271",
+            "filingDate": "2025-11-20",
+            "shares": 1163207,
+            "percent": 4.9,
+            "groupFilings": [
+              "0001213900-25-113271",
+              "0001213900-25-063594"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "2146878",
+            "persons": [
+              "HNATKO CAPITAL INC.",
+              "CHRISTOPHER HNATKO"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0000912282-26-001011",
+            "filingDate": "2026-07-22",
+            "shares": 101917,
+            "percent": 7.1,
+            "groupFilings": [
+              "0000912282-26-001011"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "HTCR",
+        "httpStatus": 200,
+        "ms": 8421,
+        "answer": {
+          "state": "PRODUCED",
+          "floatShares": 15500239,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1892322/000149315226014236/form10-k.htm",
+          "sourceTitle": "HeartCore Enterprises, Inc. Form 10-K for the fiscal year ended December 31, 2025",
+          "asOf": "2025-06-30",
+          "method": "Computed from the Form 10-K cover: aggregate market value of voting and non-voting common equity held by non-affiliates was $7,593,567, based on a closing price of $0.4899 per share on June 30, 2025. $7,593,567 ÷ $0.4899 = 15,500,238.824 shares; rounded to the nearest whole share = 15,500,239.",
+          "reason": null
+        },
+        "usage": {
+          "input": 12838,
+          "cached": 4707,
+          "output": 569,
+          "searches": 2
+        },
+        "usd": 0.0440314,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315226014236/form10-k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/0001493152-26-014236-index.html",
+          "https://www.sec.gov/Archives/edgar/data/1892322/0001493152-22-008441-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000121390025025791/0001213900-25-025791-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315226023382/",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315223037944/0001493152-23-037944-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315224013979/form10-k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000164117225020890/forms-1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000164117225026012/forms-1a.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315225013662/form424b1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315224045377/form10-q.htm",
+          "https://www.sec.gov/Archives/edgar/data/1892322/000149315224019355/form10-q.htm",
+          "https://www.sec.gov/Archives/edgar/data/1280784/000095017023003044/htgc-htgc_10k_2022_ixbrl.pdf",
+          ""
+        ],
+        "sourcesOutsideAllowList": [
+          ""
+        ]
+      },
+      "sheet": {
+        "research": {
+          "float": "660,373 displayed",
+          "value": 660373,
+          "sourceDate": "2026-10-01",
+          "reportDate": "2026-10-01"
+        },
+        "today": null
+      },
+      "verdict": "B_ABOVE_FILED"
+    },
+    {
+      "pick": {
+        "ticker": "SSM",
+        "cik": "1840416",
+        "company": "Sono Group N.V.",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 5
+      },
+      "a": {
+        "ticker": "SSM",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 1424834,
+          "asOf": "2026-08-01",
+          "filed": "2026-08-14",
+          "accession": "0001171843-26-005543",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 141916,
+        "largeHolderTotal": 271050,
+        "subtracted": 271050,
+        "subtractedFamily": "LARGE",
+        "bound": 1153784,
+        "state": "PRODUCED",
+        "underLowFloatLine": true,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001171843-25-000013",
+            "filingDate": "2025-01-02",
+            "used": false,
+            "why": "2 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001171843-25-000014",
+            "filingDate": "2025-01-02",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001171843-25-000239",
+            "filingDate": "2025-01-14",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001171843-25-000275",
+            "filingDate": "2025-01-16",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001171843-25-000346",
+            "filingDate": "2025-01-21",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2027046",
+            "owner": "Bambino 255 V V UG haftungsbeschrankt",
+            "form": "4",
+            "accession": "0001575872-26-000637",
+            "filingDate": "2026-09-03",
+            "shares": 141916,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "17018",
+            "persons": [
+              "CANTOR FITZGERALD SECURITIES",
+              "CANTOR FITZGERALD &AMP; CO.",
+              "CANTOR FITZGERALD, L.P.",
+              "CF GROUP MANAGEMENT, INC.",
+              "BRANDON G. LUTNICK"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0001213900-26-016598",
+            "filingDate": "2026-02-13",
+            "shares": 99600,
+            "percent": 7,
+            "groupFilings": [
+              "0001213900-26-016598"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "2027046",
+            "persons": [
+              "BAMBINO 255. V V UG (HAFTUNGSBESCHRANKT)"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0001575872-26-000487",
+            "filingDate": "2026-07-08",
+            "shares": 177417,
+            "percent": 12.45,
+            "groupFilings": [
+              "0001575872-26-000487"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1335730",
+            "persons": [
+              "MIZUHO FINANCIAL GROUP, INC."
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001104659-26-095312",
+            "filingDate": "2026-08-13",
+            "shares": 52000,
+            "percent": 3.6,
+            "groupFilings": [
+              "0001104659-26-095312",
+              "0001104659-25-110783"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1491072",
+            "persons": [
+              "ANSON FUNDS MANAGEMENT LP",
+              "ANSON MANAGEMENT GP LLC",
+              "TONY MOORE",
+              "ANSON ADVISORS INC.",
+              "AMIN NATHOO",
+              "MOEZ KASSAM"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001193125-26-352043",
+            "filingDate": "2026-08-14",
+            "shares": 142000,
+            "percent": 9.9,
+            "groupFilings": [
+              "0001193125-26-352043",
+              "0001193125-26-226222"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "1842872",
+            "persons": [
+              "CHRISTOPHER KELLY",
+              "KELLY VENTURES I LP",
+              "PAUL MISIR",
+              "INTERNAL MARKET FUND, LLC",
+              "REINCE PRIEBUS",
+              "CHRIS LARSEN",
+              "DEMETRI ARGYROPOULOS",
+              "DEMETRI DAPHNIS",
+              "JON RICKETTS"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0001213900-26-098095",
+            "filingDate": "2026-09-08",
+            "shares": 93633,
+            "percent": 5.5,
+            "groupFilings": [
+              "0001213900-26-098095"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2096493",
+            "persons": [
+              "ALPINE FOX CAPITAL LLC",
+              "ALPINE FOX, LP"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0002096493-26-000005",
+            "filingDate": "2026-10-01",
+            "shares": 315295,
+            "percent": 21.5,
+            "groupFilings": [
+              "0002096493-26-000005"
+            ],
+            "used": false,
+            "why": "a bar in the span has no split factor"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "SSM",
+        "httpStatus": 200,
+        "ms": 14066,
+        "answer": {
+          "state": "UNKNOWN",
+          "floatShares": null,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1840416/000117184326002178/sev20251231_10k.htm",
+          "sourceTitle": "Sono Group N.V. Annual Report on Form 10-K for the fiscal year ended December 31, 2025",
+          "asOf": "2025-06-30",
+          "method": null,
+          "reason": "The SEC filing reports only an approximate $7.2 million aggregate market value of ordinary shares held by non-affiliates as of 2025-06-30. It does not state public float in shares or the 2025-06-30 closing price needed to convert that value into shares; shares outstanding are not treated as float."
+        },
+        "usage": {
+          "input": 25723,
+          "cached": 4707,
+          "output": 939,
+          "searches": 4
+        },
+        "usd": 0.0942414,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326005854/f425_090226.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326000517",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325003334/",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325001327/",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326001589",
+          "https://www.sec.gov/search-filings",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325004369/",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325004560/",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325005499/",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325004688",
+          "https://www.sec.gov/Archives/edgar/data/921638/000092163826000035/ssrm-20251231.htm",
+          "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "https://www.sec.gov/Archives/edgar/data/1836875/000121390023030696/fars0423_nuvveholdingcorp.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1032033/000119312524118233/d775214dars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex991to13da2514210002_070125.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex993to13da2514210002_070125.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184324003572/sev20240515_20f.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326002178/sev20251231_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184324003572/0001171843-24-003572-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326002178/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326002095/nt10k_033126.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325003334/",
+          "https://www.sec.gov/Archives/edgar/data/1840416/0001171843-26-002178-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325002284/sev20241231_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000197248126000281/xsl144X01/primary_doc.xml",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326005809/f425_083126.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184326005854/f425_090226.htm",
+          "https://www.sec.gov/Archives/edgar/data/1840416/000117184325001327/",
+          "https://www.sec.gov/Archives/edgar/data/91767/000110465926027663/tm266605d2_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/806172/000117152025000254/sotk2025-annualreport.pdf",
+          "https://www.sec.gov/Archives/edgar/data/91767/000110465925023961/tm255812d3_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/806172/000117152024000261/sotk2024-annualreport.pdf"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": {
+          "float": "626,667 displayed",
+          "value": 626667,
+          "sourceDate": "2026-10-01",
+          "reportDate": "2026-10-01"
+        },
+        "today": null
+      },
+      "verdict": "ONLY_A"
+    },
+    {
+      "pick": {
+        "ticker": "WCT",
+        "cik": "1990251",
+        "company": "Wellchange Holdings Co Ltd",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 6
+      },
+      "a": {
+        "ticker": "WCT",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 46265000,
+          "asOf": "2024-12-31",
+          "filed": "2025-05-16",
+          "accession": "0001213900-25-044576",
+          "form": "20-F",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 0,
+        "largeHolderTotal": 102800000,
+        "subtracted": 102800000,
+        "subtractedFamily": "LARGE",
+        "bound": -56535000,
+        "state": "PRODUCED",
+        "underLowFloatLine": true,
+        "holdings": [
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2056626",
+            "persons": [
+              "SHEK KIN PONG"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0001213900-25-016095",
+            "filingDate": "2025-02-21",
+            "shares": 17800000,
+            "percent": 38.5,
+            "groupFilings": [
+              "0001213900-25-016095"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2090059",
+            "persons": [
+              "CHAN CHEUNG HING"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0001213900-25-097359",
+            "filingDate": "2025-10-08",
+            "shares": 40000000,
+            "percent": 27.536,
+            "groupFilings": [
+              "0001213900-25-097359"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2090071",
+            "persons": [
+              "CHAN FUK HING"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0001213900-25-097360",
+            "filingDate": "2025-10-08",
+            "shares": 20000000,
+            "percent": 13.768,
+            "groupFilings": [
+              "0001213900-25-097360"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2090080",
+            "persons": [
+              "NI SAIJUN"
+            ],
+            "form": "SCHEDULE 13D",
+            "accession": "0001213900-25-097361",
+            "filingDate": "2025-10-08",
+            "shares": 25000000,
+            "percent": 17.21,
+            "groupFilings": [
+              "0001213900-25-097361"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "WCT",
+        "httpStatus": 200,
+        "ms": 13366,
+        "answer": {
+          "state": "UNKNOWN",
+          "floatShares": null,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1990251/000121390026055994/ea0290002-20f_wellchange.htm",
+          "sourceTitle": "Wellchange Holdings Company Limited — Form 20-F for the year ended December 31, 2025",
+          "asOf": null,
+          "method": null,
+          "reason": "No admissible SEC filing or company newswire release located that states a public-float share count or provides an unambiguous non-affiliate share count from which public float can be computed. The Form 20-F reports shares outstanding and beneficial ownership, but shares outstanding must not be treated as public float."
+        },
+        "usage": {
+          "input": 34541,
+          "cached": 4707,
+          "output": 854,
+          "searches": 4
+        },
+        "usd": 0.1108574,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026055994",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390025099980",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390025116978",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026035540",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026097219/0001213900-26-097219-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1990251",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026091888/0001213900-26-091888-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390024057117",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026097242/0001213900-26-097242-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390025051558/0001213900-25-051558-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026016464/0001213900-26-016464-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1990251/000121390026023419/0001213900-26-023419-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1836875/000121390023030696/fars0423_nuvveholdingcorp.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex993to13da2514210002_070125.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex991to13da2514210002_070125.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex994to13da2514210002_070125.pdf"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": null,
+        "today": null
+      },
+      "verdict": "ONLY_A"
+    },
+    {
+      "pick": {
+        "ticker": "EJH",
+        "cik": "1769768",
+        "company": "E-Home Household Service Holdings Ltd",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 7
+      },
+      "a": {
+        "ticker": "EJH",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 4003859,
+          "asOf": "2025-06-30",
+          "filed": "2025-10-30",
+          "accession": "0001213900-25-104179",
+          "form": "20-F",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 0,
+        "largeHolderTotal": 0,
+        "subtracted": 0,
+        "subtractedFamily": "S16",
+        "bound": 4003859,
+        "state": "PRODUCED",
+        "underLowFloatLine": true,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-030720",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-26-030723",
+            "filingDate": "2026-03-18",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1997901",
+            "owner": "WENSHAN XIE",
+            "form": "4",
+            "accession": "0001213900-26-048037",
+            "filingDate": "2026-04-27",
+            "shares": 744295,
+            "used": false,
+            "why": "split in 2025-06-30..2026-04-27 (factor range x25.009)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2124595",
+            "owner": "YE YIJING",
+            "form": "3",
+            "accession": "0001213900-26-038639",
+            "filingDate": "2026-04-01",
+            "shares": 1,
+            "used": false,
+            "why": "split in 2025-06-30..2026-04-01 (factor range x25.009)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2128826",
+            "owner": "ZHU CHUNSHENG",
+            "form": "3",
+            "accession": "0001213900-26-042153",
+            "filingDate": "2026-04-10",
+            "shares": 1,
+            "used": false,
+            "why": "split in 2025-06-30..2026-04-10 (factor range x25.009)"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "1997901",
+            "persons": [
+              "WENSHAN XIE"
+            ],
+            "form": "SCHEDULE 13D/A",
+            "accession": "0001213900-26-048036",
+            "filingDate": "2026-04-27",
+            "shares": 744295,
+            "percent": 23.26,
+            "groupFilings": [
+              "0001213900-26-048036",
+              "0001213900-26-041520"
+            ],
+            "used": false,
+            "why": "split in 2025-06-30..2026-04-27 (factor range x25.009)"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "EJH",
+        "httpStatus": 200,
+        "ms": 15787,
+        "answer": {
+          "state": "PRODUCED",
+          "floatShares": 19696490,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1769768/000121390025081782/ea0254786-f3a1_ehome.htm",
+          "sourceTitle": "E-Home Household Service Holdings Limited Form F-3/A",
+          "asOf": "2025-07-14",
+          "method": "The Form F-3/A expressly states that public float was calculated from 19,696,490 Ordinary Shares held by non-affiliates at the Nasdaq closing price of $2.99 on 2025-07-14 (19,696,490 × $2.99 = $58,892,505).",
+          "reason": null
+        },
+        "usage": {
+          "input": 50159,
+          "cached": 4707,
+          "output": 921,
+          "searches": 6
+        },
+        "usd": 0.1628974,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024038146/",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024091756/",
+          "https://www.sec.gov/Archives/edgar/data/1773751/000177375125000062/hims-20241231.htm",
+          "https://www.sec.gov/Archives/edgar/data/49071/0000049071-26-000009-index.html",
+          "https://www.sec.gov/Archives/edgar/data/1830188/0001830188-26-000009-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1297989/000129798926000008/0001297989-26-000008-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/46207/000035470726000008/0000354707-26-000008-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1610853/000110465926037194/0001104659-26-037194-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1803737/000180373726000018/0001803737-26-000018-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390023027671",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390022025201/",
+          "https://www.sec.gov/Archives/edgar/data/1647639/000164763926000027/0001647639-26-000027-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/313143/000031314325000043/hae2025annualreporttoshare.pdf",
+          "https://www.sec.gov/Archives/edgar/data/0000049196/000119312526103202/hban_ars_2026.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1836875/000121390023030696/fars0423_nuvveholdingcorp.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1314152/000131415226000041/a2025annualreportwith10-k.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1616707/000161670726000079/a2025annualreport_finala.pdf",
+          "https://www.sec.gov/Archives/edgar/data/0001877322/000187732226000024/a2025annualreport.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024091756/ea0218443-20f_ehomehouse.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/0001213900-24-091756-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024091756/0001213900-24-091756-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024026617/ea0202706-6k_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024032579/ea020379201-6k_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390025081782/ea0254786-f3a1_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024025557/ea0202462-6k_ehomehouse.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390025057827/ea0246339-s8_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024047098/ea0206795-s8_ehomehouse.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024093538/ea0219421-6k_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390025045434/ea023957901ex99-2_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024091756/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390023006406/ea172293-424b5_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390024026617/ea0202706-6k_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390023063654/ea182902-6k_ehomehousehold.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390022056750/ea165910-424b5_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000101376225001635/ea0235333-424b5_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390021019347/ea138674-posam_ehomehouse.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390025117283/ea0267666-424b5_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390022017911/ea157581-f3a5_ehomehouse.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390019004098/filename1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390022029560/ea160444-f3a6_ehomehouse.htm",
+          "https://www.sec.gov/Archives/edgar/data/1769768/000121390025074324/ea0252267-424b5_ehome.htm",
+          "https://www.sec.gov/Archives/edgar/data/88808/000008880812000014/sas_ncsr0612.htm"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": {
+          "float": "2.46M",
+          "value": 2460000,
+          "sourceDate": "2026-08-18",
+          "reportDate": "2026-08-18"
+        },
+        "today": null
+      },
+      "verdict": "B_ABOVE_FILED"
+    },
+    {
+      "pick": {
+        "ticker": "AISP",
+        "cik": "1842566",
+        "company": "Airship AI Holdings, Inc.",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 8
+      },
+      "a": {
+        "ticker": "AISP",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 34439562,
+          "asOf": "2026-08-06",
+          "filed": "2026-08-06",
+          "accession": "0001654954-26-007328",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 16789109,
+        "largeHolderTotal": 0,
+        "subtracted": 16789109,
+        "subtractedFamily": "S16",
+        "bound": 17650453,
+        "state": "PRODUCED",
+        "underLowFloatLine": false,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-24-000525",
+            "filingDate": "2024-12-30",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-25-000002",
+            "filingDate": "2025-01-02",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-25-000043",
+            "filingDate": "2025-01-08",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-25-000081",
+            "filingDate": "2025-03-05",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-25-000118",
+            "filingDate": "2025-03-24",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-25-000194",
+            "filingDate": "2025-07-01",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001161697-25-000312",
+            "filingDate": "2025-09-04",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2004300",
+            "owner": "Ma Yanda",
+            "form": "4",
+            "accession": "0001161697-26-000104",
+            "filingDate": "2026-05-04",
+            "shares": 270000,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2004301",
+            "owner": "Huang Victor",
+            "form": "4/A",
+            "accession": "0001161697-26-000229",
+            "filingDate": "2026-10-01",
+            "shares": 3832207,
+            "used": false,
+            "why": "a bar in the span has no split factor"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2004278",
+            "owner": "Allen Paul M.",
+            "form": "4",
+            "accession": "0001161697-26-000097",
+            "filingDate": "2026-04-23",
+            "shares": 151948,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2004183",
+            "owner": "Airship Kirkland Family Limited Partnership",
+            "form": "4",
+            "accession": "0001161697-25-000038",
+            "filingDate": "2025-01-08",
+            "shares": 3767718,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1623863",
+            "owner": "Mital Amit",
+            "form": "4",
+            "accession": "0001161697-25-000455",
+            "filingDate": "2025-12-15",
+            "shares": 11281,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2003703",
+            "owner": "Ranjan Peeyush",
+            "form": "4",
+            "accession": "0001161697-25-000457",
+            "filingDate": "2025-12-15",
+            "shares": 9767,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2004185",
+            "owner": "Airship Redmond Family Limited Partnership",
+            "form": "4",
+            "accession": "0001161697-25-000094",
+            "filingDate": "2025-03-11",
+            "shares": 7211523,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2004130",
+            "owner": "Xu Derek",
+            "form": "4",
+            "accession": "0001161697-26-000101",
+            "filingDate": "2026-04-23",
+            "shares": 5222920,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1197104",
+            "owner": "SCOTT MARK E",
+            "form": "4",
+            "accession": "0001161697-26-000048",
+            "filingDate": "2026-03-06",
+            "shares": 43952,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1849168",
+            "owner": "Lebedin Louis",
+            "form": "4",
+            "accession": "0001161697-26-000095",
+            "filingDate": "2026-04-23",
+            "shares": 100000,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1604488",
+            "persons": [
+              "FIRST TRUST MERGER ARBITRAGE FUND",
+              "FIRST TRUST CAPITAL MANAGEMENT L.P.",
+              "FIRST TRUST CAPITAL SOLUTIONS L.P.",
+              "FTCS SUB GP LLC"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001604488-25-000078",
+            "filingDate": "2025-03-06",
+            "shares": 0,
+            "percent": 0,
+            "groupFilings": [
+              "0001604488-25-000078"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "919185",
+            "persons": [
+              "HIGHBRIDGE CAPITAL MANAGEMENT, LLC"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0000902664-26-001094",
+            "filingDate": "2026-02-17",
+            "shares": 1708795,
+            "percent": 4.8,
+            "groupFilings": [
+              "0000902664-26-001094",
+              "0000902664-25-004949",
+              "0000902664-25-003623"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "AISP",
+        "httpStatus": 200,
+        "ms": 17698,
+        "answer": {
+          "state": "UNKNOWN",
+          "floatShares": null,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1842566/000165495426001280/airsp_10k.htm",
+          "sourceTitle": "Airship AI Holdings, Inc. Form 10-K for fiscal year ended December 31, 2025",
+          "asOf": "2025-06-30",
+          "method": null,
+          "reason": "The Form 10-K reports only the aggregate market value of common equity held by non-affiliates—$68,575,909 as of 2025-06-30—not a share count. It says this amount was based on the last reported trade that date, but does not state that trade price; no admissible primary source located states a public-float share count or the same-date price needed to compute one."
+        },
+        "usage": {
+          "input": 35362,
+          "cached": 4707,
+          "output": 1136,
+          "searches": 4
+        },
+        "usd": 0.1158834,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495425002153/airsp_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000194984625000499/xsl144X01/primary_doc.xml",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495424004059/airsp_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495426001280/airsp_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495425003986/airsp_424b3.htm",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000121390023093152/f424b31223_byteacq.htm",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000121390023051861/ea180900ex2-1_byteacq.htm",
+          "https://www.sec.gov/data-research/structured-data/2507-dqreminder-public-float-tagging-errors",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495424010109/airsp_s1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1604191/000110465923060928/tm2315784-1_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495424008709/airsp_s1a.htm",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495424001437/airsp_s1.htm",
+          "https://www.sec.gov/Archives/edgar/data/2073553/000149315226011988/form10-k.htm",
+          "https://www.sec.gov/comments/S7-2026-17/s7202617-976659-3053766.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1017491/000114036124037918/ny20022160x5_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/764195/000149315224016974/formars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1870940/000110465926043898/tm2611947d1_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495426001280/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1437402/000114036126017803/ny20065368x2_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1832871/000119312526126366/d74491dn2.htm",
+          "https://www.sec.gov/Archives/edgar/data/1448893/000110465926035252/tm266492d2_ars.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1842566/000165495426001280/airsp_10k.htm",
+          "https://www.sec.gov/Archives/edgar/data/312983/000201381625000103/yorkauditfinal.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1874252/000121390026063593/ea029258402-ars_quantum.pdf",
+          "https://www.sec.gov/Archives/edgar/data/893951/000089395125000004/public063025.pdf",
+          "https://www.sec.gov/about/divisions-offices/division-corporation-finance/financial-reporting-manual/frm-topic-5",
+          "https://www.sec.gov/Archives/edgar/data/863386/000086338625000004/quintaudit.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1079297/000121390016017732/filename1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1768446/000119312521239831/d165619dfwp.htm",
+          "https://www.sec.gov/resources-small-businesses/going-public/smaller-reporting-companies",
+          "https://www.sec.gov/Archives/edgar/data/311337/000110465925017658/tm251028d4_ex99-1.htm",
+          "https://www.sec.gov/newsroom/whats-new/osd-announcement-contexts-0418",
+          "https://www.sec.gov/Archives/edgar/data/1000275/000114036123020266/brhc20051772_424b2.htm",
+          "https://www.sec.gov/Archives/edgar/data/916618/000110465925082950/tm2519756d5_ncsrs.htm",
+          "https://www.sec.gov/Archives/edgar/data/886982/000156459020005690/gs-424b2.htm",
+          "https://www.globenewswire.com/news-release/2025/08/05/3127871/0/en/Airship-AI-Reports-Second-Quarter-2025-Financial-Results.html",
+          "https://www.globenewswire.com/news-release/2025/08/05/3127871/0/en/airship-ai-reports-second-quarter-2025-financial-results.html",
+          "https://www.globenewswire.com/news-release/2026/08/06/3340341/0/en/airship-ai-reports-second-quarter-2026-financial-results.html"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": null,
+        "today": null
+      },
+      "verdict": "ONLY_A"
+    },
+    {
+      "pick": {
+        "ticker": "CAMP",
+        "cik": "1736730",
+        "company": "Camp4 Therapeutics Corp",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 10
+      },
+      "a": {
+        "ticker": "CAMP",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 62753200,
+          "asOf": "2026-08-12",
+          "filed": "2026-08-13",
+          "accession": "0001628280-26-056760",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": true,
+          "reason": "one basis across the span (factor range x1.0000)"
+        },
+        "section16Total": 671881,
+        "largeHolderTotal": 19114574,
+        "subtracted": 19114574,
+        "subtractedFamily": "LARGE",
+        "bound": 43638626,
+        "state": "PRODUCED",
+        "underLowFloatLine": false,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0000950170-24-114172",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "3 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001104659-24-107809",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001104659-24-107814",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001104659-24-107817",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001104659-24-107818",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001104659-24-107821",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001415889-24-024994",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "5 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001415889-24-024996",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "4 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001415889-24-024998",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "5 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001415889-24-025000",
+            "filingDate": "2024-10-10",
+            "used": false,
+            "why": "2 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0000950170-24-114773",
+            "filingDate": "2024-10-15",
+            "used": false,
+            "why": "3 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0000950170-24-114788",
+            "filingDate": "2024-10-15",
+            "used": false,
+            "why": "6 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001104659-24-108702",
+            "filingDate": "2024-10-15",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001104659-24-108703",
+            "filingDate": "2024-10-15",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001415889-24-025140",
+            "filingDate": "2024-10-15",
+            "used": false,
+            "why": "5 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001415889-24-025354",
+            "filingDate": "2024-10-17",
+            "used": false,
+            "why": "2 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001415889-24-025380",
+            "filingDate": "2024-10-17",
+            "used": false,
+            "why": "6 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001415889-24-025393",
+            "filingDate": "2024-10-17",
+            "used": false,
+            "why": "7 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3/A",
+            "accession": "0000950170-24-116330",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "4 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4/A",
+            "accession": "0000950170-24-116360",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "7 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001736730-25-000009",
+            "filingDate": "2025-03-19",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001736730-25-000010",
+            "filingDate": "2025-03-19",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000011",
+            "filingDate": "2025-03-19",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000012",
+            "filingDate": "2025-03-19",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-25-016481",
+            "filingDate": "2025-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-25-016482",
+            "filingDate": "2025-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-25-016484",
+            "filingDate": "2025-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-25-016486",
+            "filingDate": "2025-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000054",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000055",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000056",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000057",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000058",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000059",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000060",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001736730-25-000061",
+            "filingDate": "2025-06-27",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001193125-25-201380",
+            "filingDate": "2025-09-11",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001193125-25-201392",
+            "filingDate": "2025-09-11",
+            "used": false,
+            "why": "7 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001231919-25-000196",
+            "filingDate": "2025-09-15",
+            "used": false,
+            "why": "7 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001598549-25-000004",
+            "filingDate": "2025-09-15",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0002089301-25-000002",
+            "filingDate": "2025-10-10",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001881045-25-000005",
+            "filingDate": "2025-12-22",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001927058-25-000004",
+            "filingDate": "2025-12-22",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0002033333-25-000005",
+            "filingDate": "2025-12-22",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0002089301-25-000004",
+            "filingDate": "2025-12-22",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001383731-26-000004",
+            "filingDate": "2026-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001383731-26-000006",
+            "filingDate": "2026-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001881045-26-000002",
+            "filingDate": "2026-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001927058-26-000002",
+            "filingDate": "2026-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0002033333-26-000002",
+            "filingDate": "2026-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0002089301-26-000003",
+            "filingDate": "2026-04-03",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-26-042858",
+            "filingDate": "2026-06-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-26-042859",
+            "filingDate": "2026-06-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-26-042860",
+            "filingDate": "2026-06-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-26-042861",
+            "filingDate": "2026-06-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-26-042862",
+            "filingDate": "2026-06-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001628280-26-042863",
+            "filingDate": "2026-06-12",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001231919-26-000829",
+            "filingDate": "2026-08-05",
+            "used": false,
+            "why": "7 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001598549-26-000002",
+            "filingDate": "2026-08-05",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001598549-26-000007",
+            "filingDate": "2026-08-21",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001598549-26-000009",
+            "filingDate": "2026-08-26",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001598549-26-000011",
+            "filingDate": "2026-08-31",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1490283",
+            "owner": "Young Richard A",
+            "form": "4",
+            "accession": "0001628280-26-053513",
+            "filingDate": "2026-08-05",
+            "shares": 186388,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2032665",
+            "owner": "Thadhani Ravi I.",
+            "form": "3",
+            "accession": "0001104659-24-107811",
+            "filingDate": "2024-10-10",
+            "shares": 17014,
+            "used": false,
+            "why": "bars start 2024-10-11, after 2024-10-10"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1769914",
+            "owner": "Ragan Paula",
+            "form": "3",
+            "accession": "0001104659-24-107812",
+            "filingDate": "2024-10-10",
+            "shares": 20232,
+            "used": false,
+            "why": "bars start 2024-10-11, after 2024-10-10"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1478521",
+            "owner": "Higgins Michael J",
+            "form": "3",
+            "accession": "0001104659-24-107813",
+            "filingDate": "2024-10-10",
+            "shares": 28739,
+            "used": false,
+            "why": "bars start 2024-10-11, after 2024-10-10"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1300247",
+            "owner": "Holtzman Steven H",
+            "form": "4",
+            "accession": "0001104659-24-108701",
+            "filingDate": "2024-10-15",
+            "shares": 108946,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2033326",
+            "owner": "Bumcrot David",
+            "form": "3",
+            "accession": "0001104659-24-107816",
+            "filingDate": "2024-10-10",
+            "shares": 61741,
+            "used": false,
+            "why": "bars start 2024-10-11, after 2024-10-10"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2033333",
+            "owner": "Gold Kelly",
+            "form": "4",
+            "accession": "0001628280-26-060234",
+            "filingDate": "2026-09-02",
+            "shares": 76467,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1927058",
+            "owner": "Mandel-Brehm Josh",
+            "form": "4",
+            "accession": "0001628280-26-053505",
+            "filingDate": "2026-08-05",
+            "shares": 284968,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1184847",
+            "owner": "WILLIAMS DOUGLAS E",
+            "form": "3/A",
+            "accession": "0001628280-25-017487",
+            "filingDate": "2025-04-11",
+            "shares": 2501,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1881045",
+            "owner": "Maricich Yuri",
+            "form": "4",
+            "accession": "0001628280-26-053512",
+            "filingDate": "2026-08-05",
+            "shares": 12611,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2089301",
+            "owner": "Tardiff Daniel",
+            "form": "4",
+            "accession": "0001628280-26-058107",
+            "filingDate": "2026-08-19",
+            "shares": 0,
+            "used": true,
+            "why": "latest direct holding, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "form": "SC 13D",
+            "accession": "0001104659-24-110566",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "no reportingPersonBeneficiallyOwnedAggregateNumberOfShares in 0 reporting persons"
+          },
+          {
+            "family": "LARGE",
+            "form": "SC 13D",
+            "accession": "0001104659-24-110570",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "no reportingPersonBeneficiallyOwnedAggregateNumberOfShares in 0 reporting persons"
+          },
+          {
+            "family": "LARGE",
+            "form": "SC 13G",
+            "accession": "0001104659-24-110572",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "no reportingPersonBeneficiallyOwnedAggregateNumberOfShares in 0 reporting persons"
+          },
+          {
+            "family": "LARGE",
+            "form": "SC 13G",
+            "accession": "0001104659-24-110632",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "no reportingPersonBeneficiallyOwnedAggregateNumberOfShares in 0 reporting persons"
+          },
+          {
+            "family": "LARGE",
+            "form": "SC 13D",
+            "accession": "0001193125-24-241180",
+            "filingDate": "2024-10-22",
+            "used": false,
+            "why": "no reportingPersonBeneficiallyOwnedAggregateNumberOfShares in 0 reporting persons"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1201001",
+            "persons": [
+              "HARBOURVEST PARTNERS L.P.",
+              "HARBOURVEST PARTNERS, LLC",
+              "SMRS-TOPE LLC",
+              "HVST-TOPE LLC"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001193125-25-226248",
+            "filingDate": "2025-10-01",
+            "shares": 1271948,
+            "percent": 2.7,
+            "groupFilings": [
+              "0001193125-25-226248",
+              "0000950170-25-071166"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1656629",
+            "persons": [
+              "AH BIO FUND I, L.P.",
+              "AH EQUITY PARTNERS BIO I, L.L.C.",
+              "AH BIO FUND IV, L.P.",
+              "AH EQUITY PARTNERS BIO IV, L.L.C.",
+              "MARC L. ANDREESSEN",
+              "BENJAMIN A. HOROWITZ"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001656629-25-000005",
+            "filingDate": "2025-11-14",
+            "shares": 2125339,
+            "percent": 4.5,
+            "groupFilings": [
+              "0001656629-25-000005"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1869128",
+            "persons": [
+              "NORTHPOND VENTURES II, LP",
+              "NORTHPOND VENTURES II GP, LLC",
+              "NORTHPOND VENTURES III, LP",
+              "NORTHPOND VENTURES III GP, LLC",
+              "NORTHPOND VENTURES, LP",
+              "NORTHPOND VENTURES GP, LLC",
+              "MICHAEL P. RUBIN"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001869128-25-000004",
+            "filingDate": "2025-11-14",
+            "shares": 2238244,
+            "percent": 4.8,
+            "groupFilings": [
+              "0001869128-25-000004"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "2068530",
+            "persons": [
+              "COASTLANDS CAPITAL LP",
+              "COASTLANDS CAPITAL PARTNERS LP",
+              "COASTLANDS CAPITAL GP LLC",
+              "COASTLANDS CAPITAL LLC",
+              "MATTHEW D. PERRY"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001104659-25-120225",
+            "filingDate": "2025-12-11",
+            "shares": 4886722,
+            "percent": 9.99,
+            "groupFilings": [
+              "0001104659-25-120225",
+              "0001172661-25-004132"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1274173",
+            "persons": [
+              "JANUS HENDERSON GROUP PLC"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0001274173-26-000026",
+            "filingDate": "2026-01-08",
+            "shares": 6307636,
+            "percent": 12.2,
+            "groupFilings": [
+              "0001274173-26-000026"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "315066",
+            "persons": [
+              "FMR LLC",
+              "ABIGAIL P. JOHNSON"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0000315066-26-000391",
+            "filingDate": "2026-02-05",
+            "shares": 4918243,
+            "percent": 9.5,
+            "groupFilings": [
+              "0000315066-26-000391",
+              "0000315066-25-002916",
+              "0000315066-25-002314"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1930214",
+            "persons": [
+              "VIVO OPPORTUNITY FUND HOLDINGS, L.P.",
+              "VIVO OPPORTUNITY, LLC",
+              "VIVO OPPORTUNITY CAYMAN FUND, L.P.",
+              "VIVO OPPORTUNITY CAYMAN, LLC"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001213900-26-016645",
+            "filingDate": "2026-02-13",
+            "shares": 3856991,
+            "percent": 7.4,
+            "groupFilings": [
+              "0001213900-26-016645",
+              "0001213900-25-088676"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "1953107",
+            "persons": [
+              "ENAVATE SCIENCES GP, LLC",
+              "EVEREST AGGREGATOR, LP"
+            ],
+            "form": "SCHEDULE 13D/A",
+            "accession": "0001953107-26-000005",
+            "filingDate": "2026-03-11",
+            "shares": 2495562,
+            "percent": 4.8,
+            "groupFilings": [
+              "0001953107-26-000005",
+              "0001953107-25-000021",
+              "0001953107-25-000007"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "2077247",
+            "persons": [
+              "TRAILS EDGE CAPITAL PARTNERS, LP",
+              "TRAILS EDGE BIOTECHNOLOGY MASTER FUND, LP",
+              "ORTAV YEHUDAI"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0001493152-26-036926",
+            "filingDate": "2026-08-10",
+            "shares": 3790636,
+            "percent": 6,
+            "groupFilings": [
+              "0001493152-26-036926"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1218710",
+            "persons": [
+              "BALYASNY ASSET MANAGEMENT L.P.",
+              "BAM GP LLC",
+              "BALYASNY ASSET MANAGEMENT HOLDINGS LP",
+              "DAMES GP LLC",
+              "DMITRY BALYASNY"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001172661-26-003419",
+            "filingDate": "2026-08-14",
+            "shares": 2591097,
+            "percent": 4.99,
+            "groupFilings": [
+              "0001172661-26-003419",
+              "0001193125-26-225173"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "1678203",
+            "persons": [
+              "POLARIS MANAGEMENT CO. VII, L.L.C.",
+              "POLARIS PARTNERS VII, L.P.",
+              "POLARIS ENTREPRENEURS' FUND VII, L.P.",
+              "POLARIS PARTNERS GP X, L.L.C.",
+              "POLARIS PARTNERS X, L.P.",
+              "AMIR NASHAT",
+              "BRIAN CHEE",
+              "AMY SCHULMAN"
+            ],
+            "form": "SCHEDULE 13D/A",
+            "accession": "0001193125-26-357272",
+            "filingDate": "2026-08-19",
+            "shares": 3932251,
+            "percent": 6.3,
+            "groupFilings": [
+              "0001193125-26-357272",
+              "0001193125-25-201410"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "1753037",
+            "persons": [
+              "5AM VENTURES VI, L.P.",
+              "5AM PARTNERS VI, LLC",
+              "5AM VENTURES VII, L.P.",
+              "5AM PARTNERS VII, LLC",
+              "5AM OPPORTUNITIES II, L.P.",
+              "5AM OPPORTUNITIES II (GP), LLC",
+              "ANDREW J. SCHWAB",
+              "KUSH PARMAR"
+            ],
+            "form": "SCHEDULE 13D/A",
+            "accession": "0001753037-26-000007",
+            "filingDate": "2026-08-31",
+            "shares": 6379125,
+            "percent": 9.9,
+            "groupFilings": [
+              "0001753037-26-000007",
+              "0001753037-26-000003",
+              "0001415889-25-024279"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "CAMP",
+        "httpStatus": 200,
+        "ms": 6316,
+        "answer": {
+          "state": "UNKNOWN",
+          "floatShares": null,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1736730/000173673026000016/camp-20251231.htm",
+          "sourceTitle": "CAMP4 Therapeutics Corporation — Form 10-K for fiscal year ended December 31, 2025",
+          "asOf": "2025-06-30",
+          "method": null,
+          "reason": "The Form 10-K reports only an approximately $14.6 million aggregate market value of common stock held by non-affiliates as of 2025-06-30, based on that date's closing price. It does not state the closing-price figure or a public-float share count; therefore an admissible precise float-in-shares calculation cannot be made."
+        },
+        "usage": {
+          "input": 12966,
+          "cached": 4707,
+          "output": 439,
+          "searches": 1
+        },
+        "usd": 0.032727400000000004,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673026000016/R1.htm",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673026000030/formars-campx20251231x10k.pdf",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673026000016/camp-20251231.htm",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673026000016/0001736730-26-000016-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673025000039/",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673025000070/",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000141057824002045/0001410578-24-002045-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673026000016/",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000162828026042846/0001628280-26-042846-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000173673025000094/",
+          "https://www.sec.gov/Archives/edgar/data/1736730/0001736730-25-000022-index.html",
+          "https://www.sec.gov/Archives/edgar/data/1736730/000175303726000007/0001753037-26-000007-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/1736730"
+        ],
+        "sourcesOutsideAllowList": []
+      },
+      "sheet": {
+        "research": null,
+        "today": null
+      },
+      "verdict": "ONLY_A"
+    },
+    {
+      "pick": {
+        "ticker": "COLA",
+        "cik": "2028201",
+        "company": "Columbus Acquisition Corp/Cayman Islands",
+        "tradingDate": "2026-10-01",
+        "checkpointId": 611,
+        "inRangeRank": 11
+      },
+      "a": {
+        "ticker": "COLA",
+        "shareCount": {
+          "state": "PRODUCED",
+          "shares": 4494439,
+          "asOf": "2026-08-04",
+          "filed": "2026-08-04",
+          "accession": "0001213900-26-085116",
+          "form": "10-Q",
+          "classes": 1
+        },
+        "shareCountBasisToNow": {
+          "proven": false,
+          "reason": "a bar in the span has no split factor"
+        },
+        "section16Total": 0,
+        "largeHolderTotal": 557800,
+        "subtracted": 557800,
+        "subtractedFamily": "LARGE",
+        "bound": 3936639,
+        "state": "PRODUCED",
+        "underLowFloatLine": true,
+        "holdings": [
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-25-005577",
+            "filingDate": "2025-01-22",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001213900-25-005585",
+            "filingDate": "2025-01-22",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "4",
+            "accession": "0001213900-25-022750",
+            "filingDate": "2025-03-11",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001013762-25-002137",
+            "filingDate": "2025-03-25",
+            "used": false,
+            "why": "no direct common-stock row"
+          },
+          {
+            "family": "S16",
+            "form": "3",
+            "accession": "0001193125-26-033189",
+            "filingDate": "2026-02-02",
+            "used": false,
+            "why": "8 reporting owners (joint filing, not attributed)"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2026794",
+            "owner": "Wong Manshek Anthony",
+            "form": "3",
+            "accession": "0001213900-25-005571",
+            "filingDate": "2025-01-22",
+            "shares": 12000,
+            "used": false,
+            "why": "bars start 2025-03-17, after 2025-01-22"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2026810",
+            "owner": "McKenzie Kevin",
+            "form": "3",
+            "accession": "0001213900-25-005589",
+            "filingDate": "2025-01-22",
+            "shares": 12000,
+            "used": false,
+            "why": "bars start 2025-03-17, after 2025-01-22"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "1879076",
+            "owner": "Xu Qian",
+            "form": "3",
+            "accession": "0001213900-25-005598",
+            "filingDate": "2025-01-22",
+            "shares": 12000,
+            "used": false,
+            "why": "bars start 2025-03-17, after 2025-01-22"
+          },
+          {
+            "family": "S16",
+            "ownerCik": "2046110",
+            "owner": "Hercules Capital Management VII Corp",
+            "form": "4",
+            "accession": "0001213900-25-022747",
+            "filingDate": "2025-03-11",
+            "shares": 1698290,
+            "used": false,
+            "why": "bars start 2025-03-17, after 2025-03-11"
+          },
+          {
+            "family": "LARGE",
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001628280-26-032395",
+            "filingDate": "2026-05-07",
+            "used": false,
+            "why": "no reportingPersonBeneficiallyOwnedAggregateNumberOfShares in 0 reporting persons"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13D",
+            "filerCik": "2046110",
+            "persons": [
+              "HERCULES CAPITAL MANAGEMENT VII CORP",
+              "FEN ZHANG"
+            ],
+            "form": "SCHEDULE 13D/A",
+            "accession": "0001213900-25-022756",
+            "filingDate": "2025-03-11",
+            "shares": 1698290,
+            "percent": 21.4,
+            "groupFilings": [
+              "0001213900-25-022756",
+              "0001213900-25-006669"
+            ],
+            "used": false,
+            "why": "bars start 2025-03-17, after 2025-03-11"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1048703",
+            "persons": [
+              "KARPUS MANAGEMENT, INC."
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001072613-25-000418",
+            "filingDate": "2025-06-06",
+            "shares": 199187,
+            "percent": 2.51,
+            "groupFilings": [
+              "0001072613-25-000418",
+              "0001072613-25-000380"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "11544",
+            "persons": [
+              "W. R. BERKLEY CORPORATION",
+              "BERKLEY INSURANCE COMPANY"
+            ],
+            "form": "SCHEDULE 13G",
+            "accession": "0001193125-25-274736",
+            "filingDate": "2025-11-10",
+            "shares": 404653,
+            "percent": 5.1,
+            "groupFilings": [
+              "0001193125-25-274736"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1279891",
+            "persons": [
+              "WOLVERINE ASSET MANAGEMENT LLC",
+              "WOLVERINE TRADING PARTNERS, INC.",
+              "WOLVERINE HOLDINGS, L.P.",
+              "CHRISTOPHER L. GUST",
+              "ROBERT R. BELLICK"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001140361-25-046545",
+            "filingDate": "2025-12-23",
+            "shares": 169777,
+            "percent": 2.13,
+            "groupFilings": [
+              "0001140361-25-046545",
+              "0001140361-25-025600"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "312069",
+            "persons": [
+              "BARCLAYS PLC"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0000312069-26-000043",
+            "filingDate": "2026-02-11",
+            "shares": 297000,
+            "percent": 3.73,
+            "groupFilings": [
+              "0000312069-26-000043",
+              "0000312069-25-000547"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1335730",
+            "persons": [
+              "MIZUHO FINANCIAL GROUP, INC."
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001104659-26-060622",
+            "filingDate": "2026-05-14",
+            "shares": 400877,
+            "percent": 8.9,
+            "groupFilings": [
+              "0001104659-26-060622",
+              "0001104659-26-013855",
+              "0001104659-25-077108",
+              "0000950170-25-069740"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1349339",
+            "persons": [
+              "LINDEN CAPITAL L.P.",
+              "LINDEN GP LLC",
+              "LINDEN ADVISORS LP",
+              "SIU MIN WONG"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001193125-26-223030",
+            "filingDate": "2026-05-14",
+            "shares": 0,
+            "percent": 0,
+            "groupFilings": [
+              "0001193125-26-223030",
+              "0001193125-25-276206"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1910592",
+            "persons": [
+              "HARRADEN CIRCLE INVESTMENTS, LLC",
+              "FREDERICK V. FORTMILLER, JR."
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001193125-26-340757",
+            "filingDate": "2026-08-07",
+            "shares": 557800,
+            "percent": 12.41,
+            "groupFilings": [
+              "0001193125-26-340757",
+              "0001193125-26-340756",
+              "0001193125-25-281775"
+            ],
+            "used": true,
+            "why": "latest in its group, basis proven"
+          },
+          {
+            "family": "LARGE",
+            "kind": "13G",
+            "filerCik": "1905106",
+            "persons": [
+              "METEORA CAPITAL, LLC"
+            ],
+            "form": "SCHEDULE 13G/A",
+            "accession": "0001905106-26-000157",
+            "filingDate": "2026-08-14",
+            "shares": 141742,
+            "percent": 3.15,
+            "groupFilings": [
+              "0001905106-26-000157",
+              "0001905106-26-000156",
+              "0001905106-26-000075",
+              "0001905106-26-000017",
+              "0001905106-26-000005"
+            ],
+            "used": false,
+            "why": "13G under 10 percent stays in the float"
+          }
+        ]
+      },
+      "b": {
+        "ticker": "COLA",
+        "httpStatus": 200,
+        "ms": 7820,
+        "answer": {
+          "state": "PRODUCED",
+          "floatShares": 6210414,
+          "sourceUrl": "https://www.sec.gov/Archives/edgar/data/2028201/000121390026031935/ea0280904-10k_columbus.htm",
+          "sourceTitle": "Columbus Acquisition Corp Form 10-K for fiscal year ended December 31, 2025",
+          "asOf": "2025-06-30",
+          "method": "Computed from the Form 10-K cover-page disclosure of approximately $62.95 million aggregate market value of voting and non-voting common equity held by non-affiliates as of June 30, 2025, using the stated last-sale price of $10.1362 per ordinary share: $62,950,000 ÷ $10.1362 = 6,210,414.16 shares, rounded to 6,210,414 shares.",
+          "reason": null
+        },
+        "usage": {
+          "input": 19153,
+          "cached": 4707,
+          "output": 552,
+          "searches": 3
+        },
+        "usd": 0.0664574,
+        "sourcesRetrieved": [
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026056577/ea0290066-10q_columbus.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026085116/0001213900-26-085116-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390025106936/ea0262859-10q_columbus.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026056577/0001213900-26-056577-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/0001213900-25-044326-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026031935/ea0280904-10k_columbus.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026031935/0001213900-26-031935-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026085116/ea0299941-10q_columbus.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026086245/0001213900-26-086245-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026085077/0001213900-26-085077-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026054549/0001213900-26-054549-index.htm",
+          "https://www.sec.gov/Archives/edgar/data/2028201/000121390026085084/0001213900-26-085084-index-headers.html",
+          "https://www.sec.gov/Archives/edgar/data/1836875/000121390023030696/fars0423_nuvveholdingcorp.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex991to13da2514210002_070125.pdf",
+          "https://www.sec.gov/Archives/edgar/data/880266/000092189525001891/ex994to13da2514210002_070125.pdf",
+          ""
+        ],
+        "sourcesOutsideAllowList": [
+          ""
+        ]
+      },
+      "sheet": {
+        "research": null,
+        "today": null
+      },
+      "verdict": "B_ABOVE_FILED"
+    }
+  ]
+}

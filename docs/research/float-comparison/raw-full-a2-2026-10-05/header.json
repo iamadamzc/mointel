@@ -1,0 +1,29 @@
+{
+  "preregistration": "docs/research/float-comparison/prereg.md",
+  "head": "963520a7e0051223798594afdd9dc60c01858818",
+  "mode": "full",
+  "arm": "a",
+  "store": {
+    "path": "A:/mointel/data/market-prod-2026-10-02.db",
+    "bytes": 4892807168
+  },
+  "startedAt": "2026-10-05T00:29:19.140Z",
+  "ownershipSince": "2024-10-05",
+  "allowList": [
+    "sec.gov",
+    "prnewswire.com",
+    "globenewswire.com",
+    "accesswire.com",
+    "businesswire.com",
+    "newsfilecorp.com"
+  ],
+  "capUsd": 5,
+  "bFrom": "docs/research/float-comparison/raw-full-2026-10-05/results.json",
+  "splitJumpFactor": 1.25,
+  "plannedCallUsd": 0.248,
+  "envDir": "A:/mointel",
+  "keysPresent": {
+    "sec": true,
+    "openai": true
+  }
+}
