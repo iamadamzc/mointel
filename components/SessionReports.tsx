@@ -115,6 +115,123 @@ export function BriefingLine({
   );
 }
 
+/**
+ * The briefing, LAID OUT IN THE PAGE (his ruling 2026-10-05, "between session
+ * greater prominence should be given to the session report").
+ *
+ * Used only when no session is in progress and the live board is empty
+ * (`lib/dashboard/offHours.ts`): the premarket briefing built from the 22:00
+ * recap leads the main area, above the frozen recap board, instead of one row
+ * and a Read button. It is the same `ReportBody` the large window shows, so
+ * the words cannot differ. Collapse folds it back to the one-row line; a report
+ * that is not published (checking, or missed) stays the worded line, never
+ * blank. Non-modal: nothing dims, nothing takes focus.
+ */
+export function InlineBriefing({
+  timeline,
+  choice,
+  ranges,
+  onChooseRange,
+  board,
+  priceOf,
+  nowMs,
+  onSelectTicker,
+  onOpenCheckpoint,
+  onOpen,
+  read,
+}: {
+  timeline: ReportTimeline;
+  choice: RangeChoice;
+  ranges: ReportRange[];
+  onChooseRange: (rangeId: string) => void;
+  board: BoardRange | null;
+  priceOf: (ticker: string) => number | null;
+  nowMs: number;
+  onSelectTicker: (ticker: string) => void;
+  onOpenCheckpoint: (id: number) => void;
+  onOpen: () => void;
+  read: boolean;
+}) {
+  const [collapsed, setCollapsed] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const current = timeline.current;
+  const report = current?.state === 'PUBLISHED' ? current.report : null;
+
+  if (choice.kind !== 'CHOSEN' || !current || !report || collapsed) {
+    return (
+      <>
+        <BriefingLine
+          timeline={timeline}
+          choice={choice}
+          onChooseRange={onChooseRange}
+          onOpen={onOpen}
+          read={read}
+        />
+        {collapsed && report ? (
+          <div className="border-b border-line bg-desk px-4 py-1">
+            <button
+              type="button"
+              onClick={() => setCollapsed(false)}
+              aria-expanded={false}
+              className="min-h-6 text-[11px] font-semibold tracking-wide text-accent uppercase"
+            >
+              Show the briefing here
+            </button>
+          </div>
+        ) : null}
+      </>
+    );
+  }
+
+  return (
+    <section aria-label="Session briefing" className="border-b border-line bg-panel px-4 py-3 print:hidden">
+      <div className="mb-2 flex items-center gap-2">
+        <span className="text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase">Briefing</span>
+        {ranges.length > 1 ? (
+          <span role="radiogroup" aria-label="Briefing range" className="ml-2 flex gap-1">
+            {ranges.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                role="radio"
+                aria-checked={option.id === choice.range.id}
+                onClick={() => onChooseRange(option.id)}
+                className={`min-h-6 rounded-sm border px-2 text-[11px] font-semibold ${
+                  option.id === choice.range.id
+                    ? 'border-accent/50 bg-accent/15 text-accent'
+                    : 'border-line-2 bg-panel-2 text-ink-2 hover:text-ink'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </span>
+        ) : null}
+        <button
+          type="button"
+          onClick={() => setCollapsed(true)}
+          aria-expanded={true}
+          className="ml-auto min-h-6 px-1 text-[11px] text-ink-3 hover:text-ink"
+        >
+          Collapse
+        </button>
+      </div>
+      <div className="mx-auto w-full max-w-[760px]">
+        <ReportBody
+          view={current}
+          report={report}
+          board={board}
+          priceOf={priceOf}
+          nowMs={nowMs}
+          headingRef={headingRef}
+          onSelectTicker={onSelectTicker}
+          onOpenCheckpoint={onOpenCheckpoint}
+        />
+      </div>
+    </section>
+  );
+}
+
 function Band({ children }: { children: React.ReactNode }) {
   return (
     <section

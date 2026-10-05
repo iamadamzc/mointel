@@ -13,7 +13,14 @@ import { boardCounts } from '@/lib/dashboard/boardCounts';
 import { cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { Graveyard } from '@/components/Graveyard';
 import { FocusStrip } from '@/components/FocusStrip';
-import { BriefingLine, ReportWindow } from '@/components/SessionReports';
+import { BriefingLine, InlineBriefing, ReportWindow } from '@/components/SessionReports';
+import {
+  effectiveView,
+  isOffHoursEmpty,
+  recapToOpen,
+  selectorOptions,
+  type ViewChoice,
+} from '@/lib/dashboard/offHours';
 import { TickerDrawer } from '@/components/TickerDrawer';
 import { mergeDesk } from '@/lib/dashboard/merge';
 import {
@@ -243,7 +250,11 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
    * Which assessment the Discovery area is showing. Null is LIVE, and LIVE is
    * the default — the history is for review, not for trading from.
    */
-  const [selectedAssessment, setSelectedAssessment] = useState<number | null>(null);
+  const [viewChoice, setViewChoice] = useState<ViewChoice>('AUTO');
+  const setSelectedAssessment = useCallback(
+    (id: number | null) => setViewChoice(id === null ? 'LIVE' : id),
+    [],
+  );
   const reports = useSessionReports();
   const [reportOpen, setReportOpen] = useState(false);
   const closeReport = useCallback(() => setReportOpen(false), []);
@@ -356,6 +367,14 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
    */
   const discovery = market.snapshot?.discovery ?? null;
   const assessments = market.snapshot?.assessments ?? OFFLINE_ASSESSMENTS;
+  /*
+   * B (his ruling 2026-10-05): with no session in progress and an empty live
+   * board, the main area opens on the newest checkpoint's frozen board, and the
+   * briefing leads the page. An explicit choice in the selector always wins,
+   * and the live board returns by itself when the session starts.
+   */
+  const offHours = isOffHoursEmpty(discovery?.sessionPhase, merged.discovery.length);
+  const selectedAssessment = effectiveView(viewChoice, offHours, recapToOpen(assessments));
 
   /*
    * Session briefings. Nothing mounts until the payload exists: "the route is
@@ -460,6 +479,21 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             onOpen={openReport}
             read={false}
           />
+        ) : timeline && reportChoice && offHours && reports ? (
+          // Between sessions the briefing leads the page, laid out in it.
+          <InlineBriefing
+            timeline={timeline}
+            choice={reportChoice}
+            ranges={reports.ranges}
+            onChooseRange={chooseReportRangeId}
+            board={board}
+            priceOf={(ticker) => market.snapshot?.demand[ticker]?.price ?? null}
+            nowMs={now}
+            onSelectTicker={setSelectedTicker}
+            onOpenCheckpoint={setSelectedAssessment}
+            onOpen={openReport}
+            read={currentReadKey !== null && readReports.includes(currentReadKey)}
+          />
         ) : timeline && reportChoice ? (
           <BriefingLine
             timeline={timeline}
@@ -474,7 +508,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             replaces: choosing a past assessment swaps the live board for the
             frozen one, rather than showing both and inviting a comparison
             between numbers captured hours apart. */}
-        {assessments.today.length > 0 || selectedAssessment !== null ? (
+        {selectorOptions(assessments).length > 0 || selectedAssessment !== null ? (
           <div className="flex items-center justify-end gap-3 border-b border-line bg-desk px-4 py-1">
             {/*
               * A briefing can open a checkpoint the selector does not list --
