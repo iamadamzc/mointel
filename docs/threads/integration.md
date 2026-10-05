@@ -1180,6 +1180,17 @@ WEB ACK          Web (local_a4c618a8) agrees; live / still says "No filing carri
 TITLES RE-READ   get_session 2026-10-05 after Web's correction: local_f26376f1 = Integration-tmi-retired, ARCHIVED;
                  local_46c15fbe = Web-tmi-retired, ARCHIVED; local_2ce868d2 = Commercial-tmi, not archived (retiring);
                  local_ab66f9f3 = Research-tmi, not archived (retired). He renamed the first two.
+DESIGN 1,024     MEASURED (Design, production 6e7fff84, 08-18 board 12 rows, table 982 px, Focus star injected): Float always
+                 on FITS (Why/Risk 189 -> 147, floor 120; price col 180 not 172, so the earlier ~151 was off by 4). Priority
+                 badge (21 px) after ticker fits all 12 real rows; FAILS "WWWW" (clipped) / "MMMMM" (overflows). Pre-existing
+                 defect: retained label overflows ticker cell (PFSA 133 px in 96); Design fixes in the same build.
+                 Float cell 84 px / 68 px text / 11 px: one line "≤ 12.3M", "max 12.3M", one-word verdicts; wraps "no more
+                 than 12.3M", "under 12.3M", "DIRTY FLOAT".
+                 MY CALLS (ac002ffb): A = widen Ticker 112 -> 128 (Why/Risk 139), keeps "badge on the ticker" literal; layout
+                 within his ruling, not his. B = cell words to Marketing (53323dd1) then new Commercial. SEAMS raised: (1)
+                 "Cannot verify" (Commercial items 7, 8) unmeasured, two words, may wrap; (2) Commercial item 7 puts the
+                 filed count's date IN the cell; Design's B moves it to the popover: claims question for Marketing + new
+                 Commercial, not layout. Build waits on Research's contract.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
