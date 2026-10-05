@@ -94,6 +94,21 @@ describe('restateBars', () => {
     expect(out[2]!.close).toBeCloseTo(8, 10);
   });
 
+  it('a bar dated ON an earlier ex-date gets only the later splits ratios', () => {
+    const earlier: SplitAction = { symbol: 'WCT', exDate: '2026-08-15', oldRate: 3, newRate: 1 };
+    const out = restateBars(
+      [
+        { date: '2026-08-14', close: 1, volume: 10 },
+        { date: '2026-08-15', close: 1, volume: 10 },
+      ],
+      [earlier, WCT_TODAY],
+      TRADING_DATE,
+    );
+    // The day before the 1-for-3 carries both ratios (3 x 5); the ex-date itself already traded post-split.
+    expect(out[0]!.close).toBeCloseTo(15, 10);
+    expect(out[1]!.close).toBeCloseTo(5, 10);
+  });
+
   it('halves prices and doubles volume for a 2-for-1 forward split', () => {
     const forward: SplitAction = { symbol: 'ABC', exDate: TRADING_DATE, oldRate: 1, newRate: 2 };
     expect(restateBars([{ date: '2026-09-04', close: 100, volume: 1_000 }], [forward], TRADING_DATE)).toEqual([
