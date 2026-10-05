@@ -1325,6 +1325,9 @@ PUSHED           origin/main ac18ca05..0f1bf8e2 (the gated sha, not main's tip; 
                  cleared, 9 Integration's own). Left local: 860395a3 21839133 (inert code) + docs; Ops asked to gate the tip.
 PUSHED 2         Ops GREEN on literal 85041ad8 (233 files / 3455 passed / 1 skipped; eslint, build, tsc 0). Pushed
                  0f1bf8e2..85041ad8 (5 commits, all cleared). Left local: 21839133 + docs; Ops told the cut's gate goes first.
+PUSHED 3         Ops GREEN on literal 3e243c8f (234 files / 3463 passed / 1 skipped; eslint, build, tsc 0; overlapped by
+                 Design's tsc in A:\mointel-design, timing only). Marketing cleared 3e243c8f by reply. Pushed 85041ad8..3e243c8f.
+                 After it only Integration charter commits (docs/threads/integration.md), pushed as docs.
 TO HIM           Looser-A result (Research 85041ad8, read from the committed file): A 5 vs 45 of 719. Put to him as a
                  keep-or-switch with recommendation KEEP. Old-chat rename/archive asked.
 THE CUT          RULED to Ops: production 6e7fff84 + 28 picks, order and full shas in my message to Ops (2026-10-05, after
