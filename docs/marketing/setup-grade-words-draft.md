@@ -52,6 +52,20 @@ A produced-but-unreadable name never prints a dash, and a name with no research 
 
 *No link and no "see the rubric" placeholder: the published rubric page carries decision 3's thresholds and, when it exists, comes to Commercial before it ships. "The grades have not been tested against outcomes" is tied to a flag and changed in the same commit as the first outcome test; at expiry the clause is DELETED, never replaced with a result (any statement of how grades did is an outcome claim and goes back to Commercial). Research's simulation measures no outcome and does not trigger the expiry.*
 
+### 4a. EXPIRED 2026-10-05: "the grades have not been tested against outcomes" (Research's outcome test, adae1e89)
+
+Research's test ran on his ruling (2026-10-05T21:50:53.964Z, "should absolutely see how the names traded against the grades"): 701 usable rows, the 22:00 after-hours leaders priced $1 to $20, 2026-08-17 to 2026-10-01, next trading day's high from 04:00 through the close. Verdict as registered: the grades DID NOT SEPARATE, for the approved rule (B against D, the only groups large enough) and for the looser-A variant. The test can see a 10 to 30 point separation, not a few points. The approved rule's A (5 rows) and C (9 rows) could not be tested. The sentence is therefore false and must change in the same commit that publishes the legend. Commercial's standing rule (claims read section 6): at expiry the clause is deleted; any statement of how the grades did against outcomes is an outcome claim and goes to Commercial first.
+
+**Option 1, my recommendation: delete the clause, say nothing about testing in the legend.**
+"Setup grade is the desk's own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read."
+Why: the legend is the shortest copy on the board and every phrase there is read at a glance. A result with its limits (population, size, A and C untested) cannot be said at that length without either overstating the negative or reading as a verdict, which are the two things Research's file rules out. Silence is not a claim.
+
+**Option 2, for Commercial to rule on, if he wants the result stated: one sentence, on the rubric page when it exists, not in the legend.**
+"We looked once at how the names these grades describe traded the next day, across seven weeks of after-hours leaders priced $1 to $20. In that look the grades did not tell apart how far the names ran. The look could only have shown large differences, and there were too few A and C names to test."
+It says: once, which population, which period, a null, the limit of what a null means, and the groups that were not tested. It does not say the grades are useless (not shown), predictive (not shown), or that any entry or exit was measured (none was). It does not use "tested" as a pass/fail word.
+
+**For him (the product owner), not Marketing:** whether the desk publishes its own null result is his call. Option 1 publishes nothing and is complete without it.
+
 ## 5. Surfaces the words must reach (Commercial's sweep, restated for Integration)
 
 Column, filter options (read "Setup grade A", "B", "C", "D", "Not graded"), URL values, aria-labels (badge: "Setup grade {letter}"), tooltips, the drawer badge, MCP output, API and exports, report tags. No "AVOID" and no "Priority" may reach a reader on any of them. D is the label everywhere.
