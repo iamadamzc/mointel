@@ -1506,6 +1506,14 @@ S3 NEW TIP       67da54f4 (tag design/s3-board-gated-67da54f4, rev-parse checked
                  SHIP TERMS NOW: S3 no longer needs the reader to be safe, BUT it removes the table, so it ships only WITH
                  his B + the session-report prominence (his 22:38:04Z ruling); shipping S3 alone would put the empty
                  board in front of him off-hours, against that ruling.
+REPORT PROPOSAL  Design: window = live board empty (22:00-04:00, non-trading days); main area top-down: PREMARKET briefing
+                 INLINE (lead, name cards, range chooser, Collapse) then the 22:00 recap board, Back to live in selector;
+                 band if unpublished. Label: existing "Snapshot · not live" badge (AssessmentHistory.tsx:143-146, READ).
+                 APPROVED by me (layout inside his ruling). CONDITION: B must not degrade to A. From code: recap is in the
+                 ENDING day's schedule (schedule.ts:206); panel reads readAssessments(db, tradingDate) (readModel.ts:328)
+                 and tradingDate rolls after 22:00/weekends (session.ts:357-361), so the list is likely EMPTY in B's
+                 window. Build must read the latest completed checkpoint across dates; readModel callers enumerated in
+                 the commit. If larger than UI, back to me before shipping without it.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
