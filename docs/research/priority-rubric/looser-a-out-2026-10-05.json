@@ -1,0 +1,463 @@
+{
+  "rows": 719,
+  "checkpointDates": 31,
+  "approvedRule": {
+    "B": 293,
+    "NOT_YET": 147,
+    "UNKNOWN": 66,
+    "AVOID": 199,
+    "A": 5,
+    "C": 9
+  },
+  "looserA": {
+    "B": 253,
+    "NOT_YET": 147,
+    "UNKNOWN": 66,
+    "A": 45,
+    "AVOID": 199,
+    "C": 9
+  },
+  "promotedFromB": 40,
+  "promoted": [
+    {
+      "date": "2026-08-17",
+      "ticker": "CRGO",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "UNKNOWN",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-18",
+      "ticker": "AIXC",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-18",
+      "ticker": "ENRD",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-18",
+      "ticker": "SLE",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-21",
+      "ticker": "OLOX",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-24",
+      "ticker": "LUCY",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "ticker": "CRE",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "UNKNOWN"
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "ticker": "MIMI",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "ticker": "YYGH",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-27",
+      "ticker": "LGPS",
+      "basis": {
+        "structure": "STRONG",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "UNKNOWN"
+      }
+    },
+    {
+      "date": "2026-08-27",
+      "ticker": "PPCB",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-08-31",
+      "ticker": "CVKD",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-01",
+      "ticker": "AMBR",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-01",
+      "ticker": "LIDR",
+      "basis": {
+        "structure": "STRONG",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-01",
+      "ticker": "SSM",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-02",
+      "ticker": "TLYS",
+      "basis": {
+        "structure": "STRONG",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-03",
+      "ticker": "CHPT",
+      "basis": {
+        "structure": "STRONG",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "UNKNOWN"
+      }
+    },
+    {
+      "date": "2026-09-04",
+      "ticker": "IMRN",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-09",
+      "ticker": "ACCL",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-09",
+      "ticker": "IRD",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-09",
+      "ticker": "SUNE",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "ticker": "SKYQ",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "ticker": "TNON",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-11",
+      "ticker": "AENT",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-15",
+      "ticker": "BNGO",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-15",
+      "ticker": "VEEA",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-15",
+      "ticker": "VRA",
+      "basis": {
+        "structure": "STRONG",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "UNKNOWN"
+      }
+    },
+    {
+      "date": "2026-09-16",
+      "ticker": "MEDS",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "DTSS",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "UNKNOWN"
+      }
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "TURB",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-17",
+      "ticker": "XRTX",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-21",
+      "ticker": "GRML",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "UNKNOWN"
+      }
+    },
+    {
+      "date": "2026-09-23",
+      "ticker": "ARTL",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-25",
+      "ticker": "INLF",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "STRONG",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-28",
+      "ticker": "SCYX",
+      "basis": {
+        "structure": "UNKNOWN",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-29",
+      "ticker": "DXST",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "UNKNOWN",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "NCNA",
+      "basis": {
+        "structure": "STRONG",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-09-30",
+      "ticker": "TGE",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-10-01",
+      "ticker": "AISP",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "LIMITED"
+      }
+    },
+    {
+      "date": "2026-10-01",
+      "ticker": "SORA",
+      "basis": {
+        "structure": "LIMITED",
+        "catalyst": "STRONG",
+        "volume": "STRONG",
+        "liquidity": "LIMITED",
+        "supply": "UNKNOWN"
+      }
+    }
+  ]
+}
