@@ -55,6 +55,16 @@ Integration:**
   their outcomes, for analysis of the desk's performance.
 - 23:53:44Z, on the "Researched Names" table (the second table), verbatim: *"remove it"*. **This replaces the 2026-10-03
   reading above that the second table stays.** Priority, which he kept, needs a home on the main board (Design proposes).
+- 2026-10-05T00:00:00.915Z, verbatim: *"badge on the ticker - it needs a tooltip"*. Priority is a badge in the main
+  board's Ticker cell, with a tooltip.
+- 2026-10-05T00:40:36.034Z, on the float, after the 10-stock comparison
+  (`docs/research/float-comparison/result-2026-10-05.md`), verbatim: *"a, go with the SEC calculation. we need to teach
+  this in the tool. actually it probably deserves it's own page on the site, the explanation of this. so we'll go with SEC,
+  with a tooltip with brief helpful explanation, and a link if possible leading to a page "are float quotes real?" and a
+  well written explanation of the proecss and our method."* So: **float = the SEC upper bound, insiders only** (the safe
+  half; the comparison showed the large-holder half can go below zero), shown as an upper bound with source and date; **a
+  tooltip** on the float cell with a brief explanation; **a public page "Are float quotes real?"** explaining how floats
+  are produced anywhere and the desk's method, linked from the tooltip.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
