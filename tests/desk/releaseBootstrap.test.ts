@@ -37,7 +37,13 @@ function writeStubs(options: {
   activeState?: string;
   /** The release every service's /proc cwd resolves to after the deploy. */
   liveRelease?: string;
+  /** Contents of deploy/aws/required-env.txt at the shipping sha. Default: none declared. */
+  requiredEnv?: string;
+  /** What the box says about each declared key; 'unreadable' prints nothing, as a failed ssh does. */
+  envState?: 'present' | 'absent' | 'unreadable';
 }) {
+  const requiredEnv = options.requiredEnv ?? '';
+  const envState = options.envState ?? 'present';
   const activeState = options.activeState ?? 'inactive';
   const liveRelease = options.liveRelease ?? '/opt/mointel/releases/abc1234def';
   fs.writeFileSync(
@@ -50,6 +56,10 @@ echo "SSH \${remote}" >> "${log.replace(/\\/g, '/')}"
 case "\$remote" in
   *"test -f /opt/mointel/current/deploy/aws/preflight.sh"*)
     exit ${options.deployedHasPreflight ? 0 : 1}
+    ;;
+  *"/etc/mointel/mointel.env"*)
+    # The presence probe for one declared key: a word, never a value.
+    ${envState === 'unreadable' ? 'exit 255' : `echo ${envState}`}
     ;;
   *"bash -s"*)
     # The streamed gate: consume it so the pipe closes, then answer.
@@ -116,7 +126,12 @@ case "\$1" in
     if [ "\$2" = "--short" ]; then echo "abc1234"; else echo "abc1234def"; fi
     ;;
   diff) exit 0 ;;
-  show) echo "#!/usr/bin/env bash"; echo "exit 0" ;;
+  show)
+    case "\$2" in
+      *required-env.txt) printf '%s' "${requiredEnv}" ;;
+      *) echo "#!/usr/bin/env bash"; echo "exit 0" ;;
+    esac
+    ;;
   archive) printf 'TARBYTES' ;;
   *) exit 0 ;;
 esac
@@ -368,5 +383,64 @@ describe('release bootstrap', () => {
 
     expect(result.status).toBe(4);
     expect(result.output).toContain('is not a directory');
+  });
+});
+
+describe('required box settings', () => {
+  const DECLARED = 'DESK_OWNER_EMAIL';
+
+  it('ships when every declared key is set (the positive control)', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, requiredEnv: DECLARED, envState: 'present' });
+
+    const result = run();
+
+    expect(result.status).toBe(0);
+    expect(transcript()).toContain('/etc/mointel/mointel.env');
+    expect(transcript()).toContain('GIT archive');
+  });
+
+  it('refuses with exit 10 and ships nothing when a declared key is absent on the box', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, requiredEnv: DECLARED, envState: 'absent' });
+
+    const result = run();
+
+    expect(result.status).toBe(10);
+    expect(result.output).toContain('DESK_OWNER_EMAIL');
+    expect(transcript()).not.toContain('GIT archive');
+    expect(transcript()).not.toContain('systemd-run');
+  });
+
+  it('refuses when the box cannot be read: could not check is not present', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, requiredEnv: DECLARED, envState: 'unreadable' });
+
+    const result = run();
+
+    expect(result.status).toBe(10);
+    expect(result.output).toContain('DESK_OWNER_EMAIL(unreadable)');
+    expect(transcript()).not.toContain('GIT archive');
+  });
+
+  it('asks nothing of the box when the release declares nothing', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, requiredEnv: '', envState: 'absent' });
+
+    const result = run();
+
+    expect(result.status).toBe(0);
+    expect(transcript()).not.toContain('/etc/mointel/mointel.env');
+  });
+
+  it('never puts a value on the wire: the probe asks for presence only', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, requiredEnv: DECLARED, envState: 'present' });
+
+    run();
+
+    const probe = transcript().split('\n').find((line) => line.includes('/etc/mointel/mointel.env')) ?? '';
+    expect(probe).toContain('grep -q');
+    expect(probe).toContain('echo present');
+  });
+
+  it('this repository declares DESK_OWNER_EMAIL, the key whose absence takes Retry from the owner', () => {
+    const declared = fs.readFileSync(path.join(ROOT, 'deploy', 'aws', 'required-env.txt'), 'utf8');
+    expect(declared.split(/\r?\n/)).toContain('DESK_OWNER_EMAIL');
   });
 });
