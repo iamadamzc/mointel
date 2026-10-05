@@ -1403,7 +1403,8 @@ BADGE S3 (Design) Local in A:\mointel-design, not gated: layout, grade mapping (
                  forbids tested/validated/do not predict/did not work/outcome. NOT built: float faces, Researched Names table
                  removal, the gate. OWNERS ASSIGNED by me: MCP tools.ts :220/:272 + review readableSheet route.ts:42 -> WEB
                  (were unowned, web.md:539); setupGrades READER -> OPS (same branch as the three columns); floatBound shape
-                 review -> new Research (with the float job); report tags -> Research after the float job. OPEN: Design's
+                 -> new Research DEFINES it with the float job (CORRECTED: not Design's proposal, no such file in Design's
+                 tree; it came from the retired Research seat's reply); report tags -> Research after the float job. OPEN: Design's
                  counts strip "recounts over main-board rows"; asked for before/after definitions; same idea relabeled =
                  mine with Design, different meaning under the same label = his.
                  RULED by me: strip = rows on the main board each chip keeps if clicked, over the whole board before
@@ -1414,7 +1415,14 @@ RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, the
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
                  "arithmetic audited". R1 at 90 days: a number for 5 of 71 names (KNOWN_ACTIVE), 3 (wider rule).
-LEDGER           (none yet)
+LEDGER           1. Told new Research that Design proposed `floatBound` "on its local work (A:\mointel-design)", relaying
+                 Design's own wording without opening the tree; Design corrected itself: the shape came from the retired
+                 Research seat and no file exists. TYPE: a sentence left before its source was read (the 26th's class,
+                 named in my prompt). First this session. Caught by a peer (Design). Retracted to Research next message.
+OFF-HOURS        Design: with the Researched Names table gone, off-hours (before 04:00, after 20:00, weekends) the main area
+                 is the empty Discovery board (DashboardShell opened the table by default then); Focus and Graveyard stay.
+                 Follows from his "remove it" but he was never told it in those words. Goes to him BEFORE the removal
+                 ships, as a decision with options; asked Design to confirm from code and give 2-3 options + rec.
 ```
 
 ## THE TWENTY-SIXTH SEAT'S RUNNING NOTES (opened 2026-10-05T16:05:30Z, `local_2102878a`, Sonnet 5.5, effort medium)
