@@ -13,6 +13,15 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // CommonJS scripts (run with plain node, no bundler) cannot use ES imports, so
+  // the rule that forbids require() has nothing to offer them. Four research
+  // scripts and an ops trace tool each tripped it on main, one after another.
+  {
+    files: ["**/*.cjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
