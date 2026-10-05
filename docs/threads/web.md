@@ -450,118 +450,87 @@ that as a rejection.**
 
 ## LIVE STATE: rewrite or delete this section, never let it go stale
 
-**SNAPSHOT 2026-10-04 23:29 UTC (19:29 ET), at `98d25f3f` on local main. Written as a
-hand-off on his "hand off"; every line was true at that moment and nothing below is a
-diary.** *Where this disagrees with anything above it, this wins. The previous
-snapshot (the sign-in night, 2026-10-02) is in this file at `526bed0b`.*
-
-**ADDENDUM 2026-10-05 00:55Z, successor seat (local_a4c618a8), on opening:** *production is
-`6e7fff84` (= `f5746a84` + Sheet step 1) for web/research/assess, market on `f5746a84` (Ops `/proc`
-00:54:24Z, relayed by Integration 25th; `0b92c309` is two ships old). Read from outside by this
-seat at 00:55Z: private paths 401, public paths 200, and the live `/` still says "No filing carries
-one", so `2fe136ac` is NOT live (not cut either; next ordinary release, after Ops's Monday 10-05
-spot check). Sheet plan step 3 is not built, so step 4 is not reached. Three rows added to OPEN.*
+**SNAPSHOT 2026-10-05 22:52 UTC (18:52 ET), at `bd5c7b7c` on local main, origin/main `7283242a`. Written as a
+hand-off on his "yes hand off" by the Web seat local_a4c618a8. Every line was true at that moment; nothing below
+is a diary.** *Where this disagrees with anything above it, this wins. The previous snapshot (2026-10-04) is in
+this file at `98d25f3f`.*
 
 ### What is live on tmitrader.com
 
-**The desk is behind TWO layers now: nginx Basic Auth (unchanged, still the outer
-wall) and Google sign-in enforced in the app (step 4, shipped 2026-10-03).** *Web ran
-`0b92c309` per Integration's 2026-10-03 snapshot (start 15:22:51Z): `3b9c0a70` +
-refusal screen + gate wiring + probe removal + the `/api/dashboard` hold + Design's
-blue-sky fix + two test-only fixes. `f5746a84` (= `0b92c309` + Ops's split-day fix)
-was named by Design on 2026-10-04 as the base of the next tag; this seat did NOT
-read which sha is live now. Ask Integration.*
+**Production is `6e7fff84` (web/research/assess) and `f5746a84` (market), unchanged since 2026-10-03** (Ops
+`/proc` 21:30:35Z, in Integration 27th's live state). Read from outside by this seat just after that stamp: `/desk /enter
+/signin /api/dashboard /api/health` all 401; the live `/` still says "No filing carries one".
 
-*Behaviour as the code at `0b92c309` defines it (live reads are the last bullet):*
-- `/desk`: anonymous -> redirect to `/signin`; refused -> 403 + `NotAdmitted` via
-  `forbidden()` (`experimental.authInterrupts` in `next.config.ts`); admitted -> board.
-- `/api/{assessments,levels,market,reports,research/retry}`: 401 anonymous, 403
-  refused, identical no-detail body. **`/api/dashboard` is NOT session-gated** (OPEN).
-  `/api/health` is ungated on purpose (loopback-only, Ops's liveness check).
-- The one place a request becomes an admission: `lib/auth/requestGate.ts`.
-  `tests/auth/requestGate.test.ts` enumerates `app/api/` so no route ships ungated
-  without a test change.
-- **Sessions end at the NEXT 20:00 ET by calendar day** (`lib/auth/expiry.ts`): a
-  sign-in at or after 20:00 runs to 20:00 the following day.
-- Read from outside after the ship (2026-10-03): `/desk /signin /api/market
-  /api/dashboard /privacy-x` 401, `/ /privacy /terms` and the icons 200,
-  `placeholder-scan.py` clean (first time ever), `mointel_oauth` renders on
-  `/privacy`. **Not read by this seat: an admitted or refused session on the live
-  `/desk`; that needs his browser.**
+- `/desk`: anonymous -> `/signin`; refused -> 403 + `NotAdmitted`; admitted -> board. Data APIs 401/403.
+  `/api/dashboard` is NOT session-gated (OPEN). `/api/health` is loopback-only at nginx (see OPEN).
+- The one place a request becomes an admission: `lib/auth/requestGate.ts` over `authenticate()` in `lib/auth/gate.ts`.
+- Sessions end at the NEXT 20:00 ET by calendar day (`lib/auth/expiry.ts`).
+- Both legal texts ADOPTED (`adopted: 2026-09-11`), rendered from source at request time.
+- **NO EM DASH ANYWHERE A STRANGER READS** (his hard rule, 2026-09-30). Guard: `tests/web/emDash.test.ts`, strict
+  `SURFACES` (a missing file throws). The example board's bare empty cells are his named exception.
 
-**Both legal texts are ADOPTED (`adopted: 2026-09-11`)** and render from source at
-request time. The privacy fill of `mointel_oauth` kept `adopted` (a value fill, not a
-redraft, under the file's own test); `last_changed: 2026-10-02`.
+### TONIGHT'S RELEASE: what it carries from Web (read off the cut, not from a message)
 
-**NO EM DASH ANYWHERE A STRANGER READS.** *His hard rule, 2026-09-30. The guard is
-`tests/web/emDash.test.ts` (U+2014 AND entity forms; strict `SURFACES`, a missing file
-throws). The three bare dashes on `/` are the example board's empty cells, his named
-exception.*
+**Ops's cut `d1e7ba9d` (branch `ops/cut-2026-10-05`, production + 28 picks), gated clean, order approved by
+Integration 27th; Ops plans the ship for about 20:30 ET 2026-10-05.** This seat read the cut's tree: it carries
+- the float sentence (`2fe136ac` re-picked as `48b68283`): "No filing reports the current number of tradable shares";
+- the identity-store mode pair (0640, never breaks the open);
+- **RETRY RESEARCH IS HIS ALONE** (`gateOwnerRequest`, `DeskMode.canRetryResearch`; owner = env `DESK_OWNER_EMAIL`,
+  FAILS CLOSED; Ops's `push-release` refuses to ship while the key is absent, `d9927202`);
+- **THE ENTRY GATE** (`unaccepted` state, `/enter` with Design's screen, `POST /auth/accept`, append-only
+  `entry_acceptances`, text from `lib/legal/entryGate.ts` = terms section 7 verbatim, asked ONCE per text version);
+- **the signout fix**: `/auth/signout` answers 303 to `/` (it answered 200 with no body, so the refusal screen's
+  Sign out left a blank page in production).
 
-### Built, approved, NOT yet live
-
-- **`2fe136ac`: landing copy, his yes 2026-10-04.** "Every float is somebody's
-  computation. No filing reports the current number of tradable shares." (was "No
-  filing carries one", Commercial's correction). In `app/page.tsx`, `Main.dc.html`,
-  `LandingMobile.dc.html`. Rides the next release; Integration replays.
-- **Identity-store mode pair `f1b8b716` + `6ac43025`** (0640, never breaks the open):
-  approved by Integration for the next ordinary release cut.
-- **His private canvas artifact** (claude.ai/artifact/MydyXGM4MpDZtwixpUXjvs, "TMI
-  Public Site") was republished as v23 with the new sentence, stamped at `2fe136ac`.
-  It is private. `docs/web/canvas/tmi-trader-public-site.html` is a gitignored
-  2026-09-18 export and is NOT the source; the `.dc.html` files are.
-
-### The Google Sheet is being removed (his ruling, 2026-10-03)
-
-**Plan: `docs/sheet-removal-plan-2026-10-03.md` (Integration).** *Web's only part:
-gate `/api/dashboard` in the plan's STEP 4 release, the one that removes the market
-worker's call. Step 1 (no demo rows when the Sheet is absent) is Design's and built
-(`4cea086f`, with a one-line server warning when no source is configured). Public
-copy and legal texts never mention the Sheet (checked).*
+**THE MOMENT IT IS LIVE, EVERY USER, HIM INCLUDED, MEETS THE DISCLAIMER ON THEIR NEXT VISIT** (no acceptance rows
+exist yet). Expected, not a defect. After the ship: re-run the sweep from outside, and expect `/enter` to stay
+401 behind Basic Auth like `/desk`.
 
 ### OPEN: owner, trigger, and what happens if the trigger never fires
 
 | what | owner | trigger | if the trigger never fires |
 | --- | --- | --- | --- |
-| **gate `/api/dashboard`** (held out at `32db0d7e`: the market worker reads it over loopback with no cookie for TODAY-sheet pins, `worker/runtime.ts` refreshSheetSymbols, and drops a non-OK silently) | **Web** | **Sheet plan step 4's release** (ordered by Integration 2026-10-03). Re-grep callers first (`fetch(`, `curl`, env URLs), then drop it from the test's UNGATED set | **if Basic Auth removal is proposed with this open, it is not ready: the route would be public.** *If the Sheet plan stalls, the fallback design is a shared-secret header the worker sends (fails closed; written by `sync-env.sh`; rides a market restart, his). Ops withdrew its header-absence design (fails open).* |
-| **RETRY OWNER-ONLY: ON ORIGIN/MAIN (`4418c741`); production on his ship yes, after Ops sets DESK_OWNER_EMAIL.** ~~per-user rate limit on `POST /api/research/retry`~~ **REPLACED by his ruling 2026-10-05T18:51:26Z (transcript 125cfd6b, read at his turn): "disable retry research for users. leave that for just me". BUILT: `web/retry-owner-only` tip `4418c741` (my `2a94fa7c` + Design's non-owner line `17e4fa62` + lint fix); FULL GATE GREEN on `4418c741` in Ops's slot: 3279 passed, build 0, tsc 0, eslint 0; Ops read userHasVerifiedEmail, no concern (worktree `A:/mointel-webowner`): `gateOwnerRequest` 403s every admitted non-owner; the desk hides Retry unless `DeskMode.canRetryResearch`; owner = env `DESK_OWNER_EMAIL` matched to a verified, admitted identity; FAILS CLOSED. HIS WORD on the address, 2026-10-05T19:09:04.056Z (transcript 724a851e): "yes that address" (the one he is invited on); Ops sets it on the box. Sent to Integration for replay at `4418c741`** | **Web** | Ops's slot for the full suite + build, then Integration replays to main; production on his ship yes via Ops | **the env var must be on the box BEFORE it ships, or he loses Retry too. If Basic Auth removal is proposed before this is live, it is not ready: any tester could spend model budget** |
-| **`/api/health` at Basic Auth removal: NO GATE NEEDED, ONE CHECK REQUIRED** (Integration 26th's ask, 2026-10-05). Its premise, "public once Basic Auth comes off", does not hold on the config read at origin/main: nginx serves it from its own `location = /api/health` (nginx-locations.conf:30 and nginx.conf:102) with `satisfy any; allow 127.0.0.1; allow ::1; deny all`. Per nginx's docs (read 2026-10-05), `satisfy any` admits only if at least one module allows; with auth_basic gone, the address rule refuses every outside caller. The loopback callers (deploy.sh and status.sh via :80; Ops's T2 watchdog at `127.0.0.1:3000`, direct to the app, never through nginx) are unaffected. Read from outside now: 401 (control `/desk` 401) | **Ops**, in the removal night's sweep | Basic Auth removal | **the removal's negative control must include `/api/health` from outside and require 403 (loopback still 200). A 200 from outside means the location lost its `deny all`, and the route runs the read model per request. Also: the route's own comment says "the public route sits behind Basic Auth anyway", which is half the story and goes stale at removal; Ops's file** |
-| **Basic Auth removal** (step 5) | Ops, his yes | the two rows above closed, plus the FULL public-prefix batch: `^~ /auth/`, `= /signin` AND `= /enter` (the entry gate page, 2026-10-05; without it a tester signs in and meets a password prompt on the disclaimer), then its own night. Integration 26th's live state (integration.md:1005) lists only the first two. The 27th Integration seat (local_78f8e5f7) found it in this file, verified it against the code and nginx, and carries the three-prefix batch; it told Ops | **no date, correctly: it waits on a person with no password completing a sign-in, which nothing before it can show (claim D)** |
-| **ENTRY GATE: ON ORIGIN/MAIN 2026-10-05 (`4456512a`): server `6497285a`, screen `d023bd94`, guard `3e85557a`; ships to production as ONE release (Integration), with the signout fix; worktree removed.** Was: **ENTRY GATE, server side BUILT** (placement `docs/web/2026-10-05-entry-gate-placement.md`, Integration's nod; his "once"): server part MERGED and pushed as `6497285a` (origin `8a28dc04`); Design's screen merged by Integration from Design's own tip `d023bd94` (local main `9f9b2c1a`), so `web/entry-gate` `7cef7118` is NOT merged (duplicate). Only the guard line remains: re-cut as `3e85557a` on branch `web/entry-gate-guard` off `9f9b2c1a`, em-dash test 19/19. Superseded note follows: branch `web/entry-gate` tip `7cef7118` off `4418c741` (my `b865a578` + `6497285a`, Design's screen `4efbce09`, guard line; lint, tsc, auth/web tests clean; FULL SUITE + BUILD NOT YET RUN on `7cef7118`, needs Ops's slot; `6497285a` alone was green: 3300 passed, build 0), worktree `A:/mointel-webowner`. `unaccepted` state, `/enter`, `POST /auth/accept`, append-only `entry_acceptances` (no version bump, Ops's call). **Also fixes a live defect: `/auth/signout` answered 200 with no body, so the refusal screen's Sign out left a blank page; now 303 to `/`** | **Web**; Design replaces `/enter`'s placeholder body | Ops's slot (full suite + build), then Integration's replay; Design's screen rides the same release | **if it ships without Design's screen, testers see the bare placeholder: functional, unstyled. Requirement 1 also needs Ops's `/api/dashboard` header; review/MCP tokens bounded by Integration's rule (none to anyone outside him and the seats)** |
-| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final `204d42c6`) | him to approve; Web applies | **NOT before the short-interest label exists**; terms edit, adoption, attribution and label ride ONE change | **if he approves the wording but the label stalls, do NOT apply the terms edit** |
-| **FINRA attribution strings** | Web owns the words, Design builds | the label | **a label without them is a licence breach; say so to Integration the day it appears** |
-| **clause 2.2** (our own use non-commercial) | him or counsel; Commercial holds | an enquiry nobody has made | **the label can ship under his accepted-exposure posture without it** |
-| **three-way refusal split** | Web | a refusal REASON in the store | **possibly never; one honest screen beats three guessed ones** |
-| **self-serve sign-up and the "There are no public sign-ups" sentence** in `app/page.tsx` | him | first paying users are invited and billed by hand (his ruling), so both wait | **if anyone ships a public save-card page, that sentence changes in the same commit** |
-| **consent-screen display name** | him | the day he uploads the mark | **blocks Google brand verification only** |
-| **public page "Are float quotes real?"** (his ruling 2026-10-05T00:40:36Z, verbatim in the Sheet plan's RULED block; linked from the float cell's tooltip). **WORDING APPROVED by him 2026-10-05T16:01:43Z ("float wording is fine but i want to see the webpage", read at his own turn in transcript 019463d9): draft v12 section 3. PREVIEW sent: private artifact claude.ai/artifact/PjmvzavJrNS2WvxHpDR1gC, source `docs/web/previews/are-float-quotes-real.html` (628 words identical to section 3; em dash 0). Not a route, not deployed. Told the 26th Integration seat (local_2102878a) it reached him, on its first message.** | **Web builds**; Marketing words, Commercial re-reads | Marketing's copy past Commercial (d9a79a30: 8 of 9 pass), then his look, AND Research's insider-only validation sample passing. **A NEW public route: needs its own exact-match nginx exemption from Ops, and joins the sweep's expect-200 list (`/desk` stays in the expect-401 list)** | **if the tooltip's link ships before the page is public, a stranger's click is a 401; the link and the page ride one release** |
-| **CLOSED 2026-10-05: on origin/main (`9418a18e`, pushed in `78c51d9d`, read by merge-base). Full gate was green: 3235 passed, build 0, tsc 0. Worktree removed.** **owed-to-main audit, sign-in step 4: ANSWERED 2026-10-05, all three OWED.** origin/main `00c0cdfa` had `lib/auth/gate.ts` but no route called it. Picks on LOCAL branch `web/step4-to-main` (worktree `A:/mointel-webmain`), tip `df2712c2`: `7aa44620` (d7079581, levels hunks dropped: levels is not on main), `a08b5a68` (32db0d7e), `8c15817f` (fb50e2ff), `df2712c2` (test control by name, not count) | Integration replays and merges to main | the gate run (Ops's queue: full vitest + build on the literal sha) | **until it merges, a release cut from main ships /desk and the data APIs ungated. When levels reaches main, its owner gates it; the structural test fails until they do** |
-| **Sheet priority out of the MCP tools and the review-link API, Setup grade in.** `lib/mcp/tools.ts` `get_discovery` (:220) and `get_ticker` (:272) emit `sheet: row.research`, the whole Sheet `MomentumTicker` incl. `priority: PriorityField` (bucket A/B/C/AVOID, `lib/data/types.ts:117`); the review route emits `readableSheet(...)` (`app/review/[token]/api/dashboard/route.ts:42`, `lib/data/readable.ts:47`). **ASSIGNED TO WEB by Integration 27th (local_78f8e5f7), 2026-10-05**, on his ruling 22:04:14.942Z (transcript 1b01d57c, "yes, keep building the badge as approved"). Do: stop emitting the Sheet priority; emit the desk's Setup grade (`MarketSnapshot.setupGrades`, from Ops's `priority_grade`/`priority_basis`/`priority_rule`) in Design's field shape, or nothing. Any description text says it is the desk's reading, not a prediction or a recommendation; never "tested", "validated", "do not predict", "did not work" (Commercial c26daa80 6b, legend e1220516). `setupGrades` is NOT on origin/main as of aebcc427. **MCP PART BUILT** on Design's `0002adee`: branch `web/sheet-priority-out` tip `440bd3b8` (worktree `A:/mointel-webprio`), `sheet` minus `priority`, `setupGrade` from `setupGradeView`, mutants 4/4. **REVIEW PART CORRECTED:** `readableSheet` shapes the payload of BOTH dashboard routes, and the desk still reads the Sheet priority on that base (MomentumTable, view.ts sort and A filter, merge.ts count), so it is stripped only after Design removes those readers **UPDATE: BOTH PARTS BUILT** on Design's gated `f9110751` (its reader removal, re-grepped by me): branch `web/sheet-priority-out` tip `8c78e875`. The fields are gone at the PRODUCER (`MomentumTicker.priority`, `StructuralResearch.overallPriority*`), because `/desk` and `/review/<token>` also passed the raw state into their first paint; the change signature drops it too (it carried "AVOID"; one-time row highlight on an open desk at deploy). Rebased onto Design's `67da54f4`; tip now **`f8ed2917`** (+ no `setupGrade` key while the grade is not wired, matching the board). **FULL GATE GREEN on `f8ed2917` in Ops's slot (2026-10-05): vitest 238 files, 3508 passed, 0 failed; build 0; tsc 0; eslint 0 errors; em dash added 0. SLOT RELEASED.** Mutants 4/4 | **Web** | Integration's replay of `f8ed2917`; ships IN the badge's release | **if the badge ships without this, the MCP tools and review links keep serving the Sheet's AVOID beside a desk that no longer shows it** |
+| **Sheet priority out of every surface, Setup grade into the MCP tools.** His ruling 2026-10-05T22:04:14.942Z (transcript 1b01d57c, "yes, keep building the badge as approved"); assigned to Web by Integration 27th. BUILT and FULL GATE GREEN: local branch `web/sheet-priority-out`, tip **`f8ed2917`** on Design's gated `67da54f4` (vitest 238 files / 3508 passed, build 0, tsc 0, eslint 0). The fields are removed at the PRODUCER (`MomentumTicker.priority`, `StructuralResearch.overallPriority*`), because `/desk` and `/review/<token>` passed the raw state into their first paint as well as the two dashboard routes; the change signature drops the priority (it carried "AVOID"; a desk open across the deploy highlights its rows once, Design accepted). MCP `get_discovery`/`get_ticker` emit `setupGrade: { stored, label, letter, tooltip }` from Design's `setupGradeView`, and NO key while the grade is not wired | **Web** (built); Integration replays | **the badge release**: Design's `67da54f4` + Ops's `setupGrades` reader (after tonight) + this, ONE release | **if the badge ships without this, the MCP tools and review links serve the Sheet's AVOID beside a desk that no longer shows it. Rebase onto whatever base Integration names; the gate must re-run** |
+| **gate `/api/dashboard`** (held out at `32db0d7e`: the market worker reads it over loopback with no cookie) | Ops builds the worker's shared-secret header (fails closed; Integration 26th, not tied to Sheet step 4); Web then drops the route from the test's UNGATED set | Ops's header lands (rides a market restart, his yes) | **if Basic Auth removal is proposed with this open, it is not ready: the board's JSON would be public, and a declined tester could read it (entry gate requirement 1)** |
+| **`/api/health` at Basic Auth removal: no gate, ONE CHECK.** nginx serves it from `location = /api/health` with `satisfy any; allow 127.0.0.1; allow ::1; deny all` (nginx-locations.conf:30, nginx.conf:102); per nginx's docs `satisfy any` admits only if a module allows, so with auth_basic gone outsiders are refused. Integration 26th retracted the opposite premise | Ops, in the removal night's sweep | Basic Auth removal | **the sweep must require outside `/api/health` = 403 and loopback 200** |
+| **Basic Auth removal** (step 5) | Ops, his yes | `/api/dashboard` gated, AND the FULL public-prefix batch `^~ /auth/`, `= /signin`, `= /enter` (the 27th carries all three; it told Ops), then its own night | **no date, correctly: it waits on a person with no password completing a sign-in (claim D)** |
+| **review and MCP token holders never meet the entry gate** | Integration's rule for the beta: no token to any tester or anyone outside him and the seats | before any token goes outside that set, Commercial answers "must a reviewer accept?" | **a token handed outside that set shows desk data with no disclaimer** |
+| **public page "Are float quotes real?"** Wording APPROVED by him 2026-10-05T16:01:43Z (transcript 019463d9, v12 section 3). PREVIEW sent: private artifact claude.ai/artifact/PjmvzavJrNS2WvxHpDR1gC, source `docs/web/previews/are-float-quotes-real.html`. Not a route | **Web builds** | Research's insider-only validation sample passing (the float job, Research's new seat) | **the tooltip's link and the page ride ONE release, and the new route needs its own exact-match nginx exemption; otherwise a stranger's click is a 401** |
+| **FINRA end-user terms** (`docs/web/2026-10-02-finra-terms-draft.md`, final `204d42c6`) | him to approve; Web applies | NOT before the short-interest label exists; terms edit, adoption, attribution and label ride ONE change | **if he approves the wording but the label stalls, do NOT apply the terms edit** |
+| **FINRA attribution strings** | Web owns the words, Design builds | the label | **a label without them is a licence breach** |
+| **clause 2.2** (our own use non-commercial) | him or counsel; Commercial holds | an enquiry nobody has made | the label can ship under his accepted-exposure posture without it |
+| **three-way refusal split** | Web | a refusal REASON in the store | possibly never; one honest screen beats three guessed ones |
+| **self-serve sign-up and "There are no public sign-ups"** in `app/page.tsx` | him | his beta is FREE, LIMITED INVITES (Integration 26th); paid flow off the path | **if anyone ships a public save-card page, that sentence changes in the same commit** |
+| **consent-screen display name** | him | the day he uploads the mark | blocks Google brand verification only |
+
+**CLOSED TODAY (finished work is commits, not paragraphs):** sign-in step 4 owed to main (`9418a18e`); retry
+owner-only (`4418c741`); entry gate (`6497285a`, screen `d023bd94`, guard `3e85557a`). All on origin/main.
 
 ### Things a successor will misread
 
-**`components/NotAdmitted.tsx` is ONE screen where `docs/web/canvas/Admitted.dc.html`
-draws THREE. Deliberate:** `authenticate()` returns `refused` with no reason
-(`isEmailInvited` folds never-invited and revoked into one `false`), so the built
-screen says only what is true in all three cases.
+- **`components/NotAdmitted.tsx` is ONE screen where `Admitted.dc.html` draws THREE.** Deliberate: the gate
+  returns `refused` with no reason.
+- **The example board on `app/page.tsx` keeps `&middot;`** while site prose uses a colon (board vs prose).
+- **`readableSheet` (`lib/data/readable.ts`) shapes the payload of BOTH dashboard routes**, the desk's own
+  `/api/dashboard` included; it is not a review-only surface. The two pages' first paint does NOT go through it.
+- **The entry gate's text version is a hash of the text** (`ENTRY_GATE_VERSION`): any edit to
+  `lib/legal/entryGate.ts` re-asks every user, and any word change is new legal text (Commercial, then him).
+- **`entry_acceptances` was added WITHOUT an identity-schema version bump, on purpose** (additive; a bump makes a
+  rollback refuse the store). Ops's call to revisit.
+- **Ops counts `tsc --noEmit` and `eslint .` against the heavy slot, not only vitest and builds.** Ask first.
+- **Releases are cherry-pick cuts by Ops from production**, so a commit on main is not live until a cut carries it;
+  read the cut's tree (`git cat-file -e <cut>:<path>`) before saying what ships.
+- **This PC checks out CRLF**; re-check files out before trusting a test that reads source text.
+- **Several sessions answer to "Integration-tmi"** until he renames the retired ones: reply to the `from=` id.
+- **This charter's OLDER sections still carry 58 em dashes**, all written before his 2026-09-30 rule (none added
+  since; every addition is scanned). Sweeping them is open debt, low priority: the file is read by seats, not by
+  him or a stranger, but his rule covers docs too.
 
-**The example board on `app/page.tsx` keeps `&middot;` while site prose uses a
-colon.** *The boundary is site prose versus depicted board; the reason is commented at
-the illustration.*
+### PUSH CLEARANCES FOR INTEGRATION
 
-**`web/step4-cut` is a LOCAL branch only**, the step-4 cut as shipped plus Design's
-blue-sky commits (`fb50e2ff`). Releases ship by `git archive` from this PC
-(`deploy/aws/push-release.sh`), so nothing needed it on origin. It is history, not
-work in flight.
-
-**This PC checks out CRLF.** *A test that reads source text must normalise line
-endings; re-check files out (delete and `git checkout`) before trusting one.*
-
-### PUSH CLEARANCES FOR INTEGRATION (written here because the 27th seat handed off before a reply could reach it)
-
-**CLEARED, 2026-10-05, by the Web seat local_a4c618a8:** `b6e7cf4d`, `e579d48c`, and the commit that adds
-this line. All three touch `docs/threads/web.md` only. Branches are NOT cleared by this line:
-`web/sheet-priority-out` (`440bd3b8`) rides the badge's release by replay.
+**CLEARED by the Web seat local_a4c618a8 (2026-10-05):** every `Web (local_a4c618a8)` commit on local main that
+touches only `docs/threads/web.md`, `docs/web/*` or `docs/web-opening-prompt.md`, including this hand-off's.
+Branches are NOT cleared by this line: `web/sheet-priority-out` (`f8ed2917`) rides the badge release by replay.
 
 ### ERROR LEDGER, this seat (opened 2026-10-02 by the successor)
 

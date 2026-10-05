@@ -1,5 +1,10 @@
 # The public surface — what Web owns, and what it needs from others
 
+**AS OF 2026-10-05 22:52 UTC (Web hand-off, local_a4c618a8): NOT re-read end to end in this pass.** *Two
+surfaces were added on 2026-10-05 that this file does not describe yet: the ENTRY GATE (`/enter`,
+`POST /auth/accept`; design in `2026-10-05-entry-gate-placement.md`) and `/auth/signout` now answering 303
+to `/`. The charter's LIVE STATE is current and wins over everything here.*
+
 **RE-READ 2026-10-04 23:29 UTC by the successor Web seat, at hand-off: section 3's placeholder row is CLOSED (filled with the gate wiring, live 2026-10-03; the public site now renders no `[BRACKET]` at all, read by `placeholder-scan.py`). Sections 1, 2, 2b, 4 and 5 were not re-read end to end in that pass.**
 
 **AS OF 2026-10-02 17:34 UTC, at `01455d93`.** *What that review covered and what
