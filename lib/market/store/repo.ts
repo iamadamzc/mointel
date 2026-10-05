@@ -207,14 +207,33 @@ export function upsertMinuteBars(
   run(bars);
 }
 
+/**
+ * THE `ts` BOUND IS THE WHOLE POINT, AND IT CHANGES NO ROW. The primary key is
+ * (symbol, ts) and trading_date has only its own index, so without it SQLite
+ * walks every retained date of the symbol -- 15 on the 2026-09-29 copy -- to
+ * keep one. The bound turns that into a range seek over about two. Measured on
+ * that copy: 0 differing rows across 8,174 symbols; 0.196x the time on the 50
+ * heaviest names (docs/threads/ops.md, 2026-09-30).
+ *
+ * D-1 00:00Z, not D 00:00Z: on that copy no bar filed under D was earlier than
+ * D 00:00Z (16.4 M rows), so the tighter bound would also have held -- but that
+ * is an observation, not a rule anything enforces. A day of margin costs almost
+ * nothing and a bound that drops a bar returns a silently short day.
+ */
+export function minuteBarsLowerBound(tradingDate: string): string {
+  return new Date(Date.parse(`${tradingDate}T00:00:00.000Z`) - 86_400_000).toISOString();
+}
+
 export function loadMinuteBars(
   db: MarketDatabase,
   symbol: string,
   tradingDate: string,
 ): MarketMinuteBar[] {
   const rows = db
-    .prepare('SELECT * FROM minute_bars WHERE symbol = ? AND trading_date = ? ORDER BY ts')
-    .all(symbol, tradingDate) as Array<Record<string, never>>;
+    .prepare(
+      'SELECT * FROM minute_bars WHERE symbol = ? AND trading_date = ? AND ts >= ? ORDER BY ts',
+    )
+    .all(symbol, tradingDate, minuteBarsLowerBound(tradingDate)) as Array<Record<string, never>>;
 
   return rows.map((row) => ({
     symbol: row['symbol'] as unknown as string,
