@@ -1271,6 +1271,11 @@ OPS RETIRES      local_7fac8dfc on his "yes hand off" (per Ops). NOTHING to it a
                  HAND-OFF ROUTING LINE IS STALE (ops.md:13957-13958): Web-tmi is local_a4c618a8 (not 46c15fbe, archived);
                  Commercial-tmi is local_2aab5a77 (not 2ce868d2, archived); Marketing local_fdc0aa9a is retired, successor
                  not open. Give the next Ops seat the right ids on arrival.
+PUSHED 2         e71dc7b3..96a82b6d (Ops's 4 cleared: 79e27c68, 2833c6e6, ff15fec3, fe85f92d; + 2 mine). 0 / 0 after fetch.
+NEW SEATS        He: "new ops and marketing are live". list_sessions: Ops-tmi local_c71f613a, Marketing-tmi local_5ed7eb51 (both
+                 A:\mointel, not archived). Sent Ops (91876737, queued): correct routing ids, production, spot check + 2-5.
+                 Sent Marketing (59ea0dfd): float page v4 state, Commercial's pending face ruling on Research's max age, rubric
+                 words later. ALL SEVEN SEATS NOW HAVE ONE LIVE CHAT.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
