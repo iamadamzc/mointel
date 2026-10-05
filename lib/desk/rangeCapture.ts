@@ -58,6 +58,7 @@ export function captureRanges(
       [],
       board.board,
       RANGE_TOP_N,
+      range,
     );
     return {
       rangeKey: rangeKey(range),
