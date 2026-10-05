@@ -1211,6 +1211,18 @@ COMMERCIAL ACK   Re-verified 1-3 at the transcripts itself (enqueue records: 81e
                  distinct from "Unknown" and the popover carries the issuance reason in full.
                  OWED BY THE NEXT RESEARCH SEAT (add to its first-ask): the max filed-count age before "Cannot verify",
                  stated in the float contract, to Commercial.
+MARKETING v4     Marketing (local_fdc0aa9a, HANDING OFF; successor carries float cell, Setup-grade/tooltip, rubric per
+                 marketing.md LIVE STATE bb87e38e). Page v4 ONLY IN ITS SCRATCHPAD: C:\Users\adshu\AppData\Local\Temp\claude\
+                 A--mointel\2bb33112-b546-4b58-a082-59ad0c0936a9\scratchpad\float-page-draft.md (4,348 B; header still says
+                 "v2"). READ in full: s5d hedge + subtraction set applied; U+2014 0, entities 0 (control 1).
+                 CELL WORDS proposed: bound "≤ 12.3M" (aria "no more than 12.3 million shares"; popover "No more than 12.3M
+                 shares freely tradable when the inputs line up, from SEC filings as of {filed-count date}; insider holdings
+                 filed on {holding dates}."); "Unknown" (popover "No filed share count."); "Unverified" (popover "Cannot
+                 verify: shares may have been issued since the filed count."). Strings sent to Commercial.
+                 SEAM (mine, bec9bcd4, queued to a retiring seat, MAY NOT BE DELIVERED): page s1 + body lines 33/41 describe
+                 the OLD cell ("no more than X shares, from SEC filings as of", "Cannot verify"); must name the face
+                 Commercial passes. Draft must be committed into the tree. NOT TO HIM until page + cell agree and Commercial
+                 passes the face (needs Research's age gate). The next Marketing seat's first ask: give it this line.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
