@@ -1,0 +1,104 @@
+{
+  "restored": true,
+  "results": [
+    {
+      "id": "W0",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 0,
+      "failed": []
+    },
+    {
+      "id": "W1",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 3,
+      "failed": [
+        "wholePercent: whole numbers rounded from the EXACT value (his ruling; Marketing half case) rounds the exact value, never its one-decimal display; under one percent is never \"0\"",
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them intraday: the leader, then the next covered gainer, whole percents with basis, news, cycle and change notes; nothing else",
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts"
+      ]
+    },
+    {
+      "id": "W2",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "wholePercent: whole numbers rounded from the EXACT value (his ruling; Marketing half case) rounds the exact value, never its one-decimal display; under one percent is never \"0\""
+      ]
+    },
+    {
+      "id": "W3",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts"
+      ]
+    },
+    {
+      "id": "W4",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts"
+      ]
+    },
+    {
+      "id": "W5",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them intraday: the leader, then the next covered gainer, whole percents with basis, news, cycle and change notes; nothing else"
+      ]
+    },
+    {
+      "id": "W6",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them intraday: the leader, then the next covered gainer, whole percents with basis, news, cycle and change notes; nothing else"
+      ]
+    },
+    {
+      "id": "W7",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them intraday: the leader, then the next covered gainer, whole percents with basis, news, cycle and change notes; nothing else"
+      ]
+    },
+    {
+      "id": "W8",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "SYSTEM_V6 narrative rules v2 (his example prompt folded in, 2026-10-03T15:31:54Z) carries the purpose, the facts / interpretation / open-question split, gainers only and the after-hours label; drops the G sentence rule"
+      ]
+    },
+    {
+      "id": "W9",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts"
+      ]
+    },
+    {
+      "id": "W10",
+      "status": "RAN",
+      "total": 9,
+      "failedCount": 1,
+      "failed": [
+        "narrativeSheet v2: the given facts, worded exactly as the model must use them recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts"
+      ]
+    }
+  ]
+}
