@@ -1387,6 +1387,11 @@ MARKETING v8     on local main: split-before-holding removed (holding left out, 
 MARKETING v9     3549fff3: NOT_YET face "Not yet" (popover "Not yet: the desk has not computed this name."). Supersedes v8
                  (d05141ad) for Commercial. Design MEASURED "Not yet" 46.2 px, one line, controls matching. Marketing cleared
                  all 5 (b6484909, 198d47d2, 1fbb9414, d05141ad, 3549fff3). Push waits on Research's 7.
+WEB STEP 4 MAIN  APPROVED BY LITERAL SHA df2712c2e07d562f90d6bd00b412767e3a4fd952 (web/step4-to-main off 00c0cdfa). Cone 4, 0 merges;
+                 a08b5a68 = 32db0d7e, 8c15817f = fb50e2ff (EQUAL); 7aa44620 vs d7079581: 13 kept files identical changed lines,
+                 6 levels files dropped as named; df2712c2 = route count -> named control; 381 added lines U+2014 0. Web gate:
+                 vitest 3235 pass / build 0 / tsc 0 / eslint 0. MERGED 9418a18e. Main now carries the sign-in gate. Clearance
+                 of Web's 4 asked.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
