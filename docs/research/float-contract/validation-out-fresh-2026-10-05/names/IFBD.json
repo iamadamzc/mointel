@@ -1,0 +1,117 @@
+{
+  "ticker": "IFBD",
+  "cik": "1815566",
+  "tradingDate": "2026-09-24",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 300000000,
+      "sourceFiling": "Form F-3, file 333-292415 / accession 0001731122-25-001721; effectiveness notice dated January 5, 2026",
+      "registrationStatus": "F-3 registration statement effective January 5, 2026",
+      "effectiveDate": "2026-01-05",
+      "terms": "The prospectus describes up to $300,000,000 aggregate capacity across ordinary shares, warrants, debt securities, and units; specific terms require supplements.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "An effective registration means securities may be offered under the registration statement; it does not establish that securities were sold, the amount remaining, or a share equivalent for the dollar capacity.",
+      "evidenceSourceIds": [
+        95037,
+        95039
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": null,
+      "dollarCapacity": 25697405,
+      "sourceFiling": "Form POS AM, registration no. 333-268993 / accession 0001731122-25-001723",
+      "registrationStatus": "Prior registration abandoned by post-effective amendment",
+      "effectiveDate": "2025-12-31",
+      "terms": "The filing states that approximately $25,697,405 of securities had been sold under the prior registration statement and that the offering pursuant to that statement was abandoned.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "This is historical issuance disclosure expressed in dollars, not a current active shelf or a share count.",
+      "evidenceSourceIds": [
+        95036,
+        95040
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 8188574,
+    "asOf": "2025-12-31",
+    "filed": "2026-06-12",
+    "accession": "0001731122-26-000847",
+    "form": "20-F/A"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001731122-26-001227",
+      "form": "3",
+      "filingDate": "2026-09-11",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001731122-26-000487",
+      "form": "3",
+      "filingDate": "2026-03-26",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001731122-26-000441",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001731122-26-000440",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001731122-26-000438",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001731122-26-000436",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

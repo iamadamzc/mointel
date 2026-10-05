@@ -1,0 +1,35 @@
+{
+  "ticker": "ANTA",
+  "cik": "2044255",
+  "tradingDate": "2026-09-25",
+  "rank": 6,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 100000000,
+      "sourceFiling": "Form F-3/A, Registration No. 333-297222; effective August 11, 2026",
+      "registrationStatus": "F-3 registration statement effective",
+      "effectiveDate": "2026-08-11",
+      "terms": "The prospectus permits the company, from time to time and in one or more offerings, to offer up to $100 million aggregate of Class A ordinary shares, debt securities, and warrants; securities may also be convertible or exchangeable. This is dollar capacity, not a disclosed share count or evidence that securities were sold. [48719,48720]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The EFFECT makes the F-3 registration effective, meaning securities may be offered under the registration statement. The bundle does not show a takedown, pricing, issuance, or sales under the shelf. [48719,48720]",
+      "evidenceSourceIds": [
+        48719,
+        48720
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

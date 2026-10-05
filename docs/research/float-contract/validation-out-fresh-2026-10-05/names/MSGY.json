@@ -1,0 +1,137 @@
+{
+  "ticker": "MSGY",
+  "cik": "2020228",
+  "tradingDate": "2026-09-25",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "ACQUISITION_SHARES",
+      "amountShares": 1377000,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed August 13, 2026 (accession 0001213900-26-088654)",
+      "registrationStatus": "The cited agreement says the company agreed to allot and issue the consideration shares; the bundle does not establish closing, issuance date, resale registration, or current tradability.",
+      "effectiveDate": null,
+      "terms": "Under an August 12, 2026 share-swap agreement to acquire a 20% equity interest in Beta Beteiligungs und Besitz GmbH, Masonglory agreed to allot and issue 1,377,000 Class A ordinary shares. The stated reference price was $3.40 per Class A share.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential incremental acquisition-share supply, but the provided excerpt does not establish that the transaction closed, that shares were delivered, or that they are presently eligible for public resale.",
+      "evidenceSourceIds": [
+        98433,
+        98445
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 / related 424B3 prospectus; F-1 effectiveness notice dated June 30, 2025",
+      "registrationStatus": "An F-1 was declared effective June 30, 2025, and the subsequent prospectus describes a resale offering. The bundle does not provide the resale share amount or establish present resale eligibility as of September 2026.",
+      "effectiveDate": "2025-06-30",
+      "terms": "The 424B3 states that selling shareholders may sell through brokers or dealers, but the supplied excerpt does not quantify the registered resale shares.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The historical effective registration is evidence that securities may have been registered for resale; it is not evidence of sales and does not establish the currently remaining registered amount or whether holders can sell now.",
+      "evidenceSourceIds": [
+        98441,
+        98442
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 16957000,
+    "asOf": "2026-03-31",
+    "filed": "2026-07-30",
+    "accession": "0001213900-26-083085",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0002123171-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-20",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120247-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120245-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120237-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120227-26-000002",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120250-26-000002",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120253-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002120255-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

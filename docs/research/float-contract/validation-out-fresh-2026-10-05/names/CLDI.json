@@ -1,0 +1,522 @@
+{
+  "ticker": "CLDI",
+  "cik": "1855485",
+  "tradingDate": "2026-09-23",
+  "rank": 4,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 1025640,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K, accession 0001493152-26-043724",
+      "registrationStatus": "Registered direct offering under an effective registration statement; offering reported closed September 21, 2026. [92474,92492]",
+      "effectiveDate": "2026-09-21",
+      "terms": "1,025,640 common shares sold at $1.17 per share; approximately $1.2 million gross proceeds. [92474]",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The filing confirms a completed registered issuance, but the bundle does not provide holder-level disposition or resale activity.",
+      "evidenceSourceIds": [
+        92474,
+        92486,
+        92492
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, accession 0001493152-26-009239",
+      "registrationStatus": "The March 2026 prospectus describes Series J, K, and L warrants and pre-funded warrants; the supplied excerpts do not reconcile warrants remaining outstanding after subsequent exercises, issuances, and the July reverse split. [76680,76681]",
+      "effectiveDate": null,
+      "terms": "Pre-funded warrants described in the prospectus were immediately exercisable at $0.001 per share, subject to beneficial-ownership blockers. The same prospectus describes exercise-price reset provisions for certain common warrants following a reverse split. [76680,76681]",
+      "holderRestrictions": "Pre-funded warrant exercises were subject to 4.99% beneficial-ownership limitations, adjustable at the holder's election as described in the prospectus. [76681]",
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential derivative-related supply exists, but live exercisable share supply cannot be quantified from the provided excerpts.",
+      "evidenceSourceIds": [
+        76680,
+        76681
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 2584184,
+    "asOf": "2026-08-10",
+    "filed": "2026-08-13",
+    "accession": "0001493152-26-037847",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-039292",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039290",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039291",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039289",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039288",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039287",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039286",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-039285",
+      "form": "4",
+      "filingDate": "2026-08-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-031118",
+      "form": "3",
+      "filingDate": "2026-06-29",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-028030",
+      "form": "4",
+      "filingDate": "2025-12-16",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-026782",
+      "form": "4",
+      "filingDate": "2025-09-05",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-026780",
+      "form": "4",
+      "filingDate": "2025-09-05",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-026781",
+      "form": "4",
+      "filingDate": "2025-09-05",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-025641",
+      "form": "3",
+      "filingDate": "2025-08-27",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2043812",
+        "ownerName": "Lincoln Alternative Strategies LLC",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "common stock, par value $0.0001 per share",
+            "shares": 730000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-025448",
+      "form": "4",
+      "filingDate": "2025-08-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1420987",
+        "ownerName": "Schoeneck James A",
+        "rows": [
+          {
+            "asOf": "2025-08-21",
+            "title": "common stock",
+            "shares": 76134
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-025447",
+      "form": "4",
+      "filingDate": "2025-08-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1339484",
+        "ownerName": "Poma Eric E",
+        "rows": [
+          {
+            "asOf": "2025-08-21",
+            "title": "common stock",
+            "shares": 25000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-025446",
+      "form": "4",
+      "filingDate": "2025-08-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1991668",
+        "ownerName": "Leftwich Scott",
+        "rows": [
+          {
+            "asOf": "2025-08-21",
+            "title": "common stock",
+            "shares": 130650
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-025445",
+      "form": "4",
+      "filingDate": "2025-08-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1636738",
+        "ownerName": "Jackson Andrew C.",
+        "rows": [
+          {
+            "asOf": "2025-08-21",
+            "title": "common stock",
+            "shares": 2500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-019802",
+      "form": "4",
+      "filingDate": "2025-07-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-019803",
+      "form": "4",
+      "filingDate": "2025-07-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-019801",
+      "form": "4",
+      "filingDate": "2025-07-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-019800",
+      "form": "4",
+      "filingDate": "2025-07-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-006070",
+      "form": "4",
+      "filingDate": "2025-04-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001641172-25-006062",
+      "form": "3",
+      "filingDate": "2025-04-25",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-000306",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1705492",
+        "ownerName": "Stewart Alan R.",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 28976
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-000302",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1991668",
+        "ownerName": "Leftwich Scott",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 67774
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-050675",
+      "form": "4",
+      "filingDate": "2024-12-18",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1990674",
+        "ownerName": "Camaisa Allan",
+        "rows": [
+          {
+            "asOf": "2024-12-17",
+            "title": "common stock",
+            "shares": 66712
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-041199",
+      "form": "4",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-041200",
+      "form": "4",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-041201",
+      "form": "4",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-041202",
+      "form": "4",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-038877",
+      "form": "4",
+      "filingDate": "2024-09-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1990674",
+        "ownerName": "Camaisa Allan",
+        "rows": [
+          {
+            "asOf": "2024-09-26",
+            "title": "common stock",
+            "shares": 76712
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1339484",
+      "ownerName": "Poma Eric E",
+      "shares": 25000,
+      "asOf": "2025-08-21",
+      "accessions": [
+        "0001641172-25-025447"
+      ]
+    },
+    {
+      "ownerCik": "1420987",
+      "ownerName": "Schoeneck James A",
+      "shares": 76134,
+      "asOf": "2025-08-21",
+      "accessions": [
+        "0001641172-25-025448"
+      ]
+    },
+    {
+      "ownerCik": "1636738",
+      "ownerName": "Jackson Andrew C.",
+      "shares": 2500,
+      "asOf": "2025-08-21",
+      "accessions": [
+        "0001641172-25-025445"
+      ]
+    },
+    {
+      "ownerCik": "1705492",
+      "ownerName": "Stewart Alan R.",
+      "shares": 28976,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0001493152-25-000306"
+      ]
+    },
+    {
+      "ownerCik": "1990674",
+      "ownerName": "Camaisa Allan",
+      "shares": 66712,
+      "asOf": "2024-12-17",
+      "accessions": [
+        "0001493152-24-050675"
+      ]
+    },
+    {
+      "ownerCik": "1991668",
+      "ownerName": "Leftwich Scott",
+      "shares": 130650,
+      "asOf": "2025-08-21",
+      "accessions": [
+        "0001641172-25-025446"
+      ]
+    },
+    {
+      "ownerCik": "2043812",
+      "ownerName": "Lincoln Alternative Strategies LLC",
+      "shares": 730000,
+      "asOf": "2025-08-20",
+      "accessions": [
+        "0001641172-25-025641"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1339484": "FOUND",
+    "1420987": "FOUND",
+    "1636738": "FOUND",
+    "1705492": "FOUND",
+    "1990674": "FOUND",
+    "1991668": "FOUND",
+    "2043812": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

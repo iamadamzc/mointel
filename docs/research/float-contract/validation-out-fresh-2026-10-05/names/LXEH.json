@@ -1,0 +1,165 @@
+{
+  "ticker": "LXEH",
+  "cik": "1814067",
+  "tradingDate": "2026-09-23",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 20000000,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 filed September 11, 2026; related AGM disclosure",
+      "registrationStatus": "F-1 filed; no supplied Notice of Effectiveness for this 2026 registration",
+      "effectiveDate": null,
+      "terms": "The AGM materials state that ordinary shares will be deposited with Citibank for 20,000,000 ADSs and that the company will submit an F-1 to enable resale by purchasers. The F-1 was filed September 11, 2026. [72892,72883]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "A filed F-1 alone does not establish effectiveness or current resale eligibility. [72883]",
+      "evidenceSourceIds": [
+        72892,
+        72883
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 1800000000,
+      "dollarCapacity": 34200000,
+      "sourceFiling": "2024 prospectus / F-1",
+      "registrationStatus": "The related F-1 was declared effective December 11, 2024.",
+      "effectiveDate": "2024-12-11",
+      "terms": "The 2024 purchase agreements contemplated issuance and sale of 1,800,000,000 Class A ordinary shares for aggregate consideration of $34.2 million, with resale registration. The prospectus states issuance and sale were subject to effectiveness, filing of a final prospectus, and other agreement conditions. [72888,72884,72886]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness establishes that registered securities may be sold under the registration, not that any shares were sold or remain available for resale. The supplied sources do not reconcile the remaining eligible amount after subsequent issuances, the reverse split, or any resales. [72886,72888]",
+      "evidenceSourceIds": [
+        72888,
+        72884,
+        72886
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 50000000,
+      "dollarCapacity": null,
+      "sourceFiling": "2023 prospectus supplement",
+      "registrationStatus": "Related F-1 declared effective September 29, 2023.",
+      "effectiveDate": "2023-09-29",
+      "terms": "The prospectus supplement covered resale from time to time of up to 50,000,000 ordinary shares in ADS form by named selling shareholders. [72889,72887]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The supplied evidence does not show whether these securities were sold, remain held, or remain eligible for resale. [72889,72887]",
+      "evidenceSourceIds": [
+        72889,
+        72887
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 116667000,
+    "asOf": "2023-12-31",
+    "filed": "2024-05-15",
+    "accession": "0001213900-24-043569",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-090963",
+      "form": "3",
+      "filingDate": "2026-08-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-090961",
+      "form": "3",
+      "filingDate": "2026-08-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-032576",
+      "form": "3",
+      "filingDate": "2026-03-23",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-032569",
+      "form": "3",
+      "filingDate": "2026-03-23",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-032029",
+      "form": "3",
+      "filingDate": "2026-03-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031524",
+      "form": "3",
+      "filingDate": "2026-03-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031512",
+      "form": "3",
+      "filingDate": "2026-03-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030640",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030639",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

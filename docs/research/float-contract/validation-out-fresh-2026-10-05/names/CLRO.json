@@ -1,0 +1,251 @@
+{
+  "ticker": "CLRO",
+  "cik": "840715",
+  "tradingDate": "2026-09-25",
+  "rank": 4,
+  "ledger": [
+    {
+      "type": "ACQUISITION_SHARES",
+      "amountShares": 12500000,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed July 6, 2026 (merger agreement)",
+      "registrationStatus": "Consideration shares are subject to lock-up restrictions and registration rights; merger closing and issuance are not established in the bundle.",
+      "effectiveDate": null,
+      "terms": "Vivani is to receive 12,500,000 ClearOne common shares as consideration for Cortigent, subject to the merger agreement and closing.",
+      "holderRestrictions": "Lock-up restrictions are disclosed; detailed duration and release conditions are not provided in the excerpt.",
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The shares are contingent on transaction closing. The bundle does not establish that the merger closed, that shares were issued, or that a resale registration became effective.",
+      "evidenceSourceIds": [
+        101562
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 4285714,
+      "dollarCapacity": 15000000,
+      "sourceFiling": "S-1/A filed September 4, 2026",
+      "registrationStatus": "S-1/A registration statement filed; no effectiveness notice is provided.",
+      "effectiveDate": null,
+      "terms": "The amended registration statement describes a minimum offering of 2,857,143 units and a maximum offering of 4,285,714 units. Stockholder consent also approved a unit issuance for up to $15 million that may be priced below Nasdaq's Minimum Price and may exceed 20% of outstanding common stock or voting power.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The filing states sales are expected as soon as practicable after effectiveness. An effective registration does not appear in the bundle, and no completed sale is established.",
+      "evidenceSourceIds": [
+        101568,
+        101559
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 50000000,
+      "sourceFiling": "S-3 filed June 24, 2026",
+      "registrationStatus": "S-3 filed; effectiveness is not established in the supplied evidence.",
+      "effectiveDate": null,
+      "terms": "The prospectus contemplates up to $50 million in aggregate of common stock, preferred stock, debt securities, warrants, rights, subscription receipts, or units, potentially offered from time to time.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "This is dollar-denominated shelf capacity, not a share count. The bundle does not provide an effectiveness notice, takedown, pricing, or sales data.",
+      "evidenceSourceIds": [
+        101567
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 437500,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed August 5, 2026",
+      "registrationStatus": "Cancelled and extinguished.",
+      "effectiveDate": "2026-08-04",
+      "terms": "Warrants to purchase up to 437,500 common shares at $5.00 per share, exercisable for two years following issuance, were cancelled.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "These cancelled warrants are not a live source of exercise supply.",
+      "evidenceSourceIds": [
+        101561
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 2675412,
+    "asOf": "2026-08-14",
+    "filed": "2026-08-14",
+    "accession": "0001753926-26-001521",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-036438",
+      "form": "4",
+      "filingDate": "2026-08-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001493152-26-009040",
+      "form": "4",
+      "filingDate": "2026-03-06",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-25-038989",
+      "form": "3",
+      "filingDate": "2025-12-30",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-025227",
+      "form": "3",
+      "filingDate": "2025-11-26",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-25-036463",
+      "form": "4",
+      "filingDate": "2025-11-26",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "897911",
+        "ownerName": "BAGLEY EDWARD D",
+        "rows": [
+          {
+            "asOf": "2025-11-24",
+            "title": "common stock",
+            "shares": 140668
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-027289",
+      "form": "3",
+      "filingDate": "2025-08-18",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-005707",
+      "form": "4",
+      "filingDate": "2025-02-28",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "897911",
+        "ownerName": "BAGLEY EDWARD D",
+        "rows": [
+          {
+            "asOf": "2025-02-26",
+            "title": "common stock",
+            "shares": 12590528
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-24-036458",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-24-036457",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "897911",
+      "ownerName": "BAGLEY EDWARD D",
+      "shares": 140668,
+      "asOf": "2025-11-24",
+      "accessions": [
+        "0001437749-25-036463"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "897911": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "897911",
+      "shares": 140668,
+      "asOf": "2025-11-24",
+      "rows": [
+        {
+          "accession": "0001437749-25-036463",
+          "title": "common stock",
+          "shares": 140668,
+          "asOf": "2025-11-24"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 140668, independent 140668, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-24, count as-of 2026-08-14, independent latest eligible 2025-11-24"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 2534744, count 2675412"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

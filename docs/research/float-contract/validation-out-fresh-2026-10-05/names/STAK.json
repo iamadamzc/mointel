@@ -1,0 +1,130 @@
+{
+  "ticker": "STAK",
+  "cik": "2002453",
+  "tradingDate": "2026-09-24",
+  "rank": 10,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 6000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 / 6-K, registration statement No. 333-291542",
+      "registrationStatus": "The offering registration statement was effective January 2, 2026; the company subsequently announced closing of the registered direct offering.",
+      "effectiveDate": "2026-01-02",
+      "terms": "6,000,000 units were offered at $0.38 per unit; each unit included one Class A ordinary share and one-and-one-half warrants.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The 6,000,000 Class A shares were stated to have been issued at the closing. This establishes issuance, not float or actual secondary selling.",
+      "evidenceSourceIds": [
+        15621,
+        15623,
+        15629,
+        15616
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 9000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 / 6-K, registration statement No. 333-291542",
+      "registrationStatus": "Warrant underlying shares were included in the effective offering registration statement.",
+      "effectiveDate": "2026-01-02",
+      "terms": "Up to 9,000,000 Class A shares may be issued upon exercise. The warrants have a three-year term and become exercisable on the second anniversary of issuance, subject to adjustment and applicable law.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "Based on the stated second-anniversary commencement, these warrants were not yet exercisable as of the September 15, 2026 evidence date. Exercise price and any subsequent amendments are not established by the supplied excerpts.",
+      "evidenceSourceIds": [
+        15621,
+        15623,
+        15629
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 13210349,
+    "asOf": "2025-06-30",
+    "filed": "2025-11-05",
+    "accession": "0001493152-25-020818",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-010658",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-010662",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-010663",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-010660",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-010664",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-010659",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-010661",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

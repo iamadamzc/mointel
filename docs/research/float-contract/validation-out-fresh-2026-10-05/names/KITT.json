@@ -1,0 +1,1074 @@
+{
+  "ticker": "KITT",
+  "cik": "1849820",
+  "tradingDate": "2026-09-25",
+  "rank": 9,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "S-1 declared effective July 31, 2026; subsequent 424B3 prospectus",
+      "registrationStatus": "S-1 effectiveness reported; the supplied excerpts do not state the registered share amount.",
+      "effectiveDate": "2026-07-31",
+      "terms": "The August 2026 prospectus states that outstanding warrants, Series A/B/C preferred stock and certain convertible debentures were exercisable or convertible into common shares; the supplied excerpt does not quantify the securities or provide complete exercise/conversion terms. [40158]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "An effective S-1 establishes that covered securities may be sold under the registration statement; it does not establish that shares were sold, nor does the supplied evidence quantify immediately saleable shares. [40156, 40158]",
+      "evidenceSourceIds": [
+        40156,
+        40158
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K / term-loan amendment and August 2026 prospectus",
+      "registrationStatus": "The supplied excerpts do not provide a registration status for each individual convertible instrument.",
+      "effectiveDate": null,
+      "terms": "The company has outstanding convertible debentures. An August amendment states a conversion price of $15,552.00 as of that document date after prior split adjustments, while the prospectus states certain outstanding convertible debentures were convertible into common stock. The supplied evidence does not provide principal amounts, current adjusted conversion terms after the later 1-for-6 split, or resulting share quantities. [40163, 40158]",
+      "holderRestrictions": "One lender referenced in the August amendment agreed to waive voting/consent rights above 4.99% of outstanding common stock; that excerpt does not establish a general resale restriction or total potential issuance. [40163]",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Convertible instruments are outstanding, but the supplied evidence is insufficient to calculate currently issuable shares or determine whether conversion-related shares are presently eligible for resale. [40158, 40163]",
+      "evidenceSourceIds": [
+        40158,
+        40163
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 7471960,
+    "asOf": "2026-08-12",
+    "filed": "2026-08-12",
+    "accession": "0001849820-26-000125",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001849820-26-000121",
+      "form": "4",
+      "filingDate": "2026-07-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1946341",
+        "ownerName": "Bellingham Jim",
+        "rows": [
+          {
+            "asOf": "2026-05-27",
+            "title": "common stock",
+            "shares": 2543
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-26-000120",
+      "form": "4",
+      "filingDate": "2026-07-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1945167",
+        "ownerName": "Sharkawy Adam",
+        "rows": [
+          {
+            "asOf": "2026-05-27",
+            "title": "common stock",
+            "shares": 2543
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-26-000119",
+      "form": "4",
+      "filingDate": "2026-07-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1875548",
+        "ownerName": "Spiro Elliot",
+        "rows": [
+          {
+            "asOf": "2026-05-27",
+            "title": "common stock",
+            "shares": 2530
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-26-000118",
+      "form": "4",
+      "filingDate": "2026-07-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1361918",
+        "ownerName": "FLORES WILLIAM",
+        "rows": [
+          {
+            "asOf": "2026-05-27",
+            "title": "common stock",
+            "shares": 4335
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-26-000117",
+      "form": "4",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-26-000116",
+      "form": "4",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-26-000115",
+      "form": "4",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-26-000114",
+      "form": "4",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002147429-26-000003",
+      "form": "4",
+      "filingDate": "2026-07-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002147429-26-000002",
+      "form": "3",
+      "filingDate": "2026-07-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002143744-26-000003",
+      "form": "4",
+      "filingDate": "2026-07-14",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2143744",
+        "ownerName": "RCB EQUITIES 1, LLC",
+        "rows": [
+          {
+            "asOf": "2026-06-01",
+            "title": "common stock",
+            "shares": 815368
+          },
+          {
+            "asOf": "2026-06-01",
+            "title": "common stock",
+            "shares": 782829
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002143744-26-000002",
+      "form": "3",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2143744",
+        "ownerName": "RCB EQUITIES 1, LLC",
+        "rows": [
+          {
+            "asOf": "2026-06-01",
+            "title": "common stock, $0.0001 par value",
+            "shares": 782829
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-26-000066",
+      "form": "3",
+      "filingDate": "2026-04-21",
+      "primaryDocument": "xslF345X06/wk-form3_1776785242.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-26-000026",
+      "form": "4",
+      "filingDate": "2026-03-20",
+      "primaryDocument": "xslF345X06/wk-form4_1774035876.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-26-000013",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/wk-form4_1771976051.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1189981",
+        "ownerName": "GIBSON JOHN W JR",
+        "rows": [
+          {
+            "asOf": "2026-02-23",
+            "title": "common stock",
+            "shares": 14066
+          },
+          {
+            "asOf": "2026-02-24",
+            "title": "common stock",
+            "shares": 13351
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001083269-25-000014",
+      "form": "4",
+      "filingDate": "2025-12-04",
+      "primaryDocument": "xslF345X05/form4-12042025_101209.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1083269",
+        "ownerName": "TRANSOCEAN INTERNATIONAL Ltd",
+        "rows": [
+          {
+            "asOf": "2025-11-28",
+            "title": "common stock, par value u.s. $0.0001",
+            "shares": 2122531
+          },
+          {
+            "asOf": "2025-12-01",
+            "title": "common stock, par value u.s. $0.0001",
+            "shares": 2061180
+          },
+          {
+            "asOf": "2025-12-02",
+            "title": "common stock, par value u.s. $0.0001",
+            "shares": 2028341
+          },
+          {
+            "asOf": "2025-12-03",
+            "title": "common stock, par value u.s. $0.0001",
+            "shares": 6421
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001451505-25-000130",
+      "form": "4",
+      "filingDate": "2025-12-04",
+      "primaryDocument": "xslF345X05/form4-12042025_101222.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000284",
+      "form": "4",
+      "filingDate": "2025-11-26",
+      "primaryDocument": "xslF345X05/wk-form4_1764171977.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1361918",
+        "ownerName": "FLORES WILLIAM",
+        "rows": [
+          {
+            "asOf": "2025-11-25",
+            "title": "common stock",
+            "shares": 14501
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001083269-25-000012",
+      "form": "4",
+      "filingDate": "2025-10-31",
+      "primaryDocument": "xslF345X05/form4-10312025_101041.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1083269",
+        "ownerName": "TRANSOCEAN INTERNATIONAL Ltd",
+        "rows": [
+          {
+            "asOf": "2025-10-28",
+            "title": "common stock, par value u.s. $0.0001",
+            "shares": 2150716
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001451505-25-000125",
+      "form": "4",
+      "filingDate": "2025-10-31",
+      "primaryDocument": "xslF345X05/form4-10312025_101031.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000185",
+      "form": "3",
+      "filingDate": "2025-07-28",
+      "primaryDocument": "xslF345X02/wk-form3_1753737201.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000183",
+      "form": "4",
+      "filingDate": "2025-07-28",
+      "primaryDocument": "xslF345X05/wk-form4_1753735435.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000182",
+      "form": "4",
+      "filingDate": "2025-07-28",
+      "primaryDocument": "xslF345X05/wk-form4_1753735283.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000181",
+      "form": "4",
+      "filingDate": "2025-07-28",
+      "primaryDocument": "xslF345X05/wk-form4_1753735164.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000180",
+      "form": "4",
+      "filingDate": "2025-07-28",
+      "primaryDocument": "xslF345X05/wk-form4_1753735047.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000150",
+      "form": "4",
+      "filingDate": "2025-05-30",
+      "primaryDocument": "xslF345X05/wk-form4_1748617080.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1875548",
+        "ownerName": "Spiro Elliot",
+        "rows": [
+          {
+            "asOf": "2025-05-28",
+            "title": "common stock",
+            "shares": 27425
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000149",
+      "form": "4",
+      "filingDate": "2025-05-30",
+      "primaryDocument": "xslF345X05/wk-form4_1748616994.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1945167",
+        "ownerName": "Sharkawy Adam",
+        "rows": [
+          {
+            "asOf": "2025-05-28",
+            "title": "common stock",
+            "shares": 27425
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000148",
+      "form": "4",
+      "filingDate": "2025-05-30",
+      "primaryDocument": "xslF345X05/wk-form4_1748616946.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1361918",
+        "ownerName": "FLORES WILLIAM",
+        "rows": [
+          {
+            "asOf": "2025-05-28",
+            "title": "common stock",
+            "shares": 40501
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000147",
+      "form": "4",
+      "filingDate": "2025-05-30",
+      "primaryDocument": "xslF345X05/wk-form4_1748616888.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1946341",
+        "ownerName": "Bellingham Jim",
+        "rows": [
+          {
+            "asOf": "2025-05-28",
+            "title": "common stock",
+            "shares": 27425
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000084",
+      "form": "4",
+      "filingDate": "2025-04-01",
+      "primaryDocument": "xslF345X05/wk-form4_1743539240.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000082",
+      "form": "4",
+      "filingDate": "2025-04-01",
+      "primaryDocument": "xslF345X05/wk-form4_1743539037.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000074",
+      "form": "3",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X02/wk-form3_1743197242.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001849820-25-000060",
+      "form": "4",
+      "filingDate": "2025-02-25",
+      "primaryDocument": "xslF345X05/wk-form4_1740524113.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1189981",
+        "ownerName": "GIBSON JOHN W JR",
+        "rows": [
+          {
+            "asOf": "2025-02-21",
+            "title": "common stock",
+            "shares": 114051
+          },
+          {
+            "asOf": "2025-02-21",
+            "title": "common stock",
+            "shares": 107132
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-026774",
+      "form": "5",
+      "filingDate": "2025-02-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1945167",
+        "ownerName": "Sharkawy Adam",
+        "rows": [
+          {
+            "asOf": "2023-10-07",
+            "title": "common stock",
+            "shares": 801
+          },
+          {
+            "asOf": "2024-11-07",
+            "title": "common stock",
+            "shares": 2139
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-026704",
+      "form": "5",
+      "filingDate": "2025-02-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "3 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001849820-25-000056",
+      "form": "5",
+      "filingDate": "2025-02-14",
+      "primaryDocument": "xslF345X05/wk-form5_1739580708.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1875548",
+        "ownerName": "Spiro Elliot",
+        "rows": [
+          {
+            "asOf": "2023-10-07",
+            "title": "common stock",
+            "shares": 2139
+          },
+          {
+            "asOf": "2024-05-28",
+            "title": "common stock",
+            "shares": 2139
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000054",
+      "form": "5",
+      "filingDate": "2025-02-14",
+      "primaryDocument": "xslF345X05/wk-form5_1739574302.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1361918",
+        "ownerName": "FLORES WILLIAM",
+        "rows": [
+          {
+            "asOf": "2024-05-28",
+            "title": "common stock",
+            "shares": 11000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000053",
+      "form": "5",
+      "filingDate": "2025-02-14",
+      "primaryDocument": "xslF345X05/wk-form5_1739574202.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1946341",
+        "ownerName": "Bellingham Jim",
+        "rows": [
+          {
+            "asOf": "2023-10-07",
+            "title": "common stock",
+            "shares": 2139
+          },
+          {
+            "asOf": "2024-05-28",
+            "title": "common stock",
+            "shares": 2139
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000016",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/wk-form4_1736376402.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1944944",
+        "ownerName": "Yamokoski John",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 20854
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-25-000013",
+      "form": "4",
+      "filingDate": "2025-01-07",
+      "primaryDocument": "xslF345X05/wk-form4_1736280318.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1189981",
+        "ownerName": "GIBSON JOHN W JR",
+        "rows": [
+          {
+            "asOf": "2025-01-01",
+            "title": "common stock",
+            "shares": 97796
+          },
+          {
+            "asOf": "2025-01-06",
+            "title": "common stock",
+            "shares": 94606
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-24-000278",
+      "form": "4",
+      "filingDate": "2024-12-10",
+      "primaryDocument": "xslF345X05/wk-form4_1733871775.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2003344",
+        "ownerName": "Hay Victoria",
+        "rows": [
+          {
+            "asOf": "2024-12-08",
+            "title": "common stock",
+            "shares": 1112
+          },
+          {
+            "asOf": "2024-12-10",
+            "title": "common stock",
+            "shares": 753
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-24-000276",
+      "form": "4",
+      "filingDate": "2024-11-27",
+      "primaryDocument": "xslF345X05/wk-form4_1732756445.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1189981",
+        "ownerName": "GIBSON JOHN W JR",
+        "rows": [
+          {
+            "asOf": "2024-10-09",
+            "title": "common stock",
+            "shares": 20322
+          },
+          {
+            "asOf": "2024-10-09",
+            "title": "common stock",
+            "shares": 19556
+          },
+          {
+            "asOf": "2024-11-26",
+            "title": "common stock",
+            "shares": 71713
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001849820-24-000274",
+      "form": "4",
+      "filingDate": "2024-11-26",
+      "primaryDocument": "xslF345X05/wk-form4_1732661172.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1361918",
+        "ownerName": "FLORES WILLIAM",
+        "rows": [
+          {
+            "asOf": "2024-11-22",
+            "title": "common stock",
+            "shares": 5117
+          },
+          {
+            "asOf": "2024-11-25",
+            "title": "common stock",
+            "shares": 7172
+          },
+          {
+            "asOf": "2024-11-25",
+            "title": "common stock",
+            "shares": 11000
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1083269",
+      "ownerName": "TRANSOCEAN INTERNATIONAL Ltd",
+      "shares": 6421,
+      "asOf": "2025-12-03",
+      "accessions": [
+        "0001083269-25-000014"
+      ]
+    },
+    {
+      "ownerCik": "1189981",
+      "ownerName": "GIBSON JOHN W JR",
+      "shares": 13351,
+      "asOf": "2026-02-24",
+      "accessions": [
+        "0001849820-26-000013"
+      ]
+    },
+    {
+      "ownerCik": "1361918",
+      "ownerName": "FLORES WILLIAM",
+      "shares": 4335,
+      "asOf": "2026-05-27",
+      "accessions": [
+        "0001849820-26-000118"
+      ]
+    },
+    {
+      "ownerCik": "1875548",
+      "ownerName": "Spiro Elliot",
+      "shares": 2530,
+      "asOf": "2026-05-27",
+      "accessions": [
+        "0001849820-26-000119"
+      ]
+    },
+    {
+      "ownerCik": "1944944",
+      "ownerName": "Yamokoski John",
+      "shares": 20854,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0001849820-25-000016"
+      ]
+    },
+    {
+      "ownerCik": "1945167",
+      "ownerName": "Sharkawy Adam",
+      "shares": 2543,
+      "asOf": "2026-05-27",
+      "accessions": [
+        "0001849820-26-000120"
+      ]
+    },
+    {
+      "ownerCik": "1946341",
+      "ownerName": "Bellingham Jim",
+      "shares": 2543,
+      "asOf": "2026-05-27",
+      "accessions": [
+        "0001849820-26-000121"
+      ]
+    },
+    {
+      "ownerCik": "2003344",
+      "ownerName": "Hay Victoria",
+      "shares": 753,
+      "asOf": "2024-12-10",
+      "accessions": [
+        "0001849820-24-000278"
+      ]
+    },
+    {
+      "ownerCik": "2143744",
+      "ownerName": "RCB EQUITIES 1, LLC",
+      "shares": 1598197,
+      "asOf": "2026-06-01",
+      "accessions": [
+        "0002143744-26-000002",
+        "0002143744-26-000003"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1083269": "FOUND",
+    "1189981": "FOUND",
+    "1361918": "NONE",
+    "1875548": "NONE",
+    "1944944": "FOUND",
+    "1945167": "NONE",
+    "1946341": "NONE",
+    "2003344": "FOUND",
+    "2143744": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1361918",
+      "shares": 4335,
+      "asOf": "2026-05-27",
+      "rows": [
+        {
+          "accession": "0001849820-26-000118",
+          "title": "common stock",
+          "shares": 4335,
+          "asOf": "2026-05-27"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 4335, independent 4335, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-27, count as-of 2026-08-12, independent latest eligible 2026-05-27"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 5861812, count 7471960"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1875548",
+      "shares": 2530,
+      "asOf": "2026-05-27",
+      "rows": [
+        {
+          "accession": "0001849820-26-000119",
+          "title": "common stock",
+          "shares": 2530,
+          "asOf": "2026-05-27"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 2530, independent 2530, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-27, count as-of 2026-08-12, independent latest eligible 2026-05-27"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 5861812, count 7471960"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1945167",
+      "shares": 2543,
+      "asOf": "2026-05-27",
+      "rows": [
+        {
+          "accession": "0001849820-26-000120",
+          "title": "common stock",
+          "shares": 2543,
+          "asOf": "2026-05-27"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 2543, independent 2543, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-27, count as-of 2026-08-12, independent latest eligible 2026-05-27"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 5861812, count 7471960"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1946341",
+      "shares": 2543,
+      "asOf": "2026-05-27",
+      "rows": [
+        {
+          "accession": "0001849820-26-000121",
+          "title": "common stock",
+          "shares": 2543,
+          "asOf": "2026-05-27"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 2543, independent 2543, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-27, count as-of 2026-08-12, independent latest eligible 2026-05-27"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 5861812, count 7471960"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2143744",
+      "shares": 1598197,
+      "asOf": "2026-06-01",
+      "rows": [
+        {
+          "accession": "0002143744-26-000003",
+          "title": "common stock",
+          "shares": 815368,
+          "asOf": "2026-06-01"
+        },
+        {
+          "accession": "0002143744-26-000002",
+          "title": "common stock, $0.0001 par value",
+          "shares": 782829,
+          "asOf": "2026-06-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 1598197, independent 1598197, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-01, count as-of 2026-08-12, independent latest eligible 2026-06-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 5861812, count 7471960"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

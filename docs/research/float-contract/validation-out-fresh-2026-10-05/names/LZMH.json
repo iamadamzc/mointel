@@ -1,0 +1,35 @@
+{
+  "ticker": "LZMH",
+  "cik": "1967397",
+  "tradingDate": "2026-09-24",
+  "rank": 6,
+  "ledger": [
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "2025 Form 20-F / 2025 IPO prospectus",
+      "registrationStatus": "The cited disclosures describe Class A ordinary shares as convertible into Class B ordinary shares on a 1:1 basis; the bundle does not establish the presently convertible amount, whether conversions occurred, or current resale eligibility.",
+      "effectiveDate": null,
+      "terms": "Class A ordinary shares may be converted into Class B ordinary shares on a 1:1 basis at the holder's option under the post-offering governing documents described in the filings.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential structural complexity only; no current amount, conversion activity, registration status, or freely tradable supply is established.",
+      "evidenceSourceIds": [
+        95113,
+        95119
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

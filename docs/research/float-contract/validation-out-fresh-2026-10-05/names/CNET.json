@@ -1,0 +1,267 @@
+{
+  "ticker": "CNET",
+  "cik": "1376321",
+  "tradingDate": "2026-09-25",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 450000,
+      "dollarCapacity": 652500,
+      "sourceFiling": "8-K filed August 5, 2026; securities purchase agreements dated July 30, 2026",
+      "registrationStatus": "The agreements describe direct purchases of 150,000 and 300,000 common shares at $1.45 per share; the supplied excerpts do not establish closing or resale-registration status.",
+      "effectiveDate": "2026-07-30",
+      "terms": "150,000 shares to Amber Strong International Limited for $217,500 and 300,000 shares to Marvel Investment Limited for $435,000, each at $1.45 per share.",
+      "holderRestrictions": "Amber Strong agreed not to transfer its shares until the six-month anniversary of its agreement date. The supplied excerpt does not establish comparable restrictions for Marvel or whether either closing occurred.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential future supply, but issuance/closing and public resale eligibility are not established by the supplied excerpts.",
+      "evidenceSourceIds": [
+        4798,
+        4810,
+        4811
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 500000,
+      "dollarCapacity": null,
+      "sourceFiling": "S-8 filed April 15, 2026",
+      "registrationStatus": "Registered on Form S-8 for the 2025 Omnibus Equity Incentive Plan.",
+      "effectiveDate": "2026-04-15",
+      "terms": "500,000 shares were reserved and available for issuance under the 2025 Omnibus Equity Incentive Plan.",
+      "holderRestrictions": "Not stated in the supplied excerpt.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Plan shares are registered and may be issued under the plan, but the evidence does not state how many, if any, have been granted or issued.",
+      "evidenceSourceIds": [
+        4805
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 400000,
+      "dollarCapacity": null,
+      "sourceFiling": "S-8 filed March 19, 2025",
+      "registrationStatus": "Registered on Form S-8 for the 2024 Omnibus Equity Incentive Plan.",
+      "effectiveDate": "2025-03-19",
+      "terms": "400,000 shares were reserved and available for issuance under the 2024 Omnibus Equity Incentive Plan.",
+      "holderRestrictions": "Not stated in the supplied excerpt.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration covers plan shares, but the supplied evidence does not establish grants, issuance, remaining availability, or public resale eligibility of any particular holder.",
+      "evidenceSourceIds": [
+        4806
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 75000000,
+      "sourceFiling": "Form S-3 / Notice of Effectiveness",
+      "registrationStatus": "An S-3 covering up to $75,000,000 of securities received a Notice of Effectiveness on January 29, 2024. The supplied evidence does not establish current remaining capacity or whether the registration remains usable.",
+      "effectiveDate": "2024-01-29",
+      "terms": "The shelf prospectus describes potential offerings of common stock, preferred stock, warrants, units, or combinations thereof up to $75,000,000 in aggregate.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is dollar-denominated shelf capacity, not a share count. Effectiveness permits offerings under the registration subject to applicable terms, but does not evidence any securities were sold.",
+      "evidenceSourceIds": [
+        4804,
+        4807
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 3668429,
+    "asOf": "2026-08-14",
+    "filed": "2026-08-14",
+    "accession": "0001171843-26-005526",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001171843-26-003024",
+      "form": "4",
+      "filingDate": "2026-05-05",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1493177",
+        "ownerName": "Chu Kai",
+        "rows": [
+          {
+            "asOf": "2026-04-22",
+            "title": "common stock, par value $0.001",
+            "shares": 260833
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171843-25-000649",
+      "form": "3",
+      "filingDate": "2025-02-05",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2054662",
+        "ownerName": "Tam Kin Ming Justin",
+        "rows": [
+          {
+            "asOf": "2025-02-04",
+            "title": "common stock",
+            "shares": 0
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171843-24-005636",
+      "form": "3",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001171843-24-005635",
+      "form": "3",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001171843-24-005634",
+      "form": "3",
+      "filingDate": "2024-10-15",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1493177",
+      "ownerName": "Chu Kai",
+      "shares": 260833,
+      "asOf": "2026-04-22",
+      "accessions": [
+        "0001171843-26-003024"
+      ]
+    },
+    {
+      "ownerCik": "2054662",
+      "ownerName": "Tam Kin Ming Justin",
+      "shares": 0,
+      "asOf": "2025-02-04",
+      "accessions": [
+        "0001171843-25-000649"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1493177": "NONE",
+    "2054662": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1493177",
+      "shares": 260833,
+      "asOf": "2026-04-22",
+      "rows": [
+        {
+          "accession": "0001171843-26-003024",
+          "title": "common stock, par value $0.001",
+          "shares": 260833,
+          "asOf": "2026-04-22"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 260833, independent 260833, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-04-22, count as-of 2026-08-14, independent latest eligible 2026-04-22"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3407596, count 3668429"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2054662",
+      "shares": 0,
+      "asOf": "2025-02-04",
+      "rows": [
+        {
+          "accession": "0001171843-25-000649",
+          "title": "common stock",
+          "shares": 0,
+          "asOf": "2025-02-04"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 0, independent 0, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-02-04, count as-of 2026-08-14, independent latest eligible 2025-02-04"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3407596, count 3668429"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

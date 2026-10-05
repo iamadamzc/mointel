@@ -1,0 +1,204 @@
+{
+  "ticker": "GYGY",
+  "cik": "2111846",
+  "tradingDate": "2026-09-25",
+  "rank": 7,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 16072730,
+      "dollarCapacity": null,
+      "sourceFiling": "Form S-1 File No. 333-296763 and September 23, 2026 Form 424B3 supplement",
+      "registrationStatus": "Declared effective July 28, 2026; prospectus remains supplemented",
+      "effectiveDate": "2026-07-28",
+      "terms": "Up to 16,072,730 common shares may be resold from time to time by registered stockholders in connection with the direct listing. The company receives no resale proceeds.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration provides legal resale availability; it does not establish that any particular shares were sold.",
+      "evidenceSourceIds": [
+        100660,
+        100663,
+        13081
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "PREFERRED_CONVERSION",
+      "amountShares": 22222200,
+      "dollarCapacity": null,
+      "sourceFiling": "Form S-1 File No. 333-298502 and Forms 424B3",
+      "registrationStatus": "S-1 effective September 15, 2026",
+      "effectiveDate": "2026-09-15",
+      "terms": "Up to 22,222,200 common shares are registered for resale and may be issued upon conversion of Series A preferred stock already issued or purchased later under the financing arrangement, subject to its conditions.",
+      "holderRestrictions": "Conversion and additional purchases remain subject to contractual conditions and limitations not fully reproduced in the evidence excerpts.",
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The resale registration is effective, but effectiveness does not prove conversion, issuance, or sale of all registered shares.",
+      "evidenceSourceIds": [
+        100659,
+        100661,
+        100662
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": 40000000,
+      "sourceFiling": "September 16, 2026 Form 424B3 prospectus",
+      "registrationStatus": "Related conversion-share S-1 effective September 15, 2026",
+      "effectiveDate": "2026-09-15",
+      "terms": "The company may issue and sell up to $40 million in aggregate of Series A preferred stock; the filing states that $8 million in gross proceeds had been received. This capacity overlaps economically with the registered preferred-conversion supply and should not be added as a separate share count.",
+      "holderRestrictions": "Future purchases are at the company's discretion and subject to stated conditions or waiver by the investor.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The evidence does not establish the remaining usable dollar capacity or the number of future common shares because conversion pricing and subsequent activity are not fully provided.",
+      "evidenceSourceIds": [
+        100661,
+        100662
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 1250000,
+      "dollarCapacity": null,
+      "sourceFiling": "September 16, 2026 Form 424B3 prospectus",
+      "registrationStatus": "Underlying shares previously registered for resale under the direct-listing S-1",
+      "effectiveDate": "2026-07-28",
+      "terms": "Warrant to purchase up to 1,250,000 common shares at an exercise price of $8.00 per share.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Registration is disclosed, but the evidence does not fully establish present exercisability or whether any warrants have been exercised.",
+      "evidenceSourceIds": [
+        100662
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 1438000,
+      "dollarCapacity": null,
+      "sourceFiling": "September 16, 2026 Form 424B3 prospectus",
+      "registrationStatus": "Previously registered for resale under the direct-listing S-1",
+      "effectiveDate": "2026-07-30",
+      "terms": "Pre-delivery common shares issued in connection with the Streeterville arrangement. These shares may already be included in both reported shares outstanding and the 16,072,730-share direct-listing resale registration, so they should not be added without reconciliation.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "Issued shares are confirmed, but their exact overlap with other registered-resale totals is not reconciled in the supplied excerpts.",
+      "evidenceSourceIds": [
+        100662,
+        37367
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "September 4, 2026 Form 8-K and Exhibit 10.1",
+      "registrationStatus": "Potential future issuance; no specific registration status established",
+      "effectiveDate": "2026-09-04",
+      "terms": "Certain transaction-based service bonuses may be paid in a mix of cash and common shares at the company's discretion, subject to board approval and Nasdaq rules.",
+      "holderRestrictions": "Contingent on eligible transactions and company discretion.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "No determinable share count is available because the payment mix and issuance price are unknown.",
+      "evidenceSourceIds": [
+        100651,
+        100666
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 14392000,
+    "asOf": "2026-08-18",
+    "filed": "2026-08-21",
+    "accession": "0001213900-26-092694",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-082441",
+      "form": "3",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1695889",
+        "ownerName": "Das Soumya",
+        "rows": [
+          {
+            "asOf": "2026-07-28",
+            "title": "common stock",
+            "shares": 125840
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-082440",
+      "form": "3",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001213900-26-082439",
+      "form": "3",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2143946",
+        "ownerName": "Poole Dominic",
+        "rows": [
+          {
+            "asOf": "2026-07-28",
+            "title": "common stock",
+            "shares": 125840
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-082438",
+      "form": "3",
+      "filingDate": "2026-07-28",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1695889",
+      "ownerName": "Das Soumya",
+      "shares": 125840,
+      "asOf": "2026-07-28",
+      "accessions": [
+        "0001213900-26-082441"
+      ]
+    },
+    {
+      "ownerCik": "2143946",
+      "ownerName": "Poole Dominic",
+      "shares": 125840,
+      "asOf": "2026-07-28",
+      "accessions": [
+        "0001213900-26-082439"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1695889": "UNPROVEN",
+    "2143946": "UNPROVEN"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

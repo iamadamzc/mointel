@@ -1,0 +1,104 @@
+{
+  "ticker": "VSA",
+  "cik": "1592560",
+  "tradingDate": "2026-09-23",
+  "rank": 7,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 1500000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed April 16, 2026",
+      "registrationStatus": "Registered offering under registration statement 333-284305.",
+      "effectiveDate": "2026-04-16",
+      "terms": "Prospectus supplement describes 6,000,000 ADSs representing 1,500,000,000 Class A ordinary shares, at $1.00 per ADS.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The prospectus describes an offered issuance; the supplied excerpt does not independently reconcile all shares issued, held, or subsequently sold.",
+      "evidenceSourceIds": [
+        71721
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 750000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed March 31, 2026",
+      "registrationStatus": "Registered direct offering under registration statement 333-284305.",
+      "effectiveDate": "2026-03-31",
+      "terms": "2,750,000 pre-funded warrants underlying 2,750,000 ADSs, representing 750,000,000 Class A ordinary shares. The accompanying filing says the pre-funded warrants were exercisable immediately and at any time until exercised.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Immediately exercisable pre-funded warrants represent potential supply, but the excerpts do not state the exercised balance as of the market session.",
+      "evidenceSourceIds": [
+        71714,
+        71722
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 2307687500,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed November 13, 2025",
+      "registrationStatus": "Offering disclosure provided; current registration/exercise status is not reconciled in the bundle.",
+      "effectiveDate": "2025-11-13",
+      "terms": "Series A warrants to purchase up to 9,230,750 ADSs, representing up to 2,307,687,500 Class A ordinary shares; placement-agent warrants covered up to 184,615 ADSs, representing up to 46,153,750 Class A ordinary shares.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential warrant supply is disclosed, but exercise prices, expiry, exercised amounts, and current eligibility are not supplied.",
+      "evidenceSourceIds": [
+        71723
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "PIPE",
+      "amountShares": 125000000000,
+      "dollarCapacity": 91750000,
+      "sourceFiling": "6-K filed July 10, 2026",
+      "registrationStatus": "Private placement; registration status for resale is not established by the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "The company agreed to sell 125,000,000,000 Class A ordinary shares for an aggregate purchase price of approximately $91.75 million. The transaction was expected to close in the third quarter of 2026.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is a very large prospective issuance relative to the June reported ordinary-share count, but the filing says it was expected to close and does not confirm closing, issuance, registration for resale, or sales.",
+      "evidenceSourceIds": [
+        71710
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 85000000,
+      "sourceFiling": "F-3/A filed July 21, 2025; effective August 21, 2025",
+      "registrationStatus": "Form F-3 registration statement 333-284305 was declared effective.",
+      "effectiveDate": "2025-08-21",
+      "terms": "The shelf registered up to $85 million of ADSs, Class A ordinary shares, preferred shares, debt securities, warrants, subscription rights, and units, in one or more offerings from time to time.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is dollar-denominated shelf capacity, not a share count. The supplied evidence does not reconcile remaining capacity after the subsequent offerings.",
+      "evidenceSourceIds": [
+        71719,
+        71720
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 54563321,
+    "asOf": "2015-12-31",
+    "filed": "2016-04-20",
+    "accession": "0001144204-16-095204",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

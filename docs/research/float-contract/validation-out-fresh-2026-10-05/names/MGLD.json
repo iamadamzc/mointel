@@ -1,0 +1,829 @@
+{
+  "ticker": "MGLD",
+  "cik": "1005101",
+  "tradingDate": "2026-09-25",
+  "rank": 5,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 100000000,
+      "sourceFiling": "S-3, accession 0001493152-24-050601",
+      "registrationStatus": "Form S-3 effective December 27, 2024",
+      "effectiveDate": "2024-12-27",
+      "terms": "The shelf prospectus states it covers up to $100 million aggregate offering price of common stock, preferred stock, warrants, and units, potentially offered from time to time. This is dollar capacity, not a share count. [98039, 98040]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The S-3 was declared effective, so securities may be offered under an applicable prospectus supplement; the evidence does not establish sales, remaining capacity, or an active takedown. [98039, 98040]",
+      "evidenceSourceIds": [
+        98039,
+        98040
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, accession 0001493152-25-009595",
+      "registrationStatus": "Prospectus supplement for at-the-market sales",
+      "effectiveDate": null,
+      "terms": "The prospectus supplement contemplates sales through Maxim under an Equity Distribution Agreement, subject to a stated minimum sale price of $1.50 per share unless the parties agree to a lower price. The supplied excerpt does not state a remaining dollar or share capacity. [98041]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The filing establishes a potential ATM mechanism, not that shares were sold or remain available for sale. [98041]",
+      "evidenceSourceIds": [
+        98041
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "PREFERRED_CONVERSION",
+      "amountShares": 266040,
+      "dollarCapacity": null,
+      "sourceFiling": "10-Q, accession 0001493152-26-021973",
+      "registrationStatus": "Conversion terms disclosed",
+      "effectiveDate": "2026-05-01",
+      "terms": "As of May 1, 2026, the company reported 13,302 Series B Convertible Voting Preferred shares outstanding, each convertible into 20 common shares, implying 266,040 common shares if fully converted. [98038]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The evidence establishes the disclosed conversion ratio and then-outstanding preferred amount, but does not establish current outstanding preferred shares, conversion notices, or resale eligibility.",
+      "evidenceSourceIds": [
+        98038
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 42712250,
+    "asOf": "2026-06-30",
+    "filed": "2026-09-18",
+    "accession": "0001493152-26-043341",
+    "form": "10-K"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001171200-25-000281",
+      "form": "4",
+      "filingDate": "2025-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-12-10",
+            "title": "common stock",
+            "shares": 18751125
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000279",
+      "form": "4",
+      "filingDate": "2025-12-04",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-12-03",
+            "title": "common stock",
+            "shares": 18726125
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000277",
+      "form": "4",
+      "filingDate": "2025-11-21",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-11-20",
+            "title": "common stock",
+            "shares": 18710773
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000275",
+      "form": "4",
+      "filingDate": "2025-11-10",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1317507",
+        "ownerName": "Mullins Derek Jason",
+        "rows": [
+          {
+            "asOf": "2025-11-07",
+            "title": "common stock",
+            "shares": 14779
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000273",
+      "form": "4",
+      "filingDate": "2025-11-10",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1580544",
+        "ownerName": "Gonzalez Matt",
+        "rows": [
+          {
+            "asOf": "2025-11-07",
+            "title": "common stock",
+            "shares": 14779
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000272",
+      "form": "4",
+      "filingDate": "2025-11-10",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1970864",
+        "ownerName": "Alexander James S",
+        "rows": [
+          {
+            "asOf": "2025-11-07",
+            "title": "common stock",
+            "shares": 14676
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000271",
+      "form": "4",
+      "filingDate": "2025-11-10",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1702951",
+        "ownerName": "Harris Joya",
+        "rows": [
+          {
+            "asOf": "2025-11-07",
+            "title": "common stock",
+            "shares": 14779
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000270",
+      "form": "4",
+      "filingDate": "2025-11-10",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1702539",
+        "ownerName": "Grogan Erin",
+        "rows": [
+          {
+            "asOf": "2025-11-07",
+            "title": "common stock",
+            "shares": 14779
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000259",
+      "form": "4",
+      "filingDate": "2025-06-24",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-06-20",
+            "title": "common stock",
+            "shares": 18690773
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000026",
+      "form": "4",
+      "filingDate": "2025-02-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-02-24",
+            "title": "common stock",
+            "shares": 18640773
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000024",
+      "form": "4",
+      "filingDate": "2025-02-18",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-02-14",
+            "title": "common stock",
+            "shares": 18590773
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-25-000019",
+      "form": "4",
+      "filingDate": "2025-02-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2025-02-11",
+            "title": "common stock",
+            "shares": 18543173
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000365",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2024-12-20",
+            "title": "common stock",
+            "shares": 18510915
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000359",
+      "form": "4/A",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1580544",
+        "ownerName": "Gonzalez Matt",
+        "rows": [
+          {
+            "asOf": "2023-03-29",
+            "title": "common stock",
+            "shares": 2924
+          },
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 6444
+          },
+          {
+            "asOf": "2024-12-09",
+            "title": "common stock",
+            "shares": 9925
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000357",
+      "form": "4",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1580544",
+        "ownerName": "Gonzalez Matt",
+        "rows": [
+          {
+            "asOf": "2023-03-29",
+            "title": "common stock",
+            "shares": 2924
+          },
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 6444
+          },
+          {
+            "asOf": "2024-12-09",
+            "title": "common stock",
+            "shares": 9925
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000354",
+      "form": "4",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1317507",
+        "ownerName": "Mullins Derek Jason",
+        "rows": [
+          {
+            "asOf": "2023-03-29",
+            "title": "common stock",
+            "shares": 2924
+          },
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 6444
+          },
+          {
+            "asOf": "2024-12-09",
+            "title": "common stock",
+            "shares": 9925
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000353",
+      "form": "4",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1702951",
+        "ownerName": "Harris Joya",
+        "rows": [
+          {
+            "asOf": "2023-03-29",
+            "title": "common stock",
+            "shares": 2924
+          },
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 6444
+          },
+          {
+            "asOf": "2024-12-09",
+            "title": "common stock",
+            "shares": 9925
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000352",
+      "form": "4",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1702539",
+        "ownerName": "Grogan Erin",
+        "rows": [
+          {
+            "asOf": "2023-03-29",
+            "title": "common stock",
+            "shares": 2924
+          },
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 6444
+          },
+          {
+            "asOf": "2024-12-09",
+            "title": "common stock",
+            "shares": 9925
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000351",
+      "form": "4",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1970864",
+        "ownerName": "Alexander James S",
+        "rows": [
+          {
+            "asOf": "2023-07-06",
+            "title": "common stock",
+            "shares": 2821
+          },
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 6444
+          },
+          {
+            "asOf": "2024-12-09",
+            "title": "common stock",
+            "shares": 9822
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000343",
+      "form": "4",
+      "filingDate": "2024-11-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1632685",
+        "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+        "rows": [
+          {
+            "asOf": "2024-11-21",
+            "title": "common stock",
+            "shares": 18468766
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171200-24-000342",
+      "form": "4",
+      "filingDate": "2024-11-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1317507",
+      "ownerName": "Mullins Derek Jason",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "accessions": [
+        "0001171200-25-000275"
+      ]
+    },
+    {
+      "ownerCik": "1580544",
+      "ownerName": "Gonzalez Matt",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "accessions": [
+        "0001171200-25-000273"
+      ]
+    },
+    {
+      "ownerCik": "1632685",
+      "ownerName": "Nicholas &amp; Melinda Gerber Living Trust",
+      "shares": 18751125,
+      "asOf": "2025-12-10",
+      "accessions": [
+        "0001171200-25-000281"
+      ]
+    },
+    {
+      "ownerCik": "1702539",
+      "ownerName": "Grogan Erin",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "accessions": [
+        "0001171200-25-000270"
+      ]
+    },
+    {
+      "ownerCik": "1702951",
+      "ownerName": "Harris Joya",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "accessions": [
+        "0001171200-25-000271"
+      ]
+    },
+    {
+      "ownerCik": "1970864",
+      "ownerName": "Alexander James S",
+      "shares": 14676,
+      "asOf": "2025-11-07",
+      "accessions": [
+        "0001171200-25-000272"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1317507": "NONE",
+    "1580544": "NONE",
+    "1632685": "NONE",
+    "1702539": "NONE",
+    "1702951": "NONE",
+    "1970864": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1317507",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "rows": [
+        {
+          "accession": "0001171200-25-000275",
+          "title": "common stock",
+          "shares": 14779,
+          "asOf": "2025-11-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 14779, independent 14779, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-07, count as-of 2026-06-30, independent latest eligible 2025-11-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 23887333, count 42712250"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1580544",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "rows": [
+        {
+          "accession": "0001171200-25-000273",
+          "title": "common stock",
+          "shares": 14779,
+          "asOf": "2025-11-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 14779, independent 14779, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-07, count as-of 2026-06-30, independent latest eligible 2025-11-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 23887333, count 42712250"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1632685",
+      "shares": 18751125,
+      "asOf": "2025-12-10",
+      "rows": [
+        {
+          "accession": "0001171200-25-000281",
+          "title": "common stock",
+          "shares": 18751125,
+          "asOf": "2025-12-10"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 18751125, independent 18751125, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-12-10, count as-of 2026-06-30, independent latest eligible 2025-12-10"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 23887333, count 42712250"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1702539",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "rows": [
+        {
+          "accession": "0001171200-25-000270",
+          "title": "common stock",
+          "shares": 14779,
+          "asOf": "2025-11-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 14779, independent 14779, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-07, count as-of 2026-06-30, independent latest eligible 2025-11-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 23887333, count 42712250"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1702951",
+      "shares": 14779,
+      "asOf": "2025-11-07",
+      "rows": [
+        {
+          "accession": "0001171200-25-000271",
+          "title": "common stock",
+          "shares": 14779,
+          "asOf": "2025-11-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 14779, independent 14779, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-07, count as-of 2026-06-30, independent latest eligible 2025-11-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 23887333, count 42712250"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1970864",
+      "shares": 14676,
+      "asOf": "2025-11-07",
+      "rows": [
+        {
+          "accession": "0001171200-25-000272",
+          "title": "common stock",
+          "shares": 14676,
+          "asOf": "2025-11-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 14676, independent 14676, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-07, count as-of 2026-06-30, independent latest eligible 2025-11-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 23887333, count 42712250"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

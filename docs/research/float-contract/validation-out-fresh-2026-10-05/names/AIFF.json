@@ -1,0 +1,548 @@
+{
+  "ticker": "AIFF",
+  "cik": "803578",
+  "tradingDate": "2026-09-25",
+  "rank": 8,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 6833333,
+      "dollarCapacity": null,
+      "sourceFiling": "S-3 / 424B3, file no. 333-296046",
+      "registrationStatus": "The resale registration statement was declared effective June 30, 2026. The July 2 prospectus identifies 1,213,175 issued March 2026 SPA shares and 5,620,158 shares underlying pre-funded warrants.",
+      "effectiveDate": "2026-06-30",
+      "terms": "Includes 5,620,158 pre-funded warrant shares exercisable at $0.0001 per share, plus 1,213,175 already outstanding SPA shares.",
+      "holderRestrictions": "Selling-stockholder resale registration; actual sales are not confirmed by the registration or effectiveness notice.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The EFFECT establishes legal effectiveness for the S-3; the disclosed issued SPA shares and pre-funded-warrant shares are registered for resale. This is sale eligibility, not evidence of selling.",
+      "evidenceSourceIds": [
+        76935,
+        76938,
+        76940
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": 7434266,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed February 3, 2026, under registration no. 333-291916",
+      "registrationStatus": "The underlying S-3 was declared effective December 5, 2025.",
+      "effectiveDate": "2025-12-05",
+      "terms": "Prospectus supplement provides for sales of up to 7,434,266 common shares through an ATM agreement; the sales agent compensation is 2% of gross proceeds.",
+      "holderRestrictions": "No remaining-capacity figure or subsequent termination/amendment evidence is supplied.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The effective shelf and ATM prospectus supplement establish a potential issuance mechanism, but the bundle does not establish whether any capacity remains or whether the agreement remains active.",
+      "evidenceSourceIds": [
+        76939,
+        76941
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 250000000,
+      "sourceFiling": "S-3 filed December 3, 2025, registration no. 333-291916",
+      "registrationStatus": "The S-3 was declared effective December 5, 2025.",
+      "effectiveDate": "2025-12-05",
+      "terms": "The shelf disclosed authority to offer and sell up to $250,000,000 of common stock from time to time.",
+      "holderRestrictions": "The bundle does not establish unused capacity, whether later offerings reduced it, or present availability.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is dollar-denominated shelf capacity, not a share count and not evidence that securities were issued or sold.",
+      "evidenceSourceIds": [
+        76936,
+        76939
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 15690316,
+    "asOf": "2026-08-04",
+    "filed": "2026-08-11",
+    "accession": "0001437749-26-026822",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-099766",
+      "form": "3",
+      "filingDate": "2026-09-14",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-027700",
+      "form": "3/A",
+      "filingDate": "2026-03-13",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-026990",
+      "form": "4",
+      "filingDate": "2026-03-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2037798",
+        "ownerName": "DeCaprio David",
+        "rows": [
+          {
+            "asOf": "2026-03-10",
+            "title": "common stock",
+            "shares": 77866
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-026988",
+      "form": "4",
+      "filingDate": "2026-03-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2044426",
+        "ownerName": "Lipschitz Gregory",
+        "rows": [
+          {
+            "asOf": "2026-03-10",
+            "title": "common stock",
+            "shares": 530184
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-104097",
+      "form": "4",
+      "filingDate": "2025-10-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-104095",
+      "form": "4",
+      "filingDate": "2025-10-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-104094",
+      "form": "4",
+      "filingDate": "2025-10-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-25-247150",
+      "form": "4",
+      "filingDate": "2025-10-22",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "8 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001193125-25-242736",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "8 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001193125-25-239285",
+      "form": "4",
+      "filingDate": "2025-10-14",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "8 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-25-017885",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-012719",
+      "form": "4",
+      "filingDate": "2025-04-22",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-012718",
+      "form": "4",
+      "filingDate": "2025-04-22",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-008468",
+      "form": "3",
+      "filingDate": "2025-03-19",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2061392",
+        "ownerName": "Issachar Gil",
+        "rows": [
+          {
+            "asOf": "2024-08-12",
+            "title": "common stock",
+            "shares": 33480
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-007358",
+      "form": "3/A",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1685893",
+        "ownerName": "Menawat Arun Swarup",
+        "rows": [
+          {
+            "asOf": "2024-08-12",
+            "title": "common stock",
+            "shares": 99405
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-007342",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007341",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007340",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007339",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007338",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007213",
+      "form": "3",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1685893",
+        "ownerName": "Menawat Arun Swarup",
+        "rows": [
+          {
+            "asOf": "2024-08-12",
+            "title": "common stock",
+            "shares": 99405
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-007212",
+      "form": "3",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007211",
+      "form": "3",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007209",
+      "form": "3",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-25-007208",
+      "form": "3",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-24-032018",
+      "form": "4",
+      "filingDate": "2024-10-24",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1563432",
+        "ownerName": "Johnson David Ian",
+        "rows": [
+          {
+            "asOf": "2024-10-22",
+            "title": "common stock, par value $0.0001 per share",
+            "shares": 557885
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1563432",
+      "ownerName": "Johnson David Ian",
+      "shares": 557885,
+      "asOf": "2024-10-22",
+      "accessions": [
+        "0001437749-24-032018"
+      ]
+    },
+    {
+      "ownerCik": "2037798",
+      "ownerName": "DeCaprio David",
+      "shares": 77866,
+      "asOf": "2026-03-10",
+      "accessions": [
+        "0001213900-26-026990"
+      ]
+    },
+    {
+      "ownerCik": "2044426",
+      "ownerName": "Lipschitz Gregory",
+      "shares": 530184,
+      "asOf": "2026-03-10",
+      "accessions": [
+        "0001213900-26-026988"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1563432": "NONE",
+    "2037798": "NONE",
+    "2044426": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1563432",
+      "shares": 557885,
+      "asOf": "2024-10-22",
+      "rows": [
+        {
+          "accession": "0001437749-24-032018",
+          "title": "common stock, par value $0.0001 per share",
+          "shares": 557885,
+          "asOf": "2024-10-22"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 557885, independent 557885, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2024-10-22, count as-of 2026-08-04, independent latest eligible 2024-10-22"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 14524381, count 15690316"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2037798",
+      "shares": 77866,
+      "asOf": "2026-03-10",
+      "rows": [
+        {
+          "accession": "0001213900-26-026990",
+          "title": "common stock",
+          "shares": 77866,
+          "asOf": "2026-03-10"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 77866, independent 77866, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-03-10, count as-of 2026-08-04, independent latest eligible 2026-03-10"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 14524381, count 15690316"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2044426",
+      "shares": 530184,
+      "asOf": "2026-03-10",
+      "rows": [
+        {
+          "accession": "0001213900-26-026988",
+          "title": "common stock",
+          "shares": 530184,
+          "asOf": "2026-03-10"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 530184, independent 530184, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-03-10, count as-of 2026-08-04, independent latest eligible 2026-03-10"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 14524381, count 15690316"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

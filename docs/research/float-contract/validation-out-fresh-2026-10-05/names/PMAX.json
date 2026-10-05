@@ -1,0 +1,71 @@
+{
+  "ticker": "PMAX",
+  "cik": "2012096",
+  "tradingDate": "2026-09-24",
+  "rank": 4,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 200000000,
+      "sourceFiling": "Form F-3, file no. 333-297921",
+      "registrationStatus": "F-3 was declared effective August 14, 2026.",
+      "effectiveDate": "2026-08-14",
+      "terms": "The shelf prospectus permits offerings, from time to time, of ordinary shares, preferred stock, warrants, debt securities, units, or combinations, for aggregate initial offering price up to $200,000,000; it requires a prospectus supplement to offer and sell securities.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The effective shelf provides legal capacity for future offerings, but does not establish that securities have been sold under it.",
+      "evidenceSourceIds": [
+        63393,
+        63396
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 74809231,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-3, file no. 333-293983",
+      "registrationStatus": "The associated F-3 was declared effective March 5, 2026.",
+      "effectiveDate": "2026-03-05",
+      "terms": "The registration covered resale by selling shareholders of up to 74,809,231 Class A ordinary shares issuable from a January 2026 private placement, including 68,273,088 conversion shares and 6,024,095 common-warrant shares. This filing predates the April 17, 2026 1-for-10 share consolidation; the supplied excerpts do not reconcile these disclosed amounts to a current split-adjusted amount.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness established resale eligibility at that time, not issuance, exercise, conversion, or actual selling. Current remaining availability and split-adjusted quantity are not established in the bundle.",
+      "evidenceSourceIds": [
+        63394,
+        63397,
+        63386
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "PIPE",
+      "amountShares": null,
+      "dollarCapacity": 17000000,
+      "sourceFiling": "Form 6-K dated February 10, 2026",
+      "registrationStatus": "A subsequent resale F-3 was declared effective March 5, 2026.",
+      "effectiveDate": "2026-03-05",
+      "terms": "The January 2026 PIPE provided $17,000,000 gross proceeds through units containing one Class C ordinary share and a common warrant. The common warrants were exercisable upon issuance; the supplied excerpt does not provide exercise price, current exercise status, or remaining amount.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The financing and related resale registration create potential conversion/warrant-related supply, but the evidence does not confirm current conversion, exercise, issuance, or sales.",
+      "evidenceSourceIds": [
+        63390,
+        63394,
+        63397
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

@@ -1,0 +1,76 @@
+{
+  "ticker": "SPHL",
+  "cik": "2002236",
+  "tradingDate": "2026-09-24",
+  "rank": 5,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 2691791,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-1, file 333-292807",
+      "registrationStatus": "The F-1 registration statement covered up to 2,691,791 Class A ordinary shares and was declared effective on January 23, 2026. [93061, 93064]",
+      "effectiveDate": "2026-01-23",
+      "terms": "The available evidence identifies an effective F-1 covering up to 2,691,791 Class A ordinary shares; the excerpt does not provide the complete holder, security-mix, or resale-condition details. [93061, 93064]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The EFFECT establishes that the F-1 registration became effective; it establishes potential sale eligibility, not that any registered securities were sold. [93064]",
+      "evidenceSourceIds": [
+        93061,
+        93064
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 400000,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 6-K dated March 27, 2026",
+      "registrationStatus": "The company adopted a 2026 Equity Incentive Plan authorizing issuance of up to 400,000 Class A ordinary shares. [93055]",
+      "effectiveDate": "2026-03-27",
+      "terms": "Maximum aggregate Class A ordinary shares authorized for issuance under the 2026 Equity Incentive Plan: 400,000. The evidence does not state that these shares have been awarded, vested, or issued. [93055]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is plan authorization and potential future issuance capacity, not evidence of currently issued or freely tradable shares. [93055]",
+      "evidenceSourceIds": [
+        93055
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 11500000,
+    "asOf": "2024-12-31",
+    "filed": "2025-04-28",
+    "accession": "0001213900-25-036079",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001811107-26-000008",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002122661-26-000002",
+      "form": "3/A",
+      "filingDate": "2026-03-20",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

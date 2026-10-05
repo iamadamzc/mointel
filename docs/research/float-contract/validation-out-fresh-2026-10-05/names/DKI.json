@@ -1,0 +1,66 @@
+{
+  "ticker": "DKI",
+  "cik": "2058584",
+  "tradingDate": "2026-09-24",
+  "rank": 7,
+  "ledger": [
+    {
+      "type": "PIPE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed August 13, 2026 / Exhibit 99.1",
+      "registrationStatus": "The filing states that a US$3.8 million PIPE was completed in April 2026, but the supplied excerpt truncates the issued-share amount and does not establish current resale registration or holder eligibility.",
+      "effectiveDate": "2026-04-01",
+      "terms": "Completed US$3.8 million PIPE financing in April 2026; exact security count and terms are not fully available in the supplied excerpt.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The existence of the completed PIPE is disclosed, but the bundle does not establish whether PIPE holders have registered, unrestricted, or currently sale-eligible shares.",
+      "evidenceSourceIds": [
+        96176
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 2097587,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed September 18, 2026 / Exhibit 99.1",
+      "registrationStatus": "Not stated.",
+      "effectiveDate": "2026-09-15",
+      "terms": "As of September 15, 2026, the company reported 1,667,701 Class A ordinary shares and 429,886 Class B ordinary shares issued and outstanding.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "Issued-and-outstanding share count is reported, but it is not a public float measurement and does not establish which shares are freely tradable.",
+      "evidenceSourceIds": [
+        96174
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 2400000,
+      "dollarCapacity": null,
+      "sourceFiling": "S-8 filed August 18, 2025",
+      "registrationStatus": "An S-8 was filed to register 2,400,000 Class A ordinary shares reserved for the 2025 Equity Incentive Plan.",
+      "effectiveDate": "2025-08-18",
+      "terms": "The disclosed count is the original S-8 registration amount. The bundle does not provide a post-May 2026 reverse-split adjusted remaining reserve, grants, issuances, or exercises.",
+      "holderRestrictions": "Plan-share vesting, grant status, and current holder sale eligibility are not provided.",
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "This is potential plan-related issuance/resale infrastructure, but the evidence does not establish how many shares remain available or are currently eligible for sale.",
+      "evidenceSourceIds": [
+        96170
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

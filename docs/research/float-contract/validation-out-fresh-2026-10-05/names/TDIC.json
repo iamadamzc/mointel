@@ -1,0 +1,247 @@
+{
+  "ticker": "TDIC",
+  "cik": "2041338",
+  "tradingDate": "2026-09-25",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": 18000000,
+      "sourceFiling": "F-1, file no. 333-295540; effective May 11, 2026",
+      "registrationStatus": "F-1 effectiveness notice filed; the F-1 describes up to $18.0 million of Class A ordinary shares that may be issued under an equity purchase agreement dated December 3, 2025.",
+      "effectiveDate": "2026-05-11",
+      "terms": "Up to $18.0 million of ELOC shares may be issued to the investor; this is dollar capacity, not a confirmed share issuance or share count. [94258, 94261]",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The effective registration provides a legal route for potential issuance/sale under the described ELOC, but the evidence does not establish how much capacity remains, whether any shares were issued, or whether sales occurred. [94258, 94261]",
+      "evidenceSourceIds": [
+        94258,
+        94261
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 6000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, registration no. 333-294098",
+      "registrationStatus": "The underlying F-1 was declared effective March 19, 2026.",
+      "effectiveDate": "2026-03-19",
+      "terms": "The April 23, 2026 prospectus describes an offering of up to 6,000,000 Class A ordinary shares at $0.75 per share, post-split. The supplied excerpt does not establish final sales or closing. [94262, 97894]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The prospectus and effectiveness notice support registered offering availability, not confirmation that all 6,000,000 shares were issued or are in the public float. [94262, 97894]",
+      "evidenceSourceIds": [
+        94262,
+        97894
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 30000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, registration no. 333-294098",
+      "registrationStatus": "The underlying F-1 was declared effective March 19, 2026.",
+      "effectiveDate": "2026-03-19",
+      "terms": "The April 23, 2026 prospectus describes up to 30,000,000 common warrants exercisable for up to 30,000,000 Class A ordinary shares at $0.05 per share, post-split. [94262, 97894]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential exercise supply is material in size relative to the reported historical share count, but the excerpt does not confirm warrant issuance, outstanding warrants, exercises, or current resale eligibility. [94262, 97894, 94265]",
+      "evidenceSourceIds": [
+        94262,
+        97894,
+        94265
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 320000,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K dated June 23, 2026",
+      "registrationStatus": "The filing states that the Class A shares issued in the private placement were not registered under the Securities Act.",
+      "effectiveDate": "2026-06-22",
+      "terms": "320,000 Class A ordinary shares were sold in a private placement at $3.75 per share for $1.2 million gross proceeds. [94254]",
+      "holderRestrictions": "Unregistered at issuance; the evidence does not provide a subsequent registration or resale-eligibility determination. [94254]",
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Issued shares are confirmed, but their present tradability and public-float inclusion are not established. [94254]",
+      "evidenceSourceIds": [
+        94254
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 380000,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K dated June 30, 2026",
+      "registrationStatus": "The filing states that the Class A shares issued in the private placement were not registered under the Securities Act.",
+      "effectiveDate": "2026-06-25",
+      "terms": "380,000 Class A ordinary shares were sold in a private placement at $3.75 per share for $1.425 million gross proceeds. [94253]",
+      "holderRestrictions": "Unregistered at issuance; the evidence does not provide a subsequent registration or resale-eligibility determination. [94253]",
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Issued shares are confirmed, but their present tradability and public-float inclusion are not established. [94253]",
+      "evidenceSourceIds": [
+        94253
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K dated July 9, 2026",
+      "registrationStatus": "The provided excerpt does not establish registration status for all securities in this placement.",
+      "effectiveDate": "2026-07-07",
+      "terms": "The CEO/director purchased Class A ordinary shares and 72,000 Class B ordinary shares at $3.75 per share for $2.445 million gross proceeds. The Class A share quantity is truncated in the supplied excerpt and is left unreconciled. [94252]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The transaction evidences additional issuance, but the exact Class A amount and present public resale eligibility cannot be determined from the excerpt. [94252]",
+      "evidenceSourceIds": [
+        94252
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 28660000,
+    "asOf": "2025-03-31",
+    "filed": "2025-08-06",
+    "accession": "0001641172-25-022328",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-038578",
+      "form": "4/A",
+      "filingDate": "2026-08-17",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125603",
+        "ownerName": "Seto Wai Yue",
+        "rows": [
+          {
+            "asOf": "2026-07-07",
+            "title": "class a ordinary shares, par value us$0.00125 per share",
+            "shares": 749890
+          },
+          {
+            "asOf": "2026-07-07",
+            "title": "class b ordinary shares, par value us$0.00125 per share",
+            "shares": 80000
+          },
+          {
+            "asOf": "2026-08-13",
+            "title": "class a ordinary shares, par value us$0.00125 per share",
+            "shares": 1069890
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-032902",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125603",
+        "ownerName": "Seto Wai Yue",
+        "rows": [
+          {
+            "asOf": "2026-07-07",
+            "title": "class a ordinary shares, par value us$0.00125 per share",
+            "shares": 749890
+          },
+          {
+            "asOf": "2026-07-07",
+            "title": "class b ordinary shares, par value us$0.00125 per share",
+            "shares": 80000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-015842",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-015840",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125603",
+        "ownerName": "Seto Wai Yue",
+        "rows": [
+          {
+            "asOf": "2025-07-23",
+            "title": "class a ordinary shares",
+            "shares": 21236240
+          },
+          {
+            "asOf": "2025-07-23",
+            "title": "class b ordinary shares",
+            "shares": 1000000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-015838",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-015836",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-015834",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-015832",
+      "form": "3",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

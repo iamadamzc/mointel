@@ -1,0 +1,2169 @@
+{
+  "ticker": "TBPH",
+  "cik": "1583107",
+  "tradingDate": "2026-09-23",
+  "rank": 11,
+  "ledger": [],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 51918754,
+    "asOf": "2026-07-31",
+    "filed": "2026-08-11",
+    "accession": "0001104659-26-093773",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001898490-26-000014",
+      "form": "4",
+      "filingDate": "2026-09-17",
+      "primaryDocument": "xslF345X06/form4-09172026_090959.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-09-15",
+            "title": "ordinary shares",
+            "shares": 223461
+          },
+          {
+            "asOf": "2026-09-15",
+            "title": "ordinary shares",
+            "shares": 220133
+          },
+          {
+            "asOf": "2026-09-15",
+            "title": "ordinary shares",
+            "shares": 213476
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001302443-26-000012",
+      "form": "4",
+      "filingDate": "2026-08-24",
+      "primaryDocument": "xslF345X06/form4-08242026_100811.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2026-08-20",
+            "title": "ordinary shares",
+            "shares": 1611022
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001961289-26-000008",
+      "form": "4",
+      "filingDate": "2026-08-24",
+      "primaryDocument": "xslF345X06/form4-08242026_100819.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2026-08-20",
+            "title": "ordinary shares",
+            "shares": 336841
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002012524-26-000008",
+      "form": "4",
+      "filingDate": "2026-08-24",
+      "primaryDocument": "xslF345X06/form4-08242026_100836.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2026-08-20",
+            "title": "ordinary shares",
+            "shares": 189826
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966698-26-000008",
+      "form": "4",
+      "filingDate": "2026-08-24",
+      "primaryDocument": "xslF345X06/form4-08242026_100841.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2026-08-20",
+            "title": "ordinary shares",
+            "shares": 355168
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-26-000012",
+      "form": "4",
+      "filingDate": "2026-08-24",
+      "primaryDocument": "xslF345X06/form4-08242026_100811.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-08-20",
+            "title": "ordinary shares",
+            "shares": 226790
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001877589-26-000002",
+      "form": "4",
+      "filingDate": "2026-07-08",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "0 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001877589-26-000001",
+      "form": "4",
+      "filingDate": "2026-07-01",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002012524-26-000006",
+      "form": "4",
+      "filingDate": "2026-06-23",
+      "primaryDocument": "xslF345X06/form4-06232026_090617.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2026-06-19",
+            "title": "ordinary shares",
+            "shares": 196084
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-26-000010",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4-06172026_110631.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "ordinary shares",
+            "shares": 242442
+          },
+          {
+            "asOf": "2026-06-15",
+            "title": "ordinary shares",
+            "shares": 239114
+          },
+          {
+            "asOf": "2026-06-15",
+            "title": "ordinary shares",
+            "shares": 232457
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001589602-26-000002",
+      "form": "4",
+      "filingDate": "2026-06-16",
+      "primaryDocument": "xslF345X06/form4-06172026_010655.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1589602",
+        "ownerName": "Smaldone Alsup Laurie",
+        "rows": [
+          {
+            "asOf": "2026-06-12",
+            "title": "ordinary shares",
+            "shares": 80989
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001833453-26-000006",
+      "form": "4",
+      "filingDate": "2026-06-16",
+      "primaryDocument": "xslF345X06/form4-06172026_010638.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1833453",
+        "ownerName": "GRAY SUSANNAH",
+        "rows": [
+          {
+            "asOf": "2026-06-12",
+            "title": "ordinary shares",
+            "shares": 48146
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001199297-26-000003",
+      "form": "4",
+      "filingDate": "2026-06-16",
+      "primaryDocument": "xslF345X06/form4-06172026_010636.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1199297",
+        "ownerName": "MITCHELL DEAN J",
+        "rows": [
+          {
+            "asOf": "2026-06-12",
+            "title": "ordinary shares",
+            "shares": 97213
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001625377-26-000004",
+      "form": "4",
+      "filingDate": "2026-06-16",
+      "primaryDocument": "xslF345X06/form4-06172026_010644.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1625377",
+        "ownerName": "O'Connor Donal",
+        "rows": [
+          {
+            "asOf": "2026-06-12",
+            "title": "ordinary shares",
+            "shares": 80213
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001270734-26-000004",
+      "form": "4",
+      "filingDate": "2026-06-16",
+      "primaryDocument": "xslF345X06/form4-06172026_010650.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1270734",
+        "ownerName": "PAKIANATHAN DEEPIKA",
+        "rows": [
+          {
+            "asOf": "2026-06-12",
+            "title": "ordinary shares",
+            "shares": 64074
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001302443-26-000006",
+      "form": "4",
+      "filingDate": "2026-05-22",
+      "primaryDocument": "xslF345X06/form4-05222026_100553.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2026-05-20",
+            "title": "ordinary shares",
+            "shares": 1631056
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001961289-26-000006",
+      "form": "4",
+      "filingDate": "2026-05-22",
+      "primaryDocument": "xslF345X06/form4-05222026_100506.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2026-05-20",
+            "title": "ordinary shares",
+            "shares": 344953
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002012524-26-000004",
+      "form": "4",
+      "filingDate": "2026-05-22",
+      "primaryDocument": "xslF345X06/form4-05222026_100507.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2026-05-20",
+            "title": "ordinary shares",
+            "shares": 177334
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966698-26-000006",
+      "form": "4",
+      "filingDate": "2026-05-22",
+      "primaryDocument": "xslF345X06/form4-05222026_100551.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2026-05-20",
+            "title": "ordinary shares",
+            "shares": 363120
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-26-000008",
+      "form": "4",
+      "filingDate": "2026-05-22",
+      "primaryDocument": "xslF345X06/form4-05222026_100557.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-05-20",
+            "title": "ordinary shares",
+            "shares": 245771
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001302443-26-000004",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/form4-04032026_100419.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 1651094
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001961289-26-000004",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/form4-04032026_100414.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 353623
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966698-26-000004",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/form4-04032026_100411.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 371949
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-26-000006",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/form4-04032026_100454.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 251449
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-26-000004",
+      "form": "4",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/form4-03182026_100327.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-03-16",
+            "title": "ordinary shares",
+            "shares": 255999
+          },
+          {
+            "asOf": "2026-03-16",
+            "title": "ordinary shares",
+            "shares": 240465
+          },
+          {
+            "asOf": "2026-03-16",
+            "title": "ordinary shares",
+            "shares": 232699
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001302443-26-000002",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/form4-02252026_120248.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2026-02-20",
+            "title": "ordinary shares",
+            "shares": 1576094
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001961289-26-000002",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/form4-02252026_120248.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2026-02-20",
+            "title": "ordinary shares",
+            "shares": 316123
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002012524-26-000002",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/form4-02252026_120255.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2026-02-20",
+            "title": "ordinary shares",
+            "shares": 184161
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966698-26-000002",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/form4-02252026_120202.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2026-02-20",
+            "title": "ordinary shares",
+            "shares": 334449
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-26-000002",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/form4-02252026_120208.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2026-02-20",
+            "title": "ordinary shares",
+            "shares": 263766
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-25-000008",
+      "form": "4",
+      "filingDate": "2025-12-05",
+      "primaryDocument": "xslF345X05/form4-12052025_111222.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-12-03",
+            "title": "ordinary shares",
+            "shares": 300995
+          },
+          {
+            "asOf": "2025-12-03",
+            "title": "ordinary shares",
+            "shares": 293229
+          },
+          {
+            "asOf": "2025-12-03",
+            "title": "ordinary shares",
+            "shares": 277695
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001256230-25-000009",
+      "form": "4",
+      "filingDate": "2025-12-01",
+      "primaryDocument": "xslF345X05/form4-12022025_121248.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256230",
+        "ownerName": "BROSHY ERAN",
+        "rows": [
+          {
+            "asOf": "2025-11-26",
+            "title": "ordinary shares",
+            "shares": 60204
+          },
+          {
+            "asOf": "2025-11-26",
+            "title": "ordinary shares",
+            "shares": 44703
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001961289-25-000006",
+      "form": "4",
+      "filingDate": "2025-11-24",
+      "primaryDocument": "xslF345X05/form4-11242025_111155.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2025-11-20",
+            "title": "ordinary shares",
+            "shares": 336795
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002012524-25-000006",
+      "form": "4",
+      "filingDate": "2025-11-24",
+      "primaryDocument": "xslF345X05/form4-11242025_111102.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2025-11-20",
+            "title": "ordinary shares",
+            "shares": 201012
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966698-25-000006",
+      "form": "4",
+      "filingDate": "2025-11-24",
+      "primaryDocument": "xslF345X05/form4-11242025_111100.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2025-11-20",
+            "title": "ordinary shares",
+            "shares": 355282
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001898490-25-000006",
+      "form": "4",
+      "filingDate": "2025-11-24",
+      "primaryDocument": "xslF345X05/form4-11242025_111109.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-11-20",
+            "title": "ordinary shares",
+            "shares": 308762
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001302443-25-000008",
+      "form": "4",
+      "filingDate": "2025-11-21",
+      "primaryDocument": "xslF345X05/form4-11222025_121129.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-11-19",
+            "title": "ordinary shares",
+            "shares": 1707886
+          },
+          {
+            "asOf": "2025-11-20",
+            "title": "ordinary shares",
+            "shares": 1651069
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001256230-25-000007",
+      "form": "4/A",
+      "filingDate": "2025-11-14",
+      "primaryDocument": "xslF345X05/form4a-11142025_061102.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256230",
+        "ownerName": "BROSHY ERAN",
+        "rows": [
+          {
+            "asOf": "2025-11-11",
+            "title": "ordinary shares",
+            "shares": 75704
+          },
+          {
+            "asOf": "2025-11-11",
+            "title": "ordinary shares",
+            "shares": 60204
+          },
+          {
+            "asOf": "2025-11-11",
+            "title": "ordinary shares",
+            "shares": 60204
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001256230-25-000006",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4-11142025_021112.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256230",
+        "ownerName": "BROSHY ERAN",
+        "rows": [
+          {
+            "asOf": "2025-11-11",
+            "title": "ordinary shares",
+            "shares": 61704
+          },
+          {
+            "asOf": "2025-11-11",
+            "title": "ordinary shares",
+            "shares": 46204
+          },
+          {
+            "asOf": "2025-11-11",
+            "title": "ordinary shares",
+            "shares": 46204
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-022803",
+      "form": "4",
+      "filingDate": "2025-08-22",
+      "primaryDocument": "xslF345X05/form4-08222025_100815.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "ordinary shares",
+            "shares": 1717786
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-022801",
+      "form": "4",
+      "filingDate": "2025-08-22",
+      "primaryDocument": "xslF345X05/form4-08222025_100803.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "ordinary shares",
+            "shares": 355422
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-022799",
+      "form": "4",
+      "filingDate": "2025-08-22",
+      "primaryDocument": "xslF345X05/form4-08222025_100811.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "ordinary shares",
+            "shares": 208001
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-022797",
+      "form": "4",
+      "filingDate": "2025-08-22",
+      "primaryDocument": "xslF345X05/form4-08222025_100841.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "ordinary shares",
+            "shares": 374306
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-022794",
+      "form": "4",
+      "filingDate": "2025-08-22",
+      "primaryDocument": "xslF345X05/form4-08222025_100855.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "ordinary shares",
+            "shares": 317822
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-019869",
+      "form": "4",
+      "filingDate": "2025-07-16",
+      "primaryDocument": "xslF345X05/form4-07162025_100710.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-07-14",
+            "title": "ordinary shares",
+            "shares": 336236
+          },
+          {
+            "asOf": "2025-07-14",
+            "title": "ordinary shares",
+            "shares": 330918
+          },
+          {
+            "asOf": "2025-07-14",
+            "title": "ordinary shares",
+            "shares": 326918
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-018221",
+      "form": "4",
+      "filingDate": "2025-06-25",
+      "primaryDocument": "xslF345X05/form4-06252025_100657.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-06-23",
+            "title": "ordinary shares",
+            "shares": 1733180
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-017585",
+      "form": "4",
+      "filingDate": "2025-06-17",
+      "primaryDocument": "xslF345X05/form4-06172025_100629.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-06-13",
+            "title": "ordinary shares",
+            "shares": 1753180
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-015642",
+      "form": "4",
+      "filingDate": "2025-06-04",
+      "primaryDocument": "xslF345X05/form4-06042025_100617.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-06-02",
+            "title": "ordinary shares",
+            "shares": 336918
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014263",
+      "form": "4",
+      "filingDate": "2025-05-22",
+      "primaryDocument": "xslF345X05/form4-05222025_100552.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-05-20",
+            "title": "ordinary shares",
+            "shares": 1762780
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014261",
+      "form": "4",
+      "filingDate": "2025-05-22",
+      "primaryDocument": "xslF345X05/form4-05222025_100548.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2025-05-20",
+            "title": "ordinary shares",
+            "shares": 364790
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014259",
+      "form": "4",
+      "filingDate": "2025-05-22",
+      "primaryDocument": "xslF345X05/form4-05222025_100517.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2025-05-20",
+            "title": "ordinary shares",
+            "shares": 384068
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014257",
+      "form": "4",
+      "filingDate": "2025-05-22",
+      "primaryDocument": "xslF345X05/form4-05222025_100521.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-05-20",
+            "title": "ordinary shares",
+            "shares": 360918
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014025",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110558.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 224691
+          },
+          {
+            "asOf": "2025-05-20",
+            "title": "ordinary shares",
+            "shares": 214990
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014022",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110510.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1270734",
+        "ownerName": "PAKIANATHAN DEEPIKA",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 58065
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014017",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110551.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1625377",
+        "ownerName": "O'Connor Donal",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 74204
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014015",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110547.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1199297",
+        "ownerName": "MITCHELL DEAN J",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 91204
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014009",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110557.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1833453",
+        "ownerName": "GRAY SUSANNAH",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 42137
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014005",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110527.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004368",
+        "ownerName": "Grant Jeremy T",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 32954
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-014000",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110551.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256230",
+        "ownerName": "BROSHY ERAN",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 91204
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-013997",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/form4-05212025_110526.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1589602",
+        "ownerName": "Smaldone Alsup Laurie",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "ordinary shares",
+            "shares": 74980
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-011227",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/form4-04232025_100431.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-04-21",
+            "title": "ordinary shares",
+            "shares": 370038
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-006684",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/form4-03042025_110318.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-02-28",
+            "title": "ordinary shares",
+            "shares": 1778144
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-006679",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/form4-03042025_110322.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2025-02-28",
+            "title": "ordinary shares",
+            "shares": 374138
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-006675",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/form4-03042025_110312.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2025-02-28",
+            "title": "ordinary shares",
+            "shares": 214261
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-006670",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/form4-03042025_110315.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2025-02-28",
+            "title": "ordinary shares",
+            "shares": 393811
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-006668",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/form4-03042025_110355.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-02-28",
+            "title": "ordinary shares",
+            "shares": 374038
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-005357",
+      "form": "4",
+      "filingDate": "2025-02-24",
+      "primaryDocument": "xslF345X05/form4-02252025_120241.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2025-02-20",
+            "title": "ordinary shares",
+            "shares": 1775966
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-005353",
+      "form": "4",
+      "filingDate": "2025-02-24",
+      "primaryDocument": "xslF345X05/form4-02252025_120230.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2025-02-20",
+            "title": "ordinary shares",
+            "shares": 299138
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-005351",
+      "form": "4",
+      "filingDate": "2025-02-24",
+      "primaryDocument": "xslF345X05/form4-02252025_120228.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2025-02-20",
+            "title": "ordinary shares",
+            "shares": 139261
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-005349",
+      "form": "4",
+      "filingDate": "2025-02-24",
+      "primaryDocument": "xslF345X05/form4-02252025_120247.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2025-02-20",
+            "title": "ordinary shares",
+            "shares": 318811
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-005347",
+      "form": "4",
+      "filingDate": "2025-02-24",
+      "primaryDocument": "xslF345X05/form4-02252025_120248.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-02-10",
+            "title": "ordinary shares",
+            "shares": 314848
+          },
+          {
+            "asOf": "2025-02-20",
+            "title": "ordinary shares",
+            "shares": 299038
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-25-001957",
+      "form": "4",
+      "filingDate": "2025-01-23",
+      "primaryDocument": "xslF345X05/form4-01232025_110129.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2025-01-21",
+            "title": "ordinary shares",
+            "shares": 309565
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-027573",
+      "form": "4",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X05/form4-11222024_111145.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2024-11-20",
+            "title": "ordinary shares",
+            "shares": 1811095
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-027571",
+      "form": "4",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X05/form4-11222024_111127.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1961289",
+        "ownerName": "Sawaf Aziz",
+        "rows": [
+          {
+            "asOf": "2024-11-20",
+            "title": "ordinary shares",
+            "shares": 312889
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-027569",
+      "form": "4",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X05/form4-11222024_111114.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2012524",
+        "ownerName": "Miller Aine",
+        "rows": [
+          {
+            "asOf": "2024-11-20",
+            "title": "ordinary shares",
+            "shares": 150556
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-027567",
+      "form": "4",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X05/form4-11222024_111140.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966698",
+        "ownerName": "Grimaud Brett A.",
+        "rows": [
+          {
+            "asOf": "2024-11-20",
+            "title": "ordinary shares",
+            "shares": 333345
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-027564",
+      "form": "4",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X05/form4-11222024_111143.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2024-11-20",
+            "title": "ordinary shares",
+            "shares": 313565
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-027297",
+      "form": "4",
+      "filingDate": "2024-11-19",
+      "primaryDocument": "xslF345X05/form4-11202024_021133.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1302443",
+        "ownerName": "Winningham Rick E",
+        "rows": [
+          {
+            "asOf": "2024-11-14",
+            "title": "ordinary shares",
+            "shares": 1827092
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001415889-24-026766",
+      "form": "4",
+      "filingDate": "2024-11-13",
+      "primaryDocument": "xslF345X05/form4-11142024_011103.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1898490",
+        "ownerName": "Farnum Rhonda",
+        "rows": [
+          {
+            "asOf": "2024-11-11",
+            "title": "ordinary shares",
+            "shares": 322743
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1199297",
+      "ownerName": "MITCHELL DEAN J",
+      "shares": 97213,
+      "asOf": "2026-06-12",
+      "accessions": [
+        "0001199297-26-000003"
+      ]
+    },
+    {
+      "ownerCik": "1256230",
+      "ownerName": "BROSHY ERAN",
+      "shares": 60204,
+      "asOf": "2025-11-26",
+      "accessions": [
+        "0001256230-25-000009"
+      ]
+    },
+    {
+      "ownerCik": "1270734",
+      "ownerName": "PAKIANATHAN DEEPIKA",
+      "shares": 64074,
+      "asOf": "2026-06-12",
+      "accessions": [
+        "0001270734-26-000004"
+      ]
+    },
+    {
+      "ownerCik": "1302443",
+      "ownerName": "Winningham Rick E",
+      "shares": 1631056,
+      "asOf": "2026-05-20",
+      "accessions": [
+        "0001302443-26-000006"
+      ]
+    },
+    {
+      "ownerCik": "1589602",
+      "ownerName": "Smaldone Alsup Laurie",
+      "shares": 80989,
+      "asOf": "2026-06-12",
+      "accessions": [
+        "0001589602-26-000002"
+      ]
+    },
+    {
+      "ownerCik": "1625377",
+      "ownerName": "O'Connor Donal",
+      "shares": 80213,
+      "asOf": "2026-06-12",
+      "accessions": [
+        "0001625377-26-000004"
+      ]
+    },
+    {
+      "ownerCik": "1833453",
+      "ownerName": "GRAY SUSANNAH",
+      "shares": 48146,
+      "asOf": "2026-06-12",
+      "accessions": [
+        "0001833453-26-000006"
+      ]
+    },
+    {
+      "ownerCik": "1898490",
+      "ownerName": "Farnum Rhonda",
+      "shares": 242442,
+      "asOf": "2026-06-15",
+      "accessions": [
+        "0001898490-26-000010"
+      ]
+    },
+    {
+      "ownerCik": "1961289",
+      "ownerName": "Sawaf Aziz",
+      "shares": 344953,
+      "asOf": "2026-05-20",
+      "accessions": [
+        "0001961289-26-000006"
+      ]
+    },
+    {
+      "ownerCik": "1966698",
+      "ownerName": "Grimaud Brett A.",
+      "shares": 363120,
+      "asOf": "2026-05-20",
+      "accessions": [
+        "0001966698-26-000006"
+      ]
+    },
+    {
+      "ownerCik": "2004368",
+      "ownerName": "Grant Jeremy T",
+      "shares": 32954,
+      "asOf": "2025-05-19",
+      "accessions": [
+        "0001415889-25-014005"
+      ]
+    },
+    {
+      "ownerCik": "2012524",
+      "ownerName": "Miller Aine",
+      "shares": 196084,
+      "asOf": "2026-06-19",
+      "accessions": [
+        "0002012524-26-000006"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1199297": "NONE",
+    "1256230": "NONE",
+    "1270734": "NONE",
+    "1302443": "NONE",
+    "1589602": "NONE",
+    "1625377": "NONE",
+    "1833453": "NONE",
+    "1898490": "NONE",
+    "1961289": "NONE",
+    "1966698": "NONE",
+    "2004368": "NONE",
+    "2012524": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1199297",
+      "shares": 97213,
+      "asOf": "2026-06-12",
+      "rows": [
+        {
+          "accession": "0001199297-26-000003",
+          "title": "ordinary shares",
+          "shares": 97213,
+          "asOf": "2026-06-12"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 97213, independent 97213, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-12, count as-of 2026-07-31, independent latest eligible 2026-06-12"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1256230",
+      "shares": 60204,
+      "asOf": "2025-11-26",
+      "rows": [
+        {
+          "accession": "0001256230-25-000009",
+          "title": "ordinary shares",
+          "shares": 60204,
+          "asOf": "2025-11-26"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 60204, independent 60204, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-26, count as-of 2026-07-31, independent latest eligible 2025-11-26"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1270734",
+      "shares": 64074,
+      "asOf": "2026-06-12",
+      "rows": [
+        {
+          "accession": "0001270734-26-000004",
+          "title": "ordinary shares",
+          "shares": 64074,
+          "asOf": "2026-06-12"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 64074, independent 64074, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-12, count as-of 2026-07-31, independent latest eligible 2026-06-12"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1302443",
+      "shares": 1631056,
+      "asOf": "2026-05-20",
+      "rows": [
+        {
+          "accession": "0001302443-26-000006",
+          "title": "ordinary shares",
+          "shares": 1631056,
+          "asOf": "2026-05-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 1631056, independent 1631056, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-20, count as-of 2026-07-31, independent latest eligible 2026-05-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1589602",
+      "shares": 80989,
+      "asOf": "2026-06-12",
+      "rows": [
+        {
+          "accession": "0001589602-26-000002",
+          "title": "ordinary shares",
+          "shares": 80989,
+          "asOf": "2026-06-12"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 80989, independent 80989, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-12, count as-of 2026-07-31, independent latest eligible 2026-06-12"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1625377",
+      "shares": 80213,
+      "asOf": "2026-06-12",
+      "rows": [
+        {
+          "accession": "0001625377-26-000004",
+          "title": "ordinary shares",
+          "shares": 80213,
+          "asOf": "2026-06-12"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 80213, independent 80213, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-12, count as-of 2026-07-31, independent latest eligible 2026-06-12"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1833453",
+      "shares": 48146,
+      "asOf": "2026-06-12",
+      "rows": [
+        {
+          "accession": "0001833453-26-000006",
+          "title": "ordinary shares",
+          "shares": 48146,
+          "asOf": "2026-06-12"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 48146, independent 48146, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-12, count as-of 2026-07-31, independent latest eligible 2026-06-12"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1898490",
+      "shares": 242442,
+      "asOf": "2026-06-15",
+      "rows": [
+        {
+          "accession": "0001898490-26-000010",
+          "title": "ordinary shares",
+          "shares": 242442,
+          "asOf": "2026-06-15"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 242442, independent 242442, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-15, count as-of 2026-07-31, independent latest eligible 2026-06-15"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1961289",
+      "shares": 344953,
+      "asOf": "2026-05-20",
+      "rows": [
+        {
+          "accession": "0001961289-26-000006",
+          "title": "ordinary shares",
+          "shares": 344953,
+          "asOf": "2026-05-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 344953, independent 344953, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-20, count as-of 2026-07-31, independent latest eligible 2026-05-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1966698",
+      "shares": 363120,
+      "asOf": "2026-05-20",
+      "rows": [
+        {
+          "accession": "0001966698-26-000006",
+          "title": "ordinary shares",
+          "shares": 363120,
+          "asOf": "2026-05-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 363120, independent 363120, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-20, count as-of 2026-07-31, independent latest eligible 2026-05-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004368",
+      "shares": 32954,
+      "asOf": "2025-05-19",
+      "rows": [
+        {
+          "accession": "0001415889-25-014005",
+          "title": "ordinary shares",
+          "shares": 32954,
+          "asOf": "2025-05-19"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 32954, independent 32954, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-05-19, count as-of 2026-07-31, independent latest eligible 2025-05-19"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2012524",
+      "shares": 196084,
+      "asOf": "2026-06-19",
+      "rows": [
+        {
+          "accession": "0002012524-26-000006",
+          "title": "ordinary shares",
+          "shares": 196084,
+          "asOf": "2026-06-19"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 196084, independent 196084, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-19, count as-of 2026-07-31, independent latest eligible 2026-06-19"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 48677306, count 51918754"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

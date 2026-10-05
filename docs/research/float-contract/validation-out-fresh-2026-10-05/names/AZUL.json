@@ -1,0 +1,520 @@
+{
+  "ticker": "AZUL",
+  "cik": "1432364",
+  "tradingDate": "2026-09-24",
+  "rank": 11,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 363050536,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, Registration No. 333-295577",
+      "registrationStatus": "The related POS AM was declared effective September 14, 2026.",
+      "effectiveDate": "2026-09-14",
+      "terms": "Prospectus covers resale from time to time by named and potential unnamed selling shareholders of up to 363,050,536 common shares, including shares in ADS form.",
+      "holderRestrictions": "Specific selling-holder restrictions are not provided in the supplied excerpt; registration permits resale but does not confirm any sale.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration is effective, so the registered resale securities may be sold pursuant to the prospectus, subject to applicable prospectus terms and holder restrictions not included in the bundle.",
+      "evidenceSourceIds": [
+        95626,
+        95624
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 9383899,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, Registration No. 333-295577",
+      "registrationStatus": "The related POS AM was declared effective September 14, 2026.",
+      "effectiveDate": "2026-09-14",
+      "terms": "Up to 9,383,899 common shares, including in ADS form, are registered as issuable upon warrant exercise.",
+      "holderRestrictions": "Exercise price, vesting/exercise conditions, and holder-specific restrictions are not provided in the supplied excerpt.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The shares are registered for issuance upon exercise, but the bundle does not establish whether the warrants are currently exercisable or economically in the money.",
+      "evidenceSourceIds": [
+        95626,
+        95624,
+        95632
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 928965058,
+    "asOf": "2018-12-31",
+    "filed": "2019-04-30",
+    "accession": "0001193125-19-129160",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0002141387-26-000002",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2141387",
+        "ownerName": "Goncalves da Cruz Andre",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 255024
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002141387-26-000001",
+      "form": "3",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000905",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1218390",
+        "ownerName": "NEELEMAN DAVID",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 3764246
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000903",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2001886",
+        "ownerName": "Zinman Jon",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 980860
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000901",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2114508",
+        "ownerName": "Mariano Ricardo Luiz Temer",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 98086
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000899",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1819831",
+        "ownerName": "Slattery John S.",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 588516
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000897",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113903",
+        "ownerName": "Grant James Jason",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 980860
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000895",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113899",
+        "ownerName": "Tkacz Daniel",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 196172
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000893",
+      "form": "3",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000891",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113900",
+        "ownerName": "Shah Abhi Manoj",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 1373206
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000889",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2141100",
+        "ownerName": "Marino Bicudo Daniel",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 196172
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000887",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113901",
+        "ownerName": "Rodgerson John Peter",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 2452151
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001292814-26-003524",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2119103",
+        "ownerName": "Garcia Antonio Carlos",
+        "rows": [
+          {
+            "asOf": "2026-06-15",
+            "title": "common shares",
+            "shares": 725836
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000798",
+      "form": "4",
+      "filingDate": "2026-06-03",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1218390",
+        "ownerName": "NEELEMAN DAVID",
+        "rows": [
+          {
+            "asOf": "2026-06-01",
+            "title": "common shares",
+            "shares": 2432655
+          },
+          {
+            "asOf": "2026-06-01",
+            "title": "common shares",
+            "shares": 2469511
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001292814-26-002629",
+      "form": "3",
+      "filingDate": "2026-04-28",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000516",
+      "form": "4",
+      "filingDate": "2026-03-30",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1218390",
+        "ownerName": "NEELEMAN DAVID",
+        "rows": [
+          {
+            "asOf": "2026-03-26",
+            "title": "common shares",
+            "shares": 182462130817
+          },
+          {
+            "asOf": "2026-03-26",
+            "title": "common shares",
+            "shares": 25958221
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000452",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000451",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000450",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000449",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000448",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113901",
+        "ownerName": "Rodgerson John Peter",
+        "rows": [
+          {
+            "asOf": "2026-03-17",
+            "title": "common stock",
+            "shares": 249546
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000447",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113902",
+        "ownerName": "Ribeiro Renata Faber Rocha",
+        "rows": [
+          {
+            "asOf": "2026-03-17",
+            "title": "common stock",
+            "shares": 4000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000446",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000445",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000444",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113899",
+        "ownerName": "Tkacz Daniel",
+        "rows": [
+          {
+            "asOf": "2026-03-17",
+            "title": "common stock",
+            "shares": 1100
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000443",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1218390",
+        "ownerName": "NEELEMAN DAVID",
+        "rows": [
+          {
+            "asOf": "2026-03-17",
+            "title": "common stock",
+            "shares": 25958221
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000442",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113897",
+        "ownerName": "de Salles Pinto Sergio Eraldo",
+        "rows": [
+          {
+            "asOf": "2026-03-17",
+            "title": "common stock",
+            "shares": 7514
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000441",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113900",
+        "ownerName": "Shah Abhi Manoj",
+        "rows": [
+          {
+            "asOf": "2026-03-17",
+            "title": "common stock",
+            "shares": 431071
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001123292-26-000440",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001123292-26-000439",
+      "form": "3",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

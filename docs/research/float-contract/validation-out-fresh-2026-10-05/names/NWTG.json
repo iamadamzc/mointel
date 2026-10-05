@@ -1,0 +1,1240 @@
+{
+  "ticker": "NWTG",
+  "cik": "1934245",
+  "tradingDate": "2026-09-24",
+  "rank": 9,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": 5000000,
+      "sourceFiling": "8-K filed August 20, 2026; securities purchase agreement and related registration-rights agreement",
+      "registrationStatus": "Registration rights were contemplated; effectiveness of a resale registration statement is not established by the supplied evidence.",
+      "effectiveDate": null,
+      "terms": "The private placement contemplated at least $1.0 million in the first tranche and up to $5.0 million in aggregate, including additional tranches. Share pricing was set at $0.01 above the greater of the preceding closing price or five-day average closing price.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "A September 2026 8-K reports that an additional investor joined and a second tranche closed. The evidence supports continuing financing activity but does not establish remaining dollar capacity, shares issued in the later tranche, or resale eligibility.",
+      "evidenceSourceIds": [
+        94133,
+        94134,
+        94150,
+        94151
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ACQUISITION_SHARES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "September 24, 2026 8-K reporting on Nevada mining-project option",
+      "registrationStatus": null,
+      "effectiveDate": "2026-09-24",
+      "terms": "Secondary reporting characterizes the consideration as shares equal to 19.9% for the mining option; the supplied evidence does not state the numerical share amount or resale restrictions.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The reported issuance is material to outstanding-share supply, but the supplied evidence does not establish whether, when, or under what exemption or registration those shares may be resold.",
+      "evidenceSourceIds": [
+        94977,
+        95370
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 232202,
+      "dollarCapacity": null,
+      "sourceFiling": "September 24, 2026 8-K reporting on warrant exchange",
+      "registrationStatus": null,
+      "effectiveDate": "2026-09-24",
+      "terms": "Secondary reporting states that 232,202 common shares were issued in exchange for warrants and that 749,999 warrant shares were cancelled.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The exchange appears to have issued common shares while cancelling a larger stated warrant-share amount. The supplied evidence does not establish resale registration, lockups, or immediate sale eligibility for the issued shares.",
+      "evidenceSourceIds": [
+        95372,
+        96000
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 5422276,
+    "asOf": "2026-08-13",
+    "filed": "2026-08-14",
+    "accession": "0001493152-26-038399",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-032844",
+      "form": "4",
+      "filingDate": "2026-07-10",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002018051-26-000002",
+      "form": "4",
+      "filingDate": "2026-06-26",
+      "primaryDocument": "xslF345X06/form4-06262026_080626.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2018051",
+        "ownerName": "Casanta Jane",
+        "rows": [
+          {
+            "asOf": "2026-06-24",
+            "title": "common stock",
+            "shares": 59921
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966393-26-000002",
+      "form": "4",
+      "filingDate": "2026-06-26",
+      "primaryDocument": "xslF345X06/form4-06262026_080641.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2026-06-24",
+            "title": "common stock",
+            "shares": 356225
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001966379-26-000002",
+      "form": "4",
+      "filingDate": "2026-06-26",
+      "primaryDocument": "xslF345X06/form4-06262026_080607.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966379",
+        "ownerName": "Yorihiro Akinobu",
+        "rows": [
+          {
+            "asOf": "2026-06-24",
+            "title": "common stock",
+            "shares": 498870
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001685437-26-000002",
+      "form": "4",
+      "filingDate": "2026-06-26",
+      "primaryDocument": "xslF345X06/form4-06262026_080625.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1685437",
+        "ownerName": "CLAYBORNE JEFF",
+        "rows": [
+          {
+            "asOf": "2026-06-24",
+            "title": "common stock",
+            "shares": 438450
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-024821",
+      "form": "4",
+      "filingDate": "2026-05-21",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2135300",
+        "ownerName": "Hemphill Gregg",
+        "rows": [
+          {
+            "asOf": "2026-05-19",
+            "title": "common stock",
+            "shares": 25035
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-024812",
+      "form": "3",
+      "filingDate": "2026-05-21",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-011226",
+      "form": "4",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-004961",
+      "form": "4",
+      "filingDate": "2026-02-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2026-01-30",
+            "title": "common stock",
+            "shares": 293250
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-004958",
+      "form": "4",
+      "filingDate": "2026-02-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1612084",
+        "ownerName": "Bode John B",
+        "rows": [
+          {
+            "asOf": "2026-01-30",
+            "title": "common stock",
+            "shares": 18549
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-004956",
+      "form": "4",
+      "filingDate": "2026-02-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2018051",
+        "ownerName": "Casanta Jane",
+        "rows": [
+          {
+            "asOf": "2026-01-30",
+            "title": "common stock",
+            "shares": 22877
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-26-004954",
+      "form": "3",
+      "filingDate": "2026-02-03",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-029358",
+      "form": "4",
+      "filingDate": "2025-12-29",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-12-26",
+            "title": "common stock",
+            "shares": 335945
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-028883",
+      "form": "4",
+      "filingDate": "2025-12-22",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966379",
+        "ownerName": "Yorihiro Akinobu",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "common stock",
+            "shares": 237090
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-028881",
+      "form": "4",
+      "filingDate": "2025-12-22",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1685437",
+        "ownerName": "CLAYBORNE JEFF",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "common stock",
+            "shares": 186548
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-028879",
+      "form": "4",
+      "filingDate": "2025-12-22",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "common stock",
+            "shares": 325945
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-028021",
+      "form": "4",
+      "filingDate": "2025-12-16",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1685437",
+        "ownerName": "CLAYBORNE JEFF",
+        "rows": [
+          {
+            "asOf": "2025-12-16",
+            "title": "common stock",
+            "shares": 11548
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-024976",
+      "form": "4",
+      "filingDate": "2025-11-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-11-21",
+            "title": "common stock",
+            "shares": 270373
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-024523",
+      "form": "4",
+      "filingDate": "2025-11-20",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-11-18",
+            "title": "common stock",
+            "shares": 231371
+          },
+          {
+            "asOf": "2025-11-19",
+            "title": "common stock",
+            "shares": 246371
+          },
+          {
+            "asOf": "2025-11-20",
+            "title": "common stock",
+            "shares": 250371
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-024456",
+      "form": "4",
+      "filingDate": "2025-11-20",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1685437",
+        "ownerName": "CLAYBORNE JEFF",
+        "rows": [
+          {
+            "asOf": "2025-11-18",
+            "title": "common stock",
+            "shares": 548
+          },
+          {
+            "asOf": "2025-11-19",
+            "title": "common stock",
+            "shares": 11548
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-024453",
+      "form": "3",
+      "filingDate": "2025-11-20",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-024247",
+      "form": "4",
+      "filingDate": "2025-11-19",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-11-17",
+            "title": "common stock",
+            "shares": 125944
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-027188",
+      "form": "4",
+      "filingDate": "2025-09-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-09-10",
+            "title": "common stock",
+            "shares": 85944
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-026088",
+      "form": "4",
+      "filingDate": "2025-08-29",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-08-27",
+            "title": "common stock",
+            "shares": 148404
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-024978",
+      "form": "4",
+      "filingDate": "2025-08-20",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-08-18",
+            "title": "common stock",
+            "shares": 114118
+          },
+          {
+            "asOf": "2025-08-19",
+            "title": "common stock",
+            "shares": 134118
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-016985",
+      "form": "4",
+      "filingDate": "2025-06-27",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-06-27",
+            "title": "common stock",
+            "shares": 65944
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-014300",
+      "form": "4",
+      "filingDate": "2025-06-09",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-06-06",
+            "title": "common stock",
+            "shares": 55944
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-012687",
+      "form": "4",
+      "filingDate": "2025-05-28",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-05-23",
+            "title": "common stock",
+            "shares": 72612
+          },
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 97612
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-011919",
+      "form": "4",
+      "filingDate": "2025-05-21",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-05-19",
+            "title": "common stock",
+            "shares": 34264
+          },
+          {
+            "asOf": "2025-05-20",
+            "title": "common stock",
+            "shares": 57033
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-004993",
+      "form": "4",
+      "filingDate": "2025-04-16",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-04-15",
+            "title": "common stock",
+            "shares": 27033
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-004930",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-04-14",
+            "title": "common stock",
+            "shares": 15892
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-003983",
+      "form": "4",
+      "filingDate": "2025-04-14",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2025-04-11",
+            "title": "common stock",
+            "shares": 11150
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-003067",
+      "form": "4",
+      "filingDate": "2025-04-07",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2025-04-07",
+            "title": "common stock",
+            "shares": 35944
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-001367",
+      "form": "3",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-052513",
+      "form": "4",
+      "filingDate": "2024-12-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2024-12-30",
+            "title": "common stock",
+            "shares": 103337
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-052214",
+      "form": "4",
+      "filingDate": "2024-12-27",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-052161",
+      "form": "4",
+      "filingDate": "2024-12-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-052044",
+      "form": "4",
+      "filingDate": "2024-12-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-052042",
+      "form": "4",
+      "filingDate": "2024-12-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2024-12-13",
+            "title": "common stock",
+            "shares": 211014
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-052040",
+      "form": "4",
+      "filingDate": "2024-12-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2024-12-20",
+            "title": "common stock",
+            "shares": 49337
+          },
+          {
+            "asOf": "2024-12-20",
+            "title": "common stock",
+            "shares": 52337
+          },
+          {
+            "asOf": "2024-12-24",
+            "title": "common stock",
+            "shares": 78337
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-050664",
+      "form": "4",
+      "filingDate": "2024-12-18",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2024-12-13",
+            "title": "common stock",
+            "shares": 211014
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-050094",
+      "form": "4",
+      "filingDate": "2024-12-16",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966393",
+        "ownerName": "Hoge Brett Widney",
+        "rows": [
+          {
+            "asOf": "2024-12-12",
+            "title": "common stock",
+            "shares": 186014
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-050083",
+      "form": "4",
+      "filingDate": "2024-12-13",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2024-12-12",
+            "title": "common stock",
+            "shares": 44337
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-048651",
+      "form": "4",
+      "filingDate": "2024-12-04",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2024-12-03",
+            "title": "common stock",
+            "shares": 40337
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-047357",
+      "form": "4",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1966404",
+        "ownerName": "CAMPBELL GREGOR ALASDAIR",
+        "rows": [
+          {
+            "asOf": "2024-11-21",
+            "title": "common stock",
+            "shares": 36337
+          },
+          {
+            "asOf": "2024-11-21",
+            "title": "common stock",
+            "shares": 37337
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1612084",
+      "ownerName": "Bode John B",
+      "shares": 18549,
+      "asOf": "2026-01-30",
+      "accessions": [
+        "0001493152-26-004958"
+      ]
+    },
+    {
+      "ownerCik": "1685437",
+      "ownerName": "CLAYBORNE JEFF",
+      "shares": 438450,
+      "asOf": "2026-06-24",
+      "accessions": [
+        "0001685437-26-000002"
+      ]
+    },
+    {
+      "ownerCik": "1966379",
+      "ownerName": "Yorihiro Akinobu",
+      "shares": 498870,
+      "asOf": "2026-06-24",
+      "accessions": [
+        "0001966379-26-000002"
+      ]
+    },
+    {
+      "ownerCik": "1966393",
+      "ownerName": "Hoge Brett Widney",
+      "shares": 356225,
+      "asOf": "2026-06-24",
+      "accessions": [
+        "0001966393-26-000002"
+      ]
+    },
+    {
+      "ownerCik": "1966404",
+      "ownerName": "CAMPBELL GREGOR ALASDAIR",
+      "shares": 335945,
+      "asOf": "2025-12-26",
+      "accessions": [
+        "0001493152-25-029358"
+      ]
+    },
+    {
+      "ownerCik": "2018051",
+      "ownerName": "Casanta Jane",
+      "shares": 59921,
+      "asOf": "2026-06-24",
+      "accessions": [
+        "0002018051-26-000002"
+      ]
+    },
+    {
+      "ownerCik": "2135300",
+      "ownerName": "Hemphill Gregg",
+      "shares": 25035,
+      "asOf": "2026-05-19",
+      "accessions": [
+        "0001493152-26-024821"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1612084": "NONE",
+    "1685437": "NONE",
+    "1966379": "NONE",
+    "1966393": "NONE",
+    "1966404": "NONE",
+    "2018051": "NONE",
+    "2135300": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1612084",
+      "shares": 18549,
+      "asOf": "2026-01-30",
+      "rows": [
+        {
+          "accession": "0001493152-26-004958",
+          "title": "common stock",
+          "shares": 18549,
+          "asOf": "2026-01-30"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 18549, independent 18549, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-01-30, count as-of 2026-08-13, independent latest eligible 2026-01-30"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1685437",
+      "shares": 438450,
+      "asOf": "2026-06-24",
+      "rows": [
+        {
+          "accession": "0001685437-26-000002",
+          "title": "common stock",
+          "shares": 438450,
+          "asOf": "2026-06-24"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 438450, independent 438450, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-24, count as-of 2026-08-13, independent latest eligible 2026-06-24"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1966379",
+      "shares": 498870,
+      "asOf": "2026-06-24",
+      "rows": [
+        {
+          "accession": "0001966379-26-000002",
+          "title": "common stock",
+          "shares": 498870,
+          "asOf": "2026-06-24"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 498870, independent 498870, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-24, count as-of 2026-08-13, independent latest eligible 2026-06-24"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1966393",
+      "shares": 356225,
+      "asOf": "2026-06-24",
+      "rows": [
+        {
+          "accession": "0001966393-26-000002",
+          "title": "common stock",
+          "shares": 356225,
+          "asOf": "2026-06-24"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 356225, independent 356225, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-24, count as-of 2026-08-13, independent latest eligible 2026-06-24"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1966404",
+      "shares": 335945,
+      "asOf": "2025-12-26",
+      "rows": [
+        {
+          "accession": "0001493152-25-029358",
+          "title": "common stock",
+          "shares": 335945,
+          "asOf": "2025-12-26"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 335945, independent 335945, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-12-26, count as-of 2026-08-13, independent latest eligible 2025-12-26"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2018051",
+      "shares": 59921,
+      "asOf": "2026-06-24",
+      "rows": [
+        {
+          "accession": "0002018051-26-000002",
+          "title": "common stock",
+          "shares": 59921,
+          "asOf": "2026-06-24"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 59921, independent 59921, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-24, count as-of 2026-08-13, independent latest eligible 2026-06-24"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2135300",
+      "shares": 25035,
+      "asOf": "2026-05-19",
+      "rows": [
+        {
+          "accession": "0001493152-26-024821",
+          "title": "common stock",
+          "shares": 25035,
+          "asOf": "2026-05-19"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 25035, independent 25035, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-05-19, count as-of 2026-08-13, independent latest eligible 2026-05-19"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 3689281, count 5422276"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

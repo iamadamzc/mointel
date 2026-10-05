@@ -1,0 +1,89 @@
+{
+  "ticker": "FOFO",
+  "cik": "2060083",
+  "tradingDate": "2026-09-24",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 299922,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed September 4, 2026, Exhibit 99.1",
+      "registrationStatus": "Not established in supplied excerpt",
+      "effectiveDate": "2026-06-23",
+      "terms": "299,922 Class A ordinary shares were issued to a consultant; the filing states that Class A shares issued and outstanding were 3,871,000 after this issuance as of June 30, 2026.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "Shares were reported as issued, but the supplied evidence does not establish resale registration, lock-up status, Rule 144 availability, or actual selling eligibility.",
+      "evidenceSourceIds": [
+        62513
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 7571078,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-16",
+    "accession": "0001213900-26-044270",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-037043",
+      "form": "3",
+      "filingDate": "2026-03-31",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-033301",
+      "form": "3",
+      "filingDate": "2026-03-24",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031417",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031416",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031415",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

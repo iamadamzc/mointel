@@ -1,0 +1,746 @@
+{
+  "ticker": "GCTK",
+  "cik": "1506983",
+  "tradingDate": "2026-09-23",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 43447017,
+      "dollarCapacity": null,
+      "sourceFiling": "S-1, filed September 17, 2026 (accession 0001493152-26-043195)",
+      "registrationStatus": "S-1 filed for resale; effectiveness is not established in the supplied evidence.",
+      "effectiveDate": null,
+      "terms": "The S-1 states that up to 43,447,017 common shares are being registered, including shares associated with bridge-note conversions and other financing instruments.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "A filed S-1 alone does not establish that resale registration is effective or that any holder has sold shares.",
+      "evidenceSourceIds": [
+        87881
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 11596172.68,
+      "sourceFiling": "8-K, filed September 11, 2026 (accession 0001493152-26-042428)",
+      "registrationStatus": "The financing documents include registration-rights-related disclosure, but the supplied evidence does not establish effectiveness of the later S-1.",
+      "effectiveDate": "2026-09-10",
+      "terms": "Senior secured convertible notes had aggregate principal amount of $11,596,172.68, issued for $4.5 million cash consideration and surrender/exchange of $4,545,014 of existing obligations; the company announcement describes a $3.12 initial conversion price and 22% original-issue discount.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The notes were issued under the September 10 transaction. The evidence does not provide a conversion-share total, current conversion eligibility, or confirmation of conversions.",
+      "evidenceSourceIds": [
+        87876,
+        87891
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K / Exhibit 99.1, filed September 11, 2026 (accession 0001493152-26-042428)",
+      "registrationStatus": "Later resale registration was filed, but effectiveness is not established in the supplied evidence.",
+      "effectiveDate": "2026-09-10",
+      "terms": "Investors in the September financing received warrants exercisable at $7.50 per share. The supplied excerpts do not state the warrant-share amount.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The warrants exist, but their share amount, exercise conditions, and whether any exercise is economically or legally available are not established by the supplied excerpts.",
+      "evidenceSourceIds": [
+        87876,
+        87891
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 20000000,
+      "dollarCapacity": null,
+      "sourceFiling": "POS AM, effective April 30, 2026 (accession 0001493152-26-019677)",
+      "registrationStatus": "Registration statement became effective April 30, 2026.",
+      "effectiveDate": "2026-04-30",
+      "terms": "The effective prospectus described up to 20,000,000 purchase shares that the company could elect to issue and sell to Sixth Borough from time to time under a purchase agreement.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness establishes that shares may be offered under the described registration; it does not establish how many shares remain available, whether the facility remains active, or whether shares were sold.",
+      "evidenceSourceIds": [
+        62713,
+        62716
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 2505513,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K, filed August 10, 2026 (accession 0001493152-26-036858)",
+      "registrationStatus": "The filing describes commitment shares under the amended White Lion ELOC agreement; current resale-registration and remaining-status details are not established by the supplied excerpt.",
+      "effectiveDate": "2026-08-07",
+      "terms": "The amendment provided for issuance of 2,505,513 commitment shares to White Lion Capital, LLC. The filing preceded the subsequent 1-for-15 reverse split, and the supplied evidence does not reconcile this stated amount to post-split share terms.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The agreement and commitment-share provision were disclosed, but the bundle does not establish current availability, issuance completion, or post-split adjustment.",
+      "evidenceSourceIds": [
+        62710,
+        62723
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 10578822,
+    "asOf": "2026-08-14",
+    "filed": "2026-08-14",
+    "accession": "0001493152-26-038317",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001962858-25-000006",
+      "form": "3",
+      "filingDate": "2025-10-07",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001323190-25-000003",
+      "form": "4",
+      "filingDate": "2025-10-07",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1323190",
+        "ownerName": "Balo Andrew K",
+        "rows": [
+          {
+            "asOf": "2025-03-25",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 75
+          },
+          {
+            "asOf": "2025-07-11",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 3407
+          },
+          {
+            "asOf": "2025-10-03",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 4692
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001395781-25-000002",
+      "form": "4",
+      "filingDate": "2025-10-07",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1395781",
+        "ownerName": "Malave Luis",
+        "rows": [
+          {
+            "asOf": "2025-03-25",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 2395
+          },
+          {
+            "asOf": "2025-07-11",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 3595
+          },
+          {
+            "asOf": "2025-10-03",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 4058
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001993078-25-000003",
+      "form": "4",
+      "filingDate": "2025-10-07",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1993078",
+        "ownerName": "Carter Erin Catherine",
+        "rows": [
+          {
+            "asOf": "2025-03-25",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 762
+          },
+          {
+            "asOf": "2025-07-11",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 1762
+          },
+          {
+            "asOf": "2025-10-03",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 2148
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001622251-25-000002",
+      "form": "4",
+      "filingDate": "2025-10-07",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1622251",
+        "ownerName": "Goode Paul",
+        "rows": [
+          {
+            "asOf": "2025-03-25",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 339
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000073",
+      "form": "4",
+      "filingDate": "2025-03-31",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2046615",
+        "ownerName": "John A. Ballantyne Revocable Living Trust dated 08/01/2017",
+        "rows": [
+          {
+            "asOf": "2024-11-14",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 183039
+          },
+          {
+            "asOf": "2025-03-12",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 2743591
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000072",
+      "form": "4",
+      "filingDate": "2025-03-31",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1701346",
+        "ownerName": "BALLANTYNE JOHN",
+        "rows": [
+          {
+            "asOf": "2025-03-26",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 4126
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000071",
+      "form": "4",
+      "filingDate": "2025-03-31",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1395781",
+        "ownerName": "Malave Luis",
+        "rows": [
+          {
+            "asOf": "2021-09-30",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 8
+          },
+          {
+            "asOf": "2021-12-31",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 19
+          },
+          {
+            "asOf": "2022-03-31",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 44
+          },
+          {
+            "asOf": "2022-06-30",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 78
+          },
+          {
+            "asOf": "2022-10-04",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 122
+          },
+          {
+            "asOf": "2023-01-09",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 151
+          },
+          {
+            "asOf": "2023-04-20",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 272
+          },
+          {
+            "asOf": "2023-12-31",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 634
+          },
+          {
+            "asOf": "2024-04-08",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 1123
+          },
+          {
+            "asOf": "2024-11-14",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 8009
+          },
+          {
+            "asOf": "2025-03-12",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 141541
+          },
+          {
+            "asOf": "2025-03-26",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 143617
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000070",
+      "form": "4",
+      "filingDate": "2025-03-31",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1993078",
+        "ownerName": "Carter Erin Catherine",
+        "rows": [
+          {
+            "asOf": "2023-12-31",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 903
+          },
+          {
+            "asOf": "2024-04-08",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 1361
+          },
+          {
+            "asOf": "2024-11-14",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 3439
+          },
+          {
+            "asOf": "2025-03-12",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 43736
+          },
+          {
+            "asOf": "2025-03-26",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 45632
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000069",
+      "form": "4",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1622251",
+        "ownerName": "Goode Paul",
+        "rows": [
+          {
+            "asOf": "2024-11-14",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 2054
+          },
+          {
+            "asOf": "2025-02-05",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 3554
+          },
+          {
+            "asOf": "2025-03-12",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 18989
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000068",
+      "form": "4",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1905433",
+        "ownerName": "Danzig Allen",
+        "rows": [
+          {
+            "asOf": "2022-10-04",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 195
+          },
+          {
+            "asOf": "2024-04-08",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 424
+          },
+          {
+            "asOf": "2025-03-26",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 1922
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000067",
+      "form": "4",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1323190",
+        "ownerName": "Balo Andrew K",
+        "rows": [
+          {
+            "asOf": "2025-03-26",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 4490
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000066",
+      "form": "4",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1557104",
+        "ownerName": "Fischell Robert",
+        "rows": [
+          {
+            "asOf": "2021-08-24",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 318
+          },
+          {
+            "asOf": "2024-04-08",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 547
+          },
+          {
+            "asOf": "2025-03-26",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 2045
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000065",
+      "form": "3",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2046615",
+        "ownerName": "John A. Ballantyne Revocable Living Trust dated 08/01/2017",
+        "rows": [
+          {
+            "asOf": "2024-07-30",
+            "title": "common stock, par value $0.001 per share",
+            "shares": 51002
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000064",
+      "form": "3",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000063",
+      "form": "3",
+      "filingDate": "2025-03-28",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000041",
+      "form": "3",
+      "filingDate": "2025-02-07",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-24-000256",
+      "form": "3",
+      "filingDate": "2024-11-22",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1323190",
+      "ownerName": "Balo Andrew K",
+      "shares": 4692,
+      "asOf": "2025-10-03",
+      "accessions": [
+        "0001323190-25-000003"
+      ]
+    },
+    {
+      "ownerCik": "1395781",
+      "ownerName": "Malave Luis",
+      "shares": 4058,
+      "asOf": "2025-10-03",
+      "accessions": [
+        "0001395781-25-000002"
+      ]
+    },
+    {
+      "ownerCik": "1557104",
+      "ownerName": "Fischell Robert",
+      "shares": 2045,
+      "asOf": "2025-03-26",
+      "accessions": [
+        "0001474506-25-000066"
+      ]
+    },
+    {
+      "ownerCik": "1622251",
+      "ownerName": "Goode Paul",
+      "shares": 339,
+      "asOf": "2025-03-25",
+      "accessions": [
+        "0001622251-25-000002"
+      ]
+    },
+    {
+      "ownerCik": "1701346",
+      "ownerName": "BALLANTYNE JOHN",
+      "shares": 4126,
+      "asOf": "2025-03-26",
+      "accessions": [
+        "0001474506-25-000072"
+      ]
+    },
+    {
+      "ownerCik": "1905433",
+      "ownerName": "Danzig Allen",
+      "shares": 1922,
+      "asOf": "2025-03-26",
+      "accessions": [
+        "0001474506-25-000068"
+      ]
+    },
+    {
+      "ownerCik": "1993078",
+      "ownerName": "Carter Erin Catherine",
+      "shares": 2148,
+      "asOf": "2025-10-03",
+      "accessions": [
+        "0001993078-25-000003"
+      ]
+    },
+    {
+      "ownerCik": "2046615",
+      "ownerName": "John A. Ballantyne Revocable Living Trust dated 08/01/2017",
+      "shares": 2743591,
+      "asOf": "2025-03-12",
+      "accessions": [
+        "0001474506-25-000073"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1323190": "NONE",
+    "1395781": "NONE",
+    "1557104": "FOUND",
+    "1622251": "FOUND",
+    "1701346": "FOUND",
+    "1905433": "FOUND",
+    "1993078": "NONE",
+    "2046615": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1323190",
+      "shares": 4692,
+      "asOf": "2025-10-03",
+      "rows": [
+        {
+          "accession": "0001323190-25-000003",
+          "title": "common stock, par value $0.001 per share",
+          "shares": 4692,
+          "asOf": "2025-10-03"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 4692, independent 4692, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-10-03, count as-of 2026-08-14, independent latest eligible 2025-10-03"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 10567924, count 10578822"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1395781",
+      "shares": 4058,
+      "asOf": "2025-10-03",
+      "rows": [
+        {
+          "accession": "0001395781-25-000002",
+          "title": "common stock, par value $0.001 per share",
+          "shares": 4058,
+          "asOf": "2025-10-03"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 4058, independent 4058, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-10-03, count as-of 2026-08-14, independent latest eligible 2025-10-03"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 10567924, count 10578822"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1993078",
+      "shares": 2148,
+      "asOf": "2025-10-03",
+      "rows": [
+        {
+          "accession": "0001993078-25-000003",
+          "title": "common stock, par value $0.001 per share",
+          "shares": 2148,
+          "asOf": "2025-10-03"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 2148, independent 2148, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-10-03, count as-of 2026-08-14, independent latest eligible 2025-10-03"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": true"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 10567924, count 10578822"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

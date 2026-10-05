@@ -1,0 +1,110 @@
+{
+  "ticker": "CHR",
+  "cik": "1738758",
+  "tradingDate": "2026-09-23",
+  "rank": 10,
+  "ledger": [
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 2345453,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed July 28, 2026; interim financial statements",
+      "registrationStatus": "Issued and outstanding Class A and Class B shares reported as of June 30, 2026.",
+      "effectiveDate": "2026-06-30",
+      "terms": "1,845,453 Class A ordinary shares plus 500,000 Class B ordinary shares were issued and outstanding. [72814]",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "This is reported outstanding share count, not public float; public availability for resale is not established by this disclosure. [72814]",
+      "evidenceSourceIds": [
+        72814
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 / 424B5 and July 2026 interim financial-statement exhibit",
+      "registrationStatus": "The September 2025 F-1 registration statement became effective September 30, 2025. [72809]",
+      "effectiveDate": "2025-09-30",
+      "terms": "The October 2025 prospectus described pre-funded warrants, Series A warrants, and Series B warrants; the Series B warrants included a zero-exercise-price option. The July 2026 financial-statement exhibit still discusses warrants, but the supplied excerpts do not reconcile the outstanding warrant balance after the December 2025 and April 2026 consolidations or establish exercise status. [72812, 72815]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential dilution exists, but current outstanding quantities, exercisability, and resale eligibility cannot be determined from the excerpts. The historical prospectus quantities should not be treated as current share supply without split and exercise reconciliation. [72812, 72815]",
+      "evidenceSourceIds": [
+        72809,
+        72812,
+        72815
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 200000000,
+      "sourceFiling": "Form F-3 filed May 8, 2024; EFFECT filed September 12, 2024",
+      "registrationStatus": "F-3 was declared effective September 12, 2024. [72810]",
+      "effectiveDate": "2024-09-12",
+      "terms": "The F-3 prospectus described up to $200 million of ordinary shares, preferred shares, debt securities, warrants, and units. This is dollar-denominated shelf capacity, not a share count. [72807]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness means securities may be offered under the registration statement subject to its terms; it does not establish that securities were sold or that the full stated capacity remains available. [72807, 72810]",
+      "evidenceSourceIds": [
+        72807,
+        72810
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 10070012,
+    "asOf": "2023-12-31",
+    "filed": "2024-04-18",
+    "accession": "0001213900-24-034105",
+    "form": "20-F/A"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-027796",
+      "form": "3",
+      "filingDate": "2026-03-13",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1794862",
+        "ownerName": "Lu Jia",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "class a ordinary shares",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-027795",
+      "form": "3",
+      "filingDate": "2026-03-13",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1794882",
+        "ownerName": "Zhang Bing",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "class a ordinary shares",
+            "shares": 1520
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

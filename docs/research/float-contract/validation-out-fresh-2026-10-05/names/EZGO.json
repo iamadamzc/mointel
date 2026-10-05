@@ -1,0 +1,163 @@
+{
+  "ticker": "EZGO",
+  "cik": "1806904",
+  "tradingDate": "2026-09-24",
+  "rank": 12,
+  "ledger": [
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 75082138,
+      "sourceFiling": "6-K filed 2026-05-22; ATM sales agreement dated 2026-04-02",
+      "registrationStatus": "Sales may be made under the effective Form F-3 registration statement and related prospectus supplement.",
+      "effectiveDate": "2026-03-04",
+      "terms": "ATM facility authorized sales of up to $100 million; as of May 14, 2026, the company reported approximately $75.082 million of remaining facility capacity after issuing 325,000,000 pre-May-19-split ordinary shares for approximately $24.918 million gross proceeds.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The sales agreement permitted discretionary ATM sales; the supplied evidence does not show termination or provide a post-May-14 capacity update. Dollar capacity is not a share count.",
+      "evidenceSourceIds": [
+        15269,
+        15271,
+        15277,
+        15279
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "PIPE",
+      "amountShares": 3000000,
+      "dollarCapacity": 1500000,
+      "sourceFiling": "6-K filed 2026-08-20; Securities Purchase Agreement dated 2026-08-05",
+      "registrationStatus": "The PIPE shares were described as not registered under the Securities Act or applicable state securities laws.",
+      "effectiveDate": null,
+      "terms": "Company agreed to issue and sell 3,000,000 ordinary shares at $0.50 per share for $1.5 million gross proceeds, subject to customary closing conditions.",
+      "holderRestrictions": "Unregistered shares may not be offered or sold absent registration or an available exemption; the supplied excerpt also describes transfer restrictions.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential issued-share supply exists if the transaction closed, but closing, issuance, and resale eligibility are not established by the supplied evidence.",
+      "evidenceSourceIds": [
+        15267,
+        15286
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 200000000,
+      "sourceFiling": "Form F-3 effective March 4, 2026",
+      "registrationStatus": "Effective Form F-3 shelf registration statement.",
+      "effectiveDate": "2026-03-04",
+      "terms": "The shelf permits offerings of securities, including ordinary shares, debt securities, warrants, rights, or units, up to an aggregate $200 million. The ATM was conducted under this shelf, so this original shelf amount must not be added to ATM capacity as independent capacity.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration is effective, which permits sales but does not evidence sales. Remaining aggregate shelf capacity after later transactions is not established in the bundle.",
+      "evidenceSourceIds": [
+        15276,
+        15277,
+        15287
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 5675172,
+    "asOf": "2025-01-17",
+    "filed": "2025-01-17",
+    "accession": "0001213900-25-004698",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-073512",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-073511",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1846562",
+        "ownerName": "Ye Jianhui",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary share",
+            "shares": 24
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-073510",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-073509",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-073508",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125146",
+        "ownerName": "Jin Peiyao",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary share",
+            "shares": 3
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-073445",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-073443",
+      "form": "3",
+      "filingDate": "2026-06-30",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

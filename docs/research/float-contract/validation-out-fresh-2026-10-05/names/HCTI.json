@@ -1,0 +1,286 @@
+{
+  "ticker": "HCTI",
+  "cik": "1839285",
+  "tradingDate": "2026-09-23",
+  "rank": 8,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 27950000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, Registration No. 333-297397",
+      "registrationStatus": "Registered for resale; S-1 declared effective July 15, 2026",
+      "effectiveDate": "2026-07-15",
+      "terms": "Shares are issued or issuable to Hudson Global Ventures when the company directs purchases under the June 12, 2026 ELOC Purchase Agreement.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The effective registration provides legal resale eligibility, subject to the ELOC agreement and applicable conditions. It does not prove that all or any of the remaining shares were issued or sold.",
+      "evidenceSourceIds": [
+        90442,
+        90440,
+        90437
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 50000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, Registration No. 333-297397",
+      "registrationStatus": "Underlying shares registered for resale; registration effective July 15, 2026",
+      "effectiveDate": "2026-07-15",
+      "terms": "Commitment-fee warrant issued in connection with the ELOC Purchase Agreement; exercise price and current exercise status are not supplied in the excerpt.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Underlying shares have an effective resale registration, but exercise eligibility and whether the warrant remains outstanding are unknown.",
+      "evidenceSourceIds": [
+        90442,
+        90440
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "ACQUISITION_SHARES",
+      "amountShares": 12546540,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed July 29, 2026",
+      "registrationStatus": "Issued in previously approved transactions; the Teyame portion was issued without Securities Act registration under Section 4(a)(2)",
+      "effectiveDate": "2026-07-24",
+      "terms": "Aggregate issuance connected with the Teyame transaction and SecureKloud share exchange; 9,718,373 Teyame shares were issued to eight entities.",
+      "holderRestrictions": "Resale restrictions and current holder positions are not established by the supplied excerpts.",
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "These are issued shares and are reflected in the later outstanding-share figure, not incremental unissued capacity. Immediate resale eligibility is not established.",
+      "evidenceSourceIds": [
+        90448,
+        90431
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 4235000,
+      "sourceFiling": "8-K filed June 15, 2026",
+      "registrationStatus": "Private placement; current registration and conversion status are not fully established in the excerpt",
+      "effectiveDate": "2026-06-12",
+      "terms": "Senior convertible promissory notes with aggregate principal of $4.235 million, issued at a 15% original issue discount for approximately $3.6 million gross proceeds.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential conversion supply exists, but no share amount can be calculated because the supplied evidence lacks complete conversion-price and outstanding-balance terms.",
+      "evidenceSourceIds": [
+        90434
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "PREFERRED_CONVERSION",
+      "amountShares": 7743780,
+      "dollarCapacity": null,
+      "sourceFiling": "EX-10.2 to 8-K filed June 26, 2026",
+      "registrationStatus": "Unknown",
+      "effectiveDate": "2026-06-26",
+      "terms": "18,000 preferred shares with $1,000 stated value each, each described as convertible into 430.21 common shares at the option of the parent.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The stated conversion ratio implies 7,743,780 common shares, but conversion is described as company-controlled and the current outstanding and registration status is unknown.",
+      "evidenceSourceIds": [
+        90450
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 15000000,
+      "sourceFiling": "S-3 filed November 28, 2025; File No. 333-291838",
+      "registrationStatus": "Registration declared effective December 19, 2025",
+      "effectiveDate": "2025-12-19",
+      "terms": "Resale registration covers common shares issuable upon conversion of $15 million of convertible notes issued November 20, 2025.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effective registration permits qualifying resale but does not establish conversion, issuance, sale, or the remaining note balance. The supplied excerpt does not support a share-count calculation.",
+      "evidenceSourceIds": [
+        90439,
+        90441
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 1458118,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 filed November 25, 2025",
+      "registrationStatus": "Registered for resale",
+      "effectiveDate": null,
+      "terms": "Up to 1,429,528 inducement-warrant shares plus 28,590 advisor-warrant shares.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential warrant supply is documented, but exercise prices, expiration dates, and the number still outstanding are not supplied.",
+      "evidenceSourceIds": [
+        90445
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 260500,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed February 27, 2026",
+      "registrationStatus": "Public offering prospectus supplement",
+      "effectiveDate": "2026-02-27",
+      "terms": "Pre-funded warrants offered alongside 421,553 common shares at a stated common-stock public offering price of $5.81.",
+      "holderRestrictions": "Structured to keep investor beneficial ownership at or below 4.99% immediately following the offering.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The bundle does not establish how many pre-funded warrants remain unexercised.",
+      "evidenceSourceIds": [
+        90444
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed March 31, 2026",
+      "registrationStatus": "Prospectus supplement for sales under an ATM agreement",
+      "effectiveDate": "2026-03-31",
+      "terms": "Permits sales from time to time through Spartan Capital Securities under the November 18, 2025 ATM Sales Agreement.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The excerpt does not establish remaining ATM capacity or whether the program is currently being used.",
+      "evidenceSourceIds": [
+        90443
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 14974322,
+    "asOf": "2026-08-12",
+    "filed": "2026-08-13",
+    "accession": "0001213900-26-089241",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-25-028139",
+      "form": "4",
+      "filingDate": "2025-04-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1889531",
+        "ownerName": "Kannappan Lakshmanan",
+        "rows": [
+          {
+            "asOf": "2025-03-31",
+            "title": "common stock",
+            "shares": 324180
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-028137",
+      "form": "4",
+      "filingDate": "2025-04-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1889540",
+        "ownerName": "Kizhakevilayil Shibu",
+        "rows": [
+          {
+            "asOf": "2025-03-31",
+            "title": "common stock",
+            "shares": 54129
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-028135",
+      "form": "4",
+      "filingDate": "2025-04-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1896894",
+        "ownerName": "Ramachandran Thyagarajan",
+        "rows": [
+          {
+            "asOf": "2025-03-31",
+            "title": "common stock",
+            "shares": 29627
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-028132",
+      "form": "4",
+      "filingDate": "2025-04-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1889534",
+        "ownerName": "SECUREKLOUD TECHNOLOGIES, INC.",
+        "rows": [
+          {
+            "asOf": "2025-03-31",
+            "title": "common stock",
+            "shares": 0
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1889531",
+      "ownerName": "Kannappan Lakshmanan",
+      "shares": 324180,
+      "asOf": "2025-03-31",
+      "accessions": [
+        "0001213900-25-028139"
+      ]
+    },
+    {
+      "ownerCik": "1889534",
+      "ownerName": "SECUREKLOUD TECHNOLOGIES, INC.",
+      "shares": 0,
+      "asOf": "2025-03-31",
+      "accessions": [
+        "0001213900-25-028132"
+      ]
+    },
+    {
+      "ownerCik": "1889540",
+      "ownerName": "Kizhakevilayil Shibu",
+      "shares": 54129,
+      "asOf": "2025-03-31",
+      "accessions": [
+        "0001213900-25-028137"
+      ]
+    },
+    {
+      "ownerCik": "1896894",
+      "ownerName": "Ramachandran Thyagarajan",
+      "shares": 29627,
+      "asOf": "2025-03-31",
+      "accessions": [
+        "0001213900-25-028135"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1889531": "FOUND",
+    "1889534": "FOUND",
+    "1889540": "FOUND",
+    "1896894": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

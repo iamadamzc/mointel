@@ -1,0 +1,1495 @@
+{
+  "ticker": "MX",
+  "cik": "1325702",
+  "tradingDate": "2026-09-25",
+  "rank": 10,
+  "ledger": [
+    {
+      "type": "PIPE",
+      "amountShares": 1461988,
+      "dollarCapacity": 5000000,
+      "sourceFiling": "8-K, accession 0001193125-26-396059",
+      "registrationStatus": "Company agreed to file an S-3 resale registration statement within 30 days after closing and use commercially reasonable efforts to make it effective; no filed/effective resale registration is evidenced here.",
+      "effectiveDate": null,
+      "terms": "Privately negotiated sale to Navitas at $3.42 per share; transaction was expected to close on or about September 24, 2026, subject to customary closing conditions.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The purchase agreement was announced, but closing is not confirmed in the bundle. The shares therefore cannot be treated as confirmed issued or currently resale-eligible; a future resale registration was contemplated. [82506]",
+      "evidenceSourceIds": [
+        100627,
+        82506
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 50000000,
+      "sourceFiling": "8-K, accession 0001193125-26-274356; S-3 registration No. 333-296756",
+      "registrationStatus": "The S-3 was declared effective June 16, 2026; the June 17 ATM agreement permits sales from time to time.",
+      "effectiveDate": "2026-06-16",
+      "terms": "Up to $50 million of common stock may be offered and sold through B. Riley Securities, acting as agent or principal.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "This is an effective-dollar-capacity ATM, not evidence that any shares have been issued or sold. No share count can be derived from the supplied evidence without sale pricing and execution data. [10382, 10390]",
+      "evidenceSourceIds": [
+        10382,
+        10390
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 3000000,
+      "dollarCapacity": null,
+      "sourceFiling": "S-8, accession 0001193125-26-300960",
+      "registrationStatus": "Registered for issuance under the 2020 Equity and Incentive Compensation Plan.",
+      "effectiveDate": null,
+      "terms": "The S-8 registered an additional 3,000,000 common shares for issuance under the plan.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration supports potential plan-share issuance, but does not establish how many of these shares have been granted, vested, issued, or are freely tradable. [10388]",
+      "evidenceSourceIds": [
+        10388
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 149211,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, accession 0001193125-26-274353",
+      "registrationStatus": "Not established by the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "Outstanding stock options were disclosed as exercisable into 149,211 shares at a weighted-average exercise price of $8.10 per share as of June 15, 2026.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "These options are above the reported $3.77 market price in the bundle and therefore not shown to be economically in the money; the evidence does not establish present exercise or resale activity. [10391]",
+      "evidenceSourceIds": [
+        10391
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 36510111,
+    "asOf": "2026-07-31",
+    "filed": "2026-08-10",
+    "accession": "0001193125-26-342416",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001193125-26-402849",
+      "form": "4",
+      "filingDate": "2026-09-25",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1548322",
+        "ownerName": "LEE CHAE",
+        "rows": [
+          {
+            "asOf": "2026-09-23",
+            "title": "common stock",
+            "shares": 338750
+          },
+          {
+            "asOf": "2026-09-23",
+            "title": "common stock",
+            "shares": 368750
+          },
+          {
+            "asOf": "2026-09-24",
+            "title": "common stock",
+            "shares": 388750
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-355557",
+      "form": "4",
+      "filingDate": "2026-08-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256187",
+        "ownerName": "MARTINO CAMILLO",
+        "rows": [
+          {
+            "asOf": "2026-08-15",
+            "title": "common stock",
+            "shares": 410661
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-330663",
+      "form": "4",
+      "filingDate": "2026-08-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256187",
+        "ownerName": "MARTINO CAMILLO",
+        "rows": [
+          {
+            "asOf": "2026-08-01",
+            "title": "common stock",
+            "shares": 403897
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-330658",
+      "form": "4",
+      "filingDate": "2026-08-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1818303",
+        "ownerName": "Chung Kyo-Hwa Liz",
+        "rows": [
+          {
+            "asOf": "2026-08-01",
+            "title": "common stock",
+            "shares": 149599
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-330657",
+      "form": "4",
+      "filingDate": "2026-08-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2026-08-01",
+            "title": "common stock",
+            "shares": 265682
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-329404",
+      "form": "4",
+      "filingDate": "2026-08-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2069371",
+        "ownerName": "Amoruso Cristiano",
+        "rows": [
+          {
+            "asOf": "2026-08-01",
+            "title": "common stock",
+            "shares": 75057
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-296284",
+      "form": "4",
+      "filingDate": "2026-07-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1548322",
+        "ownerName": "LEE CHAE",
+        "rows": [
+          {
+            "asOf": "2026-07-01",
+            "title": "common stock",
+            "shares": 288750
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-296203",
+      "form": "3",
+      "filingDate": "2026-07-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-255556",
+      "form": "4",
+      "filingDate": "2026-06-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1805443",
+        "ownerName": "Park Shinyoung",
+        "rows": [
+          {
+            "asOf": "2026-06-01",
+            "title": "common stock",
+            "shares": 327954
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-255552",
+      "form": "4",
+      "filingDate": "2026-06-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023210",
+        "ownerName": "Lee Seunghoon",
+        "rows": [
+          {
+            "asOf": "2026-06-01",
+            "title": "common stock",
+            "shares": 158201
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-110936",
+      "form": "4",
+      "filingDate": "2026-03-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2026-03-16",
+            "title": "common stock",
+            "shares": 214491
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-108432",
+      "form": "4",
+      "filingDate": "2026-03-16",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2026-03-12",
+            "title": "common stock",
+            "shares": 214491
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-054727",
+      "form": "4",
+      "filingDate": "2026-02-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2026-02-15",
+            "title": "common stock",
+            "shares": 214491
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-054726",
+      "form": "4",
+      "filingDate": "2026-02-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1818303",
+        "ownerName": "Chung Kyo-Hwa Liz",
+        "rows": [
+          {
+            "asOf": "2026-02-15",
+            "title": "common stock",
+            "shares": 100789
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-054725",
+      "form": "4",
+      "filingDate": "2026-02-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2069371",
+        "ownerName": "Amoruso Cristiano",
+        "rows": [
+          {
+            "asOf": "2026-02-15",
+            "title": "common stock",
+            "shares": 28628
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-022663",
+      "form": "3",
+      "filingDate": "2026-01-26",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-000936",
+      "form": "4",
+      "filingDate": "2026-01-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023210",
+        "ownerName": "Lee Seunghoon",
+        "rows": [
+          {
+            "asOf": "2025-08-15",
+            "title": "common stock",
+            "shares": 136953
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 143953
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 140620
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 137842
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 133081
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 128201
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-000934",
+      "form": "4",
+      "filingDate": "2026-01-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1805443",
+        "ownerName": "Park Shin Young",
+        "rows": [
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 245665
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 233431
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 215454
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-25-284647",
+      "form": "4",
+      "filingDate": "2025-11-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1818303",
+        "ownerName": "Chung Kyo-Hwa Liz",
+        "rows": [
+          {
+            "asOf": "2025-11-15",
+            "title": "common stock",
+            "shares": 97843
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-25-284646",
+      "form": "4",
+      "filingDate": "2025-11-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2025-11-15",
+            "title": "common stock",
+            "shares": 213013
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-25-230289",
+      "form": "4",
+      "filingDate": "2025-10-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256187",
+        "ownerName": "MARTINO CAMILLO",
+        "rows": [
+          {
+            "asOf": "2025-10-01",
+            "title": "common stock",
+            "shares": 364611
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-111459",
+      "form": "4",
+      "filingDate": "2025-08-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1805443",
+        "ownerName": "Park Shin Young",
+        "rows": [
+          {
+            "asOf": "2025-08-25",
+            "title": "common stock",
+            "shares": 251786
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-111458",
+      "form": "4",
+      "filingDate": "2025-08-26",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256187",
+        "ownerName": "MARTINO CAMILLO",
+        "rows": [
+          {
+            "asOf": "2025-08-22",
+            "title": "common stock",
+            "shares": 259127
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-093886",
+      "form": "4",
+      "filingDate": "2025-07-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1528705",
+        "ownerName": "Lee Ilbok",
+        "rows": [
+          {
+            "asOf": "2025-07-01",
+            "title": "common stock",
+            "shares": 275026
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-093885",
+      "form": "4",
+      "filingDate": "2025-07-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256187",
+        "ownerName": "MARTINO CAMILLO",
+        "rows": [
+          {
+            "asOf": "2025-07-01",
+            "title": "common stock",
+            "shares": 229127
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-093884",
+      "form": "4",
+      "filingDate": "2025-07-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2025-07-01",
+            "title": "common stock",
+            "shares": 206693
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-093883",
+      "form": "4",
+      "filingDate": "2025-07-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1818303",
+        "ownerName": "Chung Kyo-Hwa Liz",
+        "rows": [
+          {
+            "asOf": "2025-07-01",
+            "title": "common stock",
+            "shares": 94683
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-087386",
+      "form": "4",
+      "filingDate": "2025-06-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1818303",
+        "ownerName": "Chung Kyo-Hwa Liz",
+        "rows": [
+          {
+            "asOf": "2025-06-15",
+            "title": "common stock",
+            "shares": 49228
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-080953",
+      "form": "4",
+      "filingDate": "2025-06-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1576117",
+        "ownerName": "Kim Young-Joon",
+        "rows": [
+          {
+            "asOf": "2025-06-01",
+            "title": "common stock",
+            "shares": 590970
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-080951",
+      "form": "4",
+      "filingDate": "2025-06-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1805443",
+        "ownerName": "Park Shin Young",
+        "rows": [
+          {
+            "asOf": "2025-06-01",
+            "title": "common stock",
+            "shares": 241786
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-041201",
+      "form": "4",
+      "filingDate": "2025-03-18",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1528705",
+        "ownerName": "Lee Ilbok",
+        "rows": [
+          {
+            "asOf": "2025-03-14",
+            "title": "common stock",
+            "shares": 219181
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-040273",
+      "form": "4",
+      "filingDate": "2025-03-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1256187",
+        "ownerName": "MARTINO CAMILLO",
+        "rows": [
+          {
+            "asOf": "2025-03-13",
+            "title": "common stock",
+            "shares": 175880
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-040271",
+      "form": "4",
+      "filingDate": "2025-03-17",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1657622",
+        "ownerName": "NATHAN GILBERT E",
+        "rows": [
+          {
+            "asOf": "2025-03-13",
+            "title": "common stock",
+            "shares": 156043
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-032078",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2033575",
+        "ownerName": "Yang Jinseok",
+        "rows": [
+          {
+            "asOf": "2025-03-01",
+            "title": "common stock",
+            "shares": 73909
+          },
+          {
+            "asOf": "2025-03-01",
+            "title": "common stock",
+            "shares": 70742
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-032077",
+      "form": "4",
+      "filingDate": "2025-03-04",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023210",
+        "ownerName": "Lee Seunghoon",
+        "rows": [
+          {
+            "asOf": "2025-03-01",
+            "title": "common stock",
+            "shares": 109379
+          },
+          {
+            "asOf": "2025-03-01",
+            "title": "common stock",
+            "shares": 106203
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-001206",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1592205",
+        "ownerName": "Kim Theodore S",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 311199
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 301950
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 293200
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-001208",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023210",
+        "ownerName": "Lee Seunghoon",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 110188
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 107311
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 102379
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-001207",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1576117",
+        "ownerName": "Kim Young-Joon",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 652906
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 635274
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 619757
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-001205",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1805443",
+        "ownerName": "Park Shin Young",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 149918
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 143801
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 131576
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-25-001204",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2033575",
+        "ownerName": "Yang Jinseok",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 74082
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 71638
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 66909
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1256187",
+      "ownerName": "MARTINO CAMILLO",
+      "shares": 364611,
+      "asOf": "2025-10-01",
+      "accessions": [
+        "0001193125-25-230289"
+      ]
+    },
+    {
+      "ownerCik": "1528705",
+      "ownerName": "Lee Ilbok",
+      "shares": 275026,
+      "asOf": "2025-07-01",
+      "accessions": [
+        "0000950170-25-093886"
+      ]
+    },
+    {
+      "ownerCik": "1548322",
+      "ownerName": "LEE CHAE",
+      "shares": 288750,
+      "asOf": "2026-07-01",
+      "accessions": [
+        "0001193125-26-296284"
+      ]
+    },
+    {
+      "ownerCik": "1576117",
+      "ownerName": "Kim Young-Joon",
+      "shares": 590970,
+      "asOf": "2025-06-01",
+      "accessions": [
+        "0000950170-25-080953"
+      ]
+    },
+    {
+      "ownerCik": "1592205",
+      "ownerName": "Kim Theodore S",
+      "shares": 311199,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0000950170-25-001206"
+      ]
+    },
+    {
+      "ownerCik": "1657622",
+      "ownerName": "NATHAN GILBERT E",
+      "shares": 214491,
+      "asOf": "2026-03-16",
+      "accessions": [
+        "0001193125-26-110936"
+      ]
+    },
+    {
+      "ownerCik": "1805443",
+      "ownerName": "Park Shinyoung",
+      "shares": 327954,
+      "asOf": "2026-06-01",
+      "accessions": [
+        "0001193125-26-255556"
+      ]
+    },
+    {
+      "ownerCik": "1818303",
+      "ownerName": "Chung Kyo-Hwa Liz",
+      "shares": 100789,
+      "asOf": "2026-02-15",
+      "accessions": [
+        "0001193125-26-054726"
+      ]
+    },
+    {
+      "ownerCik": "2023210",
+      "ownerName": "Lee Seunghoon",
+      "shares": 158201,
+      "asOf": "2026-06-01",
+      "accessions": [
+        "0001193125-26-255552"
+      ]
+    },
+    {
+      "ownerCik": "2033575",
+      "ownerName": "Yang Jinseok",
+      "shares": 73909,
+      "asOf": "2025-03-01",
+      "accessions": [
+        "0000950170-25-032078"
+      ]
+    },
+    {
+      "ownerCik": "2069371",
+      "ownerName": "Amoruso Cristiano",
+      "shares": 28628,
+      "asOf": "2026-02-15",
+      "accessions": [
+        "0001193125-26-054725"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1256187": "NONE",
+    "1528705": "NONE",
+    "1548322": "NONE",
+    "1576117": "NONE",
+    "1592205": "NONE",
+    "1657622": "NONE",
+    "1805443": "NONE",
+    "1818303": "NONE",
+    "2023210": "NONE",
+    "2033575": "NONE",
+    "2069371": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1256187",
+      "shares": 364611,
+      "asOf": "2025-10-01",
+      "rows": [
+        {
+          "accession": "0001193125-25-230289",
+          "title": "common stock",
+          "shares": 364611,
+          "asOf": "2025-10-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 364611, independent 364611, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-10-01, count as-of 2026-07-31, independent latest eligible 2025-10-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1528705",
+      "shares": 275026,
+      "asOf": "2025-07-01",
+      "rows": [
+        {
+          "accession": "0000950170-25-093886",
+          "title": "common stock",
+          "shares": 275026,
+          "asOf": "2025-07-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 275026, independent 275026, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-07-01, count as-of 2026-07-31, independent latest eligible 2025-07-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1548322",
+      "shares": 288750,
+      "asOf": "2026-07-01",
+      "rows": [
+        {
+          "accession": "0001193125-26-296284",
+          "title": "common stock",
+          "shares": 288750,
+          "asOf": "2026-07-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 288750, independent 288750, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-07-01, count as-of 2026-07-31, independent latest eligible 2026-07-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1576117",
+      "shares": 590970,
+      "asOf": "2025-06-01",
+      "rows": [
+        {
+          "accession": "0000950170-25-080953",
+          "title": "common stock",
+          "shares": 590970,
+          "asOf": "2025-06-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 590970, independent 590970, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-06-01, count as-of 2026-07-31, independent latest eligible 2025-06-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1592205",
+      "shares": 311199,
+      "asOf": "2024-12-31",
+      "rows": [
+        {
+          "accession": "0000950170-25-001206",
+          "title": "common stock",
+          "shares": 311199,
+          "asOf": "2024-12-31"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 311199, independent 311199, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2024-12-31, count as-of 2026-07-31, independent latest eligible 2024-12-31"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1657622",
+      "shares": 214491,
+      "asOf": "2026-03-16",
+      "rows": [
+        {
+          "accession": "0001193125-26-110936",
+          "title": "common stock",
+          "shares": 214491,
+          "asOf": "2026-03-16"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 214491, independent 214491, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-03-16, count as-of 2026-07-31, independent latest eligible 2026-03-16"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1805443",
+      "shares": 327954,
+      "asOf": "2026-06-01",
+      "rows": [
+        {
+          "accession": "0001193125-26-255556",
+          "title": "common stock",
+          "shares": 327954,
+          "asOf": "2026-06-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 327954, independent 327954, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-01, count as-of 2026-07-31, independent latest eligible 2026-06-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1818303",
+      "shares": 100789,
+      "asOf": "2026-02-15",
+      "rows": [
+        {
+          "accession": "0001193125-26-054726",
+          "title": "common stock",
+          "shares": 100789,
+          "asOf": "2026-02-15"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 100789, independent 100789, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-02-15, count as-of 2026-07-31, independent latest eligible 2026-02-15"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2023210",
+      "shares": 158201,
+      "asOf": "2026-06-01",
+      "rows": [
+        {
+          "accession": "0001193125-26-255552",
+          "title": "common stock",
+          "shares": 158201,
+          "asOf": "2026-06-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 158201, independent 158201, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-01, count as-of 2026-07-31, independent latest eligible 2026-06-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2033575",
+      "shares": 73909,
+      "asOf": "2025-03-01",
+      "rows": [
+        {
+          "accession": "0000950170-25-032078",
+          "title": "common stock",
+          "shares": 73909,
+          "asOf": "2025-03-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 73909, independent 73909, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-03-01, count as-of 2026-07-31, independent latest eligible 2025-03-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2069371",
+      "shares": 28628,
+      "asOf": "2026-02-15",
+      "rows": [
+        {
+          "accession": "0001193125-26-054725",
+          "title": "common stock",
+          "shares": 28628,
+          "asOf": "2026-02-15"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 28628, independent 28628, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-02-15, count as-of 2026-07-31, independent latest eligible 2026-02-15"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 33775583, count 36510111"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

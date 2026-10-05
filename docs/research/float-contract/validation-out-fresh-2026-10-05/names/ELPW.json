@@ -1,0 +1,135 @@
+{
+  "ticker": "ELPW",
+  "cik": "2015691",
+  "tradingDate": "2026-09-25",
+  "rank": 11,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed August 4, 2026",
+      "registrationStatus": "Completed registered offering; 11,466,666 units were issued on August 4, 2026, before the subsequent 1-for-45 share consolidation.",
+      "effectiveDate": "2026-08-04",
+      "terms": "Each unit contained one Class A ordinary share and one Common Warrant; gross proceeds were approximately $1.38 million before fees and expenses. The disclosed share quantity is pre-August-10 consolidation and therefore is not presented as a current share count.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The common shares were issued in a completed registered offering. The evidence does not provide a reconciled post-consolidation outstanding-share count.",
+      "evidenceSourceIds": [
+        76617,
+        76616
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 filed September 10, 2026; 6-K filed August 20, 2026",
+      "registrationStatus": "A September 3, 2026 F-1 was declared effective, and the September 10 prospectus covers Class A shares issuable upon exercise of May, July, and August 2026 Common Warrants.",
+      "effectiveDate": "2026-09-03",
+      "terms": "The August 2026 1-for-45 consolidation adjusted the Common Warrants, and the company reported that their exercise price was reduced pursuant to adjustment and anti-dilution provisions. Exact current warrant quantities and exercise prices are not provided in the excerpts.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effective registration establishes that covered warrant shares may be sold if issued and eligible; it does not establish exercises, issuances, or actual sales. Repricing/anti-dilution adjustments add uncertainty to potential supply.",
+      "evidenceSourceIds": [
+        76623,
+        76625,
+        76614
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 / 424B3, File No. 333-298531",
+      "registrationStatus": "Effective September 3, 2026; prospectus filed September 10, 2026.",
+      "effectiveDate": "2026-09-03",
+      "terms": "The prospectus registers Class A ordinary shares issuable upon exercise of Common Warrants issued in the May, July, and August 2026 financings.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The effective registration provides legal resale availability for the covered securities when issued and otherwise eligible, but is not evidence of holder selling or of exercised shares.",
+      "evidenceSourceIds": [
+        76623,
+        76625
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 58056099,
+    "asOf": "2025-09-19",
+    "filed": "2025-09-22",
+    "accession": "0001493152-25-014353",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-040378",
+      "form": "3",
+      "filingDate": "2026-08-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-040371",
+      "form": "3",
+      "filingDate": "2026-08-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-040369",
+      "form": "3",
+      "filingDate": "2026-08-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-040367",
+      "form": "3",
+      "filingDate": "2026-08-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-040364",
+      "form": "3",
+      "filingDate": "2026-08-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-029425",
+      "form": "3",
+      "filingDate": "2026-06-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

@@ -1,0 +1,51 @@
+{
+  "ticker": "HVII",
+  "cik": "1846416",
+  "tradingDate": "2026-09-23",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 2500000,
+      "sourceFiling": "424B3 filed 2026-08-03",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": "Up to $2.5 million of working-capital loans from the sponsor, affiliates, officers, or directors may be convertible, at the lender's option, into private-placement units at $10.00 per unit.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The filing describes a potential conversion feature, not confirmed loan issuance, conversion, or market sales. The provided excerpt does not establish whether such loans are outstanding or whether resulting securities are currently sale-eligible.",
+      "evidenceSourceIds": [
+        19730
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "S-4, File No. 333-292440",
+      "registrationStatus": "EFFECTIVE",
+      "effectiveDate": "2026-08-03",
+      "terms": "The S-4 registration statement covering securities to be issued in connection with the proposed ONE Nuclear business combination was declared effective. The provided material does not supply the relevant share amounts or establish that the transaction closed.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "Effectiveness permits the registered transaction process but is not evidence that securities were issued or sold. Closing and resulting outstanding-share and sale-eligibility status remain unverified.",
+      "evidenceSourceIds": [
+        19728,
+        19753
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

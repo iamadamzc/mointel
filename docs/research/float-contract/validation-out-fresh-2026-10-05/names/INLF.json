@@ -1,0 +1,248 @@
+{
+  "ticker": "INLF",
+  "cik": "1991592",
+  "tradingDate": "2026-09-24",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "PIPE",
+      "amountShares": 40000,
+      "dollarCapacity": 103200,
+      "sourceFiling": "Form 6-K dated 2026-07-24 / Exhibit 10.1",
+      "registrationStatus": "Private placement; the 6-K states that the purchased Class B shares would not be registered under the Securities Act or state securities laws and were to be issued pursuant to Section 4(a)(2) and Regulation S.",
+      "effectiveDate": "2026-07-20",
+      "terms": "Securities purchase agreement for 40,000 Class B ordinary shares at $2.58 per share, for $103,200 aggregate purchase price.",
+      "holderRestrictions": "The disclosed placement was unregistered and described as restricted; the supplied evidence does not establish a later resale registration or removal of restrictions.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The August voting-share count includes 43,908 Class B shares versus 3,906 Class B shares reported after the July share combination, consistent with the approximately 40,000-share transaction; however, the bundle does not provide a definitive closing notice or establish present public resale eligibility.",
+      "evidenceSourceIds": [
+        47894,
+        47919,
+        47920,
+        47915
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 prospectus supplement dated 2026-03-13",
+      "registrationStatus": "Registered at-the-market offering prospectus supplement.",
+      "effectiveDate": "2026-03-13",
+      "terms": "Sales may be made from time to time through a sales agent; the agent is entitled to a 3.0% commission on gross proceeds. The excerpt does not state the ATM's maximum dollar amount or whether any shares were sold.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The supplement provides a mechanism for potential primary sales, but the supplied evidence does not confirm sales, remaining capacity, termination, or current availability following subsequent corporate actions.",
+      "evidenceSourceIds": [
+        47904
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 300000000,
+      "sourceFiling": "Form F-3 registration statement, File No. 333-292580",
+      "registrationStatus": "Effective January 12, 2026.",
+      "effectiveDate": "2026-01-12",
+      "terms": "The F-3 registers up to $300,000,000 of Class A ordinary shares, warrants, debt securities, rights, and units in one or more offerings.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The effective shelf permits offerings subject to applicable prospectus supplements and offering terms. It is dollar capacity, not a share count, and the supplied evidence does not establish unused remaining capacity.",
+      "evidenceSourceIds": [
+        47899,
+        47902
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 6400000,
+    "asOf": "2025-12-31",
+    "filed": "2026-03-06",
+    "accession": "0001213900-26-024760",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001475597-26-000127",
+      "form": "4",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1475597",
+        "ownerName": "HRT FINANCIAL LP",
+        "rows": [
+          {
+            "asOf": "2026-07-01",
+            "title": "common stock",
+            "shares": 726296
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001475597-26-000122",
+      "form": "4",
+      "filingDate": "2026-07-01",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1475597",
+        "ownerName": "HRT FINANCIAL LP",
+        "rows": [
+          {
+            "asOf": "2026-06-29",
+            "title": "common stock",
+            "shares": 8249202
+          },
+          {
+            "asOf": "2026-06-30",
+            "title": "common stock",
+            "shares": 4417962
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001475597-26-000115",
+      "form": "4",
+      "filingDate": "2026-06-29",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1475597",
+        "ownerName": "HRT FINANCIAL LP",
+        "rows": [
+          {
+            "asOf": "2026-06-24",
+            "title": "common stock",
+            "shares": 1858061
+          },
+          {
+            "asOf": "2026-06-25",
+            "title": "common stock",
+            "shares": 3640019
+          },
+          {
+            "asOf": "2026-06-26",
+            "title": "common stock",
+            "shares": 5329965
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001475597-26-000114",
+      "form": "3",
+      "filingDate": "2026-06-29",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1475597",
+        "ownerName": "HRT FINANCIAL LP",
+        "rows": [
+          {
+            "asOf": "2026-06-24",
+            "title": "common stock",
+            "shares": 1858061
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-044427",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-044386",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031059",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2102861",
+        "ownerName": "Chen Yanting",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary share",
+            "shares": 400000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031058",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2102863",
+        "ownerName": "Xu Rongjun",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary share",
+            "shares": 700000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031057",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031056",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-031055",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

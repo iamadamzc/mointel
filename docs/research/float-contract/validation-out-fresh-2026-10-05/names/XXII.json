@@ -1,0 +1,493 @@
+{
+  "ticker": "XXII",
+  "cik": "1347858",
+  "tradingDate": "2026-09-23",
+  "rank": 6,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 3019586,
+      "dollarCapacity": null,
+      "sourceFiling": "Form S-3 / Registration No. 333-296761; prospectus dated June 26, 2026 and supplemented August 14, 2026",
+      "registrationStatus": "Effective June 24, 2026; prospectus covers resale from time to time by named selling stockholders.",
+      "effectiveDate": "2026-06-24",
+      "terms": "Up to 3,019,586 common shares issuable upon exercise of outstanding warrants issued in a June 9, 2026 private placement. The company states it will not receive proceeds from resale sales by selling stockholders.",
+      "holderRestrictions": "Exercise price, cashless-exercise provisions, beneficial-ownership blockers, lockups, and actual exercise status are not provided in the supplied excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration statement is effective and permits resale of shares once issued upon warrant exercise. This is potential legally registered supply, not evidence that shares were exercised or sold.",
+      "evidenceSourceIds": [
+        39570,
+        39572,
+        39573
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 6400000,
+      "sourceFiling": "424B5 dated May 1, 2026, under Registration No. 333-294792",
+      "registrationStatus": "The prospectus supplement registers offers and sales from time to time through Needham & Company under the sales agreement.",
+      "effectiveDate": "2026-04-10",
+      "terms": "Up to $6.4 million of common stock may be offered and sold from time to time through the sales agent.",
+      "holderRestrictions": "Remaining capacity, sales after May 1, and termination or amendment status are not established by the supplied excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is dollar-denominated ATM capacity, not a share count. The evidence does not establish how much, if any, remained available or was sold.",
+      "evidenceSourceIds": [
+        39571,
+        39574
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 250000000,
+      "sourceFiling": "Form S-3 / Registration No. 333-294792",
+      "registrationStatus": "Effective S-3 registration statement.",
+      "effectiveDate": "2026-04-10",
+      "terms": "The base prospectus permits offers from time to time of up to $250 million of debt securities, common stock, preferred stock, warrants, subscription rights, securities purchase contracts, and units.",
+      "holderRestrictions": "Availability after any later takedowns and any overlap with the separately disclosed $6.4 million ATM supplement are not established in the supplied excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is broad dollar shelf capacity, not issued shares or a share count. It should not be added to the ATM capacity because the relationship between the capacities is not reconciled in the evidence.",
+      "evidenceSourceIds": [
+        39571,
+        39575
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 713994,
+    "asOf": "2026-08-14",
+    "filed": "2026-08-14",
+    "accession": "0001104659-26-097172",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0000897069-25-001707",
+      "form": "4",
+      "filingDate": "2025-11-14",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1472122",
+        "ownerName": "Arno Andrew",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 17481
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001695",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1761643",
+        "ownerName": "MANFREDONIA ROBERT P",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 33062
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001693",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2020416",
+        "ownerName": "Staffeldt Jonathan",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 37871
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001691",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2039286",
+        "ownerName": "Marion Arvil S.",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 33062
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001689",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1231076",
+        "ownerName": "SALHANY LUCILLE S",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 11114
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001687",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2020253",
+        "ownerName": "Otto Daniel A",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 37871
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001685",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1112888",
+        "ownerName": "FIRESTONE LAWRENCE",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 68129
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001683",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1267667",
+        "ownerName": "KEYS DAVID N",
+        "rows": [
+          {
+            "asOf": "2025-11-10",
+            "title": "common stock",
+            "shares": 14696
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001566",
+      "form": "4",
+      "filingDate": "2025-10-06",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1267667",
+        "ownerName": "KEYS DAVID N",
+        "rows": [
+          {
+            "asOf": "2025-08-25",
+            "title": "common stock",
+            "shares": 2118
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001237",
+      "form": "3",
+      "filingDate": "2025-08-05",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-000591",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1880142",
+        "ownerName": "Johnson Anthony L.",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 2479
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000589",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1231076",
+        "ownerName": "SALHANY LUCILLE S",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 2477
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000586",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1472122",
+        "ownerName": "Arno Andrew",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 4284
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000584",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1112888",
+        "ownerName": "FIRESTONE LAWRENCE",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 30416
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000582",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1761643",
+        "ownerName": "MANFREDONIA ROBERT P",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 14565
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000580",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2020416",
+        "ownerName": "Staffeldt Jonathan",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 16690
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000578",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2020253",
+        "ownerName": "Otto Daniel A",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 16686
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-000576",
+      "form": "4",
+      "filingDate": "2025-03-12",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2039286",
+        "ownerName": "Marion Arvil S.",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "common stock",
+            "shares": 14569
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-001940",
+      "form": "3",
+      "filingDate": "2024-10-10",
+      "primaryDocument": "xslF345X02/form3.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1112888",
+      "ownerName": "FIRESTONE LAWRENCE",
+      "shares": 68129,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001685"
+      ]
+    },
+    {
+      "ownerCik": "1231076",
+      "ownerName": "SALHANY LUCILLE S",
+      "shares": 11114,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001689"
+      ]
+    },
+    {
+      "ownerCik": "1267667",
+      "ownerName": "KEYS DAVID N",
+      "shares": 14696,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001683"
+      ]
+    },
+    {
+      "ownerCik": "1472122",
+      "ownerName": "Arno Andrew",
+      "shares": 17481,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001707"
+      ]
+    },
+    {
+      "ownerCik": "1761643",
+      "ownerName": "MANFREDONIA ROBERT P",
+      "shares": 33062,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001695"
+      ]
+    },
+    {
+      "ownerCik": "1880142",
+      "ownerName": "Johnson Anthony L.",
+      "shares": 2479,
+      "asOf": "2025-03-10",
+      "accessions": [
+        "0000897069-25-000591"
+      ]
+    },
+    {
+      "ownerCik": "2020253",
+      "ownerName": "Otto Daniel A",
+      "shares": 37871,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001687"
+      ]
+    },
+    {
+      "ownerCik": "2020416",
+      "ownerName": "Staffeldt Jonathan",
+      "shares": 37871,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001693"
+      ]
+    },
+    {
+      "ownerCik": "2039286",
+      "ownerName": "Marion Arvil S.",
+      "shares": 33062,
+      "asOf": "2025-11-10",
+      "accessions": [
+        "0000897069-25-001691"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1112888": "FOUND",
+    "1231076": "FOUND",
+    "1267667": "FOUND",
+    "1472122": "FOUND",
+    "1761643": "FOUND",
+    "1880142": "FOUND",
+    "2020253": "FOUND",
+    "2020416": "FOUND",
+    "2039286": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

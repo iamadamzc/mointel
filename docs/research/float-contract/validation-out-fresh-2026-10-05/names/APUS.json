@@ -1,0 +1,577 @@
+{
+  "ticker": "APUS",
+  "cik": "1894525",
+  "tradingDate": "2026-09-24",
+  "rank": 8,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Registration No. 333-282324; post-effective amendment and effectiveness notice",
+      "registrationStatus": "The registration statement was declared effective on May 5, 2025; the bundle does not establish its current availability or the amount presently available for resale following subsequent corporate actions.",
+      "effectiveDate": "2025-05-05",
+      "terms": "Registration-resale-related disclosure is identified, but the supplied excerpt does not state a currently registered share amount or identify presently eligible holders.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "An historical EFFECT means securities could have been offered under the effective registration statement; it is not evidence of sales, current remaining capacity, or present holder eligibility.",
+      "evidenceSourceIds": [
+        971,
+        974
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 10-Q filed August 14, 2026; Form 8-K filed September 11, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": "The filing materials identify convertible preferred stock and a contemplated Preferred Stock Conversion, but the excerpts supplied do not provide a current conversion share amount, conversion timing, or registration eligibility.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential conversion-related supply cannot be quantified or determined to be currently issuable from the supplied excerpts.",
+      "evidenceSourceIds": [
+        969,
+        78848,
+        78862
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 10-Q filed August 14, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": "The filing is tagged for warrants, but the bundle supplies no warrant count, exercise price, expiration, cashless-exercise provision, or current registration/eligibility detail.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Warrants are identified but cannot be treated as live sale supply without exercise and registration details.",
+      "evidenceSourceIds": [
+        969
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "PIPE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 10-Q filed August 14, 2026",
+      "registrationStatus": null,
+      "effectiveDate": "2026-07-24",
+      "terms": "The filing identifies a PIPE financing as a subsequent event, but the supplied excerpt does not state the shares issued, potential issuances, registration rights, or resale availability.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential PIPE-related supply is unquantified and its present resale eligibility is not established in the evidence provided.",
+      "evidenceSourceIds": [
+        969
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 1509118,
+    "asOf": "2026-08-12",
+    "filed": "2026-08-14",
+    "accession": "0001213900-26-090120",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0002057997-25-000002",
+      "form": "4/A",
+      "filingDate": "2025-11-21",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002040378-25-000004",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002041300-25-000003",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002041972-25-000004",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001573840-25-000003",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001679971-25-000008",
+      "form": "4",
+      "filingDate": "2025-11-13",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001679971-25-000007",
+      "form": "4",
+      "filingDate": "2025-10-24",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001573840-25-000002",
+      "form": "4",
+      "filingDate": "2025-10-21",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002041972-25-000003",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002040378-25-000003",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002040022-25-000002",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002041300-25-000002",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001710496-25-000002",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000109",
+      "form": "4/A",
+      "filingDate": "2025-06-11",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2057997",
+        "ownerName": "Inscobee Inc.",
+        "rows": [
+          {
+            "asOf": "2025-05-12",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 2055706
+          },
+          {
+            "asOf": "2025-05-12",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 2099747
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000108",
+      "form": "3/A",
+      "filingDate": "2025-06-11",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2057997",
+        "ownerName": "Inscobee Inc.",
+        "rows": [
+          {
+            "asOf": "2025-03-04",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 1484616
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000103",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000102",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000101",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000100",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2040022",
+        "ownerName": "Kim Christopher",
+        "rows": [
+          {
+            "asOf": "2025-05-16",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 277500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000099",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1710496",
+        "ownerName": "Emerson Erik C.",
+        "rows": [
+          {
+            "asOf": "2025-05-16",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 750000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002040378-25-000001",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002041972-25-000001",
+      "form": "4",
+      "filingDate": "2025-05-20",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000096",
+      "form": "4",
+      "filingDate": "2025-05-15",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2040022",
+        "ownerName": "Kim Christopher",
+        "rows": [
+          {
+            "asOf": "2025-05-13",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 19770
+          },
+          {
+            "asOf": "2025-05-14",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 27500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000090",
+      "form": "4",
+      "filingDate": "2025-05-14",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2041972",
+        "ownerName": "Koo Jakap",
+        "rows": [
+          {
+            "asOf": "2025-05-12",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 643885
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000089",
+      "form": "4",
+      "filingDate": "2025-05-14",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2057997",
+        "ownerName": "Inscobee Inc.",
+        "rows": [
+          {
+            "asOf": "2025-05-12",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 1984616
+          },
+          {
+            "asOf": "2025-05-12",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 2028657
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000088",
+      "form": "3/A",
+      "filingDate": "2025-05-14",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2057997",
+        "ownerName": "Inscobee Inc.",
+        "rows": [
+          {
+            "asOf": "2025-03-04",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 1484616
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000086",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000085",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2041972",
+        "ownerName": "Koo Jakap",
+        "rows": [
+          {
+            "asOf": "2025-03-04",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 615385
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000084",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000083",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000082",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2057997",
+        "ownerName": "Inscobee Inc.",
+        "rows": [
+          {
+            "asOf": "2025-03-04",
+            "title": "common stock, par value $0.01 per share",
+            "shares": 1484615
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001474506-25-000081",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000080",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000079",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001474506-25-000078",
+      "form": "3",
+      "filingDate": "2025-05-08",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1710496",
+      "ownerName": "Emerson Erik C.",
+      "shares": 750000,
+      "asOf": "2025-05-16",
+      "accessions": [
+        "0001474506-25-000099"
+      ]
+    },
+    {
+      "ownerCik": "2040022",
+      "ownerName": "Kim Christopher",
+      "shares": 277500,
+      "asOf": "2025-05-16",
+      "accessions": [
+        "0001474506-25-000100"
+      ]
+    },
+    {
+      "ownerCik": "2041972",
+      "ownerName": "Koo Jakap",
+      "shares": 643885,
+      "asOf": "2025-05-12",
+      "accessions": [
+        "0001474506-25-000090"
+      ]
+    },
+    {
+      "ownerCik": "2057997",
+      "ownerName": "Inscobee Inc.",
+      "shares": 2055706,
+      "asOf": "2025-05-12",
+      "accessions": [
+        "0001474506-25-000109"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1710496": "FOUND",
+    "2040022": "FOUND",
+    "2041972": "FOUND",
+    "2057997": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

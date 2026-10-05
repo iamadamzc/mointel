@@ -1,0 +1,646 @@
+{
+  "ticker": "SHMD",
+  "cik": "1987240",
+  "tradingDate": "2026-09-25",
+  "rank": 12,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 10362693,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 No. 333-297530 / 424B3 prospectus supplement",
+      "registrationStatus": "F-1 No. 333-297530 became effective July 23, 2026; the August 25 prospectus supplement covers resale of up to 10,362,693 ordinary shares.",
+      "effectiveDate": "2026-07-23",
+      "terms": "Resale registration; the cited prospectus supplement states selling securityholders may offer and sell shares from time to time.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The effectiveness notice and subsequent prospectus supplement support legal resale availability under this registration as of the cited filings; this does not evidence actual sales.",
+      "evidenceSourceIds": [
+        99936,
+        99938
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 4958481,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 No. 333-296859 / 424B3 prospectus supplement",
+      "registrationStatus": "F-1 No. 333-296859 became effective June 23, 2026; the August 25 supplement covers resale of 4,958,481 ordinary shares issued in May 2026 private placements.",
+      "effectiveDate": "2026-06-23",
+      "terms": "Resale registration for private-placement shares; selling securityholders may offer and sell from time to time.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The cited effectiveness notice and prospectus supplement support resale eligibility under this registration, not confirmed selling.",
+      "evidenceSourceIds": [
+        99937,
+        99939
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 5000000,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 No. 333-296006 / 424B3 prospectus supplement",
+      "registrationStatus": "The August 25 supplement states that the underlying F-1 was declared effective May 22, 2026.",
+      "effectiveDate": "2026-05-22",
+      "terms": "Resale of up to 5,000,000 ordinary shares from time to time by named selling securityholders.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The cited prospectus supplement supports resale availability as of its filing; no evidence confirms shares were sold.",
+      "evidenceSourceIds": [
+        99940
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 42729539,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 No. 333-293511 / 424B3 prospectus supplement",
+      "registrationStatus": "The August 25 supplement states that the underlying prospectus was declared effective May 22, 2026.",
+      "effectiveDate": "2026-05-22",
+      "terms": "The filing identifies 42,729,539 ordinary shares and separately identifies additional shares potentially issuable through warrants, note conversion, a 2025 convertible loan, options, and management bonus plans.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is a broad registered-security figure. Its relationship to the separately listed warrant/conversion components and other resale registrations is not reconciled in the supplied excerpts, so it must not be summed with those amounts.",
+      "evidenceSourceIds": [
+        99941
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 21000000,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 No. 333-293511 / 424B3 prospectus supplement",
+      "registrationStatus": "The cited effective prospectus identifies up to 21,000,000 ordinary shares issuable upon exercise of warrants.",
+      "effectiveDate": "2026-05-22",
+      "terms": "Up to 21,000,000 ordinary shares issuable upon exercise; exercise prices, expiration dates, and current exercisability are not provided in the supplied excerpt.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential issuance exists, but the excerpt does not establish exercise economics, holder behavior, or whether all warrants are currently exercisable.",
+      "evidenceSourceIds": [
+        99941
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": 15544042,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 No. 333-293511 / 424B3 prospectus supplement",
+      "registrationStatus": "The cited effective prospectus identifies up to 15,544,042 ordinary shares issuable upon conversion of the 2026 convertible notes.",
+      "effectiveDate": "2026-05-22",
+      "terms": "The company closed $20.0 million aggregate-principal 5.0% Convertible Senior PIK Toggle Notes due 2029 on July 14, 2026. The supplied excerpts do not provide a conversion price or current conversion eligibility.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The notes were issued and shares are registered in the cited prospectus, but conversion mechanics, conversion eligibility, and shares actually issued are not established by the excerpts.",
+      "evidenceSourceIds": [
+        99941,
+        99927,
+        99946
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 43062427,
+    "asOf": "2025-12-31",
+    "filed": "2026-05-15",
+    "accession": "0001104659-26-062643",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001881975-26-000004",
+      "form": "4",
+      "filingDate": "2026-09-08",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1881975",
+        "ownerName": "Speth Ralf",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 201311
+          },
+          {
+            "asOf": "2026-08-31",
+            "title": "ordinary shares",
+            "shares": 236311
+          },
+          {
+            "asOf": "2026-09-02",
+            "title": "ordinary shares",
+            "shares": 269311
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002023157-26-000005",
+      "form": "4",
+      "filingDate": "2026-08-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002125667-26-000003",
+      "form": "4",
+      "filingDate": "2026-08-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125667",
+        "ownerName": "Schuetz Arthur Josef Hermann",
+        "rows": [
+          {
+            "asOf": "2006-08-28",
+            "title": "ordinary shares",
+            "shares": 29512
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125050-26-000006",
+      "form": "4",
+      "filingDate": "2026-08-07",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002125050-26-000005",
+      "form": "4",
+      "filingDate": "2026-07-07",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002125027-26-000004",
+      "form": "4",
+      "filingDate": "2026-07-07",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125027",
+        "ownerName": "Rauch Helmut",
+        "rows": [
+          {
+            "asOf": "2026-07-03",
+            "title": "ordinary shares",
+            "shares": 531166
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002120462-26-000014",
+      "form": "4/A",
+      "filingDate": "2026-06-24",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2120462",
+        "ownerName": "Streyl Annedore",
+        "rows": [
+          {
+            "asOf": "2026-06-18",
+            "title": "ordinary shares",
+            "shares": 18
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002120462-26-000013",
+      "form": "4",
+      "filingDate": "2026-06-24",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2120462",
+        "ownerName": "Streyl Annedore",
+        "rows": [
+          {
+            "asOf": "2026-06-18",
+            "title": "ordinary shares",
+            "shares": 18
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125027-26-000003",
+      "form": "4/A",
+      "filingDate": "2026-06-01",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125027",
+        "ownerName": "Rauch Helmut",
+        "rows": [
+          {
+            "asOf": "2026-05-28",
+            "title": "ordinary shares",
+            "shares": 18400
+          },
+          {
+            "asOf": "2026-05-28",
+            "title": "ordinary shares",
+            "shares": 12766
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125050-26-000004",
+      "form": "4/A",
+      "filingDate": "2026-06-01",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125050",
+        "ownerName": "Schmid Christian Mathias",
+        "rows": [
+          {
+            "asOf": "2026-05-28",
+            "title": "ordinary shares",
+            "shares": 18175
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002023157-26-000004",
+      "form": "4/A",
+      "filingDate": "2026-06-01",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023157",
+        "ownerName": "Schmid Anette",
+        "rows": [
+          {
+            "asOf": "2026-05-28",
+            "title": "ordinary shares",
+            "shares": 13111
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125667-26-000002",
+      "form": "4",
+      "filingDate": "2026-05-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125667",
+        "ownerName": "Schuetz Arthur Josef Hermann",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 24000
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 14312
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002121411-26-000002",
+      "form": "4",
+      "filingDate": "2026-05-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2121411",
+        "ownerName": "Yoon Boo Keun",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 26397
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002120462-26-000012",
+      "form": "4",
+      "filingDate": "2026-05-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2120462",
+        "ownerName": "Streyl Annedore",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 11368
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125027-26-000002",
+      "form": "4",
+      "filingDate": "2026-05-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125027",
+        "ownerName": "Rauch Helmut",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 34591
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 58591
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125050-26-000003",
+      "form": "4",
+      "filingDate": "2026-05-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125050",
+        "ownerName": "Schmid Christian Mathias",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 37150
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 13840
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 1265322
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 0
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002023157-26-000003",
+      "form": "4",
+      "filingDate": "2026-05-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023157",
+        "ownerName": "Schmid Anette",
+        "rows": [
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 24247
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 18782
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 2190589
+          },
+          {
+            "asOf": "2026-05-23",
+            "title": "ordinary shares",
+            "shares": 0
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125667-26-000001",
+      "form": "3",
+      "filingDate": "2026-05-21",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002125050-26-000002",
+      "form": "3/A",
+      "filingDate": "2026-04-29",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125050",
+        "ownerName": "Schmid Christian Mathias",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 4979000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 10341000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002023157-26-000002",
+      "form": "3/A",
+      "filingDate": "2026-04-29",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023157",
+        "ownerName": "Schmid Anette",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 6894000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 4596000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002127539-26-000001",
+      "form": "3",
+      "filingDate": "2026-04-08",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002125050-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-31",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2125050",
+        "ownerName": "Schmid Christian Mathias",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 4979000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 8962000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002125027-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001881975-26-000003",
+      "form": "3",
+      "filingDate": "2026-03-26",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1881975",
+        "ownerName": "Speth Ralf",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 185000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002121411-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2121411",
+        "ownerName": "Yoon Boo Keun",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 17500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002120462-26-000011",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002023157-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2023157",
+        "ownerName": "Schmid Anette",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 6894000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 5974800
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001881977-26-000003",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1881977",
+        "ownerName": "Berger Stefan",
+        "rows": [
+          {
+            "asOf": "2024-04-30",
+            "title": "ordinary shares",
+            "shares": 177084
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

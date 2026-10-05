@@ -1,0 +1,371 @@
+{
+  "ticker": "ARTL",
+  "cik": "1621221",
+  "tradingDate": "2026-09-23",
+  "rank": 9,
+  "ledger": [
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 6530000,
+      "sourceFiling": "Form 8-K / 424B5, filed May 26-27, 2026",
+      "registrationStatus": "The company documented an ATM program under which it may sell up to $6.53 million of common stock through H.C. Wainwright; sales are discretionary and the agent is not required to sell a specified amount. [74124,74134]",
+      "effectiveDate": "2026-05-26",
+      "terms": "Up to $6.53 million of common stock may be sold from time to time through H.C. Wainwright. This is dollar capacity, not a share count. [74124,74134]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The May 2026 ATM was established under an effective S-3 registration statement, but the bundle contains no later filing confirming remaining capacity, termination, or actual sales under this specific program. An effective registration permits sales but does not establish that sales occurred. [74132,74124,74134]",
+      "evidenceSourceIds": [
+        74132,
+        74124,
+        74134,
+        74140
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 8-K / Form 10-Q, filed July 17 and August 12, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": "Stockholders approved issuance of more than 20% of then-outstanding common stock pursuant to an Equity Purchase Agreement with Square Gate Capital Master Fund, LLC – Series 5. The provided excerpts do not state the remaining commitment, shares issuable, pricing mechanics, or whether purchases remain available. [74123,74127]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The approval and the 10-Q's disclosure of shares issued as an equity-purchase-agreement fee establish a financing-related issuance mechanism, but current availability and potential share supply cannot be quantified from the provided evidence. [74123,74127]",
+      "evidenceSourceIds": [
+        74123,
+        74127
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 10-Q, filed August 12, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": "The filing reflects warrant exercises during the reported period, but the supplied excerpt does not provide outstanding warrant quantity, exercise prices, registration status, or exercise eligibility. [74127]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential warrant supply cannot be assessed from the excerpt; warrants are not treated as confirmed live supply. [74127]",
+      "evidenceSourceIds": [
+        74127
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 10-Q, filed August 12, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": "The filing reports conversion of convertible notes to common stock during the reported period, but the provided excerpt does not establish any remaining convertible balance or conversion terms. [74127]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "No current conversion-related supply can be quantified or treated as active from the provided excerpt. [74127]",
+      "evidenceSourceIds": [
+        74127
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 4595068,
+    "asOf": "2026-08-11",
+    "filed": "2026-08-20",
+    "accession": "0001640334-26-001400",
+    "form": "10-Q/A"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001640334-26-001231",
+      "form": "4",
+      "filingDate": "2026-07-21",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-001229",
+      "form": "4",
+      "filingDate": "2026-07-21",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-001227",
+      "form": "4",
+      "filingDate": "2026-07-21",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-001225",
+      "form": "4",
+      "filingDate": "2026-07-21",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-001223",
+      "form": "4",
+      "filingDate": "2026-07-21",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-001221",
+      "form": "4",
+      "filingDate": "2026-07-21",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000199",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000198",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000197",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000196",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000195",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000194",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000193",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-26-000192",
+      "form": "4",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-002155",
+      "form": "3",
+      "filingDate": "2025-11-17",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-001925",
+      "form": "4",
+      "filingDate": "2025-10-30",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-001923",
+      "form": "4",
+      "filingDate": "2025-10-30",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-001921",
+      "form": "4",
+      "filingDate": "2025-10-30",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-001136",
+      "form": "4",
+      "filingDate": "2025-07-07",
+      "primaryDocument": "xslF345X05/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-000789",
+      "form": "4",
+      "filingDate": "2025-05-05",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-000788",
+      "form": "4",
+      "filingDate": "2025-05-05",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-25-000787",
+      "form": "4",
+      "filingDate": "2025-05-05",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-24-001935",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-24-001933",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-24-001931",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-24-001929",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-24-001927",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001640334-24-001925",
+      "form": "4",
+      "filingDate": "2024-12-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}
