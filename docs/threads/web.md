@@ -534,6 +534,11 @@ owner-only (`4418c741`); entry gate (`6497285a`, screen `d023bd94`, guard `3e855
 touches only `docs/threads/web.md`, `docs/web/*` or `docs/web-opening-prompt.md`, including this hand-off's.
 Branches are NOT cleared by this line: `web/sheet-priority-out` (`f8ed2917`) rides the badge release by replay.
 
+**CLEARED by the Web seat local_fe13d183 (2026-10-05):** `4fbdc7a5`, `623a0af9`, and every later
+`Web (local_fe13d183)` commit on local main that touches only `docs/threads/web.md`, `docs/web/*` or
+`docs/web-opening-prompt.md`. Branches are NOT cleared by this line: `web/sheet-priority-out` is now `2eaad153`
+(rebased onto Design `52cced3e`, replayed and approved by Integration 28th) and rides the badge release.
+
 ### ERROR LEDGER, this seat (opened 2026-10-02 by the successor)
 
 *Hygiene section 2: a REPEAT of a class already logged this session is the
