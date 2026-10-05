@@ -1,0 +1,722 @@
+{
+  "ticker": "NXL",
+  "cik": "1527352",
+  "tradingDate": "2026-10-01",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 2419355,
+      "dollarCapacity": 750000,
+      "sourceFiling": "424B5 filed August 20, 2026, accession 0001829126-26-009171",
+      "registrationStatus": "Registered direct offering. The filing states 2,419,354 shares, while the related 8-K states 2,419,355 shares [123099,123091].",
+      "effectiveDate": "2026-08-20",
+      "terms": "Shares were offered at $0.31 per share for approximately $750,000 gross proceeds. The stated share amounts precede the subsequent 1-for-30 reverse split, and the bundle provides no reconciled post-split outstanding-share bridge [123099,123104].",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "This was an announced registered direct issuance, creating confirmed new share supply. The evidence does not establish present holder inventory or sales activity [123099,123091].",
+      "evidenceSourceIds": [
+        123099,
+        123091,
+        123104
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 1209677,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed August 20, 2026, accession 0001829126-26-009171",
+      "registrationStatus": "Concurrent private-placement warrants. Registration and current resale eligibility are not established in the supplied excerpt [123099].",
+      "effectiveDate": "2026-08-20",
+      "terms": "The concurrent private placement included warrants to purchase up to 1,209,677 shares. Exercise price and exercisability terms are not included in the supplied excerpt [123099].",
+      "holderRestrictions": "Private-placement status is stated, but the supplied evidence does not establish current registration or Rule 144 eligibility [123099].",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential dilution exists, but live supply cannot be determined without exercise terms and current registration or exemption status [123099].",
+      "evidenceSourceIds": [
+        123099
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 1170000,
+      "sourceFiling": "8-K filed August 21, 2026, accession 0001829126-26-009226",
+      "registrationStatus": "The supplied evidence does not establish registration of any shares potentially issuable under the note [123090,123106].",
+      "effectiveDate": "2026-08-21",
+      "terms": "An institutional investor purchased an unsecured $1.17 million promissory note, with $150,000 original issue discount and $20,000 transaction expenses, for $1.0 million purchase price [123090,123106]. The supplied excerpts do not provide a conversion price or share amount.",
+      "holderRestrictions": "The note exhibit states it may not be offered or sold absent an effective registration statement or an available exemption [123106].",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The financing is active debt overhang, but the supplied excerpts do not establish a currently calculable common-share conversion amount [123090,123106].",
+      "evidenceSourceIds": [
+        123090,
+        123106
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 5600000,
+      "dollarCapacity": null,
+      "sourceFiling": "S-1 filed September 3, 2026, accession 0001829126-26-009723",
+      "registrationStatus": "The S-1 was filed for proposed delayed or continuous sales. The bundle includes no EFFECT notice for this S-1 [123094].",
+      "effectiveDate": null,
+      "terms": "The registration statement covers up to 5,600,000 common shares that Nexalin may issue and sell to Alumni Capital, LP from time to time in its discretion [123094].",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The filing establishes potential issuance capacity, not completed issuance or effective registered sales [123094].",
+      "evidenceSourceIds": [
+        123094
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 4273859,
+      "sourceFiling": "424B5 filed October 15, 2025, accession 0001829126-25-008139",
+      "registrationStatus": "The ATM supplement registered up to $4,273,859 of gross proceeds under an effective S-3 registration statement [123100,123097].",
+      "effectiveDate": "2025-04-29",
+      "terms": "The company registered sales from time to time through Maxim Group LLC as sales agent, up to $4,273,859 in gross proceeds [123100].",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration was effective, so it represented legal issuance capacity. The bundle does not state remaining capacity, termination, or sales made under this program [123100,123097].",
+      "evidenceSourceIds": [
+        123100,
+        123097
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 22036402,
+    "asOf": "2026-08-10",
+    "filed": "2026-08-12",
+    "accession": "0001829126-26-008709",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001829126-25-010255",
+      "form": "4",
+      "filingDate": "2025-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-010254",
+      "form": "4",
+      "filingDate": "2025-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-010253",
+      "form": "4",
+      "filingDate": "2025-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-010252",
+      "form": "4",
+      "filingDate": "2025-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-010251",
+      "form": "4",
+      "filingDate": "2025-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-010250",
+      "form": "4",
+      "filingDate": "2025-12-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-007778",
+      "form": "4",
+      "filingDate": "2025-09-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-007777",
+      "form": "4",
+      "filingDate": "2025-09-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2025-09-29",
+            "title": "common stock",
+            "shares": 191252
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-007776",
+      "form": "4",
+      "filingDate": "2025-09-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916504",
+        "ownerName": "Hu Ben",
+        "rows": [
+          {
+            "asOf": "2025-09-29",
+            "title": "common stock",
+            "shares": 377095
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-007775",
+      "form": "4",
+      "filingDate": "2025-09-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-007374",
+      "form": "4",
+      "filingDate": "2025-09-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-007373",
+      "form": "4",
+      "filingDate": "2025-09-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-007350",
+      "form": "4",
+      "filingDate": "2025-09-12",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-005929",
+      "form": "3",
+      "filingDate": "2025-08-07",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2080067",
+        "ownerName": "Van Fleet Justin",
+        "rows": [
+          {
+            "asOf": "2025-08-01",
+            "title": "common stock",
+            "shares": 25000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-005220",
+      "form": "4",
+      "filingDate": "2025-07-21",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-001766",
+      "form": "4",
+      "filingDate": "2025-03-13",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-001256",
+      "form": "4",
+      "filingDate": "2025-02-27",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-001254",
+      "form": "4",
+      "filingDate": "2025-02-27",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-000849",
+      "form": "5",
+      "filingDate": "2025-02-10",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2053473",
+        "ownerName": "Shelton Carolyn Hamby",
+        "rows": [
+          {
+            "asOf": "2024-10-14",
+            "title": "common stock",
+            "shares": 24000
+          },
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 24000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-000724",
+      "form": "4",
+      "filingDate": "2025-02-05",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2025-02-04",
+            "title": "common stock",
+            "shares": 155793
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-000672",
+      "form": "4",
+      "filingDate": "2025-02-04",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2025-02-04",
+            "title": "common stock",
+            "shares": 154793
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-000544",
+      "form": "5",
+      "filingDate": "2025-01-29",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2024-12-20",
+            "title": "common stock",
+            "shares": 149293
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-000543",
+      "form": "5",
+      "filingDate": "2025-01-29",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-000542",
+      "form": "4",
+      "filingDate": "2025-01-29",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2025-01-28",
+            "title": "common stock",
+            "shares": 153793
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-25-000368",
+      "form": "4",
+      "filingDate": "2025-01-24",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2025-01-13",
+            "title": "common stock",
+            "shares": 151293
+          },
+          {
+            "asOf": "2025-01-23",
+            "title": "common stock",
+            "shares": 152293
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-24-007091",
+      "form": "4",
+      "filingDate": "2024-10-30",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916664",
+        "ownerName": "Owens David",
+        "rows": [
+          {
+            "asOf": "2024-10-28",
+            "title": "common stock",
+            "shares": 148293
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-24-006598",
+      "form": "4/A",
+      "filingDate": "2024-10-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-24-006597",
+      "form": "4",
+      "filingDate": "2024-10-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1333581",
+        "ownerName": "Bernhard Leslie",
+        "rows": [
+          {
+            "asOf": "2024-09-30",
+            "title": "common stock",
+            "shares": 49838
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001829126-24-006596",
+      "form": "4",
+      "filingDate": "2024-10-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1916504",
+        "ownerName": "Hu Ben",
+        "rows": [
+          {
+            "asOf": "2024-09-30",
+            "title": "common stock",
+            "shares": 340636
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1916504",
+      "ownerName": "Hu Ben",
+      "shares": 377095,
+      "asOf": "2025-09-29",
+      "accessions": [
+        "0001829126-25-007776"
+      ]
+    },
+    {
+      "ownerCik": "1916664",
+      "ownerName": "Owens David",
+      "shares": 191252,
+      "asOf": "2025-09-29",
+      "accessions": [
+        "0001829126-25-007777"
+      ]
+    },
+    {
+      "ownerCik": "2053473",
+      "ownerName": "Shelton Carolyn Hamby",
+      "shares": 24000,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0001829126-25-000849"
+      ]
+    },
+    {
+      "ownerCik": "2080067",
+      "ownerName": "Van Fleet Justin",
+      "shares": 25000,
+      "asOf": "2025-08-01",
+      "accessions": [
+        "0001829126-25-005929"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1916504": "NONE",
+    "1916664": "NONE",
+    "2053473": "NONE",
+    "2080067": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1916504",
+      "shares": 377095,
+      "asOf": "2025-09-29",
+      "rows": [
+        {
+          "accession": "0001829126-25-007776",
+          "title": "common stock",
+          "shares": 0,
+          "asOf": "2025-09-29"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": false,
+          "note": "claimed 377095, independent 0, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": false,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-09-29, count as-of 2026-08-10, independent latest eligible 2025-09-29"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 21419055, count 22036402"
+        }
+      },
+      "dangerous": true
+    },
+    {
+      "ownerCik": "1916664",
+      "shares": 191252,
+      "asOf": "2025-09-29",
+      "rows": [
+        {
+          "accession": "0001829126-25-007777",
+          "title": "common stock",
+          "shares": 191252,
+          "asOf": "2025-09-29"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 191252, independent 191252, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-09-29, count as-of 2026-08-10, independent latest eligible 2025-09-29"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 21419055, count 22036402"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2053473",
+      "shares": 24000,
+      "asOf": "2024-12-31",
+      "rows": [
+        {
+          "accession": "0001829126-25-000849",
+          "title": "common stock",
+          "shares": 24000,
+          "asOf": "2024-12-31"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 24000, independent 24000, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2024-12-31, count as-of 2026-08-10, independent latest eligible 2024-12-31"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 21419055, count 22036402"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2080067",
+      "shares": 25000,
+      "asOf": "2025-08-01",
+      "rows": [
+        {
+          "accession": "0001829126-25-005929",
+          "title": "common stock",
+          "shares": 25000,
+          "asOf": "2025-08-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 25000, independent 25000, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-08-01, count as-of 2026-08-10, independent latest eligible 2025-08-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 21419055, count 22036402"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

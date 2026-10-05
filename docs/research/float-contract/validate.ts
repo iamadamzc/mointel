@@ -205,12 +205,18 @@ function scanRows(xml: string): { owners: number; period: string | null; rows: A
   const re = /<(nonDerivativeTransaction|nonDerivativeHolding)>([\s\S]*?)<\/\1>/g;
   for (let m = re.exec(xml); m; m = re.exec(xml)) {
     const body = m[2]!;
+    // The tag's body may hold more than <value> (a <footnoteId/> follows it on NXL's Form 4). The first
+    // control run found the earlier regex returned nothing there, and Number('') read as 0: amendment 2.
     const pick = (tag: string) => {
-      const found = new RegExp(`<${tag}>\\s*(?:<value>)?\\s*([^<]*?)\\s*(?:</value>)?\\s*</${tag}>`).exec(body);
-      return found ? found[1]! : null;
+      const found = new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`).exec(body);
+      if (!found) return null;
+      const value = /<value>\s*([^<]*?)\s*<\/value>/.exec(found[1]!);
+      const text = (value ? value[1]! : found[1]!.replace(/<[^>]+>/g, '')).trim();
+      return text === '' ? null : text;
     };
     const dateText = m[1] === 'nonDerivativeTransaction' ? pick('transactionDate') : period;
-    const after = Number((pick('sharesOwnedFollowingTransaction') ?? '').replace(/,/g, ''));
+    const afterText = pick('sharesOwnedFollowingTransaction');
+    const after = afterText === null ? Number.NaN : Number(afterText.replace(/,/g, ''));
     rows.push({
       title: (pick('securityTitle') ?? '').toLowerCase(),
       date: dateText && /^\d{4}-\d{2}-\d{2}/.test(dateText) ? dateText.slice(0, 10) : null,
