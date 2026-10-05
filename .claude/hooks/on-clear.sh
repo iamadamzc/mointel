@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# SessionStart hook (matcher "startup|clear"), mointel. In the desktop app a cleared session starts as "startup", so this
+# runs on every new or cleared session in A:\mointel. It acts only for a session already titled exactly as a seat (a
+# self-reset keeps its title); a new chat (app-generated title), a retired chat or any other session is told to ignore it.
+# Adapted from Infra-Ops's v2 draft (A:\claude-infra-agent\docs\on-clear-v2-draft.sh, 1b1dcec). Rule: session-hygiene.md s3.
+cat <<'EOF'
+{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"SESSION START NOTE (runs on every new or cleared session in A:/mointel). Read your own title with mcp__ccd_session_mgmt__get_session on \"self\" (load it with ToolSearch if needed). If the title is EXACTLY one of these seat names, this seat was just reset (A:/claude-infra-agent/docs/session-hygiene.md section 3): you have no earlier conversation, so do not act on anything you think you remember; read your opening prompt and follow it, treating the message that started this turn as the start signal only. Ops-tmi: A:/mointel/docs/ops-opening-prompt.md. Design-tmi: A:/mointel/docs/design-opening-prompt.md. Research-tmi: A:/mointel/docs/research-opening-prompt.md. Web-tmi: A:/mointel/docs/web-opening-prompt.md. Commercial-tmi: A:/mointel/docs/commercial-opening-prompt.md. Marketing-tmi: A:/mointel/docs/marketing-opening-prompt.md. Integration-tmi: A:/mointel/docs/integration-opening-prompt.md. R&D-tmi: A:/mointel/docs/rnd-opening-prompt.md. If the title is anything else (including a title ending in -retired), ignore this note entirely and follow the message that started this turn."}}
+EOF
