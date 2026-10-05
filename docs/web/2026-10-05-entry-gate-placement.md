@@ -46,8 +46,8 @@ rollback refuse the store, and sign-in would go down.
 
 ## How often
 
-Once per text version, which is Commercial's recommendation; the record is durable. Asking daily is a
-one-line change. **This is a product choice for him:** he would be the one clicking it every morning.
+**RULED by him, 2026-10-05T19:09:04.056Z (transcript 724a851e, typed to Web): "once".** A tester is
+asked once per text version, and asked again only when the text changes. The record is durable.
 
 ## Callers (12b requirement 4)
 
