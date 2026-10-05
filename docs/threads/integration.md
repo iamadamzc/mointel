@@ -1323,6 +1323,17 @@ FLOAT CONTRACT   Research c624aeec: docs/research/float-contract/contract-2026-1
                  50.2% at 90. ASKED a labelled prereg amendment: state shares at 45/90/120 on the sampled checkpoint names.
                  Commercial sent the contract + the 45 d number (55da299c). MAX AGE PUT TO HIM (product: how much of the
                  always-on column shows a number).
+OWED ANSWERS     DESIGN (vs main 00c0cdfa): OWED a4a06168, 2a625a5b, 185cea37 + 6e7fff84, 2afd15bc + 9189b569 (ladder), 558d07a5
+                 (moving label), a50f5948 (needs ladder + blue-sky three first); EQUIVALENT by reading: c5bc14c5, 88ec64ad,
+                 f9a2a5ce. Chain of 11 built (main + blue-sky 3 + its 8). MY CALLS: blue-sky 3 in Design's chain (Research
+                 declined); 2afd15bc, 9189b569, 558d07a5 are DESIGN's by subject/files (Ops's predecessor had grouped them
+                 under Ops's levels/history + movers) -> Ops told to drop them. Rebase on fresh main, gate, literal sha.
+                 WEB: all three OWED. "A cut from main today would ship /desk and the data APIs ungated" (no route calls
+                 authenticate() on main; Web's read). Releases are cut on /proc, so no live risk; it is why main must get it.
+                 Branch web/step4-to-main tip df2712c2 (A:/mointel-webmain, off 00c0cdfa): 7aa44620 = d7079581 minus levels
+                 hunks (main has no levels routes), a08b5a68 = 32db0d7e, 8c15817f = fb50e2ff, df2712c2 test floor -> named
+                 control (mutants 1/1, 1/1). Targeted vitest 64 files; full suite + build owed in Ops's slot. Levels pick
+                 (Ops) must gate /api/levels like production did. 349d051e cleared.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
