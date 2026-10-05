@@ -13957,3 +13957,11 @@ listed splits restated before the bootstrap: CMND, GUTS, SCNX, VIVK, VTAK); 6e7f
 - A session restart kills background shells and app restarts change ListAgents refs: verify a peer by get_session, send by ref.
 **Routing at hand-off:** Integration-tmi = local_ef410868 (25th); Research-tmi = local_f6ef479a; Design-tmi = local_82749387;
 Web-tmi = local_46c15fbe; Marketing-tmi = local_fdc0aa9a; Commercial-tmi = local_2ce868d2. Find by title + cwd + not archived.
+
+## SUCCESSOR OPS SEAT OPENS, 2026-10-05T01:2xZ (Sun 21:2x ET): local_c71f613a, titled Ops-tmi
+Model: claude-sonnet-5-5 (below Opus; this seat deploys and writes production, so Opus is the recommended class; he switches it).
+Production re-read from the box 2026-10-05T01:18Z (clock checked in the command, Sun 21:18 ET): web 2025357 / research 2025415 /
+assess 2025490 cwd 6e7fff84; market 2013616 cwd f5746a84; all NR 0; current -> 6e7fff84; health ok, schema 28/28, market IDLE /
+STREAMING; 3,832 MB, 2,700 available, no swap. origin/production = 6e7fff84; origin/main = 96a82b6d. Pins: pins.sh is not at
+/opt/mointel/pins (only the two .pin files listed), so pin versions NOT re-read by this seat; hand-off values stand unverified.
+Error ledger (this seat): none yet.
