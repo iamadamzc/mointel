@@ -53,25 +53,40 @@
  * until he answers. Scope: `docs/web/2026-09-26-signup-flow-scope.md`.
  */
 
-import { isUserInvited, resolveSession, type IdentityDatabase } from '@/lib/auth/store';
+import { hasAcceptedEntry, isUserInvited, resolveSession, type IdentityDatabase } from '@/lib/auth/store';
+import { ENTRY_GATE_VERSION } from '@/lib/legal/entryGate';
 
+/*
+ * A FOURTH STATE, `unaccepted` (2026-10-05, the entry gate): invited, but has
+ * not accepted the CURRENT entry text (lib/legal/entryGate.ts; Commercial 12b).
+ * It is a state of the one gate rather than a check beside it, so every
+ * consumer has to branch on it and the type system shows any that do not:
+ * /desk sends it to /enter, the API refuses it, owner actions refuse it.
+ * Refusal is still checked first: an uninvited person is refused, never asked
+ * to accept text for a desk they cannot enter.
+ */
 export type Admission =
   | { state: 'anonymous' }
   | { state: 'refused'; userId: number }
+  | { state: 'unaccepted'; userId: number }
   | { state: 'admitted'; userId: number };
 
 export function authenticate(
   db: IdentityDatabase,
   sessionId: string | null | undefined,
   now: Date = new Date(),
+  entryVersion: string = ENTRY_GATE_VERSION,
 ): Admission {
   if (!sessionId) return { state: 'anonymous' };
 
   const session = resolveSession(db, sessionId, now);
   if (!session) return { state: 'anonymous' };
 
-  if (isUserInvited(db, session.userId)) {
-    return { state: 'admitted', userId: session.userId };
+  if (!isUserInvited(db, session.userId)) {
+    return { state: 'refused', userId: session.userId };
   }
-  return { state: 'refused', userId: session.userId };
+  if (!hasAcceptedEntry(db, session.userId, entryVersion)) {
+    return { state: 'unaccepted', userId: session.userId };
+  }
+  return { state: 'admitted', userId: session.userId };
 }

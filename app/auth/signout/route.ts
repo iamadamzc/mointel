@@ -16,6 +16,12 @@
  * The cookie is read off the raw request header rather than `next/headers` so
  * the handler is a pure function of Request to Response and can be tested
  * without a Next request context.
+ *
+ * ANSWERS 303 TO THE PUBLIC PAGE, not 200 with an empty body (2026-10-05). Its
+ * callers are plain HTML forms (the refusal screen's Sign out, and the entry
+ * gate's Decline), and a form POST answered 200 with no body leaves the
+ * browser on a blank page at /auth/signout. Relative Location, so the answer
+ * is right behind nginx whatever host the app sees.
  */
 
 import { SESSION_COOKIE, clearedSessionCookie, cookieSecureDefault } from '@/lib/auth/cookie';
@@ -52,5 +58,6 @@ export async function POST(request: Request): Promise<Response> {
   const headers = new Headers();
   headers.append('Set-Cookie', clearedSessionCookie(cookieSecureDefault()));
   headers.set('Cache-Control', 'no-store');
-  return new Response(null, { status: 200, headers });
+  headers.set('Location', '/');
+  return new Response(null, { status: 303, headers });
 }

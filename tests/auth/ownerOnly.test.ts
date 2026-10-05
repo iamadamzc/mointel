@@ -13,10 +13,12 @@ import {
   inviteEmail,
   linkIdentity,
   openIdentityStore,
+  recordEntryAcceptance,
   revokeEmail,
   type IdentityDatabase,
 } from '@/lib/auth/store';
 import { DeskModeProvider, type DeskMode } from '@/lib/hooks/useDeskMode';
+import { ENTRY_GATE_VERSION } from '@/lib/legal/entryGate';
 
 /*
  * His ruling, 2026-10-05T18:51:26Z: "disable retry research for users. leave
@@ -56,11 +58,17 @@ const ENV = { [OWNER_EMAIL_ENV]: OWNER };
 function sessionFor(
   db: IdentityDatabase,
   email: string,
-  { invited = true, verified = true }: { invited?: boolean; verified?: boolean } = {},
+  {
+    invited = true,
+    verified = true,
+    accepted = true,
+  }: { invited?: boolean; verified?: boolean; accepted?: boolean } = {},
 ): string {
   const { userId } = linkIdentity(db, { provider: 'google', subject: `sub-${email}`, email, emailVerified: verified });
   if (invited) inviteEmail(db, email, 'test');
-  return createSession(db, userId, FUTURE).id;
+  const id = createSession(db, userId, FUTURE).id;
+  if (accepted) recordEntryAcceptance(db, userId, ENTRY_GATE_VERSION, id);
+  return id;
 }
 
 function retry(sessionId?: string): Request {
@@ -120,7 +128,10 @@ describe('gateOwnerRequest: retry research is the owner\'s alone', () => {
        VALUES (?, 'google', 'sub-b', ?, 1, ?, ?)`,
     ).run(controlUser, OWNER, at, at);
     inviteEmail(control, 'tester@example.com', 'test');
+    recordEntryAcceptance(control, controlUser, ENTRY_GATE_VERSION, null);
     expect(gateOwnerRequest(retry(createSession(control, controlUser, FUTURE).id), control, undefined, ENV)).toBeNull();
+    // Accepted too, so the 403 below can only come from the unverified address.
+    recordEntryAcceptance(db, userId, ENTRY_GATE_VERSION, null);
     const id = createSession(db, userId, FUTURE).id;
     expect(gateOwnerRequest(retry(id), db, undefined, ENV)?.status).toBe(403);
   });
@@ -136,6 +147,13 @@ describe('gateOwnerRequest: retry research is the owner\'s alone', () => {
     const db = store();
     const id = sessionFor(db, OWNER);
     expect(gateOwnerRequest(retry(id), db, undefined, { [OWNER_EMAIL_ENV]: '  Owner@Example.COM ' })).toBeNull();
+  });
+
+  it('the owner must accept the entry gate too: unaccepted is 403 "not accepted"', async () => {
+    const db = store();
+    const response = gateOwnerRequest(retry(sessionFor(db, OWNER, { accepted: false })), db, undefined, ENV);
+    expect(response?.status).toBe(403);
+    expect(await response?.json()).toEqual({ error: 'not accepted' });
   });
 
   it('isOwnerAdmission is false for anything but an admitted owner', () => {
