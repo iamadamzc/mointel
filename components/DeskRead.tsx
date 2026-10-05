@@ -20,7 +20,7 @@ import type {
   DeskRead,
   DeskReadLevel,
 } from '@/lib/dashboard/deskRead';
-import { formatCount, formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
+import { formatCount, formatMultiple, formatPrice, formatSignedPercent, quietFor } from '@/lib/format';
 
 /*
  * `COMPUTED` reads "price history" rather than "computed".
@@ -205,7 +205,7 @@ export function DeskReadPanel({ read }: { read: DeskRead }) {
             <StatusBadge
               label="stale"
               tone="warn"
-              title={`No market event for ${t.ageSeconds ?? '—'}s; this is the last live print, not a current one`}
+              title={`No market event for ${quietFor(t.ageSeconds)}; this is the last live print, not a current one`}
             />
           ) : null}
         </div>

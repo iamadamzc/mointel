@@ -184,3 +184,14 @@ export function formatEtHour(iso: string | null | undefined): string | null {
   if (Number.isNaN(date.getTime())) return null;
   return hourFormatter.format(date).replace(/\s/g, '').toUpperCase();
 }
+
+/**
+ * How long a ticker has been quiet, for the sentence "No market event for ...".
+ *
+ * An unknown age is words, never a glyph standing in for a number inside a
+ * sentence: "No market event for an unknown time." Read both ways by the board's
+ * stale badge and the Desk Read, so the two cannot word it differently.
+ */
+export function quietFor(ageSeconds: number | null | undefined): string {
+  return typeof ageSeconds === 'number' && Number.isFinite(ageSeconds) ? `${ageSeconds}s` : 'an unknown time';
+}

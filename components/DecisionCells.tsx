@@ -30,6 +30,7 @@ import {
   formatPrice,
   formatMultiple,
   formatSignedPercent,
+  quietFor,
 } from '@/lib/format';
 
 /* ------------------------------------------------------------------- price */
@@ -622,7 +623,7 @@ export function TickerCell({
         {stale ? (
           <span
             className="text-[9px] font-semibold tracking-wide text-warn uppercase"
-            title={`No market event for ${ageSeconds ?? '—'}s. This is the last live print, not a current one.`}
+            title={`No market event for ${quietFor(ageSeconds)}. This is the last live print, not a current one.`}
           >
             stale
           </span>
