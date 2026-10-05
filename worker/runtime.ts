@@ -876,7 +876,8 @@ export class MarketRuntime {
         }
         this.logger.info(
           `[splits] ${symbol} ${entry.split.oldRate}:${entry.split.newRate} ex ${entry.split.exDate}: ` +
-            `prior close ${oldClose ?? 'none'} restated to ${restatedClose ?? 'none'}`,
+            `prior close ${oldClose === null ? 'none' : Number(oldClose.toFixed(4))} restated to ` +
+            `${restatedClose === null ? 'none' : Number(restatedClose.toFixed(4))}`,
         );
       }
       return { ok: true, restated: built.size };
