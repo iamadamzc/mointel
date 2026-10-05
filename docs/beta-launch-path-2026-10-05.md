@@ -12,8 +12,11 @@ are his. Production at writing: web/research/assess `6e7fff84`, market `f5746a84
 > *"free beta, limited invites. 2, these will be considered testers, so its covered. 3, no."*
 
 1. **Beta = FREE, LIMITED INVITES.** Section 5 (paid) is off the critical path.
-2. **Licence: the invitees are TESTERS, and he rules the 2026-09-08 accepted exposure covers them.** The risk
-   conversation for the beta is held. Whether a paying user is "something moving" stays undefined (not asked again now).
+2. **Licence: the invitees are TESTERS, and he ACCEPTS the exposure for them under his 2026-09-08 ruling.** "Covered"
+   means accepted, NOT licensed: no published instrument has a tester category, and Alpaca, the exchange agreements and
+   UTP's trial policy all treat a beta viewer as an external subscriber (Commercial, landscape section 1b; charter
+   e9f64794). **No surface a tester sees says "licensed" or "covered by".** The risk conversation for the free beta is
+   held and closed. Whether a paying user is "something moving" stays undefined (not asked again now).
 3. **No lawyer before the beta.**
 4. **Retry research is OWNER-ONLY.** Replaces A2 (a per-user rate limit). The retry already serves everyone: it clears
    the ticker's retry state in the one shared market store (`lib/research/control.ts:59-84`), and the board is the same
