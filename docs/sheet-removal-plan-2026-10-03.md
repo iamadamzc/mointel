@@ -65,6 +65,8 @@ Integration:**
   half; the comparison showed the large-holder half can go below zero), shown as an upper bound with source and date; **a
   tooltip** on the float cell with a brief explanation; **a public page "Are float quotes real?"** explaining how floats
   are produced anywhere and the desk's method, linked from the tooltip.
+- 2026-10-05T00:43:25.901Z, on whether the Float column shows only while sorted by float (today) or always, verbatim:
+  *"always show it, it's key."* The Float column is always on the main board.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
