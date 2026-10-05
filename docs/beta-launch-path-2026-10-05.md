@@ -24,6 +24,13 @@ are his. Production at writing: web/research/assess `6e7fff84`, market `f5746a84
    `gateApiRequest` checks admission only (`lib/auth/requestGate.ts:77-79`), and the users table has only a `status`
    column (default `pending`) that nothing reads (`lib/auth/store.ts:39-61`). So the owner distinction must be built.
 
+5. **RULED 2026-10-05T19:09:04.056Z** (his turn in Web's chat, transcript 724a851e, read at his own turn): *"yes that
+   address, and once"*, answering Web's two questions: the owner address is the one he is invited on
+   (`DESK_OWNER_EMAIL`, written on the box by Ops on his word, before the ship), and the entry disclaimer is asked
+   **once**, again only when its wording changes (the option as Web put it to him).
+6. **Integration's call, inside his rulings:** for the beta, no review or MCP token goes to any tester or anyone outside
+   him and the seats; token holders never meet the entry gate (Web placement doc 7fb6411c, gap 2).
+
 ## 0. "Beta" has never been defined *(answered above: free, limited invites)*
 
 No file defines beta or launch (`integration.md:806-808`: "ASK WHAT LAUNCH MEANS. He has never defined it"). Two
