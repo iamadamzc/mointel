@@ -1257,6 +1257,10 @@ MERGED           5712324b: `git merge --no-ff origin/main` in the shared tree (i
                  conflicts ONLY research.md + research-opening-prompt.md, resolved `checkout --ours` on Research's written word;
                  0 markers; staged set all from origin's side (7 files). main now 205 ahead / 0 behind. NOT PUSHED.
                  Push waits on Marketing's clearance, then the list to Ops, then `git log origin/main..main` as its own step.
+PUSHED           SHARED-MAIN SYNC DONE. Clearances in writing: Research 56, Ops 56 (55 + e71dc7b3; Ops compared my sha list to
+                 its own, empty both ways), Web 15, Marketing 5 (incl. c23de9be, which crossed my first read). Listed as its own
+                 step (207 / 0, subjects only these + Integration 72 + Sheet plan 3, Integration's touching only its own
+                 paths); fast-forward checked; `git push origin main:main` 63c19007..e71dc7b3; after fetch 0 / 0.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
