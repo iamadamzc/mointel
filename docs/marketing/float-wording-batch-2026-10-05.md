@@ -47,4 +47,4 @@ Section 1 bound popover; section 1 Cannot verify list (one new string); section 
 
 ## 7. Open, not Marketing's
 
-Commercial's choice between S1 and S0 (Research recommends S1); the 4-day span (Research's, frozen); the measurement in Research's section 4 (not yet run); whether FORM B ever replaces FORM A is a function of those. FORM A ships if the float ships first.
+Integration 28th RULED the rule: S1, with S0 only if the measurement's controls fail (contract section 9a, 663dec5d). FORM B is S1's form; an S0 variant is worded only if the fallback is used. Still open and not Marketing's: the measurement (Research's section 4, not yet run); the 4-day span (Research's, frozen); Commercial's pass on FORM A, FILINGS_NOT_REREAD and the date label. FORM A ships if the float ships before S1 is built and passes.
