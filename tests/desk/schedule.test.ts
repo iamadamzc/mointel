@@ -43,6 +43,13 @@ describe('the standard schedule (requirements 17–26)', () => {
     expect(typesAt('16:00')).toEqual(['RTH_CLOSE']);
   });
 
+  it('places the after-hours close at 20:05, high value, in the post-market phase (v28)', () => {
+    expect(typesAt('20:05')).toEqual(['AFTER_HOURS_CLOSE']);
+    const item = scheduleFor().find((entry) => entry.type === 'AFTER_HOURS_CLOSE');
+    expect(item?.highValue).toBe(true);
+    expect(item?.sessionPhase).toBe('POST_MARKET');
+  });
+
   it('runs every 30 minutes from 10:00 to 15:30 and no further', () => {
     const intervals = scheduleFor()
       .filter((item) => item.type === 'RTH_INTERVAL')
@@ -181,7 +188,9 @@ describe('the next checkpoint', () => {
     const schedule = scheduleFor();
     expect(nextAssessment(schedule, at('12:17'))?.clock).toBe('12:30');
     expect(nextAssessment(schedule, at('06:18'))?.clock).toBe('06:25');
-    expect(nextAssessment(schedule, at('17:15'))?.clock).toBe('22:00');
+    // The after-hours session's own close comes first (v28), then the recap.
+    expect(nextAssessment(schedule, at('17:15'))?.clock).toBe('20:05');
+    expect(nextAssessment(schedule, at('20:30'))?.clock).toBe('22:00');
     expect(nextAssessment(schedule, at('23:00'))).toBeNull();
   });
 });

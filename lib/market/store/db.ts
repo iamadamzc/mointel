@@ -16,7 +16,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 27;
+export const SCHEMA_VERSION = 28;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -387,7 +387,10 @@ CREATE TABLE IF NOT EXISTS issuer_registry (
   -- Where the issuer publishes its own news. Established once and reused: a
   -- newsroom URL does not change often enough to justify rediscovering it on
   -- every refresh, and rediscovery costs a web-search call.
-  company_sources  TEXT
+  company_sources  TEXT,
+  -- EDGAR's submissions sicDescription ("what the company does"). Filled
+  -- forward by upsertIssuer's COALESCE on each SEC collection (v28).
+  sic_description  TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_issuer_registry_cik ON issuer_registry (cik);
 
@@ -663,11 +666,79 @@ CREATE TABLE IF NOT EXISTS desk_assessment_tickers (
   -- Deterministic diff against this ticker's row in the previous assessment.
   changed_fields       TEXT NOT NULL DEFAULT '[]',
   change_summary       TEXT NOT NULL DEFAULT '',
+  -- The after-hours path (reference close, high, low), copied from
+  -- ticker_session at capture (v28): the live row keeps moving, and a report
+  -- read later must show the path as the checkpoint saw it. NULL before v28.
+  ah_reference_close   REAL,
+  ah_high              REAL,
+  ah_low               REAL,
   PRIMARY KEY (assessment_id, ticker),
   FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
 );
 CREATE INDEX IF NOT EXISTS idx_desk_assessment_tickers_ticker
   ON desk_assessment_tickers (ticker);
+-- One row per configured price range per checkpoint (v28). Frozen at capture
+-- so a report read later states what the checkpoint saw.
+--
+-- COUNTS: ticker_session rows for the parent's trading_date, eligible the way
+-- the board is (readRangeCandidates: no universe row, or discovery_eligible =
+-- 1), price at capture inside [range_min, range_max] inclusive; a NULL price
+-- is outside. AFTER_HOURS: traded = ah_participation > 0, up/down = sign of
+-- ah_percent_change. SESSION_TO_DATE (04:00 ET to capture): traded =
+-- cumulative_volume > 0, up/down = sign of percent_change (prior close). up
+-- and down count traded names only, so up + down <= traded (flat is neither).
+-- volume_base_seeded = how many eligible rows carry a snapshot volume base.
+--
+-- TOP_TICKERS: the checkpoint's own board ranked inside the range by
+-- rankInRange, the function the live board uses, capped at top_n; every name
+-- has a desk_assessment_tickers row in the same assessment.
+CREATE TABLE IF NOT EXISTS desk_assessment_ranges (
+  assessment_id      INTEGER NOT NULL,
+  range_key          TEXT NOT NULL,
+  range_min          REAL NOT NULL,
+  range_max          REAL NOT NULL,
+  count_window       TEXT NOT NULL CHECK (count_window IN ('AFTER_HOURS', 'SESSION_TO_DATE')),
+  eligible           INTEGER NOT NULL,
+  traded             INTEGER NOT NULL,
+  up                 INTEGER NOT NULL,
+  down               INTEGER NOT NULL,
+  counts_version     INTEGER NOT NULL DEFAULT 1,
+  volume_base_seeded INTEGER NOT NULL DEFAULT 0,
+  top_n              INTEGER NOT NULL,
+  top_tickers        TEXT NOT NULL DEFAULT '[]',
+  ranking_definition TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (assessment_id, range_key),
+  FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
+);
+-- Checked session reports (v28; the contract is Research's). One row per slot
+-- (kind, range, date). A PUBLISHED row is never overwritten; a MISSED row may be
+-- replaced by a later PUBLISHED catch-up for the same slot (late = 1). No row
+-- means NOT_ATTEMPTED, which the reader derives. range_min/range_max are the
+-- bounds frozen at write time; assessment_id is the one checkpoint it was built
+-- from. diagnostics (strikes, tokens, cost, latency) is never shown to users.
+CREATE TABLE IF NOT EXISTS session_reports (
+  id                  INTEGER PRIMARY KEY,
+  kind                TEXT NOT NULL,
+  range_key           TEXT NOT NULL,
+  range_min           REAL NOT NULL,
+  range_max           REAL NOT NULL,
+  trading_date        TEXT NOT NULL,
+  target_trading_date TEXT,
+  assessment_id       INTEGER NOT NULL,
+  status              TEXT NOT NULL CHECK (status IN ('PUBLISHED', 'MISSED')),
+  payload             TEXT,
+  missed_cause        TEXT,
+  published_at        TEXT,
+  late                INTEGER NOT NULL DEFAULT 0,
+  versions            TEXT NOT NULL,
+  diagnostics         TEXT,
+  created_at          TEXT NOT NULL,
+  CHECK ((status = 'PUBLISHED') = (payload IS NOT NULL)),
+  CHECK ((status = 'MISSED') = (missed_cause IS NOT NULL)),
+  UNIQUE (kind, range_key, trading_date),
+  FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
+);
+CREATE INDEX IF NOT EXISTS idx_session_reports_date ON session_reports (trading_date);
 
 -- Single-row assessment worker health, mirroring feed_health and
 -- research_health. A green Sheet light must never imply the scheduler is alive.
@@ -851,6 +922,12 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'ticker_session', column: 'ah_open_at', definition: 'TEXT' },
   { table: 'ticker_session', column: 'ah_open_trades', definition: 'INTEGER' },
   { table: 'ticker_session', column: 'price_window', definition: 'TEXT' },
+  // v28: the after-hours path frozen on each checkpoint row, and the issuer's
+  // SIC description.
+  { table: 'desk_assessment_tickers', column: 'ah_reference_close', definition: 'REAL' },
+  { table: 'desk_assessment_tickers', column: 'ah_high', definition: 'REAL' },
+  { table: 'desk_assessment_tickers', column: 'ah_low', definition: 'REAL' },
+  { table: 'issuer_registry', column: 'sic_description', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
@@ -1412,7 +1489,8 @@ export function claimStoreForMode(db: MarketDatabase, mode: string): { cleared: 
     // Assessments describe a market state, so a simulated one must never be
     // left behind looking like a record of a real session.
     db.exec(
-      'DELETE FROM desk_assessment_tickers; DELETE FROM desk_assessments; DELETE FROM assessment_health;',
+      'DELETE FROM session_reports; DELETE FROM desk_assessment_ranges; ' +
+        'DELETE FROM desk_assessment_tickers; DELETE FROM desk_assessments; DELETE FROM assessment_health;',
     );
 
     setMeta(db, 'market_mode', mode);

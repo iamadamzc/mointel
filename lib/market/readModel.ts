@@ -262,6 +262,7 @@ const ASSESSMENT_LABELS: Record<string, string> = {
   OPEN_SPIKE_ASSESSMENT: 'Open spike assessment',
   RTH_INTERVAL: 'RTH reassessment',
   RTH_CLOSE: 'RTH close',
+  AFTER_HOURS_CLOSE: '20:05 after-hours close',
 };
 
 /**
