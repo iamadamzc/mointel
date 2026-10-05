@@ -39,6 +39,8 @@ Both committed validation draws (`validation-out-2026-10-05/names/` and `validat
 3. **The bound moves only up:** for every name, the bound under S1 is at least today's, and under S0 at least S1's. A single violation stops the report and is a defect.
 4. **Controls, run first; the report is not read if either fails:** (i) a planted sale (a copy of one real subtracted owner with a later row at half the shares) must lower that owner's subtraction to the half under S1 and to zero under S0; (ii) a planted purchase (a later row at twice the shares) must leave S1's subtraction at the original and take S0's to zero.
 
+**Amendment 1 (2026-10-05, written with the script, before any run):** a reproduction check: TODAY's subtraction rebuilt one class at a time must equal the raw file's recorded holdings, owner by owner, on every counted name, or nothing is written. It proves the class-by-class rebuild that S1 and S0 use is the same `holdingsAsOf` the validation ran, so a difference between the rules cannot come from the rebuild.
+
 Raw output is committed before it is read. Nothing in this changes a face or a stored reason except `FILINGS_NOT_REREAD`, which waits as above.
 
 ## 5. The build, after the measurement and the contract text are settled
