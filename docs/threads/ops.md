@@ -13968,3 +13968,5 @@ Error ledger (this seat): none yet.
 ROUTING, verified 2026-10-05 by list_sessions (title + cwd A:\mointel + not archived), superseding ops.md hand-off lines 13957-13958 (stale on three seats):
 Integration-tmi local_ef410868; Research-tmi local_f6ef479a; Design-tmi local_82749387; Web-tmi local_a4c618a8; Commercial-tmi local_2aab5a77;
 Marketing-tmi local_5ed7eb51. Integration's list of my open items matches hand-off OPEN 1-5 (origin/main = 96a82b6d); no action owed before the Monday spot check.
+SPOT CHECK + /proc READ, 2026-10-05T15:06Z (Mon 11:06 ET, clock-guarded, read-only). Units unchanged since 01:14:34Z: web 2025357 / research 2025415 / assess 2025490 cwd 6e7fff84 (started 2026-10-03 17:50:15-17Z), market 2013616 cwd f5746a84 (16:50:21Z), all NR 0.
+[splits] journal: SCNX 4.4 vs 3.97, CMND 5.7 vs 5.72, VIVK 5.35 vs 4.644, GUTS 4.71 vs 4.8792 all "confirms"; no OLD_BASIS. ticker_session percent_change = price/previous_close-1 on all four. VTAK: no print, no [splits] line, previous_close 1.51 (restated value not checked). OPEN 1 closed for four of five; result sent to Integration.
