@@ -1378,6 +1378,12 @@ RESEARCH ANSWERS READ: 33b2d781 (per-cause reason table incl. ISSUANCE_NOT_CHECK
                  incl. web search: "in filings" out). Routed to Marketing (v8). SEAM to Research: NOT_YET vs
                  ISSUANCE_NOT_CHECKED. Asked Amendment 1 table to carry all four strictness rows at 45/90/120.
                  RISK TO HIS RULING "always show it, it's key": the column may be mostly Cannot verify. Told him.
+CLEARANCES 2     Design (written): its 10 chain commits. Marketing (written): b6484909, 198d47d2, 1fbb9414; v8 commit clearance
+                 asked. Research 7: asked, pending. Web 349d051e: cleared. Push waits on Research + Marketing v8.
+"not researched yet" MEASURED (Design): 118.7 px, wraps to THREE lines in the 84 px cell; grows rows. -> Marketing.
+MARKETING v8     on local main: split-before-holding removed (holding left out, never lowers); SPLIT_SINCE_COUNT string;
+                 issuance "have been issued since the count, or may be"; "in filings" out; ISSUANCE_NOT_CHECKED string.
+                 NOT READ BY ME YET. Sent to Commercial with Research's three answer commits (f9b3c232).
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
