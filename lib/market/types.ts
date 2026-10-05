@@ -8,6 +8,7 @@
 
 import type { ActivityState, PriceWindow } from './activity';
 import type { BlueSkyState } from './blueSky';
+import type { SetupGrade } from '../dashboard/setupGrade';
 import type { SessionExtremesSet, SessionOpenSet, SessionVwapSet } from './vwap';
 
 export type MarketFeed = 'sip' | 'iex' | 'simulator' | 'test';
@@ -809,6 +810,20 @@ export interface MarketSnapshot {
    * absent, so the drawer can always say which of the five things is true.
    */
   blueSky: Record<string, BlueSkyState>;
+  /**
+   * The setup grade per symbol: the desk's own reading of five criteria,
+   * computed ONCE at the checkpoint and stored on its row, never recomputed by a
+   * reader (`docs/research/sheet-reproduction/field-contract-final-2026-10-05.md`
+   * section 2). The stored enums pass through untouched; the display mapping
+   * (AVOID shown as D) lives in `lib/dashboard/setupGrade.ts` and nowhere else.
+   *
+   * OPTIONAL, AND ABSENT IS NOT_YET: the columns and the checkpoint writer are
+   * not built yet, so no snapshot carries this today and every row reads the
+   * dash. A symbol that is absent, or null, is NOT_YET; it is never read as a
+   * grade. The reader (`lib/market/readModel.ts`) fills it from the symbol's
+   * most recent COMPLETE checkpoint row once the columns exist.
+   */
+  setupGrades?: Record<string, SetupGrade | null>;
   events: DeskEvent[];
   /**
    * The instant a catalyst must be newer than to band FRESH: the PRIOR

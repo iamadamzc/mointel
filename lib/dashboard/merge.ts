@@ -27,6 +27,7 @@ import {
   resolveIntelligenceState,
   type IntelligenceState,
 } from '@/lib/dashboard/intelligence';
+import type { SetupGrade } from '@/lib/dashboard/setupGrade';
 import { UNAVAILABLE_THRESHOLD, resolveBlueSky, type BlueSkyState } from '@/lib/market/blueSky';
 import type { DemandState, MarketSnapshot, SessionPhase } from '@/lib/market/types';
 import type { DashboardState, MomentumTicker, StructuralResearch } from '@/lib/data/types';
@@ -170,6 +171,11 @@ export interface DeskRow {
    */
   blueSky: BlueSkyState;
   /**
+   * The setup grade stored at the symbol's last complete checkpoint, or null
+   * (which is NOT_YET: the dash). Passed through from the snapshot untouched.
+   */
+  setupGrade: SetupGrade | null;
+  /**
    * The instant a CLOCKED catalyst must be newer than to band FRESH — the
    * prior session's close, his refinement of 2026-09-24.
    *
@@ -207,6 +213,8 @@ export interface DeskRowContext {
    */
   tradingDate?: string | null;
   blueSky?: BlueSkyState;
+  /** `MarketSnapshot.setupGrades[symbol]`. Absent or null is NOT_YET. */
+  setupGrade?: SetupGrade | null;
   /**
    * `MarketSnapshot.catalystFreshFrom`, straight from the payload.
    *
@@ -456,6 +464,7 @@ export function buildDeskRow(
     // snapshot has no daily history to reason from, which is unavailable —
     // not open sky.
     blueSky,
+    setupGrade: context.setupGrade ?? null,
     catalystFreshFrom: context.catalystFreshFrom ?? null,
   };
 }
@@ -521,6 +530,7 @@ export function mergeDesk(
     Object.entries(market?.intelligence ?? {}).map(([ticker, auto]) => [ticker, readableIntelligence(auto)]),
   );
   const blueSkyByTicker = market?.blueSky ?? {};
+  const setupGradeByTicker = market?.setupGrades ?? {};
   const sheetObservedAt = dashboard?.meta.fetchedAt ?? null;
   // One session for the whole merge, so two rows can never disagree about
   // which VWAP is the current one.
@@ -555,7 +565,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker] },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker] },
       ),
     );
   }
@@ -571,7 +581,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol] },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol] },
       ),
     );
   }

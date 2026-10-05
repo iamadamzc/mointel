@@ -225,6 +225,38 @@ describe('demand detected vs structural analysis available', () => {
   });
 });
 
+describe('the setup grade on a desk row', () => {
+  const GRADE = {
+    grade: 'AVOID' as const,
+    basis: { structure: 'LIMITED', catalyst: 'STRONG', volume: 'STRONG', liquidity: 'RISK', supply: 'UNKNOWN' } as const,
+    rule: 'rubric-2026-10-05',
+    checkpointCompletedAt: '2026-10-05T19:42:00.000Z',
+  };
+
+  it('passes the stored grade through untouched, for a sheet name and a discovery-only name', async () => {
+    const dashboard = await mockDashboard();
+    const market = snapshot([demand('NEWNAME'), demand('VNTX')]);
+    market.setupGrades = { NEWNAME: { ...GRADE }, VNTX: { ...GRADE, grade: 'B' } };
+    const merged = mergeDesk(dashboard, market);
+
+    expect(merged.rows.get('NEWNAME')!.setupGrade).toEqual(GRADE);
+    expect(merged.rows.get('VNTX')!.setupGrade?.grade).toBe('B');
+  });
+
+  it('reads absent, null and a snapshot without the field as no grade (NOT_YET), never as a grade', async () => {
+    const dashboard = await mockDashboard();
+    const market = snapshot([demand('NEWNAME'), demand('VNTX')]);
+    market.setupGrades = { VNTX: null };
+    const withField = mergeDesk(dashboard, market);
+    expect(withField.rows.get('NEWNAME')!.setupGrade).toBeNull();
+    expect(withField.rows.get('VNTX')!.setupGrade).toBeNull();
+
+    const without = mergeDesk(dashboard, snapshot([demand('NEWNAME')]));
+    expect(without.rows.get('NEWNAME')!.setupGrade).toBeNull();
+    expect(mergeDesk(dashboard, null).rows.get('VNTX')!.setupGrade).toBeNull();
+  });
+});
+
 describe('Alpaca state cannot overwrite research classification (requirement 21)', () => {
   it('leaves DIRTY FLOAT intact regardless of live turnover', async () => {
     const dashboard = await mockDashboard();
