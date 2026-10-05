@@ -1455,6 +1455,19 @@ COMMERCIAL 5n    9e9c7c20 (origin; merged 3c71fad9), READ: PASS on FORM A at 22b
                  when S1 is built and measured.
 TO HIM           The float wording line, in my words from 22bc856f section 6 and 5m(3): informational, no block (a change
                  to text he approved, before it ships; not a decision). Float itself: not built on main, ungated, no ship.
+DESIGN S3 GATED  Design: tag design/s3-board-gated-f9110751 -> f9110751 (rev-parse checked), 8 commits on origin/main
+                 e0139dea; Design states test 236 files / 3497 passed, lint/build/typecheck 0, Ops's slot. Contents: layout,
+                 setup grade badge/popover/drawer/filter, legend 6b, Researched Names table REMOVED, counts strip
+                 ('ranked'). Not in it: float faces. Nothing of Design's on local main. SHIP waits on his off-hours answer;
+                 I replay the cut before any ship (patch-ids, tree, U+2014, callers).
+OFF-HOURS        Design's answer, VERIFIED in code (origin/main): empty main area only 22:00-04:00 ET and non-trading days
+                 (session.ts:332-362: after 22:00 tradingDate = next date, phase NEXT_DAY_PREP; weekends CLOSED). 20:00-
+                 22:00 shows the frozen after-hours board (DiscoveryBoard.tsx:393). Empty text DiscoveryBoard.tsx:597-598.
+                 Old default: DashboardShell.tsx:655 defaultOpen={merged.discovery.length === 0} opened the table.
+                 CORRECTS the 27th's live state ("before 04:00, after 20:00"): 20:00-22:00 is NOT empty.
+                 Options A (empty, free), B (default to the 22:00 recap's frozen board, small; no badge on it until the
+                 grade rides /api/assessments; must say frozen/not live), C (new strip, medium). Design recs B.
+                 PUT TO HIM: NEEDS YOU, rec B with the not-live label as a condition.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
