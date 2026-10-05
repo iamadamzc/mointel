@@ -3,8 +3,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 import { TickerCell } from '@/components/DecisionCells';
-import { SetupGradeBadge } from '@/components/SetupGradeBadge';
-import type { SetupGrade } from '@/lib/dashboard/setupGrade';
+import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
+import { SETUP_GRADE_LEGEND, type SetupGrade } from '@/lib/dashboard/setupGrade';
 
 const GRADE: SetupGrade = {
   grade: 'AVOID',
@@ -60,5 +60,24 @@ describe('TickerCell and the badge', () => {
     );
     expect(out).toContain('flex-wrap');
     expect(out).toMatch(/<\/span><span class="text-\[9px\][^"]*">retained &gt; \$20<\/span><\/span>$/);
+  });
+});
+
+describe('the drawer section carries the legend', () => {
+  const Section = ({ title, children }: { title: string; children: React.ReactNode }) =>
+    createElement('section', { 'aria-label': title }, children);
+  const render = (grade: SetupGrade | null) =>
+    renderToStaticMarkup(createElement(SetupGradeReadings, { grade, Section }));
+
+  it('prints the legend with a grade, with Not graded and with none, so it never needs the board open', () => {
+    const legend = SETUP_GRADE_LEGEND;
+    for (const grade of [GRADE, { ...GRADE, grade: 'UNKNOWN' as const }, null]) {
+      expect(render(grade)).toContain(legend);
+    }
+  });
+
+  it('lists the five readings only for a graded name', () => {
+    expect(render(GRADE)).toContain('Wide spread or thin dollar volume.');
+    expect(render(null)).not.toContain('Wide spread');
   });
 });
