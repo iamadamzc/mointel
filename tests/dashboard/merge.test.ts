@@ -367,6 +367,19 @@ describe('duplicate TODAY rows', () => {
     const kept = dedupeSheetRows([row('AAA', true, 1), row('BBB', true, 2)]);
     expect(kept.map((r) => r.ticker)).toEqual(['AAA', 'BBB']);
   });
+
+  it('does not read the Sheet priority, so the payload can drop it', () => {
+    // The Sheet's priority leaves the served payload (the desk's setup grade
+    // replaces it); a row without the field must dedupe exactly as before.
+    const strip = (r: ReturnType<typeof row>) => {
+      const copy = { ...r } as Record<string, unknown>;
+      delete copy.priority;
+      return copy as unknown as typeof r;
+    };
+    const kept = dedupeSheetRows([strip(row('IVF', false, 17)), strip(row('IVF', true, 4))]);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].sourceRow).toBe(4);
+  });
 });
 
 describe('level map view model', () => {

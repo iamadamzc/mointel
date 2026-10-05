@@ -469,13 +469,17 @@ export function buildDeskRow(
   };
 }
 
-/** How many of a row's analysis fields carry an actual determination. */
+/**
+ * How many of a row's analysis fields carry an actual determination.
+ *
+ * The Sheet's priority is not counted: the desk's grade is its own, and nothing
+ * here reads `priority`, so it can leave the payload without breaking this.
+ */
 function classifiedFieldCount(ticker: MomentumTicker): number {
   let count = 0;
   if (ticker.cycle.state !== 'UNCLASSIFIED') count += 1;
   if (ticker.structure.state !== 'UNCLASSIFIED') count += 1;
   if (ticker.catalyst.gradeBucket !== 'UNCLASSIFIED') count += 1;
-  if (ticker.priority.bucket !== 'UNCLASSIFIED') count += 1;
   return count;
 }
 
