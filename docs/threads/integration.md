@@ -1476,6 +1476,19 @@ S3 FIRST READ    f9110751: base e0139dea, 8 commits, 0 merges, 27 files (compone
                  a "map absent" vs "null grade" guard as its call) and Ops. selectPrimaryFocus removal: no callers, clean.
 COMMERCIAL 5o    6a7120e0 (merged): FORM B's "no sale filed since the count" clause is false under S1; delete. Marketing
                  25fb0d7c applied it (diff read, em 0); CLEARED by Marketing by sha (reply).
+CLEARED          Research fa5ca968 478ff97b 9d6dff03 706b263b (research.md clearance line 9d6dff03 + 706b263b's own
+                 written "cleared", docs only). 478ff97b = split-source REGISTRATION rule R-A (Ops: ingestion does not
+                 reliably restate bars after a split; reverse split makes R0's bound too LOW): read the charter lines, not
+                 the registration file yet.
+FLOAT JOB REPLAY research/float-job literal bd20d42c (= branch tip, rev-parse): base 09d262b9 = merge-base with main, 2 commits
+                 (79d5f84d, bd20d42c), 0 merges, 14 files +1035/-1. Prod files touched: worker/research.ts (FLOAT_JOB env
+                 gate 'on', await runFloatJob after job; try/catch floatRun.ts:25-44), db.ts (CREATE TABLE IF NOT EXISTS
+                 research_float_bounds, PK only), history.ts readSpanBars (new), splitProof.ts splitProofR0 (new). U+2014 +
+                 entities on added lines 0, CONTROL 730 (a first count via Python STDIN read 0 on the control: this PC's
+                 stdin drops the glyph; read from a FILE). Surface with flag off: one empty table at startup.
+                 APPROVED FOR OPS'S GATE SLOT (not a ship). CONDITION: floatJob.ts:132 stores holdings via
+                 holdingsAsOf(count.asOf) = today's defective rule; rows cannot be recomputed under S1 (no hD). Flag stays
+                 off until the job stores what S1 needs or pre-S1 rows are declared discardable. Told Research + Ops.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
