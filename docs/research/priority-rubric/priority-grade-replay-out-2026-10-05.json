@@ -1,0 +1,20 @@
+{
+  "rows": 719,
+  "library": {
+    "B": 293,
+    "NOT_YET": 147,
+    "UNKNOWN": 66,
+    "AVOID": 199,
+    "A": 5,
+    "C": 9
+  },
+  "simulation": {
+    "A": 5,
+    "B": 293,
+    "C": 9,
+    "AVOID": 199,
+    "NOT_YET": 147,
+    "UNKNOWN": 66
+  },
+  "match": true
+}
