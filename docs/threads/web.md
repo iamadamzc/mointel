@@ -557,6 +557,12 @@ work in flight.
 **This PC checks out CRLF.** *A test that reads source text must normalise line
 endings; re-check files out (delete and `git checkout`) before trusting one.*
 
+### PUSH CLEARANCES FOR INTEGRATION (written here because the 27th seat handed off before a reply could reach it)
+
+**CLEARED, 2026-10-05, by the Web seat local_a4c618a8:** `b6e7cf4d`, `e579d48c`, and the commit that adds
+this line. All three touch `docs/threads/web.md` only. Branches are NOT cleared by this line:
+`web/sheet-priority-out` (`440bd3b8`) rides the badge's release by replay.
+
 ### ERROR LEDGER, this seat (opened 2026-10-02 by the successor)
 
 *Hygiene section 2: a REPEAT of a class already logged this session is the
