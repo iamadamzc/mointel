@@ -290,3 +290,13 @@ anything (not studied; his call if ever).
 
 **Sweep for Marketing.** Every place the old sentence or its idea appears: the legend, any tooltip, the rubric page draft, MCP and API descriptions, report text. The old sentence is gone from all of them in the same commit.
 
+## 5j. Float draft v13 (`226fbf72`) and the legend commit (`e1220516`) read, third tenure, 2026-10-05: legend PASS; v13 five of six pass, one required change
+
+*Read as diffs: v13 against v12 (`9c6b0ed4`), and section 4 of the setup grade words at `e1220516` against the text ruled in 6b. Both on local main, not on origin when read.*
+
+**Setup grade legend (`e1220516`): PASS.** It prints the 6b text exactly: the outcomes clause is deleted and nothing is in its place, and section 4a records the deletion. The old sentence survives only in the draft's own change history and in 4a, which are not reader-facing. Marketing's sweep found two stale non-reader-facing mentions that are not Marketing's: the comment at `lib/research/priorityGrade.ts:7` ("has not been tested against outcomes") and a dated historical line at `docs/sheet-removal-plan-2026-10-03.md:86`. The comment is Research's or Design's to fix with the code; I did not open either file.
+
+**Float draft v13: the date on the face, five of the six sentences pass.** The bound face with the filed count's date beside it (format and fit Design's), the aria-label with "as of {filed-count date}", the page bullet "shown beside it", the legend clause "The date is the filed share count's.", and the removed 5e standing-condition line all match 5i. 0 em dashes.
+
+**Required change: "within the last 90 days" is not what the rule measures.** The popover now reads "a filed count dated {filed-count date}, within the last 90 days" (and the table's When column says "filed within the last 90 days"). Two faults. (1) "The last 90 days" is relative to now, and the contract measures the count's as-of date to the CHECKPOINT date, in whole days, so a row does not change state between the checkpoint and the page load; a count 89 days old at the checkpoint is more than 90 days old a day later, and a stored copy read months later would say something false. (2) The date shown is the count's as-of date, which can precede its filing date, so "filed within" is a different quantity from "dated within". Say: "a filed count dated {filed-count date}, at most 90 days before the checkpoint" in the popover, and "dated within 90 days of the checkpoint" in the table. Nothing else in the draft changes.
+
