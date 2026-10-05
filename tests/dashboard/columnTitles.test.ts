@@ -33,15 +33,15 @@ const TITLES: Array<[string, string]> = Object.entries(COLUMN_TITLE).map(
   ([column, title]) => [column, title as string],
 );
 
-describe('one source, so two tables cannot explain one column differently', () => {
-  it('neither table types a column explanation of its own', () => {
+describe('one source, so the board cannot explain a column differently from the shared titles', () => {
+  it('the board types no column explanation of its own', () => {
     /*
      * `MomentumTable` already broke the one-grammar promise once with a
      * hand-typed header WORD, and that was visible on screen the moment the
      * two disagreed. A hand-typed EXPLANATION breaks it more quietly: you
      * would have to hover both tables to find it.
      */
-    for (const file of ['components/DiscoveryBoard.tsx', 'components/MomentumTable.tsx']) {
+    for (const file of ['components/DiscoveryBoard.tsx']) {
       const code = strip(read(file));
       expect(code).toContain('COLUMN_TITLE');
     }
@@ -62,16 +62,12 @@ describe('one source, so two tables cannot explain one column differently', () =
      * the tell that the pattern was reaching too far.
      */
     expect(discovery).not.toMatch(/<Th[^>]*title=['"`][A-Z]/);
-    const watchlist = strip(read('components/MomentumTable.tsx'));
-    expect(watchlist).not.toMatch(/title: ['"`][A-Z]/);
   });
 
-  it('gives the shared columns the same words in both places', () => {
+  it('gives the shared columns their shared words', () => {
     const discovery = strip(read('components/DiscoveryBoard.tsx'));
-    const watchlist = strip(read('components/MomentumTable.tsx'));
     for (const column of ['why', 'risk', 'cycle']) {
       expect(discovery).toContain(`COLUMN_TITLE.${column}`);
-      expect(watchlist).toContain(`COLUMN_TITLE.${column}`);
     }
     /*
      * `rvol` IS THE ONE EXCEPTION AND IT IS A REAL ONE, not a drift.
@@ -83,7 +79,6 @@ describe('one source, so two tables cannot explain one column differently', () =
      * asserts rather than a string appearing in two files.
      */
     expect(discovery).toContain('rankingQuantity(board).title');
-    expect(watchlist).toContain('COLUMN_TITLE.rvol');
     expect(rankingQuantity('DAILY_RVOL').title).toBe(COLUMN_TITLE.rvol);
     expect(rankingQuantity('AFTER_HOURS').title).not.toBe(COLUMN_TITLE.rvol);
   });

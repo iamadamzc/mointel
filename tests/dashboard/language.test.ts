@@ -188,7 +188,6 @@ describe('no surface claims a human reviewed anything', () => {
       'lib/dashboard/risk.ts',
       'components/DeskRead.tsx',
       'components/AutomaticIntelligence.tsx',
-      'components/MomentumTable.tsx',
     ];
 
     for (const file of files) {

@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
 
 import { getDashboardState, resetDashboardRuntime, resolveProvider } from '@/lib/data';
-import { researchedEmptyText } from '@/lib/dashboard/view';
 
 /*
  * Sheet removal, step 1 (`docs/sheet-removal-plan-2026-10-03.md`): a desk with
@@ -69,12 +68,5 @@ describe('a desk with no outside research source', () => {
     expect(resolveProvider().kind).toBe('mock');
     const state = await getDashboardState();
     expect(state.tickers.length).toBeGreaterThan(0);
-  });
-});
-
-describe('the researched table when it shows nothing', () => {
-  it('blames the filters only when there were names to filter', () => {
-    expect(researchedEmptyText(4)).toBe('No names match the current filters.');
-    expect(researchedEmptyText(0)).toBe('No researched names on file.');
   });
 });
