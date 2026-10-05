@@ -1128,6 +1128,36 @@ the v6 narrative samples when Research has them. This seat's failure, four times
 record it describes (vendor behaviour, a git listing, a code search, a measured duration).
 ```
 
+## THE TWENTY-FIFTH SEAT'S RUNNING NOTES (opened 2026-10-05T00:53:31Z, `local_ef410868`, Opus 5.5, effort high)
+
+*Newer than the twenty-fourth's live state where they disagree.*
+```
+START            Titled Integration-tmi. get_session self: claude-opus-5-5, nothing to report.
+OLD CHAT         local_f26376f1 (get_session 00:53Z): title "Integration-tmi", isArchived false, idle. TWO sessions answer
+                 to Integration-tmi until he renames it; asked him. Told Ops my id.
+                 PROMPT LINE FALSE: the live state says old Integration local_54f1341f "titled -retired, not archived";
+                 list_sessions reads it isArchived TRUE. Harmless.
+                 Research-tmi local_ab66f9f3 and Web-tmi local_46c15fbe both still titled -tmi, not archived; no successor
+                 of either open (list_sessions 00:53Z).
+OPS /proc        Ops 2026-10-05T00:54:24Z: web 2025357 / research 2025415 / assess 2025490 cwd 6e7fff84 (start 10-03
+                 17:50:15-17Z), market 2013616 cwd f5746a84 (start 10-03 16:50:21Z), NR 0 all; current -> 6e7fff84; health ok
+                 schema 28/28, IDLE / STREAMING, trading date 10-05. UNCHANGED since 23:20:09Z. Spot check after 10:00 ET
+                 Monday confirmed Ops's, result to local_ef410868.
+SHARED MAIN      fetch 00:5xZ: local main 182 AHEAD / 45 BEHIND. By subject: Integration 58, Research 56, Ops 51, Web 14,
+                 Sheet plan 3 (Integration's). Ops's 51 touch ONLY ops.md + scripts/ops/server-only-trace.cjs (read):
+                 cleared. Web cleared. Research: 10 of 56 have a patch-id twin on origin, 46 do not; NOT CLEARED.
+                 `git merge-tree` (read-only) main vs origin/main: STILL CONFLICTS in docs/research-opening-prompt.md +
+                 docs/threads/research.md only (Research's files). So the sync WAITS ON THE NEXT RESEARCH SEAT (owner of
+                 both files + clearance of its 46). No merge attempted in the shared tree.
+FLOAT CONFIRMS   The 24th's post-hand-off "Research's TWO confirms owed" are BOTH SETTLED on origin (READ, Commercial
+                 8530f442 s5b): Rule 13d-3 read at source by Commercial (17 CFR 240.13d-3(d)(1)(i) + (a)); the insider set
+                 answered by Research from float-comparison/run.ts (every reporting owner on a single-owner Form 3/4/5, any
+                 role, direct non-derivative common only, joint filings not attributed). STILL OPEN for the next Research
+                 seat: item 7, "Cannot verify" after active issuance. Commercial d9a79a30 s5c: draft v2 PASS 8 of 9, three
+                 small corrections to Marketing's page (12b-2 "public float" is a dollar value; below-zero story; condition
+                 where the bound is stated).
+```
+
 ## THE TWENTY-FOURTH SEAT'S RUNNING NOTES (opened 2026-10-03T17:04:49Z, `local_f26376f1`, Opus 5.5, effort high)
 
 *Newer than the twenty-third's live state where they disagree.*
