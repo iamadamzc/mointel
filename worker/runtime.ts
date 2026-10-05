@@ -40,6 +40,7 @@ import {
   CLASSIFIER_VERSION,
   type ClassificationSummary,
 } from '../lib/market/securities';
+import { internalCredentialHeaders } from '../lib/auth/internalCredential';
 import { DemandEngine, type EngineEvent } from '../lib/market/engine';
 import { replaySession } from '../lib/market/replay';
 import { DEFAULT_ACTIVITY_CONFIG } from '../lib/market/activity';
@@ -1933,13 +1934,26 @@ export class MarketRuntime {
    * directly, so the worker never holds Google credentials and the sheet is not
    * polled any more often than the dashboard already polls it.
    */
+  private sheetReadRefusedStatus: number | null = null;
+
   async refreshSheetSymbols(): Promise<void> {
     const url = process.env.MOINTEL_DASHBOARD_URL ?? 'http://localhost:3000';
     try {
       const response = await fetch(`${url}/api/dashboard`, {
+        headers: internalCredentialHeaders(),
         signal: AbortSignal.timeout(5000),
       });
-      if (!response.ok) return;
+      if (!response.ok) {
+        // Said ONCE per status: this used to return in silence, and a refused
+        // read (no internal credential on the box) stopped the pins with
+        // nothing in any log. Found by Integration replaying step 4, 2026-10-03.
+        if (this.sheetReadRefusedStatus !== response.status) {
+          this.sheetReadRefusedStatus = response.status;
+          this.logger.warn(`[sheet] the dashboard read answered ${response.status}; TODAY-sheet pins are not refreshing`);
+        }
+        return;
+      }
+      this.sheetReadRefusedStatus = null;
       const payload = (await response.json()) as { tickers?: Array<{ ticker?: string }> };
       const candidates = (payload.tickers ?? [])
         .map((entry) => entry.ticker?.trim().toUpperCase())

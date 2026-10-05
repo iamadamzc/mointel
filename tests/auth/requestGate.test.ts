@@ -126,11 +126,11 @@ describe('no API route ships ungated', () => {
   const UNGATED = new Set([
     // Loopback-only at nginx; how Ops and deploy.sh check the box.
     'app/api/health/route.ts',
-    // HELD: the market worker reads it over loopback with no cookie. Must be
-    // gated, with an internal credential for the worker, BEFORE Basic Auth
-    // comes off /api/. See the comment in the route.
-    'app/api/dashboard/route.ts',
   ]);
+
+  // The one route the box's own workers read: a session OR the internal
+  // credential. Exactly this set may call gateInternalOrApiRequest.
+  const INTERNAL_OK = new Set(['app/api/dashboard/route.ts']);
 
   // The owner's alone (his ruling 2026-10-05): these must call gateOwnerRequest,
   // and no other route may, so widening or narrowing the set is a test change.
@@ -156,7 +156,11 @@ describe('no API route ships ungated', () => {
       const exported = source.match(/export (async )?function (GET|POST|PUT|PATCH|DELETE)\b/g) ?? [];
       expect(exported.length, `${file} exports a handler`).toBeGreaterThan(0);
       expect(handlers.length, `${file}: every handler takes the request`).toBe(exported.length);
-      const gate = OWNER_ONLY.has(file) ? 'gateOwnerRequest' : 'gateApiRequest';
+      const gate = OWNER_ONLY.has(file)
+        ? 'gateOwnerRequest'
+        : INTERNAL_OK.has(file)
+          ? 'gateInternalOrApiRequest'
+          : 'gateApiRequest';
       const gatedFirst =
         source.match(
           new RegExp(
@@ -168,5 +172,6 @@ describe('no API route ships ungated', () => {
     }
     // Control: the owner-only set names routes that exist.
     for (const file of OWNER_ONLY) expect(files).toContain(file);
+    for (const file of INTERNAL_OK) expect(files).toContain(file);
   });
 });

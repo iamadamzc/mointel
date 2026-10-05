@@ -104,8 +104,36 @@ EOF
 
 # ------------------------------------------------------------------ install ---
 
+# MOINTEL_INTERNAL_TOKEN is NOT in the document and never in .env.local: it is the
+# box's own secret (the market worker presents it to /api/dashboard,
+# lib/auth/internalCredential.ts). This script rewrites the env wholesale, so it
+# is carried over from the file being replaced, or generated here on the box if
+# there is none. The value is produced and kept ON THE BOX: it is never read
+# back to this machine, never on a command line, never printed. The document goes
+# to a root-only staging file first, so no step puts a value in an argument.
 printf '%s\n' "$DOCUMENT" | ssh -i "$KEY" -o StrictHostKeyChecking=no "ubuntu@$HOST" \
-  "sudo install -m 0640 -o root -g mointel /dev/stdin /etc/mointel/mointel.env"
+  "sudo install -m 0600 -o root -g root /dev/stdin /etc/mointel/mointel.env.new"
+
+ssh -i "$KEY" -o StrictHostKeyChecking=no "ubuntu@$HOST" "sudo bash -s" <<'REMOTE'
+set -euo pipefail
+ENVF=/etc/mointel/mointel.env
+NEW=/etc/mointel/mointel.env.new
+KEEP=""
+if [ -f "$ENVF" ]; then
+  KEEP="$(sed -n 's/^MOINTEL_INTERNAL_TOKEN=//p' "$ENVF" | head -n 1 | tr -d '[:space:]' | tr -d "'" | tr -d '"')"
+fi
+# A line in the new document would be a stale or hostile value: drop it.
+sed -i '/^MOINTEL_INTERNAL_TOKEN=/d' "$NEW"
+if [ "${#KEEP}" -ge 32 ]; then
+  printf 'MOINTEL_INTERNAL_TOKEN=%s\n' "$KEEP" >> "$NEW"
+  echo "[env] internal token: kept"
+else
+  printf 'MOINTEL_INTERNAL_TOKEN=%s\n' "$(openssl rand -hex 32)" >> "$NEW"
+  echo "[env] internal token: generated on the box"
+fi
+install -m 0640 -o root -g mointel "$NEW" "$ENVF"
+rm -f "$NEW"
+REMOTE
 
 echo "[env] written to $HOST:/etc/mointel/mointel.env"
 echo "[env] keys installed:"
