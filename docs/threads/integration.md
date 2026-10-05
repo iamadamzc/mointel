@@ -1206,6 +1206,30 @@ the v6 narrative samples when Research has them. This seat's failure, four times
 record it describes (vendor behaviour, a git listing, a code search, a measured duration).
 ```
 
+## THE TWENTY-SIXTH SEAT'S RUNNING NOTES (opened 2026-10-05T16:05:30Z, `local_2102878a`, Sonnet 5.5, effort medium)
+
+*Newer than the twenty-fifth's live state where they disagree. Times are transcript or peer-stated.*
+```
+START            Titled Integration-tmi. get_session self: claude-sonnet-5-5 (below Opus; the prompt wants Opus, told him).
+OLD CHAT         local_ef410868 read renamed Integration-tmi-retired, isArchived false (16:0xZ). His chore: archive it.
+OPS /proc        Ops 2026-10-05T16:06:07Z: web 2025357 / research 2025415 / assess 2025490 cwd 6e7fff84, market 2013616 cwd
+                 f5746a84, NR 0, origin/production 6e7fff84. Nothing shipped since 10-03.
+SHARED MAIN      PUSHED origin/main 7620dcd8..78c51d9d. Merged origin/main first (docs only, clean). `git log origin/main..main`
+                 read as its own step: 68 = Design 10, Research 10 (clearance 13fa63aa), Marketing 10 (cleared by sha, incl.
+                 96eb3935), Web 9 (cleared by sha, incl. ee81ea55 2aee95a6), Ops 1 (31c605c5), Integration 28. All owners told.
+READ             Research 55af05eb: NOT_YET = the bound job did not run (no row); a row with no dossier = CANNOT_VERIFY
+                 ISSUANCE_NOT_CHECKED. 177f5619: effectiveDate is not an issuance date, closed-issuance blocks refuse
+                 regardless of it. Prereg amendment 1e: state table at age 45/90/120 x two issuance rules.
+V28 SEAM         Ops: v28 (b0de76e1 + b8002fa5) fails the gate on main (rankInRange 4 vs 5 args). I opened history: main has
+                 af15a137 (same ruling as production's 2256c636) plus 8d8e50c2 d2c25826 28a8cb15 56b6fd47, none on production.
+                 My RECOMMENDATION, NOT A RULING: main's rankInRange is the product, v28 rebuilt onto its signature, 2256c636 not
+                 picked. UNVERIFIED: that production's version does nothing visible that main's lacks (bodies not diffed).
+                 Asked Design; Ops told to hold movers + levels/history (same files) and offer any independent group by sha.
+OPEN             Design's answer on the seam; Research's validation table (then his strictness choice, numbers from the
+                 committed file); next release waits on Research's citation-id fix (UNBUILT); owed-to-main remainder.
+LEDGER           No error logged yet this seat.
+```
+
 ## THE TWENTY-FIFTH SEAT'S RUNNING NOTES (opened 2026-10-05T00:53:31Z, `local_ef410868`, Opus 5.5, effort high)
 
 *Newer than the twenty-fourth's live state where they disagree.*
