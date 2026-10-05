@@ -1,4 +1,5 @@
 {
+  "noDossierMatchesNullColumns": true,
   "rows": 719,
   "thresholds": {
     "rvolStrong": 10,
@@ -43,7 +44,8 @@
   },
   "grades": {
     "B": 293,
-    "NOT_GRADED": 213,
+    "NOT_YET": 147,
+    "NOT_GRADED": 66,
     "D": 199,
     "A": 5,
     "C": 9

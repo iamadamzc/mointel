@@ -8,7 +8,7 @@ const Database = require('A:/mointel/node_modules/better-sqlite3');
 const db = new Database(process.argv[2], { readonly: true, fileMustExist: true });
 const rows = db
   .prepare(
-    `SELECT a.trading_date d, t.ticker, t.price, t.rvol, t.spread_pct, t.volume, t.cycle, t.structure, t.catalyst, t.intelligence_status
+    `SELECT a.trading_date d, t.ticker, t.price, t.rvol, t.spread_pct, t.volume, t.cycle, t.structure, t.catalyst, t.intelligence_status, t.analysis_version_id
        FROM desk_assessment_tickers t JOIN desk_assessments a ON a.id = t.assessment_id
       WHERE a.status = 'COMPLETE' AND a.assessment_type = 'NEXT_DAY_RECAP' AND t.price BETWEEN 1 AND 20`,
   )
@@ -45,7 +45,8 @@ const supply = (r) => {
   return 'UNKNOWN';
 };
 
-function grade(read) {
+function grade(read, noDossier) {
+  if (noDossier) return 'NOT_YET';
   const values = Object.values(read);
   const known = values.filter((v) => v !== 'UNKNOWN' && v !== 'NOT_YET').length;
   if (known < 3) return 'NOT_GRADED';
@@ -55,14 +56,16 @@ function grade(read) {
   return 'B';
 }
 
+let mismatch = 0;
 const tally = {};
 const per = { structure: {}, catalyst: {}, volume: {}, liquidity: {}, supply: {} };
 for (const r of rows) {
   const read = { structure: structure(r), catalyst: catalyst(r), volume: volume(r), liquidity: liquidity(r), supply: supply(r) };
   for (const [k, v] of Object.entries(read)) per[k][v] = (per[k][v] ?? 0) + 1;
-  const g = grade(read);
+  const g = grade(read, r.analysis_version_id === null);
+  if ((r.analysis_version_id === null) !== (r.cycle === null && r.catalyst === null && r.structure === null)) mismatch += 1;
   tally[g] = (tally[g] ?? 0) + 1;
 }
-const out = { rows: rows.length, thresholds: T, perCriterion: per, grades: tally };
+const out = { noDossierMatchesNullColumns: mismatch === 0, rows: rows.length, thresholds: T, perCriterion: per, grades: tally };
 fs.writeFileSync(process.argv[3], JSON.stringify(out, null, 2));
 console.log(JSON.stringify(out));

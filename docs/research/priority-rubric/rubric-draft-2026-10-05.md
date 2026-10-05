@@ -24,7 +24,8 @@ Where the cut sits, on the 719 rows: `rvol` p10 2.0, p25 3.2, p50 11.4, p75 73, 
 
 Read top to bottom; the first that applies:
 
-1. **Fewer than three criteria readable** (STRONG, LIMITED or RISK): stored UNKNOWN, no letter. A grade built on two criteria would be a guess.
+0. **No research row (no dossier) at this checkpoint:** stored NOT_YET, no letter. This is a statement about the RESEARCH, not the name: volume and liquidity read from market data on these rows anyway, but the four criteria that need the dossier cannot be read. Its words must not say the desk has not read the name; they say that no research had reached it at this checkpoint (Commercial be0bdaca section 6; Integration's seam).
+1. **A dossier exists but fewer than three criteria are readable** (STRONG, LIMITED or RISK): stored UNKNOWN, no letter. A grade built on two criteria would be a guess.
 2. **Liquidity RISK or Tradable supply RISK:** AVOID, displayed D. These are the two the recap prompt names for it ("structural, liquidity, or supply risk").
 3. **Structure RISK (the cycle is a backside):** C. The recap prompt's C is "BACKSIDE / OPPORTUNISTIC".
 4. **All five readable, Structure STRONG, Catalyst STRONG, Volume STRONG, Liquidity STRONG, Tradable supply not UNKNOWN:** A.
@@ -40,14 +41,15 @@ Stored as the existing PriorityBucket enum (`A`, `B`, `C`, `AVOID`) plus UNKNOWN
 | B | 293 | 40.8 percent |
 | C | 9 | 1.3 percent |
 | AVOID (D) | 199 | 27.7 percent |
-| UNKNOWN (fewer than three readable) | 213 | 29.6 percent |
+| NOT_YET (rule 0: no dossier at the checkpoint) | 147 | 20.4 percent |
+| UNKNOWN (rule 1: a dossier, fewer than three readable) | 66 | 9.2 percent |
 
 Readings by criterion (STRONG / LIMITED / RISK / UNKNOWN / NOT_YET): Structure 29 / 107 / 17 / 419 / 147; Catalyst 104 / 292 / 64 / 112 / 147; Volume 380 / 266 / 73 / 0 / 0; Liquidity 158 / 235 / 114 / 212 / 0; Tradable supply 0 / 332 / 123 / 117 / 147.
 
 Three things this says that he should see before approving:
 
 1. **A almost never occurs under these rules (5 of 719), and the cause is inputs, not thresholds.** Tradable supply cannot read STRONG at all: no stored row has structure CLEAN (CAUTION 332, DIRTY_FLOAT 123, UNKNOWN 117, the other 147 null), and the float bound that would let it read STRONG does not exist yet. And the cycle reads UNKNOWN on 419 of the 572 rows that have a dossier (73 percent), so Structure cannot discriminate either. Loosening A to "no RISK anywhere and Catalyst and Volume STRONG" is the lever; I have not simulated it.
-2. **Nearly a third of rows get no letter** (213), mostly the 147 with no dossier at that checkpoint plus rows where cycle and structure are both unknown. That is the honest face of coverage, and it means the badge will often read "not graded" on the leaders until research reaches them.
+2. **Nearly a third of rows get no letter** (213): 147 NOT_YET (counted by rule 0 on the stored analysis_version_id being null, which matches the null cycle, structure and catalyst columns on the same 147 rows) and 66 UNKNOWN (counted, not inferred: the simulation now applies rule 0 first). That is the honest face of coverage, and it means the badge will often read "not graded" on the leaders until research reaches them.
 3. **AVOID is more than a quarter of rows (199),** driven by Liquidity RISK (114) and Tradable supply RISK (123, every DIRTY_FLOAT). This is the rule the recap prompt states, so I applied it; the share is large because DIRTY_FLOAT is common (123 of 572 researched rows, 22 percent).
 
 ### 3a. What would move the inputs finding, and who owns each change
