@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { createElement } from 'react';
+import { createElement, type ComponentProps } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it } from 'vitest';
 
@@ -150,7 +150,13 @@ describe('the Retry control is offered to the owner alone', () => {
   const render = (mode: DeskMode | null) =>
     renderToStaticMarkup(
       mode
-        ? createElement(DeskModeProvider, { mode, children: createElement(RetryAnalysis, { ticker: 'ABCD' }) })
+        ? createElement(
+            DeskModeProvider,
+            // children arrives as the third argument; the cast satisfies the
+            // provider's props type, which declares children as required.
+            { mode } as ComponentProps<typeof DeskModeProvider>,
+            createElement(RetryAnalysis, { ticker: 'ABCD' }),
+          )
         : createElement(RetryAnalysis, { ticker: 'ABCD' }),
     );
 
