@@ -1,9 +1,9 @@
-# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v11
+# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v12
 
 *Marketing draft v10, 2026-10-05. Built on Commercial's claims reads 5e to 5h and Research's float contract (c624aeec and its answer commits). Read-order for Commercial: the diff of this file against the last pass (5h passed v8).*
 
 *Current change list (this draft against v8, the version 5h read; item 1 changed again in v11, see below):*
-1. *NOT_YET face is "Not computed" (two words, each 9 characters or fewer, two lines like "Cannot verify"), not "not researched yet", which Design measured at three lines in the 68 px text room. v9 had "Not yet", which Commercial passed with one note: it implies something is on its way, the same objection I had to "Pending". "Not computed" states what is true and promises nothing. Needs Design to re-measure two lines in the 84 px cell.*
+1. *NOT_YET face is "Not computed" (two words, each 9 characters or fewer, one line in the 102 px Float column), not "not researched yet", which Design measured at three lines in the 68 px text room. v9 had "Not yet", which Commercial passed with one note: it implies something is on its way, the same objection I had to "Pending". "Not computed" states what is true and promises nothing. Design measured it at 77.3 px, one line, in the 102 px Float column (approved).*
 2. *ISSUANCE_NOT_CHECKED string is Commercial's (5h, required): "Cannot verify: we have not yet reviewed this company's share supply, so share issuance was not checked."*
 3. *"Left out ... before a share split" now reads "before a share split that fell between it and the count" (5h, recommended).*
 
@@ -24,8 +24,8 @@ The cell face is compact; the full statement is in the popover. A trader sees on
 |---|---|---|
 | **≤ 12.3M** (also "≤ 123.4M", "≤ 1.23B") | filed count present and recent, no issuance flagged, figure passes its check | "The float is no more than {X} shares when the filings line up. Computed from the company's filed share count as of {filed-count date}, less insider holdings filed on {holding dates}. Lined up means: a recent filed count, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count." |
 | **Unknown** | no filed count (see causes) | per cause, below |
-| **Cannot verify** (two lines) | a count exists but cannot be relied on today (see causes) | per cause, below |
-| **Not computed** (two lines) | the desk has not computed this name | "The desk has not computed a float for this name." |
+| **Cannot verify** (one line, 83.7 px) | a count exists but cannot be relied on today (see causes) | per cause, below |
+| **Not computed** (one line, 77.3 px) | the desk has not computed this name | "The desk has not computed a float for this name." |
 
 **Unknown, one string per cause:**
 - No filed share count: "No filed share count."
@@ -97,4 +97,4 @@ This is a bound, not a measurement of the true float. Where we show a number, it
 **Open points**
 1. The boundary between "Not computed" (no bound computed) and "Cannot verify" with the issuance-not-checked reason (the bound ran, no dossier) is Research's to state when a name is each. Commercial's string for the second now says "we have not yet reviewed this company's share supply", which reads differently from "Not computed" because it names the company's supply; if Research's boundary changes which state a never-researched name takes, the strings stay and the mapping changes.
 2. The wider rule (a may-be-issuing flag also reads Cannot verify) stays only if Research's table shows the column is still usable. If it narrows, the issuance string loses nothing, since "may have been issued" is true of both.
-3. Face choice for Design: "Not computed" wraps to "Not" / "computed" (the longer word is 8 characters, about 53 px), two lines like "Cannot verify". Design measured it: a two-line float cell is 56 px against 32 px for one line, and raises 10 of 12 board rows, so the face is held until Design measures a wider Float column (about 102 px) that would put both two-word faces on one line. If that does not fit, the fallback is one-line faces ("Not run", 46.2 px), and "Cannot verify" would need a one-line face, which reopens Commercial. "Not yet" (one line) and "Pending" both imply something is on its way; if two lines is unwanted, "Not run" (7 characters) is the one-line fallback.
+3. Face and column width: Design approved a 102 px Float column (from 84), in which "Cannot verify" (83.7 px) and "Not computed" (77.3 px) and all other faces are one line. In the old 84 px cell a two-line face cost 56 px against 32 px and raised 10 of 12 board rows, so the wider column is what keeps the board rows unchanged. "Not yet" and "Pending" both imply something is on its way, which is why the face is "Not computed".
