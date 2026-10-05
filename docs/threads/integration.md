@@ -966,7 +966,88 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTY-FIFTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T16:01:43.807Z after ledger 2; snapshot read 2026-10-05T16:02:22Z = Mon 2026-10-05 12:02 ET)
+## LIVE STATE: AT THE TWENTY-SIXTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T21:22:37.844Z after ledger 3; snapshot read 2026-10-05T21:23:46Z = Mon 2026-10-05 17:23 ET)
+
+*A SNAPSHOT. RE-READ before acting: ask Ops-tmi for /proc, and run `git log origin/main..main` yourself. The 26th's running
+notes (search "THE TWENTY-SIXTH SEAT'S RUNNING NOTES") carry each verification. NO EM DASHES in anything he reads.*
+
+### PRODUCTION (Ops /proc 2026-10-05T16:06:07Z; this seat saw no ship after it)
+```
+web/research/assess 6e7fff84, market f5746a84, started 2026-10-03, NR 0. NOTHING SHIPPED since 2026-10-03.
+```
+
+### HIS RULINGS THIS SEAT (each read at his own turn; verbatim in the named RULED block)
+```
+BETA      docs/beta-launch-path-2026-10-05.md RULED 1-9: free, limited invites (18:51:26Z); testers = ACCEPTED exposure,
+          not licensed, no surface says "licensed"/"covered"; no lawyer; retry research owner-only; owner address = his
+          invite address and disclaimer asked once per text version (19:09:04Z, Web's chat 724a851e); "leave it out", the
+          past-movement sentence off the gate (20:00:12Z, Marketing's chat 46f08289); alerts + env-write/restart PLAN
+          approved (20:01:39Z); alerts to his existing TELEGRAM bot (20:45:12Z). Integration's call: no review/MCP token
+          to any tester.
+SHEET     docs/sheet-removal-plan-2026-10-03.md RULED (21:22:37Z): float max count age 90 days, date on the cell face;
+          Priority rubric APPROVED as drafted (3ca325bd).
+SPEND     OpenAI web-search spend: closed by him ("i think it came from another project. it's fine.").
+```
+
+### BETA PATH: what stands between now and the first tester
+```
+ON ORIGIN/MAIN (not live): retry owner-only; entry gate server + /enter screen; required-env check (push-release refuses
+  a release whose declared box keys are absent); watchdog + Telegram notifier; citation fix (board 62dceecd, new reports
+  837a04d7, stored reports fe21c99b); v28 + reports runner; health comment.
+ON LOCAL MAIN, NOT PUSHED: af71021c = Ops's b6f8891f (/api/dashboard gated by session OR box-generated
+  MOINTEL_INTERNAL_TOKEN; follower deadline 1800 s) merged, required-env.txt conflict resolved on Ops's word (FOUR keys:
+  DESK_OWNER_EMAIL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, MOINTEL_INTERNAL_TOKEN). WAITS ON Ops's full gate of af71021c
+  (asked; slot was Research's). Then push.
+NEXT RELEASE: Ops cuts once af71021c is green and pushed; you replay the literal tip (picks: 61e2f777, f1b8b716 +
+  6ac43025, split follow-up, Web 2fe136ac, plus main's beta work). NIGHT ORDER (his go in Ops's session): Ops adds
+  DESK_OWNER_EMAIL to .env.local (he already added the two TELEGRAM keys; checked by name only), sync-env (generates the
+  internal token on the box), cut with RESTART_MARKET=yes. Then Ops asks him before the Telegram test alert.
+AFTER THE RELEASE: nginx `= /signin` and `^~ /auth/` exemptions; sweep check outside /api/health = 403, loopback 200
+  (nginx-locations.conf:30 is loopback-only; never add auth_basic off there); Basic Auth off on its own night, his yes;
+  one tester with no password signs in (claim D); invite the list. Design's board-level "not updating" state before
+  the list grows. His browser checks of the sign-in release: still unreported.
+```
+
+### IN FLIGHT (owner -> next)
+```
+FLOAT        Research: validation PASSED on the fresh draw (af660d29; the first draw FAILED on the audit's own heuristic,
+             49ea118b, all five pages read). Column still "Cannot verify" for most names: split proof UNPROVEN 30 of 30
+             as built; R1 to R3 replays give 2 to 3 of 35. NEXT: R1 pre-registered as a contract rule, re-run at 90 days.
+             Marketing rewrites Commercial 5i's six sentences (b757236d) for 90 days. Ship gates: the column and page in
+             ONE release, nginx exemption for the public page, page wording must not claim the column is populated.
+PRIORITY     Approved. Research writes the final field contract; Design builds the badge (S3). Inputs that keep A rare
+             (rubric section 3a): live cycle phase not stored on the checkpoint row (Research defines, Ops/assess writes),
+             supply STRONG only via the float bound.
+MOVERS       HELD: production's rankInRange returns `all` (movers' candidates); main's does not. A design for Design +
+             Research. Levels/history, Now, evening wait with it; Design's 558d07a5 after movers.
+v6 REPORTS   Research steps 3-6 on research/reports-v6 (not main).
+```
+
+### UNPUSHED ON LOCAL MAIN, CLEARANCE STATE (read 21:23Z; re-list yourself)
+```
+CLEARED in writing: Marketing 7e0472d1 4a04b132 5855bf61 a9ea26a4; Research 010e9031 3cf42bc3 49ea118b and the float-
+  contract docs it named for 040bc01d (a21ee1b4 ea89900a c8b7254d) and af660d29 (c4a35331 576f16b5); Ops 80097100
+  b6f8891f (replayed); Integration's own.
+ASK RESEARCH BY SHA before pushing: db44c74e 3ca325bd 46a865ec 571e5119 7ce4b7a9 (all docs/research/** per its messages,
+  not cleared by sha to me).
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_c71f613a  Research-tmi local_f6ef479a  Design-tmi local_83b5b7ec (NEW, ninth seat)  Web-tmi local_a4c618a8
+Marketing-tmi local_5ed7eb51  Commercial-tmi local_2aab5a77  THIS seat local_2102878a retires on his rename.
+Old Integration local_ef410868 "Integration-tmi-retired": archived (get_session read at this hand-off). Old Design local_82749387 retired.
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc and for af71021c's gate result; push only when green and every unpushed line is cleared by sha.
+Then replay the release cut. Bring him nothing until the cut's go is due (that ask is Ops's). This seat's failure, three
+times: a sentence sent before its source was read (a draft line relayed as shipped; a route's exposure taken from its
+comment, not nginx; a commit sha typed from memory). Open the file, then send.
+```
+
+## ARCHIVE: WAS LIVE STATE AT THE TWENTY-FIFTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T16:01:43.807Z after ledger 2; snapshot read 2026-10-05T16:02:22Z = Mon 2026-10-05 12:02 ET; SUPERSEDED BY THE TWENTY-SIXTH'S)
 
 *A SNAPSHOT. RE-READ PRODUCTION before acting (ask Ops-tmi for /proc). The 25th's running notes (search "THE TWENTY-FIFTH
 SEAT'S RUNNING NOTES") carry every verification; where they disagree with this, the later note wins. NO EM DASHES in
