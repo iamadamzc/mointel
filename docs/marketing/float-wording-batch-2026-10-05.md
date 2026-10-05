@@ -13,7 +13,11 @@ The defect: a sale by an insider after the count date is still subtracted at the
 
 **Tooltip** (replaces v15 tooltip): "Computed from SEC filings: the latest filed share count we have, less the shares insiders hold directly (holdings as filed on {holding dates}). When the filings line up, the true float as of the count's date is at most this. Read how float numbers are made: **Are float quotes real?**"
 
-**aria-label on the bound face:** unchanged ("no more than {X} shares, computed from SEC filings as of {filed-count date}, when the filings line up"); it already carries the date.
+**aria-label on the bound face** (Commercial 5m item 2: "as of" hangs on the claim, not the filings): "no more than {X} shares as of {filed-count date}, computed from SEC filings, when the filings line up".
+
+**Off-popover string** (report text, MCP output, exports, stored copies; it travels, so it carries the date on the claim): "no more than {X} shares as of {filed-count date}, when the filings line up, from SEC filings".
+
+**Legend** (Commercial 5m item 1; the float draft's legend line): "Float: computed from SEC filings. An upper bound as of the date shown, when the filings line up. The date is the filed share count's."
 
 **Page, three edits:**
 1. "How we do it", last sentence: "When the filings line up, what is left is the most shares that could be trading, and the true float is at most that number." becomes "When the filings line up, what is left is the most shares that could have been trading on the date of the count, and the true float on that date was at most that number."
@@ -39,11 +43,11 @@ Research: D is the checkpoint's date, fixed when the checkpoint is written, so a
 
 ## 5. What this changes in `float-page-draft.md`, when Commercial passes FORM A
 
-Section 1 bound popover; section 1 Cannot verify list (one new string); section 2 tooltip; section 3 four page edits and the Cannot verify bullet; the header gets one change list. Nothing else.
+Section 1 bound popover, aria-label, off-popover string and legend line; section 1 Cannot verify list (one new string); section 2 tooltip; section 3 four page edits and the Cannot verify bullet; the header gets one change list. Nothing else.
 
 ## 6. The one line for him (Integration carries it)
 
-"The float cell no longer says the figure is the float today. It says no more than {X} as of the filed count's date, notes that insiders may have sold since, shows when the filings were last read, and reads Cannot verify if they were read more than four days before the date shown. Reason: a sale by an insider after the count is not subtracted, so today's float can be larger than the figure; a rule change that fixes it is being measured."
+"The float cell no longer says the figure is the float today. It says no more than {X} as of the filed count's date, notes that insiders may have sold since, shows when the filings were last read, and reads Cannot verify if they were read more than four days before the date shown. Reason: a sale by an insider after the count is not reflected, so the shares sold are still subtracted and today's float can be larger than the figure; a rule change that fixes it is being measured."
 
 ## 7. Open, not Marketing's
 
