@@ -37,6 +37,11 @@ are his. Production at writing: web/research/assess `6e7fff84`, market `f5746a84
    (`DESK_OWNER_EMAIL`, and the shared secret the market worker sends to a gated `/api/dashboard`) and one market worker
    restart outside his window, riding the next release. As put to him, Ops still asks for the go on the night; this is
    not that go.
+9. **RULED 2026-10-05T20:45:12.612Z** (his turn to Integration, transcript 125cfd6b, human origin): *"yes, switch to
+   telegram"*. Desk-down alerts go to his EXISTING Telegram bot (`A:\options_lab\TELEGRAM_BOT_REFERENCE.md`), not AWS
+   SMS. The AWS texting setup in RULED 8(a) is dropped. He copies the bot key and chat id into `.env.local` himself
+   (seats never read the values); Ops builds the Telegram notifier and adds both keys to `required-env.txt` in the release
+   that turns it on.
 6. **Integration's call, inside his rulings:** for the beta, no review or MCP token goes to any tester or anyone outside
    him and the seats; token holders never meet the entry gate (Web placement doc 7fb6411c, gap 2).
 
