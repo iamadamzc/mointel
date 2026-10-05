@@ -234,7 +234,7 @@ export const TOOLS: McpTool[] = [
     description:
       'Everything the ticker drawer shows for one name: Desk Read, live telemetry, the level ladder, ' +
       'catalyst, structure, supply ledger, cycle, Sheet/AUTO provenance, research state and evidence ' +
-      'sources. This is the deep view — use it after get_discovery identifies a name worth reading. ' +
+      'sources. This is the deep view. Use it after get_discovery identifies a name worth reading. ' +
       "setupGrade is the desk's own reading of the setup at its last checkpoint, with the five " +
       'criteria behind it; it is not a prediction and not a recommendation.',
     inputSchema: OBJECT(
