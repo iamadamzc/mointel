@@ -1525,6 +1525,18 @@ WEB HAND-OFF     Web local_a4c618a8 handed off on his 'yes hand off' (web.md LIV
                  tip will move (e8685f77 + B); f8ed2917 must be re-based/replayed onto the final Design tip, and the next
                  Web seat owns that. Web's note: tonight's cut carries the entry gate, so every user (him too) meets the
                  disclaimer once (his 19:09:04Z "once" ruling); expected, not news.
+S3+B REPLAY     52cced3e (tag design/s3-b-gated-52cced3e, rev-parse ok), base e0139dea, 13 commits, 0 merges, 67da54f4
+                 ancestor; +4: e8685f77 (null = not wired), ce506527 (quietFor 'an unknown time'), 772f4ef2 (carried =
+                 newest earlier checkpoint, read only when today empty; readRecentAssessments excludes RUNNING,
+                 assessmentRepo.ts:458), 52cced3e (B + inline briefing; offHours.ts read). Design states gate 240 files /
+                 3521 passed and a local render at a 22:30 ET clock shim: recap opens with "SNAPSHOT · NOT LIVE", Back to
+                 live works. Inline briefing NOT seen on a real page (static tests only): SHIP-NIGHT LOOK owed.
+                 U+2014 + entities on 1783 added lines: 0 (control 730). APPROVED as the S3+B candidate.
+                 BY SURFACE (correcting Design's "changes nothing"): `carried` now appears additively in /api/market,
+                 review diagnostics (renders d.assessments whole) and the MCP `assessments` object; /api/health picks
+                 fields, unchanged; market worker's /api/dashboard untouched.
+                 RELEASE = 52cced3e + Ops's grade store/reader (contract sent) + Web's sheet-priority-out RE-BASED onto
+                 52cced3e (f8ed2917 sits on 67da54f4; next Web seat owns the re-base). I replay the cut.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
