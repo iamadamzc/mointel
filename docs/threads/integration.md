@@ -1494,6 +1494,18 @@ HIS RULING       2026-10-05T22:38:04.297Z (transcript d947056e, his turn), verba
                  report" = SessionReports (BriefingLine + ReportWindow, components/SessionReports.tsx; DashboardShell.tsx:16,
                  :457), my reading from code, Design asked to correct. "Between session" = B's window (my reading, flagged).
                  Design: build B + propose the prominence change to me before building; ship with Ops's grade store/reader.
+S3 NEW TIP       67da54f4 (tag design/s3-board-gated-67da54f4, rev-parse checked), parent f9110751, 9 commits on e0139dea,
+                 0 merges; Design states gate green in Ops's slot (236 files / 3500 passed). SUPERSEDES f9110751. Guard:
+                 setupGradeWired = market?.setupGrades !== undefined (merge.ts); not wired = no badge/drawer/filter/legend.
+                 SEAMS sent to Design: null reads as wired (suggest != null); empty map before the first graded checkpoint
+                 would say "no research" on all. READER CONTRACT sent to Ops: object never null; omit until a graded
+                 checkpoint exists; every researched name in the map.
+                 U+2014 on the cone's added lines: 1 hit, DecisionCells.tsx:625 `${ageSeconds ?? dash}s` in a tooltip,
+                 UNCHANGED from production 6e7fff84:619 (re-indent); also DeskRead.tsx:208. Not this release's; noted to
+                 Design. Control 730.
+                 SHIP TERMS NOW: S3 no longer needs the reader to be safe, BUT it removes the table, so it ships only WITH
+                 his B + the session-report prominence (his 22:38:04Z ruling); shipping S3 alone would put the empty
+                 board in front of him off-hours, against that ruling.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
