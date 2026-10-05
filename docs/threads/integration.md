@@ -1550,6 +1550,8 @@ WEB REPLAY       2eaad153 (full 2eaad1536a68..., = web/sheet-priority-out) on 52
                  BY SURFACE (Web part): /api/dashboard rows lose the Sheet `priority` field; MCP tools emit setupGrade
                  (only when wired) instead of the Sheet priority. Asked new Web to clear 4fbdc7a5 623a0af9 by sha
                  (the old class line names local_a4c618a8 only).
+                 CLEARED by Web local_fe13d183 by sha: 4fbdc7a5 623a0af9 c7798504 (all web.md only, read). c7798504 adds a
+                 class line for this seat's later docs-only commits (read); check each later sha's file list against it.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
