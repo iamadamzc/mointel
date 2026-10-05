@@ -1,6 +1,6 @@
-# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v6
+# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v7
 
-*Marketing draft v6, 2026-10-05. Applies Commercial's sections 5e (4df63826) and 5f (5bef01e3) and Research's float contract (c624aeec). Title carries v6; the change list below is v5 to v6 first, then v4 to v5. No em dashes; no universal claims beyond the sources; no vendor named or disparaged; the body never answers "no" about anyone. MUST NOT ship before the insider-only method has a validation sample, and the page must not say or imply the sample has run until it has. The tooltip link and this page ship in ONE release (Web's rule).*
+*Marketing draft v7, 2026-10-05. v6 to v7 (Commercial 5g, two corrections): "who files Forms 3, 4 and 5 on their own" (single-owner filings; joint filers not attributed); the sanity-check popover no longer repeats "on the figure". HELD FOR RESEARCH, not settled here: (a) the share-split cause, kept and marked pending; (b) the issuance sentence against RECENT_OFFERING and PIPE; (c) the ledger's evidence sources. Applies Commercial's sections 5e (4df63826) and 5f (5bef01e3) and Research's float contract (c624aeec). Title carries v6; the change list below is v5 to v6 first, then v4 to v5. No em dashes; no universal claims beyond the sources; no vendor named or disparaged; the body never answers "no" about anyone. MUST NOT ship before the insider-only method has a validation sample, and the page must not say or imply the sample has run until it has. The tooltip link and this page ship in ONE release (Web's rule).*
 
 *What changed v5 to v6 (5f, five required and the four points):* (1) off-popover string carries "when the filings line up"; (2) closing paragraph carries it; (3) comparisons with how other floats are made or shown removed; (4) "no public source" sentence deleted and replaced, "almost every stock" now "many stocks"; (5) issuance paragraph reworded, "in the company's filings" dropped; "we know of" now "the desk has flagged"; "can only leave higher" now the arithmetic; the split line restored pending Research; "check" now "sanity check on the figure"; "large holders" now "10 percent owners".
 
@@ -33,7 +33,7 @@ The cell face is compact; the full statement is in the popover. A trader sees on
 **Cannot verify, one string per cause:**
 - Count too old: "Cannot verify: the latest filed share count is from {filed-count date}, too old to rely on."
 - Active issuance: "Cannot verify: shares may have been issued since the filed count."
-- Figure fails its check: "Cannot verify: the computed figure did not pass the desk's own sanity check on the figure, so it is not shown."
+- Figure fails its check: "Cannot verify: the computed figure did not pass the desk's own sanity check, so it is not shown."
 
 Unknown and Cannot verify are distinct: Unknown is no usable single filed count; Cannot verify is a count that exists but cannot be relied on. The face "not researched yet" is never printed as Unknown.
 
@@ -65,7 +65,7 @@ So a float number on a quote page is an estimate someone computed, unless a fili
 
 Ours is an estimate too. Here is what it is computed from and how we show it.
 
-We start with the share count the company most recently filed. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5, each holding taken from that filer's own filing and dated at or before the count. When the filings line up, what is left is the most shares that could be trading, and the true float is at most that number.
+We start with the share count the company most recently filed. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own, each holding taken from that filer's own filing and dated at or before the count. When the filings line up, what is left is the most shares that could be trading, and the true float is at most that number.
 
 **What you see in the cell**
 
@@ -73,7 +73,7 @@ The cell shows one of four things.
 
 - **≤ 12.3M** (the number varies). The float is no more than that, when the filings line up. The date of the filed count is in the detail.
 - **Unknown.** There is no single filed share count to start from: the company has none on file, we could not match it to an SEC filer, or its count is split across several filings.
-- **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, shares may have been issued since, a holding is dated before a share split, or the figure did not pass our own sanity check. The reason is in the detail.
+- **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, shares may have been issued since, a holding is dated before a share split [PENDING RESEARCH, open point 1], or the figure did not pass our own sanity check. The reason is in the detail.
 - **not researched yet.** We have not computed this name. That is different from Unknown.
 
 **What we do not subtract, and why**
@@ -89,6 +89,8 @@ When we find that shares are being issued, the name reads Cannot verify. A name 
 This is a bound, not a measurement of the true float. Where we show a number, it is computed from filings, and when the filings line up it is the most shares that could be trading.
 
 ---
+
+**Held for Research (not Marketing's to settle): (b) whether "When we find that shares are being issued" covers RECENT_OFFERING and PIPE blocks, which may not trigger Cannot verify in the built rule; (c) the ledger's evidence sources.**
 
 **Open points (5f settled the four wording points; two items remain)**
 1. Splits: the line "a holding is dated before a share split" is restored as a Cannot verify cause on the page, pending Research. If the built rule does not refuse a split between the holding and the count, the line goes and the "lined up" clause gains "no share split between the holding and the count" (Commercial 5f, point 3). Research has been asked.
