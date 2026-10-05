@@ -1229,6 +1229,11 @@ OPEN             Design's answer on the seam; Research's validation table (then 
                  committed file); next release waits on Research's citation-id fix (UNBUILT); owed-to-main remainder.
 LEDGER           1. Relayed Design's DRAFT non-owner line to him with "when"; shipped line says "if" (Marketing). TYPE: a
                  sentence left before its source was re-read. New this seat. Caught by Marketing; corrected to him.
+                 2. Told him and Web that /api/health "becomes public when Basic Auth comes off", from the route's own
+                 comment, without opening nginx: nginx-locations.conf:30 allows loopback only and denies all. TYPE: a
+                 sentence left before its source was read. REPEAT of ledger 1's class this session. Caught by Web.
+                 Retracted to him. Per session-hygiene s2: hand-off proposed to him, not initiated.
+OPEN SEARCH SPEND  CLOSED by him 2026-10-05: "i think it came from another project. it's fine. i'll keep an eye on it".
 BETA (his 18:51:26Z + 19:09:04Z rulings, docs/beta-launch-path-2026-10-05.md RULED block): free, limited invites;
                  testers = accepted exposure, not licensed; no lawyer; retry owner-only; disclaimer once per text version.
 PUSHED           7620dcd8..78c51d9d, 776f1415..8c422c4e (preflight+minuteBars, v28 79734ecc, retry owner-only 4418c741),
