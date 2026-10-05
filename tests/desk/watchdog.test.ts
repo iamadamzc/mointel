@@ -261,3 +261,22 @@ describe('watchdog: the notifier', () => {
     expect(log()).toContain('notifier failed');
   });
 });
+
+describe('watchdog: files a person reads', () => {
+  const DASH = String.fromCharCode(0x2014);
+  const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT, ...parts), 'utf8');
+
+  it('carry no em dash (the journal and systemctl show these)', () => {
+    for (const file of [
+      ['deploy', 'aws', 'watchdog.sh'],
+      ['deploy', 'aws', 'systemd', 'mointel-watchdog.service'],
+      ['deploy', 'aws', 'systemd', 'mointel-watchdog.timer'],
+    ]) {
+      expect(read(...file).includes(DASH), file.join('/')).toBe(false);
+    }
+  });
+
+  it('the check can see the glyph: an existing unit that carries it reads as carrying it', () => {
+    expect(read('deploy', 'aws', 'systemd', 'mointel-web.service').includes(DASH)).toBe(true);
+  });
+});

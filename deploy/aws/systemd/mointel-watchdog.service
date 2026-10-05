@@ -2,7 +2,7 @@
 # One watchdog tick (deploy/aws/watchdog.sh). Started by mointel-watchdog.timer
 # every minute; deliberately NOT part of mointel.target, so a deploy never
 # stops it and it never starts the market worker.
-Description=Momentum Intelligence — watchdog tick
+Description=Momentum Intelligence: watchdog tick
 After=network-online.target
 
 [Service]
