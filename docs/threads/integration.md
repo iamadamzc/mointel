@@ -1359,6 +1359,10 @@ COMMERCIAL 5f    origin 5bef01e3 (spot-read: the S-1 counterexample and point 5 
                  source states a freely tradable count" contradicted by a 2006 S-1; "in the company's filings" unconfirmed)
                  + Marketing's four. Live landing sentence unaffected ("current"). Routed: Marketing (v6), Research (ledger
                  evidence sources; split rule).
+v6 / 5g          Marketing v6 198d47d2 (local main). Commercial 5g (origin 3dc6a58d): all 5f changes applied; "10 percent owners"
+                 ok (catch-all keeps it as wide as the method); two small fixes ("on their own"; sanity-check string) ->
+                 Marketing for v7. HELD FOR RESEARCH (no answer seen yet): (a) split cause, (b) issuance sentence vs
+                 RECENT_OFFERING/PIPE, (c) ledger evidence sources. v7 -> me (READ) -> HIM for sight, (a)(b) shown as OPEN.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
