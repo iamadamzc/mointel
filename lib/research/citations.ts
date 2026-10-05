@@ -91,9 +91,18 @@ export function citedSourceIds(value: unknown, out: Set<number> = new Set()): Se
  * Every string in a JSON-shaped value, with citation tokens removed. Numbers, ids
  * and keys are untouched. The value's own `evidenceSourceIds` are collected once,
  * so a dossier's lone short citations go too (see the header).
+ *
+ * `knownSourceIds`: every research source id of the same ticker, cited or not. The
+ * model also writes the id of a source it read but did not cite (RPGL "[1043]", the
+ * ticker's SEC_SUBMISSIONS row, absent from version 2694's cited list), and that is a
+ * citation as much as a cited one. The cost: a lone bracket that happens to equal one of
+ * the ticker's source ids is removed even if it was meant as a year; a number the ticker
+ * does not own keeps its bracket.
  */
-export function withoutCitationsDeep<T>(value: T): T {
-  return deep(value, citedSourceIds(value));
+export function withoutCitationsDeep<T>(value: T, knownSourceIds?: ReadonlySet<number>): T {
+  const ids = citedSourceIds(value);
+  if (knownSourceIds) for (const id of knownSourceIds) ids.add(id);
+  return deep(value, ids);
 }
 
 function deep<T>(value: T, citedIds: ReadonlySet<number>): T {

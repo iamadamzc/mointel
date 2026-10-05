@@ -673,6 +673,13 @@ export function readSources(
   return rows.map(toSource);
 }
 
+/** Every source id stored for a ticker (ids only: no bodies), for recognising citation tokens in prose. */
+export function readSourceIdsForTicker(db: MarketDatabase, ticker: string): number[] {
+  if (!researchTablesPresent(db)) return [];
+  const rows = db.prepare('SELECT id FROM research_sources WHERE ticker = ?').all(ticker) as Array<{ id: number }>;
+  return rows.map((row) => row.id);
+}
+
 export function readSourcesByIds(db: MarketDatabase, ids: number[]): ResearchSource[] {
   if (ids.length === 0 || !researchTablesPresent(db)) return [];
   const placeholders = ids.map(() => '?').join(',');

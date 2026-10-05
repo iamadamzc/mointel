@@ -10,6 +10,7 @@ import {
   schemaBackupDirectory,
   SCHEMA_VERSION,
 } from '@/lib/market/store/db';
+import { readIntelligence } from '@/lib/market/readModel';
 import { insertDeskEvents } from '@/lib/market/store/repo';
 import {
   claimQueuedJobs,
@@ -26,6 +27,7 @@ import {
   readLatestJobForTicker,
   readOrphanedJobs,
   readRecycledContent,
+  readSourceIdsForTicker,
   readSources,
   requeueJobForRetry,
   researchTablesPresent,
@@ -424,6 +426,38 @@ describe('research sources', () => {
     expect(readSources(db, 'SLE')).toHaveLength(1);
     // Re-collection returns the same id, so citations stay stable.
     expect(second).toEqual(first);
+  });
+
+  it('hands the board every source id of the ticker, cited or not (the read model wiring)', () => {
+    const db = temporaryDb();
+    upsertIssuer(db, issuer());
+    const ids = insertResearchSources(db, [
+      source(),
+      source({ contentHash: 'hash-b', documentFingerprint: 'doc-b', accession: 'A-2', sourceType: 'SEC_SUBMISSIONS' }),
+    ]);
+    saveAnalysisVersion(db, {
+      ticker: 'SLE',
+      generatedAt: '2026-08-17T12:00:00Z',
+      evidenceFingerprint: 'fp-1',
+      model: 'test-model',
+      dossier: dossier(),
+      sourceIds: [ids[0]!],
+    });
+    const intelligence = readIntelligence(db, DATE, ['SLE']).SLE!;
+    expect(intelligence.evidence.map((link) => link.id)).toEqual([ids[0]]);
+    expect([...(intelligence.tickerSourceIds ?? [])].sort()).toEqual([...ids].sort());
+  });
+
+  it('lists every source id of one ticker and no other', () => {
+    const db = temporaryDb();
+    const mine = insertResearchSources(db, [
+      source(),
+      source({ contentHash: 'hash-b', documentFingerprint: 'doc-b', accession: 'A-2' }),
+    ]);
+    const other = insertResearchSources(db, [source({ ticker: 'OTH', contentHash: 'hash-c', documentFingerprint: 'doc-c', accession: 'A-3' })]);
+    expect(readSourceIdsForTicker(db, 'SLE').sort()).toEqual([...mine].sort());
+    expect(readSourceIdsForTicker(db, 'SLE')).not.toContain(other[0]);
+    expect(readSourceIdsForTicker(db, 'NONE')).toEqual([]);
   });
 
   it('stores distinct documents separately', () => {

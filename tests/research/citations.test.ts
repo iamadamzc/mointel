@@ -157,3 +157,21 @@ describe('the report company line (display)', () => {
     ).toBe('Generation Essentials Group. Cayman Islands. A media and entertainment group and a SPAC sponsor manager.');
   });
 });
+
+describe('withoutCitationsDeep with the ticker\'s known source ids', () => {
+  const dossier = { structure: { summary: 'A resale registration [1043] filed in [2026].', evidenceSourceIds: [7] } };
+
+  it('removes a lone short bracket that is a known id even when the dossier did not cite it', () => {
+    expect(withoutCitationsDeep(dossier).structure.summary).toBe('A resale registration [1043] filed in [2026].');
+    expect(withoutCitationsDeep(dossier, new Set([1043])).structure.summary).toBe('A resale registration filed in [2026].');
+  });
+
+  it('a known id set never touches a number the ticker does not own', () => {
+    expect(withoutCitationsDeep(dossier, new Set([1043])).structure.summary).toContain('[2026]');
+  });
+
+  it('still removes the dossier\'s own cited ids when known ids are given', () => {
+    const cited = { a: 'See [7].', evidenceSourceIds: [7] };
+    expect(withoutCitationsDeep(cited, new Set([1043])).a).toBe('See.');
+  });
+});
