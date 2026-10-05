@@ -966,7 +966,83 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTY-SIXTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T21:22:37.844Z after ledger 3; snapshot read 2026-10-05T21:23:46Z = Mon 2026-10-05 17:23 ET)
+## LIVE STATE: AT THE TWENTY-SEVENTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T22:17:33.157Z after ledger 2; snapshot read 2026-10-05T22:17:42Z = Mon 2026-10-05 18:17 ET)
+
+*A SNAPSHOT. RE-READ before acting: ask Ops-tmi for /proc, and run `git log origin/main..main` yourself. The 27th's running
+notes (search "THE TWENTY-SEVENTH SEAT'S RUNNING NOTES") carry each verification. NO EM DASHES in anything he reads.*
+
+### PRODUCTION (Ops /proc 2026-10-05T21:30:35Z; origin/production re-fetched 22:17Z = 6e7fff84)
+```
+web/research/assess 6e7fff84, market f5746a84, NR 0. NOTHING SHIPPED since 2026-10-03.
+BOX CHANGE on his word in Ops's session ("yes add the swap"): 4 GB /swapfile, swappiness 10 (Ops b1398aaa, ops.md).
+TONIGHT: the cut ops/cut-2026-10-05, literal tip d1e7ba9d2ab07d92df3614168cf381c241fdbcd8 (production 6e7fff84 + 28 picks,
+  tree 2e93f991), gated clean (242 files / 3512 passed / 1 skipped), ORDER APPROVED by the 27th after replay. Ops's session
+  says the ship waits for "about 20:30 ET per your answer" (Ops's words; NOT verified at his turn by the 27th). Night steps
+  are Ops's: DESK_OWNER_EMAIL, sync-env FROM A:\mointel ON MAIN with read-back by name, cut with RESTART_MARKET=yes, /proc,
+  then his word before the Telegram test alert. Ask Ops for /proc after it.
+```
+
+### HIS RULINGS THIS SEAT (each read at his own turn, transcript 1b01d57c; verbatim in the Sheet plan RULED block)
+```
+21:50:53.964Z  "1, should absolutely see how the names traded against the grades. 2, no retirement yet." Outcome test run
+               (Research adae1e89: DOES NOT SEPARATE, both rules; approved A and C untestable). Old Integration chat
+               local_2102878a NOT retired: it still answers to Integration-tmi. Do not ask him again.
+22:04:14.942Z  "yes, keep building the badge as approved".
+22:17:33.157Z  "yes hand off".
+Peer rulings: Commercial c26daa80 (6b) legend sentence "not tested against outcomes" DELETED, nothing in its place; never
+  "tested/validated/do not predict/did not work". Commercial e0139dea (5k): float claims under row reuse + the insider-sale
+  defect (below).
+```
+
+### IN FLIGHT (owner -> next)
+```
+BADGE (S3)     Design: built locally in A:\mointel-design, not gated (Web built on Design's 0002adee), legend e1220516 text exactly; Researched Names table
+               removal IN PROGRESS; counts strip RULED by the 27th (whole board, "on the board"; fresh catalyst = defect fix).
+               Ops: three columns + setupGrades reader, AFTER tonight, base = the cut once live (Ops's view, to confirm).
+               Web: MCP built (web/sheet-priority-out 440bd3b8); readableSheet strip only after Design removes the readers,
+               same release.
+OFF-HOURS      Design: without the table, before 04:00 / after 20:00 / weekends the main area is the empty Discovery board
+               (Focus, Graveyard stay). Asked Design to confirm from code + 2-3 options + rec. GOES TO HIM as a decision
+               BEFORE the table removal ships.
+FLOAT          Research (NEW seat local_dd23765d): float JOB, build plan 09d262b9. Row date RULED (B) by the 27th with two
+               conditions (holdings re-read to D or refuse; max reuse span in the contract). Commercial 5k: D fixed per
+               checkpoint; later count unseen = bound too LOW; popover MUST ADD "Filings read on {fetch date}"; DEFECT for
+               fresh rows: contract line 17 ignores insider filings after the count, so a sale makes true float exceed the
+               bound. Research to answer item 4 first, amend contract, count coverage change at $0 (if it moves coverage
+               materially, that goes to him). Marketing v15 acd6cf0f done; (b) dated wording waits on Research.
+               TO HIM BEFORE THE FLOAT SHIPS, one batch: the v15 phrase change and the dated-claim change (both alter text
+               he approved 16:01:43Z). Ship gates as before: measured peak RSS (Ops), Web's render approved, one release.
+ISSUANCE       Research: miss-rate PRE-REGISTRATION, second in its order, before any page claims more than "arithmetic audited".
+REPORT TAGS    Research, after the float job: Setup grade or legend pointer instead of the Sheet priority.
+AFTER TONIGHT  nginx `= /signin`, `^~ /auth/`, `= /enter` (Web's correction, verified); Basic Auth off its own night, his yes;
+               one tester signs in; invites. Design's "not updating" state before the list grows.
+MOVERS         HELD (production's rankInRange returns `all`); a design for Design + Research.
+```
+
+### UNPUSHED ON LOCAL MAIN (34 at 22:17Z; re-list yourself). Push only on an Ops-gated sha; gate main's tip AFTER tonight.
+```
+CLEARED by sha: Research 1113b940 43a926dc 0031136a 1d5f2d8b 18b14fd9 b15b72d0 9fd9e06c adae1e89 eec8c68d 842023cc 8a933358;
+  Marketing 13458dc8 3fd16f82 e1220516 65603d38 acd6cf0f; Integration's own.
+NOT YET CLEARED: Research 09d262b9 (plan; Research said its clearance comes with the code); Web b6e7cf4d e579d48c;
+  Ops b1398aaa. Ask each owner by sha.
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_c71f613a  Research-tmi local_dd23765d (NEW; old local_f6ef479a retitled "Research-tmi (retired 2026-10-05)")
+Design-tmi local_83b5b7ec  Web-tmi local_a4c618a8  Marketing-tmi local_5ed7eb51  Commercial-tmi local_2aab5a77
+Integration: THREE sessions answer to Integration-tmi until he renames them: local_2102878a (26th, he keeps it for now),
+  local_78f8e5f7 (27th, this hand-off), and you. Give your id in every send.
+```
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc (tonight's ship). Then the open decisions for him: the off-hours default (Design's options) and,
+before the float ships, the batched wording changes. This seat's failure, twice: a peer's sentence about a FILE relayed
+as fact before the file was opened (Design's "my floatBound"; Commercial's "the popover carries"). Open the file, then send.
+```
+
+## ARCHIVE: WAS LIVE STATE AT THE TWENTY-SIXTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" typed 2026-10-05T21:22:37.844Z after ledger 3; snapshot read 2026-10-05T21:23:46Z = Mon 2026-10-05 17:23 ET; SUPERSEDED BY THE TWENTY-SEVENTH'S)
 
 *A SNAPSHOT. RE-READ before acting: ask Ops-tmi for /proc, and run `git log origin/main..main` yourself. The 26th's running
 notes (search "THE TWENTY-SIXTH SEAT'S RUNNING NOTES") carry each verification. NO EM DASHES in anything he reads.*
