@@ -1443,7 +1443,9 @@ HELD FOR HIM     9b's coverage cost of the 4-day span (morning names with a read
                  Research asked to commit the number.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
-LEDGER           (none yet)
+LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
+                 it by sha. TYPE: a clearance inferred, not read (new class this session). Caught by me in the next step,
+                 before any push; corrected in the file and asked. Not the 27th's class (no peer sentence relayed).
 ```
 
 ## THE TWENTY-SEVENTH SEAT'S RUNNING NOTES (opened 2026-10-05T21:28:28Z, `local_78f8e5f7`, Opus 5.5, effort high)
