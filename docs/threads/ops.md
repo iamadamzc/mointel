@@ -13897,3 +13897,4 @@ ROUTING 00:51Z: Integration 24th (local_f26376f1) HANDING OFF on his yes (live s
 ROUTING + READ 00:54Z: Integration 25th = local_ef410868 (verified; ListAgents ref aa7d74). /proc 2026-10-05T00:54:24Z unchanged (web/research/assess 6e7fff84 since 2026-10-03 17:50:15-17Z NR 0; market 2013616 f5746a84 since 16:50:21Z NR 0); health ok, STREAMING, trading date 10-05. Sent to the 25th.
 SLOT 00:54Z: Design (local_82749387) holds it: next dev :3100 from A:\mointel-design at 6e7fff84, measurement only.
 SLOT 00:58Z: Design released (measurement only, nothing committed, :3100 stopped, store copy deleted). FREE. Design's note: a local /desk render now hits Google sign-in; render via a review token created in a SCRATCH store copy, never the real store. CORRECTION to Design's message: the pm2 daemon (pid 6860, since 2026-10-04T11:57:26Z) is NOT this seat's; it is his.
+ROUTING 01:06Z: Research-tmi is now local_f6ef479a (replaces local_ab66f9f3); will ask before any run.
