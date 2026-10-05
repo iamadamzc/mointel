@@ -1405,6 +1405,11 @@ v11              56cdc9dc: NOT_YET face "Not computed" (fallback "Not run"); Com
                  Design re-measuring two lines. Marketing asks v11 cleared (to confirm by sha). Told him the label changed.
                  Remaining gates (not Commercial's): validation sample, as-of + split rules unbuilt, Research's effectiveDate
                  answer, his sight, Design's measure, his strictness / age choice.
+ROW HEIGHT       Design CORRECTED its own earlier "two lines cost no row height" (unmeasured; I relayed it to Marketing):
+                 measured line box 24 px + 4/4 padding: 1-line cell 32 px, 2-line 56 px; on the 08-18 board a 2-line face raises
+                 10 of 12 rows to 56 px (~one visible row per screen). "Not computed" 79.2 px (2 lines), "Not run" 46.2 (1).
+                 Retraction sent to Marketing. OPTION to Design (my arithmetic, unmeasured): widen Float 84 -> ~102 px so
+                 "Cannot verify" (85.7) and "Not computed" (79.2) fit one line; Why/Risk ~130 each vs 120 floor. Measure first.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
