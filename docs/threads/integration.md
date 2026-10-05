@@ -1398,6 +1398,14 @@ HIS RULING       2026-10-05T22:04:14.942Z (transcript 1b01d57c, human): "yes, ke
 NEW RESEARCH     Research-tmi = local_dd23765d (Opus 5.5), replaced local_f6ef479a. Answered its four questions with pointers;
                  ORDER set by me: float JOB first, issuance miss-rate prereg second (before the float page ships with more
                  than "arithmetic audited"). Deploy-memory dependency: not found pending in what I read; told it to ask Ops.
+BADGE S3 (Design) Local in A:\mointel-design, not gated: layout, grade mapping (AVOID shown D), setupGrades plumbing, badge +
+                 drawer + filter chip, Sheet priority drawer fields removed, legend = e1220516/6b exactly with a test that
+                 forbids tested/validated/do not predict/did not work/outcome. NOT built: float faces, Researched Names table
+                 removal, the gate. OWNERS ASSIGNED by me: MCP tools.ts :220/:272 + review readableSheet route.ts:42 -> WEB
+                 (were unowned, web.md:539); setupGrades READER -> OPS (same branch as the three columns); floatBound shape
+                 review -> new Research (with the float job); report tags -> Research after the float job. OPEN: Design's
+                 counts strip "recounts over main-board rows"; asked for before/after definitions; same idea relabeled =
+                 mine with Design, different meaning under the same label = his.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
