@@ -226,6 +226,28 @@ describe('captureRanges', () => {
     expect(row.traded).toBe(3);
     db.close();
   });
+
+  it('applies the viewer range to the latch: a day-latched name qualified inside stays, an after-hours-latched one priced outside does not', () => {
+    const db = openDatabase(temporaryPath());
+    seed(db, [
+      { symbol: 'INSD', price: 5, rvol: 3 },
+      // Priced out now, but latched on a qualifying price of $6, inside the range.
+      { symbol: 'DLAT', price: 25, rvol: 8 },
+      // Priced out, latched only on the AFTER-HOURS path: not a day-board name.
+      { symbol: 'ALAT', price: 25, rvol: 9 },
+    ]);
+    db.prepare("UPDATE ticker_session SET latched = 1, qualified_at = '2026-09-30T14:00:00.000Z', qualified_price = 6 WHERE symbol = 'DLAT'").run();
+    db.prepare(
+      "UPDATE ticker_session SET ah_latched = 1, ah_qualification_price = 6 WHERE symbol = 'ALAT'",
+    ).run();
+    const [row] = captureRanges(db, D, { board: 'DAILY_RVOL', rankingLabel: 'Daily RVOL' }, [
+      { min: 1, max: 20 },
+    ]);
+    expect(row.topTickers).toContain('DLAT');
+    expect(row.topTickers).toContain('INSD');
+    expect(row.topTickers).not.toContain('ALAT');
+    db.close();
+  });
 });
 
 describe('persistence', () => {
