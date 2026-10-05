@@ -1392,6 +1392,11 @@ WEB STEP 4 MAIN  APPROVED BY LITERAL SHA df2712c2e07d562f90d6bd00b412767e3a4fd95
                  6 levels files dropped as named; df2712c2 = route count -> named control; 381 added lines U+2014 0. Web gate:
                  vitest 3235 pass / build 0 / tsc 0 / eslint 0. MERGED 9418a18e. Main now carries the sign-in gate. Clearance
                  of Web's 4 asked.
+COMMERCIAL 5h    origin 75b17929: contract 55af05eb + v8 PASS with ONE required change (ISSUANCE_NOT_CHECKED string -> "Cannot
+                 verify: we have not yet reviewed this company's share supply, so share issuance was not checked."); one
+                 recommended (split wording); header cleanup. v9 diff: "Not yet" PASSES (optional note: implies something is
+                 coming, like Pending). For Research: effectiveDate is not issuance (say what the field holds); two internal
+                 unconditional sentences must not reach a surface. Routed. After v10 (I diff it): to HIM for sight.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
