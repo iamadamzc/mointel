@@ -546,8 +546,8 @@ export function mergeDesk(
   );
   const blueSkyByTicker = market?.blueSky ?? {};
   const setupGradeByTicker = market?.setupGrades ?? {};
-  // An absent map is NOT WIRED; an empty or partial map is wired (a missing name is no grade).
-  const setupGradeWired = market?.setupGrades !== undefined;
+  // An absent OR null map is NOT WIRED; an object, even empty, is wired (a name missing from it is no grade).
+  const setupGradeWired = market?.setupGrades != null;
   const sheetObservedAt = dashboard?.meta.fetchedAt ?? null;
   // One session for the whole merge, so two rows can never disagree about
   // which VWAP is the current one.

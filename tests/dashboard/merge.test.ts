@@ -263,6 +263,11 @@ describe('the setup grade on a desk row', () => {
     expect(notWired.rows.get('NEWNAME')!.setupGradeWired).toBe(false);
     expect(mergeDesk(dashboard, null).rows.get('VNTX')!.setupGradeWired).toBe(false);
 
+    // A null map (a reader that sends null) is also not wired, never "wired and empty".
+    const nullMap = snapshot([demand('NEWNAME')]);
+    (nullMap as unknown as { setupGrades: null }).setupGrades = null;
+    expect(mergeDesk(dashboard, nullMap).rows.get('NEWNAME')!.setupGradeWired).toBe(false);
+
     // An EMPTY map is wired: every name in it is simply without a grade.
     const wired = snapshot([demand('NEWNAME')]);
     wired.setupGrades = {};
