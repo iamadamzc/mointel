@@ -1542,6 +1542,14 @@ NEW WEB SEAT     Web-tmi = local_fe13d183 (created 22:56:01Z; cwd A:\mointel, no
                  in the cut: main b6f8891f, picked as 5f273d87, requestGate.ts:95-101; (4) reader contract + MCP must use
                  setupGrades != null like Design's e8685f77.
                  Design takes the ship-night look (review link, outside 07:00-10:00 ET); I tell it when live + map sent.
+WEB REPLAY       2eaad153 (full 2eaad1536a68..., = web/sheet-priority-out) on 52cced3e: 4 commits, 0 merges, patch-ids
+                 --stable IDENTICAL to f8ed2917's four; no file overlap with Design's +4; merge.ts:550 `!= null` read.
+                 U+2014: 0 on 205 added lines, 0 on the whole e0139dea..2eaad153 cone (1988 lines, 45 files; control 730).
+                 No Sheet-priority reader left outside tests. Web states gate 242 files / 3529 passed / 1 skipped.
+                 APPROVED. BADGE RELEASE CANDIDATE TIP = 2eaad153 (Design S3+B + Web), + Ops's grade store/reader to come.
+                 BY SURFACE (Web part): /api/dashboard rows lose the Sheet `priority` field; MCP tools emit setupGrade
+                 (only when wired) instead of the Sheet priority. Asked new Web to clear 4fbdc7a5 623a0af9 by sha
+                 (the old class line names local_a4c618a8 only).
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
