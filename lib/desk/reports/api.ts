@@ -166,10 +166,15 @@ export function readReportsPayload(
           .all(dates[0], dates[1]) as StoredReportRow[]);
   const payload = buildReportsPayload(recap, rows, ranges, defaultRangeId);
   const sources = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'research_sources'").get();
-  if (!sources || payload.reports.length === 0) return payload;
+  if (payload.reports.length === 0) return payload;
   const owned = new Map<string, Set<number>>();
   const idsFor = (ticker: string) => {
     let ids = owned.get(ticker);
+    if (!ids && !sources) {
+      // No sources table: no owned ids, so only the forms that need none (long ids, comma lists) go.
+      ids = new Set<number>();
+      owned.set(ticker, ids);
+    }
     if (!ids) {
       ids = new Set((db.prepare('SELECT id FROM research_sources WHERE ticker = ?').all(ticker) as Array<{ id: number }>).map((row) => row.id));
       owned.set(ticker, ids);
