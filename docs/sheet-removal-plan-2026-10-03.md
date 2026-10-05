@@ -91,6 +91,9 @@ Integration:**
   trading day's high (04:00 through the close) for either rule; the test sees 10 to 30 point separations only; the approved
   rule's A (5 rows) and C (9) could not be tested. **Legend (Commercial `c26daa80`, claims read 6b):** the sentence "not
   tested against outcomes" is deleted with nothing in its place; no result goes in the legend.
+- 2026-10-05T22:04:14.942Z, typed to Integration (27th seat, transcript 1b01d57c, human origin), verbatim: *"yes, keep
+  building the badge as approved"*, answering whether the badge continues after the outcome test. **The badge is built as
+  approved** (rubric at `3ca325bd`, Research's `priorityGrade`, field contract `2c325f05`, legend per Commercial 6b).
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 

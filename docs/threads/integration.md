@@ -1392,6 +1392,12 @@ MARKETING        Cleared by reply: e1220516 (legend, Commercial PASS 5j), 65603d
                  90 days before the checkpoint"), plus 13458dc8 3fd16f82 earlier. Float still ships nothing until Web's
                  render is approved and the float build exists.
 UNPUSHED         All cleared by owners; push waits on Ops's main-tip gate after tonight (docs/research .ts scripts inside).
+HIS RULING       2026-10-05T22:04:14.942Z (transcript 1b01d57c, human): "yes, keep building the badge as approved". In the
+                 Sheet plan RULED block. Told Design (legend per Commercial 6b / e1220516) and Ops (assess stores the three
+                 columns after tonight, not in the cut).
+NEW RESEARCH     Research-tmi = local_dd23765d (Opus 5.5), replaced local_f6ef479a. Answered its four questions with pointers;
+                 ORDER set by me: float JOB first, issuance miss-rate prereg second (before the float page ships with more
+                 than "arithmetic audited"). Deploy-memory dependency: not found pending in what I read; told it to ask Ops.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
