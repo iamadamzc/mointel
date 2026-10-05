@@ -1002,7 +1002,8 @@ NEXT RELEASE: Ops cuts once af71021c is green and pushed; you replay the literal
   6ac43025, split follow-up, Web 2fe136ac, plus main's beta work). NIGHT ORDER (his go in Ops's session): Ops adds
   DESK_OWNER_EMAIL to .env.local (he already added the two TELEGRAM keys; checked by name only), sync-env (generates the
   internal token on the box), cut with RESTART_MARKET=yes. Then Ops asks him before the Telegram test alert.
-AFTER THE RELEASE: nginx `= /signin` and `^~ /auth/` exemptions; sweep check outside /api/health = 403, loopback 200
+AFTER THE RELEASE: nginx `= /signin`, `^~ /auth/` AND `= /enter` exemptions (`= /enter` added by the 27th on Web's
+  correction ee5e8763, verified: app/enter exists, app/desk/page.tsx:29 redirects there, nginx has no location); sweep check outside /api/health = 403, loopback 200
   (nginx-locations.conf:30 is loopback-only; never add auth_basic off there); Basic Auth off on its own night, his yes;
   one tester with no password signs in (claim D); invite the list. Design's board-level "not updating" state before
   the list grows. His browser checks of the sign-in release: still unreported.
@@ -1295,6 +1296,29 @@ or match by patch-id, and if `git merge origin/main` conflicts in a peer's file,
 First: ask Ops for /proc after the 16:34Z market restart (f5746a84); confirm the [splits] line. Then his two Sheet decisions,
 the v6 narrative samples when Research has them. This seat's failure, four times: a value passed on before READING the
 record it describes (vendor behaviour, a git listing, a code search, a measured duration).
+```
+
+## THE TWENTY-SEVENTH SEAT'S RUNNING NOTES (opened 2026-10-05T21:28:28Z, `local_78f8e5f7`, Opus 5.5, effort high)
+
+*Newer than the twenty-sixth's live state where they disagree. Times are transcript, peer-stated, or python UTC.*
+```
+START            Titled Integration-tmi. get_session self: claude-opus-5-5. Old chat local_2102878a read 21:28Z: title still
+                 Integration-tmi, isArchived false. His chore: rename Integration-tmi-retired and archive.
+SHARED MAIN      Fetched; no MERGE_HEAD, index empty. Merged origin/main (ac18ca05 b757236d, Commercial docs, clean) as
+                 c9fd2f2a. Replayed ops/lint-cjs (60aa7a07: notifyTelegram test +1 line; b2821e53: eslint.config.mjs
+                 no-require-imports off for **/*.cjs) and merged as 0f1bf8e2. Config override chosen; Research's .cjs untouched.
+GATE ASKED       Ops: full gate on 0f1bf8e2 (main gained 95f017bd splitProof since 60aa7a07) and /proc. 21:30Z.
+CLEARANCE ASKED  (owner's FILE must name each sha; the 26th's "cleared in writing" lines were messages)
+                 Research LINE 5 (94e02ce4) clears 12. Asked LINE 6 for 94e02ce4 db44c74e 3ca325bd 46a865ec 571e5119
+                 010e9031 3cf42bc3 49ea118b. Marketing: 2c93a226 226fbf72 a9ea26a4 5855bf61 4a04b132 7e0472d1. Web: ee5e8763
+                 37e1249e. Ops: 280f751e 80097100 b6f8891f 60aa7a07 b2821e53.
+CORRECTION       Web ee5e8763: Basic Auth batch needs `= /enter` too. Verified in code; live state fixed; Ops told.
+THE CUT          Ops (280f751e): production 6e7fff84 + picks; PICK LIST IS MINE TO RULE, after the push. Not started.
+RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
+                 float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
+                 miss rate UNMEASURED at every age: say it to him once more before any page claims more than
+                 "arithmetic audited". R1 at 90 days: a number for 5 of 71 names (KNOWN_ACTIVE), 3 (wider rule).
+LEDGER           (none yet)
 ```
 
 ## THE TWENTY-SIXTH SEAT'S RUNNING NOTES (opened 2026-10-05T16:05:30Z, `local_2102878a`, Sonnet 5.5, effort medium)
