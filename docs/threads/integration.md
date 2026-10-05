@@ -1249,6 +1249,14 @@ FLOAT PAGE SEAM  CLOSED. Marketing e79e295a / e05fb9d2: page v4 in the tree at d
                  name the compact "≤ X" face with the date + conditional in the popover, "Cannot verify" two lines. READ;
                  U+2014 0, entities 0 (control 1). Still gated: Commercial's item 7/3 judgment (needs Research's max age),
                  the validation sample, then to him with the cell words.
+CLEARANCES       Research (written): ALL 56 ^Research may ride (it re-ran the list; paths research.md / docs/research/** /
+                 research-opening-prompt.md only). Ops (written): ALL 55 ^Ops may ride (its own scan of 328 added lines for
+                 key shapes: 0, control finds a planted fake key); later Ops commits not covered; wants the final
+                 origin/main..main list before the push. Web: cleared (all 15). Marketing 4: ASKED (local_fdc0aa9a, handed off).
+MERGED           5712324b: `git merge --no-ff origin/main` in the shared tree (index empty before; CLAUDE.md untouched by origin);
+                 conflicts ONLY research.md + research-opening-prompt.md, resolved `checkout --ours` on Research's written word;
+                 0 markers; staged set all from origin's side (7 files). main now 205 ahead / 0 behind. NOT PUSHED.
+                 Push waits on Marketing's clearance, then the list to Ops, then `git log origin/main..main` as its own step.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
