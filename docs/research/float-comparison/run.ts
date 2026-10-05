@@ -298,7 +298,8 @@ async function armA(db: MarketDatabase, pick: Pick, since: string) {
       filingDate: held.filing.filingDate, shares: held.shares, used, why: used ? 'latest direct holding, basis proven' : basis.reason,
     });
   }
-  let large = 0;
+  // A sum once the cover-page parse is fitted after the list run; zero until then (nothing subtracted).
+  const large = 0;
   for (const filing of ordered.filter((f) => isLargeHolderForm(f.form))) {
     const parsed = parseLargeHolder('', filing);
     holdings.push({ family: 'LARGE', form: filing.form, accession: filing.accession, filingDate: filing.filingDate, primaryDocument: filing.primaryDocument, used: false, why: parsed.reason });
