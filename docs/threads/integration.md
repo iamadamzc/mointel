@@ -1348,6 +1348,12 @@ CUT APPROVED     Ops built ops/cut-2026-10-05 (A:\mointel-cut), literal tip d1e7
                  same +/- lines in all ten files). Gate clean slot: 242 files / 3512 passed / 1 skipped, eslint/build/tsc 0.
                  ORDER APPROVED to Ops. Ship, env writes, market restart = his go in Ops's session. Scratch worktree removed.
                  NEXT: Ops's /proc after the night; then the nginx three-prefix batch; main tip gate after the night.
+HIS RULING       2026-10-05T21:50:53.964Z (transcript 1b01d57c, human): "1, should absolutely see how the names traded
+                 against the grades. 2, no retirement yet." Recorded in the Sheet plan RULED block. (1) Approved rubric
+                 stands; Research asked for a PRE-REGISTERED outcome test, both rules, every grade, grades as of the
+                 checkpoint, population named, cost stated; prereg sha to me before it runs. (2) Old chat local_2102878a
+                 keeps the title Integration-tmi for now: TWO sessions answer to it. Every send carries my id; do not
+                 ask him again.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than

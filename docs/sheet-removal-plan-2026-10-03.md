@@ -81,6 +81,12 @@ Integration:**
   `3ca325bd`: Structure = the cycle; A = all five readable with Structure, Catalyst, Volume, Liquidity STRONG; the section 1
   thresholds; catalyst KIND only, no age cap; AVOID on Liquidity OR Supply RISK alone; rule 0 NOT_YET). Words: Marketing
   v3 `5855bf61` + `a9ea26a4`, Commercial-passed (`067dae18`). (3) Integration hand-off.
+- 2026-10-05T21:50:53.964Z, typed to Integration (27th seat, transcript 1b01d57c, human origin), verbatim: *"1, should
+  absolutely see how the names traded against the grades. 2, no retirement yet."* Clause 1 answers the looser-A question
+  (Research `85041ad8`: approved rule A 5 of 719 rows, looser rule 45; neither tested against outcomes). **The approved
+  rubric stands; the rule was not switched.** Research runs a pre-registered outcome test of the grades, both rules,
+  against how the names traded after each checkpoint, grades as of the checkpoint. Clause 2 is the old Integration chat
+  (`local_2102878a`): it is not retired yet.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
