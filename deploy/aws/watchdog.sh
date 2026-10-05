@@ -23,10 +23,10 @@
 #     stops a unit by hand writes a time a few minutes ahead).
 #
 # THE NOTIFIER IS PLUGGABLE. Every alert goes to the journal (tag
-# mointel-watchdog, grep it). If $NOTIFIER exists and is executable it is also
-# run with the alert text as its one argument; its failure is logged, never
-# fatal. Nothing here holds a credential or a phone number: the SMS notifier,
-# when it exists, reads its own from the box env.
+# mointel-watchdog, grep it). If $NOTIFIER exists it is also
+# run (through bash) with the alert text as its one argument; its failure is logged, never
+# fatal. Nothing here holds a credential or a phone number: the notifier
+# (notify-telegram.sh) reads its own from the box env.
 #
 # LIMIT: this runs ON the box. It cannot report that the box itself is down.
 #
@@ -38,7 +38,7 @@ set -uo pipefail
 STATE_DIR="${WATCHDOG_STATE_DIR:-/var/lib/mointel-watchdog}"
 HEALTH_URL="${WATCHDOG_HEALTH_URL:-http://127.0.0.1:3000/api/health}"
 UNITS="${WATCHDOG_UNITS:-mointel-web mointel-research mointel-assess mointel-market}"
-NOTIFIER="${WATCHDOG_NOTIFIER:-/opt/mointel/current/deploy/aws/notify-sms.sh}"
+NOTIFIER="${WATCHDOG_NOTIFIER:-/opt/mointel/current/deploy/aws/notify-telegram.sh}"
 COOLDOWN="${WATCHDOG_COOLDOWN_SECONDS:-1800}"
 LOOP_RESTARTS="${WATCHDOG_LOOP_RESTARTS:-3}"
 LOOP_WINDOW="${WATCHDOG_LOOP_WINDOW:-600}"
@@ -52,8 +52,10 @@ say() { logger -t mointel-watchdog -p "daemon.$1" -- "$2" 2>/dev/null || echo "[
 
 notify() {
   say "$1" "$2"
-  if [ -x "$NOTIFIER" ]; then
-    "$NOTIFIER" "$2" >/dev/null 2>&1 || say warning "notifier failed (exit $?); the alert is in the journal only"
+  # Run through bash, not exec: a file checked in without its executable bit
+  # (Windows commits lose it) would otherwise be skipped without a word.
+  if [ -f "$NOTIFIER" ]; then
+    bash "$NOTIFIER" "$2" >/dev/null 2>&1 || say warning "notifier failed (exit $?); the alert is in the journal only"
   fi
 }
 
