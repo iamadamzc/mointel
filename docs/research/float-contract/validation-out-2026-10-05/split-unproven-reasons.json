@@ -1,0 +1,340 @@
+{
+ "tally": {
+  "SPAN_HAS_NULL_SPLIT_FACTOR": 26,
+  "PROVEN_NONE": 1,
+  "BARS_START_AFTER_COUNT_DATE": 2,
+  "FOUND": 1
+ },
+ "rows": [
+  {
+   "ticker": "AISP",
+   "countAsOf": "2026-08-06",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2021-05-10",
+   "barsLast": "2026-10-01",
+   "bars": 1356,
+   "spanBars": 40,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "AIXC",
+   "countAsOf": "2026-08-07",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2016-09-29",
+   "barsLast": "2026-09-29",
+   "bars": 2513,
+   "spanBars": 37,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "AMOD",
+   "countAsOf": "2026-08-14",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2021-02-10",
+   "barsLast": "2026-10-02",
+   "bars": 1418,
+   "spanBars": 34,
+   "spanNulls": 14,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "BGIN",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2025-10-21",
+   "barsLast": "2026-09-29",
+   "bars": 236,
+   "spanBars": 187,
+   "spanNulls": 11,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "BIYA",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2025-03-21",
+   "barsLast": "2026-09-29",
+   "bars": 383,
+   "spanBars": 187,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "BKYI",
+   "countAsOf": "2026-08-11",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2026-07-08",
+   "barsLast": "2026-09-29",
+   "bars": 59,
+   "spanBars": 35,
+   "spanNulls": 5,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "BYSI",
+   "countAsOf": "2026-07-31",
+   "checkpoint": "2026-09-28",
+   "barsFirst": "2017-03-09",
+   "barsLast": "2026-09-28",
+   "bars": 2402,
+   "spanBars": 41,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "CAMP",
+   "countAsOf": "2026-08-12",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2024-10-11",
+   "barsLast": "2026-10-01",
+   "bars": 494,
+   "spanBars": 36,
+   "spanNulls": 0,
+   "reason": "PROVEN_NONE"
+  },
+  {
+   "ticker": "CHGA",
+   "countAsOf": "2026-08-10",
+   "checkpoint": "2026-09-30",
+   "barsFirst": "2018-11-05",
+   "barsLast": "2026-09-30",
+   "bars": 1985,
+   "spanBars": 37,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "CMCT",
+   "countAsOf": "2026-08-06",
+   "checkpoint": "2026-09-30",
+   "barsFirst": "2016-09-30",
+   "barsLast": "2026-09-30",
+   "bars": 2513,
+   "spanBars": 39,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "COLA",
+   "countAsOf": "2026-08-04",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2025-03-17",
+   "barsLast": "2026-10-01",
+   "bars": 389,
+   "spanBars": 42,
+   "spanNulls": 19,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "DXST",
+   "countAsOf": "2024-10-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2025-01-22",
+   "barsLast": "2026-09-29",
+   "bars": 424,
+   "spanBars": 424,
+   "spanNulls": 3,
+   "reason": "BARS_START_AFTER_COUNT_DATE"
+  },
+  {
+   "ticker": "EJH",
+   "countAsOf": "2025-06-30",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2021-05-14",
+   "barsLast": "2026-10-01",
+   "bars": 1352,
+   "spanBars": 317,
+   "spanNulls": 15,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "HTCR",
+   "countAsOf": "2026-08-13",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2022-02-10",
+   "barsLast": "2026-10-01",
+   "bars": 1164,
+   "spanBars": 35,
+   "spanNulls": 4,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "KMRK",
+   "countAsOf": "2025-03-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2025-07-16",
+   "barsLast": "2026-09-29",
+   "bars": 304,
+   "spanBars": 304,
+   "spanNulls": 1,
+   "reason": "BARS_START_AFTER_COUNT_DATE"
+  },
+  {
+   "ticker": "LPA",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-30",
+   "barsFirst": "2021-03-30",
+   "barsLast": "2026-09-30",
+   "bars": 1383,
+   "spanBars": 188,
+   "spanNulls": 15,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "MI",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-30",
+   "barsFirst": "2017-03-22",
+   "barsLast": "2026-09-30",
+   "bars": 2395,
+   "spanBars": 188,
+   "spanNulls": 0,
+   "reason": "FOUND"
+  },
+  {
+   "ticker": "NAMM",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2025-06-06",
+   "barsLast": "2026-10-01",
+   "bars": 332,
+   "spanBars": 189,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "NCI",
+   "countAsOf": "2024-12-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2016-09-29",
+   "barsLast": "2026-09-29",
+   "bars": 2513,
+   "spanBars": 437,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "NCNA",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-30",
+   "barsFirst": "2017-09-28",
+   "barsLast": "2026-09-30",
+   "bars": 2263,
+   "spanBars": 188,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "NEXR",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2022-08-26",
+   "barsLast": "2026-09-29",
+   "bars": 1026,
+   "spanBars": 187,
+   "spanNulls": 9,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "NXL",
+   "countAsOf": "2026-08-10",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2022-09-16",
+   "barsLast": "2026-10-01",
+   "bars": 1014,
+   "spanBars": 38,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "ONFO",
+   "countAsOf": "2026-08-19",
+   "checkpoint": "2026-09-28",
+   "barsFirst": "2022-08-26",
+   "barsLast": "2026-09-28",
+   "bars": 1025,
+   "spanBars": 28,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "PWCM",
+   "countAsOf": "2026-08-07",
+   "checkpoint": "2026-09-30",
+   "barsFirst": "2016-09-30",
+   "barsLast": "2026-09-30",
+   "bars": 2513,
+   "spanBars": 38,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "SANG",
+   "countAsOf": "2026-06-30",
+   "checkpoint": "2026-09-28",
+   "barsFirst": "2021-12-16",
+   "barsLast": "2026-09-28",
+   "bars": 1199,
+   "spanBars": 63,
+   "spanNulls": 8,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "SDEV",
+   "countAsOf": "2026-07-27",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2016-09-20",
+   "barsLast": "2026-10-01",
+   "bars": 2522,
+   "spanBars": 46,
+   "spanNulls": 7,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "SORA",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2025-04-02",
+   "barsLast": "2026-10-01",
+   "bars": 377,
+   "spanBars": 189,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "SSM",
+   "countAsOf": "2026-08-01",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2025-09-05",
+   "barsLast": "2026-10-01",
+   "bars": 270,
+   "spanBars": 44,
+   "spanNulls": 10,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "WCT",
+   "countAsOf": "2024-12-31",
+   "checkpoint": "2026-10-01",
+   "barsFirst": "2024-10-02",
+   "barsLast": "2026-10-01",
+   "bars": 501,
+   "spanBars": 439,
+   "spanNulls": 1,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  },
+  {
+   "ticker": "YDKG",
+   "countAsOf": "2025-12-31",
+   "checkpoint": "2026-09-29",
+   "barsFirst": "2016-09-27",
+   "barsLast": "2026-09-29",
+   "bars": 2515,
+   "spanBars": 187,
+   "spanNulls": 2,
+   "reason": "SPAN_HAS_NULL_SPLIT_FACTOR"
+  }
+ ]
+}

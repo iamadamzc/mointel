@@ -1,0 +1,235 @@
+{
+ "unprovenNames": 28,
+ "where": {
+  "onCheckpointDate": 15,
+  "withinLastThreeSessions": 2,
+  "earlier": 11,
+  "noNulls": 0
+ },
+ "rows": [
+  {
+   "ticker": "AISP",
+   "checkpoint": "2026-10-01",
+   "nulls": 1,
+   "firstNull": "2026-10-01",
+   "lastNull": "2026-10-01",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "AIXC",
+   "checkpoint": "2026-09-29",
+   "nulls": 1,
+   "firstNull": "2026-09-29",
+   "lastNull": "2026-09-29",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "AMOD",
+   "checkpoint": "2026-10-01",
+   "nulls": 14,
+   "firstNull": "2026-09-14",
+   "lastNull": "2026-10-01",
+   "class": "earlier"
+  },
+  {
+   "ticker": "BGIN",
+   "checkpoint": "2026-09-29",
+   "nulls": 11,
+   "firstNull": "2026-09-15",
+   "lastNull": "2026-09-29",
+   "class": "earlier"
+  },
+  {
+   "ticker": "BIYA",
+   "checkpoint": "2026-09-29",
+   "nulls": 1,
+   "firstNull": "2026-09-29",
+   "lastNull": "2026-09-29",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "BKYI",
+   "checkpoint": "2026-09-29",
+   "nulls": 5,
+   "firstNull": "2026-09-23",
+   "lastNull": "2026-09-29",
+   "class": "earlier"
+  },
+  {
+   "ticker": "BYSI",
+   "checkpoint": "2026-09-28",
+   "nulls": 1,
+   "firstNull": "2026-09-28",
+   "lastNull": "2026-09-28",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "CHGA",
+   "checkpoint": "2026-09-30",
+   "nulls": 1,
+   "firstNull": "2026-09-30",
+   "lastNull": "2026-09-30",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "CMCT",
+   "checkpoint": "2026-09-30",
+   "nulls": 1,
+   "firstNull": "2026-09-30",
+   "lastNull": "2026-09-30",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "COLA",
+   "checkpoint": "2026-10-01",
+   "nulls": 19,
+   "firstNull": "2026-09-04",
+   "lastNull": "2026-10-01",
+   "class": "earlier"
+  },
+  {
+   "ticker": "DXST",
+   "checkpoint": "2026-09-29",
+   "nulls": 3,
+   "firstNull": "2026-09-25",
+   "lastNull": "2026-09-29",
+   "class": "withinLastThreeSessions"
+  },
+  {
+   "ticker": "EJH",
+   "checkpoint": "2026-10-01",
+   "nulls": 15,
+   "firstNull": "2026-09-11",
+   "lastNull": "2026-10-01",
+   "class": "earlier"
+  },
+  {
+   "ticker": "HTCR",
+   "checkpoint": "2026-10-01",
+   "nulls": 4,
+   "firstNull": "2026-09-28",
+   "lastNull": "2026-10-01",
+   "class": "earlier"
+  },
+  {
+   "ticker": "KMRK",
+   "checkpoint": "2026-09-29",
+   "nulls": 1,
+   "firstNull": "2026-09-29",
+   "lastNull": "2026-09-29",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "LPA",
+   "checkpoint": "2026-09-30",
+   "nulls": 15,
+   "firstNull": "2026-09-10",
+   "lastNull": "2026-09-30",
+   "class": "earlier"
+  },
+  {
+   "ticker": "NAMM",
+   "checkpoint": "2026-10-01",
+   "nulls": 1,
+   "firstNull": "2026-10-01",
+   "lastNull": "2026-10-01",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "NCI",
+   "checkpoint": "2026-09-29",
+   "nulls": 1,
+   "firstNull": "2026-09-29",
+   "lastNull": "2026-09-29",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "NCNA",
+   "checkpoint": "2026-09-30",
+   "nulls": 1,
+   "firstNull": "2026-09-30",
+   "lastNull": "2026-09-30",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "NEXR",
+   "checkpoint": "2026-09-29",
+   "nulls": 9,
+   "firstNull": "2026-09-17",
+   "lastNull": "2026-09-29",
+   "class": "earlier"
+  },
+  {
+   "ticker": "NXL",
+   "checkpoint": "2026-10-01",
+   "nulls": 1,
+   "firstNull": "2026-10-01",
+   "lastNull": "2026-10-01",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "ONFO",
+   "checkpoint": "2026-09-28",
+   "nulls": 1,
+   "firstNull": "2026-09-28",
+   "lastNull": "2026-09-28",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "PWCM",
+   "checkpoint": "2026-09-30",
+   "nulls": 1,
+   "firstNull": "2026-09-30",
+   "lastNull": "2026-09-30",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "SANG",
+   "checkpoint": "2026-09-28",
+   "nulls": 8,
+   "firstNull": "2026-09-17",
+   "lastNull": "2026-09-28",
+   "class": "earlier"
+  },
+  {
+   "ticker": "SDEV",
+   "checkpoint": "2026-09-29",
+   "nulls": 7,
+   "firstNull": "2026-09-21",
+   "lastNull": "2026-09-29",
+   "class": "earlier"
+  },
+  {
+   "ticker": "SORA",
+   "checkpoint": "2026-10-01",
+   "nulls": 1,
+   "firstNull": "2026-10-01",
+   "lastNull": "2026-10-01",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "SSM",
+   "checkpoint": "2026-10-01",
+   "nulls": 10,
+   "firstNull": "2026-09-18",
+   "lastNull": "2026-10-01",
+   "class": "earlier"
+  },
+  {
+   "ticker": "WCT",
+   "checkpoint": "2026-10-01",
+   "nulls": 1,
+   "firstNull": "2026-10-01",
+   "lastNull": "2026-10-01",
+   "class": "onCheckpointDate"
+  },
+  {
+   "ticker": "YDKG",
+   "checkpoint": "2026-09-29",
+   "nulls": 2,
+   "firstNull": "2026-09-28",
+   "lastNull": "2026-09-29",
+   "class": "withinLastThreeSessions"
+  }
+ ]
+}
