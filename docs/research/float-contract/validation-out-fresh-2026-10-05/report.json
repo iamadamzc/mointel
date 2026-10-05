@@ -1,0 +1,828 @@
+{
+  "names": 35,
+  "namesWithACount": 30,
+  "namesWithAtLeastOneSubtractedHolding": 9,
+  "holdingsAudited": 50,
+  "dangerousFailures": [],
+  "holdingsWhoseFilingTextMentionsSplit": 7,
+  "ruleOfThreeUpperBound95": 0.06,
+  "stateTables": {
+    "KNOWN_ACTIVE @ 45 days": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 18,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12
+    },
+    "KNOWN_ACTIVE @ 90 days": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 18,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12
+    },
+    "KNOWN_ACTIVE @ 120 days": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 18,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12
+    },
+    "KNOWN_OR_POSSIBLY_ACTIVE @ 45 days": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 5
+    },
+    "KNOWN_OR_POSSIBLY_ACTIVE @ 90 days": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 5
+    },
+    "KNOWN_OR_POSSIBLY_ACTIVE @ 120 days": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 5
+    }
+  },
+  "perName": [
+    {
+      "ticker": "AIFF",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 15690316,
+        "asOf": "2026-08-04",
+        "filed": "2026-08-11",
+        "accession": "0001437749-26-026822",
+        "form": "10-Q"
+      },
+      "holdings": 3,
+      "audited": 3,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "ANTA",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "UNKNOWN",
+        "reason": "NO_FILED_COUNT"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT"
+      }
+    },
+    {
+      "ticker": "APUS",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 1509118,
+        "asOf": "2026-08-12",
+        "filed": "2026-08-14",
+        "accession": "0001213900-26-090120",
+        "form": "10-Q"
+      },
+      "holdings": 4,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT"
+      }
+    },
+    {
+      "ticker": "ARTL",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 4595068,
+        "asOf": "2026-08-11",
+        "filed": "2026-08-20",
+        "accession": "0001640334-26-001400",
+        "form": "10-Q/A"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "AZUL",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 928965058,
+        "asOf": "2018-12-31",
+        "filed": "2019-04-30",
+        "accession": "0001193125-19-129160",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "BKYI",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 1436344,
+        "asOf": "2026-08-11",
+        "filed": "2026-08-13",
+        "accession": "0001437749-26-027723",
+        "form": "10-Q"
+      },
+      "holdings": 9,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT"
+      }
+    },
+    {
+      "ticker": "CHR",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 10070012,
+        "asOf": "2023-12-31",
+        "filed": "2024-04-18",
+        "accession": "0001213900-24-034105",
+        "form": "20-F/A"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "CLDI",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 2584184,
+        "asOf": "2026-08-10",
+        "filed": "2026-08-13",
+        "accession": "0001493152-26-037847",
+        "form": "10-Q"
+      },
+      "holdings": 7,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "CLRO",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 2675412,
+        "asOf": "2026-08-14",
+        "filed": "2026-08-14",
+        "accession": "0001753926-26-001521",
+        "form": "10-Q"
+      },
+      "holdings": 1,
+      "audited": 1,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT"
+      }
+    },
+    {
+      "ticker": "CNET",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 3668429,
+        "asOf": "2026-08-14",
+        "filed": "2026-08-14",
+        "accession": "0001171843-26-005526",
+        "form": "10-Q"
+      },
+      "holdings": 2,
+      "audited": 2,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "DKI",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "UNKNOWN",
+        "reason": "NO_FILED_COUNT"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT"
+      }
+    },
+    {
+      "ticker": "ELPW",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 58056099,
+        "asOf": "2025-09-19",
+        "filed": "2025-09-22",
+        "accession": "0001493152-25-014353",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "EZGO",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 5675172,
+        "asOf": "2025-01-17",
+        "filed": "2025-01-17",
+        "accession": "0001213900-25-004698",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "FOFO",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 7571078,
+        "asOf": "2025-12-31",
+        "filed": "2026-04-16",
+        "accession": "0001213900-26-044270",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "GCTK",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 10578822,
+        "asOf": "2026-08-14",
+        "filed": "2026-08-14",
+        "accession": "0001493152-26-038317",
+        "form": "10-Q"
+      },
+      "holdings": 8,
+      "audited": 3,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "GYGY",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 14392000,
+        "asOf": "2026-08-18",
+        "filed": "2026-08-21",
+        "accession": "0001213900-26-092694",
+        "form": "10-Q"
+      },
+      "holdings": 2,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "HCTI",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 14974322,
+        "asOf": "2026-08-12",
+        "filed": "2026-08-13",
+        "accession": "0001213900-26-089241",
+        "form": "10-Q"
+      },
+      "holdings": 4,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "HVII",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "UNKNOWN",
+        "reason": "NO_FILED_COUNT"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT"
+      }
+    },
+    {
+      "ticker": "IFBD",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 8188574,
+        "asOf": "2025-12-31",
+        "filed": "2026-06-12",
+        "accession": "0001731122-26-000847",
+        "form": "20-F/A"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT"
+      }
+    },
+    {
+      "ticker": "INLF",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 6400000,
+        "asOf": "2025-12-31",
+        "filed": "2026-03-06",
+        "accession": "0001213900-26-024760",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "KITT",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 7471960,
+        "asOf": "2026-08-12",
+        "filed": "2026-08-12",
+        "accession": "0001849820-26-000125",
+        "form": "10-Q"
+      },
+      "holdings": 9,
+      "audited": 5,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "LXEH",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 116667000,
+        "asOf": "2023-12-31",
+        "filed": "2024-05-15",
+        "accession": "0001213900-24-043569",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "LZMH",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "UNKNOWN",
+        "reason": "NO_FILED_COUNT"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT"
+      }
+    },
+    {
+      "ticker": "MGLD",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 42712250,
+        "asOf": "2026-06-30",
+        "filed": "2026-09-18",
+        "accession": "0001493152-26-043341",
+        "form": "10-K"
+      },
+      "holdings": 6,
+      "audited": 6,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "MSGY",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 16957000,
+        "asOf": "2026-03-31",
+        "filed": "2026-07-30",
+        "accession": "0001213900-26-083085",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "MX",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 36510111,
+        "asOf": "2026-07-31",
+        "filed": "2026-08-10",
+        "accession": "0001193125-26-342416",
+        "form": "10-Q"
+      },
+      "holdings": 11,
+      "audited": 11,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "NWTG",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 5422276,
+        "asOf": "2026-08-13",
+        "filed": "2026-08-14",
+        "accession": "0001493152-26-038399",
+        "form": "10-Q"
+      },
+      "holdings": 7,
+      "audited": 7,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "PMAX",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "UNKNOWN",
+        "reason": "NO_FILED_COUNT"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "UNKNOWN:NO_FILED_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "UNKNOWN:NO_FILED_COUNT"
+      }
+    },
+    {
+      "ticker": "SHMD",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 43062427,
+        "asOf": "2025-12-31",
+        "filed": "2026-05-15",
+        "accession": "0001104659-26-062643",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "SPHL",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 11500000,
+        "asOf": "2024-12-31",
+        "filed": "2025-04-28",
+        "accession": "0001213900-25-036079",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "STAK",
+      "tradingDate": "2026-09-24",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 13210349,
+        "asOf": "2025-06-30",
+        "filed": "2025-11-05",
+        "accession": "0001493152-25-020818",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "TBPH",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 51918754,
+        "asOf": "2026-07-31",
+        "filed": "2026-08-11",
+        "accession": "0001104659-26-093773",
+        "form": "10-Q"
+      },
+      "holdings": 12,
+      "audited": 12,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT"
+      }
+    },
+    {
+      "ticker": "TDIC",
+      "tradingDate": "2026-09-25",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 28660000,
+        "asOf": "2025-03-31",
+        "filed": "2025-08-06",
+        "accession": "0001641172-25-022328",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "VSA",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 54563321,
+        "asOf": "2015-12-31",
+        "filed": "2016-04-20",
+        "accession": "0001144204-16-095204",
+        "form": "20-F"
+      },
+      "holdings": 0,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    },
+    {
+      "ticker": "XXII",
+      "tradingDate": "2026-09-23",
+      "count": {
+        "state": "PRODUCED",
+        "shares": 713994,
+        "asOf": "2026-08-14",
+        "filed": "2026-08-14",
+        "accession": "0001104659-26-097172",
+        "form": "10-Q"
+      },
+      "holdings": 9,
+      "audited": 0,
+      "splitSinceCount": "UNPROVEN",
+      "states": {
+        "KNOWN_ACTIVE@45": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@90": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_ACTIVE@120": "CANNOT_VERIFY:SPLIT_SINCE_COUNT",
+        "KNOWN_OR_POSSIBLY_ACTIVE@45": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@90": "CANNOT_VERIFY:ISSUANCE_FLAGGED",
+        "KNOWN_OR_POSSIBLY_ACTIVE@120": "CANNOT_VERIFY:ISSUANCE_FLAGGED"
+      }
+    }
+  ]
+}

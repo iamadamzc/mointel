@@ -1,0 +1,409 @@
+{
+  "namesWithACount": 30,
+  "controls": {
+    "planted": true,
+    "plantedCleanStep": true
+  },
+  "r0ReproducesRecorded": true,
+  "r0Mismatch": [],
+  "foundNamesUnderR0": [],
+  "disqualified": {},
+  "cleanAdmitName": [],
+  "cleanAdmitHoldsUnderAllRules": true,
+  "ruleCounts": {
+    "R0": {
+      "NONE": 0,
+      "FOUND": 0,
+      "UNPROVEN": 30
+    },
+    "R1": {
+      "NONE": 6,
+      "FOUND": 3,
+      "UNPROVEN": 21
+    },
+    "R2": {
+      "NONE": 7,
+      "FOUND": 3,
+      "UNPROVEN": 20
+    },
+    "R3": {
+      "NONE": 10,
+      "FOUND": 9,
+      "UNPROVEN": 11
+    }
+  },
+  "r4": {
+    "namesWithAnyEntry": 17,
+    "namesWithADateInSpan": []
+  },
+  "stateTables": {
+    "R0 | KNOWN_ACTIVE | 45d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 18,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12
+    },
+    "R0 | KNOWN_ACTIVE | 90d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 18,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12
+    },
+    "R0 | KNOWN_ACTIVE | 120d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 18,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12
+    },
+    "R0 | KNOWN_OR_POSSIBLY_ACTIVE | 45d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 5
+    },
+    "R0 | KNOWN_OR_POSSIBLY_ACTIVE | 90d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 5
+    },
+    "R0 | KNOWN_OR_POSSIBLY_ACTIVE | 120d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 5
+    },
+    "R1 | KNOWN_ACTIVE | 45d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 14,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R1 | KNOWN_ACTIVE | 90d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 14,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R1 | KNOWN_ACTIVE | 120d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 14,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R1 | KNOWN_OR_POSSIBLY_ACTIVE | 45d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 2,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    },
+    "R1 | KNOWN_OR_POSSIBLY_ACTIVE | 90d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 2,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    },
+    "R1 | KNOWN_OR_POSSIBLY_ACTIVE | 120d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 2,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    },
+    "R2 | KNOWN_ACTIVE | 45d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 13,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 3
+    },
+    "R2 | KNOWN_ACTIVE | 90d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 13,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R2 | KNOWN_ACTIVE | 120d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 13,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R2 | KNOWN_OR_POSSIBLY_ACTIVE | 45d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 1,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R2 | KNOWN_OR_POSSIBLY_ACTIVE | 90d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 1,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    },
+    "R2 | KNOWN_OR_POSSIBLY_ACTIVE | 120d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 1,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    },
+    "R3 | KNOWN_ACTIVE | 45d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 13,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 3
+    },
+    "R3 | KNOWN_ACTIVE | 90d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 13,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R3 | KNOWN_ACTIVE | 120d": {
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 13,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 12,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R3 | KNOWN_OR_POSSIBLY_ACTIVE | 45d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 1,
+      "PRODUCED": 2,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 2
+    },
+    "R3 | KNOWN_OR_POSSIBLY_ACTIVE | 90d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 1,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    },
+    "R3 | KNOWN_OR_POSSIBLY_ACTIVE | 120d": {
+      "CANNOT_VERIFY:ISSUANCE_FLAGGED": 25,
+      "UNKNOWN:NO_FILED_COUNT": 5,
+      "CANNOT_VERIFY:SPLIT_SINCE_COUNT": 1,
+      "PRODUCED": 3,
+      "CANNOT_VERIFY:COUNT_TOO_OLD": 1
+    }
+  },
+  "perName": [
+    {
+      "ticker": "AIFF",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "APUS",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "ARTL",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "AZUL",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "BKYI",
+      "R0": "UNPROVEN",
+      "R1": "NONE",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "CHR",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "CLDI",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "CLRO",
+      "R0": "UNPROVEN",
+      "R1": "NONE",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "CNET",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "ELPW",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "EZGO",
+      "R0": "UNPROVEN",
+      "R1": "FOUND",
+      "R2": "FOUND",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "FOFO",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "GCTK",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "GYGY",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "HCTI",
+      "R0": "UNPROVEN",
+      "R1": "NONE",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "IFBD",
+      "R0": "UNPROVEN",
+      "R1": "NONE",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "INLF",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "KITT",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "LXEH",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "MGLD",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "MSGY",
+      "R0": "UNPROVEN",
+      "R1": "FOUND",
+      "R2": "FOUND",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "MX",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "NWTG",
+      "R0": "UNPROVEN",
+      "R1": "NONE",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "SHMD",
+      "R0": "UNPROVEN",
+      "R1": "NONE",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "SPHL",
+      "R0": "UNPROVEN",
+      "R1": "FOUND",
+      "R2": "FOUND",
+      "R3": "FOUND"
+    },
+    {
+      "ticker": "STAK",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "TBPH",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "NONE",
+      "R3": "NONE"
+    },
+    {
+      "ticker": "TDIC",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "VSA",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    },
+    {
+      "ticker": "XXII",
+      "R0": "UNPROVEN",
+      "R1": "UNPROVEN",
+      "R2": "UNPROVEN",
+      "R3": "UNPROVEN"
+    }
+  ]
+}
