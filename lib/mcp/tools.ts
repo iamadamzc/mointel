@@ -35,6 +35,7 @@ import {
   listAssessments,
 } from '../market/readModel';
 import { buildDiagnostics } from '../review/diagnostics';
+import { setupGradeForTools, sheetWithoutPriority } from './sheetProjection';
 
 /* --------------------------------------------------------------- registry */
 
@@ -178,7 +179,9 @@ export const TOOLS: McpTool[] = [
     description:
       'The current session-aware Discovery board, ranked by whichever board is active — Daily RVOL ' +
       'during the session, AH Participation after the close. Returns the same merged rows the UI ' +
-      'renders: telemetry, ranks, level ladder, cycle, catalyst, structure and intelligence status.',
+      'renders: telemetry, ranks, level ladder, cycle, catalyst, structure and intelligence status. ' +
+      "setupGrade is the desk's own reading of the setup at its last checkpoint, as the board's " +
+      'badge shows it; it is not a prediction and not a recommendation.',
     inputSchema: OBJECT({
       limit: {
         type: 'integer',
@@ -195,6 +198,7 @@ export const TOOLS: McpTool[] = [
     async handler(args) {
       const { snapshot, merged } = await deskContext();
       const limit = limitOf(args, snapshot.discovery.discoveryRank || 12, 50);
+      const nowIso = new Date().toISOString();
 
       return {
         tradingDate: snapshot.discovery.tradingDate,
@@ -217,7 +221,8 @@ export const TOOLS: McpTool[] = [
           intelligenceState: row.intelligenceState,
           provenance: row.provenance,
           deskRead: buildDeskRead(row),
-          sheet: row.research,
+          setupGrade: setupGradeForTools(row.setupGrade, nowIso),
+          sheet: sheetWithoutPriority(row.research),
         })),
       };
     },
@@ -229,7 +234,9 @@ export const TOOLS: McpTool[] = [
     description:
       'Everything the ticker drawer shows for one name: Desk Read, live telemetry, the level ladder, ' +
       'catalyst, structure, supply ledger, cycle, Sheet/AUTO provenance, research state and evidence ' +
-      'sources. This is the deep view — use it after get_discovery identifies a name worth reading.',
+      'sources. This is the deep view — use it after get_discovery identifies a name worth reading. ' +
+      "setupGrade is the desk's own reading of the setup at its last checkpoint, with the five " +
+      'criteria behind it; it is not a prediction and not a recommendation.',
     inputSchema: OBJECT(
       { ticker: { type: 'string', description: 'Ticker symbol, e.g. "XOS".' } },
       ['ticker'],
@@ -269,7 +276,8 @@ export const TOOLS: McpTool[] = [
         intelligenceState: row.intelligenceState,
         provenance: row.provenance,
         comparison: row.comparison,
-        sheet: row.research,
+        setupGrade: setupGradeForTools(row.setupGrade, new Date().toISOString()),
+        sheet: sheetWithoutPriority(row.research),
         supplyLedger: row.researchRecord,
         intelligence: withHonestTimestamps(row.intelligence),
         researchStatus: dashboard.research[ticker] ? 'RESEARCH_RECORD_PRESENT' : 'NO_RESEARCH_RECORD',
