@@ -1,6 +1,6 @@
-# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v12
+# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v13
 
-*Marketing draft v10, 2026-10-05. Built on Commercial's claims reads 5e to 5h and Research's float contract (c624aeec and its answer commits). Read-order for Commercial: the diff of this file against the last pass (5h passed v8).*
+*Marketing draft v13, 2026-10-05. v12 to v13 is the 90-day rewrite only (his ruling, read at his own turn in the Integration seat's transcript 125cfd6b, 2026-10-05T21:22:37.820Z, human origin: "90 days, approve the badge draft, yes hand off"; the first clause is the float maximum filed-count age). The six sentences are Commercial's 5i (b757236d); Commercial reads only these: (1) the bound face carries the filed count's date beside it, format and fit in the 102 px column Design's; (2) the aria-label carries "as of {filed-count date}"; (3) "a recent filed count" in the popover is "a filed count dated {filed-count date}, within the last 90 days"; (4) the page bullet says the date "is shown beside it"; (5) the legend gains "The date is the filed share count's."; (6) the spent 5e standing-condition line is gone. Built on Commercial's claims reads 5e to 5h and Research's float contract (c624aeec and its answer commits). Read-order for Commercial: the diff of this file against the last pass (5h passed v8).*
 
 *Current change list (this draft against v8, the version 5h read; item 1 changed again in v11, see below):*
 1. *NOT_YET face is "Not computed" (two words, each 9 characters or fewer, one line in the 102 px Float column), not "not researched yet", which Design measured at three lines in the 68 px text room. v9 had "Not yet", which Commercial passed with one note: it implies something is on its way, the same objection I had to "Pending". "Not computed" states what is true and promises nothing. Design measured it at 77.3 px, one line, in the 102 px Float column (approved).*
@@ -14,15 +14,13 @@
 - *Issuance wording is true of a closed offering and of a may-be-issuing flag; "in the company's filings" stays out because a flag may cite any source type. A name with nothing found may still have issued shares.*
 - *No em dashes; no universal claims beyond the sources; no vendor named or disparaged; the body never answers "no" about anyone. MUST NOT ship before the insider-only method has a validation sample, and the page must not say or imply the sample has run until it has. The tooltip link and this page ship in ONE release (Web's rule).*
 
-*Standing condition from 5e: the date-in-popover ruling holds ONLY while the maximum filed-count age is 45 days. If he moves it to 90 or 120, the date returns to the cell face and section 1 changes.*
-
 ## 1. Float cell
 
 The cell face is compact; the full statement is in the popover. A trader sees one of four faces.
 
 | Face | When | Popover |
 |---|---|---|
-| **≤ 12.3M** (also "≤ 123.4M", "≤ 1.23B") | filed count present and recent, no issuance flagged, figure passes its check | "The float is no more than {X} shares when the filings line up. Computed from the company's filed share count as of {filed-count date}, less insider holdings filed on {holding dates}. Lined up means: a recent filed count, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count." |
+| **≤ 12.3M** (also "≤ 123.4M", "≤ 1.23B"), with the filed count's date beside it (format and fit in the 102 px column are Design's) | filed count present and filed within the last 90 days, no issuance flagged, figure passes its check | "The float is no more than {X} shares when the filings line up. Computed from the company's filed share count as of {filed-count date}, less insider holdings filed on {holding dates}. Lined up means: a filed count dated {filed-count date}, within the last 90 days, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count." |
 | **Unknown** | no filed count (see causes) | per cause, below |
 | **Cannot verify** (one line, 83.7 px) | a count exists but cannot be relied on today (see causes) | per cause, below |
 | **Not computed** (one line, 77.3 px) | the desk has not computed this name | "The desk has not computed a float for this name." |
@@ -41,9 +39,9 @@ The cell face is compact; the full statement is in the popover. A trader sees on
 
 Unknown and Cannot verify are distinct: Unknown is no usable single filed count; Cannot verify is a count that exists but cannot be relied on. The face "Not computed" is never printed as Unknown. Its aria-label is "float not computed for this name".
 
-**aria-label on the bound face:** "no more than {X} shares, computed from SEC filings, when the filings line up".
+**aria-label on the bound face:** "no more than {X} shares, computed from SEC filings as of {filed-count date}, when the filings line up".
 
-**Column header or once-only legend** (5e item 3a; the header is not a bare "Float"): "Float: computed from SEC filings. An upper bound when the filings line up." (If Design prefers the header, "Float, from filings" with this line as its legend.)
+**Column header or once-only legend** (5e item 3a; the header is not a bare "Float"): "Float: computed from SEC filings. An upper bound when the filings line up. The date is the filed share count's." (If Design prefers the header, "Float, from filings" with this line as its legend.)
 
 **Anywhere the number appears without a popover** (report text, MCP tool output, exports, any stored copy): "no more than {X} shares when the filings line up, from SEC filings as of {filed-count date}". The popover is not a place a persisted number can lean on.
 
@@ -75,7 +73,7 @@ We start with the share count the company most recently filed. From it we subtra
 
 The cell shows one of four things.
 
-- **≤ 12.3M** (the number varies). The float is no more than that, when the filings line up. The date of the filed count is in the detail.
+- **≤ 12.3M** (the number varies). The float is no more than that, when the filings line up. The date of the filed count is shown beside it.
 - **Unknown.** There is no single filed share count to start from: the company has none on file, we could not match it to an SEC filer, or its count is split across several filings.
 - **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, shares may have been issued since, a split may have changed the share units, we did not check for issuance, or the figure did not pass our own sanity check. The reason is in the detail.
 - **Not computed.** We have not computed this name. That is different from Unknown.
