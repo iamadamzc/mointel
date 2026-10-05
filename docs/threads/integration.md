@@ -966,7 +966,96 @@ turns across ALL transcripts (not a peer's last N messages) before any claim of 
 his screen -- read his IP in the nginx log; every time from `%cI`, a transcript timestamp, or `date -u` in the same
 step.*
 
-## LIVE STATE: AT THE TWENTY-THIRD SEAT'S HAND-OFF (2026-10-03, on his "yes" to the hand-off after ledger 4; snapshot read 2026-10-03T16:05:39Z)
+## LIVE STATE: AT THE TWENTY-FOURTH SEAT'S HAND-OFF (2026-10-05, on his "yes hand off" after ledger 3; snapshot read 2026-10-05T00:49:49Z = Sun 2026-10-04 20:49 ET)
+
+*A SNAPSHOT. RE-READ PRODUCTION before acting (ask Ops-tmi for /proc). The 24th's running notes (search "THE TWENTY-FOURTH
+SEAT'S RUNNING NOTES") carry every verification; where they disagree with this, the later note wins. NO EM DASHES in
+anything he reads. His rulings below are each read at his own typed turn in this seat's transcript (session 267e4fe2).*
+
+### PRODUCTION (Ops /proc 2026-10-04T23:20:09Z; re-read)
+```
+WEB/RESEARCH/ASSESS  6e7fff846a573e2692deb8fcb7982c7b375e6f08 (web 2025357 / research 2025415 / assess 2025490, start 2026-10-03
+                     17:50:15-17Z, NR 0) = f5746a84 + Sheet step 1 (no demo rows when the Sheet is absent; Sheet still
+                     connected: meta.provider google-sheets). Sign-in enforced on /desk + data APIs; desk password still on.
+MARKET               2013616 on f5746a84 (since 2026-10-03T16:50:21Z), NR 0: split-day prior close restated from Alpaca
+                     corporate actions (Monday 10-05: 7 listed, 5 on the desk restated: CMND GUTS SCNX VIVK VTAK).
+ORIGIN REFS          refs/heads/production = 6e7fff84 (Ops moves it fast-forward only, after /proc confirms each ship);
+                     tag release/2026-10-03-6e7fff84. Production commits are NOT on main (71 without a patch twin).
+```
+
+### IN FLIGHT (owner -> next)
+```
+MONDAY SPOT CHECK  Ops, after 10:00 ET 10-05, read-only: one of CMND/GUTS/SCNX/VIVK/VTAK, [splits] verdict + percent vs the
+                   restated close. Result comes to Integration.
+FLOAT PAGE         Marketing revising "Are float quotes real?" per Commercial's 9 changes (claims read s5, origin 94c8ede9);
+                   Commercial re-reads; then HIM; then the next WEB seat builds it (new public route MUST be exempt from
+                   Basic Auth in nginx); live only after the insider-only validation sample exists.
+DESIGN MEASURE     Design, in Ops's slot: at 1,024, the Priority badge in the Ticker cell + the Float column ALWAYS ON (84 px;
+                   computed ~151 px each for Why/Risk vs 120 floor, NOT measured). Trade-off to Integration if it doesn't
+                   fit. One popover component (click/focus/touch) for both tooltips; float link opens a new tab.
+```
+
+### APPROVED, NOT BUILT / NOT SHIPPED (owner -> trigger)
+```
+NEXT ORDINARY RELEASE  Ops cuts on /proc (6e7fff84) after Monday's spot check, once the two unbuilt items exist; Integration
+                   replays the literal tip. Picks: 61e2f777 (weekend preflight; effective for deploys AFTER it ships),
+                   f1b8b716 + 6ac43025 (identity.db mode), Research's citation-id fix (UNBUILT; RPGL "[1043]"), Ops's split
+                   follow-up (M1 ex-date fixture + [splits] log rounding; UNBUILT), Web 2fe136ac (landing float sentence,
+                   his yes in Web's chat).
+SPLIT FIX TO MAIN  Ops: ops/split-to-main = origin/main + dff3fb0a + f5746a84 (-x) + the follow-up, gated, literal sha to
+                   Integration, after Monday's spot check (my nod given).
+OWED-TO-MAIN AUDIT Integration: put Ops's list (ops.md: release-only vs owed, by feature) to each owner (Web: step 4; Research/
+                   Design: blue sky, citations, reports runner; Ops: movers, levels/history, v28, preflight, loadMinuteBars,
+                   Now/evening; Design: AR, Sheet step 1): equivalent on main / owed / release-only. Trigger: after the spot check.
+SHEET REPRODUCTION HIS RULINGS (plan docs/sheet-removal-plan-2026-10-03.md, RULED blocks; proposal docs/research/sheet-
+                   reproduction/proposal-2026-10-04.md + addendum 69010a3e; float result docs/research/float-comparison/
+                   result-2026-10-05.md 759465bc):
+                   - FLOAT: SEC upper bound, INSIDERS ONLY (00:40:36Z), always-on column (00:43:25Z), popover tooltip linking
+                     a public page "Are float quotes real?". Commercial s5 rules: no number + "Cannot verify" on active
+                     issuance (ATM / equity line / KNOWN_ACTIVE warrant, convertible, preferred); Unknown = no filed count,
+                     Cannot verify = count too old; cell date = filed count's date. VALIDATION SAMPLE gates the surface AND
+                     the page; verdict only until then.
+                   - PRIORITY: computed from the recap's five criteria (23:49:48Z); stored AVOID displays "D"; per-criterion
+                     basis stored on the checkpoint row; badge on the ticker with a tooltip (00:00:00Z); rubric table drafted
+                     by Research, worded by Marketing, approved by HIM ONCE (NOT yet approved). Filter keeps his 09-23 hide rule.
+                   - RESEARCHED NAMES TABLE REMOVED (23:53:44Z). Counts strip recounts over board rows; Priority sort chip.
+                   - LEARNING LAYER KEPT for desk-performance analysis (23:49:48Z): desk_call_outcomes, $0; patterns as
+                     counts until he sets status thresholds; desk calls only, never his trades.
+                   Owners: next RESEARCH (contract, bound, rubric, outcomes), Design (surface), Marketing (words), next WEB
+                   (page), Ops (steps 4-5; worker pins change = market restart, his yes). OPEN owners to name at step 3:
+                   lib/mcp/tools.ts raw Sheet object, review API readableSheet.
+v6 NARRATIVE       Steps 1-2 ACCEPTED (research/reports-v6 head 759465bc). Steps 3-6 to the next Research seat. Conditions:
+                   NO sample to him before step 4 prints the no-close + split-excluded footnotes; leader sign vs the GAINERS
+                   rule; scan samples for citation tokens; replayed-sample older-high note; cycle words prose form (Marketing).
+                   Design's v6 surface 5c95c92e: replay owed before any cut.
+BASIC-AUTH-OFF     own night; preconditions: /api/research/retry rate limit (Ops + Web, UNASSIGNED); /api/dashboard gated
+                   (Sheet step 4); ^~ /auth/ exemption; claim D test.
+SI LABEL           HOLD (pre-registered Ortex comparison + Commercial's terms read + his yes).
+```
+
+### SEATS (look up by TITLE; check cwd A:\mointel and not archived before every send)
+```
+Ops-tmi local_7fac8dfc   Design-tmi local_82749387   Marketing-tmi local_fdc0aa9a   Commercial-tmi local_2ce868d2
+Research: local_ab66f9f3 RETIRED 10-05 (successor NOT open; its first ask comes to Integration: give it the live state above).
+Web: local_46c15fbe RETIRED 10-04 (successor NOT open). Both old chats still titled -tmi until he renames: route to the NEWER
+createdAt. THIS seat local_f26376f1 retires on his rename. Old Integration local_54f1341f titled -retired, not archived.
+```
+
+**SHARED MAIN (read 2026-10-05T00:49:49Z, not pushed):** local main 179 AHEAD / 44 BEHIND origin. Unpushed by subject: Research
+56, Integration 56, Ops 50, Web 14, plan 3 (mine). CLEARED: all Web (its hand-off); Ops's (ops.md + scripts/ops/server-only-trace.cjs).
+NOT EXPLICITLY CLEARED: Research's (retiring seat said "yours to coordinate"; ask the next Research seat or match by patch-id).
+An earlier `git merge origin/main` CONFLICTED in docs/threads/research.md + docs/research-opening-prompt.md (Research's files).
+THE SYNC IS OVERDUE AND IS INTEGRATION'S: list `origin/main..main` as its own step; clearance per owner; merge origin/main;
+a conflict in a peer's file -> `git merge --abort`, owner resolves. Never push through a side worktree.
+
+### HAND-OFF LINE
+```
+First: ask Ops for /proc, then the Monday spot check result. Give the next Research seat the live state when it asks. Then the
+shared-main sync. This seat's failure, three times: a sentence left before its source was read or re-read (a search that could
+not see part of the set; universal claims from general knowledge; a guarantee restated without the conditions I had read).
+```
+
+## ARCHIVE: WAS LIVE STATE AT THE TWENTY-THIRD SEAT'S HAND-OFF (2026-10-03, on his "yes" to the hand-off after ledger 4; snapshot read 2026-10-03T16:05:39Z; SUPERSEDED BY THE TWENTY-FOURTH'S)
 
 *A SNAPSHOT. RE-READ PRODUCTION before acting (ask Ops-tmi for /proc). The 23rd's running notes (search "THE TWENTY-THIRD
 SEAT'S RUNNING NOTES") carry every verification; where they disagree with this, the later note wins. NO EM DASHES in
