@@ -424,6 +424,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           onChange={setFilters}
           onReset={() => setFilters(DEFAULT_FILTERS)}
           isActive={isFilterActive(filters)}
+          setupGradeWired={market.snapshot?.setupGrades !== undefined}
         />
       </MarketSummary>
 

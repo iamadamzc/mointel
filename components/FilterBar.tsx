@@ -15,6 +15,8 @@ interface FilterBarProps {
   onChange: (next: FilterState) => void;
   onReset: () => void;
   isActive: boolean;
+  /** False while the grade is not wired: its filter would hide every row. */
+  setupGradeWired: boolean;
 }
 
 interface OptionGroupProps<T extends string> {
@@ -71,7 +73,7 @@ function OptionGroup<T extends string>({ label, value, options, onSelect }: Opti
   );
 }
 
-export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarProps) {
+export function FilterBar({ filters, onChange, onReset, isActive, setupGradeWired }: FilterBarProps) {
   return (
     /*
      * An inline group inside the session line, not a band of its own.
@@ -94,12 +96,14 @@ export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarPro
         />
       </div>
 
-      <OptionGroup<SetupGradeFilter>
-        label="Setup grade"
-        value={filters.setupGrade}
-        onSelect={(setupGrade) => onChange({ ...filters, setupGrade })}
-        options={SETUP_GRADE_FILTERS.map((option) => ({ value: option.value, label: option.label.replace(/^Setup grade /, '') }))}
-      />
+      {setupGradeWired ? (
+        <OptionGroup<SetupGradeFilter>
+          label="Setup grade"
+          value={filters.setupGrade}
+          onSelect={(setupGrade) => onChange({ ...filters, setupGrade })}
+          options={SETUP_GRADE_FILTERS.map((option) => ({ value: option.value, label: option.label.replace(/^Setup grade /, '') }))}
+        />
+      ) : null}
 
       <OptionGroup<CycleFilter>
         label="Cycle"
