@@ -1028,6 +1028,14 @@ v6 REPORTS   Research steps 3-6 on research/reports-v6 (not main).
 CLEARED in writing: Marketing 7e0472d1 4a04b132 5855bf61 a9ea26a4; Research 010e9031 3cf42bc3 49ea118b and the float-
   contract docs it named for 040bc01d (a21ee1b4 ea89900a c8b7254d) and af660d29 (c4a35331 576f16b5); Ops 80097100
   b6f8891f (replayed); Integration's own.
+POST-HAND-OFF (Ops): af71021c GATED as 60aa7a07 (af71021c + Ops's one-line test naming the fourth key): vitest 3429
+  passed, build 0, tsc 0, ESLINT RED (8 no-require-imports errors in Research's new .cjs files under docs/research/**).
+  Fix offered: ops/lint-cjs tip b2821e53 on 60aa7a07, eslint.config.mjs override for **/*.cjs (eslint 0 errors, 16
+  warnings). NOT replayed or merged by the 26th; yours to replay (config-only; choose config override vs per-file
+  disables, Research owns the files). The cut is production 6e7fff84 + picks (not main's tip); Ops is building the list.
+POST-HAND-OFF (Design): float cell with the date on the face FITS one line in 102 px (number 11 px, date 10 px muted,
+  numeric m/d, no year; widest "<= 12.3M" + "12/22" = 79.8 of 86 px), measured on a scratch page, re-measure in S3 at
+  1,024. Needs from Research: the number never exceeds 7 characters (3 significant digits, M or B).
 POST-HAND-OFF: Marketing float draft v13 226fbf72 (Commercial 5i's six sentences for 90 days) CLEARED by Marketing, plus
   its charter commit recording it (ask its sha). Commercial reads those six sentences, then Web renders.
 ASK RESEARCH BY SHA before pushing: db44c74e 3ca325bd 46a865ec 571e5119 7ce4b7a9 (all docs/research/** per its messages,
