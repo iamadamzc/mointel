@@ -1398,6 +1398,15 @@ ASKED            Ops: /proc when the cut ships; clear b1398aaa; full gate on mai
                  have been read by a seat that has since handed off).
 READ             5k and 6b read from origin's claims file in full (now on local main). Sheet plan RULED block and beta
                  path RULED 1-9 read.
+OPS /proc        Ops, read off the box 2026-10-05T22:22:17Z: web 2025357 / research 2025415 / assess 2025490 cwd 6e7fff84
+                 (started 2026-10-03 17:50Z), market 2013616 cwd f5746a84 (started 2026-10-03 16:50Z), NR 0,
+                 /opt/mointel/current -> 6e7fff84, origin/production 6e7fff84. CUT NOT SHIPPED. Ops states he answered
+                 "we'll wait" to its ask for a yes and a time (Ops's words, NOT read at his turn by me); Ops plans after
+                 20:00 ET, his go still to come in Ops's session. No env read-back, no market restart yet. Box change since
+                 the 27th: 4 GB swap (b1398aaa). Ops will send the post-ship readout.
+CLEARED          Ops b1398aaa (reply); Marketing 11dbdc04 (reply). Still NOT cleared: Research 09d262b9.
+                 Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
+                 IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           (none yet)
 ```
 
