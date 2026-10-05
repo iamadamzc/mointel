@@ -1468,6 +1468,14 @@ OFF-HOURS        Design's answer, VERIFIED in code (origin/main): empty main are
                  Options A (empty, free), B (default to the 22:00 recap's frozen board, small; no badge on it until the
                  grade rides /api/assessments; must say frozen/not live), C (new strip, medium). Design recs B.
                  PUT TO HIM: NEEDS YOU, rec B with the not-live label as a condition.
+S3 FIRST READ    f9110751: base e0139dea, 8 commits, 0 merges, 27 files (components, lib/dashboard, lib/market/types.ts,
+                 tests). SHIP DEPENDENCY FOUND: the badge reads MarketSnapshot.setupGrades (merge.ts:537, types.ts:827,
+                 optional); NOTHING populates it in f9110751 or on main. Alone, every row prints the dash + "The desk has no
+                 research on this name at this checkpoint." (false) and a letter filter hides every row. RULED: S3 ships
+                 only with (or after) Ops's assess store of the grade columns + the setupGrades reader. Told Design (offered
+                 a "map absent" vs "null grade" guard as its call) and Ops. selectPrimaryFocus removal: no callers, clean.
+COMMERCIAL 5o    6a7120e0 (merged): FORM B's "no sale filed since the count" clause is false under S1; delete. Marketing
+                 25fb0d7c applied it (diff read, em 0); sha NOT named by Marketing, asked.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
