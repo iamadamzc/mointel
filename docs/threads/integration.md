@@ -1563,6 +1563,12 @@ SELF-RESET HOOK  Infra-Ops: session-hygiene s3 now has "self-reset" (READ lines 
                  Infra-Ops v2 draft READ (claude-infra-agent docs/on-clear-v2-draft.sh, 1b1dcec): acts only on an EXACT
                  seat title, else "ignore this note, follow the message". Seam closed. ON HIS YES: write a mointel draft
                  doc (seven -tmi titles -> docs/<seat>-opening-prompt.md, R&D excluded unless he says) for him to install.
+HIS RULING       2026-10-05T23:48:28.801Z (transcript d947056e, his turn): "yes, write it up" (adopt the self-reset hook for
+                 mointel). WRITTEN: docs/self-reset-hook-mointel.md (script + .claude/settings.json entry, matcher
+                 startup|clear; eight titles incl. R&D-tmi, as I told him). Tested: script prints valid JSON, all eight
+                 prompt paths exist, doc's script byte-identical to the tested file, settings JSON valid, em 0 (control
+                 730). HE INSTALLS (seats may not edit settings). Not yet installed. Once installed, every mointel seat may
+                 ask "Reset this seat now?"; tell the seats then.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
