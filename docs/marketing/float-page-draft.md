@@ -1,19 +1,51 @@
-# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v4
+# Float cell, tooltip, and the public page "Are float quotes real?": DRAFT copy v5
 
-*Marketing draft v4, 2026-10-05. All of Commercial's section 5 changes applied (5, 5b, 5c, 5d). No em dashes; no universal claims beyond the sources; no vendor named or disparaged; the body never answers "no" about anyone. Research's two points (the 13d-3 wording; the Forms 3/4/5 subtraction set) are SETTLED (Commercial 8530f442). MUST NOT ship before the insider-only method has a validation sample (next Research seat). The cell FACE and one claims judgment (date-in-popover satisfying item 7) wait on the NEW Commercial seat (local_2aab5a77) and the next Research seat's maximum filed-count age; the page body below is written to the proposed compact face and updates to whatever face Commercial passes.*
+*Marketing draft v5, 2026-10-05. Applies Commercial's section 5e (origin 4df63826) and Research's float contract (c624aeec) to v4. No em dashes; no universal claims beyond the sources; no vendor named or disparaged; the body never answers "no" about anyone. MUST NOT ship before the insider-only method has a validation sample, and the page must not say or imply the sample has run until it has. The tooltip link and this page ship in ONE release (Web's rule).*
+
+*What changed from v4, so Commercial re-reads only this:*
+1. *Four faces, not three: "≤ 12.3M", "Unknown", "Cannot verify", "not researched yet" (the contract's NOT_YET).*
+2. *Popover reasons are PER CAUSE (three for Cannot verify, three for Unknown, one for not researched), each true of its cause (5e, required).*
+3. *The conditional behind a bare "≤ X" lives in the legend and the aria-label (5e item 3a, 3b), and the popover says what "line up" means (3c, recommended).*
+4. *Wherever the number appears with no popover (report text, MCP output, exports, stored copy) it carries "as of {date}" inline (5e item 7).*
+5. *The page no longer lists a holding dated before a split or after the count as a cause of Cannot verify. The contract does not make either one: a holding dated after the count is simply not subtracted. See the open point at the bottom.*
+6. *The page now says outright that a flagged-issuance check is only as good as what the desk finds (5e finding), and never implies "no issuance".*
+
+*Standing condition from 5e: the date-in-popover ruling holds ONLY while the maximum filed-count age is 45 days. If he moves it to 90 or 120, the date returns to the cell face and section 1 changes.*
 
 ## 1. Float cell
 
-The cell face is compact (one short line of room); the full statement is in the popover.
-- Bound (filed count present, inputs aligned): cell **"≤ {X}"** (for example "≤ 12.3M", "≤ 123.4M", "≤ 1.23B"). Popover: "No more than {X} shares freely tradable when the inputs line up, from SEC filings as of {filed-count date}; insider holdings filed on {holding dates}."
-- No filed share count at all: cell **"Unknown"**. Popover: "No filed share count."
-- A filed count exists but recent issuance could have changed it (a stale count, or an active ATM, equity line, or a known-active warrant, convertible or preferred block): cell **"Cannot verify"** (two lines). Popover: "Cannot verify: shares may have been issued since the filed count."
+The cell face is compact; the full statement is in the popover. A trader sees one of four faces.
 
-Unknown and Cannot verify are distinct: Unknown is no filed count; Cannot verify is a count that exists but cannot be trusted. {filed-count date} is the filed share count's date; the cell carries the compact bound, the date lives in the popover. The "≤ {X}" cell needs an aria-label "no more than {X} shares".
+| Face | When | Popover |
+|---|---|---|
+| **≤ 12.3M** (also "≤ 123.4M", "≤ 1.23B") | filed count present and recent, no issuance flagged, figure passes its check | "The float is no more than {X} shares when the filings line up. Computed from the company's filed share count as of {filed-count date}, less insider holdings filed on {holding dates}. Lined up means: a recent filed count, no share issuance we know of, and holdings dated at or before the count." |
+| **Unknown** | no filed count (see causes) | per cause, below |
+| **Cannot verify** (two lines) | a count exists but cannot be relied on today (see causes) | per cause, below |
+| **not researched yet** | the desk has not computed this name | "The desk has not computed this name yet." |
+
+**Unknown, one string per cause:**
+- No filed share count: "No filed share count."
+- No SEC filer match: "We could not match this name to an SEC filer, so there is no filed share count to start from."
+- Count spread across filings: "The filed share count is split across several filings, so no single count applies."
+
+**Cannot verify, one string per cause:**
+- Count too old: "Cannot verify: the latest filed share count is from {filed-count date}, too old to rely on."
+- Active issuance: "Cannot verify: shares may have been issued since the filed count."
+- Figure fails its check: "Cannot verify: the computed figure did not pass the desk's own check against the filed count, so it is not shown."
+
+Unknown and Cannot verify are distinct: Unknown is no usable single filed count; Cannot verify is a count that exists but cannot be relied on. The face "not researched yet" is never printed as Unknown.
+
+**aria-label on the bound face:** "no more than {X} shares, computed from SEC filings, when the filings line up".
+
+**Column header or once-only legend** (5e item 3a; the header is not a bare "Float"): "Float: computed from SEC filings. An upper bound when the filings line up." (If Design prefers the header, "Float, from filings" with this line as its legend.)
+
+**Anywhere the number appears without a popover** (report text, MCP tool output, exports, any stored copy): "no more than {X} shares, from SEC filings as of {filed-count date}". The popover is not a place a persisted number can lean on.
+
+Wherever the cell is described in words, "not researched yet" and "Unknown" are not interchangeable.
 
 ## 2. Float tooltip (ends with the page link)
 
-"Computed from SEC filings: the most recent filed share count less the shares insiders hold directly (holdings as filed on {holding dates}). When the inputs line up, the true float is at most this. Read how float numbers are made: **Are float quotes real?**"
+"Computed from SEC filings: the most recent filed share count less the shares insiders hold directly (holdings as filed on {holding dates}). When the filings line up, the true float is at most this. Read how float numbers are made: **Are float quotes real?**"
 
 ## 3. Public page: "Are float quotes real?"
 
@@ -31,16 +63,35 @@ So a quoted float is an estimate, not a filed fact. We know of no public source 
 
 Ours is an estimate too. What differs is what it is computed from and how we show it: computed from SEC filings, shown as a bound rather than a single figure presented as fact.
 
-We start with the share count the company most recently filed. From it we subtract the shares the company's insiders report holding directly, the officers, directors, large holders and anyone else who files Forms 3, 4 and 5, each holding taken from that filer's own filing. When the inputs line up, what is left is the most shares that could be trading, and the true float is at most that number; the cell shows this compactly as "≤ X", with the full statement, no more than X shares as of the filed count's date, in the detail. When they do not, a count too old to trust, a holding dated before a share split, or a holding dated after the count, the cell reads Cannot verify, with the reason in the detail.
+We start with the share count the company most recently filed. From it we subtract the shares the company's insiders report holding directly, the officers, directors, large holders and anyone else who files Forms 3, 4 and 5, each holding taken from that filer's own filing and dated at or before the count. When the filings line up, what is left is the most shares that could be trading, and the true float is at most that number.
+
+**What you see in the cell**
+
+The cell shows one of four things.
+
+- **≤ 12.3M** (the number varies). The float is no more than that, when the filings line up. The date of the filed count is in the detail.
+- **Unknown.** There is no single filed share count to start from: the company has none on file, we could not match it to an SEC filer, or its count is split across several filings.
+- **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, shares may have been issued since, or the figure did not pass our own check. The reason is in the detail.
+- **not researched yet.** We have not computed this name. That is different from Unknown.
 
 **What we do not subtract, and why**
 
-We do not subtract the beneficial-ownership totals in 13D or 13G filings. Beneficial ownership (SEC Rule 13d-3) is broader than the direct holdings above: it counts shares a holder has the right to acquire within 60 days, such as warrants or convertible notes that are not trading today, and shares whose voting or investment the holder controls. Subtracting a beneficial total can take the number below the real float. An earlier version of this method that also subtracted those totals went below zero on one test name, where the large holders' combined beneficial totals exceeded the filed share count. So we subtract only the shares an insider reports holding outright.
+We do not subtract the beneficial-ownership totals in 13D or 13G filings. Beneficial ownership (SEC Rule 13d-3) is broader than the direct holdings above: it counts shares a holder has the right to acquire within 60 days, such as warrants or convertible notes that are not trading today, and shares whose voting or investment the holder controls. Subtracting a beneficial total can take the number below the real float. An earlier version of this method that also subtracted those totals went below zero on one test name, where the large holders' combined beneficial totals exceeded the filed share count. So we subtract only the shares an insider reports holding outright. A holding dated after the filed count is left out for the same reason: it can only leave the number higher.
 
-**When we cannot**
+**What a number does not tell you**
 
-When the company has no filed share count, the cell reads Unknown. When a filed count exists but recent share issuance could have changed it, for example an active at-the-market program or a convertible block, or the count is simply too old to trust, the cell reads Cannot verify, with the reason in the detail.
+We flag share issuance when we find it in the company's filings, and a flagged name reads Cannot verify. A name with nothing flagged may still have issued shares. The figure is only as current as the filings under it.
 
 **What this is, and is not**
 
 This is a bound, not a measurement of the true float. Where we show a number, it is computed from filings, shown as the most shares that could be trading rather than a single figure presented as fact.
+
+---
+
+**Open points for Commercial (words only, nothing here passes a surface)**
+1. "Lined up means ... no share issuance we know of": the popover's one clause for 5e item 3c. Is "we know of" the right hedge, given the flag is a model's label?
+2. The page says a holding dated after the count "can only leave the number higher". That rests on Research's contract section 2 (an owner with no eligible holding is not subtracted). I have not run a name through it. Provable from the contract, not from a measurement.
+3. v4 listed "a holding dated before a share split" as a Cannot verify cause. The new as-of rule in the contract does not name splits as a state. I removed it from the page; if splits still force a refusal in the built code, Research says so and the line returns.
+4. "Figure fails its check" popover: I describe it as "did not pass the desk's own check against the filed count". The contract calls it a defect alarm. Is "check" enough, or must it say what is checked?
+
+**Open point for Design:** "not researched yet" is lower case in the contract and is the widest of the four faces; it needs the 84 px cell measured at 1,024, and may need two lines like "Cannot verify".
