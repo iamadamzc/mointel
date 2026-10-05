@@ -1427,6 +1427,10 @@ LEDGER           1. Told new Research that Design proposed `floatBound` "on its 
 MARKETING v15    acd6cf0f cleared by reply: "the most recent filed share count" -> "the latest filed share count we have"
                  (tooltip + page). CHANGES TEXT HE APPROVED 16:01:43Z: one line to him before the float ships, batched with
                  the dated-claim change (b) once Research answers 5k item 4.
+WEB SHEET-PRIO   Web: MCP built, web/sheet-priority-out tip 440bd3b8 on Design's 0002adee (`sheet` without `priority`,
+                 plus `setupGrade`), mutants 4/4, rides the badge's release. CORRECTION to my assignment: readableSheet shapes
+                 the payload of BOTH /api/dashboard and /review/<token>/api/dashboard, and the desk still reads Sheet priority
+                 on Design's base, so the strip lands only AFTER Design removes those readers, same release. In web.md OPEN.
 FLOAT ROW DATE   Research 09d262b9 build-plan section 3: (A) row counts only on its own date (morning board dark) vs (B)
                  reuse newest row on or before D, recompute at D. RULED (B) in principle, two conditions: (1) insider SALE
                  after the fetch makes true float exceed the stored bound (count minus insiders): re-read holdings to D or
