@@ -1026,6 +1026,9 @@ commit cleared; push fast-forward; tell the clearing seats.
 Ops-tmi local_c71f613a   Research-tmi local_f6ef479a   Design-tmi local_82749387   Web-tmi local_a4c618a8
 Marketing-tmi local_5ed7eb51   Commercial-tmi local_2aab5a77   THIS seat local_ef410868 retires on his rename.
 All predecessors renamed -retired and archived (read 10-05), except old Ops local_7fac8dfc ("Ops-tmi (retired 2026-10-05)").
+POST-HAND-OFF: Design local_82749387 RETIRING on his "yes hand over" (per Design); hand-off on origin 4d5c2a0a (design.md
+live state: S3 = approved step-3 spec, OM = owed-to-main chain merged locally c0d57723, not on origin; 558d07a5 held).
+Successor NOT open: route nothing to local_82749387; give the next Design seat this live state on its first ask.
 ```
 
 ### HAND-OFF LINE
