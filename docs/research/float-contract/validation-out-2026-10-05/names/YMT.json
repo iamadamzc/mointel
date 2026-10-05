@@ -1,0 +1,67 @@
+{
+  "ticker": "YMT",
+  "cik": "1991605",
+  "tradingDate": "2026-09-28",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 42307692,
+      "dollarCapacity": 10000000,
+      "sourceFiling": "424B3, Registration Statement No. 333-293952",
+      "registrationStatus": "The September 24 prospectus supplement states that the prospectus relates to resale from time to time of up to 42,307,692 ADSs issuable upon conversion or otherwise under up to US$10.0 million of notes. The supplied evidence does not independently establish current effectiveness or confirm any resale activity.",
+      "effectiveDate": null,
+      "terms": "Up to 42,307,692 ADSs, representing up to 1,057,692,300 Class A ordinary shares, associated with up to US$10.0 million of senior convertible promissory notes.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "A filed resale prospectus describes legal resale availability from time to time, but the bundle does not confirm shares converted, issued, sold, or currently eligible for resale.",
+      "evidenceSourceIds": [
+        107567
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 30000000,
+      "sourceFiling": "6-K dated September 8, 2026",
+      "registrationStatus": "The note and underlying securities were described as unregistered in the related exhibit; the separate resale prospectus evidence covers only up to US$10.0 million of notes.",
+      "effectiveDate": null,
+      "terms": "The company reported an agreement to issue and sell up to an aggregate US$30.0 million principal amount of senior unsecured convertible promissory notes convertible into ADSs. Conversion-share quantity and currently outstanding principal are not established by the supplied excerpt.",
+      "holderRestrictions": "The related note exhibit states the note and conversion securities were not registered and refers to Rule 144 or an effective and available registration statement for resale.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential conversion-related supply exists, but the supplied evidence does not establish the amount currently issued, conversion status, applicable conversion price, or current resale eligibility.",
+      "evidenceSourceIds": [
+        89395,
+        89411
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "ACQUISITION_SHARES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K dated September 28, 2026",
+      "registrationStatus": "Not stated in the supplied excerpt.",
+      "effectiveDate": "2026-09-10",
+      "terms": "The company reported issuance of consideration shares on September 10 in connection with the US$5.8 million Qingdao Xingongguan acquisition, but the excerpt truncates the share amount and does not state resale restrictions.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The issuance is confirmed, but quantity, lock-up or other transfer restrictions, and resale eligibility are not established in the bundle.",
+      "evidenceSourceIds": [
+        107556
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

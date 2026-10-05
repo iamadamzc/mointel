@@ -1,0 +1,514 @@
+{
+  "ticker": "SDEV",
+  "cik": "1389545",
+  "tradingDate": "2026-09-29",
+  "rank": 8,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 45337032,
+      "dollarCapacity": null,
+      "sourceFiling": "S-3 filed August 11, 2026, accession 0001437749-26-027018",
+      "registrationStatus": "The prospectus was preliminary and stated that offers or sales were not permitted; no effectiveness evidence for this August 2026 resale S-3 is included.",
+      "effectiveDate": null,
+      "terms": "The filing covers resale or other disposition of 45,337,032 already-issued common shares, including 22,614,600 October 2025 pre-funded-warrant exercise shares and 22,722,432 preferred-conversion shares.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The August 2026 filing itself indicates the offering was not yet permitted; this is registration capacity, not evidence of sales.",
+      "evidenceSourceIds": [
+        12684
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 167539227,
+      "dollarCapacity": null,
+      "sourceFiling": "S-3 filed August 11, 2026, accession 0001437749-26-027018",
+      "registrationStatus": "The related August 2026 resale registration was preliminary, with no included EFFECT notice.",
+      "effectiveDate": null,
+      "terms": "The S-3 identifies up to 167,539,227 common shares underlying January 2026 pre-funded warrants. A September 2026 8-K states that investors purchased approximately $134 million in aggregate of January 2026 pre-funded warrants. [12684, 82315]",
+      "holderRestrictions": "Specific exercise and beneficial-ownership limitations for the January 2026 warrants are not established in the provided excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The warrant shares are identified in the filing, but the provided evidence does not establish remaining exercisable amounts, all holder limitations, or an effective resale registration for the August 2026 filing.",
+      "evidenceSourceIds": [
+        12684,
+        82315
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 22614600,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed June 17, 2026, accession 0001437749-26-020980",
+      "registrationStatus": "Not stated in the cited excerpt.",
+      "effectiveDate": "2026-06-15",
+      "terms": "Following amendments removing exercise restrictions, R01 and Framework fully cashlessly exercised the October 2025 pre-funded warrants, resulting in issuance of 22,614,600 common shares. The company stated that 50,449,780 common shares were issued and outstanding after the exercise.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "These shares were confirmed issued; the evidence does not establish their current resale eligibility or whether they have been sold.",
+      "evidenceSourceIds": [
+        12679
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": 398367,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K exhibit filed May 20, 2026, accession 0001437749-26-017872",
+      "registrationStatus": "An ATM program was reported; the provided evidence does not establish its remaining capacity or whether it remains active.",
+      "effectiveDate": null,
+      "terms": "The company reported sales of an aggregate 398,367 common shares under its ATM program. Separately, the January 2026 ATM prospectus supplement states that Virtu would act as sales agent, was not required to sell a specific amount, and could receive commissions up to 2.0% of gross proceeds. [12696, 12689]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Past ATM issuance is confirmed, but the evidence does not establish available remaining capacity, a termination, or subsequent sales.",
+      "evidenceSourceIds": [
+        12696,
+        12689
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 200000000,
+      "sourceFiling": "S-3 filed October 3, 2025, accession 0001829126-25-007885",
+      "registrationStatus": "The S-3 became effective on November 26, 2025.",
+      "effectiveDate": "2025-11-26",
+      "terms": "The shelf registered up to $200 million of common stock, preferred stock, debt securities, warrants, or units. This is dollar-denominated issuance capacity, not a common-share count.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "An EFFECT notice confirms effectiveness, but the provided evidence does not reconcile use, remaining capacity, or whether the shelf has been suspended or exhausted.",
+      "evidenceSourceIds": [
+        12685,
+        12687
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 50615437,
+    "asOf": "2026-07-27",
+    "filed": "2026-07-30",
+    "accession": "0001437749-26-025065",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001437749-26-029853",
+      "form": "3",
+      "filingDate": "2026-09-08",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-024419",
+      "form": "3",
+      "filingDate": "2026-07-24",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-021026",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-021025",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "5 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-26-021024",
+      "form": "4",
+      "filingDate": "2026-06-17",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-26-017857",
+      "form": "4",
+      "filingDate": "2026-05-19",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "5 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-26-017856",
+      "form": "4",
+      "filingDate": "2026-05-19",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-26-017855",
+      "form": "4",
+      "filingDate": "2026-05-19",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-014303",
+      "form": "4/A",
+      "filingDate": "2026-04-30",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-014302",
+      "form": "4/A",
+      "filingDate": "2026-04-30",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "5 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-26-014301",
+      "form": "4/A",
+      "filingDate": "2026-04-30",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-26-012935",
+      "form": "4",
+      "filingDate": "2026-04-21",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-011913",
+      "form": "4",
+      "filingDate": "2026-04-09",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-011781",
+      "form": "4",
+      "filingDate": "2026-04-08",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-011195",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001437749-26-011164",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000921895-26-000165",
+      "form": "4",
+      "filingDate": "2026-01-29",
+      "primaryDocument": "xslF345X05/form412227020_01292026.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1932843",
+        "ownerName": "Lazar David E.",
+        "rows": [
+          {
+            "asOf": "2025-10-21",
+            "title": "common stock",
+            "shares": 6388000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-032856",
+      "form": "4",
+      "filingDate": "2025-11-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "5 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-25-032855",
+      "form": "4",
+      "filingDate": "2025-11-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001437749-25-032854",
+      "form": "4",
+      "filingDate": "2025-11-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-008355",
+      "form": "4/A",
+      "filingDate": "2025-10-22",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "5 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-008354",
+      "form": "3/A",
+      "filingDate": "2025-10-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "5 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-008289",
+      "form": "4",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-008288",
+      "form": "4",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-008287",
+      "form": "4",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-008286",
+      "form": "3",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001829126-25-008285",
+      "form": "3",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001829126-25-008284",
+      "form": "3",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0000921895-25-002764",
+      "form": "4",
+      "filingDate": "2025-10-17",
+      "primaryDocument": "xslF345X05/form412227020_10172025.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000921895-25-002393",
+      "form": "3",
+      "filingDate": "2025-08-26",
+      "primaryDocument": "xslF345X02/form312227001_08262025.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1932843",
+        "ownerName": "Lazar David E.",
+        "rows": [
+          {
+            "asOf": "2025-08-19",
+            "title": "common stock",
+            "shares": 0
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001398344-25-007148",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-7_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-007146",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-6_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-007144",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-5_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-007141",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-4_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-007139",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-3_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-007136",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-2_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-007133",
+      "form": "4",
+      "filingDate": "2025-04-15",
+      "primaryDocument": "xslF345X05/fp0093058-1_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001398344-25-006732",
+      "form": "3",
+      "filingDate": "2025-04-07",
+      "primaryDocument": "xslF345X02/fp0092959-1.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "4 reporting owners (joint filing, not attributed)"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1932843",
+      "ownerName": "Lazar David E.",
+      "shares": 6388000,
+      "asOf": "2025-10-21",
+      "accessions": [
+        "0000921895-26-000165"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1932843": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

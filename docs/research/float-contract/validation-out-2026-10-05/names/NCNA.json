@@ -1,0 +1,259 @@
+{
+  "ticker": "NCNA",
+  "cik": "1709626",
+  "tradingDate": "2026-09-30",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 100000000,
+      "sourceFiling": "424B5 filed 2025-06-27; referenced in 2026 interim reporting",
+      "registrationStatus": "Available under the effective Form F-3 registration statement; the company states it may periodically sell ADSs up to an aggregate offering price of $100.0 million through its agents.",
+      "effectiveDate": "2025-06-24",
+      "terms": "Dollar capacity only; no share conversion is supportable from the evidence. The filing states agent compensation of 3.0% of gross proceeds. [33856]",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The effective F-3 permits sales, but the evidence does not establish how much, if any, of this facility remains unused or whether sales have occurred after the cited disclosure. [33854,33856,33874]",
+      "evidenceSourceIds": [
+        33854,
+        33856,
+        33874
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 150000000,
+      "sourceFiling": "F-3/A, File No. 333-281576",
+      "registrationStatus": "Form F-3 was declared effective on June 24, 2025.",
+      "effectiveDate": "2025-06-24",
+      "terms": "The shelf permits issuance from time to time of up to $150.0 million of ADSs, debt securities, warrants, rights, or units. The $100.0 million ATM may rely on this registration, so these dollar capacities must not be added together without reconciliation. [33853,33854,33856]",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "Effective registration represents issuance capacity, not evidence of issuance or sales. [33854]",
+      "evidenceSourceIds": [
+        33853,
+        33854,
+        33856
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 10845985,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed 2025-05-07",
+      "registrationStatus": "The definitive prospectus describes Series A warrants to purchase up to 10,845,985 ADSs.",
+      "effectiveDate": null,
+      "terms": "The evidence excerpt does not provide a current unexercised balance, expiration date, exercise price, or present exercisability. [33857]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential ADS supply, but live availability cannot be determined from the supplied excerpt. [33857]",
+      "evidenceSourceIds": [
+        33857
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 10845985,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed 2025-05-07",
+      "registrationStatus": "The definitive prospectus describes Series B warrants to purchase up to 10,845,985 ADSs.",
+      "effectiveDate": null,
+      "terms": "The Series B warrants contain a zero-exercise-price option according to the prospectus excerpt. The current balance and eligibility are not supplied. [33857]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential supply is material to structure review, but the bundle does not establish current exercisability, unexercised amount, or resulting ADS issuance. [33857]",
+      "evidenceSourceIds": [
+        33857
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 8393050,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed 2025-05-07",
+      "registrationStatus": "The definitive prospectus describes pre-funded warrants to purchase up to 8,393,050 ADSs.",
+      "effectiveDate": null,
+      "terms": "The supplied excerpt does not state the currently outstanding balance or exercise status. [33857]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential supply; current availability cannot be confirmed from the evidence. [33857]",
+      "evidenceSourceIds": [
+        33857
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 20809854947,
+    "asOf": "2025-12-31",
+    "filed": "2026-03-19",
+    "accession": "0001193125-26-116030",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001193125-26-280239",
+      "form": "4",
+      "filingDate": "2026-06-24",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-279925",
+      "form": "4",
+      "filingDate": "2026-06-23",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-159162",
+      "form": "4",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-138044",
+      "form": "3",
+      "filingDate": "2026-04-01",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1858745",
+        "ownerName": "Levy Elliott M.",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 13
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-121868",
+      "form": "3",
+      "filingDate": "2026-03-24",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-117653",
+      "form": "3",
+      "filingDate": "2026-03-20",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1992320",
+        "ownerName": "Mellish Martin C.B.",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 28
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-116293",
+      "form": "3",
+      "filingDate": "2026-03-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1807569",
+        "ownerName": "Bloss Jeffrey D.",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 47136
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-114426",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-114414",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-114405",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-114365",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-114355",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1296964",
+        "ownerName": "Griffith Hugh",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1000000
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

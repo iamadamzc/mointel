@@ -1,0 +1,1842 @@
+{
+  "ticker": "AISP",
+  "cik": "1842566",
+  "tradingDate": "2026-10-01",
+  "rank": 8,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 100000000,
+      "sourceFiling": "Form S-3, file number 333-295755",
+      "registrationStatus": "Effective S-3 shelf registration statement.",
+      "effectiveDate": "2026-05-19",
+      "terms": "The company may offer common stock, preferred stock, debt securities, warrants, or units from time to time up to an aggregate initial offering price of $100.0 million.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is effective issuance capacity, not evidence of securities sold or a share count.",
+      "evidenceSourceIds": [
+        123574,
+        123577
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 25000000,
+      "sourceFiling": "424B5 prospectus supplement, registration number 333-285678",
+      "registrationStatus": "The prospectus supplement describes an ATM agreement, but the supplied evidence does not establish remaining capacity, sales to date, or termination status.",
+      "effectiveDate": null,
+      "terms": "Up to $25.0 million of common stock may be sold through Roth Capital Partners, LLC as sales agent.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential issuer-sale capacity. No share count can be calculated from the dollar cap without sale prices, and no sales are established by this evidence.",
+      "evidenceSourceIds": [
+        123580
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 18092575,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 prospectus supplement, file number 333-276932",
+      "registrationStatus": "The prospectus covers resale from time to time by named selling securityholders. The underlying registration was declared effective in 2025.",
+      "effectiveDate": "2025-06-17",
+      "terms": "Up to 18,092,575 shares of common stock were registered for resale by selling securityholders.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This establishes resale availability as disclosed, not actual sales. The supplied evidence does not reconcile how many registered shares, if any, remain unsold or eligible today.",
+      "evidenceSourceIds": [
+        123581,
+        123576,
+        123578
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 16159012,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 prospectus supplement, file number 333-276932",
+      "registrationStatus": "The prospectus describes issuer issuance of shares upon exercise of public warrants.",
+      "effectiveDate": null,
+      "terms": "Up to 16,159,012 common shares were issuable upon exercise of public warrants.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential exercise-related supply, not confirmed issuance or selling. The supplied excerpt does not provide current exercise status, exercise price, remaining warrant count, or whether holders are economically incentivized to exercise at the current price.",
+      "evidenceSourceIds": [
+        123581
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 34439562,
+    "asOf": "2026-08-06",
+    "filed": "2026-08-06",
+    "accession": "0001654954-26-007328",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001161697-26-000229",
+      "form": "4/A",
+      "filingDate": "2026-10-01",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2026-06-03",
+            "title": "common stock",
+            "shares": 3832207
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000130",
+      "form": "4",
+      "filingDate": "2026-06-04",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2026-06-03",
+            "title": "common stock",
+            "shares": 3832207
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000104",
+      "form": "4",
+      "filingDate": "2026-05-04",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004300",
+        "ownerName": "Ma Yanda",
+        "rows": [
+          {
+            "asOf": "2026-04-20",
+            "title": "common stock",
+            "shares": 270000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000101",
+      "form": "4",
+      "filingDate": "2026-04-23",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2026-04-20",
+            "title": "common stock",
+            "shares": 5222920
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000099",
+      "form": "4",
+      "filingDate": "2026-04-23",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2026-04-20",
+            "title": "common stock",
+            "shares": 4032207
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000097",
+      "form": "4",
+      "filingDate": "2026-04-23",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2026-04-20",
+            "title": "common stock",
+            "shares": 151948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000095",
+      "form": "4",
+      "filingDate": "2026-04-23",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1849168",
+        "ownerName": "Lebedin Louis",
+        "rows": [
+          {
+            "asOf": "2026-04-20",
+            "title": "common stock",
+            "shares": 100000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000067",
+      "form": "4",
+      "filingDate": "2026-03-23",
+      "primaryDocument": "xslF345X06/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2026-03-20",
+            "title": "common stock",
+            "shares": 4012567
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000048",
+      "form": "4",
+      "filingDate": "2026-03-06",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1197104",
+        "ownerName": "SCOTT MARK E",
+        "rows": [
+          {
+            "asOf": "2026-03-04",
+            "title": "common stock",
+            "shares": 43952
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000046",
+      "form": "4",
+      "filingDate": "2026-03-06",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2026-03-04",
+            "title": "common stock",
+            "shares": 151948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000033",
+      "form": "4/A",
+      "filingDate": "2026-01-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-12-15",
+            "title": "common stock",
+            "shares": 3972567
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-26-000031",
+      "form": "4/A",
+      "filingDate": "2026-01-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "common stock",
+            "shares": 5222920
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000478",
+      "form": "4",
+      "filingDate": "2025-12-30",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2025-12-29",
+            "title": "common stock",
+            "shares": 151948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000470",
+      "form": "4",
+      "filingDate": "2025-12-18",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2025-12-18",
+            "title": "common stock",
+            "shares": 74719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000459",
+      "form": "4",
+      "filingDate": "2025-12-16",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-12-15",
+            "title": "common stock",
+            "shares": 204849
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000457",
+      "form": "4",
+      "filingDate": "2025-12-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2003703",
+        "ownerName": "Ranjan Peeyush",
+        "rows": [
+          {
+            "asOf": "2025-12-11",
+            "title": "common stock",
+            "shares": 9767
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000456",
+      "form": "4",
+      "filingDate": "2025-12-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1849168",
+        "ownerName": "Lebedin Louis",
+        "rows": [
+          {
+            "asOf": "2025-12-11",
+            "title": "common stock",
+            "shares": 100000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000455",
+      "form": "4",
+      "filingDate": "2025-12-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1623863",
+        "ownerName": "Mital Amit",
+        "rows": [
+          {
+            "asOf": "2025-12-11",
+            "title": "common stock",
+            "shares": 11281
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000382",
+      "form": "4",
+      "filingDate": "2025-11-24",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-11-21",
+            "title": "common stock",
+            "shares": 199849
+          },
+          {
+            "asOf": "2025-11-21",
+            "title": "common stock",
+            "shares": 204849
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000378",
+      "form": "4",
+      "filingDate": "2025-11-20",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-11-20",
+            "title": "common stock",
+            "shares": 194849
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000376",
+      "form": "4",
+      "filingDate": "2025-11-19",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1849168",
+        "ownerName": "Lebedin Louis",
+        "rows": [
+          {
+            "asOf": "2025-11-18",
+            "title": "common stock",
+            "shares": 100000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000346",
+      "form": "4/A",
+      "filingDate": "2025-10-06",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 74719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000344",
+      "form": "4/A",
+      "filingDate": "2025-10-06",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-29",
+            "title": "common stock",
+            "shares": 143849
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000342",
+      "form": "4/A",
+      "filingDate": "2025-10-06",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1849168",
+        "ownerName": "Lebedin Louis",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 50000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000325",
+      "form": "4",
+      "filingDate": "2025-09-23",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1623863",
+        "ownerName": "Mital Amit",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 11281
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000322",
+      "form": "4",
+      "filingDate": "2025-09-12",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-29",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000314",
+      "form": "4",
+      "filingDate": "2025-09-04",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2003703",
+        "ownerName": "Ranjan Peeyush",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 9767
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000312",
+      "form": "4",
+      "filingDate": "2025-09-04",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-25-000310",
+      "form": "4",
+      "filingDate": "2025-09-04",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1197104",
+        "ownerName": "SCOTT MARK E",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 43952
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000308",
+      "form": "4",
+      "filingDate": "2025-09-04",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 51948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000306",
+      "form": "4",
+      "filingDate": "2025-09-04",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 74719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000304",
+      "form": "4",
+      "filingDate": "2025-09-04",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-09-03",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000296",
+      "form": "4",
+      "filingDate": "2025-08-25",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-22",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000290",
+      "form": "4",
+      "filingDate": "2025-08-21",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-20",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000288",
+      "form": "4",
+      "filingDate": "2025-08-20",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-19",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000285",
+      "form": "4",
+      "filingDate": "2025-08-19",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-18",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000283",
+      "form": "4",
+      "filingDate": "2025-08-18",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-15",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000272",
+      "form": "4",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-14",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000270",
+      "form": "4/A",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-13",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000268",
+      "form": "4/A",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-12",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000266",
+      "form": "4/A",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-08",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000264",
+      "form": "4",
+      "filingDate": "2025-08-14",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-13",
+            "title": "common stock",
+            "shares": 177719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000258",
+      "form": "4",
+      "filingDate": "2025-08-13",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-12",
+            "title": "common stock",
+            "shares": 170719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000242",
+      "form": "4",
+      "filingDate": "2025-08-11",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-08-08",
+            "title": "common stock",
+            "shares": 160719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000219",
+      "form": "4",
+      "filingDate": "2025-08-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1197104",
+        "ownerName": "SCOTT MARK E",
+        "rows": [
+          {
+            "asOf": "2025-08-08",
+            "title": "common stock",
+            "shares": 43952
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000194",
+      "form": "4",
+      "filingDate": "2025-07-01",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-25-000192",
+      "form": "4",
+      "filingDate": "2025-06-25",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2025-06-23",
+            "title": "common stock",
+            "shares": 51948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000118",
+      "form": "4",
+      "filingDate": "2025-03-24",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-25-000096",
+      "form": "4",
+      "filingDate": "2025-03-11",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2025-03-07",
+            "title": "common stock",
+            "shares": 74719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000094",
+      "form": "4",
+      "filingDate": "2025-03-11",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004185",
+        "ownerName": "Airship Redmond Family Limited Partnership",
+        "rows": [
+          {
+            "asOf": "2025-03-07",
+            "title": "common stock",
+            "shares": 7211523
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000092",
+      "form": "4/A",
+      "filingDate": "2025-03-11",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000081",
+      "form": "4",
+      "filingDate": "2025-03-05",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-25-000079",
+      "form": "4",
+      "filingDate": "2025-03-05",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2025-03-04",
+            "title": "common stock",
+            "shares": 121948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000039",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004300",
+        "ownerName": "Ma Yanda",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 44317
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000040",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1623863",
+        "ownerName": "Mital Amit",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 11281
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000036",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004278",
+        "ownerName": "Allen Paul M.",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 121948
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000037",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 134719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000043",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-25-000044",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004130",
+        "ownerName": "Xu Derek",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 74719
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000042",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004185",
+        "ownerName": "Airship Redmond Family Limited Partnership",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 8907733
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000041",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2003703",
+        "ownerName": "Ranjan Peeyush",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 9767
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000038",
+      "form": "4",
+      "filingDate": "2025-01-08",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004183",
+        "ownerName": "Airship Kirkland Family Limited Partnership",
+        "rows": [
+          {
+            "asOf": "2025-01-07",
+            "title": "common stock",
+            "shares": 3767718
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000015",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 60000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000004",
+      "form": "4",
+      "filingDate": "2025-01-02",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004300",
+        "ownerName": "Ma Yanda",
+        "rows": [
+          {
+            "asOf": "2024-12-30",
+            "title": "common stock",
+            "shares": 0
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-25-000002",
+      "form": "4",
+      "filingDate": "2025-01-02",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-24-000525",
+      "form": "4",
+      "filingDate": "2024-12-30",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001161697-24-000511",
+      "form": "4",
+      "filingDate": "2024-12-12",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004300",
+        "ownerName": "Ma Yanda",
+        "rows": [
+          {
+            "asOf": "2024-12-11",
+            "title": "common stock",
+            "shares": 60000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-24-000498",
+      "form": "4",
+      "filingDate": "2024-12-09",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004300",
+        "ownerName": "Ma Yanda",
+        "rows": [
+          {
+            "asOf": "2024-12-06",
+            "title": "common stock",
+            "shares": 90000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-24-000496",
+      "form": "4",
+      "filingDate": "2024-12-06",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004300",
+        "ownerName": "Ma Yanda",
+        "rows": [
+          {
+            "asOf": "2024-12-04",
+            "title": "common stock",
+            "shares": 30000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001161697-24-000413",
+      "form": "4",
+      "filingDate": "2024-10-01",
+      "primaryDocument": "xslF345X05/form_4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2004301",
+        "ownerName": "Huang Victor",
+        "rows": [
+          {
+            "asOf": "2024-09-27",
+            "title": "common stock",
+            "shares": 60000
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1197104",
+      "ownerName": "SCOTT MARK E",
+      "shares": 43952,
+      "asOf": "2026-03-04",
+      "accessions": [
+        "0001161697-26-000048"
+      ]
+    },
+    {
+      "ownerCik": "1623863",
+      "ownerName": "Mital Amit",
+      "shares": 11281,
+      "asOf": "2025-12-11",
+      "accessions": [
+        "0001161697-25-000455"
+      ]
+    },
+    {
+      "ownerCik": "1849168",
+      "ownerName": "Lebedin Louis",
+      "shares": 100000,
+      "asOf": "2026-04-20",
+      "accessions": [
+        "0001161697-26-000095"
+      ]
+    },
+    {
+      "ownerCik": "2003703",
+      "ownerName": "Ranjan Peeyush",
+      "shares": 9767,
+      "asOf": "2025-12-11",
+      "accessions": [
+        "0001161697-25-000457"
+      ]
+    },
+    {
+      "ownerCik": "2004130",
+      "ownerName": "Xu Derek",
+      "shares": 5222920,
+      "asOf": "2026-04-20",
+      "accessions": [
+        "0001161697-26-000101"
+      ]
+    },
+    {
+      "ownerCik": "2004183",
+      "ownerName": "Airship Kirkland Family Limited Partnership",
+      "shares": 3767718,
+      "asOf": "2025-01-07",
+      "accessions": [
+        "0001161697-25-000038"
+      ]
+    },
+    {
+      "ownerCik": "2004185",
+      "ownerName": "Airship Redmond Family Limited Partnership",
+      "shares": 7211523,
+      "asOf": "2025-03-07",
+      "accessions": [
+        "0001161697-25-000094"
+      ]
+    },
+    {
+      "ownerCik": "2004278",
+      "ownerName": "Allen Paul M.",
+      "shares": 151948,
+      "asOf": "2026-04-20",
+      "accessions": [
+        "0001161697-26-000097"
+      ]
+    },
+    {
+      "ownerCik": "2004300",
+      "ownerName": "Ma Yanda",
+      "shares": 270000,
+      "asOf": "2026-04-20",
+      "accessions": [
+        "0001161697-26-000104"
+      ]
+    },
+    {
+      "ownerCik": "2004301",
+      "ownerName": "Huang Victor",
+      "shares": 3832207,
+      "asOf": "2026-06-03",
+      "accessions": [
+        "0001161697-26-000229"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1197104": "NONE",
+    "1623863": "NONE",
+    "1849168": "NONE",
+    "2003703": "NONE",
+    "2004130": "NONE",
+    "2004183": "NONE",
+    "2004185": "NONE",
+    "2004278": "NONE",
+    "2004300": "NONE",
+    "2004301": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1197104",
+      "shares": 43952,
+      "asOf": "2026-03-04",
+      "rows": [
+        {
+          "accession": "0001161697-26-000048",
+          "title": "common stock",
+          "shares": 43952,
+          "asOf": "2026-03-04"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 43952, independent 43952, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-03-04, count as-of 2026-08-06, independent latest eligible 2026-03-04"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1623863",
+      "shares": 11281,
+      "asOf": "2025-12-11",
+      "rows": [
+        {
+          "accession": "0001161697-25-000455",
+          "title": "common stock",
+          "shares": 11281,
+          "asOf": "2025-12-11"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 11281, independent 11281, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-12-11, count as-of 2026-08-06, independent latest eligible 2025-12-11"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1849168",
+      "shares": 100000,
+      "asOf": "2026-04-20",
+      "rows": [
+        {
+          "accession": "0001161697-26-000095",
+          "title": "common stock",
+          "shares": 100000,
+          "asOf": "2026-04-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 100000, independent 100000, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-04-20, count as-of 2026-08-06, independent latest eligible 2026-04-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2003703",
+      "shares": 9767,
+      "asOf": "2025-12-11",
+      "rows": [
+        {
+          "accession": "0001161697-25-000457",
+          "title": "common stock",
+          "shares": 9767,
+          "asOf": "2025-12-11"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 9767, independent 9767, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-12-11, count as-of 2026-08-06, independent latest eligible 2025-12-11"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004130",
+      "shares": 5222920,
+      "asOf": "2026-04-20",
+      "rows": [
+        {
+          "accession": "0001161697-26-000101",
+          "title": "common stock",
+          "shares": 5222920,
+          "asOf": "2026-04-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 5222920, independent 5222920, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-04-20, count as-of 2026-08-06, independent latest eligible 2026-04-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004183",
+      "shares": 3767718,
+      "asOf": "2025-01-07",
+      "rows": [
+        {
+          "accession": "0001161697-25-000038",
+          "title": "common stock",
+          "shares": 3767718,
+          "asOf": "2025-01-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 3767718, independent 3767718, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-01-07, count as-of 2026-08-06, independent latest eligible 2025-01-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004185",
+      "shares": 7211523,
+      "asOf": "2025-03-07",
+      "rows": [
+        {
+          "accession": "0001161697-25-000094",
+          "title": "common stock",
+          "shares": 7211523,
+          "asOf": "2025-03-07"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 7211523, independent 7211523, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-03-07, count as-of 2026-08-06, independent latest eligible 2025-03-07"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004278",
+      "shares": 151948,
+      "asOf": "2026-04-20",
+      "rows": [
+        {
+          "accession": "0001161697-26-000097",
+          "title": "common stock",
+          "shares": 151948,
+          "asOf": "2026-04-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 151948, independent 151948, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-04-20, count as-of 2026-08-06, independent latest eligible 2026-04-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004300",
+      "shares": 270000,
+      "asOf": "2026-04-20",
+      "rows": [
+        {
+          "accession": "0001161697-26-000104",
+          "title": "common stock",
+          "shares": 270000,
+          "asOf": "2026-04-20"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 270000, independent 270000, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-04-20, count as-of 2026-08-06, independent latest eligible 2026-04-20"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2004301",
+      "shares": 3832207,
+      "asOf": "2026-06-03",
+      "rows": [
+        {
+          "accession": "0001161697-26-000229",
+          "title": "common stock",
+          "shares": 3832207,
+          "asOf": "2026-06-03"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 3832207, independent 3832207, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-03, count as-of 2026-08-06, independent latest eligible 2026-06-03"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 13818246, count 34439562"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

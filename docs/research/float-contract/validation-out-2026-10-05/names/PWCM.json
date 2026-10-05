@@ -1,0 +1,321 @@
+{
+  "ticker": "PWCM",
+  "cik": "1640384",
+  "tradingDate": "2026-09-30",
+  "rank": 8,
+  "ledger": [
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K exhibit filed August 28, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": null,
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The supplied exhibit is tagged as warrant-related evidence, but its excerpt does not provide warrant quantity, exercise price, registration status, or exercisability. [118159]",
+      "evidenceSourceIds": [
+        118159
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K exhibit filed August 14, 2026",
+      "registrationStatus": null,
+      "effectiveDate": null,
+      "terms": null,
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The supplied quarterly-results exhibit is tagged for convertibles and warrants, but the excerpt does not establish terms, amounts, conversion status, or potential common-share issuance. [12990]",
+      "evidenceSourceIds": [
+        12990
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 1794135,
+    "asOf": "2026-08-07",
+    "filed": "2026-08-14",
+    "accession": "0001193125-26-352417",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0000897069-26-001196",
+      "form": "4",
+      "filingDate": "2026-05-20",
+      "primaryDocument": "xslF345X06/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1634290",
+        "ownerName": "Russell Richard D.",
+        "rows": [
+          {
+            "asOf": "2026-05-19",
+            "title": "common stock",
+            "shares": 244147
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-25-001530",
+      "form": "4",
+      "filingDate": "2025-10-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001528",
+      "form": "4",
+      "filingDate": "2025-10-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001526",
+      "form": "4",
+      "filingDate": "2025-10-02",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001399",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001397",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001395",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001393",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001391",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-25-001389",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000897069-24-002319",
+      "form": "4",
+      "filingDate": "2024-12-19",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1742160",
+        "ownerName": "Duran Ryan H",
+        "rows": [
+          {
+            "asOf": "2024-12-18",
+            "title": "common stock",
+            "shares": 12818
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-002248",
+      "form": "4",
+      "filingDate": "2024-12-04",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1742160",
+        "ownerName": "Duran Ryan H",
+        "rows": [
+          {
+            "asOf": "2024-12-04",
+            "title": "common stock",
+            "shares": 13318
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-002203",
+      "form": "4",
+      "filingDate": "2024-11-25",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1742160",
+        "ownerName": "Duran Ryan H",
+        "rows": [
+          {
+            "asOf": "2024-11-20",
+            "title": "common stock",
+            "shares": 13818
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-002181",
+      "form": "4",
+      "filingDate": "2024-11-19",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1458737",
+        "ownerName": "Graham Andrew L.",
+        "rows": [
+          {
+            "asOf": "2024-11-15",
+            "title": "common stock",
+            "shares": 17303
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-002122",
+      "form": "4",
+      "filingDate": "2024-11-07",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1742160",
+        "ownerName": "Duran Ryan H",
+        "rows": [
+          {
+            "asOf": "2024-11-06",
+            "title": "common stock",
+            "shares": 14318
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-002027",
+      "form": "4",
+      "filingDate": "2024-10-23",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1742160",
+        "ownerName": "Duran Ryan H",
+        "rows": [
+          {
+            "asOf": "2024-10-23",
+            "title": "common stock",
+            "shares": 14818
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000897069-24-001942",
+      "form": "4",
+      "filingDate": "2024-10-11",
+      "primaryDocument": "xslF345X05/form4.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1742160",
+        "ownerName": "Duran Ryan H",
+        "rows": [
+          {
+            "asOf": "2024-10-09",
+            "title": "common stock",
+            "shares": 15318
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1458737",
+      "ownerName": "Graham Andrew L.",
+      "shares": 17303,
+      "asOf": "2024-11-15",
+      "accessions": [
+        "0000897069-24-002181"
+      ]
+    },
+    {
+      "ownerCik": "1634290",
+      "ownerName": "Russell Richard D.",
+      "shares": 244147,
+      "asOf": "2026-05-19",
+      "accessions": [
+        "0000897069-26-001196"
+      ]
+    },
+    {
+      "ownerCik": "1742160",
+      "ownerName": "Duran Ryan H",
+      "shares": 12818,
+      "asOf": "2024-12-18",
+      "accessions": [
+        "0000897069-24-002319"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1458737": "FOUND",
+    "1634290": "FOUND",
+    "1742160": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

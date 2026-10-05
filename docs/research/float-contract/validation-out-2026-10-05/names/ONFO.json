@@ -1,0 +1,154 @@
+{
+  "ticker": "ONFO",
+  "cik": "1825452",
+  "tradingDate": "2026-09-28",
+  "rank": 5,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 32696345,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 filed April 30, 2026 (accession 0001654954-26-004162); S-1 effective April 27, 2026",
+      "registrationStatus": "The prospectus described 31,636,364 note-conversion shares plus up to 1,059,981 right shares, and the associated S-1 was declared effective. This is resale/issuance eligibility, not evidence that these shares were sold. [103593, 103591]",
+      "effectiveDate": "2026-04-27",
+      "terms": "The stated share amount is from the April 2026 prospectus and predates the subsequently announced 1-for-50 reverse split. The bundle does not provide a post-split reconciliation or revised registered-share count. [103593, 103614]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The EFFECT establishes that the S-1 became effective, so the registered securities may have been eligible for sale or issuance subject to the governing instruments. The supplied evidence does not establish current remaining availability, conversion status, or actual sales. [103591, 103593]",
+      "evidenceSourceIds": [
+        103591,
+        103593,
+        103614
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 6199863,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed September 2, 2025 (accession 0001654954-25-010231)",
+      "registrationStatus": "A prospectus covered 6,199,863 common shares issuable on warrant exercise, and the related S-1 was declared effective on August 29, 2025. [103594, 103592]",
+      "effectiveDate": "2025-08-29",
+      "terms": "The prospectus stated that the warrants were exercisable through August 30, 2027 and that cash exercise could yield approximately $31.0 million in gross proceeds; it also stated that exercise timing and amount could not be predicted. The disclosed share quantity predates the later 1-for-50 reverse split, and no post-split warrant adjustment is supplied. [103594, 103614]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Warrants are potential—not confirmed—supply. Their current exercise status, adjusted share count, exercise price, and actual exercise activity are not established by the bundle. [103594, 103614]",
+      "evidenceSourceIds": [
+        103592,
+        103594,
+        103614
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 2452712,
+    "asOf": "2026-08-19",
+    "filed": "2026-08-19",
+    "accession": "0001654954-26-007754",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001654954-26-000043",
+      "form": "4",
+      "filingDate": "2026-01-02",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1825756",
+        "ownerName": "Wells Dominic Benjamin James",
+        "rows": [
+          {
+            "asOf": "2025-12-30",
+            "title": "common stock",
+            "shares": 1225207
+          },
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 1240000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001654954-25-009718",
+      "form": "4",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001654954-25-009717",
+      "form": "4",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001654954-25-009715",
+      "form": "4",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001654954-25-009714",
+      "form": "4",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001654954-25-007243",
+      "form": "4",
+      "filingDate": "2025-06-20",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001654954-24-015951",
+      "form": "4",
+      "filingDate": "2024-12-30",
+      "primaryDocument": "xslF345X05/section16.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1825756",
+      "ownerName": "Wells Dominic Benjamin James",
+      "shares": 1240000,
+      "asOf": "2025-12-31",
+      "accessions": [
+        "0001654954-26-000043"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1825756": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

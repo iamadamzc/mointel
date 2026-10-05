@@ -1,0 +1,488 @@
+{
+  "ticker": "LPA",
+  "cik": "1997711",
+  "tradingDate": "2026-09-30",
+  "rank": 4,
+  "ledger": [],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 31617815,
+    "asOf": "2025-12-31",
+    "filed": "2026-03-18",
+    "accession": "0001997711-26-000045",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001997711-26-000163",
+      "form": "3",
+      "filingDate": "2026-09-18",
+      "primaryDocument": "xslF345X06/wk-form3_1789743561.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001997711-26-000161",
+      "form": "4",
+      "filingDate": "2026-09-18",
+      "primaryDocument": "xslF345X06/wk-form4_1789739420.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2122728",
+        "ownerName": "Lazarus Roger A.",
+        "rows": [
+          {
+            "asOf": "2026-09-16",
+            "title": "ordinary shares",
+            "shares": 27500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000149",
+      "form": "4",
+      "filingDate": "2026-09-04",
+      "primaryDocument": "xslF345X06/wk-form4_1788546242.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2115770",
+        "ownerName": "Marquina Javier",
+        "rows": [
+          {
+            "asOf": "2026-09-01",
+            "title": "ordinary shares",
+            "shares": 30168
+          },
+          {
+            "asOf": "2026-09-04",
+            "title": "ordinary shares",
+            "shares": 28408
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000147",
+      "form": "4",
+      "filingDate": "2026-08-26",
+      "primaryDocument": "xslF345X06/wk-form4_1787789625.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1873034",
+        "ownerName": "McDonald Thomas",
+        "rows": [
+          {
+            "asOf": "2026-08-24",
+            "title": "ordinary shares",
+            "shares": 22500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000115",
+      "form": "4",
+      "filingDate": "2026-05-22",
+      "primaryDocument": "xslF345X06/wk-form4_1779450794.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2122728",
+        "ownerName": "Lazarus Roger A.",
+        "rows": [
+          {
+            "asOf": "2026-05-20",
+            "title": "ordinary shares",
+            "shares": 27500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000087",
+      "form": "3",
+      "filingDate": "2026-04-07",
+      "primaryDocument": "xslF345X06/wk-form3_1775604272.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1873034",
+        "ownerName": "McDonald Thomas",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 22500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000085",
+      "form": "3",
+      "filingDate": "2026-04-07",
+      "primaryDocument": "xslF345X06/wk-form3_1775584690.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001997711-26-000082",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/wk-form4_1775235209.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113281",
+        "ownerName": "Canales Saldana Gloria",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 25000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000080",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/wk-form4_1775235150.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2112936",
+        "ownerName": "Salgar Mauricio",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 25000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000078",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/wk-form4_1775235070.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2119320",
+        "ownerName": "Fernandez Pagan Annette",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 18900
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000076",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/wk-form4_1775179024.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2115770",
+        "ownerName": "Marquina Javier",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 31968
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000075",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/wk-form4_1775178977.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113061",
+        "ownerName": "Saldarriaga Esteban",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 31500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000074",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/wk-form4_1775164045.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2122728",
+        "ownerName": "Lazarus Roger A.",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 37500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000073",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/wk-form4_1775161459.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2123413",
+        "ownerName": "Lavertu Francoise",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 17500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000072",
+      "form": "4",
+      "filingDate": "2026-04-02",
+      "primaryDocument": "xslF345X06/wk-form4_1775161422.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2108495",
+        "ownerName": "SMITH-MARQUEZ JAMES PAUL",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 25830
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000063",
+      "form": "3",
+      "filingDate": "2026-03-25",
+      "primaryDocument": "xslF345X06/wk-form3_1774459317.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001997711-26-000061",
+      "form": "3",
+      "filingDate": "2026-03-23",
+      "primaryDocument": "xslF345X06/wk-form3_1774283636.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2123413",
+        "ownerName": "Lavertu Francoise",
+        "rows": [
+          {
+            "asOf": "2026-03-20",
+            "title": "ordinary shares (rsu)",
+            "shares": 15000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000059",
+      "form": "3",
+      "filingDate": "2026-03-20",
+      "primaryDocument": "xslF345X06/wk-form3_1774031065.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2122728",
+        "ownerName": "Lazarus Roger A.",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 30000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000057",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866335.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113281",
+        "ownerName": "Canales Saldana Gloria",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 15000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 2500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000056",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866318.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2119320",
+        "ownerName": "Fernandez Pagan Annette",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 6300
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000055",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866300.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2113061",
+        "ownerName": "Saldarriaga Esteban",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 10500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000054",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866267.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2112936",
+        "ownerName": "Salgar Mauricio",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 15000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 2500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000053",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866249.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2108495",
+        "ownerName": "SMITH-MARQUEZ JAMES PAUL",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 8610
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000052",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866226.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001997711-26-000051",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866204.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2121634",
+        "ownerName": "Durruty Diego",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 15000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001997711-26-000050",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form3_1773866175.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2115770",
+        "ownerName": "Marquina Javier",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares (rsu)",
+            "shares": 15000
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 9462
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002118651-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-11",
+      "primaryDocument": "xslF345X02/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

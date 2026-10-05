@@ -1,0 +1,68 @@
+{
+  "ticker": "GOW",
+  "cik": "2097702",
+  "tradingDate": "2026-09-30",
+  "rank": 10,
+  "ledger": [
+    {
+      "type": "PIPE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K / Exhibit 99.1, accession 0001213900-26-103502",
+      "registrationStatus": "The closing release confirms that an investor purchased approximately $50 million of preferred shares and warrants; the share count and resale registration status are not stated in the supplied excerpt.",
+      "effectiveDate": "2026-09-25",
+      "terms": "Approximately $50 million closing PIPE investment in preferred shares and warrants; approximately $20 million private placement had been funded at signing in October 2025.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The securities were purchased at closing, but the evidence does not establish immediate public resale eligibility, preferred conversion terms, warrant exercise price, or lock-ups.",
+      "evidenceSourceIds": [
+        115776
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 980392,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, accession 0001213900-26-095812",
+      "registrationStatus": "The prospectus covers up to 980,392 warrants and was associated with F-4 registration statement 333-294547, which became effective August 11, 2026. Effectiveness permits registered securities to be sold or issued as applicable; it does not establish exercise or resale activity.",
+      "effectiveDate": "2026-08-11",
+      "terms": "Prospectus states it is for up to 980,392 warrants, alongside up to 18,981,618 ordinary shares and 2,464,986 Series A redeemable preference shares.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The supplied evidence establishes registered warrant capacity/coverage, not whether all warrants were issued, exercisable, in the money, or freely saleable.",
+      "evidenceSourceIds": [
+        115774,
+        115772
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 18981618,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, accession 0001213900-26-095812",
+      "registrationStatus": "The effective F-4 transaction prospectus covers up to 18,981,618 ordinary shares. The excerpt does not distinguish shares issued at closing from shares reserved for transaction-related issuances or establish public resale eligibility.",
+      "effectiveDate": "2026-08-11",
+      "terms": "The prospectus is for up to 18,981,618 ordinary shares, 2,464,986 Series A redeemable preference shares, and 980,392 warrants in connection with the business combination.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is registered transaction share coverage, not a confirmed float or proof that all covered ordinary shares are issued and freely tradeable.",
+      "evidenceSourceIds": [
+        115774,
+        115772
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

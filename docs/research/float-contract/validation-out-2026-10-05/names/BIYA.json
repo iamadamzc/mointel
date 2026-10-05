@@ -1,0 +1,71 @@
+{
+  "ticker": "BIYA",
+  "cik": "1944712",
+  "tradingDate": "2026-09-29",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": 35550000,
+      "sourceFiling": "424B3 filed April 1, 2026; related F-1 effectiveness notice dated March 26, 2026",
+      "registrationStatus": "The prospectus states the company may receive up to $35.55 million in gross proceeds from future sales of Advance Shares to selling shareholders under subscription agreements; an F-1 effectiveness notice is in the evidence.",
+      "effectiveDate": "2026-03-26",
+      "terms": "Up to $35.55 million of aggregate gross proceeds may be received from sales of Advance Shares to selling shareholders from time to time. The prospectus states that the company itself was not selling securities under that prospectus. [112823]",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The evidence supports an effective F-1 registration and a prospectus describing future Advance Share sales, but does not quantify shares available, actual draws, shares issued, or actual shareholder selling. [112821, 112823]",
+      "evidenceSourceIds": [
+        112821,
+        112823
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 200000000,
+      "sourceFiling": "F-3 filed July 23, 2026",
+      "registrationStatus": "Preliminary F-3 prospectus; no effectiveness notice for this F-3 is included in the evidence.",
+      "effectiveDate": null,
+      "terms": "The preliminary prospectus registers up to $200 million of securities that the company may offer from time to time. This is dollar-denominated shelf capacity, not a share count. [112818]",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "No F-3 EFFECT filing or takedown is supplied; the evidence therefore does not establish that the shelf was effective or that any securities were issued under it. [112818]",
+      "evidenceSourceIds": [
+        112818
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 50000000,
+      "dollarCapacity": null,
+      "sourceFiling": "F-3 filed July 23, 2026",
+      "registrationStatus": "The preliminary F-3 identifies 50,000,000 Class A ordinary shares offered by selling shareholders; no effectiveness notice for this F-3 is included.",
+      "effectiveDate": null,
+      "terms": "The F-3 identifies 50,000,000 Class A ordinary shares offered by selling shareholders. It is a preliminary prospectus and does not evidence sales. [112818]",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The filing would describe resale capacity if effective, but the supplied evidence lacks an F-3 effectiveness notice and does not establish resale eligibility or actual selling. [112818]",
+      "evidenceSourceIds": [
+        112818
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 1185835,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-30",
+    "accession": "0001213900-26-050223",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

@@ -1,0 +1,52 @@
+{
+  "ticker": "TGE",
+  "cik": "2053456",
+  "tradingDate": "2026-09-30",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 57401944,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, File No. 333-288278",
+      "registrationStatus": "The June 8, 2026 prospectus states that it relates to potential offers and sales from time to time by named selling securityholders. The associated registration statement was declared effective June 3, 2026. [Source 115972, Source 115970]",
+      "effectiveDate": "2026-06-03",
+      "terms": "The prospectus covers 57,401,944 Class A ordinary shares for resale. This is registered resale capacity, not evidence that shares were sold. [Source 115972]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The evidence establishes effectiveness on June 3, 2026, but does not establish whether every resale holder remained eligible to sell on the current date or whether any sales occurred. [Source 115970, Source 115972]",
+      "evidenceSourceIds": [
+        115972,
+        115970
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 16220000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3, File No. 333-288278",
+      "registrationStatus": "The prospectus relates to issuance of up to 16,220,000 Class A ordinary shares underlying warrants; effectiveness of the associated registration statement was reported June 3, 2026. [Source 115972, Source 115970]",
+      "effectiveDate": "2026-06-03",
+      "terms": "The prospectus also covers 11,120,000 warrants and identifies sponsor warrants with an exercise price of US$11.50 per share. It does not establish exercises or issuance of underlying shares. [Source 115972]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "At the bundle market price of US$1.57, the disclosed US$11.50 sponsor-warrant exercise price is far above market. The evidence does not provide the full exercise terms for all warrants, current holder eligibility or evidence of exercise. [Source 115972]",
+      "evidenceSourceIds": [
+        115972,
+        115970
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT (companyfacts: SEC responded 404)"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

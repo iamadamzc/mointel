@@ -1,0 +1,67 @@
+{
+  "ticker": "KNRX",
+  "cik": "1982960",
+  "tradingDate": "2026-09-28",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1, file no. 333-299038; effective September 25, 2026",
+      "registrationStatus": "The F-1 indicated securities could be offered from time to time after effectiveness and checked the Rule 415 delayed/continuous offering box. The registration statement became effective September 25, 2026.",
+      "effectiveDate": "2026-09-25T16:15:00.000Z",
+      "terms": "Share amount and specific resale-holder terms are not present in the supplied excerpt.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness provides legal ability for registered securities to be sold under the registration statement; it does not establish that sales occurred or identify an active selling holder in the supplied evidence.",
+      "evidenceSourceIds": [
+        105677,
+        105680
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 filed September 21, 2026",
+      "registrationStatus": "The supplied filing classification identifies an equity purchase agreement, but its operative terms are absent from the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "Unknown.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "No share amount, pricing mechanism, draw status, registration coverage, or issuance evidence is supplied.",
+      "evidenceSourceIds": [
+        105677
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 filed September 21, 2026",
+      "registrationStatus": "The supplied filing classification identifies warrants, but warrant quantities, exercise prices, exercisability, and registration coverage are absent from the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "Unknown.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The evidence does not establish whether any warrants are economically exercisable or available for resale.",
+      "evidenceSourceIds": [
+        105677
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

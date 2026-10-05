@@ -1,0 +1,83 @@
+{
+  "ticker": "DKI",
+  "cik": "2058584",
+  "tradingDate": "2026-09-30",
+  "rank": 5,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 4166666,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 filed September 30, 2026",
+      "registrationStatus": "Registration statement filed; no EFFECT for this F-1 appears in the bundle.",
+      "effectiveDate": null,
+      "terms": "Proposed offering of up to 4,166,666 units or pre-funded units. Each regular unit consists of one Class A ordinary share and one warrant; each pre-funded unit substitutes a pre-funded warrant for the share [119979].",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "Proposed issuance only. The filing does not establish effectiveness, pricing, closing, or completed sales [119979].",
+      "evidenceSourceIds": [
+        119979
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 4166666,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 filed September 30, 2026",
+      "registrationStatus": "Included in a newly filed registration statement with no corresponding EFFECT in the bundle.",
+      "effectiveDate": null,
+      "terms": "The proposed units include one warrant to purchase one Class A ordinary share per unit, implying up to 4,166,666 additional warrant-underlying shares if the maximum number of units is issued and the warrants later become exercisable [119979].",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "Potential supply only. Exercise price, effectiveness, issuance, and exercise are not established by the excerpt [119979].",
+      "evidenceSourceIds": [
+        119979
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "PIPE",
+      "amountShares": null,
+      "dollarCapacity": 3800000,
+      "sourceFiling": "6-K exhibit filed August 13, 2026",
+      "registrationStatus": "The evidence references registration-resale concepts but does not establish current resale eligibility.",
+      "effectiveDate": null,
+      "terms": "The company reported completing a $3.8 million PIPE in April 2026. The supplied excerpt truncates the issued-share count [96176].",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The financing was completed, but the bundle excerpt does not establish how many adjusted shares remain held, whether they are registered for resale, or whether any were sold [96176].",
+      "evidenceSourceIds": [
+        96176
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 2400000,
+      "dollarCapacity": null,
+      "sourceFiling": "S-8 filed August 18, 2025",
+      "registrationStatus": "Registered on Form S-8.",
+      "effectiveDate": "2025-08-18T20:30:48.000Z",
+      "terms": "The S-8 registered 2,400,000 Class A ordinary shares reserved for the 2025 Equity Incentive Plan. This stated amount predates the May 2026 1-for-16 reverse split and is not presented as a current split-adjusted count [96170, 96177].",
+      "holderRestrictions": "Issuance is governed by the equity incentive plan [96170].",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The current adjusted amount available for grant or sale cannot be determined from the supplied evidence [96170, 96177].",
+      "evidenceSourceIds": [
+        96170,
+        96177
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

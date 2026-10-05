@@ -1,0 +1,108 @@
+{
+  "ticker": "KMRK",
+  "cik": "2049187",
+  "tradingDate": "2026-09-29",
+  "rank": 10,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-1, File No. 333-290261; effectiveness notice dated September 22, 2025",
+      "registrationStatus": "EFFECTIVE; the available evidence does not provide the registered resale share quantity or identify whether any registered securities have been sold.",
+      "effectiveDate": "2025-09-22",
+      "terms": "The F-1 was marked for delayed or continuous offerings under Rule 415 in the available filing excerpt; quantity and holder-specific resale terms are not available in the bundle excerpt.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness indicates securities may be sold under the registration statement, not that sales occurred. The resale amount and currently eligible holders cannot be determined from the supplied excerpts.",
+      "evidenceSourceIds": [
+        111535,
+        111538
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 1600000,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 424B4 prospectus dated July 16, 2025",
+      "registrationStatus": "IPO offering",
+      "effectiveDate": "2025-07-16",
+      "terms": "1.6 million Class A Shares were offered at $4.00 per share on a firm-commitment basis.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The evidence establishes the offering terms but does not independently confirm the final issued amount, subsequent resale availability, or whether these shares remain distinct from the later reported 21.1 million shares outstanding.",
+      "evidenceSourceIds": [
+        111541
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 80000,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 424B4 prospectus dated July 16, 2025",
+      "registrationStatus": "Registration and exercise status not established in the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "Representative warrants covering up to 80,000 Class A Shares were disclosed at 125% of the IPO price; with a $4.00 IPO price, that implies a $5.00 exercise price.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The disclosed exercise price is above the observed $1.22 price. The bundle does not establish exercise, cashless-exercise provisions, registration eligibility, or shares issued upon exercise.",
+      "evidenceSourceIds": [
+        111541
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 19500000,
+    "asOf": "2025-03-31",
+    "filed": "2025-08-15",
+    "accession": "0001213900-25-077494",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-074795",
+      "form": "3",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2119278",
+        "ownerName": "KWOK YIU WAH",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary shares",
+            "shares": 4000000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-074794",
+      "form": "3",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2122644",
+        "ownerName": "Kwok Yiu Keung",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary shares",
+            "shares": 4000000
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

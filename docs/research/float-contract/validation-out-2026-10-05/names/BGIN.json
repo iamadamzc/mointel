@@ -1,0 +1,184 @@
+{
+  "ticker": "BGIN",
+  "cik": "1945565",
+  "tradingDate": "2026-09-29",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed October 22, 2025 (accession 0001213900-25-101062)",
+      "registrationStatus": "The F-1 registration statement became effective September 30, 2025; the supplied final-prospectus excerpt references $27.9 million of proceeds to the company before expenses, but does not establish closing or provide an extracted share count. [68569,68570]",
+      "effectiveDate": "2025-09-30",
+      "terms": "Final-prospectus excerpt references $27.9 million of proceeds to the company before expenses and underwriting-discount assumptions; the supplied evidence does not provide a reliable extracted offering share count. [68570]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "An EFFECT establishes that the F-1 registration statement was effective, not that securities were sold or remain available for sale. Current eligibility and remaining availability are not established. [68569]",
+      "evidenceSourceIds": [
+        68569,
+        68570
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 113135941,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-28",
+    "accession": "0001213900-26-048532",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-066783",
+      "form": "3",
+      "filingDate": "2026-06-09",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-050940",
+      "form": "3",
+      "filingDate": "2026-05-01",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030055",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030048",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030037",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030028",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030023",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030017",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030012",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2115541",
+        "ownerName": "Tsang Chung Shing Paul",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary shares",
+            "shares": 115902
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030006",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-029995",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2111603",
+        "ownerName": "Li Qiuhua",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary shares",
+            "shares": 60000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-029992",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2111589",
+        "ownerName": "Wu Qingfeng",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "class a ordinary shares",
+            "shares": 249500
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

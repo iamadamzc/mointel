@@ -1,0 +1,39 @@
+{
+  "ticker": "SANG",
+  "cik": "1753368",
+  "tradingDate": "2026-09-28",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-3, accession 0001104659-23-037846",
+      "registrationStatus": "Declared effective on April 12, 2023; effectiveness permits sales but does not establish that sales occurred or that the facility remains usable today.",
+      "effectiveDate": "2023-04-12",
+      "terms": "The prospectus concerns common shares previously issued or to be issued to selling shareholders under an identified transaction, but the supplied excerpt does not provide a reliable share quantity [76498,76500].",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Current availability, remaining registered amount, selling-holder eligibility, and any completed sales are not established by the bundle.",
+      "evidenceSourceIds": [
+        76498,
+        76500
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 33338932,
+    "asOf": "2026-06-30",
+    "filed": "2026-09-28",
+    "accession": "0001753368-26-000011",
+    "form": "40-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

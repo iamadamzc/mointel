@@ -1,0 +1,836 @@
+{
+  "ticker": "BKYI",
+  "cik": "1019034",
+  "tradingDate": "2026-09-29",
+  "rank": 4,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 6183336,
+      "dollarCapacity": null,
+      "sourceFiling": "S-1 file 333-291728 / 424B3",
+      "registrationStatus": "Effective S-1 registration statement; prospectus covers resale of up to 6,183,336 shares issuable upon warrant exercise.",
+      "effectiveDate": "2025-12-01",
+      "terms": "The December 2025 prospectus states these are shares issuable upon exercise of warrants issued in a private placement; proceeds from any resale go to the selling stockholder, while the company may receive warrant-exercise proceeds.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The S-1 was declared effective, permitting registered resale under the registration statement. This is legal resale availability rather than evidence of exercise or actual sales; the supplied sources do not reconcile how much remains unexercised or available.",
+      "evidenceSourceIds": [
+        90246,
+        90248
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 1236668,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K dated August 13, 2026",
+      "registrationStatus": "The August 2026 warrant-inducement transaction contemplated issuance of new warrants; exercise was subject to required stockholder approval.",
+      "effectiveDate": null,
+      "terms": "The company entered an agreement with an institutional investor for exercise of 618,334 existing warrants. The September 8, 2026 8-K states stockholder approval was sought for issuance of up to 1,236,668 shares upon exercise of warrants issued in that transaction.",
+      "holderRestrictions": "The exhibit states the new warrants could not be exercisable until required Nasdaq-related stockholder approval was received.",
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The available September 8 filing says approval had not yet been obtained at the annual meeting and does not document subsequent approval. Therefore, these shares should not be treated as presently exercisable from the supplied evidence.",
+      "evidenceSourceIds": [
+        90238,
+        90254,
+        90236
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 618334,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K exhibit / Q2 2026 earnings release",
+      "registrationStatus": "Existing-warrant shares had an effective resale registration statement according to the warrant-inducement exhibit.",
+      "effectiveDate": "2025-12-01",
+      "terms": "BIO-key reported raising approximately $2.5 million from exercise of outstanding warrants at $4.06 per share. The associated agreement involved exercise of 618,334 existing warrants.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The earnings release reports the warrant exercise occurred. The evidence does not independently reconcile the resulting issued-share count with the August 11 reported outstanding-share figure, nor does it establish subsequent holder sales.",
+      "evidenceSourceIds": [
+        90253,
+        90238,
+        90254
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 1436344,
+    "asOf": "2026-08-11",
+    "filed": "2026-08-13",
+    "accession": "0001437749-26-027723",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001437749-26-022527",
+      "form": "4",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1834436",
+        "ownerName": "Sullivan James David",
+        "rows": [
+          {
+            "asOf": "2026-06-30",
+            "title": "common stock",
+            "shares": 9986
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-26-022517",
+      "form": "4",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2026-06-30",
+            "title": "common stock",
+            "shares": 10778
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-26-022511",
+      "form": "4",
+      "filingDate": "2026-07-02",
+      "primaryDocument": "xslF345X06/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1242836",
+        "ownerName": "LACOUS MIRA K",
+        "rows": [
+          {
+            "asOf": "2026-06-30",
+            "title": "common stock",
+            "shares": 4076
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-26-000384",
+      "form": "4",
+      "filingDate": "2026-01-05",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1242836",
+        "ownerName": "LACOUS MIRA K",
+        "rows": [
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 38258
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-26-000379",
+      "form": "4",
+      "filingDate": "2026-01-05",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1834436",
+        "ownerName": "Sullivan James David",
+        "rows": [
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 97351
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-26-000373",
+      "form": "4",
+      "filingDate": "2026-01-05",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-12-31",
+            "title": "common stock",
+            "shares": 105275
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-029320",
+      "form": "4/A",
+      "filingDate": "2025-09-17",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-09-15",
+            "title": "common stock",
+            "shares": 101158
+          },
+          {
+            "asOf": "2025-09-16",
+            "title": "common stock",
+            "shares": 102775
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-029226",
+      "form": "4",
+      "filingDate": "2025-09-17",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-09-15",
+            "title": "common stock",
+            "shares": 110557
+          },
+          {
+            "asOf": "2025-09-16",
+            "title": "common stock",
+            "shares": 112174
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-028307",
+      "form": "4",
+      "filingDate": "2025-09-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1479589",
+        "ownerName": "Welch Cecilia C",
+        "rows": [
+          {
+            "asOf": "2025-09-02",
+            "title": "common stock",
+            "shares": 59396
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-028295",
+      "form": "4",
+      "filingDate": "2025-09-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1834436",
+        "ownerName": "Sullivan James David",
+        "rows": [
+          {
+            "asOf": "2025-09-02",
+            "title": "common stock",
+            "shares": 94851
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-028291",
+      "form": "4",
+      "filingDate": "2025-09-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1242836",
+        "ownerName": "LACOUS MIRA K",
+        "rows": [
+          {
+            "asOf": "2025-09-02",
+            "title": "common stock",
+            "shares": 35758
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-028288",
+      "form": "4",
+      "filingDate": "2025-09-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-09-02",
+            "title": "common stock",
+            "shares": 98658
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-027787",
+      "form": "4",
+      "filingDate": "2025-08-26",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1834436",
+        "ownerName": "Sullivan James David",
+        "rows": [
+          {
+            "asOf": "2025-08-22",
+            "title": "common stock",
+            "shares": 54851
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-022023",
+      "form": "4",
+      "filingDate": "2025-07-02",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-06-30",
+            "title": "common stock",
+            "shares": 53658
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-022020",
+      "form": "4",
+      "filingDate": "2025-07-02",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1834436",
+        "ownerName": "Sullivan James David",
+        "rows": [
+          {
+            "asOf": "2025-06-30",
+            "title": "common stock",
+            "shares": 44851
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-022012",
+      "form": "4",
+      "filingDate": "2025-07-02",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1242836",
+        "ownerName": "LACOUS MIRA K",
+        "rows": [
+          {
+            "asOf": "2025-06-30",
+            "title": "common stock",
+            "shares": 10758
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-020375",
+      "form": "4",
+      "filingDate": "2025-06-16",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-06-13",
+            "title": "common stock",
+            "shares": 53519
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-019370",
+      "form": "4",
+      "filingDate": "2025-06-04",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-06-03",
+            "title": "common stock",
+            "shares": 48519
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-019230",
+      "form": "4",
+      "filingDate": "2025-06-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2025-06-03",
+            "title": "common stock",
+            "shares": 44519
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-018537",
+      "form": "4",
+      "filingDate": "2025-05-27",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1660128",
+        "ownerName": "Kwok Fong Wong",
+        "rows": [
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 35248
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-018531",
+      "form": "4",
+      "filingDate": "2025-05-27",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1809576",
+        "ownerName": "Alia Emmanuel",
+        "rows": [
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 21323
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-018529",
+      "form": "4",
+      "filingDate": "2025-05-27",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1458190",
+        "ownerName": "Michel Robert J",
+        "rows": [
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 22303
+          },
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 23569
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-018526",
+      "form": "4",
+      "filingDate": "2025-05-27",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1976008",
+        "ownerName": "Williams Cameron E.",
+        "rows": [
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 20684
+          },
+          {
+            "asOf": "2025-05-27",
+            "title": "common stock",
+            "shares": 21950
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-016159",
+      "form": "4",
+      "filingDate": "2025-05-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1976008",
+        "ownerName": "Williams Cameron E.",
+        "rows": [
+          {
+            "asOf": "2025-05-08",
+            "title": "common stock",
+            "shares": 15684
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-016156",
+      "form": "4",
+      "filingDate": "2025-05-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1809576",
+        "ownerName": "Alia Emmanuel",
+        "rows": [
+          {
+            "asOf": "2025-05-08",
+            "title": "common stock",
+            "shares": 16323
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-016147",
+      "form": "4",
+      "filingDate": "2025-05-12",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1458190",
+        "ownerName": "Michel Robert J",
+        "rows": [
+          {
+            "asOf": "2025-05-08",
+            "title": "common stock",
+            "shares": 17303
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-008785",
+      "form": "4",
+      "filingDate": "2025-03-21",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1976008",
+        "ownerName": "Williams Cameron E.",
+        "rows": [
+          {
+            "asOf": "2025-03-20",
+            "title": "common stock",
+            "shares": 11787
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-008782",
+      "form": "4",
+      "filingDate": "2025-03-21",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1809576",
+        "ownerName": "Alia Emmanuel",
+        "rows": [
+          {
+            "asOf": "2025-03-20",
+            "title": "common stock",
+            "shares": 12426
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-008779",
+      "form": "4",
+      "filingDate": "2025-03-21",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1458190",
+        "ownerName": "Michel Robert J",
+        "rows": [
+          {
+            "asOf": "2025-03-20",
+            "title": "common stock",
+            "shares": 13406
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-000218",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1242836",
+        "ownerName": "LACOUS MIRA K",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 10619
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-000213",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1246138",
+        "ownerName": "DEPASQUALE MICHAEL W",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 39519
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-25-000211",
+      "form": "4",
+      "filingDate": "2025-01-03",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1834436",
+        "ownerName": "Sullivan James David",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "common stock",
+            "shares": 44712
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-24-037034",
+      "form": "3",
+      "filingDate": "2024-12-09",
+      "primaryDocument": "xslF345X02/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2047699",
+        "ownerName": "Fiber Food Systems, Inc.",
+        "rows": [
+          {
+            "asOf": "2024-11-27",
+            "title": "common stock",
+            "shares": 595000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-24-034243",
+      "form": "4",
+      "filingDate": "2024-11-08",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1458190",
+        "ownerName": "Michel Robert J",
+        "rows": [
+          {
+            "asOf": "2024-11-07",
+            "title": "common stock",
+            "shares": 10435
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-24-034239",
+      "form": "4",
+      "filingDate": "2024-11-08",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1809576",
+        "ownerName": "Alia Emmanuel",
+        "rows": [
+          {
+            "asOf": "2024-11-07",
+            "title": "common stock",
+            "shares": 9455
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001437749-24-034228",
+      "form": "4",
+      "filingDate": "2024-11-08",
+      "primaryDocument": "xslF345X05/rdgdoc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1976008",
+        "ownerName": "Williams Cameron E.",
+        "rows": [
+          {
+            "asOf": "2024-11-07",
+            "title": "common stock",
+            "shares": 8816
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1242836",
+      "ownerName": "LACOUS MIRA K",
+      "shares": 4076,
+      "asOf": "2026-06-30",
+      "accessions": [
+        "0001437749-26-022511"
+      ]
+    },
+    {
+      "ownerCik": "1246138",
+      "ownerName": "DEPASQUALE MICHAEL W",
+      "shares": 10778,
+      "asOf": "2026-06-30",
+      "accessions": [
+        "0001437749-26-022517"
+      ]
+    },
+    {
+      "ownerCik": "1458190",
+      "ownerName": "Michel Robert J",
+      "shares": 22303,
+      "asOf": "2025-05-27",
+      "accessions": [
+        "0001437749-25-018529"
+      ]
+    },
+    {
+      "ownerCik": "1479589",
+      "ownerName": "Welch Cecilia C",
+      "shares": 59396,
+      "asOf": "2025-09-02",
+      "accessions": [
+        "0001437749-25-028307"
+      ]
+    },
+    {
+      "ownerCik": "1660128",
+      "ownerName": "Kwok Fong Wong",
+      "shares": 35248,
+      "asOf": "2025-05-27",
+      "accessions": [
+        "0001437749-25-018537"
+      ]
+    },
+    {
+      "ownerCik": "1809576",
+      "ownerName": "Alia Emmanuel",
+      "shares": 21323,
+      "asOf": "2025-05-27",
+      "accessions": [
+        "0001437749-25-018531"
+      ]
+    },
+    {
+      "ownerCik": "1834436",
+      "ownerName": "Sullivan James David",
+      "shares": 9986,
+      "asOf": "2026-06-30",
+      "accessions": [
+        "0001437749-26-022527"
+      ]
+    },
+    {
+      "ownerCik": "1976008",
+      "ownerName": "Williams Cameron E.",
+      "shares": 20684,
+      "asOf": "2025-05-27",
+      "accessions": [
+        "0001437749-25-018526"
+      ]
+    },
+    {
+      "ownerCik": "2047699",
+      "ownerName": "Fiber Food Systems, Inc.",
+      "shares": 595000,
+      "asOf": "2024-11-27",
+      "accessions": [
+        "0001437749-24-037034"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1242836": "UNPROVEN",
+    "1246138": "UNPROVEN",
+    "1458190": "UNPROVEN",
+    "1479589": "UNPROVEN",
+    "1660128": "UNPROVEN",
+    "1809576": "UNPROVEN",
+    "1834436": "UNPROVEN",
+    "1976008": "UNPROVEN",
+    "2047699": "UNPROVEN"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

@@ -1,0 +1,150 @@
+{
+  "ticker": "EJH",
+  "cik": "1769768",
+  "tradingDate": "2026-10-01",
+  "rank": 7,
+  "ledger": [
+    {
+      "type": "PIPE",
+      "amountShares": 71800000,
+      "dollarCapacity": 43080000,
+      "sourceFiling": "Form 6-K and Securities Purchase Agreement filed September 30, 2026",
+      "registrationStatus": "Private placement relying on the Regulation S exemption from Securities Act registration [122419].",
+      "effectiveDate": "2026-09-29",
+      "terms": "71.8 million ordinary shares at $0.60 per share. Stated consideration consists of $1 million in cash and 2.104 million MFT tokens valued by the agreement at $20 each. Closing was expected on or about October 15, 2026 [122419, 122435].",
+      "holderRestrictions": "Purchasers and detailed transfer restrictions are not established by the supplied excerpts [122435].",
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The agreement had been executed, but the filing described a future expected closing and the bundle contains no closing confirmation. The shares therefore should not be treated as issued or saleable supply yet [122419].",
+      "evidenceSourceIds": [
+        122419,
+        122435
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 4003859,
+    "asOf": "2025-06-30",
+    "filed": "2025-10-30",
+    "accession": "0001213900-25-104179",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-048037",
+      "form": "4",
+      "filingDate": "2026-04-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1997901",
+        "ownerName": "WENSHAN XIE",
+        "rows": [
+          {
+            "asOf": "2026-04-23",
+            "title": "ordinary shares",
+            "shares": 744295
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-042153",
+      "form": "3",
+      "filingDate": "2026-04-10",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2128826",
+        "ownerName": "ZHU CHUNSHENG",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-039773",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1997901",
+        "ownerName": "WENSHAN XIE",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 552295
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-038639",
+      "form": "3",
+      "filingDate": "2026-04-01",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2124595",
+        "ownerName": "YE YIJING",
+        "rows": [
+          {
+            "asOf": "2026-04-01",
+            "title": "ordinary shares",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030720",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030718",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1997901",
+        "ownerName": "WENSHAN XIE",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 307361
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030723",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

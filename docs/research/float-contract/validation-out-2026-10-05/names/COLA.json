@@ -1,0 +1,246 @@
+{
+  "ticker": "COLA",
+  "cik": "2028201",
+  "tradingDate": "2026-10-01",
+  "rank": 11,
+  "ledger": [
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 100000,
+      "sourceFiling": "8-K exhibits dated July 29-30, 2026",
+      "registrationStatus": "The notes state that offers, sales, and transfers require an effective registration statement or an available exemption; the evidence does not establish an effective resale registration for converted securities.",
+      "effectiveDate": null,
+      "terms": "Four $25,000 convertible promissory notes, totaling $100,000 principal, provide holders a right to convert unpaid obligations into securities equivalent to CAC private units or successor-company replacement securities in connection with the business combination. The supplied excerpts do not provide a conversion ratio or resulting share amount. [48635,48636,48637,48638]",
+      "holderRestrictions": "Transfer and disposition are restricted absent an effective registration statement or an available exemption, as described in the notes. [48635,48636,48637,48638]",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential conversion-related supply exists, but share quantity, conversion timing, whether obligations remain outstanding, and resale eligibility are not established by the provided excerpts.",
+      "evidenceSourceIds": [
+        48635,
+        48636,
+        48637,
+        48638
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-4 registration statement referenced in August 6, 2026 8-K",
+      "registrationStatus": "A Form F-4 for the proposed transaction was filed; no EFFECT notice for that F-4 is included in the evidence bundle.",
+      "effectiveDate": null,
+      "terms": "The filing states that Pubco filed Form F-4 containing a proxy statement/prospectus for the proposed business combination. The available excerpt does not specify resale share counts or identify currently eligible selling holders. [48622]",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The bundle does not establish effectiveness of the referenced F-4 or an active registered-resale share amount.",
+      "evidenceSourceIds": [
+        48622
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 4494439,
+    "asOf": "2026-08-04",
+    "filed": "2026-08-04",
+    "accession": "0001213900-26-085116",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001193125-26-033189",
+      "form": "3",
+      "filingDate": "2026-02-02",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "8 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001013762-25-002137",
+      "form": "3",
+      "filingDate": "2025-03-25",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-022750",
+      "form": "4",
+      "filingDate": "2025-03-11",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-022747",
+      "form": "4",
+      "filingDate": "2025-03-11",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2046110",
+        "ownerName": "Hercules Capital Management VII Corp",
+        "rows": [
+          {
+            "asOf": "2025-03-10",
+            "title": "ordinary shares",
+            "shares": 1698290
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-005600",
+      "form": "3",
+      "filingDate": "2025-01-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2046110",
+        "ownerName": "Hercules Capital Management VII Corp",
+        "rows": [
+          {
+            "asOf": "2025-01-22",
+            "title": "ordinary share",
+            "shares": 234290
+          },
+          {
+            "asOf": "2025-01-22",
+            "title": "ordinary share",
+            "shares": 1689000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-005598",
+      "form": "3",
+      "filingDate": "2025-01-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1879076",
+        "ownerName": "Xu Qian",
+        "rows": [
+          {
+            "asOf": "2025-01-22",
+            "title": "ordinary share",
+            "shares": 12000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-005589",
+      "form": "3",
+      "filingDate": "2025-01-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2026810",
+        "ownerName": "McKenzie Kevin",
+        "rows": [
+          {
+            "asOf": "2025-01-22",
+            "title": "ordinary share",
+            "shares": 12000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-005585",
+      "form": "3",
+      "filingDate": "2025-01-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-005577",
+      "form": "3",
+      "filingDate": "2025-01-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-005571",
+      "form": "3",
+      "filingDate": "2025-01-22",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2026794",
+        "ownerName": "Wong Manshek Anthony",
+        "rows": [
+          {
+            "asOf": "2025-01-22",
+            "title": "ordinary share",
+            "shares": 12000
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1879076",
+      "ownerName": "Xu Qian",
+      "shares": 12000,
+      "asOf": "2025-01-22",
+      "accessions": [
+        "0001213900-25-005598"
+      ]
+    },
+    {
+      "ownerCik": "2026794",
+      "ownerName": "Wong Manshek Anthony",
+      "shares": 12000,
+      "asOf": "2025-01-22",
+      "accessions": [
+        "0001213900-25-005571"
+      ]
+    },
+    {
+      "ownerCik": "2026810",
+      "ownerName": "McKenzie Kevin",
+      "shares": 12000,
+      "asOf": "2025-01-22",
+      "accessions": [
+        "0001213900-25-005589"
+      ]
+    },
+    {
+      "ownerCik": "2046110",
+      "ownerName": "Hercules Capital Management VII Corp",
+      "shares": 1932580,
+      "asOf": "2025-03-10",
+      "accessions": [
+        "0001213900-25-005600",
+        "0001213900-25-022747"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1879076": "UNPROVEN",
+    "2026794": "UNPROVEN",
+    "2026810": "UNPROVEN",
+    "2046110": "UNPROVEN"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

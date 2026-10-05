@@ -1,0 +1,212 @@
+{
+  "ticker": "AMOD",
+  "cik": "1862463",
+  "tradingDate": "2026-10-01",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "PIPE",
+      "amountShares": 51621560,
+      "dollarCapacity": null,
+      "sourceFiling": "Bitcoin-backed Securities Purchase Agreement dated August 26, 2026, followed by September 30 completion reporting",
+      "registrationStatus": "Registration status of the PIPE shares is not established in the excerpts.",
+      "effectiveDate": "2026-09-30",
+      "terms": "The agreement contemplated 51,621,560 newly issued Class A shares; secondary coverage reported receipt of 3,170 Bitcoin at closing. [125273,125293,39780]",
+      "holderRestrictions": "Not provided in the evidence excerpts.",
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "Closing evidence supports treating the contemplated issuance as completed, but immediate resale eligibility and any lockups remain unknown.",
+      "evidenceSourceIds": [
+        125273,
+        125293,
+        39780
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form S-1, file number 333-297555",
+      "registrationStatus": "Effective July 27, 2026, with later 424B3 supplements.",
+      "effectiveDate": "2026-07-27",
+      "terms": "The S-1 registered securities for delayed or continuous sale, but the excerpts do not establish the registered share count. Effectiveness permits covered sales but does not prove any sale occurred. [23214,23217,39773]",
+      "holderRestrictions": "Not established in the excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Covered securities may be sold under the effective registration, subject to the prospectus terms; actual selling is unconfirmed.",
+      "evidenceSourceIds": [
+        23214,
+        23217,
+        39773
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Securities Purchase Agreement dated June 29, 2026",
+      "registrationStatus": "The bundle includes an effective S-1, but the excerpts do not fully reconcile its securities with this agreement.",
+      "effectiveDate": "2026-06-29",
+      "terms": "The agreement provides for pre-paid purchases and purchase-share settlement, including a floor price equal to 20% of the Nasdaq Minimum Price for subsequent pre-paid purchases. [23226,23227]",
+      "holderRestrictions": "Not established in the excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The arrangement may create variable-price share supply, but remaining capacity, utilization and current eligibility are unknown.",
+      "evidenceSourceIds": [
+        23226,
+        23227
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Nasdaq security description in the September 30 Form 8-K",
+      "registrationStatus": "Not established in the excerpt.",
+      "effectiveDate": null,
+      "terms": "Each whole AMODW warrant is exercisable for one Class A share at $11.50. [125273]",
+      "holderRestrictions": "Not provided.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The $11.50 exercise price is well above the evidenced market price, so these warrants are not economically in the money based on the bundle; warrant count and exercise eligibility remain unknown.",
+      "evidenceSourceIds": [
+        125273
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": 250000,
+      "sourceFiling": "Executive agreement filed with the July 22, 2026 Form 8-K",
+      "registrationStatus": "Not established.",
+      "effectiveDate": null,
+      "terms": "The company agreed to provide $250,000 of common-stock warrants, with the share count based on a five-day average closing price and a $0.0001 exercise price; the warrants were to be exercisable for five years. [23225]",
+      "holderRestrictions": "Not provided in the excerpt.",
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The exercise price is nominal, but the evidence does not confirm issuance, the resulting warrant count or resale eligibility.",
+      "evidenceSourceIds": [
+        23225
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 10-Q for the period ended June 30, 2026",
+      "registrationStatus": "Not established.",
+      "effectiveDate": null,
+      "terms": "The filing reported convertible-note liabilities, but the excerpts do not provide conversion prices, maximum shares or current eligibility. [23212]",
+      "holderRestrictions": "Not established.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential conversion supply exists, but it cannot be quantified from the provided evidence.",
+      "evidenceSourceIds": [
+        23212
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 4966818,
+    "asOf": "2026-08-14",
+    "filed": "2026-08-14",
+    "accession": "0001493152-26-038220",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-25-020365",
+      "form": "4",
+      "filingDate": "2025-10-31",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-020364",
+      "form": "4",
+      "filingDate": "2025-10-31",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-25-020108",
+      "form": "3",
+      "filingDate": "2025-10-29",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1768026",
+        "ownerName": "Chumas Christopher Phillip",
+        "rows": [
+          {
+            "asOf": "2024-12-13",
+            "title": "class a common stock",
+            "shares": 75000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-051121",
+      "form": "3",
+      "filingDate": "2024-12-20",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-050899",
+      "form": "3",
+      "filingDate": "2024-12-20",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2048857",
+        "ownerName": "Garel Michael",
+        "rows": [
+          {
+            "asOf": "2024-12-13",
+            "title": "class a common stock",
+            "shares": 20400
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1768026",
+      "ownerName": "Chumas Christopher Phillip",
+      "shares": 75000,
+      "asOf": "2024-12-13",
+      "accessions": [
+        "0001493152-25-020108"
+      ]
+    },
+    {
+      "ownerCik": "2048857",
+      "ownerName": "Garel Michael",
+      "shares": 20400,
+      "asOf": "2024-12-13",
+      "accessions": [
+        "0001493152-24-050899"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1768026": "FOUND",
+    "2048857": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

@@ -1,0 +1,103 @@
+{
+  "ticker": "HIT",
+  "cik": "2019505",
+  "tradingDate": "2026-09-30",
+  "rank": 2,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 20000000,
+      "dollarCapacity": 20000000,
+      "sourceFiling": "S-3 filed September 4, 2026 (SEPA dated August 12, 2026)",
+      "registrationStatus": "The S-3 states that up to 20,000,000 Advance Shares may be issued to Yorkville under the SEPA; the bundle does not include an EFFECT notice for this September S-3.",
+      "effectiveDate": null,
+      "terms": "Standby Equity Purchase Agreement with Yorkville permits Advance Shares; the cited filing describes the arrangement as a $20 million SEPA.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The filing identifies potential issuance to Yorkville, but no effectiveness notice for the September 2026 registration statement is included; issuance and resale eligibility therefore remain unconfirmed.",
+      "evidenceSourceIds": [
+        119957,
+        119971
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": 9532889,
+      "dollarCapacity": null,
+      "sourceFiling": "S-3 filed September 4, 2026",
+      "registrationStatus": "The S-3 seeks registration of up to 9,532,889 Conversion Shares issuable upon conversion of convertible promissory notes issued or to be issued under the SEPA; no EFFECT notice for this registration is included.",
+      "effectiveDate": null,
+      "terms": "Conversion Shares relate to convertible promissory notes issued or to be issued pursuant to the August 12, 2026 SEPA with Yorkville.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "Potential conversion supply is identified, but the evidence does not establish note issuance, conversion, registration effectiveness, or actual resale.",
+      "evidenceSourceIds": [
+        119957
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 5600000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 filed June 24, 2026",
+      "registrationStatus": "Prospectus states that selling stockholders may sell up to 5,600,000 Class A common shares from time to time. An S-3 effectiveness notice was filed June 11, 2026, but the provided excerpts do not explicitly link that EFFECT notice to this resale prospectus.",
+      "effectiveDate": "2026-06-10T17:30:00.000Z",
+      "terms": "Selling stockholders may sell the registered shares from time to time and in one or more offerings.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The prospectus establishes resale capacity, not actual sales. The bundle supports possible live resale availability but does not fully reconcile the prospectus to the cited effectiveness notice or confirm remaining unsold shares.",
+      "evidenceSourceIds": [
+        119963,
+        119961,
+        119959
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 300000000,
+      "sourceFiling": "424B3 filed July 30, 2026",
+      "registrationStatus": "The July 30 prospectus covers up to $300 million of common stock, preferred stock, warrants, debt securities, subscription rights, and units. An S-3 effectiveness notice dated July 22, 2026 is included.",
+      "effectiveDate": "2026-07-22T16:30:00.000Z",
+      "terms": "The company may offer and sell securities from time to time in one or more offerings, up to an aggregate public offering price of $300 million.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "An effective shelf creates financing capacity but is not evidence that securities have been issued or sold; no share count can be inferred from the dollar capacity.",
+      "evidenceSourceIds": [
+        119962,
+        119960
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 5600000,
+      "dollarCapacity": 7000000,
+      "sourceFiling": "10-Q filed May 14, 2026",
+      "registrationStatus": "Completed PIPE; a later prospectus also describes up to 5,600,000 resale shares by selling stockholders.",
+      "effectiveDate": "2026-03-27T00:00:00.000Z",
+      "terms": "The company issued and sold 5,600,000 Class A shares at $1.25 per share in a March 27, 2026 PIPE, receiving approximately $6.381 million in net proceeds after $619,000 in placement-agent and escrow fees.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The PIPE shares were issued. The evidence also identifies a subsequent 5.6 million-share resale prospectus, but does not confirm the amount, if any, that has been sold into the market.",
+      "evidenceSourceIds": [
+        119956,
+        119963
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "UNKNOWN",
+    "reason": "NO_FILED_COUNT"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

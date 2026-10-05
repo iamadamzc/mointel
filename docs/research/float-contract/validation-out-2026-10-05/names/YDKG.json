@@ -1,0 +1,169 @@
+{
+  "ticker": "YDKG",
+  "cik": "1413745",
+  "tradingDate": "2026-09-29",
+  "rank": 12,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 28000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, accession 0001213900-25-099410",
+      "registrationStatus": "Registered prospectus supplement; current outstanding status not established in supplied excerpt",
+      "effectiveDate": null,
+      "terms": "The October 2025 prospectus supplement covered 28,000,000 units, each comprising one Class A ordinary share and one warrant. The share figures are historical and the supplied excerpt notes adjustment provisions for share combinations; no current split-adjusted amount is supplied. [13155]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The filing evidences the offering, but does not establish remaining unsold securities or current tradable supply after subsequent corporate actions. [13155]",
+      "evidenceSourceIds": [
+        13155
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 364000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5, accession 0001213900-25-099410",
+      "registrationStatus": "Included in registered prospectus supplement; present exercisability and split-adjusted amount not established",
+      "effectiveDate": null,
+      "terms": "The October 2025 prospectus supplement disclosed 364,000,000 Class A shares issuable upon exercise of warrants at a zero exercise price, subject to adjustment provisions for share splits, combinations, reclassifications, dividends, and certain corporate transactions. [13155]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Zero-exercise-price warrant terms create potentially material contingent supply, but the excerpt does not establish how many remain outstanding, whether they have been exercised, or the current post-consolidation share equivalent. [13155]",
+      "evidenceSourceIds": [
+        13155
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 80826225,
+      "dollarCapacity": null,
+      "sourceFiling": "20-F, accession 0001213900-26-050194",
+      "registrationStatus": "Registration and current exercise eligibility not fully established by supplied excerpt",
+      "effectiveDate": null,
+      "terms": "The 2026 annual report describes Stapled Warrants to purchase up to 80,826,225 ordinary shares before adjustment for the 2025 share consolidation, with an initial exercise price of $3.3405 pre-2025-consolidation, stated as $344.05 following that consolidation, and expiry on August 27, 2030. [13148]",
+      "holderRestrictions": "Exercise is subject to a beneficial-ownership limitation for a holder and its attribution parties. [13148]",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The warrants had a stated 2030 expiry, but their disclosed exercise price was far above the supplied market price and the evidence does not provide the current exercise price after later corporate actions, current quantity outstanding, or registration status. [13148]",
+      "evidenceSourceIds": [
+        13148
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 15555600,
+      "dollarCapacity": null,
+      "sourceFiling": "F-3, accession 0001013762-25-004226",
+      "registrationStatus": "Resale registration filing; effectiveness and current post-consolidation amount are not established in supplied excerpt",
+      "effectiveDate": null,
+      "terms": "The March 2025 F-3 sought registration for resale of up to 15,555,600 ordinary shares held by selling shareholders pursuant to a February 2025 securities purchase agreement. [13151]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This establishes a resale registration request, not actual selling; subsequent share consolidations and the current unsold balance are not reconciled in the supplied evidence. [13151]",
+      "evidenceSourceIds": [
+        13151
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-3ASR, accession 0001213900-25-089634",
+      "registrationStatus": "Automatic shelf registration filed; specific currently available capacity not provided",
+      "effectiveDate": null,
+      "terms": "The September 2025 F-3ASR states that the company or selling securityholders may offer Class A or Class B shares, debt securities, warrants, and units from time to time. No dollar or share capacity is provided in the supplied excerpt. [13150]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "A shelf permits potential offerings subject to applicable supplements and conditions; it is not evidence that shares were issued or sold. [13150]",
+      "evidenceSourceIds": [
+        13150
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 5529189,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-30",
+    "accession": "0001213900-26-050194",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-074037",
+      "form": "3",
+      "filingDate": "2026-07-01",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002127458-26-000001",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/form3-04162026_080403.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001352912-26-000003",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/form3-04162026_080432.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1352912",
+        "ownerName": "Xiang Songzuo",
+        "rows": [
+          {
+            "asOf": "2026-04-16",
+            "title": "class a ordinary shares",
+            "shares": 200
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0002126399-26-000001",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/form3-04162026_080439.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2126399",
+        "ownerName": "Tian Chunhua",
+        "rows": [
+          {
+            "asOf": "2026-04-16",
+            "title": "class a ordinary shares",
+            "shares": 200
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001425951-26-000003",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/form3-04162026_080430.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

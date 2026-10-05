@@ -1,0 +1,227 @@
+{
+  "ticker": "AIXC",
+  "cik": "1460702",
+  "tradingDate": "2026-09-29",
+  "rank": 9,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 4044975,
+      "dollarCapacity": 50000000,
+      "sourceFiling": "424B3 filed September 14, 2026 (accession 0001493152-26-042589)",
+      "registrationStatus": "Form S-1 registration statement effective September 14, 2026; 4,044,975 VWAP Shares registered for resale under the prospectus.",
+      "effectiveDate": "2026-09-14T09:00:00.000Z",
+      "terms": "Under the June 16, 2026 Common Shares Purchase Agreement, AIxC may issue and sell common shares to the investor through one or more VWAP purchases, with an aggregate commitment of up to $50 million. The 4,044,975 registered shares are limited to shares issuable under the agreement; the excerpt does not establish that all or any shares have been issued or sold.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The effective S-1 permits the registered resale of up to 4,044,975 VWAP Shares by the selling stockholder. The agreement's investment period commenced upon effectiveness, but actual company issuances and resale activity are not confirmed by this evidence. [112791, 112793]",
+      "evidenceSourceIds": [
+        112791,
+        112793
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 20234993,
+    "asOf": "2026-08-07",
+    "filed": "2026-08-07",
+    "accession": "0001493152-26-036658",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001493152-26-040228",
+      "form": "3",
+      "filingDate": "2026-08-26",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-26-028576",
+      "form": "3",
+      "filingDate": "2026-06-12",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-25-118901",
+      "form": "3",
+      "filingDate": "2025-12-05",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1805521",
+        "ownerName": "FARADAY FUTURE INTELLIGENT ELECTRIC INC.",
+        "rows": [
+          {
+            "asOf": "2025-11-17",
+            "title": "common stock",
+            "shares": 248722
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-118890",
+      "form": "3",
+      "filingDate": "2025-12-05",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1872661",
+        "ownerName": "Wang Jiawei",
+        "rows": [
+          {
+            "asOf": "2025-09-29",
+            "title": "common stock, par value $0.001",
+            "shares": 1658
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-046273",
+      "form": "3",
+      "filingDate": "2024-11-15",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001493152-24-041407",
+      "form": "3",
+      "filingDate": "2024-10-17",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1805521",
+      "ownerName": "FARADAY FUTURE INTELLIGENT ELECTRIC INC.",
+      "shares": 248722,
+      "asOf": "2025-11-17",
+      "accessions": [
+        "0001213900-25-118901"
+      ]
+    },
+    {
+      "ownerCik": "1872661",
+      "ownerName": "Wang Jiawei",
+      "shares": 1658,
+      "asOf": "2025-09-29",
+      "accessions": [
+        "0001213900-25-118890"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1805521": "NONE",
+    "1872661": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1805521",
+      "shares": 248722,
+      "asOf": "2025-11-17",
+      "rows": [
+        {
+          "accession": "0001213900-25-118901",
+          "title": "common stock",
+          "shares": 248722,
+          "asOf": "2025-11-17"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 248722, independent 248722, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-11-17, count as-of 2026-08-07, independent latest eligible 2025-11-17"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 19984613, count 20234993"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "1872661",
+      "shares": 1658,
+      "asOf": "2025-09-29",
+      "rows": [
+        {
+          "accession": "0001213900-25-118890",
+          "title": "common stock, par value $0.001",
+          "shares": 1658,
+          "asOf": "2025-09-29"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 1658, independent 1658, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2025-09-29, count as-of 2026-08-07, independent latest eligible 2025-09-29"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 19984613, count 20234993"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

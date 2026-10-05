@@ -1,0 +1,228 @@
+{
+  "ticker": "CHGA",
+  "cik": "1630212",
+  "tradingDate": "2026-09-30",
+  "rank": 9,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 5000000,
+      "dollarCapacity": null,
+      "sourceFiling": "424B3 filed September 18, 2026 (accession 0001213900-26-101506)",
+      "registrationStatus": "S-1 effective September 18, 2026; prospectus filed September 18, 2026.",
+      "effectiveDate": "2026-09-18T17:00:00.000Z",
+      "terms": "Up to 5,000,000 put shares issuable to Hudson Global Ventures under the amended ELOC purchase agreement at a fixed purchase price of $2.00 per share.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The registration statement was effective, and the prospectus covers shares issued or issuable under the ELOC. This establishes potential registered supply, not issuance or actual sales.",
+      "evidenceSourceIds": [
+        113993,
+        113991
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 1000000,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed September 14, 2026 (accession 0001213900-26-099714)",
+      "registrationStatus": "Registration status for this specific warrant block is not established in the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "The company issued September 2026 pre-funded warrants to purchase 1,000,000 common shares in connection with $280,000 aggregate-principal OID notes that generated $250,000 gross proceeds.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The warrants were issued, but the supplied evidence does not establish exercise status, exercise price, specific resale registration coverage, or whether shares have entered the market.",
+      "evidenceSourceIds": [
+        113981,
+        113996
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 1000000,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed August 18, 2026 (accession 0001213900-26-091239)",
+      "registrationStatus": "Registration status for this specific warrant block is not established in the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "The company issued August 2026 pre-funded warrants to purchase 1,000,000 common shares in connection with $616,000 aggregate-principal OID notes that generated $550,000 gross proceeds.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The warrants were issued, but the evidence provided does not establish exercise status, exercise price, specific resale registration coverage, or actual sales.",
+      "evidenceSourceIds": [
+        113985
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 19946803,
+    "asOf": "2026-08-10",
+    "filed": "2026-08-14",
+    "accession": "0001213900-26-090229",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-085844",
+      "form": "4",
+      "filingDate": "2026-08-05",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1469394",
+        "ownerName": "Mathews Michael",
+        "rows": [
+          {
+            "asOf": "2026-08-05",
+            "title": "common stock",
+            "shares": 62280
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-077600",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-077599",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-077596",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-077595",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-077594",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-077588",
+      "form": "4",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-019919",
+      "form": "4",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-019918",
+      "form": "3",
+      "filingDate": "2026-02-24",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1469394",
+      "ownerName": "Mathews Michael",
+      "shares": 62280,
+      "asOf": "2026-08-05",
+      "accessions": [
+        "0001213900-26-085844"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1469394": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1469394",
+      "shares": 62280,
+      "asOf": "2026-08-05",
+      "rows": [
+        {
+          "accession": "0001213900-26-085844",
+          "title": "common stock",
+          "shares": 62280,
+          "asOf": "2026-08-05"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 62280, independent 62280, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-08-05, count as-of 2026-08-10, independent latest eligible 2026-08-05"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 19884523, count 19946803"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

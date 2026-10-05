@@ -1,0 +1,142 @@
+{
+  "ticker": "SORA",
+  "cik": "2033515",
+  "tradingDate": "2026-10-01",
+  "rank": 1,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 registration statement, effective March 27, 2025, and related 424B4 prospectus",
+      "registrationStatus": "The F-1 was declared effective on March 27, 2025. The related prospectus identifies ordinary shares offered by selling shareholders, but the supplied evidence does not state how many registered resale shares remain available today. [125175,125176]",
+      "effectiveDate": "2025-03-27",
+      "terms": "Historical resale-registration evidence exists, but the supplied excerpts do not provide the registered share amount, resale holders, remaining availability, or any subsequent termination status. [125175,125176]",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Effectiveness establishes that registered securities could be sold under the registration statement. It does not confirm that shares were sold, remain registered, or are currently eligible for resale. [125175]",
+      "evidenceSourceIds": [
+        125175,
+        125176
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "2025 Form 20-F",
+      "registrationStatus": "The annual report contains warrant-related disclosure, but the supplied evidence does not state warrant count, exercise price, exercisability, or registration coverage. [125170]",
+      "effectiveDate": null,
+      "terms": "Unknown from the supplied excerpt. [125170]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Warrant-related disclosure alone does not establish currently exercisable or immediately saleable share supply. [125170]",
+      "evidenceSourceIds": [
+        125170
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "2025 Form 20-F",
+      "registrationStatus": "The annual report contains convertible-security-related disclosure, but the supplied evidence does not state principal amount, conversion price, conversion status, or resulting share count. [125170]",
+      "effectiveDate": null,
+      "terms": "Unknown from the supplied excerpt. [125170]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The evidence does not establish whether any convertible instrument is outstanding, convertible, registered for resale, or a current source of share supply. [125170]",
+      "evidenceSourceIds": [
+        125170
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 24864000,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-30",
+    "accession": "0001213900-26-050019",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-044901",
+      "form": "3",
+      "filingDate": "2026-04-17",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-044303",
+      "form": "3",
+      "filingDate": "2026-04-16",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-029669",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-029662",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-029659",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-029654",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-029647",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

@@ -1,0 +1,164 @@
+{
+  "ticker": "NCI",
+  "cik": "1916331",
+  "tradingDate": "2026-09-29",
+  "rank": 6,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 100000000,
+      "sourceFiling": "F-3 registration statement No. 333-297635; effective July 30, 2026",
+      "registrationStatus": "Effective F-3 shelf registration",
+      "effectiveDate": "2026-07-30",
+      "terms": "The shelf permits offerings, from time to time, of up to $100,000,000 in Class A ordinary shares, debt securities, warrants, rights, units, or combinations thereof. The cited F-3 does not establish a takedown or issued share count under this shelf.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "An effective shelf means securities may be offered, but it is not evidence that securities were sold.",
+      "evidenceSourceIds": [
+        112840,
+        112843
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 140000,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 6-K filed August 26, 2026",
+      "registrationStatus": null,
+      "effectiveDate": "2026-08-25",
+      "terms": "The company reported issuance of 140,000 Class B ordinary shares to Mr. Jiang. Each Class B share carries 30 votes; immediately after issuance, these shares represented approximately 64.0% of aggregate voting power.",
+      "holderRestrictions": "Public-sale eligibility and transfer restrictions are not established in the supplied excerpt.",
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "This is an issued Class B block, but the evidence does not establish whether, when, or how it could become publicly tradable Class A supply.",
+      "evidenceSourceIds": [
+        112834
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 20320000,
+    "asOf": "2024-12-31",
+    "filed": "2025-05-15",
+    "accession": "0001213900-25-043533",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-097820",
+      "form": "4",
+      "filingDate": "2026-09-08",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2119061",
+        "ownerName": "Jiang Pengfei",
+        "rows": [
+          {
+            "asOf": "2026-08-25",
+            "title": "class b ordinary shares",
+            "shares": 140000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001185185-26-003372",
+      "form": "3",
+      "filingDate": "2026-08-11",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-068020",
+      "form": "4",
+      "filingDate": "2026-06-12",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-042734",
+      "form": "3",
+      "filingDate": "2026-04-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-035118",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-035113",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030190",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030187",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030183",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030179",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

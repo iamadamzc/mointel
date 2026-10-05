@@ -1,0 +1,635 @@
+{
+  "ticker": "CMCT",
+  "cik": "908311",
+  "tradingDate": "2026-09-30",
+  "rank": 6,
+  "ledger": [
+    {
+      "type": "PREFERRED_CONVERSION",
+      "amountShares": 30555,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed September 10, 2026 (accession 0000908311-26-000106)",
+      "registrationStatus": "Issued common shares; registration status not stated in the supplied excerpt.",
+      "effectiveDate": "2026-09-09",
+      "terms": "CMCT issued 7,477 common shares for Series A1 preferred-stock redemptions and 23,078 common shares for Series A preferred-stock redemptions, each in lieu of cash payment and including accrued and unpaid dividends.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "These 30,555 common shares were confirmed issued on September 9, 2026; the excerpt does not state resale restrictions or public-sale eligibility.",
+      "evidenceSourceIds": [
+        118566
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "PREFERRED_CONVERSION",
+      "amountShares": 50660,
+      "dollarCapacity": null,
+      "sourceFiling": "8-K filed September 4, 2026 (accession 0000908311-26-000103)",
+      "registrationStatus": "Issued common shares; registration status not stated in the supplied excerpt.",
+      "effectiveDate": "2026-09-02",
+      "terms": "The filing reports 21,695, 645, and 28,320 common shares issued on August 19, August 25, and September 2, respectively, for Series A1 preferred-stock redemptions in lieu of cash payment. The supplied excerpt also references Series A redemptions but does not provide their corresponding common-share quantities.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "At least 50,660 common shares were confirmed issued through the specified Series A1 redemptions; sale eligibility is not stated.",
+      "evidenceSourceIds": [
+        118567
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 250000,
+      "dollarCapacity": null,
+      "sourceFiling": "Form S-8 filed August 11, 2026 (accession 0000908311-26-000083)",
+      "registrationStatus": "Form S-8 registration statement filed; effectiveness is not supplied.",
+      "effectiveDate": null,
+      "terms": "The S-8 registers an aggregate 250,000 common shares for the registrant’s equity compensation plan.",
+      "holderRestrictions": "Plan-share issuance and resale conditions are not provided in the supplied excerpt.",
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The filing evidences registered plan-share capacity, not confirmed issuance or freely tradable public float; effectiveness and actual grants/issuances are not supplied.",
+      "evidenceSourceIds": [
+        118575
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 1000000000,
+      "sourceFiling": "Form S-3/A filed November 21, 2022 (accession 0001104659-22-120775); EFFECT dated November 22, 2022",
+      "registrationStatus": "SEC notice of effectiveness supplied for Form S-3, file number 333-268032.",
+      "effectiveDate": "2022-11-22",
+      "terms": "The S-3/A describes up to $1.0 billion aggregate capacity across debt securities, common stock, preferred stock, depositary shares, warrants, rights and units.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is dollar-denominated shelf capacity, not a common-share amount and not evidence of a current takedown or issuance. Remaining capacity, expiry, and current usability are not established in the evidence.",
+      "evidenceSourceIds": [
+        118574,
+        118577
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 2947493,
+    "asOf": "2026-08-06",
+    "filed": "2026-08-14",
+    "accession": "0000908311-26-000098",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0000908311-26-000093",
+      "form": "4",
+      "filingDate": "2026-08-13",
+      "primaryDocument": "xslF345X06/wk-form4_1786652363.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1791070",
+        "ownerName": "Wong Elaine Y",
+        "rows": [
+          {
+            "asOf": "2026-08-11",
+            "title": "common stock",
+            "shares": 11653
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000092",
+      "form": "4",
+      "filingDate": "2026-08-13",
+      "primaryDocument": "xslF345X06/wk-form4_1786652297.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1192951",
+        "ownerName": "BECH DOUGLAS Y",
+        "rows": [
+          {
+            "asOf": "2026-08-11",
+            "title": "common stock",
+            "shares": 11653
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000091",
+      "form": "4",
+      "filingDate": "2026-08-13",
+      "primaryDocument": "xslF345X06/wk-form4_1786652229.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1543270",
+        "ownerName": "Bryant John Hope",
+        "rows": [
+          {
+            "asOf": "2026-08-11",
+            "title": "common stock",
+            "shares": 11653
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000090",
+      "form": "4",
+      "filingDate": "2026-08-13",
+      "primaryDocument": "xslF345X06/wk-form4_1786652151.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1843822",
+        "ownerName": "Edwards Marcie L",
+        "rows": [
+          {
+            "asOf": "2026-08-11",
+            "title": "common stock",
+            "shares": 11654
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000073",
+      "form": "4",
+      "filingDate": "2026-06-23",
+      "primaryDocument": "xslF345X06/wk-form4_1782248398.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1543270",
+        "ownerName": "Bryant John Hope",
+        "rows": [
+          {
+            "asOf": "2026-06-22",
+            "title": "common stock",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000072",
+      "form": "4",
+      "filingDate": "2026-06-23",
+      "primaryDocument": "xslF345X06/wk-form4_1782248328.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1843822",
+        "ownerName": "Edwards Marcie L",
+        "rows": [
+          {
+            "asOf": "2026-06-22",
+            "title": "common stock",
+            "shares": 2
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000071",
+      "form": "4",
+      "filingDate": "2026-06-23",
+      "primaryDocument": "xslF345X06/wk-form4_1782248263.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1791070",
+        "ownerName": "Wong Elaine Y",
+        "rows": [
+          {
+            "asOf": "2026-06-22",
+            "title": "common stock",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000070",
+      "form": "4",
+      "filingDate": "2026-06-23",
+      "primaryDocument": "xslF345X06/wk-form4_1782248177.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1192951",
+        "ownerName": "BECH DOUGLAS Y",
+        "rows": [
+          {
+            "asOf": "2026-06-22",
+            "title": "common stock",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000034",
+      "form": "4",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form4_1773872123.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "904290",
+        "ownerName": "RESSLER RICHARD S",
+        "rows": [
+          {
+            "asOf": "2026-03-16",
+            "title": "common stock",
+            "shares": 500
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000033",
+      "form": "4",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form4_1773872090.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1601806",
+        "ownerName": "Kuba Shaul",
+        "rows": [
+          {
+            "asOf": "2026-03-16",
+            "title": "common stock",
+            "shares": 185
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000032",
+      "form": "4",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/wk-form4_1773872077.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1601805",
+        "ownerName": "Shemesh Avraham",
+        "rows": [
+          {
+            "asOf": "2026-03-16",
+            "title": "common stock",
+            "shares": 185
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-26-000010",
+      "form": "3",
+      "filingDate": "2026-01-23",
+      "primaryDocument": "xslF345X02/wk-form3_1769206874.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2099925",
+        "ownerName": "Hill Brandon James",
+        "rows": [
+          {
+            "asOf": "2026-01-21",
+            "title": "common stock",
+            "shares": 1
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-25-000083",
+      "form": "4",
+      "filingDate": "2025-09-11",
+      "primaryDocument": "xslF345X05/wk-form4_1757630084.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1791070",
+        "ownerName": "Wong Elaine Y",
+        "rows": [
+          {
+            "asOf": "2025-08-04",
+            "title": "common stock",
+            "shares": 8851
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-25-000082",
+      "form": "4",
+      "filingDate": "2025-09-11",
+      "primaryDocument": "xslF345X05/wk-form4_1757630022.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1192951",
+        "ownerName": "BECH DOUGLAS Y",
+        "rows": [
+          {
+            "asOf": "2025-08-04",
+            "title": "common stock",
+            "shares": 8993
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-25-000081",
+      "form": "4",
+      "filingDate": "2025-09-11",
+      "primaryDocument": "xslF345X05/wk-form4_1757629895.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1843822",
+        "ownerName": "Edwards Marcie L",
+        "rows": [
+          {
+            "asOf": "2025-08-04",
+            "title": "common stock",
+            "shares": 8876
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000908311-25-000080",
+      "form": "4",
+      "filingDate": "2025-09-11",
+      "primaryDocument": "xslF345X05/wk-form4_1757629821.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1543270",
+        "ownerName": "Bryant John Hope",
+        "rows": [
+          {
+            "asOf": "2025-08-04",
+            "title": "common stock",
+            "shares": 8820
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1192951",
+      "ownerName": "BECH DOUGLAS Y",
+      "shares": 1,
+      "asOf": "2026-06-22",
+      "accessions": [
+        "0000908311-26-000070"
+      ]
+    },
+    {
+      "ownerCik": "1543270",
+      "ownerName": "Bryant John Hope",
+      "shares": 1,
+      "asOf": "2026-06-22",
+      "accessions": [
+        "0000908311-26-000073"
+      ]
+    },
+    {
+      "ownerCik": "1601805",
+      "ownerName": "Shemesh Avraham",
+      "shares": 185,
+      "asOf": "2026-03-16",
+      "accessions": [
+        "0000908311-26-000032"
+      ]
+    },
+    {
+      "ownerCik": "1601806",
+      "ownerName": "Kuba Shaul",
+      "shares": 185,
+      "asOf": "2026-03-16",
+      "accessions": [
+        "0000908311-26-000033"
+      ]
+    },
+    {
+      "ownerCik": "1791070",
+      "ownerName": "Wong Elaine Y",
+      "shares": 1,
+      "asOf": "2026-06-22",
+      "accessions": [
+        "0000908311-26-000071"
+      ]
+    },
+    {
+      "ownerCik": "1843822",
+      "ownerName": "Edwards Marcie L",
+      "shares": 2,
+      "asOf": "2026-06-22",
+      "accessions": [
+        "0000908311-26-000072"
+      ]
+    },
+    {
+      "ownerCik": "2099925",
+      "ownerName": "Hill Brandon James",
+      "shares": 1,
+      "asOf": "2026-01-21",
+      "accessions": [
+        "0000908311-26-000010"
+      ]
+    },
+    {
+      "ownerCik": "904290",
+      "ownerName": "RESSLER RICHARD S",
+      "shares": 500,
+      "asOf": "2026-03-16",
+      "accessions": [
+        "0000908311-26-000034"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "904290": "FOUND",
+    "1192951": "NONE",
+    "1543270": "NONE",
+    "1601805": "FOUND",
+    "1601806": "FOUND",
+    "1791070": "NONE",
+    "1843822": "NONE",
+    "2099925": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1192951",
+      "shares": 1,
+      "asOf": "2026-06-22",
+      "rows": [
+        {
+          "accession": "0000908311-26-000070",
+          "title": "common stock",
+          "shares": 1,
+          "asOf": "2026-06-22"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 1, independent 1, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": false,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-22, count as-of 2026-08-06, independent latest eligible 2026-06-22"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 2947488, count 2947493"
+        }
+      },
+      "dangerous": true
+    },
+    {
+      "ownerCik": "1543270",
+      "shares": 1,
+      "asOf": "2026-06-22",
+      "rows": [
+        {
+          "accession": "0000908311-26-000073",
+          "title": "common stock",
+          "shares": 1,
+          "asOf": "2026-06-22"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 1, independent 1, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": false,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-22, count as-of 2026-08-06, independent latest eligible 2026-06-22"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 2947488, count 2947493"
+        }
+      },
+      "dangerous": true
+    },
+    {
+      "ownerCik": "1791070",
+      "shares": 1,
+      "asOf": "2026-06-22",
+      "rows": [
+        {
+          "accession": "0000908311-26-000071",
+          "title": "common stock",
+          "shares": 1,
+          "asOf": "2026-06-22"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 1, independent 1, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": false,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-22, count as-of 2026-08-06, independent latest eligible 2026-06-22"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 2947488, count 2947493"
+        }
+      },
+      "dangerous": true
+    },
+    {
+      "ownerCik": "1843822",
+      "shares": 2,
+      "asOf": "2026-06-22",
+      "rows": [
+        {
+          "accession": "0000908311-26-000072",
+          "title": "common stock",
+          "shares": 2,
+          "asOf": "2026-06-22"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 2, independent 2, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": false,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-06-22, count as-of 2026-08-06, independent latest eligible 2026-06-22"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 2947488, count 2947493"
+        }
+      },
+      "dangerous": true
+    }
+  ]
+}

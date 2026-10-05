@@ -1,0 +1,569 @@
+{
+  "ticker": "NEXR",
+  "cik": "1885408",
+  "tradingDate": "2026-09-29",
+  "rank": 7,
+  "ledger": [
+    {
+      "type": "CONVERTIBLES",
+      "amountShares": null,
+      "dollarCapacity": 600000,
+      "sourceFiling": "6-K filed September 22, 2026 (issuance dated September 17, 2026)",
+      "registrationStatus": "Registration eligibility for securities underlying this specific note is not established in the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "Sixth promissory note has $600,000 principal and was sold for $540,000 cash. The holder may convert after issuance at the lower of $1.420 or another price specified in the note’s conversion formula.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The note was issued, so contractual conversion exposure exists; actual conversion and resale eligibility are not established.",
+      "evidenceSourceIds": [
+        104899
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "F-3 filed September 28, 2026",
+      "registrationStatus": "Filed registration statement; no effectiveness notice for this September 28 F-3 is included in the bundle.",
+      "effectiveDate": null,
+      "terms": "The filing states that additional warrant shares were registered to permit selling shareholders to offer the maximum shares issuable under Series A Warrants for resale from time to time.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "The supplied evidence shows a filing, not an EFFECT notice or actual resale activity for this registration statement.",
+      "evidenceSourceIds": [
+        112923
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K filed September 3, 2026",
+      "registrationStatus": "The excerpt references registration statements but does not reconcile the current registered quantity or eligibility of every warrant series.",
+      "effectiveDate": null,
+      "terms": "Outstanding Series A Warrants and the June 2026 note warrant had exercise prices adjusted effective September 3, 2026. Earlier filings also identify June 2026 PIPE warrants and repeated adjustment provisions.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Outstanding warrant instruments and price adjustments are documented, but the supplied excerpts do not provide reconciled current share counts, exercise prices, exercises, or resale status.",
+      "evidenceSourceIds": [
+        75781,
+        75783,
+        25842
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 filed June 9, 2026; subsequent 1-for-11 reverse split announced July 24, 2026",
+      "registrationStatus": "Registered direct offering; current post-split outstanding amount is not reconciled in the bundle.",
+      "effectiveDate": null,
+      "terms": "The June offering included 1,200,000 ordinary shares and concurrent warrants for up to 1,200,000 ordinary shares at an original $1.00 exercise price. A later 1-for-11 reverse split changed the share count and requires updated terms/count reconciliation.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The offering occurred, but this bundle does not reconcile how many offering shares remain outstanding or the current adjusted warrant terms after subsequent adjustments and the reverse split.",
+      "evidenceSourceIds": [
+        25854,
+        25845,
+        75783
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": null,
+      "dollarCapacity": 88000000,
+      "sourceFiling": "6-K filed June 22, 2026",
+      "registrationStatus": "Not established for all future issuances in the supplied excerpt.",
+      "effectiveDate": null,
+      "terms": "Under the securities purchase agreement, the company stated that $88,000,000 of remaining subscription amount was available as of June 18, 2026, with no minimum commitment or minimum-use penalty.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is remaining contractual financing capacity, not a share count and not evidence that the remaining amount has been drawn.",
+      "evidenceSourceIds": [
+        25846
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 250727,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-01",
+    "accession": "0001213900-26-038003",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-053309",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1988933",
+        "ownerName": "Zalayet Ronen",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 6269
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053310",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1973096",
+        "ownerName": "Adler Oz",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "warrants to purchase ordinary shares",
+            "shares": 1450
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053313",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2100427",
+        "ownerName": "Zamir Eli",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 10030
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053312",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1574875",
+        "ownerName": "Dinar Tali",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053315",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1826618",
+        "ownerName": "Berenstein Israel Yakov",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053307",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1826620",
+        "ownerName": "Weiss Amitay",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053316",
+      "form": "3",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1988934",
+        "ownerName": "Bergman Naor",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 6270
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053308",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1973293",
+        "ownerName": "Revach Moshe",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 5540
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053311",
+      "form": "3/A",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1628325",
+        "ownerName": "Carmel Liron",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-053306",
+      "form": "3",
+      "filingDate": "2026-05-07",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1988935",
+        "ownerName": "Etzyoni Tomer",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-034349",
+      "form": "3",
+      "filingDate": "2026-03-26",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1826618",
+        "ownerName": "Berenstein Israel Yakov",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031554",
+      "form": "3",
+      "filingDate": "2026-03-19",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2100427",
+        "ownerName": "Zamir Eli",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 10030
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031249",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1973096",
+        "ownerName": "Adler Oz",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "warrants to purchase ordinary shares",
+            "shares": 1450
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031247",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1574875",
+        "ownerName": "Dinar Tali",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031244",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1826620",
+        "ownerName": "Weiss Amitay",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031242",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1628325",
+        "ownerName": "Carmel Liron",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 1255
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031238",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1988933",
+        "ownerName": "Zalayet Ronen",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 6269
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-031236",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1973293",
+        "ownerName": "Revach Moshe",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 5540
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-041829",
+      "form": "4",
+      "filingDate": "2024-10-21",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2040809",
+        "ownerName": "Conroy Jeffrey J.",
+        "rows": [
+          {
+            "asOf": "2024-09-18",
+            "title": "ordinary shares",
+            "shares": 1000000
+          },
+          {
+            "asOf": "2024-09-19",
+            "title": "ordinary shares",
+            "shares": 1215000
+          },
+          {
+            "asOf": "2024-09-20",
+            "title": "ordinary shares",
+            "shares": 1330110
+          },
+          {
+            "asOf": "2024-09-23",
+            "title": "ordinary shares",
+            "shares": 2432000
+          },
+          {
+            "asOf": "2024-09-24",
+            "title": "ordinary shares",
+            "shares": 3713265
+          },
+          {
+            "asOf": "2024-09-24",
+            "title": "ordinary shares",
+            "shares": 2200000
+          },
+          {
+            "asOf": "2024-09-25",
+            "title": "ordinary shares",
+            "shares": 3168191
+          },
+          {
+            "asOf": "2024-09-25",
+            "title": "ordinary shares",
+            "shares": 1711126
+          },
+          {
+            "asOf": "2024-09-26",
+            "title": "ordinary shares",
+            "shares": 1806600
+          },
+          {
+            "asOf": "2024-09-26",
+            "title": "ordinary shares",
+            "shares": 1270000
+          },
+          {
+            "asOf": "2024-09-27",
+            "title": "ordinary shares",
+            "shares": 1507960
+          },
+          {
+            "asOf": "2024-09-30",
+            "title": "ordinary shares",
+            "shares": 1634000
+          },
+          {
+            "asOf": "2024-09-30",
+            "title": "ordinary shares",
+            "shares": 1500000
+          },
+          {
+            "asOf": "2024-10-08",
+            "title": "ordinary shares",
+            "shares": 2001160
+          },
+          {
+            "asOf": "2024-10-08",
+            "title": "ordinary shares",
+            "shares": 1961160
+          },
+          {
+            "asOf": "2024-10-09",
+            "title": "ordinary shares",
+            "shares": 1996388
+          },
+          {
+            "asOf": "2024-10-09",
+            "title": "ordinary shares",
+            "shares": 1715000
+          },
+          {
+            "asOf": "2024-10-09",
+            "title": "ordinary shares",
+            "shares": 1747002
+          },
+          {
+            "asOf": "2024-10-09",
+            "title": "ordinary shares",
+            "shares": 1720002
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-041828",
+      "form": "3",
+      "filingDate": "2024-10-21",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2040809",
+        "ownerName": "Conroy Jeffrey J.",
+        "rows": [
+          {
+            "asOf": "2024-09-18",
+            "title": "ordinary shares",
+            "shares": 922000
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "2040809",
+      "ownerName": "Conroy Jeffrey J.",
+      "shares": 1996388,
+      "asOf": "2024-10-09",
+      "accessions": [
+        "0001493152-24-041829"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "2040809": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

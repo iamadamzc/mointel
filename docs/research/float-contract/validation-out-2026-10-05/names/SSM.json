@@ -1,0 +1,231 @@
+{
+  "ticker": "SSM",
+  "cik": "1840416",
+  "tradingDate": "2026-10-01",
+  "rank": 5,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 283500,
+      "dollarCapacity": null,
+      "sourceFiling": "Form 8-K dated August 31, 2026 and Form 424B5 filed September 2, 2026. [37117,78620]",
+      "registrationStatus": "The shares were offered and sold under the company's effective Form S-3 registration statement, according to the August 31 Form 8-K. [37117]",
+      "effectiveDate": null,
+      "terms": "Registered direct offering of 283,500 ordinary shares to private purchasers at the consolidated Nasdaq closing bid price on the trading day immediately before the August 31 purchase agreement. The company stated the shares represented 19.9% of outstanding ordinary shares. [37131,37117,78620]",
+      "holderRestrictions": "The related company release states the investor group was subject to a 180-day lock-up. [37131]",
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The shares were issued in a registered direct offering, but the disclosed 180-day investor lock-up restricts the identified purchasers during its term. The evidence does not establish any waiver, expiration, or subsequent resale. [37131,37117]",
+      "evidenceSourceIds": [
+        37131,
+        37117,
+        78620
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": null,
+      "dollarCapacity": null,
+      "sourceFiling": "Exhibit 10.1 to the March 10, 2026 Form 8-K. [37136]",
+      "registrationStatus": "The pre-funded warrant agreement defines an effective date tied to an initial registration statement registering warrant shares for resale, but the excerpt does not establish the number of warrants, whether the registration became effective, or exercise status. [37136]",
+      "effectiveDate": null,
+      "terms": "Pre-funded warrant securities purchase agreement with YA II PN, Ltd. [37136]",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential warrant-related supply cannot be quantified or treated as live from the available excerpt because warrant quantity, exercise status, and resale-registration effectiveness are not established. [37136]",
+      "evidenceSourceIds": [
+        37136
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 1424834,
+    "asOf": "2026-08-01",
+    "filed": "2026-08-14",
+    "accession": "0001171843-26-005543",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001575872-26-000637",
+      "form": "4",
+      "filingDate": "2026-09-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2027046",
+        "ownerName": "Bambino 255 V V UG haftungsbeschrankt",
+        "rows": [
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 149758
+          },
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 149658
+          },
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 149258
+          },
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 148058
+          },
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 147958
+          },
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 147916
+          },
+          {
+            "asOf": "2026-09-01",
+            "title": "common stock",
+            "shares": 141916
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001575872-26-000631",
+      "form": "4",
+      "filingDate": "2026-08-31",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2027046",
+        "ownerName": "Bambino 255 V V UG haftungsbeschrankt",
+        "rows": [
+          {
+            "asOf": "2026-08-27",
+            "title": "common stock",
+            "shares": 154999
+          },
+          {
+            "asOf": "2026-08-27",
+            "title": "common stock",
+            "shares": 154053
+          },
+          {
+            "asOf": "2026-08-27",
+            "title": "common stock",
+            "shares": 153953
+          },
+          {
+            "asOf": "2026-08-27",
+            "title": "common stock",
+            "shares": 153753
+          },
+          {
+            "asOf": "2026-08-27",
+            "title": "common stock",
+            "shares": 153326
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001575872-26-000566",
+      "form": "4",
+      "filingDate": "2026-08-12",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2027046",
+        "ownerName": "Bambino 255 V V UG haftungsbeschrankt",
+        "rows": [
+          {
+            "asOf": "2026-08-10",
+            "title": "common stock",
+            "shares": 171916
+          },
+          {
+            "asOf": "2026-08-10",
+            "title": "common stock",
+            "shares": 166916
+          },
+          {
+            "asOf": "2026-08-10",
+            "title": "common stock",
+            "shares": 164292
+          },
+          {
+            "asOf": "2026-08-10",
+            "title": "common stock",
+            "shares": 159292
+          },
+          {
+            "asOf": "2026-08-10",
+            "title": "common stock",
+            "shares": 157326
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001171843-25-000346",
+      "form": "3",
+      "filingDate": "2025-01-21",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001171843-25-000275",
+      "form": "3",
+      "filingDate": "2025-01-16",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001171843-25-000239",
+      "form": "3",
+      "filingDate": "2025-01-14",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001171843-25-000014",
+      "form": "3",
+      "filingDate": "2025-01-02",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001171843-25-000013",
+      "form": "3",
+      "filingDate": "2025-01-02",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "2 reporting owners (joint filing, not attributed)"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

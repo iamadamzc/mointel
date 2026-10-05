@@ -1,0 +1,206 @@
+{
+  "ticker": "NAMM",
+  "cik": "2026514",
+  "tradingDate": "2026-10-01",
+  "rank": 12,
+  "ledger": [
+    {
+      "type": "REGISTERED_RESALE",
+      "amountShares": 80646036,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-3 prospectus, Registration No. 333-297763",
+      "registrationStatus": "Form F-3 registration became effective August 6, 2026. The prospectus covers resale by selling securityholders of up to 80,646,036 ordinary shares.",
+      "effectiveDate": "2026-08-06",
+      "terms": "The August 6 prospectus covers resale from time to time by selling securityholders of up to 80,646,036 ordinary shares, plus resale of up to 5,289,934 warrants.",
+      "holderRestrictions": "Sales are by named selling securityholders or permitted transferees. The bundle does not provide current holder-by-holder lockup, ownership, or selling information.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The F-3 effectiveness notice and subsequent 424B3 support that the registered resale capacity may be used, but registration is not evidence that any holder has sold shares. [121921,121923]",
+      "evidenceSourceIds": [
+        121921,
+        121923
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 18576677,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-3 prospectus, Registration No. 333-297763",
+      "registrationStatus": "The effective F-3 prospectus registers issuance of up to 18,576,677 ordinary shares upon warrant exercise.",
+      "effectiveDate": "2026-08-06",
+      "terms": "Up to 18,576,677 ordinary shares are issuable upon exercise of warrants. The prospectus also covers resale of up to 5,289,934 warrants.",
+      "holderRestrictions": "Exercise prices, exercise timing, current warrant-holder positions, and whether exercises are economically attractive are not provided in the supplied excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential supply exists if warrants are exercised, but the evidence does not establish current exercise economics or that any exercise has occurred. [121923]",
+      "evidenceSourceIds": [
+        121923
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 28770000,
+      "dollarCapacity": null,
+      "sourceFiling": "Form F-3 registration statement and August 6 prospectus, Registration No. 333-297763",
+      "registrationStatus": "Included within the resale registration, subject to issuance upon operational milestones.",
+      "effectiveDate": "2026-08-06",
+      "terms": "The filings identify 28,770,000 earnout shares that may be issued to former Greenstone shareholders upon achievement of specified operational milestones.",
+      "holderRestrictions": "The precise outstanding milestone conditions and satisfaction status are not supplied in the excerpts.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "These are contingent shares, not confirmed issued shares. They can become additional supply if the applicable operational milestones are achieved. [121918,121923]",
+      "evidenceSourceIds": [
+        121918,
+        121923
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 54084183,
+    "asOf": "2025-12-31",
+    "filed": "2026-04-02",
+    "accession": "0001213900-26-038838",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-26-077315",
+      "form": "3",
+      "filingDate": "2026-07-13",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-072829",
+      "form": "3",
+      "filingDate": "2026-06-29",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001213900-26-030787",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1449960",
+        "ownerName": "JOHNSON DENNIS ANTHONY",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 38594
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030789",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2116154",
+        "ownerName": "Tall Ibrahima Sory",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 174336
+          },
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 255722
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030788",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1708005",
+        "ownerName": "Zhang Peifang",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 47929
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030786",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2067360",
+        "ownerName": "Sikwila Tulani",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 92937
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030785",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2116153",
+        "ownerName": "Mchunu Siphesihle",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 56504
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-26-030784",
+      "form": "3",
+      "filingDate": "2026-03-18",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2116064",
+        "ownerName": "Martins Junior Tito Botelho",
+        "rows": [
+          {
+            "asOf": "2026-03-18",
+            "title": "ordinary shares",
+            "shares": 38344
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

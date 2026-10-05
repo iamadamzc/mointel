@@ -1,0 +1,313 @@
+{
+  "ticker": "HTCR",
+  "cik": "1892322",
+  "tradingDate": "2026-10-01",
+  "rank": 4,
+  "ledger": [
+    {
+      "type": "EQUITY_PURCHASE_AGREEMENT",
+      "amountShares": 20833333,
+      "dollarCapacity": 25000000,
+      "sourceFiling": "424B1 filed 2025-09-16; Equity Purchase Agreement dated June 30, 2025",
+      "registrationStatus": "An S-1 registering resale by Crom Structured Opportunities Fund I, LP was declared effective September 15, 2025. The prospectus describes up to $25.0 million of company-directed sales under the facility and 20,833,333 registered shares; the excerpt does not establish remaining capacity, issuance, or resale activity as of September 2026.",
+      "effectiveDate": "2025-09-15",
+      "terms": "The company may, at its discretion, issue and sell common shares to Crom up to a $25.0 million maximum commitment. The disclosed 20,833,333 registered-share total includes shares potentially issued under the facility, ELOC commitment shares, and shares registered for preferred conversion.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The effective registration establishes legal resale availability for covered securities, not that shares were issued or sold. The bundle does not show whether the agreement, registration, or unused commitment remained operative as of the analysis date.",
+      "evidenceSourceIds": [
+        103753,
+        103749
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "ATM",
+      "amountShares": null,
+      "dollarCapacity": 1988229,
+      "sourceFiling": "424B5 filed 2023-10-23",
+      "registrationStatus": "The supplied prospectus supplement offered up to $1,988,229 of common stock through H.C. Wainwright under an ATM agreement.",
+      "effectiveDate": null,
+      "terms": "Dollar-denominated ATM capacity; no share count can be calculated from the supplied evidence.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The bundle does not establish remaining capacity, subsequent sales, termination, or availability of this ATM as of September 2026.",
+      "evidenceSourceIds": [
+        103751
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 1515328,
+    "asOf": "2026-08-13",
+    "filed": "2026-08-13",
+    "accession": "0001493152-26-037604",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001213900-25-050027",
+      "form": "4",
+      "filingDate": "2025-06-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1905222",
+        "ownerName": "Yasui Daishin",
+        "rows": [
+          {
+            "asOf": "2025-05-29",
+            "title": "common stock",
+            "shares": 2261756
+          },
+          {
+            "asOf": "2025-05-30",
+            "title": "common stock",
+            "shares": 2201756
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001213900-25-047804",
+      "form": "4",
+      "filingDate": "2025-05-27",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1905222",
+        "ownerName": "Yasui Daishin",
+        "rows": [
+          {
+            "asOf": "2025-05-20",
+            "title": "common stock",
+            "shares": 2312625
+          },
+          {
+            "asOf": "2025-05-21",
+            "title": "common stock",
+            "shares": 2311756
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001641172-25-000590",
+      "form": "4",
+      "filingDate": "2025-03-25",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1905222",
+        "ownerName": "Yasui Daishin",
+        "rows": [
+          {
+            "asOf": "2025-03-21",
+            "title": "common stock",
+            "shares": 2322625
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-011141",
+      "form": "4",
+      "filingDate": "2025-03-21",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1905222",
+        "ownerName": "Yasui Daishin",
+        "rows": [
+          {
+            "asOf": "2025-03-19",
+            "title": "common stock",
+            "shares": 2325125
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-25-005786",
+      "form": "3",
+      "filingDate": "2025-02-11",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1905222",
+        "ownerName": "Yasui Daishin",
+        "rows": [
+          {
+            "asOf": "2022-02-09",
+            "title": "common stock",
+            "shares": 2325425
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-048369",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1904454",
+        "ownerName": "Kuno Keisuke",
+        "rows": [
+          {
+            "asOf": "2024-11-19",
+            "title": "common stock",
+            "shares": 91785
+          },
+          {
+            "asOf": "2024-11-19",
+            "title": "common stock",
+            "shares": 81785
+          },
+          {
+            "asOf": "2024-11-19",
+            "title": "common stock",
+            "shares": 75785
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-048363",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1904502",
+        "ownerName": "Yamamoto Sumitaka",
+        "rows": [
+          {
+            "asOf": "2023-06-15",
+            "title": "common stock",
+            "shares": 10684473
+          },
+          {
+            "asOf": "2024-10-01",
+            "title": "common stock",
+            "shares": 10677363
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-048345",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1904454",
+        "ownerName": "Kuno Keisuke",
+        "rows": [
+          {
+            "asOf": "2024-10-01",
+            "title": "common stock",
+            "shares": 101785
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-048343",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1904494",
+        "ownerName": "Gao Qizhi",
+        "rows": [
+          {
+            "asOf": "2024-10-01",
+            "title": "common stock",
+            "shares": 32531
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001493152-24-048341",
+      "form": "4",
+      "filingDate": "2024-12-02",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1904516",
+        "ownerName": "Hosaka Kimio",
+        "rows": [
+          {
+            "asOf": "2024-10-01",
+            "title": "common stock",
+            "shares": 115434
+          }
+        ]
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1904454",
+      "ownerName": "Kuno Keisuke",
+      "shares": 91785,
+      "asOf": "2024-11-19",
+      "accessions": [
+        "0001493152-24-048369"
+      ]
+    },
+    {
+      "ownerCik": "1904494",
+      "ownerName": "Gao Qizhi",
+      "shares": 32531,
+      "asOf": "2024-10-01",
+      "accessions": [
+        "0001493152-24-048343"
+      ]
+    },
+    {
+      "ownerCik": "1904502",
+      "ownerName": "Yamamoto Sumitaka",
+      "shares": 10677363,
+      "asOf": "2024-10-01",
+      "accessions": [
+        "0001493152-24-048363"
+      ]
+    },
+    {
+      "ownerCik": "1904516",
+      "ownerName": "Hosaka Kimio",
+      "shares": 115434,
+      "asOf": "2024-10-01",
+      "accessions": [
+        "0001493152-24-048341"
+      ]
+    },
+    {
+      "ownerCik": "1905222",
+      "ownerName": "Yasui Daishin",
+      "shares": 2201756,
+      "asOf": "2025-05-30",
+      "accessions": [
+        "0001213900-25-050027"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1904454": "FOUND",
+    "1904494": "FOUND",
+    "1904502": "FOUND",
+    "1904516": "FOUND",
+    "1905222": "FOUND"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

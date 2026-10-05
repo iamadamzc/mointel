@@ -1,0 +1,748 @@
+{
+  "ticker": "BYSI",
+  "cik": "1677940",
+  "tradingDate": "2026-09-28",
+  "rank": 4,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": 10000000,
+      "dollarCapacity": null,
+      "sourceFiling": "Registration No. 333-280153; Form S-3 post-effective amendment and related prospectus supplement",
+      "registrationStatus": "Effective August 18, 2025. The cited prospectus supplement describes the shelf as permitting sales of up to 10,000,000 ordinary shares, but the remaining unused capacity is not established in the bundle.",
+      "effectiveDate": "2025-08-18",
+      "terms": "Securities may be offered from time to time after effectiveness; applicable prospectus supplements would provide transaction-specific terms.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "An effective shelf permits potential sales but does not establish that securities were sold or that the full stated capacity remains available.",
+      "evidenceSourceIds": [
+        107434,
+        107437,
+        107439
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 800000,
+      "dollarCapacity": 2000000,
+      "sourceFiling": "424B5 filed November 17, 2025",
+      "registrationStatus": "Registered offering under the effective Registration No. 333-280153 shelf.",
+      "effectiveDate": "2025-11-17",
+      "terms": "Prospectus supplement states the company was offering 800,000 ordinary shares to Ray Beauty Group Limited at $2.50 per share.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "The prospectus establishes an offering and registration pathway, but the supplied excerpt does not independently confirm closing, issuance, resale status, or current holder eligibility.",
+      "evidenceSourceIds": [
+        107439
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 41119820,
+    "asOf": "2026-07-31",
+    "filed": "2026-08-14",
+    "accession": "0001171843-26-005558",
+    "form": "10-Q"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001193125-26-295935",
+      "form": "4",
+      "filingDate": "2026-07-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-295934",
+      "form": "4",
+      "filingDate": "2026-07-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-295932",
+      "form": "3",
+      "filingDate": "2026-07-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2143654",
+        "ownerName": "Qiu Min",
+        "rows": [
+          {
+            "asOf": "2026-07-01",
+            "title": "ordinary shares",
+            "shares": 2498
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001193125-26-295930",
+      "form": "3",
+      "filingDate": "2026-07-06",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-226749",
+      "form": "4",
+      "filingDate": "2026-05-15",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-147830",
+      "form": "4",
+      "filingDate": "2026-04-08",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-142402",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-142218",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-142217",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-142216",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-142215",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001193125-26-142214",
+      "form": "4",
+      "filingDate": "2026-04-03",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001231919-25-000335",
+      "form": "4",
+      "filingDate": "2025-10-20",
+      "primaryDocument": "xslF345X05/form4-10202025_111053.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "7 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000323",
+      "form": "4",
+      "filingDate": "2025-10-15",
+      "primaryDocument": "xslF345X05/form4-10162025_121006.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "7 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000308",
+      "form": "4",
+      "filingDate": "2025-10-10",
+      "primaryDocument": "xslF345X05/form4-10102025_091053.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "7 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000292",
+      "form": "4",
+      "filingDate": "2025-10-07",
+      "primaryDocument": "xslF345X05/form4-10072025_101049.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "7 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000278",
+      "form": "4",
+      "filingDate": "2025-10-02",
+      "primaryDocument": "xslF345X05/form4-10032025_121037.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "7 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000258",
+      "form": "4",
+      "filingDate": "2025-09-29",
+      "primaryDocument": "xslF345X05/form4-09302025_120929.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000244",
+      "form": "4",
+      "filingDate": "2025-09-24",
+      "primaryDocument": "xslF345X05/form4-09242025_100902.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001231919-25-000221",
+      "form": "4",
+      "filingDate": "2025-09-19",
+      "primaryDocument": "xslF345X05/form4-09192025_100903.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001736814-25-000007",
+      "form": "4",
+      "filingDate": "2025-09-16",
+      "primaryDocument": "xslF345X05/form4-09162025_110941.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-024317",
+      "form": "4",
+      "filingDate": "2025-09-11",
+      "primaryDocument": "xslF345X05/form4-09112025_110935.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-023907",
+      "form": "4",
+      "filingDate": "2025-09-08",
+      "primaryDocument": "xslF345X05/form4-09082025_100931.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-023607",
+      "form": "4",
+      "filingDate": "2025-09-03",
+      "primaryDocument": "xslF345X05/form4-09032025_110901.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-023258",
+      "form": "4",
+      "filingDate": "2025-08-28",
+      "primaryDocument": "xslF345X05/form4-08292025_120807.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-022967",
+      "form": "4",
+      "filingDate": "2025-08-25",
+      "primaryDocument": "xslF345X05/form4-08252025_110849.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-022532",
+      "form": "4",
+      "filingDate": "2025-08-20",
+      "primaryDocument": "xslF345X05/form4-08202025_100823.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-022119",
+      "form": "4",
+      "filingDate": "2025-08-15",
+      "primaryDocument": "xslF345X05/form4-08152025_110853.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-021441",
+      "form": "4",
+      "filingDate": "2025-08-11",
+      "primaryDocument": "xslF345X05/form4-08112025_090812.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0001415889-25-021439",
+      "form": "3",
+      "filingDate": "2025-08-11",
+      "primaryDocument": "xslF345X02/form3-08112025_090817.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "6 reporting owners (joint filing, not attributed)"
+      }
+    },
+    {
+      "accession": "0000950170-25-056990",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-25-056989",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-25-056988",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-25-056987",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-25-056986",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-25-056985",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-25-056984",
+      "form": "4",
+      "filingDate": "2025-04-23",
+      "primaryDocument": "xslF345X05/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-24-141461",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-24-141460",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2050150",
+        "ownerName": "Majeti Jiangwen",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "ordinary shares",
+            "shares": 50914
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-24-141459",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2050151",
+        "ownerName": "Lu Yingjuan June",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "ordinary shares",
+            "shares": 100
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-24-141457",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-24-141456",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1658859",
+        "ownerName": "Fabbio Patrick",
+        "rows": [
+          {
+            "asOf": "2024-12-31",
+            "title": "ordinary shares",
+            "shares": 24592
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0000950170-24-141455",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0000950170-24-141454",
+      "form": "3",
+      "filingDate": "2024-12-31",
+      "primaryDocument": "xslF345X02/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [
+    {
+      "ownerCik": "1658859",
+      "ownerName": "Fabbio Patrick",
+      "shares": 24592,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0000950170-24-141456"
+      ]
+    },
+    {
+      "ownerCik": "2050150",
+      "ownerName": "Majeti Jiangwen",
+      "shares": 50914,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0000950170-24-141460"
+      ]
+    },
+    {
+      "ownerCik": "2050151",
+      "ownerName": "Lu Yingjuan June",
+      "shares": 100,
+      "asOf": "2024-12-31",
+      "accessions": [
+        "0000950170-24-141459"
+      ]
+    },
+    {
+      "ownerCik": "2143654",
+      "ownerName": "Qiu Min",
+      "shares": 2498,
+      "asOf": "2026-07-01",
+      "accessions": [
+        "0001193125-26-295932"
+      ]
+    }
+  ],
+  "holdingSplit": {
+    "1658859": "NONE",
+    "2050150": "NONE",
+    "2050151": "NONE",
+    "2143654": "NONE"
+  },
+  "splitSinceCount": "UNPROVEN",
+  "audit": [
+    {
+      "ownerCik": "1658859",
+      "shares": 24592,
+      "asOf": "2024-12-31",
+      "rows": [
+        {
+          "accession": "0000950170-24-141456",
+          "title": "ordinary shares",
+          "shares": 24592,
+          "asOf": "2024-12-31"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 24592, independent 24592, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2024-12-31, count as-of 2026-07-31, independent latest eligible 2024-12-31"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 41041716, count 41119820"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2050150",
+      "shares": 50914,
+      "asOf": "2024-12-31",
+      "rows": [
+        {
+          "accession": "0000950170-24-141460",
+          "title": "ordinary shares",
+          "shares": 50914,
+          "asOf": "2024-12-31"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 50914, independent 50914, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2024-12-31, count as-of 2026-07-31, independent latest eligible 2024-12-31"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 41041716, count 41119820"
+        }
+      },
+      "dangerous": false
+    },
+    {
+      "ownerCik": "2050151",
+      "shares": 100,
+      "asOf": "2024-12-31",
+      "rows": [
+        {
+          "accession": "0000950170-24-141459",
+          "title": "ordinary shares",
+          "shares": 100,
+          "asOf": "2024-12-31"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 100, independent 100, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": false,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2024-12-31, count as-of 2026-07-31, independent latest eligible 2024-12-31"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 41041716, count 41119820"
+        }
+      },
+      "dangerous": true
+    },
+    {
+      "ownerCik": "2143654",
+      "shares": 2498,
+      "asOf": "2026-07-01",
+      "rows": [
+        {
+          "accession": "0001193125-26-295932",
+          "title": "ordinary shares",
+          "shares": 2498,
+          "asOf": "2026-07-01"
+        }
+      ],
+      "checks": {
+        "1_owner": {
+          "ok": true,
+          "note": "scanner single=true; rendered pages list one owner=true"
+        },
+        "2_number": {
+          "ok": true,
+          "note": "claimed 2498, independent 2498, number found in rendered text=true"
+        },
+        "3_class": {
+          "ok": true,
+          "note": "direct, common or ordinary: rendered text near the number shows D and Common/Ordinary"
+        },
+        "4_as_of": {
+          "ok": true,
+          "note": "claimed as-of 2026-07-01, count as-of 2026-07-31, independent latest eligible 2026-07-01"
+        },
+        "5_basis": {
+          "ok": true,
+          "note": "stored bars say NONE; PARTIAL (not read from SEC text); rendered filing text mentions \"split\": false"
+        },
+        "6_double_count": {
+          "ok": true,
+          "note": "owner CIK appears once among subtracted holdings"
+        },
+        "7_range": {
+          "ok": true,
+          "note": "bound 41041716, count 41119820"
+        }
+      },
+      "dangerous": false
+    }
+  ]
+}

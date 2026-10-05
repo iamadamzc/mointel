@@ -1,0 +1,175 @@
+{
+  "ticker": "MI",
+  "cik": "1958713",
+  "tradingDate": "2026-09-30",
+  "rank": 7,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 279600,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed August 24, 2026",
+      "registrationStatus": "F-1 effective August 21, 2026; prospectus describes a best-efforts offering, but the bundle does not confirm completed sales.",
+      "effectiveDate": "2026-08-21",
+      "terms": "Up to 279,600 units, each consisting of one Class A ordinary share and one common warrant, at $4.60 per unit.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The registration was effective and a prospectus was filed, so the offering may proceed; actual issuance and resale availability are not established in the bundle.",
+      "evidenceSourceIds": [
+        24314,
+        24316
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 158357,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed August 24, 2026",
+      "registrationStatus": "Included in the effective F-1 offering documents.",
+      "effectiveDate": "2026-08-21",
+      "terms": "The prospectus identifies 158,357 Class A ordinary shares underlying pre-funded warrants.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential share issuance is disclosed, but the bundle does not establish issuance of the pre-funded units, exercise status, or applicable blocker and exercise terms.",
+      "evidenceSourceIds": [
+        24314,
+        24316
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 437957,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 filed August 24, 2026",
+      "registrationStatus": "Included in the effective F-1 offering documents.",
+      "effectiveDate": "2026-08-21",
+      "terms": "The prospectus identifies 437,957 Class A ordinary shares underlying common warrants.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "Potential warrant supply is disclosed, but exercise price, exercise status, and issuance of the associated offering units are not established by the provided excerpt.",
+      "evidenceSourceIds": [
+        24314,
+        24316
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 720779,
+      "dollarCapacity": null,
+      "sourceFiling": "6-K dated March 12, 2026",
+      "registrationStatus": "Registered direct offering reported closed on March 11, 2026.",
+      "effectiveDate": "2026-03-11",
+      "terms": "The company reported issuing 720,779 units, each containing one Class A ordinary share and one warrant, at $3.85 per unit.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "The filing reports that these units were issued in a closed registered direct offering. The excerpt does not separately establish public float treatment for all resulting shares.",
+      "evidenceSourceIds": [
+        24308
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 3439689,
+      "dollarCapacity": null,
+      "sourceFiling": "424B5 dated March 11, 2026",
+      "registrationStatus": "Covered by effective F-3 shelf registration statement No. 333-284912.",
+      "effectiveDate": "2025-11-28",
+      "terms": "The prospectus supplement covers up to 3,439,689 Class A ordinary shares issuable upon warrant exercise and states that the warrants include a zero-cash-exercise-price option.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "A potentially significant warrant-related issuance amount is registered; actual exercises and the conditions governing any zero-cash exercise are not established in the bundle.",
+      "evidenceSourceIds": [
+        24315,
+        24317
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 500000000,
+      "sourceFiling": "F-3 registration statement No. 333-284912",
+      "registrationStatus": "Declared effective November 28, 2025.",
+      "effectiveDate": "2025-11-28",
+      "terms": "The F-3 describes up to $500 million aggregate capacity across Class A ordinary shares, debt securities, warrants, rights, and units.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "This is dollar-denominated shelf capacity, not a share count. The remaining unused capacity is not established because the bundle includes subsequent offerings and does not reconcile drawdowns against the shelf.",
+      "evidenceSourceIds": [
+        24313,
+        24315,
+        24317
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 14318410,
+    "asOf": "2025-12-31",
+    "filed": "2026-05-01",
+    "accession": "0001213900-26-050939",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0002124824-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002124075-26-000002",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002124069-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002124070-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0002124071-26-000001",
+      "form": "3",
+      "filingDate": "2026-03-27",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "FOUND",
+  "audit": []
+}

@@ -1,0 +1,203 @@
+{
+  "ticker": "DXST",
+  "cik": "1958133",
+  "tradingDate": "2026-09-29",
+  "rank": 3,
+  "ledger": [
+    {
+      "type": "SHELF_CAPACITY",
+      "amountShares": null,
+      "dollarCapacity": 200000000,
+      "sourceFiling": "F-3 registration statement, file 333-295313",
+      "registrationStatus": "F-3 declared effective May 7, 2026",
+      "effectiveDate": "2026-05-07",
+      "terms": "The effective shelf covers up to $200,000,000 aggregate initial offering price of Class A shares, share purchase contracts/units, warrants, debt securities, rights, or units. Dollar capacity is not a share count.",
+      "holderRestrictions": null,
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The EFFECT establishes that the F-3 registration statement became effective and that the company may conduct offerings under the shelf, subject to applicable prospectus and offering requirements. It does not evidence that securities have been sold under the shelf.",
+      "evidenceSourceIds": [
+        18529,
+        18532
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 1568627,
+      "dollarCapacity": null,
+      "sourceFiling": "F-1 filed September 22, 2026",
+      "registrationStatus": "Registration statement filed; no notice of effectiveness is supplied for this F-1.",
+      "effectiveDate": null,
+      "terms": "Preliminary prospectus describes up to 1,568,627 units, each consisting of one Class A ordinary share or, in lieu thereof, a pre-funded warrant; the supplied excerpt indicates proposed sale following effectiveness.",
+      "holderRestrictions": null,
+      "status": "NOT_YET_ACTIVE",
+      "eligibilityAssessment": "This filed F-1 is a potential new issuance pathway, but the supplied bundle contains no EFFECT for it and does not establish any completed sale or currently saleable securities under this registration statement.",
+      "evidenceSourceIds": [
+        97669,
+        97702
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "WARRANTS",
+      "amountShares": 26666666,
+      "dollarCapacity": null,
+      "sourceFiling": "424B4 dated November 12, 2025",
+      "registrationStatus": "The prospectus described up to 26,666,666 warrants and up to 26,666,666 Class A shares issuable upon exercise.",
+      "effectiveDate": null,
+      "terms": "The stated quantities are from a pre-March-2026 reverse-split prospectus. The supplied excerpts do not provide enough warrant exercise, outstanding-versus-issued, exercise-price, adjustment, or current-registration detail to reconcile a current post-split exercisable-share amount.",
+      "holderRestrictions": null,
+      "status": "UNKNOWN",
+      "eligibilityAssessment": "Potential warrant-related supply cannot be quantified as currently exercisable or currently saleable from the supplied excerpts. Warrants should not be treated as confirmed live supply without current terms and status.",
+      "evidenceSourceIds": [
+        18534,
+        18526
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 15000000,
+    "asOf": "2024-10-31",
+    "filed": "2025-03-07",
+    "accession": "0001213900-25-021825",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [
+    {
+      "accession": "0001185185-26-003676",
+      "form": "4",
+      "filingDate": "2026-08-21",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "2131176",
+        "ownerName": "Sun Dingxin",
+        "rows": [
+          {
+            "asOf": "2026-08-06",
+            "title": "class b ordinary shares",
+            "shares": 400000
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001475597-26-000053",
+      "form": "4",
+      "filingDate": "2026-06-05",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1475597",
+        "ownerName": "HRT FINANCIAL LP",
+        "rows": [
+          {
+            "asOf": "2026-06-03",
+            "title": "common stock",
+            "shares": 188392
+          },
+          {
+            "asOf": "2026-06-04",
+            "title": "common stock",
+            "shares": 59694
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001475597-26-000052",
+      "form": "3",
+      "filingDate": "2026-06-05",
+      "primaryDocument": "xslF345X06/primary_doc.xml",
+      "parsed": {
+        "ok": true,
+        "ownerCik": "1475597",
+        "ownerName": "HRT FINANCIAL LP",
+        "rows": [
+          {
+            "asOf": "2026-06-03",
+            "title": "common stock",
+            "shares": 188392
+          }
+        ]
+      }
+    },
+    {
+      "accession": "0001185185-26-001804",
+      "form": "3",
+      "filingDate": "2026-05-12",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001185185-26-001704",
+      "form": "3",
+      "filingDate": "2026-05-04",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001185185-26-001593",
+      "form": "3",
+      "filingDate": "2026-04-29",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001185185-26-001466",
+      "form": "3",
+      "filingDate": "2026-04-22",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001185185-26-001450",
+      "form": "3",
+      "filingDate": "2026-04-21",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001185185-26-001422",
+      "form": "3",
+      "filingDate": "2026-04-20",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    },
+    {
+      "accession": "0001185185-26-001421",
+      "form": "3",
+      "filingDate": "2026-04-20",
+      "primaryDocument": "xslF345X06/ownership.xml",
+      "parsed": {
+        "ok": false,
+        "reason": "no direct common-stock row with a date"
+      }
+    }
+  ],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}

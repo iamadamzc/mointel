@@ -1,0 +1,58 @@
+{
+  "ticker": "WCT",
+  "cik": "1990251",
+  "tradingDate": "2026-10-01",
+  "rank": 6,
+  "ledger": [
+    {
+      "type": "RECENT_OFFERING",
+      "amountShares": 50000000,
+      "dollarCapacity": 7500000,
+      "sourceFiling": "6-K, accession 0001213900-26-095769",
+      "registrationStatus": "The Form F-1 registration statement was effective, and the offering closed on August 31, 2026.",
+      "effectiveDate": "2026-08-27",
+      "terms": "50,000,000 Class A ordinary shares were sold at $0.15 per pre-split Class A share for approximately $7.5 million gross proceeds. The share count is stated on a pre-September 8, 1-for-5 reverse-split basis.",
+      "holderRestrictions": null,
+      "status": "KNOWN_ACTIVE",
+      "eligibilityAssessment": "This was a completed registered public offering. The reverse split subsequently changed the Class A per-share count, so the 50,000,000 figure should not be treated as a current post-split share count without a reconciliation.",
+      "evidenceSourceIds": [
+        125071,
+        125088,
+        33259,
+        125086
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "type": "OTHER_ISSUED_SHARES",
+      "amountShares": 1465043,
+      "dollarCapacity": 1371720,
+      "sourceFiling": "6-K, accession 0001213900-26-075477",
+      "registrationStatus": "Issued in an offshore Regulation S transaction and described as restricted securities.",
+      "effectiveDate": "2026-07-02",
+      "terms": "1,465,043 newly issued Class B ordinary shares were sold at $0.9363 per share for $1,371,720.",
+      "holderRestrictions": "The shares were not registered under the Securities Act, are restricted securities, and may not be offered, sold or transferred absent an effective registration statement, an available exemption, or another permitted transaction.",
+      "status": "POSSIBLY_ACTIVE",
+      "eligibilityAssessment": "The shares were issued, but the filing expressly describes resale restrictions. The evidence does not establish current public resale eligibility.",
+      "evidenceSourceIds": [
+        33252,
+        33267
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "count": {
+    "state": "PRODUCED",
+    "shares": 46265000,
+    "asOf": "2024-12-31",
+    "filed": "2025-05-16",
+    "accession": "0001213900-25-044576",
+    "form": "20-F"
+  },
+  "spreadAcrossFilings": false,
+  "filings": [],
+  "holdings": [],
+  "holdingSplit": {},
+  "splitSinceCount": "UNPROVEN",
+  "audit": []
+}
