@@ -1552,6 +1552,14 @@ WEB REPLAY       2eaad153 (full 2eaad1536a68..., = web/sheet-priority-out) on 52
                  (the old class line names local_a4c618a8 only).
                  CLEARED by Web local_fe13d183 by sha: 4fbdc7a5 623a0af9 c7798504 (all web.md only, read). c7798504 adds a
                  class line for this seat's later docs-only commits (read); check each later sha's file list against it.
+SELF-RESET HOOK  Infra-Ops: session-hygiene s3 now has "self-reset" (READ lines 70-80): at a task boundary or a ledger repeat,
+                 commit, make the opening prompt true, ask him "Reset this seat now?", on yes clear_session "self"; a
+                 SessionStart hook (matcher startup|clear) points the cleared seat at its prompt by title. Template READ:
+                 claude-infra-agent .claude/hooks/on-clear.sh + 86ebefc. mointel has no hooks (.claude/settings.local.json
+                 hooks empty). SEAM found and sent to Infra-Ops: "startup" fires on EVERY new chat; at startup a new chat
+                 is untitled, so the template's fallback ("cannot tell which seat you are, ask") collides with every pasted
+                 hand-off prompt and the scheduled read-only sessions. PUT TO HIM: adopt for mointel with a fallback of
+                 "title matches no seat: ignore, follow the message"; he applies (seats may not edit their own settings).
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
