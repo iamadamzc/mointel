@@ -33,8 +33,10 @@ the file as a SURFACE.
   row and answers 303 to `/desk`. A stale version (a tab opened before a text change) answers 303 back
   to `/enter`, so nobody accepts text they were not shown.
 - **DECLINE:** records nothing, so the gate reappears on the next entry (12b requirement 3). It posts
-  to the existing `/auth/signout` and lands on `/` (requirement 2). Design may prefer a "you need to
-  accept" state at `/enter?declined`; server-side, either works.
+  to the existing `/auth/signout` and lands on the public `/`, which shows nothing special
+  (requirement 2). *A "you need to accept" state at `/enter?declined` was withdrawn on Design's
+  catch: signout makes the user anonymous, and an anonymous visitor at `/enter` is sent to
+  `/signin`, so that state could never render.*
 
 ## Storage
 
@@ -71,7 +73,8 @@ The entry check touches neither.
 
 ## Contract for Design's screen
 
-- `/enter` passes the component `{ text: typeof ENTRY_GATE; version: string; declined: boolean }`.
+- `/enter` is a full page, not an overlay (Design). It passes the component
+  `{ text: typeof ENTRY_GATE; version: string }`.
 - The component imports the text from `lib/legal/entryGate.ts` and never retypes it.
 - ACCEPT is `<form method="post" action="/auth/accept">` with a hidden `version`, so it works before
   JavaScript loads.
