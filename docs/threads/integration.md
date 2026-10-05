@@ -1195,6 +1195,14 @@ DESIGN 1,024     MEASURED (Design, production 6e7fff84, 08-18 board 12 rows, tab
                  values from the real desk cell; known wraps reproduce): 85.7 px, WRAPS to 2 lines; "Unknown" 46 px fits;
                  <= 9 capitals fit, 10 ~66 px edge. Relayed to Marketing with the two options (2-line cell, or shorter cell
                  word + full Commercial text in popover; the latter is a change to a Commercial-named state -> new Commercial).
+NEW COMMERCIAL   Commercial-tmi local_2aab5a77 (get_session: A:\mointel, created 2026-10-05T00:59:52Z, Opus 5.5). Answered
+                 (89936e42): STALE in commercial.md live state (d37043af): landing sentence ANSWERED (his turn 81e25ab4
+                 23:20:42.954Z) but NOT LIVE (2fe136ac not in 6e7fff84); float page row superseded by 7fa31bcb s5d (final
+                 re-read PASS, 2 items: hedge the negative universal "we know of no SEC filing that requires a count of
+                 floating shares"; subtraction set + "and anyone else who reports on those forms"); float ruling NOW
+                 VERIFIED at his turn (transcript 267e4fe2, 2026-10-05T00:40:36.034Z, read by me). New: float cell claims
+                 questions (in-cell date per item 7; shortened "Cannot verify"; conditional vs bare "≤"), release pairing.
+                 Marketing told s5d's two items (queued).
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
