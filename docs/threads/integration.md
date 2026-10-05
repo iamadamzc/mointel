@@ -1378,6 +1378,12 @@ LEGEND RULED     Commercial c26daa80 (on origin; claims read 6b): DELETE "not te
                  "tested", "validated", "do not predict", "did not work". Marketing sweeps every surface (13458dc8,
                  3fd16f82 cleared by Marketing). I had told him the new sentence would state the test; CORRECTED to him in
                  the next message (the line is removed). Open to him: keep building the badge (rec: yes, as approved).
+COMMERCIAL 5j    aebcc427 (origin): legend commit e1220516 PASSES (6b text exactly). Float v13 226fbf72: 5 of 6 pass, one
+                 change to Marketing ("within the last 90 days" -> "at most 90 days before the checkpoint").
+RESEARCH SEAT    local_f6ef479a retitled "Research-tmi (retired 2026-10-05)" (read 22:0xZ via list_sessions); NO new
+                 Research-tmi yet. OWED TO THE NEW RESEARCH SEAT, tell it on arrival (my queued message to the old one may
+                 never be read): lib/research/priorityGrade.ts:7 still says "has not been tested against outcomes"; fix
+                 by pointing to adae1e89 (code, rides a gate). Sheet plan line 86 (mine) annotated + result added.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than

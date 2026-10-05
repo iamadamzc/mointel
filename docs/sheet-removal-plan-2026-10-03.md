@@ -83,10 +83,14 @@ Integration:**
   v3 `5855bf61` + `a9ea26a4`, Commercial-passed (`067dae18`). (3) Integration hand-off.
 - 2026-10-05T21:50:53.964Z, typed to Integration (27th seat, transcript 1b01d57c, human origin), verbatim: *"1, should
   absolutely see how the names traded against the grades. 2, no retirement yet."* Clause 1 answers the looser-A question
-  (Research `85041ad8`: approved rule A 5 of 719 rows, looser rule 45; neither tested against outcomes). **The approved
+  (Research `85041ad8`: approved rule A 5 of 719 rows, looser rule 45; neither tested against outcomes at that time; since tested, see below). **The approved
   rubric stands; the rule was not switched.** Research runs a pre-registered outcome test of the grades, both rules,
   against how the names traded after each checkpoint, grades as of the checkpoint. Clause 2 is the old Integration chat
   (`local_2102878a`): it is not retired yet.
+  **Result of the test (Research `adae1e89`, report `9fd9e06c`):** on 701 usable rows the grades did not separate the next
+  trading day's high (04:00 through the close) for either rule; the test sees 10 to 30 point separations only; the approved
+  rule's A (5 rows) and C (9) could not be tested. **Legend (Commercial `c26daa80`, claims read 6b):** the sentence "not
+  tested against outcomes" is deleted with nothing in its place; no result goes in the legend.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 
