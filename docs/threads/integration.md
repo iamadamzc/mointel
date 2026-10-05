@@ -1363,6 +1363,21 @@ v6 / 5g          Marketing v6 198d47d2 (local main). Commercial 5g (origin 3dc6a
                  ok (catch-all keeps it as wide as the method); two small fixes ("on their own"; sanity-check string) ->
                  Marketing for v7. HELD FOR RESEARCH (no answer seen yet): (a) split cause, (b) issuance sentence vs
                  RECENT_OFFERING/PIPE, (c) ledger evidence sources. v7 -> me (READ) -> HIM for sight, (a)(b) shown as OPEN.
+DESIGN CHAIN     APPROVED BY LITERAL SHA 5fe3997f3dddc5bffeab6f49cf5e506a14c5a22f (tag design/owed-to-main-on-2ca33587): cone 10
+                 over 2ca33587, 0 merges, 9 patch-ids EQUAL + c0d696f1 changed lines identical to a4a06168; 22 files
+                 +999/-178 (components, lib/dashboard, lib/data, lib/market/blueSky.ts, tests; no worker/deploy/db/package);
+                 U+2014 0 (control 1); origin's newer commits docs only, no overlap. Design gate 3,257 pass / build 0 / tsc 0.
+                 MERGED a3249a55 (origin/main) + c0d57723 (chain) into shared main. 558d07a5 HELD: needs the MOVERS group
+                 (d1677f07, 74d941f8, b1a8bb8f, f75ec7e3, d1017381, 6eaff6e5, c01dedc5; Ops's list). NOT PUSHED: clearance
+                 asked of Design (10), Research (7), Marketing (3); Web 349d051e cleared.
+RESEARCH ANSWERS READ: 33b2d781 (per-cause reason table incl. ISSUANCE_NOT_CHECKED; types IN: ATM, EPA, warrants, convertibles,
+                 preferred any date; RECENT_OFFERING/PIPE/ACQUISITION/OTHER if dated after count or undated; OUT resale +
+                 shelf; triggers KNOWN_ACTIVE AND POSSIBLY_ACTIVE (WIDER than Commercial; Integration's + his call on the
+                 table); no-ledger rules); eba2922b (holding across a split REFUSED; NEW count-level SPLIT_SINCE_COUNT, proof
+                 required, 9/10 unavailable in the 10-name run over a longer span); 4c02162d (evidence may be ANY source type
+                 incl. web search: "in filings" out). Routed to Marketing (v8). SEAM to Research: NOT_YET vs
+                 ISSUANCE_NOT_CHECKED. Asked Amendment 1 table to carry all four strictness rows at 45/90/120.
+                 RISK TO HIS RULING "always show it, it's key": the column may be mostly Cannot verify. Told him.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
