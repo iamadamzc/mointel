@@ -1514,6 +1514,8 @@ REPORT PROPOSAL  Design: window = live board empty (22:00-04:00, non-trading day
                  and tradingDate rolls after 22:00/weekends (session.ts:357-361), so the list is likely EMPTY in B's
                  window. Build must read the latest completed checkpoint across dates; readModel callers enumerated in
                  the commit. If larger than UI, back to me before shipping without it.
+                 Design e8685f77 (on 67da54f4): wired = setupGrades != null (seam 1), test added; rides the B gate.
+                 Tooltip dash reword (DecisionCells.tsx:625, DeskRead.tsx:208) to "an unknown time": YES, same gate.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
