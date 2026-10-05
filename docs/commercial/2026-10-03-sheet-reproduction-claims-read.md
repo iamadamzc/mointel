@@ -202,3 +202,20 @@ anything (not studied; his call if ever).
 
 **Not reviewed:** the voice; Design's cell sizing for "not researched yet".
 
+## 5g. Float page and cell draft v6 re-read, third tenure, 2026-10-05: PASS on the five 5f changes and the four points, two small corrections, three items held for Research
+
+*Read: `docs/marketing/float-page-draft.md` at `198d47d2` (local main, not on origin when read). Words only; the validation sample, the unbuilt as-of rule, his sight of the draft and Design's sizing of "not researched yet" still gate any surface.*
+
+**Passes.** All five 5f required changes are applied as asked: the conditional is in the off-popover string and the closing paragraph; the comparison with other floats is gone; the "no public source" sentence is replaced by "an estimate someone computed, unless a filing happens to state it"; "many stocks"; "the desk has flagged"; "never lowers our number"; "10 percent owners". **"10 percent owners" checked against the insider set (5b):** the list reads "the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5", and the catch-all keeps the description as wide as the method (any role, including "other"), so it is not narrower than the code.
+
+**Two small corrections.**
+1. **The list is now wider than the method in one place.** Research subtracts only single-owner filings; a joint filing is not attributed (contract section 1). "Anyone else who files Forms 3, 4 and 5" reads as including joint filers. Say "who files Forms 3, 4 and 5 on their own". The direction is safe (leaving a holding out never lowers the number); the claim should still match the method.
+2. **The popover string repeats itself:** "did not pass the desk's own sanity check on the figure". Say "did not pass the desk's own sanity check, so it is not shown".
+
+**Held for Research, none of them a Marketing fault.**
+1. **Splits.** The page restores "a holding is dated before a share split" as a Cannot verify cause, but the contract defines Cannot verify by three causes (age, issuance, a range failure) and no popover string exists for a fourth. Three outcomes, each changing the page: no built refusal (the line goes and "lined up" gains "no share split between the holding and the count"); a per-owner refusal (it moves to "left out", not Cannot verify); a whole-name refusal (it needs its own popover string). The page cannot ship until Research says which.
+2. **"When we find that shares are being issued, the name reads Cannot verify."** True only for the block types the rule acts on. Per the contract those are ATM, equity line, warrant, convertible and preferred, at KNOWN_ACTIVE; a closed offering (`RECENT_OFFERING`) or a PIPE is not on that list (5e). If Research does not widen the list, the sentence is false for those names and must say which issuance it means.
+3. **Ledger evidence sources** (whether "in the company's filings" may return): open, unchanged.
+
+**Recommendation for the route.** After the two corrections the wording is ready for his sight. Items 1 and 2 above should reach him as open, not as settled sentences.
+
