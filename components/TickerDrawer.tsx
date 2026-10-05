@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react';
 
 import {
-  PriorityBadge,
   StatusBadge,
   StructureBadge,
   catalystTone,
@@ -16,6 +15,7 @@ import { HaltBadge } from '@/components/DecisionCells';
 import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
+import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
 import { StoredLevelLadder } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
@@ -157,6 +157,8 @@ export function TickerDrawer({
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
           <DeskReadPanel read={buildDeskRead(row)} />
 
+          <SetupGradeReadings grade={row.setupGrade} Section={Section} />
+
           {/* ONE ladder: the stored resistance levels on its axis (his ruling 2026-10-02). */}
           <StoredLevelLadder
             key={row.ticker}
@@ -293,13 +295,9 @@ function DrawerHeader({
             >
               {row.ticker}
             </h2>
+            <SetupGradeBadge grade={row.setupGrade} />
             {ticker ? (
               <>
-                <PriorityBadge
-                  bucket={ticker.priority.bucket}
-                  raw={ticker.priority.raw}
-                  isRevised={ticker.priority.isRevised}
-                />
                 {/* The same resolved cycle the board and the Desk Read show.
                     This badge read the Sheet's classification directly, so it
                     survived the cutover onto the computed phase and would have
@@ -571,8 +569,6 @@ function Overview({
   return (
     <Section title="Overview">
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
-        <Field label="Current Priority" value={ticker.priority.raw} />
-        <Field label="Original Priority" value={ticker.priority.originalRaw} />
         {/* Named as the Sheet's, because it is. The desk's own cycle is
             arithmetic now and shows in the header badge above; an unqualified
             "Cycle" here would contradict it in the same drawer. */}

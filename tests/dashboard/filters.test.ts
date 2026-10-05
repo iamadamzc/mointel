@@ -475,34 +475,52 @@ describe('the 28-day catalyst that rendered green', () => {
   });
 });
 
-describe('priority hides non-matching rows, Discovery included', () => {
+describe('a setup grade filter hides non-matching rows, Discovery included', () => {
   /*
-   * His ruling, 2026-09-23: "a filter should filter". Priority is a Sheet
-   * judgement, so a Discovery name has no bucket and matches no letter — which
-   * is the ruling working rather than a gap. Selecting A means "the names I
-   * rated A", and a name nobody rated is not one of them.
+   * His ruling, 2026-09-23: "a filter should filter". The grade is the desk's
+   * own stored reading, so a name with no grade at the checkpoint (the dash)
+   * matches no letter and not "Not graded" either. Selecting A means "the names
+   * the desk read as A", and a name with no reading is not one of them.
    */
-  it('keeps a watchlist row whose bucket matches', () => {
-    expect(rowMatchesFilters(sheetRow('FRESH'), filters({ priority: 'A' }))).toBe(true);
+  const stored = (grade: 'A' | 'B' | 'C' | 'AVOID' | 'UNKNOWN' | 'NOT_YET') => ({
+    grade,
+    basis: { structure: 'LIMITED', catalyst: 'STRONG', volume: 'STRONG', liquidity: 'STRONG', supply: 'UNKNOWN' } as const,
+    rule: 'rubric-2026-10-05',
+    checkpointCompletedAt: '2026-10-05T19:42:00.000Z',
+  });
+  const graded = (row: ReturnType<typeof discoveryRow>, grade: Parameters<typeof stored>[0]) => ({
+    ...row,
+    setupGrade: stored(grade),
   });
 
-  it('hides a watchlist row whose bucket does not match', () => {
-    expect(rowMatchesFilters(sheetRow('FRESH'), filters({ priority: 'C' }))).toBe(false);
+  it('keeps a row whose stored grade matches, on either board population', () => {
+    expect(rowMatchesFilters(graded(discoveryRow('FRESH'), 'A'), filters({ setupGrade: 'A' }))).toBe(true);
+    expect(rowMatchesFilters(graded(sheetRow('FRESH'), 'B'), filters({ setupGrade: 'B' }))).toBe(true);
   });
 
-  it('hides a DISCOVERY row, which carries no priority at all', () => {
-    // Before this, priority filtered only the researched table and Discovery
-    // sat underneath it unchanged — the shape of his original complaint.
+  it('hides a row whose grade does not match', () => {
+    expect(rowMatchesFilters(graded(discoveryRow('FRESH'), 'A'), filters({ setupGrade: 'C' }))).toBe(false);
+  });
+
+  it('D selects stored AVOID, and Not graded selects stored UNKNOWN only', () => {
+    expect(rowMatchesFilters(graded(discoveryRow('FRESH'), 'AVOID'), filters({ setupGrade: 'D' }))).toBe(true);
+    expect(rowMatchesFilters(graded(discoveryRow('FRESH'), 'UNKNOWN'), filters({ setupGrade: 'NOT_GRADED' }))).toBe(true);
+    expect(rowMatchesFilters(graded(discoveryRow('FRESH'), 'NOT_YET'), filters({ setupGrade: 'NOT_GRADED' }))).toBe(false);
+  });
+
+  it('hides a row with NO grade (the dash) under every selected grade', () => {
     const row = discoveryRow('FRESH');
-    expect(row.research ?? null).toBeNull();
-    expect(rowMatchesFilters(row, filters({ priority: 'A' }))).toBe(false);
+    expect(row.setupGrade).toBeNull();
+    for (const selected of ['A', 'B', 'C', 'D', 'NOT_GRADED'] as const) {
+      expect(rowMatchesFilters(row, filters({ setupGrade: selected })), selected).toBe(false);
+    }
   });
 
-  it('leaves every row alone when no priority is selected', () => {
-    // The control: without it, a predicate that excluded unrated rows
-    // unconditionally would pass the three tests above and empty the board.
-    expect(rowMatchesFilters(discoveryRow('FRESH'), filters({ priority: 'ALL' }))).toBe(true);
-    expect(rowMatchesFilters(sheetRow('STALE'), filters({ priority: 'ALL' }))).toBe(true);
+  it('leaves every row alone when no grade is selected', () => {
+    // The control: without it, a predicate that excluded ungraded rows
+    // unconditionally would pass the tests above and empty the board.
+    expect(rowMatchesFilters(discoveryRow('FRESH'), filters({ setupGrade: 'ALL' }))).toBe(true);
+    expect(rowMatchesFilters(sheetRow('STALE'), filters({ setupGrade: 'ALL' }))).toBe(true);
   });
 });
 

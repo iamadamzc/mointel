@@ -52,6 +52,7 @@ import {
 } from '@/lib/dashboard/view';
 import type { DiscoveryState } from '@/lib/market/types';
 import { formatCount, formatMultiple } from '@/lib/format';
+import { SETUP_GRADE_LEGEND } from '@/lib/dashboard/setupGrade';
 
 const VIEW_SIZES = [12, 25, 50] as const;
 type ViewSize = (typeof VIEW_SIZES)[number];
@@ -809,6 +810,8 @@ export function DiscoveryBoard({
           </>
         )}
       </p>
+      {/* The standing legend, once per board, verbatim (Marketing v3, Commercial-passed). */}
+      <p className="mt-1.5 text-[11px] text-ink-3">{SETUP_GRADE_LEGEND}</p>
     </section>
   );
 }
@@ -1030,6 +1033,7 @@ function DiscoveryRow({
           stale={t.stale}
           ageSeconds={t.ageSeconds}
           retention={retention}
+          setupGrade={row.setupGrade}
         />
         {moving ? (
           /*

@@ -16,6 +16,11 @@ const TONE_CLASS: Record<Tone, string> = {
   dim: 'border-line bg-panel-2 text-ink-3',
 };
 
+/** The badge colours, for a control that has to be a button but must look like one. */
+export function toneClass(tone: Tone): string {
+  return TONE_CLASS[tone];
+}
+
 interface StatusBadgeProps {
   label: string;
   tone?: Tone;

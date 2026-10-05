@@ -5,9 +5,10 @@ import type {
   CycleFilter,
   FilterState,
   GradeFilter,
-  PriorityFilter,
+  SetupGradeFilter,
   StructureFilter,
 } from '@/lib/dashboard/view';
+import { SETUP_GRADE_FILTERS } from '@/lib/dashboard/setupGrade';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -93,16 +94,11 @@ export function FilterBar({ filters, onChange, onReset, isActive }: FilterBarPro
         />
       </div>
 
-      <OptionGroup<PriorityFilter>
-        label="Priority"
-        value={filters.priority}
-        onSelect={(priority) => onChange({ ...filters, priority })}
-        options={[
-          { value: 'ALL', label: 'All' },
-          { value: 'A', label: 'A' },
-          { value: 'B', label: 'B' },
-          { value: 'C', label: 'C' },
-        ]}
+      <OptionGroup<SetupGradeFilter>
+        label="Setup grade"
+        value={filters.setupGrade}
+        onSelect={(setupGrade) => onChange({ ...filters, setupGrade })}
+        options={SETUP_GRADE_FILTERS.map((option) => ({ value: option.value, label: option.label.replace(/^Setup grade /, '') }))}
       />
 
       <OptionGroup<CycleFilter>

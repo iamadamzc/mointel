@@ -4,6 +4,7 @@
  */
 
 import { resolveRisk } from '@/lib/dashboard/risk';
+import { matchesSetupGradeFilter, type SetupGradeFilter } from '@/lib/dashboard/setupGrade';
 import { nowReadingOf, nowSortTier, nowSortValue } from '@/lib/dashboard/nowReading';
 import { resolveWhy } from '@/lib/dashboard/why';
 import type { DeskRow } from '@/lib/dashboard/merge';
@@ -13,7 +14,8 @@ import type { DiscoveryBoard } from '@/lib/market/types';
 import type { MomentumTicker, PriorityBucket } from '@/lib/data/types';
 import type { SessionPhase } from '@/lib/market/types';
 
-export type PriorityFilter = 'ALL' | 'A' | 'B' | 'C';
+export type { SetupGradeFilter };
+
 /*
  * Cycle filters name phases that exist.
  *
@@ -67,7 +69,7 @@ export type GradeFilter = 'ALL' | 'A' | 'B' | 'C';
 
 export interface FilterState {
   search: string;
-  priority: PriorityFilter;
+  setupGrade: SetupGradeFilter;
   cycle: CycleFilter;
   structure: StructureFilter;
   catalyst: CatalystFilter;
@@ -76,7 +78,7 @@ export interface FilterState {
 
 export const DEFAULT_FILTERS: FilterState = {
   search: '',
-  priority: 'ALL',
+  setupGrade: 'ALL',
   cycle: 'ALL',
   structure: 'ALL',
   catalyst: 'ALL',
@@ -105,7 +107,7 @@ const PRIORITY_RANK: Record<PriorityBucket, number> = {
 export function isFilterActive(filters: FilterState): boolean {
   return (
     filters.search.trim() !== '' ||
-    filters.priority !== 'ALL' ||
+    filters.setupGrade !== 'ALL' ||
     filters.cycle !== 'ALL' ||
     filters.structure !== 'ALL' ||
     filters.catalyst !== 'ALL' ||
@@ -666,19 +668,19 @@ export function rowMatchesFilters(
   const search = filters.search.trim().toUpperCase();
   if (search && !row.ticker.includes(search)) return false;
 
-  if (filters.priority !== 'ALL') {
+  if (filters.setupGrade !== 'ALL') {
     /*
-     * HIS RULING, 2026-09-23: a selected priority HIDES non-matching rows,
-     * Discovery included — "a filter should filter".
+     * HIS RULING, 2026-09-23: a selected grade HIDES non-matching rows,
+     * Discovery included, "a filter should filter".
      *
-     * Priority is a Sheet judgement, so a Discovery name without a sheet row
-     * has no bucket and matches no letter. That is the ruling working rather
-     * than a gap: selecting A means "show me the names I rated A", and a name
-     * nobody rated is not one of them. The alternative — leaving unrated rows
-     * on screen under a priority filter — is the same lie the fresh-catalyst
-     * chip was telling.
+     * The grade is the desk's own stored reading (`row.setupGrade`), so a name
+     * with no grade at the checkpoint (the dash) matches no letter and not
+     * "Not graded" either: selecting A means "show the names the desk read as
+     * A", and a name with no reading is not one of them. Leaving ungraded rows
+     * on screen under a grade filter is the same lie the fresh-catalyst chip
+     * was telling.
      */
-    if (row.research?.priority.bucket !== filters.priority) return false;
+    if (!matchesSetupGradeFilter(row.setupGrade, filters.setupGrade)) return false;
   }
 
   if (filters.cycle !== 'ALL') {
