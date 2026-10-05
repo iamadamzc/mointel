@@ -76,10 +76,16 @@ web research, with no stated method.
 - **(a) Show the filed share count instead, labelled as such (recommended).** From the company's own SEC filings, with
   completed offerings added back in (Research built and checked this today for the short-interest work: the research
   write-ups' count matched SEC's figure 193 times out of 193). It is not float: it includes insiders' shares, so it reads
-  higher than float, and the label says so. No vendor, no new cost. **Measured (Research, run 3, your top-12 names,
+  higher than float, and the label says so. No vendor, no new cost. ~~**Measured (Research, run 3, your top-12 names,
   Aug 18 to Sep 15, 422 name-dates):** 82% have a filed share count; it is at most 45 days old for 34%, at most 90 days
-  for 46%, at most 120 days for 50%. Foreign companies: 167 of 180 have one, but only 47 are at most 120 days old. So
-  (a) covers most names, often with an old date that must be shown beside it.
+  for 46%, at most 120 days for 50%. Foreign companies: 167 of 180 have one, but only 47 are at most 120 days old.~~
+  **Corrected 2026-10-05:** the 34 / 46 / 50 figures did not reproduce from the committed raw and their derivation is
+  unknown. Re-derived by Research (`docs/research/float-contract/age-rederive-out-2026-10-05.json`, 3fcb1f2a, 422
+  short-interest pairs, ages as of each settlement date): no filed count 74 (17.5%); count at most 45 days old 171
+  (40.5% of all 422), at most 90 days 204 (48.3%), at most 120 days 218 (51.7%). Foreign companies: 167 of 180 have one;
+  33 are at most 45 days old, 51 at most 120. 66 of the 171 are counts dated on or after the settlement, which a board
+  checkpoint cannot see, so the 45-day share is probably a little high for the board. So (a) covers most names, often
+  with an old date that must be shown beside it.
 - **(b) Buy float data from a licensed vendor.** Commercial prices it and checks whether it may be shown to customers. A
   spend, so yours. Can run alongside (a).
 - **(c) Build the desk's own float from insider and large-holder filings.** A large build the desk deliberately has not

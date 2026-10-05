@@ -1343,6 +1343,12 @@ COMMERCIAL 5e    origin 4df63826, READ in full: date in popover PASSES only whil
                  PIPE, ACQUISITION_SHARES absent); no-ledger state unstated; page must name the 4 faces. Routed: Research
                  (contract items), Marketing (words), Commercial given addresses. To HIM: max-age choice now also moves the
                  date onto the cell at 90/120.
+AGE RE-DERIVED   Research 3fcb1f2a: age-rederive.mjs + age-rederive-out-2026-10-05.json (READ: source viewtime-raw-2026-09-15.json,
+                 422 evaluated pairs, COMBINED count, age as of settlement): no count 74 (17.5%); <=45 d 171 (40.5% of 422),
+                 <=90 204 (48.3%), <=120 218 (51.7%); domestic 138/242 within 45, foreign 33/180; 66 of the 171 dated on/after
+                 settlement (invisible to a board checkpoint, so 45 d share is a little high for the board). 34/46/50 DID NOT
+                 REPRODUCE; struck in the Sheet plan (Decision 1, corrected inline) and marked SUPERSEDED in my archive note.
+                 Corrected numbers to HIM.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
@@ -2157,7 +2163,7 @@ STRUCK CARD      Marketing catch A (struck line drops its card; "of the 12" over
 SHEET PLAN UPD   Research corrected appendix C (no Report Date in dossier; displayedFloat null since v237, not a source;
                  eventTimestamp no precision; reverseSplitHistory is prose; computedCycle optional). Decision 1(a) measured
                  (run 3, no new run): 82% have a filed count (74/422 none, consistent); <=45 d 34%, <=90 d 46%, <=120 d
-                 50%; foreign 167/180 have one, 47 <=120 d. Plan b83e72cb, re-sent to him. Step 2 pre-registered 4a0f65c1
+                 50% [SUPERSEDED 2026-10-05: did not reproduce; re-derived 3fcb1f2a: 40.5 / 48.3 / 51.7% of 422]; foreign 167/180 have one, 47 <=120 d. Plan b83e72cb, re-sent to him. Step 2 pre-registered 4a0f65c1
                  (4 arms incl. noise; scratch copy; $15 cap); Research asks HIM (4.9 GB copy, CPU, up to $15).
 COMBINED CUT     a50f59487ac666280e88d47677face81c74e6093 (research/bluesky-cut-on-32db0d7e) = 32db0d7e + 70c534f4 ded2274a
                  bac44069 c535dce7 (patch-ids EQUAL, read). REPLAYED + APPROVED BY LITERAL SHA. 5 files, no deploy/db/
