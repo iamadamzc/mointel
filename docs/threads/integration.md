@@ -1261,6 +1261,16 @@ PUSHED           SHARED-MAIN SYNC DONE. Clearances in writing: Research 56, Ops 
                  its own, empty both ways), Web 15, Marketing 5 (incl. c23de9be, which crossed my first read). Listed as its own
                  step (207 / 0, subjects only these + Integration 72 + Sheet plan 3, Integration's touching only its own
                  paths); fast-forward checked; `git push origin main:main` 63c19007..e71dc7b3; after fetch 0 / 0.
+OPS RETIRES      local_7fac8dfc on his "yes hand off" (per Ops). NOTHING to it after now. Hand-off docs/threads/ops.md "HAND-OFF,
+                 2026-10-05T01:14:34Z" (2833c6e6, READ) + docs/ops-opening-prompt.md (ff15fec3). Production at 01:14:34Z
+                 unchanged. Cleared in writing: exactly 79e27c68, 2833c6e6, ff15fec3 (its "bd2d5a1e-era" was a made-up id,
+                 corrected by Ops itself).
+                 OWED BY THE NEXT OPS SEAT (its first ask comes to me): MONDAY SPOT CHECK after 10:00 ET 10-05 (no Ops seat
+                 open = no check; to him in NEEDS YOU), ops/split-to-main, next ordinary release cut, production ref ff +
+                 tag after each ship, owed-to-main items it owns, /api/dashboard gate timing, his browser reads (ask once).
+                 HAND-OFF ROUTING LINE IS STALE (ops.md:13957-13958): Web-tmi is local_a4c618a8 (not 46c15fbe, archived);
+                 Commercial-tmi is local_2aab5a77 (not 2ce868d2, archived); Marketing local_fdc0aa9a is retired, successor
+                 not open. Give the next Ops seat the right ids on arrival.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
