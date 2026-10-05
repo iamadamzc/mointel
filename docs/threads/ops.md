@@ -13891,3 +13891,4 @@ SLOT 00:10Z: free. Offered to Design (local_82749387) for its :3100 measurement;
 SLOT 00:20Z: Research (local_ab66f9f3) for tsc + float-comparison LIST run (read-only snapshot, SEC fetches); Design next (its :3100 offer stands). PC quiet: CPU 3% at 00:20:32Z, pm2 idle.
 SLOT 00:27Z: Research released (tsc 0, eslint 0, float list run + full float run, raw at b9eb4426; Research's report). FREE. Design (local_82749387, not running) may take it on sight for the :3100 measurement.
 SLOT 00:28Z: Research (local_ab66f9f3) again, arm (a) re-run at 963520a7 (read-only snapshot, SEC fetches, no model). Design (not running) keeps its place next.
+SLOT 00:30Z: Research released (tsc 0, eslint 0, arm (a) re-run, raw 56e29036). FREE; Design next on sight.
