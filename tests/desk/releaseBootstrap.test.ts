@@ -444,3 +444,11 @@ describe('required box settings', () => {
     expect(declared.split(/\r?\n/)).toContain('DESK_OWNER_EMAIL');
   });
 });
+
+describe('the deploy follower', () => {
+  it('waits longer than a deploy takes by default (30 minutes), not the 15 that ended every ship at rc 8', () => {
+    const script = fs.readFileSync(PUSH_RELEASE_SH, 'utf8');
+    expect(script).toContain('${DEPLOY_FOLLOW_SECONDS:-1800}');
+    expect(script).not.toContain('DEPLOY_FOLLOW_SECONDS:-900');
+  });
+});
