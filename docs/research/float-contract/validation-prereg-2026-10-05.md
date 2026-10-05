@@ -45,6 +45,8 @@ On the sampled names at their own checkpoint dates, report the number and share 
 
 **Amendment 1c (labeled, 2026-10-05, before any run):** the state table also carries `SPLIT_SINCE_COUNT` (contract section 2, rule 2) as its own CANNOT_VERIFY row, split into "a split was found" and "no proof either way (missing split factor or bars)", at precedence after issuance and before age. The second count is the one that tells whether the proof is usable inside the 45-day window.
 
+**Amendment 1d (labeled, 2026-10-05, before any run; $0):** on the sampled names' checkpoint dossiers, count supply blocks by type and by the `sourceType` of every source they cite: blocks citing at least one SEC source type (`SEC_FILING`, `SEC_EXHIBIT`, `SEC_SUBMISSIONS`, `SEC_COMPANY_FACTS`) versus blocks citing only other types, and the count of each non-SEC type. Reported, not graded. It decides whether the public page may say issuance is found "in the company's filings" (contract section 5).
+
 ## Order of work
 
 This file committed; the parser change for as-of alignment built and gated (mutants predicted first, counts stated in that commit); the audit script written; the controls run; the sample run; raw output committed before it is read; the report written.
