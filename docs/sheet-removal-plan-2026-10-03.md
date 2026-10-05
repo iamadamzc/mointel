@@ -94,6 +94,15 @@ Integration:**
 - 2026-10-05T22:04:14.942Z, typed to Integration (27th seat, transcript 1b01d57c, human origin), verbatim: *"yes, keep
   building the badge as approved"*, answering whether the badge continues after the outcome test. **The badge is built as
   approved** (rubric at `3ca325bd`, Research's `priorityGrade`, field contract `2c325f05`, legend per Commercial 6b).
+- 2026-10-05T22:38:04.297Z, typed to Integration (28th seat, transcript d947056e, his turn), verbatim: *"B, with the
+  not-live label, but between session greater promiunence shoukd be guven to the session report"*, answering what the
+  main area shows once the Researched Names table is removed and no live session is on (22:00 to 04:00 ET and
+  non-trading days; 20:00 to 22:00 already shows the frozen after-hours board, Design from code, verified by
+  Integration). So: **option B**, the main area opens on the latest checkpoint's frozen board, labelled as frozen and not
+  live, with Back to live; **and between sessions the session report (the briefing line and the report panel,
+  `components/SessionReports.tsx`) is given more prominence than it has today.** How it is made more prominent is
+  layout (Design proposes, Integration checks against this ruling). *Integration's reading, not his words: "between
+  session" is the same window as B.* Ships only with the grade store and reader (the badge reads them).
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 

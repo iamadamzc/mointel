@@ -1489,6 +1489,11 @@ FLOAT JOB REPLAY research/float-job literal bd20d42c (= branch tip, rev-parse): 
                  APPROVED FOR OPS'S GATE SLOT (not a ship). CONDITION: floatJob.ts:132 stores holdings via
                  holdingsAsOf(count.asOf) = today's defective rule; rows cannot be recomputed under S1 (no hD). Flag stays
                  off until the job stores what S1 needs or pre-S1 rows are declared discardable. Told Research + Ops.
+HIS RULING       2026-10-05T22:38:04.297Z (transcript d947056e, his turn), verbatim: "B, with the not-live label, but between
+                 session greater promiunence shoukd be guven to the session report". In the Sheet plan RULED block. "Session
+                 report" = SessionReports (BriefingLine + ReportWindow, components/SessionReports.tsx; DashboardShell.tsx:16,
+                 :457), my reading from code, Design asked to correct. "Between session" = B's window (my reading, flagged).
+                 Design: build B + propose the prominence change to me before building; ship with Ops's grade store/reader.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
