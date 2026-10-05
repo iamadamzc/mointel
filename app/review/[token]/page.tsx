@@ -36,6 +36,7 @@ export default async function ReviewDashboardPage({
         apiBase: `/review/${token}/api`,
         readOnly: true,
         expiresAt: check.token.expiresAt,
+        canRetryResearch: false,
       }}
     >
       <div className="flex h-screen flex-col overflow-hidden bg-desk">

@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
 
-import { gateApiRequest } from '@/lib/auth/requestGate';
+import { gateOwnerRequest } from '@/lib/auth/requestGate';
 import { retryResearch } from '@/lib/research/control';
 
-// A user action, never cached.
+// An owner action, never cached. His ruling 2026-10-05: retry research is his
+// alone; every other admitted user is refused here (403) and never offered the
+// control (DeskMode.canRetryResearch).
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
-  const refused = gateApiRequest(request);
+  const refused = gateOwnerRequest(request);
   if (refused) return refused;
 
   let body: unknown;

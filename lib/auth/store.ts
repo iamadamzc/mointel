@@ -674,3 +674,29 @@ export function isUserInvited(db: IdentityDatabase, userId: number): boolean {
     .get(userId) as { ok: number } | undefined;
   return row !== undefined;
 }
+
+/**
+ * Does this user hold a VERIFIED identity at this address? The owner check's
+ * read (`lib/auth/requestGate.ts`, his ruling 2026-10-05: retry research is his
+ * alone). Added by Web; the rules are isUserInvited's and for the same reasons:
+ * only a verified address counts, NULL is not verified, and both sides are
+ * folded the way normaliseEmail folds them.
+ */
+export function userHasVerifiedEmail(
+  db: IdentityDatabase,
+  userId: number,
+  email: string | null | undefined,
+): boolean {
+  if (!email || !email.trim()) return false;
+  const row = db
+    .prepare(
+      `SELECT 1 AS ok
+         FROM identities
+        WHERE user_id = ?
+          AND email_verified = 1
+          AND lower(trim(email)) = ?
+        LIMIT 1`,
+    )
+    .get(userId, normaliseEmail(email)) as { ok: number } | undefined;
+  return row !== undefined;
+}

@@ -16,7 +16,7 @@ import { useDeskMode } from '@/lib/hooks/useDeskMode';
  * name up on its next pass, through the same path as everything else.
  */
 export function RetryAnalysis({ ticker }: { ticker: string }) {
-  const { apiBase, readOnly } = useDeskMode();
+  const { apiBase, readOnly, canRetryResearch } = useDeskMode();
   const [state, setState] = useState<'idle' | 'working' | 'done' | 'error'>('idle');
   const [message, setMessage] = useState<string | null>(null);
 
@@ -45,8 +45,19 @@ export function RetryAnalysis({ ticker }: { ticker: string }) {
   }
 
   // Retrying analysis spends model calls and queues real work. A reviewer is
-  // here to observe the desk, not to make it do things.
-  if (readOnly) return null;
+  // here to observe the desk, not to make it do things; and on the desk it is
+  // the owner's alone (his ruling 2026-10-05), so nobody else is offered a
+  // button the server would refuse.
+  // Everyone else gets one plain line instead of nothing: no button and no
+  // promise of one, only what the retry policy guarantees (lib/research/retry.ts:
+  // the block clears when the evidence changes). Wording: Marketing 2026-10-05.
+  if (readOnly || !canRetryResearch) {
+    return (
+      <p className="mt-3 text-[11px] text-ink-3">
+        Analysis did not complete for this name. It runs again if new information about it arrives.
+      </p>
+    );
+  }
 
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
