@@ -1354,6 +1354,14 @@ HIS RULING       2026-10-05T21:50:53.964Z (transcript 1b01d57c, human): "1, shou
                  checkpoint, population named, cost stated; prereg sha to me before it runs. (2) Old chat local_2102878a
                  keeps the title Integration-tmi for now: TWO sessions answer to it. Every send carries my id; do not
                  ask him again.
+OUTCOME PREREG   Research 1113b940 (docs/research/priority-rubric/outcome-test-prereg-2026-10-05.md), $0, stored scratch
+                 db through 10-02. Seam read sent. HOLDS: frozen inputs (desk-assessments.ts:291-293, no UPDATE of
+                 desk_assessment_tickers in lib/worker/app); population named; controls; rth_final frozen once at the bell.
+                 LABEL SEAM, amend before run: rth_final_high = sessionHigh at the bell, raised by every bar/trade of the day
+                 with no RTH guard (engine.ts:928-930, 1220, 1626), so P is probably premarket-through-close, not "regular
+                 session peak"; control on the minute-bar subset suggested. CAVEAT: no reconstruction flag; restarts in
+                 04:00-16:00 re-seed sessionHigh (engine.ts:1058, source unread). Result sha to me; numbers to him from the
+                 committed file. Approved A (5) and C (9) are below n=20: the approved rule's verdict is B vs AVOID only.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
