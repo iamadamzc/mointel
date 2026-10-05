@@ -146,7 +146,10 @@ describe('no API route ships ungated', () => {
 
   it('every handler in app/api/ except health calls the gate first', () => {
     const files = routes('app/api');
-    expect(files.length).toBeGreaterThanOrEqual(7);
+    // Control: the walk must find routes known to exist, or every check below
+    // passes on an empty list. Named rather than counted: main and production
+    // carry different route sets (levels is production-only as of 2026-10-05).
+    expect(files).toEqual(expect.arrayContaining(['app/api/health/route.ts', 'app/api/market/route.ts']));
     for (const file of files) {
       if (UNGATED.has(file)) continue;
       // Normalised first: this PC checks out CRLF (core.autocrlf=true), and the
