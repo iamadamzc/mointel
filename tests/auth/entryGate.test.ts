@@ -58,7 +58,8 @@ describe('the entry gate text is the adopted terms, verbatim', () => {
 
   it('has no em dash in any encoding', () => {
     const source = fs.readFileSync('lib/legal/entryGate.ts', 'utf8');
-    expect(source).not.toContain('—');
+    // By code point, so this file never carries the glyph it forbids.
+    expect(source).not.toContain(String.fromCharCode(0x2014));
     expect(source).not.toMatch(/&mdash;|&#8212;|&#x2014;/i);
   });
 
