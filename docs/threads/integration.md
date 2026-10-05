@@ -1233,6 +1233,9 @@ LEDGER           1. Relayed Design's DRAFT non-owner line to him with "when"; sh
                  comment, without opening nginx: nginx-locations.conf:30 allows loopback only and denies all. TYPE: a
                  sentence left before its source was read. REPEAT of ledger 1's class this session. Caught by Web.
                  Retracted to him. Per session-hygiene s2: hand-off proposed to him, not initiated.
+                 3. Gave Marketing a commit sha for rubric rule 0 ("2e5ea3d2") that I never read; real sha db44c74e.
+                 TYPE: a sentence left before its source was read. SECOND REPEAT this session. Caught by me (git log),
+                 corrected to Marketing in the next message. Hand-off still pending his answer.
 OPEN SEARCH SPEND  CLOSED by him 2026-10-05: "i think it came from another project. it's fine. i'll keep an eye on it".
 BETA (his 18:51:26Z + 19:09:04Z rulings, docs/beta-launch-path-2026-10-05.md RULED block): free, limited invites;
                  testers = accepted exposure, not licensed; no lawyer; retry owner-only; disclaimer once per text version.
