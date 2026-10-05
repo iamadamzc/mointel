@@ -48,7 +48,16 @@ export function RetryAnalysis({ ticker }: { ticker: string }) {
   // here to observe the desk, not to make it do things; and on the desk it is
   // the owner's alone (his ruling 2026-10-05), so nobody else is offered a
   // button the server would refuse.
-  if (readOnly || !canRetryResearch) return null;
+  // Everyone else gets one plain line instead of nothing: no button and no
+  // promise of one, only what the retry policy guarantees (lib/research/retry.ts:
+  // the block clears when the evidence changes). Wording: Marketing 2026-10-05.
+  if (readOnly || !canRetryResearch) {
+    return (
+      <p className="mt-3 text-[11px] text-ink-3">
+        Analysis did not complete for this name. It runs again if new information about it arrives.
+      </p>
+    );
+  }
 
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
