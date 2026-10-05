@@ -10,7 +10,7 @@ It does NOT test whether the bound equals the true float (nothing here measures 
 
 ## Sample
 
-Names: the first 30 distinct tickers, by rank, from the desk's top-12-in-range of each COMPLETE `NEXT_DAY_RECAP` checkpoint, newest date first, whose bound is PRODUCED or CANNOT_VERIFY (a name with no filed count is UNKNOWN and not sampled). No stratification; record how many of the 30 had at least one subtracted holding. A name with zero subtracted holdings contributes to the range check only. If fewer than 30 distinct names exist in the stored checkpoints, report the count and run on all of them.
+Names: the first 30 distinct tickers, by rank, from the desk's top-12-in-range of each COMPLETE `NEXT_DAY_RECAP` checkpoint, newest date first, whose bound is PRODUCED or CANNOT_VERIFY (a name with no filed count is UNKNOWN: it has nothing to audit, so it does not count toward the 30, but it IS counted in Amendment 1's state table). No stratification; record how many of the 30 had at least one subtracted holding. A name with zero subtracted holdings contributes to the range check only. If fewer than 30 distinct names exist in the stored checkpoints, report the count and run on all of them.
 
 Holdings audited: ALL subtracted holdings of each sampled name (the bound is only as good as every one), plus ALL REFUSED holdings of the first 10 names (to see what the refusals hide).
 
@@ -38,6 +38,10 @@ Before the sample, the same audit runs on TWO constructed cases: (i) a real clea
 - **FAIL:** one dangerous failure. The cell does not ship; the failure is classified into one of the contract's rules, the rule is fixed, and the sample re-runs on a fresh draw (the same 30 names are not reused).
 - **Non-dangerous failures** (the desk subtracted less than the filing shows; a refusal that was unnecessary) are counted and reported, not graded.
 - **INSUFFICIENT:** fewer than 30 audited holdings in total is reported as INSUFFICIENT, not as a pass; the draw widens to the next distinct names until 30 holdings or the checkpoints run out.
+
+## Amendment 1 (labeled, 2026-10-05, Integration's ask, BEFORE any run; $0): the state table at three max ages
+
+On the sampled names at their own checkpoint dates, report the number and share of names in each state at max age 45, 90 and 120 days: PRODUCED / UNKNOWN (no filed count) / CANNOT_VERIFY by age / CANNOT_VERIFY by active issuance (KNOWN_ACTIVE block, contract section 5). A name counts in exactly one row, by this precedence: UNKNOWN, then CANNOT_VERIFY by issuance, then CANNOT_VERIFY by age, then PRODUCED (so the issuance row is the same at the three ages and only the age row and PRODUCED move). Reported beside the validation verdict but NOT graded: it informs the max-age choice, which is his; it does not change PASS or FAIL. The table covers every name drawn, including those with no subtracted holding; its denominator is stated. The 30-name draw is the board's own population, not the calibration's FINRA settlement pairs.
 
 ## Order of work
 
