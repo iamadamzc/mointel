@@ -1334,6 +1334,15 @@ OWED ANSWERS     DESIGN (vs main 00c0cdfa): OWED a4a06168, 2a625a5b, 185cea37 + 
                  hunks (main has no levels routes), a08b5a68 = 32db0d7e, 8c15817f = fb50e2ff, df2712c2 test floor -> named
                  control (mutants 1/1, 1/1). Targeted vitest 64 files; full suite + build owed in Ops's slot. Levels pick
                  (Ops) must gate /api/levels like production did. 349d051e cleared.
+                 Web's 13 files vs Design's 11 owed commits: intersection EMPTY (read); no rebase either way.
+COMMERCIAL 5e    origin 4df63826, READ in full: date in popover PASSES only while max age = 45 enforced as a state (90/120:
+                 date back on the cell face); inline "as of {date}" wherever no popover (reports, MCP, exports, stored);
+                 bare "≤" passes only with header/legend "computed from SEC filings, an upper bound when the filings line
+                 up" + same conditional in aria; per-cause reason strings (CANNOT_VERIFY x3, UNKNOWN x3) REQUIRED; PRODUCED
+                 = "no flag raised" not "no issuance"; issuance type list narrower than SupplyBlockType (RECENT_OFFERING,
+                 PIPE, ACQUISITION_SHARES absent); no-ledger state unstated; page must name the 4 faces. Routed: Research
+                 (contract items), Marketing (words), Commercial given addresses. To HIM: max-age choice now also moves the
+                 date onto the cell at 90/120.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
