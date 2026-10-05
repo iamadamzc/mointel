@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CRITERIA,
   DASH,
+  NOT_GRADED_REASON,
   NO_RESEARCH_TOOLTIP,
   READING_LINE,
   SETUP_GRADE_FILTERS,
@@ -88,6 +89,26 @@ describe('setupGradeView: stored enums to the words, one mapping', () => {
     for (const f of SETUP_GRADE_FILTERS) strings.push(f.label);
     for (const s of strings) expect(s, s).not.toMatch(BANNED);
     for (const s of strings.filter((x) => x !== DASH)) expect(s.includes(EM_DASH), s).toBe(false);
+  });
+});
+
+describe('the standing legend', () => {
+  it('is the approved sentence set, with the outcomes clause deleted and nothing put in its place', () => {
+    expect(SETUP_GRADE_LEGEND).toBe(
+      "Setup grade is the desk's own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.",
+    );
+  });
+
+  it('never says the grades were tested, validated, do not predict, or did not work, anywhere a reader sees', () => {
+    const NO_RESULT_CLAIM = /tested|validated|do not predict|did not work|outcome/i;
+    const everything: string[] = [SETUP_GRADE_LEGEND, NO_RESEARCH_TOOLTIP, NOT_GRADED_REASON];
+    for (const g of ['A', 'B', 'C', 'AVOID', 'UNKNOWN', 'NOT_YET'] as StoredGrade[]) {
+      const v = setupGradeView(grade(g), NOW);
+      everything.push(v.label, v.tooltip, v.ariaLabel);
+    }
+    for (const c of CRITERIA) for (const line of Object.values(READING_LINE[c])) everything.push(line);
+    for (const f of SETUP_GRADE_FILTERS) everything.push(f.label);
+    for (const s of everything) expect(s, s).not.toMatch(NO_RESULT_CLAIM);
   });
 });
 

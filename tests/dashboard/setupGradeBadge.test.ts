@@ -70,7 +70,8 @@ describe('the drawer section carries the legend', () => {
     renderToStaticMarkup(createElement(SetupGradeReadings, { grade, Section }));
 
   it('prints the legend with a grade, with Not graded and with none, so it never needs the board open', () => {
-    const legend = SETUP_GRADE_LEGEND;
+    // React writes an apostrophe as &#x27; in markup.
+    const legend = SETUP_GRADE_LEGEND.replaceAll("'", '&#x27;');
     for (const grade of [GRADE, { ...GRADE, grade: 'UNKNOWN' as const }, null]) {
       expect(render(grade)).toContain(legend);
     }
