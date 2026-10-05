@@ -1575,6 +1575,14 @@ INSTALLED        On his "you do it" (2026-10-05T23:51:01.179Z, his turn): wrote 
                  now (new chats and resets). Seats told.
 COMMITTED        On his "commit it" (2026-10-05T23:53:08.895Z): 7e4ec76e (.claude/settings.json + .claude/hooks/on-clear.sh
                  only, --only). Local main; rides the next push after Ops's main-tip gate (config, no app code). Integration's own.
+SHIP TIMING      His "its suppsed to ship after 8pm close no?": yes, after-hours ends 20:00 ET (session.ts:30). My earlier note to
+                 Ops ("ask now rather than 20:30") corrected to Ops: nothing before 20:00. Pointed Ops at RECAP_MIN 22:00
+                 (schedule.ts:79) as a timing consideration.
+HIS DIRECTION    2026-10-05T23:58:21.877Z (transcript d947056e, his turn), verbatim: "i want everything planned to be built and everything built to
+                 be shipped". DIRECTION, not a go: ship/restart yeses stay his, in Ops's chat. Asked every seat for its
+                 approved-not-built / built-not-shipped list (Research: in research.md, send cap). Asked Ops for CUT 2
+                 feasibility: d1e7ba9d + the 17 picks of 2eaad153 (safe without the reader), tonight after the 22:00 recap
+                 or tomorrow after 20:00. Then: one register to him with owner, trigger, and which need his yes.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
