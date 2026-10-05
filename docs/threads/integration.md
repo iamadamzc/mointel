@@ -1338,6 +1338,10 @@ FLOAT PAGE READ  Commercial s5 (origin 94c8ede9, READ): draft NOT READY, 9 chang
                  subtraction covers (incl. 10% holders); validation sample gates the surface AND the page going live.
                  Next WEB: accession links in the tooltip/page or drop the "traces to a filing" sentence.
                  MY ERRORS (ledger 2, 3) corrected to him and Marketing.
+AFTER HAND-OFF   Marketing (after 842079fa): page v2 already follows Commercial s5; waits on Commercial's re-read and
+                 RESEARCH'S TWO CONFIRMS (exactly whom the Forms 3/4/5 subtraction covers, incl. 10% holders; Rule 13d-3
+                 "right to acquire within 60 days" wording). Research is retired: NEXT RESEARCH SEAT owes both; the next
+                 Integration seat puts them to it on arrival.
 ```
 **THE TWENTY-FOURTH SEAT'S LEDGER:**
 ```
