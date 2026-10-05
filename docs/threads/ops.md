@@ -13645,6 +13645,7 @@ Heavy-slot queue now held here: Design holds it, Web next.
 | 1. Ran two small node scripts on this PC (import trace + package check, 03:2xZ) after his rule "if any one needs to run anuythign locally lmk first", reading it as heavy runs only | ruling narrowed by its reason | no (first) | peer (Integration) |
 | 2. Counted added U+2014 in a50f5948 with Git Bash $'—' and read "0"; Git Bash printed the literal \u2014, so the check could not fire (redone in Python: 0 of 334 added lines, control 2,021 in research.md) | check that cannot fire read as a result | no (first for this seat; the hand-off named the class) | self (control), before it reached anyone |
 | 3. Sent the 24th Integration's /proc reply to the bare title "Integration-tmi" while the retiring 23rd still held it; it reached the 23rd (forwarded verbatim by it). The from= id was in the message I was answering | bare title routing (memory: bare-thread-names-collide) | no (first this session; the class is in memory) | peer (retiring Integration) |
+| 4. In the retirement message to Integration I wrote "bd2d5a1e-era Ops commits": an identifier I made up, in a push clearance. Corrected in the next message with the exact shas (79e27c68, 2833c6e6, ff15fec3) | invented identifier in a peer message | no (new type) | self, before the push |
 
 **2026-10-03 03:07-03:15Z.** HIS RULE (verified at his own turn: Integration transcript 24ec00be, queued_command,
 origin human, 2026-10-03T03:07:44.647Z): "if any one needs to run anuythign locally lmk first". So every gate, build, full
