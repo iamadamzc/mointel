@@ -20,6 +20,7 @@
  */
 
 import { withoutEmDash } from '../../dashboard/prose';
+import { withoutCitationsDeep } from '../../research/citations';
 import { countryName } from '../../research/sec/stateCountry';
 import type {
   CatalystGrade,
@@ -101,11 +102,18 @@ function clean(text: string | null | undefined): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+/**
+ * `ownedSourceIds`: every research source id of the ticker, cited or not. The dossier is read
+ * WITHOUT citation tokens, as the board reads it (`readableIntelligence`), so a lone short
+ * bracket the model left for a source it read ("[1043]") reaches neither the company line
+ * the report prints nor the sheet the writer restates from. The ids and counts are untouched.
+ */
 export function reportResearch(
   version: ResearchAnalysisVersion,
   sourcesById: ReadonlyMap<number, ResearchSource>,
+  ownedSourceIds?: ReadonlySet<number>,
 ): ReportResearch {
-  const { dossier } = version;
+  const dossier = withoutCitationsDeep(version.dossier, ownedSourceIds);
   const { catalyst, structure } = dossier;
   const shares =
     structure.sharesOutstanding !== null && structure.sharesOutstandingDate

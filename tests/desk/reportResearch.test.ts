@@ -3,10 +3,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import { researchForReport } from '@/lib/desk/reports/pipeline';
 import { reportResearch } from '@/lib/desk/reports/research';
 import { openDatabase } from '@/lib/market/store/db';
-import { readAnalysisVersionsByIds, saveAnalysisVersion } from '@/lib/market/store/researchRepo';
-import type { ResearchAnalysisVersion, ResearchDossier, ResearchSource } from '@/lib/research/types';
+import { insertResearchSources, readAnalysisVersionsByIds, saveAnalysisVersion } from '@/lib/market/store/researchRepo';
+import type { NewResearchSource, ResearchAnalysisVersion, ResearchDossier, ResearchSource } from '@/lib/research/types';
 
 const temporaryFiles: string[] = [];
 afterEach(() => {
@@ -226,3 +227,56 @@ describe('reading analysis versions by id', () => {
     expect(readAnalysisVersionsByIds(db, [999]).size).toBe(0);
   });
 });
+
+describe('the report reads the dossier without citation tokens (RPGL "[1043]")', () => {
+  const BUSINESS = 'A resale-registration issuer [1043] listed in [2026].';
+
+  it('drops a lone short bracket that is one of the ticker source ids, from the company line and the sheet text', () => {
+    const research = reportResearch(
+      version({ businessDescription: BUSINESS, catalyst: { ...dossier().catalyst, summary: 'Filed a resale registration [1043].' } }),
+      SOURCES,
+      new Set([1043]),
+    );
+    expect(research.company.business).toBe('A resale-registration issuer listed in [2026].');
+    expect(research.catalyst.summary).toBe('Filed a resale registration.');
+  });
+
+  it('keeps a number the ticker does not own, and every id and count', () => {
+    const research = reportResearch(version({ businessDescription: BUSINESS }), SOURCES, new Set([1043]));
+    expect(research.company.business).toContain('[2026]');
+    expect(research.catalyst.sources.map((s) => s.id)).toEqual([7, 9]);
+    expect(research.structure.sharesOutstanding).toEqual({ count: 33_338_932, asOf: '2026-06-30' });
+  });
+
+  it('without the ids a lone short bracket the dossier did not cite is left (the earlier behaviour)', () => {
+    expect(reportResearch(version({ businessDescription: BUSINESS }), SOURCES).company.business).toContain('[1043]');
+  });
+
+  it('reads the ids from the store: its own ticker only (the pipeline wiring)', () => {
+    const db = temporaryDb();
+    const mine = insertResearchSources(db, [newSource('SANG', 'a'), newSource('SANG', 'b')]);
+    const other = insertResearchSources(db, [newSource('OTHR', 'c')]);
+    const text = `Business [${mine[1]}] and [${other[0]}].`;
+    const research = researchForReport(db, 'SANG', version({ businessDescription: text }), SOURCES);
+    expect(research.company.business).toBe(`Business and [${other[0]}].`);
+  });
+});
+
+function newSource(ticker: string, tag: string): NewResearchSource {
+  return {
+    ticker,
+    sourceType: 'SEC_SUBMISSIONS',
+    title: `Filing ${tag}`,
+    url: `https://www.sec.gov/${ticker}/${tag}`,
+    publishedAt: '2026-09-28T11:00:00Z',
+    fetchedAt: '2026-09-28T11:05:00Z',
+    accession: `0001-${tag}`,
+    secForm: '8-K',
+    authority: 'SEC',
+    contentHash: `hash-${tag}`,
+    documentFingerprint: `doc-${ticker}-${tag}`,
+    excerpt: null,
+    metadata: {},
+    active: true,
+  };
+}
