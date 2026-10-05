@@ -33,7 +33,7 @@ import { NextResponse } from 'next/server';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
 import { getIdentityDb } from '@/lib/auth/db';
 import { authenticate, type Admission } from '@/lib/auth/gate';
-import type { IdentityDatabase } from '@/lib/auth/store';
+import { userHasVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 
 /** The session id from a raw `Cookie` header, or null. Reads nothing else. */
 export function sessionIdFromCookieHeader(header: string | null): string | null {
@@ -77,4 +77,59 @@ export function apiRefusal(admission: Admission): NextResponse | null {
 export function gateApiRequest(request: Request, db?: IdentityDatabase, now?: Date): NextResponse | null {
   const sessionId = sessionIdFromCookieHeader(request.headers.get('cookie'));
   return apiRefusal(admissionForSession(sessionId, db, now));
+}
+
+/*
+ * THE OWNER, for the few actions that are his alone.
+ *
+ * His ruling, 2026-10-05T18:51:26Z: "disable retry research for users. leave
+ * that for just me". A retry spends model calls and changes the board for
+ * everyone (lib/research/control.ts clears the shared retry state), so it is
+ * not an action a beta tester takes.
+ *
+ * WHO THE OWNER IS: the env var DESK_OWNER_EMAIL on the box, matched against a
+ * VERIFIED identity of an ADMITTED user. An env var rather than a store column
+ * because the owner is one person and a deployment fact, it changes about
+ * never, and a column would be an identity-store migration (the store refuses
+ * a newer schema, so a migration ties deploy order and rollback together) for
+ * one row. The address is checked with the allowlist's own rules
+ * (userHasVerifiedEmail), and the owner must also be admitted, so revoking his
+ * invitation revokes this too. The address never reaches client code: the page
+ * is told a boolean.
+ *
+ * FAILS CLOSED: unset or blank means NOBODY is the owner, him included. A
+ * missing variable takes the retry away from him, which he will see; the other
+ * failure would hand it to every tester, which nobody would see.
+ */
+export const OWNER_EMAIL_ENV = 'DESK_OWNER_EMAIL';
+
+export function isOwnerAdmission(
+  admission: Admission,
+  db: IdentityDatabase = getIdentityDb(),
+  env: Record<string, string | undefined> = process.env,
+): boolean {
+  if (admission.state !== 'admitted') return false;
+  const owner = env[OWNER_EMAIL_ENV]?.trim();
+  if (!owner) return false;
+  return userHasVerifiedEmail(db, admission.userId, owner);
+}
+
+/**
+ * The gate for an owner-only route: gateApiRequest's 401/403 first, then 403
+ * for an admitted caller who is not the owner. Its body says only that the
+ * action is not permitted; the desk hides the control from everyone else, so
+ * a person reaches this only by writing the request by hand.
+ */
+export function gateOwnerRequest(
+  request: Request,
+  db: IdentityDatabase = getIdentityDb(),
+  now?: Date,
+  env?: Record<string, string | undefined>,
+): NextResponse | null {
+  const sessionId = sessionIdFromCookieHeader(request.headers.get('cookie'));
+  const admission = admissionForSession(sessionId, db, now);
+  const refused = apiRefusal(admission);
+  if (refused) return refused;
+  if (isOwnerAdmission(admission, db, env)) return null;
+  return NextResponse.json({ error: 'not permitted' }, { status: 403, headers: NO_STORE });
 }

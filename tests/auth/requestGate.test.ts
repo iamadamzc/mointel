@@ -118,6 +118,10 @@ describe('no API route ships ungated', () => {
     'app/api/dashboard/route.ts',
   ]);
 
+  // The owner's alone (his ruling 2026-10-05): these must call gateOwnerRequest,
+  // and no other route may, so widening or narrowing the set is a test change.
+  const OWNER_ONLY = new Set(['app/api/research/retry/route.ts']);
+
   function routes(dir: string): string[] {
     return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
       const full = path.join(dir, entry.name);
@@ -138,11 +142,17 @@ describe('no API route ships ungated', () => {
       const exported = source.match(/export (async )?function (GET|POST|PUT|PATCH|DELETE)\b/g) ?? [];
       expect(exported.length, `${file} exports a handler`).toBeGreaterThan(0);
       expect(handlers.length, `${file}: every handler takes the request`).toBe(exported.length);
+      const gate = OWNER_ONLY.has(file) ? 'gateOwnerRequest' : 'gateApiRequest';
       const gatedFirst =
         source.match(
-          /export async function (GET|POST|PUT|PATCH|DELETE)\(request: Request\) \{\n  const refused = gateApiRequest\(request\);\n  if \(refused\) return refused;\n/g,
+          new RegExp(
+            `export async function (GET|POST|PUT|PATCH|DELETE)\\(request: Request\\) \\{\\n  const refused = ${gate}\\(request\\);\\n  if \\(refused\\) return refused;\\n`,
+            'g',
+          ),
         ) ?? [];
-      expect(gatedFirst.length, `${file}: the gate is the first statement of every handler`).toBe(exported.length);
+      expect(gatedFirst.length, `${file}: ${gate} is the first statement of every handler`).toBe(exported.length);
     }
+    // Control: the owner-only set names routes that exist.
+    for (const file of OWNER_ONLY) expect(files).toContain(file);
   });
 });
