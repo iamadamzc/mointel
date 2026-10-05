@@ -178,3 +178,27 @@ anything (not studied; his call if ever).
 
 **Contract text, for Research.** Section 3's "the cell's 'as of' is the filed count's date" becomes the popover (and inline wherever there is no popover). Section 1's "makes no claim about what trades" sits beside a popover that says "freely tradable"; as an upper bound that is consistent, but the two should not read as contradicting each other. The contract's "safe" (section 2, joint filings and unaligned holdings) is internal and must not reach a surface.
 
+## 5f. Float page and cell draft v5 re-read, third tenure, 2026-10-05: NOT READY, five required changes
+
+*Read: `docs/marketing/float-page-draft.md` at `b6484909` (local main, not on origin when read), against 5e. One counterexample search was run and opened (below). Words only: nothing here passes a surface, and the validation sample and the unbuilt as-of rule still gate it.*
+
+**Passes.** The four faces; the per-cause reasons for Unknown (three) and Cannot verify (three) and the single string for not researched yet; the legend ("Float: computed from SEC filings. An upper bound when the filings line up."); the aria-label with the conditional; the popover for the bound and its "lined up means" clause; the 12b-2 paragraph; the 13d-3 paragraph and the below-zero story as 5c corrected it; "A name with nothing flagged may still have issued shares."
+
+**Required changes.**
+
+1. **The off-popover string drops the conditional.** "no more than {X} shares, from SEC filings as of {filed-count date}" is the bare claim in exactly the places with no popover (report text, MCP output, exports, stored copies). Add "when the filings line up".
+2. **The closing paragraph states the bound without its condition.** "shown as the most shares that could be trading" in "What this is, and is not" is the 5c item 3 fault again. Add "when the filings line up".
+3. **Two comparisons assert how other floats are made or shown.** "What differs is what it is computed from and how we show it", and "shown as a bound rather than a single figure presented as fact" (twice), say others differ in sources and presentation. No source supports that, and the readers' inferable third parties are float vendors (standing rule 2). Say what ours is and stop: "Ours is an estimate too. Here is what it is computed from and how we show it."
+4. **"We know of no public source that states a count of freely tradable shares" is contradicted by a source this seat opened,** and the sentence before it ("So a quoted float is an estimate, not a filed fact") is the same universal. Global Cash Access Holdings' S-1 (2006, `sec.gov/Archives/edgar/data/1318568/000095013406009584/f20324orsv1.htm`, read in the browser pane 2026-10-05) says that "approximately 30,130,351 shares ... will be freely tradable without restriction under the Securities Act, unless held by our 'affiliates'". It is a point-in-time count at an offering, in a "shares eligible for future sale" passage, not a current one, and prospectuses commonly carry such a passage (one prospectus read; how common is not measured). Delete the "no public source" sentence and write: "So a float number on a quote page is an estimate someone computed, unless a filing happens to state it." The live landing sentence ("No filing reports the current number of tradable shares") is unaffected, because of "current". Also change "almost every stock" to "many stocks": it is a coverage claim nobody measured.
+5. **"We flag share issuance when we find it in the company's filings, and a flagged name reads Cannot verify" claims two things not established.** The ledger's evidence sources are not confirmed to be filings only (open for Research), and a name carrying a POSSIBLY_ACTIVE block, or a type the rule does not act on (5e, Research's open type question), is flagged in the ledger yet still reads a number. Say: "When we find that shares are being issued, the name reads Cannot verify. A name with nothing found may still have issued shares." Drop "in the company's filings" unless Research confirms it.
+
+**Marketing's four open points.**
+1. "No share issuance we know of": change to "no share issuance the desk has flagged". "We know of" claims the writer's awareness; the check is a model's label.
+2. "Can only leave the number higher": state the arithmetic instead, "leaving a holding out never lowers our number". It does not claim the number errs high against the truth.
+3. Splits: do not remove the line yet. The pre-registration (check 5) treats "a split between the holding's date and the count's date" as a dangerous failure, and the contract's section 2 describes the harness's split check without saying whether the built rule keeps it. Arithmetic, not a measurement: a reverse split makes a pre-split holding too large against a post-split count, which lowers the bound. Research says whether the built rule refuses it; if yes, the page needs nothing, if no, "lined up" must include "no share split between the holding and the count".
+4. "Figure fails its check": "against the filed count" covers half of the range check (above zero, and not above the count). Use "did not pass the desk's own sanity check on the figure".
+
+**Recommended.** "Large holders" in the subtraction list sits one section above "13D or 13G"; say "10 percent owners" so the reader does not read them as the same set.
+
+**Not reviewed:** the voice; Design's cell sizing for "not researched yet".
+
