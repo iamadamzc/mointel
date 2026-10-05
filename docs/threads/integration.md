@@ -1441,6 +1441,13 @@ CLEARED          Marketing 51e7dd52; Research 663dec5d 7ce94a05 (all docs).
 HELD FOR HIM     9b's coverage cost of the 4-day span (morning names with a read in the last 4 days): UNMEASURED. If a
                  material share of the morning board would read Cannot verify, that is his decision before the float ships.
                  Research asked to commit the number.
+COMMERCIAL 5m    68175ef6 (origin; merged bc8219fb), READ: FILINGS_NOT_REREAD string + page bullet PASS; FORM A popover,
+                 tooltip, four page edits PASS. THREE REQUIRED: (1) legend "An upper bound as of the date shown, when the
+                 filings line up."; (2) off-popover string and aria-label put "as of {filed-count date}" on the claim (the
+                 off-popover string travels into reports/exports); (3) the line for him had the defect BACKWARDS: sold
+                 shares ARE still subtracted. Sent to Marketing by Commercial. HIS LINE WAITS on Marketing's fix and I
+                 reword it myself from 5m's corrected sentence. Commercial's 5m still says Form B waits on my choice: my
+                 S1 ruling was queued to it; re-told.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
