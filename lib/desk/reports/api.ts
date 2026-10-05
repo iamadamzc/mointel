@@ -17,6 +17,7 @@
  */
 
 import { etWallClockToUtc } from '../../market/session';
+import { withoutCitations } from '../../research/citations';
 import type { MissedCause, ReportKind, ReportRange, ReportSlot, SessionReport, SessionReportsPayload } from './contract';
 import { reportKey } from './contract';
 
@@ -110,6 +111,30 @@ interface Database {
   prepare(sql: string): { get(...params: unknown[]): unknown; all(...params: unknown[]): unknown[] };
 }
 
+/**
+ * Stored reports keep the company line they were written with, and a report written before
+ * the report side of the citation fix carries the model's lone short tokens ("[1043]") in
+ * `company.business`. They are removed here, on read, with the ticker's own research source
+ * ids, so rows already stored read clean without being rewritten. Only `company.business` is
+ * touched: the writer's checked sentences are left exactly as stored. Returns new objects.
+ */
+export function withoutStoredCitations(
+  reports: readonly SessionReport[],
+  idsFor: (ticker: string) => ReadonlySet<number>,
+): SessionReport[] {
+  return reports.map((report) => ({
+    ...report,
+    sections: report.sections.map((section) => ({
+      ...section,
+      lines: section.lines.map((line) => {
+        const business = line.company?.business;
+        if (!line.ticker || typeof business !== 'string') return line;
+        return { ...line, company: { ...line.company!, business: withoutCitations(business, idsFor(line.ticker)) } };
+      }),
+    })),
+  }));
+}
+
 /** Null while the table does not exist: the route then answers 404. */
 export function readReportsPayload(
   db: Database,
@@ -139,5 +164,17 @@ export function readReportsPayload(
               WHERE trading_date IN (?, ?)`,
           )
           .all(dates[0], dates[1]) as StoredReportRow[]);
-  return buildReportsPayload(recap, rows, ranges, defaultRangeId);
+  const payload = buildReportsPayload(recap, rows, ranges, defaultRangeId);
+  const sources = db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'research_sources'").get();
+  if (!sources || payload.reports.length === 0) return payload;
+  const owned = new Map<string, Set<number>>();
+  const idsFor = (ticker: string) => {
+    let ids = owned.get(ticker);
+    if (!ids) {
+      ids = new Set((db.prepare('SELECT id FROM research_sources WHERE ticker = ?').all(ticker) as Array<{ id: number }>).map((row) => row.id));
+      owned.set(ticker, ids);
+    }
+    return ids;
+  };
+  return { ...payload, reports: withoutStoredCitations(payload.reports, idsFor) };
 }
