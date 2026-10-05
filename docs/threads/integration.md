@@ -1286,6 +1286,15 @@ OPS /proc + SPOT Ops local_c71f613a, read 2026-10-05T15:06Z (11:06 ET): web 2025
                  the restated value in the 10-03 bootstrap log (ops.md:13825, "VTAK 10:1 0.151 -> 1.51", read by me).
                  NOD sent: ops/split-to-main now, literal sha to me. Owed-to-main audit trigger (after the spot check) MET:
                  mine to put to owners next.
+SPLIT-TO-MAIN    APPROVED BY LITERAL SHA 08d8d245fc0d4b10b88078d5db27c38d83365d41 (ops/split-to-main, A:\mointel-splitmain, off
+                 origin/main 96a82b6d). Replayed: cone 3, 0 merges; 64b28184 = dff3fb0a, f5b36cde = f5746a84 (patch-ids EQUAL,
+                 -x); 5 files +877/-5; vs production f5746a84 differs only by the follow-up (runtime.ts log rounding, test +15).
+                 Follow-up null check safe (RvolBaseline.previousClose number|null, types.ts:178; rvol.ts:102 `?? null`).
+                 U+2014 0 / entities 0 in 877 added lines (control 1). Ops gate: vitest 3225 pass / 1 skip, splitRestate 22/22,
+                 M1 mutant predicted 1 killed 1. tsc LayoutProps + 2 eslint errors are in files blob-identical to origin/main
+                 (pre-existing; .next/types absent in fresh worktree); eslint on the 5 changed files exit 0 (mine).
+                 LANDING: I merge into shared main + push, after Ops's written clearance of its 3. FOUND: main's lint is red
+                 today on scripts/ops/server-only-trace.cjs (2 errors, Ops's file) -> Ops.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
