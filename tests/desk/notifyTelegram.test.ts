@@ -166,6 +166,7 @@ describe('the watchdog is wired to it', () => {
     const required = fs.readFileSync(path.join(ROOT, 'deploy', 'aws', 'required-env.txt'), 'utf8').split(/\r?\n/);
     expect(required).toContain('TELEGRAM_BOT_TOKEN');
     expect(required).toContain('TELEGRAM_CHAT_ID');
+    expect(required).toContain('MOINTEL_INTERNAL_TOKEN');
     expect(required).toContain('DESK_OWNER_EMAIL');
   });
 });
