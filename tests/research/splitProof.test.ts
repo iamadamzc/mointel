@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { splitProofFromBars, type SpanBar } from '@/lib/research/splitProof';
+import { splitProofFromBars, splitProofR0, type SpanBar } from '@/lib/research/splitProof';
 
 /**
  * Rule R1. Registration: docs/research/float-contract/split-proof-r1-registration-2026-10-05.md.
@@ -69,5 +69,40 @@ describe('splitProofFromBars (R1)', () => {
 
   it('refuses a non-positive factor', () => {
     expect(splitProofFromBars(span(10.4, { lastFactor: 1, factors: [0, 1, 1, 1] }), CHECKPOINT)).toBe('UNPROVEN');
+  });
+});
+
+/** Rule R0, the HOLDING span, as the validation ran it (validate.ts splitProof). */
+describe('splitProofR0 (holding span)', () => {
+  const bar = (date: string, factor: number | null): SpanBar => ({ date, close: 10, factor });
+  const FROM = '2026-07-01';
+  const TO = '2026-08-01';
+
+  it('reads NONE for a holding dated on the count date (no span), even with no bars', () => {
+    expect(splitProofR0([], TO, TO)).toBe('NONE');
+  });
+
+  it('reads NONE on one basis, including a single factored bar', () => {
+    expect(splitProofR0([bar('2026-06-30', 1), bar('2026-07-15', 1), bar(TO, 1)], FROM, TO)).toBe('NONE');
+    expect(splitProofR0([bar('2026-06-30', 1)], FROM, TO)).toBe('NONE');
+  });
+
+  it('refuses no bars, and bars that start after the holding date', () => {
+    expect(splitProofR0([], FROM, TO)).toBe('UNPROVEN');
+    expect(splitProofR0([bar('2026-07-02', 1), bar(TO, 1)], FROM, TO)).toBe('UNPROVEN');
+  });
+
+  it('refuses a null factor on the LAST bar too (R1 would allow it on a checkpoint day)', () => {
+    expect(splitProofR0([bar('2026-06-30', 1), bar(TO, null)], FROM, TO)).toBe('UNPROVEN');
+  });
+
+  it('finds a split at a 1.25 step and not at 1.24', () => {
+    expect(splitProofR0([bar('2026-06-30', 2), bar(TO, 1)], FROM, TO)).toBe('FOUND');
+    expect(splitProofR0([bar('2026-06-30', 1.25), bar(TO, 1)], FROM, TO)).toBe('FOUND');
+    expect(splitProofR0([bar('2026-06-30', 1.24), bar(TO, 1)], FROM, TO)).toBe('NONE');
+  });
+
+  it('refuses a non-positive factor', () => {
+    expect(splitProofR0([bar('2026-06-30', 0), bar(TO, 1)], FROM, TO)).toBe('UNPROVEN');
   });
 });

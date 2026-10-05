@@ -345,6 +345,32 @@ CREATE TABLE IF NOT EXISTS research_qualification_episodes (
   PRIMARY KEY (ticker, trading_date, entered_at)
 );
 
+-- The insider-only SEC float bound (docs/research/float-contract/contract-2026-10-05.md), one row per symbol and the
+-- ET date the research job computed it for. No schema bump: a missing table is created by the upgrade guard below.
+-- count_kind: COUNT, NO_FILED_COUNT or COUNT_SPLIT_ACROSS_FILINGS; the count_* columns are null unless COUNT.
+-- holdings_json: every eligible holding WITH its split proof, subtracted or not, so the cell can be recomputed.
+CREATE TABLE IF NOT EXISTS research_float_bounds (
+  symbol              TEXT NOT NULL,
+  as_of_date          TEXT NOT NULL,
+  cik                 TEXT,
+  count_kind          TEXT NOT NULL,
+  count_shares        REAL,
+  count_as_of         TEXT,
+  count_filed         TEXT,
+  count_accession     TEXT,
+  count_form          TEXT,
+  holdings_json       TEXT NOT NULL,
+  split_since_count   TEXT NOT NULL,
+  analysis_version_id INTEGER,
+  issuance_rule       TEXT NOT NULL,
+  max_age_days        INTEGER NOT NULL,
+  state               TEXT NOT NULL,
+  reason              TEXT,
+  bound               REAL,
+  computed_at         TEXT NOT NULL,
+  PRIMARY KEY (symbol, as_of_date)
+);
+
 CREATE TABLE IF NOT EXISTS model_usage (
   id                  INTEGER PRIMARY KEY AUTOINCREMENT,
   trading_date        TEXT NOT NULL,

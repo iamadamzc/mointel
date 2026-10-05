@@ -17,6 +17,24 @@ export interface SpanBar {
   factor: number | null;
 }
 
+/**
+ * Rule R0, the HOLDING span (a holding's as-of date to the count's), exactly as the validation ran it
+ * (`docs/research/float-contract/validate.ts`, `splitProof`). R1 below is registered for the count-to-checkpoint
+ * span only; R0 differs from it on purpose in two cases: a span with no length (holding dated on the count's date)
+ * is NONE, and a null factor is refused on every bar, the last included.
+ *
+ * `bars`: oldest first, from the last bar on or before `from` through `to`.
+ */
+export function splitProofR0(bars: readonly SpanBar[], from: string, to: string): SplitProof {
+  if (from >= to) return 'NONE';
+  if (bars.length === 0 || bars[0]!.date > from) return 'UNPROVEN';
+  if (bars.some((bar) => bar.factor === null)) return 'UNPROVEN';
+  const factors = bars.map((bar) => bar.factor as number);
+  const lowest = Math.min(...factors);
+  if (!(lowest > 0)) return 'UNPROVEN';
+  return Math.max(...factors) / lowest >= SPLIT_JUMP_FACTOR ? 'FOUND' : 'NONE';
+}
+
 /** `bars`: oldest first, from the last bar on or before the count's as-of date through the checkpoint date. */
 export function splitProofFromBars(bars: readonly SpanBar[], checkpointDate: string): SplitProof {
   if (bars.length < 2) return 'UNPROVEN';
