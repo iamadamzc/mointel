@@ -255,6 +255,22 @@ describe('the setup grade on a desk row', () => {
     expect(without.rows.get('NEWNAME')!.setupGrade).toBeNull();
     expect(mergeDesk(dashboard, null).rows.get('VNTX')!.setupGrade).toBeNull();
   });
+
+  it('tells a map that is not wired from a name with no grade: two states, not one', async () => {
+    const dashboard = await mockDashboard();
+    // No setupGrades on the snapshot at all: the grade is NOT WIRED.
+    const notWired = mergeDesk(dashboard, snapshot([demand('NEWNAME')]));
+    expect(notWired.rows.get('NEWNAME')!.setupGradeWired).toBe(false);
+    expect(mergeDesk(dashboard, null).rows.get('VNTX')!.setupGradeWired).toBe(false);
+
+    // An EMPTY map is wired: every name in it is simply without a grade.
+    const wired = snapshot([demand('NEWNAME')]);
+    wired.setupGrades = {};
+    const merged = mergeDesk(dashboard, wired);
+    expect(merged.rows.get('NEWNAME')!.setupGradeWired).toBe(true);
+    expect(merged.rows.get('NEWNAME')!.setupGrade).toBeNull();
+    expect(merged.rows.get('VNTX')!.setupGradeWired).toBe(true);
+  });
 });
 
 describe('Alpaca state cannot overwrite research classification (requirement 21)', () => {

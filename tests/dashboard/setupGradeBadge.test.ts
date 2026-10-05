@@ -3,7 +3,11 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 import { TickerCell } from '@/components/DecisionCells';
+import { readFileSync } from 'node:fs';
+
+import { FilterBar } from '@/components/FilterBar';
 import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
+import { DEFAULT_FILTERS } from '@/lib/dashboard/view';
 import { SETUP_GRADE_LEGEND, type SetupGrade } from '@/lib/dashboard/setupGrade';
 
 const GRADE: SetupGrade = {
@@ -80,5 +84,27 @@ describe('the drawer section carries the legend', () => {
   it('lists the five readings only for a graded name', () => {
     expect(render(GRADE)).toContain('Wide spread or thin dollar volume.');
     expect(render(null)).not.toContain('Wide spread');
+  });
+});
+
+describe('while the grade is not wired, no surface speaks of it', () => {
+  const bar = (setupGradeWired: boolean) =>
+    renderToStaticMarkup(
+      createElement(FilterBar, { filters: DEFAULT_FILTERS, onChange: () => {}, onReset: () => {}, isActive: false, setupGradeWired }),
+    );
+
+  it('shows the Setup grade filter only when wired (it would hide every row otherwise)', () => {
+    expect(bar(false)).not.toContain('Setup grade');
+    expect(bar(true)).toContain('Setup grade');
+  });
+
+  it('gates the board badge, the legend and the drawer on the wired flag', () => {
+    const read = (file: string) => readFileSync(file, 'utf8');
+    const board = read('components/DiscoveryBoard.tsx');
+    expect(board).toContain('setupGrade={row.setupGradeWired ? row.setupGrade : undefined}');
+    expect(board).toMatch(/rows\.some\(\(row\) => row\.setupGradeWired\) \?/);
+    const drawer = read('components/TickerDrawer.tsx');
+    expect(drawer).toContain('row.setupGradeWired ? <SetupGradeReadings');
+    expect(drawer).toContain('row.setupGradeWired ? <SetupGradeBadge');
   });
 });

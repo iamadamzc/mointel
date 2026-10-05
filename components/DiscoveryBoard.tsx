@@ -811,7 +811,9 @@ export function DiscoveryBoard({
         )}
       </p>
       {/* The standing legend, once per board, verbatim (Marketing v3, Commercial-passed). */}
-      <p className="mt-1.5 text-[11px] text-ink-3">{SETUP_GRADE_LEGEND}</p>
+      {rows.some((row) => row.setupGradeWired) ? (
+        <p className="mt-1.5 text-[11px] text-ink-3">{SETUP_GRADE_LEGEND}</p>
+      ) : null}
     </section>
   );
 }
@@ -1033,7 +1035,7 @@ function DiscoveryRow({
           stale={t.stale}
           ageSeconds={t.ageSeconds}
           retention={retention}
-          setupGrade={row.setupGrade}
+          setupGrade={row.setupGradeWired ? row.setupGrade : undefined}
         />
         {moving ? (
           /*

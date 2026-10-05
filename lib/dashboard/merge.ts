@@ -176,6 +176,14 @@ export interface DeskRow {
    */
   setupGrade: SetupGrade | null;
   /**
+   * Whether the snapshot carries a setup-grade map at all. FALSE means the
+   * grade is not wired yet (the checkpoint columns and their reader do not
+   * exist), which is a different state from a name with no grade: no surface
+   * shows a grade, a filter, a legend or a "no research" tooltip while this is
+   * false, because every researched name would otherwise read as having none.
+   */
+  setupGradeWired: boolean;
+  /**
    * The instant a CLOCKED catalyst must be newer than to band FRESH — the
    * prior session's close, his refinement of 2026-09-24.
    *
@@ -215,6 +223,8 @@ export interface DeskRowContext {
   blueSky?: BlueSkyState;
   /** `MarketSnapshot.setupGrades[symbol]`. Absent or null is NOT_YET. */
   setupGrade?: SetupGrade | null;
+  /** True when `MarketSnapshot.setupGrades` exists, even empty. */
+  setupGradeWired?: boolean;
   /**
    * `MarketSnapshot.catalystFreshFrom`, straight from the payload.
    *
@@ -465,6 +475,7 @@ export function buildDeskRow(
     // not open sky.
     blueSky,
     setupGrade: context.setupGrade ?? null,
+    setupGradeWired: context.setupGradeWired ?? false,
     catalystFreshFrom: context.catalystFreshFrom ?? null,
   };
 }
@@ -535,6 +546,8 @@ export function mergeDesk(
   );
   const blueSkyByTicker = market?.blueSky ?? {};
   const setupGradeByTicker = market?.setupGrades ?? {};
+  // An absent map is NOT WIRED; an empty or partial map is wired (a missing name is no grade).
+  const setupGradeWired = market?.setupGrades !== undefined;
   const sheetObservedAt = dashboard?.meta.fetchedAt ?? null;
   // One session for the whole merge, so two rows can never disagree about
   // which VWAP is the current one.
@@ -569,7 +582,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker] },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker], setupGradeWired },
       ),
     );
   }
@@ -585,7 +598,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol] },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol], setupGradeWired },
       ),
     );
   }
