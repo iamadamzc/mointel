@@ -1,0 +1,482 @@
+{
+  "SORA": {
+    "section16Filings": 7,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2026-02-04",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2025-12-16",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-11-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2025-11-10",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-08-12",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      }
+    ]
+  },
+  "AMOD": {
+    "section16Filings": 5,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-04",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-07-07",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-17",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-05-15",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-04-28",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-02-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      }
+    ]
+  },
+  "NXL": {
+    "section16Filings": 26,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2026-09-03",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-08-27",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      }
+    ]
+  },
+  "HTCR": {
+    "section16Filings": 10,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-07-22",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-11-20",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-07-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      }
+    ]
+  },
+  "SSM": {
+    "section16Filings": 8,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2026-10-01",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2026-09-08",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-14",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-13",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-07-08",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-05-15",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-02-13",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-11-13",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      }
+    ]
+  },
+  "WCT": {
+    "section16Filings": 0,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2025-10-08",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2025-10-08",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2025-10-08",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2025-02-21",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      }
+    ]
+  },
+  "EJH": {
+    "section16Filings": 7,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2026-04-27",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2026-04-08",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      }
+    ]
+  },
+  "AISP": {
+    "section16Filings": 69,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-17",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-11-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-08-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-03-06",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      }
+    ]
+  },
+  "CAMP": {
+    "section16Filings": 84,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2026-08-31",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2026-08-19",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-14",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-08-10",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2026-08-05",
+        "primaryDocument": "xslSCHEDULE_13D_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-05-15",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2026-03-11",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-13",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-05",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-01-08",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2025-12-23",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-12-11",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-11-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-11-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-11-07",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-10-07",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-10-01",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-09-17",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-09-16",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2025-09-15",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2025-09-11",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2025-09-11",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-05-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SC 13G",
+        "filingDate": "2024-10-22",
+        "primaryDocument": "tm2426605d1_sc13g.htm"
+      },
+      {
+        "form": "SC 13D",
+        "filingDate": "2024-10-22",
+        "primaryDocument": "d902106dsc13d.htm"
+      },
+      {
+        "form": "SC 13G",
+        "filingDate": "2024-10-22",
+        "primaryDocument": "tm2426610d1_sc13g.htm"
+      },
+      {
+        "form": "SC 13D",
+        "filingDate": "2024-10-22",
+        "primaryDocument": "tm2426593d1_sc13d.htm"
+      },
+      {
+        "form": "SC 13D",
+        "filingDate": "2024-10-22",
+        "primaryDocument": "tm2426590d1_sc13d.htm"
+      }
+    ]
+  },
+  "COLA": {
+    "section16Filings": 10,
+    "largeHolderFilings": [
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-14",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-14",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-07",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-08-07",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-05-15",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-05-14",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-05-14",
+        "primaryDocument": "xslSCHEDULE_13G_X02/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-05-07",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-12",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-11",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2026-02-06",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2026-02-06",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-12-23",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-11-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-11-12",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-11-10",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-08-13",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-08-12",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-07-11",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G/A",
+        "filingDate": "2025-06-06",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-05-14",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13G",
+        "filingDate": "2025-05-13",
+        "primaryDocument": "xslSCHEDULE_13G_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D/A",
+        "filingDate": "2025-03-11",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      },
+      {
+        "form": "SCHEDULE 13D",
+        "filingDate": "2025-01-24",
+        "primaryDocument": "xslSCHEDULE_13D_X01/primary_doc.xml"
+      }
+    ]
+  }
+}
