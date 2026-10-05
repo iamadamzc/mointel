@@ -1,3 +1,5 @@
 # Box settings (/etc/mointel/mointel.env) this release cannot run correctly without.
 # One name per line. push-release.sh refuses to ship unless each is set and non-empty.
 DESK_OWNER_EMAIL
+TELEGRAM_BOT_TOKEN
+TELEGRAM_CHAT_ID
