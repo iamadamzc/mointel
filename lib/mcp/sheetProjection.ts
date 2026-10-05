@@ -28,8 +28,19 @@ export interface SetupGradeForTools {
  * The desk's Setup grade for one name, as the tools emit it. The display comes
  * from `setupGradeView`, Design's one mapping (AVOID is shown as D there and
  * nowhere else); this never maps a grade by hand.
+ *
+ * NOT WIRED -> NOTHING (Design 67da54f4): while MarketSnapshot.setupGrades is
+ * absent the board shows no grade surface at all, so the tools emit no
+ * `setupGrade` key either (undefined is dropped from the JSON), rather than a
+ * "no grade" object for every name. Wired but no grade for this name is the
+ * badge's empty view, as on the board.
  */
-export function setupGradeForTools(grade: SetupGrade | null | undefined, nowIso: string): SetupGradeForTools {
+export function setupGradeForTools(
+  grade: SetupGrade | null | undefined,
+  wired: boolean,
+  nowIso: string,
+): SetupGradeForTools | undefined {
+  if (!wired) return undefined;
   const view = setupGradeView(grade, nowIso);
   return {
     stored: grade ?? null,

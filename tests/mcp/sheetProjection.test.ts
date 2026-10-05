@@ -23,7 +23,7 @@ const grade = (g: SetupGrade['grade']): SetupGrade => ({
 describe('setupGradeForTools', () => {
   it('shows AVOID as D, exactly as the badge does, with the stored enum untouched', () => {
     const stored = grade('AVOID');
-    const out = setupGradeForTools(stored, NOW);
+    const out = setupGradeForTools(stored, true, NOW)!;
     const badge = setupGradeView(stored, NOW);
     expect(out.letter).toBe('D');
     expect(out.label).toBe(badge.label);
@@ -32,18 +32,26 @@ describe('setupGradeForTools', () => {
   });
 
   it('a letter grade carries the badge tooltip (positive control)', () => {
-    const out = setupGradeForTools(grade('A'), NOW);
+    const out = setupGradeForTools(grade('A'), true, NOW)!;
     expect(out.letter).toBe('A');
     expect(out.tooltip).toContain('Setup grade A');
   });
 
   it('no grade yet is null stored and the badge empty view', () => {
     for (const g of [null, undefined, grade('NOT_YET')]) {
-      const out = setupGradeForTools(g, NOW);
+      const out = setupGradeForTools(g, true, NOW)!;
       expect(out.letter).toBeNull();
       expect(out.label).toBe(setupGradeView(null, NOW).label);
     }
-    expect(setupGradeForTools(null, NOW).stored).toBeNull();
+    expect(setupGradeForTools(null, true, NOW)!.stored).toBeNull();
+  });
+
+  it('not wired: no setupGrade at all, even with a stored grade, so JSON drops the key (Design 67da54f4)', () => {
+    expect(setupGradeForTools(grade('A'), false, NOW)).toBeUndefined();
+    expect(setupGradeForTools(null, false, NOW)).toBeUndefined();
+    expect(JSON.stringify({ ticker: 'ABCD', setupGrade: setupGradeForTools(grade('A'), false, NOW) })).toBe(
+      '{"ticker":"ABCD"}',
+    );
   });
 });
 

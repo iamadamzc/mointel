@@ -221,7 +221,7 @@ export const TOOLS: McpTool[] = [
           intelligenceState: row.intelligenceState,
           provenance: row.provenance,
           deskRead: buildDeskRead(row),
-          setupGrade: setupGradeForTools(row.setupGrade, nowIso),
+          setupGrade: setupGradeForTools(row.setupGrade, row.setupGradeWired, nowIso),
           sheet: row.research,
         })),
       };
@@ -276,7 +276,7 @@ export const TOOLS: McpTool[] = [
         intelligenceState: row.intelligenceState,
         provenance: row.provenance,
         comparison: row.comparison,
-        setupGrade: setupGradeForTools(row.setupGrade, new Date().toISOString()),
+        setupGrade: setupGradeForTools(row.setupGrade, row.setupGradeWired, new Date().toISOString()),
         sheet: row.research,
         supplyLedger: row.researchRecord,
         intelligence: withHonestTimestamps(row.intelligence),
