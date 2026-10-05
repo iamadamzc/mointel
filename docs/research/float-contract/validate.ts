@@ -229,6 +229,25 @@ function scanRows(xml: string): { owners: number; period: string | null; rows: A
 
 const textOf = (html: string) => html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;|&#160;/g, ' ').replace(/\s+/g, ' ');
 
+/**
+ * AMENDMENT 3: the number is located INSIDE the Table I segment of the rendered text (never searched on the
+ * whole page, where a small number such as "1" matches the form's legal header). A row reads, in the rendered
+ * text, "<title> ... <amount> <D or I>" with optional footnote markers "(1)" between: the amount must be a whole
+ * token (not preceded by a digit, comma, point or "(") followed by the ownership form D, and a Common or
+ * Ordinary title must stand earlier in the segment.
+ */
+export function locateRow(text: string, shares: number): { numberInRow: boolean; commonOrOrdinaryDirect: boolean } {
+  const start = text.search(/Table I\b/i);
+  if (start < 0) return { numberInRow: false, commonOrOrdinaryDirect: false };
+  const rest = text.slice(start);
+  const end = rest.search(/Table II\b/i);
+  const segment = end < 0 ? rest : rest.slice(0, end);
+  const amount = shares.toLocaleString('en-US').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const found = new RegExp(`(?<![\\d,.(])${amount}(?![\\d,])\\s*(?:\\(\\d+\\)\\s*)*D\\b`).exec(segment);
+  if (!found) return { numberInRow: false, commonOrOrdinaryDirect: false };
+  return { numberInRow: true, commonOrOrdinaryDirect: /common|ordinary/i.test(segment.slice(0, found.index)) };
+}
+
 interface AuditInput {
   record: Pick<NameRecord, 'ticker' | 'cik' | 'count' | 'filings' | 'holdingSplit'>;
   holding: { ownerCik: string; shares: number; asOf: string };
@@ -284,13 +303,9 @@ async function auditHolding(input: AuditInput, xmlCache: Map<string, string>, ht
     }
     const text = textOf(html);
     if ((text.match(/Name and Address of Reporting Person/gi) ?? []).length !== 1) htmlOwnerOk = false;
-    const formatted = row.shares.toLocaleString('en-US');
-    const at = text.indexOf(formatted);
-    if (at < 0) htmlNumberOk = false;
-    else {
-      const near = text.slice(Math.max(0, at - 160), at + 160);
-      if (!(/\bD\b/.test(near) && /common|ordinary/i.test(near))) htmlClassOk = false;
-    }
+    const located = locateRow(text, row.shares);
+    if (!located.numberInRow) htmlNumberOk = false;
+    if (!located.commonOrOrdinaryDirect) htmlClassOk = false;
     if (/split/i.test(text)) mentionsSplit = true;
   }
   checks['1_owner'] = { ok: single && htmlOwnerOk && rows.length > 0, note: `scanner single=${single}; rendered pages list one owner=${htmlOwnerOk}` };
@@ -312,15 +327,17 @@ async function auditHolding(input: AuditInput, xmlCache: Map<string, string>, ht
 
 /* ------------------------------------------------------------- collecting */
 
-function recapDates(db: MarketDatabase): string[] {
+function recapDates(db: MarketDatabase, before: string | undefined): string[] {
   return (
     db.prepare(`SELECT DISTINCT trading_date AS d FROM desk_assessments WHERE assessment_type = 'NEXT_DAY_RECAP' AND status = 'COMPLETE' ORDER BY d DESC`).all() as Array<{ d: string }>
-  ).map((r) => r.d);
+  )
+    .map((r) => r.d)
+    .filter((d) => before === undefined || d < before);
 }
 
-function* candidates(db: MarketDatabase): Generator<Candidate> {
+function* candidates(db: MarketDatabase, before?: string): Generator<Candidate> {
   const seen = new Set<string>();
-  for (const date of recapDates(db)) {
+  for (const date of recapDates(db, before)) {
     const read = readReportInputs(db as never, 'PREMARKET', date, RANGE);
     if (!read.ok) continue;
     const { inputs } = read;
@@ -394,6 +411,22 @@ async function collect(db: MarketDatabase, c: Candidate): Promise<NameRecord> {
 
 /* --------------------------------------------------------------- controls */
 
+/** Amendment 3: the row locator on the literal rendered rows of the five first-sample failures, and on traps. */
+function locatorSelfTest(): boolean {
+  const header = 'Filed pursuant to Section 16(a) of the Securities Exchange Act of 1934 1. Name and Address of Reporting Person';
+  const cmct = header + ' Table I - Non-Derivative Securities Acquired 1. Title of Security (Instr. 3) 2. Transaction Date 5. Amount of Securities Beneficially Owned Following Reported Transaction(s) Code V Amount (A) or (D) Price Common Stock 06/22/2026 D (1) 86 (1) D (1) 1 D Table II - Derivative Securities';
+  const bysi = header + ' Table I - Non-Derivative Securities Beneficially Owned 1. Title of Security (Instr. 4) 2. Amount of Securities Beneficially Owned (Instr. 4) 3. Ownership Form: Direct (D) or Indirect (I) Ordinary Shares 100 D Table II - Derivative Securities';
+  const indirect = header + ' Table I - Non-Derivative Common Stock 06/22/2026 D (1) 86 (1) D (1) 1 I Table II';
+  const a = locateRow(cmct, 1);
+  const b = locateRow(bysi, 100);
+  return (
+    a.numberInRow && a.commonOrOrdinaryDirect && // the trap: the first "1" in the text is in the legal header
+    b.numberInRow && b.commonOrOrdinaryDirect &&
+    !locateRow(cmct, 7).numberInRow && // a number that is not in the row
+    !locateRow(indirect, 1).numberInRow // 1 followed by I (indirect) is not a direct row
+  );
+}
+
 async function runControls(db: MarketDatabase) {
   const only = flag('only') ?? 'NXL';
   let target: Candidate | null = null;
@@ -426,7 +459,7 @@ async function runControls(db: MarketDatabase) {
     plantedFails = planted.checks['4_as_of']?.ok === false;
     plantedNote = planted.checks['4_as_of']?.note ?? '';
   }
-  const result = { ticker: record.ticker, control_i_clean_passes_all_checks: clean, control_ii_planted_fault_fails_check_4: plantedFails, plantedNote, audited: record.audit.length, boundAudited: record.count };
+  const result = { ticker: record.ticker, locator_self_test: locatorSelfTest(), control_i_clean_passes_all_checks: clean, control_ii_planted_fault_fails_check_4: plantedFails, plantedNote, audited: record.audit.length, boundAudited: record.count };
   writeJson('controls.json', result);
   console.log(`controls: (i) clean passes=${clean} (ii) planted fails check 4=${plantedFails}; wrote ${path.join(outDir, 'controls.json')}`);
 }
@@ -434,13 +467,14 @@ async function runControls(db: MarketDatabase) {
 /* ----------------------------------------------------------------- sample */
 
 async function runSample(db: MarketDatabase) {
-  const controls = JSON.parse(fs.readFileSync(path.join(outDir, 'controls.json'), 'utf8')) as { control_i_clean_passes_all_checks: boolean; control_ii_planted_fault_fails_check_4: boolean };
-  if (!controls.control_i_clean_passes_all_checks || !controls.control_ii_planted_fault_fails_check_4) {
+  const controls = JSON.parse(fs.readFileSync(path.join(outDir, 'controls.json'), 'utf8')) as { control_i_clean_passes_all_checks: boolean; control_ii_planted_fault_fails_check_4: boolean; locator_self_test: boolean };
+  if (!controls.control_i_clean_passes_all_checks || !controls.control_ii_planted_fault_fails_check_4 || !controls.locator_self_test) {
     throw new Error('the controls did not behave as registered; the audit instrument is broken and the sample is NOT run');
   }
   let nonUnknown = 0;
   let drawn = 0;
-  for (const c of candidates(db)) {
+  // Amendment 3: --before=DATE draws only from recap checkpoints older than DATE (a fresh draw).
+  for (const c of candidates(db, flag('before'))) {
     if (nonUnknown >= WANT) break;
     const record = await collect(db, c);
     drawn += 1;
