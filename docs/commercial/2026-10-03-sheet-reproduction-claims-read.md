@@ -256,3 +256,5 @@ anything (not studied; his call if ever).
 
 **Not reviewed:** the voice; the rubric page when written; the board's behaviour once graded.
 
+**6a. Passes recorded, 2026-10-05.** Setup grade words v2 (`4a04b132`): the four section 6 changes are applied as written, the legend ships without the rubric link, the outcomes sentence is deleted at expiry and never replaced; PASS. Setup grade words v3 (`5855bf61`), read against rubric rule 0 (`3ca325bd`, "no research row (no dossier) at this checkpoint: stored NOT_YET, no letter", read in the rubric text): the dash state for NOT_YET only, its string "The desk has no research on this name at this checkpoint.", the legend sentence "A dash in this column means the desk has no research on the name at that checkpoint.", and the single Not graded string "Fewer than three of the five criteria could be read." (the no-research Not graded string removed, now unreachable) are each true of the state they describe, and the dash says what is true of the research, not of the name; PASS. Both earlier passes had been given to Integration by message only.
+
