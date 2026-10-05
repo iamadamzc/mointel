@@ -23,8 +23,8 @@ import {
   type AssessmentRecord,
   type AssessmentTickerRecord,
 } from '../../market/store/assessmentRepo';
-import { readAnalysisVersionsByIds, readSourcesByIds } from '../../market/store/researchRepo';
-import type { ResearchSource } from '../../research/types';
+import { readAnalysisVersionsByIds, readSourceIdsForTicker, readSourcesByIds } from '../../market/store/researchRepo';
+import type { ResearchAnalysisVersion, ResearchSource } from '../../research/types';
 import type { AssessmentType } from '../schedule';
 import { applyStrikes, checkReport, type CheckerModel, type Strike } from './check';
 import type { MissedCause, ReportKind, ReportPath, SessionReport } from './contract';
@@ -95,6 +95,16 @@ function readSessionLatches(db: Database, tradingDate: string, symbols: readonly
   return found;
 }
 
+/** One name's research as the report reads it: citation tokens out, the ticker's own source ids included. */
+export function researchForReport(
+  db: Database,
+  ticker: string,
+  version: ResearchAnalysisVersion,
+  sources: ReadonlyMap<number, ResearchSource>,
+): ReportResearch {
+  return reportResearch(version, sources, new Set(readSourceIdsForTicker(db, ticker)));
+}
+
 export interface ReportInputs {
   stored: AssessmentRecord;
   facts: ReportFact[];
@@ -152,7 +162,7 @@ export function readReportInputs(
   for (const fact of built.facts) {
     const row = byTicker.get(fact.ticker);
     const version = row?.analysisVersionId != null ? versions.get(row.analysisVersionId) : undefined;
-    if (version) research.set(fact.ticker, reportResearch(version, sources));
+    if (version) research.set(fact.ticker, researchForReport(db, fact.ticker, version, sources));
     const session = sessions.get(fact.ticker);
     paths.set(
       fact.ticker,
