@@ -1028,6 +1028,8 @@ v6 REPORTS   Research steps 3-6 on research/reports-v6 (not main).
 CLEARED in writing: Marketing 7e0472d1 4a04b132 5855bf61 a9ea26a4; Research 010e9031 3cf42bc3 49ea118b and the float-
   contract docs it named for 040bc01d (a21ee1b4 ea89900a c8b7254d) and af660d29 (c4a35331 576f16b5); Ops 80097100
   b6f8891f (replayed); Integration's own.
+POST-HAND-OFF: Marketing float draft v13 226fbf72 (Commercial 5i's six sentences for 90 days) CLEARED by Marketing, plus
+  its charter commit recording it (ask its sha). Commercial reads those six sentences, then Web renders.
 ASK RESEARCH BY SHA before pushing: db44c74e 3ca325bd 46a865ec 571e5119 7ce4b7a9 (all docs/research/** per its messages,
   not cleared by sha to me).
 ```
