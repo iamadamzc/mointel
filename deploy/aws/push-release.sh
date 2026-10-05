@@ -80,6 +80,38 @@ else
   git show "$SHA:deploy/aws/preflight.sh" | "${SSH_PRE[@]}" "$PREFLIGHT_ENV bash -s" || preflight_refused
 fi
 
+# --------------------------------------------------------- required env ---
+#
+# A release can DECLARE the box settings it cannot run correctly without, one
+# name per line in deploy/aws/required-env.txt AT THE SHIPPING SHA. It is read
+# from the sha being shipped, not from the deployed release, so the release that
+# introduces a key is the first one checked. (preflight.sh cannot do this: it
+# runs from the DEPLOYED release, which predates the key.)
+#
+# Presence and non-emptiness only; a value is never read back, printed or
+# logged. A key set to nothing or to a bare pair of quotes counts as absent.
+# A box that cannot be read refuses too: "could not check" is not "present".
+# Why this exists: DESK_OWNER_EMAIL fails CLOSED, so a release shipped without
+# it takes Retry research away from the owner too.
+REQUIRED_ENV="$(git show "$SHA:deploy/aws/required-env.txt" 2>/dev/null | grep -o -E '^[A-Z][A-Z0-9_]*' || true)"
+MISSING_ENV=""
+for key in $REQUIRED_ENV; do
+  case "$key" in
+    *[!A-Z0-9_]*|"") echo "[release] required-env.txt names an invalid key; nothing was shipped" >&2; exit 10 ;;
+  esac
+  state="$("${SSH_PRE[@]}" "sudo sed -n 's/^$key=//p' /etc/mointel/mointel.env | tr -d \"' \" | grep -q . && echo present || echo absent" 2>/dev/null || true)"
+  case "$state" in
+    present) ;;
+    absent) MISSING_ENV="$MISSING_ENV $key" ;;
+    *) MISSING_ENV="$MISSING_ENV $key(unreadable)" ;;
+  esac
+done
+if [ -n "$MISSING_ENV" ]; then
+  echo "[release] $SHORT declares box settings that are not set:$MISSING_ENV" >&2
+  echo "[release] set them on the box (sync-env.sh), then re-run; nothing was shipped" >&2
+  exit 10
+fi
+
 echo "[release] deploying $SHORT to $HOST"
 
 SSH=(ssh -i "$KEY" -o StrictHostKeyChecking=no "ubuntu@$HOST")
