@@ -25,6 +25,25 @@ function extraSymbols(url: URL): string[] {
     .slice(0, 50);
 }
 
+/*
+ * NOT SESSION-GATED YET, AND THAT IS A RECORDED HOLD, NOT AN OVERSIGHT.
+ *
+ * The market worker reads this route over loopback with no cookie to pin his
+ * TODAY-sheet tickers (`worker/runtime.ts` refreshSheetSymbols, and
+ * `worker/diagnose.ts`), via MOINTEL_DASHBOARD_URL = http://127.0.0.1:3000.
+ * Gating it would answer that worker 401, and it drops a non-OK response
+ * silently: the pins would stop with nothing in any log. Found by Integration
+ * replaying step 4, 2026-10-03.
+ *
+ * A loopback exemption is NOT the fix: nginx proxies every outside request from
+ * 127.0.0.1 too. The fix is an internal credential the worker sends, which
+ * changes the worker, and its restart is his. Until then Basic Auth on `/api/`
+ * is this route's protection, exactly as before step 4.
+ *
+ * IT MUST BE GATED BEFORE BASIC AUTH COMES OFF `/api/` (charter OPEN table).
+ * `tests/auth/requestGate.test.ts` names this file in its UNGATED set with the
+ * same reason, so the hold cannot be lifted, or forgotten, without a test change.
+ */
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const force = url.searchParams.get('force') === '1';

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { gateApiRequest } from '@/lib/auth/requestGate';
 import { boardRangeRequest } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 
@@ -9,6 +10,9 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
+  const refused = gateApiRequest(request);
+  if (refused) return refused;
+
   const params = new URL(request.url).searchParams;
   const symbols = params.get('symbols');
   // The viewer's price range (Design, 4b7fca4). Absent = the board default

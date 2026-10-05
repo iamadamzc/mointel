@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+// The session gate is tested in tests/auth/requestGate.test.ts. These tests are
+// about what the route SERVES, so they run as an admitted caller.
+vi.mock('@/lib/auth/requestGate', () => ({ gateApiRequest: () => null }));
+
 /*
  * The review mirror of /api/reports (his "1 yes", 2026-10-01T02:36:53Z): the
  * guard is the real `guardReviewApi`, unchanged; only the token store and the
@@ -52,7 +56,7 @@ describe('review /api/reports', () => {
     verify.mockReturnValue({ ok: true, token: { id: 1 } });
     getSessionReports.mockReturnValue(PAYLOAD);
     const review = await call();
-    const owner = await ownerRoute.GET();
+    const owner = await ownerRoute.GET(new Request('https://tmitrader.com/api/reports'));
     expect(review.status).toBe(200);
     expectReviewHeaders(review);
     expect(await review.text()).toBe(await owner.text());
