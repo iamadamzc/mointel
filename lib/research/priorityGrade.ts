@@ -4,7 +4,8 @@
  * field contract docs/research/sheet-reproduction/field-contract-final-2026-10-05.md). Pure: no I/O, no clock.
  *
  * Every threshold is a product choice he approved; none is a finding. A missing input is UNKNOWN or NOT_YET,
- * never a default. The grade is a reading, not a prediction, and has not been tested against outcomes.
+ * never a default. The grade is a reading, not a prediction. For any outcome test of it, see
+ * docs/research/priority-rubric/outcome-test-result-2026-10-05.md (adae1e89); this file does not restate it.
  */
 
 export const PRIORITY_RULE = 'rubric-2026-10-05';
