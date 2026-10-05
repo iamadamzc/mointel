@@ -1362,6 +1362,16 @@ OUTCOME PREREG   Research 1113b940 (docs/research/priority-rubric/outcome-test-p
                  session peak"; control on the minute-bar subset suggested. CAVEAT: no reconstruction flag; restarts in
                  04:00-16:00 re-seed sessionHigh (engine.ts:1058, source unread). Result sha to me; numbers to him from the
                  committed file. Approved A (5) and C (9) are below n=20: the approved rule's verdict is B vs AVOID only.
+OUTCOME RESULT   Research adae1e89 (result md), report.json 9fd9e06c; order verified by commit times: prereg 1113b940,
+                 script+amend1 43a926dc, grades 0031136a, raw outcomes 1d5f2d8b, label control 18b14fd9, amend2 b15b72d0
+                 (P relabeled: next day's high 04:00 through close; label control 134 extended / 6 RTH-only / 216 tie of
+                 369), report 9fd9e06c. READ by me: result md in full; report.json verdicts approved p 0.679/0.322 gap
+                 +0.12 pt, looser p 0.501/0.499 gap +1.95 pt, both DOES_NOT_SEPARATE, robust (546 first-appearance rows);
+                 controls power SEPARATES, false positives 0 of 200 runs (300 perms each; main test 10,000, script
+                 outcome-test.ts:255-283). Legend "not tested against outcomes" EXPIRED: sent to Commercial (read) +
+                 Marketing (sentence). To him: the result, plus a keep-building question with recommendation.
+                 Research cleared by sha: 1113b940 43a926dc 0031136a 1d5f2d8b 18b14fd9 b15b72d0 9fd9e06c adae1e89 (push
+                 waits on Ops's main-tip gate after the night; outcome-test.ts and label-control.ts are .ts under docs).
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
