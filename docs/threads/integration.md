@@ -1033,6 +1033,8 @@ Ops-tmi local_c71f613a  Research-tmi local_dd23765d (NEW; old local_f6ef479a ret
 Design-tmi local_83b5b7ec  Web-tmi local_a4c618a8  Marketing-tmi local_5ed7eb51  Commercial-tmi local_2aab5a77
 Integration: THREE sessions answer to Integration-tmi until he renames them: local_2102878a (26th, he keeps it for now),
   local_78f8e5f7 (27th, this hand-off), and you. Give your id in every send.
+  SUPERSEDED (28th, 22:2xZ, list_sessions): both old chats are now Integration-tmi-retired (26th also archived). The 28th,
+  local_7df5566d, is the only Integration-tmi.
 ```
 
 ### HAND-OFF LINE
@@ -1372,6 +1374,31 @@ or match by patch-id, and if `git merge origin/main` conflicts in a peer's file,
 First: ask Ops for /proc after the 16:34Z market restart (f5746a84); confirm the [splits] line. Then his two Sheet decisions,
 the v6 narrative samples when Research has them. This seat's failure, four times: a value passed on before READING the
 record it describes (vendor behaviour, a git listing, a code search, a measured duration).
+```
+
+## THE TWENTY-EIGHTH SEAT'S RUNNING NOTES (opened 2026-10-05T22:20:31Z, `local_7df5566d`, Opus 5.5, effort high)
+
+*Newer than the twenty-seventh's live state where they disagree. Times are tool-reported or transcript.*
+```
+START            Titled Integration-tmi. get_session self: claude-opus-5-5. OLD CHATS CHANGED since the 27th's prompt:
+                 local_2102878a (26th) titled Integration-tmi-retired AND archived; local_78f8e5f7 (27th) titled
+                 Integration-tmi-retired, not archived (list_sessions include_archived, 22:2xZ). I am the only
+                 Integration-tmi. His 21:50:53Z "no retirement yet" is overtaken by whoever renamed them; not asked.
+SHARED MAIN      Fetched. origin/production 6e7fff84 (ls-remote), so the cut d1e7ba9d is NOT on production yet.
+                 Local main was 38 ahead / 3 behind (origin had Commercial c26daa80 aebcc427 e0139dea, docs). No MERGE_HEAD,
+                 index empty: merged origin/main as 00ef53c3 (claims-read only, clean). Working tree carries Research's
+                 UNCOMMITTED float-job files (lib/research/floatJob.ts, floatRun.ts, filedCount.ts, floatBoundRepo.ts,
+                 history.ts, splitProof.ts, db.ts, worker/research.ts, tests): not mine, not staged.
+CLEARANCE        Web b6e7cf4d e579d48c eb55a250: CLEARED in web.md (eb55a250, read). NOT CLEARED, asked by sha:
+                 Ops b1398aaa, Research 09d262b9, Marketing 11dbdc04 (each docs-only, file lists read).
+ASKED            Ops: /proc when the cut ships; clear b1398aaa; full gate on main's tip AFTER the ship (clean detached
+                 worktree, so Research's uncommitted files stay out). Research: 09d262b9; Commercial 5k item 4 answer
+                 as a file sha (cure a or b, contract amendment, coverage change at $0). Marketing: 11dbdc04; batch when
+                 Research answers. Design: off-hours options (not found in design.md; resend asked, the 27th's ask may
+                 have been read by a seat that has since handed off).
+READ             5k and 6b read from origin's claims file in full (now on local main). Sheet plan RULED block and beta
+                 path RULED 1-9 read.
+LEDGER           (none yet)
 ```
 
 ## THE TWENTY-SEVENTH SEAT'S RUNNING NOTES (opened 2026-10-05T21:28:28Z, `local_78f8e5f7`, Opus 5.5, effort high)
