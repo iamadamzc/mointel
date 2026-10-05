@@ -1415,6 +1415,16 @@ FLOAT 5k ITEM 4  Research ANSWERED: docs/research/float-contract/insider-sale-re
                  an Ops slot. Float job steps 1-5 on research/float-job 79d5f84d (A:/mointel-float), UNGATED, off by env.
                  ROUTED: Commercial (claims read of S1 vs S0, the new reason, D) queued; Marketing TRIGGERED with the sha.
                  CONTRACT TEXT S1/S0 = MINE after Commercial's read + the measurement. Coverage moving materially -> him.
+COMMERCIAL 5l    b867a589 (origin; merged to local main 8cfb7221), READ in full: S1 and S0 both PASS on claims, no claims
+                 preference. Breaks under S1: three approved "dated at or before the count" sentences (popover lined-up
+                 clause; page x2); replacements in 5l. Add to the page: "a sale not yet filed by the date the filings were
+                 read can still make the float larger than the bound". The 5k interim (dated claim) stands UNTIL S1 SHIPS,
+                 then goes. FILINGS_NOT_REREAD string requirements (name last-read date; only "not read since"; never "not
+                 researched"/"not computed"; distinct from the other five). 4-day span fine. D per checkpoint meets 5k(1).
+                 Commercial was asked by Research directly, so Marketing likely has 5l; my trigger to Marketing stands.
+                 S1/S0: HELD for the measurement (claims are indifferent; S1 keeps buyers subtracted, so by construction
+                 its bounds are lower and tighter than S0's). He gets ONE line before the float ships: the three
+                 broken sentences, the unfiled-sale sentence, the new Cannot verify reason, the v15 phrase.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           (none yet)
