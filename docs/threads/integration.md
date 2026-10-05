@@ -1537,11 +1537,19 @@ S3+B REPLAY     52cced3e (tag design/s3-b-gated-52cced3e, rev-parse ok), base e0
                  fields, unchanged; market worker's /api/dashboard untouched.
                  RELEASE = 52cced3e + Ops's grade store/reader (contract sent) + Web's sheet-priority-out RE-BASED onto
                  52cced3e (f8ed2917 sits on 67da54f4; next Web seat owns the re-base). I replay the cut.
+NEW WEB SEAT     Web-tmi = local_fe13d183 (created 22:56:01Z; cwd A:\mointel, not archived; checked AFTER my send, see
+                 ledger 2). Answered: (1) not shipped, production 6e7fff84; (2) re-base onto 52cced3e; (3) dashboard gate is
+                 in the cut: main b6f8891f, picked as 5f273d87, requestGate.ts:95-101; (4) reader contract + MCP must use
+                 setupGrades != null like Design's e8685f77.
+                 Design takes the ship-night look (review link, outside 07:00-10:00 ET); I tell it when live + map sent.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
                  it by sha. TYPE: a clearance inferred, not read (new class this session). Caught by me in the next step,
                  before any push; corrected in the file and asked. Not the 27th's class (no peer sentence relayed).
+                 2. Sent to the NEW Web seat (local_fe13d183) before checking its cwd and archive state (the prompt's
+                 every-send rule); checked straight after: cwd A:\mointel, not archived, so no misroute. TYPE: a send
+                 before the routing check (new class). Self-caught. Not a repeat of 1.
 ```
 
 ## THE TWENTY-SEVENTH SEAT'S RUNNING NOTES (opened 2026-10-05T21:28:28Z, `local_78f8e5f7`, Opus 5.5, effort high)
