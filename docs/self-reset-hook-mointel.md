@@ -5,6 +5,9 @@ The rule is in `A:\claude-infra-agent\docs\session-hygiene.md` section 3 ("Self-
 draft (`A:\claude-infra-agent\docs\on-clear-v2-draft.sh`, commit `1b1dcec`). Tested: the script below prints valid JSON,
 and every prompt file it names exists.*
 
+**INSTALLED 2026-10-05 by Integration on your "you do it":** both files below are in place and the hook was run as
+configured (valid output). The steps are kept as the record of what was added.
+
 ## What it does
 
 When a seat reaches a stopping point, or repeats a mistake, it saves its work, brings its opening prompt up to date and

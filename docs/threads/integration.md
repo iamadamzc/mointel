@@ -1569,6 +1569,10 @@ HIS RULING       2026-10-05T23:48:28.801Z (transcript d947056e, his turn): "yes,
                  prompt paths exist, doc's script byte-identical to the tested file, settings JSON valid, em 0 (control
                  730). HE INSTALLS (seats may not edit settings). Not yet installed. Once installed, every mointel seat may
                  ask "Reset this seat now?"; tell the seats then.
+INSTALLED        On his "you do it" (2026-10-05T23:51:01.179Z, his turn): wrote .claude/hooks/on-clear.sh (byte-identical to
+                 the tested script) and .claude/settings.json (valid JSON); ran the hook as configured: valid SessionStart
+                 JSON. NOT COMMITTED (untracked; his commit question open). Takes effect for sessions that START after
+                 now (new chats and resets). Seats told.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
