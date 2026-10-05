@@ -1419,6 +1419,13 @@ LEDGER           1. Told new Research that Design proposed `floatBound` "on its 
                  Design's own wording without opening the tree; Design corrected itself: the shape came from the retired
                  Research seat and no file exists. TYPE: a sentence left before its source was read (the 26th's class,
                  named in my prompt). First this session. Caught by a peer (Design). Retracted to Research next message.
+FLOAT ROW DATE   Research 09d262b9 build-plan section 3: (A) row counts only on its own date (morning board dark) vs (B)
+                 reuse newest row on or before D, recompute at D. RULED (B) in principle, two conditions: (1) insider SALE
+                 after the fetch makes true float exceed the stored bound (count minus insiders): re-read holdings to D or
+                 refuse (R0 not opened by me; asked Research); unflagged issuance exposure also lengthens; (2) maximum
+                 reuse span for the fetch, in the contract, reader refuses past it. Contract sha owed before the reader.
+                 Commercial asked whether v14's "upper bound" / "at most 90 days before the checkpoint" hold under (B).
+                 Ops (via Research): memory does not block the build; measured peak RSS owed before any ship ask.
 OFF-HOURS        Design: with the Researched Names table gone, off-hours (before 04:00, after 20:00, weekends) the main area
                  is the empty Discovery board (DashboardShell opened the table by default then); Focus and Graveyard stay.
                  Follows from his "remove it" but he was never told it in those words. Goes to him BEFORE the removal
