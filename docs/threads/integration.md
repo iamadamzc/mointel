@@ -1295,6 +1295,12 @@ SPLIT-TO-MAIN    APPROVED BY LITERAL SHA 08d8d245fc0d4b10b88078d5db27c38d83365d4
                  (pre-existing; .next/types absent in fresh worktree); eslint on the 5 changed files exit 0 (mine).
                  LANDING: I merge into shared main + push, after Ops's written clearance of its 3. FOUND: main's lint is red
                  today on scripts/ops/server-only-trace.cjs (2 errors, Ops's file) -> Ops.
+                 LINT FIX approved by literal sha 7b696f4dc328bf54b1a5d8119431315d20ab5f63 (one eslint-disable comment line;
+                 old file shows exactly 2 no-require-imports errors = control; fixed blob eslint exit 0).
+MAIN LANDED      Merged b719f4e9 (split-to-main 08d8d245) + 00c0cdfa (lint 7b696f4d) into shared main; 6 files only. Ops
+                 cleared all 9 of its commits in writing (3 branch + lint + 4 charter: 8661a1f0, 1aaeebef, cd16720b,
+                 93655ea2). Listed as own step (13 / 0); pushed 96a82b6d..00c0cdfa; 0 / 0. The SPLIT FIX IS ON MAIN; owed-to-
+                 main list loses dff3fb0a + f5746a84. Main's lint error on server-only-trace.cjs fixed.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
