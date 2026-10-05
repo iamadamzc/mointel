@@ -14,10 +14,10 @@
  * WHAT IS NOT GATED HERE, deliberately:
  * - `/api/health` is loopback-only at nginx and is how Ops checks the box;
  *   gating it would make a healthy app read as down.
- * - `/api/dashboard`, HELD: the market worker reads it over loopback with no
- *   cookie (`worker/runtime.ts` refreshSheetSymbols). It must be gated, with an
- *   internal credential for the worker, before Basic Auth comes off `/api/`.
- *   The reason is in the route.
+ * - `/api/dashboard` is gated by `gateInternalOrApiRequest`: a session, OR the
+ *   box's internal credential, which the market worker sends
+ *   (`worker/runtime.ts` refreshSheetSymbols, `lib/auth/internalCredential.ts`).
+ *   No other route accepts that credential.
  * - `/review/[token]/*` and `/mcp/[token]` carry their own token guard
  *   (`lib/review/access.ts`). A reviewer holds a token, not a session.
  * `tests/auth/requestGate.test.ts` enumerates `app/api/` so a new route cannot
@@ -33,6 +33,7 @@ import { NextResponse } from 'next/server';
 import { SESSION_COOKIE } from '@/lib/auth/cookie';
 import { getIdentityDb } from '@/lib/auth/db';
 import { authenticate, type Admission } from '@/lib/auth/gate';
+import { hasInternalCredential } from '@/lib/auth/internalCredential';
 import { userHasVerifiedEmail, type IdentityDatabase } from '@/lib/auth/store';
 
 /** The session id from a raw `Cookie` header, or null. Reads nothing else. */
@@ -84,6 +85,21 @@ export function apiRefusal(admission: Admission): NextResponse | null {
 export function gateApiRequest(request: Request, db?: IdentityDatabase, now?: Date): NextResponse | null {
   const sessionId = sessionIdFromCookieHeader(request.headers.get('cookie'));
   return apiRefusal(admissionForSession(sessionId, db, now));
+}
+
+/**
+ * For the one route the box's own workers read: a session, or the internal
+ * credential. The credential admits nothing else: every other handler calls
+ * `gateApiRequest`, and the structural test holds that to the route set.
+ */
+export function gateInternalOrApiRequest(
+  request: Request,
+  db?: IdentityDatabase,
+  now?: Date,
+  env?: Record<string, string | undefined>,
+): NextResponse | null {
+  if (hasInternalCredential(request, env)) return null;
+  return gateApiRequest(request, db, now);
 }
 
 /*

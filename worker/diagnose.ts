@@ -9,6 +9,7 @@
 import { loadWorkerEnv } from './env';
 loadWorkerEnv();
 
+import { internalCredentialHeaders } from '../lib/auth/internalCredential';
 import { ALPACA_ENDPOINTS, loadMarketConfig } from '../lib/market/config';
 import { findAlpacaCredentials, maskKeyId, redact } from '../lib/market/credentials';
 import { AlpacaRestClient } from '../lib/market/alpaca/rest';
@@ -150,6 +151,7 @@ async function main(): Promise<void> {
   const dashboardUrl = process.env.MOINTEL_DASHBOARD_URL ?? 'http://localhost:3000';
   try {
     const response = await fetch(`${dashboardUrl}/api/dashboard`, {
+      headers: internalCredentialHeaders(),
       signal: AbortSignal.timeout(6000),
     });
     if (!response.ok) {
