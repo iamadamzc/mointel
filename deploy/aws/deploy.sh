@@ -146,6 +146,7 @@ install -m 0755 "$RELEASE/deploy/aws/status.sh" /usr/local/bin/mointel-status
 log "installing systemd units"
 install -m 0644 "$RELEASE"/deploy/aws/systemd/*.service /etc/systemd/system/
 install -m 0644 "$RELEASE"/deploy/aws/systemd/mointel.target /etc/systemd/system/
+install -m 0644 "$RELEASE"/deploy/aws/systemd/*.timer /etc/systemd/system/
 systemctl daemon-reload
 
 # ----------------------------------------------------------------- switch ---
@@ -224,6 +225,10 @@ if [ "$RESTART_MARKET" = "yes" ]; then
   systemctl enable mointel-market >/dev/null 2>&1 || true
   systemctl start mointel-market
 fi
+
+# The watchdog is not part of the runtime and must never fail a deploy: enable
+# its timer if it is not already, and move on either way.
+systemctl enable --now mointel-watchdog.timer >/dev/null 2>&1 || log "WARNING: the watchdog timer could not be enabled"
 
 systemctl reload nginx || systemctl restart nginx
 
