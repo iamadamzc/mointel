@@ -50,6 +50,8 @@ Unit: one row (ticker by recap date). Groups: A, B, C, AVOID, UNKNOWN, NOT_YET, 
 3. **Exclusion control:** the basis-mismatch rule MUST exclude at least one row (the coverage count says 3); zero would mean the check is not looking.
 4. **Order control:** the grades file is committed before any outcome is read (the commit order shows it).
 
+**Amendment 1 (labeled, 2026-10-05, after the script was written and BEFORE any outcome is read):** (a) A half of the dates with fewer than 5 rows in the best or in the worst included group cannot show a sign; if the primary p value would otherwise meet SEPARATES or INVERTED, the verdict is INCONCLUSIVE with that reason stated. (b) The controls run in the report step, after the raw outcomes are committed and BEFORE any verdict is printed; if a control fails the verdicts are not produced. The power control uses 2,000 permutations; each of the 200 false-positive runs uses 300 (the verdicts use 10,000). (c) The false-positive control shuffles the real grades against the real peak values; the power control injects its separation into the real peak values.
+
 ## 7. Cost, and what it waits on
 
 **$0.** Stored data only: local read-only SQLite on this PC, no network, no model, nothing on the live endpoint (so nothing on `/api/market` at 07:00 to 10:00 ET). It needs no Ops slot beyond one node process of a few minutes; it runs no vitest, tsc or build. Any spend is his and none is proposed.
