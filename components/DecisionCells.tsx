@@ -605,20 +605,24 @@ export function TickerCell({
   retention?: string | null;
 }) {
   return (
-    <span className="flex items-center gap-1">
-      <FocusToggle ticker={ticker} focused={focused} onToggle={onToggleFocus} />
-      <span className="text-[15px] font-bold tracking-tight text-ink">{ticker}</span>
+    <span className="flex flex-col items-start">
+      <span className="flex items-center gap-1">
+        <FocusToggle ticker={ticker} focused={focused} onToggle={onToggleFocus} />
+        <span className="text-[15px] font-bold tracking-tight text-ink">{ticker}</span>
+        {stale ? (
+          <span
+            className="text-[9px] font-semibold tracking-wide text-warn uppercase"
+            title={`No market event for ${ageSeconds ?? '—'}s. This is the last live print, not a current one.`}
+          >
+            stale
+          </span>
+        ) : null}
+      </span>
+      {/* Its own line: "RETAINED > $20" is 133 px and the cell is 128, so beside the
+          ticker it overflowed into the next column (PFSA, measured 2026-10-03). */}
       {retention ? (
         <span className="text-[9px] font-semibold tracking-wide whitespace-nowrap text-accent uppercase">
           {retention}
-        </span>
-      ) : null}
-      {stale ? (
-        <span
-          className="text-[9px] font-semibold tracking-wide text-warn uppercase"
-          title={`No market event for ${ageSeconds ?? '—'}s. This is the last live print, not a current one.`}
-        >
-          stale
         </span>
       ) : null}
     </span>
