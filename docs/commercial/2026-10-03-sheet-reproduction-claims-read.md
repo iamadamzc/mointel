@@ -258,3 +258,19 @@ anything (not studied; his call if ever).
 
 **6a. Passes recorded, 2026-10-05.** Setup grade words v2 (`4a04b132`): the four section 6 changes are applied as written, the legend ships without the rubric link, the outcomes sentence is deleted at expiry and never replaced; PASS. Setup grade words v3 (`5855bf61`), read against rubric rule 0 (`3ca325bd`, "no research row (no dossier) at this checkpoint: stored NOT_YET, no letter", read in the rubric text): the dash state for NOT_YET only, its string "The desk has no research on this name at this checkpoint.", the legend sentence "A dash in this column means the desk has no research on the name at that checkpoint.", and the single Not graded string "Fewer than three of the five criteria could be read." (the no-research Not graded string removed, now unreachable) are each true of the state they describe, and the dash says what is true of the research, not of the name; PASS. Both earlier passes had been given to Integration by message only.
 
+## 5i. What changes if the maximum filed-count age is 90 days instead of 45: float draft v12 (`9c6b0ed4`), third tenure, 2026-10-05
+
+*Asked by Integration 26th before the age goes to him. Read: v12 at `9c6b0ed4`, sections 1 to 3, against 5e (item 7) and 5h. Words only; the age is his.*
+
+**What breaks, by sentence.** My 5e ruling put the filed count's date in the popover only because the age was bounded and enforced as a state: at 45 days the cell cannot show a number built on a count older than that. At 90 the ruling reverses (as 5e said it would, and as the size grade's 120-day rule requires): **the date goes on the cell face.** The sentences that change:
+1. **The face itself** (section 1 table, the bound row): "≤ 12.3M" becomes "≤ 12.3M" with the count's date beside it. Form and fit in the 102 px column are Design's; the requirement is a date a trader sees without hovering, not its format.
+2. **The aria-label on the bound face** carries the date too: "no more than {X} shares, computed from SEC filings as of {filed-count date}, when the filings line up".
+3. **"Lined up means: a recent filed count ..." in the popover.** "Recent" stretches to a quarter at 90 days and reads as fresh. Say "a filed count dated {filed-count date}" or name the limit ("filed within the last 90 days").
+4. **The page's cell bullet** "The date of the filed count is in the detail" (section 3) becomes false once the date is on the face. Say "The date of the filed count is shown beside it."
+5. **The legend** ("Float: computed from SEC filings. An upper bound when the filings line up.") gains a clause saying what the date is: "The date is the filed share count's."
+6. **v12's header** "Standing condition from 5e" is then spent and goes.
+
+**What does not break.** The popover strings for Unknown and every Cannot verify cause (the too-old string states a cause, not a number of days); the tooltip; the off-popover string (it already carries the date); the issuance sentence ("A name with nothing found may still have issued shares" stays true and matters more); the 13D, Rule 12b-2 and Rule 13d-3 paragraphs.
+
+**One point for the decision, not a wording change.** The validation sample that passed (`af660d29`) tests holdings, ownership, class, as-of alignment, splits, double counting and the range (the prereg's seven checks). It does not test share issuance since the count, and the miss rate of the issuance flag at any age is unmeasured. So the pass says nothing about whether 90 days is safer or riskier than 45 for the "at most" claim; a longer age widens the window in which an unflagged issuance can make the number too low, and the conditional "when the filings line up" is what carries that risk on the page.
+
