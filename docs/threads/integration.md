@@ -1311,6 +1311,18 @@ OWED-TO-MAIN     PUT TO OWNERS (trigger met), by subject read per sha: WEB d7079
                  DECLINED (not author). REASSIGNED TO DESIGN with a50f5948; pick order d8c4e5f1, 3653f814, 9ee3b50b.
                  Research STRUCK its aside "my work there was b36afd15 and a036a854" (authorship not checked; they are only
                  main's two older blueSky commits). I never relayed that line; nothing to retract.
+FLOAT CONTRACT   Research c624aeec: docs/research/float-contract/contract-2026-10-05.md + validation-prereg-2026-10-05.md, READ
+                 in full. Insider set per 5b; NEW DEFECT found in run.ts (holding not required as-of <= count: too LOW route)
+                 -> as-of alignment rule; states PRODUCED / UNKNOWN / CANNOT_VERIFY / NOT_YET; item 7 KNOWN_ACTIVE adopted;
+                 MAX AGE 45 d (FILED_SHARES_CURRENT_DAYS float.ts:92) to the checkpoint date; validation: 30 names, all
+                 subtracted holdings audited against EDGAR's rendered page by a second path, planted-fault control must
+                 fail, rule-of-three bound, $0, Ops's slot. ACCEPTED as lead; next = as-of parser change.
+                 CORRECTED (to Research): "two thirds Cannot verify" folds UNKNOWN in. Source = short-interest calibration
+                 result.md:125-140 (422 FINRA settlement pairs, 74 no count): at 45 d ~34% number (before KNOWN_ACTIVE),
+                 ~18% UNKNOWN, ~48% CANNOT_VERIFY on age; 90 d 46%; 120 d 50%. float.ts:82-83 (211 issuers): 46.9% at 45 vs
+                 50.2% at 90. ASKED a labelled prereg amendment: state shares at 45/90/120 on the sampled checkpoint names.
+                 Commercial sent the contract + the 45 d number (55da299c). MAX AGE PUT TO HIM (product: how much of the
+                 always-on column shows a number).
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
