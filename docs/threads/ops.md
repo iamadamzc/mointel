@@ -13965,3 +13965,6 @@ assess 2025490 cwd 6e7fff84; market 2013616 cwd f5746a84; all NR 0; current -> 6
 STREAMING; 3,832 MB, 2,700 available, no swap. origin/production = 6e7fff84; origin/main = 96a82b6d. Pins: pins.sh is not at
 /opt/mointel/pins (only the two .pin files listed), so pin versions NOT re-read by this seat; hand-off values stand unverified.
 Error ledger (this seat): none yet.
+ROUTING, verified 2026-10-05 by list_sessions (title + cwd A:\mointel + not archived), superseding ops.md hand-off lines 13957-13958 (stale on three seats):
+Integration-tmi local_ef410868; Research-tmi local_f6ef479a; Design-tmi local_82749387; Web-tmi local_a4c618a8; Commercial-tmi local_2aab5a77;
+Marketing-tmi local_5ed7eb51. Integration's list of my open items matches hand-off OPEN 1-5 (origin/main = 96a82b6d); no action owed before the Monday spot check.
