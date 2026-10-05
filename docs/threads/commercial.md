@@ -68,58 +68,41 @@ his, and it is an open question rather than a lean.
 
 ---
 
-## LIVE STATE — as of 2026-09-28T15:35Z
+## LIVE STATE: as of 2026-10-05T01:00Z
 
-**If anything above disagrees with this section, this section is right and the
-section above is stale.** This is a snapshot of now, not a diary; the diary is
+**If anything above disagrees with this section, this section is right and the section
+above is stale.** This is a snapshot of now, not a diary; the prior tenure's version is
 in the archive at the foot of this file.
 
-**This seat's tenure, 2026-09-25 to 2026-09-28.** Onboarded from
-`docs/commercial-opening-prompt.md`, the prior tenure's hand-off (that prompt
-is now stale and superseded by this one). **A genuinely heavy tenure, by
-volume and by density of cross-session coordination** — ten dated documents
-delivered or corrected, a five-stage day-boundary correction chain resolved by
-his own direct final ruling, and a full four-seat design (this seat, Ops,
-Design, Web) assembled, corrected twice, and closed. Retiring now on the
-owner's own word, confirming this seat's judgement that it had reached
-saturation — session-hygiene rule
-(`A:\claude-infra-agent\docs\session-hygiene.md`). Hand-off prompt for the
-successor: [`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md)
-(overwritten with this tenure's hand-off; the prior one is in git history).
+**This seat's second tenure, 2026-09-28 to 2026-10-05, retired on his word ("yes, retire
+it and write the hand-off") after the first repeat of an already-corrected class
+(session-hygiene section 2).** Hand-off prompt:
+[`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md). The seat ran on
+Opus 5.5 and then Sonnet 5.5; the work needed no more than Sonnet.
 
-**What this tenure actually got wrong, named as mechanisms because a
-successor who knows the shape catches it faster than one who doesn't:**
+**What this tenure delivered, in one paragraph.** Corrections to the Gate 1 record; the
+newswire and Benzinga work closed and reopened by his own rulings; the entry-gate
+disclaimer ruling; the historical-bars costing for Alpaca; the whole FINRA short interest
+chain (vendor and licence landscape, the Query API route, who else uses the data, review
+of the label design, Marketing's words, the share-count source reading and Web's
+end-user wording); and, since 2026-10-03, the claims read on reproducing the Sheet (grade
+wording, a model-researched float) and on the float page. Every document is in the table
+below; the standing wording rulings are in `docs/research/session-reports/commercial.md`
+sections 8 to 13.
 
-- **Endorsed a peer's recommendation without checking its premise twice** —
-  twice. Once on the day-pass boundary (endorsed Web's "define by the clock"
-  recommendation without registering that his own later ruling overruled it),
-  and once on the newswire case (asserted "Warrior Trading is built on
-  TradingView, therefore closed" from TradingView's own pages alone, without
-  ever checking Warrior Trading's own published statement about its Scanner
-  specifically — Integration caught both). **The shape both times: citing
-  where a peer's or my own earlier claim CAME FROM is not the same as
-  verifying what it actually ESTABLISHES.**
-- **Stated an unmeasured number as a specific measurement, twice, in the same
-  document** (the newswire coverage landscape): a 44-second desk-internal gap
-  described as a distance from "Ops's query window" that was never involved,
-  and a Benzinga-vs-wire latency claimed with no source anywhere establishing
-  it — `research.md` itself says explicitly that latency was never measured.
-  **Both were caught on a second, later re-read, not the first — a real gap
-  between when a number reads clean and when it's actually checked against
-  its cited source line-by-line.**
-- **Wrote a ranking table cell that said more than the prose above it
-  supported**, crediting a marketing claim ("1,000+ sources") as if it were
-  closer to confirmed than it was. **The generalisable lesson across all of
-  these: a document's summary artefacts — a headline, a table cell, a
-  register line — decay independently of the prose that was actually
-  corrected, and need their own explicit pass, every time, not an assumption
-  that fixing the prose fixed everything reading from it.**
-
-**None of these reached him wrong.** Integration's review caught all of them
-before anything was sent, in every case. That is the process working as
-designed, not a near-miss — but the density of catches in this tenure,
-against a session running for days with heavy cross-thread traffic, is itself
-the signal that closed this tenure rather than a single incident.
+**How this seat failed, as mechanisms (nine ledger entries below cluster into four).**
+(1) A true statement carried past its scope: FINRA's website terms applied to its Query
+API; "can only understate" stated without the precondition it rested on; a gloss written
+into binding text. (2) A universal claim with no counterexample search, twice in one day:
+"no filing carries a float" is contradicted by the 10-K cover (Rule 12b-2 public float, a
+dollar value), and the same fault appeared in the replacement wording this seat supplied;
+**one such sentence is live on the public site** (`app/page.tsx` line 280; Web is putting
+the correction to him). (3) Reading a clause and not using it: an exchange-fee worry was
+raised from price lists while the Equity Data terms already said "Third Party Terms: Not
+applicable". (4) An action outside the lane hidden by a clipped output: a `git pull` in
+the shared tree conflicted and `| tail -1` showed one line, so the tree sat mid-merge
+until Integration aborted it. **The reviewers caught the first three before they shipped,
+except the live sentence.**
 
 ### Error ledger — this tenure (from 2026-09-28T15:41Z), per session-hygiene §2
 
@@ -134,6 +117,8 @@ the signal that closed this tenure rather than a single incident.
 | 7 | Ran `git fetch -q && git pull -q --no-edit 2>&1\|tail -1` in the shared tree, 2026-10-03: the pull conflicted on two of Research's files and `tail -1` showed only the last line, so the shared tree sat mid-merge blocking every seat's commits until Integration aborted it | **a check that returned a plausible answer** (the output looked like a routine sync; the one line that mattered was not the last) and **an action outside the seat's lane** (the shared tree's local main is Integration's to sync; this seat reads origin with `git show origin/main:<path>` and pushes only from a temp worktree off origin/main) | no, first instance of this class; the pull-in-shared-tree rule was already in memory | peer (Integration 24th, who aborted the merge) |
 | 8 | Cleared the public sentence 'Every float is somebody's computation. No filing carries one.' (naming doc 2f item 3, live at app/page.tsx:280) without checking the counterexample: a 10-K cover carries a dollar public float (dei:EntityPublicFloat) | **a universal claim cleared without a counterexample search** (true of the current tradable share count, stated as 'no filing carries one') | no, first instance | this seat, on reading Research's SEC data while reviewing Marketing's float legend |
 | 9 | Marketing's float draft v2 said 'companies are not required to report a float'; I had told them (section 5 item 1) to say 'companies are not required to file a float', my own wording, which is false in the SEC's vocabulary (Rule 12b-2 'public float' is a dollar value that 10-K filers do report) | **a universal claim I supplied** (the same class as entry 8, in the suggested replacement text) | YES, repeat of entry 8's class within the same day: warn him and propose a hand-off per hygiene section 2 | this seat, on reviewing v2 against Rule 12b-2 |
+
+**Classes, for a successor's own ledger:** source-not-opened (1), overstated authority (2), excerpt-not-context (3), source-scope mismatch (4), read-a-clause-and-did-not-apply-it (5), a guarantee stated without its precondition (6), a check that returned a plausible answer and an action outside the lane (7), a universal claim cleared or supplied without a counterexample search (8, 9). **Entry 9 repeated entry 8's class within a day, which is the retirement trigger.**
 
 ### What this seat has delivered — dated documents, unchanged since landing
 
@@ -154,6 +139,10 @@ the signal that closed this tenure rather than a single incident.
 | [`commercial/2026-09-27-day-pass-addendum-2-annual.md`](../commercial/2026-09-27-day-pass-addendum-2-annual.md) | annual shape only, after monthly was refused ("i will not do monthly"): the $0.30 fee stops mattering once a year; **CORRECTED by Integration** — the per-day session boundary already exists (built 2026-09-10, unrelated to billing) so neither shape needs new revoke/cycling; the real asymmetry is daily needing a live payment-processor call inside every day's login path (a new failure mode) where annual needs only a local paid-through-date check; refund/cancellation shape quoted from a real comparable (Seeking Alpha: nonrefundable past a short window); an annual and a daily buyer are indistinguishable to `isUserInvited` today | 2026-09-27 |
 | [`commercial/2026-09-28-newswire-coverage-landscape.md`](../commercial/2026-09-28-newswire-coverage-landscape.md) | "this can't happen" — the MEDS/ACCESS Newswire miss. **CORRECTED after Integration's review, before it reached him** — the first draft conflated two claims: TradingView itself is confirmed closed (explicit, broad no-product-building bar, unobtainable at any price), but whether Warrior Trading's SCANNER specifically runs on TradingView news was never checked and is NOT established — Warrior Trading's own disclaimer names no vendor for it; his own question stays open rather than answered on assumption. Added the AIFF/GlobeNewswire control (measured, `benzONLY`, `primary=YES`) as direct evidence the Benzinga bundle already carries some third-party wire content, replacing an inference drawn only from a marketing number. Fixed three coverage figures that had implied an impossible union. ACCESS Newswire: no reader terms, `robots.txt` disallows `/rss`,`/rss2`,`/api`. Newsfile: standard non-commercial-only. Direct Benzinga licence remains the best-supported next question, now grounded in a measurement rather than a claim. **Two more corrections after a second re-read (two unsourced timing claims, both fixed) and it's WHOLE — sent to him directly `416e187`** | 2026-09-28 |
 | [`commercial/daily-billing-design/commercial.md`](../commercial/daily-billing-design/commercial.md) | **DAILY BILLING DESIGN — WHOLE AND CLOSED.** This seat's lead section plus Ops's infra ([`2026-09-28-daily-billing-infra.md`](../commercial/2026-09-28-daily-billing-infra.md)), Design's warning (`daily-billing-design/design-seat.md`) and Web's pages (`web/2026-09-27-paid-day-signup-scope.md`), all folded in. The day-boundary question ran five stages before his own direct final ruling closed it (§8, kept in full — it is a genuine correction history, not just a record): **the paid day is 20:00 ET to 20:00 ET, "end of ah to end of ah,"** matching `sessionExpiry` exactly, no boundary code change; the ~20:30 report is the day's first content, not its start; a paid day opening with the previous session's report is confirmed intentional in his own words, not a shortfall. Every other open item is RULED (§9): no charge on non-trading days, a lapsed hour ends only that day, retries only on card update, the OS notification ships as Design scoped it, first users are invited and billed by hand with self-serve later, and **daily billing is BUILD APPROVED**, strictly after the sign-in cut-over proves it refuses, with nothing charging anyone until he separately approves the first real run | 2026-09-27/28 |
+| [`commercial/2026-10-02-short-interest-landscape.md`](../commercial/2026-10-02-short-interest-landscape.md) | Short interest: how it is derived; Alpaca has none (borrow data only, locate quotes account-specific); FINRA website terms versus the **Query API terms** (Equity Data Specific Terms: derivative and Resultant Data permitted, redistribution to end users for non-commercial use with FINRA named owner and source, no incremental fee, Third Party Terms not applicable); Massive resells it; Ortex and borrow-fee sources (consumer terms bar display); who else uses FINRA data and how; his registration and accepted exposure on clause 2.2 (10.5); coverage answered by Ops (49 of 50 board names); Web's end-user wording reviewed (10.6). Sections 3, 6, 6b and 6c were corrected by 10 and 11b | 2026-10-02 |
+| [`legal/terms-of-sale-daily-pass.md`](../legal/terms-of-sale-daily-pass.md) | A DRAFT terms of sale for the daily pass: the four sentences Stripe's compliance text requires. **HELD**, not urgent; refund line his; adoption sets the adopted terms to null if it edits `terms.md`, so it ships with billing | 2026-09-30 |
+| [`research/session-reports/commercial.md`](../research/session-reports/commercial.md) sections 8 to 13 | Standing rulings on report and label wording: catalyst as characteristics, float verdict not number, shares outstanding dated and never called float, price paths as the licence class, the entry-gate disclaimer (12), and reviews of the SANG block, the v5 sample, the short interest label (R1 to R6), the size-source reading (13f: the grade is stated against the dated filed count; refuse on active issuance) | 2026-09-30 to 10-02 |
+| [`commercial/2026-10-03-sheet-reproduction-claims-read.md`](../commercial/2026-10-03-sheet-reproduction-claims-read.md) | Claims read on reproducing the Sheet: the A/B/C/AVOID wording conflicts with the no-recommendation rules as defined and is fixed by wording (Setup grade, readings of five criteria, D for AVOID, one legend sentence); a model-researched float needs its error rate measured, honest labelling and a source allow-list; the landing sentence correction (4); the float page draft review (5, 5b, 5c) | 2026-10-03 to 10-05 |
 
 Gate 0 is mapped and ruled at the top of [`monetization-gates.md`](../monetization-gates.md).
 Method for all of them: public pages only, every load-bearing figure re-read by
@@ -173,6 +162,12 @@ this seat before it carried a sha, contradictions reported not resolved.
 - **The paid day, final, ~01:20Z 2026-09-28, verbatim, verified at his own turn:** *"days run from 8pm to 8pm... i look at my plan for premarket the night before, so my trading day starts in the evening the day before and ends after hours the next day. end of ah to end of ah."* **20:00 ET to 20:00 ET, no code change** — closes a five-stage boundary question this desk got wrong twice on the way there. **"rest agreed"**: no charge on non-trading days, a lapsed hour ends only that day, retries only on card update, first users invited and billed by hand, **daily billing BUILD APPROVED** after the sign-in cut-over proves it refuses, nothing charges anyone until he separately approves the first run.
 - **Newswire source, 2026-09-25, verbatim:** *"yep, build the alpaca. we need to look at the pipeline now. it will change how we do things on the model interpretation."* Build Alpaca News (Benzinga-sourced, already in the account) under the accepted-exposure posture already ruled — no new vendor, no new spend, no new exposure category. Routed to Integration for Research to scope; this seat's licence question on this source is closed. A contracted commercial licence (Benzinga direct, or a primary wire) stays open below, not asked for.
 - **What reaches him, 2026-09-25 (`README.md` "His rule: report what changes the product, not how the work went", `60a2f08`):** *"I don't care about how the back end conversations or the mechanics go relative to code or conflicts or Qnumbers... I care about the information that impacts the app relative to my decisions and what we're doing with the product."* **Applied to this seat:** a claims ruling, a licence-posture change, a vendor decision, or anything that changes what the product may say or fetch, reaches him. Which document records a ruling, register housekeeping, session titles, sha provenance and which seat corrected which peer do not — those stay in this charter and the commits. The vendor-float constraint (below) is the model of a ruling that reaches him because it changes what the app may DO; the fact that it lives in `commercial-seat-research-tooling.md` versus `commercial.md` does not.
+- **Benzinga, 2026-09-28 to 09-30:** *"no to both"* (verified at his own turn 23:32:53Z on 09-28; the Benzinga item was then put to him again as a fresh question because its premise changed); *"yes draft the email"* (09-29T02:20:59Z; the draft is his to send, no seat sends it); his own report that Benzinga quoted *"$1000/mo"* (09-30T23:28:15Z; product and terms unknown).
+- **Entry-gate disclaimer, 2026-09-30, direct to this seat:** *"let's add a disclaimer entry ... this is required before you can enter the platform"* (session-reports section 12).
+- **No em dashes, 2026-09-30, HARD RULE:** *"no em dashes in any writing. hard rule."* Applies to chat replies and docs.
+- **FINRA, 2026-10-02, direct to this seat:** *"registered. accepted exposure"* (clause 2.2, our own use; recorded in the landscape doc 10.5). Earlier the same day: *"we don't need to publish the details they provide, just do our own assessment and present a label."*
+- **Local runs, 2026-10-03:** restricted by him for a few hours, then *"if they need to run anything its open."* Currently open.
+- **The Sheet, 2026-10-03T17:20:45Z (typed to Integration):** *"we need to reproduce what the sheet does in the app. its that simple. the sheet is nothing more than a repository of model outputs."* Float: the SEC upper bound from insiders only, with a tooltip linking to a new public page "Are float quotes real?" (2026-10-05T00:40:36Z, relayed by Integration, not checked at his turn by this seat).
 
 ### Standing rules this seat applies to claims
 
@@ -183,32 +178,35 @@ this seat before it carried a sha, contradictions reported not resolved.
 5. A paid report narrates the float **verdict**, never a float **number** — standing default, ruled by Integration under order-and-process 2026-09-17.
 6. The registered plain statement (naming document §2e item 2) is the only description of the product; it rests on the board rendering not-researched as a state (verified by type, Design `ba13d79`).
 7. The FINRA short interest label has no price of its own (Equity Data terms 2.3(b), landscape §10.6): part of the subscription, never an add-on, and in every tier equally if tiers ever exist.
+8. **A universal claim ("no", "never", "every", "all") about filings, vendors or third parties is not made without a counterexample search and a source opened.** The 10-K cover's public float is the worked example; one such sentence is live on the site.
+9. **A grade or label states what it is computed against, with the date, and the precondition any "at least" or "at most" rests on.** A bound that holds only while a share count is current is stated against the dated count, and refused where issuance since is known.
 
-### Open items — owner and what each waits on
+### Open items: owner and what each waits on (as of 2026-10-05T01:00Z; "unverified" means this seat did not re-read the artefact on that date)
 
 | item | owner | waits on |
 | --- | --- | --- |
-| Billing, onboarding, terms of sale and support — scoped 2026-09-26, complete (`2026-09-26-billing-onboarding-support-scope.md`), with Web's flow and Ops's infra both landed and linked | him | that document's NEEDS YOU block, **re-read against later rulings before any of it is put to him again** — items 1 (what is sold — ruled 2026-09-07, day pass 2026-09-27) and 4 (invite-by-hand — ruled 2026-09-28) are answered and struck in place; items 2, 3, 5, 6, 7 not yet re-checked against the later rulings as of 2026-09-28 |
-| The vendor decision (Massive Business $2,499 no spread vs Databento Plus $1,500 unstated-delay volume) | him | the undefined "something moving" trigger |
-| The pre-launch exposure conversation | Integration | the page going live (`c7ada4f` trigger) |
-| Session-report pricing and packaging | this seat | him; the report cannot narrate structure honestly until Phase C (filing-derived float) replaces the Sheet float |
-| Marketing's claims as they arrive | this seat | each one; ruled in the naming document §2f |
-| A second Alpaca account in his name (for a staging desk) | him | ruled deferred by Integration `1c0c0a6`; unresolvable from public pages; an enquiry is his |
-| A contracted newswire licence — **RULED, ANSWERED, drafted, his to send** | him | His original "no to both" (2026-09-28, 23:32:53Z) was made believing Benzinga's source list unpublished; Research corrected that premise 2026-09-29 (`benzinga-licence-cost-2026-09-29.md`, this seat's landscape correction at `16fdbb0`) and put the fresh question to him once, not a re-ask. **He answered "yes draft the email," verified at his own turn 2026-09-29T02:20:59Z** (`55fcf3fe-...jsonl`, `origin.kind: human`), with two conditions on the draft: confirm the AWS free tier is unusable, and confirm a forum/other-source price search was done first. **The draft is in `benzinga-licence-cost-2026-09-29.md` §4, addressed to `licensing@benzinga.com`, his to send — no seat sends it.** **A FIRST QUOTED FIGURE, 2026-09-30, verbatim, verified at his own turn 23:28:15Z:** *"i heard from Benzinga today. a licesnse will cost $1000/mo."* Relayed by Integration, not an authorisation of anything — no seat has contacted Benzinga; this is what came back from wherever his own draft or enquiry landed. **Which product ($1,000/mo covers editorial Stock News, the Press Releases wire product this seat's draft actually asked about, or both) and on what terms (commercial display rights, redistribution) is unknown** — the figure alone doesn't answer the question the draft was built to ask. No action from this seat unless he raises it; recorded so a fresh session has the number rather than rediscovering it. |
-| Watch, no clock | this seat | CT Plan agreements (2027-04-01; migration since 2026-09-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list |
-| India as a market — deliverable sent 2026-09-26 (`2026-09-26-india-momentum-traders.md`) | him | reading it; the "can they" question is answered (mostly yes, recently), "do they" is not answerable from public sources — a market-research vendor or a direct platform question, both enquiries and both his |
-| Session reports, commercial/legal section — filed 2026-09-27 at `docs/research/session-reports/commercial.md` (this seat's file alone), Research assembles the four-seat design | Research, then him | nothing from this seat; ruled the two flagged phrases (§3), sized the disclaimer gap (§4), named state-level adviser law as unchecked (§6) — does not stand alone, waits on Research's assembly |
-| Daily-billing design — **CLOSED**, `daily-billing-design/commercial.md`, all four sections folded in, his final ruling on the paid day recorded | — | nothing; build approved, sequenced after the sign-in cut-over |
-| Newswire coverage landscape, whole and sent directly 2026-09-28 (`2026-09-28-newswire-coverage-landscape.md`, `416e187`) | him (Benzinga item), closed (Warrior Trading item) | **His 2026-09-28 ruling was "no to both."** The Warrior Trading item stands closed — nothing has changed its premise. The Benzinga item's premise changed 2026-09-29 (source list corrected, see the row above); Research put the new fact to him as a fresh question, not a re-ask, and it waits on his answer. Landscape document itself corrected in place (`16fdbb0`), not reopened as a whole. |
-| FINRA short interest as a derived label (his question, 2026-10-02; `2026-10-02-short-interest-landscape.md` §10 to §11b) | Research (label), Web (terms wording), a credential-holding seat (coverage check), then him | **He registered for the FINRA API Console and accepted the clause-2.2 exposure, his words direct 2026-10-02: "registered. accepted exposure".** Waits on: the coverage check (are Nasdaq and NYSE-listed small caps in the API dataset), Research's label design, his adoption of end-user terms wording, this seat's §8 review before anything ships. This seat holds no credential. |
-| Terms of sale for the daily pass — drafted 2026-09-30 (`terms-of-sale-daily-pass.md`, `21865ca6`), ahead of an actual need | him, when billing is actually about to ship | **HELD, not active.** Drafted under a misread of the night's urgency — sign-in ships Friday, not that night (his own word, verified at his own turn, Web's session 15:51:36.984Z, "3, sign in friday"), and neither sign-in nor billing was built yet. Covers Stripe's four required sentences for the card-save flow; refund section is this seat's recommendation (no refund for a completed day) explicitly marked as his to rule, not decided. Ready the moment billing is actually about to ship; not to be put to him before then. |
+| **Short interest label (FINRA).** Design, Marketing's words, Web's end-user wording and the share-count source reading all passed this seat's review. **Research recommended HOLD on the display decision on 2026-10-02** (`9b32ec4e`) after an Ortex comparison: FINRA alone shows no line on the most crowded of five names (SDEV: FINRA 2.39% of the filed count against Ortex's 12% of float). Nothing is built | him (display decision), Research | a pre-registered matched-date FINRA versus Ortex comparison (Research's note); any build then needs: Web's terms wording adopted by him in the same change as the label and the attribution, and this seat's section 8 review of the sample. Clause 2.2 is his accepted exposure |
+| **FINRA end-user terms wording** (`docs/web/2026-10-02-finra-terms-draft.md`, Web `204d42c6`) | him, Web | passes this seat's check; held so adoption rides the label (the banner rule: an edit to `terms.md` sets `adopted` to null and publishes a DRAFT banner). Unverified whether it changed since |
+| **Sheet reproduction: Priority grades.** Wording passed (Setup grade, A to D, legend with the rubric, "not tested against outcomes" tied to a tested flag) | Research (contract), Design, Web, Marketing | Research's field contract must apply the mapping on EVERY user-reachable surface (filters, URL values, tooltips, MCP tool output, exports, report tags); Marketing verifies it is in the contract |
+| **Sheet reproduction: the float and the public page "Are float quotes real?".** Draft v2 reviewed: eight of nine pass, three small corrections pending (claims read 5c: "not required to file a count of floating shares", the below-zero story, the condition beside the bound) | Marketing (v3), Research, Web | **the insider-only validation sample (Research, NOT run) is a gate before any surface or the page**; Cannot verify after active issuance (open for the next Research seat); his sight of the draft; this seat's read of v3 |
+| **Landing-page sentence `app/page.tsx` line 280** ("No filing carries one") and its three canvas copies | him, Web | Web is putting my wording to him ("No filing reports the current number of tradable shares"); unverified whether he answered |
+| **Daily billing and terms of sale.** Sign-in released 2026-10-02 per Integration and Ops records (unverified here); daily billing build approved 2026-09-28 after sign-in proves it refuses; nothing charges until he separately approves the first run. Terms of sale drafted and held | him, Ops, Web, Design | the billing build and his approval of the first run; the terms of sale must be adopted before a live card is charged |
+| **Benzinga licence.** His enquiry email is drafted (`benzinga-licence-cost-2026-09-29.md` sections 4 and 4b); Benzinga replied with questions; he reported a $1,000 a month quote | him | which product the price covers and on what terms (display, redistribution) is unknown; whether the email was sent is unverified. No seat contacts Benzinga |
+| **Entry-gate disclaimer** (session-reports section 12) | Web, Design | build status unverified; DECLINE must actually withhold the platform |
+| **Session reports.** This seat reviews each new sample against session-reports sections 8 to 13 before it ships | Research, Integration | the next report sample; Marketing's wording stays Marketing's |
+| **The pre-launch exposure conversation; the vendor decision (Massive Business versus Databento Plus)** | Integration; him | the page going live; the undefined "something moving" trigger |
+| **Ortex personal plan** | him | flag only: its consumer terms bar use "in connection with any business, professional or commercial activities", so using it to evaluate a product may breach them; a counsel question |
+| Watch, no clock; India; a second Alpaca account | this seat; him | CT Plan agreements (2027-04-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list. India: sent 2026-09-26, "do they" is not answerable from public sources. A second Alpaca account: an enquiry, his |
 
 ### Hazards a fresh session must know on day one
 
 - **Public sources only; register nothing; no vendor contact.** An enquiry is an approach and an approach is his. Not even a pricing page behind a login.
 - **Never take a relayed word as a fact — open the file.** On 2026-09-17 this seat filed "his prior analysis" for a Sheet no human has ever written; two decisions were put to him on that premise and withdrawn. Three documents on the desk already said otherwise.
 - **WebFetch fails on PDFs and JS pages; the in-app browser and pymupdf do not. Close the browser tab when the read is done** — an idle tab played YouTube audio on his machine with no visible owner (2026-09-11).
-- **Commit with `git commit --only <paths>`;** five sessions share one index. Verify a push with `git branch -r --contains`, never by the push output.
+- **Git in the shared tree: never pull or merge here, and never pipe a state-changing git command through `tail` or `head`.** Local `main` carries many seats' held commits; syncing it is Integration's. Read origin with `git fetch` then `git show origin/main:<path>`. Push your own files from a temporary worktree (`git worktree add --detach <dir> origin/main`, commit, `git push origin HEAD:main`, verify with `git branch -r --contains <sha>`, remove it). `git commit --only <paths>` if you must commit in the shared tree; never `git add -A`.
+- **No em dashes, in chat or docs, and search the entity forms.** His hard rule.
+- **A "no" or "every" sentence needs a counterexample search.** See standing rule 8.
+- **`sec.gov` blocks plain `curl`; read rule text through `law.cornell.edu`, filings through the browser pane, PDFs through `pymupdf`.** Verify a ruling at his own turn (transcripts under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`, `queue-operation` `enqueue` records; a cross-session message with the same words is an echo).
 - **Addresses from `list_sessions` every time.** Titles carry a `-tmi` suffix now (`Integration-tmi`, `Marketing-tmi`); there are three constellations on this machine.
 - **No P&L and no figure from his fills in the repository.**
 
@@ -592,3 +590,59 @@ to sign. Both are his.
 
 ---
 
+---
+
+## ARCHIVE: the 2026-09-25 to 2026-09-28 tenure's live-state head, kept for provenance
+
+*Superseded 2026-10-05 by the live state above. Nothing here overrides it.*
+
+**If anything above disagrees with this section, this section is right and the
+section above is stale.** This is a snapshot of now, not a diary; the diary is
+in the archive at the foot of this file.
+
+**This seat's tenure, 2026-09-25 to 2026-09-28.** Onboarded from
+`docs/commercial-opening-prompt.md`, the prior tenure's hand-off (that prompt
+is now stale and superseded by this one). **A genuinely heavy tenure, by
+volume and by density of cross-session coordination** — ten dated documents
+delivered or corrected, a five-stage day-boundary correction chain resolved by
+his own direct final ruling, and a full four-seat design (this seat, Ops,
+Design, Web) assembled, corrected twice, and closed. Retiring now on the
+owner's own word, confirming this seat's judgement that it had reached
+saturation — session-hygiene rule
+(`A:\claude-infra-agent\docs\session-hygiene.md`). Hand-off prompt for the
+successor: [`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md)
+(overwritten with this tenure's hand-off; the prior one is in git history).
+
+**What this tenure actually got wrong, named as mechanisms because a
+successor who knows the shape catches it faster than one who doesn't:**
+
+- **Endorsed a peer's recommendation without checking its premise twice** —
+  twice. Once on the day-pass boundary (endorsed Web's "define by the clock"
+  recommendation without registering that his own later ruling overruled it),
+  and once on the newswire case (asserted "Warrior Trading is built on
+  TradingView, therefore closed" from TradingView's own pages alone, without
+  ever checking Warrior Trading's own published statement about its Scanner
+  specifically — Integration caught both). **The shape both times: citing
+  where a peer's or my own earlier claim CAME FROM is not the same as
+  verifying what it actually ESTABLISHES.**
+- **Stated an unmeasured number as a specific measurement, twice, in the same
+  document** (the newswire coverage landscape): a 44-second desk-internal gap
+  described as a distance from "Ops's query window" that was never involved,
+  and a Benzinga-vs-wire latency claimed with no source anywhere establishing
+  it — `research.md` itself says explicitly that latency was never measured.
+  **Both were caught on a second, later re-read, not the first — a real gap
+  between when a number reads clean and when it's actually checked against
+  its cited source line-by-line.**
+- **Wrote a ranking table cell that said more than the prose above it
+  supported**, crediting a marketing claim ("1,000+ sources") as if it were
+  closer to confirmed than it was. **The generalisable lesson across all of
+  these: a document's summary artefacts — a headline, a table cell, a
+  register line — decay independently of the prose that was actually
+  corrected, and need their own explicit pass, every time, not an assumption
+  that fixing the prose fixed everything reading from it.**
+
+**None of these reached him wrong.** Integration's review caught all of them
+before anything was sent, in every case. That is the process working as
+designed, not a near-miss — but the density of catches in this tenure,
+against a session running for days with heavy cross-thread traffic, is itself
+the signal that closed this tenure rather than a single incident.
