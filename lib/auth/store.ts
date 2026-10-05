@@ -179,6 +179,33 @@ CREATE TABLE IF NOT EXISTS invited_emails (
   revoked_at TEXT,
   revoked_by TEXT
 );
+
+/*
+ * WHO ACCEPTED THE ENTRY GATE, AND WHICH TEXT. Added by Web 2026-10-05 for the
+ * entry gate (lib/legal/entryGate.ts; Commercial 12b: store the acceptance
+ * server-side with the time and the text version).
+ *
+ * APPEND-ONLY, LIKE SESSIONS: nothing deletes a row. A row is the only evidence
+ * that a person accepted a given text, so a tidy-up that removed old versions
+ * would destroy the record a dispute asks for.
+ *
+ * session_hash is the sha256 of the session the acceptance happened in (the
+ * sessions table's own id_hash), so the acceptance can be tied to a sign-in.
+ *
+ * ADDITIVE, AND DELIBERATELY NO SCHEMA VERSION BUMP. This SCHEMA re-runs on
+ * every open with IF NOT EXISTS, so a build that knows the table creates it,
+ * and a rollback to a build that does not simply ignores it. A bump would make
+ * that rollback refuse the store and take sign-in down with it. Ops's call to
+ * revisit.
+ */
+CREATE TABLE IF NOT EXISTS entry_acceptances (
+  user_id      INTEGER NOT NULL REFERENCES users(id),
+  text_version TEXT    NOT NULL,
+  accepted_at  TEXT    NOT NULL,
+  session_hash TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_entry_acceptances_user ON entry_acceptances(user_id, text_version);
 `;
 
 /**
@@ -698,5 +725,30 @@ export function userHasVerifiedEmail(
         LIMIT 1`,
     )
     .get(userId, normaliseEmail(email)) as { ok: number } | undefined;
+  return row !== undefined;
+}
+
+/**
+ * Records that this user accepted this version of the entry gate's text.
+ * Added by Web for the entry gate. Append-only: accepting twice writes twice,
+ * which is the honest record, and nothing here or anywhere deletes a row.
+ */
+export function recordEntryAcceptance(
+  db: IdentityDatabase,
+  userId: number,
+  textVersion: string,
+  sessionId: string | null,
+  now: Date = new Date(),
+): void {
+  db.prepare(
+    'INSERT INTO entry_acceptances (user_id, text_version, accepted_at, session_hash) VALUES (?, ?, ?, ?)',
+  ).run(userId, textVersion, now.toISOString(), sessionId ? hashSessionId(sessionId) : null);
+}
+
+/** Has this user accepted THIS version of the entry gate? The gate's read. */
+export function hasAcceptedEntry(db: IdentityDatabase, userId: number, textVersion: string): boolean {
+  const row = db
+    .prepare('SELECT 1 AS ok FROM entry_acceptances WHERE user_id = ? AND text_version = ? LIMIT 1')
+    .get(userId, textVersion) as { ok: number } | undefined;
   return row !== undefined;
 }

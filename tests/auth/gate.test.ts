@@ -9,10 +9,12 @@ import {
   inviteEmail,
   linkIdentity,
   openIdentityStore,
+  recordEntryAcceptance,
   revokeEmail,
   revokeSession,
   type IdentityDatabase,
 } from '@/lib/auth/store';
+import { ENTRY_GATE_VERSION } from '@/lib/legal/entryGate';
 
 const dirs: string[] = [];
 let db: IdentityDatabase;
@@ -77,11 +79,35 @@ describe('authenticate', () => {
     expect(authenticate(db, id)).toEqual({ state: 'anonymous' });
   });
 
-  it('admitted for a valid session of an invited, verified user', () => {
+  it('admitted for a valid session of an invited, verified user who accepted the current entry text', () => {
     const userId = makeUser('s-ok', 'A@B.com'); // raw mixed case; the store folds
     inviteEmail(db, 'a@b.com');
     const { id } = createSession(db, userId, FUTURE);
+    recordEntryAcceptance(db, userId, ENTRY_GATE_VERSION, id);
     expect(authenticate(db, id)).toEqual({ state: 'admitted', userId });
+  });
+
+  it('unaccepted for an invited user who has not accepted the entry gate (Commercial 12b)', () => {
+    const userId = makeUser('s-new', 'a@b.com');
+    inviteEmail(db, 'a@b.com');
+    const { id } = createSession(db, userId, FUTURE);
+    expect(authenticate(db, id)).toEqual({ state: 'unaccepted', userId });
+  });
+
+  it('unaccepted again when the entry text changes: acceptance is per version', () => {
+    const userId = makeUser('s-old', 'a@b.com');
+    inviteEmail(db, 'a@b.com');
+    const { id } = createSession(db, userId, FUTURE);
+    recordEntryAcceptance(db, userId, 'an-older-version', id);
+    expect(authenticate(db, id)).toEqual({ state: 'unaccepted', userId });
+    expect(authenticate(db, id, new Date(), 'an-older-version')).toEqual({ state: 'admitted', userId });
+  });
+
+  it('refused, not unaccepted, for an uninvited user even if they once accepted', () => {
+    const userId = makeUser('s-gone', 'stranger@x.com');
+    const { id } = createSession(db, userId, FUTURE);
+    recordEntryAcceptance(db, userId, ENTRY_GATE_VERSION, id);
+    expect(authenticate(db, id)).toEqual({ state: 'refused', userId });
   });
 
   it('refused for a valid session of a user who was never invited', () => {
@@ -101,6 +127,7 @@ describe('authenticate', () => {
     const userId = makeUser('s-revoke', 'a@b.com');
     inviteEmail(db, 'a@b.com');
     const { id } = createSession(db, userId, FUTURE);
+    recordEntryAcceptance(db, userId, ENTRY_GATE_VERSION, id);
     expect(authenticate(db, id).state).toBe('admitted');
 
     revokeEmail(db, 'a@b.com'); // ends live sessions in the same transaction
