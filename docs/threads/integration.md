@@ -1560,6 +1560,9 @@ SELF-RESET HOOK  Infra-Ops: session-hygiene s3 now has "self-reset" (READ lines 
                  is untitled, so the template's fallback ("cannot tell which seat you are, ask") collides with every pasted
                  hand-off prompt and the scheduled read-only sessions. PUT TO HIM: adopt for mointel with a fallback of
                  "title matches no seat: ignore, follow the message"; he applies (seats may not edit their own settings).
+                 Infra-Ops v2 draft READ (claude-infra-agent docs/on-clear-v2-draft.sh, 1b1dcec): acts only on an EXACT
+                 seat title, else "ignore this note, follow the message". Seam closed. ON HIS YES: write a mointel draft
+                 doc (seven -tmi titles -> docs/<seat>-opening-prompt.md, R&D excluded unless he says) for him to install.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
