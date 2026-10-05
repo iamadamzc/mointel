@@ -1173,6 +1173,21 @@ COMMERCIAL RETIRES local_2ce868d2 on his word (per Commercial), hand-off d37043a
                  ordinary release. (5) SI label HOLD stands (Web terms wording + s8 review with any build); (6) held, his:
                  daily-billing terms of sale draft (docs/legal/terms-of-sale-daily-pass.md), Benzinga enquiry.
                  Old Commercial chat still titled -tmi until he renames it.
+WEB ACK          Web (local_a4c618a8) agrees; live / still says "No filing carries one" (consistent, 2fe136ac not cut). Web
+                 766756c1 (local main, web.md only) CLEARED to ride my push. RELEASE PAIRING (Web's, adopted): the float
+                 tooltip's link and the public "Are float quotes real?" page MUST ship in ONE release, or a stranger's click
+                 lands on a 401. Carry into the step-3 plan when Design's surface is cut.
+TITLES RE-READ   get_session 2026-10-05 after Web's correction: local_f26376f1 = Integration-tmi-retired, ARCHIVED;
+                 local_46c15fbe = Web-tmi-retired, ARCHIVED; local_2ce868d2 = Commercial-tmi, not archived (retiring);
+                 local_ab66f9f3 = Research-tmi, not archived (retired). He renamed the first two.
+```
+**THE TWENTY-FIFTH SEAT'S LEDGER:**
+```
+error                                                  TYPE                               repeat?  caught by
+1 asked HIM to rename the old Web chat (2nd message)  restated a state from an earlier   no       peer (Web)
+  from my 00:53Z list_sessions read; it was already   read without re-reading it         (new;
+  Web-tmi-retired + archived by 00:55Z. Reached him.  (stale snapshot re-sent)           family:
+  CURE: re-read titles (get_session) immediately before any ask about them.               24th's)
 ```
 
 ## THE TWENTY-FOURTH SEAT'S RUNNING NOTES (opened 2026-10-03T17:04:49Z, `local_f26376f1`, Opus 5.5, effort high)
