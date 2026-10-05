@@ -1426,6 +1426,14 @@ FLOAT ROW DATE   Research 09d262b9 build-plan section 3: (A) row counts only on 
                  reuse span for the fetch, in the contract, reader refuses past it. Contract sha owed before the reader.
                  Commercial asked whether v14's "upper bound" / "at most 90 days before the checkpoint" hold under (B).
                  Ops (via Research): memory does not block the build; measured peak RSS owed before any ship ask.
+COMMERCIAL 5k    e0139dea (origin): (1) D fixed per checkpoint, then "90 days before the checkpoint" holds; (2) "later
+                 count not seen = safe" is WRONG (later higher count = stored bound too LOW); "most recent filed share
+                 count" -> "the latest filed share count we have"; (3) popover's "Filings read on" covers reuse; (4) DEFECT
+                 for fresh rows too: contract line 17 (OPENED) takes holdings at or before the count date and ignores later
+                 filings, so an insider SALE after the count makes true float exceed the bound; validation af660d29 cannot
+                 see it. Sent to Research (answer 4 first, amend contract, count coverage change at $0) and Marketing (a
+                 now, b after Research). He approved float wording 16:01:43Z: a change to that text reaches him as one line
+                 before it ships. Nothing float is live.
 OFF-HOURS        Design: with the Researched Names table gone, off-hours (before 04:00, after 20:00, weekends) the main area
                  is the empty Discovery board (DashboardShell opened the table by default then); Focus and Graveyard stay.
                  Follows from his "remove it" but he was never told it in those words. Goes to him BEFORE the removal
