@@ -1237,6 +1237,18 @@ NEW RESEARCH     Research-tmi local_f6ef479a (get_session: A:\mointel, created 2
                  MERGE EVIDENCE: all 7 origin-side commits touching research.md / research-opening-prompt.md (c75c8c37,
                  c8467a64, 96da54cb, 5e909ca3, 81fbeec9, f04a56fa, 73e68705) have patch-id twins on local main, so "resolve
                  to local" should lose nothing from origin. Owner's word still required.
+                 RESEARCH'S WORD: "YES, resolve docs/threads/research.md and docs/research-opening-prompt.md to local main's
+                 version" (re-checked the 7 twins itself). Clearance of its commits: sent the 56 shas by subject (all touch
+                 only research.md / docs/research/** / research-opening-prompt.md; read), awaiting its written clear.
+                 Order (b)-(e) accepted; max-age proposed in the contract from the recency data.
+SHARED MAIN      fetch: 202 ahead / 50 behind. Subjects: Integration 69, Research 56, Ops 55 (all ops.md + server-only-trace.cjs;
+                 4 newer than Ops's path clearance: re-confirm with Ops at push), Web 15 (all cleared, incl. 766756c1),
+                 Marketing 4 (bb87e38e, 36bde7e6, e79e295a, e05fb9d2: marketing.md + docs/marketing/float-page-draft.md;
+                 seat HANDED OFF, NOT cleared: its successor clears), Sheet 3 (mine).
+FLOAT PAGE SEAM  CLOSED. Marketing e79e295a / e05fb9d2: page v4 in the tree at docs/marketing/float-page-draft.md; s1 + body now
+                 name the compact "≤ X" face with the date + conditional in the popover, "Cannot verify" two lines. READ;
+                 U+2014 0, entities 0 (control 1). Still gated: Commercial's item 7/3 judgment (needs Research's max age),
+                 the validation sample, then to him with the cell words.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
