@@ -6,6 +6,7 @@ import {
   CRITERIA,
   CRITERION_NAME,
   READING_LINE,
+  SETUP_GRADE_LEGEND,
   setupGradeView,
   type SetupGrade,
 } from '@/lib/dashboard/setupGrade';
@@ -82,6 +83,8 @@ export function SetupGradeReadings({
           ))}
         </ul>
       ) : null}
+      {/* Reachable from every place a grade shows, board open or not (Marketing, section 5). */}
+      <p className="mt-2 mb-0 text-[11px] leading-relaxed text-ink-3">{SETUP_GRADE_LEGEND}</p>
     </Section>
   );
 }
