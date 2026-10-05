@@ -40,7 +40,7 @@ import {
 } from '@/lib/dashboard/cycle';
 import { COLUMN_TITLE, priceColumnTitle, rankingQuantity } from '@/lib/dashboard/columnTitles';
 import { resolveRisk } from '@/lib/dashboard/risk';
-import { resolveWhy } from '@/lib/dashboard/why';
+import { resolveWhy, whySpoken } from '@/lib/dashboard/why';
 import {
   DISCOVERY_DEFAULT_SORT,
   discoveryMissingCount,
@@ -1019,7 +1019,7 @@ function DiscoveryRow({
       {...rowKeyboardProps(
         `${row.ticker}, ${afterHours ? 'after-hours participation' : 'RVOL'} ${formatMultiple(
           afterHours ? (ah?.participation ?? null) : t.rvol,
-        )}. ${why.grade} catalyst. ${risk.label}. Open dossier.`,
+        )}. ${whySpoken(why)}. ${risk.label}. Open dossier.`,
         () => onSelect(row.ticker),
       )}
       onClick={() => onSelect(row.ticker)}

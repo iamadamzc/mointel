@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 /**
  * Price level visualisation.
  *
@@ -16,6 +18,18 @@ import type { CompactLevel, LevelMap, LevelZone } from '@/lib/data/priceLevels';
 import { levelTypeLabel, toCompactRow } from '@/lib/data/priceLevels';
 import { ClampedText } from '@/components/ClampedText';
 import { describeBlueSkyWindow, type BlueSkyState } from '@/lib/market/blueSky';
+import { deepCeilingTitle } from '@/lib/dashboard/blueSkyView';
+import {
+  airPocketAboveHolds,
+  computedText,
+  horizonText,
+  LEVELS_ABSENT_TEXT,
+  levelsNote,
+  shownStoredRows,
+  storedLadderRows,
+  type StoredLadderRow,
+  type StoredLevelsState,
+} from '@/lib/dashboard/resistance';
 
 function priceText(value: number): string {
   return value < 1 ? value.toFixed(3) : value.toFixed(2);
@@ -116,7 +130,7 @@ function ZoneRow({ zone, side }: { zone: LevelZone; side: 'ABOVE' | 'BELOW' }) {
       </span>
 
       <span
-        className={`num w-[76px] shrink-0 text-[11px] ${side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
+        className={`num w-[112px] shrink-0 whitespace-nowrap text-[11px] ${side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
       >
         {zone.distanceAbs === null ? '—' : `${sign}${zone.distanceAbs.toFixed(2)}`}
         {zone.distancePct === null ? '' : ` / ${zone.distancePct.toFixed(1)}%`}
@@ -163,7 +177,10 @@ function BlueSkyLine({ state }: { state: BlueSkyState }) {
     : (state.threshold.unverifiedReason ?? window);
 
   return (
-    <div className={`mb-3 border-l-2 pl-2 ${BLUE_SKY_TONE[state.status]}`}>
+    <div
+      className={`mb-3 border-l-2 pl-2 ${BLUE_SKY_TONE[state.status]}`}
+      title={deepCeilingTitle(state.threshold) ?? undefined}
+    >
       <p className="text-[12px] font-semibold tracking-wide uppercase">{state.label}</p>
       {detail ? <p className="mt-0.5 text-[11px] text-ink-3">{detail}</p> : null}
     </div>
@@ -171,45 +188,136 @@ function BlueSkyLine({ state }: { state: BlueSkyState }) {
 }
 
 /**
+ * A stored resistance level as a ladder row (his ruling 2026-10-02: one
+ * ladder). Same columns as a zone: price, then "RESISTANCE" (his label for
+ * these levels), the timeframe tags where a zone shows its state, the signed
+ * distance from the live price, then the candle tops. No strength, no
+ * highlight: the tags are the only mark.
+ */
+function StoredRow({ level }: { level: StoredLadderRow }) {
+  const sign = level.side === 'ABOVE' ? '+' : '-';
+  const detail = [level.topsText, level.span, level.farBack ? 'over 12 months back' : null]
+    .filter(Boolean)
+    .join(' · ');
+  return (
+    <div className="flex items-baseline gap-2 border-l-2 border-line-2 py-[3px] pl-2" title={level.title}>
+      <span className="num w-[92px] shrink-0 text-[12px] text-ink-1">{level.priceText}</span>
+      <span className="w-[110px] shrink-0 text-[10px] uppercase tracking-wide text-ink-2">resistance</span>
+      <span className="w-[92px] shrink-0 truncate text-[10px] text-ink-3">{level.tags}</span>
+      <span
+        className={`num w-[112px] shrink-0 whitespace-nowrap text-[11px] ${level.side === 'ABOVE' ? 'text-pos' : 'text-warn'}`}
+      >
+        {level.distanceAbs === null ? '' : `${sign}${level.distanceAbs.toFixed(2)}`}
+        {level.distancePct === null ? '' : ` / ${level.distancePct.toFixed(1)}%`}
+      </span>
+      <ClampedText className="text-[10px] text-ink-3" text={detail} />
+    </div>
+  );
+}
+
+type AxisItem =
+  | { kind: 'ZONE'; key: string; price: number; zone: LevelZone }
+  | { kind: 'STORED'; key: string; price: number; level: StoredLadderRow };
+
+/** Highest first: the axis reads top to bottom as price falls. */
+function byPriceDesc(a: AxisItem, b: AxisItem): number {
+  return b.price - a.price;
+}
+
+/** What the stored levels say beside the axis: loading, failure, absent, empty, split. */
+function storedNote(stored: StoredLevelsState | undefined): string | null {
+  if (!stored) return null;
+  if (stored.kind === 'LOADING') return 'Loading stored levels…';
+  if (stored.kind === 'ERROR') return 'Stored levels could not be loaded.';
+  if (stored.kind === 'ABSENT') return LEVELS_ABSENT_TEXT;
+  if (stored.kind === 'ROW') return levelsNote(stored.row);
+  return null;
+}
+
+/**
  * Drawer ladder: the complete map, ordered as a price axis.
  *
- * Farthest resistance at the top down to farthest support at the bottom, with
- * current price fixed in the middle.
+ * Farthest above at the top down to farthest support at the bottom, with
+ * current price fixed in the middle. The stored resistance levels (`stored`)
+ * are rows on the same axis, not a second list (his ruling 2026-10-02).
  */
 export function LevelLadder({
   map,
   blueSky,
+  stored,
   Section,
 }: {
   map: LevelMap;
   /** The one honest blue-sky state for this ticker. Always rendered. */
   blueSky: BlueSkyState;
+  /** The stored levels for this name; undefined where the route is not wired. */
+  stored?: StoredLevelsState;
   Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
 }) {
-  if (map.empty) {
+  // Every name opens collapsed: the drawer remounts this per name.
+  const [showAll, setShowAll] = useState(false);
+  const row = stored?.kind === 'ROW' ? stored.row : null;
+  const storedRows = row ? storedLadderRows(row, map.currentPrice) : [];
+  const { shown, toggle } = shownStoredRows(storedRows, showAll);
+  const note = storedNote(stored);
+  const footer = row ? [computedText(row), horizonText(row)].filter(Boolean).join(' ') : '';
+
+  if (map.empty && storedRows.length === 0) {
     return (
       <Section title="Level Ladder">
         <BlueSkyLine state={blueSky} />
         <p className="text-[12px] text-ink-2">No key levels available for this ticker.</p>
+        {note ? <p className="mt-2 text-[11px] text-ink-3">{note}</p> : null}
+        {footer ? <p className="mt-1 text-[11px] text-ink-3">{footer}</p> : null}
       </Section>
     );
   }
 
-  // Nearest-first from the model; reversed so the axis reads high-to-low.
-  const above = [...map.above].reverse();
+  const items = (side: 'ABOVE' | 'BELOW'): AxisItem[] =>
+    [
+      ...(side === 'ABOVE' ? map.above : map.below).map(
+        (zone): AxisItem => ({ kind: 'ZONE', key: zone.clusterId, price: zone.nearestPrice, zone }),
+      ),
+      ...shown
+        .filter((level) => level.side === side)
+        .map((level): AxisItem => ({ kind: 'STORED', key: level.key, price: level.value, level })),
+    ].sort(byPriceDesc);
+
+  // The note is the ladder's own, computed without the stored levels; it is
+  // printed only while a stored level does not sit nearer above.
+  const airPocketAbove =
+    map.airPocketAbove && airPocketAboveHolds(map.above[0]?.distancePct ?? null, storedRows)
+      ? map.airPocketAbove
+      : null;
+
+  const renderItem = (item: AxisItem, side: 'ABOVE' | 'BELOW') =>
+    item.kind === 'ZONE' ? (
+      <ZoneRow key={item.key} zone={item.zone} side={side} />
+    ) : (
+      <StoredRow key={item.key} level={item.level} />
+    );
 
   return (
     <Section title="Level Ladder">
       <BlueSkyLine state={blueSky} />
 
-      {map.airPocketAbove ? (
-        <p className="mb-2 text-[11px] text-ink-3">{map.airPocketAbove}</p>
+      {airPocketAbove ? <p className="mb-2 text-[11px] text-ink-3">{airPocketAbove}</p> : null}
+      {note ? <p className="mb-2 text-[11px] text-ink-3">{note}</p> : null}
+
+      {/* The link sits where the hidden levels would be: at the top of the axis. */}
+      {toggle ? (
+        <button
+          type="button"
+          onClick={() => setShowAll((value) => !value)}
+          aria-expanded={showAll}
+          className="mb-1 min-h-6 text-[11px] font-semibold text-accent hover:underline"
+        >
+          {toggle}
+        </button>
       ) : null}
 
       <div className="flex flex-col">
-        {above.map((zone) => (
-          <ZoneRow key={zone.clusterId} zone={zone} side="ABOVE" />
-        ))}
+        {items('ABOVE').map((item) => renderItem(item, 'ABOVE'))}
 
         {/* The price row is the visual centre of the ladder. */}
         <div className="my-1 flex items-baseline gap-2 rounded-sm border-l-2 border-accent bg-panel-2 py-1.5 pl-2">
@@ -219,7 +327,7 @@ export function LevelLadder({
           <span className="w-[110px] shrink-0 text-[10px] uppercase tracking-wide text-ink-2">
             current price
           </span>
-          <span className="num w-[76px] shrink-0 text-[11px] text-ink-3">
+          <span className="num w-[112px] shrink-0 whitespace-nowrap text-[11px] text-ink-3">
             {map.spreadPct === null ? '' : `${map.spreadPct.toFixed(2)}% sprd`}
           </span>
           <ClampedText
@@ -232,9 +340,7 @@ export function LevelLadder({
           />
         </div>
 
-        {map.below.map((zone) => (
-          <ZoneRow key={zone.clusterId} zone={zone} side="BELOW" />
-        ))}
+        {items('BELOW').map((item) => renderItem(item, 'BELOW'))}
       </div>
 
       {map.airPocketBelow ? (
@@ -247,6 +353,9 @@ export function LevelLadder({
           Not normalised: {map.unparsed.join(' · ')}
         </p>
       ) : null}
+
+      {/* Where the stored levels were read from and how far back. */}
+      {footer ? <p className="mt-2 text-[11px] text-ink-3">{footer}</p> : null}
     </Section>
   );
 }

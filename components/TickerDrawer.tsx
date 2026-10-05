@@ -16,8 +16,7 @@ import { HaltBadge } from '@/components/DecisionCells';
 import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
-import { LevelLadder } from '@/components/LevelLadder';
-import { ResistanceLevels } from '@/components/ResistanceLevels';
+import { StoredLevelLadder } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
@@ -158,9 +157,14 @@ export function TickerDrawer({
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
           <DeskReadPanel read={buildDeskRead(row)} />
 
-          <LevelLadder map={row.levelMap} blueSky={row.blueSky} Section={Section} />
-
-          <ResistanceLevels key={row.ticker} symbol={row.ticker} Section={Section} />
+          {/* ONE ladder: the stored resistance levels on its axis (his ruling 2026-10-02). */}
+          <StoredLevelLadder
+            key={row.ticker}
+            symbol={row.ticker}
+            map={row.levelMap}
+            blueSky={row.blueSky}
+            Section={Section}
+          />
 
           <AutomaticIntelligence
             intel={row.intelligence}

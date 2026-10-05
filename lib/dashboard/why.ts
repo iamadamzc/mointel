@@ -492,3 +492,21 @@ function gradeTone(grade: string): DeskWhy['tone'] {
   if (grade === 'C') return 'warn';
   return 'dim';
 }
+
+/**
+ * The catalyst, as a row's accessible name says it.
+ *
+ * The cell prints "—" when there is no grade, and the row's spoken label used
+ * to interpolate it: a screen reader heard "[dash] catalyst", a glyph read
+ * aloud in place of a fact (and his no-em-dash rule's empty-cell exception is
+ * for a cell, not for a sentence). So the label says WHY there is no grade, the
+ * same distinction the cell's hover draws.
+ */
+export function whySpoken(why: Pick<DeskWhy, 'grade' | 'code'>): string {
+  const grade = why.grade.trim();
+  if (/^[A-Z]$/.test(grade)) return `${grade} catalyst`;
+  if (grade !== '' && grade !== '\u2014') return `catalyst ${grade}`;
+  if (why.code === 'NOT_RESEARCHED') return 'not researched';
+  if (why.code === 'RESEARCHING') return 'catalyst being researched';
+  return 'no catalyst grade';
+}

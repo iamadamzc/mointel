@@ -2,7 +2,8 @@
  * Data access entry point.
  *
  * Responsibilities:
- *   - choose a provider (Google Sheets when credentials exist, otherwise mock)
+ *   - choose a provider (Google Sheets when credentials exist, mock only when
+ *     USE_MOCK_DATA asks, otherwise none: an empty payload)
  *   - hold a short server-side cache so browser polling never maps 1:1 to
  *     Google API reads
  *   - de-duplicate concurrent refreshes
@@ -15,6 +16,7 @@ import 'server-only';
 
 import { GoogleSheetsProvider, readCredentialsFromEnv } from './providers/googleSheets';
 import { MockProvider } from './providers/mock';
+import { NoSourceProvider } from './providers/none';
 import type { DashboardDataProvider, DashboardState } from './types';
 
 /** How long a normalized payload may be reused before a new upstream read. */
@@ -51,18 +53,38 @@ function forcedMockMode(): boolean {
   return flag === '1' || flag === 'true' || flag === 'yes';
 }
 
+/**
+ * Demo rows ONLY when `USE_MOCK_DATA` asks for them. Missing credentials mean
+ * no outside source, served as an empty payload (`NoSourceProvider`), never as
+ * mock rows: those read as research on the board and became tickers the
+ * market worker tracked (Sheet removal plan, step 1).
+ */
 export function resolveProvider(): DashboardDataProvider {
   if (runtime.provider) return runtime.provider;
 
-  if (!forcedMockMode()) {
-    const credentials = readCredentialsFromEnv();
-    if (credentials) {
-      runtime.provider = new GoogleSheetsProvider(credentials);
-      return runtime.provider;
-    }
+  if (forcedMockMode()) {
+    runtime.provider = new MockProvider();
+    return runtime.provider;
   }
 
-  runtime.provider = new MockProvider();
+  const credentials = readCredentialsFromEnv();
+  if (credentials) {
+    runtime.provider = new GoogleSheetsProvider(credentials);
+    return runtime.provider;
+  }
+
+  /*
+   * Once per process (the provider is memoized). The board shows nothing for
+   * `none` on purpose, so until the planned removal (step 5) this line is the
+   * only place an ACCIDENTAL loss of the keys, a settings rewrite, say, is
+   * told apart from the deliberate one: it lands in the service journal.
+   * Web's review, 2026-10-03.
+   */
+  console.warn(
+    '[data] no outside research source: the Google Sheet credentials are not set, so the researched ' +
+      'list is served empty (no demo rows). Expected only after the Sheet is removed on purpose.',
+  );
+  runtime.provider = new NoSourceProvider();
   return runtime.provider;
 }
 

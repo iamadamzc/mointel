@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  describeBlueSkyWindow,
   MIN_SESSIONS,
   resolveBlueSky,
   resolveBlueSkyThreshold,
@@ -265,7 +266,10 @@ describe('ceilingSplitFactor and ceilingComparable', () => {
 
     const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
 
-    expect(t.price).toBe(14_249.94);
+    // Since 2026-10-02 the deep ceiling is data only; `price` is the level on today's basis.
+    expect(t.deepCeiling).toEqual({ price: 14_249.94, date: '2020-03-31', splitFactor: 600 });
+    expect(t.price).toBe(26.58);
+    expect(t.consolidated).toBe(true);
     expect(t.ceilingSplitFactor).toBe(600);
     expect(t.ceilingComparable).toBe(false);
   });
@@ -326,7 +330,8 @@ describe('comparableCeiling', () => {
 
     const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-08-24', adjustment: 'split' });
 
-    expect(t.price).toBe(14_249.94);
+    expect(t.deepCeiling?.price).toBe(14_249.94);
+    expect(t.price).toBe(26.58);
     expect(t.comparableCeiling).toBe(26.58);
     expect(t.comparableCeilingDate).toBe('2024-11-13');
   });
@@ -424,5 +429,108 @@ describe('why a basis could not be vouched', () => {
     });
 
     expect(threshold.unverifiedReason).toContain('not split-adjusted');
+  });
+});
+
+/**
+ * GNPX, 2026-10-02: a deep ceiling behind a KNOWN consolidation is never the
+ * level. Pre-split neighbours carry the same factor and corroborate each
+ * other, so every guard passed on a $855,795.60 "overhead" that nobody can
+ * trade against. The verdict now rests on today's share basis only.
+ */
+describe('a ceiling behind a consolidation (GNPX shape)', () => {
+  const day = (index: number) => new Date(Date.UTC(2018, 2, 29) + index * 86_400_000).toISOString().slice(0, 10);
+  const bar = (index: number, high: number, splitFactor: number | null) => ({
+    tradingDate: day(index), open: high * 0.9, high, low: high * 0.8, close: high * 0.95,
+    volume: 1_000_000, sessionComplete: true, splitFactor,
+  });
+  /** `pre` pre-split sessions at factor 44,000 (corroborated near 855,795.60), then `post` sessions on today's basis peaking at 9.99. */
+  function gnpx(pre: number, post: number, postFactor: number | null = 1) {
+    const bars = [];
+    for (let i = 0; i < pre; i += 1) bars.push(bar(i, i === 5 ? 855_795.6 : 800_000, 44_000));
+    for (let i = 0; i < post; i += 1) bars.push(bar(pre + i, i === 10 ? 9.99 : 9.5, postFactor));
+    return bars;
+  }
+  const TODAY_GNPX = '2026-12-31';
+
+  it('rests the verdict on the high on today’s basis; the deep ceiling is data only, never in any printed text', () => {
+    const t = resolveBlueSkyThreshold(gnpx(50, 45), { tradingDate: TODAY_GNPX, adjustment: 'split' });
+    expect(t.verified).toBe(true);
+    expect(t.price).toBe(9.99);
+    expect(t.consolidated).toBe(true);
+    expect(t.deepCeiling).toEqual({ price: 855_795.6, date: day(5), splitFactor: 44_000 });
+
+    const state = resolveBlueSky(t, 2.81);
+    expect(state.status).toBe('NOT_BLUE_SKY');
+    expect(state.label).toBe('NOT BLUE SKY · OVERHEAD AT $9.99');
+    expect(t.lastSplit).toEqual({ ratio: 44_000, firstSessionOnBasis: day(50) });
+    const window = describeBlueSkyWindow(t)!;
+    expect(window).toBe(`Highest prior-session high since the 1-for-44,000 reverse split effective ${day(50)}. Older highs back to ${day(0)} are not compared with today's price.`);
+    expect(`${state.label} ${window}`).not.toMatch(/855|800,?000/);
+  });
+
+  it('is UNVERIFIED with no price at all when no high on today’s basis is established', () => {
+    const t = resolveBlueSkyThreshold(gnpx(50, 45, null), { tradingDate: TODAY_GNPX, adjustment: 'split' });
+    expect(t.verified).toBe(false);
+    expect(t.price).toBeNull();
+    expect(t.unverifiedReason).toContain('share consolidation stands between');
+    expect(t.deepCeiling?.price).toBe(855_795.6);
+    const state = resolveBlueSky(t, 2.81);
+    expect(state.label).toBe('BLUE-SKY LEVEL UNVERIFIED');
+    expect(`${state.label} ${t.unverifiedReason}`).not.toMatch(/855/);
+  });
+
+  it('needs MIN_SESSIONS on today’s basis, not across the whole window', () => {
+    const t = resolveBlueSkyThreshold(gnpx(50, 20), { tradingDate: TODAY_GNPX, adjustment: 'split' });
+    expect(t.verified).toBe(false);
+    expect(t.price).toBe(9.99);
+    expect(t.unverifiedReason).toBe("Only 20 prior sessions on today's share basis are retained; at least 40 are needed to set a ceiling.");
+  });
+
+  it('leaves an UNKNOWN factor (shallow-written bars) exactly as before', () => {
+    const bars = gnpx(0, 50, null);
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: TODAY_GNPX, adjustment: 'split' });
+    expect(t.verified).toBe(true);
+    expect(t.price).toBe(9.99);
+    expect(t.consolidated).toBe(false);
+    expect(describeBlueSkyWindow(t)).toContain('May not be an all-time high.');
+  });
+});
+
+describe('naming the last split, not the cumulative factor', () => {
+  const day = (index: number) => new Date(Date.UTC(2024, 0, 1) + index * 86_400_000).toISOString().slice(0, 10);
+  const bar = (index: number, high: number, splitFactor: number | null) => ({
+    tradingDate: day(index), open: high * 0.9, high, low: high * 0.8, close: high * 0.95,
+    volume: 1_000_000, sessionComplete: true, splitFactor,
+  });
+
+  it('two reverse splits (1-for-20 then 1-for-40): names the LAST one, never the cumulative 800', () => {
+    const bars = [];
+    for (let i = 0; i < 10; i += 1) bars.push(bar(i, 4_000, 800)); // before both splits
+    for (let i = 10; i < 20; i += 1) bars.push(bar(i, 200, 40)); // between them
+    for (let i = 20; i < 70; i += 1) bars.push(bar(i, i === 30 ? 6 : 5.8, 1));
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-12-31', adjustment: 'split' });
+    expect(t.lastSplit).toEqual({ ratio: 40, firstSessionOnBasis: day(20) });
+    expect(describeBlueSkyWindow(t)).toContain('since the 1-for-40 reverse split effective');
+    expect(describeBlueSkyWindow(t)).not.toContain('800');
+  });
+
+  it('a measured factor that is not a whole ratio is not stated as one', () => {
+    const bars = [];
+    for (let i = 0; i < 10; i += 1) bars.push(bar(i, 4_000, 37.5)); // 1.3% from 37 and from 38: outside the 1% rule
+    for (let i = 10; i < 60; i += 1) bars.push(bar(i, i === 30 ? 6 : 5.8, 1));
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-12-31', adjustment: 'split' });
+    expect(describeBlueSkyWindow(t)).toContain('sit behind a share consolidation');
+  });
+});
+
+describe('number agreement in the today’s-basis session count (Marketing)', () => {
+  it('says "1 prior session ... is retained" for one session', () => {
+    const day = (index: number) => new Date(Date.UTC(2025, 0, 1) + index * 86_400_000).toISOString().slice(0, 10);
+    const bars = [];
+    for (let i = 0; i < 45; i += 1) bars.push({ tradingDate: day(i), open: 900, high: 1_000, low: 800, close: 950, volume: 1, sessionComplete: true, splitFactor: 100 });
+    bars.push({ tradingDate: day(45), open: 9, high: 10, low: 8, close: 9.5, volume: 1, sessionComplete: true, splitFactor: 1 });
+    const t = resolveBlueSkyThreshold(bars, { tradingDate: '2026-12-31', adjustment: 'split' });
+    expect(t.unverifiedReason).toBe("Only 1 prior session on today's share basis is retained; at least 40 are needed to set a ceiling.");
   });
 });

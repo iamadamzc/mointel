@@ -18,6 +18,8 @@ import { formatEtMinute, formatPrice } from '../format';
 import type { ResistanceLevel, ResistanceLevels } from '../market/resistance';
 
 export interface LevelLine {
+  /** The level as a number, for placing it on the ladder's price axis. */
+  value: number;
   /** "$4.02" */
   price: string;
   /** "3.99 to 4.05" when the level merged tops at different prices, else null. */
@@ -89,6 +91,7 @@ export function levelLines(row: ResistanceLevels): LevelLine[] {
             ? `, candle ending ${newest}`
             : '';
       return {
+        value: level.price,
         price: `$${formatPrice(level.price)}`,
         span: spread ? `${formatPrice(level.low)} to ${formatPrice(level.high)}` : null,
         distance,
@@ -117,24 +120,6 @@ export const LEVELS_ABSENT_TEXT =
  * one click away, so "show all" (his earlier "a, show all 7") still holds.
  */
 export const NEAREST_LEVELS = 10;
-
-export interface ShownLevels {
-  shown: LevelLine[];
-  /** How many the link would reveal; 0 means no link. */
-  hidden: number;
-  /** The link's words, null when there is no link. */
-  toggle: string | null;
-}
-
-export function shownLevels(lines: LevelLine[], showAll: boolean): ShownLevels {
-  if (lines.length <= NEAREST_LEVELS) return { shown: lines, hidden: 0, toggle: null };
-  if (showAll) return { shown: lines, hidden: 0, toggle: `Show the nearest ${NEAREST_LEVELS}` };
-  return {
-    shown: lines.slice(0, NEAREST_LEVELS),
-    hidden: lines.length - NEAREST_LEVELS,
-    toggle: `Show all ${lines.length} levels`,
-  };
-}
 
 /**
  * What the section says when there is no level to draw, or when fewer ladders
@@ -193,3 +178,114 @@ export function computedText(row: ResistanceLevels): string | null {
   if (!at || !isPrice(row.price)) return null;
   return `From $${formatPrice(row.price)} at the ${at} 5-minute close.`;
 }
+
+/* ------------------------------------------------------------------------- *
+ * ONE LADDER (his ruling 2026-10-02T11:51:56Z, to Integration: "the way the
+ * resistance levels are written is unhelpful. they are inverted. find a way to
+ * diesig them like the level ladder. incorporate the two. doesn't make sensee
+ * to have them in two places.")
+ *
+ * The level ladder reads as a price axis: farthest above at the top, the
+ * current price in the middle, support below. The stored levels were a list
+ * ascending from the nearest, the axis upside down. So the stored levels are
+ * now rows ON the ladder, placed by price against the LIVE price the ladder's
+ * centre row shows, in the ladder's own number format and distance form.
+ * ------------------------------------------------------------------------- */
+
+/** One stored level as a ladder row. */
+export interface StoredLadderRow {
+  key: string;
+  value: number;
+  /** The ladder's format: three decimals under $1, else two, no "$". */
+  priceText: string;
+  /** "6.80 to 6.86" when tops at different prices merged, in the ladder's format. */
+  span: string | null;
+  /** "daily · 15m": the only tag (his ruling), coarsest first as given. */
+  tags: string;
+  /** "3 candle tops". Descriptive, never a weight. */
+  topsText: string;
+  farBack: boolean;
+  /** Hover: tops and when. */
+  title: string;
+  /** Against the ladder's centre price. A level the price has since crossed sits BELOW. */
+  side: 'ABOVE' | 'BELOW';
+  distanceAbs: number | null;
+  distancePct: number | null;
+}
+
+/** The ladder's own number format (`LevelLadder` priceText). */
+export function ladderPriceText(value: number): string {
+  return value < 1 ? value.toFixed(3) : value.toFixed(2);
+}
+
+/**
+ * Every stored level as a ladder row, against `reference` (the ladder's live
+ * price; the row's own 5-minute price when there is none).
+ */
+export function storedLadderRows(row: ResistanceLevels, reference: number | null): StoredLadderRow[] {
+  const from = isPrice(reference) ? reference : isPrice(row.price) ? row.price : null;
+  return row.levels
+    .filter((level) => isPrice(level.price))
+    .slice()
+    .sort((a, b) => a.price - b.price)
+    .map((level, index) => {
+      // A span that ROUNDS to one price prints as one price, never "4.62 to 4.62".
+      const low = isPrice(level.low) ? ladderPriceText(level.low) : null;
+      const high = isPrice(level.high) ? ladderPriceText(level.high) : null;
+      const spread = low !== null && high !== null && low !== high;
+      const line = levelLines({ ...row, levels: [level] })[0];
+      const side: 'ABOVE' | 'BELOW' = from === null || level.price > from ? 'ABOVE' : 'BELOW';
+      return {
+        key: `stored:${index}:${level.price}`,
+        value: level.price,
+        priceText: ladderPriceText(level.price),
+        span: spread ? `${low} to ${high}` : null,
+        tags: line.tags,
+        topsText: `${level.tops} ${level.tops === 1 ? 'candle top' : 'candle tops'}`,
+        farBack: line.farBack,
+        title: line.title,
+        side,
+        distanceAbs: from === null ? null : Math.abs(level.price - from),
+        distancePct: from === null ? null : (Math.abs(level.price - from) / from) * 100,
+      };
+    });
+}
+
+/**
+ * His "2 b" on the ladder: the nearest 10 stored levels ABOVE the price show,
+ * the farther ones (the top of the axis) behind the link. A stored level the
+ * price has crossed (BELOW) always shows: it is next to the price.
+ */
+export function shownStoredRows(
+  rows: StoredLadderRow[],
+  showAll: boolean,
+): { shown: StoredLadderRow[]; toggle: string | null } {
+  const above = rows.filter((r) => r.side === 'ABOVE').sort((a, b) => a.value - b.value);
+  const below = rows.filter((r) => r.side === 'BELOW');
+  if (above.length <= NEAREST_LEVELS) return { shown: rows, toggle: null };
+  if (showAll) return { shown: rows, toggle: `Show the nearest ${NEAREST_LEVELS}` };
+  return { shown: [...below, ...above.slice(0, NEAREST_LEVELS)], toggle: `Show all ${above.length} levels above` };
+}
+
+/**
+ * Whether the ladder's "open air above" note still holds once stored levels
+ * are on the axis. The note is computed from the ladder's own levels only, so
+ * a stored level nearer than the ladder's nearest above makes it false.
+ */
+export function airPocketAboveHolds(
+  nearestLadderAbovePct: number | null,
+  rows: StoredLadderRow[],
+): boolean {
+  const stored = rows.filter((r) => r.side === 'ABOVE' && r.distancePct !== null).map((r) => r.distancePct as number);
+  if (stored.length === 0) return true;
+  if (nearestLadderAbovePct === null) return false;
+  return Math.min(...stored) >= nearestLadderAbovePct;
+}
+
+/** The stored levels' state, as the drawer's fetch resolves it. */
+export type StoredLevelsState =
+  | { kind: 'LOADING' }
+  | { kind: 'UNAVAILABLE' }
+  | { kind: 'ERROR' }
+  | { kind: 'ABSENT' }
+  | { kind: 'ROW'; row: ResistanceLevels };

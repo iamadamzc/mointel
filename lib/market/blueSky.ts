@@ -64,7 +64,14 @@ export const IN_PLAY_PCT = 25;
 export interface BlueSkyThreshold {
   /** True only when every guard above passed. */
   verified: boolean;
-  /** Highest prior-session high in the retained window. */
+  /**
+   * The ceiling the verdict rests on: the highest prior-session high in the
+   * retained window, OR, when that high sits behind a share consolidation
+   * (`consolidated`), the highest prior high on today's share basis. Null when
+   * a consolidation stands in the way and no high on today's basis is
+   * established: the deep number is then only in `deepCeiling`, so no surface
+   * can print it as a level.
+   */
   price: number | null;
   date: string | null;
   sessionsObserved: number;
@@ -121,6 +128,31 @@ export interface BlueSkyThreshold {
    */
   comparableCeiling: number | null;
   comparableCeilingDate: string | null;
+  /**
+   * The highest stored high REGARDLESS of basis, with its factor: the number
+   * for a surface's hover, never a level. `ceilingSplitFactor` and
+   * `ceilingComparable` above describe THIS bar.
+   *
+   * Split from `price` on 2026-10-02 (GNPX): a 2018 high of $855,795.60 at a
+   * factor of 44,000 is arithmetically right on today's basis, describes
+   * shares that no longer exist in that form, and passed every guard, because
+   * its neighbours carry the same factor and corroborate it. Null when there
+   * is no ceiling.
+   */
+  deepCeiling: { price: number; date: string; splitFactor: number | null } | null;
+  /** True when `price` is the comparable ceiling because the deep one sits behind a consolidation. */
+  consolidated: boolean;
+  /**
+   * The LAST split before today's share basis: its ratio (the factor on the
+   * final session before it) and the first session on today's basis. Null
+   * unless `consolidated`.
+   *
+   * Not the deep ceiling's factor: that is CUMULATIVE over every split since
+   * the ceiling (GNPX's 44,000 may be several), so naming it as one
+   * consolidation could be false. The comparable ceiling is bounded by the
+   * last split only, and this is that split.
+   */
+  lastSplit: { ratio: number; firstSessionOnBasis: string } | null;
 }
 
 export interface BlueSkyState {
@@ -139,6 +171,9 @@ export const UNAVAILABLE_THRESHOLD: BlueSkyThreshold = {
   ceilingComparable: null,
   comparableCeiling: null,
   comparableCeilingDate: null,
+  deepCeiling: null,
+  consolidated: false,
+  lastSplit: null,
   price: null,
   date: null,
   sessionsObserved: 0,
@@ -218,16 +253,43 @@ export function resolveBlueSkyThreshold(
     if (comparable === null || (bar.high as number) > (comparable.high as number)) comparable = bar;
   }
 
-  const price = ceiling.high as number;
+  /*
+   * A deep ceiling behind a KNOWN consolidation (factor established and not 1)
+   * is never the level. The verdict rests on the highest high on today's basis
+   * instead, and every guard below runs on today's-basis sessions only: on
+   * GNPX the pre-split neighbours carry the same factor of 44,000 and
+   * corroborate a $855,795.60 "level" that nobody can trade against.
+   *
+   * An UNKNOWN factor (null, every shallow-written bar) is not treated as a
+   * consolidation. That is most of the board, and refusing it would refuse
+   * blue sky wherever the deep pass has not run. It is unchanged.
+   */
+  const behindConsolidation = ceiling.splitFactor !== null && ceiling.splitFactor !== 1;
+  const subject = behindConsolidation ? comparable : ceiling;
+
+  // The last split before today's basis: the final session carrying a known factor other than 1.
+  let lastSplit: BlueSkyThreshold['lastSplit'] = null;
+  if (behindConsolidation && subject !== null) {
+    for (let i = prior.length - 1; i > 0; i -= 1) {
+      const before = prior[i - 1]!.splitFactor;
+      if (prior[i]!.splitFactor === 1 && before !== null && before !== 1) {
+        lastSplit = { ratio: before, firstSessionOnBasis: prior[i]!.tradingDate };
+        break;
+      }
+    }
+  }
   const base: BlueSkyThreshold = {
-    ceilingSessionComplete: ceiling.sessionComplete,
+    ceilingSessionComplete: subject?.sessionComplete ?? null,
     ceilingSplitFactor: ceiling.splitFactor,
     comparableCeiling: (comparable?.high as number | undefined) ?? null,
     comparableCeilingDate: comparable?.tradingDate ?? null,
     ceilingComparable: ceiling.splitFactor === null ? null : ceiling.splitFactor === 1,
+    deepCeiling: { price: ceiling.high as number, date: ceiling.tradingDate, splitFactor: ceiling.splitFactor },
+    consolidated: behindConsolidation && subject !== null,
+    lastSplit,
     verified: false,
-    price,
-    date: ceiling.tradingDate,
+    price: (subject?.high as number | undefined) ?? null,
+    date: subject?.tradingDate ?? null,
     sessionsObserved: prior.length,
     windowFrom,
     windowTo,
@@ -239,29 +301,41 @@ export function resolveBlueSkyThreshold(
     return { ...base, unverifiedReason: basisRefusal(options.basisReason ?? null) };
   }
 
-  if (prior.length < MIN_SESSIONS) {
+  if (subject === null) {
     return {
       ...base,
-      unverifiedReason: `Only ${prior.length} prior session(s) are retained; at least ${MIN_SESSIONS} are needed before a ceiling means anything.`,
+      unverifiedReason:
+        "A share consolidation stands between the highest stored price and today. With no high established on today's share basis, no ceiling is compared with today's price.",
     };
   }
 
-  const ceilingClose = ceiling.close as number;
-  if (price / ceilingClose > MAX_SPIKE_RATIO) {
+  const pool = behindConsolidation ? prior.filter((bar) => bar.splitFactor === 1) : prior;
+  if (pool.length < MIN_SESSIONS) {
     return {
       ...base,
-      unverifiedReason: `The ${money(price)} high on ${ceiling.tradingDate} is far above that session's own close and reads as a bad print rather than a traded level.`,
+      unverifiedReason: behindConsolidation
+        ? `Only ${pool.length} prior ${pool.length === 1 ? "session on today's share basis is" : "sessions on today's share basis are"} retained; at least ${MIN_SESSIONS} are needed to set a ceiling.`
+        : `Only ${pool.length} prior session(s) are retained; at least ${MIN_SESSIONS} are needed before a ceiling means anything.`,
     };
   }
 
-  const corroborating = prior.filter(
-    (bar) => bar !== ceiling && (bar.high as number) >= price * NEAR_CEILING,
+  const price = subject.high as number;
+  const subjectClose = subject.close as number;
+  if (price / subjectClose > MAX_SPIKE_RATIO) {
+    return {
+      ...base,
+      unverifiedReason: `The ${money(price)} high on ${subject.tradingDate} is far above that session's own close and reads as a bad print rather than a traded level.`,
+    };
+  }
+
+  const corroborating = pool.filter(
+    (bar) => bar !== subject && (bar.high as number) >= price * NEAR_CEILING,
   ).length;
 
   if (corroborating < MIN_CORROBORATING_SESSIONS) {
     return {
       ...base,
-      unverifiedReason: `The ${money(price)} high on ${ceiling.tradingDate} is an isolated spike: no other retained session came within ${Math.round((1 - NEAR_CEILING) * 100)}% of it.`,
+      unverifiedReason: `The ${money(price)} high on ${subject.tradingDate} is an isolated spike: no other retained session${behindConsolidation ? " on today's share basis" : ''} came within ${Math.round((1 - NEAR_CEILING) * 100)}% of it.`,
     };
   }
 
@@ -352,8 +426,35 @@ export function resolveBlueSky(
   };
 }
 
+/**
+ * A split ratio in words, or null when the factor is not within 1% of a whole
+ * ratio. The factor is measured (raw against adjusted), so it carries rounding;
+ * a ratio that is not whole is not stated as one.
+ */
+function splitWords(ratio: number): string | null {
+  if (!Number.isFinite(ratio) || ratio <= 0 || ratio === 1) return null;
+  const big = ratio > 1 ? ratio : 1 / ratio;
+  const whole = Math.round(big);
+  if (whole < 2 || Math.abs(big - whole) / big > 0.01) return null;
+  const n = whole.toLocaleString('en-US');
+  return ratio > 1 ? `1-for-${n} reverse split` : `${n}-for-1 split`;
+}
+
 /** How the retained window should be described wherever the level is shown. */
 export function describeBlueSkyWindow(threshold: BlueSkyThreshold): string | null {
   if (threshold.sessionsObserved === 0 || !threshold.windowFrom || !threshold.windowTo) return null;
-  return `Highest prior-session high across ${threshold.sessionsObserved} split-adjusted sessions, ${threshold.windowFrom} to ${threshold.windowTo}. Not an all-time or 52-week high.`;
+  /*
+   * "Not an all-time or 52-week high" was true of a 90-session window. The
+   * window is now ALL stored depth (readModel.ts), which for a deep-passed
+   * name can reach its listing and may hold a 52-week high, so the sentence
+   * could be false. Revised 2026-10-02; Marketing reads it before the cut.
+   */
+  if (threshold.consolidated) {
+    const split = threshold.lastSplit ? splitWords(threshold.lastSplit.ratio) : null;
+    if (split && threshold.lastSplit) {
+      return `Highest prior-session high since the ${split} effective ${threshold.lastSplit.firstSessionOnBasis}. Older highs back to ${threshold.windowFrom} are not compared with today's price.`;
+    }
+    return `Highest prior-session high on today's share basis. Older highs back to ${threshold.windowFrom} sit behind a share consolidation, so they are not compared with today's price.`;
+  }
+  return `Highest prior-session high across ${threshold.sessionsObserved} split-adjusted sessions, ${threshold.windowFrom} to ${threshold.windowTo}. May not be an all-time high.`;
 }

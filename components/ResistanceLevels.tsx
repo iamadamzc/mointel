@@ -2,34 +2,25 @@
 
 import { useEffect, useState } from 'react';
 
-import {
-  computedText,
-  horizonText,
-  LEVELS_ABSENT_TEXT,
-  levelLines,
-  levelsNote,
-  shownLevels,
-} from '@/lib/dashboard/resistance';
+import { LevelLadder } from '@/components/LevelLadder';
+import type { LevelMap } from '@/lib/data/priceLevels';
+import type { StoredLevelsState } from '@/lib/dashboard/resistance';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
+import type { BlueSkyState } from '@/lib/market/blueSky';
 import type { ResistanceLevels as LevelsRow } from '@/lib/market/resistance';
 
 /**
- * The levels recompute at each 5-minute close and the route memoizes per close,
- * so a minute while the drawer is open is ample.
+ * The stored rows are refreshed every few minutes and the route only reads
+ * them, so a minute while the drawer is open is ample.
  */
 const LEVELS_POLL_INTERVAL_MS = 60_000;
 
 /**
- * UNAVAILABLE = the route does not exist (404): the section does not mount,
+ * UNAVAILABLE = the route does not exist (404): no stored rows and no note,
  * because "not built" is not a fact about this name. ABSENT = the route
- * answered with no row (a JSON null): not computed yet.
+ * answered with no row (a JSON null): not computed for this name.
  */
-type LevelsState =
-  | { kind: 'LOADING' }
-  | { kind: 'UNAVAILABLE' }
-  | { kind: 'ERROR' }
-  | { kind: 'ABSENT' }
-  | { kind: 'ROW'; row: LevelsRow };
+type LevelsState = StoredLevelsState;
 
 function isRow(value: unknown): value is LevelsRow {
   return Boolean(value) && Array.isArray((value as LevelsRow).levels) && typeof (value as LevelsRow).price === 'number';
@@ -90,75 +81,23 @@ function useResistanceLevels(symbol: string): LevelsState {
 }
 
 /**
- * "Resistance levels": every level above the price, nearest first, each with
- * its timeframe. His label and his "show all"; no strength, no highlight.
+ * The drawer's ONE level ladder (his ruling 2026-10-02T11:51:56Z: "incorporate
+ * the two. doesn't make sense to have them in two places"): the ladder with this
+ * name's stored resistance levels on its axis. Mount it with `key={symbol}` so
+ * a new name starts from LOADING and opens collapsed. A 404 (the route not
+ * wired) leaves the ladder as it was, with no stored rows and no note.
  */
-export function ResistanceLevels({
+export function StoredLevelLadder({
   symbol,
+  map,
+  blueSky,
   Section,
 }: {
   symbol: string;
-  Section: React.ComponentType<{ title: string; children: React.ReactNode }>;
+  map: LevelMap;
+  blueSky: BlueSkyState;
+  Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
 }) {
   const state = useResistanceLevels(symbol);
-  if (state.kind === 'UNAVAILABLE') return null;
-
-  return (
-    <Section title="Resistance levels">
-      {state.kind === 'LOADING' ? <p className="text-[12px] text-ink-3">Loading levels…</p> : null}
-      {state.kind === 'ERROR' ? <p className="text-[12px] text-ink-3">Levels could not be loaded.</p> : null}
-      {state.kind === 'ABSENT' ? (
-        <p className="text-[12px] text-ink-3">{LEVELS_ABSENT_TEXT}</p>
-      ) : null}
-      {state.kind === 'ROW' ? <LevelsBody row={state.row} /> : null}
-    </Section>
-  );
-}
-
-function LevelsBody({ row }: { row: LevelsRow }) {
-  // Nearest 10 by default, the rest behind a link (his "2 b"). The drawer
-  // remounts this per name, so every name opens collapsed.
-  const [showAll, setShowAll] = useState(false);
-  const { shown, toggle } = shownLevels(levelLines(row), showAll);
-  const note = levelsNote(row);
-  const computed = computedText(row);
-  const horizon = horizonText(row);
-
-  return (
-    <div className="space-y-2">
-      {shown.length > 0 ? (
-        <ol className="space-y-0.5">
-          {shown.map((line, index) => (
-            <li
-              key={`${line.price}:${index}`}
-              title={line.title}
-              className="flex items-baseline gap-3 font-mono text-[12px] tabular-nums"
-            >
-              <span className="w-20 shrink-0 font-semibold text-ink">{line.price}</span>
-              <span className="w-14 shrink-0 text-ink-2">{line.distance}</span>
-              <span className="min-w-0 flex-1 text-ink-2">
-                {line.tags}
-                {line.farBack ? <span className="text-ink-3"> · over 12 months back</span> : null}
-              </span>
-              {line.span ? <span className="shrink-0 text-[11px] text-ink-3">{line.span}</span> : null}
-            </li>
-          ))}
-        </ol>
-      ) : null}
-      {toggle ? (
-        <button
-          type="button"
-          onClick={() => setShowAll((value) => !value)}
-          aria-expanded={showAll}
-          className="min-h-6 text-[11px] font-semibold text-accent hover:underline"
-        >
-          {toggle}
-        </button>
-      ) : null}
-      {note ? <p className="text-[12px] text-ink-2">{note}</p> : null}
-      {computed || horizon ? (
-        <p className="text-[11px] text-ink-3">{[computed, horizon].filter(Boolean).join(' ')}</p>
-      ) : null}
-    </div>
-  );
+  return <LevelLadder map={map} blueSky={blueSky} stored={state} Section={Section} />;
 }
