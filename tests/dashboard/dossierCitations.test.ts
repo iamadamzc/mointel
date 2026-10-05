@@ -75,3 +75,41 @@ describe('every row takes its dossier without citation tokens', () => {
     expect(original.catalyst.summary).toContain('[Source 115982]');
   });
 });
+
+describe('the ticker\'s own source ids count as citations, cited or not (RPGL "[1043]")', () => {
+  // 1043 is a source the ticker holds (its SEC_SUBMISSIONS row) that the dossier did not cite;
+  // 2026 is a year, and the ticker owns no source 2026.
+  const withIds = {
+    ...auto,
+    ticker: 'RPGL',
+    tickerSourceIds: [1043, 115982],
+    analysis: {
+      ...auto.analysis!,
+      dossier: {
+        ...(auto.analysis!.dossier as object),
+        structure: {
+          summary: 'The company filed a resale registration [1043] in [2026].',
+          structuralWarnings: [],
+          sharesOutstanding: 1,
+        },
+      },
+    },
+  } as unknown as AutoIntelligence;
+
+  it('removes a lone short citation that is one of the ticker\'s source ids, and keeps a year it does not own', () => {
+    const out = readableIntelligence(withIds)!;
+    const structure = (out.analysis!.dossier as unknown as Dossier).structure;
+    expect(structure.summary).toBe('The company filed a resale registration in [2026].');
+  });
+
+  it('leaves the bracket when the ids are not supplied (the earlier behaviour)', () => {
+    const { tickerSourceIds: _ids, ...bare } = withIds;
+    void _ids;
+    const out = readableIntelligence(bare as AutoIntelligence)!;
+    expect((out.analysis!.dossier as unknown as Dossier).structure.summary).toContain('[1043]');
+  });
+
+  it('does not pass the id list on to the payload', () => {
+    expect('tickerSourceIds' in readableIntelligence(withIds)!).toBe(false);
+  });
+});

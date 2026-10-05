@@ -315,11 +315,14 @@ function resolveDisplayedFloat(
  */
 export function readableIntelligence(auto: AutoIntelligence | null | undefined): AutoIntelligence | null {
   if (!auto) return null;
+  // The ticker's own source ids are used to recognise citations and are not passed on.
+  const { tickerSourceIds, ...rest } = auto;
+  const known = new Set(tickerSourceIds ?? []);
   return {
-    ...auto,
+    ...rest,
     statusLabel: withoutEmDash(auto.statusLabel),
     analysis: auto.analysis
-      ? { ...auto.analysis, dossier: withoutEmDashDeep(withoutCitationsDeep(auto.analysis.dossier)) }
+      ? { ...auto.analysis, dossier: withoutEmDashDeep(withoutCitationsDeep(auto.analysis.dossier, known)) }
       : null,
     evidence: auto.evidence.map((link) => ({ ...link, title: link.title === null ? null : withoutEmDash(link.title) })),
   };

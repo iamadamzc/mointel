@@ -62,6 +62,7 @@ import {
   readCurrentAnalyses,
   readLatestJobForTicker,
   readResearchHealth,
+  readSourceIdsForTicker,
   readSourcesByIds,
   researchTablesPresent,
 } from './store/researchRepo';
@@ -945,7 +946,7 @@ export function overlayLiveCycle(
   };
 }
 
-function readIntelligence(
+export function readIntelligence(
   db: MarketDatabase,
   tradingDate: string,
   tickers: string[],
@@ -1007,6 +1008,7 @@ function readIntelligence(
       analysisVersionId: analysis?.id ?? null,
       coverageIncomplete,
       evidence: analysis ? readSourcesByIds(db, analysis.sourceIds).map(toEvidenceLink) : [],
+      tickerSourceIds: analysis ? readSourceIdsForTicker(db, ticker) : [],
     };
   }
 

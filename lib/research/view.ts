@@ -93,6 +93,13 @@ export interface AutoIntelligence {
   analysisVersionId: number | null;
   coverageIncomplete: boolean;
   evidence: EvidenceLink[];
+  /**
+   * Every research source id stored for this ticker, cited or not, so a citation token
+   * the model left for a source it read but did not cite is recognised and removed
+   * (`citations.ts`). Server-side only: `readableIntelligence` consumes it and drops it,
+   * so it never reaches the payload.
+   */
+  tickerSourceIds?: number[];
 }
 
 /**
