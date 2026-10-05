@@ -73,12 +73,15 @@ export const NO_RESEARCH_TOOLTIP = 'The desk has no research on this name at thi
 export const DASH = String.fromCharCode(0x2014);
 
 /**
- * The standing legend, once per board. Verbatim; "have not been tested against
- * outcomes" is a factual claim that EXPIRES the day any outcome test runs, and
- * is then deleted, never replaced with a result.
+ * The standing legend, once per board. Verbatim from Marketing's words file at
+ * e1220516, with Commercial's ruling 6b (c26daa80): the clause about testing
+ * against outcomes is DELETED and nothing is put in its place. Never "tested",
+ * "validated", "do not predict" or "did not work" on any surface; a result, if
+ * he ever wants one published, is a separate dated page that goes to Commercial
+ * first.
  */
 export const SETUP_GRADE_LEGEND =
-  'Setup grade is the desk’s own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction, not a recommendation, and the grades have not been tested against outcomes. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.';
+  'Setup grade is the desk\'s own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.';
 
 /** The five readings in words, one line per criterion (the drawer's detail lines). */
 export const READING_LINE: Record<Criterion, Record<StoredReading, string>> = {
@@ -97,9 +100,9 @@ export const READING_LINE: Record<Criterion, Record<StoredReading, string>> = {
     NOT_YET: 'The catalyst could not be graded.',
   },
   volume: {
-    STRONG: 'Reads heavy on the desk’s scale.',
-    LIMITED: 'Reads moderate on the desk’s scale.',
-    RISK: 'Reads light on the desk’s scale.',
+    STRONG: 'Reads heavy on the desk\'s scale.',
+    LIMITED: 'Reads moderate on the desk\'s scale.',
+    RISK: 'Reads light on the desk\'s scale.',
     UNKNOWN: 'Volume could not be read.',
     NOT_YET: 'Volume could not be read.',
   },
