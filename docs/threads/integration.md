@@ -1156,6 +1156,13 @@ FLOAT CONFIRMS   The 24th's post-hand-off "Research's TWO confirms owed" are BOT
                  seat: item 7, "Cannot verify" after active issuance. Commercial d9a79a30 s5c: draft v2 PASS 8 of 9, three
                  small corrections to Marketing's page (12b-2 "public float" is a dollar value; below-zero story; condition
                  where the bound is stated).
+NEW WEB SEAT     Web-tmi local_a4c618a8 (get_session: A:\mointel, created 2026-10-05T00:54:52Z, Opus 5.5). Asked 4 things;
+                 answered (452adf62): live = 6e7fff84 web / f5746a84 market; 2fe136ac NOT shipped, NOT cut (read: not an
+                 ancestor of 6e7fff84, not on origin/main; next ordinary release); Sheet step 3 unbuilt, step 4 not reached;
+                 owed: float page (gates: Marketing v3, his look, validation sample; nginx Basic Auth exemption), owed-to-main
+                 sign-in step 4 (d7079581, 32db0d7e, fb50e2ff) after the spot check, Basic-auth-off preconditions, two
+                 unowned step-3 surfaces (mcp tools.ts, review readableSheet), step 7. Old Web chat still titled -tmi.
+MARKETING        Told (355139a4, queued): Research's two confirms settled by 8530f442; item 7 open; v3 to me, then him.
 ```
 
 ## THE TWENTY-FOURTH SEAT'S RUNNING NOTES (opened 2026-10-03T17:04:49Z, `local_f26376f1`, Opus 5.5, effort high)
