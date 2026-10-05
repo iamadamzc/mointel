@@ -14,7 +14,7 @@ const sec = new SecClient({ config: readResearchConfig(process.env).sec });
 const textOf = (html: string) => html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;|&#160;/g, ' ').replace(/\s+/g, ' ');
 const dir = 'A:/mointel/docs/research/float-contract/validation-out-fresh-2026-10-05/names';
 
-interface Record {
+interface NameFile {
   cik: string;
   count: { asOf: string };
   tradingDate: string;
@@ -24,7 +24,7 @@ interface Record {
 
 async function main() {
   for (const ticker of ['GCTK', 'KITT']) {
-    const r = JSON.parse(fs.readFileSync(`${dir}/${ticker}.json`, 'utf8')) as Record;
+    const r = JSON.parse(fs.readFileSync(`${dir}/${ticker}.json`, 'utf8')) as NameFile;
     console.log(`${ticker}: count as-of ${r.count.asOf}, checkpoint ${r.tradingDate}`);
     for (const a of r.audit) {
       if (!/mentions "split": true/.test(a.checks['5_basis']!.note)) continue;
