@@ -1,0 +1,246 @@
+import { describe, expect, it } from 'vitest';
+
+import {
+  floatCell,
+  holdingsAsOf,
+  issuanceFlagged,
+  parseSection16,
+  type FloatCellInput,
+  type OwnerFiling,
+  type OwnerHolding,
+  type Section16Parse,
+} from '@/lib/research/insiderBound';
+import type { SupplyBlock } from '@/lib/research/types';
+
+/**
+ * The insider-only bound. Contract: docs/research/float-contract/contract-2026-10-05.md.
+ * Validation pre-registration: docs/research/float-contract/validation-prereg-2026-10-05.md.
+ *
+ * The case the 10-name harness could not show: a holding DATED AFTER the count's date.
+ * Subtracting it removes shares the count does not contain, and the bound goes too LOW.
+ */
+
+const ok = (p: Section16Parse) => {
+  if (!p.ok) throw new Error(`fixture did not parse: ${p.reason}`);
+  return p;
+};
+
+function form(options: { owners?: number; period?: string; body: string }): string {
+  const owner = '<reportingOwner><reportingOwnerId><rptOwnerCik>0001234567</rptOwnerCik><rptOwnerName>A DIRECTOR</rptOwnerName></reportingOwnerId></reportingOwner>';
+  return `<ownershipDocument><periodOfReport>${options.period ?? '2026-08-01'}</periodOfReport>${owner.repeat(options.owners ?? 1)}${options.body}</ownershipDocument>`;
+}
+
+const tx = (title: string, date: string, after: number, own = 'D') =>
+  `<nonDerivativeTransaction><securityTitle><value>${title}</value></securityTitle><transactionDate><value>${date}</value></transactionDate>` +
+  `<postTransactionAmounts><sharesOwnedFollowingTransaction><value>${after}</value></sharesOwnedFollowingTransaction></postTransactionAmounts>` +
+  `<ownershipNature><directOrIndirectOwnership><value>${own}</value></directOrIndirectOwnership></ownershipNature></nonDerivativeTransaction>`;
+
+const hold = (title: string, after: number) =>
+  `<nonDerivativeHolding><securityTitle><value>${title}</value></securityTitle>` +
+  `<postTransactionAmounts><sharesOwnedFollowingTransaction><value>${after}</value></sharesOwnedFollowingTransaction></postTransactionAmounts>` +
+  `<ownershipNature><directOrIndirectOwnership><value>D</value></directOrIndirectOwnership></ownershipNature></nonDerivativeHolding>`;
+
+describe('parseSection16', () => {
+  it('stands a transaction row at its transactionDate and a holding row at the report period', () => {
+    const parsed = ok(parseSection16(form({ period: '2026-08-20', body: tx('Common Stock', '2026-08-10', 500) + hold('Common Stock', 900) })));
+    expect(parsed.rows).toEqual([
+      { asOf: '2026-08-10', title: 'common stock', shares: 500 },
+      { asOf: '2026-08-20', title: 'common stock', shares: 900 },
+    ]);
+  });
+
+  it('does not attribute a joint filing', () => {
+    const parsed = parseSection16(form({ owners: 2, body: tx('Common Stock', '2026-08-10', 500) }));
+    expect(parsed.ok).toBe(false);
+  });
+
+  it('keeps direct rows only, and common or ordinary titles only', () => {
+    const parsed = ok(
+      parseSection16(
+        form({ body: tx('Common Stock', '2026-08-10', 500, 'I') + tx('Series A Preferred', '2026-08-10', 70) + tx('Ordinary Shares', '2026-08-11', 40) }),
+      ),
+    );
+    expect(parsed.rows).toEqual([{ asOf: '2026-08-11', title: 'ordinary shares', shares: 40 }]);
+  });
+});
+
+function filing(accession: string, filingDate: string, xml: string): OwnerFiling {
+  return { accession, filingDate, parse: ok(parseSection16(xml)) };
+}
+
+describe('holdingsAsOf: the holding must stand at or before the count date', () => {
+  const COUNT_DATE = '2026-08-10';
+  const WINDOW = '2024-08-10';
+
+  it('does NOT use a holding dated after the count; it falls back to the last one before', () => {
+    const rows = holdingsAsOf(
+      [
+        filing('0001', '2026-05-02', form({ body: tx('Common Stock', '2026-05-01', 600_000) })),
+        filing('0002', '2026-09-03', form({ body: tx('Common Stock', '2026-09-01', 900_000) })),
+      ],
+      COUNT_DATE,
+      WINDOW,
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.shares).toBe(600_000);
+    expect(rows[0]!.asOf).toBe('2026-05-01');
+  });
+
+  it('leaves an owner out when every row is after the count', () => {
+    const rows = holdingsAsOf([filing('0002', '2026-09-03', form({ body: tx('Common Stock', '2026-09-01', 900_000) }))], COUNT_DATE, WINDOW);
+    expect(rows).toEqual([]);
+  });
+
+  it('accepts a LATE-filed Form 4 whose transaction stands before the count', () => {
+    const rows = holdingsAsOf(
+      [
+        filing('0001', '2026-05-02', form({ body: tx('Common Stock', '2026-05-01', 600_000) })),
+        filing('0003', '2026-08-25', form({ body: tx('Common Stock', '2026-08-05', 650_000) })),
+      ],
+      COUNT_DATE,
+      WINDOW,
+    );
+    expect(rows[0]!.shares).toBe(650_000);
+  });
+
+  it('sums classes, each at its own latest eligible row across filings', () => {
+    const rows = holdingsAsOf(
+      [
+        filing('0001', '2026-05-02', form({ body: tx('Class A Common Stock', '2026-05-01', 100) })),
+        filing('0002', '2026-06-02', form({ body: tx('Class B Common Stock', '2026-06-01', 40) })),
+      ],
+      COUNT_DATE,
+      WINDOW,
+    );
+    expect(rows[0]!.shares).toBe(140);
+    expect(rows[0]!.accessions).toEqual(['0001', '0002']);
+  });
+
+  it('drops rows older than the filing window', () => {
+    const rows = holdingsAsOf([filing('0001', '2023-05-02', form({ body: tx('Common Stock', '2023-05-01', 600_000) }))], COUNT_DATE, WINDOW);
+    expect(rows).toEqual([]);
+  });
+
+  it('breaks a same-day tie to the later filing', () => {
+    const rows = holdingsAsOf(
+      [
+        filing('0001', '2026-05-02', form({ body: tx('Common Stock', '2026-05-01', 100) })),
+        filing('0002', '2026-05-03', form({ body: tx('Common Stock', '2026-05-01', 120) })),
+      ],
+      COUNT_DATE,
+      WINDOW,
+    );
+    expect(rows[0]!.shares).toBe(120);
+  });
+});
+
+const block = (type: SupplyBlock['type'], status: SupplyBlock['status'], effectiveDate: string | null = null): SupplyBlock => ({
+  type,
+  amountShares: null,
+  dollarCapacity: null,
+  sourceFiling: null,
+  registrationStatus: null,
+  effectiveDate,
+  terms: null,
+  holderRestrictions: null,
+  status,
+  eligibilityAssessment: null,
+  evidenceSourceIds: [1],
+  confidence: 'MEDIUM',
+});
+
+describe('issuanceFlagged', () => {
+  it('flags the share-creating types when KNOWN_ACTIVE', () => {
+    for (const type of ['ATM', 'EQUITY_PURCHASE_AGREEMENT', 'WARRANTS', 'CONVERTIBLES', 'PREFERRED_CONVERSION', 'RECENT_OFFERING', 'PIPE', 'ACQUISITION_SHARES', 'OTHER_ISSUED_SHARES'] as const) {
+      expect(issuanceFlagged([block(type, 'KNOWN_ACTIVE')], 'KNOWN_ACTIVE')).toBe(true);
+    }
+  });
+
+  it('does not flag resale registration or shelf capacity, which create no shares', () => {
+    expect(issuanceFlagged([block('REGISTERED_RESALE', 'KNOWN_ACTIVE'), block('SHELF_CAPACITY', 'KNOWN_ACTIVE')], 'KNOWN_OR_POSSIBLY_ACTIVE')).toBe(false);
+  });
+
+  it('flags POSSIBLY_ACTIVE only under the wider rule', () => {
+    const ledger = [block('WARRANTS', 'POSSIBLY_ACTIVE')];
+    expect(issuanceFlagged(ledger, 'KNOWN_ACTIVE')).toBe(false);
+    expect(issuanceFlagged(ledger, 'KNOWN_OR_POSSIBLY_ACTIVE')).toBe(true);
+  });
+
+  it('never clears a closed-issuance block by its effectiveDate (effectiveness is not issuance)', () => {
+    expect(issuanceFlagged([block('RECENT_OFFERING', 'KNOWN_ACTIVE', '2019-01-01')], 'KNOWN_ACTIVE')).toBe(true);
+  });
+
+  it('ignores NOT_YET_ACTIVE and UNKNOWN', () => {
+    expect(issuanceFlagged([block('ATM', 'NOT_YET_ACTIVE'), block('ATM', 'UNKNOWN')], 'KNOWN_OR_POSSIBLY_ACTIVE')).toBe(false);
+  });
+});
+
+const holding = (ownerCik: string, shares: number): OwnerHolding => ({ ownerCik, ownerName: null, shares, asOf: '2026-05-01', accessions: ['x'] });
+
+function input(overrides: Partial<FloatCellInput> = {}): FloatCellInput {
+  return {
+    cik: '1234',
+    // NXL in the 10-name run: 22,036,402 filed, 617,347 insider shares, bound 21,419,055.
+    count: { shares: 22_036_402, asOf: '2026-08-10' },
+    spreadAcrossFilings: false,
+    checkpointDate: '2026-09-01',
+    maxAgeDays: 45,
+    holdings: [holding('9', 617_347)],
+    holdingSplit: new Map([['9', 'NONE']]),
+    splitSinceCount: 'NONE',
+    ledger: [],
+    issuanceRule: 'KNOWN_ACTIVE',
+    ...overrides,
+  };
+}
+
+describe('floatCell', () => {
+  it('ADMITS the known-clean case (the control): the NXL arithmetic', () => {
+    const cell = floatCell(input());
+    expect(cell).toMatchObject({ state: 'PRODUCED', bound: 21_419_055, subtracted: 617_347 });
+  });
+
+  it('gives each UNKNOWN cause its own reason', () => {
+    expect(floatCell(input({ cik: null }))).toEqual({ state: 'UNKNOWN', reason: 'NO_CIK' });
+    expect(floatCell(input({ spreadAcrossFilings: true }))).toEqual({ state: 'UNKNOWN', reason: 'COUNT_SPLIT_ACROSS_FILINGS' });
+    expect(floatCell(input({ count: null }))).toEqual({ state: 'UNKNOWN', reason: 'NO_FILED_COUNT' });
+  });
+
+  it('reads CANNOT_VERIFY, ISSUANCE_NOT_CHECKED, when there is no dossier', () => {
+    expect(floatCell(input({ ledger: null }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
+  });
+
+  it('reads an empty ledger as PRODUCED, and a flagged one as ISSUANCE_FLAGGED', () => {
+    expect(floatCell(input({ ledger: [] })).state).toBe('PRODUCED');
+    expect(floatCell(input({ ledger: [block('ATM', 'KNOWN_ACTIVE')] }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' });
+  });
+
+  it('enforces the maximum age as a state, in whole days, 45 inclusive', () => {
+    // 2026-08-10 to 2026-09-24 is exactly 45 days.
+    expect(floatCell(input({ checkpointDate: '2026-09-24' })).state).toBe('PRODUCED');
+    expect(floatCell(input({ checkpointDate: '2026-09-25' }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'COUNT_TOO_OLD' });
+  });
+
+  it('refuses a split since the count, found or unproven', () => {
+    expect(floatCell(input({ splitSinceCount: 'FOUND' }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+    expect(floatCell(input({ splitSinceCount: 'UNPROVEN' }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+  });
+
+  it('applies the precedence: issuance before split before age', () => {
+    const old = { checkpointDate: '2027-01-01', splitSinceCount: 'FOUND' as const };
+    expect(floatCell(input({ ...old, ledger: [block('ATM', 'KNOWN_ACTIVE')] }))).toMatchObject({ reason: 'ISSUANCE_FLAGGED' });
+    expect(floatCell(input(old))).toMatchObject({ reason: 'SPLIT_SINCE_COUNT' });
+  });
+
+  it('refuses a HOLDING across a split without changing the state: not subtracted, bound stays higher', () => {
+    const found = floatCell(input({ holdingSplit: new Map([['9', 'FOUND']]) }));
+    expect(found).toMatchObject({ state: 'PRODUCED', bound: 22_036_402, subtracted: 0 });
+    const unproven = floatCell(input({ holdingSplit: new Map() }));
+    expect(unproven).toMatchObject({ state: 'PRODUCED', bound: 22_036_402, refused: [{ ownerCik: '9', why: 'SPLIT_UNPROVEN' }] });
+  });
+
+  it('fails its own range check: insiders at or above the count, or a count dated after the checkpoint', () => {
+    expect(floatCell(input({ holdings: [holding('9', 22_036_402)] }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
+    expect(floatCell(input({ count: { shares: 1000, asOf: '2026-12-01' } }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
+  });
+});
