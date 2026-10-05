@@ -40,17 +40,17 @@ export const FLEX_COLUMNS = ['why', 'risk'] as const;
 type FlexKey = (typeof FLEX_COLUMNS)[number];
 
 /**
- * TODAY'S WIDTHS, UNCHANGED, as the default. Each one was measured on the live
+ * THE DEFAULT WIDTHS. Each one was measured on the live
  * board for a reason recorded beside its header in `DiscoveryBoard.tsx`; `Now`
  * at 68 is the sorted-head fix of 2026-09-25. `null` is a flexible column.
  */
 export const DEFAULT_WIDTHS: Readonly<Record<DiscoveryColumnKey, number | null>> = {
   mark: 24,
-  ticker: 112,
+  ticker: 128,
   price: 172,
   rvol: 68,
   now: 68,
-  float: 84,
+  float: 102,
   why: null,
   risk: null,
   cycle: 152,
@@ -72,10 +72,12 @@ export const RESIZABLE: ReadonlySet<DiscoveryColumnKey> = new Set([
 ]);
 
 /**
- * The least Why and Risk may be squeezed to by another column's drag. At 120 px
+ * The least Why and Risk may be squeezed to by another column's drag. At 130 px
  * a Why cell still carries `B · 16h` and a Risk chip still carries its value.
+ * Raised from 120 with the Sheet reproduction's layout (Ticker 128, Float 102,
+ * Why 130, Risk 130, Cycle 152), measured at the 1,024 px floor.
  */
-export const FLEX_FLOOR = 120;
+export const FLEX_FLOOR = 130;
 
 /** No column is narrower than this whatever its header measures. */
 export const ABSOLUTE_MIN = 32;
