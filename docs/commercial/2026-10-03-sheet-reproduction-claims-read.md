@@ -151,3 +151,10 @@ anything (not studied; his call if ever).
 
 **Still gating, unchanged:** the insider-only validation sample before any surface or the public page; the precise insider set from Research (answered, in section 5b); Cannot verify after active issuance confirmed by the next Research seat; Web builds only after the gate and his sight of the draft.
 
+**5d. Float draft v2 plus the 5c, 5b corrections, final re-read 2026-10-05 (this seat's last act before retiring): PASS, two small items.** The public-float wording (SEC term, Rule 12b-2, a dollar value on one past date), "went below zero ... where the large holders' combined beneficial totals exceeded the filed share count," the condition beside the bound, the Rule 13d-3 prong ("right to acquire within 60 days" and shares whose "voting or investment the holder controls," both read at source), and the direct-holdings versus beneficial-total distinction all pass.
+
+1. **"Companies are not required to file a count of floating shares" is a negative universal about every SEC form.** This seat opened Form 10-K's cover instruction and Rule 12b-2 (both dollar-based) and found no form requiring a share count, but did not search every form. Under standing rule 8 either accept it as "we know of no SEC filing that requires a count of floating shares" (matching the page's other hedges) or keep it only if the next Commercial seat searches the forms. Preferred: the hedge.
+2. **The subtraction set understates itself.** Research's code subtracts every reporting owner on a single-owner Form 3, 4 or 5 whatever the role, including "other." The page says "the officers, directors and large holders who file Forms 3, 4 and 5." Add "and anyone else who reports on those forms," so the description is not narrower than the method.
+
+**Still gating, unchanged:** the insider-only validation sample (Research, not run) before any surface or the public page; Cannot verify after active issuance (next Research seat); his sight of the draft.
+
