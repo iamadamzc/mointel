@@ -1313,6 +1313,18 @@ CLEARANCE ASKED  (owner's FILE must name each sha; the 26th's "cleared in writin
                  010e9031 3cf42bc3 49ea118b. Marketing: 2c93a226 226fbf72 a9ea26a4 5855bf61 4a04b132 7e0472d1. Web: ee5e8763
                  37e1249e. Ops: 280f751e 80097100 b6f8891f 60aa7a07 b2821e53.
 CORRECTION       Web ee5e8763: Basic Auth batch needs `= /enter` too. Verified in code; live state fixed; Ops told.
+OPS /proc        Ops, read off the box 2026-10-05T21:30:35Z: web 2025357 / research 2025415 / assess 2025490 cwd 6e7fff84,
+                 market 2013616 cwd f5746a84, NR 0, /opt/mointel/current -> 6e7fff84, origin/production 6e7fff84. Nothing
+                 shipped since 2026-10-03.
+GATE GREEN       Ops on literal 0f1bf8e2 (clean detached worktree, npm ci): vitest 232 files / 3440 passed / 1 skipped,
+                 eslint 0, next build 0, tsc 0.
+CLEARED          In owners' files or replies, by sha: Research LINE 5 (94e02ce4) + LINE 6 (5fdfe46b: 94e02ce4 db44c74e
+                 3ca325bd 46a865ec 571e5119 010e9031 3cf42bc3 49ea118b 860395a3 85041ad8 21839133); Marketing bc0fc973 (six
+                 + itself); Web reply (ee5e8763 37e1249e a6b358a0); Ops reply (280f751e 80097100 b6f8891f 60aa7a07 b2821e53).
+PUSHED           origin/main ac18ca05..0f1bf8e2 (the gated sha, not main's tip; 42 commits, script cross-check: 33 owner-
+                 cleared, 9 Integration's own). Left local: 860395a3 21839133 (inert code) + docs; Ops asked to gate the tip.
+TO HIM           Looser-A result (Research 85041ad8, read from the committed file): A 5 vs 45 of 719. Put to him as a
+                 keep-or-switch with recommendation KEEP. Old-chat rename/archive asked.
 THE CUT          Ops (280f751e): production 6e7fff84 + picks; PICK LIST IS MINE TO RULE, after the push. Not started.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
