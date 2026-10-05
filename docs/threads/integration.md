@@ -1325,7 +1325,18 @@ PUSHED           origin/main ac18ca05..0f1bf8e2 (the gated sha, not main's tip; 
                  cleared, 9 Integration's own). Left local: 860395a3 21839133 (inert code) + docs; Ops asked to gate the tip.
 TO HIM           Looser-A result (Research 85041ad8, read from the committed file): A 5 vs 45 of 719. Put to him as a
                  keep-or-switch with recommendation KEEP. Old-chat rename/archive asked.
-THE CUT          Ops (280f751e): production 6e7fff84 + picks; PICK LIST IS MINE TO RULE, after the push. Not started.
+THE CUT          RULED to Ops: production 6e7fff84 + 28 picks, order and full shas in my message to Ops (2026-10-05, after
+                 the push): 61e2f777 f1b8b716 8a47e1cf 6ac43025 2fe136ac 08d8d245 2a94fa7c 17e4fa62 4418c741 b865a578
+                 6497285a d023bd94 62dceecd 3e85557a 83dd5c06 ddbad567 8f0cb4c5 837a04d7 c637576a 1d4f31bc fe21c99b
+                 72fd634c 2e30804f 80097100 b6f8891f 60aa7a07 b2821e53 df2712c2 (last one added by me, test-only).
+                 Replayed in a detached scratch worktree (scratchpad/prodwt, no branch): one conflict, b6f8891f
+                 required-env.txt, resolved to main's four keys. TREE 2e93f9918e21638cf141dd58e2d2fec6c4c7bf71, 60 files.
+                 Vs main only readModel.ts (production movers/levels), sync-env.sh, two canvas docs differ. U+2014 + entities
+                 on added lines: 1, a guard regex in a test (control 730). /api/dashboard callers both send the token.
+                 HAZARD named to Ops: production's sync-env.sh lacks six keys main's carries and rewrites the box env; it
+                 refuses without .env.local, which only A:\mointel has; run it from main and read back by name.
+                 NEXT: Ops builds + full-gates; I replay its literal tip (patch-ids, tree) and approve the order. His go
+                 is Ops's to ask. Remove scratchpad/prodwt (git worktree remove) after that replay.
 RESEARCH OWES    priorityGrade fn + tests, then Ops/assess stores 3 columns, then Design badge; looser-A simulation ($0);
                  float build (span reader, wiring, table, 90-day face; depends on Ops's deploy-memory ruling); issuance-flag
                  miss rate UNMEASURED at every age: say it to him once more before any page claims more than
