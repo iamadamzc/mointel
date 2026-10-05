@@ -252,6 +252,13 @@ describe('the report reads the dossier without citation tokens (RPGL "[1043]")',
     expect(reportResearch(version({ businessDescription: BUSINESS }), SOURCES).company.business).toContain('[1043]');
   });
 
+  it('drops a 5-digit bracket with no owned ids at all (the form production stored on 2026-10-01)', () => {
+    const research = reportResearch(version({ businessDescription: 'A group [30265] listed in [2026].' }), SOURCES);
+    expect(research.company.business).toBe('A group listed in [2026].');
+    const withOwned = reportResearch(version({ businessDescription: 'A group [30265] listed in [2026].' }), SOURCES, new Set([1043]));
+    expect(withOwned.company.business).toBe('A group listed in [2026].');
+  });
+
   it('reads the ids from the store: its own ticker only (the pipeline wiring)', () => {
     const db = temporaryDb();
     const mine = insertResearchSources(db, [newSource('SANG', 'a'), newSource('SANG', 'b')]);
