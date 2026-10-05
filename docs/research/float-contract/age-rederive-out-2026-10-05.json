@@ -1,0 +1,58 @@
+{
+  "source": "docs/research/short-interest-calibration/out/viewtime-raw-2026-09-15.json",
+  "population": "EVALUATED pairs; ages as of each pair settlement date",
+  "combined": {
+    "all": {
+      "n": 422,
+      "noCount": 74,
+      "withCount": 348,
+      "age": {
+        "le45": 171,
+        "le90": 204,
+        "le120": 218,
+        "le180": 240,
+        "over180": 108
+      },
+      "countOnOrAfterSettlement": 66
+    },
+    "domestic": {
+      "n": 242,
+      "noCount": 61,
+      "withCount": 181,
+      "age": {
+        "le45": 138,
+        "le90": 160,
+        "le120": 167,
+        "le180": 173,
+        "over180": 8
+      },
+      "countOnOrAfterSettlement": 59
+    },
+    "foreign": {
+      "n": 180,
+      "noCount": 13,
+      "withCount": 167,
+      "age": {
+        "le45": 33,
+        "le90": 44,
+        "le120": 51,
+        "le180": 67,
+        "over180": 100
+      },
+      "countOnOrAfterSettlement": 7
+    }
+  },
+  "sourceA": {
+    "n": 422,
+    "noCount": 86,
+    "withCount": 336,
+    "age": {
+      "le45": 137,
+      "le90": 158,
+      "le120": 172,
+      "le180": 193,
+      "over180": 143
+    },
+    "countOnOrAfterSettlement": 58
+  }
+}
