@@ -1,0 +1,73 @@
+{
+ "names": 36,
+ "withCount": 30,
+ "noCount": 6,
+ "splitSinceCountAmongCounted": {
+  "UNPROVEN": 28,
+  "NONE": 1,
+  "FOUND": 1
+ },
+ "holdingLevelSplitProofs": {
+  "NONE": 31,
+  "FOUND": 17,
+  "UNPROVEN": 17
+ },
+ "countedWithoutDossierLedger": 0,
+ "countAgeDaysSorted": [
+  40,
+  48,
+  49,
+  49,
+  50,
+  51,
+  52,
+  53,
+  54,
+  55,
+  56,
+  58,
+  59,
+  61,
+  64,
+  90,
+  272,
+  272,
+  272,
+  272,
+  273,
+  273,
+  273,
+  274,
+  274,
+  458,
+  547,
+  637,
+  639,
+  698
+ ],
+ "issuanceFlagged": {
+  "knownActive": 14,
+  "knownOrPossiblyActive": 21
+ },
+ "drawDates": [
+  "2026-09-28",
+  "2026-09-29",
+  "2026-09-30",
+  "2026-10-01"
+ ],
+ "wouldPassIfOnlyThisGate": {
+  "age45": 1,
+  "age90": 16,
+  "age120": 16,
+  "splitProofNone": 1,
+  "noKnownActiveIssuance": 16,
+  "noKnownOrPossiblyActiveIssuance": 9
+ },
+ "wouldPassIgnoringSplitProof": {
+  "age45_known": 1,
+  "age90_known": 7,
+  "age120_known": 7,
+  "age90_knownOrPossibly": 3,
+  "age120_knownOrPossibly": 3
+ }
+}
