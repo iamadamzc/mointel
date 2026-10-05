@@ -1223,6 +1223,11 @@ MARKETING v4     Marketing (local_fdc0aa9a, HANDING OFF; successor carries float
                  the OLD cell ("no more than X shares, from SEC filings as of", "Cannot verify"); must name the face
                  Commercial passes. Draft must be committed into the tree. NOT TO HIM until page + cell agree and Commercial
                  passes the face (needs Research's age gate). The next Marketing seat's first ask: give it this line.
+                 UPDATE (Marketing, handed off): "Unverified" WITHDRAWN; cell keeps "Cannot verify" on TWO lines. Faces:
+                 "≤ 12.3M" / "Unknown" / "Cannot verify". Page now agrees on Unknown + Cannot verify; STILL DISAGREES on the
+                 bound (page: cell reads "no more than X shares, from SEC filings as of"; cell: "≤ 12.3M"). Commercial's
+                 open judgments: item 7 (date in popover) AND item 3 (conditional only in popover), both on Research's age
+                 gate. Commercial told.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
