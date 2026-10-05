@@ -1410,6 +1410,10 @@ ROW HEIGHT       Design CORRECTED its own earlier "two lines cost no row height"
                  10 of 12 rows to 56 px (~one visible row per screen). "Not computed" 79.2 px (2 lines), "Not run" 46.2 (1).
                  Retraction sent to Marketing. OPTION to Design (my arithmetic, unmeasured): widen Float 84 -> ~102 px so
                  "Cannot verify" (85.7) and "Not computed" (79.2) fit one line; Why/Risk ~130 each vs 120 floor. Measure first.
+                 MEASURED (Design, 5fe3997f local board, 08-18, 1,024, real resize code): Ticker 128 / Float 102 / Why 130 /
+                 Risk 130 / Cycle 152, table 982 in 982, 0 overflow; every face ONE line ("Cannot verify" 83.7 px, 2.3 spare).
+                 Cost: Why/Risk wrap makes 2 rows 42 -> 51 and 2 rows 59 -> 61. APPROVED by me (layout within his rulings).
+                 Marketing: no rewording; drop "two lines" wording from the file.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
