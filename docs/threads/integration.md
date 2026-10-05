@@ -1309,6 +1309,8 @@ OWED-TO-MAIN     PUT TO OWNERS (trigger met), by subject read per sha: WEB d7079
                  Deadline: before the next ordinary release cut (fallback: I chase at that cut). Settled: dff3fb0a, f5746a84.
                  BLUE SKY: Research read all 3 OWED (no ancestor, no twin; diff main..production blueSky.ts +115/-14) and
                  DECLINED (not author). REASSIGNED TO DESIGN with a50f5948; pick order d8c4e5f1, 3653f814, 9ee3b50b.
+                 Research STRUCK its aside "my work there was b36afd15 and a036a854" (authorship not checked; they are only
+                 main's two older blueSky commits). I never relayed that line; nothing to retract.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
