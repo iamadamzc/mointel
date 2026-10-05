@@ -1,0 +1,51 @@
+{
+  "rows": 719,
+  "thresholds": {
+    "rvolStrong": 10,
+    "rvolRisk": 2,
+    "spreadStrong": 1,
+    "spreadRisk": 5,
+    "dollarStrong": 5000000,
+    "dollarRisk": 500000
+  },
+  "perCriterion": {
+    "structure": {
+      "STRONG": 29,
+      "NOT_YET": 147,
+      "UNKNOWN": 419,
+      "LIMITED": 107,
+      "RISK": 17
+    },
+    "catalyst": {
+      "LIMITED": 292,
+      "NOT_YET": 147,
+      "UNKNOWN": 112,
+      "STRONG": 104,
+      "RISK": 64
+    },
+    "volume": {
+      "STRONG": 380,
+      "RISK": 73,
+      "LIMITED": 266
+    },
+    "liquidity": {
+      "UNKNOWN": 212,
+      "RISK": 114,
+      "STRONG": 158,
+      "LIMITED": 235
+    },
+    "supply": {
+      "UNKNOWN": 117,
+      "NOT_YET": 147,
+      "LIMITED": 332,
+      "RISK": 123
+    }
+  },
+  "grades": {
+    "B": 293,
+    "NOT_GRADED": 213,
+    "D": 199,
+    "A": 5,
+    "C": 9
+  }
+}
