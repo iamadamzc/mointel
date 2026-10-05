@@ -1301,6 +1301,12 @@ MAIN LANDED      Merged b719f4e9 (split-to-main 08d8d245) + 00c0cdfa (lint 7b696
                  cleared all 9 of its commits in writing (3 branch + lint + 4 charter: 8661a1f0, 1aaeebef, cd16720b,
                  93655ea2). Listed as own step (13 / 0); pushed 96a82b6d..00c0cdfa; 0 / 0. The SPLIT FIX IS ON MAIN; owed-to-
                  main list loses dff3fb0a + f5746a84. Main's lint error on server-only-trace.cjs fixed.
+OWED-TO-MAIN     PUT TO OWNERS (trigger met), by subject read per sha: WEB d7079581, 32db0d7e, fb50e2ff (sign-in step 4);
+                 DESIGN a50f5948, 2a625a5b, a4a06168, 185cea37, 6e7fff84; RESEARCH (lib/market has no owner; reassign if it
+                 declines) blue sky d8c4e5f1, 3653f814, 9ee3b50b; OPS movers, levels/history, v28 (first), reports runner
+                 a7389325 + 68b2a9af (subject "Ops:", not Research/Design as the live state said), Now/evening, 46d9f9d3,
+                 84b00991. Each answers EQUIVALENT (main sha) / OWED (pick off origin/main, I replay) / RELEASE-ONLY.
+                 Deadline: before the next ordinary release cut (fallback: I chase at that cut). Settled: dff3fb0a, f5746a84.
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
