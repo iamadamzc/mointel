@@ -1573,6 +1573,8 @@ INSTALLED        On his "you do it" (2026-10-05T23:51:01.179Z, his turn): wrote 
                  the tested script) and .claude/settings.json (valid JSON); ran the hook as configured: valid SessionStart
                  JSON. NOT COMMITTED (untracked; his commit question open). Takes effect for sessions that START after
                  now (new chats and resets). Seats told.
+COMMITTED        On his "commit it" (2026-10-05T23:53:08.895Z): 7e4ec76e (.claude/settings.json + .claude/hooks/on-clear.sh
+                 only, --only). Local main; rides the next push after Ops's main-tip gate (config, no app code). Integration's own.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
