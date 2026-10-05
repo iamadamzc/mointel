@@ -1191,6 +1191,10 @@ DESIGN 1,024     MEASURED (Design, production 6e7fff84, 08-18 board 12 rows, tab
                  "Cannot verify" (Commercial items 7, 8) unmeasured, two words, may wrap; (2) Commercial item 7 puts the
                  filed count's date IN the cell; Design's B moves it to the popover: claims question for Marketing + new
                  Commercial, not layout. Build waits on Research's contract.
+                 "Cannot verify" MEASURED (Design, Geist Mono 11 px on the public site at 68 px, checked within 1.4 px vs 5
+                 values from the real desk cell; known wraps reproduce): 85.7 px, WRAPS to 2 lines; "Unknown" 46 px fits;
+                 <= 9 capitals fit, 10 ~66 px edge. Relayed to Marketing with the two options (2-line cell, or shorter cell
+                 word + full Commercial text in popover; the latter is a change to a Commercial-named state -> new Commercial).
 ```
 **THE TWENTY-FIFTH SEAT'S LEDGER:**
 ```
