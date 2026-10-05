@@ -19,11 +19,14 @@ export default async function DashboardPage() {
    * refused   -> forbidden(): a 403 rendering `app/forbidden.tsx`, the one
    *   NotAdmitted screen. Never a 200: a denial that rendered 200 has already
    *   happened on this desk once (README section 2).
+   * unaccepted -> /enter, the entry gate (2026-10-05, Commercial 12b): no desk
+   *   content before the current disclaimer is accepted.
    * A store that cannot open throws here and the page is a 500, never the board.
    */
   const admission = admissionForSession((await cookies()).get(SESSION_COOKIE)?.value);
   if (admission.state === 'anonymous') redirect('/signin');
   if (admission.state === 'refused') forbidden();
+  if (admission.state === 'unaccepted') redirect('/enter');
 
   // Server-rendered first paint; the client then polls /api/dashboard.
   const initialState = await getDashboardState();

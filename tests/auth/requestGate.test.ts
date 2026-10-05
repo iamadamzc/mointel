@@ -10,9 +10,11 @@ import {
   inviteEmail,
   linkIdentity,
   openIdentityStore,
+  recordEntryAcceptance,
   revokeEmail,
   type IdentityDatabase,
 } from '@/lib/auth/store';
+import { ENTRY_GATE_VERSION } from '@/lib/legal/entryGate';
 
 /*
  * The gate the board and its API pass through, on a REAL identity store. The
@@ -46,10 +48,13 @@ function store(): IdentityDatabase {
 
 const FUTURE = { etDate: '2099-01-01', expiresAt: new Date(Date.now() + 3_600_000) };
 
-function sessionFor(db: IdentityDatabase, email: string, invited: boolean): string {
+/** An invited user here has also accepted the current entry text unless told otherwise. */
+function sessionFor(db: IdentityDatabase, email: string, invited: boolean, accepted = true): string {
   const { userId } = linkIdentity(db, { provider: 'google', subject: `sub-${email}`, email, emailVerified: true });
   if (invited) inviteEmail(db, email, 'test');
-  return createSession(db, userId, FUTURE).id;
+  const id = createSession(db, userId, FUTURE).id;
+  if (invited && accepted) recordEntryAcceptance(db, userId, ENTRY_GATE_VERSION, id);
+  return id;
 }
 
 function request(cookie?: string): Request {
@@ -78,6 +83,15 @@ describe('gateApiRequest on a real store', () => {
     const db = store();
     const id = sessionFor(db, 'stranger@example.com', false);
     expect(gateApiRequest(request(`${SESSION_COOKIE}=${id}`), db)?.status).toBe(403);
+  });
+
+  it('unaccepted: invited but the entry gate not accepted is 403 "not accepted", no-store', async () => {
+    const db = store();
+    const id = sessionFor(db, 'new@example.com', true, false);
+    const response = gateApiRequest(request(`${SESSION_COOKIE}=${id}`), db);
+    expect(response?.status).toBe(403);
+    expect(response?.headers.get('Cache-Control')).toContain('no-store');
+    expect(await response?.json()).toEqual({ error: 'not accepted' });
   });
 
   it('admitted: a live session for an invited address passes (null)', () => {

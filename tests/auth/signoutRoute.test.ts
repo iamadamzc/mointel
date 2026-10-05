@@ -66,15 +66,19 @@ describe('POST /auth/signout', () => {
 
     const res = await POST(signoutRequest(`${SESSION_COOKIE}=${id}`));
 
-    expect(res.status).toBe(200);
+    // 303 to the public page: its callers are plain forms, and 200 with no
+    // body would leave the browser on a blank page.
+    expect(res.status).toBe(303);
+    expect(res.headers.get('location')).toBe('/');
     expect(clearsSessionCookie(res)).toBe(true);
     // The handler's own connection revoked the row; the seed connection sees it.
     expect(resolveSession(seed, id)).toBeNull();
   });
 
-  it('is idempotent with no session cookie: 200 and still clears', async () => {
+  it('is idempotent with no session cookie: 303 to / and still clears', async () => {
     const res = await POST(signoutRequest());
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(303);
+    expect(res.headers.get('location')).toBe('/');
     expect(clearsSessionCookie(res)).toBe(true);
   });
 

@@ -7,7 +7,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
  */
 
 const state = vi.hoisted(() => ({
-  admission: { state: 'anonymous' } as { state: 'anonymous' } | { state: 'refused' | 'admitted'; userId: number },
+  admission: { state: 'anonymous' } as
+    | { state: 'anonymous' }
+    | { state: 'refused' | 'unaccepted' | 'admitted'; userId: number },
   cookie: undefined as string | undefined,
   seen: [] as Array<string | undefined>,
   owner: false,
@@ -70,6 +72,14 @@ describe('/desk', () => {
     expect(state.seen).toEqual(['sid']);
     expect(getDashboardState).toHaveBeenCalledTimes(1);
     expect(redirect).not.toHaveBeenCalled();
+    expect(forbidden).not.toHaveBeenCalled();
+  });
+
+  it('unaccepted: redirects to /enter (the entry gate) and reads no desk data', async () => {
+    state.cookie = 'sid';
+    state.admission = { state: 'unaccepted', userId: 7 };
+    await expect(DashboardPage()).rejects.toThrow('REDIRECT /enter');
+    expect(getDashboardState).not.toHaveBeenCalled();
     expect(forbidden).not.toHaveBeenCalled();
   });
 

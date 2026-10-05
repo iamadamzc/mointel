@@ -66,9 +66,16 @@ const NO_STORE = { 'Cache-Control': 'no-store, max-age=0' };
  * folds both into one "Signed out: frozen" line (`lib/dashboard/feedFailure.ts`)
  * so it never says which of the two the server thought, and the store folds
  * never-invited and revoked into one `false` for the same reason.
+ *
+ * `unaccepted` (invited, entry gate not accepted) is 403 with its own body,
+ * "not accepted": that person is on the allowlist, so naming the state tells
+ * them nothing about who else is, and a reload sends them to /enter.
  */
 export function apiRefusal(admission: Admission): NextResponse | null {
   if (admission.state === 'admitted') return null;
+  if (admission.state === 'unaccepted') {
+    return NextResponse.json({ error: 'not accepted' }, { status: 403, headers: NO_STORE });
+  }
   const status = admission.state === 'anonymous' ? 401 : 403;
   return NextResponse.json({ error: 'not admitted' }, { status, headers: NO_STORE });
 }
