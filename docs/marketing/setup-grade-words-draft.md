@@ -48,6 +48,8 @@ A produced-but-unreadable name never prints a dash, and a name with no research 
 
 ## 4. The standing legend (once per board, not per row)
 
+**The clause "the grades have not been tested against outcomes" in the sentence below EXPIRED on 2026-10-05; see 4a before this legend ships. Do not publish the legend as written here.**
+
 "Setup grade is the desk's own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction, not a recommendation, and the grades have not been tested against outcomes. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read."
 
 *No link and no "see the rubric" placeholder: the published rubric page carries decision 3's thresholds and, when it exists, comes to Commercial before it ships. "The grades have not been tested against outcomes" is tied to a flag and changed in the same commit as the first outcome test; at expiry the clause is DELETED, never replaced with a result (any statement of how grades did is an outcome claim and goes back to Commercial). Research's simulation measures no outcome and does not trigger the expiry.*
