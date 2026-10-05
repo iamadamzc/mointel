@@ -158,9 +158,17 @@ describe('the Retry control is offered to the owner alone', () => {
     expect(render({ ...BASE, canRetryResearch: true })).toContain('Retry analysis');
   });
 
-  it('hides for every other viewer, for a reviewer, and on a desk that never said who is looking', () => {
-    expect(render(BASE)).toBe('');
-    expect(render({ ...BASE, readOnly: true, canRetryResearch: true })).toBe('');
-    expect(render(null)).toBe('');
+  it('offers no button to every other viewer, a reviewer, or a desk that never said who is looking, and says so plainly', () => {
+    const LINE = 'It runs again if new information about it arrives.';
+    for (const html of [
+      render(BASE),
+      render({ ...BASE, readOnly: true, canRetryResearch: true }),
+      render(null),
+    ]) {
+      expect(html).not.toContain('<button');
+      expect(html).not.toContain('Retry analysis');
+      expect(html).toContain(LINE);
+    }
+    expect(render({ ...BASE, canRetryResearch: true })).not.toContain(LINE);
   });
 });
