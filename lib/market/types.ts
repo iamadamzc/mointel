@@ -10,6 +10,7 @@ import type { ActivityState, PriceWindow } from './activity';
 import type { BlueSkyState } from './blueSky';
 import type { FloatBound } from '../dashboard/floatBound';
 import type { SetupGrade } from '../dashboard/setupGrade';
+import type { Confirmation, PmCatalyst } from '../desk/morningRead';
 import type { SessionExtremesSet, SessionOpenSet, SessionVwapSet } from './vwap';
 
 export type MarketFeed = 'sip' | 'iex' | 'simulator' | 'test';
@@ -835,6 +836,17 @@ export interface MarketSnapshot {
    * float job's to define; this is the consumer's provisional type.
    */
   floatBounds?: Record<string, FloatBound | null>;
+  /**
+   * The morning read of the evening call (contract rows 22 and 21): Research's
+   * `morningReadOf` for the snapshot's trading date at the moment of the read,
+   * carried WITH ITS FRAME so a name's absence is never guessed (Integration
+   * 29th's ruling, 2026-10-06): the field absent means not wired; `morningAt`
+   * null means no morning checkpoint yet; a name on the morning checkpoint and
+   * missing from `byTicker` was not on the evening recap (prints nothing); a
+   * name not on the morning checkpoint has no morning check. `unreadable` is a
+   * fault and reads Unknown, never an absence.
+   */
+  morningRead?: MorningReadPayload;
   events: DeskEvent[];
   /**
    * The instant a catalyst must be newer than to band FRESH: the PRIOR
@@ -859,3 +871,15 @@ export interface MarketSnapshot {
   catalystFreshFrom: string | null;
   fetchedAt: string;
 }
+
+/** `MarketSnapshot.morningRead`: Research's `morningReadOf` frame, as it travels on the wire. */
+export type MorningReadPayload =
+  | {
+      morningAt: string | null;
+      eveningAt: string | null;
+      /** Every name on the chosen morning checkpoint, in its stored order. */
+      morningTickers: string[];
+      /** Names on both checkpoints; a morning name missing here was not on the evening recap. */
+      byTicker: Record<string, { confirmation: Confirmation; pmCatalyst: PmCatalyst }>;
+    }
+  | { unreadable: true };
