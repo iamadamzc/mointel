@@ -89,13 +89,18 @@ describe('the after-hours line (today only)', () => {
     expect(line.parts?.volume.hover).toBe('Counts only trades after the bell.');
   });
 
-  it("before today's close arrives: the percent cell reads No close (only its baseline is missing)", () => {
+  it("before today's daily bar: the percent reads No final close, true beside the provisional close shown above", () => {
     const line = after({ percentChange: null }, { ...PRIOR, referenceRthCloseBasis: 'PRIOR_SESSION' });
     expect(line.parts?.percent).toEqual({
       state: 'UNKNOWN',
-      text: 'No close',
-      hover: 'The desk has no regular-session close to measure the change from.',
+      text: 'No final close',
+      hover: "The change is measured from the daily bar's close for Aug 17, 2026, which the desk does not have.",
     });
+  });
+
+  it('with no close shown at all, the percent reads No close', () => {
+    const line = after({ percentChange: null }, { ...PRIOR, referenceRthCloseBasis: 'PRIOR_SESSION', rthFinal: frozen(null) });
+    expect(line.parts?.percent).toEqual({ state: 'UNKNOWN', text: 'No close', hover: 'The desk has no close to measure the change from.' });
     expect(line.parts?.price.state).toBe('PRODUCED');
   });
 
