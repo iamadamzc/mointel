@@ -89,8 +89,9 @@ import {
   toEvidenceLink,
   type AutoIntelligence,
 } from '../research/view';
-import type { DemandState, DiscoveryState, MarketFeedHealth, MarketSnapshot } from './types';
+import type { DemandState, DiscoveryState, MarketFeedHealth, MarketSnapshot, MorningReadPayload } from './types';
 import { catalystFreshFromUtc } from '../research/freshFrom';
+import { morningReadOf } from '../desk/morningRead';
 
 const globalStore = globalThis as typeof globalThis & {
   __momentumMarketDb?: { db: MarketDatabase; path: string } | null;
@@ -459,6 +460,48 @@ function readNowBuckets(
   }
 }
 
+/*
+ * THE MORNING READ (contract rows 22 and 21), Research's `morningReadOf` for the
+ * snapshot's trading date, carried with its frame (Integration 29th's ruling).
+ * Cached for a minute per store and date: every poll, the health probe, MCP and
+ * diagnostics all build a snapshot, and the read parses two checkpoints'
+ * dossiers. A minute is the most a newly completed checkpoint waits to show. A
+ * read that throws is a FAULT and travels as `unreadable` (the drawer reads
+ * Unknown), never as an absent field (which means not wired) or an empty frame
+ * (which means no morning checkpoint yet).
+ */
+const MORNING_READ_TTL_MS = 60_000;
+let morningReadCache: { key: string; at: number; value: MorningReadPayload } | null = null;
+
+export function resetMorningReadCache(): void {
+  morningReadCache = null;
+}
+
+export function readMorningRead(db: MarketDatabase, dbPath: string, tradingDate: string, now: Date): MorningReadPayload {
+  const key = `${dbPath}|${tradingDate}`;
+  if (morningReadCache && morningReadCache.key === key && now.getTime() - morningReadCache.at < MORNING_READ_TTL_MS) {
+    return morningReadCache.value;
+  }
+  let value: MorningReadPayload;
+  if (!tradingDate) {
+    value = { morningAt: null, eveningAt: null, morningTickers: [], byTicker: {} };
+  } else {
+    try {
+      const read = morningReadOf(db, tradingDate, now.toISOString());
+      value = {
+        morningAt: read.morningAt,
+        eveningAt: read.eveningAt,
+        morningTickers: [...read.morningTickers],
+        byTicker: Object.fromEntries(read.byTicker),
+      };
+    } catch {
+      value = { unreadable: true };
+    }
+  }
+  morningReadCache = { key, at: now.getTime(), value };
+  return value;
+}
+
 export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSnapshot {
   const config = loadMarketConfig();
   const fetchedAt = new Date().toISOString();
@@ -736,6 +779,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
        * session's.
        */
       catalystFreshFrom: catalystFreshFromUtc(db, tradingDate),
+      morningRead: readMorningRead(db, config.dbPath, tradingDate, new Date()),
       fetchedAt,
     };
   } catch (error) {
