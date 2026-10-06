@@ -578,10 +578,10 @@ export interface EvidenceRisk {
   evidenceSourceIds: number[];
   /**
    * Set when a guardrail removed the text: the rule, the shape, and the removed
-   * sentence for the audit of the removal rate. NOT safe to serve: the board payload carries the whole dossier (readModel.ts), so this must be stripped server-side before any surface.
+   * sentence is NOT stored (Integration 29th): the board payload carries the whole dossier (readModel.ts), and refused text about a named company is not kept.
    * Absent on the model's own output, before validation.
    */
-  removed?: { rule: EvidenceRiskRule; detail: string; text: string | null } | null;
+  removed?: { rule: EvidenceRiskRule; detail: string } | null;
 }
 
 export interface ResearchDossier {

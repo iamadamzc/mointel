@@ -47,9 +47,9 @@ describe('validateEvidenceRisk', () => {
     expect(rule(FILLED, [])).toBe('RISK_REQUIRES_SOURCE');
     expect(rule(FILLED, [2, 9])).toBe('RISK_REQUIRES_SOURCE');
     expect(kept(FILLED, [2])).toBe(FILLED);
-    // The removal keeps the ids and the removed sentence for the audit.
+    // The removal keeps the ids, the rule and the shape; the removed sentence is not stored.
     expect(run(FILLED, [9])).toEqual({
-      text: null, evidenceSourceIds: [9], removed: { rule: 'RISK_REQUIRES_SOURCE', detail: 'source id 9 is not in the bundle', text: FILLED },
+      text: null, evidenceSourceIds: [9], removed: { rule: 'RISK_REQUIRES_SOURCE', detail: 'source id 9 is not in the bundle' },
     });
   });
 
@@ -126,7 +126,7 @@ describe('evidenceRiskState', () => {
     expect(evidenceRiskState(produced, 2)).toEqual({ state: 'NOT_YET' });
     expect(evidenceRiskState(produced, null)).toEqual({ state: 'NOT_YET' });
     expect(evidenceRiskState(produced, 3)).toEqual({ state: 'PRODUCED', text: FILLED, evidenceSourceIds: [1] });
-    const removed = { evidenceRisk: { text: null, evidenceSourceIds: [1], removed: { rule: 'RISK_SHARES_RULE' as const, detail: 'x', text: 'The float is 2 million.' } } };
+    const removed = { evidenceRisk: { text: null, evidenceSourceIds: [1], removed: { rule: 'RISK_SHARES_RULE' as const, detail: 'x' } } };
     expect(evidenceRiskState(removed, 3)).toEqual({ state: 'UNKNOWN', removedBy: 'RISK_SHARES_RULE' });
     expect(evidenceRiskState({}, 3)).toEqual({ state: 'UNKNOWN', removedBy: null });
   });

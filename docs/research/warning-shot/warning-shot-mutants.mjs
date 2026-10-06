@@ -47,6 +47,9 @@ const M = [
   ['W27', ER, 'risk.text?.trim() || null', 'risk.text ?? null', 2, 'the text not trimmed; a blank read as a sentence', 'V1, V10'],
   // Added with Commercial 7e's example change (6655d652), before any run; W1-W27 re-checked against the changed tests: unchanged.
   ['W28', ER, "[/[{}]/, 'template placeholder'],", '', 1, 'rule 3: the copied placeholder admitted', 'V1'],
+  // Added with the no-store change (Integration 29th), before its run; W1-W28 re-checked against the changed tests
+  // (V2 and S1 lose the stored text, I1 gains a not-stored assertion): unchanged.
+  ['W29', ER, 'removed: { rule, detail } };', 'removed: { rule, detail, text: risk.text } };', 2, 'the removed sentence stored again', 'V2, I1'],
 ];
 
 if (process.argv.includes('--dry')) {

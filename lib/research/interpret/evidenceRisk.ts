@@ -128,7 +128,9 @@ function shareCounts(dossier: ResearchDossier, bundle: ResearchEvidenceBundle): 
 }
 
 function removed(risk: EvidenceRisk, rule: EvidenceRiskRule, detail: string): EvidenceRisk {
-  return { text: null, evidenceSourceIds: risk.evidenceSourceIds, removed: { rule, detail, text: risk.text } };
+  // The removed sentence is NOT stored (Integration 29th): the board payload carries the whole dossier, and refused text
+  // about a named company is not kept. Only the rule and the shape (or the one matched word) remain.
+  return { text: null, evidenceSourceIds: risk.evidenceSourceIds, removed: { rule, detail } };
 }
 
 /**

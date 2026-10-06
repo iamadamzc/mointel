@@ -395,6 +395,8 @@ describe('structural guardrails', () => {
     expect(modal.violations).toEqual(base.violations);
     expect(modal.ok).toBe(base.ok);
     expect(modal.dossier.evidenceRisk).toMatchObject({ text: null, removed: { rule: 'RISK_FORBIDDEN_WORDING' } });
+    // The refused sentence is stored nowhere in the dossier the board serves.
+    expect(JSON.stringify(modal.dossier)).not.toContain('could expire');
     // An id outside the bundle removes the sentence; it does not REJECT the dossier as SOURCE_ID_MUST_EXIST would.
     const foreign = validateDossier(dossier({ evidenceRisk: { text: FILLED_RISK, evidenceSourceIds: [999] } }), bundle());
     expect(foreign.violations).toEqual(base.violations);
