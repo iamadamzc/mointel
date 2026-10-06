@@ -13,6 +13,8 @@ import { boardCounts } from '@/lib/dashboard/boardCounts';
 import { cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { Graveyard } from '@/components/Graveyard';
 import { FocusStrip } from '@/components/FocusStrip';
+import { FeedBanner } from '@/components/FeedBanner';
+import { feedBanner } from '@/lib/dashboard/feedBanner';
 import { BriefingLine, InlineBriefing, ReportWindow } from '@/components/SessionReports';
 import {
   effectiveView,
@@ -340,6 +342,20 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
    * and the live board returns by itself when the session starts.
    */
   const offHours = isOffHoursEmpty(discovery?.sessionPhase, merged.discovery.length);
+  /*
+   * "NOT UPDATING" (beta path T3): the board keeps its last numbers in both
+   * failure cases, so it must say when they are not current. The times are the
+   * desk's own stamps, never this page's clock (`lib/dashboard/feedBanner.ts`).
+   */
+  const banner = feedBanner({
+    failure: market.failure,
+    hasSnapshot: market.snapshot !== null,
+    receivedAt: market.snapshot?.fetchedAt ?? null,
+    health: market.snapshot?.marketHealth ?? null,
+    dataAt: market.snapshot?.health.lastMessageAt ?? null,
+    simulated: market.snapshot?.health.mode === 'SIMULATOR' || market.snapshot?.health.mode === 'TEST',
+    nowIso: new Date(now).toISOString(),
+  });
   const selectedAssessment = effectiveView(viewChoice, offHours, recapToOpen(assessments));
 
   /*
@@ -415,6 +431,8 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           setupGradeWired={market.snapshot?.setupGrades != null}
         />
       </MarketSummary>
+
+      <FeedBanner banner={banner} />
 
       {/*
         * Hierarchy: the compact Focus strip, then Discovery as the dominant
