@@ -78,7 +78,7 @@ const recapV2: NarrativeFacts = {
 
 describe('narrativeSheet v2: the given facts, worded exactly as the model must use them', () => {
   it('intraday: the leader, then the next covered gainer, whole percents with basis, news, cycle and change notes; nothing else', () => {
-    const sheet = narrativeSheet(intradayV2, RANGE);
+    const sheet = narrativeSheet(intradayV2);
     expect(sheet[0]).toBe(
       'leader (ranked first in this range): AAA, up 68 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst\'s own figure): A distribution agreement.; cycle: fresh frontside',
     );
@@ -89,7 +89,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
   });
 
   it('recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts', () => {
-    const sheet = narrativeSheet(recapV2, RANGE);
+    const sheet = narrativeSheet(recapV2);
     expect(sheet).toContain('ran at least 50 percent above the prior close, on the day: 9');
     expect(sheet).toContain('of those, gave the entire move back (closed at or below the prior close): 0');
     expect(sheet).toContain('of those, kept at least half of the peak gain at the close: 4');

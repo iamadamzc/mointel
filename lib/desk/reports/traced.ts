@@ -262,7 +262,7 @@ export function researchAllowance(research: ReportResearch | null): ResearchAllo
 }
 
 /** A claimed date matches when an allowed one agrees on every part the claim states. */
-function dateAllowed(claim: string, allowed: ReadonlySet<string>): boolean {
+export function dateAllowed(claim: string, allowed: ReadonlySet<string>): boolean {
   for (const day of allowed) {
     if (claim === day) return true;
     if (/^\d{4}-\d{2}$/.test(claim) && day.startsWith(claim)) return true;

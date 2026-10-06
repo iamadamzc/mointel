@@ -107,8 +107,8 @@ function fixture(catalyst: Partial<ResearchDossier['catalyst']> = {}): MarketDat
   return db;
 }
 
-// Worded from the fixture's computed facts: 2,700 traded so far today, AAA leads at +12.5%, 1 of 2 covered fresh.
-const NARRATIVE = 'Across $1 to $20, 2,700 traded so far today, 1,500 up and 1,100 down. AAA tops the board, up 12.5 percent from the prior close. One of the 2 names the desk covers had fresh news in our sources.';
+// Worded from the fixture's computed facts: 2,700 traded so far today, AAA leads at +12.5% (the v2 sheet's whole percent: 13), 1 of 2 covered fresh.
+const NARRATIVE = 'Across $1 to $20, 2,700 traded so far today, 1,500 up and 1,100 down. AAA tops the board, up 13 percent from the prior close. One of the 2 names the desk covers had fresh news in our sources.';
 const prompts: Array<{ role: 'writer' | 'checker'; system: string; user: string }> = [];
 function writerWith(narrative: string | null, aaa = 'Our sources found a contract award.') {
   return {

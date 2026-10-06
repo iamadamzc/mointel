@@ -169,9 +169,9 @@ function intradaySheet(facts: NarrativeFacts): string[] {
  * build step 2). OUT of the sheet, by his rulings and Marketing's final
  * examples: the price range (the header carries it), breadth (the examples
  * omit it), the no-close and split counts (computed footnotes, step 4), and the
- * carried names as a list. The `range` argument is kept for the checker's call.
+ * carried names as a list.
  */
-export function narrativeSheet(facts: NarrativeFacts, _range: { min: number; max: number }): string[] {
+export function narrativeSheet(facts: NarrativeFacts): string[] {
   return isRecap(facts.kind) ? recapSheet(facts) : intradaySheet(facts);
 }
 
@@ -284,7 +284,7 @@ export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
     `Checkpoint time: ${time} ET.`,
     '',
     'NARRATIVE FACTS (word these and nothing else):',
-    `  ${narrativeSheet(input.narrative, input.range).join('\n  ')}`,
+    `  ${narrativeSheet(input.narrative).join('\n  ')}`,
     '',
     'NAMES:',
     sheets,
