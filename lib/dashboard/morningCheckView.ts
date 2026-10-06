@@ -121,8 +121,12 @@ export function morningCheckView(
   if ('unreadable' in payload) return view('UNKNOWN', W.unknown, null, none, nowIso);
 
   const frame = { eveningAt: payload.eveningAt, morningAt: payload.morningAt };
-  if (payload.morningAt === null || !payload.morningTickers.includes(ticker)) {
-    return view('NOT_YET', W.notYetFace, W.notYetDetail, frame, nowIso);
+  if (payload.morningAt === null) return view('NOT_YET', W.notYetFace, W.notYetDetail, frame, nowIso);
+  if (!payload.morningTickers.includes(ticker)) {
+    // A morning checkpoint DID complete; this name was not on it. The NOT_YET detail ("No morning
+    // checkpoint has completed") would be false, and a "Compared" line would claim a comparison that
+    // did not happen for this name: the face alone until Marketing words this case (seen on a render).
+    return { ...view('NOT_YET', W.notYetFace, null, none, nowIso), labelHover: view('NOT_YET', '', null, frame, nowIso).labelHover };
   }
   if (payload.eveningAt === null) return view('UNKNOWN', W.unknown, null, frame, nowIso);
 

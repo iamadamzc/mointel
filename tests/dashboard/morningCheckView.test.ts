@@ -40,9 +40,12 @@ describe('which absence is which (Integration 29th ruling; 30th on the missing r
     }
   });
 
-  it('a name not on the morning checkpoint: "No morning check yet", never hidden', () => {
+  it('a name not on the morning checkpoint: "No morning check yet", never hidden, and never the false "no checkpoint completed" or a Compared line', () => {
     const v = morningCheckView(frame({ ABC: conf() }), 'ZZZ', NOW);
     expect(v.state).toBe('NOT_YET');
+    expect(v.face).toBe('No morning check yet');
+    expect(v.detail).toBeNull();
+    expect(v.compared).toBeNull();
   });
 
   it('on the morning checkpoint but not on the evening recap: the section is hidden', () => {
