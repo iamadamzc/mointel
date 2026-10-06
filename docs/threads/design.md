@@ -692,6 +692,13 @@ probe came before any edit, as the ledger says it must.**
 | Told Integration "the drawer already serialises the WHOLE stored dossier to the browser" having seen only the client read `analysis.dossier`, not the server code that builds it. It turned out TRUE (`readModel.ts:955-958`), but it was asserted before the search I had launched to confirm it reported | ABSENCE-ASSERTED-FROM-A-NARROW-SEARCH family (a claim wider than what was opened) | Yes: the ninth seat's corrected class, named in my opening prompt; first time this seat | Self, said so in the same turn; Integration verified it independently |
 | Told Commercial I would "treat readModel.ts:663's '16:00' fallback as no clock". The server substitutes the constant before sending, so the browser cannot tell it from a real 16:00; the promise was not buildable | Same class (a capability promised before opening what the browser receives) | **Yes, the SECOND this seat: a repeat** | Self, within minutes, while starting to build it; corrected to Commercial and Integration before anyone relied on it |
 
+**Eleventh seat (same id `local_83b5b7ec`, reset in place 2026-10-06 ~02:25 UTC).**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Ran `git stash` / `stash pop` in `A:\mointel-designdoc` to move a worktree with an untracked doc, against README rule 5 ("git stash is not safe on this tree"). A no-op (stash leaves untracked files alone); the file was intact | RULE-NOT-APPLIED (a written house rule skipped for convenience) | No, first this seat | Self, the same minute. **Commit or copy aside; never stash** |
+| Wrote `not.toContain(' to ')` in a test that must fail on "{date} to {date}" while every line contains "base close to the high" | VACUOUS-ASSERTION-BY-DESIGN (an assertion that fails on every input, caught before running) | No | Self, before the first run |
+
 **Repeat reached:** per session-hygiene section 2, warned the owner and proposed a reset at the next task boundary (row 5's final words).
 
 **Eighth seat RETIRED 2026-10-05 16:02 UTC on his "yes hand over"** (proposed after the unmeasured row-height claim reached him; no class repeated after its correction). Classes to watch: ASSERTED-UNMEASURED, STALE-LEAD-AS-SOURCE, EDIT-ANCHORED-MID-ROW, GATE-ORDER.
