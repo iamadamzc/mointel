@@ -174,6 +174,7 @@ export function TickerDrawer({
 
           <AutomaticIntelligence
             intel={row.intelligence}
+            checkpointAt={row.setupGradeWired ? (row.setupGrade?.checkpointCompletedAt ?? null) : null}
             comparison={row.comparison}
             structure={buildStructureSummary(row)}
             Section={Section}
