@@ -75,7 +75,8 @@ describe('the list and the largest advance cannot disagree', () => {
     for (const phase of ['BACKSIDE', 'SHADOW'] as const) {
       const facts = cycleFacts(history(arc({ phase, sessionsSinceHigh: 4 }), []));
       expect(facts.runs.lines).toHaveLength(1);
-      expect(facts.runs.lines[0].startsWith(CYCLE_WORDS.currentOverPrefix)).toBe(true);
+      expect(facts.runs.lines[0].startsWith(CYCLE_WORDS.currentPrefix)).toBe(true);
+      expect(facts.runs.lines[0].startsWith('Current run: Aug 15, 2026 to Aug 15, 2026: up 53%')).toBe(true);
       expect(facts.runs.lines[0]).toContain('up 53% from the base close to the high, high was 4 sessions ago');
       expect(facts.runs.empty).toBeNull();
     }
