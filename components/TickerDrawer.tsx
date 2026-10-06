@@ -16,6 +16,7 @@ import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
 import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
+import { COMPANY_WORDS, companyLine } from '@/lib/dashboard/companyLine';
 import { priceSourceTitle, telemetryTitle } from '@/lib/dashboard/feedBanner';
 import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StoredLevelLadder } from '@/components/ResistanceLevels';
@@ -279,6 +280,11 @@ function DrawerHeader({
   // The same projection the board used to pick this row's price.
   const t = row.telemetry;
   const conclusions = resolveConclusions(row);
+  const company = companyLine({
+    dossier: row.intelligence?.analysis?.dossier ?? null,
+    sheetName: research?.company,
+    sheetCountry: ticker?.country,
+  });
 
   return (
     <div className="border-b border-line-2 bg-panel-2 px-5 py-3">
@@ -326,13 +332,17 @@ function DrawerHeader({
               <StatusBadge label={`RVOL #${t.rvolRank}`} tone="accent" />
             ) : null}
           </div>
-          <div
-            className="mt-1 truncate text-[12px] text-ink-2"
-            title={research?.company || undefined}
-          >
-            {research?.company || 'Company name not in RESEARCH'}
-            {ticker?.country ? <span className="text-ink-3"> · {ticker.country}</span> : null}
+          {/* The desk's own dossier first (contract row 4); the Sheet is only a fallback while it exists. */}
+          <div className="mt-1 truncate text-[12px] text-ink-2" title={company.hint ?? undefined}>
+            {company.text}
+            {company.country ? (
+              <span className="text-ink-3" title={COMPANY_WORDS.countryHover}>
+                {' '}
+                {company.country}
+              </span>
+            ) : null}
           </div>
+          {company.countryNote ? <div className="mt-0.5 text-[11px] text-ink-3">{company.countryNote}</div> : null}
         </div>
 
         <div className="flex items-start gap-4">
