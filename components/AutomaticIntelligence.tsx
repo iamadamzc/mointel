@@ -11,6 +11,7 @@
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
+import { catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
@@ -23,6 +24,18 @@ import {
   STRUCTURE_LABEL,
   type AutoIntelligence,
 } from '@/lib/research/view';
+
+/** Marketing's label for the catalyst's own source list (words requested 2026-10-05; not yet confirmed). */
+const CATALYST_SOURCES_LABEL = 'Sources for this catalyst';
+
+/** The catalyst's event time, as the evidence supports it (reads the clock here, not in render). */
+function eventTimeText(
+  at: string | null | undefined,
+  citedIds: readonly number[] | null | undefined,
+  evidence: AutoIntelligence['evidence'],
+): string {
+  return eventTimeView(at, citedIds, evidence, Date.now()).text;
+}
 
 /** An instant a trader can act on: ET wall clock, with its age beside it. */
 function timeWithAge(at: string | null | undefined): string {
@@ -325,7 +338,9 @@ export function AutomaticIntelligence({
    * sentence on screen twice inside one bordered card, which reads as the desk
    * repeating itself rather than as two findings.
    */
-  const eventTime = timeWithAge(catalyst.eventTimestamp);
+  // Never a false clock: the clock prints only when a cited source with that exact instant is EXACT.
+  const eventTime = eventTimeText(catalyst.eventTimestamp, catalyst.evidenceSourceIds, intel.evidence);
+  const catalystSourceList = catalystSources(catalyst.evidenceSourceIds, intel.evidence);
   const generatedAt = timeWithAge(intel.generatedAt);
 
   /*
@@ -398,6 +413,31 @@ export function AutomaticIntelligence({
             trader do timezone arithmetic to answer the only question that
             matters about a catalyst: how old is it. */}
         <Field label="Event time" value={eventTime} />
+        {/* The sources this catalyst's own conclusion rests on, not the ticker's whole list below. */}
+        {catalystSourceList.length > 0 ? (
+          <div className="mt-3">
+            <FieldLabel>{CATALYST_SOURCES_LABEL}</FieldLabel>
+            <ul className="mt-1 space-y-1">
+              {catalystSourceList.map(({ link, day, dateOnly }) => (
+                <li key={link.id} className="text-[11px]">
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-ink-1 underline decoration-dotted underline-offset-2"
+                  >
+                    [{link.id}] {link.secForm ?? humanise(link.sourceType)}
+                    {link.title ? ` · ${link.title}` : ''}
+                  </a>
+                  <span className="ml-1 text-ink-3">
+                    {day ? day : 'date not stated'}
+                    {dateOnly ? ' (date only)' : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <Field
           label="Plausibly explains move"
           value={
