@@ -1,6 +1,11 @@
 // Float line mutants: every prediction committed BEFORE any run. AMENDED before any run, after rule I-D's tests
 // changed the suite: F2 2->5, J1 2->7, RD1 1->5 (the original is kept as the 7th field and reported beside the result;
 // RD1's original 1 was already low before I-D: four existing tests read at exactly 4 days); D1-D9 added.
+// RE-PREDICTED before any run, after the 2026-10-06 run at fdfdfcef's code (aa9f6dc4) showed counting from the
+// introducing commit was low: every mutant now predicts against the WHOLE suite at 628f961a (82 tests) = the kills
+// observed at fdfdfcef's code + the 6 I-D tests traced per mutant. Changed: F2 5->8, J2 1->2, J3 1->2, S1a 2->4,
+// S1e 1->4, RA3 2->3 (the first prediction kept as the 7th field). Also fixed: the loop shadowed that 7th field with
+// the file's bytes, so an amended row would have recorded the file as its original prediction (no run was affected).
 // (commits d4c10c95, 968f641c, fdfdfcef and
 // build-plan-2026-10-05.md section 4 predicted the counts; this file makes each one an exact edit).
 // Run in an Ops slot, from A:/mointel-float:  node docs/research/float-contract/float-mutants.mjs <out-dir>
@@ -22,7 +27,7 @@ const TESTS = ['filedCount', 'splitProof', 'spanBars', 'floatJob', 'floatBoundRe
 const M = [
   // build plan step 1: the selector
   ['F1', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '.filter((r) => r.filed < asOfDate)', 1, 'selector <= to <'],
-  ['F2', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '', 5, 'drop the filed filter', 2],
+  ['F2', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '', 8, 'drop the filed filter', 2],
   ['F3', 'lib/research/filedCount.ts', "if (new Set(chosen.map((r) => r.accn)).size !== 1) return { kind: 'COUNT_SPLIT_ACROSS_FILINGS' };", '', 1, 'drop the one-accession check'],
   ['F4', 'lib/research/filedCount.ts', 'shares: chosen.reduce((sum, r) => sum + r.val, 0),', 'shares: chosen[0]!.val,', 1, 'sum to first value'],
   // build plan step 1: R0
@@ -37,23 +42,23 @@ const M = [
   ['B3', 'lib/research/history.ts', 'if (!start) return [];', '', 0, 'drop the empty-start guard (EQUIVALENT: BETWEEN NULL returns nothing)'],
   // build plan step 4: the job
   ['J1', 'lib/research/floatJob.ts', 'export const FLOAT_MAX_AGE_DAYS = 90;', 'export const FLOAT_MAX_AGE_DAYS = 45;', 7, 'max age 90 to 45', 2],
-  ['J2', 'lib/research/floatJob.ts', "export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_OR_POSSIBLY_ACTIVE';", "export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_ACTIVE';", 1, 'issuance rule to KNOWN_ACTIVE'],
-  ['J3', 'lib/research/floatJob.ts', 'const r0 = splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf);', 'const r0 = splitProofFromBars(deps.spanBars(symbol, holding.asOf, count.asOf), count.asOf);', 1, 'R1 instead of R0 for holdings'],
+  ['J2', 'lib/research/floatJob.ts', "export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_OR_POSSIBLY_ACTIVE';", "export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_ACTIVE';", 2, 'issuance rule to KNOWN_ACTIVE', 1],
+  ['J3', 'lib/research/floatJob.ts', 'const r0 = splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf);', 'const r0 = splitProofFromBars(deps.spanBars(symbol, holding.asOf, count.asOf), count.asOf);', 2, 'R1 instead of R0 for holdings', 1],
   ['J4', 'lib/research/floatJob.ts', 'companyfacts/CIK${pad10(cik)}.json`);', 'companyfacts/CIK${pad10(cik)}.json`).catch(() => ({}) as CompanyFactsShares);', 1, 'swallow the companyfacts error'],
   ['J5', 'lib/research/floatJob.ts', "input.cik.replace(/^0+/, '')", 'input.cik', 1, 'drop the CIK zero-strip'],
   ['J6', 'lib/research/floatJob.ts', 'if (!SECTION16.has(form) || filingDate < since || filingDate > until) continue;', 'if (filingDate < since || filingDate > until) continue;', 1, 'section16Filings: drop the form filter'],
   ['J7', 'lib/research/floatJob.ts', 'if (!SECTION16.has(form) || filingDate < since || filingDate > until) continue;', 'if (!SECTION16.has(form) || filingDate > until) continue;', 1, 'section16Filings: drop the since filter'],
   ['J8', 'lib/research/floatJob.ts', 'if (!SECTION16.has(form) || filingDate < since || filingDate > until) continue;', 'if (!SECTION16.has(form) || filingDate < since) continue;', 1, 'section16Filings: drop the until filter'],
   // S1 (d4c10c95)
-  ['S1a', 'lib/research/insiderBound.ts', 'sum + Math.min(c.h0, c.hD), 0)', 'sum + Math.max(c.h0, c.hD), 0)', 2, 'S1 min to max'],
+  ['S1a', 'lib/research/insiderBound.ts', 'sum + Math.min(c.h0, c.hD), 0)', 'sum + Math.max(c.h0, c.hD), 0)', 4, 'S1 min to max', 2],
   ['S1b', 'lib/research/insiderBound.ts', 'sum + Math.min(c.h0, c.hD), 0)', 'sum + c.hD, 0)', 2, 'S1 hD only'],
   ['S1c', 'lib/research/insiderBound.ts', 'const atD = new Map(holdingsAsOf(only, d, windowStart)', "const atD = new Map(holdingsAsOf(only, '9999-12-31', windowStart)", 1, 'S1 hD past D'],
   ['S1d', 'lib/research/insiderBound.ts', 'shares: e.classes.reduce((sum, c) => sum + Math.min(c.h0, c.hD), 0),', 'shares: Math.min(e.classes.reduce((sum, c) => sum + c.h0, 0), e.classes.reduce((sum, c) => sum + c.hD, 0)),', 1, 'S1 owner-total min, not per class'],
-  ['S1e', 'lib/research/insiderBound.ts', 'for (const h0 of holdingsAsOf(only, countAsOf, windowStart)) {', 'for (const h0 of [...holdingsAsOf(only, countAsOf, windowStart), ...[...atD.values()].filter((h) => !holdingsAsOf(only, countAsOf, windowStart).some((x) => x.ownerCik === h.ownerCik))]) {', 1, 'S1 owners without h0 included'],
+  ['S1e', 'lib/research/insiderBound.ts', 'for (const h0 of holdingsAsOf(only, countAsOf, windowStart)) {', 'for (const h0 of [...holdingsAsOf(only, countAsOf, windowStart), ...[...atD.values()].filter((h) => !holdingsAsOf(only, countAsOf, windowStart).some((x) => x.ownerCik === h.ownerCik))]) {', 4, 'S1 owners without h0 included', 1],
   // R-A (968f641c)
   ['RA1', 'lib/research/splitProof.ts', 'exDates.some((d) => d >= from && d <= to)', 'exDates.some((d) => d > from && d <= to)', 1, 'R-A from >= to >'],
   ['RA2', 'lib/research/splitProof.ts', 'exDates.some((d) => d >= from && d <= to)', 'exDates.some((d) => d >= from && d < to)', 2, 'R-A to <= to <'],
-  ['RA3', 'lib/research/splitProof.ts', "if (exDates === null) return proof === 'FOUND' ? 'FOUND' : 'UNPROVEN';", 'if (exDates === null) return proof;', 2, 'R-A null passes the proof through'],
+  ['RA3', 'lib/research/splitProof.ts', "if (exDates === null) return proof === 'FOUND' ? 'FOUND' : 'UNPROVEN';", 'if (exDates === null) return proof;', 3, 'R-A null passes the proof through', 2],
   ['RA4', 'lib/research/floatJob.ts', 'start, addDays(asOfDate, FLOAT_REUSE_DAYS))', 'start, asOfDate)', 1, 'R-A no reuse span on the fetch'],
   ['RA5', 'lib/research/floatJob.ts', 'const start = [count.asOf, ...found.map((h) => h.asOf)].sort()[0]!;', 'const start = [count.asOf].sort()[0]!;', 1, 'R-A holdings not combined into the fetch window'],
   // the reader (fdfdfcef)
@@ -107,8 +112,8 @@ if (m0.failed !== 0 || m0.failedSuites !== 0) {
 }
 
 for (const [id, file, from, to, predicted, what, original] of M) {
-  const original = fs.readFileSync(file);
-  const text = original.toString('utf8');
+  const bytes = fs.readFileSync(file);
+  const text = bytes.toString('utf8');
   const hits = text.split(from).length - 1;
   if (hits !== 1) {
     results.push({ id, file, what, predicted, invalid: `from-text found ${hits} times` });
@@ -118,9 +123,9 @@ for (const [id, file, from, to, predicted, what, original] of M) {
   try {
     results.push({ id, file, what, predicted, ...(original === undefined ? {} : { originalPrediction: original }), ...runTests(id) });
   } finally {
-    fs.writeFileSync(file, original);
+    fs.writeFileSync(file, bytes);
   }
-  if (!fs.readFileSync(file).equals(original)) throw new Error(`${file} not restored after ${id}`);
+  if (!fs.readFileSync(file).equals(bytes)) throw new Error(`${file} not restored after ${id}`);
 }
 
 fs.writeFileSync(path.join(outDir, 'results.json'), JSON.stringify({ results }, null, 2));
