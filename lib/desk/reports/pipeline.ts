@@ -30,7 +30,7 @@ import { applyStrikes, checkReport, type CheckerModel, type Strike } from './che
 import type { MissedCause, ReportKind, ReportPath, SessionReport } from './contract';
 import { REPORT_NAME_CAP, reportFacts, type ReportFact } from './facts';
 import { catalystFreshFromUtc } from '../../research/freshFrom';
-import { narrativeFacts, type NarrativeFacts } from './narrative';
+import { narrativeFacts, narrativeFootnotes, type NarrativeFacts } from './narrative';
 import { reportPath } from './path';
 import { reportResearch, type ReportResearch } from './research';
 import { computedSections } from './sections';
@@ -350,6 +350,8 @@ export async function runReport(
     watchCount: applied.watchCount,
     // v6: the opening narrative REPLACES overall (contract.ts); the checker read it as id O.
     narrative: applied.overall,
+    // Step 4: G and the split count, computed, beside the narrative and independent of its strike.
+    narrativeFootnotes: narrativeFootnotes(inputs.narrative),
   };
   return { status: 'PUBLISHED', report, diagnostics };
 }

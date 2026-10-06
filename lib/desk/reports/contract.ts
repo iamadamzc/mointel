@@ -185,6 +185,20 @@ export interface SessionReport {
    * on v5 rows (which keep `overall`).
    */
   narrative?: string | null;
+  /**
+   * v6 build step 4: the narrative's COMPUTED footnotes, never worded by the
+   * model (G and the split count left the prose, N11). Recap only: how many
+   * in-range names traded but have no 16:00 close (outside the recap's counts),
+   * and how many rows the split check left out. Null on the intraday kinds;
+   * set whether or not the narrative survived its checker; Marketing words
+   * them, Design places them. Absent on rows before step 4.
+   */
+  narrativeFootnotes?: NarrativeFootnotes | null;
+}
+
+export interface NarrativeFootnotes {
+  noClose: number | null;
+  splitExcluded: number | null;
 }
 
 export interface SessionReportsPayload {
