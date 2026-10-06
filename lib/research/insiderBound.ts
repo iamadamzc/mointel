@@ -191,7 +191,9 @@ export type FloatCellReason =
   | 'ISSUANCE_FLAGGED'
   | 'ISSUANCE_NOT_CHECKED'
   | 'SPLIT_SINCE_COUNT'
-  | 'BOUND_OUT_OF_RANGE';
+  | 'BOUND_OUT_OF_RANGE'
+  /** Contract 9b: the newest read of the filings is more than the reuse span before D. Set by the reader, never by `floatCell`. */
+  | 'FILINGS_NOT_REREAD';
 
 export type FloatCell =
   | { state: 'PRODUCED'; bound: number; subtracted: number; holdings: OwnerHolding[]; refused: RefusedHolding[] }
