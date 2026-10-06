@@ -91,7 +91,8 @@ export function cycleDetail(current: CycleResult): string | null {
   if (current.phase === 'NO_CYCLE') return null;
 
   const parts = [
-    `up ${pct(current.advancePct)} from ${current.baseClose.toFixed(2)}`,
+    // advancePct is a FRACTION (0.53 is a 53% move), like retracementPct, so it is scaled here.
+    `up ${pct(current.advancePct * 100)} from ${current.baseClose.toFixed(2)}`,
     `high ${current.cycleHigh.toFixed(2)} on ${current.cycleHighDate}`,
   ];
 
