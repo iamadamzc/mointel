@@ -546,3 +546,14 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 *Read: the diff of `f468e044` against `1822d376` for `evidenceRisk.ts` and both test files. Not run: Research's note says tsc, eslint and vitest still wait on an Ops slot.*
 
 7e's required change is made: `EVIDENCE_RISK_GOOD` is "The supply ledger shows an open at-the-market program of {amount}." (no figure, no stated absence). Research added one removal I had not asked for and was right to: a `{` or `}` in the text removes it as `RISK_FORBIDDEN_WORDING`, detail "template placeholder", because the placeholder I introduced passes every other rule and could otherwise reach a surface verbatim. The control test now uses the example with its placeholder filled and asserts that the example copied as written is removed (mutant W28). Nothing else in the rule, the examples or the lists changed. **The strings and word lists are released from this seat for the first real-name run** (an Ops slot, his yes by literal sha, the build note's ship conditions), subject to the surface conditions in 7e, which are Design's.
+
+
+## 7g. What "Risk in the evidence" is dated to, fourth tenure, 2026-10-06 (Design's question; corrects 7a item 2)
+
+*Read: `lib/research/interpret/pipeline.ts` lines 180 (the bundle's sources read) and 383 (`generatedAt` set after the model call), `lib/research/types.ts:606` (`generatedAt` on the dossier), and Design's account of `readModel.ts:996-1014` (the live drawer reads the current dossier version, not a checkpoint's).*
+
+**The sentence is "as of the bundle's date", and the bundle is read at interpretation time.** So the instant the sentence is true of is the dossier version's own time, `generatedAt` (set a minute or less after the bundle was read; at the minute, the two are the same). It is not a checkpoint's `completed_at`. A checkpoint row cites a version that can have been written days before the checkpoint (a version stays current while its evidence is unchanged), so printing the checkpoint time beside the sentence dates it to an instant its evidence may not reach. **7a item 2 asked for "as of {checkpoint time} ET" by analogy with the grade tooltip; that was wrong for this field**: the grade is computed at the checkpoint, the sentence is not.
+
+**Ruling.** On every surface (live drawer, MCP `get_ticker`, frozen board, reports, exports) the sentence carries "as of {the dossier version's generatedAt, ET, to the minute}" with the date when it is not the reader's day. On a checkpoint surface the version is the one the row cites. A sentence whose version has no `generatedAt` is not shown (an undated sentence is not printed, as with the float's count date). The checkpoint time may appear elsewhere on the row for the grade; it does not date this sentence.
+
+**Ledger.** Entry 5 of the fourth-tenure ledger in the charter.
