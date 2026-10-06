@@ -1,6 +1,6 @@
 'use client';
 
-import type { BoardCounts } from '@/lib/dashboard/boardCounts';
+import { RANKED_HINT, type BoardCounts } from '@/lib/dashboard/boardCounts';
 import type { CycleFilter, FilterState, StructureFilter } from '@/lib/dashboard/view';
 
 interface MarketSummaryProps {
@@ -53,11 +53,11 @@ export function MarketSummary({
       label: 'ranked',
       value: counts.onBoard,
       tone: 'text-ink',
-      // The board shows the top 12, 25 or 50 of this list; the number is the
-      // whole ranked list, so it is not worded as "on the board". Not "right now":
+      // The board shows the first 12, 25 or 50 of this list plus moving names outside
+      // them; the number is the whole ranked list, so it is not worded as "on the board". Not "right now":
       // the strip also sits over a frozen checkpoint (Marketing, 73cdc4bc). This
       // segment has no click, so its hint is shown whole and ends in a full stop.
-      hint: 'Names in the ranking at the time shown. The board shows the top 12, 25 or 50 of them.',
+      hint: RANKED_HINT,
     },
     /*
      * EVERY NUMBER HERE IS WHAT ITS CLICK KEEPS. They are computed by running

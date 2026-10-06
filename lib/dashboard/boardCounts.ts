@@ -23,6 +23,15 @@ import {
   type FilterState,
 } from '@/lib/dashboard/view';
 
+/**
+ * The "ranked" segment's hint (Marketing 970acacd, Commercial 20): the board now
+ * shows the first 12, 25 or 50 of the ranking plus moving names outside them
+ * (`visibleWithMovers`), so "the top 12, 25 or 50 of them" alone is no longer true.
+ * The cap stays out of the words (a build constant goes stale silently).
+ */
+export const RANKED_HINT =
+  'Names in the ranking at the time shown. The board shows the first 12, 25 or 50 of them, plus moving names outside them, up to a limit.';
+
 export interface BoardCounts {
   /** Rows on the main board. */
   onBoard: number;
