@@ -1670,6 +1670,11 @@ OPS 7a1d31bd     READ. (1) PRODUCTION CARRIES, MAIN LACKS: LEVELS (app/api/level
                  never dropped: stays after (a)(b); drop only with reasons, to him.
 ROW 17           Levels route absent on main (ls-tree verified), present in production + cut 2. Ruled (A): row 17 extends the
                  levels route after Ops's (b) lands; one line "Support at the last checkpoint" (assessment.ts:36-40).
+PROD DEFECT      Design found: cycle badge hover printed the run's advance 100x too small ("up 0.5%" for +53%) since 34c720f5
+                 (2026-08-24). VERIFIED: advancePct is a fraction (market/cycle.ts:356); dashboard/cycle.ts:94 prints it
+                 unscaled in production 6e7fff84 AND cut 2 10cb60c3; retracement beside it scaled. Phase uses retracementPct
+                 (cycle.ts comment :82-83), so ranking/phase untouched. FIX fae81306 (1 line + resolver test). NOT in cut 2
+                 (literal sha approved, his go given); CUT 3 pick. Told him.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
