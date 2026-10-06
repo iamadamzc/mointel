@@ -59,6 +59,9 @@ export type StrikeReason =
   | 'OMITTED_FACT'
   | 'WINDOW_CONTRADICTED'
   | 'CITATION_TOKEN'
+  /* deterministic, v6 narrative (Integration 30th's ruling on the writer comparison's verdict notes) */
+  | 'UNFRAMED_PERCENT'
+  | 'CAUSAL_WORDING'
   /* model */
   | 'UNSUPPORTED';
 
@@ -257,6 +260,65 @@ function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates:
  * given number. Set membership alone admits a swap to another fact's value
  * (9 movers written as 12 when 12 names are covered).
  */
+/**
+ * The writer comparison's verdict notes (`writer-comparison-result-2026-10-06.md`):
+ * 15 of 22 narratives the checker model struck were one of two wordings a rule
+ * can find, so they are struck by rule before the model sees the text
+ * (Integration 30th's ruling (a)). Both read a CLAUSE (split at "." or ";"):
+ * - a move percent ("up 51 percent", "ran to 157 percent") needs its frame in
+ *   the same clause ("the prior close", or after hours "after the close");
+ * - after a move, a connective that makes the news its cause ("after", "on",
+ *   "following", "amid", "due to") is struck; "with" is the approved link, and
+ *   a connective after it is inside the news ("with news of a split amid a
+ *   financing"). "on the day" and "after the close" are frames, and "news on X"
+ *   is a topic.
+ */
+const MOVE = /\b(?:(?:up|down)\s+\d[\d,.]*\s+percent|(?:ran|rose|gained|added|jumped|climbed|surged|fell|dropped|slid|lost)(?:\s+to)?\s+\d[\d,.]*\s+percent|ran\s+(?:at least|past)\s+\d[\d,.]*\s+percent|print(?:ed|ing) a new high)\b/gi;
+const FRAME = /\b(?:the prior close|the previous close|the 16:00 close|the regular-session close|after the close|after hours|after-hours)\b/i;
+const CAUSAL = /\b(?:after|following|on|amid|due to|because of|driven by|thanks to)\b/gi;
+/** A connective that is a frame is not causal. */
+const FRAME_AT = /^(?:on (?:the day|the session)|after (?:the close|hours)|after-hours)\b/i;
+/** "on" after one of these names a topic ("news on X"). */
+const TOPIC_BEFORE_ON = /\b(?:news|reporting|report|reports|coverage|update|updates|details|filing|filings|article|articles|story|stories)\s+$/i;
+
+function clausesOf(text: string): string[] {
+  return text.split(/[.;](?=\s|$)/).map((c) => c.trim()).filter((c) => c.length > 0);
+}
+
+/** The first causal connective in `segment` (the text after a move, up to the next move), or null. */
+function causalIn(segment: string): string | null {
+  for (const c of segment.matchAll(CAUSAL)) {
+    const before = segment.slice(0, c.index);
+    if (/\bwith\b/i.test(before)) return null;
+    if (FRAME_AT.test(segment.slice(c.index))) continue;
+    const word = c[0].toLowerCase();
+    if (word === 'on' && TOPIC_BEFORE_ON.test(before)) continue;
+    // A particle ends its clause ("most held on"): nothing follows it to be a cause.
+    if (/^\w+[\W_]*$/.test(segment.slice(c.index))) continue;
+    if (word === 'following' && /\bthe\s+$/i.test(before)) continue;
+    return c[0];
+  }
+  return null;
+}
+
+function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: string }> {
+  const out: Array<{ reason: StrikeReason; detail: string }> = [];
+  for (const clause of clausesOf(text)) {
+    const moves = [...clause.matchAll(MOVE)];
+    if (moves.length === 0) continue;
+    const percent = moves.find((m) => /percent/i.test(m[0]));
+    if (percent && !FRAME.test(clause)) out.push({ reason: 'UNFRAMED_PERCENT', detail: `"${percent[0]}" with no frame in its clause` });
+    for (let i = 0; i < moves.length; i += 1) {
+      const end = moves[i]!.index! + moves[i]![0].length;
+      const word = causalIn(clause.slice(end, moves[i + 1]?.index ?? clause.length));
+      if (word === null) continue;
+      out.push({ reason: 'CAUSAL_WORDING', detail: `"${word}" after "${moves[i]![0]}"` });
+      break;
+    }
+  }
+  return out;
+}
+
 const ANCHORS: Array<[RegExp, (facts: NarrativeFacts) => number | null, string]> = [
   [/\bran (?:at least |past )50 percent\b/i, (f) => f.movers50, 'ran at least 50 percent above'],
   [/\bgave (?:the entire move back|back the entire move)\b/i, (f) => f.gaveBack, 'gave the entire move back'],
@@ -306,6 +368,7 @@ export function narrativeFindings(
       out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ${phrase} vs ${value}` });
     }
   }
+  out.push(...wordingFindings(text));
   return out;
 }
 

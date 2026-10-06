@@ -140,6 +140,9 @@ describe('SYSTEM_V6 narrative rules v2 (his example prompt folded in, 2026-10-03
     expect(SYSTEM_V6).toContain('After-hours figures are ALWAYS labeled');
     expect(SYSTEM_V6).toContain('Percents are whole numbers as given');
     expect(SYSTEM_V6).not.toContain('no regular-session close');
+    // Integration 30th (the comparison's verdict notes): the two wordings the checker struck most, named; the rules strike them too.
+    expect(SYSTEM_V6).toContain('A move and its news sit side by side, never cause and effect');
+    expect(SYSTEM_V6).toContain('Every percent move carries its frame in the same sentence');
   });
 });
 
