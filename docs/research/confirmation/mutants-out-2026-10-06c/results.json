@@ -1,0 +1,311 @@
+{
+  "results": [
+    {
+      "id": "M0",
+      "predicted": 0,
+      "failed": 0,
+      "failedSuites": 0,
+      "total": 16
+    },
+    {
+      "id": "K1",
+      "file": "lib/desk/morningRead.ts",
+      "what": "an evening recap for another target date paired",
+      "predicted": 1,
+      "which": "C1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K2",
+      "file": "lib/desk/morningRead.ts",
+      "what": "an evening recap not COMPLETE paired",
+      "predicted": 1,
+      "which": "C1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K3",
+      "file": "lib/desk/morningRead.ts",
+      "what": "any checkpoint type read as a morning call",
+      "predicted": 1,
+      "which": "C2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K4",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a morning checkpoint of another date read",
+      "predicted": 1,
+      "which": "C2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K5",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a missing grade compared as null",
+      "predicted": 2,
+      "which": "C3, DB1",
+      "failed": 2,
+      "failedSuites": 3,
+      "total": 16
+    },
+    {
+      "id": "K6",
+      "file": "lib/desk/morningRead.ts",
+      "what": "an unreadable version compared as empty",
+      "predicted": 1,
+      "which": "C4",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K7",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a grade change alone not REVISED",
+      "predicted": 1,
+      "which": "C5",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K9",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a new version not a re-check",
+      "predicted": 2,
+      "which": "C6, C8",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K10",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a PARTIAL or FAILED job counts as a re-check",
+      "predicted": 1,
+      "which": "C7",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K11",
+      "file": "lib/desk/morningRead.ts",
+      "what": "look-ahead: a job after the morning checkpoint counts",
+      "predicted": 1,
+      "which": "C7",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K12",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a job at the evening instant counts",
+      "predicted": 1,
+      "which": "C7",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K13",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a job at the morning instant does not count",
+      "predicted": 1,
+      "which": "C8",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K14",
+      "file": "lib/desk/morningRead.ts",
+      "what": "another name's job counts",
+      "predicted": 1,
+      "which": "C7",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K15",
+      "file": "lib/desk/morningRead.ts",
+      "what": "an un-re-read catalyst read as CONFIRMED",
+      "predicted": 1,
+      "which": "C7",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K16",
+      "file": "lib/desk/morningRead.ts",
+      "what": "no morning research not its own state",
+      "predicted": 2,
+      "which": "P1, DB1",
+      "failed": 2,
+      "failedSuites": 3,
+      "total": 16
+    },
+    {
+      "id": "K17",
+      "file": "lib/desk/morningRead.ts",
+      "what": "the same version not its own state",
+      "predicted": 1,
+      "which": "P1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K18",
+      "file": "lib/desk/morningRead.ts",
+      "what": "an older morning version shown as an update",
+      "predicted": 1,
+      "which": "P3",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K19",
+      "file": "lib/desk/morningRead.ts",
+      "what": "an equally dated version shown as an update",
+      "predicted": 1,
+      "which": "P3",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K20",
+      "file": "lib/desk/morningRead.ts",
+      "what": "catalystChanged always false",
+      "predicted": 1,
+      "which": "P2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K22",
+      "file": "lib/desk/morningRead.ts",
+      "what": "look-ahead: a morning checkpoint after `at` read",
+      "predicted": 3,
+      "which": "DB1, DB2, DB3",
+      "failed": 3,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K23",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a name new this morning paired with no evening row",
+      "predicted": 2,
+      "which": "DB1, DB3",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K24",
+      "file": "lib/desk/morningRead.ts",
+      "what": "'NOT_YET -> B' read as a grade change",
+      "predicted": 1,
+      "which": "C3b",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K25",
+      "file": "lib/desk/morningRead.ts",
+      "what": "only the evening side checked",
+      "predicted": 1,
+      "which": "C3b",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K26",
+      "file": "lib/desk/morningRead.ts",
+      "what": "NOT_YET compared as a grade",
+      "predicted": 1,
+      "which": "C3b",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K27",
+      "file": "lib/desk/morningRead.ts",
+      "what": "the frame never names the morning checkpoint",
+      "predicted": 2,
+      "which": "DB1, DB2",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K28",
+      "file": "lib/desk/morningRead.ts",
+      "what": "the frame never names the evening recap",
+      "predicted": 2,
+      "which": "DB1, DB3",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K29",
+      "file": "lib/desk/morningRead.ts",
+      "what": "no morning names listed",
+      "predicted": 2,
+      "which": "DB2, DB3",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K30",
+      "file": "lib/desk/morningRead.ts",
+      "what": "no evening recap read as one (throws)",
+      "predicted": 1,
+      "which": "DB2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K31",
+      "file": "lib/desk/morningRead.ts",
+      "what": "a missing recap hides the morning names",
+      "predicted": 1,
+      "which": "DB2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    },
+    {
+      "id": "K32",
+      "file": "lib/desk/morningRead.ts",
+      "what": "the recap not found before a morning checkpoint",
+      "predicted": 1,
+      "which": "DB3",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 16
+    }
+  ]
+}
