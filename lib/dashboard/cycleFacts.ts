@@ -44,8 +44,8 @@ export const CYCLE_WORDS = {
    * Not "over": those are the desk's classifications, and "high was N sessions ago" shows the rest.
    */
   currentPrefix: 'Current run: ',
-  /** A run whose start and high are the same day: "{date}, began and peaked that day" (Marketing 3409b2c2). */
-  oneDayRun: 'began and peaked that day',
+  /** A run whose start and high are the same stored day; states the two dates, no market fact (Commercial 10, abfe773a). */
+  oneDayRun: 'start and high on the same day',
   /** Hover on the current-run line; true of BACKSIDE and SHADOW (a SHADOW run need not have given anything back). */
   currentHover:
     "Listed because the desk's cycle reading has this run ended: it gave back a large share of its advance, or trading in it went quiet.",
@@ -72,7 +72,7 @@ const pct0 = (fraction: number) => `${(fraction * 100).toFixed(0)}%`;
 
 function runLine(start: string, high: string, advanceFraction: number, sessionsAgo: number): string {
   const when = sessionsAgo === 0 ? 'high was the latest session' : `high was ${sessions(sessionsAgo)} ago`;
-  // A one-day run (start and high stored as the same day) collapses to one date (Marketing 3409b2c2).
+  // A one-day run (start and high stored as the same day) collapses to one date (Commercial 10, abfe773a).
   const span =
     start === high
       ? `${longDate(start) ?? start}, ${CYCLE_WORDS.oneDayRun}`
