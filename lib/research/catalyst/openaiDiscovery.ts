@@ -32,6 +32,15 @@ import { blockedSearchDomains, DOMAIN_POLICY_VERSION } from './domainPolicy';
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
 
 /**
+ * One hosted search per look (his ruling 2026-10-06T23:39:21.703Z, "a"). The Responses API's `max_tool_calls` bounds
+ * the built-in tool calls in one response, across all built-in tools; past it, "further attempts to call a tool by the
+ * model will be ignored" (OpenAI API reference, Create a model response, read 2026-10-06). Before
+ * this, a pass made about three searches (read E, an estimate). Sent on both requests below and recorded in each
+ * `toolConfig`, so the ledger tells a capped call from an uncapped one.
+ */
+export const MAX_TOOL_CALLS = 1;
+
+/**
  * How much retrieved page content the hosted search puts in context.
  *
  * The provider's default is `medium`. It is the dominant cost of both classes
@@ -132,7 +141,7 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
    * looked populated for both stages.
    */
   get toolConfig(): string {
-    return `web_search:${this.searchContextSize ?? 'default'};domains:v${DOMAIN_POLICY_VERSION}`;
+    return `web_search:${this.searchContextSize ?? 'default'};domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:${MAX_TOOL_CALLS}`;
   }
 
   async discover(request: DiscoveryRequest): Promise<DiscoveryResult> {
@@ -151,6 +160,7 @@ export class OpenAiDiscoveryProvider implements CatalystSourceDiscoveryProvider 
     const body = {
       model: this.model,
       input: buildPrompt(request),
+      max_tool_calls: MAX_TOOL_CALLS, // one search per discovery look
       tools: [
         {
           type: 'web_search',
@@ -271,7 +281,7 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
 
   /** What this provider was configured to buy, for the token ledger. */
   get toolConfig(): string {
-    return `web_search:${this.searchContextSize ?? 'default'};domains:v${DOMAIN_POLICY_VERSION}`;
+    return `web_search:${this.searchContextSize ?? 'default'};domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:${MAX_TOOL_CALLS}`;
   }
 
   get available(): boolean {
@@ -286,6 +296,7 @@ export class OpenAiCompanySourceResolver implements CompanySourceResolverProvide
     const body = {
       model: this.model,
       input: buildResolverPrompt(request),
+      max_tool_calls: MAX_TOOL_CALLS, // one search per resolver look
       tools: [
         {
           type: 'web_search',

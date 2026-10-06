@@ -97,8 +97,8 @@ describe('the resolver search context', () => {
 
     const result = await low.resolve({ ticker: 'ACME', companyName: null });
 
-    expect(low.toolConfig).toBe(`web_search:low;domains:v${DOMAIN_POLICY_VERSION}`);
-    expect(unset.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION}`);
+    expect(low.toolConfig).toBe(`web_search:low;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
+    expect(unset.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
     // And it travels with the result, so the collector records it per call
     // rather than reading it back off a shared provider later.
     expect(result.toolConfig).toBe(low.toolConfig);
@@ -127,7 +127,7 @@ describe('the discovery search filter', () => {
       knownUrls: [],
     });
 
-    expect(result.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION}`);
+    expect(result.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
   });
 });
 
@@ -179,9 +179,9 @@ describe('the discovery search context', () => {
     const high = new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl, searchContextSize: 'high' });
     const unset = new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl });
 
-    expect(low.toolConfig).toBe(`web_search:low;domains:v${DOMAIN_POLICY_VERSION}`);
-    expect(high.toolConfig).toBe(`web_search:high;domains:v${DOMAIN_POLICY_VERSION}`);
-    expect(unset.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION}`);
+    expect(low.toolConfig).toBe(`web_search:low;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
+    expect(high.toolConfig).toBe(`web_search:high;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
+    expect(unset.toolConfig).toBe(`web_search:default;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
     // The point of the whole field: three configurations, three strings.
     expect(new Set([low.toolConfig, high.toolConfig, unset.toolConfig]).size).toBe(3);
   });
@@ -196,7 +196,7 @@ describe('the discovery search context', () => {
 
     const result = await discover(discovery);
 
-    expect(result.toolConfig).toBe(`web_search:high;domains:v${DOMAIN_POLICY_VERSION}`);
+    expect(result.toolConfig).toBe(`web_search:high;domains:v${DOMAIN_POLICY_VERSION};max_tool_calls:1`);
   });
 
   it('never sends an empty filter object', async () => {
@@ -216,5 +216,23 @@ describe('the discovery search context', () => {
     } else {
       expect(entry.filters).toBeDefined();
     }
+  });
+});
+
+/*
+ * One hosted search per look (his ruling 2026-10-06T23:39:21.703Z, "a"): both requests carry max_tool_calls 1, and the
+ * toolConfig above says so, so the ledger can tell a capped call from an uncapped one.
+ */
+describe('one hosted search per look', () => {
+  it('MC1 discovery sends max_tool_calls 1', async () => {
+    const { fetchImpl, seen } = capturing({ sources: [] });
+    await new OpenAiDiscoveryProvider({ config: MODEL, fetchImpl }).discover({ ticker: 'ACME', companyName: null, since: '2026-08-13', knownUrls: [] });
+    expect(seen[0].body.max_tool_calls).toBe(1);
+  });
+
+  it('MC2 the resolver sends max_tool_calls 1', async () => {
+    const { fetchImpl, seen } = capturing({ candidates: [] });
+    await new OpenAiCompanySourceResolver({ config: MODEL, fetchImpl }).resolve({ ticker: 'ACME', companyName: 'Acme Inc.' });
+    expect(seen[0].body.max_tool_calls).toBe(1);
   });
 });

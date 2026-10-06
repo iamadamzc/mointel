@@ -1113,6 +1113,13 @@ export function clearRetryState(db: MarketDatabase, ticker: string, tradingDate:
 export interface CollectorReportRecord {
   /** RESOLVER, DISCOVERY, or null when neither paid tier ran. */
   discoveryMode: string | null;
+  /**
+   * Paid finds this pass and why the paid tier did or did not run (his paid-search rulings, 2026-10-06), so one
+   * search per look can be measured against three after ship. Optional: rows written before 2026-10-06 lack them, and
+   * ABSENT means "predates the field", not zero.
+   */
+  paidSourcesFound?: number;
+  discoveryDetail?: string | null;
   /** Sanitized outcome, e.g. "located newsroom index". */
   companySourceDetail: string | null;
   /**

@@ -132,10 +132,9 @@ export interface CatalystCollectionInput {
   /** Skips web discovery entirely; used to prove the zero-model path. */
   disableDiscovery?: boolean;
   /**
-   * The paid-search budget for this name today (`paidSearchCap.ts`, his rulings 2026-10-06). When given it is the
-   * only clock for paid passes: refused, no resolver, recovery or discovery call is made, whatever the trigger;
-   * allowed, the pass is due now and the discovery interval does not hold it back. Absent (the diagnostics), the
-   * interval rule applies as before.
+   * Whether this name may buy a paid web search at all (`paidSearchCap.ts`, his rulings 2026-10-06: top 12, RVOL of
+   * at least 3). Refused: no resolver, recovery or discovery call is made, whatever the trigger, and the report says
+   * why. Allowed or absent (the diagnostics): the existing cadence decides, unchanged.
    */
   paidSearch?: PaidSearchDecision;
 }
@@ -188,6 +187,11 @@ export interface CatalystCollectionReport {
   exhibitsFound: CatalystSourceSummary[];
   companyReleases: CatalystSourceSummary[];
   discoveredSources: CatalystSourceSummary[];
+  /**
+   * Sources the paid discovery call returned THIS pass that were not already held (0 when it did not run), so one
+   * search per look can be compared with three: paid finds per paid pass, before and after (his ruling 2026-10-06).
+   */
+  paidSourcesFound: number;
   /** Items stored from news adapters (lib/research/news). */
   newsItems: CatalystSourceSummary[];
   clusters: SourceCluster[];
@@ -401,6 +405,7 @@ export async function collectCatalystEvidence(
     exhibitsFound: [],
     companyReleases: [],
     discoveredSources: [],
+    paidSourcesFound: 0,
     newsItems: [],
     clusters: [],
     latestSourceAt: null,
@@ -584,9 +589,8 @@ export async function collectCatalystEvidence(
    */
   const recoveryEpisode = input.recoveryEpisode === true && staleResolver;
 
-  // The daily budget (his rulings 2026-10-06): refused means no paid call of any kind in this pass.
+  // His paid-search gate (2026-10-06): refused means no paid call of any kind in this pass.
   const paidRefused = input.paidSearch !== undefined && !input.paidSearch.allowed;
-  const paidDue = input.paidSearch?.allowed === true;
 
   let urgentResolutionRan = false;
   let urgentResolutionResolved = false;
@@ -861,7 +865,7 @@ export async function collectCatalystEvidence(
     !paidRefused &&
     (input.forceDiscovery === true ||
       materialEvent !== null ||
-      (!justResolved && (neverAttempted || intervalElapsed || paidDue)));
+      (!justResolved && (neverAttempted || intervalElapsed)));
 
   /*
    * Where the issuer publishes is a different question from what it published,
@@ -1023,6 +1027,7 @@ export async function collectCatalystEvidence(
     }));
 
     if (discovered.length > 0) insertResearchSources(db, discovered);
+    report.paidSourcesFound = discovered.length;
     if (!result.ran) report.state = 'SOURCE_DISCOVERY_FAILED';
 
     // Stamp only an attempt that actually happened, so the interval measures

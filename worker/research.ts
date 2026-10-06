@@ -26,15 +26,7 @@ import {
 import { SecClient, describeReachability } from '../lib/research/sec/client';
 import { collectSecEvidence, TickerMapCache } from '../lib/research/sec/collector';
 import { collectCatalystEvidence } from '../lib/research/catalyst/collector';
-import {
-  PAID_SEARCH_MAX_RANK,
-  PAID_SEARCH_MIN_RVOL,
-  PAID_SEARCH_OFFSETS_MINUTES,
-  PAID_SEARCH_RECHECK_MS,
-  paidSearchDecision,
-  readPaidSearchPasses,
-  type PaidSearchDecision,
-} from '../lib/research/catalyst/paidSearchCap';
+import { paidSearchDecision, type PaidSearchDecision } from '../lib/research/catalyst/paidSearchCap';
 import { AlpacaNewsAdapter } from '../lib/research/news/alpaca';
 import type { NewsAdapter } from '../lib/research/news/types';
 import { queueNewsRecheck } from '../lib/research/news/recheck';
@@ -122,19 +114,13 @@ function activeBoard(db: MarketDatabase, tradingDate: string): BoardDescriptor {
 }
 
 /**
- * This job's paid-search budget (his rulings 2026-10-06, `paidSearchCap.ts`): the name's rank and RVOL on the board
- * active NOW (the ruling gates the search itself, not the trigger that queued the job) and the day's paid passes from
- * the ledger, so a restart continues the count.
+ * Whether this job may buy a paid web search (his rulings 2026-10-06, `paidSearchCap.ts`): the name's rank and RVOL on
+ * the board active NOW, since the ruling gates the search itself, not the trigger that queued the job.
  */
 function paidSearchFor(db: MarketDatabase, ticker: string, tradingDate: string, autoRank: number): PaidSearchDecision {
   const board = activeBoard(db, tradingDate);
   const candidate = readBoardCandidates(db, { tradingDate, autoRank, board: board.board }).find((c) => c.ticker === ticker) ?? null;
-  return paidSearchDecision({
-    now: new Date(),
-    rank: candidate?.rank ?? null,
-    rvol: candidate?.rvol ?? null,
-    priorPasses: readPaidSearchPasses(db, ticker, tradingDate),
-  });
+  return paidSearchDecision({ rank: candidate?.rank ?? null, rvol: candidate?.rvol ?? null });
 }
 
 async function main(): Promise<void> {
@@ -481,14 +467,6 @@ async function main(): Promise<void> {
       // The collector's own gate, so a re-ask is never scheduled for a moment
       // when discovery would refuse to pay anyway.
       recheckAfterMs: config.catalyst.webDiscoveryUnresolvedMinutes * 60_000,
-      // His paid-search budget (2026-10-06): while a top-12, RVOL >= 3 name still owes a paid pass today, re-ask at
-      // the budget's 5-minute step so its +5 and +10 passes can run; otherwise the interval above.
-      recheckAfterMsFor: (candidate) =>
-        candidate.rank <= PAID_SEARCH_MAX_RANK &&
-        (candidate.rvol ?? 0) >= PAID_SEARCH_MIN_RVOL &&
-        readPaidSearchPasses(db, candidate.ticker, tradingDate).length < PAID_SEARCH_OFFSETS_MINUTES.length
-          ? PAID_SEARCH_RECHECK_MS
-          : config.catalyst.webDiscoveryUnresolvedMinutes * 60_000,
     });
     for (const decision of decisions.filter((item) => item.queued)) {
       log(`[research] ${decision.ticker} queued priority=${decision.priority}`);
@@ -711,6 +689,8 @@ async function main(): Promise<void> {
            */
           recordCollectorReport(db, job.id, {
             discoveryMode: catalystReport.discoveryMode,
+            paidSourcesFound: catalystReport.paidSourcesFound,
+            discoveryDetail: catalystReport.discoveryDetail,
             companySourceDetail: catalystReport.companySourceDetail,
             companyFetchDetail: catalystReport.companyFetchDetail,
             newsFetchDetail: catalystReport.newsFetchDetail,
