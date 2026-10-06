@@ -33,5 +33,8 @@ describe('the drawer', () => {
     const drawer = readFileSync('components/TickerDrawer.tsx', 'utf8');
     expect(drawer).toContain('row.setupGradeWired ? (row.setupGrade?.checkpointCompletedAt ?? null) : null');
     expect(PRODUCED_WORDS.label).toBe('Produced');
+    expect(PRODUCED_WORDS.hover).toBe(
+      "The older of when the desk's research was written and when the checkpoint it rests on ran.",
+    );
   });
 });

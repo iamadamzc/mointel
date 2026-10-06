@@ -14,7 +14,7 @@ import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
 import { CYCLE_WORDS, cycleFacts } from '@/lib/dashboard/cycleFacts';
 import { PRODUCED_WORDS, producedAt } from '@/lib/dashboard/produced';
-import { SUPPLY_GROUP_EMPTY, supplyGroups } from '@/lib/dashboard/supplyGroups';
+import { SUPPLY_GROUP_EMPTY, SUPPLY_GROUP_EMPTY_HOVER, supplyGroups } from '@/lib/dashboard/supplyGroups';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
@@ -43,7 +43,7 @@ function producedNow(dossierAt: string | null, checkpointAt: string): ReturnType
   return producedAt(dossierAt, checkpointAt, new Date().toISOString());
 }
 
-/** The title over the computed cycle facts. A placeholder: Marketing has not worded a section title for it. */
+/** The title over the computed cycle facts (Marketing, 1cf3d14f). */
 const CYCLE_FACTS_TITLE = 'Cycle, from daily bars';
 
 /** An instant a trader can act on: ET wall clock, with its age beside it. */
@@ -561,7 +561,9 @@ export function AutomaticIntelligence({
             <div key={group.key}>
               <FieldLabel>{group.label}</FieldLabel>
               {group.empty ? (
-                <p className="m-0 mt-1 text-[11px] text-ink-3">{SUPPLY_GROUP_EMPTY}</p>
+                <p className="m-0 mt-1 text-[11px] text-ink-3" title={SUPPLY_GROUP_EMPTY_HOVER}>
+                  {SUPPLY_GROUP_EMPTY}
+                </p>
               ) : (
                 <ul className="mt-1 space-y-1">
                   {group.lines.map((line, index) => (
@@ -677,10 +679,10 @@ export function AutomaticIntelligence({
       </Section>
 
       {/* Computed from daily bars, beside the model's block above under its own labels. The
-          "Former runner" row above is untouched (his ruling is being re-asked on a corrected premise). */}
+          "Former runner" row above keeps its computed meaning (his ruling 2026-10-06T00:38:58Z). */}
       <Section title={CYCLE_FACTS_TITLE}>
         {facts.message ? <p className="m-0 text-[12px] text-ink-2">{facts.message}</p> : null}
-        {facts.phase ? <Field label={CYCLE_WORDS.phaseLabel} value={facts.phase} /> : null}
+        {facts.phase ? <Field label={CYCLE_WORDS.phaseLabel} value={facts.phase} title={CYCLE_WORDS.phaseHover} /> : null}
         {facts.measure ? <Field label={CYCLE_WORDS.measureLabel} value={facts.measure} /> : null}
         {facts.cycleHigh ? <Field label="Cycle high" value={facts.cycleHigh.text} title={facts.cycleHigh.hover} numeric /> : null}
         {facts.flush ? <Field label="Flush from high" value={facts.flush.text} /> : null}
@@ -690,8 +692,12 @@ export function AutomaticIntelligence({
           </span>
           {facts.runs.lines.length > 0 ? (
             <ul className="mt-1 space-y-1">
-              {facts.runs.lines.map((line) => (
-                <li key={line} className="text-[12px] leading-snug text-ink-1" title={facts.runs.hover}>
+              {facts.runs.lines.map((line, i) => (
+                <li
+                  key={line}
+                  className="text-[12px] leading-snug text-ink-1"
+                  title={i === 0 && facts.runs.currentHover ? facts.runs.currentHover : facts.runs.hover}
+                >
                   {line}
                 </li>
               ))}

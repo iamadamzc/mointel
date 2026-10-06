@@ -12,14 +12,15 @@
  * ET day, the date with it on any other day (a clock time alone is a value with
  * no frame).
  *
- * Words: placeholders owed by Marketing (requested).
+ * Words: Marketing's (drawer-rows-18-13-24-words-2026-10-06.md, 0e1e90e7). The
+ * older time understates the row's age, never overstates it.
  */
 
 import { checkpointTimeET } from '@/lib/dashboard/setupGrade';
 
 export const PRODUCED_WORDS = {
   label: 'Produced',
-  hover: 'The older of when the desk’s research was written and when the checkpoint ran.',
+  hover: "The older of when the desk's research was written and when the checkpoint it rests on ran.",
 } as const;
 
 export interface Produced {

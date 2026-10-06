@@ -71,4 +71,18 @@ describe('the Grade sort chip', () => {
   it('marks the Ticker column as sorted, where the badge is', () => {
     expect(board).toContain("sorted={activeColumn === 'ticker'}");
   });
+
+  it("uses Marketing's words (02ec44ab): one name for the grade, the whole order, and a count that names the checkpoint", () => {
+    expect(board).toContain("label: 'Setup grade',");
+    expect(board).not.toContain("label: 'Grade',");
+    expect(board).toContain(
+      "'Sorted by setup grade: A first, then B, C, D, Not graded. Names with no research at this checkpoint are last. The grade is the desk\\'s reading, not a recommendation.'",
+    );
+    expect(board).toContain('text: (n: number) => `${n} with no research at this checkpoint`');
+    expect(board).toContain(
+      "'Names with a dash in the Setup grade column: the desk has no research on them at this checkpoint. Names marked Not graded are not counted here.'",
+    );
+    // "no grade" would be false of a count that leaves out Not graded.
+    expect(board).not.toContain("setupGrade: 'no grade'");
+  });
 });

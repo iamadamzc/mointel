@@ -3,8 +3,8 @@
  * date, how far the last close is below it, and the earlier runs, all measured
  * from daily bars (`lib/market/cycle.ts`), not judged by a model. Shown beside
  * the model's own cycle block under their own labels. The "Former runner" label
- * is NOT touched here (his ruling 2026-10-06T00:28Z, "a", is being re-asked on
- * a corrected premise; Integration will say).
+ * is NOT touched here: it keeps its present computed meaning (his ruling
+ * 2026-10-06T00:38:58Z).
  *
  * UNITS: `advancePct` and `givebackPct` are FRACTIONS (0.53 is 53%), scaled here
  * in one place; the cycle tooltip once printed one unscaled.
@@ -19,8 +19,8 @@
  * not today before 20:00 ET and is today after it), so every figure carries the
  * date of the last bar it was computed from.
  *
- * Words: Marketing's (drawer-rows-words-2026-10-05.md). Strings still owed are
- * marked in CYCLE_WORDS.
+ * Words: Marketing's (drawer-rows-words-2026-10-05.md at a9c33f0e,
+ * drawer-rows-18-13-24-words-2026-10-06.md at 0e1e90e7). None is owed.
  */
 
 import { CYCLE_PHASE_LABEL, cycleDetail } from '@/lib/dashboard/cycle';
@@ -32,17 +32,21 @@ export const CYCLE_WORDS = {
   noEarlierRun: 'No earlier run in the history we hold.',
   /** A dossier with no computed history (fewer than two daily bars): Marketing's "unknown" string. */
   noHistory: 'Cannot tell: not enough daily history.',
-  /** OWED BY MARKETING: bars were read and no run has started in them. */
+  /** Bars were read and no run has started in them. */
   noRun: 'No current run in the history we hold.',
-  /** OWED BY MARKETING: labels for the computed phase and its arithmetic (row 13). */
+  /** The computed phase and its arithmetic (row 13). */
   phaseLabel: 'Phase',
+  phaseHover:
+    "The desk's reading of where the current run stands, computed from daily bars. It describes the move so far and is not a forecast.",
   measureLabel: 'How it is measured',
   /**
-   * Marketing's prefix for the current run when it counts toward the largest advance (BACKSIDE or SHADOW).
+   * The prefix for the current run when it counts toward the largest advance (BACKSIDE or SHADOW).
    * Not "over": those are the desk's classifications, and "high was N sessions ago" shows the rest.
-   * Her hover ("past its high") is HELD OUT: SHADOW does not require the close to be below the high.
    */
   currentPrefix: 'Current run: ',
+  /** Hover on the current-run line; true of BACKSIDE and SHADOW (a SHADOW run need not have given anything back). */
+  currentHover:
+    "Listed because the desk's cycle reading has this run ended: it gave back a large share of its advance, or trading in it went quiet.",
 } as const;
 
 export type CycleFactsState = 'PRODUCED' | 'UNKNOWN' | 'NOT_YET';
@@ -57,7 +61,8 @@ export interface CycleFacts {
   measure: string | null;
   cycleHigh: { text: string; hover: string } | null;
   flush: { text: string } | null;
-  runs: { lines: string[]; empty: string | null; hover: string };
+  /** `currentHover` is the first line's own hover, set only when that line is the current run. */
+  runs: { lines: string[]; empty: string | null; hover: string; currentHover: string | null };
 }
 
 const sessions = (n: number) => `${n} session${n === 1 ? '' : 's'}`;
@@ -71,7 +76,7 @@ function runLine(start: string, high: string, advanceFraction: number, sessionsA
 const RUNS_HOVER = `A run starts on a day the stock rose at least ${CYCLE_START_MOVE_PCT * 100}% on at least ${CYCLE_START_RVOL} times its usual volume.`;
 
 export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts {
-  const emptyRuns = { lines: [], empty: CYCLE_WORDS.noEarlierRun, hover: RUNS_HOVER };
+  const emptyRuns = { lines: [], empty: CYCLE_WORDS.noEarlierRun, hover: RUNS_HOVER, currentHover: null };
   if (!history) {
     return { state: 'NOT_YET', message: CYCLE_WORDS.noHistory, phase: null, measure: null, cycleHigh: null, flush: null, runs: emptyRuns };
   }
@@ -86,7 +91,7 @@ export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts
       measure: null,
       cycleHigh: null,
       flush: null,
-      runs: { lines: prior, empty: prior.length === 0 ? CYCLE_WORDS.noEarlierRun : null, hover: RUNS_HOVER },
+      runs: { lines: prior, empty: prior.length === 0 ? CYCLE_WORDS.noEarlierRun : null, hover: RUNS_HOVER, currentHover: null },
     };
   }
 
@@ -110,6 +115,11 @@ export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts
       hover: `Highest price since the current run began, from daily bars through ${asOf}'s close.`,
     },
     flush: { text: `${(arc.givebackPct * 100).toFixed(1)}% below the cycle high, at ${asOf}'s close` },
-    runs: { lines, empty: lines.length === 0 ? CYCLE_WORDS.noEarlierRun : null, hover: RUNS_HOVER },
+    runs: {
+      lines,
+      empty: lines.length === 0 ? CYCLE_WORDS.noEarlierRun : null,
+      hover: RUNS_HOVER,
+      currentHover: countsCurrent ? CYCLE_WORDS.currentHover : null,
+    },
   };
 }

@@ -54,8 +54,10 @@ export function MarketSummary({
       value: counts.onBoard,
       tone: 'text-ink',
       // The board shows the top 12, 25 or 50 of this list; the number is the
-      // whole ranked list, so it is not worded as "on the board".
-      hint: 'Names in the ranking right now. The board shows the top 12, 25 or 50 of them',
+      // whole ranked list, so it is not worded as "on the board". Not "right now":
+      // the strip also sits over a frozen checkpoint (Marketing, 73cdc4bc). This
+      // segment has no click, so its hint is shown whole and ends in a full stop.
+      hint: 'Names in the ranking at the time shown. The board shows the top 12, 25 or 50 of them.',
     },
     /*
      * EVERY NUMBER HERE IS WHAT ITS CLICK KEEPS. They are computed by running
@@ -155,7 +157,7 @@ export function MarketSummary({
             key={segment.key}
             type="button"
             aria-pressed={active}
-            title={`${segment.hint}. Click to filter the board.`}
+            title={`${segment.hint}. Click to show only these names.`}
             onClick={() => onChange(segment.apply!(filters))}
             className={`inline-flex min-h-[24px] shrink-0 items-baseline gap-1 rounded-sm px-1.5 py-0.5 transition-colors hover:bg-panel-3 ${
               active ? 'bg-accent/15 ring-1 ring-accent/40' : ''

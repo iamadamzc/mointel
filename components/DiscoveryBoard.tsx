@@ -208,9 +208,10 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.', column: 'float' },
   {
     key: 'setupGrade',
-    label: 'Grade',
+    // Marketing, grade-sort-chip-words-2026-10-06.md (02ec44ab). The last sentence is Commercial's to keep or cut.
+    label: 'Setup grade',
     title:
-      'The setup grade, A first. Names without a grade are listed last. Never the default order.',
+      'Sorted by setup grade: A first, then B, C, D, Not graded. Names with no research at this checkpoint are last. The grade is the desk\'s reading, not a recommendation.',
     metric: 'setup grade, A first',
     column: 'ticker',
   },
@@ -243,8 +244,18 @@ const MISSING_NOUN: Partial<Record<DiscoverySortKey, string>> = {
    * true of the unmeasured rows only, which is what this set contains.
    */
   now: 'not measured',
-  setupGrade: 'no grade',
 };
+
+/**
+ * The setup grade's count has its own words (Marketing, 02ec44ab): it counts the
+ * dash rows only, so "no grade" would be false (Not graded also has no letter),
+ * and it names the checkpoint, since research missing at one may exist at another.
+ */
+const SETUP_GRADE_MISSING = {
+  text: (n: number) => `${n} with no research at this checkpoint`,
+  hover:
+    'Names with a dash in the Setup grade column: the desk has no research on them at this checkpoint. Names marked Not graded are not counted here.',
+} as const;
 
 /** One reader for every place a sort key's name appears. */
 function resolveSortEntry(
@@ -548,9 +559,15 @@ export function DiscoveryBoard({
               // about". Absence is stated, never implied by position.
               <span
                 className="num text-[11px] text-warn"
-                title={`${missing} of ${rows.length} rows have no value for this sort and are listed last, in both directions. The board shows the first ${size}, so a row listed last may not be on screen at all.`}
+                title={
+                  sort.key === 'setupGrade'
+                    ? SETUP_GRADE_MISSING.hover
+                    : `${missing} of ${rows.length} rows have no value for this sort and are listed last, in both directions. The board shows the first ${size}, so a row listed last may not be on screen at all.`
+                }
               >
-                {missing} {MISSING_NOUN[sort.key] ?? 'unknown'}
+                {sort.key === 'setupGrade'
+                  ? SETUP_GRADE_MISSING.text(missing)
+                  : `${missing} ${MISSING_NOUN[sort.key] ?? 'unknown'}`}
               </span>
             ) : null}
           </div>

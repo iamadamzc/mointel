@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-import { SUPPLY_GROUP_EMPTY, SUPPLY_GROUP_LABEL, supplyGroups } from '@/lib/dashboard/supplyGroups';
+import { SUPPLY_GROUP_EMPTY, SUPPLY_GROUP_EMPTY_HOVER, SUPPLY_GROUP_LABEL, supplyGroups } from '@/lib/dashboard/supplyGroups';
 import type { StructureFindings, SupplyBlock, SupplyBlockType } from '@/lib/research/types';
 import type { EvidenceLink } from '@/lib/research/view';
 
@@ -125,7 +125,15 @@ describe('an empty group says so', () => {
   it('prints the empty sentence in the drawer rather than dropping the heading', () => {
     const source = readFileSync('components/AutomaticIntelligence.tsx', 'utf8');
     expect(source).toContain('SUPPLY_GROUP_EMPTY');
+    expect(source).toContain('title={SUPPLY_GROUP_EMPTY_HOVER}');
     expect(source).toContain('supplyGroups(structure, intel.evidence)');
-    expect(SUPPLY_GROUP_EMPTY.length).toBeGreaterThan(0);
+  });
+
+  it("uses Marketing's words (0e1e90e7), and the empty sentence never reads as a finding", () => {
+    expect(SUPPLY_GROUP_EMPTY).toBe('Nothing recorded for this group.');
+    expect(SUPPLY_GROUP_EMPTY_HOVER).toBe(
+      "The desk's research holds nothing here. Either it found none or it did not read for this group; the record does not say which.",
+    );
+    expect(SUPPLY_GROUP_LABEL.SOURCES).toBe('Filings cited for share structure');
   });
 });

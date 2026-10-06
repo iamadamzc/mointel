@@ -79,6 +79,9 @@ describe('the list and the largest advance cannot disagree', () => {
       expect(facts.runs.lines[0].startsWith('Current run: Aug 15, 2026 to Aug 15, 2026: up 53%')).toBe(true);
       expect(facts.runs.lines[0]).toContain('up 53% from the base close to the high, high was 4 sessions ago');
       expect(facts.runs.empty).toBeNull();
+      expect(facts.runs.currentHover).toBe(
+        "Listed because the desk's cycle reading has this run ended: it gave back a large share of its advance, or trading in it went quiet.",
+      );
     }
   });
 
@@ -87,7 +90,18 @@ describe('the list and the largest advance cannot disagree', () => {
       const facts = cycleFacts(history(arc({ phase })));
       expect(facts.runs.lines).toEqual([]);
       expect(facts.runs.empty).toBe('No earlier run in the history we hold.');
+      // No current-run line, so no line may carry its hover.
+      expect(facts.runs.currentHover).toBeNull();
     }
+  });
+
+  it('gives the current-run hover to the first line only, and the phase its own hover', () => {
+    const source = readFileSync('components/AutomaticIntelligence.tsx', 'utf8');
+    expect(source).toContain('i === 0 && facts.runs.currentHover ? facts.runs.currentHover : facts.runs.hover');
+    expect(source).toContain('title={CYCLE_WORDS.phaseHover}');
+    expect(CYCLE_WORDS.phaseHover).toBe(
+      "The desk's reading of where the current run stands, computed from daily bars. It describes the move so far and is not a forecast.",
+    );
   });
 });
 

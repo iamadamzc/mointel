@@ -10,8 +10,10 @@
  * (contract rule), so a group with nothing in it is marked empty and the drawer
  * prints Marketing's sentence for it instead of dropping the heading.
  *
- * Words: the group names are the Sheet's own column names, and the empty
- * sentence is a placeholder: both are Marketing's to confirm (requested).
+ * Words: Marketing's (drawer-rows-18-13-24-words-2026-10-06.md, 0e1e90e7): five
+ * group names are the Sheet's own, the sixth is reworded. The empty sentence
+ * never reads as "none exist": the record does not say whether the desk found
+ * none or did not read for the group. Commercial reads the empty sentence and hover.
  */
 
 import { humanise } from '@/lib/dashboard/language';
@@ -26,11 +28,13 @@ export const SUPPLY_GROUP_LABEL: Record<SupplyGroupKey, string> = {
   OFFERINGS: 'Offerings / ATM / PIPE',
   WARRANTS: 'Warrants / Convertibles',
   OTHER: 'Other share structure',
-  SOURCES: 'Structure sources',
+  SOURCES: 'Filings cited for share structure',
 };
 
-/** PLACEHOLDER, owed by Marketing: the line for a group with nothing in it. */
-export const SUPPLY_GROUP_EMPTY = "None in the desk's research.";
+/** The line for a group with nothing in it, and its hover. */
+export const SUPPLY_GROUP_EMPTY = 'Nothing recorded for this group.';
+export const SUPPLY_GROUP_EMPTY_HOVER =
+  "The desk's research holds nothing here. Either it found none or it did not read for this group; the record does not say which.";
 
 /** Which group a ledger block type belongs to. Exhaustive: a new type is a compile error. */
 const BLOCK_GROUP: Record<SupplyBlockType, Exclude<SupplyGroupKey, 'FILINGS' | 'SOURCES'>> = {
