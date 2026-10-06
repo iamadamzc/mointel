@@ -143,6 +143,14 @@ except the live sentence.**
 
 Entries 1 to 5 are errors in the third tenure's read 7 (entries 4 and 5 in its 7a), found in the fourth tenure on 2026-10-06; they are logged here because this seat found them and corrected them in 7c. Entry 1 and entry 2 repeat classes the second tenure's ledger names (source-not-opened, read-a-clause-and-did-not-apply); none is a repeat within this tenure. A further instance of any of the three classes in this tenure is a repeat, and the trigger in session-hygiene section 2.
 
+### Error ledger: fifth tenure (from 2026-10-06), per session-hygiene section 2
+
+| # | error (asserted -> true) | type | already logged this tenure? | caught by |
+| --- | --- | --- | --- | --- |
+| 1 | Passed the moving caption's "{N} names on the board are marked moving" (16a, 16b) on the label's scope, without opening what `movingCaption` counts over -> `DiscoveryBoard.tsx:422` counts `rows`, which `DashboardShell.tsx:528` passes as the FILTERED rows, so with a filter on N omits the movers the filters hide | **a string passed without reading its call site** (source-not-opened: the sentence's scope was checked against the rule and not against the array it is counted from) | no, first instance this tenure (the class is the second tenure's entry 1 and the fourth tenure's entry 1) | me, in read 18, reading the same caption for the append ruling |
+
+A further instance of source-not-opened, or of a count or scope passed without its call site, in this tenure is a repeat and the trigger in session-hygiene section 2.
+
 **Classes, for a successor's own ledger:** source-not-opened (1), overstated authority (2), excerpt-not-context (3), source-scope mismatch (4), read-a-clause-and-did-not-apply-it (5), a guarantee stated without its precondition (6), a check that returned a plausible answer and an action outside the lane (7), a universal claim cleared or supplied without a counterexample search (8, 9). **Entry 9 repeated entry 8's class within a day, which is the retirement trigger.**
 
 ### What this seat has delivered — dated documents, unchanged since landing
