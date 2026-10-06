@@ -102,7 +102,7 @@ for design documents.
 | W | **Owed after v6 is live:** one both-surfaces wording change (Marketing's words, explains-the-move in three states) | Not built | v6 live; checked at 1,024 |
 | FI | **FINRA short-interest attribution** (Web's words) | Recorded, NOT approved work | When the label is built; history in the archive |
 | 5b | Company-name casing | Not built; spec in the 09 archive (row 5b) | After v6 |
-| 5 | Follow-ups, not built | | Poll: a visible "not updating" state; the same abort pattern in `useDashboard`; the sorted `Now` header renders on three lines |
+| 5 | Follow-ups, not built | | Poll: ~~a visible "not updating" state~~ LIVE (see P2); the same abort pattern in `useDashboard`; the sorted `Now` header renders on three lines |
 
 ### PENDING BUILDS FOR INTEGRATION (his direction 2026-10-05: everything planned is built, everything built is shipped)
 
@@ -111,7 +111,7 @@ Everything of Design's that is approved and not built, each with what it waits o
 | # | Build | Waits on | Can start now |
 | --- | --- | --- | --- |
 | P1 | **Float column always on, four faces, popover, the filed count's date on the face, tooltip link to the public page** | **BUILT locally** (Marketing v16 words, link `/are-float-quotes-real`, hidden until `MarketSnapshot.floatBounds` is a map; fit measured at 1,024: widest button 74.0 of 86 px, "Cannot verify" 83.7, "Not computed" 77.3). NOT GATED, NOT SHIPPED. Waits on Research's float job and its payload (the type is my provisional consumer type), Web's public page (`web/float-page`) and his yes to the path, Ops's exact-match nginx exemption in the same release | Gate in Ops's slot after Web, then Integration replays |
-| P2 | **Visible "not updating" state on the board** (beta path T3) | **BUILT locally** in Marketing's words (`docs/marketing/board-not-updating-banner-words.md`): banner, header chip and price tooltips stop saying live while it is up, all reading one state (`lib/hooks/useFeedBanner.tsx`). Measured at 1,024: banner one line, chip at most 320 px, header 61 px. NOT GATED | Gate, then Integration replays |
+| P2 | **Visible "not updating" state on the board** (beta path T3) | **LIVE in production** (by content at `84b4d425`, checked 2026-10-06: `lib/dashboard/feedBanner.ts`, `lib/hooks/useFeedBanner.tsx`, `components/FeedBanner.tsx`). Not yet seen in a real outage | Owed read: the banner states if an outage ever gives the case |
 | P3 | **Grade sort chip** | **BUILT locally** (hidden until the grade is wired). NOT GATED | Gate, then Integration replays |
 | P4 | **Setup grade on the frozen snapshot board** | The stored grade riding `/api/assessments` (Ops and Research) | No |
 | P5 | **Revised grade tag** (contract row 3: the 09:25 grade differs from the evening grade) | Ops storing the 09:25 grade and exposing both; a ruling that the tag exists; Marketing's words | No |
