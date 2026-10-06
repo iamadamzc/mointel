@@ -22,8 +22,15 @@ import {
  * The popover ends with the link to the public page that explains how the
  * number is made; it opens in a new tab and the page ships in the same release.
  */
-export function FloatCell({ bound }: { bound: FloatBound | null | undefined }) {
-  const view = floatCellView(bound);
+export function FloatCell({
+  bound,
+  dateShown,
+}: {
+  bound: FloatBound | null | undefined;
+  /** The board's own date, YYYY-MM-DD: what the 90-day rule is measured from, printed in the popover. */
+  dateShown?: string | null;
+}) {
+  const view = floatCellView(bound, { dateShown });
   const tone =
     view.kind === 'bound'
       ? 'text-ink'

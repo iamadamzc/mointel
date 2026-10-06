@@ -14,6 +14,7 @@ const bound = (over: Partial<FloatBound> = {}): FloatBound => ({
   bound: 8_100_000,
   countAsOf: '2026-09-22',
   holdingDates: ['2026-09-18'],
+  fetchedOn: '2026-10-05',
   ...over,
 });
 
@@ -26,7 +27,7 @@ describe('FloatCell, server-rendered', () => {
     expect(html).toContain('>9/22<');
     expect(html).toContain('<button');
     expect(html).toContain('whitespace-nowrap');
-    expect(html).toContain('aria-label="no more than 8.10M shares, computed from SEC filings as of Sep 22, 2026, when the filings line up"');
+    expect(html).toContain('aria-label="no more than 8.10M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up"');
   });
 
   it('prints the words for the other states, and "Not computed" for no state at all', () => {
@@ -45,7 +46,7 @@ describe('FloatCell, server-rendered', () => {
     expect(source).toContain('href={FLOAT_PAGE_HREF}');
     expect(source).toContain('target="_blank"');
     expect(source).toContain('rel="noopener noreferrer"');
-    expect(FLOAT_PAGE_HREF.startsWith('/')).toBe(true);
+    expect(FLOAT_PAGE_HREF).toBe('/are-float-quotes-real');
   });
 });
 
@@ -85,7 +86,7 @@ describe('the board shows the column always once wired, and the legend once', ()
 
   it('renders the new cell only when wired, and the legend under the board', () => {
     expect(board).toContain('row.floatBoundWired ? (');
-    expect(board).toContain('<FloatCell bound={row.floatBound} />');
+    expect(board).toContain('<FloatCell bound={row.floatBound} dateShown={dateShown} />');
     expect(board).toContain('floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null');
   });
 });
