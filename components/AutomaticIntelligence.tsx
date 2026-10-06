@@ -12,6 +12,7 @@ import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
+import { cycleFacts } from '@/lib/dashboard/cycleFacts';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
@@ -34,6 +35,9 @@ function eventTimeText(
   const view = eventTimeView(at, citedIds, evidence, Date.now());
   return { text: view.text, hover: view.hover };
 }
+
+/** The title over the computed cycle facts. A placeholder: Marketing has not worded a section title for it. */
+const CYCLE_FACTS_TITLE = 'Cycle, from daily bars';
 
 /** An instant a trader can act on: ET wall clock, with its age beside it. */
 function timeWithAge(at: string | null | undefined): string {
@@ -339,6 +343,7 @@ export function AutomaticIntelligence({
   // Never a false clock: the clock prints only when a cited source with that exact instant is EXACT.
   const eventTime = eventTimeText(catalyst.eventTimestamp, catalyst.evidenceSourceIds, intel.evidence);
   const catalystSourceList = catalystSources(catalyst.evidenceSourceIds, intel.evidence);
+  const facts = cycleFacts(intel.analysis?.dossier.computedCycle);
   const generatedAt = timeWithAge(intel.generatedAt);
 
   /*
@@ -620,6 +625,30 @@ export function AutomaticIntelligence({
           tone="warn"
           FieldLabel={FieldLabel}
         />
+      </Section>
+
+      {/* Computed from daily bars, beside the model's block above under its own labels. The
+          "Former runner" row above is untouched (his ruling is being re-asked on a corrected premise). */}
+      <Section title={CYCLE_FACTS_TITLE}>
+        {facts.message ? <p className="m-0 text-[12px] text-ink-2">{facts.message}</p> : null}
+        {facts.cycleHigh ? <Field label="Cycle high" value={facts.cycleHigh.text} title={facts.cycleHigh.hover} numeric /> : null}
+        {facts.flush ? <Field label="Flush from high" value={facts.flush.text} /> : null}
+        <div className="mt-3">
+          <span title={facts.runs.hover}>
+            <FieldLabel>Prior runs</FieldLabel>
+          </span>
+          {facts.runs.lines.length > 0 ? (
+            <ul className="mt-1 space-y-1">
+              {facts.runs.lines.map((line) => (
+                <li key={line} className="text-[12px] leading-snug text-ink-1" title={facts.runs.hover}>
+                  {line}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="m-0 mt-1 text-[12px] text-ink-2">{facts.runs.empty}</p>
+          )}
+        </div>
       </Section>
 
       <Section title="Evidence & Provenance">
