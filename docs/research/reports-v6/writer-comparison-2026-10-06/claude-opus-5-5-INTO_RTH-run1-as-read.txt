@@ -1,0 +1,24 @@
+claude-opus-5-5-INTO_RTH-run1 · built from checkpoint #596
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  NXL: Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America at 08:30 ET, with secondary coverage at 08:42 ET describing seven Latin American markets; no deal value, minimum purchase commitment or revenue forecast was given. The desk reads it as a company-specific commercial development that lined up with the heavy-volume move, without evidence that it caused the move.
+  EZRA: 
+  EJH: A filing at 16:30 ET on September 30, 2026 disclosed that EJH agreed to a private placement of 71,800,000 shares at $0.60 for $43.08 million gross, paid in $1.0 million cash and MFT tokens, with closing expected on or about October 15, 2026. The desk reads it as a potential dilution concern if it closes, against an outstanding-share figure too old to reconcile; it printed a new high of day since the previous checkpoint.
+  LRHC: A current report at 05:00 ET disclosed La Rosa's acquisition of NVIDIA GPUs and an exploration of real estate divestitures, alongside an exchange into newly issued Series F convertible preferred shares. The desk sees an AI infrastructure story set against potential future common-share supply, with GPU quantity, price and conversion amounts not on file.
+
+OLDER NEWS
+  RPGL: Only older news was found, not a fresh catalyst: secondary coverage at 10:30 ET on September 23, 2026 of a 1-for-16 reverse split effective September 25, alongside an August share offering and a variable-price convertible note. The desk reads this as a changed share structure with potential additional supply, and no fresh operating catalyst found in our sources.
+  NAMM: Only older news was found, not a fresh catalyst: Namib announced at 19:26 ET on September 29, 2026 a US$6.5 million term loan facility for resource definition and bankability work on its Redwing restart. The desk reads it as debt funding with no stated equity issuance, not enough to account for a large move; it printed a new high of day since the previous checkpoint.
+
+UNCLEAR
+  ISNR: The latest item our sources found is the July 27, 2026 announcement that Class A shares and warrants would begin trading separately on July 30, and the analysis reached no conclusion about a catalyst. The desk notes coverage is incomplete and this event does not explain the current move.
+
+NOT YET RESEARCHED
+  CEPV: No research is on file for this name at this checkpoint.
+  LTGR: No research is on file for this name at this checkpoint.
+  CCAQ: No research is on file for this name at this checkpoint.
+  MTNE: No research is on file for this name at this checkpoint.
+  PALO: No research is on file for this name at this checkpoint.

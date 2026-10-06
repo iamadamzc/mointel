@@ -1,0 +1,35 @@
+store A:/mointel-scratch/market-scratch-2026-10-02.db: 4892938240 bytes, mtime 2026-10-03T15:15:39.110Z
+day 2026-10-01, range $1-$20, 2 runs per arm per kind; checker gpt-5.6-terra on every arm; Claude effort low
+luna-INTO_RTH-run1: PUBLISHED; 7 of 13 lines struck; $0.0461; tokens gpt-5.6-luna:4923/2167 gpt-5.6-terra:15847/903
+luna-INTO_POWER_HOUR-run1: PUBLISHED; 5 of 13 lines struck; $0.0532; tokens gpt-5.6-luna:5777/2209 gpt-5.6-terra:20196/751
+luna-AFTER_HOURS-run1: PUBLISHED; 3 of 13 lines struck; $0.0517; tokens gpt-5.6-luna:5825/1823 gpt-5.6-terra:20157/672
+luna-PREMARKET-run1: PUBLISHED; 0 of 13 lines struck; $0.0543; tokens gpt-5.6-luna:6478/2897 gpt-5.6-terra:20604/696
+luna-INTO_RTH-run2: PUBLISHED; 2 of 13 lines struck; $0.0465; tokens gpt-5.6-luna:4923/2234 gpt-5.6-terra:15933/917
+luna-INTO_POWER_HOUR-run2: PUBLISHED; 4 of 13 lines struck; $0.0532; tokens gpt-5.6-luna:5777/2303 gpt-5.6-terra:20294/723
+luna-AFTER_HOURS-run2: PUBLISHED; 2 of 13 lines struck; $0.0572; tokens gpt-5.6-luna:5825/2431 gpt-5.6-terra:20115/1070
+luna-PREMARKET-run2: PUBLISHED; 0 of 13 lines struck; $0.0543; tokens gpt-5.6-luna:6478/2614 gpt-5.6-terra:20626/718
+terra-INTO_RTH-run1: PUBLISHED; 3 of 13 lines struck; $0.0695; tokens gpt-5.6-terra:4923/1735 gpt-5.6-terra:15891/586
+terra-INTO_POWER_HOUR-run1: PUBLISHED; 3 of 13 lines struck; $0.0838; tokens gpt-5.6-terra:5777/1544 gpt-5.6-terra:20162/1120
+terra-AFTER_HOURS-run1: PUBLISHED; 2 of 13 lines struck; $0.0859; tokens gpt-5.6-terra:5825/1909 gpt-5.6-terra:20111/923
+terra-PREMARKET-run1: PUBLISHED; 2 of 13 lines struck; $0.0863; tokens gpt-5.6-terra:6478/1806 gpt-5.6-terra:20641/869
+terra-INTO_RTH-run2: PUBLISHED; 2 of 13 lines struck; $0.0692; tokens gpt-5.6-terra:4923/1598 gpt-5.6-terra:15834/709
+terra-INTO_POWER_HOUR-run2: PUBLISHED; 4 of 13 lines struck; $0.0932; tokens gpt-5.6-terra:5777/1961 gpt-5.6-terra:20265/1468
+terra-AFTER_HOURS-run2: PUBLISHED; 3 of 13 lines struck; $0.0917; tokens gpt-5.6-terra:5825/2246 gpt-5.6-terra:20139/1069
+terra-PREMARKET-run2: PUBLISHED; 2 of 13 lines struck; $0.0857; tokens gpt-5.6-terra:6478/1809 gpt-5.6-terra:20550/831
+claude-sonnet-5-5-INTO_RTH-run1: PUBLISHED; 3 of 12 lines struck; $0.0691; tokens claude-sonnet-5-5:7605/1343 gpt-5.6-terra:15877/723
+claude-sonnet-5-5-INTO_POWER_HOUR-run1: PUBLISHED; 4 of 13 lines struck; $0.0852; tokens claude-sonnet-5-5:8767/1662 gpt-5.6-terra:20248/881
+claude-sonnet-5-5-AFTER_HOURS-run1: PUBLISHED; 3 of 13 lines struck; $0.0841; tokens claude-sonnet-5-5:8871/1733 gpt-5.6-terra:20224/719
+claude-sonnet-5-5-PREMARKET-run1: PUBLISHED; 1 of 13 lines struck; $0.0864; tokens claude-sonnet-5-5:9790/1704 gpt-5.6-terra:20538/723
+claude-sonnet-5-5-INTO_RTH-run2: PUBLISHED; 4 of 13 lines struck; $0.0707; tokens claude-sonnet-5-5:7605/1352 gpt-5.6-terra:15875/854
+claude-sonnet-5-5-INTO_POWER_HOUR-run2: PUBLISHED; 7 of 13 lines struck; $0.0901; tokens claude-sonnet-5-5:8767/1703 gpt-5.6-terra:20280/1247
+claude-sonnet-5-5-AFTER_HOURS-run2: PUBLISHED; 3 of 13 lines struck; $0.0878; tokens claude-sonnet-5-5:8871/1632 gpt-5.6-terra:20151/1119
+claude-sonnet-5-5-PREMARKET-run2: PUBLISHED; 2 of 13 lines struck; $0.0873; tokens claude-sonnet-5-5:9790/1747 gpt-5.6-terra:20580/757
+claude-opus-5-5-INTO_RTH-run1: PUBLISHED; 2 of 13 lines struck; $0.0998; tokens claude-opus-5-5:7605/1334 gpt-5.6-terra:15859/911
+claude-opus-5-5-INTO_POWER_HOUR-run1: PUBLISHED; 3 of 13 lines struck; $0.1302; tokens claude-opus-5-5:8767/1810 gpt-5.6-terra:20336/1519
+claude-opus-5-5-AFTER_HOURS-run1: PUBLISHED; 4 of 13 lines struck; $0.1183; tokens claude-opus-5-5:8871/1587 gpt-5.6-terra:20108/901
+claude-opus-5-5-PREMARKET-run1: PUBLISHED; 2 of 13 lines struck; $0.1310; tokens claude-opus-5-5:9790/1858 gpt-5.6-terra:20678/1112
+claude-opus-5-5-INTO_RTH-run2: PUBLISHED; 1 of 13 lines struck; $0.0999; tokens claude-opus-5-5:7605/1363 gpt-5.6-terra:15883/871
+claude-opus-5-5-INTO_POWER_HOUR-run2: PUBLISHED; 4 of 13 lines struck; $0.1245; tokens claude-opus-5-5:8767/1496 gpt-5.6-terra:20131/1608
+claude-opus-5-5-AFTER_HOURS-run2: PUBLISHED; 4 of 13 lines struck; $0.1203; tokens claude-opus-5-5:8871/1535 gpt-5.6-terra:20071/1165
+claude-opus-5-5-PREMARKET-run2: PUBLISHED; 0 of 13 lines struck; $0.1297; tokens claude-opus-5-5:9790/1917 gpt-5.6-terra:20707/899
+TOTAL spend $2.6963

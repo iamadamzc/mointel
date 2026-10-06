@@ -1,0 +1,24 @@
+claude-opus-5-5-PREMARKET-run1 · built from checkpoint #611
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  SORA: AsiaStrategy reported on October 1, 2026 at 12:06 ET a non-binding MOU with Plume to explore an Asian joint venture for tokenized financial products, with no deal value attached. The desk reads it as a link to tokenization activity that lined up with the high-volume strength, though the MOU carries no disclosed value, revenue, conditions or timetable.
+  AMOD: Alpha Modus filed an 8-K reporting an asset transaction completed on September 30, and secondary coverage put the PIPE at 3,170 Bitcoin valued above $250M, against a planned issue of 51,621,560 new Class A shares. The desk sees the asset addition as material but the planned share issue as many times the prior share count, a large change to supply; final closing terms and a post-closing share count are not on file.
+  NXL: Nexalin announced at 08:30 ET on October 1, 2026 a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America, with no contract value stated. The desk reads it as a company-specific commercialization story, which secondary coverage tied to a heavy-volume surge; contract value, minimum purchases and revenue conditions are not known.
+  SSM: A Schedule 13D was filed on October 1, 2026, and secondary coverage reported Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The desk treats it as an attention event, since the filing excerpt gives no purchase dates, intentions or transaction with the company.
+  EJH: E-Home announced at 07:15 ET on October 1, 2026 an AI service robot for China's household-services market, alongside a September 29 private-placement agreement for 71.8 million shares at $0.60 for $43.1M gross. The desk sees an AI-themed headline paired with substantial pending supply priced below the market; whether the placement has closed is not known.
+  AISP: Airship AI announced at 09:00 ET on October 1, 2026 $29.0M of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The desk reads the award as material and company-specific, coinciding with unusually high activity; performance period and revenue timing are not on file.
+  NAMM: Namib released first-half 2026 results at 08:00 ET on October 1, 2026, revising production guidance to 26,500 to 27,000 ounces, with all-in sustaining cost up to $3,078 per ounce and $11.3M of non-cash fair-value losses, after a $6.5M non-dilutive term loan announced September 29. The desk reads the release as mixed, with constructive financing set against cost and earnings pressure, and the prior guidance range is not on file.
+
+OLDER NEWS
+  WCT: This is not a fresh catalyst: the latest company event in our sources is the 1-for-5 reverse split announced at 16:50 ET on September 3, 2026, which followed a completed public offering of roughly $7.5M. The desk reads the financing as a large addition of new shares and finds no newer positive company event to explain the move.
+  CAMP: This is not a fresh catalyst: the latest developments in our sources are the August 13 Q2 update reporting regulatory clearance for a planned CMP-002 trial and the August 4 private-placement closing. The desk views the clearance as a clinical milestone, while the financing added resale supply in common stock and pre-funded warrants.
+  COLA: This is not a fresh catalyst: Columbus, a SPAC, announced at 04:01 ET on September 11, 2026 that it convened and adjourned its extraordinary general meeting. The desk reads it as a corporate-process event, with the reason, reconvened date and vote results not known.
+
+UNCLEAR
+  HTCR: The analysis reached no conclusion about a catalyst: the latest filing in our sources is an 8-K from September 25, 2026 whose subject is not in the excerpt, and coverage was SEC-only, so outside news may have been missed.
+
+NOT YET RESEARCHED
+  ALPX: 

@@ -1,0 +1,22 @@
+luna-INTO_POWER_HOUR-run2 · built from checkpoint #606
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  NXL: Nexalin announced a 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America, providing a company-specific commercialization framework. The supplied primary-source excerpt does not state contract value, minimum purchases, expected revenue, financial commitments, regulatory conditions, manufacturing readiness, or distributor performance requirements.
+  AISP: Airship AI announced $29.0 million of firm-fixed-price contract awards from an agency within the U.S. Department of Homeland Security. The release excerpt does not establish award delivery timing, revenue-recognition timing, or the specific DHS agency.
+  WFCF: The company’s Form S-3 became effective on September 30, 2026, covering up to $50.0 million of common stock, preferred stock and warrants, which creates financing capacity but does not document a completed financing. The evidence includes no prospectus supplement, takedown notice, pricing, purchaser information, or completed sale, and does not establish that the shelf caused the current price move; the sheet records it as down 17.4% since the previous checkpoint.
+  EJH: E-Home announced an AI service robot for China’s household-services market, alongside a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million. The supplied record does not provide product specifications, customer commitments, revenue expectations, a development timeline, or evidence that the placement has closed and its proceeds were received.
+  NAMM: On October 1, the company reported first-half 2026 results and revised production guidance to 26,500 to 27,000 ounces, maintained C1 cost guidance, reported group AISC of $3,078 per ounce versus $2,462 per ounce in the comparative period, and disclosed $11.3 million of non-cash losses from earnout and warrant-liability revaluations, following a September 29 $6.5 million non-dilutive term loan for Redwing restart work. The update contains new production, cost, and restart-funding information, with adverse operating and financial elements alongside non-equity funding; since the previous checkpoint, NAMM printed a new high of day. The bundle does not tie the price move to a specific release or other driver.
+  FHTX: Foghorn and Lilly decided not to advance FHD-909 beyond Phase 1 dose escalation or the selective SMARCA2 degrader program, and Foghorn announced pipeline prioritization with an approximately 40% workforce reduction expected to extend its cash runway into the second half of 2029. The decision materially changes the clinical pipeline and collaboration outlook, while the workforce reduction and longer projected runway partly offset cash concerns; since the previous checkpoint, FHTX printed a new high of day. Detailed efficacy and safety results and any future Lilly-collaboration economics are not established.
+
+OLDER NEWS
+  STKH: Not a fresh catalyst: the company reported a September 3, 2026 retail launch of its Perfecta plant-based meat in the Northeastern U.S., its first U.S. store-shelf placement. The sources do not disclose sales, revenue, retail-door count, purchase-order value, or margin contribution, and no later company-specific announcement tied to the current session is in the bundle.
+  EZRA: 
+  LONA: Not a fresh catalyst: 23,031,494 Series A warrants became exercisable on September 18, 2026 at a $6.35 exercise price through October 19, 2026, while the last favorable clinical update concerned enrollment of the 500th subject in ELAINE-3 on August 26, 2026. The latest filing concerns potential warrant supply rather than favorable clinical data, and actual warrant exercises or sales have not been established.
+  STFS: Not a fresh catalyst: the company closed a best-efforts offering of 12,000,000 Class A ordinary shares at $0.80 per share for approximately $9.6 million in gross proceeds on September 28, 2026. This is a completed dilutive supply event, while the evidence does not establish a separate fresh positive company-specific event explaining the current session move or how much of the offering stock has been resold.
+
+NOT YET RESEARCHED
+  APAC: 
+  DTSQ: 

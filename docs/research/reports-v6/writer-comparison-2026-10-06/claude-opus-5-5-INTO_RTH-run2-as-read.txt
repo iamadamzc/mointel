@@ -1,0 +1,24 @@
+claude-opus-5-5-INTO_RTH-run2 · built from checkpoint #596
+
+THE SESSION
+NXL leads, up 102 percent from the prior close, with fresh news in our sources: a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. RPGL is up 10 percent with only older or secondary news found (a reverse split amid recent financing), and NAMM is up 3 percent with older news of a term loan facility; since the previous checkpoint, NAMM printed a new high of day. Fresh news turned up in our sources for 4 of the 12 names the desk covers.
+
+FRESH NEWS
+  NXL: Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America at 08:30 ET, with secondary coverage at 08:42 ET describing seven Latin American markets; no deal value, minimum purchase or revenue forecast was given. The desk reads it as a company-specific commercial development that lined up with the high-volume move, though the evidence does not show it caused the move.
+  EZRA: 
+  EJH: A filing at 16:30 ET on September 30, 2026 disclosed an agreed private placement of 71,800,000 ordinary shares at $0.60 for $43.08 million gross, paid in $1.0 million cash and MFT tokens, with closing expected on or about October 15, 2026. The desk reads it as a potential dilution concern if it closes; the closing, resale path and token value are not established. Since the previous checkpoint it printed a new high of day.
+  LRHC: La Rosa reported at 05:00 ET that it acquired NVIDIA GPUs and is exploring real estate divestitures as it moves into AI infrastructure, while the same report disclosed an exchange into 3,410 new Series F convertible preferred shares. The desk reads it as mixed: an AI narrative alongside potential future common-share supply, with GPU count, price and conversion amount not given.
+
+OLDER NEWS
+  RPGL: Only older or secondary news was found, not a fresh catalyst: coverage at 10:30 ET on September 23, 2026 of a 1-for-16 reverse split effective September 25, alongside an August offering and a variable-price convertible note. The desk reads this as a changed share structure with potential additional supply, and no fresh operating catalyst found in our sources.
+  NAMM: Only older news was found, not a fresh catalyst: Namib announced at 19:26 ET on September 29, 2026 a US$6.5 million term loan facility from African Banking Corporation to partly fund resource definition and bankability work for its Redwing restart. The desk reads it as debt funding without a stated equity issuance, and the data do not tie a large move to it. Since the previous checkpoint it printed a new high of day.
+
+UNCLEAR
+  ISNR: The latest company item found is the July 27, 2026 announcement that Class A shares and warrants would begin trading separately on July 30. The desk reads it as a change in tradable instruments that does not explain the current move, and source coverage is incomplete, so the analysis reached no conclusion on a catalyst.
+
+NOT YET RESEARCHED
+  CEPV: Research is not on file for this name at this checkpoint.
+  LTGR: Research is not on file for this name at this checkpoint.
+  CCAQ: Research is not on file for this name at this checkpoint.
+  MTNE: Research is not on file for this name at this checkpoint.
+  PALO: Research is not on file for this name at this checkpoint.
