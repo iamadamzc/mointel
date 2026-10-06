@@ -105,6 +105,7 @@ discards your own uncommitted work: use a `cp` backup and restore it). Push docs
   with the computed value; I told Integration the opposite before it ruled and corrected it after reading the code for
   another reason. **Before saying nothing else does X, or that Y is Z, search the whole tree and open the code that decides
   Y.**
+- **A number stated without a count, and a list called final without reading it** ("25 and 11 placeholders"; "the commits whose words are final"): count from the code and list each commit's strings before saying either. design.md holds the counted list of Design's unworded strings.
 - **A shape called mine that was a peer's** (the float payload, `floatBound`): name the file that holds it before claiming it.
 - **Escapes and quotes through the Write tool and python heredocs**: a backslash-u quote became a real apostrophe and broke a
   string; use `String.fromCharCode`, raw-string python scripts written to a file, and read the result back.
