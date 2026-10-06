@@ -1,12 +1,12 @@
 // v6 narrative wording rules (Integration 30th's ruling (a) on the writer comparison's verdict notes): mutants, every
 // prediction committed WITH the code and tests, BEFORE any run. Predicted counts are FAILING TESTS across
-// tests/desk/{reportCheckV6,reportWriterV6}.test.ts (23 + 9 tests), traced per test block of the whole files.
+// tests/desk/{reportCheckV6,reportWriterV6}.test.ts (24 + 9 tests), traced per test block of the whole files.
 // Run in an Ops slot, from A:/mointel-v6:  node docs/research/reports-v6/wording-mutants.mjs <out-dir> [--dry]
 // Each `from` must occur EXACTLY once (else INVALID, never run); the edit is applied, the two test files run, the
 // failing-test count is recorded against the prediction, and the file is restored byte for byte. M0 (no edit) runs
 // first and must fail 0 tests, or nothing else runs. --dry checks the matches only and runs no test.
 // No `from` string carries a backslash (a shell or tool can drop one; a mutant that matches nothing reads as INVALID).
-// Test ids in "which": W1-W4 the new wording tests; the existing reportCheckV6 blocks by their first line:
+// Test ids in "which": W1-W5 the new wording tests; the existing reportCheckV6 blocks by their first line:
 // L70 templates, L75 N1/N2/N4/N9, L83 whole percents, L96 catalyst figures, L108 G and split count, L114 N7,
 // L121 breadth, L133 anchors, L140 "four of the nine", L147 anchor with no count, L157 LIMIT, F16 the ruleStrikes
 // block on the recap's 16:00 frame (after the new W blocks, so its line moved); WP the writer prompt test (reportWriterV6, "carries the purpose ...").
@@ -38,6 +38,8 @@ const M = [
   ['X11', CK, 'for (let i = 0; i < moves.length; i += 1) {', 'for (let i = 0; i < 1; i += 1) {', 1, 'only the first move in a clause is read', 'W4'],
   ['X12', WR, "'- A move and its news sit side by side, never cause and effect: ", "'- REMOVED: ", 1, 'the causal prompt line gone', 'WP'],
   ['X13', WR, "'- Every percent move carries its frame in the same sentence: ", "'- REMOVED: ", 1, 'the frame prompt line gone', 'WP'],
+  // Added with Commercial 14a (placeholder strike, test W5), before any run; X1-X13 re-traced against W5: none reaches it.
+  ['X14', CK, 'if (/[{}]/.test(text)) out.push(', 'if (false) out.push(', 1, 'a copied placeholder passes', 'W5'],
 ];
 
 if (process.argv.includes('--dry')) {
