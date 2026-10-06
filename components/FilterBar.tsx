@@ -8,7 +8,14 @@ import type {
   SetupGradeFilter,
   StructureFilter,
 } from '@/lib/dashboard/view';
-import { SETUP_GRADE_FILTERS } from '@/lib/dashboard/setupGrade';
+import {
+  CATALYST_GRADE_OPTIONS,
+  CYCLE_OPTIONS,
+  FILTER_GROUP_LABEL,
+  FRESHNESS_OPTIONS,
+  SETUP_GRADE_OPTIONS,
+  STRUCTURE_OPTIONS,
+} from '@/lib/dashboard/filterLabels';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -35,17 +42,19 @@ interface OptionGroupProps<T extends string> {
  * size.
  */
 function OptionGroup<T extends string>({ label, value, options, onSelect }: OptionGroupProps<T>) {
+  // One token: "Setup grade" made the id "filter-setup grade", which aria-labelledby reads as two ids.
+  const id = `filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
   return (
     <div className="flex shrink-0 items-center gap-1.5">
       <span
-        id={`filter-${label.toLowerCase()}`}
+        id={id}
         className="text-[11px] font-medium tracking-[0.08em] text-ink-3 uppercase"
       >
         {label}
       </span>
       <div
         role="radiogroup"
-        aria-labelledby={`filter-${label.toLowerCase()}`}
+        aria-labelledby={id}
         className="flex overflow-hidden rounded-sm border border-line-2"
       >
         {options.map((option) => {
@@ -98,44 +107,25 @@ export function FilterBar({ filters, onChange, onReset, isActive, setupGradeWire
 
       {setupGradeWired ? (
         <OptionGroup<SetupGradeFilter>
-          label="Setup grade"
+          label={FILTER_GROUP_LABEL.setupGrade}
           value={filters.setupGrade}
           onSelect={(setupGrade) => onChange({ ...filters, setupGrade })}
-          options={SETUP_GRADE_FILTERS.map((option) => ({ value: option.value, label: option.label.replace(/^Setup grade /, '') }))}
+          options={SETUP_GRADE_OPTIONS}
         />
       ) : null}
 
       <OptionGroup<CycleFilter>
-        label="Cycle"
+        label={FILTER_GROUP_LABEL.cycle}
         value={filters.cycle}
         onSelect={(cycle) => onChange({ ...filters, cycle })}
-        options={[
-          { value: 'ALL', label: 'All' },
-          { value: 'DAY_1', label: 'Day 1', title: 'The move began today' },
-          { value: 'FRONTSIDE', label: 'Frontside', title: 'Still making the cycle high' },
-          {
-            value: 'OFF_HIGH',
-            label: 'Off high',
-            title: 'Off the high, less than half the move given back',
-          },
-          {
-            value: 'BACKSIDE',
-            label: 'Backside',
-            title: 'Half the move or more given back, still in play',
-          },
-        ]}
+        options={CYCLE_OPTIONS}
       />
 
       <OptionGroup<StructureFilter>
-        label="Structure"
+        label={FILTER_GROUP_LABEL.structure}
         value={filters.structure}
         onSelect={(structure) => onChange({ ...filters, structure })}
-        options={[
-          { value: 'ALL', label: 'All' },
-          { value: 'DIRTY', label: 'Dirty' , title: 'Dirty Float' },
-          { value: 'UNKNOWN', label: 'Unknown', title: 'Unknown Structure' },
-          { value: 'OTHER', label: 'Other', title: 'Neither Dirty Float nor Unknown Structure' },
-        ]}
+        options={STRUCTURE_OPTIONS}
       />
 
       {/*
@@ -148,36 +138,17 @@ export function FilterBar({ filters, onChange, onReset, isActive, setupGradeWire
         * FRESHNESS; these now match, one control each.
         */}
       <OptionGroup<CatalystFilter>
-        label="Freshness"
+        label={FILTER_GROUP_LABEL.catalyst}
         value={filters.catalyst}
         onSelect={(catalyst) => onChange({ ...filters, catalyst })}
-        options={[
-          { value: 'ALL', label: 'All' },
-          { value: 'FRESH', label: 'Fresh', title: 'The catalyst is from today' },
-          { value: 'RECENT', label: 'Recent', title: 'The catalyst is from yesterday' },
-          /*
-           * HIS WORD IS "OLD", THE STORED VALUE IS STILL `STALE`.
-           *
-           * He defined the bands on 2026-09-24 — fresh today, recent
-           * yesterday, old beyond that — and the desk's vocabulary should be
-           * his. Renaming the enum is Research's to do and changes a stored
-           * contract; renaming the LABEL is this seat's and changes a word. So
-           * the word moves now and the value follows if they rename it.
-           */
-          { value: 'STALE', label: 'Old', title: 'The catalyst is from before yesterday' },
-        ]}
+        options={FRESHNESS_OPTIONS}
       />
 
       <OptionGroup<GradeFilter>
-        label="Grade"
+        label={FILTER_GROUP_LABEL.grade}
         value={filters.grade}
         onSelect={(grade) => onChange({ ...filters, grade })}
-        options={[
-          { value: 'ALL', label: 'All' },
-          { value: 'A', label: 'A' },
-          { value: 'B', label: 'B' },
-          { value: 'C', label: 'C' },
-        ]}
+        options={CATALYST_GRADE_OPTIONS}
       />
 
       <div className="flex shrink-0 items-center gap-2">
