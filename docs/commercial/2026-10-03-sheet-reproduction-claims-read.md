@@ -589,3 +589,19 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 **PARTIAL with no trade seen (price and percent "Unknown"): pass in meaning, with the clock-free form and the cause caveat from 9.** "The desk began recording after the bell on {date}, so it cannot say whether trades occurred before it started." says what it cannot say, which is the claim; it names one cause of PARTIAL (a process that started after the bell), and 9 recommended (a) the cause-neutral form ("The desk did not see every trade after the bell on {date}, so it cannot say whether trades occurred.") if any other route can reach PARTIAL.
 
 **Design's seven placeholders mapped to the words:** the mapping is consistent with 9 and moves nothing, except that `closeOther` still maps to the C5 hover 9 required change 2 rewrites, and `afterHoursNotRecorded` to the A5 hover 9 required change 3 holds.
+
+
+## 9c. Drawer row 5 words after 9 (Marketing `83c8193c`), fourth tenure, 2026-10-06: PASS on 9 required changes 1 and 2; A6 hover and A5 still open
+
+*Read: the diff of `83c8193c` against `f35d945f` (local main, not on origin when read), and a grep of the whole file for "16:00" (the only remaining mentions are in the note that records the change).*
+
+**9 required change 1 (no clock): applied, PASS.** Every string says "the bell" or "the regular-session close", including the A1 face "Today's after hours begins after the regular-session close", the C3 hover, the volume hover and the prior-session hover.
+
+**9 required change 2 (source honesty): applied, PASS.** Sheet source "The close for {date} as the Sheet recorded it."; unknown source with a value "A close for {date}. The desk did not record where it came from."; percent hover "Measured from the close shown above, for {date}." The C5 line's bold markup is broken (nested asterisks); cosmetic, Marketing fixes it before Design reads it.
+
+**A4 and the PARTIAL hovers: PASS.** Volume "The desk did not see every trade after the bell on {date}, so a volume would leave out some."; price and percent "The desk did not see every trade after the bell on {date}, so it cannot show an after-hours price or change." Both are true of every route to PARTIAL.
+
+**Still open.**
+1. **A6 hover:** "The desk was recording and saw no trade after the bell on {date}." was not changed (9b required change 2: COMPLETE is also reached by seeding, so "was recording" is not what it means). Use "The desk's after-hours record for {date} is complete and holds no trade after the bell." The face "No trade seen since the bell" passes. Design's one-line answer on what "no trade seen" is computed from (a trade timestamp at or after the bell) is still owed.
+2. **A5 and the prior-session NONE string:** A5 is held, correctly, and the prior-session section still lists "The desk was not recording after hours on {date}." for NONE; that is the same string and is held with it.
+3. **Design's confirmations from 9:** A5's payload state, and that the C3 freeze price is the last trade before the bell.
