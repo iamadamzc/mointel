@@ -152,6 +152,11 @@ describe('words and placement', () => {
     expect(drawer).toContain('<SessionsGroup demand={demand} />');
     // The percent hover says "shown above": the group must stay one column, close first.
     expect(drawer).toContain('<div className="mt-1 grid grid-cols-1 gap-y-3">');
+    // The old footnote's close sentence and raw engine strings are gone; Sessions carries the close (Integration 29th).
+    expect(drawer).not.toContain('16:00 ET regular-session close');
+    expect(drawer).not.toContain("demand.referenceRthCloseSource ?? 'unknown'");
+    expect(drawer).not.toContain('demand.volumeSource ??');
+    expect(drawer).not.toContain('demand.baselineAdjustment ??');
     // No premarket line until Ops's field exists (Integration 29th).
     expect(Object.keys(SESSIONS_WORDS).some((key) => /premarket/i.test(key))).toBe(false);
   });
