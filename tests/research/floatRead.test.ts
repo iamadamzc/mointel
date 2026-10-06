@@ -18,7 +18,7 @@ import type { SupplyBlock } from '@/lib/research/types';
 const READ = '2026-09-25';
 const COUNT = { kind: 'COUNT' as const, shares: 10_000_000, asOf: '2026-08-01', filed: '2026-08-10', accession: 'acc', form: '10-Q' };
 const holdings: StoredHolding[] = [
-  { ownerCik: '111', ownerName: 'A', shares: 400_000, asOf: '2026-07-14', accessions: ['x'], split: 'NONE', classes: [{ title: 'common stock', h0: 1_000_000, h0AsOf: '2026-07-14', hD: 400_000, hDAsOf: '2026-08-30' }] },
+  { ownerCik: '111', ownerName: 'A', shares: 400_000, asOf: '2026-07-14', accessions: ['x'], filingDates: ['2026-07-20', '2026-09-02'], split: 'NONE', classes: [{ title: 'common stock', h0: 1_000_000, h0AsOf: '2026-07-14', hD: 400_000, hDAsOf: '2026-08-30' }] },
 ];
 function row(overrides: Partial<FloatBoundRow> = {}): FloatBoundRow {
   return {
@@ -82,11 +82,24 @@ describe('toFloatBound (the payload Design builds from)', () => {
   it('carries the bound, the count dates and the read date when PRODUCED; null bound and a reason otherwise', () => {
     const r = row();
     expect(toFloatBound(r, floatCellAt(r, '2026-09-29', [], flat('2026-09-29'))!)).toEqual({
-      state: 'PRODUCED', reason: null, bound: 9_600_000, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 1, filingsReadOn: READ,
+      state: 'PRODUCED', reason: null, bound: 9_600_000, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 1, filingsReadOn: READ, holdingsFiledOn: ['2026-07-20', '2026-09-02'],
     });
     expect(toFloatBound(r, { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' })).toEqual({
-      state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD', bound: null, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 0, filingsReadOn: READ,
+      state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD', bound: null, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 0, filingsReadOn: READ, holdingsFiledOn: [],
     });
+  });
+
+  it('holdingsFiledOn: the FILED dates of the holdings subtracted, sorted and unique; not a refused one, not a zero', () => {
+    const c = (title: string) => [{ title, h0: 1, h0AsOf: '2026-07-01', hD: 1, hDAsOf: '2026-07-01' }];
+    const mixed: StoredHolding[] = [
+      { ownerCik: '111', ownerName: 'A', shares: 400_000, asOf: '2026-07-14', accessions: ['a'], filingDates: ['2026-07-20', '2026-09-02'], split: 'NONE', classes: c('common stock') },
+      { ownerCik: '222', ownerName: 'B', shares: 100_000, asOf: '2026-07-01', accessions: ['b'], filingDates: ['2026-08-15', '2026-09-02'], split: 'NONE', classes: c('common stock') },
+      { ownerCik: '333', ownerName: 'C', shares: 200_000, asOf: '2026-06-01', accessions: ['c'], filingDates: ['2026-06-03'], split: 'FOUND', classes: c('common stock') },
+      { ownerCik: '444', ownerName: 'D', shares: 0, asOf: '2026-07-02', accessions: ['d'], filingDates: ['2026-07-03'], split: 'NONE', classes: c('common stock') },
+    ];
+    const cell = floatCellFor({ cik: '555', count: COUNT, holdings: mixed, splitSinceCount: 'NONE', ledger: [], asOfDate: '2026-08-20', issuanceFiled: false });
+    expect(cell.state).toBe('PRODUCED');
+    expect(toFloatBound(row({ holdings: mixed, cell }), cell).holdingsFiledOn).toEqual(['2026-07-20', '2026-08-15', '2026-09-02']);
   });
 });
 

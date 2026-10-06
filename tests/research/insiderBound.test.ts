@@ -117,6 +117,19 @@ describe('holdingsAsOf: the holding must stand at or before the count date', () 
     expect(rows[0]!.accessions).toEqual(['0001', '0002']);
   });
 
+  it('carries the FILED date of each chosen row, never its as-of date, and only the filings of the chosen rows', () => {
+    const rows = holdingsAsOf(
+      [
+        filing('0001', '2026-05-02', form({ body: tx('Common Stock', '2026-05-01', 600_000) })),
+        filing('0003', '2026-08-25', form({ body: tx('Common Stock', '2026-08-05', 650_000) })),
+      ],
+      COUNT_DATE,
+      WINDOW,
+    );
+    expect(rows[0]!.asOf).toBe('2026-08-05');
+    expect(rows[0]!.filingDates).toEqual(['2026-08-25']);
+  });
+
   it('drops rows older than the filing window', () => {
     const rows = holdingsAsOf([filing('0001', '2023-05-02', form({ body: tx('Common Stock', '2023-05-01', 600_000) }))], COUNT_DATE, WINDOW);
     expect(rows).toEqual([]);
@@ -288,6 +301,7 @@ describe('holdingsAtBoth (rule S1)', () => {
     expect(subtracted(filings)).toEqual({ '1': 700 });
     const [h] = holdingsAtBoth(filings, COUNT, D, WINDOW);
     expect(h!.asOf).toBe('2026-07-01');
+    expect(h!.filingDates).toEqual(['2026-07-01', '2026-08-20']);
     expect(h!.classes).toEqual([
       { title: 'class b common stock', h0: 500, h0AsOf: '2026-07-01', hD: 1300, hDAsOf: '2026-08-20' },
       { title: 'common stock', h0: 1000, h0AsOf: '2026-07-01', hD: 200, hDAsOf: '2026-08-20' },

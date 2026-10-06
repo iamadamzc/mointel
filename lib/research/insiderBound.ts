@@ -92,6 +92,15 @@ export interface OwnerHolding {
 }
 
 /**
+ * A holding with the FILED dates of the filings its rows came from (one per accession), for the
+ * popover's "less insider holdings filed on {dates}" (Integration 30th, choice (a)). `asOf` is the
+ * row's own date (transaction or period), never a filed date.
+ */
+export interface DatedHolding extends OwnerHolding {
+  filingDates: string[];
+}
+
+/**
  * Per owner, per class, the latest row whose as-of date is ON OR BEFORE `cutoff` (the count's
  * as-of date), taken across every filing of that owner, including a filing made after the
  * cutoff (a late Form 4). Ties break to the later filing date, then accession. An owner with no
@@ -99,7 +108,7 @@ export interface OwnerHolding {
  *
  * `windowStart` drops a row older than the filing window; such an owner is also not subtracted.
  */
-export function holdingsAsOf(filings: readonly OwnerFiling[], cutoff: string, windowStart: string): OwnerHolding[] {
+export function holdingsAsOf(filings: readonly OwnerFiling[], cutoff: string, windowStart: string): DatedHolding[] {
   type Best = { row: Section16Row; filingDate: string; accession: string };
   const byOwner = new Map<string, { name: string | null; titles: Map<string, Best> }>();
   for (const filing of filings) {
@@ -117,7 +126,7 @@ export function holdingsAsOf(filings: readonly OwnerFiling[], cutoff: string, wi
       if (better) entry.titles.set(row.title, { row, filingDate: filing.filingDate, accession: filing.accession });
     }
   }
-  const out: OwnerHolding[] = [];
+  const out: DatedHolding[] = [];
   for (const [ownerCik, entry] of byOwner) {
     const best = [...entry.titles.values()];
     if (best.length === 0) continue;
@@ -127,6 +136,7 @@ export function holdingsAsOf(filings: readonly OwnerFiling[], cutoff: string, wi
       shares: best.reduce((sum, b) => sum + b.row.shares, 0),
       asOf: best.map((b) => b.row.asOf).sort().at(-1)!,
       accessions: [...new Set(best.map((b) => b.accession))].sort(),
+      filingDates: [...new Set(best.map((b) => b.filingDate))].sort(),
     });
   }
   return out.sort((a, b) => a.ownerCik.localeCompare(b.ownerCik));
@@ -145,7 +155,7 @@ export interface ClassHolding {
 }
 
 /** An owner under rule S1: `shares` is what is subtracted, the sum over classes of min(h0, hD); `asOf` is h0's. */
-export interface S1Holding extends OwnerHolding {
+export interface S1Holding extends DatedHolding {
   classes: ClassHolding[];
 }
 
@@ -157,15 +167,16 @@ export interface S1Holding extends OwnerHolding {
  */
 export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: string, d: string, windowStart: string): S1Holding[] {
   const titles = [...new Set(filings.flatMap((f) => f.parse.rows.map((row) => row.title)))].sort();
-  const byOwner = new Map<string, { name: string | null; classes: ClassHolding[]; accessions: Set<string> }>();
+  const byOwner = new Map<string, { name: string | null; classes: ClassHolding[]; accessions: Set<string>; filingDates: Set<string> }>();
   for (const title of titles) {
     const only = filings.map((f) => ({ ...f, parse: { ...f.parse, rows: f.parse.rows.filter((row) => row.title === title) } }));
     const atD = new Map(holdingsAsOf(only, d, windowStart).map((h) => [h.ownerCik, h]));
     for (const h0 of holdingsAsOf(only, countAsOf, windowStart)) {
       const hD = atD.get(h0.ownerCik) ?? h0;
-      const entry = byOwner.get(h0.ownerCik) ?? { name: h0.ownerName, classes: [], accessions: new Set<string>() };
+      const entry = byOwner.get(h0.ownerCik) ?? { name: h0.ownerName, classes: [], accessions: new Set<string>(), filingDates: new Set<string>() };
       entry.classes.push({ title, h0: h0.shares, h0AsOf: h0.asOf, hD: hD.shares, hDAsOf: hD.asOf });
       for (const a of [...h0.accessions, ...hD.accessions]) entry.accessions.add(a);
+      for (const f of [...h0.filingDates, ...hD.filingDates]) entry.filingDates.add(f);
       byOwner.set(h0.ownerCik, entry);
     }
   }
@@ -176,6 +187,7 @@ export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: strin
       shares: e.classes.reduce((sum, c) => sum + Math.min(c.h0, c.hD), 0),
       asOf: e.classes.map((c) => c.h0AsOf).sort().at(-1)!,
       accessions: [...e.accessions].sort(),
+      filingDates: [...e.filingDates].sort(),
       classes: e.classes,
     }))
     .sort((a, b) => a.ownerCik.localeCompare(b.ownerCik));

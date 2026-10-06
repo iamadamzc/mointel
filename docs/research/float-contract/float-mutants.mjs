@@ -6,6 +6,10 @@
 // observed at fdfdfcef's code + the 6 I-D tests traced per mutant. Changed: F2 5->8, J2 1->2, J3 1->2, S1a 2->4,
 // S1e 1->4, RA3 2->3 (the first prediction kept as the 7th field). Also fixed: the loop shadowed that 7th field with
 // the file's bytes, so an amended row would have recorded the file as its original prediction (no run was affected).
+// RE-PREDICTED again before the holdingsFiledOn run (2026-10-06, Integration 30th/31st choice (a)): F2 8->9, the count the
+// 46b00886 run observed and mutant-results-2026-10-06.md diagnosed (floatJob.test.ts:283); H1-H6 added; every other
+// mutant re-traced against the new tests (insiderBound: the filed-date test and the S1 per-class dates; floatRead: TF1's
+// holdingsFiledOn and TF2, built with floatCellFor at a 19-day count age so J1 and the RD mutants cannot reach it): unchanged.
 // (commits d4c10c95, 968f641c, fdfdfcef and
 // build-plan-2026-10-05.md section 4 predicted the counts; this file makes each one an exact edit).
 // Run in an Ops slot, from A:/mointel-float:  node docs/research/float-contract/float-mutants.mjs <out-dir>
@@ -27,7 +31,7 @@ const TESTS = ['filedCount', 'splitProof', 'spanBars', 'floatJob', 'floatBoundRe
 const M = [
   // build plan step 1: the selector
   ['F1', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '.filter((r) => r.filed < asOfDate)', 1, 'selector <= to <'],
-  ['F2', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '', 8, 'drop the filed filter', 2],
+  ['F2', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '', 9, 'drop the filed filter', 2],
   ['F3', 'lib/research/filedCount.ts', "if (new Set(chosen.map((r) => r.accn)).size !== 1) return { kind: 'COUNT_SPLIT_ACROSS_FILINGS' };", '', 1, 'drop the one-accession check'],
   ['F4', 'lib/research/filedCount.ts', 'shares: chosen.reduce((sum, r) => sum + r.val, 0),', 'shares: chosen[0]!.val,', 1, 'sum to first value'],
   // build plan step 1: R0
@@ -75,6 +79,13 @@ const M = [
   ['D8', 'lib/research/floatRead.ts', "const issuanceFiled = row.count.kind === 'COUNT' && issuanceFiledIn(", "const issuanceFiled = false && row.count.kind === 'COUNT' && issuanceFiledIn(", 1, 'the reader ignores I-D'],
   ['D9', 'lib/research/floatJob.ts', '.reduce((min, d) => (d < min ? d : min)) <= date;', '.reduce((min, d) => (d < min ? d : min)) < date;', 1, 'listingReaches <= to <'],
   ['RD3', 'lib/research/floatRead.ts', "row.count.kind === 'COUNT' ? withAnnouncedSplits(splitProofFromBars(countSpanBars, d), row.announcedSplits, row.count.asOf, d) : row.splitSinceCount", 'row.splitSinceCount', 1, 'reader uses the stored split proof, not one recomputed at D'],
+  // holdingsFiledOn (Integration 30th/31st choice (a)): filed dates carried from the chosen filings to FloatBound.
+  ['H1', 'lib/research/insiderBound.ts', 'filingDates: [...new Set(best.map((b) => b.filingDate))].sort(),', 'filingDates: [],', 2, 'holdingsAsOf drops the filed dates'],
+  ['H2', 'lib/research/insiderBound.ts', 'for (const f of [...h0.filingDates, ...hD.filingDates]) entry.filingDates.add(f);', 'for (const f of [...h0.filingDates]) entry.filingDates.add(f);', 1, 'S1 drops the hD filing dates'],
+  ['H3', 'lib/research/floatRead.ts', 'used.holdings.filter((h) => h.shares > 0)', 'used.holdings', 1, 'a zero holding dated as subtracted'],
+  ['H4', 'lib/research/floatRead.ts', 'row.holdings.filter((h) => subtracted.has(h.ownerCik))', 'row.holdings', 1, 'a refused holding dated as subtracted'],
+  ['H5', 'lib/research/floatRead.ts', 'filingsReadOn: row.asOfDate, holdingsFiledOn: [] }', "filingsReadOn: row.asOfDate, holdingsFiledOn: ['x'] }", 1, 'a refusal carries dates'],
+  ['H6', 'lib/research/floatRead.ts', '.flatMap((h) => h.filingDates))].sort();', '.flatMap((h) => h.filingDates))];', 1, 'dates unsorted'],
 ];
 
 function runTests(tag) {

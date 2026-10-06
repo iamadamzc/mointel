@@ -46,13 +46,24 @@ export interface FloatBound {
   countFiled: string | null;
   subtractedHolders: number;
   filingsReadOn: string;
+  /**
+   * PRODUCED only (else []): the FILED dates, sorted and unique, of the filings the subtracted holdings were read from,
+   * for "less insider holdings filed on {dates}" (Integration 30th/31st, choice (a)). Never a holding's own `asOf`.
+   */
+  holdingsFiledOn: string[];
+}
+
+/** The filed dates of the holdings the bound subtracted (shares above zero), read from the row's stored holdings. */
+function filedOn(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' }): string[] {
+  const subtracted = new Set(used.holdings.filter((h) => h.shares > 0).map((h) => h.ownerCik));
+  return [...new Set(row.holdings.filter((h) => subtracted.has(h.ownerCik)).flatMap((h) => h.filingDates))].sort();
 }
 
 export function toFloatBound(row: FloatBoundRow, cell: FloatCell): FloatBound {
   const count = row.count.kind === 'COUNT' ? row.count : null;
   return cell.state === 'PRODUCED'
-    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate }
-    : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate };
+    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell) }
+    : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [] };
 }
 
 function tablePresent(db: MarketDatabase): boolean {
