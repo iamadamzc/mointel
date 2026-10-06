@@ -1,0 +1,17 @@
+Sheet removal step 2, analysis of docs/research/sheet-removal/omit-prior-raw-2026-10-03: 12 rows, 3 tickers
+
+outcome: WITH noise 66.7% (2/3), WITHOUT noise 33.3% (1/3), cross 33.3% (4/12)
+catalyst.catalystStatus: WITH noise 0.0% (0/3), WITHOUT noise 0.0% (0/3), cross 0.0% (0/12)
+catalyst.catalystGrade: WITH noise 0.0% (0/3), WITHOUT noise 0.0% (0/3), cross 0.0% (0/12)
+catalyst.catalystType: WITH noise 33.3% (1/3), WITHOUT noise 0.0% (0/3), cross 16.7% (2/12)
+catalyst.plausiblyExplainsMove: WITH noise 33.3% (1/3), WITHOUT noise 33.3% (1/3), cross 33.3% (4/12)
+structure.structureClassification: WITH noise 66.7% (2/3), WITHOUT noise 33.3% (1/3), cross 50.0% (6/12)
+structure.sharesOutstanding: WITH noise 0.0% (0/3), WITHOUT noise 0.0% (0/3), cross 0.0% (0/12)
+structure.sharesOutstandingDate: WITH noise 0.0% (0/3), WITHOUT noise 0.0% (0/3), cross 0.0% (0/12)
+cycle.cycleClassification: WITH noise 33.3% (1/3), WITHOUT noise 33.3% (1/3), cross 16.7% (2/12)
+escalated: WITH noise 66.7% (2/3), WITHOUT noise 0.0% (0/3), cross 33.3% (4/12)
+chip.why.code: WITH noise 33.3% (1/3), WITHOUT noise 0.0% (0/3), cross 16.7% (2/12)
+chip.why.grade: WITH noise 0.0% (0/3), WITHOUT noise 0.0% (0/3), cross 0.0% (0/12)
+chip.risk.label: WITH noise 66.7% (2/3), WITHOUT noise 33.3% (1/3), cross 66.7% (8/12)
+
+escalations per arm: {"WITH-1":2,"WITHOUT-1":2,"WITH-2":0,"WITHOUT-2":2}
