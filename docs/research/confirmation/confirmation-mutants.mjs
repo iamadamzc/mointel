@@ -57,6 +57,11 @@ const M = [
   ['K30', MR, 'if (!morningCheckpoint || !eveningCheckpoint) return out;', 'if (!morningCheckpoint) return out;', 1, 'no evening recap read as one (throws)', 'DB2'],
   ['K31', MR, 'const morningRows = morningCheckpoint ?', 'const morningRows = morningCheckpoint && eveningCheckpoint ?', 1, 'a missing recap hides the morning names', 'DB2'],
   ['K32', MR, 'const eveningCheckpoint = eveningId ?', 'const eveningCheckpoint = eveningId && morningId ?', 1, 'the recap not found before a morning checkpoint', 'DB3'],
+  // Added with eveningTickers (Integration 30th's amendment of d21e4ba0), before its run. K1-K32 re-traced against the
+  // new assertions (DB1 eveningTickers, DB2/DB3/DB4 full frames, DB3 rules 5 and 6): unchanged (K30 still throws in DB2,
+  // now at the research-jobs read, since research_jobs is in the base schema).
+  ['K33', MR, 'eveningTickers: eveningList.map((row) => row.ticker),', 'eveningTickers: [],', 2, 'no evening names listed', 'DB1, DB3'],
+  ['K34', MR, 'const eveningList = eveningCheckpoint ?', 'const eveningList = eveningCheckpoint && morningCheckpoint ?', 1, 'the evening names listed only once a morning checkpoint exists', 'DB3'],
 ];
 
 if (process.argv.includes('--dry')) {

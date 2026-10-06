@@ -213,6 +213,7 @@ describe('morningReadOf: the server read', () => {
     expect([...late.byTicker.keys()].sort()).toEqual(['ACME', 'BETA']);
     expect(late.morningAt).toBe(MORNING_AT);
     expect(late.eveningAt).toBe(EVENING_AT);
+    expect(late.eveningTickers).toEqual(['ACME', 'BETA']);
     // No stored grade column yet: every pair is UNKNOWN, never confirmed; no research cited: no PM update.
     expect(late.byTicker.get('ACME')).toEqual({
       confirmation: { state: 'UNKNOWN', reason: 'GRADE_NOT_STORED', changes: [], eveningAt: EVENING_AT, morningAt: MORNING_AT },
@@ -224,31 +225,35 @@ describe('morningReadOf: the server read', () => {
     checkpoint('NEXT_DAY_RECAP', '2026-10-04', '2026-10-05', '2026-10-05T02:00:30.000Z', ['ACME']);
     checkpoint('PREMARKET_0700', D, null, MORNING_AT, ['ACME']);
     expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z')).toEqual({
-      morningAt: MORNING_AT, eveningAt: null, morningTickers: ['ACME'], byTicker: new Map(),
+      morningAt: MORNING_AT, eveningAt: null, morningTickers: ['ACME'], eveningTickers: [], byTicker: new Map(),
     });
   });
 
-  it('the frame tells the three absences apart: no morning checkpoint yet, on it with no evening call, not on it', () => {
+  it('the frame tells the absences apart: no morning checkpoint yet, on it with no evening call, on the evening list only, on neither', () => {
     checkpoint('NEXT_DAY_RECAP', '2026-10-05', D, EVENING_AT, ['ACME', 'BETA']);
     checkpoint('PREMARKET_0625', D, null, '2026-10-06T10:25:30.000Z', ['ACME', 'NEWCO']);
 
     // Before any morning checkpoint: the evening recap is found, no morning (NOT_YET for every name).
     expect(morningReadOf(db, D, '2026-10-06T10:00:00.000Z')).toEqual({
-      morningAt: null, eveningAt: EVENING_AT, morningTickers: [], byTicker: new Map(),
+      morningAt: null, eveningAt: EVENING_AT, morningTickers: [], eveningTickers: ['ACME', 'BETA'], byTicker: new Map(),
     });
     const read = morningReadOf(db, D, '2026-10-06T10:30:00.000Z');
     // NEWCO is on the morning checkpoint with no evening call: listed, not paired (NO_EVENING_CALL).
     expect(read.morningTickers.slice().sort()).toEqual(['ACME', 'NEWCO']);
     expect(read.byTicker.has('NEWCO')).toBe(false);
-    // BETA had an evening call and is not on the morning checkpoint: in neither (NOT_YET).
+    // BETA had an evening call and is not on the morning checkpoint: on the evening list only (NOT_YET, rule 5).
     expect(read.morningTickers).not.toContain('BETA');
     expect(read.byTicker.has('BETA')).toBe(false);
+    expect(read.eveningTickers).toContain('BETA');
+    // NEWCO is not on the evening list (rule 4); a name on neither list prints nothing (rule 6).
+    expect(read.eveningTickers).not.toContain('NEWCO');
+    expect([...read.morningTickers, ...read.eveningTickers]).not.toContain('ZZZ');
     expect([...read.byTicker.keys()]).toEqual(['ACME']);
   });
 
   it('nothing stored for D: an empty frame', () => {
     expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z')).toEqual({
-      morningAt: null, eveningAt: null, morningTickers: [], byTicker: new Map(),
+      morningAt: null, eveningAt: null, morningTickers: [], eveningTickers: [], byTicker: new Map(),
     });
   });
 });
