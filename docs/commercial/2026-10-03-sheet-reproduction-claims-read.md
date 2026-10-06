@@ -717,3 +717,6 @@ Two faces, one per case: a provisional close shown and the daily bar's close abs
 - **Found, same fix, older:** `language.ts:31` words status NONE_FOUND as "no catalyst found", which is the bare form that rule strikes in reports. The admitted form is "no catalyst found in our sources". Marketing and Design place it; it is in the same line family ("Catalyst status: ... to no catalyst found").
 - **Status CONFLICTING "conflicting evidence": PASS.** It is the interpreter's own report ("conflicting evidence under complete coverage"); the status enum carries no definition of its own, so the wording rests on that one reason text.
 - **Grade STRONG "strong", grade UNKNOWN and status UNKNOWN "unknown": PASS as fallbacks.** "Strong" is the grade's own existing label (the badge), defined as an event that could by itself explain a large move; "unknown" is the house word.
+
+
+**11b. Pass recorded (Marketing `7109a3b1`), 2026-10-06: PASS.** Grade NONE reads "no company event in the desk's evidence" and status NONE_FOUND reads "no catalyst found in our sources" (for `language.ts:31` wherever it prints, the board and row 21; Design places it). The rest of the file is as 11a passed it; no em dash (bytes and entity form, 0). Row 21's words are released to Design to build from `7109a3b1`.
