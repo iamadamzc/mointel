@@ -688,3 +688,6 @@ Two faces, one per case: a provisional close shown and the daily bar's close abs
 
 
 **10a. Pass recorded (Marketing `e0f9192b`), 2026-10-06: PASS.** Current run "Current run: {date}, start and high on the same day: up {X}% from the base close to the high, high was {N} sessions ago" and Prior runs "{date}, start and high on the same day: ..." state the two stored dates and no market fact; the tail rules and the range form for differing dates are unchanged; the old phrase appears nowhere in the file; no em dash (bytes and entity form, 0). Design had built the superseded text on its own tag and replaces it before shipping.
+
+
+**10b. Built string passed (Design `a1d3b7fa`, tag design/one-day-run-a1d3b7fa), 2026-10-06: PASS.** `CYCLE_WORDS.oneDayRun` is "start and high on the same day" and `runLine` prints "{date}, start and high on the same day: up {X}% from the base close to the high, {N} sessions ago", with "Current run: " in front for the current run; a run whose dates differ keeps "{start} to {high}". The text "began and peaked" appears nowhere in the tag (the earlier commit `d1c54b5f` is superseded and not for shipping). The runs hover ("a day the stock rose at least 20% on at least 5 times its usual volume") is unchanged and not part of this read.
