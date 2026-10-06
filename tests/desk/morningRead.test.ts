@@ -47,8 +47,9 @@ const VERSIONS = new Map<number, Version>([
   [14, version(14, '2026-10-05T21:00:00.000Z')], // generated at the same instant as 10
 ]);
 
-const row = (analysisVersionId: number | null, priorityGrade: string | null | undefined = 'A', catalyst = 'STRONG'): CallRow => ({
-  ticker: 'ACME', catalyst, analysisVersionId, ...(priorityGrade === undefined ? {} : { priorityGrade }),
+/** `'ABSENT'` leaves the column off the row, as on every row before Ops's columns ship (an `undefined` argument would take the default). */
+const row = (analysisVersionId: number | null, priorityGrade: string | null = 'A', catalyst = 'STRONG'): CallRow => ({
+  ticker: 'ACME', catalyst, analysisVersionId, ...(priorityGrade === 'ABSENT' ? {} : { priorityGrade }),
 });
 const job = (completedAt: string, status = 'COMPLETE', ticker = 'ACME'): CompletedJob => ({ ticker, status, completedAt });
 
@@ -78,7 +79,7 @@ describe('confirmationOf: the states in spec section 4 order', () => {
   });
 
   it('UNKNOWN GRADE_NOT_STORED on either row (every row until Ops ships its columns), ahead of a catalyst change', () => {
-    expect(confirmationOf(input(row(10, undefined), row(12, undefined)))).toMatchObject({ state: 'UNKNOWN', reason: 'GRADE_NOT_STORED', changes: [] });
+    expect(confirmationOf(input(row(10, 'ABSENT'), row(12, 'ABSENT')))).toMatchObject({ state: 'UNKNOWN', reason: 'GRADE_NOT_STORED', changes: [] });
     expect(state(input(row(10), row(10, null)))).toBe('UNKNOWN');
     expect(state(input(row(10, null), row(10)))).toBe('UNKNOWN');
   });
