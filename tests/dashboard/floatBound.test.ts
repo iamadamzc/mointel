@@ -15,8 +15,10 @@ const produced = (over: Partial<FloatBound> = {}): FloatBound => ({
   reason: null,
   bound: 12_301_000,
   countAsOf: '2026-09-22',
-  holdingDates: ['2026-09-18', '2026-08-30'],
-  fetchedOn: '2026-10-05',
+  countFiled: '2026-09-25',
+  subtractedHolders: 2,
+  filingsReadOn: '2026-10-05',
+  holdingsFiledOn: ['2026-09-18', '2026-08-30'],
   ...over,
 });
 const refused = (state: 'UNKNOWN' | 'CANNOT_VERIFY', reason: FloatBoundReason, over: Partial<FloatBound> = {}): FloatBound => ({
@@ -24,8 +26,10 @@ const refused = (state: 'UNKNOWN' | 'CANNOT_VERIFY', reason: FloatBoundReason, o
   reason,
   bound: null,
   countAsOf: null,
-  holdingDates: [],
-  fetchedOn: null,
+  countFiled: null,
+  subtractedHolders: 0,
+  filingsReadOn: '2026-10-05',
+  holdingsFiledOn: [],
   ...over,
 });
 
@@ -113,17 +117,17 @@ describe('the other three faces, one string per stored cause', () => {
     expect(old.paragraphs[0]).toBe('Cannot verify: the latest filed share count is from May 1, 2026, too old to rely on.');
     const seen = new Set(
       (['COUNT_TOO_OLD', 'ISSUANCE_FLAGGED', 'SPLIT_SINCE_COUNT', 'ISSUANCE_NOT_CHECKED', 'BOUND_OUT_OF_RANGE', 'FILINGS_NOT_REREAD'] as const).map(
-        (r) => floatCellView(refused('CANNOT_VERIFY', r, { countAsOf: '2026-05-01', fetchedOn: '2026-09-30' })).paragraphs[0],
+        (r) => floatCellView(refused('CANNOT_VERIFY', r, { countAsOf: '2026-05-01', filingsReadOn: '2026-09-30' })).paragraphs[0],
       ),
     );
     expect(seen.size).toBe(6);
-    expect(floatCellView(refused('CANNOT_VERIFY', 'FILINGS_NOT_REREAD', { fetchedOn: '2026-09-30' })).paragraphs[0]).toBe(
+    expect(floatCellView(refused('CANNOT_VERIFY', 'FILINGS_NOT_REREAD', { filingsReadOn: '2026-09-30' })).paragraphs[0]).toBe(
       "Cannot verify: the desk has not read this company's filings since Sep 30, 2026.",
     );
   });
 
   it('Not computed is a state of its own, never printed as Unknown', () => {
-    for (const none of [null, undefined, { ...refused('UNKNOWN', 'NO_CIK'), state: 'NOT_YET' as const }]) {
+    for (const none of [null, undefined]) {
       const v = floatCellView(none);
       expect(v.face).toBe('Not computed');
       expect(v.ariaLabel).toBe('float not computed for this name');

@@ -14,39 +14,56 @@
  * is verified, or that the validation covers more than it does; changing a word
  * is changing passed copy, so Marketing and Commercial first.
  *
- * THE PAYLOAD SHAPE BELOW IS PROVISIONAL: the retired Research seat gave it, the
- * float job that produces it is not built, and the new Research seat owns the
- * definition. It is a consumer type, not a contract.
+ * THE PAYLOAD IS RESEARCH'S `FloatBound` (`lib/research/floatRead.ts`, built by
+ * `toFloatBound`), read here through `normalizeFloatBound`, the one place the wire
+ * value enters: a missing or extra field never throws, a malformed entry is a
+ * FAULT and reads "Cannot verify" (never the absence's "Not computed"), and an
+ * absent or null entry is NOT_YET, the common case on the float's first day.
  */
 
 import { BOUND_PREFIX, compactBound } from '@/lib/research/compactBound';
+import type { FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
 import type { FloatCellReason } from '@/lib/research/insiderBound';
 
-export type FloatBoundState = 'PRODUCED' | 'UNKNOWN' | 'CANNOT_VERIFY' | 'NOT_YET';
+/** Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed". */
+export type FloatBound = ResearchFloatBound;
+export type FloatBoundReason = FloatCellReason;
+
+const STATES: ReadonlySet<string> = new Set(['PRODUCED', 'UNKNOWN', 'CANNOT_VERIFY']);
+const isDate = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v);
 
 /**
- * The stored causes: the eight `floatCell` produces, plus FILINGS_NOT_REREAD, the
- * sixth Cannot verify reason of Marketing's v16 (shown when a stored row is more
- * than four days older than the date shown). Research owns when it is stored.
- * ISSUANCE_FILED is Research's rule I-D (`lib/research/insiderBound.ts` on
- * research/float-job 16077d58); it is named here too so this module compiles on a
- * base that does not carry it yet. Once Research's type lands both names are redundant.
+ * The wire value to Research's type, defensively. Absent or null: null (NOT_YET).
+ * Not an object, or an unknown state: a fault, CANNOT_VERIFY with no reason (the
+ * generic "Cannot verify."). Each field is checked for its own type and falls back
+ * to the value that claims least (null, 0, []), so PRODUCED without a usable
+ * number or date is refused downstream by `floatCellView`.
  */
-export type FloatBoundReason = FloatCellReason | 'FILINGS_NOT_REREAD' | 'ISSUANCE_FILED';
-
-/** What the payload carries per ticker. Null, or absent, is NOT_YET: "Not computed". */
-export interface FloatBound {
-  state: FloatBoundState;
-  /** The stored cause, for UNKNOWN and CANNOT_VERIFY. */
-  reason: FloatBoundReason | null;
-  /** Shares, only for PRODUCED. */
-  bound: number | null;
-  /** The filed count's as-of date, YYYY-MM-DD. */
-  countAsOf: string | null;
-  /** The dates the subtracted holdings were filed, YYYY-MM-DD. */
-  holdingDates: string[];
-  /** The date the desk last read the company's filings, YYYY-MM-DD. */
-  fetchedOn: string | null;
+export function normalizeFloatBound(raw: unknown): FloatBound | null {
+  if (raw === null || raw === undefined) return null;
+  const fault: FloatBound = {
+    state: 'CANNOT_VERIFY',
+    reason: null,
+    bound: null,
+    countAsOf: null,
+    countFiled: null,
+    subtractedHolders: 0,
+    filingsReadOn: '',
+    holdingsFiledOn: [],
+  };
+  if (typeof raw !== 'object' || Array.isArray(raw)) return fault;
+  const r = raw as Record<string, unknown>;
+  if (typeof r.state !== 'string' || !STATES.has(r.state)) return fault;
+  return {
+    state: r.state as FloatBound['state'],
+    reason: typeof r.reason === 'string' ? (r.reason as FloatBoundReason) : null,
+    bound: typeof r.bound === 'number' && Number.isFinite(r.bound) ? r.bound : null,
+    countAsOf: isDate(r.countAsOf) ? r.countAsOf : null,
+    countFiled: isDate(r.countFiled) ? r.countFiled : null,
+    subtractedHolders: typeof r.subtractedHolders === 'number' ? r.subtractedHolders : 0,
+    filingsReadOn: isDate(r.filingsReadOn) ? r.filingsReadOn : '',
+    holdingsFiledOn: Array.isArray(r.holdingsFiledOn) ? r.holdingsFiledOn.filter(isDate) : [],
+  };
 }
 
 export type FloatFaceKind = 'bound' | 'unknown' | 'cannotVerify' | 'notComputed';
@@ -156,8 +173,9 @@ function measuredFrom(surface: FloatSurface): string {
   return surface.dateShown && shown ? `the date shown (${shown})` : 'the checkpoint';
 }
 
-export function floatCellView(bound: FloatBound | null | undefined, surface: FloatSurface = {}): FloatCellView {
-  if (!bound || bound.state === 'NOT_YET') return NOT_COMPUTED;
+export function floatCellView(raw: FloatBound | null | undefined, surface: FloatSurface = {}): FloatCellView {
+  const bound = normalizeFloatBound(raw);
+  if (!bound) return NOT_COMPUTED;
   const countDate = longDate(bound.countAsOf);
 
   if (bound.state === 'PRODUCED') {
@@ -174,8 +192,8 @@ export function floatCellView(bound: FloatBound | null | undefined, surface: Flo
     }
     const compact = compactBound(bound.bound);
     const amount = compact.startsWith(BOUND_PREFIX) ? compact.slice(BOUND_PREFIX.length) : compact;
-    const holdings = bound.holdingDates.map(longDate).filter((d): d is string => d !== null);
-    const fetched = longDate(bound.fetchedOn);
+    const holdings = bound.holdingsFiledOn.map(longDate).filter((d): d is string => d !== null);
+    const fetched = longDate(bound.filingsReadOn);
     return {
       kind: 'bound',
       face: compact,
@@ -203,11 +221,12 @@ export function floatCellView(bound: FloatBound | null | undefined, surface: Flo
     face: 'Cannot verify',
     date: null,
     ariaLabel: 'float cannot be verified for this name',
-    paragraphs: [cannotVerifyText(bound.reason, countDate, longDate(bound.fetchedOn))],
+    paragraphs: [cannotVerifyText(bound.reason, countDate, longDate(bound.filingsReadOn))],
   };
 }
 
 /** The sort value: the bound, only where it is PRODUCED. A refused or absent float has no number to order by. */
-export function floatSortValue(bound: FloatBound | null | undefined): number | null {
+export function floatSortValue(raw: FloatBound | null | undefined): number | null {
+  const bound = normalizeFloatBound(raw);
   return bound?.state === 'PRODUCED' && bound.bound !== null && bound.bound > 0 ? bound.bound : null;
 }

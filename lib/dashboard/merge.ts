@@ -27,7 +27,7 @@ import {
   resolveIntelligenceState,
   type IntelligenceState,
 } from '@/lib/dashboard/intelligence';
-import type { FloatBound } from '@/lib/dashboard/floatBound';
+import { normalizeFloatBound, type FloatBound } from '@/lib/dashboard/floatBound';
 import type { SetupGrade } from '@/lib/dashboard/setupGrade';
 import { UNAVAILABLE_THRESHOLD, resolveBlueSky, type BlueSkyState } from '@/lib/market/blueSky';
 import type { DemandState, MarketSnapshot, SessionPhase } from '@/lib/market/types';
@@ -601,7 +601,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker], setupGradeWired, floatBound: floatBoundByTicker[ticker.ticker], floatBoundWired },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker], setupGradeWired, floatBound: normalizeFloatBound(floatBoundByTicker[ticker.ticker]), floatBoundWired },
       ),
     );
   }
@@ -617,7 +617,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol], setupGradeWired, floatBound: floatBoundByTicker[symbol], floatBoundWired },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol], setupGradeWired, floatBound: normalizeFloatBound(floatBoundByTicker[symbol]), floatBoundWired },
       ),
     );
   }

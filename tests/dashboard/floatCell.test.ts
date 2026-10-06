@@ -13,8 +13,10 @@ const bound = (over: Partial<FloatBound> = {}): FloatBound => ({
   reason: null,
   bound: 8_100_000,
   countAsOf: '2026-09-22',
-  holdingDates: ['2026-09-18'],
-  fetchedOn: '2026-10-05',
+  countFiled: '2026-09-25',
+  subtractedHolders: 1,
+  filingsReadOn: '2026-10-05',
+  holdingsFiledOn: ['2026-09-18'],
   ...over,
 });
 
