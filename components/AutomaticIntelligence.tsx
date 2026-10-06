@@ -12,7 +12,7 @@ import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
-import { cycleFacts } from '@/lib/dashboard/cycleFacts';
+import { CYCLE_WORDS, cycleFacts } from '@/lib/dashboard/cycleFacts';
 import { SUPPLY_GROUP_EMPTY, supplyGroups } from '@/lib/dashboard/supplyGroups';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
@@ -669,6 +669,8 @@ export function AutomaticIntelligence({
           "Former runner" row above is untouched (his ruling is being re-asked on a corrected premise). */}
       <Section title={CYCLE_FACTS_TITLE}>
         {facts.message ? <p className="m-0 text-[12px] text-ink-2">{facts.message}</p> : null}
+        {facts.phase ? <Field label={CYCLE_WORDS.phaseLabel} value={facts.phase} /> : null}
+        {facts.measure ? <Field label={CYCLE_WORDS.measureLabel} value={facts.measure} /> : null}
         {facts.cycleHigh ? <Field label="Cycle high" value={facts.cycleHigh.text} title={facts.cycleHigh.hover} numeric /> : null}
         {facts.flush ? <Field label="Flush from high" value={facts.flush.text} /> : null}
         <div className="mt-3">

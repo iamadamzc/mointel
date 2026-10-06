@@ -33,6 +33,16 @@ describe('the cycle facts, in the right units', () => {
     expect(facts.flush?.text).toBe("10.9% below the cycle high, at Aug 16, 2026's close");
   });
 
+  it('shows the computed phase in the board own cycle words, with the arithmetic behind it', () => {
+    const facts = cycleFacts(history(arc()));
+    expect(facts.phase).toBe('OFF HIGH');
+    expect(facts.measure).toBe(
+      'up 53.3% from 3.00 · high 4.60 on 2026-08-15 · 31.3% of the move given back · 1 session since the high · through 2026-08-16 close',
+    );
+    expect(cycleFacts(null).phase).toBeNull();
+    expect(cycleFacts(history({ phase: 'NO_CYCLE' })).measure).toBeNull();
+  });
+
   it('dates every figure to the last bar it was computed from, and never says "today"', () => {
     const facts = cycleFacts(history(arc()));
     expect(facts.cycleHigh?.hover).toBe("Highest price since the current run began, from daily bars through Aug 16, 2026's close.");
