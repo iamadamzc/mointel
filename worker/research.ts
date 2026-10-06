@@ -199,6 +199,10 @@ async function main(): Promise<void> {
   const newsAdapters: NewsAdapter[] = newsCredentials
     ? [new AlpacaNewsAdapter(new AlpacaRestClient(newsCredentials))]
     : [];
+  // Rule R-A needs Alpaca's announced splits; without credentials the float job cannot vouch for a split and is skipped.
+  const floatSplits = FLOAT_JOB ? findAlpacaCredentials().credentials : null;
+  const floatSplitClient = floatSplits ? new AlpacaRestClient(floatSplits) : null;
+  if (FLOAT_JOB) log(`[research] float job: ${floatSplitClient ? 'on' : 'SKIPPED (no Alpaca credentials for announced splits)'}`);
   log(
     `[research] news: ${
       newsAdapters.length > 0
@@ -754,7 +758,7 @@ async function main(): Promise<void> {
           });
 
           // After the job is complete, so the board never waits on it; runFloatJob never throws.
-          if (FLOAT_JOB) await runFloatJob(db, secClient, job.ticker, tradingDate, log);
+          if (floatSplitClient) await runFloatJob(db, secClient, floatSplitClient, job.ticker, tradingDate, log);
 
           if (report.dossier) {
             // It works now, so whatever it failed on before is history.

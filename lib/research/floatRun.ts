@@ -5,6 +5,7 @@
  *
  * RSS is logged before and after each name, for Ops's ship question (the research worker has been OOM-killed twice).
  */
+import type { SplitDataClient } from '../market/splitRestate';
 import type { MarketDatabase } from '../market/store/db';
 import { writeFloatBound } from '../market/store/floatBoundRepo';
 import { readCurrentAnalysis } from '../market/store/researchRepo';
@@ -17,6 +18,8 @@ const mb = (bytes: number) => (bytes / 1_048_576).toFixed(1);
 export async function runFloatJob(
   db: MarketDatabase,
   sec: Pick<SecClient, 'get' | 'getJson'>,
+  /** Alpaca's corporate actions, for rule R-A. The caller does not call this without one. */
+  splits: Pick<SplitDataClient, 'getSplits'>,
   ticker: string,
   tradingDate: string,
   log: (line: string) => void,
@@ -35,6 +38,8 @@ export async function runFloatJob(
         getJson: async <T>(url: string) => (await sec.getJson<T>(url)).data,
         getText: async (url: string) => (await sec.get(url)).body,
         spanBars: (symbol, from, to) => readSpanBars(db, symbol, from, to),
+        announcedSplits: async (symbol, start, end) =>
+          (await splits.getSplits({ symbols: [symbol], start, end })).filter((s) => s.symbol === symbol).map((s) => s.exDate),
         now: () => new Date().toISOString(),
       },
     );

@@ -23,7 +23,7 @@ import {
   type SplitProof,
 } from './insiderBound';
 import { selectFiledCount, type CompanyFactsShares, type FiledCount } from './filedCount';
-import { splitProofFromBars, splitProofR0, type SpanBar } from './splitProof';
+import { splitProofFromBars, splitProofR0, withAnnouncedSplits, type SpanBar } from './splitProof';
 import type { SupplyBlock } from './types';
 
 /** His ruling, 2026-10-05T21:22:37.844Z: the filed count may be at most 90 days old. NOT `FILED_SHARES_CURRENT_DAYS`. */
@@ -32,6 +32,8 @@ export const FLOAT_MAX_AGE_DAYS = 90;
 export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_OR_POSSIBLY_ACTIVE';
 /** Section 16 filings older than this are not read; an owner whose only holding is older is not subtracted. */
 export const FLOAT_WINDOW_DAYS = 730;
+/** Contract 9b: a row's fetch may be reused for at most this many calendar days after it was read. */
+export const FLOAT_REUSE_DAYS = 4;
 
 const SECTION16 = new Set(['3', '3/A', '4', '4/A', '5', '5/A']);
 
@@ -48,6 +50,12 @@ export interface FloatBoundRow {
   count: FiledCount;
   holdings: StoredHolding[];
   splitSinceCount: SplitProof;
+  /**
+   * Alpaca's announced split ex-dates (rule R-A) from the earliest holding's date through `asOfDate` + FLOAT_REUSE_DAYS
+   * (published ahead, so a reader reusing the row within its span can check them); null = the fetch failed. Empty when
+   * there was no count (nothing fetched).
+   */
+  announcedSplits: string[] | null;
   /** The dossier whose ledger was read; null = none existed (ISSUANCE_NOT_CHECKED). */
   analysisVersionId: number | null;
   issuanceRule: IssuanceRule;
@@ -64,6 +72,8 @@ export interface FloatJobDeps {
   getJson: <T>(url: string) => Promise<T>;
   getText: (url: string) => Promise<string>;
   spanBars: (symbol: string, from: string, to: string) => SpanBar[];
+  /** Alpaca's announced split ex-dates for the symbol in [start, end]; throws on failure. */
+  announcedSplits: (symbol: string, start: string, end: string) => Promise<string[]>;
   now: () => string;
 }
 
@@ -111,6 +121,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   let count: FiledCount = { kind: 'NO_FILED_COUNT' };
   const holdings: StoredHolding[] = [];
   let splitSinceCount: SplitProof = 'UNPROVEN';
+  let announcedSplits: string[] | null = [];
 
   if (cik) {
     // A throw here propagates: a failed fetch is not "no count".
@@ -132,15 +143,25 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
         if (parse.ok) owners.push({ accession: meta.accession, filingDate: meta.filingDate, parse });
       }
       // Rule S1 (contract 9a): both holdings per owner and class, so a sale since the count is subtracted at what is left.
-      for (const holding of holdingsAtBoth(owners, count.asOf, asOfDate, since)) {
-        holdings.push({ ...holding, split: splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf) });
+      const found = holdingsAtBoth(owners, count.asOf, asOfDate, since);
+      // Rule R-A: one fetch over every span this row's proofs cover, through the reuse span; a failure refuses (null).
+      const start = [count.asOf, ...found.map((h) => h.asOf)].sort()[0]!;
+      try {
+        announcedSplits = (await deps.announcedSplits(symbol, start, addDays(asOfDate, FLOAT_REUSE_DAYS))).sort();
+      } catch {
+        announcedSplits = null;
       }
-      splitSinceCount = splitProofFromBars(deps.spanBars(symbol, count.asOf, asOfDate), asOfDate);
+      for (const holding of found) {
+        const r0 = splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf);
+        holdings.push({ ...holding, split: withAnnouncedSplits(r0, announcedSplits, holding.asOf, count.asOf) });
+      }
+      const r1 = splitProofFromBars(deps.spanBars(symbol, count.asOf, asOfDate), asOfDate);
+      splitSinceCount = withAnnouncedSplits(r1, announcedSplits, count.asOf, asOfDate);
     }
   }
 
   const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: input.dossier?.ledger ?? null, asOfDate });
-  return { ...base, count, holdings, splitSinceCount, cell, computedAt: deps.now() };
+  return { ...base, count, holdings, splitSinceCount, announcedSplits, cell, computedAt: deps.now() };
 }
 
 /** The cell from stored inputs: the one place `floatCell` is called with the job's constants. */

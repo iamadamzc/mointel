@@ -38,6 +38,7 @@ function row(asOfDate: string, overrides: Partial<FloatBoundRow> = {}): FloatBou
     count,
     holdings,
     splitSinceCount: 'NONE',
+    announcedSplits: ['2026-01-05'],
     analysisVersionId: 42,
     issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE',
     maxAgeDays: 90,
@@ -57,7 +58,7 @@ describe('research_float_bounds', () => {
 
   it('round-trips a refusal with its reason and no bound, and a count that is not a COUNT', () => {
     const store = db();
-    const refused = row('2026-09-28', { cik: null, count: { kind: 'NO_FILED_COUNT' }, holdings: [], splitSinceCount: 'UNPROVEN', cell: { state: 'UNKNOWN', reason: 'NO_CIK' } });
+    const refused = row('2026-09-28', { cik: null, count: { kind: 'NO_FILED_COUNT' }, holdings: [], splitSinceCount: 'UNPROVEN', announcedSplits: null, cell: { state: 'UNKNOWN', reason: 'NO_CIK' } });
     writeFloatBound(store, refused);
     expect(readFloatBound(store, 'ACME', '2026-09-28')).toEqual(refused);
   });

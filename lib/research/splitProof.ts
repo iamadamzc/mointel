@@ -58,3 +58,16 @@ export function splitProofFromBars(bars: readonly SpanBar[], checkpointDate: str
   }
   return 'NONE';
 }
+
+/**
+ * Rule R-A (registration docs/research/float-contract/split-source-registration-2026-10-05.md): Alpaca's ANNOUNCED
+ * splits as a second source that can only refuse. The stored bars are not reliably restated after a split (Ops,
+ * 2026-10-05), so either source may refuse and neither may admit against the other. `exDates` null = the fetch failed,
+ * which is never "no split". An ex-date ON either end of the span counts as inside it: a filing's date does not say
+ * whether its numbers are in the old units or the new.
+ */
+export function withAnnouncedSplits(proof: SplitProof, exDates: readonly string[] | null, from: string, to: string): SplitProof {
+  if (exDates === null) return proof === 'FOUND' ? 'FOUND' : 'UNPROVEN';
+  if (exDates.some((d) => d >= from && d <= to)) return 'FOUND';
+  return proof;
+}

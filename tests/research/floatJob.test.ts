@@ -90,6 +90,10 @@ function deps(overrides: Partial<FloatJobDeps> = {}): FloatJobDeps & { urls: str
     // A 2-for-1 factor step only in owner 333's span (2026-06-01 to the count).
     spanBars: (_symbol, from, to) =>
       from === '2026-06-01' ? [{ date: '2026-05-29', close: 10, factor: 2 }, { date: to, close: 10, factor: 1 }] : from === to ? [{ date: from, close: 10, factor: 1 }] : flat(from, to),
+    announcedSplits: async (_symbol, start, end) => {
+      urls.push(`splits ${start} ${end}`);
+      return [];
+    },
     now: () => '2026-09-28T23:00:00.000Z',
     ...overrides,
   };
@@ -109,7 +113,7 @@ describe('computeFloatBound', () => {
     expect(row.cell).toMatchObject({ state: 'PRODUCED', bound: 9_300_000, subtracted: 700_000 });
     expect(row.holdings[0]!.classes).toEqual([{ title: 'common stock', h0: 1_000_000, h0AsOf: '2026-07-14', hD: 400_000, hDAsOf: '2026-08-30' }]);
     expect(row.splitSinceCount).toBe('NONE');
-    expect(row).toMatchObject({ cik: '555', analysisVersionId: 42, issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE', maxAgeDays: 90 });
+    expect(row).toMatchObject({ cik: '555', analysisVersionId: 42, issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE', maxAgeDays: 90, announcedSplits: [] });
   });
 
   it('writes no row when companyfacts cannot be fetched: a failed fetch is not "no filed count"', async () => {
@@ -161,5 +165,36 @@ describe('section16Filings', () => {
       },
     };
     expect(section16Filings(data, '2024-09-28', AS_OF).map((f) => f.accession)).toEqual(['a', 'b']);
+  });
+});
+
+describe('computeFloatBound: rule R-A, announced splits refuse where stale bars cannot', () => {
+  const run = (exDates: string[] | Error) =>
+    computeFloatBound(
+      { symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dossier() },
+      deps({ announcedSplits: async () => (exDates instanceof Error ? Promise.reject(exDates) : exDates) }),
+    );
+
+  it('fetches once, from the earliest holding date through the reuse span (asOfDate + 4 days)', async () => {
+    const d = deps();
+    await computeFloatBound({ symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dossier() }, d);
+    expect(d.urls.filter((u) => u.startsWith('splits '))).toEqual(['splits 2026-06-01 2026-10-02']);
+  });
+
+  it('refuses a holding whose span holds an announced ex-date, though its bars read one basis', async () => {
+    const row = await run(['2026-07-20']); // inside owner 111's span (07-14 to the count), not 555's (count date only)
+    expect(row.holdings.find((h) => h.ownerCik === '111')!.split).toBe('FOUND');
+    expect(row.holdings.find((h) => h.ownerCik === '555')!.split).toBe('NONE');
+    expect(row.cell).toMatchObject({ state: 'PRODUCED', bound: 9_700_000 });
+  });
+
+  it('reads SPLIT_SINCE_COUNT for an announced ex-date between the count and the checkpoint, the checkpoint day included', async () => {
+    expect((await run(['2026-09-28'])).cell).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+  });
+
+  it('never reads a failed fetch as "no split"', async () => {
+    const row = await run(new Error('503'));
+    expect(row.announcedSplits).toBeNull();
+    expect(row.cell).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
   });
 });

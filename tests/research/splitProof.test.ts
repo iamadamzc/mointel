@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { splitProofFromBars, splitProofR0, type SpanBar } from '@/lib/research/splitProof';
+import { splitProofFromBars, splitProofR0, withAnnouncedSplits, type SpanBar } from '@/lib/research/splitProof';
 
 /**
  * Rule R1. Registration: docs/research/float-contract/split-proof-r1-registration-2026-10-05.md.
@@ -104,5 +104,21 @@ describe('splitProofR0 (holding span)', () => {
 
   it('refuses a non-positive factor', () => {
     expect(splitProofR0([bar('2026-06-30', 0), bar(TO, 1)], FROM, TO)).toBe('UNPROVEN');
+  });
+});
+
+/** Rule R-A: the announced splits can only refuse. */
+describe('withAnnouncedSplits', () => {
+  it('finds a split on either end of the span and inside it, and nothing outside', () => {
+    expect(withAnnouncedSplits('NONE', ['2026-07-01'], '2026-07-01', '2026-08-01')).toBe('FOUND');
+    expect(withAnnouncedSplits('NONE', ['2026-08-01'], '2026-07-01', '2026-08-01')).toBe('FOUND');
+    expect(withAnnouncedSplits('NONE', ['2026-06-30', '2026-08-02'], '2026-07-01', '2026-08-01')).toBe('NONE');
+  });
+
+  it('never admits against the bars, and reads a failed fetch as UNPROVEN', () => {
+    expect(withAnnouncedSplits('UNPROVEN', [], '2026-07-01', '2026-08-01')).toBe('UNPROVEN');
+    expect(withAnnouncedSplits('FOUND', [], '2026-07-01', '2026-08-01')).toBe('FOUND');
+    expect(withAnnouncedSplits('NONE', null, '2026-07-01', '2026-08-01')).toBe('UNPROVEN');
+    expect(withAnnouncedSplits('FOUND', null, '2026-07-01', '2026-08-01')).toBe('FOUND');
   });
 });
