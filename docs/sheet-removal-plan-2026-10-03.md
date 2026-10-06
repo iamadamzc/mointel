@@ -109,6 +109,11 @@ Integration:**
   still stand at the morning checkpoint) itself, so the ChatGPT recap task can be fully retired. Put to him with Research's
   estimate of about $2 to $10 a month for the Warning Shot, stated as unchecked. Owner Research (design and build), Marketing
   (words), Commercial (reads the Warning Shot's instructions), Design (surfaces). Both live before step 4.
+- 2026-10-06T00:28:56.053Z, typed to Integration (28th seat, transcript d947056e, his turn), verbatim: *"a"*, answering what
+  "Former runner" in the drawer means once the computed cycle reaches it (contract row 14): **option A, it keeps today's
+  meaning** (the research model's judgement), and the computed facts (prior runs, largest prior advance, cycle high, flush
+  from high) show beside it as plain numbers under their own labels. Option B, put to him and declined: the computed
+  status, which counts any earlier measured run (`lib/market/cycle.ts:640-647`).
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 

@@ -1659,6 +1659,8 @@ P10 FINDINGS     Row 21 STOPPED (payload has one analysis per ticker; evening/mo
                  EXACT source. Row 14: computed fields under their own labels; "Former runner" HELD: computed FORMER_RUNNER =
                  any earlier measured run (cycle.ts:640-647), superrunner at SUPERRUNNER_ADVANCE 2.0. Same word, looser meaning:
                  TO HIM, rec keep today's meaning, computed facts as plain numbers.
+HIS RULING       2026-10-06T00:28:56.053Z (transcript d947056e): "a" = "Former runner" keeps the model's meaning; computed facts
+                 as plain numbers under own labels. In the Sheet plan RULED block. Design told to build.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
