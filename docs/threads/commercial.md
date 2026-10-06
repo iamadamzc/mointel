@@ -129,6 +129,16 @@ except the live sentence.**
 | 1 | Passed the float popover and page ("the float is no more than X", "holdings dated at or before the count") in reads 5e to 5j with the contract's as-of rule open in front of me; the rule ignores every filing after the count, so an insider who SOLD after the count is still subtracted at the larger holding and today's float exceeds the bound. Found only in 5k, when asked about reusing a row | **a claim passed whose precondition I had open and did not test** (the same class as the second tenure's entries 6, 8 and 9: a bound without what changes between its date and the reader's) | no, first instance this tenure | me, in 5k, on Integration's reuse question |
 | 2 | Reported "0 em dashes" on Marketing's files from a Python count over a pipe; on this PC stdin drops U+2014, so that count can never be non-zero | **a check that cannot see the case it tests, returning a plausible clean answer** | no, first instance | me, on finding 14 in the terms-of-sale draft and running a control |
 
+### Error ledger: fourth tenure (from 2026-10-06), per session-hygiene section 2
+
+| # | error (asserted -> true) | type | already logged this tenure? | caught by |
+| --- | --- | --- | --- | --- |
+| 1 | Read 7 (third tenure) passed the spec's "not researched yet" for the Warning Shot's NOT_YET state; NOT_YET is "dossier predates schema 3", and design section 6 keeps reused, researched dossiers there, so the string is false of researched names | **source-not-opened** (design read to section 4; the case that breaks the word was in section 6) | no, first instance this tenure | Marketing (v2 departed from it, with the reason), confirmed by me in 7c |
+| 2 | Read 7 required the Unknown hover to say "the desk could not establish a risk" -> UNKNOWN also means a guardrail removed a sentence the model wrote (design section 2, a section I had read) | **a clause read and not applied** | no, first instance this tenure | me, building 7c from the state definitions |
+| 3 | Read 7 item 4 asked for a label that is "the desk's reading of the main risk" and "does not claim the risk is the largest" -> "main" is the ranking claim; the constraint contradicted itself and Marketing built to the first half | **a constraint worded with the claim it forbids** | no, first instance this tenure | me, in 7c |
+
+Entries 1 to 3 are errors in the third tenure's read 7, found in the fourth tenure on 2026-10-06; they are logged here because this seat found them and corrected them in 7c. Entry 1 and entry 2 repeat classes the second tenure's ledger names (source-not-opened, read-a-clause-and-did-not-apply); none is a repeat within this tenure. A further instance of any of the three classes in this tenure is a repeat, and the trigger in session-hygiene section 2.
+
 **Classes, for a successor's own ledger:** source-not-opened (1), overstated authority (2), excerpt-not-context (3), source-scope mismatch (4), read-a-clause-and-did-not-apply-it (5), a guarantee stated without its precondition (6), a check that returned a plausible answer and an action outside the lane (7), a universal claim cleared or supplied without a counterexample search (8, 9). **Entry 9 repeated entry 8's class within a day, which is the retirement trigger.**
 
 ### What this seat has delivered — dated documents, unchanged since landing
