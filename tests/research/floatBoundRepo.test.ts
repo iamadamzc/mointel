@@ -25,8 +25,8 @@ afterEach(() => {
 });
 
 const holdings: StoredHolding[] = [
-  { ownerCik: '111', ownerName: 'A', shares: 1_000_000, asOf: '2026-07-14', accessions: ['x'], split: 'NONE' },
-  { ownerCik: '333', ownerName: 'B', shares: 200_000, asOf: '2026-06-01', accessions: ['y'], split: 'FOUND' },
+  { ownerCik: '111', ownerName: 'A', shares: 400_000, asOf: '2026-07-14', accessions: ['x', 'z'], split: 'NONE', classes: [{ title: 'common stock', h0: 1_000_000, h0AsOf: '2026-07-14', hD: 400_000, hDAsOf: '2026-08-30' }] },
+  { ownerCik: '333', ownerName: 'B', shares: 200_000, asOf: '2026-06-01', accessions: ['y'], split: 'FOUND', classes: [{ title: 'common stock', h0: 200_000, h0AsOf: '2026-06-01', hD: 200_000, hDAsOf: '2026-06-01' }] },
 ];
 
 function row(asOfDate: string, overrides: Partial<FloatBoundRow> = {}): FloatBoundRow {

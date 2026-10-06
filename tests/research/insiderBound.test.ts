@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   floatCell,
   holdingsAsOf,
+  holdingsAtBoth,
   issuanceFlagged,
   parseSection16,
   type FloatCellInput,
@@ -242,5 +243,54 @@ describe('floatCell', () => {
   it('fails its own range check: insiders at or above the count, or a count dated after the checkpoint', () => {
     expect(floatCell(input({ holdings: [holding('9', 22_036_402)] }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
     expect(floatCell(input({ count: { shares: 1000, asOf: '2026-12-01' } }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
+  });
+});
+
+/**
+ * Rule S1 (contract section 9a): per owner and class, subtract min(h0, hD). The defect it exists for: an insider who
+ * SOLD after the count was subtracted at the larger count-date holding, and the bound went too LOW.
+ */
+describe('holdingsAtBoth (rule S1)', () => {
+  const COUNT = '2026-08-01';
+  const D = '2026-09-28';
+  const WINDOW = '2024-09-28';
+  const row = (asOf: string, shares: number, title = 'common stock') => ({ asOf, title, shares });
+  const f = (accession: string, ownerCik: string, rows: Array<{ asOf: string; title: string; shares: number }>): OwnerFiling => ({
+    accession,
+    filingDate: rows[0]!.asOf,
+    parse: { ok: true, ownerCik, ownerName: null, rows },
+  });
+  const subtracted = (filings: OwnerFiling[]) => Object.fromEntries(holdingsAtBoth(filings, COUNT, D, WINDOW).map((h) => [h.ownerCik, h.shares]));
+
+  it('subtracts what is LEFT after a sale since the count', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])])).toEqual({ '1': 400 });
+  });
+
+  it('subtracts the count-date holding after a purchase or grant since the count', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 2500)])])).toEqual({ '1': 1000 });
+  });
+
+  it('is the count-date holding when nothing later was filed, and ignores a row dated after D', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)])])).toEqual({ '1': 1000 });
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-10-02', 10)])])).toEqual({ '1': 1000 });
+  });
+
+  it('never subtracts an owner whose only rows are after the count', () => {
+    expect(subtracted([f('b', '2', [row('2026-08-20', 400)])])).toEqual({});
+  });
+
+  it('takes the minimum per CLASS, not on the owner total', () => {
+    const filings = [
+      f('a', '1', [row('2026-07-01', 1000, 'common stock'), row('2026-07-01', 500, 'class b common stock')]),
+      f('b', '1', [row('2026-08-20', 200, 'common stock'), row('2026-08-20', 1300, 'class b common stock')]),
+    ];
+    // Owner total went 1,500 to 1,500; per class: min(1000, 200) + min(500, 1300) = 700.
+    expect(subtracted(filings)).toEqual({ '1': 700 });
+    const [h] = holdingsAtBoth(filings, COUNT, D, WINDOW);
+    expect(h!.asOf).toBe('2026-07-01');
+    expect(h!.classes).toEqual([
+      { title: 'class b common stock', h0: 500, h0AsOf: '2026-07-01', hD: 1300, hDAsOf: '2026-08-20' },
+      { title: 'common stock', h0: 1000, h0AsOf: '2026-07-01', hD: 200, hDAsOf: '2026-08-20' },
+    ]);
   });
 });

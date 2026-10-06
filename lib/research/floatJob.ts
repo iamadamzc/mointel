@@ -1,6 +1,8 @@
 /**
  * The float JOB: the validated pipeline (`docs/research/float-contract/validate.ts`, `collect`) moved into lib, the
- * audit removed, nothing else changed. Plan: docs/research/float-contract/build-plan-2026-10-05.md.
+ * audit removed, and ONE rule changed: holdings follow rule S1 (contract section 9a, `holdingsAtBoth`), because the
+ * validated rule subtracted an insider who sold after the count at the larger holding. Plan:
+ * docs/research/float-contract/build-plan-2026-10-05.md.
  *
  * One call per researched symbol, after the research job has saved its dossier. No model, $0: SEC fetches through the
  * caller's rate-limited client. The fetch and the store are injected so every rule can be tested against fakes.
@@ -12,12 +14,12 @@
  */
 import {
   floatCell,
-  holdingsAsOf,
+  holdingsAtBoth,
   parseSection16,
   type FloatCell,
   type IssuanceRule,
   type OwnerFiling,
-  type OwnerHolding,
+  type S1Holding,
   type SplitProof,
 } from './insiderBound';
 import { selectFiledCount, type CompanyFactsShares, type FiledCount } from './filedCount';
@@ -33,8 +35,8 @@ export const FLOAT_WINDOW_DAYS = 730;
 
 const SECTION16 = new Set(['3', '3/A', '4', '4/A', '5', '5/A']);
 
-export interface StoredHolding extends OwnerHolding {
-  /** R0, from the holding's as-of date to the count's. Only NONE is subtracted. */
+export interface StoredHolding extends S1Holding {
+  /** R0, from the h0 as-of date to the count's. Only NONE is subtracted; `shares` is S1's min(h0, hD) summed. */
   split: SplitProof;
 }
 
@@ -129,7 +131,8 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
         const parse = parseSection16(xml);
         if (parse.ok) owners.push({ accession: meta.accession, filingDate: meta.filingDate, parse });
       }
-      for (const holding of holdingsAsOf(owners, count.asOf, since)) {
+      // Rule S1 (contract 9a): both holdings per owner and class, so a sale since the count is subtracted at what is left.
+      for (const holding of holdingsAtBoth(owners, count.asOf, asOfDate, since)) {
         holdings.push({ ...holding, split: splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf) });
       }
       splitSinceCount = splitProofFromBars(deps.spanBars(symbol, count.asOf, asOfDate), asOfDate);

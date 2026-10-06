@@ -13,9 +13,10 @@ import type { SpanBar } from '@/lib/research/splitProof';
 import type { SupplyBlock } from '@/lib/research/types';
 
 /**
- * The float job is the validated pipeline (validate.ts collect) in lib. The rule this exists to get right: a holding
- * dated AFTER the count is never subtracted (owner 222 below); a holding across a split is refused (333); a holding
- * dated ON the count's date is subtracted, because R0, not R1, decides the holding span (555).
+ * The float job is the validated pipeline (validate.ts collect) in lib, with rule S1. The rules this exists to get right:
+ * an owner whose only holding is dated AFTER the count is never subtracted (222); a holding across a split is refused
+ * (333); a holding dated ON the count's date is subtracted, because R0, not R1, decides the holding span (555); an
+ * owner who SOLD after the count is subtracted at what is left (111, rule S1).
  */
 
 const AS_OF = '2026-09-28';
@@ -33,6 +34,8 @@ const filings = [
   { accession: '0000-26-000002', form: '4', filingDate: '2026-08-20', doc: 'b.xml', xml: form4('222', '2026-08-18', 500_000) },
   { accession: '0000-26-000003', form: '4', filingDate: '2026-08-05', doc: 'c.xml', xml: form4('333', '2026-06-01', 200_000) },
   { accession: '0000-26-000004', form: '4', filingDate: '2026-08-03', doc: 'd.xml', xml: form4('555', COUNT_END, 300_000) },
+  // Owner 111 SOLD after the count: rule S1 subtracts the 400,000 left, not the 1,000,000 held at the count.
+  { accession: '0000-26-000007', form: '4', filingDate: '2026-09-02', doc: 'g.xml', xml: form4('111', '2026-08-30', 400_000) },
   { accession: '0000-26-000005', form: '4', filingDate: '2026-08-04', doc: 'e.xml', xml: null },
   { accession: '0000-26-000006', form: '10-Q', filingDate: '2026-08-10', doc: 'q.htm', xml: null },
 ];
@@ -103,7 +106,8 @@ describe('computeFloatBound', () => {
       ['333', 'FOUND'],
       ['555', 'NONE'],
     ]);
-    expect(row.cell).toMatchObject({ state: 'PRODUCED', bound: 8_700_000, subtracted: 1_300_000 });
+    expect(row.cell).toMatchObject({ state: 'PRODUCED', bound: 9_300_000, subtracted: 700_000 });
+    expect(row.holdings[0]!.classes).toEqual([{ title: 'common stock', h0: 1_000_000, h0AsOf: '2026-07-14', hD: 400_000, hDAsOf: '2026-08-30' }]);
     expect(row.splitSinceCount).toBe('NONE');
     expect(row).toMatchObject({ cik: '555', analysisVersionId: 42, issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE', maxAgeDays: 90 });
   });

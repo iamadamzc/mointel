@@ -132,6 +132,55 @@ export function holdingsAsOf(filings: readonly OwnerFiling[], cutoff: string, wi
   return out.sort((a, b) => a.ownerCik.localeCompare(b.ownerCik));
 }
 
+/* ------------------------------------------- rule S1: sales after the count */
+
+export interface ClassHolding {
+  title: string;
+  /** The latest row on or before the count's as-of date (the as-of alignment above). */
+  h0: number;
+  h0AsOf: string;
+  /** The latest row on or before D, over the filings read; equal to h0 when nothing later was filed. */
+  hD: number;
+  hDAsOf: string;
+}
+
+/** An owner under rule S1: `shares` is what is subtracted, the sum over classes of min(h0, hD); `asOf` is h0's. */
+export interface S1Holding extends OwnerHolding {
+  classes: ClassHolding[];
+}
+
+/**
+ * Rule S1 (registration docs/research/float-contract/insider-sale-registration-2026-10-05.md; contract section 9a).
+ * Per owner and class: h0 by `holdingsAsOf` at the count's date, hD by `holdingsAsOf` at D, each one class at a time so
+ * the selection is the validated one. Subtract min(h0, hD): a sale since the count subtracts what is left, a purchase
+ * or grant subtracts h0. An owner or class with no h0 is not subtracted, whatever it filed later.
+ */
+export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: string, d: string, windowStart: string): S1Holding[] {
+  const titles = [...new Set(filings.flatMap((f) => f.parse.rows.map((row) => row.title)))].sort();
+  const byOwner = new Map<string, { name: string | null; classes: ClassHolding[]; accessions: Set<string> }>();
+  for (const title of titles) {
+    const only = filings.map((f) => ({ ...f, parse: { ...f.parse, rows: f.parse.rows.filter((row) => row.title === title) } }));
+    const atD = new Map(holdingsAsOf(only, d, windowStart).map((h) => [h.ownerCik, h]));
+    for (const h0 of holdingsAsOf(only, countAsOf, windowStart)) {
+      const hD = atD.get(h0.ownerCik) ?? h0;
+      const entry = byOwner.get(h0.ownerCik) ?? { name: h0.ownerName, classes: [], accessions: new Set<string>() };
+      entry.classes.push({ title, h0: h0.shares, h0AsOf: h0.asOf, hD: hD.shares, hDAsOf: hD.asOf });
+      for (const a of [...h0.accessions, ...hD.accessions]) entry.accessions.add(a);
+      byOwner.set(h0.ownerCik, entry);
+    }
+  }
+  return [...byOwner.entries()]
+    .map(([ownerCik, e]) => ({
+      ownerCik,
+      ownerName: e.name,
+      shares: e.classes.reduce((sum, c) => sum + Math.min(c.h0, c.hD), 0),
+      asOf: e.classes.map((c) => c.h0AsOf).sort().at(-1)!,
+      accessions: [...e.accessions].sort(),
+      classes: e.classes,
+    }))
+    .sort((a, b) => a.ownerCik.localeCompare(b.ownerCik));
+}
+
 /* ------------------------------------------------------------ the cell state */
 
 export type FloatCellReason =
