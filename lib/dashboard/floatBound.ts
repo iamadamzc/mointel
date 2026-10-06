@@ -50,6 +50,12 @@ export interface FloatCellView {
   paragraphs: string[];
 }
 
+/**
+ * The public page's route. PROVISIONAL until Web names it: the link and the page
+ * must ship in one release, so this is the one value to confirm.
+ */
+export const FLOAT_PAGE_HREF = '/float';
+
 export const FLOAT_PAGE_LINK_LEAD = 'Read how float numbers are made:';
 export const FLOAT_PAGE_LINK_LABEL = 'Are float quotes real?';
 

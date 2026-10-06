@@ -445,3 +445,30 @@ describe('level map view model', () => {
     expect(row.levelMap.currentPrice).toBeNull();
   });
 });
+
+describe('the float on a desk row: two absences, as the grade', () => {
+  const FLOAT = {
+    state: 'PRODUCED' as const,
+    reason: null,
+    bound: 8_100_000,
+    countAsOf: '2026-09-22',
+    holdingDates: ['2026-09-18'],
+  };
+
+  it('an absent or null map is not wired, an object (even empty) is wired, and a missing name is Not computed', async () => {
+    const dashboard = await mockDashboard();
+    const rowFor = (floatBounds: unknown) => {
+      const market = snapshot([demand('NEWNAME')]);
+      (market as unknown as { floatBounds: unknown }).floatBounds = floatBounds;
+      return mergeDesk(dashboard, market).rows.get('NEWNAME')!;
+    };
+    expect(rowFor(undefined).floatBoundWired).toBe(false);
+    expect(rowFor(null).floatBoundWired).toBe(false);
+    const empty = rowFor({});
+    expect(empty.floatBoundWired).toBe(true);
+    expect(empty.floatBound).toBeNull();
+    const sent = rowFor({ NEWNAME: FLOAT });
+    expect(sent.floatBoundWired).toBe(true);
+    expect(sent.floatBound?.bound).toBe(8_100_000);
+  });
+});
