@@ -76,7 +76,8 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > `tail` or `head`. **Tool traps on this PC:** long text with backticks or apostrophes in a bash command breaks the
 > parser, so write it to a file with the Write tool and read it in Python by its Windows path (`C:\Users\...`; Python
 > cannot resolve `/c/...`). Addresses from `list_sessions` every time; a message to an archived or retiring session
-> fails or is dropped. Send peer messages with SendMessage (his ruling 2026-10-06T02:22:30.305Z); on a
+> fails or is dropped. Send peer messages with SendMessage, addressed by title or a uds: address, never the local_ session id (his ruling
+> 2026-10-06T02:22:30.305Z; Integration measured the pause as coming only from the local_ id); on a
 > refusal, report the text to Integration. Close the browser tab when a read is done. `sec.gov` blocks plain `curl`; read rule text through
 > `law.cornell.edu`, filings through the browser pane, PDFs through `pymupdf`.
 >
