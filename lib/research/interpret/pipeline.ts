@@ -387,6 +387,8 @@ export async function interpretTicker(
       ...accepted.structure.evidenceSourceIds,
       ...accepted.cycle.evidenceSourceIds,
       ...accepted.structure.supplyLedger.flatMap((block) => block.evidenceSourceIds),
+      // The risk sentence's ids, only when it survived its guardrails: the payload resolves them to titles and dates.
+      ...(accepted.evidenceRisk?.text ? accepted.evidenceRisk.evidenceSourceIds : []),
     ]),
   ];
 

@@ -14,6 +14,7 @@
 import type { ResearchEvidenceBundle } from './bundle';
 import { withoutCitationsDeep } from '../citations';
 import { resolveCatalystFreshness } from '../time';
+import { validateEvidenceRisk } from './evidenceRisk';
 import type {
   Confidence,
   ResearchDossier,
@@ -684,6 +685,17 @@ export function validateDossier(
   if (bundle.coverage.incomplete) {
     if (catalyst.confidence === 'HIGH') catalyst.confidence = 'MEDIUM';
     if (structure.confidence === 'HIGH') structure.confidence = 'MEDIUM';
+  }
+
+  /*
+   * The evidence risk sentence, LAST, against the corrected ledger and share
+   * count. Its guardrails remove the text and record why on the field; they add
+   * no `Violation`, so a removed sentence never turns the dossier PARTIAL, buys
+   * a repair, or reaches the escalation decision (`evidenceRisk.ts` header). Its
+   * ids are deliberately not run through `checkIds`, whose REJECT would.
+   */
+  if (dossier.evidenceRisk !== undefined) {
+    corrected.evidenceRisk = validateEvidenceRisk(dossier.evidenceRisk, corrected, corrected.structure.supplyLedger, bundle);
   }
 
   return {

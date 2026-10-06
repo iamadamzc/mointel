@@ -564,6 +564,26 @@ export interface CycleFindings {
   unknowns: string[];
 }
 
+/** Why a guardrail removed the evidence risk sentence (`interpret/evidenceRisk.ts`, design section 4). */
+export type EvidenceRiskRule =
+  | 'RISK_REQUIRES_SOURCE'
+  | 'RISK_NOT_ONE_SENTENCE'
+  | 'RISK_FORBIDDEN_WORDING'
+  | 'RISK_ACTIVITY_WITHOUT_ACTIVE_BLOCK'
+  | 'RISK_SHARES_RULE';
+
+export interface EvidenceRisk {
+  /** One sentence stating the condition, or null (the model returned none, or a guardrail removed it). */
+  text: string | null;
+  evidenceSourceIds: number[];
+  /**
+   * Set when a guardrail removed the text: the rule, the shape, and the removed
+   * sentence for the audit of the removal rate. Never shown on a surface.
+   * Absent on the model's own output, before validation.
+   */
+  removed?: { rule: EvidenceRiskRule; detail: string; text: string | null } | null;
+}
+
 export interface ResearchDossier {
   ticker: string;
   companyName: string | null;
@@ -577,6 +597,13 @@ export interface ResearchDossier {
    * v2 lacks it; absent and null both read as not stated.
    */
   businessDescription?: string | null;
+  /**
+   * The main risk CONDITION in the evidence, one cited sentence, or null
+   * (contract row 20; `interpret/evidenceRisk.ts`). Optional because every
+   * dossier before schema v3 lacks it; read it through `evidenceRiskState`,
+   * never directly.
+   */
+  evidenceRisk?: EvidenceRisk | null;
   catalyst: CatalystFindings;
   structure: StructureFindings;
   cycle: CycleFindings;

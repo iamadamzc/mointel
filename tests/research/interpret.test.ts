@@ -11,6 +11,7 @@ import {
   upsertIssuer,
 } from '@/lib/market/store/researchRepo';
 import { buildEvidenceBundle, summariseHistory, type ResearchEvidenceBundle } from '@/lib/research/interpret/bundle';
+import { EVIDENCE_RISK_GOOD } from '@/lib/research/interpret/evidenceRisk';
 import { validateDossier } from '@/lib/research/interpret/guardrails';
 import { EMPTY_HISTORY_SUMMARY, upsertDailyBars } from '@/lib/research/history';
 import { shouldEscalate } from '@/lib/research/interpret/escalation';
@@ -384,6 +385,21 @@ describe('interpreter transport', () => {
 /* -------------------------------------------------------------- guardrails */
 
 describe('structural guardrails', () => {
+  it('a removed evidence risk sentence adds no violation (the dossier is not made PARTIAL), and a valid one survives', () => {
+    const base = validateDossier(dossier(), bundle());
+    expect('evidenceRisk' in base.dossier).toBe(false);
+    const modal = validateDossier(dossier({ evidenceRisk: { text: 'The shelf could expire unused.', evidenceSourceIds: [1] } }), bundle());
+    expect(modal.violations).toEqual(base.violations);
+    expect(modal.ok).toBe(base.ok);
+    expect(modal.dossier.evidenceRisk).toMatchObject({ text: null, removed: { rule: 'RISK_FORBIDDEN_WORDING' } });
+    // An id outside the bundle removes the sentence; it does not REJECT the dossier as SOURCE_ID_MUST_EXIST would.
+    const foreign = validateDossier(dossier({ evidenceRisk: { text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [999] } }), bundle());
+    expect(foreign.violations).toEqual(base.violations);
+    expect(foreign.dossier.evidenceRisk?.removed?.rule).toBe('RISK_REQUIRES_SOURCE');
+    const good = validateDossier(dossier({ evidenceRisk: { text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1] } }), bundle());
+    expect(good.dossier.evidenceRisk).toEqual({ text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1], removed: null });
+  });
+
   it('normalises inline citation tokens out of the written prose, and keeps the cited ids', () => {
     const d = dossier({
       businessDescription: 'A digital media provider building AI content tools [96174, 96176, 119985].',
@@ -979,9 +995,31 @@ describe('interpretation pipeline', () => {
     });
 
     const current = readCurrentAnalysis(db, 'ACME')!;
-    expect(current.metadata.schemaVersion).toBe(2);
-    expect(current.metadata.promptVersion).toBe(3);
+    expect(current.metadata.schemaVersion).toBe(3);
+    expect(current.metadata.promptVersion).toBe(4);
     expect((current.metadata.metrics as { inputTokens: number }).inputTokens).toBe(1000);
+  });
+
+  it("stores a surviving evidence risk sentence's ids with the version (the payload resolves them), and not a removed one's", async () => {
+    const db = temporaryDb();
+    const ids = seed(db);
+    const withRisk = (text: string) => {
+      const d = dossier({ evidenceRisk: { text, evidenceSourceIds: [ids[2]] } });
+      d.catalyst.evidenceSourceIds = [ids[0]];
+      d.structure.evidenceSourceIds = [ids[0]];
+      d.cycle.evidenceSourceIds = [ids[0]];
+      return d;
+    };
+
+    await interpretPipeline(db, new ScriptedInterpreter([withRisk(EVIDENCE_RISK_GOOD)]), null, { ticker: 'ACME', tradingDate: DATE });
+    const kept = readCurrentAnalysis(db, 'ACME')!;
+    expect(kept.dossier.evidenceRisk?.text).toBe(EVIDENCE_RISK_GOOD);
+    expect(kept.sourceIds).toContain(ids[2]);
+
+    await interpretPipeline(db, new ScriptedInterpreter([withRisk('The shelf could expire unused.')]), null, { ticker: 'ACME', tradingDate: DATE, force: true });
+    const removed = readCurrentAnalysis(db, 'ACME')!;
+    expect(removed.dossier.evidenceRisk?.removed?.rule).toBe('RISK_FORBIDDEN_WORDING');
+    expect(removed.sourceIds).not.toContain(ids[2]);
   });
 
   it('escalates exactly once on a material Sheet/AUTO structure conflict', async () => {

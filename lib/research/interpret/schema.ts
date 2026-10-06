@@ -12,13 +12,16 @@
  */
 
 import { catalystGradeSchemaDescription } from './catalystGrades';
+import { EVIDENCE_RISK_RULE } from './evidenceRisk';
 
 // 2: `businessDescription` added (his ruling 2026-09-30T10:42:25Z).
-export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 2;
+// 3: `evidenceRisk` added (contract row 20; his ruling 2026-10-06T00:22:29.450Z, "yes, build both").
+export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 3;
 // 2: catalyst grades defined (his ruling 2026-09-29T14:46:55Z, `catalystGrades.ts`).
 // 3: the business line, and no em dash in any text written (his rulings
 //    2026-09-30T10:42:25Z and 10:43:39Z). The grade text is unchanged from 2.
-export const INTERPRETER_PROMPT_VERSION = 3;
+// 4: the evidence risk rule (`evidenceRisk.ts`), with schema 3, in one change.
+export const INTERPRETER_PROMPT_VERSION = 4;
 
 const CONFIDENCE = ['HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'] as const;
 
@@ -167,6 +170,12 @@ const CYCLE = required({
   unknowns: stringArray,
 });
 
+// Under a NEUTRAL key: the model reads the key as well as the rule, and "warning" pulls toward what could happen.
+const EVIDENCE_RISK = required({
+  text: { type: ['string', 'null'], description: EVIDENCE_RISK_RULE },
+  evidenceSourceIds: idArray,
+});
+
 export const AUTOMATIC_DOSSIER_SCHEMA = required({
   ticker: { type: 'string' },
   companyName: nullableString,
@@ -178,6 +187,7 @@ export const AUTOMATIC_DOSSIER_SCHEMA = required({
     description:
       'What the company does, in one plain sentence, from sicDescription and the filings in the bundle. Null when the bundle does not say.',
   },
+  evidenceRisk: EVIDENCE_RISK,
   catalyst: CATALYST,
   structure: STRUCTURE,
   cycle: CYCLE,
