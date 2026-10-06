@@ -1,7 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-import { SESSIONS_WORDS, afterHoursLine, closeLine } from '@/lib/dashboard/sessionsView';
+import {
+  SESSIONS_WORDS,
+  adjustmentWord,
+  afterHoursLine,
+  closeLine,
+  etStampWithDate,
+  footnoteCloseSentence,
+} from '@/lib/dashboard/sessionsView';
 import type { AfterHoursState, DemandState, RthFinalState } from '@/lib/market/types';
 
 const EM_DASH = String.fromCharCode(0x2014);
@@ -164,5 +171,41 @@ describe('words and placement', () => {
     expect(drawer).not.toContain('demand.baselineAdjustment ??');
     // No premarket line until Ops's field exists (Integration 29th).
     expect(Object.keys(SESSIONS_WORDS).some((key) => /premarket/i.test(key))).toBe(false);
+  });
+});
+
+describe('the market footnote (Marketing 36ffacd2, f0fe654e; Commercial 9g)', () => {
+  it('names the close source in words, never the constant, and says which session', () => {
+    expect(footnoteCloseSentence(demand({ previousClose: 2.5 }))).toBe(
+      "Percent change is measured from the prior session's close (Aug 14, 2026), taken from the daily bar. Prior session close $2.50.",
+    );
+    const current = footnoteCloseSentence(demand({ ...TODAY_BAR, referenceRthCloseBasis: 'CURRENT_SESSION', previousClose: 2.5 }));
+    expect(current).toContain("from the current session's close (Aug 17, 2026)");
+    expect(footnoteCloseSentence(demand({ referenceRthCloseSource: 'sheet', previousClose: null }))).toBe(
+      "Percent change is measured from the prior session's close (Aug 14, 2026), taken from the Sheet.",
+    );
+    expect(footnoteCloseSentence(demand({ referenceRthCloseSource: null, previousClose: null }))).toContain(
+      'taken from a source the desk did not record.',
+    );
+  });
+
+  it('a simulator source, or no reference close, prints no close sentence', () => {
+    expect(footnoteCloseSentence(demand({ referenceRthCloseSource: 'simulator' }))).toBeNull();
+    expect(footnoteCloseSentence(demand({ referenceRthClose: null }))).toBeNull();
+  });
+
+  it('the adjustment prints only for the two worded values; the time is ET with its date', () => {
+    expect(adjustmentWord('split')).toBe('split-adjusted');
+    expect(adjustmentWord('raw')).toBe('unadjusted');
+    for (const other of ['dividend', 'all', null, undefined]) expect(adjustmentWord(other)).toBeNull();
+    expect(etStampWithDate('2026-10-06T20:11:03.000Z')).toBe('Oct 6, 16:11 ET');
+    expect(etStampWithDate(null)).toBeNull();
+  });
+
+  it('the drawer prints no raw engine value in the footnote', () => {
+    const drawer = readFileSync('components/TickerDrawer.tsx', 'utf8');
+    expect(drawer).toContain('footnoteCloseSentence(demand)');
+    expect(drawer).not.toContain('toISOString() :');
+    expect(drawer).not.toContain('demand.volumeSource');
   });
 });

@@ -22,7 +22,14 @@ import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StoredLevelLadder } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
-import { SESSIONS_WORDS, afterHoursLine, closeLine } from '@/lib/dashboard/sessionsView';
+import {
+  SESSIONS_WORDS,
+  adjustmentWord,
+  afterHoursLine,
+  closeLine,
+  etStampWithDate,
+  footnoteCloseSentence,
+} from '@/lib/dashboard/sessionsView';
 import type { DemandState } from '@/lib/market/types';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
@@ -564,15 +571,16 @@ function Demand({ row }: { row: DeskRow | null }) {
       <SessionsGroup demand={demand} />
 
       {/*
-       * The close sentence (a fixed "16:00 ET", "regular-session close" for any source, the raw source
-       * constant) is gone: the Sessions group above carries the close, worded by source. The raw engine
-       * strings (baseline adjustment, volume source) went with it, having no reader's words (Integration 29th).
+       * Clock-free and no engine constant (Marketing 36ffacd2, f0fe654e; Commercial 9g): the close sentence
+       * names its source in words, the adjustment prints only where worded, the time is ET with its date.
+       * The raw volume source has no reader's words, so it is not printed.
        */}
       <p className="mt-3 text-[10px] leading-relaxed text-ink-3">
-        Baseline: {demand.baselineSessions ?? 0} eligible full sessions, average{' '}
-        {formatCount(demand.baselineAverageVolume)} shares, calculated{' '}
-        {demand.baselineCalculatedAt ? new Date(demand.baselineCalculatedAt).toISOString() : '—'}. Prior session close{' '}
-        {formatPrice(demand.previousClose)}. Level 1 spread only. This is not depth.
+        Baseline: {demand.baselineSessions ?? 0} eligible full sessions,{' '}
+        {adjustmentWord(demand.baselineAdjustment) ? `${adjustmentWord(demand.baselineAdjustment)}, ` : ''}average{' '}
+        {formatCount(demand.baselineAverageVolume)} shares
+        {etStampWithDate(demand.baselineCalculatedAt) ? `, calculated ${etStampWithDate(demand.baselineCalculatedAt)}` : ''}.
+        {footnoteCloseSentence(demand) ? ` ${footnoteCloseSentence(demand)}` : ''} Level 1 spread only. This is not depth.
       </p>
     </Section>
   );
