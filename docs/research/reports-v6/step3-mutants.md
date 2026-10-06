@@ -42,3 +42,24 @@
 | M15 | `sheetPercent` keeps one decimal | 11 | controls, numbers, whole percents, summary, G retired, tickers, window, anchors, LIMIT, name-count exemption, 16:00 frame |
 
 Control M0 (no mutant): 18 tests, 0 failing. Gate in the slot: `tsc --noEmit`, `eslint` on the seven touched `.ts` files (three in lib, four tests), then vitest on `tests/desk/{reportCheckV6,reportWriterV6,reportPipeline,reportRunner}.test.ts`, then the mutants, raw output committed before it is read.
+
+## Seam-read amendment (Integration 28th's two questions), written BEFORE any run of it
+
+*Research-tmi `local_dd23765d`, after the 2026-10-06 self-reset. NOT RUN: no tsc, eslint or vitest has run on this amendment; it waits on an Ops slot.*
+
+**(3) Breadth and the range bounds: struck.** The writer's prompt carries neither (`narrativeSheet` drops both, `writerV6.ts:167-176`; `buildWriterPromptV6` sends no range, opened). The checker compared them to the stored facts, so they were not untraced, but the writer had nothing to copy them from, so a stated one could only be invented, and admitting them widened the set a swap can hide behind. `givenNumbers` no longer takes the range or the breadth; `narrativeFindings` loses its `range` parameter. N10 (the breadth window check) is retired with it: it could only add a second reason to a line already struck. `WINDOW_CONTRADICTED` stays in the type for stored strikes. Checker prompt text unchanged (version stays 6).
+
+**(4) An anchor with no count is struck when its count is 0** ("Some names gave the entire move back" when none did). With a nonzero count it is still not struck (it states no count to contradict). "None ran at least 50 percent" reads as 0 and passes.
+
+**Tests:** `reportCheckV6.test.ts` now **19** (`grep -c "  it("`): the window test is replaced by "breadth and the range bounds are not on the sheet" (true breadth with its window's words is struck; the range top is struck; a frame mention of after-hours with no number is not); a new zero-anchor test; `GOOD_INTRADAY` loses its breadth and range clause; the numbers test's intraday case is now exact (13 for 12). `reportPipeline.test.ts`: its `NARRATIVE` fixture loses the breadth and range clause, and its struck-number case changes 13 to 14 percent (2,700 is no longer stated).
+
+**Every earlier mutant re-predicted against the whole suite at this commit** (the ledger cure: count against the suite at run time, not the introducing commit). Changed: M3 9 to **10**, M4 9 to **10**, M5 8 to **9** (each adds the breadth test, whose recap cases are exact), M8 2 to **3** (adds the zero-anchor test), M10 1 to **2** (adds the zero-anchor test's nonzero case). Unchanged: M1 1, M2 1, M6 1, M7 1, M9 1, M11 1, M12 1, M13 7 (the breadth test replaces the window test in its list), M14 1, M15 11 (the same).
+
+| # | Mutant | Predicted | Which |
+|---|---|---|---|
+| N1 | the range top (20) among the given numbers | 1 | breadth and range |
+| N2 | the breadth among the given numbers | 1 | breadth and range |
+| N3 | the zero-count anchor rule removed | 1 | zero anchor |
+| N4 | an anchor with no count struck at any count | 2 | "of the nine" (third case), zero anchor (its nonzero case) |
+
+Runner amended in place (`step3-mutants.mjs`): 19 mutants, predicted kills 65; dry check: every edit matches exactly once. Gate in the slot: `next typegen`, `tsc --noEmit` (with a planted-error control), `eslint` on `check.ts`, the two test files and the runner, vitest on `tests/desk/{reportCheckV6,reportWriterV6,reportPipeline,reportRunner}.test.ts` (19 + 9 + 6 + 4 = 38), then the mutants, raw committed before it is read.
