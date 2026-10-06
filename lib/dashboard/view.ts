@@ -514,7 +514,8 @@ export function baselineLabel(phase: SessionPhase | null): { label: string; titl
       return { label: 'RTH Gap', title: "Change from the prior session's close" };
     case 'AFTER_HOURS':
     case 'POST_MARKET':
-      return { label: 'AH Gap', title: "Change from today's regular-session close" };
+      // Not "regular-session": the close may come from the Sheet or an unrecorded source (Commercial 9g).
+      return { label: 'AH Gap', title: "Change from today's close" };
     default:
       /*
        * `CLOSED` AND `NEXT_DAY_PREP` LAND HERE, AND THEY ARE NOT RARE -- they
