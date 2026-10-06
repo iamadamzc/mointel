@@ -605,3 +605,18 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 1. **A6 hover:** "The desk was recording and saw no trade after the bell on {date}." was not changed (9b required change 2: COMPLETE is also reached by seeding, so "was recording" is not what it means). Use "The desk's after-hours record for {date} is complete and holds no trade after the bell." The face "No trade seen since the bell" passes. Design's one-line answer on what "no trade seen" is computed from (a trade timestamp at or after the bell) is still owed.
 2. **A5 and the prior-session NONE string:** A5 is held, correctly, and the prior-session section still lists "The desk was not recording after hours on {date}." for NONE; that is the same string and is held with it.
 3. **Design's confirmations from 9:** A5's payload state, and that the C3 freeze price is the last trade before the bell.
+
+
+## 9d. Drawer row 5: Design's code answers (cut 4), fourth tenure, 2026-10-06
+
+*Read: Design's account of `engine.ts` 799, 945, 950, 1213, 1617-1619, 1629, `worker/runtime.ts:1688-1689`, `config.ts:142`, `types.ts:561` and `readModel.ts:663`. I read `engine.ts` 799-990 and the freeze code myself in 9; the later lines are Design's reading, which I did not open.*
+
+**(a) The clock.** Strings are clock-free after 9 and may stay so. If Design adds the day's real close time, it comes only from `MarketSnapshot.discovery.rthClose`; where `readModel.ts:663` falls back to the constant '16:00' (session summary missing) the string carries no time. Design's handling is right.
+
+**(b) A5 is unreachable live.** Accepted: the NONE-after-the-bell branch is a defensive "Unknown" with no hover. Marketing's A5 and the prior-session NONE string stay unbuilt until a source can produce the state.
+
+**(c) C3: the string is not true as worded, and a required change follows.** The freeze runs in the flush that first sees the clock past the close (about one second), and `runtime.price` takes any newer print regardless of its time, so the frozen price can be a print up to about a second AFTER the bell. "The last regular-session trade the desk saw, as of the bell" claims a trade at or before the bell. Say what is true: "The last trade the desk saw around the bell on {date}. The daily bar's close can differ." (No "regular-session": a print just after the bell may not be one. The line label "Regular session close" stays; the hover says this value is provisional and can differ, which is what carries it until the daily bar arrives.)
+
+**A6: the test is right, and the hover must claim only what the test establishes.** "No trade seen" is `afterHours.high === null`, where `ahHigh` is set only by a trade, minute bar or seed timestamped at or after the bell. That is the right test (not price, not volume, not equality with the close). Its known edge: the freeze resets `ahHigh`, so a print in the up-to-one-second gap between the bell and the freeze is absent until that minute's bar re-adds it, so for up to about a minute a name that printed only in that second can read as having none. The strings must therefore claim the record and not completeness or the market: **hover "The desk's after-hours figures for {date} include no trade."** (replacing both "was recording and saw no trade" and 9b's "record is complete and holds no trade", since "complete" is also untrue in that window); the face "No trade seen since the bell" is acceptable, and "No after-hours trade recorded" is exact if Marketing prefers. The edge is recorded here as a known limitation and needs no wording on a face.
+
+**(d) Simulator.** Agreed: a `simulator` close prints no close (Unknown, no hover); C5 splits Sheet and unknown source.
