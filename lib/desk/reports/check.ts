@@ -26,7 +26,7 @@ import { etClock, etDateString } from '../../market/session';
 import type { MissedCause, ReportCheckpointRef, ReportKind } from './contract';
 import { withoutCitations } from '../../research/citations';
 import type { ReportFact } from './facts';
-import type { BreadthWindow, NarrativeFacts } from './narrative';
+import type { NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
 import { claimsIn, dateAllowed, etDayAndClock, roundsTo, traceLine } from './traced';
 import { narrativeSheet } from './writerV6';
@@ -193,13 +193,6 @@ const CLOCK = /\b(\d{1,2}):(\d{2})\b/g;
 /** A percent framed from the prior session, said on a row whose basis is not that. */
 const PRIOR_FRAME = /\b(?:prior|previous) (?:close|session)\b/i;
 
-/** v6: the phrase a breadth count must carry, per its window (seed N10; `WINDOW_WORDS` in writerV6.ts). */
-const WINDOW_PHRASE: Record<BreadthWindow, RegExp> = {
-  SESSION_TO_DATE: /\bso far today\b/i,
-  AFTER_HOURS: /\bafter[- ]hours\b/i,
-  REGULAR_SESSION: /\bon the day\b/i,
-};
-
 /** The label of the FORBIDDEN rule the v6 narrative is exempt from: it states GIVEN counts of names. */
 const NAME_COUNT_LABEL = 'a count of names (computed, never written)';
 
@@ -219,14 +212,13 @@ export function namedTickers(facts: NarrativeFacts): Set<string> {
 /**
  * v2 (build step 3): every number the narrative sheet hands the writer, AS THE
  * SHEET PRINTS IT (`narrativeSheet`): counts, whole percents, prices at two
- * places, the change notes' figures. Breadth and the range bounds stay allowed
- * (the sheet dropped them; a true one is not struck). G and the split count are
- * NOT here: they left the prose for computed footnotes (step 4).
+ * places, the change notes' figures. Breadth and the range bounds are NOT here:
+ * the sheet does not give them, so the writer has nothing to copy them from and
+ * a stated one is struck (Integration 28th's seam read: trace it or strike it).
+ * G and the split count are not here either: computed footnotes (step 4).
  */
-function givenNumbers(facts: NarrativeFacts, range: { min: number; max: number }): Set<number> {
-  const out = new Set<number>([range.min, range.max, 50, facts.fresh.count, facts.fresh.covered]);
-  const b = facts.breadth;
-  if (b) for (const value of [b.eligible, b.traded, b.up, b.down]) out.add(value);
+function givenNumbers(facts: NarrativeFacts): Set<number> {
+  const out = new Set<number>([50, facts.fresh.count, facts.fresh.covered]);
   for (const value of [
     facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers,
     facts.moversWithoutFresh, facts.moversNotResearched, facts.moversUnclear, facts.tracking?.length ?? null,
@@ -274,27 +266,25 @@ const ANCHORS: Array<[RegExp, (facts: NarrativeFacts) => number | null, string]>
  * v6: the narrative ('O') against its computed facts (`prereg-narrative-facts.md`),
  * v2 (`narrative-redesign-proposal.md`, build step 3). Every number is a given
  * one, as the sheet prints it, or a figure or date of a named name's catalyst
- * summary (N1-N4, N9); the only tickers it may name are the named ones (N7); a
- * stated breadth carries its window's phrase (N10); the pattern counts are
- * anchored to their phrases. G is no longer the narrative's (N11 retired: a
- * computed footnote, step 4). The model half reads causation (N5), themes and
+ * summary (N1-N4, N9); the only tickers it may name are the named ones (N7); the
+ * pattern counts are anchored to their phrases, and an anchor with no count is
+ * struck when its count is 0 (the phrase still says some names did it). Breadth
+ * left the sheet, so a stated breadth is a number no fact gives (N10 retired with
+ * it). G is no longer the narrative's (N11 retired: a computed footnote, step 4).
+ * The model half reads causation (N5), themes and
  * interpretation (N6: an interpretation names the facts it rests on) and
  * undefined adjectives (N8).
  */
 export function narrativeFindings(
   text: string,
   facts: NarrativeFacts,
-  range: { min: number; max: number },
   tickers: readonly string[],
 ): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
-  const given = givenNumbers(facts, range);
+  const given = givenNumbers(facts);
   const summary = summaryAllowance(facts);
   const claims = claimsIn(text);
-  const stated: number[] = [];
   for (const claim of claims.numbers) {
-    const value = claim.mantissa * claim.unit;
-    stated.push(value);
     const isGiven = claim.unit === 1 && given.has(claim.mantissa);
     const inSummary = summary.magnitudes.some((m) => roundsTo(m, claim));
     const isYear = claim.unit === 1 && claim.dp === 0 && [...summary.dates].some((day) => day.startsWith(`${claim.mantissa}-`));
@@ -306,15 +296,13 @@ export function narrativeFindings(
   const named = namedTickers(facts);
   const others = tickers.filter((t) => !named.has(t) && tickerRe(t).test(text));
   if (others.length > 0) out.push({ reason: 'NOT_SELF_CONTAINED', detail: `names ${others.join(', ')} in the narrative` });
-  const b = facts.breadth;
-  if (b && stated.includes(b.traded) && !WINDOW_PHRASE[b.window].test(text)) {
-    out.push({ reason: 'WINDOW_CONTRADICTED', detail: `breadth stated without "${WINDOW_PHRASE[b.window].source}" (${b.window})` });
-  }
   for (const [anchor, fact, phrase] of ANCHORS) {
     const value = fact(facts);
     if (value === null) continue;
     const said = countBefore(text, anchor);
-    if (said !== undefined && said !== null && said !== value) {
+    if (said === null && value === 0) {
+      out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `"${phrase}" with no count, but the count is 0` });
+    } else if (said !== undefined && said !== null && said !== value) {
       out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ${phrase} vs ${value}` });
     }
   }
@@ -382,7 +370,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     }
 
     if (v6Narrative) {
-      for (const finding of narrativeFindings(line.text, v6Narrative, input.range, tickers)) hit(finding.reason, finding.detail);
+      for (const finding of narrativeFindings(line.text, v6Narrative, tickers)) hit(finding.reason, finding.detail);
       continue;
     }
     if (line.id === 'O') {
@@ -544,7 +532,7 @@ export const REPORT_CHECKER_PROMPT_VERSION_V6 = 6;
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
  * ran them), then what the model reads in the narrative. The narrative's numbers,
- * ticker, window and G are decided deterministically (`narrativeFindings`); the
+ * tickers and anchored counts are decided deterministically (`narrativeFindings`); the
  * model judges what a rule cannot: causation, themes and undefined adjectives.
  */
 const CHECKER_SYSTEM_V6 = [

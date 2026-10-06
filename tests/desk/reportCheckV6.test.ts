@@ -12,6 +12,9 @@ import type { ReportFact } from '@/lib/desk/reports/facts';
  * v2 (build step 3, `narrative-redesign-proposal.md`): the numbers the v2 sheet
  * prints (whole percents, prices, the named names' catalyst figures and dates),
  * the named tickers, the two anchored counts; G left the prose (N11 retired).
+ * Seam read (Integration 28th): breadth and the range bounds are not on the
+ * sheet, so a stated one is struck (N10 retired); an anchor with no count is
+ * struck when its count is 0.
  */
 
 const RANGE = { min: 1, max: 20 };
@@ -58,9 +61,9 @@ const recap: NarrativeFacts = {
   moversWithoutFresh: 0, moversNotResearched: 1, moversUnclear: 0,
   context: { ticker: 'NXL', sessionHigh: 10.98, close: 7.55, support: 4.9, resistance: 10.98, olderHigh: 19.2, openSupply: [] },
 };
-const reasons = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, RANGE, TICKERS).map((f) => f.reason);
+const reasons = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS).map((f) => f.reason);
 
-const GOOD_INTRADAY = 'Across $1 to $20, 2,700 traded so far today, 1,500 up and 1,100 down. AAA leads, down 12 percent from the prior close. BBB is up 51 percent with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
+const GOOD_INTRADAY = 'AAA leads, down 12 percent from the prior close. BBB is up 51 percent with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
 const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. Into today, NXL sits between $4.90 support and its $10.98 high, with an older high at $19.20 overhead. The desk carries 12 names into today.';
 
 describe('narrativeFindings: the narrative against its computed facts (v2)', () => {
@@ -70,7 +73,7 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
   });
 
   it('N1/N2/N4/N9: a number that is no given fact, as the sheet prints it, is struck', () => {
-    expect(reasons(GOOD_INTRADAY.replace('2,700', '2,710'), intraday)).toContain('NUMBER_WITHOUT_ROW');
+    expect(reasons(GOOD_INTRADAY.replace('One of the 12', 'One of the 13'), intraday)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_RECAP.replace('156 percent', '157 percent'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_RECAP.replace('$4.90 support', '$4.95 support'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_RECAP.replace('added 62 percent', 'added 61 percent'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
@@ -80,12 +83,12 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
   it('percents are WHOLE as the sheet gives them: the exact one-decimal value is struck; "less than 1" reads as 1', () => {
     expect(reasons(GOOD_RECAP.replace('156 percent', '156.5 percent'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_INTRADAY.replace('down 12 percent', 'down 12.5 percent'), intraday)).toEqual(['NUMBER_WITHOUT_ROW']);
-    // No other given value is 1 here (range from 2, fresh count 3), so only the sheet's "less than 1" admits it.
+    // No other given value is 1 here (fresh count 3), so only the sheet's "less than 1" admits it.
     const small: NarrativeFacts = {
       ...intraday, fresh: { count: 3, covered: 12 },
       intradayNamed: [{ ...intraday.intradayNamed![0]!, percentChange: 0.3 }], leader: { ...intraday.leader!, percentChange: 0.3 },
     };
-    const smallReasons = (text: string) => narrativeFindings(text, small, { min: 2, max: 20 }, TICKERS).map((f) => f.reason);
+    const smallReasons = (text: string) => narrativeFindings(text, small, TICKERS).map((f) => f.reason);
     expect(smallReasons('AAA leads, up less than 1 percent from the prior close.')).toEqual([]);
     expect(smallReasons('AAA leads, up 0 percent from the prior close.')).toEqual(['NUMBER_WITHOUT_ROW']);
   });
@@ -115,8 +118,15 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
     expect(reasons('AAA leads, down 12 percent from the prior close; AMOD has news.', intraday)).toEqual(['NOT_SELF_CONTAINED']);
   });
 
-  it('N10: a breadth stated with the wrong window words is struck; a frame mention of after-hours is not', () => {
-    expect(reasons(GOOD_INTRADAY.replace('so far today', 'after hours'), intraday)).toEqual(['WINDOW_CONTRADICTED']);
+  it('breadth and the range bounds are not on the sheet: a stated one is struck even when true (N10 retired)', () => {
+    // The stored breadth, true and with its window's words: each figure is a number the writer was not given.
+    expect(reasons(`${GOOD_INTRADAY} So far today 2,700 traded, 1,500 up and 1,100 down.`, intraday)).toEqual([
+      'NUMBER_WITHOUT_ROW', 'NUMBER_WITHOUT_ROW', 'NUMBER_WITHOUT_ROW',
+    ]);
+    expect(reasons(`${GOOD_RECAP} On the day 2,862 traded.`, recap)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // The range's top (20 is no other given value here).
+    expect(reasons(`${GOOD_RECAP} Every name here trades under $20.`, recap)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // A frame mention of after-hours, with no number, is not struck.
     expect(reasons(`Into after-hours: ${GOOD_INTRADAY}`, intraday)).toEqual([]);
   });
 
@@ -132,6 +142,16 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
     expect(reasons(two, { ...recap, gaveBack: 2 })).toEqual([]);
     expect(reasons(two, recap)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons('Of the movers that ran at least 50 percent above the prior close, most held on.', recap)).toEqual([]);
+  });
+
+  it('an anchor with no count is struck when its count is 0: the phrase still says some names did it', () => {
+    // recap's gave-back count is 0.
+    expect(reasons('Some names gave the entire move back.', recap)).toEqual(['NUMBER_WITHOUT_ROW']);
+    expect(reasons('Some names gave the entire move back.', { ...recap, gaveBack: 2 })).toEqual([]);
+    const noMovers = { ...recap, movers50: 0 };
+    expect(reasons('Of the movers that ran at least 50 percent above the prior close, most held on.', noMovers)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // Saying the zero is the control: "none" reads as 0.
+    expect(reasons('None ran at least 50 percent above the prior close.', noMovers)).toEqual([]);
   });
 
   it('LIMIT, stated: an unanchored swap to another given value passes the rules and is the model\'s to read', () => {

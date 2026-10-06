@@ -1,5 +1,5 @@
 // v6 step 3 (check.ts) mutants: the predictions are in step3-mutants.md (committed with the code, 2b91ddd8, BEFORE
-// any run); this file makes each one an exact edit. Run in an Ops slot, from A:/mointel-v6:
+// any run; amended for the seam read BEFORE its run); this file makes each one an exact edit. Run in an Ops slot, from A:/mointel-v6:
 //   node docs/research/reports-v6/step3-mutants.mjs <out-dir> [--dry]
 // Each `from` must occur EXACTLY once (else INVALID, never run); the edit is applied, reportCheckV6.test.ts runs,
 // the failing-test count is recorded against the prediction, and check.ts is restored byte for byte. M0 (no edit)
@@ -18,19 +18,25 @@ const TESTS = ['tests/desk/reportCheckV6.test.ts'];
 const M = [
   ['M1', 'return Math.round(Math.abs(exact)) || 1;', 'return Math.round(Math.abs(exact));', 1, 'sheetPercent drops || 1'],
   ['M2', 'const isYear = claim.unit === 1 && claim.dp === 0 &&', 'const isYear = false && claim.unit === 1 && claim.dp === 0 &&', 1, 'the bare-year allowance removed'],
-  ['M3', 'summary.magnitudes.some((m) => roundsTo(m, claim))', 'summary.magnitudes.includes(claim.mantissa * claim.unit)', 9, 'summary figures compared exactly'],
-  ['M4', 'dateAllowed(date.value, summary.dates)', 'summary.dates.has(date.value)', 9, 'dates compared exactly'],
-  ['M5', ', ...(facts.afterHours ? [facts.afterHours] : [])]) out.add(m.ticker);', ']) out.add(m.ticker);', 8, 'namedTickers drops the after-hours name'],
+  ['M3', 'summary.magnitudes.some((m) => roundsTo(m, claim))', 'summary.magnitudes.includes(claim.mantissa * claim.unit)', 10, 'summary figures compared exactly'],
+  ['M4', 'dateAllowed(date.value, summary.dates)', 'summary.dates.has(date.value)', 10, 'dates compared exactly'],
+  ['M5', ', ...(facts.afterHours ? [facts.afterHours] : [])]) out.add(m.ticker);', ']) out.add(m.ticker);', 9, 'namedTickers drops the after-hours name'],
   ['M6', 'facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers,', 'facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers, facts.noClose,', 1, 'noClose among the given numbers'],
   ['M7', 'facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers,', 'facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers, facts.splitExcluded,', 1, 'splitExcluded among the given numbers'],
-  ['M8', "(f) => f.gaveBack, 'gave the entire move back'],", "(f) => null, 'gave the entire move back'],", 2, 'the gave-back anchor removed'],
+  ['M8', "(f) => f.gaveBack, 'gave the entire move back'],", "(f) => null, 'gave the entire move back'],", 3, 'the gave-back anchor removed'],
   ['M9', ') pick = prior;', ') pick = pick;', 1, 'the "N of the M" rule removed'],
-  ['M10', 'said !== undefined && said !== null && said !== value', 'said !== undefined && said !== value', 1, 'an anchor with no count struck'],
+  ['M10', 'said !== undefined && said !== null && said !== value', 'said !== undefined && said !== value', 2, 'an anchor with no count struck'],
   ['M11', "const frame = v6Narrative?.afterHours ? '16:00' : null;", 'const frame = null;', 1, 'the 16:00 frame removed'],
   ['M12', "const frame = v6Narrative?.afterHours ? '16:00' : null;", "const frame = v6Narrative ? '16:00' : null;", 1, 'the 16:00 frame with no after-hours name'],
   ['M13', 'for (const note of m.changeNotes) for (const claim of claimsIn(note).numbers) out.add(claim.mantissa * claim.unit);', '', 7, 'the change notes figures not given'],
   ['M14', 'An interpretation is supported only when the same sentence names the given facts it rests on', '', 1, 'the interpretation sentence dropped'],
   ['M15', 'return Math.round(Math.abs(exact)) || 1;', 'return Math.round(Math.abs(exact) * 10) / 10 || 1;', 11, 'sheetPercent keeps one decimal'],
+  // Seam-read amendment (Integration 28th): predictions above re-counted against the whole suite BEFORE any run
+  // (M3 9->10, M4 9->10, M5 8->9, M8 2->3, M10 1->2; originals in step3-mutants.md); N1-N4 are the new rules' mutants.
+  ['N1', 'const out = new Set<number>([50, facts.fresh.count, facts.fresh.covered]);', 'const out = new Set<number>([20, 50, facts.fresh.count, facts.fresh.covered]);', 1, 'the range top among the given numbers'],
+  ['N2', 'const out = new Set<number>([50, facts.fresh.count, facts.fresh.covered]);', 'const out = new Set<number>([50, facts.fresh.count, facts.fresh.covered, ...(facts.breadth ? [facts.breadth.traded, facts.breadth.up, facts.breadth.down] : [])]);', 1, 'breadth among the given numbers'],
+  ['N3', 'if (said === null && value === 0) {', 'if (false) {', 1, 'the zero-count anchor rule removed'],
+  ['N4', 'if (said === null && value === 0) {', 'if (said === null) {', 2, 'an anchor with no count struck at any count'],
 ];
 
 if (process.argv.includes('--dry')) {

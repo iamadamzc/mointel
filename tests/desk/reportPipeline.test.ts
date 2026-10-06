@@ -107,8 +107,8 @@ function fixture(catalyst: Partial<ResearchDossier['catalyst']> = {}): MarketDat
   return db;
 }
 
-// Worded from the fixture's computed facts: 2,700 traded so far today, AAA leads at +12.5% (the v2 sheet's whole percent: 13), 1 of 2 covered fresh.
-const NARRATIVE = 'Across $1 to $20, 2,700 traded so far today, 1,500 up and 1,100 down. AAA tops the board, up 13 percent from the prior close. One of the 2 names the desk covers had fresh news in our sources.';
+// Worded from the fixture's computed facts: AAA leads at +12.5% (the v2 sheet's whole percent: 13), 1 of 2 covered fresh. Breadth and the range are not on the sheet, so a stated one is struck (seam read, Integration 28th).
+const NARRATIVE = 'AAA tops the board, up 13 percent from the prior close. One of the 2 names the desk covers had fresh news in our sources.';
 const prompts: Array<{ role: 'writer' | 'checker'; system: string; user: string }> = [];
 function writerWith(narrative: string | null, aaa = 'Our sources found a contract award.') {
   return {
@@ -180,7 +180,7 @@ describe('the report pipeline, v6 wiring', () => {
 
   it('a narrative number that is no computed fact is struck by rule; the names still publish', async () => {
     const db = fixture();
-    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE.replace('2,700', '2,710')), checker }, () => new Date(COMPLETED));
+    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE.replace('up 13 percent', 'up 14 percent')), checker }, () => new Date(COMPLETED));
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
     expect(run.diagnostics.strikes.map((s) => [s.id, s.reason])).toEqual([['O', 'NUMBER_WITHOUT_ROW']]);
