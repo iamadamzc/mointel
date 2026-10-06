@@ -13,6 +13,7 @@ import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
 import { CYCLE_WORDS, cycleFacts } from '@/lib/dashboard/cycleFacts';
+import { PRODUCED_WORDS, producedAt } from '@/lib/dashboard/produced';
 import { SUPPLY_GROUP_EMPTY, supplyGroups } from '@/lib/dashboard/supplyGroups';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
@@ -35,6 +36,11 @@ function eventTimeText(
 ): { text: string; hover: string | null } {
   const view = eventTimeView(at, citedIds, evidence, Date.now());
   return { text: view.text, hover: view.hover };
+}
+
+/** `producedAt` against the clock, kept out of render. */
+function producedNow(dossierAt: string | null, checkpointAt: string): ReturnType<typeof producedAt> {
+  return producedAt(dossierAt, checkpointAt, new Date().toISOString());
 }
 
 /** The title over the computed cycle facts. A placeholder: Marketing has not worded a section title for it. */
@@ -278,8 +284,11 @@ export function AutomaticIntelligence({
   Field,
   FieldLabel,
   ProseField,
+  checkpointAt = null,
 }: {
   intel: AutoIntelligence | null;
+  /** The checkpoint the setup grade rests on (ISO), when the grade is wired. Row 24. */
+  checkpointAt?: string | null;
   comparison: SheetAutoComparison | null;
   structure: StructureSummary | null;
   Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
@@ -346,6 +355,8 @@ export function AutomaticIntelligence({
   const catalystSourceList = catalystSources(catalyst.evidenceSourceIds, intel.evidence);
   const facts = cycleFacts(intel.analysis?.dossier.computedCycle);
   const supplyGroupList = supplyGroups(structure, intel.evidence);
+  // The older of the dossier's time and the checkpoint's, once the grade supplies a checkpoint time (row 24).
+  const produced = checkpointAt ? producedNow(intel.generatedAt, checkpointAt) : null;
   const generatedAt = timeWithAge(intel.generatedAt);
 
   /*
@@ -694,6 +705,7 @@ export function AutomaticIntelligence({
       <Section title="Evidence & Provenance">
         <Field label="Analysis source" value={humanise(intel.provenance)} />
         <Field label="Generated" value={generatedAt} />
+        {produced ? <Field label={PRODUCED_WORDS.label} value={produced.text} title={PRODUCED_WORDS.hover} /> : null}
         <Field label="Model" value={intel.model ?? 'unknown'} />
         <Field
           label="Analysis version"
