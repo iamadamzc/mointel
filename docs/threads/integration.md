@@ -1600,6 +1600,17 @@ ORPHAN SWEEP     His ask "anything approved no yet planned/built?". Swept the ol
                    (Marketing). Asked.
                  - Done: gzip (present on main and production). His own: Benzinga reply (his to send, 2026-09-29 draft), SI
                    label HOLD.
+INV Design       design.md PENDING BUILDS (origin 91eb0446, READ): P1 float column/faces (start on fixtures; build from v16), P2
+                 not-updating (words from Marketing), P3 grade SORT CHIP (in the S3 spec, NOT built), P4 grade on the frozen
+                 board (needs grade on /api/assessments), P5 revised-grade tag (needs HIS ruling; not tonight), P6 v6 samples,
+                 P7 explains-the-move words (after v6), P8 moving label (movers), P9 follow-ups (APPROVED by me), P10 audit
+                 of contract mapping rows (gaps to me before building). Order set: P3, P1, P10, P2 detection.
+INV Marketing    Marketing self-reset (fresh seat, Sonnet 5.5). FORM A applied as float draft v16, f2089575 (file only, em 0),
+                 CLEARED by sha. His line on the wording: already given by me. Owed: both-surfaces tag words (6cca5549,
+                 after v6, re-read first); SI words locked (his display choice); older table unchecked.
+INV Web          web.md PENDING BUILDS de076b44: built-not-shipped = 2eaad153 + its picks in the cut. Float page: GO on branch
+                 web/float-page, path /are-float-quotes-real APPROVED by me, build from v16 not v12. Cannot start: FINRA terms,
+                 billing P5. Private preview for him is Web's next deliverable.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
