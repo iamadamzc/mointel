@@ -28,6 +28,7 @@ import { publishedDisplay, type TimePrecision } from '../research/time';
 import type { AutoIntelligence } from '../research/view';
 import { mergeDesk } from '../dashboard/merge';
 import { buildDeskRead, buildStructureSummary } from '../dashboard/deskRead';
+import { evidenceRiskForTools, withoutEvidenceRisk } from '../dashboard/evidenceRiskView';
 import { prioritizeEvents, relevantEvents } from '../dashboard/events';
 import {
   getAssessmentSnapshot,
@@ -280,6 +281,7 @@ export const TOOLS: McpTool[] = [
         sheet: row.research,
         supplyLedger: row.researchRecord,
         intelligence: withHonestTimestamps(row.intelligence),
+        riskInTheEvidence: evidenceRiskForTools(row.intelligence, new Date().toISOString()),
         researchStatus: dashboard.research[ticker] ? 'RESEARCH_RECORD_PRESENT' : 'NO_RESEARCH_RECORD',
       };
     },
@@ -444,10 +446,14 @@ export function describeTools() {
  * published at 12:00:00Z when it carries no time at all. The precision was
  * already recorded alongside — it just was not being honoured on the way out.
  */
-function withHonestTimestamps(intelligence: AutoIntelligence | null): AutoIntelligence | null {
+function withHonestTimestamps(intelligence: AutoIntelligence | null) {
   if (!intelligence) return intelligence;
   return {
     ...intelligence,
+    // The stored risk sentence leaves only through `riskInTheEvidence`, dated and with its sources.
+    analysis: intelligence.analysis
+      ? { ...intelligence.analysis, dossier: withoutEvidenceRisk(intelligence.analysis.dossier) }
+      : null,
     evidence: intelligence.evidence.map((link) => ({
       ...link,
       publishedAt: publishedDisplay(link.publishedAt, link.publishedPrecision as TimePrecision),

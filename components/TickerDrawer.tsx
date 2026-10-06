@@ -892,10 +892,13 @@ function Collapsible({ title, children }: { title: string; children: React.React
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, titleHover, children }: { title: string; titleHover?: string; children: React.ReactNode }) {
   return (
     <section className="mb-5 rounded-sm border border-line bg-panel-2/60 px-4 py-3">
-      <h3 className="mb-3 border-b border-line pb-2 text-[10px] font-semibold tracking-[0.16em] text-accent uppercase">
+      <h3
+        className="mb-3 border-b border-line pb-2 text-[10px] font-semibold tracking-[0.16em] text-accent uppercase"
+        title={titleHover}
+      >
         {title}
       </h3>
       {children}

@@ -11,7 +11,8 @@
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
-import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
+import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView, type CatalystSource } from '@/lib/dashboard/catalystView';
+import { EVIDENCE_RISK_WORDS, evidenceRiskView } from '@/lib/dashboard/evidenceRiskView';
 import { CYCLE_WORDS, cycleFacts } from '@/lib/dashboard/cycleFacts';
 import { PRODUCED_WORDS, producedAt } from '@/lib/dashboard/produced';
 import { SUPPLY_GROUP_EMPTY, SUPPLY_GROUP_EMPTY_HOVER, supplyGroups } from '@/lib/dashboard/supplyGroups';
@@ -276,6 +277,42 @@ function ListField({
   );
 }
 
+/**
+ * A conclusion's own cited sources, "{date}, {title}" each, under its label.
+ * Renders nothing when none resolve, so no surface claims sources it does not show.
+ */
+function SourceList({
+  label,
+  sources,
+  FieldLabel,
+}: {
+  label: string;
+  sources: readonly CatalystSource[];
+  FieldLabel: (props: { children: React.ReactNode }) => React.ReactElement;
+}) {
+  if (sources.length === 0) return null;
+  return (
+    <div className="mt-3">
+      <FieldLabel>{label}</FieldLabel>
+      <ul className="mt-1 space-y-1">
+        {sources.map(({ link, day }) => (
+          <li key={link.id} className="text-[11px]">
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink-1 underline decoration-dotted underline-offset-2"
+            >
+              {day ? `${day}, ` : ''}
+              {link.title ?? link.secForm ?? humanise(link.sourceType)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function AutomaticIntelligence({
   intel,
   comparison,
@@ -291,7 +328,7 @@ export function AutomaticIntelligence({
   checkpointAt?: string | null;
   comparison: SheetAutoComparison | null;
   structure: StructureSummary | null;
-  Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
+  Section: (props: { title: string; titleHover?: string; children: React.ReactNode }) => React.ReactElement;
   Field: (props: { label: string; value: string; numeric?: boolean; title?: string }) => React.ReactElement;
   FieldLabel: (props: { children: React.ReactNode }) => React.ReactElement;
   ProseField: (props: {
@@ -353,6 +390,14 @@ export function AutomaticIntelligence({
   // Never a false clock: the clock prints only when a cited source with that exact instant is EXACT.
   const eventTime = eventTimeText(catalyst.eventTimestamp, catalyst.evidenceSourceIds, intel.evidence);
   const catalystSourceList = catalystSources(catalyst.evidenceSourceIds, intel.evidence);
+  // Dated by the version it comes from, never by a checkpoint (Commercial 7g).
+  const risk = evidenceRiskView({
+    dossier: intel.analysis.dossier,
+    schemaVersion: intel.schemaVersion,
+    versionGeneratedAt: intel.generatedAt,
+    evidence: intel.evidence,
+    nowIso: new Date().toISOString(),
+  });
   const facts = cycleFacts(intel.analysis?.dossier.computedCycle);
   const supplyGroupList = supplyGroups(structure, intel.evidence);
   // The older of the dossier's time and the checkpoint's, once the grade supplies a checkpoint time (row 24).
@@ -430,26 +475,7 @@ export function AutomaticIntelligence({
             matters about a catalyst: how old is it. */}
         <Field label="Event time" value={eventTime.text} title={eventTime.hover ?? undefined} />
         {/* The sources this catalyst's own conclusion rests on, not the ticker's whole list below. */}
-        {catalystSourceList.length > 0 ? (
-          <div className="mt-3">
-            <FieldLabel>{CATALYST_SOURCES_LABEL}</FieldLabel>
-            <ul className="mt-1 space-y-1">
-              {catalystSourceList.map(({ link, day }) => (
-                <li key={link.id} className="text-[11px]">
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-ink-1 underline decoration-dotted underline-offset-2"
-                  >
-                    {day ? `${day}, ` : ''}
-                    {link.title ?? link.secForm ?? humanise(link.sourceType)}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+        <SourceList label={CATALYST_SOURCES_LABEL} sources={catalystSourceList} FieldLabel={FieldLabel} />
         <Field
           label="Plausibly explains move"
           value={
@@ -466,6 +492,22 @@ export function AutomaticIntelligence({
           className="mt-3"
           FieldLabel={FieldLabel}
         />
+      </Section>
+
+      {/* Contract row 20. Dated by its version and its sources beside it, or no sources label at all. */}
+      <Section title={EVIDENCE_RISK_WORDS.label} titleHover={EVIDENCE_RISK_WORDS.labelHover}>
+        {risk.state === 'PRODUCED' ? (
+          <>
+            <p className="m-0 text-[12px] leading-snug text-ink-1">
+              {risk.text} <span className="text-ink-3">({risk.asOf})</span>
+            </p>
+            <SourceList label={EVIDENCE_RISK_WORDS.sourcesLabel} sources={risk.sources} FieldLabel={FieldLabel} />
+          </>
+        ) : (
+          <p className="m-0 text-[12px] text-ink-2" title={risk.hover ?? undefined}>
+            {risk.text}
+          </p>
+        )}
       </Section>
 
       <Section title="Structural Intelligence · Desk">
