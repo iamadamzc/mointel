@@ -68,11 +68,15 @@ his, and it is an open question rather than a lean.
 
 ---
 
-## LIVE STATE: as of 2026-10-05T01:00Z
+## LIVE STATE: as of 2026-10-06 (last Commercial commit `bbfb7a17`; no clock time is stated here, read the commits)
 
 **If anything above disagrees with this section, this section is right and the section
 above is stale.** This is a snapshot of now, not a diary; the prior tenure's version is
 in the archive at the foot of this file.
+
+**This seat's third tenure, 2026-10-05 to 2026-10-06, ended by a RESET IN PLACE on his word ("reset"), not a retirement** (the self-reset hook, `docs/self-reset-hook-mointel.md`): same chat, same title `Commercial-tmi`. Sonnet 5.5 throughout; the work needed no more. Hand-off prompt: [`docs/commercial-opening-prompt.md`](../commercial-opening-prompt.md), rewritten for this reset. The seat was the claims reader for the float cell and page, the Setup grade, the entry gate, the free beta, the terms of sale, and the Warning Shot and Confirmation. Every read is a numbered section: `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md` sections 5e to 5p (float), 6 to 6b (Setup grade), 7 to 7b (Warning Shot, Confirmation), and `docs/research/session-reports/commercial.md` section 12b (entry gate).
+
+**What the third tenure delivered.** The float cell faces and wording through to a pass (dated claim, per-cause reasons, FILINGS_NOT_REREAD, legend, date label; Form A passes, Form B read ahead); the 90-day consequences (date on the cell face); the insider-sale defect found and fixed in the contract (S1); the effect of the measured issuance miss rate on the 5i and 5k reads; the Setup grade words (v3 passed), the legend after the outcome test (the outcomes sentence deleted, no result published); the entry gate's final text, built verbatim from terms section 7, with what DECLINE must do; the beta ruling recorded (free, invite-only, "covered" means accepted, not licensed); the terms of sale swept and re-read (still held); the Warning Shot prompt rule and word list and the Confirmation state names, to a pass on the design text.
 
 **This seat's second tenure, 2026-09-28 to 2026-10-05, retired on his word ("yes, retire
 it and write the hand-off") after the first repeat of an already-corrected class
@@ -118,6 +122,13 @@ except the live sentence.**
 | 8 | Cleared the public sentence 'Every float is somebody's computation. No filing carries one.' (naming doc 2f item 3, live at app/page.tsx:280) without checking the counterexample: a 10-K cover carries a dollar public float (dei:EntityPublicFloat) | **a universal claim cleared without a counterexample search** (true of the current tradable share count, stated as 'no filing carries one') | no, first instance | this seat, on reading Research's SEC data while reviewing Marketing's float legend |
 | 9 | Marketing's float draft v2 said 'companies are not required to report a float'; I had told them (section 5 item 1) to say 'companies are not required to file a float', my own wording, which is false in the SEC's vocabulary (Rule 12b-2 'public float' is a dollar value that 10-K filers do report) | **a universal claim I supplied** (the same class as entry 8, in the suggested replacement text) | YES, repeat of entry 8's class within the same day: warn him and propose a hand-off per hygiene section 2 | this seat, on reviewing v2 against Rule 12b-2 |
 
+### Error ledger: third tenure (from 2026-10-05), per session-hygiene section 2
+
+| # | error (asserted -> true) | type | already logged this tenure? | caught by |
+| --- | --- | --- | --- | --- |
+| 1 | Passed the float popover and page ("the float is no more than X", "holdings dated at or before the count") in reads 5e to 5j with the contract's as-of rule open in front of me; the rule ignores every filing after the count, so an insider who SOLD after the count is still subtracted at the larger holding and today's float exceeds the bound. Found only in 5k, when asked about reusing a row | **a claim passed whose precondition I had open and did not test** (the same class as the second tenure's entries 6, 8 and 9: a bound without what changes between its date and the reader's) | no, first instance this tenure | me, in 5k, on Integration's reuse question |
+| 2 | Reported "0 em dashes" on Marketing's files from a Python count over a pipe; on this PC stdin drops U+2014, so that count can never be non-zero | **a check that cannot see the case it tests, returning a plausible clean answer** | no, first instance | me, on finding 14 in the terms-of-sale draft and running a control |
+
 **Classes, for a successor's own ledger:** source-not-opened (1), overstated authority (2), excerpt-not-context (3), source-scope mismatch (4), read-a-clause-and-did-not-apply-it (5), a guarantee stated without its precondition (6), a check that returned a plausible answer and an action outside the lane (7), a universal claim cleared or supplied without a counterexample search (8, 9). **Entry 9 repeated entry 8's class within a day, which is the retirement trigger.**
 
 ### What this seat has delivered — dated documents, unchanged since landing
@@ -143,6 +154,8 @@ except the live sentence.**
 | [`legal/terms-of-sale-daily-pass.md`](../legal/terms-of-sale-daily-pass.md) | A DRAFT terms of sale for the daily pass: the four sentences Stripe's compliance text requires. **HELD**, not urgent; refund line his; adoption sets the adopted terms to null if it edits `terms.md`, so it ships with billing | 2026-09-30 |
 | [`research/session-reports/commercial.md`](../research/session-reports/commercial.md) sections 8 to 13 | Standing rulings on report and label wording: catalyst as characteristics, float verdict not number, shares outstanding dated and never called float, price paths as the licence class, the entry-gate disclaimer (12), and reviews of the SANG block, the v5 sample, the short interest label (R1 to R6), the size-source reading (13f: the grade is stated against the dated filed count; refuse on active issuance) | 2026-09-30 to 10-02 |
 | [`commercial/2026-10-03-sheet-reproduction-claims-read.md`](../commercial/2026-10-03-sheet-reproduction-claims-read.md) | Claims read on reproducing the Sheet: the A/B/C/AVOID wording conflicts with the no-recommendation rules as defined and is fixed by wording (Setup grade, readings of five criteria, D for AVOID, one legend sentence); a model-researched float needs its error rate measured, honest labelling and a source allow-list; the landing sentence correction (4); the float page draft review (5, 5b, 5c) | 2026-10-03 to 10-05 |
+| [`commercial/2026-10-03-sheet-reproduction-claims-read.md`](../commercial/2026-10-03-sheet-reproduction-claims-read.md) sections 5e to 5p, 6 to 6b, 7 to 7b | The third tenure's reads, in order: 5e to 5h the float cell faces, popover reasons, date in the popover while the max age is 45; 5i what changes at 90 days (date on the face); 5j and 5k the date measured to the checkpoint and the row-reuse wording; 5l to 5o S1 and the insider-sale rule, FILINGS_NOT_REREAD, Form A and Form B; 5p the measured issuance miss rate (BKYI at 43 days); 6 to 6b the Setup grade words and the legend after the outcome test; 7 to 7b the Warning Shot prompt rule and word list and the Confirmation state names | 2026-10-05 to 10-06 |
+| [`research/session-reports/commercial.md`](../research/session-reports/commercial.md) section 12b | The entry gate's FINAL text, verbatim from terms section 7 with one sentence left out, and what DECLINE must do (`776f1415`) | 2026-10-05 |
 
 Gate 0 is mapped and ruled at the top of [`monetization-gates.md`](../monetization-gates.md).
 Method for all of them: public pages only, every load-bearing figure re-read by
@@ -168,6 +181,7 @@ this seat before it carried a sha, contradictions reported not resolved.
 - **FINRA, 2026-10-02, direct to this seat:** *"registered. accepted exposure"* (clause 2.2, our own use; recorded in the landscape doc 10.5). Earlier the same day: *"we don't need to publish the details they provide, just do our own assessment and present a label."*
 - **Local runs, 2026-10-03:** restricted by him for a few hours, then *"if they need to run anything its open."* Currently open.
 - **The Sheet, 2026-10-03T17:20:45Z (typed to Integration):** *"we need to reproduce what the sheet does in the app. its that simple. the sheet is nothing more than a repository of model outputs."* Float: the SEC upper bound from insiders only, with a tooltip linking to a new public page "Are float quotes real?" (2026-10-05T00:40:36.015Z, verified at his own turn by the third tenure in transcript 267e4fe2; the same chat has "always show it, it's key." at 00:43:25.883Z, the Float column always on).
+- **Third tenure, his words (each verified at his own turn by this seat unless marked):** free beta, invite-only, the invitees are testers under the accepted exposure, no lawyer (*"free beta, limited invites. 2, these will be considered testers, so its covered. 3, no."*, 2026-10-05T18:51:26.824Z, transcript 125cfd6b; **"covered" means accepted, not licensed**). Float: *"a, go with the SEC calculation... always show it, it's key."* (2026-10-05T00:40:36.015Z and 00:43:25.883Z, 267e4fe2). The new landing sentence: *"yes, use the new wording"* (23:20:42.913Z, 81e25ab4). Float wording approved but the page not: *"yes hand off. float wording is fine but i want to see the webpage."* (16:01:43.775Z, 019463d9). Maximum filed-count age: *"90 days, approve the badge draft, yes hand off"* (21:22:37.820Z, 125cfd6b). Warning Shot and Confirmation: *"yes, build both"* (2026-10-06T00:22:29.450Z, d947056e, relayed in Research's files, not re-read here). **Integration's rulings, not his:** S1 for insider sales (S0 only if the measurement's controls fail), and a direct submissions check (424B and 8-K item 3.02 after the count) before the float is ever on.
 
 ### Standing rules this seat applies to claims
 
@@ -180,8 +194,10 @@ this seat before it carried a sha, contradictions reported not resolved.
 7. The FINRA short interest label has no price of its own (Equity Data terms 2.3(b), landscape §10.6): part of the subscription, never an add-on, and in every tier equally if tiers ever exist.
 8. **A universal claim ("no", "never", "every", "all") about filings, vendors or third parties is not made without a counterexample search and a source opened.** The 10-K cover's public float is the worked example; one such sentence is live on the site.
 9. **A grade or label states what it is computed against, with the date, and the precondition any "at least" or "at most" rests on.** A bound that holds only while a share count is current is stated against the dated count, and refused where issuance since is known.
+10. **A bound, a grade or a label is dated to what it was computed for, and a present-tense "at most" carries only the conditions the desk checks.** A check for a hazard states what it cannot see (the issuance direct check cannot see ATM sales between supplements, conversions or exercises). No surface says "audited", "verified" or "safe" about the float.
+11. **A check is proved able to see a present case before its clean result is believed** (the em-dash count over a pipe; a bound validated against the count's date only).
 
-### Open items: owner and what each waits on (as of 2026-10-05T01:00Z; "unverified" means this seat did not re-read the artefact on that date)
+### Open items: owner and what each waits on (as of 2026-10-06; "unverified" means this seat did not re-read the artefact on that date)
 
 | item | owner | waits on |
 | --- | --- | --- |
@@ -197,6 +213,12 @@ this seat before it carried a sha, contradictions reported not resolved.
 | **The pre-launch exposure conversation (CLOSED FOR THE FREE BETA); the vendor decision (Massive Business versus Databento Plus) for paid** | him; Integration | **His turn 2026-10-05T18:51:26.824Z (transcript 125cfd6b, verified by this seat): "free beta, limited invites. 2, these will be considered testers, so its covered. 3, no."** Meaning, per Integration 26th: the beta is free and invite-only; the invitees are testers under his 2026-09-08 accepted exposure; no lawyer before the beta. **What "covered" means, so it is not read as licensed:** it is his acceptance of the exposure, not a licence. The landscape (section 1b, "private beta: exposure") found no instrument with a tester category: Alpaca, the exchange agreements and the UTP trial policy treat a beta viewer as an external subscriber, and the UTP trial construct still requires a subscriber agreement. His ruling accepts that exposure for the beta; it does not remove it. The vendor decision and the undefined "something moving" trigger stay open for paid. Plan: `docs/beta-launch-path-2026-10-05.md` |
 | **Ortex personal plan** | him | flag only: its consumer terms bar use "in connection with any business, professional or commercial activities", so using it to evaluate a product may breach them; a counsel question |
 | Watch, no clock; India; a second Alpaca account | this seat; him | CT Plan agreements (2027-04-01); IEX TOPS $1,000 from 2026-10-01; sol's promotional price after 2026-11-21; a 2026 Nasdaq Basic list. India: sent 2026-09-26, "do they" is not answerable from public sources. A second Alpaca account: an enquiry, his |
+| **THIRD-TENURE OPEN ITEMS (2026-10-06)** | | |
+| Float cell and page | Marketing, Research, Design, Web, Ops, him | Wording: Form A passed; Form B (S1) needs a pass when the revised batch comes back and S1 is built and measured. Gates not mine: his sight of the webpage; Research's float job (built on branch `research/float-job`, gate passed, mutants not yet run); Ops's memory and ship slot; the direct issuance check (Integration's ruling, built before the float is on; its refusal can reuse the existing issuance string, 5p); and whether his 90-day ruling stands now that the issuance flag is measured to miss often (to him via Integration; unverified whether put) |
+| Entry gate | Design, Web, Marketing | Text final (`776f1415`). Not built as of 2026-10-05. Marketing's voice check; I read the BUILT gate only if its words deviate from 12b |
+| Setup grade | Marketing, Research, Design | Words v3 and the legend passed (6a, 6b); rubric approved as drafted. The rubric PAGE (thresholds) comes to this seat before it publishes. An outcome-result page only if he asks (recommended not now) |
+| Warning Shot (field `evidenceRisk`) and Confirmation | Research, Marketing, Design | Design text passed (7b, `26597e9d`). Owed to this seat before any real-name run: the BUILT prompt string and word list. Marketing: the label (not "Warning Shot"), the Unknown face, the Confirmation words (no state name prints; never "Confirmed") |
+| Terms of sale for the daily pass | him, Ops, Web | Held; swept of em dashes (`3729eadf`); three open items named in the file header: how a hand-billed user is charged, which paid days count as non-trading, the refund line |
 
 ### Hazards a fresh session must know on day one
 
@@ -208,6 +230,9 @@ this seat before it carried a sha, contradictions reported not resolved.
 - **A "no" or "every" sentence needs a counterexample search.** See standing rule 8.
 - **`sec.gov` blocks plain `curl`; read rule text through `law.cornell.edu`, filings through the browser pane, PDFs through `pymupdf`.** Verify a ruling at his own turn (transcripts under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`, `queue-operation` `enqueue` records; a cross-session message with the same words is an echo).
 - **Addresses from `list_sessions` every time.** Titles carry a `-tmi` suffix now (`Integration-tmi`, `Marketing-tmi`); there are three constellations on this machine.
+- **Check the em-dash rule by bytes, with a control.** A Python count over a pipe cannot see U+2014 on this PC. Use `grep -c $'\xe2\x80\x94'` after proving it finds a planted glyph, or read the file with `encoding='utf-8'`. Search the HTML entity form of the dash too.
+- **Long text and a bash command do not mix here.** Backticks and apostrophes in a heredoc broke the parser twice. Write the text to a file with the Write tool, then read it in Python by its Windows path (`C:\Users\...`); Python on this PC cannot resolve `/c/...` paths.
+- **Verify a relayed approval at his turn, and carry its clauses.** The float wording "approval" arrived without "but i want to see the webpage".
 - **No P&L and no figure from his fills in the repository.**
 
 **Declined, deliberately:** any enquiry to any vendor, and any recommendation

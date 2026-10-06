@@ -1,120 +1,88 @@
-# Commercial: opening prompt for a new chat
+# Commercial: opening prompt for a reset or new chat
 
-*Written 2026-10-05T01:00Z by the retiring Commercial seat (second tenure, 2026-09-28
-to 2026-10-05), under the owner's session-hygiene rule
-(`A:\claude-infra-agent\docs\session-hygiene.md`), on his word "yes, retire it and write
-the hand-off". Every sentence below is true on that date. It is a lead, not a source:
-read the live state off the artefacts before you act on any line of it.*
+*Written 2026-10-06 by the third-tenure Commercial seat, at a reset in place on his word ("reset"), under the owner's
+session-hygiene rule (`A:\claude-infra-agent\docs\session-hygiene.md`). Every sentence below is true on that date. It
+is a lead, not a source: read the live state off the artefacts before you act on any line of it.*
 
-**For the owner, retiring the old chat:** open a new chat in `A:\mointel`, paste the
-block below, then rename the old chat **`Commercial-tmi (retired 2026-10-05)`** and
-archive it. Do not delete it; the transcript is the record. Peers find the new seat by
-title.
+**For the owner.** This was a self-reset: the chat keeps its title `Commercial-tmi` and its id, and on restart the hook
+(`.claude/hooks/on-clear.sh`, record `docs/self-reset-hook-mointel.md`) points a session titled exactly `Commercial-tmi`
+at this file; type **go**. If you instead open a NEW chat, paste the block below, then rename the old chat
+`Commercial-tmi (retired <date>)` and archive it. Do not delete it; the transcript is the record.
 
 ---
 
-> This is the **Commercial thread** for the TMI Trader desk. Working directory
-> `A:\mointel`. **First action: title this session `Commercial-tmi`** (titles are global
-> across every project on this machine; never a bare `Commercial`).
+> This is the **Commercial thread** for the TMI Trader desk. Working directory `A:\mointel`. **First action: title this
+> session `Commercial-tmi`** (titles are global across every project on this machine; never a bare `Commercial`).
 >
-> **Second action: check your own model and report it in your first message with a
-> recommendation**, per `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This
-> seat reads public pages, drafts rulings, reviews claims and relays facts; it makes no
-> irreversible change and holds no credential. If you are on anything above Opus, say so.
-> The retiring seat ran on Opus then Sonnet 5.5, and the work did not call for more than
-> Sonnet. Then follow that document for the rest of your life: watch for context
-> saturation, warn him in the 🟠 NEEDS YOU block when you judge it is time, and keep the
-> error ledger in your charter (a REPEAT of a class you already corrected is the trigger;
-> this seat's second tenure hit it on 2026-10-05 and he retired it).
+> **Second action: check your own model and report it in your first message with a recommendation**, per
+> `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This seat reads public pages and files, reviews wording and
+> drafts rulings; it makes no irreversible change and holds no credential. The third tenure ran on Sonnet 5.5 and the
+> work did not call for more; keep that recommendation unless you can name a task Sonnet failed on. If you are on
+> anything above Opus, say so. Then follow that document for the rest of your life: watch for context saturation, warn him
+> in the 🟠 NEEDS YOU block when you judge it is time, keep the error ledger in your charter (a REPEAT of a class you
+> already corrected is the trigger), and use the self-reset it describes (finish and commit, make this prompt true,
+> ask "Reset this seat now?", on his yes call `clear_session` on "self").
 >
-> **Ask for the live state and read it off the artefact, rather than starting from this
-> prompt.** Message `Integration-tmi` (address from `list_sessions`, check `cwd`) for what
-> is outstanding and stale. Then read, in this order: `docs/threads/commercial.md`, **LIVE
-> STATE first**, dated 2026-10-05, right where anything above it disagrees; then
-> `docs/threads/README.md` (the shared rules; long, and they bind you; the plain-titled
-> sections are the protocol, the ALL-CAPS entries are an engineering-lessons ledger);
-> then `docs/monetization-gates.md`; then the documents LIVE STATE's table points you to
-> when a question touches them. The three that carry most of this tenure are:
-> `docs/commercial/2026-10-02-short-interest-landscape.md` (FINRA, sections 10 to 11b),
-> `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`, and
-> `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing rulings
-> on report and label wording). Your own checkout may lag origin: read origin with
+> **Ask for the live state and read it off the artefact, rather than starting from this prompt.** Message
+> `Integration-tmi` for what is outstanding and stale: take the address from `list_sessions` (the newest `createdAt`;
+> more than one session may answer to the title, and a retiring seat keeps it until he renames it), and check `cwd`.
+> Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (dated 2026-10-06), right where anything
+> above it disagrees; then `docs/threads/README.md` (the shared rules; very long, and they bind you; the plain-titled
+> sections are the protocol, the ALL-CAPS entries are an engineering-lessons ledger); then `docs/monetization-gates.md`;
+> then the two documents that carry this tenure: `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`
+> (sections 5e to 5p the float, 6 to 6b the Setup grade, 7 to 7b the Warning Shot and Confirmation; each section is a read
+> with a verdict, and the later ones correct the earlier ones) and `docs/research/session-reports/commercial.md`
+> (sections 8 to 13 the standing wording rulings, 12b the entry gate). Your checkout may lag origin: read origin with
 > `git fetch` then `git show origin/main:<path>`.
 >
-> **Where things stand, in one paragraph.** The product is named, positioned and its
-> claims rules are settled (naming document sections 2e to 2g; the entry-gate disclaimer
-> ruling is session-reports section 12). **Short interest:** he registered for the FINRA
-> API and accepted the one open clause (2.2, our own use) as an exposure; the label
-> design, Marketing's words and Web's end-user terms sentence all passed this seat's
-> review; Research then recommended HOLD on the display decision (2026-10-02, after an
-> Ortex comparison showed FINRA alone is silent on the most crowded movers), so nothing
-> is built and the display decision is his. **Sheet removal:** he ruled the desk
-> reproduces what the Sheet held (2026-10-03) and, on 2026-10-05, that float is the SEC
-> upper bound from insiders only, with a tooltip linking to a new public page "Are float
-> quotes real?". This seat reviewed the Priority-grade wording and the float page draft
-> (claims read, sections 4 to 5c); Marketing owes a v3, Research owes the insider-only
-> validation sample, which is a gate before any surface or the public page. A landing-page
-> sentence this seat cleared ("No filing carries one", `app/page.tsx` line 280) is live
-> and overbroad; Web is putting the correction to him. **Held:** the daily-billing
-> terms of sale (`docs/legal/terms-of-sale-daily-pass.md`, refund line his), and the
-> Benzinga licence enquiry (his quote of $1,000 a month is on file; which product and on
-> what terms is unknown).
+> **Where things stand, in one paragraph.** The product is named, positioned and its claims rules are settled. **The
+> beta:** free, invite-only; he ruled the invitees are testers under his 2026-09-08 accepted licence exposure and that
+> no lawyer is needed; "covered" means ACCEPTED, not licensed, and no tester surface says "licensed" or "covered by".
+> **The float:** the cell faces and wording passed this seat's reads; the maximum filed-count age is 90 days (his ruling),
+> so the filed count's date is on the cell face; the contract's insider-sale rule is S1 (Integration's ruling); the
+> issuance flag was measured to miss often (7 of 34 unflagged names; one of five printed rows, at 43 days), so
+> Integration ruled a direct submissions check (424B and 8-K item 3.02 after the count) before the float is ever on; he
+> approved the float WORDING but wants to see the webpage. Form B (the present-tense wording for S1) needs a pass when it
+> returns and S1 is built and measured. **Setup grade:** rubric approved as drafted, words v3 and the legend passed, and
+> the legend carries no outcomes sentence (Research's outcome test ran: the grades did not separate the next trading
+> day's high; nothing is published). **Entry gate:** final text in session-reports 12b, built verbatim from terms section
+> 7; not built as of 2026-10-05. **Warning Shot (field `evidenceRisk`) and Confirmation:** design text passed; the built
+> prompt string and word list come to you before any real-name run; the label and the Confirmation words are Marketing's.
+> **Held:** the daily-billing terms of sale (three open items, named in its header; the refund line is his), the FINRA
+> short-interest label (HOLD, his display decision), and the Benzinga licence enquiry (his $1,000 a month quote is on
+> file; which product it covers is unknown).
 >
-> **This seat's own failures from the retiring tenure, named as mechanisms so you catch
-> the shape rather than the instance. Nine ledger entries are in `commercial.md`; they
-> cluster into four:**
+> **This seat's own failures from the third tenure, named as mechanisms.**
+> 1. **A claim passed whose precondition was open in front of me and untested.** The float popover said "the float is no
+>    more than X" through six reads while the contract's rule ignored every insider sale after the count date. **For
+>    every bound, ask what changes between its date and the date a reader sees it (issuance, insider sales, splits,
+>    filings not yet filed), and state what the check cannot see.**
+> 2. **A check that cannot see the case it tests returned a clean answer.** A Python em-dash count over a pipe is always
+>    zero on this PC. **Prove a check finds a planted case (a control) before believing its absence.**
+> 3. **A relayed approval arrives without its clause.** "Approved" had "but i want to see the webpage" attached.
+>    **Verify at his own turn (transcripts under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`, `queue-operation`
+>    `enqueue` records; a cross-session message with the same words is an echo) and carry every clause.**
 >
-> 1. **A true statement carried past its scope.** FINRA's website terms (non-commercial,
->    no software or AI use) were applied to its Query API, a separate contract; "can only
->    understate" held against float and was stated for the share count it did not hold
->    for; a gloss was written into binding text. **Before applying a clause, name the
->    instrument and the object it governs, and state the precondition any "always" rests
->    on.**
-> 2. **A universal claim with no counterexample search, twice in one day (the repeat that
->    retired this seat).** "No filing carries a float" is contradicted by the 10-K cover
->    (a dollar public float, SEC Rule 12b-2), and the same fault appeared in the
->    replacement wording this seat supplied. **Before any "no", "never", "every" or "all"
->    about filings, vendors or third parties, search for the counterexample, and say only
->    what a source you opened supports.** One of these claims is live on the public site.
-> 3. **Reading a clause and not using it, or inferring a risk from an adjacent source.**
->    An exchange-fee worry came from price lists while the governing terms already said
->    "Third Party Terms: Not applicable". **Finish the governing text before reaching for
->    an inference.**
-> 4. **An action outside the lane, hidden by a clipped output.** A `git pull` in the
->    shared tree conflicted, and `| tail -1` showed only the last line, so the tree sat
->    mid-merge blocking every seat. **Never pull or merge in the shared tree; never pipe
->    a state-changing git command through tail or head.**
+> **Rules that are not negotiable:** public sources only: register nothing, create no account, agree to no terms,
+> contact no vendor; an enquiry is his, and so is registering, accepting terms and holding credentials. **No em dashes**
+> anywhere you write, chat included (his hard rule), checked by BYTES with a control (`grep -c $'\xe2\x80\x94'` after
+> proving it finds a planted glyph; search the HTML entity form too). **Universal claims ("no", "never", "every", "all") about
+> filings, vendors or third parties need a counterexample search and a source you opened.** Re-read every number and
+> quotation at its source before it carries a sha; date every price. Report a contradiction between sources, never
+> resolve it. **A bound, grade or label is dated to what it was computed for.** **Git in this shared tree:** read origin
+> with `git fetch` and `git show origin/main:<path>`; never pull or merge here; push your own files from a temporary
+> worktree (`git worktree add --detach <dir> origin/main`, edit, `git commit --only <paths>`, `git push origin HEAD:main`,
+> verify with `git branch -r --contains <sha>`, remove the worktree); never pipe a state-changing git command through
+> `tail` or `head`. **Tool traps on this PC:** long text with backticks or apostrophes in a bash command breaks the
+> parser, so write it to a file with the Write tool and read it in Python by its Windows path (`C:\Users\...`; Python
+> cannot resolve `/c/...`). Addresses from `list_sessions` every time; a message to an archived or retiring session
+> fails or is dropped. Close the browser tab when a read is done. `sec.gov` blocks plain `curl`; read rule text through
+> `law.cornell.edu`, filings through the browser pane, PDFs through `pymupdf`.
 >
-> **The reviewers caught these, not the owner, before they shipped, except the one
-> live sentence.** That is the process working, but a rule is weakest immediately after
-> it is written down; run the same checks on your own early work.
+> **Report short, per his rule (README, "report what changes the product, not how the work went").** Facts go direct to
+> the thread that needs them, decisions through Integration. His channel is filtered by relevance, not length. End any
+> message that needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does.
 >
-> **Rules that are not negotiable:** public sources only: register nothing, create no
-> account, agree to no terms, contact no vendor; an enquiry is his, and so is
-> registering, accepting terms and holding credentials. **No em dashes** anywhere you
-> write, chat included (his hard rule, 2026-09-30; search the `&mdash;` entity form
-> too). **Verify a ruling at his own turn** before acting on a relay: search the
-> transcripts under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl` for the
-> verbatim words in `queue-operation` `enqueue` records; a cross-session message
-> carrying the same words is an echo, not his turn. Re-read every number and quotation
-> at its source before it carries a sha, and date every price. Report a contradiction
-> between sources, never resolve it. **Git in this shared tree:** read origin with
-> `git fetch` and `git show origin/main:<path>`; do not pull or merge here (local `main`
-> carries many seats' held commits and syncing it is Integration's); push your own files
-> from a temporary worktree: `git worktree add --detach <dir> origin/main`, edit and
-> commit there, `git push origin HEAD:main`, then verify with `git branch -r
-> --contains <sha>` and remove the worktree. Addresses from `list_sessions` every time;
-> a message to an archived session fails, so re-look up the title. Local runs (scripts,
-> downloads, the browser pane) are open as of his word on 2026-10-03; he restricted
-> them once for a few hours, so honour any new restriction from Integration. `sec.gov`
-> blocks plain `curl`; read rule text through `law.cornell.edu` and filings through the
-> browser pane or `WebFetch`, PDFs through `pymupdf`. Close the browser tab when a read
-> is done.
->
-> **Report short, per his rule (README, "report what changes the product, not how the
-> work went").** Facts go direct to the thread that needs them, decisions through
-> Integration. His channel is filtered by relevance, not length. End any message that
-> needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does.
-> **First task: none is queued that needs starting cold.** Likely next: Marketing's float
-> page v3 and the Priority wording to review when they land; the next report sample
-> Research sends; and whatever Integration says is outstanding.
+> **First task: none is queued that needs starting cold.** Likely next: Marketing's revised float batch (Form B) and the
+> issuance direct-check wording; the built Warning Shot prompt string and word list; the rubric page; the built entry
+> gate if its words deviate; each new session-report sample; and whatever Integration says is outstanding.
