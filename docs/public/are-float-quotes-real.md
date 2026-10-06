@@ -6,13 +6,16 @@ title: Are float quotes real?
 THE ONE SOURCE of the public page /are-float-quotes-real, rendered at request
 time by lib/public/explainer.ts. No copy of this text exists in any template.
 
-TEXT: docs/marketing/float-page-draft.md section 3 at v16 (f2089575), verbatim.
-He approved v16 and this path 2026-10-06T00:41:47.543Z ("yes to both, v16 and
-that path"), after a preview with the changes from v12 marked. Any word changed
+TEXT: docs/marketing/float-page-draft.md section 3 at v19 (d5ca0adc, Commercial
+5s PASS at 3763ef0c), verbatim. He approved v16 and this path
+2026-10-06T00:41:47.543Z ("yes to both, v16 and that path"), and v19's one
+changed paragraph ("What a number does not tell you") 2026-10-06T01:43:24.471Z
+("yes to v19"), each after a preview with the changes marked. Any word changed
 here is public copy and needs his yes before the commit.
 
-DO NOT SHIP before Research's insider-only validation sample has run. The page
-must not say or imply that it has. The board's float cell links here, and the
+DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
+check (424B1, 424B4, 424B5 and 8-K item 3.02), so the page must not ship before
+that check runs in production. The board's float cell links here, and the
 link and this page ship in ONE release (a link to a page that 401s is worse than
 no link). The route also needs its own exact-match nginx exemption from Basic
 Auth while Basic Auth stands.
@@ -51,7 +54,7 @@ We do not subtract the beneficial-ownership totals in 13D or 13G filings. Benefi
 
 ## What a number does not tell you
 
-When we find that shares have been issued since the count, or may be, the name reads Cannot verify. A name with nothing found may still have issued shares, and insiders may have sold since the count. We subtract the holdings they reported as of the count's date, so shares an insider has sold since are not added back, and today's float can be larger than the figure. The figure is only as current as the filings under it.
+When we find a flag or a filing showing that shares have been issued since the count, or may have been, the name reads Cannot verify. The filings we look for are two kinds made on or after the count's date: a final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5), and a report of an unregistered sale of shares (Form 8-K item 3.02). Resale prospectuses and routine prospectus supplements do not trigger the check. Those checks cannot see every issuance: sales under an open at-the-market program between supplements, private placements below the size that requires a report (Form 8-K item 3.02 requires none below 1 percent of the class, or 5 percent for a smaller reporting company), and conversions or exercises that file nothing, do not show up in them. A name with nothing found may still have issued shares, and insiders may have sold since the count. We subtract the holdings they reported as of the count's date, so shares an insider has sold since are not added back, and today's float can be larger than the figure. The figure is only as current as the filings under it.
 
 ## What this is, and is not
 
