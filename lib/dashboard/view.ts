@@ -9,6 +9,7 @@ import {
   setupGradeRank,
   type SetupGradeFilter,
 } from '@/lib/dashboard/setupGrade';
+import { floatSortValue } from '@/lib/dashboard/floatBound';
 import { nowReadingOf, nowSortTier, nowSortValue } from '@/lib/dashboard/nowReading';
 import { resolveWhy } from '@/lib/dashboard/why';
 import type { DeskRow } from '@/lib/dashboard/merge';
@@ -322,7 +323,8 @@ export function discoveryValueFor(
     case 'float':
       // Research, not market state. Null whenever the source says UNKNOWN or
       // DIRTY FLOAT, which is a material share of rows.
-      return row.displayedFloat;
+      // WIRED: the SEC upper bound, only where PRODUCED (a refused or absent float has no number).
+      return row.floatBoundWired ? floatSortValue(row.floatBound) : row.displayedFloat;
     case 'setupGrade': {
       /*
        * BEST FIRST: A, B, C, D, then "Not graded". A name with NO grade (the

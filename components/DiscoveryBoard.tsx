@@ -52,6 +52,8 @@ import {
 } from '@/lib/dashboard/view';
 import type { DiscoveryState } from '@/lib/market/types';
 import { formatCount, formatMultiple } from '@/lib/format';
+import { FloatCell } from '@/components/FloatCell';
+import { FLOAT_LEGEND } from '@/lib/dashboard/floatBound';
 import { SETUP_GRADE_LEGEND } from '@/lib/dashboard/setupGrade';
 
 const VIEW_SIZES = [12, 25, 50] as const;
@@ -320,7 +322,10 @@ export function DiscoveryBoard({
   const sortActive = sort.key !== DISCOVERY_DEFAULT_SORT.key;
   const missing = discoveryMissingCount(rows, sort.key, sortBoard);
   // Read off the entry like every other per-key fact in this component.
-  const showFloat = SORT_KEYS.find((entry) => entry.key === sort.key)?.column === 'float';
+  // ALWAYS ON once the float is wired (his ruling 2026-10-05: "always show it, it's key");
+  // until then the column appears only while the board is sorted by float, as before.
+  const floatWired = rows.some((row) => row.floatBoundWired);
+  const showFloat = floatWired || SORT_KEYS.find((entry) => entry.key === sort.key)?.column === 'float';
   // Resolved once: the button, the active marker and the tooltip must never
   // disagree about what the percent change is measured from.
   // Null phase falls to the neutral label rather than guessing a session.
@@ -837,6 +842,7 @@ export function DiscoveryBoard({
         )}
       </p>
       {/* The standing legend, once per board, verbatim (Marketing v3, Commercial-passed). */}
+      {floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null}
       {rows.some((row) => row.setupGradeWired) ? (
         <p className="mt-1.5 text-[11px] text-ink-3">{SETUP_GRADE_LEGEND}</p>
       ) : null}
@@ -1154,12 +1160,14 @@ function DiscoveryRow({
       </td>
 
       {showFloat ? (
-        // Present only while the board is sorted by float. A sort whose column
+        // Present once the float is wired; before that only while the board is sorted by float. A sort whose column
         // is not on screen leaves the trader unable to see why the order is
         // what it is; a permanent column would spend width the eight-field
         // board does not have.
         <td className="num px-2 py-1 text-right align-middle">
-          {row.displayedFloat === null ? (
+          {row.floatBoundWired ? (
+            <FloatCell bound={row.floatBound} />
+          ) : row.displayedFloat === null ? (
             /*
              * Three outcomes, and collapsing any two would lose the finding.
              *

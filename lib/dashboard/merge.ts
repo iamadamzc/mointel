@@ -27,6 +27,7 @@ import {
   resolveIntelligenceState,
   type IntelligenceState,
 } from '@/lib/dashboard/intelligence';
+import type { FloatBound } from '@/lib/dashboard/floatBound';
 import type { SetupGrade } from '@/lib/dashboard/setupGrade';
 import { UNAVAILABLE_THRESHOLD, resolveBlueSky, type BlueSkyState } from '@/lib/market/blueSky';
 import type { DemandState, MarketSnapshot, SessionPhase } from '@/lib/market/types';
@@ -183,6 +184,10 @@ export interface DeskRow {
    * false, because every researched name would otherwise read as having none.
    */
   setupGradeWired: boolean;
+  /** The stored float state, or null (NOT_YET: "Not computed"). Only meaningful when `floatBoundWired`. */
+  floatBound: FloatBound | null;
+  /** The snapshot carries a float map (not null, even empty). False keeps today's Float column. */
+  floatBoundWired: boolean;
   /**
    * The instant a CLOCKED catalyst must be newer than to band FRESH — the
    * prior session's close, his refinement of 2026-09-24.
@@ -225,6 +230,8 @@ export interface DeskRowContext {
   setupGrade?: SetupGrade | null;
   /** True when `MarketSnapshot.setupGrades` exists, even empty. */
   setupGradeWired?: boolean;
+  floatBound?: FloatBound | null;
+  floatBoundWired?: boolean;
   /**
    * `MarketSnapshot.catalystFreshFrom`, straight from the payload.
    *
@@ -476,6 +483,8 @@ export function buildDeskRow(
     blueSky,
     setupGrade: context.setupGrade ?? null,
     setupGradeWired: context.setupGradeWired ?? false,
+    floatBound: context.floatBound ?? null,
+    floatBoundWired: context.floatBoundWired ?? false,
     catalystFreshFrom: context.catalystFreshFrom ?? null,
   };
 }
@@ -548,6 +557,8 @@ export function mergeDesk(
   const setupGradeByTicker = market?.setupGrades ?? {};
   // An absent OR null map is NOT WIRED; an object, even empty, is wired (a name missing from it is no grade).
   const setupGradeWired = market?.setupGrades != null;
+  const floatBoundByTicker = market?.floatBounds ?? {};
+  const floatBoundWired = market?.floatBounds != null;
   const sheetObservedAt = dashboard?.meta.fetchedAt ?? null;
   // One session for the whole merge, so two rows can never disagree about
   // which VWAP is the current one.
@@ -582,7 +593,7 @@ export function mergeDesk(
         demandByTicker[ticker.ticker] ?? null,
         intelligenceByTicker[ticker.ticker] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker], setupGradeWired },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[ticker.ticker], setupGrade: setupGradeByTicker[ticker.ticker], setupGradeWired, floatBound: floatBoundByTicker[ticker.ticker], floatBoundWired },
       ),
     );
   }
@@ -598,7 +609,7 @@ export function mergeDesk(
         demand,
         intelligenceByTicker[symbol] ?? null,
         sheetObservedAt,
-        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol], setupGradeWired },
+        { sessionPhase, tradingDate, catalystFreshFrom, nowCapture, blueSky: blueSkyByTicker[symbol], setupGrade: setupGradeByTicker[symbol], setupGradeWired, floatBound: floatBoundByTicker[symbol], floatBoundWired },
       ),
     );
   }

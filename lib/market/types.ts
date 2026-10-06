@@ -8,6 +8,7 @@
 
 import type { ActivityState, PriceWindow } from './activity';
 import type { BlueSkyState } from './blueSky';
+import type { FloatBound } from '../dashboard/floatBound';
 import type { SetupGrade } from '../dashboard/setupGrade';
 import type { SessionExtremesSet, SessionOpenSet, SessionVwapSet } from './vwap';
 
@@ -827,6 +828,14 @@ export interface MarketSnapshot {
    * most recent COMPLETE checkpoint row once the columns exist.
    */
   setupGrades?: Record<string, SetupGrade | null>;
+  /**
+   * The float cell's stored state per symbol (the SEC upper bound, or why there
+   * is none). Same two absences as `setupGrades`: the WHOLE MAP absent or null
+   * means the float is not wired and the Float column stays as it is today; a
+   * symbol absent from a sent map is NOT_YET ("Not computed"). The shape is the
+   * float job's to define; this is the consumer's provisional type.
+   */
+  floatBounds?: Record<string, FloatBound | null>;
   events: DeskEvent[];
   /**
    * The instant a catalyst must be newer than to band FRESH: the PRIOR
