@@ -1,0 +1,569 @@
+{
+  "arm": "claude-opus-5-5",
+  "writerModel": "claude-opus-5-5",
+  "kind": "INTO_RTH",
+  "runNo": 1,
+  "draft": {
+    "headline": "",
+    "overall": null,
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "NXL",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "EZRA",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "CEPV",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "LTGR",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "EJH",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "LRHC",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "CCAQ",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "MTNE",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "ISNR",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "PALO",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "RPGL",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "NAMM",
+            "text": "Dry run line."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-01",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 596,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-10-01T13:25:17.573Z"
+        }
+      ],
+      "publishedAt": "2026-10-06T02:38:38.195Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS",
+          "lines": [
+            {
+              "ticker": "NXL",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Nexalin Technology, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 4.28,
+                "high": 8.8,
+                "now": 8.6532,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "55m",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:30 AM ET",
+                  "headline": "Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America, which the company described as a step toward commercial revenue generation. Secondary coverage describes the arrangement as covering seven Latin American markets. No deal value, minimum purchase commitment, or revenue forecast was supplied.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "9.23M sh",
+                  "detail": "The reported 22,036,402 shares outstanding is dated August 10, 2026, before the August 28, 2026 1-for-30 reverse split.",
+                  "tone": "warn",
+                  "full": "The reported 22,036,402 shares outstanding is dated August 10, 2026, before the August 28, 2026 1-for-30 reverse split. It should not be treated as a current post-split share count without reconciliation."
+                }
+              }
+            },
+            {
+              "ticker": "EZRA",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Reliance Global Group, Inc.",
+                "country": "United States",
+                "business": "Reliance Global Group owns and operates insurance agency businesses."
+              },
+              "path": {
+                "from": 2.28,
+                "high": 2.81,
+                "now": 2.2929,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:18 AM ET",
+                  "headline": "The company announced completion of the Altruis Benefit Consulting sale for $8 million plus an earnout of up to $1 million. The transaction had already appeared in a September 29 SEC filing and September 30 secondary coverage, so the October 1 release is fresh dissemination of a previously disclosed transaction.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "28.8M sh supply",
+                  "detail": "The latest reported 1,002,998 shares outstanding is dated July 30, before the effective registration of up to 6,107,568 additional ELOC shares.",
+                  "tone": "neg",
+                  "full": "The latest reported 1,002,998 shares outstanding is dated July 30, before the effective registration of up to 6,107,568 additional ELOC shares."
+                }
+              }
+            },
+            {
+              "ticker": "EJH",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "E-Home Household Service Holdings Ltd",
+                "country": "Cayman Islands",
+                "business": "E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance, housekeeping and property-cleaning services."
+              },
+              "path": {
+                "from": 1.42,
+                "high": 1.8499,
+                "now": 1.44,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "since Wed close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Sep 30, 4:30 PM ET",
+                  "headline": "On September 29, 2026, EJH agreed to a private placement of 71,800,000 ordinary shares at $0.60 per share for $43.08 million gross proceeds, consisting of $1.0 million cash and 2,104,000 MFT tokens valued at $20 each. The company said closing was expected on or about October 15, 2026, so the filing establishes contracted new supply rather than a confirmed closing or issuance.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Wed close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "101.8M sh supply",
+                  "detail": "No float is reported in the bundle.",
+                  "tone": "neg",
+                  "full": "No float is reported in the bundle. Shares outstanding are not float."
+                }
+              }
+            },
+            {
+              "ticker": "LRHC",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "La Rosa Holdings Corp.",
+                "country": "United States",
+                "business": "La Rosa provides residential and commercial real estate brokerage services and technology-driven products and support for agents and franchise partners, while expanding into AI infrastructure."
+              },
+              "path": {
+                "from": 2.36,
+                "high": 3.25,
+                "now": 2.06,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "4h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 5:00 AM ET",
+                  "headline": "La Rosa announced the acquisition of NVIDIA GPUs and said it is exploring real estate asset divestitures as it expands into AI infrastructure. The same current report disclosed an exchange of outstanding securities for 3,410 newly issued Series F convertible preferred shares, creating potential common-stock dilution. The favorable AI announcement and adverse convertible-supply element make the event mixed.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": null,
+                  "detail": "No source states the public float, so the displayed float cannot be reconciled.",
+                  "tone": "neg",
+                  "full": "No source states the public float, so the displayed float cannot be reconciled."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER NEWS",
+          "lines": [
+            {
+              "ticker": "RPGL",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Republic Power Group Ltd",
+                "country": "Singapore",
+                "business": "Republic Power Group provides project-based customized ERP products and is adding SaaS ERP products."
+              },
+              "path": {
+                "from": 16.39,
+                "high": 25,
+                "now": 18,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "8d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 23, 10:30 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 23 · The latest identified company-specific item is secondary coverage of a 1-for-16 reverse share split effective September 25, 2026. The split sits alongside documented recent financing: an August 4 closing of 15,000,000 Class A ordinary shares at $1.00 per share and a July 24 convertible note whose conversion price is 80% of the average of the three lowest Nasdaq trading prices. This is structurally dilutive context, not evidence of a fresh operating catalyst for the present move.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "15.1M sh supply",
+                  "detail": "No reported current share count is available in the bundle, so current outstanding shares and float cannot be reconciled. [1043]",
+                  "tone": "neg",
+                  "full": "No reported current share count is available in the bundle, so current outstanding shares and float cannot be reconciled. [1043]"
+                }
+              }
+            },
+            {
+              "ticker": "NAMM",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Namib Minerals",
+                "country": null,
+                "business": "Namib Minerals is a gold producer, developer and explorer operating in Zimbabwe, including the How Mine and planned restarts of two assets."
+              },
+              "path": {
+                "from": 0.9583,
+                "high": 1.25,
+                "now": 0.9824,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "2d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 29, 7:26 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 29 · Namib announced that its wholly owned subsidiary secured a new US$6.5 million term loan facility from African Banking Corporation to partially fund resource definition and bankability work, which the company characterized as non-dilutive financing for its Redwing restart plan.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "193.8M sh supply",
+                  "detail": "The latest disclosed shares outstanding figure is 54,084,183 as of December 31, 2025, while the effective August F-3 alone registers up to 80,646,036 ordinary shares for resale and up to 18,576,677 shares upon warrant exercise.",
+                  "tone": "neg",
+                  "full": "The latest disclosed shares outstanding figure is 54,084,183 as of December 31, 2025, while the effective August F-3 alone registers up to 80,646,036 ordinary shares for resale and up to 18,576,677 shares upon warrant exercise. Registered resale is legal sale capacity, not evidence of selling."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "UNCLEAR",
+          "lines": [
+            {
+              "ticker": "ISNR",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Snow Rothschild Acquisition Corp.",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 9.83,
+                "high": 9.84,
+                "now": 9.84,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "—",
+                  "age": "66d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Jul 26, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Jul 26 · The latest identified company-specific event is the July 27, 2026 announcement that Class A shares and warrants would begin separate trading on July 30. This is stale relative to the supplied market-state move and the bundle’s source coverage is explicitly incomplete; the evidence does not establish a fresh company catalyst or a flow-dominant move.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "35.8M sh",
+                  "detail": "No reported current shares-outstanding figure is available in the bundle; the historical IPO and Class B figures cannot be treated as reconciled current shares outstanding.",
+                  "tone": "warn",
+                  "full": "No reported current shares-outstanding figure is available in the bundle; the historical IPO and Class B figures cannot be treated as reconciled current shares outstanding."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT YET RESEARCHED",
+          "lines": [
+            {
+              "ticker": "CEPV",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": null,
+              "path": {
+                "from": 10.3,
+                "high": 10.3,
+                "now": 10.3,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "LTGR",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": null,
+              "path": {
+                "from": 9.99,
+                "high": 9.95,
+                "now": 9.95,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "CCAQ",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": null,
+              "path": {
+                "from": 10.69,
+                "high": 10.67,
+                "now": 10.67,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "MTNE",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": null,
+              "path": {
+                "from": 9.92,
+                "high": 9.92,
+                "now": 9.92,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "PALO",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": null,
+              "path": {
+                "from": 9.97,
+                "high": 9.98,
+                "now": 9.98,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": null,
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 12,
+      "strikes": [],
+      "writerMs": 1,
+      "checkerMs": 3
+    }
+  },
+  "error": null,
+  "usage": []
+}
