@@ -39,7 +39,18 @@ beforeEach(() => {
   fs.mkdirSync(bin);
   fs.writeFileSync(
     path.join(bin, 'sqlite3'),
-    ['#!/usr/bin/env bash', `[ -f "${fwd(sandbox)}/reader-fails" ] && exit 1`, `cat "${fwd(sandbox)}/rows.txt" 2>/dev/null`, ''].join('\n'),
+    [
+      '#!/usr/bin/env bash',
+      `[ -f "${fwd(sandbox)}/reader-fails" ] && exit 1`,
+      'case "$*" in',
+      // The split note's keyed read: the day's first minute bar for one symbol.
+      '  *minute_bars*)',
+      `    [ -f "${fwd(sandbox)}/firstbar.txt" ] || exit 0`,
+      `    while IFS='|' read -r sym open; do case "$*" in *"'$sym'"*) echo "$open" ;; esac; done < "${fwd(sandbox)}/firstbar.txt" ;;`,
+      `  *) cat "${fwd(sandbox)}/rows.txt" 2>/dev/null ;;`,
+      'esac',
+      '',
+    ].join('\n'),
     { mode: 0o755 },
   );
   fs.writeFileSync(path.join(sandbox, 'notifier.sh'), ['#!/usr/bin/env bash', `printf '%s\\n' "$1" >> "${fwd(sent)}"`, ''].join('\n'));
@@ -192,5 +203,42 @@ describe('runner alert: the message and failures', () => {
     tick();
     expect(messages()).toHaveLength(0);
     expect(fs.readFileSync(journal, 'utf8')).toContain('could not read');
+  });
+});
+
+/*
+ * THE SPLIT NOTE (Integration 32nd ruled: annotation, never suppression). An
+ * unlisted reverse split leaves the raw prior close, so a 1-for-5 reads +400%
+ * from the very first print. When the day's FIRST minute bar already opens at or
+ * above the crossed level, the text says so; the alert is still sent, because a
+ * real gap on news looks the same at 04:00.
+ */
+describe('runner alert: the split note', () => {
+  function firstBars(lines: string[]) {
+    fs.writeFileSync(path.join(sandbox, 'firstbar.txt'), lines.join('\n') + '\n');
+  }
+
+  it('appends the note when the first bar already opens at or above the crossed level, and still alerts', () => {
+    rows(['RSPL|7.6|1.5|407|2000000']);
+    firstBars(['RSPL|7.5']);
+    tick();
+    expect(messages()).toHaveLength(1);
+    expect(messages()[0]).toContain('+400%');
+    expect(messages()[0]).toContain('gap at first print, check for a split');
+  });
+
+  it('no note when the first bar opened below the crossed level (the move happened in the session)', () => {
+    rows(['RUNR|4.6|2|130|2000000']);
+    firstBars(['RUNR|2.1']);
+    tick();
+    expect(messages()).toHaveLength(1);
+    expect(messages()[0]).not.toContain('split');
+  });
+
+  it('no first bar on record: the alert is sent without the note', () => {
+    rows(['NOBAR|4.6|2|130|2000000']);
+    tick();
+    expect(messages()).toHaveLength(1);
+    expect(messages()[0]).not.toContain('split');
   });
 });

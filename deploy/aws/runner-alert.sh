@@ -123,7 +123,24 @@ while IFS='|' read -r SYM PRICE PREV STORED VOL; do
   PREV_FMT=$(awk -v p="$PREV" 'BEGIN { printf "%.2f", p }')
   VOL_FMT=$(awk -v v="$VOL" 'BEGIN { s = sprintf("%d", v); o = ""; while (length(s) > 3) { o = "," substr(s, length(s) - 2) o; s = substr(s, 1, length(s) - 3) } print s o }')
   if [ "$BASELINE" = "prior" ]; then BASIS="from prior close $PREV_FMT"; else BASIS="stored change, prior close $PREV_FMT"; fi
-  notify "RUNNER $SYM +${LEVEL}% (now +${PCT}%) at $PRICE_FMT, vol $VOL_FMT, ${HHMM:0:2}:${HHMM:2:2} ET, $BASIS"
+
+  # THE SPLIT NOTE (Integration 32nd ruled: an annotation, never suppression).
+  # A reverse split Alpaca had not listed by the roll keeps the raw prior close,
+  # so the level is crossed by the very first print. One keyed read of the day's
+  # first minute bar (minute_bars primary key symbol, ts), only for a name that
+  # is about to alert. A real gap on news looks the same, so the alert still goes.
+  NOTE=""
+  case "$SYM" in
+    *[!A-Z0-9.]*) ;;
+    *)
+      FIRST_OPEN=$("$SQLITE" -readonly -cmd '.timeout 3000' "$DB" \
+        "SELECT open FROM minute_bars WHERE symbol = '$SYM' AND trading_date = '$TODAY' ORDER BY ts LIMIT 1;" 2>/dev/null || true)
+      if [ -n "$FIRST_OPEN" ] && awk -v o="$FIRST_OPEN" -v p="$PREV" -v l="$LEVEL" 'BEGIN { exit !(o + 0 >= p * (1 + l / 100) - 1e-9) }'; then
+        NOTE=", gap at first print, check for a split"
+      fi
+      ;;
+  esac
+  notify "RUNNER $SYM +${LEVEL}% (now +${PCT}%) at $PRICE_FMT, vol $VOL_FMT, ${HHMM:0:2}:${HHMM:2:2} ET, $BASIS$NOTE"
   echo "$SYM $LEVEL" >> "$FIRED"
 done <<<"$ROWS"
 
