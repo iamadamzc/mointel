@@ -1661,6 +1661,15 @@ P10 FINDINGS     Row 21 STOPPED (payload has one analysis per ticker; evening/mo
                  TO HIM, rec keep today's meaning, computed facts as plain numbers.
 HIS RULING       2026-10-06T00:28:56.053Z (transcript d947056e): "a" = "Former runner" keeps the model's meaning; computed facts
                  as plain numbers under own labels. In the Sheet plan RULED block. Design told to build.
+OPS 7a1d31bd     READ. (1) PRODUCTION CARRIES, MAIN LACKS: LEVELS (app/api/levels + review twin, lib/market/levels*, levelsRefreshJob,
+                 worker/levels-refresh.ts), HISTORY STORE (historyStore.ts, historyRollup.ts, historyStoreJob.ts, HISTORY_STORE_
+                 ENABLED), MOVERS (boardMovers.ts), plus readModel.ts/rangeRank.ts differ both ways. Ops's order APPROVED: (a)
+                 history, (b) levels, each gated + replayed; (c) movers/Now-evening wait on the range-ranking design. (2)
+                 claimQueuedJobs: withBusyRetry exists, but worker/research.ts:467 sits outside the try/catch, so an exhausted
+                 retry exits the worker (systemd restarts it): call-site handling ORDERED. (3) Price-range fix: not built,
+                 never dropped: stays after (a)(b); drop only with reasons, to him.
+ROW 17           Levels route absent on main (ls-tree verified), present in production + cut 2. Ruled (A): row 17 extends the
+                 levels route after Ops's (b) lands; one line "Support at the last checkpoint" (assessment.ts:36-40).
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
