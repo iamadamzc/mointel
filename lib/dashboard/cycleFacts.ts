@@ -44,6 +44,8 @@ export const CYCLE_WORDS = {
    * Not "over": those are the desk's classifications, and "high was N sessions ago" shows the rest.
    */
   currentPrefix: 'Current run: ',
+  /** A run whose start and high are the same day: "{date}, began and peaked that day" (Marketing 3409b2c2). */
+  oneDayRun: 'began and peaked that day',
   /** Hover on the current-run line; true of BACKSIDE and SHADOW (a SHADOW run need not have given anything back). */
   currentHover:
     "Listed because the desk's cycle reading has this run ended: it gave back a large share of its advance, or trading in it went quiet.",
@@ -70,7 +72,12 @@ const pct0 = (fraction: number) => `${(fraction * 100).toFixed(0)}%`;
 
 function runLine(start: string, high: string, advanceFraction: number, sessionsAgo: number): string {
   const when = sessionsAgo === 0 ? 'high was the latest session' : `high was ${sessions(sessionsAgo)} ago`;
-  return `${longDate(start) ?? start} to ${longDate(high) ?? high}: up ${pct0(advanceFraction)} from the base close to the high, ${when}`;
+  // A one-day run (start and high stored as the same day) collapses to one date (Marketing 3409b2c2).
+  const span =
+    start === high
+      ? `${longDate(start) ?? start}, ${CYCLE_WORDS.oneDayRun}`
+      : `${longDate(start) ?? start} to ${longDate(high) ?? high}`;
+  return `${span}: up ${pct0(advanceFraction)} from the base close to the high, ${when}`;
 }
 
 const RUNS_HOVER = `A run starts on a day the stock rose at least ${CYCLE_START_MOVE_PCT * 100}% on at least ${CYCLE_START_RVOL} times its usual volume.`;
