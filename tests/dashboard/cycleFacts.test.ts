@@ -58,15 +58,15 @@ describe('the cycle facts, in the right units', () => {
     expect(facts.runs.empty).toBeNull();
   });
 
-  it('collapses a one-day run to one date in Marketing words (3409b2c2), and keeps the range otherwise', () => {
+  it('collapses a one-day run to one date in Commercial 10 words (abfe773a), and keeps the range otherwise', () => {
     const prior = [
       { startDate: '2026-06-02', highDate: '2026-06-02', cycleHigh: 9, advancePct: 0.8, sessionsAgo: 1 },
       { startDate: '2026-05-01', highDate: '2026-05-01', cycleHigh: 7, advancePct: 0.4, sessionsAgo: 0 },
     ];
     const lines = cycleFacts(history(arc(), prior)).runs.lines;
     expect(lines).toEqual([
-      'Jun 2, 2026, began and peaked that day: up 80% from the base close to the high, high was 1 session ago',
-      'May 1, 2026, began and peaked that day: up 40% from the base close to the high, high was the latest session',
+      'Jun 2, 2026, start and high on the same day: up 80% from the base close to the high, high was 1 session ago',
+      'May 1, 2026, start and high on the same day: up 40% from the base close to the high, high was the latest session',
     ]);
     expect(lines.join(' ')).not.toMatch(/\d{4} to /);
     expect(cycleFacts(history(arc({ phase: 'BACKSIDE', cycleHighDate: '2026-08-17' }))).runs.lines[0]).toContain(
@@ -93,7 +93,7 @@ describe('the list and the largest advance cannot disagree', () => {
       expect(facts.runs.lines).toHaveLength(1);
       expect(facts.runs.lines[0].startsWith(CYCLE_WORDS.currentPrefix)).toBe(true);
       expect(facts.runs.lines[0]).toBe(
-        'Current run: Aug 15, 2026, began and peaked that day: up 53% from the base close to the high, high was 4 sessions ago',
+        'Current run: Aug 15, 2026, start and high on the same day: up 53% from the base close to the high, high was 4 sessions ago',
       );
       expect(facts.runs.lines[0]).toContain('up 53% from the base close to the high, high was 4 sessions ago');
       expect(facts.runs.empty).toBeNull();
