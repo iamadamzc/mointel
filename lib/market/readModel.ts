@@ -556,7 +556,7 @@ export function readMorningRead(db: MarketDatabase, dbPath: string, tradingDate:
   }
   let value: MorningReadPayload;
   if (!tradingDate) {
-    value = { morningAt: null, eveningAt: null, morningTickers: [], byTicker: {} };
+    value = { morningAt: null, eveningAt: null, morningTickers: [], eveningTickers: [], byTicker: {} };
   } else {
     try {
       const read = morningReadOf(db, tradingDate, now.toISOString());
@@ -564,6 +564,7 @@ export function readMorningRead(db: MarketDatabase, dbPath: string, tradingDate:
         morningAt: read.morningAt,
         eveningAt: read.eveningAt,
         morningTickers: [...read.morningTickers],
+        eveningTickers: [...read.eveningTickers],
         byTicker: Object.fromEntries(read.byTicker),
       };
     } catch {

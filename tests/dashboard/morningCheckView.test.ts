@@ -21,45 +21,66 @@ const conf = (over: Partial<Confirmation> = {}): Confirmation => ({
 const pm = { state: 'SAME_VERSION', reason: null, catalyst: null, catalystChanged: null, generatedAt: null } as const;
 const frame = (
   byTicker: Record<string, Confirmation>,
-  over: Partial<{ morningAt: string | null; eveningAt: string | null; morningTickers: string[] }> = {},
+  over: Partial<{ morningAt: string | null; eveningAt: string | null; morningTickers: string[]; eveningTickers: string[] }> = {},
 ): MorningReadPayload => ({
   morningAt: MORNING,
   eveningAt: EVENING,
   morningTickers: ['ABC', 'NEW', ...Object.keys(byTicker)],
+  eveningTickers: ['ABC', 'EVE', ...Object.keys(byTicker)],
   byTicker: Object.fromEntries(Object.entries(byTicker).map(([t, c]) => [t, { confirmation: c, pmCatalyst: { ...pm } }])),
   ...over,
 });
 
-describe('which absence is which (Integration 29th ruling; 30th on the missing recap)', () => {
-  it('not wired, or no morning checkpoint yet: "No morning check yet"', () => {
-    for (const payload of [undefined, null, frame({}, { morningAt: null, morningTickers: [] })]) {
+describe('which absence is which: Integration 30th, six rows (Commercial 15)', () => {
+  it('row 1: no morning checkpoint yet: "No morning check yet" with the no-checkpoint detail', () => {
+    const v = morningCheckView(frame({}, { morningAt: null, morningTickers: [] }), 'ABC', NOW);
+    expect(v.state).toBe('NOT_YET');
+    expect(v.face).toBe('No morning check yet');
+    expect(v.detail).toBe('No morning checkpoint has completed for this date.');
+    expect(v.compared).toBeNull();
+  });
+
+  it('not wired (field absent): the face alone, no claim about checkpoints', () => {
+    for (const payload of [undefined, null]) {
       const v = morningCheckView(payload, 'ABC', NOW);
       expect(v.state).toBe('NOT_YET');
-      expect(v.face).toBe('No morning check yet');
-      expect(v.detail).toBe('No morning checkpoint has completed for this date.');
+      expect(v.detail).toBeNull();
     }
   });
 
-  it('a name not on the morning checkpoint: "No morning check yet", never hidden', () => {
-    const v = morningCheckView(frame({ ABC: conf() }), 'ZZZ', NOW);
-    expect(v.state).toBe('NOT_YET');
-  });
-
-  it('on the morning checkpoint but not on the evening recap: the section is hidden', () => {
-    const v = morningCheckView(frame({ ABC: conf() }), 'NEW', NOW);
-    expect(v.state).toBe('HIDDEN');
-  });
-
-  it('a morning checkpoint with NO evening recap reads Unknown for every morning name, with no reason; off the checkpoint stays NOT_YET', () => {
-    const payload = frame({}, { eveningAt: null, morningTickers: ['ABC', 'NEW'] });
+  it('row 2: a morning checkpoint with NO evening recap reads Unknown for every morning name, with no detail and no reason', () => {
+    const payload = frame({}, { eveningAt: null, morningTickers: ['ABC', 'NEW'], eveningTickers: [] });
     for (const ticker of ['ABC', 'NEW']) {
       const v = morningCheckView(payload, ticker, NOW);
       expect(v.state).toBe('UNKNOWN');
       expect(v.face).toBe('Unknown');
       expect(v.detail).toBeNull();
-      expect(JSON.stringify(v)).not.toMatch(/recap did not|missing|GRADE_NOT_STORED|NOT_GRADED|VERSION_UNREADABLE/);
+      expect(JSON.stringify(v)).not.toMatch(/recap did not|missing|not among|GRADE_NOT_STORED|NOT_GRADED|VERSION_UNREADABLE/);
     }
-    expect(morningCheckView(payload, 'ZZZ', NOW).state).toBe('NOT_YET');
+    // ...and a name on neither list is hidden (row 6), never told about the morning.
+    expect(morningCheckView(payload, 'ZZZ', NOW).state).toBe('HIDDEN');
+  });
+
+  it('row 3: on the morning checkpoint and in byTicker: its own state', () => {
+    expect(morningCheckView(frame({ ABC: conf() }), 'ABC', NOW).state).toBe('UNCHANGED');
+  });
+
+  it('row 4: on the morning checkpoint, not in byTicker (not on the evening recap): hidden', () => {
+    expect(morningCheckView(frame({ ABC: conf() }), 'NEW', NOW).state).toBe('HIDDEN');
+  });
+
+  it('row 5: on the evening recap only: the face, the not-read detail, and the evening time alone; no Compared line', () => {
+    const v = morningCheckView(frame({ ABC: conf() }), 'EVE', NOW);
+    expect(v.state).toBe('NOT_YET');
+    expect(v.face).toBe('No morning check yet');
+    expect(v.detail).toBe('This name was not among the names the 07:00 ET checkpoint read.');
+    expect(v.compared).toBe('Evening recap: Oct 5, 22:00 ET.');
+    expect(JSON.stringify(v)).not.toContain('Compared:');
+    expect(JSON.stringify(v)).not.toContain('No morning checkpoint has completed');
+  });
+
+  it('row 6: on neither list: hidden', () => {
+    expect(morningCheckView(frame({ ABC: conf() }), 'ZZZ', NOW).state).toBe('HIDDEN');
   });
 
   it('an unreadable read is a fault and reads Unknown, never "No morning check yet"', () => {

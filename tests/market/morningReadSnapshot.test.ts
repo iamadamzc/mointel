@@ -36,13 +36,14 @@ describe('the morning read on the market snapshot', () => {
       morningAt: null,
       eveningAt: null,
       morningTickers: [],
+      eveningTickers: [],
       byTicker: {},
     });
   });
 
   it('no trading date: an empty frame without touching the store', () => {
     const store = brokenStore();
-    expect(readMorningRead(store.db, 'a.db', '', T0)).toEqual({ morningAt: null, eveningAt: null, morningTickers: [], byTicker: {} });
+    expect(readMorningRead(store.db, 'a.db', '', T0)).toEqual({ morningAt: null, eveningAt: null, morningTickers: [], eveningTickers: [], byTicker: {} });
     expect(store.calls()).toBe(0);
   });
 
