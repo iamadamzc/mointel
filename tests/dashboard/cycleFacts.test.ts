@@ -116,7 +116,8 @@ describe('the drawer', () => {
 
   it('shows the computed facts under their own labels', () => {
     expect(source).toContain('cycleFacts(intel.analysis?.dossier.computedCycle)');
-    for (const label of ['Cycle high', 'Flush from high', 'Prior runs']) expect(source).toContain(`"${label}"`);
+    for (const label of ['Cycle high', 'Flush from high']) expect(source).toContain(`label="${label}"`);
+    expect(source).toContain('<FieldLabel>Prior runs</FieldLabel>');
   });
 
   it('leaves the "Former runner" row exactly as it was: the model block, one row', () => {
