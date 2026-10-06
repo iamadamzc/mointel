@@ -94,7 +94,7 @@ describe('the price tooltip names the baseline the number was measured from', ()
      */
     expect(priceColumnTitle('PREMARKET')).toContain('including after hours');
     expect(priceColumnTitle('RTH')).toContain("prior session's close");
-    expect(priceColumnTitle('AFTER_HOURS')).toContain("today's regular-session close");
+    expect(priceColumnTitle('AFTER_HOURS')).toContain("today's close");
   });
 
   it('names the label the header is actually showing', () => {
