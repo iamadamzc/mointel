@@ -62,6 +62,7 @@ for design documents.
 
 **Owed, with triggers:**
 - ~~Ship-night read~~ DONE above.
+- **CUT 4 + WARNING SHOT LIVE** on web, research, assess since 02:51:41Z (Ops /proc 02:52:07Z); market `10cb60c3`. Read 22:53 to 23:00 ET (link 68, revoked, dead by content): country hover fixed, cycle facts render, grade hidden as designed, 0 U+2014. **Owed read:** "Risk in the evidence" populated; both names read showed "Not recorded" on dossiers generated before the release; trigger: the first dossier generated after 02:51:41Z on a name whose drawer opens. Copy oddity sent to Integration: a one-day run prints "Sep 18, 2026 to Sep 18, 2026".
 - **Risk column follow-up (RULED by Integration 29th):** `lib/dashboard/risk.ts:137-139` reads the Sheet's Warning Shot; the line must read the desk's evidence-risk sentence with its as-of, no "cited" implication, LIVE BEFORE SHEET STEP 4. Bring Integration the layout first if the as-of changes the column. Not started.
 - **Row 5, before the bell:** the prior session's after-hours line (Marketing's words at `7bfc267d`) waits on Ops carrying that summary in the per-ticker payload (routed by Integration; a Sheet step 4 prerequisite). A clock in row 5's strings only after the server sends null instead of the `readModel.ts:663` '16:00' fallback (optional follow-up, not a blocker).
 - **Float popover 90 days** typed, not read from a constant: trigger is Research's float job exporting the maximum age as a named constant.
