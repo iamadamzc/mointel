@@ -536,6 +536,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
           <DiscoveryBoard
             discovery={discovery}
             rows={discoveryRows}
+            boardRows={merged.discovery}
             onSelect={setSelectedTicker}
             selectedTicker={selectedTicker}
             marketOffline={health.offline}

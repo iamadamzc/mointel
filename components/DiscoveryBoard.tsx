@@ -272,6 +272,12 @@ interface DiscoveryBoardProps {
   /** Null until the first market payload arrives — not a fabricated state. */
   discovery: DiscoveryState | null;
   rows: DeskRow[];
+  /**
+   * The whole board BEFORE the filters (`merged.discovery`), for the moving caption's count only:
+   * "{N} names on the board are marked moving" counts the board, not the filter matches (Commercial 18).
+   * Absent: `rows`.
+   */
+  boardRows?: readonly DeskRow[];
   onSelect: (ticker: string) => void;
   selectedTicker: string | null;
   marketOffline: boolean;
@@ -308,6 +314,7 @@ export function DiscoveryBoard({
   onToggleFocus,
   changedTickers,
   nowCapture,
+  boardRows,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
@@ -421,7 +428,7 @@ export function DiscoveryBoard({
   const frozen = discovery?.sessionPhase === 'POST_MARKET';
   // Counted over the rows the board holds (filters applied), not the Top N:
   // the point is to say a mover exists when the cut is hiding it.
-  const movers = afterHours ? null : movingCaption(rows, { size, extra: moversPast });
+  const movers = afterHours ? null : movingCaption(boardRows ?? rows, { size, extra: moversPast });
 
   return (
     <section className="border-b border-line bg-desk px-4 py-2">
