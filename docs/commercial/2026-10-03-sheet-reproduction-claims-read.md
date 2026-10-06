@@ -574,3 +574,18 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 **Passes.** The group label "Sessions" and the line labels; C1 and C2 "The regular-session close from the daily bar for {date}." (see below); C3 apart from the clock, with "The daily bar's close can differ"; C4 "Unknown" with "The desk has no regular-session close recorded for {date}."; A3 "No close" with "The desk has no regular-session close to measure the change from." and no "yet"; no "official" and no "closing auction" anywhere; no forward tense.
 
 **Marketing's question (official close or last trade?).** Keep "official" and "closing auction" out. The repo's own check says the daily bar's close was "verified against minute bars to be the official closing-auction print" (`types.ts:70-75`, `ARCHITECTURE.md:59`), but that is an internal verification (the number of names and the date are not stated) and Alpaca's public pages do not say it. "From the daily bar" is attributive and true; it credits no definition to Alpaca, and that is why it passes.
+
+
+## 9b. Drawer row 5, additions A6 and PARTIAL-with-no-trade (Marketing `f35d945f`), fourth tenure, 2026-10-06
+
+*Read: the diff of `f35d945f` against `7bfc267d` (local main, not on origin when read). The file still carries the three 9 required changes (the "16:00 ET" clock, the "regular-session" close on a Sheet or unknown source, the A5 "not recording" hover); Marketing's message predates 9 and none of those is re-read here.*
+
+**A6 (after the bell, complete coverage, no after-hours trade seen): two required changes.**
+1. **The clock** ("No trade seen since the 16:00 ET bell"; "after the 16:00 ET bell on {date}"): 9 required change 1 applies. "No trade seen since the bell"; "... saw no trade after the bell on {date}."
+2. **"The desk was recording" is not what COMPLETE means.** In the engine COMPLETE is "observed live from the close" or "seeded" (`seedAfterHours` fills the window a restarted desk missed, and sets COMPLETE), so on a seeded name the desk was not recording the whole time. A string true of both: "The desk's after-hours record for {date} is complete and holds no trade after the bell." The face "No trade seen since the bell" is fine: "seen" keeps the claim about the record, not the market, which is the right instinct.
+
+**One thing the words depend on and I cannot read from here:** what "no trade seen" is computed from. It must be "no trade with a timestamp at or after the bell in the record", not an empty price, a price equal to the close, or a zero volume. Design confirms which, because the wrong test prints "no trade seen" on a name that traded and whose price came back to the close.
+
+**PARTIAL with no trade seen (price and percent "Unknown"): pass in meaning, with the clock-free form and the cause caveat from 9.** "The desk began recording after the bell on {date}, so it cannot say whether trades occurred before it started." says what it cannot say, which is the claim; it names one cause of PARTIAL (a process that started after the bell), and 9 recommended (a) the cause-neutral form ("The desk did not see every trade after the bell on {date}, so it cannot say whether trades occurred.") if any other route can reach PARTIAL.
+
+**Design's seven placeholders mapped to the words:** the mapping is consistent with 9 and moves nothing, except that `closeOther` still maps to the C5 hover 9 required change 2 rewrites, and `afterHoursNotRecorded` to the A5 hover 9 required change 3 holds.
