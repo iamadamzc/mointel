@@ -212,8 +212,31 @@ export function retentionNote(options: {
  * leaves the board rather than keeping a stale label.
  * ------------------------------------------------------------------------- */
 
+/*
+ * TWO KINDS OF MOVER, ONE LABEL (Integration 31st, after IPDN on 2026-10-06): the
+ * server marks a name below the RVOL cut `boardReason: 'MOVER'` (added to the
+ * board for its move) and a name the rule selects that is ALREADY ranked
+ * `moving: true` (on the board for its rank; before this, it carried no mark and
+ * the caption did not count it). Both are recomputed by the server on every read.
+ *
+ * "FROM THE PRIOR CLOSE" IS A CONDITION, NOT A HABIT (Commercial 17b): the row's
+ * percentChange is measured from the prior session's close only while
+ * `referenceRthCloseBasis` is PRIOR_SESSION; after the regular session it is
+ * today's close, and the daily board can still be up (NEXT_DAY_PREP). A row on
+ * any other basis is not labelled, not counted and not listed, whatever its flag.
+ */
+function measuredFromPriorClose(row: Pick<DeskRow, 'demand'>): boolean {
+  return row.demand?.referenceRthCloseBasis === 'PRIOR_SESSION';
+}
+
 export function isMover(row: Pick<DeskRow, 'demand'>): boolean {
-  return row.demand?.boardReason === 'MOVER';
+  if (!measuredFromPriorClose(row)) return false;
+  return row.demand?.boardReason === 'MOVER' || row.demand?.moving === true;
+}
+
+/** A mover that is also in the RVOL ranking: on the board for its rank, marked for its move. */
+export function isRankedMover(row: Pick<DeskRow, 'demand'>): boolean {
+  return isMover(row) && row.demand?.boardReason !== 'MOVER';
 }
 
 export function movingNote(
@@ -223,37 +246,39 @@ export function movingNote(
   const pct = row.demand?.percentChange ?? null;
   const volume = row.demand?.cumulativeVolume ?? null;
   const rank = row.telemetry.rvolRank;
+  const ranked = isRankedMover(row);
 
-  const parts = ['On the board for its move, not its RVOL rank.'];
+  // Words: Marketing 493c8e33 (Commercial 16, 16a): a ranked mover's hover says what it did,
+  // never why it is on the board; the unranked hover is as built.
+  const parts = [ranked ? 'Also a mover.' : 'On the board for its move, not its RVOL rank.'];
   if (pct !== null && Number.isFinite(pct)) {
     const shares =
       volume !== null && Number.isFinite(volume) ? ` on ${formatCount(volume)} shares since 04:00 ET` : '';
     parts.push(`${pct >= 0 ? 'Up' : 'Down'} ${Math.abs(pct).toFixed(1)}% from the prior close${shares}.`);
   }
-  parts.push(rank !== null ? `RVOL rank ${rank}, outside the ranking.` : 'No RVOL rank.');
+  if (ranked) {
+    if (rank !== null) parts.push(`RVOL rank ${rank}.`);
+  } else {
+    parts.push(rank !== null ? `RVOL rank ${rank}, outside the ranking.` : 'No RVOL rank.');
+  }
   return { label: 'moving', title: parts.join(' ') };
 }
 
 /**
- * The caption's count. Movers follow the ranked rows under the Rank and RVOL
- * sorts, so the default Top 12 never shows one: without a count on screen a
- * mover is invisible until he changes the sort, and nothing says it is there.
+ * The caption's count: every row marked moving, ranked or not. Words: Marketing
+ * 493c8e33 (Commercial 16a). The Top N clause stays while Top 12, 25 or 50 can
+ * leave movers off; it goes in the same build as any change to that.
  */
 export function movingCaption(
   rows: readonly Pick<DeskRow, 'demand'>[],
 ): { text: string; title: string } | null {
   const count = rows.filter(isMover).length;
   if (count === 0) return null;
-  const one = count === 1;
-  const its = one ? 'its' : 'their';
-  const it = one ? 'it' : 'them';
-  return {
-    text: `${count} moving`,
-    title:
-      `${count} ${one ? 'name is' : 'names are'} on the board for ${its} move from the prior close, not ${its} RVOL rank. ` +
-      `Under the Rank and RVOL sorts ${one ? 'it follows' : 'they follow'} the ranked names, so Top 12, 25 or 50 can leave ${it} off. ` +
-      `Any other sort places ${it} by ${its} own value.`,
-  };
+  const title =
+    count === 1
+      ? '1 name on the board is marked moving: it made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave it off. Any other sort places every name by its own value.'
+      : `${count} names on the board are marked moving: each made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave some of them off. Any other sort places every name by its own value.`;
+  return { text: `${count} moving`, title };
 }
 
 /* ------------------------------------------------------------------------- *

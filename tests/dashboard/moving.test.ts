@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { DeskRow } from '@/lib/dashboard/merge';
-import { isMover, movingCaption, movingNote } from '@/lib/dashboard/view';
+import { isMover, isRankedMover, movingCaption, movingNote } from '@/lib/dashboard/view';
 
 /*
  * His ruling, 2026-10-01T15:36:50Z: a mover is an ordinary row "labeled as
@@ -13,13 +13,18 @@ type Row = Pick<DeskRow, 'demand' | 'telemetry'>;
 
 function row(options: {
   mover: boolean;
+  /** A ranked row the rule selected: `moving: true` with no boardReason. */
+  ranked?: boolean;
   pct?: number | null;
   volume?: number | null;
   rank?: number | null;
+  basis?: 'PRIOR_SESSION' | 'CURRENT_SESSION' | null;
 }): Row {
   return {
     demand: {
-      ...(options.mover ? { boardReason: 'MOVER' as const } : {}),
+      ...(options.mover && !options.ranked ? { boardReason: 'MOVER' as const } : {}),
+      ...(options.mover && options.ranked ? { moving: true as const } : {}),
+      referenceRthCloseBasis: options.basis === undefined ? 'PRIOR_SESSION' : options.basis,
       percentChange: options.pct ?? null,
       cumulativeVolume: options.volume ?? null,
     },
@@ -84,13 +89,45 @@ describe('movingCaption', () => {
     const one = movingCaption([row({ mover: false }), row({ mover: true }), row({ mover: false })]);
     expect(one?.text).toBe('1 moving');
     expect(one?.title).toBe(
-      '1 name is on the board for its move from the prior close, not its RVOL rank. Under the Rank and RVOL sorts it follows the ranked names, so Top 12, 25 or 50 can leave it off. Any other sort places it by its own value.',
+      '1 name on the board is marked moving: it made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave it off. Any other sort places every name by its own value.',
     );
 
     const three = movingCaption([row({ mover: true }), row({ mover: false }), row({ mover: true }), row({ mover: true })]);
     expect(three?.text).toBe('3 moving');
     expect(three?.title).toBe(
-      '3 names are on the board for their move from the prior close, not their RVOL rank. Under the Rank and RVOL sorts they follow the ranked names, so Top 12, 25 or 50 can leave them off. Any other sort places them by their own value.',
+      '3 names on the board are marked moving: each made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave some of them off. Any other sort places every name by its own value.',
     );
+  });
+
+  it('counts a ranked mover (IPDN) beside the unranked ones', () => {
+    const caption = movingCaption([row({ mover: true }), row({ mover: true, ranked: true }), row({ mover: false })]);
+    expect(caption?.text).toBe('2 moving');
+  });
+});
+
+describe('a ranked mover (Integration 31st, IPDN 2026-10-06)', () => {
+  it('is labelled moving, and its hover says what it did, never why it is on the board', () => {
+    const ipdn = row({ mover: true, ranked: true, pct: 70.04, volume: 19_300_000, rank: 14 });
+    expect(isMover(ipdn)).toBe(true);
+    expect(isRankedMover(ipdn)).toBe(true);
+    expect(movingNote(ipdn)?.title).toBe('Also a mover. Up 70.0% from the prior close on 19.3M shares since 04:00 ET. RVOL rank 14.');
+    expect(movingNote(ipdn)?.title).not.toMatch(/on the board for|outside the ranking/);
+  });
+
+  it('an unranked mover keeps its as-built hover, and is not a ranked mover', () => {
+    expect(isRankedMover(row({ mover: true, rank: 120 }))).toBe(false);
+  });
+});
+
+describe('"from the prior close" only when it is (Commercial 17b)', () => {
+  it('a row measured from the current session close, or with no basis, is not labelled or counted, either kind', () => {
+    for (const basis of ['CURRENT_SESSION', null] as const) {
+      for (const ranked of [false, true]) {
+        const r = row({ mover: true, ranked, pct: 40, volume: 5_000_000, rank: ranked ? 9 : 90, basis });
+        expect(isMover(r)).toBe(false);
+        expect(movingNote(r)).toBeNull();
+        expect(movingCaption([r])).toBeNull();
+      }
+    }
   });
 });

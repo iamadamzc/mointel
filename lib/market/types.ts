@@ -326,6 +326,11 @@ export interface DemandState {
    * (`boardMovers.ts`). Absent on a ranked row. The "moving" label is Design's.
    */
   boardReason?: 'MOVER';
+  /**
+   * The mover rule selected this name although it is already in the RVOL ranking (Integration 31st;
+   * the server sets it on every read, never stores it). Absent: not selected, or not set by this server.
+   */
+  moving?: true;
 
   price: number | null;
   priceSource: PriceSource | null;
