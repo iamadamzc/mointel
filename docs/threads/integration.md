@@ -1628,6 +1628,15 @@ CUT 2 (TONIGHT)  HIS CHOICE "cut 2" read at his turn (transcript a55449cd, 2026-
                  (runtime.ts ~1942-1960), diagnose.ts length + meta.provider. ORDER APPROVED to Ops. Scratch removed.
                  Writes/restart = his go in Ops's chat. Ops's answers on production-only code, claimQueuedJobs, range cache:
                  ops.md local 7a1d31bd (to read).
+DESIGN P1+P3     bc7223e3 local, not gated: 52cced3e + P3 grade sort chip (hidden until wired) + P1 float column/faces from v16
+                 (link /are-float-quotes-real as working value; path is his, with Web's question). Tip to me when gated.
+P10 AUDIT        Design (read-only, evidence kept): SHOWN rows 8, 9, 11, 16, 19, 23. GAPS 4, 5, 12, 13, 14, 15, 17, 18, 21, 24.
+                 Contract field-contract-final section 4 READ: those rows FINAL ("mapping unchanged") under his 10-03 Sheet
+                 ruling -> APPROVED work; ORDER mine: first 4, 12, 14, 17, 21 (SHEET-FED today, vanish at Sheet step 4),
+                 then 13, 15, 18, 5, 24. Three states always; a label whose MEANING changes comes to me; payload changes
+                 enumerate callers. SEQUENCING RULE: Sheet plan step 4 does NOT ship before rows 4, 12, 14, 17, 21 are
+                 rebuilt and live. P5 revised-grade tag: contract row 3 FINAL, no new ruling; waits on Ops storing the
+                 09:25 grade + Marketing words. (Corrects my earlier "P5 needs his ruling".)
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
