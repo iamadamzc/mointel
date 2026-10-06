@@ -44,6 +44,15 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
+## Live state: 2026-10-06 01:45 UTC / 21:45 ET (tenth seat, same id local_83b5b7ec, reset in place; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
+
+- **Production (Ops /proc 2026-10-06T01:34:25Z):** every process on `10cb60c3` (cut 2). **Cut 3 `385e6129` SHIPS tonight after the 22:00 ET recap, as is**: his ruling "yes, ship it" 2026-10-06T01:43:44Z, with the row 4 country hover defect known (below).
+- **CUT 4 CANDIDATE `f0748725` (tag `design/cut4-candidate-f0748725`), base cut 3, UNGATED, gate requested of Ops.** 11 commits: ISSUANCE_FILED maps to the issued-since sentence (Commercial 5p); the grade sort chip; rows 14, 13, 18, 24 (patch-identical to the gated originals at `design/next-cut-gated-5831445d`); Marketing's words for every held string (`e795a48e`); row 4 fix (`a453979e`); float popover lined-up clause from v20 (`f0748725`). `design/cut3-country-fix-e105d9e6` is superseded (cut 3 ships as is).
+- **Row 4 country, Commercial 8a (`102596d0`), Integration's option (b):** `dossier.country` is model-written and checked against nothing, so the SEC "business address" hover was false for some names (in cut 3, in production after tonight). Cut 4: a dossier country carries "Country as recorded in the desk's research."; a Sheet country carries no hover. The SEC sentence returns only when `issuer_registry.country` reaches a browser payload (an Ops/Research field, none exists) and the row reads `edgarCountry` of it.
+- **Strings:** everything on the counted list is now worded (Marketing 0e1e90e7, 02ec44ab, 73cdc4bc, 1cf3d14f, a9c33f0e). ONE string the count missed: the sort caption `metric: 'setup grade, A first'` in `components/DiscoveryBoard.tsx`; asked of Marketing.
+- **Next, in order (Integration 29th):** the 22:00 to 04:00 ET inline-briefing read on a review link; row 5 RTH close and after-hours halves (UI only; the premarket third waits on an Ops field); Warning Shot and morning check only when Integration says (Marketing v3 words, Commercial passed). Waiting, do not build: rows 15, 17, 21.
+- **Model:** Opus 5.5 from 2026-10-06 (he switched it on this seat's recommendation).
+
 ## Live state: 2026-10-05 22:33 UTC / 18:33 ET (ninth seat local_83b5b7ec; clock read via zoneinfo)
 
 **Nothing of Design's is running.** Everything Design built is on pushed `design/*` tags, none on local main. Worktrees: `A:\mointel-design` (detached on the gated S3 tip), `A:\mointel-designdoc` (docs only). The previous live block, with every row's full history, is in [`design-archive-2026-09.md`](design-archive-2026-09.md), section "design.md live state at the eighth seat's hand-off".
