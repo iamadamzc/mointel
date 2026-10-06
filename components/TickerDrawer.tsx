@@ -22,6 +22,8 @@ import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StoredLevelLadder } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
+import { SESSIONS_WORDS, afterHoursLine, closeLine } from '@/lib/dashboard/sessionsView';
+import type { DemandState } from '@/lib/market/types';
 import type { CycleLevels } from '@/lib/data/cycleLevels';
 import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
 import {
@@ -559,6 +561,8 @@ function Demand({ row }: { row: DeskRow | null }) {
         />
       </div>
 
+      <SessionsGroup demand={demand} />
+
       <p className="mt-3 text-[10px] leading-relaxed text-ink-3">
         Baseline: {demand.baselineSessions ?? 0} eligible full sessions,{' '}
         {demand.baselineAdjustment ?? 'unknown'}-adjusted, average{' '}
@@ -900,6 +904,41 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       </h3>
       {children}
     </section>
+  );
+}
+
+/**
+ * Contract row 5: the regular-session close and today's after hours, from the
+ * market engine (`lib/dashboard/sessionsView.ts`). Each after-hours figure
+ * carries its own hover, so an Unknown part says why without hiding the others.
+ */
+function SessionsGroup({ demand }: { demand: DemandState }) {
+  const close = closeLine(demand);
+  const ah = afterHoursLine(demand);
+  return (
+    <div className="mt-4">
+      <FieldLabel>{SESSIONS_WORDS.group}</FieldLabel>
+      <div className="mt-1 grid grid-cols-2 gap-x-6 gap-y-3">
+        <Field label={SESSIONS_WORDS.closeLabel} value={close.text} title={close.hover ?? undefined} numeric />
+        <div className="min-w-0">
+          <FieldLabel>{SESSIONS_WORDS.afterHoursLabel}</FieldLabel>
+          <div className="num mt-1 text-[12px] leading-snug break-words text-ink">
+            {ah.parts ? (
+              [ah.parts.price, ah.parts.percent, ah.parts.volume].map((part, i) => (
+                <span key={i} title={part.hover ?? undefined} className={part.state === 'PRODUCED' ? '' : 'text-ink-3'}>
+                  {i > 0 ? ', ' : ''}
+                  {part.text}
+                </span>
+              ))
+            ) : (
+              <span title={ah.hover ?? undefined} className={ah.state === 'PRODUCED' ? '' : 'text-ink-3'}>
+                {ah.text}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
