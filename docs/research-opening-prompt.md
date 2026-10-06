@@ -30,7 +30,8 @@ Everything for the float job is written on branch **`research/float-job`, tip `f
 1. The Ops slot: gate `fdfdfcef` (tests listed in the GATE CANDIDATE line), then run the insider-sale measurement, the reuse coverage count, the split-source measurement, the issuance miss-rate measurement. Raw committed before it is read; results to Integration as committed files. A material coverage move or a material share of the morning board reading Cannot verify goes to him through Integration.
 2. Before `RESEARCH_FLOAT_JOB` is ever on: gated S1, R-A, the reader; Marketing's `FILINGS_NOT_REREAD` words with Commercial's pass; peak RSS measured (Ops); his yes. Design wires `readFloatBoundsAt` into the snapshot.
 3. Report tags (item 8): **a question is open with Integration**; the report code carries no Sheet priority, so the item would ADD the Setup grade to reports; do not build until answered.
-4. v6 narrative steps 3 to 6 on `research/reports-v6` (`A:/mointel-v6`, head `759465bc`): step 3 is next; step 6 needs a spend yes.
+4. v6 narrative steps 3 to 6 on `research/reports-v6` (`A:/mointel-v6`, head `759465bc`): step 3 is next; step 6 needs a spend yes; no sample to him before step 4 prints the no-close and split-excluded footnotes (Integration's conditions, in the 2026-10-05T00:36Z hand-off block).
+5. The desk's performance record (`desk_call_outcomes`, approved 2026-10-04, not built, no file carries it): a pre-registered design note first, after v6 step 3 (PENDING BUILDS row 12).
 
 ### How this seat failed, as mechanisms (all in its ERROR LEDGER)
 
