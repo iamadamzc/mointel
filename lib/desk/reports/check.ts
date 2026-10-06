@@ -272,10 +272,15 @@ function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates:
  *   a connective after it is inside the news ("with news of a split amid a
  *   financing"). "on the day" and "after the close" are frames, and "news on X"
  *   is a topic.
+ * LIMITS (Commercial 14): a cause placed BEFORE the move ("After the filing, it
+ * ran 68 percent from the prior close") is not read; "as" is not a connective
+ * here ("as of", "such as" would strike true text); a "%" sign form is not read;
+ * one frame per clause admits a second unframed move in it. The model checker
+ * still reads all of these.
  */
 const MOVE = /\b(?:(?:up|down)\s+\d[\d,.]*\s+percent|(?:ran|rose|gained|added|jumped|climbed|surged|fell|dropped|slid|lost)(?:\s+to)?\s+\d[\d,.]*\s+percent|ran\s+(?:at least|past)\s+\d[\d,.]*\s+percent|print(?:ed|ing) a new high)\b/gi;
 const FRAME = /\b(?:the prior close|the previous close|the 16:00 close|the regular-session close|after the close|after hours|after-hours)\b/i;
-const CAUSAL = /\b(?:after|following|on|amid|due to|because of|driven by|thanks to)\b/gi;
+const CAUSAL = /\b(?:after|following|on|amid|due to|because of|driven by|thanks to|in response to|in the wake of)\b/gi;
 /** A connective that is a frame is not causal. */
 const FRAME_AT = /^(?:on (?:the day|the session)|after (?:the close|hours)|after-hours)\b/i;
 /** "on" after one of these names a topic ("news on X"). */

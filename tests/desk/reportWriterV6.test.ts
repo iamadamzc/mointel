@@ -94,7 +94,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(sheet).toContain('of those, gave the entire move back (closed at or below the prior close): 0');
     expect(sheet).toContain('of those, kept at least half of the peak gain at the close: 4');
     expect(sheet).toContain('of those, the desk covers: 5');
-    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent on the day; news: fresh news found in our sources');
+    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent from the prior close; news: fresh news found in our sources');
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('cycle: frontside with a warning');
     const ah = sheet.find((l) => l.startsWith('after the close'))!;
     expect(ah).toContain('ALWAYS say "after the close" or "after hours"');
