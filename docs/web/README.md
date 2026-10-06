@@ -1,9 +1,8 @@
 # The public surface — what Web owns, and what it needs from others
 
-**AS OF 2026-10-05 22:52 UTC (Web hand-off, local_a4c618a8): NOT re-read end to end in this pass.** *Two
-surfaces were added on 2026-10-05 that this file does not describe yet: the ENTRY GATE (`/enter`,
-`POST /auth/accept`; design in `2026-10-05-entry-gate-placement.md`) and `/auth/signout` now answering 303
-to `/`. The charter's LIVE STATE is current and wins over everything here.*
+**AS OF 2026-10-06 (Web, local_fe13d183): section 2c added for the entry gate and the signout 303, read off
+the code on origin/main `91eb0446`; neither is live until Ops's cut `d1e7ba9d` ships. The rest NOT re-read end
+to end in this pass.** *The charter's LIVE STATE is current and wins over everything here.*
 
 **RE-READ 2026-10-04 23:29 UTC by the successor Web seat, at hand-off: section 3's placeholder row is CLOSED (filled with the gate wiring, live 2026-10-03; the public site now renders no `[BRACKET]` at all, read by `placeholder-scan.py`). Sections 1, 2, 2b, 4 and 5 were not re-read end to end in that pass.**
 
@@ -364,6 +363,26 @@ the callback gate; that option is closed.* **The price is now owed rather than
 hypothetical — every refused person holds a live session, so the mid-session
 downgrade is common, and the board behaviour Design specified is obligatory
 before enforcement ships.** *Told to Design directly.*
+
+---
+
+## 2c. THE ENTRY GATE AND THE SIGNOUT 303 (built 2026-10-05, in cut `d1e7ba9d`)
+
+*Read off the code, not a summary. Design and its two gaps: `2026-10-05-entry-gate-placement.md`.*
+
+- **A fourth admission state, `unaccepted`** (`lib/auth/gate.ts`): invited, but has not accepted the CURRENT
+  entry text. The version is a hash of the text (`ENTRY_GATE_VERSION`, `lib/legal/entryGate.ts`), so any edit
+  to that file asks every user again, and any word change is new legal text (Commercial, then him).
+- **`/enter`** (`app/enter/page.tsx`, screen `components/EntryGate.tsx`) renders only for `unaccepted`:
+  anonymous goes to `/signin`, refused gets 403, admitted goes to `/desk`. `noindex`.
+- **`POST /auth/accept`** records one append-only row in `entry_acceptances` for the version the person was
+  shown; a stale version is sent back to `/enter`.
+- **Data routes answer an `unaccepted` session 403 `{"error":"not accepted"}`** (`lib/auth/requestGate.ts`).
+- **DECLINE is a sign-out.** Nothing is recorded, so the gate appears again on the next entry.
+- **`POST /auth/signout` answers 303 to `/`.** It answered 200 with no body, which left the refusal screen's
+  Sign out on a blank page in production.
+- **Behind Basic Auth `/enter` is 401 from outside like `/desk`.** At Basic Auth removal it needs its own
+  `= /enter` exemption, in the same batch as `= /signin` and `^~ /auth/` (charter OPEN).
 
 ---
 
