@@ -652,3 +652,12 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 ## 9h. The split percent faces (Marketing `387b2ff0`), fourth tenure, 2026-10-06: PASS
 
 Two faces, one per case: a provisional close shown and the daily bar's close absent reads "No final close" ("The change is measured from the daily bar's close for {date}, which the desk does not have."); no close shown at all reads "No close". The "No close" hover is true in either form, "The desk has no close to measure the change from." or the earlier "...no regular-session close..." (nothing is shown, so no source is claimed); the file at `387b2ff0` still carries the longer one as its primary string with the shorter given as the alternative, so the shorter is the string to build. The split is more exact than one string and passes with 9g's conditions unchanged (footnote sentence omitted for a simulator source).
+
+
+## 9i. The built row 5 revisions (Design `146168ac`, tag design/row5-candidate-146168ac; the AH Gap title in `eec1f530`), fourth tenure, 2026-10-06: PASS
+
+*Read: the diff of `146168ac` against `563c947e` for `sessionsView.ts` and `TickerDrawer.tsx`, `view.ts` at the commit, and the adjustment values in `lib/market/alpaca/rest.ts:218` (raw, split, dividend, all). Not read: the tests.*
+
+- **Percent cell:** "No final close" with "The change is measured from the daily bar's close for {date}, which the desk does not have." when the close line shows the provisional trade, decided by the same test `closeLine` uses (so the two lines cannot disagree), and "No close" with "The desk has no close to measure the change from." otherwise. As ruled in 9h.
+- **Footnote:** "Percent change is measured from the {current|prior} session's close ({date}), taken from {the daily bar | the Sheet | a source the desk did not record}. Prior session close $X." with no clock and no engine constant; the sentence is omitted for a simulator source or no reference close (9g condition met); the adjustment prints only as "split-adjusted" (split) or "unadjusted" (raw), both true of Alpaca's values, and is omitted for any other; the calculation time is ET with its date ("Oct 6, 16:11 ET"); the raw volume source is no longer printed, which is the safe side. "Level 1 spread only. This is not depth." is unchanged and not part of this read.
+- **AH Gap title:** "Change from today's close" at `view.ts` in `146168ac`.
