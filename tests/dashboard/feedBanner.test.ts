@@ -4,7 +4,17 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 import { FeedBanner } from '@/components/FeedBanner';
-import { bannerTime, feedBanner, type FeedBannerInput } from '@/lib/dashboard/feedBanner';
+import { MarketStatus } from '@/components/MarketStatus';
+import {
+  bannerTime,
+  chipText,
+  feedBanner,
+  priceSourceTitle,
+  telemetryTitle,
+  type FeedBanner as FeedBannerState,
+  type FeedBannerInput,
+} from '@/lib/dashboard/feedBanner';
+import { FeedBannerProvider } from '@/lib/hooks/useFeedBanner';
 
 // 15:58:07 ET on 2026-10-05 (EDT, UTC-4).
 const AT = '2026-10-05T19:58:07.000Z';
@@ -108,7 +118,7 @@ describe('the words stay inside what Marketing allowed', () => {
 describe('the component and its place', () => {
   it('prints nothing when there is no banner and one status line when there is', () => {
     expect(renderToStaticMarkup(createElement(FeedBanner, { banner: null }))).toBe('');
-    const html = renderToStaticMarkup(createElement(FeedBanner, { banner: { cause: 'DATA_OLD', text: 'x' } }));
+    const html = renderToStaticMarkup(createElement(FeedBanner, { banner: { cause: 'DATA_OLD', text: 'x', time: '15:58:07', minutes: 14 } }));
     expect(html).toContain('role="status"');
     expect(html).toContain('whitespace-nowrap');
     expect(html).toContain('data-feed-banner="DATA_OLD"');
@@ -119,5 +129,74 @@ describe('the component and its place', () => {
     expect(shell).toMatch(/<\/MarketSummary>\s*<FeedBanner banner=\{banner\} \/>/);
     expect(shell).toContain('receivedAt: market.snapshot?.fetchedAt ?? null');
     expect(shell).toContain('dataAt: market.snapshot?.health.lastMessageAt ?? null');
+  });
+});
+
+describe('the surfaces that would claim live while the banner is up', () => {
+  const A: FeedBannerState = { cause: 'UNREACHABLE', text: 'a', time: '15:58:07', minutes: null };
+  const B: FeedBannerState = { cause: 'DATA_OLD', text: 'b', time: 'Oct 2, 15:58:07', minutes: 14 };
+  const C: FeedBannerState = { cause: 'NEVER', text: 'c', time: null, minutes: null };
+
+  it('words the header chip in the three causes, with no feed name', () => {
+    expect(chipText(A)).toBe('Market: no connection, last data 15:58:07 ET');
+    expect(chipText(B)).toBe('Market: data 14 min old, as of Oct 2, 15:58:07 ET');
+    expect(chipText(C)).toBe('Market: no data received');
+    for (const banner of [A, B, C]) expect(chipText(banner), banner.cause).not.toMatch(/alpaca|sip|live/i);
+  });
+
+  it('words the price-source tooltip and the drawer title', () => {
+    expect(priceSourceTitle(A)).toBe('Last market data received, 15:58:07 ET');
+    expect(priceSourceTitle(B)).toBe('Last market data received, Oct 2, 15:58:07 ET');
+    expect(priceSourceTitle(C)).toBe('No market data received since this page opened');
+    expect(telemetryTitle(A)).toBe('Market Telemetry');
+    expect(telemetryTitle(null)).toBe('Live Market Telemetry');
+  });
+
+  const view = {
+    state: 'LIVE',
+    label: 'Market: ALPACA SIP · LIVE',
+    detail: 'Streaming',
+    tone: 'pos',
+    live: true,
+    connection: 'STREAMING',
+    freshness: 'FRESH',
+    messageAgeSeconds: 1,
+    heartbeatAgeSeconds: 1,
+    thresholds: { freshSeconds: 90, staleSeconds: 240 },
+  };
+  const chip = (banner: FeedBannerState | null) =>
+    renderToStaticMarkup(
+      createElement(
+        FeedBannerProvider,
+        { banner } as never,
+        createElement(MarketStatus, {
+          health: {} as never,
+          marketHealth: view as never,
+          discovery: null,
+          mounted: true,
+        }),
+      ),
+    );
+
+  it('the chip stops claiming live and stops pulsing while the banner is up, and reverts when it clears', () => {
+    const up = chip(A);
+    expect(up).toContain('Market: no connection, last data 15:58:07 ET');
+    expect(up).not.toContain('ALPACA');
+    expect(up).not.toContain('live-dot');
+    const down = chip(null);
+    expect(down).toContain('ALPACA SIP');
+    expect(down).toContain('live-dot');
+    expect(down).not.toContain('no connection');
+  });
+
+  it('all three price-source surfaces and the drawer title read the same state, not a copy of it', () => {
+    for (const file of ['components/TickerDrawer.tsx', 'components/DeskRead.tsx', 'components/FocusStrip.tsx']) {
+      const source = readFileSync(file, 'utf8');
+      expect(source, file).toContain('useFeedBanner()');
+      expect(source, file).toContain('priceSourceTitle(feedBanner)');
+      // The normal-state wording is kept for the normal state.
+      expect(source, file).toContain("'Live Alpaca market data'");
+    }
+    expect(readFileSync('components/TickerDrawer.tsx', 'utf8')).toContain('telemetryTitle(feedBanner)');
   });
 });

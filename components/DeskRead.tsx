@@ -13,6 +13,8 @@
  */
 
 import { RetryAnalysis } from '@/components/RetryAnalysis';
+import { priceSourceTitle } from '@/lib/dashboard/feedBanner';
+import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
 import type {
   DeskConclusion,
@@ -176,6 +178,7 @@ function Narrative({
 }
 
 export function DeskReadPanel({ read }: { read: DeskRead }) {
+  const feedBanner = useFeedBanner();
   const t = read.telemetry;
 
   return (
@@ -196,7 +199,9 @@ export function DeskReadPanel({ read }: { read: DeskRead }) {
             tone={t.source === 'ALPACA' ? 'accent' : 'dim'}
             title={
               t.source === 'ALPACA'
-                ? 'Live Alpaca market data'
+                ? feedBanner
+                  ? priceSourceTitle(feedBanner)
+                  : 'Live Alpaca market data'
                 : 'Google Sheet value. No live market data for this ticker.'
             }
           />

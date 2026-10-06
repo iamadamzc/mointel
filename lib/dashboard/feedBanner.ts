@@ -33,6 +33,10 @@ export type FeedBannerCause = 'UNREACHABLE' | 'NEVER' | 'DATA_OLD';
 export interface FeedBanner {
   cause: FeedBannerCause;
   text: string;
+  /** The last number's time as printed ("15:58:07" or "Oct 2, 15:58:07"), with no zone; null for NEVER. */
+  time: string | null;
+  /** Whole minutes old, DATA_OLD only. */
+  minutes: number | null;
 }
 
 const CLOCK = new Intl.DateTimeFormat('en-US', {
@@ -85,14 +89,19 @@ export function feedBanner(input: FeedBannerInput): FeedBanner | null {
 
   if (failure && failure.kind === 'TRANSPORT') {
     if (!input.hasSnapshot) {
-      return { cause: 'NEVER', text: 'This page cannot reach the desk. No numbers have been received since this page opened.' };
+      return { cause: 'NEVER', text: NEVER_TEXT, time: null, minutes: null };
     }
     const at = bannerTime(input.receivedAt, input.nowIso);
     // A last-received time that cannot be read is the NEVER sentence's honest twin, not a guessed time.
     if (at === null) {
-      return { cause: 'NEVER', text: 'This page cannot reach the desk. No numbers have been received since this page opened.' };
+      return { cause: 'NEVER', text: NEVER_TEXT, time: null, minutes: null };
     }
-    return { cause: 'UNREACHABLE', text: `This page cannot reach the desk. The numbers below are the last ones received, at ${at} ET.` };
+    return {
+      cause: 'UNREACHABLE',
+      text: `This page cannot reach the desk. The numbers below are the last ones received, at ${at} ET.`,
+      time: at,
+      minutes: null,
+    };
   }
   if (failure) return null; // UNAUTHORIZED: its own line, not this one.
 
@@ -109,5 +118,35 @@ export function feedBanner(input: FeedBannerInput): FeedBanner | null {
   return {
     cause: 'DATA_OLD',
     text: `The desk's market data was last updated at ${at} ET, ${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago. The numbers below are as of then.`,
+    time: at,
+    minutes,
   };
+}
+
+const NEVER_TEXT = 'This page cannot reach the desk. No numbers have been received since this page opened.';
+
+/**
+ * THE OTHER SURFACES THAT WOULD CLAIM LIVE WHILE THE BANNER IS UP, reworded in
+ * Marketing's strings (2026-10-05), and reverting on the same render the banner
+ * clears because they read the same state. No feed name in any of them: after a
+ * failed poll the page cannot say which feed is current.
+ */
+
+/** The header chip's words while the banner is up. */
+export function chipText(banner: FeedBanner): string {
+  if (banner.cause === 'NEVER') return 'Market: no data received';
+  if (banner.cause === 'DATA_OLD') return `Market: data ${banner.minutes} min old, as of ${banner.time} ET`;
+  return `Market: no connection, last data ${banner.time} ET`;
+}
+
+/** The price-source tooltip that said "Live Alpaca market data", while the banner is up. */
+export function priceSourceTitle(banner: FeedBanner): string {
+  return banner.cause === 'NEVER'
+    ? 'No market data received since this page opened'
+    : `Last market data received, ${banner.time} ET`;
+}
+
+/** The drawer section title: "Live" drops while the banner is up. */
+export function telemetryTitle(banner: FeedBanner | null): string {
+  return banner ? 'Market Telemetry' : 'Live Market Telemetry';
 }
