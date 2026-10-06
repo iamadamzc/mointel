@@ -170,7 +170,7 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
   });
 
   it('W2: a connective that makes the news the cause is struck (CAUSAL_WORDING)', () => {
-    for (const word of ['after', 'on', 'following', 'amid', 'due to']) {
+    for (const word of ['after', 'on', 'following', 'amid', 'due to', 'on the back of', 'in response to', 'in the wake of']) {
       expect(reasons(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
     }
     expect(reasons('BBB printed a new high after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
