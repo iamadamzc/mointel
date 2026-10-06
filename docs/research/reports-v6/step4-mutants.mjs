@@ -4,7 +4,7 @@
 // Each `from` must occur EXACTLY once (else INVALID, never run); the edit is applied, the two test files run, the
 // failing-test count is recorded against the prediction, and the file is restored byte for byte. M0 (no edit) runs
 // first and must fail 0 tests, or nothing else runs. --dry checks the matches only and runs no test.
-// Test ids in "which": F the narrativeFootnotes test (reportNarrative), P the v6 publish test (reportPipeline).
+// Test ids in "which": F the narrativeFootnotes test (reportNarrative), P the v6 publish test (reportPipeline), R the recap run test (reportPipeline, added on Integration 30th's condition).
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -21,7 +21,10 @@ const M = [
   ['S4a', NA, 'if (facts.noClose === null && facts.splitExcluded === null) return null;', '', 2, 'an intraday report carries empty footnotes', 'F, P'],
   ['S4b', NA, 'facts.noClose === null && facts.splitExcluded === null', 'facts.noClose === null || facts.splitExcluded === null', 1, 'one null count hides the other', 'F'],
   ['S4c', NA, 'return { noClose: facts.noClose, splitExcluded: facts.splitExcluded };', 'return { noClose: facts.noClose ?? 0, splitExcluded: facts.splitExcluded ?? 0 };', 1, 'a null count read as zero', 'F'],
-  ['S4d', 'lib/desk/reports/pipeline.ts', 'narrativeFootnotes: narrativeFootnotes(inputs.narrative),', '', 1, 'the report never carries the footnotes', 'P'],
+  ['S4d', 'lib/desk/reports/pipeline.ts', 'narrativeFootnotes: narrativeFootnotes(inputs.narrative),', '', 2, 'the report never carries the footnotes', 'P, R'],
+  // Added with test R (Integration 30th: nothing pinned the recap wiring; this mutant survived every test before R), BEFORE any run.
+  // S4a-S4c re-traced against R: unchanged (R's counts are both non-null, so none of their lines changes its result); S4d 1 -> 2 (R reads undefined).
+  ['S4e', 'lib/desk/reports/pipeline.ts', 'narrativeFootnotes: narrativeFootnotes(inputs.narrative),', 'narrativeFootnotes: null,', 1, 'the recap carries null footnotes', 'R'],
 ];
 
 if (process.argv.includes('--dry')) {
