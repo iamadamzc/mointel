@@ -403,6 +403,33 @@ describe('duplicate TODAY rows', () => {
   });
 });
 
+describe('the regular-session high is not printed from the 04:00-16:00 high (Integration 30th)', () => {
+  const types = (row: ReturnType<typeof buildDeskRow>) =>
+    new Set([...row.levelMap.above, ...row.levelMap.below].flatMap((zone) => zone.members.map((m) => m.type)));
+  const rthFinal = { close: 6.1, high: 7.25, low: 5.5, volume: 3_000_000, rvol: 3, rvolRank: 1, frozenAt: null };
+
+  it('after hours: rthFinal.high present gives no RTH_HIGH level; the session high and the after-hours high stay', () => {
+    const afterHours = { ...emptyAfterHours(), high: 6.9 };
+    const row = buildDeskRow('ACME', null, null, demand('ACME', { price: 6.22, sessionHigh: 6.48, rthFinal, afterHours }), null, null, {
+      sessionPhase: 'AFTER_HOURS',
+    });
+    const seen = types(row);
+    expect(seen.has('RTH_HIGH')).toBe(false);
+    expect(seen.has('HOD')).toBe(true);
+    expect(seen.has('AH_HIGH')).toBe(true);
+    expect(JSON.stringify(row.levelMap)).not.toContain('regular-session high');
+  });
+
+  it('premarket: no RTH_HIGH either, and the premarket high stays', () => {
+    const row = buildDeskRow('ACME', null, null, demand('ACME', { price: 6.22, sessionHigh: 6.48, rthFinal }), null, null, {
+      sessionPhase: 'PREMARKET',
+    });
+    const seen = types(row);
+    expect(seen.has('RTH_HIGH')).toBe(false);
+    expect(seen.has('PM_HIGH')).toBe(true);
+  });
+});
+
 describe('level map view model', () => {
   it('reaches the desk row already grouped and measured', () => {
     // The component must receive structured levels, not prose to re-parse.

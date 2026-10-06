@@ -451,7 +451,15 @@ export function buildDeskRow(
       // makes the trader work out which session made the level.
       sessionHigh: context.sessionPhase === 'PREMARKET' ? null : telemetry.sessionHigh,
       premarketHigh: context.sessionPhase === 'PREMARKET' ? telemetry.sessionHigh : null,
-      rthHigh: demand?.rthFinal?.high ?? null,
+      /*
+       * NOT BUILT while its only source is `rthFinal.high` (Integration 30th, 2026-10-06): that
+       * is the 04:00-16:00 high, which Ops measured as different from the regular-session high
+       * on 54 of 57 differing rows (premarket set it), so the ladder printed a premarket price
+       * labelled "regular-session high". The requirement is a regular-session-only value or no
+       * level. The engine computes one (`sessionExtremes.regular.high`) but the store does not
+       * keep it; Ops's RTH-only column feeds this input when it lands.
+       */
+      rthHigh: null,
       afterHoursHigh: demand?.afterHours.high ?? null,
       sessionVwap:
         telemetry.vwap && telemetry.vwap.vwap !== null
