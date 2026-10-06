@@ -38,7 +38,7 @@ import {
 import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 
 /** Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 8;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 9;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -183,6 +183,8 @@ const NARRATIVE_RULES = [
   '- Name ONLY the tickers the narrative facts name. They are GAINERS, chosen by the day\'s high on the recap and by the move intraday: never call them the biggest movers in both directions, never "every mover" or "all the runners".',
   '- After-hours figures are ALWAYS labeled "after the close" or "after hours" and never mixed with the day\'s figures.',
   '- A catalyst is news FOUND in our sources, never a cause: never "drove", "sparked", "fueled", "behind the move", "on the news".',
+  '- A move and its news sit side by side, never cause and effect: join them with "with" ("up 68 percent from the prior close, with fresh news found in our sources"), never "after", "on", "following", "amid" or "due to" between a move and its news.',
+  '- Every percent move carries its frame in the same sentence: "from the prior close" or "above the prior close"; an after-hours move "after the close" or "after hours". When a sentence states two moves, each carries its own frame.',
   '- No adjective the facts do not define ("busy", "quiet", "hot", "strong"). No forecast: support, resistance and supply are described, never "will hold", "should break" or "expect".',
   '- Intraday report: two or three short sentences, the leader first. Recap report (premarket): five or six short sentences: open with the session\'s pattern, then the named movers and their news, then the after-hours name, then the context into the next session, and end with HOW MANY names the desk carries into the next session, framed as what the desk covers, never "your watchlist". State the COUNT only and never list those tickers: the cards below list them.',
   '- When a count is zero, say so plainly ("none of them gave the entire move back") and drop the clause that depends on it. Number agreement throughout.',

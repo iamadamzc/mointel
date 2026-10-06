@@ -63,8 +63,8 @@ const recap: NarrativeFacts = {
 };
 const reasons = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS).map((f) => f.reason);
 
-const GOOD_INTRADAY = 'AAA leads, down 12 percent from the prior close. BBB is up 51 percent with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
-const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. Into today, NXL sits between $4.90 support and its $10.98 high, with an older high at $19.20 overhead. The desk carries 12 names into today.';
+const GOOD_INTRADAY = 'AAA leads, down 12 percent from the prior close. BBB is up 51 percent from the prior close with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
+const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent above the prior close and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. Into today, NXL sits between $4.90 support and its $10.98 high, with an older high at $19.20 overhead. The desk carries 12 names into today.';
 
 describe('narrativeFindings: the narrative against its computed facts (v2)', () => {
   it('admits the templates worded from the given facts (controls)', () => {
@@ -157,6 +157,36 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
   it('LIMIT, stated: an unanchored swap to another given value passes the rules and is the model\'s to read', () => {
     // kept half (4) written as the covered count (5): both are given.
     expect(reasons(GOOD_RECAP.replace('only four of the nine held', 'only five of the nine held'), recap)).toEqual([]);
+  });
+});
+
+describe('narrativeFindings: the two wording rules (Integration 30th, from the writer comparison verdict notes)', () => {
+  it('W1: a move percent needs its frame in its clause (UNFRAMED_PERCENT); the after-hours frame counts', () => {
+    expect(reasons('BBB is up 51 percent with first-half results.', intraday)).toEqual(['UNFRAMED_PERCENT']);
+    expect(reasons('BBB is up 51 percent from the prior close with first-half results.', intraday)).toEqual([]);
+    expect(reasons('AAA leads, down 12 percent from the prior close; BBB is up 51 percent.', intraday)).toEqual(['UNFRAMED_PERCENT']);
+    expect(reasons('AMOD added 62 percent after hours.', recap)).toEqual([]);
+    expect(reasons('AMOD added 62 percent.', recap)).toEqual(['UNFRAMED_PERCENT']);
+  });
+
+  it('W2: a connective that makes the news the cause is struck (CAUSAL_WORDING)', () => {
+    for (const word of ['after', 'on', 'following', 'amid', 'due to']) {
+      expect(reasons(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
+    }
+    expect(reasons('BBB printed a new high after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
+  });
+
+  it('W3: not causal: "with", a connective inside the news, a frame, a particle, "the following", a topic', () => {
+    expect(reasons('BBB is up 51 percent from the prior close, with fresh news on first-half results.', intraday)).toEqual([]);
+    expect(reasons('BBB is up 51 percent from the prior close with news of a split amid a financing.', intraday)).toEqual([]);
+    expect(reasons('NXL ran to 156 percent above the prior close and closed up 76 percent on the day.', recap)).toEqual([]);
+    expect(reasons('Of the movers that ran at least 50 percent above the prior close, most held on.', recap)).toEqual([]);
+    expect(reasons('BBB is up 51 percent from the prior close into the following session.', intraday)).toEqual([]);
+    expect(reasons('BBB is up 51 percent from the prior close, and reporting on first-half results was found in our sources.', intraday)).toEqual([]);
+  });
+
+  it('W4: each move in a clause is read up to the next move, so a second move cannot hide behind the first one and its "with"', () => {
+    expect(reasons('AAA leads, down 12 percent from the prior close with no news found, while BBB is up 51 percent after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
   });
 });
 
