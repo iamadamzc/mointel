@@ -176,6 +176,8 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.diagnostics.strikes).toEqual([]);
     expect(run.report.narrative).toBe(NARRATIVE);
     expect('overall' in run.report).toBe(false);
+    // Step 4: the intraday kinds carry no footnotes (G and the split count are the recap's).
+    expect(run.report.narrativeFootnotes).toBeNull();
   });
 
   it('a narrative number that is no computed fact is struck by rule; the names still publish', async () => {

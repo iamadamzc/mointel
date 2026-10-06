@@ -45,7 +45,7 @@ import { rangeKey, readAssessmentRanges, type AssessmentTickerRecord } from '../
 import { dailyBarBasis } from '../../research/history';
 import type { CatalystStatus, SupplyBlockStatus, SupplyBlockType } from '../../research/types';
 import { decodeLevels } from '../assessment';
-import type { ReportKind } from './contract';
+import type { NarrativeFootnotes, ReportKind } from './contract';
 import type { ReportFact } from './facts';
 import type { ReportResearch } from './research';
 import { reportableChangeNotes } from './writer';
@@ -171,6 +171,16 @@ export interface NarrativeFacts {
 
 export function isRecap(kind: ReportKind): boolean {
   return kind === 'PREMARKET';
+}
+
+/**
+ * Build step 4: the counts that left the prose (N11), as the report's own
+ * computed field. Null when the facts carry neither (the intraday kinds); a
+ * count the facts hold as null stays null, never a zero.
+ */
+export function narrativeFootnotes(facts: Pick<NarrativeFacts, 'noClose' | 'splitExcluded'>): NarrativeFootnotes | null {
+  if (facts.noClose === null && facts.splitExcluded === null) return null;
+  return { noClose: facts.noClose, splitExcluded: facts.splitExcluded };
 }
 
 /* ------------------------------------------------------------ split check */

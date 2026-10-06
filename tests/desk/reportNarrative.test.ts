@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { openDatabase, type MarketDatabase } from '@/lib/market/store/db';
 import { insertAssessmentRanges, type AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
-import { narrativeFacts, readFrozenBreadth, readRecapCounts } from '@/lib/desk/reports/narrative';
+import { narrativeFacts, narrativeFootnotes, readFrozenBreadth, readRecapCounts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
 
@@ -335,5 +335,14 @@ describe('narrativeFacts intraday v2: F10 and F13', () => {
     expect(out.intradayNamed![1]).toMatchObject({ status: 'FRESH_FOUND', summary: 'results', basis: 'PRIOR_SESSION' });
     expect(out.intradayNamed![2]).toMatchObject({ status: null, summary: null });
     expect([out.recapLeaders, out.afterHours, out.context, out.splitExcluded]).toEqual([null, null, null, null]);
+  });
+});
+
+describe('narrativeFootnotes (build step 4)', () => {
+  it('carries G and the split count as computed fields on the recap; null on the intraday kinds; a zero is a zero, a null stays null', () => {
+    expect(narrativeFootnotes({ noClose: 3, splitExcluded: 2 })).toEqual({ noClose: 3, splitExcluded: 2 });
+    expect(narrativeFootnotes({ noClose: 0, splitExcluded: 0 })).toEqual({ noClose: 0, splitExcluded: 0 });
+    expect(narrativeFootnotes({ noClose: null, splitExcluded: null })).toBeNull();
+    expect(narrativeFootnotes({ noClose: 1, splitExcluded: null })).toEqual({ noClose: 1, splitExcluded: null });
   });
 });
