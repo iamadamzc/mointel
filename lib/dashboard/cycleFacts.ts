@@ -37,8 +37,12 @@ export const CYCLE_WORDS = {
   /** OWED BY MARKETING: labels for the computed phase and its arithmetic (row 13). */
   phaseLabel: 'Phase',
   measureLabel: 'How it is measured',
-  /** OWED BY MARKETING: prefix for the current run when it is over and counts toward the largest advance. */
-  currentOverPrefix: 'Current run, over: ',
+  /**
+   * Marketing's prefix for the current run when it counts toward the largest advance (BACKSIDE or SHADOW).
+   * Not "over": those are the desk's classifications, and "high was N sessions ago" shows the rest.
+   * Her hover ("past its high") is HELD OUT: SHADOW does not require the close to be below the high.
+   */
+  currentPrefix: 'Current run: ',
 } as const;
 
 export type CycleFactsState = 'PRODUCED' | 'UNKNOWN' | 'NOT_YET';
@@ -91,7 +95,7 @@ export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts
   // The current run is listed first only when it counts toward the largest advance (it is over).
   const countsCurrent = arc.phase === 'BACKSIDE' || arc.phase === 'SHADOW';
   const lines = countsCurrent
-    ? [CYCLE_WORDS.currentOverPrefix + runLine(arc.startDate, arc.cycleHighDate, arc.advancePct, arc.sessionsSinceHigh), ...prior]
+    ? [CYCLE_WORDS.currentPrefix + runLine(arc.startDate, arc.cycleHighDate, arc.advancePct, arc.sessionsSinceHigh), ...prior]
     : prior;
 
   return {
