@@ -47,9 +47,9 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > S1 is built and measured. **Setup grade:** rubric approved, words v3 and legend passed, no outcomes sentence. **Warning
 > Shot (field `evidenceRisk`, label "Risk in the evidence"):** words v3, Research's build strings (the example is
 > "...program of {amount}.", a copied brace is removed, a removal stores no sentence) and Design's surface (dated to the
-> version's `generatedAt`, never a checkpoint; sources beside it or no "cited") all passed; **nothing has run on a real name
-> and the gates are not yours**: typecheck, lint and tests (Research's note says none has run), an Ops slot, his yes by
-> literal sha. The frozen board, reports and exports do not show the sentence yet; read them when built. **Drawer:** row 5
+> version's `generatedAt`, never a checkpoint; sources beside it or no "cited") all passed; **it SHIPPED (production `ce4e297d`, live from 2026-10-06T02:52Z), but no real-name dossier had been written at prompt 4 as of 03:00Z, so the trigger is Research's read of the first one**;
+> Integration (2026-10-06) also named a live "regular-session high" ladder label that is the 04:00 to 16:00 high (ruled a defect fix; any changed string comes here), and Research's v6 writer lines come here when built.
+> The frozen board, reports and exports do not show the sentence yet; read them when built. **Drawer:** row 5
 > (Sessions: close and after hours) built and passed in cut 4 candidate `146168ac`: no clock anywhere, no "regular-session"
 > for a Sheet or unknown source, A5 unreachable and unbuilt; the country hover reads "Country as recorded in the desk's
 > research." (cut 3 shipped with the old SEC hover on his "yes, ship it"; cut 4 carries the fix); the one-day run reads
