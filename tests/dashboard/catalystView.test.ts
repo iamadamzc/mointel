@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-import { catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
+import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
 import type { EvidenceLink } from '@/lib/research/view';
 
 const NOW = Date.parse('2026-08-17T16:00:00.000Z');
@@ -33,15 +33,17 @@ describe('the event time never prints a clock the evidence does not support', ()
     const noon = '2026-08-17T12:00:00.000Z';
     const v = eventTimeView(noon, [1], [link(1, noon, 'DATE_ONLY')], NOW);
     expect(v.kind).toBe('DATE_ONLY');
-    expect(v.text).toBe('2026-08-17 (date only)');
+    expect(v.text).toBe('Aug 17, time not stated');
     expect(v.text).not.toMatch(/\d{1,2}:\d{2}/);
   });
 
   it('prints an inferred clock marked as inferred', () => {
     const v = eventTimeView(EVENT, [1], [link(1, EVENT, 'INFERRED')], NOW);
     expect(v.kind).toBe('INFERRED');
-    expect(v.text).toContain('(time inferred)');
-    expect(v.text).toContain('8:15 AM ET');
+    expect(v.text).toBe('Aug 17, 8:15 AM ET, time inferred');
+    expect(v.hover).toBe(
+      'The source does not state a time. This time was taken from something next to the event, such as the time the filing was accepted.',
+    );
   });
 
   it('prints the date only when no cited source carries that instant, or its precision is unknown', () => {
@@ -53,7 +55,7 @@ describe('the event time never prints a clock the evidence does not support', ()
   });
 
   it('says unknown when there is no event time, or it cannot be read', () => {
-    expect(eventTimeView(null, [1], [], NOW)).toEqual({ kind: 'NONE', text: 'unknown' });
+    expect(eventTimeView(null, [1], [], NOW)).toEqual({ kind: 'NONE', text: 'No event time', hover: null });
     expect(eventTimeView('not a time', [1], [], NOW).kind).toBe('NONE');
   });
 });
@@ -68,7 +70,7 @@ describe('the catalyst sources', () => {
 
   it('carries the ET day and whether it is date only, and survives a missing date', () => {
     const [a, b] = catalystSources([2, 3], evidence);
-    expect(a.day).toBe('2026-08-16');
+    expect(a.day).toBe('Aug 16');
     expect(a.dateOnly).toBe(true);
     expect(b.day).toBeNull();
   });
@@ -90,5 +92,14 @@ describe('the drawer uses it', () => {
   it('lists the catalyst own sources under the event time', () => {
     expect(source).toContain('catalystSources(catalyst.evidenceSourceIds, intel.evidence)');
     expect(source).toContain('rel="noopener noreferrer"');
+  });
+});
+
+describe('the words', () => {
+  it('labels the list "Sources the desk read" and prints each line as the date, then the title', () => {
+    expect(CATALYST_SOURCES_LABEL).toBe('Sources the desk read');
+    const source = readFileSync('components/AutomaticIntelligence.tsx', 'utf8');
+    expect(source).toContain("{day ? `${day}, ` : ''}");
+    expect(source).toContain('{link.title ?? link.secForm ?? humanise(link.sourceType)}');
   });
 });
