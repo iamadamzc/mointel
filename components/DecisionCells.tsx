@@ -470,7 +470,7 @@ export function WhyCell({ why }: { why: DeskWhy }) {
             className="text-[9px] font-semibold tracking-wide text-warn uppercase"
             title="The desk searched its sources and found no catalyst for this move."
           >
-            no catalyst found
+            no catalyst found in our sources
           </span>
         ) : null}
         {why.code === 'OLD_CATALYST' ? (
