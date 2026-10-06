@@ -23,6 +23,7 @@
  * marked in CYCLE_WORDS.
  */
 
+import { CYCLE_PHASE_LABEL, cycleDetail } from '@/lib/dashboard/cycle';
 import { longDate } from '@/lib/dashboard/floatBound';
 import { formatPrice } from '@/lib/format';
 import { CYCLE_START_MOVE_PCT, CYCLE_START_RVOL, type CycleArc, type CycleHistory } from '@/lib/market/cycle';
@@ -33,6 +34,9 @@ export const CYCLE_WORDS = {
   noHistory: 'Cannot tell: not enough daily history.',
   /** OWED BY MARKETING: bars were read and no run has started in them. */
   noRun: 'No current run in the history we hold.',
+  /** OWED BY MARKETING: labels for the computed phase and its arithmetic (row 13). */
+  phaseLabel: 'Phase',
+  measureLabel: 'How it is measured',
   /** OWED BY MARKETING: prefix for the current run when it is over and counts toward the largest advance. */
   currentOverPrefix: 'Current run, over: ',
 } as const;
@@ -43,6 +47,10 @@ export interface CycleFacts {
   state: CycleFactsState;
   /** The state's own sentence when there is no current run to describe. */
   message: string | null;
+  /** The computed phase, in the board's own cycle words (row 13). */
+  phase: string | null;
+  /** The arithmetic behind the phase, the line the cycle badge hover carries (row 13). */
+  measure: string | null;
   cycleHigh: { text: string; hover: string } | null;
   flush: { text: string } | null;
   runs: { lines: string[]; empty: string | null; hover: string };
@@ -61,7 +69,7 @@ const RUNS_HOVER = `A run starts on a day the stock rose at least ${CYCLE_START_
 export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts {
   const emptyRuns = { lines: [], empty: CYCLE_WORDS.noEarlierRun, hover: RUNS_HOVER };
   if (!history) {
-    return { state: 'NOT_YET', message: CYCLE_WORDS.noHistory, cycleHigh: null, flush: null, runs: emptyRuns };
+    return { state: 'NOT_YET', message: CYCLE_WORDS.noHistory, phase: null, measure: null, cycleHigh: null, flush: null, runs: emptyRuns };
   }
 
   const prior = history.priorCycles.map((cycle) => runLine(cycle.startDate, cycle.highDate, cycle.advancePct, cycle.sessionsAgo));
@@ -70,6 +78,8 @@ export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts
     return {
       state: 'UNKNOWN',
       message: CYCLE_WORDS.noRun,
+      phase: null,
+      measure: null,
       cycleHigh: null,
       flush: null,
       runs: { lines: prior, empty: prior.length === 0 ? CYCLE_WORDS.noEarlierRun : null, hover: RUNS_HOVER },
@@ -87,6 +97,8 @@ export function cycleFacts(history: CycleHistory | null | undefined): CycleFacts
   return {
     state: 'PRODUCED',
     message: null,
+    phase: CYCLE_PHASE_LABEL[arc.phase],
+    measure: cycleDetail(arc),
     cycleHigh: {
       text: `$${formatPrice(arc.cycleHigh)}, ${longDate(arc.cycleHighDate) ?? arc.cycleHighDate}`,
       // The last sentence of Marketing's hover ("Today's trading is not included") is held out:
