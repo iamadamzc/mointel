@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { DeskRow } from '@/lib/dashboard/merge';
-import { isMover, isRankedMover, movingCaption, movingNote } from '@/lib/dashboard/view';
+import { isMover, isRankedMover, MOVERS_PAST_TOP_N, movingCaption, movingNote, visibleWithMovers } from '@/lib/dashboard/view';
 
 /*
  * His ruling, 2026-10-01T15:36:50Z: a mover is an ordinary row "labeled as
@@ -89,13 +89,13 @@ describe('movingCaption', () => {
     const one = movingCaption([row({ mover: false }), row({ mover: true }), row({ mover: false })]);
     expect(one?.text).toBe('1 moving');
     expect(one?.title).toBe(
-      '1 name on the board is marked moving: it made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave it off. Any other sort places every name by its own value.',
+      '1 name on the board is marked moving: it made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names. Any other sort places every name by its own value.',
     );
 
     const three = movingCaption([row({ mover: true }), row({ mover: false }), row({ mover: true }), row({ mover: true })]);
     expect(three?.text).toBe('3 moving');
     expect(three?.title).toBe(
-      '3 names on the board are marked moving: each made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave some of them off. Any other sort places every name by its own value.',
+      '3 names on the board are marked moving: each made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names. Any other sort places every name by its own value.',
     );
   });
 
@@ -129,5 +129,60 @@ describe('"from the prior close" only when it is (Commercial 17b)', () => {
         expect(movingCaption([r])).toBeNull();
       }
     }
+  });
+});
+
+type Named = Row & { ticker: string };
+const named = (ticker: string, mover: boolean, ranked = false): Named => ({ ...row({ mover, ranked, pct: 40, volume: 1_000_000, rank: 1 }), ticker });
+
+describe('movers past Top N (his ruling 2026-10-06T14:41:43Z)', () => {
+  const board = (n: number, movers: Record<number, 'ranked' | 'unranked'>) =>
+    Array.from({ length: n }, (_, i) => named(`R${i + 1}`, i + 1 in movers, movers[i + 1] === 'ranked'));
+
+  it('a rank-14 mover at Top 12 shows as row 13, after the top twelve, with nothing between', () => {
+    const { rows, extra } = visibleWithMovers(board(50, { 14: 'ranked' }), 12);
+    expect(rows.map((r) => r.ticker)).toEqual([...Array.from({ length: 12 }, (_, i) => `R${i + 1}`), 'R14']);
+    expect(extra).toBe(1);
+  });
+
+  it('an unranked mover far down (row 120 of the sort) shows too', () => {
+    const { rows } = visibleWithMovers(board(130, { 120: 'unranked' }), 12);
+    expect(rows.at(-1)?.ticker).toBe('R120');
+  });
+
+  it('a mover inside Top N is not repeated', () => {
+    const { rows, extra } = visibleWithMovers(board(60, { 14: 'ranked' }), 50);
+    expect(rows).toHaveLength(50);
+    expect(rows.filter((r) => r.ticker === 'R14')).toHaveLength(1);
+    expect(extra).toBe(0);
+  });
+
+  it('sixteen movers past the line show fifteen, in the sort order', () => {
+    const movers = Object.fromEntries(Array.from({ length: 16 }, (_, i) => [20 + i, 'unranked' as const]));
+    const { rows, extra } = visibleWithMovers(board(60, movers), 12);
+    expect(extra).toBe(MOVERS_PAST_TOP_N);
+    expect(rows.slice(12).map((r) => r.ticker)).toEqual(Array.from({ length: 15 }, (_, i) => `R${20 + i}`));
+  });
+
+  it('no movers past the line changes nothing', () => {
+    const { rows, extra } = visibleWithMovers(board(50, {}), 12);
+    expect(rows).toHaveLength(12);
+    expect(extra).toBe(0);
+  });
+
+  it('a row not measured from the prior close is never appended (Commercial 17b)', () => {
+    const late = { ...named('LATE', true), demand: { ...named('LATE', true).demand, referenceRthCloseBasis: 'CURRENT_SESSION' } } as Named;
+    const { rows } = visibleWithMovers([...board(12, {}), late], 12);
+    expect(rows.map((r) => r.ticker)).not.toContain('LATE');
+  });
+
+  it('the caption says how many moving names Top N also shows', () => {
+    expect(movingCaption([row({ mover: true }), row({ mover: true })], { size: 12, extra: 1 })?.title).toMatch(
+      / Top 12 also shows 1 moving name outside it\.$/,
+    );
+    expect(movingCaption([row({ mover: true }), row({ mover: true })], { size: 25, extra: 2 })?.title).toMatch(
+      / Top 25 also shows 2 moving names outside it\.$/,
+    );
+    expect(movingCaption([row({ mover: true })], { size: 12, extra: 0 })?.title).not.toContain('also shows');
   });
 });

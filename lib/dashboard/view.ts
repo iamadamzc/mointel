@@ -265,20 +265,45 @@ export function movingNote(
 }
 
 /**
- * The caption's count: every row marked moving, ranked or not. Words: Marketing
- * 493c8e33 (Commercial 16a). The Top N clause stays while Top 12, 25 or 50 can
- * leave movers off; it goes in the same build as any change to that.
+ * MOVERS PAST TOP N (his ruling 2026-10-06T14:41:43Z, "yes show movers past top
+ * n"): the table shows the top N of the current sort, THEN every moving row
+ * (either kind) below that line, in the same sort order, at most
+ * MOVERS_PAST_TOP_N of them. No header and no separate group (his 10-01 ruling):
+ * the rows sit after row N with their "moving" label. `sorted` is the filtered
+ * board, so an appended mover is subject to the filters like any other row; a
+ * mover inside the top N is not repeated.
+ */
+export const MOVERS_PAST_TOP_N = 15;
+
+export function visibleWithMovers<T extends Pick<DeskRow, 'demand'>>(
+  sorted: readonly T[],
+  size: number,
+): { rows: T[]; extra: number } {
+  const top = sorted.slice(0, size);
+  const extra = sorted.slice(size).filter(isMover).slice(0, MOVERS_PAST_TOP_N);
+  return { rows: [...top, ...extra], extra: extra.length };
+}
+
+/**
+ * The caption's count: every row marked moving, ranked or not, plus, when the
+ * table shows movers past its Top N, how many. Words: Marketing 76110b1b (the
+ * append build; the Top N clause is gone because it is no longer true).
  */
 export function movingCaption(
   rows: readonly Pick<DeskRow, 'demand'>[],
+  pastTopN: { size: number; extra: number } | null = null,
 ): { text: string; title: string } | null {
   const count = rows.filter(isMover).length;
   if (count === 0) return null;
-  const title =
+  const base =
     count === 1
-      ? '1 name on the board is marked moving: it made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave it off. Any other sort places every name by its own value.'
-      : `${count} names on the board are marked moving: each made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names, and Top 12, 25 or 50 can leave some of them off. Any other sort places every name by its own value.`;
-  return { text: `${count} moving`, title };
+      ? '1 name on the board is marked moving: it made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names. Any other sort places every name by its own value.'
+      : `${count} names on the board are marked moving: each made a large move from the prior close, whether or not it is also in the RVOL ranking. Under the Rank and RVOL sorts, names outside the RVOL ranking come after the ranked names. Any other sort places every name by its own value.`;
+  const shown =
+    pastTopN && pastTopN.extra > 0
+      ? ` Top ${pastTopN.size} also shows ${pastTopN.extra} moving name${pastTopN.extra === 1 ? '' : 's'} outside it.`
+      : '';
+  return { text: `${count} moving`, title: base + shown };
 }
 
 /* ------------------------------------------------------------------------- *

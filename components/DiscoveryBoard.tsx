@@ -45,6 +45,7 @@ import {
   baselineLabel,
   movingCaption,
   movingNote,
+  visibleWithMovers,
   retentionNote,
   sortDiscoveryRows,
   type DiscoverySortKey,
@@ -327,7 +328,8 @@ export function DiscoveryBoard({
    */
   const sortBoard = discovery?.board ?? 'DAILY_RVOL';
   const sorted = sortDiscoveryRows(rows, sort, sortBoard);
-  const visible = sorted.slice(0, size);
+  // Top N, then the moving rows below it (his ruling 2026-10-06T14:41:43Z).
+  const { rows: visible, extra: moversPast } = visibleWithMovers(sorted, size);
   const sortActive = sort.key !== DISCOVERY_DEFAULT_SORT.key;
   const missing = discoveryMissingCount(rows, sort.key, sortBoard);
   // Read off the entry like every other per-key fact in this component.
@@ -419,7 +421,7 @@ export function DiscoveryBoard({
   const frozen = discovery?.sessionPhase === 'POST_MARKET';
   // Counted over the rows the board holds (filters applied), not the Top N:
   // the point is to say a mover exists when the cut is hiding it.
-  const movers = afterHours ? null : movingCaption(rows);
+  const movers = afterHours ? null : movingCaption(rows, { size, extra: moversPast });
 
   return (
     <section className="border-b border-line bg-desk px-4 py-2">

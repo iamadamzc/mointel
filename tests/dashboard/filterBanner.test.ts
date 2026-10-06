@@ -53,7 +53,7 @@ describe('the banner', () => {
   it('counts the names that MATCH against every name on the board, never "Showing"', () => {
     const v = view(fresh, [plain('A'), plain('B'), plain('C')], ['A']);
     expect(v?.match).toBe('1 of 3 names match.');
-    expect(v?.matchHover).toBe('3 is every name on the board before these filters. 1 match; the table shows at most the Top 12, 25 or 50 of them.');
+    expect(v?.matchHover).toBe('3 is every name on the board before these filters. 1 match; the table shows the first 12, 25 or 50 of them, plus any moving names among the rest.');
     expect(JSON.stringify(v)).not.toContain('Showing');
     expect(view(fresh, [plain('A')], [])?.match).toBe('0 of 1 name matches.');
     // More matches than Top 12 shows: the count is every match, not the rows on screen.
