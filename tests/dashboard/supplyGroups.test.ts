@@ -134,6 +134,6 @@ describe('an empty group says so', () => {
     expect(SUPPLY_GROUP_EMPTY_HOVER).toBe(
       "The desk's research holds nothing here. Either it found none or it did not read for this group; the record does not say which.",
     );
-    expect(SUPPLY_GROUP_LABEL.SOURCES).toBe('Filings cited for share structure');
+    expect(SUPPLY_GROUP_LABEL.SOURCES).toBe('Sources cited for share structure');
   });
 });

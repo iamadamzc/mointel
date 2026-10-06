@@ -28,7 +28,7 @@ export const SUPPLY_GROUP_LABEL: Record<SupplyGroupKey, string> = {
   OFFERINGS: 'Offerings / ATM / PIPE',
   WARRANTS: 'Warrants / Convertibles',
   OTHER: 'Other share structure',
-  SOURCES: 'Filings cited for share structure',
+  SOURCES: 'Sources cited for share structure',
 };
 
 /** The line for a group with nothing in it, and its hover. */
