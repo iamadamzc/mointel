@@ -20,7 +20,15 @@ import { describe, expect, it } from 'vitest';
 const root = process.cwd();
 const read = (rel: string) => fs.readFileSync(path.join(root, rel), 'utf8');
 
-const PUBLIC_SOURCES = ['app/page.tsx', 'app/privacy/page.tsx', 'app/terms/page.tsx', 'components/LegalPage.tsx'];
+const PUBLIC_SOURCES = [
+  'app/page.tsx',
+  'app/privacy/page.tsx',
+  'app/terms/page.tsx',
+  'components/LegalPage.tsx',
+  'components/SiteChrome.tsx',
+  'app/are-float-quotes-real/page.tsx',
+  'components/ExplainerPage.tsx',
+];
 
 describe('the board moved to /desk', () => {
   it('renders the dashboard at /desk and not at /', () => {

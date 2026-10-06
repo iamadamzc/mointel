@@ -57,6 +57,10 @@ const SURFACES = [
   'components/EntryGate.tsx',
   'docs/legal/privacy-policy.md',
   'docs/legal/terms.md',
+  'components/SiteChrome.tsx',
+  'components/ExplainerPage.tsx',
+  'app/are-float-quotes-real/page.tsx',
+  'docs/public/are-float-quotes-real.md',
 ];
 
 const EM = '—';

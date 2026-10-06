@@ -1,0 +1,80 @@
+/**
+ * The public page "Are float quotes real?" renders its one file and nothing
+ * else, in the legal pages' frame, without their adoption banner.
+ *
+ * The text is pinned by section titles and by the four cell faces, read from
+ * the rendered page: a heading or a face that changes in the file changes the
+ * page, and the change is public copy that needs his yes first.
+ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { describe, expect, it } from 'vitest';
+
+import { ExplainerPage } from '@/components/ExplainerPage';
+import { explainerPath, loadExplainer } from '@/lib/public/explainer';
+
+const SECTIONS = [
+  'Where a float number comes from',
+  'How we do it',
+  'What you see in the cell',
+  'What we do not subtract, and why',
+  'What a number does not tell you',
+  'What this is, and is not',
+];
+
+const FACES = ['≤ 12.3M', 'Unknown.', 'Cannot verify.', 'Not computed.'];
+
+describe('loadExplainer', () => {
+  const document = loadExplainer('are-float-quotes-real');
+
+  it('reads docs/public/are-float-quotes-real.md', () => {
+    expect(document.sourcePath).toBe('docs/public/are-float-quotes-real.md');
+    expect(explainerPath('are-float-quotes-real', '/root')).toBe(
+      path.join('/root', 'docs', 'public', 'are-float-quotes-real.md'),
+    );
+    expect(fs.existsSync(explainerPath('are-float-quotes-real'))).toBe(true);
+  });
+
+  it('carries the title and the six section headings in order, ids s1 to s6', () => {
+    expect(document.title).toBe('Are float quotes real?');
+    expect(document.sections.map((s) => s.title)).toEqual(SECTIONS);
+    expect(document.sections.map((s) => s.id)).toEqual(['s1', 's2', 's3', 's4', 's5', 's6']);
+  });
+
+  it('renders the four cell faces as list items that open in bold', () => {
+    for (const face of FACES) expect(document.html).toContain(`<li><strong>${face}</strong>`);
+  });
+
+  it("never renders the file's editor notes", () => {
+    expect(document.html).not.toContain('DO NOT SHIP');
+    expect(document.html).not.toContain('<!--');
+  });
+});
+
+describe('ExplainerPage', () => {
+  const markup = renderToStaticMarkup(ExplainerPage({ document: loadExplainer('are-float-quotes-real') }));
+
+  it('renders the file inside the legal frame, with a section index', () => {
+    expect(markup).toContain('<h1>Are float quotes real?</h1>');
+    expect(markup).toContain('Float is the number of shares actually available to trade.');
+    for (let n = 1; n <= SECTIONS.length; n += 1) expect(markup).toContain(`href="#s${n}"`);
+    expect(markup).toContain('TMI TRADER');
+    expect(markup).toContain('href="mailto:info@andromedagenius.com"');
+  });
+
+  it('carries no adoption banner, dateline or ONE SOURCE box: it is not a legal text', () => {
+    expect(markup).not.toContain('IN FORCE');
+    expect(markup).not.toContain('DRAFT');
+    expect(markup).not.toContain('ONE SOURCE');
+  });
+});
+
+describe('the route', () => {
+  it('reads the file at request time', () => {
+    const source = fs.readFileSync(path.join(process.cwd(), 'app/are-float-quotes-real/page.tsx'), 'utf8');
+    expect(source).toContain("export const dynamic = 'force-dynamic'");
+    expect(source).toContain("loadExplainer('are-float-quotes-real')");
+  });
+});
