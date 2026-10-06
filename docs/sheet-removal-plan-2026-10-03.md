@@ -103,6 +103,12 @@ Integration:**
   `components/SessionReports.tsx`) is given more prominence than it has today.** How it is made more prominent is
   layout (Design proposes, Integration checks against this ruling). *Integration's reading, not his words: "between
   session" is the same window as B.* Ships only with the grade store and reader (the badge reads them).
+- 2026-10-06T00:22:29.450Z, typed to Integration (28th seat, transcript d947056e, his turn), verbatim: *"yes, build
+  both"*, answering whether the desk should produce the Sheet's **Warning Shot** (contract row 20: one decision-useful
+  sentence per name, evening and PM) and the **morning Confirmation** (row 22: whether the evening catalyst and grade
+  still stand at the morning checkpoint) itself, so the ChatGPT recap task can be fully retired. Put to him with Research's
+  estimate of about $2 to $10 a month for the Warning Shot, stated as unchecked. Owner Research (design and build), Marketing
+  (words), Commercial (reads the Warning Shot's instructions), Design (surfaces). Both live before step 4.
 
 ### ~~Decision 1: what replaces the Sheet's float?~~ (ruled above)
 

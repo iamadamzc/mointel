@@ -1637,6 +1637,14 @@ P10 AUDIT        Design (read-only, evidence kept): SHOWN rows 8, 9, 11, 16, 19,
                  enumerate callers. SEQUENCING RULE: Sheet plan step 4 does NOT ship before rows 4, 12, 14, 17, 21 are
                  rebuilt and live. P5 revised-grade tag: contract row 3 FINAL, no new ruling; waits on Ops storing the
                  09:25 grade + Marketing words. (Corrects my earlier "P5 needs his ruling".)
+CHATGPT TASK     His ask: has the ChatGPT recap (writes the Google Sheet) been replaced? ANSWERED NO, KEEP IT RUNNING: the desk
+                 still reads the Sheet (market worker pins TODAY tickers; drawer Sheet research; Why grade and risk chips read
+                 the Sheet first, plan appendix D); stopping it leaves a STALE Sheet read as current. Safe to stop after plan
+                 steps 4 (worker off the Sheet, restart = his yes) and 5 (Ops removes the Sheet keys). TELL HIM THEN.
+HIS RULING       2026-10-06T00:22:29.450Z (transcript d947056e): "yes, build both" = Warning Shot (row 20) + morning
+                 Confirmation (row 22). In the Sheet plan RULED block. Routed to Research (spend within ~$2-10/mo estimate,
+                 else to him first; Confirmation spend to him first if any; Commercial reads instructions; Marketing words;
+                 Design surfaces; live before step 4).
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
