@@ -83,6 +83,24 @@ export interface PmCatalyst {
   generatedAt: string | null;
 }
 
+/**
+ * The frame of the server read (Integration 29th's ruling, `d21e4ba0`; shape
+ * confirmed by Design), so a surface can tell its three absences apart: no
+ * morning checkpoint yet (`morningAt` null), a name on the morning checkpoint
+ * with no evening call (in `morningTickers`, not in `byTicker`), and a name not
+ * on the morning checkpoint (in neither).
+ */
+export interface MorningRead {
+  /** The morning checkpoint read; null when none of D has completed at or before `at`. */
+  morningAt: string | null;
+  /** The evening recap targeting D; null when there is none, whether or not a morning checkpoint exists. */
+  eveningAt: string | null;
+  /** Every name on the morning checkpoint, in the stored read's order (rank, unranked last, then ticker); empty without one. */
+  morningTickers: string[];
+  /** Names on both checkpoints only. */
+  byTicker: Map<string, { confirmation: Confirmation; pmCatalyst: PmCatalyst }>;
+}
+
 /** The evening call pairs only with its own target date, and only when COMPLETE. */
 function eveningOf(input: MorningInput): MorningInput['evening'] {
   const e = input.evening;
@@ -212,11 +230,11 @@ export function pmCatalystOf(input: MorningInput): PmCatalyst {
  * targeting D, both checkpoints' rows, both versions in ONE call to
  * `readAnalysisVersionsByIds`, and the COMPLETE research jobs between the two
  * checkpoints. Read-only; no new table, no new index. Names absent from the
- * evening recap are omitted (NO_EVENING_CALL prints nothing). No morning
- * checkpoint yet: an empty map.
+ * evening recap are omitted from `byTicker` (NO_EVENING_CALL prints nothing)
+ * but listed in `morningTickers`. Each checkpoint is looked up on its own, so
+ * either can be found without the other.
  */
-export function morningReadOf(db: MarketDatabase, d: string, at: string): Map<string, { confirmation: Confirmation; pmCatalyst: PmCatalyst }> {
-  const out = new Map<string, { confirmation: Confirmation; pmCatalyst: PmCatalyst }>();
+export function morningReadOf(db: MarketDatabase, d: string, at: string): MorningRead {
   const placeholders = [...MORNING_TYPES].map(() => '?').join(',');
   const morningId = db
     .prepare(
@@ -233,13 +251,18 @@ export function morningReadOf(db: MarketDatabase, d: string, at: string): Map<st
         ORDER BY completed_at DESC LIMIT 1`,
     )
     .get(EVENING_TYPE, d) as { id: number } | undefined;
-  if (!morningId || !eveningId) return out;
-  const morningCheckpoint = readAssessment(db, morningId.id);
-  const eveningCheckpoint = readAssessment(db, eveningId.id);
+  const morningCheckpoint = morningId ? readAssessment(db, morningId.id) : null;
+  const eveningCheckpoint = eveningId ? readAssessment(db, eveningId.id) : null;
+  const morningRows = morningCheckpoint ? (readAssessmentTickers(db, morningCheckpoint.id) as CallRow[]) : [];
+  const out: MorningRead = {
+    morningAt: morningCheckpoint ? morningCheckpoint.completedAt : null,
+    eveningAt: eveningCheckpoint ? eveningCheckpoint.completedAt : null,
+    morningTickers: morningRows.map((row) => row.ticker),
+    byTicker: new Map(),
+  };
   if (!morningCheckpoint || !eveningCheckpoint) return out;
 
   const eveningRows = new Map(readAssessmentTickers(db, eveningCheckpoint.id).map((row) => [row.ticker, row as CallRow]));
-  const morningRows = readAssessmentTickers(db, morningCheckpoint.id) as CallRow[];
   const ids: number[] = [];
   for (const row of [...eveningRows.values(), ...morningRows]) if (row.analysisVersionId !== null) ids.push(row.analysisVersionId);
   const versions = readAnalysisVersionsByIds(db, ids);
@@ -262,7 +285,7 @@ export function morningReadOf(db: MarketDatabase, d: string, at: string): Map<st
       versions,
       jobs,
     };
-    out.set(row.ticker, { confirmation: confirmationOf(input), pmCatalyst: pmCatalystOf(input) });
+    out.byTicker.set(row.ticker, { confirmation: confirmationOf(input), pmCatalyst: pmCatalystOf(input) });
   }
   return out;
 }
