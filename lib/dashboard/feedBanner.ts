@@ -136,7 +136,7 @@ const NEVER_TEXT = 'This page cannot reach the desk. No numbers have been receiv
 export function chipText(banner: FeedBanner): string {
   if (banner.cause === 'NEVER') return 'Market: no data received';
   if (banner.cause === 'DATA_OLD') return `Market: data ${banner.minutes} min old, as of ${banner.time} ET`;
-  return `Market: no connection, last data ${banner.time} ET`;
+  return `Market: not reaching the desk, last data ${banner.time} ET`;
 }
 
 /** The price-source tooltip that said "Live Alpaca market data", while the banner is up. */

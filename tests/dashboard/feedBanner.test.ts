@@ -138,7 +138,7 @@ describe('the surfaces that would claim live while the banner is up', () => {
   const C: FeedBannerState = { cause: 'NEVER', text: 'c', time: null, minutes: null };
 
   it('words the header chip in the three causes, with no feed name', () => {
-    expect(chipText(A)).toBe('Market: no connection, last data 15:58:07 ET');
+    expect(chipText(A)).toBe('Market: not reaching the desk, last data 15:58:07 ET');
     expect(chipText(B)).toBe('Market: data 14 min old, as of Oct 2, 15:58:07 ET');
     expect(chipText(C)).toBe('Market: no data received');
     for (const banner of [A, B, C]) expect(chipText(banner), banner.cause).not.toMatch(/alpaca|sip|live/i);
@@ -180,13 +180,13 @@ describe('the surfaces that would claim live while the banner is up', () => {
 
   it('the chip stops claiming live and stops pulsing while the banner is up, and reverts when it clears', () => {
     const up = chip(A);
-    expect(up).toContain('Market: no connection, last data 15:58:07 ET');
+    expect(up).toContain('Market: not reaching the desk, last data 15:58:07 ET');
     expect(up).not.toContain('ALPACA');
     expect(up).not.toContain('live-dot');
     const down = chip(null);
     expect(down).toContain('ALPACA SIP');
     expect(down).toContain('live-dot');
-    expect(down).not.toContain('no connection');
+    expect(down).not.toContain('not reaching the desk');
   });
 
   it('all three price-source surfaces and the drawer title read the same state, not a copy of it', () => {
