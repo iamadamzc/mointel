@@ -22,8 +22,10 @@ Rules:
 
 Times are the payload's own, with the banner's date rule. Words not yet seen on a built banner; redo if the build changes how they read.
 
-**Header chip (MarketStatus.tsx).** Normal unchanged ("Market: ALPACA SIP, LIVE"). A: "Market: no connection, last data {HH:MM:SS} ET". B: "Market: data {N} min old, as of {HH:MM:SS} ET". C: "Market: no data received". If too wide at 1,024 px, drop "Market: " in all three first.
+**Header chip (MarketStatus.tsx).** Normal unchanged ("Market: ALPACA SIP, LIVE"). A: "Market: not reaching the desk, last data {HH:MM:SS} ET" (changed from "no connection", which blamed the wrong party; Design built it at 365 px, header 61 px, no wrap, commit 2207c53e). B: "Market: data {N} min old, as of {HH:MM:SS} ET". C: "Market: no data received". If too wide at 1,024 px, drop "Market: " in all three first.
 
 **Price-source tooltips (TickerDrawer.tsx, DeskRead.tsx, FocusStrip.tsx), banner up:** "Last market data received, {HH:MM:SS} ET"; in C "No market data received since this page opened". Normal keeps "Live Alpaca market data". **Drawer section title:** "Market Telemetry" while the banner is up, "Live Market Telemetry" otherwise.
 
 **Left alone:** the Now column (carries its own "not live" capture state) and the View selector's "Live" (a mode). All of the above must revert on the same render the banner clears.
+
+**Read 2026-10-05 off the built page text (Design's report, not on screen; A and B reproduced with a patched poll, C pinned by test only):** chip, tooltip and drawer section match this file in normal, A and B, and all three return to normal wording on the render the poll recovers. Marketing read is on strings; an on-screen read waits for a review link after the ship.
