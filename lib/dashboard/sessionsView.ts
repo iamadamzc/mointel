@@ -183,3 +183,48 @@ export function afterHoursLine(demand: DemandState): AfterHoursLine {
     parts: { price, percent, volume },
   };
 }
+
+/*
+ * THE MARKET SECTION'S FOOTNOTE (Marketing 36ffacd2, f0fe654e; Commercial 9g). Clock-free and no engine
+ * constant: the close's source maps to three phrases, a simulator source prints no close sentence, the
+ * baseline adjustment prints only for the two values worded, and the calculation time is ET with its date.
+ */
+const ET_STAMP = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/New_York',
+  month: 'short',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+/** "Oct 6, 16:11 ET", or null. */
+export function etStampWithDate(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const at = new Date(iso);
+  return Number.isNaN(at.getTime()) ? null : `${ET_STAMP.format(at)} ET`;
+}
+
+/** The baseline's adjustment as a reader's word; null omits the clause (dividend, all, anything else). */
+export function adjustmentWord(adjustment: string | null | undefined): string | null {
+  if (adjustment === 'split') return 'split-adjusted';
+  if (adjustment === 'raw') return 'unadjusted';
+  return null;
+}
+
+/** The close sentence, or null for a simulator source or no reference close. */
+export function footnoteCloseSentence(demand: DemandState): string | null {
+  const source = demand.referenceRthCloseSource;
+  if (demand.referenceRthClose === null || source === 'simulator') return null;
+  const which = demand.referenceRthCloseBasis === 'CURRENT_SESSION' ? 'current' : 'prior';
+  const from =
+    source !== null && DAILY_BAR.has(source)
+      ? 'the daily bar'
+      : source === 'sheet'
+        ? 'the Sheet'
+        : 'a source the desk did not record';
+  const prior = demand.previousClose !== null && Number.isFinite(demand.previousClose)
+    ? ` Prior session close $${formatPrice(demand.previousClose)}.`
+    : '';
+  return `Percent change is measured from the ${which} session's close (${day(demand.referenceRthCloseDate)}), taken from ${from}.${prior}`;
+}
