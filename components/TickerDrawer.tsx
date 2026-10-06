@@ -336,7 +336,7 @@ function DrawerHeader({
           <div className="mt-1 truncate text-[12px] text-ink-2" title={company.hint ?? undefined}>
             {company.text}
             {company.country ? (
-              <span className="text-ink-3" title={COMPANY_WORDS.countryHover}>
+              <span className="text-ink-3" title={company.countryFromDossier ? COMPANY_WORDS.countryHover : undefined}>
                 {' '}
                 {company.country}
               </span>

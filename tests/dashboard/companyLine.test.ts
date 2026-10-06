@@ -45,8 +45,27 @@ describe('the company line, three states', () => {
     expect(companyLine({ dossier: { companyName: '   ', country: null } }).state).toBe('UNKNOWN');
   });
 
-  it('says the country is the business address, from SEC filings', () => {
-    expect(COMPANY_WORDS.countryHover).toBe("Country is where the company's business address is, from its SEC filings.");
+  it('makes no SEC claim on the country: the dossier field is model-written and checked against nothing (Commercial 8a)', () => {
+    expect(COMPANY_WORDS.countryHover).toBe("Country as recorded in the desk's research.");
+    expect(Object.values(COMPANY_WORDS).join(' ')).not.toMatch(/SEC|business address/);
+  });
+
+  it('a dossier country carries the hover, a code or a written-out name alike; a Sheet country carries none', () => {
+    expect(companyLine({ dossier: { companyName: 'Sangoma', country: 'A6' } }).countryFromDossier).toBe(true);
+    const named = companyLine({ dossier: { companyName: 'Acme', country: 'Cayman Islands' } });
+    expect(named.country).toBe('Cayman Islands.');
+    expect(named.countryFromDossier).toBe(true);
+    // EDGAR's own UNKNOWN decodes to nothing, so the Sheet's value shows, with no hover.
+    const sheet = companyLine({ dossier: { companyName: 'Acme', country: 'XX' }, sheetCountry: 'Canada' });
+    expect(sheet.country).toBe('Canada.');
+    expect(sheet.countryFromDossier).toBe(false);
+    expect(companyLine({ dossier: null, sheetName: 'Sheet Co', sheetCountry: 'USA' }).countryFromDossier).toBe(false);
+  });
+
+  it('the drawer puts the hover on the country only when it came from the dossier', () => {
+    const drawer = readFileSync('components/TickerDrawer.tsx', 'utf8');
+    expect(drawer).toContain('title={company.countryFromDossier ? COMPANY_WORDS.countryHover : undefined}');
+    expect(drawer).not.toContain('title={COMPANY_WORDS.countryHover}');
   });
 });
 
