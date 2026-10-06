@@ -21,6 +21,8 @@ import type { ResearchAnalysisVersion } from '../research/types';
 export const EVENING_TYPE = 'NEXT_DAY_RECAP';
 /** The morning checkpoints of D a Confirmation is shown on (spec section 1: 07:00 included, not 09:25 alone). */
 export const MORNING_TYPES: ReadonlySet<string> = new Set(['PREMARKET_0625', 'PREMARKET_0645', 'PREMARKET_0700', 'OPEN_SPIKE_ASSESSMENT']);
+/** Stored Priority grades that say why there is no grade (`field-contract-final-2026-10-05.md` section 2): never compared as grades. */
+export const NOT_A_GRADE: ReadonlySet<string> = new Set(['UNKNOWN', 'NOT_YET']);
 
 export type CallCheckpoint = Pick<AssessmentRecord, 'id' | 'assessmentType' | 'tradingDate' | 'targetTradingDate' | 'completedAt' | 'status'>;
 
@@ -57,7 +59,8 @@ export type ConfirmationPart = 'CATALYST_GRADE' | 'CATALYST_STATUS' | 'EVENT_DAT
 
 export interface Confirmation {
   state: ConfirmationState;
-  reason: 'GRADE_NOT_STORED' | 'VERSION_UNREADABLE' | null;
+  /** Internal: UNKNOWN prints Marketing's Unknown word and never its reason (spec section 5). */
+  reason: 'GRADE_NOT_STORED' | 'NOT_GRADED' | 'VERSION_UNREADABLE' | null;
   changes: Array<{ part: ConfirmationPart; from: string | null; to: string | null }>;
   eveningAt: string | null;
   morningAt: string | null;
@@ -142,6 +145,8 @@ export function confirmationOf(input: MorningInput): Confirmation {
   const eveningGrade = evening.row.priorityGrade ?? null;
   const morningGrade = morning.row.priorityGrade ?? null;
   if (eveningGrade === null || morningGrade === null) return out('UNKNOWN', 'GRADE_NOT_STORED');
+  // The field contract stores an ungraded row as a STRING (UNKNOWN or NOT_YET), never null: neither is a grade to compare.
+  if (NOT_A_GRADE.has(eveningGrade) || NOT_A_GRADE.has(morningGrade)) return out('UNKNOWN', 'NOT_GRADED');
   const eveningVersion = versionOf(input, evening.row.analysisVersionId);
   const morningVersion = versionOf(input, morning.row.analysisVersionId);
   if (eveningVersion.kind === 'UNREADABLE' || morningVersion.kind === 'UNREADABLE') return out('UNKNOWN', 'VERSION_UNREADABLE');

@@ -84,6 +84,12 @@ describe('confirmationOf: the states in spec section 4 order', () => {
     expect(state(input(row(10, null), row(10)))).toBe('UNKNOWN');
   });
 
+  it('UNKNOWN NOT_GRADED when either row stores the contract strings UNKNOWN or NOT_YET (never a grade change)', () => {
+    expect(confirmationOf(input(row(10, 'NOT_YET'), row(10, 'B')))).toMatchObject({ state: 'UNKNOWN', reason: 'NOT_GRADED', changes: [] });
+    expect(confirmationOf(input(row(10, 'B'), row(12, 'UNKNOWN')))).toMatchObject({ state: 'UNKNOWN', reason: 'NOT_GRADED', changes: [] });
+    expect(state(input(row(10, 'UNKNOWN'), row(10, 'UNKNOWN')))).toBe('UNKNOWN');
+  });
+
   it('UNKNOWN VERSION_UNREADABLE when a cited version cannot be read', () => {
     expect(confirmationOf(input(row(10), row(99)))).toMatchObject({ state: 'UNKNOWN', reason: 'VERSION_UNREADABLE' });
     expect(confirmationOf(input(row(98), row(10)))).toMatchObject({ state: 'UNKNOWN', reason: 'VERSION_UNREADABLE' });
