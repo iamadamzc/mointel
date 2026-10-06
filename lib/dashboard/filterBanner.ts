@@ -30,7 +30,7 @@ export const FILTER_BANNER_WORDS = {
   clear: 'Clear filters',
   match: (x: number, y: number) => (y === 1 ? `${x} of 1 name matches.` : `${x} of ${y} names match.`),
   matchHover: (x: number, y: number) =>
-    `${y} is every name on the board before these filters. ${x} match; the table shows the first 12, 25 or 50 of them, plus any moving names among the rest.`,
+    `${y} is every name on the board before these filters. ${x} match; the table shows the first 12, 25 or 50 of them, plus moving names among the rest, up to a limit.`,
   hiddenLead: 'Moving names these filters hide:',
   more: (n: number) => `and ${n} more`,
   nameHover: (ticker: string, pct: string, shares: string | null) =>
