@@ -22,6 +22,8 @@ Web-tmi, Marketing-tmi and Commercial-tmi in `list_sessions` BY TITLE at every s
 archived; when two share a title the newer `createdAt` is live; a message to an archived seat fails and one to a retired
 seat is dropped. Seats change ids often (Integration three times and Web once in one day).
 
+**Send peer messages with SendMessage** (his ruling 2026-10-06T02:22:30.305Z, relayed by Integration): `to` = the seat's title; to reply, copy the `from=`. On a refusal, report the exact text to Integration, then fall back to send_message. No test messages.
+
 **Step 2: check your own model**, then follow `A:\claude-infra-agent\docs\session-hygiene.md` (context, the error ledger,
 hand-off or the self-reset hook, the NEEDS YOU block).
 
@@ -51,7 +53,7 @@ market shas (Ops's /proc read, not a relay); which cut is live (cut 2, `10cb60c3
   `fae81306`: the cycle badge hover printed a fraction as a percent ("up 0.5%" for a 53% move) since 2026-08-24, in
   production. Integration has the defect and decides which cut carries it.
 
-**UPDATE 2026-10-06 02:19 UTC / 22:19 ET (clock read via zoneinfo), by the TENTH seat (same id, reset in place) at the end of its tenure:** the state is the table at the top of `docs/threads/design.md` LIVE STATE. In short: cut 3 `385e6129` ships tonight as is (his "yes, ship it" 2026-10-06T01:43:44Z). Three Design candidates are BUILT AND UNGATED, queued for Ops's gate in this order: CUT 4 `f0748725` (the held rows and chip, every string worded, the country hover fixed, float clause v20; Commercial passed its strings), WARNING SHOT `ce4e297d` ("Risk in the evidence", drawer and MCP, on Research's gated `e0e96953`), ROW 5 `563c947e` ("Sessions": close and today's after hours; Commercial's read of the built strings pending). Owed: the ship-night inline-briefing read (trigger: Ops says cut 3 is live), and the Risk column follow-up, ruled by Integration to be live before Sheet step 4. Do NOT start any gate step outside Ops's slot: lint and tests count.
+**UPDATE 2026-10-06 02:19 UTC / 22:19 ET (clock read via zoneinfo), by the TENTH seat (same id, reset in place) at the end of its tenure:** the state is the table at the top of `docs/threads/design.md` LIVE STATE. In short: cut 3 `385e6129` ships tonight as is (his "yes, ship it" 2026-10-06T01:43:44Z). Three Design candidates are BUILT AND UNGATED, queued for Ops's gate in this order: CUT 4 `f0748725` (the held rows and chip, every string worded, the country hover fixed, float clause v20; Commercial passed its strings), WARNING SHOT `ce4e297d` ("Risk in the evidence", drawer and MCP, on Research's gated `e0e96953`), ROW 5 `146168ac` ("Sessions": close and today's after hours; Commercial's read of the built strings pending). Owed: the ship-night inline-briefing read (trigger: Ops says cut 3 is live), and the Risk column follow-up, ruled by Integration to be live before Sheet step 4. Do NOT start any gate step outside Ops's slot: lint and tests count.
 
 **Then the work, in this order (details and triggers in design.md):**
 
