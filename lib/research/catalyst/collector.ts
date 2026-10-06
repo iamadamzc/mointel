@@ -49,6 +49,7 @@ import {
 } from './irRegistry';
 import type { ProviderUsage } from './discovery';
 import type { CompanySourceResolverProvider } from './companySourceContract';
+import type { PaidSearchDecision } from './paidSearchCap';
 
 /*
  * Stands in when no resolver is configured, so the collector keeps one code
@@ -130,6 +131,13 @@ export interface CatalystCollectionInput {
   forceDiscovery?: boolean;
   /** Skips web discovery entirely; used to prove the zero-model path. */
   disableDiscovery?: boolean;
+  /**
+   * The paid-search budget for this name today (`paidSearchCap.ts`, his rulings 2026-10-06). When given it is the
+   * only clock for paid passes: refused, no resolver, recovery or discovery call is made, whatever the trigger;
+   * allowed, the pass is due now and the discovery interval does not hold it back. Absent (the diagnostics), the
+   * interval rule applies as before.
+   */
+  paidSearch?: PaidSearchDecision;
 }
 
 export interface CatalystSourceSummary {
@@ -576,10 +584,14 @@ export async function collectCatalystEvidence(
    */
   const recoveryEpisode = input.recoveryEpisode === true && staleResolver;
 
+  // The daily budget (his rulings 2026-10-06): refused means no paid call of any kind in this pass.
+  const paidRefused = input.paidSearch !== undefined && !input.paidSearch.allowed;
+  const paidDue = input.paidSearch?.allowed === true;
+
   let urgentResolutionRan = false;
   let urgentResolutionResolved = false;
 
-  if ((firstQualification || recoveryEpisode) && !usableCompanySourceBefore) {
+  if ((firstQualification || recoveryEpisode) && !usableCompanySourceBefore && !paidRefused) {
     urgentResolutionRan = true;
     report.discoveryMode = recoveryEpisode && !firstQualification ? 'RECOVERY' : 'RESOLVER';
     const label = recoveryEpisode && !firstQualification ? 'recovery' : 'urgent';
@@ -846,9 +858,10 @@ export async function collectCatalystEvidence(
     !input.disableDiscovery &&
     discovery.available &&
     relevant &&
+    !paidRefused &&
     (input.forceDiscovery === true ||
       materialEvent !== null ||
-      (!justResolved && (neverAttempted || intervalElapsed)));
+      (!justResolved && (neverAttempted || intervalElapsed || paidDue)));
 
   /*
    * Where the issuer publishes is a different question from what it published,
@@ -1027,6 +1040,8 @@ export async function collectCatalystEvidence(
     report.discoveryDetail = 'discovery provider unavailable';
   } else if (input.disableDiscovery) {
     report.discoveryDetail = 'discovery disabled by caller';
+  } else if (input.paidSearch && !input.paidSearch.allowed) {
+    report.discoveryDetail = `paid search not allowed: ${input.paidSearch.reason}`;
   } else if (justResolved) {
     // Start the clock from the moment we became resolved, so the next poll
     // does not read an unset timer as "interval already elapsed".

@@ -389,6 +389,14 @@ describe('queueing', () => {
     expect(decisions[0].queued).toBe(true);
   });
 
+  it('Q1 re-asks at the per-name spacing when one is given (the paid budget step, his rulings 2026-10-06), and keeps the interval otherwise', () => {
+    const db = temporaryDb();
+    acceptDossier(db, { status: 'UNKNOWN', acceptedAt: '2026-08-17T13:50:00Z', completedAt: '2026-08-17T13:50:00Z' });
+    const options = { tradingDate: DATE, autoRank: 12, now: new Date('2026-08-17T13:56:00Z'), recheckAfterMs: 10 * 60_000 };
+    expect(queueDiscoveryResearch(db, [candidate()], options)[0].queued).toBe(false);
+    expect(queueDiscoveryResearch(db, [candidate()], { ...options, recheckAfterMsFor: () => 5 * 60_000 })[0].queued).toBe(true);
+  });
+
   it('never delays the first analysis of a name', () => {
     // The interval applies only to a name that already has a dossier. A first
     // look must not wait for a clock that is measuring a re-ask.

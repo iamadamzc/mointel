@@ -199,6 +199,12 @@ export function queueDiscoveryResearch(
      * queue a job per name per cycle.
      */
     recheckAfterMs?: number;
+    /**
+     * Per name, overrides `recheckAfterMs` (his paid-search rulings 2026-10-06): a top-12 name with RVOL of at least
+     * 3 and a paid pass still owed today is re-asked at the paid budget's step (5 minutes), so its +5 and +10 passes
+     * can happen; every other name keeps `recheckAfterMs`.
+     */
+    recheckAfterMsFor?: (candidate: QueueCandidate) => number;
   },
 ): QueueDecision[] {
   const decisions: QueueDecision[] = [];
@@ -377,7 +383,7 @@ export function queueDiscoveryResearch(
       // A completion stamped in the future is clock skew, not a recent ask.
       // Reading it as one would freeze the name until the clocks agreed.
       sinceLastAsk >= 0 &&
-      sinceLastAsk < recheckAfterMs
+      sinceLastAsk < (options.recheckAfterMsFor ? options.recheckAfterMsFor(candidate) : recheckAfterMs)
     ) {
       decisions.push({
         ticker: candidate.ticker,
