@@ -88,7 +88,10 @@ export interface PmCatalyst {
  * confirmed by Design), so a surface can tell its three absences apart: no
  * morning checkpoint yet (`morningAt` null), a name on the morning checkpoint
  * with no evening call (in `morningTickers`, not in `byTicker`), and a name not
- * on the morning checkpoint (in neither).
+ * on the morning checkpoint (in neither). `eveningTickers` (Integration 30th's
+ * amendment, for Commercial 15 and Marketing) splits the last: a name the
+ * evening recap called that the morning checkpoint did not read is NOT_YET; a
+ * name on neither list prints nothing.
  */
 export interface MorningRead {
   /** The morning checkpoint read; null when none of D has completed at or before `at`. */
@@ -97,6 +100,8 @@ export interface MorningRead {
   eveningAt: string | null;
   /** Every name on the morning checkpoint, in the stored read's order (rank, unranked last, then ticker); empty without one. */
   morningTickers: string[];
+  /** Every name on the evening recap targeting D, in the same order; empty without one. */
+  eveningTickers: string[];
   /** Names on both checkpoints only. */
   byTicker: Map<string, { confirmation: Confirmation; pmCatalyst: PmCatalyst }>;
 }
@@ -254,15 +259,17 @@ export function morningReadOf(db: MarketDatabase, d: string, at: string): Mornin
   const morningCheckpoint = morningId ? readAssessment(db, morningId.id) : null;
   const eveningCheckpoint = eveningId ? readAssessment(db, eveningId.id) : null;
   const morningRows = morningCheckpoint ? (readAssessmentTickers(db, morningCheckpoint.id) as CallRow[]) : [];
+  const eveningList = eveningCheckpoint ? (readAssessmentTickers(db, eveningCheckpoint.id) as CallRow[]) : [];
   const out: MorningRead = {
     morningAt: morningCheckpoint ? morningCheckpoint.completedAt : null,
     eveningAt: eveningCheckpoint ? eveningCheckpoint.completedAt : null,
     morningTickers: morningRows.map((row) => row.ticker),
+    eveningTickers: eveningList.map((row) => row.ticker),
     byTicker: new Map(),
   };
   if (!morningCheckpoint || !eveningCheckpoint) return out;
 
-  const eveningRows = new Map(readAssessmentTickers(db, eveningCheckpoint.id).map((row) => [row.ticker, row as CallRow]));
+  const eveningRows = new Map(eveningList.map((row) => [row.ticker, row]));
   const ids: number[] = [];
   for (const row of [...eveningRows.values(), ...morningRows]) if (row.analysisVersionId !== null) ids.push(row.analysisVersionId);
   const versions = readAnalysisVersionsByIds(db, ids);
