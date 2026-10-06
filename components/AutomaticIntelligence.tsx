@@ -13,6 +13,7 @@ import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
 import { cycleFacts } from '@/lib/dashboard/cycleFacts';
+import { SUPPLY_GROUP_EMPTY, supplyGroups } from '@/lib/dashboard/supplyGroups';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
@@ -344,6 +345,7 @@ export function AutomaticIntelligence({
   const eventTime = eventTimeText(catalyst.eventTimestamp, catalyst.evidenceSourceIds, intel.evidence);
   const catalystSourceList = catalystSources(catalyst.evidenceSourceIds, intel.evidence);
   const facts = cycleFacts(intel.analysis?.dossier.computedCycle);
+  const supplyGroupList = supplyGroups(structure, intel.evidence);
   const generatedAt = timeWithAge(intel.generatedAt);
 
   /*
@@ -541,28 +543,64 @@ export function AutomaticIntelligence({
           <p className="mt-3 text-[11px] text-ink-3">{noDenominator}</p>
         ) : null}
 
-        {structure.supplyLedger.length > 0 ? (
-          <div className="mt-3">
-            <FieldLabel>Supply ledger</FieldLabel>
-            <ul className="mt-1 space-y-1">
-              {structure.supplyLedger.map((block, index) => (
-                <li key={index} className="text-[11px] text-ink-2">
-                  <span className="text-ink-1">{humanise(block.type)}</span> ·{' '}
-                  {humanise(block.status)}
-                  {block.amountShares !== null
-                    ? ` · ${block.amountShares.toLocaleString()} shares`
-                    : block.dollarCapacity !== null
-                      ? ` · $${block.dollarCapacity.toLocaleString()} capacity`
-                      : ''}
-                  {block.registrationStatus ? ` · ${humanise(block.registrationStatus)}` : ''}
-                  {block.evidenceSourceIds.length > 0
-                    ? ` · sources ${block.evidenceSourceIds.join(', ')}`
-                    : ''}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+        {/* Supply evidence in the groups the Sheet used (contract row 18). Every group shows
+            its state: an empty one says so rather than dropping its heading. */}
+        <div className="mt-3 space-y-3">
+          {supplyGroupList.map((group) => (
+            <div key={group.key}>
+              <FieldLabel>{group.label}</FieldLabel>
+              {group.empty ? (
+                <p className="m-0 mt-1 text-[11px] text-ink-3">{SUPPLY_GROUP_EMPTY}</p>
+              ) : (
+                <ul className="mt-1 space-y-1">
+                  {group.lines.map((line, index) => (
+                    <li key={index} className="text-[11px] text-ink-2">
+                      <span className="text-ink-1">{line.text}</span>
+                      {line.sourceIds.length > 0 ? (
+                        <span className="text-ink-3">
+                          {' · sources '}
+                          {line.sourceIds.map((id, at) => {
+                            const source = intel.evidence.find((item) => item.id === id);
+                            return (
+                              <span key={id}>
+                                {at > 0 ? ', ' : ''}
+                                {source ? (
+                                  <a
+                                    href={source.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline decoration-dotted underline-offset-2"
+                                  >
+                                    {id}
+                                  </a>
+                                ) : (
+                                  id
+                                )}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                  {group.links.map((source) => (
+                    <li key={`link-${source.id}`} className="text-[11px]">
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-ink-1 underline decoration-dotted underline-offset-2"
+                      >
+                        {source.secForm ? `${source.secForm}, ` : ''}
+                        {source.title ?? humanise(source.sourceType)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
 
         {/*
           * The headline warning is already rendered by the structure summary
