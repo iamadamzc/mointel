@@ -28,8 +28,11 @@ export type FloatBoundState = 'PRODUCED' | 'UNKNOWN' | 'CANNOT_VERIFY' | 'NOT_YE
  * The stored causes: the eight `floatCell` produces, plus FILINGS_NOT_REREAD, the
  * sixth Cannot verify reason of Marketing's v16 (shown when a stored row is more
  * than four days older than the date shown). Research owns when it is stored.
+ * ISSUANCE_FILED is Research's rule I-D (`lib/research/insiderBound.ts` on
+ * research/float-job 16077d58); it is named here too so this module compiles on a
+ * base that does not carry it yet. Once Research's type lands both names are redundant.
  */
-export type FloatBoundReason = FloatCellReason | 'FILINGS_NOT_REREAD';
+export type FloatBoundReason = FloatCellReason | 'FILINGS_NOT_REREAD' | 'ISSUANCE_FILED';
 
 /** What the payload carries per ticker. Null, or absent, is NOT_YET: "Not computed". */
 export interface FloatBound {
@@ -110,6 +113,9 @@ function cannotVerifyText(
     case 'COUNT_TOO_OLD':
       return `Cannot verify: the latest filed share count is from ${countDate ?? 'an unknown date'}, too old to rely on.`;
     case 'ISSUANCE_FLAGGED':
+    // A filed offering or an 8-K item 3.02 after the count: Commercial 5p (bbfb7a17)
+    // found this sentence true of it, so the two causes share it by ruling.
+    case 'ISSUANCE_FILED':
       return 'Cannot verify: shares may have been issued since the filed count.';
     case 'SPLIT_SINCE_COUNT':
       return "Cannot verify: a share split fell after the filed count's date, or we could not rule one out, so the count may be in different share units.";

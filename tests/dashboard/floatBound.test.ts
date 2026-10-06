@@ -37,10 +37,15 @@ const REASONS: FloatBoundReason[] = [
   'COUNT_TOO_OLD',
   'ISSUANCE_FLAGGED',
   'ISSUANCE_NOT_CHECKED',
+  'ISSUANCE_FILED',
   'SPLIT_SINCE_COUNT',
   'BOUND_OUT_OF_RANGE',
   'FILINGS_NOT_REREAD',
 ];
+/** Causes that share another's words by ruling, each with the cause whose words it takes. */
+const SHARED_BY_RULING: Partial<Record<FloatBoundReason, FloatBoundReason>> = {
+  ISSUANCE_FILED: 'ISSUANCE_FLAGGED', // Commercial 5p, bbfb7a17
+};
 
 describe('the bound face', () => {
   it('prints the compact number, rounded UP, with the filed count date beside it as m/d', () => {
@@ -124,8 +129,19 @@ describe('the other three faces, one string per stored cause', () => {
     const strings = REASONS.map((r) =>
       floatCellView(refused(r.startsWith('NO_') || r === 'COUNT_SPLIT_ACROSS_FILINGS' ? 'UNKNOWN' : 'CANNOT_VERIFY', r, { countAsOf: '2026-05-01' })).paragraphs[0],
     );
-    expect(new Set(strings).size).toBe(REASONS.length);
+    expect(new Set(strings).size).toBe(REASONS.length - Object.keys(SHARED_BY_RULING).length);
     for (const s of strings) expect(s).not.toBe('Cannot verify.');
+  });
+
+  it('a filed issuance after the count reads the issued-since sentence, not the bare fallback', () => {
+    const filed = floatCellView(refused('CANNOT_VERIFY', 'ISSUANCE_FILED', { countAsOf: '2026-05-01' }));
+    expect(filed.face).toBe('Cannot verify');
+    expect(filed.paragraphs[0]).toBe('Cannot verify: shares may have been issued since the filed count.');
+    for (const [r, words] of Object.entries(SHARED_BY_RULING) as [FloatBoundReason, FloatBoundReason][]) {
+      expect(floatCellView(refused('CANNOT_VERIFY', r, { countAsOf: '2026-05-01' })).paragraphs[0]).toBe(
+        floatCellView(refused('CANNOT_VERIFY', words, { countAsOf: '2026-05-01' })).paragraphs[0],
+      );
+    }
   });
 });
 
