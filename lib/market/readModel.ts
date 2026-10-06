@@ -49,7 +49,7 @@ import {
   readFeedHealth,
   readTopMovers,
 } from './store/repo';
-import { addBoardMovers, selectMovers } from './boardMovers';
+import { addBoardMovers, moversLogGate, moversLogLine, selectMovers } from './boardMovers';
 import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
 import { attachNowBuckets } from './nowBuckets';
 import {
@@ -196,6 +196,9 @@ type StoredSummary = Partial<DiscoveryState> & {
   ahEligibleCount?: number;
   ahRankedCount?: number;
 };
+
+/** One gate per web process: the movers log line fires at most once a minute. */
+const moversLogDue = moversLogGate();
 
 export interface MarketSnapshotOptions {
   /** Extra symbols to include even when unranked (TODAY-sheet tickers). */
@@ -600,6 +603,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
               moverLimit,
             );
     const states = addBoardMovers(boardStates, movers, config.boardMoversK);
+    // The server's mover decisions, once a minute at most (Integration 32nd, option b; see moversLogLine).
+    if (board === 'DAILY_RVOL' && moversLogDue(Date.now())) console.log(moversLogLine(states));
 
     // Ticker freshness is judged per ticker, never from the connection alone.
     const nowMs = Date.now();

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { addBoardMovers, selectMovers } from '@/lib/market/boardMovers';
+import { addBoardMovers, moversLogGate, moversLogLine, selectMovers } from '@/lib/market/boardMovers';
 import { loadMarketConfig } from '@/lib/market/config';
 import type { DemandState } from '@/lib/market/types';
 
@@ -194,5 +194,53 @@ describe('selectMovers, the close basis', () => {
       15,
     );
     expect(picked.map((s) => s.ticker)).toEqual(['PRIOR']);
+  });
+});
+
+/*
+ * THE LOG LINE (Integration 32nd ruled, option b): the only way to observe the
+ * server's mover decisions end to end, since /api/market admits a session only.
+ * It counts what the read already built, no new query: rows with moving: true,
+ * rows added as MOVER, and as the CONTROL the board rows on a PRIOR_SESSION
+ * basis (zero of those means no mover was possible, not a broken flag). At most
+ * once a minute. The client's append past Top N is NOT visible here.
+ */
+describe('moversLogLine', () => {
+  const row = (ticker: string, basis: string | null, extra: Partial<DemandState> = {}) =>
+    ({ ticker, referenceRthCloseBasis: basis, ...extra }) as unknown as DemandState;
+
+  it('counts moving, added and the PRIOR_SESSION control, naming the symbols', () => {
+    const line = moversLogLine([
+      row('A', 'PRIOR_SESSION'),
+      row('IPDN', 'PRIOR_SESSION', { moving: true }),
+      row('B', 'CURRENT_SESSION'),
+      row('VEEA', 'PRIOR_SESSION', { boardReason: 'MOVER' }),
+    ]);
+    expect(line).toBe('[movers] board 4 rows, PRIOR_SESSION 3; moving 1 (IPDN); added 1 (VEEA)');
+  });
+
+  it('a zero is reported beside its control', () => {
+    expect(moversLogLine([row('A', 'CURRENT_SESSION'), row('B', null)])).toBe(
+      '[movers] board 2 rows, PRIOR_SESSION 0; moving 0; added 0',
+    );
+  });
+
+  it('names at most 5 symbols per kind, then "+n more"', () => {
+    const many = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7'].map((t) => row(t, 'PRIOR_SESSION', { moving: true }));
+    expect(moversLogLine(many)).toBe(
+      '[movers] board 7 rows, PRIOR_SESSION 7; moving 7 (M1, M2, M3, M4, M5, +2 more); added 0',
+    );
+  });
+});
+
+describe('moversLogGate', () => {
+  it('admits the first read, then at most once per clock minute', () => {
+    const due = moversLogGate();
+    const t0 = Date.parse('2026-10-06T14:00:05.000Z');
+    expect(due(t0)).toBe(true);
+    expect(due(t0 + 30_000)).toBe(false);
+    expect(due(t0 + 54_999)).toBe(false);
+    expect(due(t0 + 55_000)).toBe(true); // 14:01:00
+    expect(due(t0 + 56_000)).toBe(false);
   });
 });

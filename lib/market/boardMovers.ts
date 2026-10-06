@@ -93,3 +93,35 @@ export function addBoardMovers(states: DemandState[], movers: readonly DemandSta
     marked.size === 0 ? states : states.map((state) => (marked.has(state.ticker) ? { ...state, moving: true as const } : state));
   return added.length > 0 ? [...board, ...added] : board;
 }
+
+/**
+ * One log line of what this read decided about movers (Integration 32nd ruled,
+ * option b): /api/market admits a session only, so this line is the way to see
+ * the server's mover decisions end to end. Counts only what the read already
+ * built, no query: rows marked `moving`, rows added as MOVER, and as the
+ * CONTROL the board rows on a PRIOR_SESSION basis, because a zero mover count
+ * beside zero PRIOR_SESSION rows means no mover was possible, not a broken
+ * flag. Up to 5 symbols per kind. The client's append past Top N happens in the
+ * browser and cannot appear here.
+ */
+export function moversLogLine(states: readonly DemandState[]): string {
+  const moving = states.filter((state) => state.moving === true).map((state) => state.ticker);
+  const added = states.filter((state) => state.boardReason === 'MOVER').map((state) => state.ticker);
+  const prior = states.filter((state) => state.referenceRthCloseBasis === 'PRIOR_SESSION').length;
+  const named = (tickers: string[]) =>
+    tickers.length === 0
+      ? `${tickers.length}`
+      : `${tickers.length} (${tickers.slice(0, 5).join(', ')}${tickers.length > 5 ? `, +${tickers.length - 5} more` : ''})`;
+  return `[movers] board ${states.length} rows, PRIOR_SESSION ${prior}; moving ${named(moving)}; added ${named(added)}`;
+}
+
+/** True on the first call and then at most once per clock minute (UTC minute bucket). */
+export function moversLogGate(): (nowMs: number) => boolean {
+  let lastMinute: number | null = null;
+  return (nowMs: number) => {
+    const minute = Math.floor(nowMs / 60_000);
+    if (minute === lastMinute) return false;
+    lastMinute = minute;
+    return true;
+  };
+}
