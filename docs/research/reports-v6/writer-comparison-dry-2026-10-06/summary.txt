@@ -1,0 +1,35 @@
+store A:/mointel-scratch/market-scratch-2026-10-02.db: 4892938240 bytes, mtime 2026-10-03T15:15:39.110Z
+day 2026-10-01, range $1-$20, 2 runs per arm per kind; checker gpt-5.6-terra on every arm; Claude effort low
+luna-INTO_RTH-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-INTO_POWER_HOUR-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-AFTER_HOURS-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-PREMARKET-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-INTO_RTH-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-INTO_POWER_HOUR-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-AFTER_HOURS-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+luna-PREMARKET-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-INTO_RTH-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-INTO_POWER_HOUR-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-AFTER_HOURS-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-PREMARKET-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-INTO_RTH-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-INTO_POWER_HOUR-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-AFTER_HOURS-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+terra-PREMARKET-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-INTO_RTH-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-INTO_POWER_HOUR-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-AFTER_HOURS-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-PREMARKET-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-INTO_RTH-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-INTO_POWER_HOUR-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-AFTER_HOURS-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-sonnet-5-5-PREMARKET-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-INTO_RTH-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-INTO_POWER_HOUR-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-AFTER_HOURS-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-PREMARKET-run1: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-INTO_RTH-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-INTO_POWER_HOUR-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-AFTER_HOURS-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+claude-opus-5-5-PREMARKET-run2: PUBLISHED; 0 of 12 lines struck; $0.0000; tokens 
+TOTAL spend $0.0000 (dry: stub models, nothing spent)

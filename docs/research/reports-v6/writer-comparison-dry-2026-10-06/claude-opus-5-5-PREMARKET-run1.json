@@ -1,0 +1,588 @@
+{
+  "arm": "claude-opus-5-5",
+  "writerModel": "claude-opus-5-5",
+  "kind": "PREMARKET",
+  "runNo": 1,
+  "draft": {
+    "headline": "",
+    "overall": null,
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "SORA",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "AMOD",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "NXL",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "HTCR",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "SSM",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "WCT",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "EJH",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "AISP",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "ALPX",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "CAMP",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "COLA",
+            "text": "Dry run line."
+          },
+          {
+            "ticker": "NAMM",
+            "text": "Dry run line."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "PREMARKET",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-01",
+      "targetTradingDate": "2026-10-02",
+      "checkpoints": [
+        {
+          "id": 611,
+          "type": "NEXT_DAY_RECAP",
+          "completedAt": "2026-10-02T02:00:16.028Z"
+        }
+      ],
+      "publishedAt": "2026-10-06T02:38:38.280Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS",
+          "lines": [
+            {
+              "ticker": "SORA",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "AsiaStrategy",
+                "country": null,
+                "business": "AsiaStrategy is a Hong Kong-headquartered luxury-watch trading company that has diversified into Bitcoin and digital-asset treasury activities, including digital-asset-collateralized lending and compute infrastructure."
+              },
+              "path": {
+                "from": 2.4,
+                "high": 3.64,
+                "now": 3.0703,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "10h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 12:06 PM ET",
+                  "headline": "On October 1, 2026, AsiaStrategy filed a release announcing a non-binding MOU with Plume to explore forming an Asian joint venture for structuring, issuing and distributing tokenized financial products. The release describes an exploration agreement, not a completed joint venture, contract award, financing, or quantified transaction.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Reported shares outstanding were 24,864,000 as of December 31, 2025.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 24,864,000 as of December 31, 2025. This is not a reported public float."
+                }
+              }
+            },
+            {
+              "ticker": "AMOD",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "ALPHA MODUS HOLDINGS, INC.",
+                "country": "United States",
+                "business": "Alpha Modus develops retail technology related to personalized marketing and advertising based on shoppers' in-store behavior."
+              },
+              "path": {
+                "from": 1.17,
+                "high": 2.0999,
+                "now": 1.89,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 29, 8:00 PM ET",
+                  "headline": "Alpha Modus filed an 8-K reporting completion of an asset transaction on September 30, while secondary coverage reported that the closed PIPE delivered 3,170 Bitcoin valued above $250 million. The underlying agreement contemplated issuing 51,621,560 new Class A shares, compared with 4,986,264 shares outstanding before closing, making the favorable asset addition highly dilutive.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "51.6M sh supply",
+                  "detail": "The latest reconciled pre-closing share count was 4,986,264, while the PIPE agreement contemplated 51,621,560 new shares, more than ten times that baseline.",
+                  "tone": "neg",
+                  "full": "The latest reconciled pre-closing share count was 4,986,264, while the PIPE agreement contemplated 51,621,560 new shares, more than ten times that baseline."
+                }
+              }
+            },
+            {
+              "ticker": "NXL",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Nexalin Technology, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 7.55,
+                "high": 8.09,
+                "now": 6.5003,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "13h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:30 AM ET",
+                  "headline": "On October 1, 2026, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America, which it described as a step toward commercial revenue generation.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "9.23M sh supply",
+                  "detail": "The reported 22,036,402 shares outstanding date is August 10, 2026, before the August 28, 2026 1-for-30 reverse split and before later financing activity.",
+                  "tone": "neg",
+                  "full": "The reported 22,036,402 shares outstanding date is August 10, 2026, before the August 28, 2026 1-for-30 reverse split and before later financing activity. The bundle does not provide a reconciled current outstanding-share count."
+                }
+              }
+            },
+            {
+              "ticker": "SSM",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Sono Group N.V.",
+                "country": "Netherlands",
+                "business": "Sono Group N.V. is a Netherlands-incorporated holding company whose subsidiary is Sono Motors GmbH, referred to as Sono Solar."
+              },
+              "path": {
+                "from": 2.21,
+                "high": 2.63,
+                "now": 2.62,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "14h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "A Schedule 13D was filed on October 1, 2026, while secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The primary filing excerpt does not provide the ownership terms, acquisition date, or investment rationale, so the reported stake is treated as a secondary-confirmed attention event rather than a fully characterized company catalyst.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "284K sh",
+                  "detail": "A registered direct offering issued 283,500 ordinary shares, stated to equal 19.9% of outstanding ordinary shares.",
+                  "tone": "warn",
+                  "full": "A registered direct offering issued 283,500 ordinary shares, stated to equal 19.9% of outstanding ordinary shares."
+                }
+              }
+            },
+            {
+              "ticker": "EJH",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "E-Home Household Service Holdings Ltd",
+                "country": "Cayman Islands",
+                "business": "E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services."
+              },
+              "path": {
+                "from": 1.79,
+                "high": 1.87,
+                "now": 1.53,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "15h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 7:15 AM ET",
+                  "headline": "E-Home announced the launch of a dedicated AI service robot for China's household-services market, but the positive product headline is paired with a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "71.8M sh supply",
+                  "detail": "A pending private placement covers 71.8 million shares at $0.60, but current shares outstanding and float are not established, so its proportional dilution cannot be calculated.",
+                  "tone": "neg",
+                  "full": "A pending private placement covers 71.8 million shares at $0.60, but current shares outstanding and float are not established, so its proportional dilution cannot be calculated."
+                }
+              }
+            },
+            {
+              "ticker": "AISP",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Airship AI Holdings, Inc.",
+                "country": "United States",
+                "business": "Airship AI provides AI-driven video, sensor and data-management surveillance solutions for public safety and operational efficiency."
+              },
+              "path": {
+                "from": 2.22,
+                "high": 2.4,
+                "now": 2.3607,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "13h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 9:00 AM ET",
+                  "headline": "On October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "34.3M sh",
+                  "detail": "No float is reported in the supplied evidence.",
+                  "tone": "warn",
+                  "full": "No float is reported in the supplied evidence. The reported 34,439,562 shares outstanding must not be treated as float."
+                }
+              }
+            },
+            {
+              "ticker": "NAMM",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Namib Minerals",
+                "country": null,
+                "business": "Namib Minerals is a gold producer, developer and explorer operating the How Mine and pursuing restarts of other mining assets in Zimbabwe."
+              },
+              "path": {
+                "from": 1.3,
+                "high": 1.38,
+                "now": 1.36,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "14h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "Namib released first-half 2026 results and a business update on October 1, including revised production guidance of 26,500 to 27,000 ounces while maintaining C1 cost guidance. The release also disclosed that all-in sustaining cost rose to $3,078 per ounce and that $11.3 million of non-cash earnout and warrant fair-value losses affected reported earnings. Separately, the company announced a $6.5 million non-dilutive term loan on September 29 to partly fund Redwing Mine resource definition and bankability work. The evidence therefore contains both constructive operational and financing developments and adverse cost and reported-earnings elements.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "128.0M sh supply",
+                  "detail": "An effective F-3 registration covers resale of up to 80,646,036 ordinary shares.",
+                  "tone": "neg",
+                  "full": "An effective F-3 registration covers resale of up to 80,646,036 ordinary shares. This is legal resale capacity, not evidence of completed sales."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER NEWS",
+          "lines": [
+            {
+              "ticker": "WCT",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Wellchange Holdings Co Ltd",
+                "country": "China",
+                "business": "Wellchange is a Hong Kong-headquartered enterprise software solution services provider."
+              },
+              "path": {
+                "from": 1.67,
+                "high": 2.34,
+                "now": 1.42,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "28d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 3, 4:50 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 3 · The latest identified company event is the September 3 announcement of a 1-for-5 reverse split, effective September 8. It followed a completed August 31 public offering of 50,000,000 Class A shares for approximately $7.5 million at $0.15 per pre-split share. In this context, the reverse split is paired with confirmed new equity issuance and is graded weak negative/dilutive.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "51.5M sh supply",
+                  "detail": "A completed 50,000,000-share Class A public offering preceded the September 8, 1-for-5 reverse split.",
+                  "tone": "neg",
+                  "full": "A completed 50,000,000-share Class A public offering preceded the September 8, 1-for-5 reverse split. The disclosed offering count is pre-split and cannot be used as a current share count without reconciliation."
+                }
+              }
+            },
+            {
+              "ticker": "CAMP",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Camp4 Therapeutics Corp",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 3.84,
+                "high": 3.9,
+                "now": 3.9,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "49d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 12, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 12 · The latest substantive company developments in the supplied sources were the August 13 Q2 update (reporting regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch) and the August 4 completion of the second private-placement closing. These are legitimate developments, but they predate the supplied August 26 market state; no newer substantive company catalyst is identified in the adequately covered bundle.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "72.2M sh supply",
+                  "detail": "No source in the bundle states a public float; the reported 62,753,200 shares outstanding must not be treated as float.",
+                  "tone": "neg",
+                  "full": "No source in the bundle states a public float; the reported 62,753,200 shares outstanding must not be treated as float."
+                }
+              }
+            },
+            {
+              "ticker": "COLA",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "Columbus Acquisition Corp/Cayman Islands",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 2.86,
+                "high": 3,
+                "now": 2.714,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "20d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 11, 4:01 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 11 · Columbus announced on September 11, 2026 that it convened and adjourned its extraordinary general meeting of shareholders. The cited release identifies Columbus as a SPAC; the available excerpt does not establish a completed business combination, financing, or other definitive value-creating development.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Reported shares outstanding are 4,494,439 as of August 4, 2026; this is not a reported public float.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding are 4,494,439 as of August 4, 2026; this is not a reported public float."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "UNCLEAR",
+          "lines": [
+            {
+              "ticker": "HTCR",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": {
+                "name": "HeartCore Enterprises, Inc.",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 1.925,
+                "high": 2.466,
+                "now": 2.16,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No catalyst determination is supportable. The latest collected SEC item is an 8-K filed September 25, 2026, but the supplied excerpt does not disclose its substantive event. The latest clearly described company announcements in the bundle concern second-quarter results (August 13), the proposed HCLV divestiture (August 7), and the completed Sigmaways divestiture (June 25). Catalyst coverage is SEC-only and explicitly incomplete, so an external company/newswire announcement could have been missed.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "20.8M sh",
+                  "detail": "Reported shares outstanding were 1,515,328 as of August 13, 2026; this is not a public-float figure.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 1,515,328 as of August 13, 2026; this is not a public-float figure."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT YET RESEARCHED",
+          "lines": [
+            {
+              "ticker": "ALPX",
+              "liveFeed": null,
+              "text": "Dry run line.",
+              "company": null,
+              "path": {
+                "from": 9.96,
+                "high": 9.95,
+                "now": 9.95,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": null,
+      "narrativeFootnotes": {
+        "noClose": 3,
+        "splitExcluded": 0
+      }
+    },
+    "diagnostics": {
+      "lines": 12,
+      "strikes": [],
+      "writerMs": 1,
+      "checkerMs": 4
+    }
+  },
+  "error": null,
+  "usage": []
+}
