@@ -28,9 +28,9 @@ import { withoutCitations } from '../../research/citations';
 import type { ReportFact } from './facts';
 import type { BreadthWindow, NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
-import { etDayAndClock, traceLine } from './traced';
+import { claimsIn, dateAllowed, etDayAndClock, roundsTo, traceLine } from './traced';
 import { narrativeSheet } from './writerV6';
-import { numbersIn, stripTimestamps, verifyLine } from './verify';
+import { numbersIn, roundTo, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
 
 /* ------------------------------------------------------------------ types */
@@ -55,6 +55,7 @@ export type StrikeReason =
   | 'SHARES_UNDATED'
   | 'SHARES_AS_FLOAT'
   /* deterministic, v6: the narrative against its computed facts, and citation tokens */
+  /* no rule raises it since v2 (G left the prose, N11 retired); kept so stored strikes still read */
   | 'OMITTED_FACT'
   | 'WINDOW_CONTRADICTED'
   | 'CITATION_TOKEN'
@@ -92,8 +93,8 @@ export interface CheckInput {
   /**
    * v6: the opening narrative's COMPUTED facts (`narrative.ts`), the same block
    * the writer was given. Present = a v6 check: the 'O' line is the narrative,
-   * traced against these (numbers, the one ticker it may name, the window words,
-   * G never omitted), every line is checked for citation tokens, and the model
+   * traced against these (numbers, the named tickers, the window words, the
+   * anchored counts), every line is checked for citation tokens, and the model
    * reads the v6 prompt. Absent = v5, unchanged.
    */
   narrative?: NarrativeFacts | null;
@@ -202,12 +203,83 @@ const WINDOW_PHRASE: Record<BreadthWindow, RegExp> = {
 /** The label of the FORBIDDEN rule the v6 narrative is exempt from: it states GIVEN counts of names. */
 const NAME_COUNT_LABEL = 'a count of names (computed, never written)';
 
+/** The whole percent the sheet prints (`wholePercent`): "less than 1" reads as 1. */
+function sheetPercent(exact: number): number {
+  return Math.round(Math.abs(exact)) || 1;
+}
+
+/** The tickers the narrative facts name (v2): the recap's named movers and its after-hours name, or the intraday leader and the next two. */
+export function namedTickers(facts: NarrativeFacts): Set<string> {
+  const out = new Set<string>();
+  if (facts.leader) out.add(facts.leader.ticker);
+  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? []), ...(facts.afterHours ? [facts.afterHours] : [])]) out.add(m.ticker);
+  return out;
+}
+
 /**
- * v6: the narrative ('O') against its computed facts (`prereg-narrative-facts.md`).
- * Every number is a given one (N1-N4, N9); the only ticker it may name is the
- * given leader (N7); a stated breadth carries its window's phrase (N10); and G
- * is never omitted when above zero (N11). The model half reads causation (N5),
- * themes (N6) and undefined adjectives (N8).
+ * v2 (build step 3): every number the narrative sheet hands the writer, AS THE
+ * SHEET PRINTS IT (`narrativeSheet`): counts, whole percents, prices at two
+ * places, the change notes' figures. Breadth and the range bounds stay allowed
+ * (the sheet dropped them; a true one is not struck). G and the split count are
+ * NOT here: they left the prose for computed footnotes (step 4).
+ */
+function givenNumbers(facts: NarrativeFacts, range: { min: number; max: number }): Set<number> {
+  const out = new Set<number>([range.min, range.max, 50, facts.fresh.count, facts.fresh.covered]);
+  const b = facts.breadth;
+  if (b) for (const value of [b.eligible, b.traded, b.up, b.down]) out.add(value);
+  for (const value of [
+    facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers,
+    facts.moversWithoutFresh, facts.moversNotResearched, facts.moversUnclear, facts.tracking?.length ?? null,
+  ]) {
+    if (value !== null) out.add(value);
+  }
+  if (facts.leader) out.add(sheetPercent(facts.leader.percentChange));
+  for (const m of facts.recapLeaders ?? []) {
+    out.add(sheetPercent(m.highPct));
+    out.add(sheetPercent(m.closePct));
+  }
+  if (facts.afterHours) out.add(sheetPercent(facts.afterHours.percentChange));
+  for (const m of facts.intradayNamed ?? []) {
+    out.add(sheetPercent(m.percentChange));
+    for (const note of m.changeNotes) for (const claim of claimsIn(note).numbers) out.add(claim.mantissa * claim.unit);
+  }
+  const c = facts.context;
+  if (c) for (const value of [c.close, c.sessionHigh, c.support, c.resistance, c.olderHigh]) if (value !== null) out.add(roundTo(value, 2));
+  return out;
+}
+
+/** The named names' catalyst summaries: their own figures (shortened as a name line may) and their dates. */
+function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates: Set<string> } {
+  const out = { magnitudes: [] as number[], dates: new Set<string>() };
+  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? []), ...(facts.afterHours ? [facts.afterHours] : [])]) {
+    if (!m.summary) continue;
+    const claims = claimsIn(m.summary);
+    for (const number of claims.numbers) out.magnitudes.push(number.mantissa * number.unit);
+    for (const date of claims.dates) out.dates.add(date.value);
+  }
+  return out;
+}
+
+/**
+ * The anchored counts (v2): each phrase must carry ITS fact's count, not just a
+ * given number. Set membership alone admits a swap to another fact's value
+ * (9 movers written as 12 when 12 names are covered).
+ */
+const ANCHORS: Array<[RegExp, (facts: NarrativeFacts) => number | null, string]> = [
+  [/\bran (?:at least |past )50 percent\b/i, (f) => f.movers50, 'ran at least 50 percent above'],
+  [/\bgave (?:the entire move back|back the entire move)\b/i, (f) => f.gaveBack, 'gave the entire move back'],
+];
+
+/**
+ * v6: the narrative ('O') against its computed facts (`prereg-narrative-facts.md`),
+ * v2 (`narrative-redesign-proposal.md`, build step 3). Every number is a given
+ * one, as the sheet prints it, or a figure or date of a named name's catalyst
+ * summary (N1-N4, N9); the only tickers it may name are the named ones (N7); a
+ * stated breadth carries its window's phrase (N10); the pattern counts are
+ * anchored to their phrases. G is no longer the narrative's (N11 retired: a
+ * computed footnote, step 4). The model half reads causation (N5), themes and
+ * interpretation (N6: an interpretation names the facts it rests on) and
+ * undefined adjectives (N8).
  */
 export function narrativeFindings(
   text: string,
@@ -216,37 +288,34 @@ export function narrativeFindings(
   tickers: readonly string[],
 ): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
-  const allowed = new Set<number>([range.min, range.max, 50, facts.fresh.count, facts.fresh.covered]);
+  const given = givenNumbers(facts, range);
+  const summary = summaryAllowance(facts);
+  const claims = claimsIn(text);
+  const stated: number[] = [];
+  for (const claim of claims.numbers) {
+    const value = claim.mantissa * claim.unit;
+    stated.push(value);
+    const isGiven = claim.unit === 1 && given.has(claim.mantissa);
+    const inSummary = summary.magnitudes.some((m) => roundsTo(m, claim));
+    const isYear = claim.unit === 1 && claim.dp === 0 && [...summary.dates].some((day) => day.startsWith(`${claim.mantissa}-`));
+    if (!isGiven && !inSummary && !isYear) out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${claim.raw.trim()} is not a narrative fact` });
+  }
+  for (const date of claims.dates) {
+    if (!dateAllowed(date.value, summary.dates)) out.push({ reason: 'DATE_NOT_TRACED', detail: `${date.raw} is in no named catalyst` });
+  }
+  const named = namedTickers(facts);
+  const others = tickers.filter((t) => !named.has(t) && tickerRe(t).test(text));
+  if (others.length > 0) out.push({ reason: 'NOT_SELF_CONTAINED', detail: `names ${others.join(', ')} in the narrative` });
   const b = facts.breadth;
-  if (b) for (const value of [b.eligible, b.traded, b.up, b.down]) allowed.add(value);
-  for (const value of [facts.movers50, facts.gaveBack, facts.noClose, facts.tracking?.length ?? null]) {
-    if (value !== null) allowed.add(value);
-  }
-  if (facts.leader) allowed.add(Math.round(Math.abs(facts.leader.percentChange) * 10) / 10);
-  const stated = numbersIn(stripTimestamps(text)).map((value) => Math.abs(value));
-  for (const value of stated) {
-    if (!allowed.has(value)) out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${value} is not a narrative fact` });
-  }
-  const named = tickers.filter((t) => t !== facts.leader?.ticker && tickerRe(t).test(text));
-  if (named.length > 0) out.push({ reason: 'NOT_SELF_CONTAINED', detail: `names ${named.join(', ')} in the narrative` });
   if (b && stated.includes(b.traded) && !WINDOW_PHRASE[b.window].test(text)) {
     out.push({ reason: 'WINDOW_CONTRADICTED', detail: `breadth stated without "${WINDOW_PHRASE[b.window].source}" (${b.window})` });
   }
-  // ANCHORED, not just "in the allowed set": set membership alone admits a swap
-  // to another fact's value (11 movers written as 12 when 12 names are covered;
-  // the G sentence dropped while the carried count happens to equal G).
-  if (facts.movers50 !== null) {
-    const said = countBefore(text, /\bran past 50 percent\b/i);
-    if (said !== undefined && said !== facts.movers50) {
-      out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ran past 50 percent vs ${facts.movers50}` });
-    }
-  }
-  if (facts.noClose !== null && facts.noClose > 0) {
-    const said = countBefore(text, /\bno regular[- ]session close\b/i);
-    if (said === undefined) {
-      out.push({ reason: 'OMITTED_FACT', detail: `G = ${facts.noClose} in-range names with no 16:00 close, not stated` });
-    } else if (said !== facts.noClose) {
-      out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} with no regular-session close vs ${facts.noClose}` });
+  for (const [anchor, fact, phrase] of ANCHORS) {
+    const value = fact(facts);
+    if (value === null) continue;
+    const said = countBefore(text, anchor);
+    if (said !== undefined && said !== null && said !== value) {
+      out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ${phrase} vs ${value}` });
     }
   }
   return out;
@@ -258,15 +327,19 @@ const WORD_COUNTS: Record<string, number> = {
 
 /**
  * The count stated in the same clause before `anchor`: the LAST number or count
- * word before it, back to the clause's start. `undefined` when the anchor is
- * absent; `null` when the anchor has no count before it.
+ * word before it, back to the clause's start; in "four of the nine" the count is
+ * the four, not the nine it is a part of. `undefined` when the anchor is absent;
+ * `null` when the anchor has no count before it.
  */
 function countBefore(text: string, anchor: RegExp): number | null | undefined {
   const match = anchor.exec(text);
   if (!match) return undefined;
   const clause = text.slice(0, match.index).split(/[.;]\s/).pop() ?? '';
   const tokens = [...clause.matchAll(/\b(\d[\d,]*|no|none|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b/gi)];
-  const last = tokens.at(-1)?.[1];
+  let pick = tokens.at(-1);
+  const prior = tokens.at(-2);
+  if (pick && prior && /^\s+of\s+(?:the\s+|those\s+|these\s+)?$/i.test(clause.slice(prior.index! + prior[0].length, pick.index))) pick = prior;
+  const last = pick?.[1];
   if (last === undefined) return null;
   return /^\d/.test(last) ? Number(last.replace(/,/g, '')) : WORD_COUNTS[last.toLowerCase()]!;
 }
@@ -300,9 +373,11 @@ export function ruleStrikes(input: CheckInput): Strike[] {
 
     // v5 traces a ticker line's clock times with its research (below).
     if (!(input.research && line.ticker !== null)) {
+      // v2: the recap sheet frames its after-hours name "from the 16:00 close"; the narrative may say that frame.
+      const frame = v6Narrative?.afterHours ? '16:00' : null;
       for (const match of line.text.matchAll(CLOCK)) {
         const said = `${match[1]!.padStart(2, '0')}:${match[2]}`;
-        if (said !== time) hit('TIME_NOT_CHECKPOINT', `${said} vs ${time}`);
+        if (said !== time && said !== frame) hit('TIME_NOT_CHECKPOINT', `${said} vs ${time}`);
       }
     }
 
@@ -464,7 +539,7 @@ const CHECKER_SYSTEM_V5 = [
  * `docs/research/reports-v6/probe-2026-10-02/result.md`, approved path
  * `design.md:98`) plus the narrative's model-read rules.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 5;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 6;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -477,7 +552,9 @@ const CHECKER_SYSTEM_V6 = [
   "A catalyst status is the desk's own verdict on freshness under its rules; do not re-judge freshness from the dates in the research. A line matching its status's supported wording is supported even when the research names an older dated event.",
   "A null `sharesOutstanding` supports 'no share count is on file' (or 'no dated share count'); it never supports a number.",
   '',
-  'v6: THE NARRATIVE (id O) replaces the overall line. It may state ONLY the narrative facts given below: their counts, the given leader and its move, the window words. It is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move"), any theme, sector or industry, a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), or any claim the facts do not give.',
+  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, the after-hours name labeled as after hours, and the context into the next session, described.',
+  'v6: it may also state an INTERPRETATION: a pattern or theme the given facts support (for example how many 50 percent movers kept half their peak gain against how many gave the move back, or what the named catalysts have in common). An interpretation is supported only when the same sentence names the given facts it rests on; one that rests on no named fact is UNSUPPORTED.',
+  'v6: the narrative is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move", "on the news"), a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), a forecast about support, resistance or supply ("will hold", "should break", "expect"), an after-hours figure not labeled as after hours or mixed with the day\'s figures, or any claim the facts do not give.',
   'v6: each name line is the catalyst story only. Grade, fit to the move, structure, float, shares outstanding and supply are printed as tags beside it; a line that restates them must still be supported by the research like any other claim.',
 ].join('\n');
 
@@ -549,7 +626,7 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
           input.narrative
             ? // Worded EXACTLY as the writer was given them. Voice run v6b (801efe6e): shown as raw JSON, the model could not map "9 ran past
             // 50 percent" to movers50 or "the desk carries 12" to tracking, and struck a narrative that stated only given facts.
-            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${narrativeSheet(input.narrative, input.range).join('\n  ')}`
+            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${narrativeSheet(input.narrative).join('\n  ')}`
             : input.afterHoursTotals
               ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
               : 'After-hours totals: none given, so any count in an overall line is unsupported.',
