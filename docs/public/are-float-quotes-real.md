@@ -6,11 +6,10 @@ title: Are float quotes real?
 THE ONE SOURCE of the public page /are-float-quotes-real, rendered at request
 time by lib/public/explainer.ts. No copy of this text exists in any template.
 
-TEXT: docs/marketing/float-page-draft.md section 3 at v12 (9c6b0ed4), verbatim.
-He approved that wording 2026-10-05T16:01:43Z ("float wording is fine but i want
-to see the webpage"). Any word changed here is public copy and needs his yes
-before the commit. Marketing's later revisions (v13 onward) change text he
-approved; they replace this file only after he approves them.
+TEXT: docs/marketing/float-page-draft.md section 3 at v16 (f2089575), verbatim.
+He approved v16 and this path 2026-10-06T00:41:47.543Z ("yes to both, v16 and
+that path"), after a preview with the changes from v12 marked. Any word changed
+here is public copy and needs his yes before the commit.
 
 DO NOT SHIP before Research's insider-only validation sample has run. The page
 must not say or imply that it has. The board's float cell links here, and the
@@ -35,15 +34,15 @@ So a float number on a quote page is an estimate someone computed, unless a fili
 
 Ours is an estimate too. Here is what it is computed from and how we show it.
 
-We start with the share count the company most recently filed. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own, each holding taken from that filer's own filing and dated at or before the count. When the filings line up, what is left is the most shares that could be trading, and the true float is at most that number.
+We start with the latest filed share count we have for the company. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own, each holding taken from that filer's own filing and dated at or before the count. When the filings line up, what is left is the most shares that could have been trading on the date of the count, and the true float on that date was at most that number.
 
 ## What you see in the cell
 
 The cell shows one of four things.
 
-- **≤ 12.3M** (the number varies). The float is no more than that, when the filings line up. The date of the filed count is in the detail.
+- **≤ 12.3M** (the number varies). The float as of that date was no more than that, when the filings line up. The date of the filed count is shown beside it.
 - **Unknown.** There is no single filed share count to start from: the company has none on file, we could not match it to an SEC filer, or its count is split across several filings.
-- **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, shares may have been issued since, a split may have changed the share units, we did not check for issuance, or the figure did not pass our own sanity check. The reason is in the detail.
+- **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, the desk has not read the company's filings since the date given in the detail, shares may have been issued since, a split may have changed the share units, we did not check for issuance, or the figure did not pass our own sanity check. The reason is in the detail.
 - **Not computed.** We have not computed this name. That is different from Unknown.
 
 ## What we do not subtract, and why
@@ -52,8 +51,8 @@ We do not subtract the beneficial-ownership totals in 13D or 13G filings. Benefi
 
 ## What a number does not tell you
 
-When we find that shares have been issued since the count, or may be, the name reads Cannot verify. A name with nothing found may still have issued shares. The figure is only as current as the filings under it.
+When we find that shares have been issued since the count, or may be, the name reads Cannot verify. A name with nothing found may still have issued shares, and insiders may have sold since the count. We subtract the holdings they reported as of the count's date, so shares an insider has sold since are not added back, and today's float can be larger than the figure. The figure is only as current as the filings under it.
 
 ## What this is, and is not
 
-This is a bound, not a measurement of the true float. Where we show a number, it is computed from filings, and when the filings line up it is the most shares that could be trading.
+This is a bound, not a measurement of the true float. Where we show a number, it is computed from filings, and when the filings line up it is the most shares that could have been trading on the date of the count.
