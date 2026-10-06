@@ -14,6 +14,7 @@ import { cyclePhaseOf } from '@/lib/dashboard/cycle';
 import { Graveyard } from '@/components/Graveyard';
 import { FocusStrip } from '@/components/FocusStrip';
 import { FeedBanner } from '@/components/FeedBanner';
+import { FeedBannerProvider } from '@/lib/hooks/useFeedBanner';
 import { feedBanner } from '@/lib/dashboard/feedBanner';
 import { BriefingLine, InlineBriefing, ReportWindow } from '@/components/SessionReports';
 import {
@@ -428,6 +429,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const reportPanelOpen = reportOpen && timeline !== null && reportChoice?.kind === 'CHOSEN';
 
   return (
+    <FeedBannerProvider banner={banner}>
     <div
       className="flex h-screen flex-col overflow-hidden bg-desk"
       data-report-printing={reportPanelOpen ? '' : undefined}
@@ -648,5 +650,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
         onClose={() => setSelectedTicker(null)}
       />
     </div>
+    </FeedBannerProvider>
   );
 }

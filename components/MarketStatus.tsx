@@ -1,6 +1,8 @@
 'use client';
 
 import { StatusBadge } from '@/components/StatusBadge';
+import { chipText } from '@/lib/dashboard/feedBanner';
+import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import type { MarketHealthView } from '@/lib/market/health';
 import { isMarketDataExpected } from '@/lib/market/session';
 import type { DiscoveryState, MarketFeedHealth } from '@/lib/market/types';
@@ -64,6 +66,14 @@ function ageDetail(
  */
 export function MarketStatus({ health, marketHealth, discovery, mounted }: MarketStatusProps) {
   const age = marketHealth.messageAgeSeconds;
+  /*
+   * WHILE THE BOARD IS NOT UPDATING the chip must not keep the last payload's
+   * verdict: it would go on reading LIVE, with a pulsing dot, over numbers the
+   * page can no longer vouch for. It takes the banner's cause in Marketing's
+   * words, names no feed, and reverts on the render the banner clears.
+   */
+  const banner = useFeedBanner();
+  const tone: MarketHealthView['tone'] = banner ? 'warn' : marketHealth.tone;
 
   /*
    * What this hour SHOULD produce. Inside the session window a feed is expected
@@ -112,17 +122,17 @@ export function MarketStatus({ health, marketHealth, discovery, mounted }: Marke
        * every hour and are unaffected.
        */}
       <span
-        title={marketHealth.label + ' · ' + marketHealth.detail}
+        title={banner ? banner.text : marketHealth.label + ' · ' + marketHealth.detail}
         className={`inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase ${
-          TONE_CLASS[marketHealth.tone]
+          TONE_CLASS[tone]
         }`}
       >
         <span
-          className={`h-1.5 w-1.5 rounded-full ${DOT_CLASS[marketHealth.tone]} ${
-            marketHealth.live ? 'live-dot' : ''
+          className={`h-1.5 w-1.5 rounded-full ${DOT_CLASS[tone]} ${
+            marketHealth.live && !banner ? 'live-dot' : ''
           }`}
         />
-        {marketHealth.state === nominalState ? null : marketHealth.label}
+        {banner ? chipText(banner) : marketHealth.state === nominalState ? null : marketHealth.label}
       </span>
 
       {/*

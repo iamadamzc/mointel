@@ -221,7 +221,9 @@ describe('status chrome shows only what varies', () => {
       ['components/ResearchEngineStatus.tsx', 'health.label'],
     ] as const) {
       const source = await read(file);
-      expect(source).toMatch(new RegExp(`title=\{${expr.replace('.', '\.')} \+`));
+      // MarketStatus may carry the feed banner's words instead while the board is not updating;
+      // the normal-state label stays on hover.
+      expect(source).toMatch(new RegExp(`title=\{(banner \\? banner\\.text : )?${expr.replace('.', '\\.')} +`));
     }
   });
 });

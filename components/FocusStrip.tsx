@@ -14,6 +14,8 @@
  * conclusions on this strip cannot drift from the drawer for the same ticker.
  */
 
+import { priceSourceTitle } from '@/lib/dashboard/feedBanner';
+import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { FocusToggle } from '@/components/FocusToggle';
 import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
 import { buildDeskRead, type DeskRead, type DeskReadLevel } from '@/lib/dashboard/deskRead';
@@ -138,6 +140,7 @@ function FocusCard({
   onSelect: (ticker: string) => void;
   onToggleFocus: (ticker: string) => void;
 }) {
+  const feedBanner = useFeedBanner();
   const read: DeskRead = buildDeskRead(row);
   const t = read.telemetry;
 
@@ -178,7 +181,9 @@ function FocusCard({
             }`}
             title={
               t.source === 'ALPACA'
-                ? 'Live Alpaca market data'
+                ? feedBanner
+                  ? priceSourceTitle(feedBanner)
+                  : 'Live Alpaca market data'
                 : 'Google Sheet value. No live market data for this ticker.'
             }
           >

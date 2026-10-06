@@ -16,6 +16,8 @@ import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
 import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
+import { priceSourceTitle, telemetryTitle } from '@/lib/dashboard/feedBanner';
+import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StoredLevelLadder } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
@@ -45,6 +47,7 @@ export function TickerDrawer({
   onToggleFocus,
   onClose,
 }: TickerDrawerProps) {
+  const feedBanner = useFeedBanner();
   const panelRef = useRef<HTMLElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const restoreFocusTo = useRef<HTMLElement | null>(null);
@@ -205,7 +208,7 @@ export function TickerDrawer({
             <NotAnalyzedPanel symbol={row.ticker} research={research} />
           ) : null}
 
-          <Collapsible title="Live Market Telemetry">
+          <Collapsible title={telemetryTitle(feedBanner)}>
             <Demand row={row} />
           </Collapsible>
         </div>
@@ -271,6 +274,7 @@ function DrawerHeader({
   onClose: () => void;
   headingRef: React.Ref<HTMLHeadingElement>;
 }) {
+  const feedBanner = useFeedBanner();
   const ticker = row.research;
   // The same projection the board used to pick this row's price.
   const t = row.telemetry;
@@ -351,7 +355,9 @@ function DrawerHeader({
                 }
                 title={
                   t.source === 'ALPACA'
-                    ? 'Live Alpaca market data'
+                    ? feedBanner
+                      ? priceSourceTitle(feedBanner)
+                      : 'Live Alpaca market data'
                     : 'Google Sheet value. No live market data for this ticker.'
                 }
               />
