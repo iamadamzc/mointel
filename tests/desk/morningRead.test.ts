@@ -203,25 +203,52 @@ describe('morningReadOf: the server read', () => {
     checkpoint('PREMARKET_0625', D, null, '2026-10-06T10:25:30.000Z', ['ACME']);
     checkpoint('PREMARKET_0700', D, null, MORNING_AT, ['ACME', 'BETA', 'NEWCO']);
 
-    // Before any morning checkpoint: nothing to show.
-    expect(morningReadOf(db, D, '2026-10-06T10:00:00.000Z').size).toBe(0);
     // Between 06:25 and 07:00: the 06:25 checkpoint (ACME only).
     const early = morningReadOf(db, D, '2026-10-06T10:30:00.000Z');
-    expect([...early.keys()]).toEqual(['ACME']);
-    expect(early.get('ACME')!.confirmation.morningAt).toBe('2026-10-06T10:25:30.000Z');
+    expect([...early.byTicker.keys()]).toEqual(['ACME']);
+    expect(early.byTicker.get('ACME')!.confirmation.morningAt).toBe('2026-10-06T10:25:30.000Z');
+    expect(early.morningAt).toBe('2026-10-06T10:25:30.000Z');
     // After 07:00: NEWCO was not on the evening recap, so it is absent.
     const late = morningReadOf(db, D, '2026-10-06T12:00:00.000Z');
-    expect([...late.keys()].sort()).toEqual(['ACME', 'BETA']);
+    expect([...late.byTicker.keys()].sort()).toEqual(['ACME', 'BETA']);
+    expect(late.morningAt).toBe(MORNING_AT);
+    expect(late.eveningAt).toBe(EVENING_AT);
     // No stored grade column yet: every pair is UNKNOWN, never confirmed; no research cited: no PM update.
-    expect(late.get('ACME')).toEqual({
+    expect(late.byTicker.get('ACME')).toEqual({
       confirmation: { state: 'UNKNOWN', reason: 'GRADE_NOT_STORED', changes: [], eveningAt: EVENING_AT, morningAt: MORNING_AT },
       pmCatalyst: { state: 'NO_MORNING_RESEARCH', reason: null, catalyst: null, catalystChanged: null, generatedAt: null },
     });
   });
 
-  it('reads nothing without an evening recap targeting D', () => {
+  it('without an evening recap targeting D: the morning frame and its names, no pairs (every name NO_EVENING_CALL)', () => {
     checkpoint('NEXT_DAY_RECAP', '2026-10-04', '2026-10-05', '2026-10-05T02:00:30.000Z', ['ACME']);
     checkpoint('PREMARKET_0700', D, null, MORNING_AT, ['ACME']);
-    expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z').size).toBe(0);
+    expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z')).toEqual({
+      morningAt: MORNING_AT, eveningAt: null, morningTickers: ['ACME'], byTicker: new Map(),
+    });
+  });
+
+  it('the frame tells the three absences apart: no morning checkpoint yet, on it with no evening call, not on it', () => {
+    checkpoint('NEXT_DAY_RECAP', '2026-10-05', D, EVENING_AT, ['ACME', 'BETA']);
+    checkpoint('PREMARKET_0625', D, null, '2026-10-06T10:25:30.000Z', ['ACME', 'NEWCO']);
+
+    // Before any morning checkpoint: the evening recap is found, no morning (NOT_YET for every name).
+    expect(morningReadOf(db, D, '2026-10-06T10:00:00.000Z')).toEqual({
+      morningAt: null, eveningAt: EVENING_AT, morningTickers: [], byTicker: new Map(),
+    });
+    const read = morningReadOf(db, D, '2026-10-06T10:30:00.000Z');
+    // NEWCO is on the morning checkpoint with no evening call: listed, not paired (NO_EVENING_CALL).
+    expect(read.morningTickers.slice().sort()).toEqual(['ACME', 'NEWCO']);
+    expect(read.byTicker.has('NEWCO')).toBe(false);
+    // BETA had an evening call and is not on the morning checkpoint: in neither (NOT_YET).
+    expect(read.morningTickers).not.toContain('BETA');
+    expect(read.byTicker.has('BETA')).toBe(false);
+    expect([...read.byTicker.keys()]).toEqual(['ACME']);
+  });
+
+  it('nothing stored for D: an empty frame', () => {
+    expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z')).toEqual({
+      morningAt: null, eveningAt: null, morningTickers: [], byTicker: new Map(),
+    });
   });
 });
