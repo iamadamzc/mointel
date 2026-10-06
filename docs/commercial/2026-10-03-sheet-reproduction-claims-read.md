@@ -494,3 +494,16 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 **7d. Warning Shot and morning check words v3: PASS on the three 7c changes.** The label is "Risk in the evidence" (no "Main"); the hover is "One sentence from the desk's research: its reading of a risk the evidence shows for this name. It is the desk's reading and not a recommendation."; the Unknown hover is "The desk is not showing a risk for this name. That is not a finding that there is no risk." (true of a null and of a guardrail removal); the morning check's hover says "the {evening ET} recap". Nothing else changed. Still owed to this seat before any real-name run: the built prompt string and word list, read against the design text.
 
 **Still open from 8, both with Design:** the country hover (the hover stands only if row 4 reads `edgarCountry` of the registry code; if it stays `dossier.country` the hover is "Country as recorded in the desk's research."), and the empty supply-group hover (Marketing found `supplyLedger` in `lib/research/interpret/schema.ts:137` is a plain array with no per-group coverage field, and read the schema only; Design or Research confirm nothing else stores one).
+
+
+## 8a. The country hover and the empty-group hover, resolved with Design, fourth tenure, 2026-10-06
+
+*Read: Design's reply (code reads of `TickerDrawer.tsx`, `researchRepo.ts`, `lib/research/types.ts` at `385e6129`), and by me `lib/research/interpret/schema.ts:174` and `bundle.ts:538`.*
+
+**Empty supply-group hover: PASS, unconditional.** Design read the stored types: `StructureFindings` and `SupplyBlock` carry only the ledger's blocks, no per-group searched or found-none marker reaches the stored dossier, and the 8-K / 6-K group is filled from cited evidence links. "Either it found none or it did not read for this group; the record does not say which" is true.
+
+**Country hover.** Design found two further facts: the drawer line also falls back to the Sheet's country (`TickerDrawer.tsx` passes `sheetCountry`), which is not SEC at all, and `issuer_registry.country` is server-side only, so the SEC-sourced form (a) needs an Ops or Research field before it can be built. So for now form (b).
+- **Dossier-sourced value: "Country as recorded in the desk's research."** True of every dossier value, a code or a written-out name.
+- **Sheet fallback value: no hover.** The Sheet's country is not the desk's research either.
+- **Design's proposal (show the SEC hover when the value decoded from a two-character EDGAR code) is not accepted.** A two-character value in `dossier.country` is the model's copy of the bundle's code: the field is a plain `nullableString` (`schema.ts:174`) and no step checks it against `bundle.country` (`bundle.ts:538`) or the registry. The measurement in `stateCountry.ts` says the codes are mostly copied, which makes the SEC claim probably true, not established; this seat has passed no such claim since 5e. The SEC hover returns when the registry's code reaches the payload and the row reads `edgarCountry` of it.
+- **Cut 3 (`385e6129`) already shows the SEC hover unhidden.** It must not ship that way: either the hover is the string above (dossier case) with none on a Sheet value, or no hover on row 4's country in cut 3. Either is true; the SEC sentence is not.
