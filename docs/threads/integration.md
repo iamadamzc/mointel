@@ -1645,6 +1645,14 @@ HIS RULING       2026-10-06T00:22:29.450Z (transcript d947056e): "yes, build bot
                  Confirmation (row 22). In the Sheet plan RULED block. Routed to Research (spend within ~$2-10/mo estimate,
                  else to him first; Confirmation spend to him first if any; Commercial reads instructions; Marketing words;
                  Design surfaces; live before step 4).
+RESEARCH RESET   Research self-reset (same id local_dd23765d). Answered: slot not happened; float increment REPLAYED bd20d42c..
+                 fdfdfcef (5 commits, 0 merges, 16 files +836/-24, em 0 control 730; worker needs Alpaca split client, still
+                 env-off; db adds announced_splits_json; floatRead no callers). S1 storage condition MET (floatJob.ts:146
+                 holdingsAtBoth). APPROVED for Ops's gate slot, literal fdfdfcef7e45. Hazard noted: schema edits under IF NOT
+                 EXISTS need a migration once any box has the table.
+                 REPORT TAGS WITHDRAWN: report code has no Sheet priority (git grep 0, control rows.ts hits); adding the grade
+                 to reports would be a new surface, never approved. Came from Marketing's 10-04 sweep; the 27th carried it.
+CUT 2 GO         Ops 170a55a0: his "cut 2" then "go" (~20:15 ET) for steps 1-4. Production still 6e7fff84 at my last read.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
