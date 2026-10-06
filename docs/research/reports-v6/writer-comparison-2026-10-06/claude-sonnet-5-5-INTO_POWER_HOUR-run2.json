@@ -1,0 +1,642 @@
+{
+  "arm": "claude-sonnet-5-5",
+  "writerModel": "claude-sonnet-5-5",
+  "kind": "INTO_POWER_HOUR",
+  "runNo": 2,
+  "draft": {
+    "headline": "",
+    "overall": "NXL leads the session at 14:30 ET, up 68 percent from the prior close, with fresh news found in our sources: a 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. NAMM is next among the covered gainers, up 51 percent, with fresh news found in our sources (first-half results and an operating update), and it printed a new high of day since the previous checkpoint. EJH is up 28 percent, with fresh news found in our sources about an AI service robot launch paired with a private placement. Fresh news was found in our sources for 6 of the 12 names the desk covers.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "NXL",
+            "text": "Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America at 08:30 ET, October 1, 2026, which it framed as a step toward commercial revenue. The desk reads it as a company-specific commercialization story, but the excerpt gives no contract value, minimum purchases or revenue figure, and it does not establish what conditions must be met before revenue is realized."
+          },
+          {
+            "ticker": "STKH",
+            "text": "No fresh catalyst: only older news was found in our sources, the September 3, 2026 retail launch of Perfecta plant-based meat in the Northeastern U.S., described as its first U.S. store-shelf placement. No sales, store-count or contract-value figure was disclosed, and no later company announcement tied to this session is on file."
+          },
+          {
+            "ticker": "AISP",
+            "text": "Airship AI announced $29.0M of firm-fixed-price, brand-name-only contract awards from a Department of Homeland Security agency at 09:00 ET, October 1, 2026. The desk reads the award as material against the $4.12 million of revenue reported for Q2 2026, but delivery timing, revenue-recognition timing and the specific agency are not established."
+          },
+          {
+            "ticker": "WFCF",
+            "text": "The company's Form S-3 shelf, covering up to $50.0 million of stock, preferred stock and warrants, became effective on September 30, 2026. That is financing capacity only: no takedown, offering or sale is documented, and the evidence does not show the shelf caused the price move. It is down 17.4% since the previous checkpoint."
+          },
+          {
+            "ticker": "APAC",
+            "text": "Research is not on file for this name at this checkpoint, so no catalyst is stated."
+          },
+          {
+            "ticker": "EZRA",
+            "text": "No fresh catalyst: the older item in our sources is the completed sale of Altruis Benefit Consulting, reported in an 8-K at 17:51 ET, September 29, 2026, for $8 million in cash plus an earnout of up to $1 million. The desk reads it as added liquidity, but the effect on revenue, earnings and debt is not quantified and the earnout amount is unknown."
+          },
+          {
+            "ticker": "EJH",
+            "text": "E-Home announced the launch of a dedicated AI service robot for China's household-services market at 07:15 ET, October 1, 2026, alongside a September 29 private-placement agreement for 71.8 million shares at $0.60 (stated gross proceeds $43.08 million). The desk notes the placement is substantial prospective supply, and the evidence does not show it has closed."
+          },
+          {
+            "ticker": "LONA",
+            "text": "No fresh catalyst: the latest company-specific item in our sources is warrant-related, with Series A warrants exercisable since September 18, 2026, which is dilutive rather than favorable. The last clinical update found was enrollment of the 500th ELAINE-3 subject on August 26, 2026, and nothing found corresponds to the live move."
+          },
+          {
+            "ticker": "NAMM",
+            "text": "Namib Minerals reported first-half 2026 results and an operating update at 08:00 ET, October 1, 2026, with revised production guidance, higher reported AISC and $11.3 million of non-cash revaluation losses. It followed a $6.5 million non-dilutive term loan announced September 29. The desk reads the outlook and costs as adverse and the loan as non-equity funding, and our sources do not tie the price move to any one of these. Since the previous checkpoint it printed a new high of day."
+          },
+          {
+            "ticker": "STFS",
+            "text": "No fresh catalyst: the older item in our sources is a closed best-efforts offering of 12,000,000 Class A shares at $0.80, for approximately $9.6 million gross, on September 28, 2026. That is confirmed new issuance and a dilutive supply event, and nothing found explains the current positive move."
+          },
+          {
+            "ticker": "FHTX",
+            "text": "Foghorn and Lilly decided not to advance FHD-909 beyond Phase 1 dose escalation, per an 8-K at 03:01 ET, October 1, 2026, and Foghorn announced a workforce reduction of approximately 40%. The desk reads it as a major strategic retrenchment, only partly offset by a longer cash runway, and the efficacy or safety data behind the decision are not provided. Since the previous checkpoint it printed a new high of day."
+          },
+          {
+            "ticker": "DTSQ",
+            "text": "Research is not on file for this name at this checkpoint, so no catalyst is stated."
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_POWER_HOUR",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-01",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 606,
+          "type": "RTH_INTERVAL",
+          "completedAt": "2026-10-01T18:30:05.368Z"
+        }
+      ],
+      "publishedAt": "2026-10-06T02:48:33.749Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS",
+          "lines": [
+            {
+              "ticker": "NXL",
+              "liveFeed": null,
+              "text": "Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America at 08:30 ET, October 1, 2026, which it framed as a step toward commercial revenue. The desk reads it as a company-specific commercialization story, but the excerpt gives no contract value, minimum purchases or revenue figure, and it does not establish what conditions must be met before revenue is realized.",
+              "company": {
+                "name": "Nexalin Technology, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 4.28,
+                "high": 10.98,
+                "now": 7.21,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:30 AM ET",
+                  "headline": "On October 1, 2026, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America, which it described as a step toward commercial revenue generation.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "9.23M sh supply",
+                  "detail": "The reported 22,036,402 shares outstanding date is August 10, 2026, before the August 28, 2026 1-for-30 reverse split and before later financing activity.",
+                  "tone": "neg",
+                  "full": "The reported 22,036,402 shares outstanding date is August 10, 2026, before the August 28, 2026 1-for-30 reverse split and before later financing activity. The bundle does not provide a reconciled current outstanding-share count."
+                }
+              }
+            },
+            {
+              "ticker": "AISP",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Airship AI Holdings, Inc.",
+                "country": "United States",
+                "business": "Airship AI provides an AI-driven video, sensor and data-management surveillance platform for public-safety and operational-efficiency uses."
+              },
+              "path": {
+                "from": 1.86,
+                "high": 2.86,
+                "now": 2.3491,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 9:00 AM ET",
+                  "headline": "Airship AI announced $29.0 million of firm-fixed-price brand-name-only contract awards from an agency within the U.S. Department of Homeland Security on October 1, 2026. This is a company-specific, primary-source contract award with a stated material value.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "34.3M sh supply",
+                  "detail": "No reported public float is supplied, so float cannot be inferred from shares outstanding or market capitalization.",
+                  "tone": "neg",
+                  "full": "No reported public float is supplied, so float cannot be inferred from shares outstanding or market capitalization."
+                }
+              }
+            },
+            {
+              "ticker": "WFCF",
+              "liveFeed": null,
+              "text": "The company's Form S-3 shelf, covering up to $50.0 million of stock, preferred stock and warrants, became effective on September 30, 2026. That is financing capacity only: no takedown, offering or sale is documented, and the evidence does not show the shelf caused the price move. It is down 17.4% since the previous checkpoint.",
+              "company": {
+                "name": "Where Food Comes From, Inc.",
+                "country": "United States",
+                "business": "The company provides independent third-party verification of food production practices in North America."
+              },
+              "path": {
+                "from": 11.05,
+                "high": 18.79,
+                "now": 13.1216,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "since Wed close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Sep 30, 4:00 PM ET",
+                  "headline": "The company’s Form S-3 registration statement, covering up to $50.0 million of common stock, preferred stock and warrants, became effective on September 30, 2026. This is an effective shelf registration, meaning the company may sell securities from time to time, but the evidence does not document a takedown, offering, or shares actually sold.",
+                  "explainsMove": false,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Wed close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "An effective $50.0 million universal shelf creates material future issuance capacity, but no actual issuance is evidenced.",
+                  "tone": "warn",
+                  "full": "An effective $50.0 million universal shelf creates material future issuance capacity, but no actual issuance is evidenced."
+                }
+              }
+            },
+            {
+              "ticker": "EJH",
+              "liveFeed": null,
+              "text": "E-Home announced the launch of a dedicated AI service robot for China's household-services market at 07:15 ET, October 1, 2026, alongside a September 29 private-placement agreement for 71.8 million shares at $0.60 (stated gross proceeds $43.08 million). The desk notes the placement is substantial prospective supply, and the evidence does not show it has closed.",
+              "company": {
+                "name": "E-Home Household Service Holdings Ltd",
+                "country": "Cayman Islands",
+                "business": "E-Home provides integrated household services in China, including home-appliance and smart-home installation and maintenance services."
+              },
+              "path": {
+                "from": 1.42,
+                "high": 2.17,
+                "now": 1.82,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 7:15 AM ET",
+                  "headline": "E-Home announced the launch of a dedicated AI service robot for China's household-services market, but the positive product headline is paired with a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "71.8M sh supply",
+                  "detail": "A pending private placement covers 71.8 million shares at $0.60, but current shares outstanding and float are not established, so its proportional dilution cannot be calculated.",
+                  "tone": "neg",
+                  "full": "A pending private placement covers 71.8 million shares at $0.60, but current shares outstanding and float are not established, so its proportional dilution cannot be calculated."
+                }
+              }
+            },
+            {
+              "ticker": "NAMM",
+              "liveFeed": null,
+              "text": "Namib Minerals reported first-half 2026 results and an operating update at 08:00 ET, October 1, 2026, with revised production guidance, higher reported AISC and $11.3 million of non-cash revaluation losses. It followed a $6.5 million non-dilutive term loan announced September 29. The desk reads the outlook and costs as adverse and the loan as non-equity funding, and our sources do not tie the price move to any one of these. Since the previous checkpoint it printed a new high of day.",
+              "company": {
+                "name": "Namib Minerals",
+                "country": null,
+                "business": "Namib Minerals is a gold producer, developer and explorer operating in Zimbabwe, including the producing How Mine and planned restarts of other assets."
+              },
+              "path": {
+                "from": 0.9583,
+                "high": 1.5,
+                "now": 1.4515,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "On October 1, the company reported first-half 2026 results and an operating update. The update revised production guidance to 26,500 to 27,000 ounces while maintaining C1 cost guidance; it also reported group AISC of $3,078 per ounce, versus $2,462 per ounce in the comparative period, and disclosed $11.3 million of non-cash losses from earnout and warrant-liability revaluations. The mixed operating and financial disclosure followed the September 29 announcement of a $6.5 million non-dilutive term loan to partially fund Redwing restart work.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "188.5M sh supply",
+                  "detail": "An effective F-3 resale registration covers up to 80,646,036 ordinary shares, plus resale of 5,289,934 warrants and issuance of up to 18,576,677 warrant-exercise shares.",
+                  "tone": "neg",
+                  "full": "An effective F-3 resale registration covers up to 80,646,036 ordinary shares, plus resale of 5,289,934 warrants and issuance of up to 18,576,677 warrant-exercise shares. This is legal resale and issuance capacity, not proof of sales."
+                }
+              }
+            },
+            {
+              "ticker": "FHTX",
+              "liveFeed": null,
+              "text": "Foghorn and Lilly decided not to advance FHD-909 beyond Phase 1 dose escalation, per an 8-K at 03:01 ET, October 1, 2026, and Foghorn announced a workforce reduction of approximately 40%. The desk reads it as a major strategic retrenchment, only partly offset by a longer cash runway, and the efficacy or safety data behind the decision are not provided. Since the previous checkpoint it printed a new high of day.",
+              "company": {
+                "name": "Foghorn Therapeutics Inc.",
+                "country": "United States",
+                "business": "Foghorn Therapeutics is a clinical-stage biotechnology company developing medicines intended to treat serious diseases by correcting abnormal gene expression, with an initial focus on oncology."
+              },
+              "path": {
+                "from": 3.57,
+                "high": 2.84,
+                "now": 2.815,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "11h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 3:01 AM ET",
+                  "headline": "Foghorn and Lilly decided not to advance FHD-909 beyond Phase 1 dose escalation, will not advance the selective SMARCA2 degrader program, and do not anticipate further collaboration activity. Foghorn also announced pipeline prioritization and an approximately 40% workforce reduction, expected to extend its cash runway into the second half of 2029.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "22.1M sh supply",
+                  "detail": "The reported 59,385,315 common shares outstanding as of July 31, 2026 conflicts with an investor presentation reporting approximately 70.6 million shares as of June 30, 2026.",
+                  "tone": "neg",
+                  "full": "The reported 59,385,315 common shares outstanding as of July 31, 2026 conflicts with an investor presentation reporting approximately 70.6 million shares as of June 30, 2026. The bundle does not reconcile the definitions or the decrease."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER NEWS",
+          "lines": [
+            {
+              "ticker": "STKH",
+              "liveFeed": null,
+              "text": "No fresh catalyst: only older news was found in our sources, the September 3, 2026 retail launch of Perfecta plant-based meat in the Northeastern U.S., described as its first U.S. store-shelf placement. No sales, store-count or contract-value figure was disclosed, and no later company announcement tied to this session is on file.",
+              "company": {
+                "name": "Steakholder Foods Ltd.",
+                "country": "Israel",
+                "business": "Steakholder Foods develops 3D-printing technology for producing whole cuts of plant-based meat."
+              },
+              "path": {
+                "from": 1.57,
+                "high": 2.3,
+                "now": 0.8608,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "28d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 3, 8:32 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 3 · The company announced on September 3, 2026 that Perfecta Premium Plant-Based Meat launched at retail outlets in the Northeastern U.S., described as its first U.S. store-shelf placement. This is a company-confirmed commercial milestone, but the evidence provides no sales, revenue, store-count, or contract-value figure.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2368.6M sh supply",
+                  "detail": "No public-float figure is supplied.",
+                  "tone": "neg",
+                  "full": "No public-float figure is supplied. Reported shares outstanding must not be treated as float."
+                }
+              }
+            },
+            {
+              "ticker": "EZRA",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Reliance Global Group, Inc.",
+                "country": "United States",
+                "business": "Reliance Global Group is an insurance-focused holding company whose subsidiaries operate insurance agency businesses."
+              },
+              "path": {
+                "from": 2.28,
+                "high": 2.81,
+                "now": 2.3,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "2d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 29, 5:51 PM ET",
+                  "headline": "The company disclosed the completed sale of Altruis Benefit Consulting, with its company release stating $8 million in cash plus an earnout of up to $1 million.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "21.9M sh supply",
+                  "detail": "The latest reported 1,002,998 shares outstanding is dated July 30, 2026 and predates the effective registration of up to 6,107,568 additional ELOC shares.",
+                  "tone": "neg",
+                  "full": "The latest reported 1,002,998 shares outstanding is dated July 30, 2026 and predates the effective registration of up to 6,107,568 additional ELOC shares."
+                }
+              }
+            },
+            {
+              "ticker": "LONA",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "LeonaBio, Inc.",
+                "country": "United States",
+                "business": "LeonaBio is a clinical-stage biopharmaceutical company developing lasofoxifene for metastatic breast cancer and ATH-1105 for ALS."
+              },
+              "path": {
+                "from": 3.57,
+                "high": 5.34,
+                "now": 4.41,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "13d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 17, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 17 · The latest company-specific event is dilutive rather than positive: 23,031,494 Series A warrants with a $6.35 exercise price became exercisable on September 18, 2026 and remain exercisable through October 19, 2026. The last favorable clinical update was enrollment of the 500th subject in ELAINE-3 on August 26, 2026.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "95.8M sh supply",
+                  "detail": "Effective resale registrations cover amounts far larger than the 9,421,663 reported common shares outstanding, although the registered totals include overlapping issued shares and warrant shares and cannot be treated as additive.",
+                  "tone": "neg",
+                  "full": "Effective resale registrations cover amounts far larger than the 9,421,663 reported common shares outstanding, although the registered totals include overlapping issued shares and warrant shares and cannot be treated as additive."
+                }
+              }
+            },
+            {
+              "ticker": "STFS",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Star Fashion Culture Holdings Ltd",
+                "country": null,
+                "business": "Star Fashion Culture provides content marketing services, including marketing campaign planning and execution, offline advertising, and online precision marketing services."
+              },
+              "path": {
+                "from": 3.6101,
+                "high": 3.905,
+                "now": 3.75,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "3d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 28, 4:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 28 · The company closed a best-efforts public offering of 12,000,000 Class A ordinary shares at $0.80 per share for approximately $9.6 million in gross proceeds on September 28, 2026. This is confirmed new share issuance and a dilutive supply event.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "16.0M sh supply",
+                  "detail": "A 12,000,000-share public offering closed on September 28, 2026, creating confirmed new issuance.",
+                  "tone": "neg",
+                  "full": "A 12,000,000-share public offering closed on September 28, 2026, creating confirmed new issuance."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT YET RESEARCHED",
+          "lines": [
+            {
+              "ticker": "APAC",
+              "liveFeed": null,
+              "text": "",
+              "company": null,
+              "path": {
+                "from": 10.27,
+                "high": 10.27,
+                "now": 10.27,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "DTSQ",
+              "liveFeed": null,
+              "text": "",
+              "company": null,
+              "path": {
+                "from": 11.58,
+                "high": 11.64,
+                "now": 11.58,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched yet.",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched yet, so there is no catalyst grade and no freshness to colour.",
+                  "disagreement": null
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": null,
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "4.12 million"
+        },
+        {
+          "id": "S1L5",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "S1L6",
+          "reason": "SHARES_UNDATED",
+          "by": "rule",
+          "detail": "1002998"
+        },
+        {
+          "id": "S1L10",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "prediction or certainty: \"confirmed\""
+        },
+        {
+          "id": "S1L12",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "bare \"no catalyst\": \"no catalyst\""
+        },
+        {
+          "id": "O",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "NAMM's and EJH's percentage moves are stated without the required prior-close reference frame."
+        },
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research only says no new favorable company announcement corresponds to the move; “nothing found corresponds to the live move” is broader."
+        },
+        {
+          "id": "S1L10",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research only says no separate fresh positive company-specific event explains the move; “nothing found explains the current positive move” is broader."
+        }
+      ],
+      "writerMs": 11385,
+      "checkerMs": 12432
+    }
+  },
+  "error": null,
+  "usage": [
+    {
+      "model": "claude-sonnet-5-5",
+      "inputTokens": 8767,
+      "outputTokens": 1703,
+      "cachedInputTokens": 0,
+      "reasoningTokens": null,
+      "durationMs": 11384
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "inputTokens": 20280,
+      "outputTokens": 1247,
+      "cachedInputTokens": 1782,
+      "reasoningTokens": 967,
+      "durationMs": 12426
+    }
+  ]
+}

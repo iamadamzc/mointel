@@ -1,0 +1,24 @@
+claude-sonnet-5-5-PREMARKET-run2 · built from checkpoint #611
+
+THE SESSION
+Nine names ran at least 50 percent above the prior close on the day; none of them gave the entire move back, and four kept at least half of the peak gain at the close. Of those nine, the desk covers five. That split rests on those counts alone. NXL ran to 157 percent above the prior close and closed up 76 percent, with fresh news in our sources: a 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America. SSM ran to 130 percent above the prior close and closed up 97 percent, with fresh news in our sources: a Schedule 13D filing and secondary coverage of a reported stake in Sono Group, which is not a fully characterized company catalyst. After the close, AMOD was up 62 percent, with an 8-K reporting an asset transaction completed on September 30. For context, NXL closed at $7.55 against a session high of $10.98; stored support is $4.90 and stored resistance is $10.98, and open supply is a recent offering (active), with warrants, convertibles and an ATM possibly active. Seven of the 12 names the desk covers have fresh news in our sources, and the desk carries 12 names into the next session.
+
+FRESH NEWS
+  SORA: 
+  AMOD: 
+  NXL: Nexalin announced at 08:30 ET a definitive 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America. The desk reads it as a commercialization story; the excerpt gives no contract value, minimum purchases or conditions before revenue.
+  SSM: A Schedule 13D was filed on October 1, and secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The desk treats it as an attention event, not a fully characterized catalyst: purchase dates, intentions and the link to the move are not established.
+  EJH: E-Home announced at 07:15 ET the launch of an AI service robot for China's household-services market. It is paired with a September 29 private placement of 71.8 million shares at $0.60 for $43.08M gross, and the desk cannot confirm that the placement has closed.
+  AISP: Airship AI announced at 09:00 ET $29.0M of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The desk reads it as a material, company-specific award; performance period, delivery schedule and revenue timing are not in the excerpt.
+  NAMM: Namib released first-half 2026 results and a business update at 08:00 ET, with revised production guidance of 26,500 to 27,000 ounces, all-in sustaining cost of $3,078 per ounce and $11.3M of non-cash fair-value losses. It also announced a $6.5M non-dilutive term loan on September 29. The desk reads the evidence as mixed, and the prior guidance range is not on file.
+
+OLDER NEWS
+  WCT: This is not a fresh catalyst. The latest company event found is a 1-for-5 reverse split announced at 16:50 ET on September 3, following an August 31 public offering of 50,000,000 Class A shares for about $7.5M. The desk reads the pairing as dilutive and found nothing newer to explain the move.
+  CAMP: This is not a fresh catalyst. The latest items are an August 13 update reporting regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch, and the August 4 completion of a second private-placement closing. The financing added capital but also resale supply, and nothing newer is identified.
+  COLA: This is not a fresh catalyst. Columbus, a SPAC, announced at 04:01 ET on September 11 that it convened and adjourned its extraordinary general meeting. The reason, the reconvened date and the outcome are not in the excerpt, and coverage is incomplete.
+
+UNCLEAR
+  HTCR: The analysis reached no conclusion about a catalyst. The latest SEC item is an 8-K filed at 16:05 ET on September 25, and its subject is not in the excerpt. Coverage is SEC-only, so an outside announcement could have been missed.
+
+NOT YET RESEARCHED
+  ALPX: Not researched yet; there is no dossier on this name at this checkpoint.

@@ -1,0 +1,24 @@
+terra-INTO_RTH-run1 · built from checkpoint #596
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  NXL: At 08:30 ET, October 1, 2026, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement for Brazil and South America, with secondary coverage describing seven Latin American markets. The desk reads it as a company-specific commercial-distribution development, but the materials do not provide economics, sales commitments, regulatory conditions, commercial timing, or evidence that the agreement caused the move.
+  EZRA: 
+  EJH: 
+  LRHC: At 05:00 ET, October 1, 2026, La Rosa announced NVIDIA GPU acquisitions, explored real estate asset divestitures, and disclosed an exchange for 3,410 newly issued Series F convertible preferred shares. The desk reads the disclosure as an AI infrastructure narrative paired with potential future common-share dilution; GPU terms and the potential conversion amount are not established.
+
+OLDER NEWS
+  RPGL: This is not a fresh catalyst: the latest identified item is secondary coverage of a 1-for-16 reverse share split effective September 25, 2026, alongside an August 4 closing of 15,000,000 Class A ordinary shares at $1.00 per share and a July 24 convertible note priced at 80% of the average of the three lowest Nasdaq trading prices. The desk reads the split as a trading-share-structure change and the financing context as structurally dilutive, without a verified fresh operating catalyst for the move.
+  NAMM: This is not a fresh catalyst: at 19:26 ET, September 29, 2026, Namib announced a US$6.5 million term loan facility from African Banking Corporation to partially fund resource definition and bankability work for the Redwing restart plan. The desk reads it as debt funding for a stated restart milestone without a stated equity issuance; it does not establish full funding for the remaining restart steps. Since the previous checkpoint, NAMM printed a new high of day.
+
+UNCLEAR
+  ISNR: The latest identified company event is the July 27, 2026 announcement that Class A shares and warrants would begin separate trading on July 30. The desk cannot establish a fresh catalyst or the reason for the current move from the incomplete source coverage.
+
+NOT YET RESEARCHED
+  CEPV: Research is not on file for CEPV at this checkpoint.
+  LTGR: Research is not on file for LTGR at this checkpoint.
+  CCAQ: Research is not on file for CCAQ at this checkpoint.
+  MTNE: Research is not on file for MTNE at this checkpoint.
+  PALO: Research is not on file for PALO at this checkpoint.

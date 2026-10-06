@@ -1,0 +1,24 @@
+claude-sonnet-5-5-PREMARKET-run1 · built from checkpoint #611
+
+THE SESSION
+Nine names ran at least 50 percent above the prior close on the day; none of them gave the entire move back, and four kept at least half of the peak gain at the close. That split rests on those given counts alone. NXL ran to 157 percent above the prior close and closed up 76 percent, with fresh news in our sources: an agreement for exclusive distribution and local manufacturing in Brazil and South America. SSM ran to 130 percent and closed up 97 percent, with a Schedule 13D filing in our sources, reported by secondary coverage as a 21.5% stake. After the close, AMOD is up 62 percent, with an 8-K in our sources reporting completion of an asset transaction. NXL closed at $7.55 against a session high of $10.98, with stored support at $4.90 and stored resistance at $10.98; open supply includes a recent offering (active), plus warrants, convertibles and an ATM, each possibly active. Fresh news was found for 7 of the 12 names the desk covers, and the desk carries 12 names into the next session.
+
+FRESH NEWS
+  SORA: 
+  AMOD: Alpha Modus filed an 8-K reporting completion of an asset transaction on September 30, and secondary coverage reported that the closed PIPE delivered 3,170 Bitcoin valued above $250M. The desk sees a material asset addition alongside heavy dilution from the contemplated new share issuance, and the final closing terms and resale eligibility are not in the evidence.
+  NXL: Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America at 08:30 ET on October 1, described by the company as a step toward commercial revenue. The excerpt gives no contract value, minimum purchases or expected revenue, and does not say what conditions come before revenue.
+  SSM: A Schedule 13D was filed on October 1, and secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The filing excerpt gives no purchase dates, intentions or full ownership terms, so the desk treats it as an attention event, not a fully characterized company catalyst.
+  EJH: E-Home announced the launch of a dedicated AI service robot for China's household-services market at 07:15 ET on October 1. The same sources show a September 29 private-placement agreement for 71.8 million shares at $0.60, which the desk reads as substantial prospective supply; the release body and the placement's closing are not in the evidence.
+  AISP: Airship AI announced $29.0M of firm-fixed-price awards from a Department of Homeland Security agency at 09:00 ET on October 1. The desk reads it as a material, company-specific award, though the performance period, delivery schedule and revenue timing are not in the excerpt.
+  NAMM: Namib released first-half 2026 results and a business update at 08:00 ET on October 1, with revised production guidance and a higher all-in sustaining cost, plus $11.3 million of non-cash fair-value losses. It also announced a $6.5 million non-dilutive term loan on September 29; the desk reads the evidence as mixed, and the prior guidance range is not provided.
+
+OLDER NEWS
+  WCT: This is not a fresh catalyst: the latest company event found is the September 3 announcement of a 1-for-5 reverse split, which followed a completed August 31 public offering of Class A shares. The desk reads the pairing as dilutive, and nothing newer was found to explain the current move.
+  CAMP: This is not a fresh catalyst: the latest substantive items are the August 13 Q2 update, reporting regulatory clearance in two jurisdictions for a planned Phase 1/2 launch, and the August 4 private-placement closing. The financing added capital and also created resale supply, and no newer company event was identified.
+  COLA: This is not a fresh catalyst: Columbus, a SPAC, announced on September 11 at 04:01 ET that it convened and adjourned its extraordinary general meeting. The excerpt gives no reason, new date or voting result, and coverage is incomplete because no newswire or company source was located.
+
+UNCLEAR
+  HTCR: The analysis reached no conclusion about a catalyst. The latest collected SEC item is an 8-K from September 25 whose subject is not disclosed in the excerpt, and coverage is SEC-only, so an outside announcement could have been missed.
+
+NOT YET RESEARCHED
+  ALPX: Not researched yet; there is no dossier for this name at this checkpoint.

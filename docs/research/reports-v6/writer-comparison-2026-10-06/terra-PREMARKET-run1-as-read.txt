@@ -1,0 +1,24 @@
+terra-PREMARKET-run1 · built from checkpoint #611
+
+THE SESSION
+(no narrative: struck, or nothing to say)
+
+FRESH NEWS
+  SORA: At 12:06 ET, October 1, 2026, AsiaStrategy announced a non-binding MOU with Plume to explore an Asian joint venture for tokenized financial products. The desk reads the relationship as timely tokenization exposure, but the release discloses no binding transaction, deal value, revenue contribution, closing condition, or timetable.
+  AMOD: Alpha Modus reported completion of an asset transaction on September 30, 2026, while secondary coverage reported a closed PIPE delivering 3,170 Bitcoin valued above $250 million; the underlying agreement contemplated 51,621,560 new Class A shares. The desk views the reported asset addition as material, while the contemplated issuance materially changes the capital structure.
+  NXL: At 08:30 ET, October 1, 2026, Nexalin announced a definitive 10-year exclusive distribution and local-manufacturing agreement covering Brazil and South America. The desk reads it as a company-specific commercialization framework, though the supplied primary excerpt gives no contract value, minimum purchases, expected revenue, or financial commitments.
+  SSM: A Schedule 13D was filed on October 1, 2026, and secondary coverage reported that Alpine Fox Capital disclosed a 21.5% stake in Sono Group. The desk treats this as an attention event because the filing excerpt does not provide purchase dates, ownership terms, or the holder's intentions.
+  EJH: At 07:15 ET, October 1, 2026, E-Home announced an AI service robot for China's household-services market, alongside a September 29 private-placement agreement covering 71.8 million shares at $0.60 for stated gross proceeds of $43.08 million. The desk reads the product announcement as timely AI exposure, while the placement represents prospective issuance below the observed market price.
+  AISP: At 09:00 ET, October 1, 2026, Airship AI announced $29.0 million of firm-fixed-price awards from an agency within the U.S. Department of Homeland Security. The desk views the awards as a company-specific revenue and execution development, with performance period, delivery schedule, revenue-recognition timing, and profit contribution undisclosed.
+  NAMM: At 08:00 ET, October 1, 2026, Namib released first-half 2026 results and revised production guidance to 26,500 to 27,000 ounces, while maintaining C1 cost guidance; it also disclosed all-in sustaining cost of $3,078 per ounce and $11.3 million of non-cash earnout and warrant fair-value losses. The desk reads the update as mixed operating and cost information, alongside a September 29 $6.5 million non-dilutive term loan for Redwing Mine resource definition and bankability work.
+
+OLDER NEWS
+  WCT: 
+  CAMP: This is not a fresh catalyst: the latest substantive developments were the August 13, 2026 update on regulatory clearance in two jurisdictions for a planned Q4 2026 CMP-002 Phase 1/2 launch and the August 4 second private-placement closing. The desk views the clinical update as a development milestone and notes that the financing created common-stock and pre-funded-warrant resale availability.
+  COLA: This is not a fresh catalyst: on September 11, 2026, Columbus announced that it convened and adjourned an extraordinary general meeting of shareholders. The desk treats it as a SPAC corporate-process event, with the reason for adjournment, reconvened meeting date, voting results, and transaction implications not stated in the supplied excerpt.
+
+UNCLEAR
+  HTCR: A catalyst determination is not supportable: the substantive event in the September 25, 2026 8-K is absent from the supplied excerpt, and the SEC-only coverage is incomplete.
+
+NOT YET RESEARCHED
+  ALPX: Research is not on file for ALPX at this checkpoint.
