@@ -1583,6 +1583,12 @@ HIS DIRECTION    2026-10-05T23:58:21.877Z (transcript d947056e, his turn), verba
                  approved-not-built / built-not-shipped list (Research: in research.md, send cap). Asked Ops for CUT 2
                  feasibility: d1e7ba9d + the 17 picks of 2eaad153 (safe without the reader), tonight after the 22:00 recap
                  or tomorrow after 20:00. Then: one register to him with owner, trigger, and which need his yes.
+INV Commercial   Blocks a ship: terms of sale (docs/legal/terms-of-sale-daily-pass.md) for BILLING only, not the free beta:
+                 Commercial owes em-dash sweep (14 U+2014, its byte grep with control), re-read vs rulings since 09-30,
+                 [CONTACT] x3; HIS: refund line + adoption. Told: proceed (a)(b)(c). FORM B final pass waits on S1 built
+                 and measured; float CAN ship in FORM A before S1. When it exists: rubric page, entry-gate deviation from
+                 12b, each new session-report sample, any outcome page. Commercial corrected its own piped-Python em-dash
+                 counts; re-checked by byte grep: all passed files 0.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
