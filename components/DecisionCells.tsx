@@ -600,6 +600,7 @@ export function TickerCell({
   ageSeconds,
   retention,
   setupGrade,
+  companyHint,
 }: {
   ticker: string;
   focused: boolean;
@@ -609,6 +610,8 @@ export function TickerCell({
   retention?: string | null;
   /** The stored setup grade (null or absent is NOT_YET: the dash). */
   setupGrade?: SetupGrade | null;
+  /** "Name. Country." as a hover on the ticker (contract row 4); absent when the desk has no name. */
+  companyHint?: string | null;
 }) {
   return (
     <span className="flex flex-col items-start">
@@ -618,7 +621,9 @@ export function TickerCell({
           line only when it has to; a letter badge (18 px) fits every ticker. */}
       <span className="flex flex-wrap items-center gap-x-1">
         <FocusToggle ticker={ticker} focused={focused} onToggle={onToggleFocus} />
-        <span className="text-[15px] font-bold tracking-tight text-ink">{ticker}</span>
+        <span className="text-[15px] font-bold tracking-tight text-ink" title={companyHint ?? undefined}>
+          {ticker}
+        </span>
         {setupGrade !== undefined ? <SetupGradeBadge grade={setupGrade} /> : null}
         {stale ? (
           <span

@@ -53,6 +53,7 @@ import {
 import type { DiscoveryState } from '@/lib/market/types';
 import { formatCount, formatMultiple } from '@/lib/format';
 import { FloatCell } from '@/components/FloatCell';
+import { companyLine } from '@/lib/dashboard/companyLine';
 import { FLOAT_LEGEND } from '@/lib/dashboard/floatBound';
 import { SETUP_GRADE_LEGEND } from '@/lib/dashboard/setupGrade';
 
@@ -1071,6 +1072,13 @@ function DiscoveryRow({
           ageSeconds={t.ageSeconds}
           retention={retention}
           setupGrade={row.setupGradeWired ? row.setupGrade : undefined}
+          companyHint={
+            companyLine({
+              dossier: row.intelligence?.analysis?.dossier ?? null,
+              sheetName: row.researchRecord?.company,
+              sheetCountry: row.research?.country,
+            }).hint
+          }
         />
         {afterHours ? (
           // One line: a wrapped second line here made every row in the evening
