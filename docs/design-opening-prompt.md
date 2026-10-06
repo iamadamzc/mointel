@@ -22,7 +22,7 @@ Web-tmi, Marketing-tmi and Commercial-tmi in `list_sessions` BY TITLE at every s
 archived; when two share a title the newer `createdAt` is live; a message to an archived seat fails and one to a retired
 seat is dropped. Seats change ids often (Integration three times and Web once in one day).
 
-**Send peer messages with SendMessage** (his ruling 2026-10-06T02:22:30.305Z, relayed by Integration): `to` = the seat's title; to reply, copy the `from=`. On a refusal, report the exact text to Integration, then fall back to send_message. No test messages.
+**Send peer messages with SendMessage** (his ruling 2026-10-06T02:22:30.305Z, relayed by Integration): `to` = the seat's TITLE or a `uds:` from-address, never the `local_` session id (addressing by id is what hit the 10-per-turn pause; Integration measured 0 refusals in 132 sends by title); to reply, copy the `from=`. On a refusal, report the exact text to Integration, then fall back to send_message. No test messages.
 
 **Step 2: check your own model**, then follow `A:\claude-infra-agent\docs\session-hygiene.md` (context, the error ledger,
 hand-off or the self-reset hook, the NEEDS YOU block).
