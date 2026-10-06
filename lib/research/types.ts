@@ -578,7 +578,7 @@ export interface EvidenceRisk {
   evidenceSourceIds: number[];
   /**
    * Set when a guardrail removed the text: the rule, the shape, and the removed
-   * sentence for the audit of the removal rate. Never shown on a surface.
+   * sentence for the audit of the removal rate. NOT safe to serve: the board payload carries the whole dossier (readModel.ts), so this must be stripped server-side before any surface.
    * Absent on the model's own output, before validation.
    */
   removed?: { rule: EvidenceRiskRule; detail: string; text: string | null } | null;
