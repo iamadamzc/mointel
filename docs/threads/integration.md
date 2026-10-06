@@ -1611,6 +1611,10 @@ INV Marketing    Marketing self-reset (fresh seat, Sonnet 5.5). FORM A applied a
 INV Web          web.md PENDING BUILDS de076b44: built-not-shipped = 2eaad153 + its picks in the cut. Float page: GO on branch
                  web/float-page, path /are-float-quotes-real APPROVED by me, build from v16 not v12. Cannot start: FINRA terms,
                  billing P5. Private preview for him is Web's next deliverable.
+BILLING TERMS    Commercial 3729eadf (origin): terms of sale em 0, contact filled, two charge sentences from his rulings 4-5; still
+                 HELD. OPEN, all block only the BILLING ship: (1) how a hand-billed first user is charged (Ops/Web design;
+                 billing has no code), (2) which paid days "a non-trading day is not charged" covers (HIS), (3) refund line
+                 (HIS). Put (2)+(3) to him in ONE batch when billing is close (after A6 + his processor account), not before.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
