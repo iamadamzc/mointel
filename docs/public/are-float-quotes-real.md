@@ -6,11 +6,12 @@ title: Are float quotes real?
 THE ONE SOURCE of the public page /are-float-quotes-real, rendered at request
 time by lib/public/explainer.ts. No copy of this text exists in any template.
 
-TEXT: docs/marketing/float-page-draft.md section 3 at v19 (d5ca0adc, Commercial
-5s PASS at 3763ef0c), verbatim. He approved v16 and this path
-2026-10-06T00:41:47.543Z ("yes to both, v16 and that path"), and v19's one
-changed paragraph ("What a number does not tell you") 2026-10-06T01:43:24.471Z
-("yes to v19"), each after a preview with the changes marked. Any word changed
+TEXT: docs/marketing/float-page-draft.md section 3 at v20 (6fed4658, Commercial
+5t PASS at 2c350906), verbatim. He approved v16 and this path
+2026-10-06T00:41:47.543Z ("yes to both, v16 and that path"), then the paragraph
+"What a number does not tell you" at v19 2026-10-06T01:43:24.491Z ("yes to v19")
+and at v20 2026-10-06T02:17:32.593Z ("yes to v20"), each after a preview with
+the changes marked. Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -54,7 +55,7 @@ We do not subtract the beneficial-ownership totals in 13D or 13G filings. Benefi
 
 ## What a number does not tell you
 
-When we find a flag or a filing showing that shares have been issued since the count, or may have been, the name reads Cannot verify. The filings we look for are two kinds made on or after the count's date: a final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5), and a report of an unregistered sale of shares (Form 8-K item 3.02). Resale prospectuses and routine prospectus supplements do not trigger the check. Those checks cannot see every issuance: sales under an open at-the-market program between supplements, private placements below the size that requires a report (Form 8-K item 3.02 requires none below 1 percent of the class, or 5 percent for a smaller reporting company), and conversions or exercises that file nothing, do not show up in them. A name with nothing found may still have issued shares, and insiders may have sold since the count. We subtract the holdings they reported as of the count's date, so shares an insider has sold since are not added back, and today's float can be larger than the figure. The figure is only as current as the filings under it.
+When we find a flag or a filing showing that shares have been issued since the count, or may have been, the name reads Cannot verify. The filings we look for are two kinds made on or after the count's date: a final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5), and a report of an unregistered sale of shares (Form 8-K item 3.02). Resale prospectuses and prospectus updates (such as forms 424B2 and 424B3) do not trigger the check. Those checks cannot see every issuance: sales under an open at-the-market program between supplements, private placements below the size that requires a report (Form 8-K item 3.02 requires none below 1 percent of the class, or 5 percent for a smaller reporting company, counted in total since the last report), and conversions or exercises that file nothing, do not show up in them. A name with nothing found may still have issued shares, and insiders may have sold since the count. We subtract the holdings they reported as of the count's date, so shares an insider has sold since are not added back, and today's float can be larger than the figure. The figure is only as current as the filings under it.
 
 ## What this is, and is not
 
