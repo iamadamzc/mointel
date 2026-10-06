@@ -1653,6 +1653,12 @@ RESEARCH RESET   Research self-reset (same id local_dd23765d). Answered: slot no
                  REPORT TAGS WITHDRAWN: report code has no Sheet priority (git grep 0, control rows.ts hits); adding the grade
                  to reports would be a new surface, never approved. Came from Marketing's 10-04 sweep; the 27th carried it.
 CUT 2 GO         Ops 170a55a0: his "cut 2" then "go" (~20:15 ET) for steps 1-4. Production still 6e7fff84 at my last read.
+P10 FINDINGS     Row 21 STOPPED (payload has one analysis per ticker; evening/morning version and "newer" undefined) -> routed to
+                 Research + Ops as a design, with the Confirmation spec. Row 17 APPROVED (support on the /levels route, callers
+                 enumerated). Row 12 precision APPROVED (contract: "never a false clock", proposal :102): clock only from an
+                 EXACT source. Row 14: computed fields under their own labels; "Former runner" HELD: computed FORMER_RUNNER =
+                 any earlier measured run (cycle.ts:640-647), superrunner at SUPERRUNNER_ADVANCE 2.0. Same word, looser meaning:
+                 TO HIM, rec keep today's meaning, computed facts as plain numbers.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
