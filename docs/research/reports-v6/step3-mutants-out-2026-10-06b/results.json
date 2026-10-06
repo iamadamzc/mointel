@@ -1,0 +1,163 @@
+{
+  "results": [
+    {
+      "id": "M0",
+      "predicted": 0,
+      "failed": 0,
+      "failedSuites": 0,
+      "total": 19
+    },
+    {
+      "id": "M1",
+      "what": "sheetPercent drops || 1",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M2",
+      "what": "the bare-year allowance removed",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M3",
+      "what": "summary figures compared exactly",
+      "predicted": 10,
+      "failed": 10,
+      "failedSuites": 3,
+      "total": 19
+    },
+    {
+      "id": "M4",
+      "what": "dates compared exactly",
+      "predicted": 10,
+      "failed": 10,
+      "failedSuites": 3,
+      "total": 19
+    },
+    {
+      "id": "M5",
+      "what": "namedTickers drops the after-hours name",
+      "predicted": 9,
+      "failed": 9,
+      "failedSuites": 3,
+      "total": 19
+    },
+    {
+      "id": "M6",
+      "what": "noClose among the given numbers",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M7",
+      "what": "splitExcluded among the given numbers",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M8",
+      "what": "the gave-back anchor removed",
+      "predicted": 3,
+      "failed": 3,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M9",
+      "what": "the \"N of the M\" rule removed",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M10",
+      "what": "an anchor with no count struck",
+      "predicted": 2,
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M11",
+      "what": "the 16:00 frame removed",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M12",
+      "what": "the 16:00 frame with no after-hours name",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M13",
+      "what": "the change notes figures not given",
+      "predicted": 7,
+      "failed": 7,
+      "failedSuites": 3,
+      "total": 19
+    },
+    {
+      "id": "M14",
+      "what": "the interpretation sentence dropped",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "M15",
+      "what": "sheetPercent keeps one decimal",
+      "predicted": 11,
+      "failed": 11,
+      "failedSuites": 3,
+      "total": 19
+    },
+    {
+      "id": "N1",
+      "what": "the range top among the given numbers",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "N2",
+      "what": "breadth among the given numbers",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "N3",
+      "what": "the zero-count anchor rule removed",
+      "predicted": 1,
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 19
+    },
+    {
+      "id": "N4",
+      "what": "an anchor with no count struck at any count",
+      "predicted": 2,
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 19
+    }
+  ]
+}
