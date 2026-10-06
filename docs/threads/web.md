@@ -528,6 +528,38 @@ owner-only (`4418c741`); entry gate (`6497285a`, screen `d023bd94`, guard `3e855
   since; every addition is scanned). Sweeping them is open debt, low priority: the file is read by seats, not by
   him or a stranger, but his rule covers docs too.
 
+### PENDING BUILDS FOR INTEGRATION
+
+**Written 2026-10-06 by local_fe13d183, on Integration 28th's ask under his direction "i want everything planned to
+be built and everything built to be shipped" (his turn 2026-10-05T23:58:21.877Z, read in transcript d947056e).
+Every sha read off git, not from a message.**
+
+**BUILT, NOT SHIPPED**
+
+| what | sha | waits on |
+| --- | --- | --- |
+| Sheet priority out of every surface; MCP emits Setup grade | branch `web/sheet-priority-out` `2eaad153` (on Design `52cced3e`; gate green; replayed and approved by Integration 28th) | Ops's `setupGrades` store and reader, then ONE badge release with Design `52cced3e` |
+| Landing float sentence | `48b68283` in cut `d1e7ba9d` | his go on tonight's ship |
+| Identity store 0640 pair | `e0bcdd30`, `1fe81da3` in the cut | same |
+| Retry research owner-only | `4f136f15`, `2b82c876` in the cut | same |
+| Entry gate (server side) + signout 303 | `34e9d05f`, `07762ee2`, `3d6023ce`, `d1e7ba9d` in the cut | same. After the ship: outside sweep, `/enter` must stay 401 behind Basic Auth |
+
+**APPROVED, NOT BUILT**
+
+| what | approval | can start now? |
+| --- | --- | --- |
+| Public page "Are float quotes real?" | wording v12 approved 2026-10-05T16:01:43Z ("float wording is fine but i want to see the webpage"); preview `63f9c251` sent | **YES, the build.** A route rendering the text from ONE source, on a branch, from v12 (the approved text). The text has since moved (Marketing v15 `acd6cf0f`, plus a batch waiting on Research's answer to Commercial 5k item 4); that batch goes to him as one line, then it is a one-file swap. The route PATH is new public copy and is not chosen anywhere I found: proposed `/are-float-quotes-real`. **Shipping waits on:** Research's insider-only validation sample, his yes on the final text, Ops's exact-match nginx exemption, and Design's float cell link in the SAME release |
+| FINRA end-user terms edit (draft `204d42c6`) and attribution strings | drafted; his approval not given | **NO**: not before the short-interest label exists (charter OPEN) |
+| Billing, Web's part (P5 in `docs/beta-launch-path-2026-10-05.md`) | build approved 2026-09-28 | **NO**: sequenced after A6 and P4 (no processor account exists) |
+
+**NOT A WEB BUILD:** invites (an allowlist row, live); A1 `/api/dashboard` gate (Ops `b6f8891f`, in the cut as
+`5f273d87`, and it already moved the route out of the gate test's `UNGATED` set into `INTERNAL_OK`); A3 and A5 (Ops,
+nginx). The review link's Sheet data: priority leaves with `2eaad153`; the rest of the Sheet leaves at Sheet plan
+step 7 (code deletion, after his step 6). Three-way refusal split waits on a refusal reason in the store.
+
+**DOCS THIS SEAT CAN DO NOW (no approval needed):** `docs/web/README.md` does not yet describe `/enter` or the
+signout 303; this charter's 58 pre-rule em dashes.
+
 ### PUSH CLEARANCES FOR INTEGRATION
 
 **CLEARED by the Web seat local_a4c618a8 (2026-10-05):** every `Web (local_a4c618a8)` commit on local main that
