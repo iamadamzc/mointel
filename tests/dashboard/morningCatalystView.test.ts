@@ -29,6 +29,7 @@ const payload = (pm: PmCatalyst, over: Partial<{ morningAt: string | null; eveni
   morningAt: MORNING,
   eveningAt: EVENING,
   morningTickers: ['ABC'],
+  eveningTickers: ['ABC'],
   byTicker: { ABC: { confirmation, pmCatalyst: pm } },
   ...over,
 });

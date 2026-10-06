@@ -879,6 +879,8 @@ export type MorningReadPayload =
       eveningAt: string | null;
       /** Every name on the chosen morning checkpoint, in its stored order. */
       morningTickers: string[];
+      /** Every name on the chosen evening recap ([] without one): the only source of evening membership (Commercial 15). */
+      eveningTickers: string[];
       /** Names on both checkpoints; a morning name missing here was not on the evening recap. */
       byTicker: Record<string, { confirmation: Confirmation; pmCatalyst: PmCatalyst }>;
     }

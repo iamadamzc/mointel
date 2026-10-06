@@ -3,15 +3,19 @@
  * recap compared with the latest morning checkpoint, read from Research's
  * `morningReadOf` frame (`MarketSnapshot.morningRead`), never recomputed here.
  *
- * WHICH ABSENCE IS WHICH (Integration 29th's ruling, 2026-10-06): the field
- * absent (not wired) or `morningAt` null is "No morning check yet"; a name not
- * on the morning checkpoint is the same; a name on the morning checkpoint and
- * missing from `byTicker` was not on the evening recap and the section is
- * HIDDEN (Marketing v3: "a name new this morning is not unconfirmed"). Two
- * faults read "Unknown", never an absence: an unreadable read, and a morning
- * checkpoint with no evening recap at all (`eveningAt` null), which is a recap
- * that did not complete, not a name new this morning (Design's call, told to
- * Integration).
+ * WHICH ABSENCE IS WHICH, Integration 30th's six rows (amending the 29th's
+ * d21e4ba0 for Commercial 15): (1) `morningAt` null: "No morning check yet",
+ * "No morning checkpoint has completed for this date."; (2) `morningAt` set and
+ * `eveningAt` null: "Unknown", no detail, for every morning-checkpoint name (a
+ * recap that did not complete is a fault, not a name new this morning); (3) on
+ * the morning checkpoint and in `byTicker`: its state; (4) on the morning
+ * checkpoint, not in `byTicker`: not on the evening recap, HIDDEN (Marketing v3:
+ * "a name new this morning is not unconfirmed"); (5) NOT on the morning
+ * checkpoint and IN `eveningTickers`: "No morning check yet", "This name was not
+ * among the names the {morning ET} checkpoint read.", and "Evening recap:
+ * {evening ET}." alone; (6) on neither: HIDDEN. Evening membership is read from
+ * `eveningTickers` only, never inferred (Commercial 15). The field absent (not
+ * wired) prints the face alone; an unreadable read is a fault and reads Unknown.
  *
  * No internal state or reason prints: UNKNOWN never says why (GRADE_NOT_STORED,
  * NOT_GRADED and VERSION_UNREADABLE are engine constants). The word "confirmed"
@@ -21,7 +25,7 @@
  * Words: Marketing v3 (`docs/marketing/warning-shot-confirmation-words-2026-10-06.md`
  * at 6fed4658, Commercial-passed); the catalyst values NONE, CONFLICTING and NONE_FOUND per
  * Marketing (pm-catalyst-words at 7109a3b1, Commercial 11b), everything else through the
- * board's `humanise`.
+ * board's `humanise`; the row-5 detail and "Evening recap" line Marketing 580583cf, Commercial 15.
  */
 
 import { longDate } from '@/lib/dashboard/floatBound';
@@ -46,6 +50,8 @@ export const MORNING_CHECK_WORDS = {
     "The desk has not re-read this name's catalyst since the evening checkpoint. The setup grade is the same.",
   notYetFace: 'No morning check yet',
   notYetDetail: 'No morning checkpoint has completed for this date.',
+  notOnMorningDetail: (morning: string) => `This name was not among the names the ${morning} checkpoint read.`,
+  eveningOnly: (evening: string) => `Evening recap: ${evening}.`,
   unknown: 'Unknown',
   notStated: 'not stated',
   part: {
@@ -117,17 +123,19 @@ export function morningCheckView(
 ): MorningCheckView {
   const W = MORNING_CHECK_WORDS;
   const none = { eveningAt: null, morningAt: null };
-  if (!payload) return view('NOT_YET', W.notYetFace, W.notYetDetail, none, nowIso);
+  if (!payload) return view('NOT_YET', W.notYetFace, null, none, nowIso);
   if ('unreadable' in payload) return view('UNKNOWN', W.unknown, null, none, nowIso);
 
   const frame = { eveningAt: payload.eveningAt, morningAt: payload.morningAt };
+  // (1) No morning checkpoint has completed for the date.
   if (payload.morningAt === null) return view('NOT_YET', W.notYetFace, W.notYetDetail, frame, nowIso);
   if (!payload.morningTickers.includes(ticker)) {
-    // A morning checkpoint DID complete; this name was not on it. The NOT_YET detail ("No morning
-    // checkpoint has completed") would be false, and a "Compared" line would claim a comparison that
-    // did not happen for this name: the face alone until Marketing words this case (seen on a render).
-    return { ...view('NOT_YET', W.notYetFace, null, none, nowIso), labelHover: view('NOT_YET', '', null, frame, nowIso).labelHover };
+    // (5) On the evening recap only; (6) on neither: nothing.
+    if (payload.eveningAt === null || !payload.eveningTickers.includes(ticker)) return view('HIDDEN', '', null, frame, nowIso);
+    const v = view('NOT_YET', W.notYetFace, W.notOnMorningDetail(et(payload.morningAt, nowIso)), frame, nowIso);
+    return { ...v, compared: W.eveningOnly(et(payload.eveningAt, nowIso)) };
   }
+  // (2) A morning checkpoint with no completed evening recap.
   if (payload.eveningAt === null) return view('UNKNOWN', W.unknown, null, frame, nowIso);
 
   const entry = payload.byTicker[ticker];
