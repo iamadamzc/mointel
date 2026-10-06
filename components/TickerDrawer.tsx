@@ -921,7 +921,8 @@ function SessionsGroup({ demand }: { demand: DemandState }) {
   return (
     <div className="mt-4">
       <FieldLabel>{SESSIONS_WORDS.group}</FieldLabel>
-      <div className="mt-1 grid grid-cols-2 gap-x-6 gap-y-3">
+      {/* One column: the close sits ABOVE after hours, which the percent's hover ("shown above") relies on. */}
+      <div className="mt-1 grid grid-cols-1 gap-y-3">
         <Field label={SESSIONS_WORDS.closeLabel} value={close.text} title={close.hover ?? undefined} numeric />
         <div className="min-w-0">
           <FieldLabel>{SESSIONS_WORDS.afterHoursLabel}</FieldLabel>

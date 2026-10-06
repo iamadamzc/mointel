@@ -29,7 +29,7 @@ describe('the close line', () => {
     expect(closeLine(demand())).toEqual({
       state: 'PRODUCED',
       text: '$2.50, Aug 14, 2026',
-      hover: SESSIONS_WORDS.closeFromBar('Aug 14, 2026'),
+      hover: 'The regular-session close from the daily bar for Aug 14, 2026.',
     });
   });
 
@@ -47,7 +47,9 @@ describe('the close line', () => {
     const line = closeLine(demand({ rthFinal: frozen(3.09) }));
     expect(line.text).toBe('$3.09, Aug 17, 2026');
     expect(line.text).not.toContain('2.50');
-    expect(line.hover).toBe(SESSIONS_WORDS.closeProvisional('Aug 17, 2026'));
+    expect(line.hover).toBe(
+      "The last regular-session trade the desk saw, as of the 16:00 ET bell on Aug 17, 2026. The daily bar's close can differ.",
+    );
   });
 
   it('after the bell with no value at all: Unknown, with the day', () => {
@@ -60,7 +62,7 @@ describe('the close line', () => {
 
   it('a close from the Sheet makes no daily-bar claim', () => {
     const line = closeLine(demand({ referenceRthCloseSource: 'sheet' }));
-    expect(line.hover).toBe(SESSIONS_WORDS.closeOther('Aug 14, 2026'));
+    expect(line.hover).toBe('The regular-session close for Aug 14, 2026, as stored. The desk does not show its source.');
     expect(line.hover).not.toContain('daily bar');
   });
 });
@@ -71,20 +73,28 @@ describe('the after-hours line (today only)', () => {
       demand({ ...TODAY_BAR, referenceRthCloseBasis: 'CURRENT_SESSION', rthFinal: frozen(3.1), afterHours: ahState(ah), ...extra }),
     );
 
-  it('before the bell: Not yet, worded as today', () => {
-    expect(afterHoursLine(demand())).toMatchObject({ state: 'NOT_YET', text: SESSIONS_WORDS.afterHoursNotYet, parts: null });
+  it("before the bell: Not yet, worded as TODAY's after hours", () => {
+    expect(afterHoursLine(demand())).toMatchObject({
+      state: 'NOT_YET',
+      text: "Today's after hours begins after the 16:00 ET close",
+      parts: null,
+    });
   });
 
   it('complete coverage: price, percent from the close, volume, each with its hover', () => {
     const line = after({});
     expect(line.text).toBe('$3.48, +12.3% from the close, 1.25M shares');
-    expect(line.parts?.percent.hover).toBe('Measured from the regular-session close on Aug 17, 2026.');
+    expect(line.parts?.percent.hover).toBe('Measured from the regular-session close shown above, for Aug 17, 2026.');
     expect(line.parts?.volume.hover).toBe('Counts only trades after the 16:00 ET bell.');
   });
 
-  it("before today's close arrives: the percent alone is Unknown and says why", () => {
+  it("before today's close arrives: the percent cell reads No close (only its baseline is missing)", () => {
     const line = after({ percentChange: null }, { ...PRIOR, referenceRthCloseBasis: 'PRIOR_SESSION' });
-    expect(line.parts?.percent).toEqual({ state: 'UNKNOWN', text: 'Unknown', hover: SESSIONS_WORDS.percentWaiting });
+    expect(line.parts?.percent).toEqual({
+      state: 'UNKNOWN',
+      text: 'No close',
+      hover: 'The desk has no regular-session close to measure the change from.',
+    });
     expect(line.parts?.price.state).toBe('PRODUCED');
   });
 
@@ -95,17 +105,32 @@ describe('the after-hours line (today only)', () => {
     expect(line.parts?.percent.state).toBe('PRODUCED');
   });
 
-  it('coverage NONE: every figure Unknown', () => {
-    expect(after({ coverage: 'NONE', volume: null })).toMatchObject({ state: 'UNKNOWN', text: 'Unknown', parts: null });
+  it('coverage NONE: every figure Unknown, one hover', () => {
+    expect(after({ coverage: 'NONE', volume: null })).toMatchObject({
+      state: 'UNKNOWN',
+      text: 'Unknown',
+      hover: 'The desk was not recording after hours on Aug 17, 2026.',
+      parts: null,
+    });
   });
 
   it('no after-hours trade seen: the regular session price is never printed as an after-hours price', () => {
     const complete = after({ high: null, volume: 0 });
-    expect(complete).toMatchObject({ state: 'PRODUCED', text: SESSIONS_WORDS.noTradeSinceBell, parts: null });
+    expect(complete).toMatchObject({
+      state: 'PRODUCED',
+      text: 'No trade seen since the 16:00 ET bell',
+      hover: 'The desk was recording and saw no trade after the 16:00 ET bell on Aug 17, 2026.',
+      parts: null,
+    });
     expect(complete.text).not.toContain('3.48');
     const partial = after({ high: null, coverage: 'PARTIAL', volume: null });
     expect(partial.parts?.price.state).toBe('UNKNOWN');
     expect(partial.parts?.percent.state).toBe('UNKNOWN');
+    // Price and percent say they cannot tell; only the volume speaks of leaving trades out.
+    const cannotTell = 'The desk began recording after the bell on Aug 17, 2026, so it cannot say whether trades occurred before it started.';
+    expect(partial.parts?.price.hover).toBe(cannotTell);
+    expect(partial.parts?.percent.hover).toBe(cannotTell);
+    expect(partial.parts?.volume.hover).toBe(SESSIONS_WORDS.volumePartial('Aug 17, 2026'));
     expect(partial.text).not.toContain('3.48');
   });
 });
@@ -123,6 +148,8 @@ describe('words and placement', () => {
   it('the drawer renders the group in the market section, with no premarket line', () => {
     const drawer = readFileSync('components/TickerDrawer.tsx', 'utf8');
     expect(drawer).toContain('<SessionsGroup demand={demand} />');
+    // The percent hover says "shown above": the group must stay one column, close first.
+    expect(drawer).toContain('<div className="mt-1 grid grid-cols-1 gap-y-3">');
     // No premarket line until Ops's field exists (Integration 29th).
     expect(Object.keys(SESSIONS_WORDS).some((key) => /premarket/i.test(key))).toBe(false);
   });

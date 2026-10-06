@@ -24,8 +24,8 @@
  * after-hours figures (with PARTIAL coverage the desk cannot tell whether one
  * happened before it started, so they read Unknown).
  *
- * Words: Marketing (`docs/marketing/drawer-row-5-words-2026-10-06.md`).
- * Strings marked PENDING are Design's placeholders, asked of Marketing.
+ * Words: Marketing (`docs/marketing/drawer-row-5-words-2026-10-06.md` at
+ * f35d945f, the FINAL state list and A6). None is a placeholder.
  */
 
 import { longDate } from '@/lib/dashboard/floatBound';
@@ -37,29 +37,36 @@ export const SESSIONS_WORDS = {
   closeLabel: 'Regular session close',
   afterHoursLabel: 'After hours',
   unknown: 'Unknown',
-  /** C1, C2: a close from the day's daily bar. PENDING. */
-  closeFromBar: (date: string) => `The regular-session close for ${date}, from the day's daily bar.`,
-  /** C3: the provisional value, later replaced by the daily bar's close. PENDING. */
-  closeProvisional: (date: string) => `The last regular-session trade the desk saw at the 16:00 ET bell on ${date}.`,
-  /** C5: a close whose source is not a daily bar. PENDING. */
-  closeOther: (date: string) => `The regular-session close for ${date}.`,
+  /** C1, C2: a close from the daily bar; the date is the bar's own trading date. */
+  closeFromBar: (date: string) => `The regular-session close from the daily bar for ${date}.`,
+  /** C3: the provisional value, before the daily bar arrives. Says it can differ, never that it will be replaced. */
+  closeProvisional: (date: string) =>
+    `The last regular-session trade the desk saw, as of the 16:00 ET bell on ${date}. The daily bar's close can differ.`,
+  /** C5: a close whose source is not a daily bar: no source claim. */
+  closeOther: (date: string) => `The regular-session close for ${date}, as stored. The desk does not show its source.`,
   /** C4. */
   closeMissing: (date: string) => `The desk has no regular-session close recorded for ${date}.`,
   /** No session captured at all. */
   closeNone: "Today's regular session has not closed",
-  /** A1: today's after hours has not begun. PENDING confirmation that it never implies no move last evening. */
-  afterHoursNotYet: 'Begins after the 16:00 ET close',
-  percentHover: (date: string) => `Measured from the regular-session close on ${date}.`,
-  /** A3: the percent before today's close has arrived. PENDING. */
-  percentWaiting: "Today's close has not arrived, so there is no percent from it.",
+  /** A1: "Today's" says whose after hours, so nothing about last evening is implied. */
+  afterHoursNotYet: "Today's after hours begins after the 16:00 ET close",
+  /** A2: the close line sits ABOVE the after-hours line, which this string relies on. */
+  percentHover: (date: string) => `Measured from the regular-session close shown above, for ${date}.`,
+  /** A3: only the baseline is missing, so not "Unknown". */
+  percentNoClose: 'No close',
+  percentNoCloseHover: 'The desk has no regular-session close to measure the change from.',
   volumeHover: 'Counts only trades after the 16:00 ET bell.',
   /** A4. */
   volumePartial: (date: string) =>
     `The desk began recording after the bell on ${date}, so a volume would leave out the earlier trades.`,
-  /** A5: coverage NONE. PENDING. */
-  afterHoursNotRecorded: (date: string) => `The desk did not record after-hours trading for this name on ${date}.`,
-  /** A6: after the bell, no trade yet. PENDING. */
-  noTradeSinceBell: 'No trade since the 16:00 ET bell',
+  /** PARTIAL with no trade seen: the price and percent, which are not about volume. */
+  partialNoTradeSeen: (date: string) =>
+    `The desk began recording after the bell on ${date}, so it cannot say whether trades occurred before it started.`,
+  /** A5: one hover on all three Unknowns. */
+  afterHoursNotRecorded: (date: string) => `The desk was not recording after hours on ${date}.`,
+  /** A6: "seen": a claim about what the desk recorded, not about the market. */
+  noTradeSeen: 'No trade seen since the 16:00 ET bell',
+  noTradeSeenHover: (date: string) => `The desk was recording and saw no trade after the 16:00 ET bell on ${date}.`,
 } as const;
 
 const DAILY_BAR: ReadonlySet<RthCloseSource> = new Set(['alpaca-daily-bar-rth-close', 'alpaca-snapshot-prev-daily-bar']);
@@ -126,27 +133,28 @@ export function afterHoursLine(demand: DemandState): AfterHoursLine {
    */
   const tradedSinceBell = ah.high !== null;
   if (!tradedSinceBell && ah.coverage === 'COMPLETE') {
-    return { state: 'PRODUCED', text: SESSIONS_WORDS.noTradeSinceBell, hover: SESSIONS_WORDS.volumeHover, parts: null };
+    return { state: 'PRODUCED', text: SESSIONS_WORDS.noTradeSeen, hover: SESSIONS_WORDS.noTradeSeenHover(today), parts: null };
   }
 
   const unknown = (hover: string | null): SessionsLine => ({ state: 'UNKNOWN', text: SESSIONS_WORDS.unknown, hover });
+  // Here coverage is PARTIAL: the desk cannot say whether a trade came before it started.
+  const notSeen = unknown(SESSIONS_WORDS.partialNoTradeSeen(today));
   const closeDate = demand.referenceRthCloseBasis === 'CURRENT_SESSION' ? day(demand.referenceRthCloseDate) : null;
 
-  const price: SessionsLine =
-    tradedSinceBell && demand.price !== null && Number.isFinite(demand.price)
+  // A trade was seen but no price is held: there is no cause to state, so none is claimed.
+  const price: SessionsLine = !tradedSinceBell
+    ? notSeen
+    : demand.price !== null && Number.isFinite(demand.price)
       ? { state: 'PRODUCED', text: `$${formatPrice(demand.price)}`, hover: null }
-      : unknown(SESSIONS_WORDS.volumePartial(today));
-  const percent: SessionsLine =
-    tradedSinceBell && ah.percentChange !== null && closeDate !== null
-      ? { state: 'PRODUCED', text: `${formatSignedPercent(ah.percentChange)} from the close`, hover: SESSIONS_WORDS.percentHover(closeDate) }
-      : // Each cause its own hover: no trade seen, today's close not arrived, or no price at all.
-        unknown(
-          !tradedSinceBell
-            ? SESSIONS_WORDS.volumePartial(today)
-            : closeDate === null
-              ? SESSIONS_WORDS.percentWaiting
-              : null, // a trade was seen but there is no price: no cause to state, so none is claimed
-        );
+      : unknown(null);
+  const percent: SessionsLine = !tradedSinceBell
+    ? notSeen
+    : closeDate === null
+      ? // Only the baseline is missing, so the cell says that rather than "Unknown".
+        { state: 'UNKNOWN', text: SESSIONS_WORDS.percentNoClose, hover: SESSIONS_WORDS.percentNoCloseHover }
+      : ah.percentChange !== null
+        ? { state: 'PRODUCED', text: `${formatSignedPercent(ah.percentChange)} from the close`, hover: SESSIONS_WORDS.percentHover(closeDate) }
+        : unknown(null);
   const volume: SessionsLine =
     ah.coverage === 'PARTIAL' || ah.volume === null
       ? unknown(SESSIONS_WORDS.volumePartial(today))
