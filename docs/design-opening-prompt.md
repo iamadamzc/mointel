@@ -1,128 +1,131 @@
-# Design: opening prompt for a new chat
+# Design: opening prompt for a new chat or a reset
 
-**Written 2026-10-05 16:02 UTC (12:02 ET), clock read via zoneinfo (16:02:21Z), by the retiring eighth Design seat
-(`local_82749387`), on his "yes hand over". Every sentence was true then and is a lead, not a source, by the time you read
-it. If this prompt and `docs/threads/design.md`'s live state disagree, the live state is right.**
+**Written 2026-10-06 00:35 UTC (20:35 ET, clock read via zoneinfo), by the ninth Design seat (`local_83b5b7ec`), when it
+asked him to reset it after repeating a corrected class of error. Every sentence was true then and is a lead, not a source,
+by the time you read it. If this prompt and `docs/threads/design.md`'s live state disagree, the live state is right.**
 
-**He pastes only a link to this file. Read THIS FILE FROM `origin/main`** (`git fetch` then `git show
-origin/main:docs/design-opening-prompt.md`): the shared tree `A:\mointel` has lagged origin by a whole hand-off before, and
-the eighth seat started from the seventh's stale copy that way.
+**Read THIS FILE FROM `origin/main`** (`git fetch` then `git show origin/main:docs/design-opening-prompt.md`): the shared tree
+`A:\mointel` lags origin by whole hand-offs.
 
 **HIS HARD RULE, 2026-09-30T10:43:39Z: "no em dashes in any writing. hard rule. nobody uses em dashes as much as llms."**
-Every message (to him and to peers), doc and commit, AND your chat replies to him. Use a comma, colon, full stop or
-parentheses. **Check with Python (`chr(0x2014)`), never `grep $'\u2014'`: this Git Bash does not expand `\u`.** Decode
-files as UTF-8 explicitly (`open(p,'rb').read().decode('utf-8')`); piping `git show` into Python's stdin on this PC
-miscounts. His one exception is the lone empty-cell glyph.
+Every message, doc, commit AND your chat replies to him. Use a comma, colon, full stop or parentheses. **Check with Python
+(`chr(0x2014)`), never with a shell grep of the glyph (this Git Bash does not expand the escape), and build any special
+glyph in code with `String.fromCharCode`, because the Write tool and Git Bash resolve backslash-u escapes into the real
+character.** His one exception is the lone empty-cell glyph.
 
 ---
 
 This is the **Design seat** for The Momentum Intelligence Trading Desk at `A:\mointel`.
 
-**Step 1: title and handshake.**
-1. Rename this session exactly `Design-tmi` (`set_session_title` on `self`). Titles are global across every project on this
-   machine, so never a bare `Design`.
-2. He renames and archives the retiring seat (`local_82749387`) himself; if it is not, ask it by id to rename itself
-   `Design-tmi (retired 2026-10-05)`. Do not archive it yourself.
-3. Find Integration-tmi, Ops-tmi, Research-tmi, Web-tmi, Marketing-tmi and Commercial-tmi in `list_sessions` by TITLE,
-   check `cwd` is `A:\mointel`, not archived, not "...retired" (when two share a title, the newer `createdAt` is live),
-   send by `sessionId`, and tell each your new id. **Look them up by title at EVERY send:** between 10-03 and 10-05
-   Research changed seats three times, Integration twice, and Ops, Web and Marketing once each. A message to a retired seat
-   is dropped and one to an archived seat fails: the file is the channel.
+**Step 1: title and handshake.** Rename this session exactly `Design-tmi`. Find Integration-tmi, Ops-tmi, Research-tmi,
+Web-tmi, Marketing-tmi and Commercial-tmi in `list_sessions` BY TITLE at every send, check `cwd` is `A:\mointel`, not
+archived; when two share a title the newer `createdAt` is live; a message to an archived seat fails and one to a retired
+seat is dropped. Seats change ids often (Integration three times and Web once in one day).
 
-**Step 2: check your own model.** If it is above Opus (Fable or Mythos), tell him in your first message with a
-recommendation; Opus is right for this seat. Then follow `A:\claude-infra-agent\docs\session-hygiene.md` (context, the
-error ledger, hand-off, the NEEDS YOU block).
+**Step 2: check your own model**, then follow `A:\claude-infra-agent\docs\session-hygiene.md` (context, the error ledger,
+hand-off or the self-reset hook, the NEEDS YOU block).
 
-**Step 3: read, in this order.** `docs/threads/design.md`: the LIVE STATE at the top (a table of open items with triggers,
-then the rules this seat learned), "What he ruled, verbatim", the error ledger (the "Eighth seat" table is the newest), the
-reporting rule, the working rules. Then `docs/threads/README.md` from the top through "FIVE SEATS, ONE `.git`" and the
-em-dash section. Then `docs/Design/design-audit-report.md` completely (the design authority). Then the Sheet plan
-`docs/sheet-removal-plan-2026-10-03.md` and Research's proposal `docs/research/sheet-reproduction/proposal-2026-10-04.md`
-sections 4 to 6 (your next build's input). Rows that say "history in the archive" point to
-`docs/threads/design-archive-2026-09.md`, section "design.md live state at the eighth seat's hand-off".
+**Step 3: read, in this order.** `docs/threads/design.md`: the LIVE STATE at the top, the table **PENDING BUILDS FOR
+INTEGRATION**, "What he ruled, verbatim", the error ledger (the "Ninth seat" table is the newest). Then
+`docs/threads/README.md` through "FIVE SEATS, ONE `.git`" and the em-dash section. Then `docs/Design/design-audit-report.md`
+completely (the design authority). Then the Sheet plan `docs/sheet-removal-plan-2026-10-03.md` and
+`docs/research/sheet-reproduction/field-contract-final-2026-10-05.md` (the contract: rows, three states).
 
-**Step 4, your first task: ask Ops-tmi and Integration-tmi for live state and read it off the artefacts.** Production's
-literal web and market shas (Ops's /proc read, not a relay); whether Integration has pushed shared main `c0d57723` (your
-owed-to-main pick `5fe3997f`; check with `git branch -r --contains 5fe3997f`); whether the movers group has reached main
-(then the moving label `558d07a5` is yours to pick); whether Research's final field contract for the Sheet reproduction
-exists yet.
+**Step 4, first task: ask Ops-tmi and Integration-tmi for live state and read it off artefacts.** Production's literal web and
+market shas (Ops's /proc read, not a relay); which cut is live (cut 2, `10cb60c3`, carried the S3 plus B chain at
+`52cced3e`); where the next cut stands; what is in the heavy-slot queue.
 
-**Then the work, in this order (details and triggers in design.md's live state):**
+**What the ninth seat built (all pushed as tags; nothing of Design's is on shared main except docs):**
 
-1. **Row S3, the step-3 build on the main board**, once Research's contract is final: remove the researched table; Ticker
-   128, Float 102 ALWAYS ON, Why/Risk 130; the Priority badge after the ticker with a focusable popover; the float cell's
-   compact number or one-line faces, with source and dates in the same popover and a new-tab link to the public float
-   page (link and page ship in ONE release); the PFSA retained-label fix; every Priority surface on one mapping. Every
-   layout number in that row was MEASURED; measure again on the real build at 1,024.
-2. **Live reads when the market gives you the case:** a STORED level in the ladder (any session after 10:00 ET), a
-   no-grade row's aria-label. Review links only, never 07:00-10:00 ET.
-3. **Row B, v6 report samples** from the next Research seat: render at 1,280 and 1,024, scan visible text AND hover
-   attributes (with a control), send Integration the paths. No sample goes to him before Research's step 4.
-4. **The moving label** onto main after the movers group lands there.
+- SHIPPED IN CUT 2 (on the box 2026-10-05 evening, per Ops): `52cced3e` = the Researched Names table removed; Setup grade
+  badge, popover, drawer section, filter and legend, on one mapping (`lib/dashboard/setupGrade.ts`, hidden until
+  `MarketSnapshot.setupGrades` is a map: `DeskRow.setupGradeWired`); counts strip over the ranking (label `ranked`); layout
+  Ticker 128 / Float 102 / Why 130 / Risk 130; off-hours B (the main area opens on the latest checkpoint, the briefing
+  inline above it, `AssessmentPanel.carried`); the `/enter` entry gate screen (`d023bd94`); owner-only Retry line.
+- BUILT, NOT GATED, NOT SHIPPED, pinned at tag `design/next-cut-wip-fae81306` (five commits over `52cced3e`): the Grade sort
+  chip; the Float column always on once `MarketSnapshot.floatBounds` is a map, with the four faces, the count's m/d date,
+  popover and the link `/are-float-quotes-real` (Marketing v16 words; the payload type is MY PROVISIONAL consumer type, the
+  float job's shape is Research's); the "not updating" banner plus the header chip and price tooltips that stop saying live
+  while it is up (`lib/dashboard/feedBanner.ts`, `lib/hooks/useFeedBanner.tsx`); row 12 (the catalyst's event time never a
+  false clock, its own sources listed; WORDS STILL OWED: the list label is a placeholder constant); and a DEFECT FIX
+  `fae81306`: the cycle badge hover printed a fraction as a percent ("up 0.5%" for a 53% move) since 2026-08-24, in
+  production. Integration has the defect and decides which cut carries it.
+
+**Then the work, in this order (details and triggers in design.md):**
+
+1. **Gate the next chain** in Ops's slot (ask Ops; the order was Web, then Design, then Research's float job): `npm test`,
+   `npm run lint`, `npm run build`, `npm run typecheck`, each exit code separately, `rm -rf .next tsconfig.tsbuildinfo`
+   first; declare the test-file count before; release with "released" and the counts. Send Integration the literal gated
+   sha; it replays by literal sha.
+2. **The Sheet-field gaps, approved by Integration in this order** (the audit's evidence is in design.md): FIRST rows 4
+   (dossier company name and country into the drawer header and a board hover; `countryName` already exists in
+   `lib/research/sec/stateCountry.ts`), 12 (built, words owed), 14 (computed cycle facts as plain rows beside the existing
+   "Former runner" row; see the premise correction below), 17 (STOPPED: the `/levels` route is not on main, only on
+   production and branches; Integration must rule whether the route reaches main first, my recommendation), 21 (STOPPED: a
+   Research plus Ops design; do not build); THEN 13, 15, 18, 5, 24. Every reproduced field shows PRODUCED, UNKNOWN with its
+   reason, or NOT_YET, never a blank. Words for any new label come from Marketing (requested for rows 4, 12 and 14).
+3. **Float job integration:** when Research's float job defines `floatBounds`, align `lib/dashboard/floatBound.ts` to it;
+   the link target and Web's page `web/float-page` ship in one release with Ops's exact-match nginx exemption.
+4. **Live reads owed**, through a review link only, never 07:00-10:00 ET: a stored level in the ladder (after 10:00 ET), a
+   no-grade row's aria-label, the inline briefing between 22:00 and 04:00 ET with a published briefing (the store copy used
+   for local renders has no `session_reports` table), and the banner states if a real outage ever gives the case.
+5. **Report v6 samples** from the next Research seat (render at 1,280 and 1,024, scan visible text and hover text with a
+   control, send Integration the paths). P5 revised grade tag waits on Ops storing the 09:25 grade and Marketing's words.
 
 **How you see production:** `scripts\aws-create-review.ps1 -ServerHost mointel-ssm -Hours 1 -Label design`, output to a
-scratchpad file with `/review/[A-Za-z0-9_-]+` redacted in anything printed; read the URL with
-`grep -o 'https://tmitrader.com/review/[A-Za-z0-9_-]*' <file>` (his standing permission rule is in
-`A:\mointel\.claude\settings.local.json`). Revoke with `-Action revoke -Id N`; confirm dead by content (a revoked link now
-returns 17,153 bytes, 0 `RVOL`, "revoked" behind a 200; read with a `fetch` from the still-open tab), close the tab, delete
-the file. /desk itself is behind Google sign-in and Basic Auth; no seat signs in.
+scratchpad file with `/review/[A-Za-z0-9_-]+` redacted in anything printed; read the URL with `grep -o
+'https://tmitrader.com/review/[A-Za-z0-9_-]*' <file>`. Revoke with `-Action revoke -Id N`; confirm dead by content, close the
+tab, delete the file. /desk itself is behind Google sign-in; no seat signs in.
 
-**How you see a build locally:** check out the sha DETACHED in your worktree `A:\mointel-design`; add a temporary
-`design-local` entry to `A:\mointel\.claude\launch.json` (`runtimeExecutable` `node`, `runtimeArgs`
-`["A:/mointel-design/node_modules/next/dist/bin/next", "dev", "A:/mointel-design", "-p", "3100"]`, `env`: `MARKET_DB_PATH`
-at a scratchpad copy of `data/market.db` + `-wal`, `DESIGN_FAKE_NOW`, `NODE_OPTIONS` `--require <clock shim>`). /desk
-redirects to Google sign-in locally too, so **create a review token in the SCRATCH copy** (`MARKET_DB_PATH=<copy> npx tsx
---conditions=react-server worker/review.ts create`) and open `http://localhost:3100/review/<token>`. The clock shim replaces
-`Date` with a function offset to `DESIGN_FAKE_NOW`, statics (`now`, `parse`, `UTC`) as OWN properties;
-`2026-08-18T14:45:00Z` gives a 12-row day board. The review view hides the Focus star: inject a 14 px replica when measuring
-the ticker cell. The hidden pane stops the poll: override `document.hidden` for a local render only. To test column widths,
-set the board's own resize storage (`mointel.discovery.columnWidths.v1`), reload, and remove the key after. To measure text
-widths without a slot: the public site in the cell's font (number cells are Geist Mono 11 px), checked first against
-known desk values. After: stop the server, close the tab, `git checkout -- .claude/launch.json`, delete the copies.
+**How you see a build locally (worked every time this seat):** check the sha out DETACHED in `A:\mointel-design`; copy
+`data/market.db` and its `-wal` to the scratchpad (340 MB); write a clock shim (`DESIGN_FAKE_NOW`: replaces `Date` with a
+function offset to that instant, with `now`, `parse` and `UTC` as own properties) and add a temporary `design-local` entry to
+`A:\mointel\.claude\launch.json` (`runtimeExecutable` `node`, `runtimeArgs` `["A:/mointel-design/node_modules/next/dist/bin/next",
+"dev", "A:/mointel-design", "-p", "3100"]`, `env` `MARKET_DB_PATH`, `DESIGN_FAKE_NOW`, `NODE_OPTIONS` `--require <shim>`);
+create a review token IN THE SCRATCH COPY (`MARKET_DB_PATH=<copy> npx tsx --conditions=react-server worker/review.ts
+create`) and open `http://localhost:3100/review/<token>`. `2026-08-18T14:45:00Z` gives a 50-row ranked board in RTH;
+setting the copy's `meta.trading_date` to `2026-08-19` with the clock at `2026-08-19T02:30:00Z` gives the off-hours state
+(NEXT_DAY_PREP, empty board, a carried 22:00 recap). The page's polls stop while the pane is hidden: override
+`document.hidden` and `document.visibilityState` for a local render only. To show payload fields that no worker writes yet
+(the grade map, the float map, a stale or failing poll), patch `window.fetch` in the page for `/api/market` and rebuild the
+Response; this is how every wired-state measurement here was taken. The client clock is the real one even when the server
+shim is on. After: stop the server, close the tab, `git checkout -- .claude/launch.json`, delete the copies.
 
 **You don't deploy.** Build and gate in `A:\mointel-design`; commit with `git commit --only <paths>` (`git add` a new file
-first). Pin anything you hand over with a NEW `design/` tag and push it, never `-f` on a name that exists. **Gate, in this
-order: `npm test`, `npm run lint`, `npm run build`, `npm run typecheck`, each exit code read separately, in Git Bash; `rm -rf
-.next tsconfig.tsbuildinfo` first** (typecheck before build fails on Next's generated `LayoutProps`). Declare the test-file
-count before gating (`git ls-tree -r HEAD --name-only tests | grep -c '\.test\.ts$'`). **One heavy job on this PC at a time:
-ask Ops for the slot, wait, release with "released" and the counts.** Nothing heavy in 07:00-10:00 ET. Push docs from a
-worktree detached on origin/main; if refused, fetch, read the incoming stat, rebase, and push in a SEPARATE command. The pm2
-daemon on this PC is his; leave it alone.
+first); pin anything you hand over with a NEW `design/` tag and push it; never `git checkout <file>` to undo a mutant (it
+discards your own uncommitted work: use a `cp` backup and restore it). Push docs from a worktree detached on origin/main
+(`A:\mointel-designdoc`); fetch first and push in a separate command. One heavy job on this PC at a time through Ops.
 
-## This seat's failures, as mechanisms
+## This seat's failures, as mechanisms (the repeat is why it asked to reset)
 
-- **A width measured, a height asserted.** I told Integration twice, and him once, that two-line float faces stay inside
-  today's row heights. I had measured widths only; the cell's line box is 24 px, so two lines make a 56 px cell, taller than
-  most rows. **Measure every dimension a claim depends on, or say which one is unmeasured.**
-- **A stale opening prompt.** I began from the copy in the shared tree, one hand-off behind origin. Nothing was acted on
-  from it, but only by luck of steps 1 and 2 matching. **Read the prompt from origin first.**
-- **A table edit anchored mid-row.** Replacing a fragment inside a live-state row left an extra cell; the ledger line about
-  it then quoted pipes and split its own cells. **Rewrite a row whole by its `| ID |` prefix; never put a pipe in a cell.**
-- **Gate steps out of order.** Typecheck before build failed on a generated type and read like a code error. **Test, lint,
-  build, typecheck.**
-- **What worked:** measuring before building, on the real board with the real layout code (store copy, review token, the
-  board's own width storage), with controls against known values, which caught a wrong-font instrument before it reported;
-  the owed-to-main audit in four independent passes (ancestry, patch-id with a self-finding control, a trial pick chain,
-  per-file compare with production), which found three commits the request had missed and a dependency (the moving label
-  on the movers feature) that only typecheck could see.
+- **A claim wider than what was opened, three times (the corrected class repeated).** (1) "No surface changes" for the
+  callers of the market snapshot, from a grep of the fields they READ: three of them serialise the whole panel. (2) "No other
+  surface says live", from a grep of the header files: a repo-wide grep found the pulsing dot, three tooltips and a section
+  title. (3) "The Former runner label is the model's judgement": `lib/research/interpret/pipeline.ts:432-434` overwrites it
+  with the computed value; I told Integration the opposite before it ruled and corrected it after reading the code for
+  another reason. **Before saying nothing else does X, or that Y is Z, search the whole tree and open the code that decides
+  Y.**
+- **A shape called mine that was a peer's** (the float payload, `floatBound`): name the file that holds it before claiming it.
+- **Escapes and quotes through the Write tool and python heredocs**: a backslash-u quote became a real apostrophe and broke a
+  string; use `String.fromCharCode`, raw-string python scripts written to a file, and read the result back.
+- **An approved label changed on my own judgement** ("on the board" to "ranked"): flag it in the same report; the label is
+  Integration's to confirm.
+- **What worked:** measuring every layout number on the real board with the real layout code and a control against a known
+  value (Marketing's 83.7 and 77.3 px matched exactly); mutants for every guard; patching `window.fetch` to render states no
+  worker can yet produce; finding a production defect (the cycle hover) by testing with the real resolver instead of fixtures.
 
-## His rulings since the seventh seat, so you don't re-ask
+## His rulings this seat acted on (verbatim in design.md and the Integration charter)
 
-All typed to Integration and recorded there and in design.md row S3: reproduce what the Sheet does in the app (2026-10-03
-17:20:45Z); remove the Researched Names table (2026-10-04T23:53:44Z); Priority computed by the desk from the recap's five
-criteria (23:49:48Z); "badge on the ticker - it needs a tooltip" (2026-10-05T00:00:00.915Z); the float is the SEC upper
-bound with a tooltip linking a public "Are float quotes real?" page (00:40:36.034Z); "always show it, it's key" for the
-Float column (00:43:25.901Z). Integration's approvals within them: Ticker 128 and Float 102 px; the popover component; the
-new-tab link; stored AVOID displays as D.
+Reproduce what the Sheet does in the app (2026-10-03T17:20:45Z); remove the Researched Names table; Priority computed from
+the five criteria; the badge approved as drafted and kept after the outcome test (2026-10-05T22:04:14Z); the float is the SEC
+upper bound, always shown, 90 days maximum count age with the date on the face; retry research is owner-only; the entry gate
+once per text version; off-hours "B, with the not-live label, but between session greater prominence should be given to the
+session report" (2026-10-05T22:38:04Z). A URL a stranger reads is public copy and is his to approve (the float page path is
+with him).
 
 ## How he wants to be told things
 
 *"I care about the information that impacts the app relative to my decisions and what we're doing with the product."* A
-relevance filter, not a length limit. Shas, gate numbers and which seat corrected whom don't reach him. **The exception is
-an error that reached, or could have reached, the app, or a statement of yours he relied on that turned out wrong: tell him
-plainly.** Plain words, no jargon, no question numbers, no em dashes. End with the NEEDS YOU block only when a decision is
-his.
-
-## What he does with the old chat
-
-Rename it `Design-tmi (retired 2026-10-05)` and archive it. Do not delete it; the transcript is the record.
+relevance filter, not a length limit. Shas, gate numbers and which seat corrected whom do not reach him. **The exception is an
+error that reached, or could have reached, the app, or a statement of yours he relied on that turned out wrong: tell him
+plainly.** Plain words, no jargon, no question numbers, no em dashes. End with the NEEDS YOU block only when a decision is his.
