@@ -98,7 +98,7 @@ interface SortEntry {
    * if-chains over the same keys are how the sort control once read `Gap`
    * while the header above the same number read `Move`.
    */
-  column: 'rank' | 'rvol' | 'price' | 'now' | 'float';
+  column: 'rank' | 'rvol' | 'price' | 'now' | 'float' | 'ticker';
   /**
    * Set when the quantity's NAME depends on the session, so the button, the
    * active marker and the tooltip resolve it from one place.
@@ -203,6 +203,14 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
   },
   { key: 'price', label: 'Price', title: 'Last price', column: 'price' },
   { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.', column: 'float' },
+  {
+    key: 'setupGrade',
+    label: 'Grade',
+    title:
+      'The setup grade, A first. Names without a grade are listed last. Never the default order.',
+    metric: 'setup grade, A first',
+    column: 'ticker',
+  },
 ];
 
 /**
@@ -232,6 +240,7 @@ const MISSING_NOUN: Partial<Record<DiscoverySortKey, string>> = {
    * true of the unmeasured rows only, which is what this set contains.
    */
   now: 'not measured',
+  setupGrade: 'no grade',
 };
 
 /** One reader for every place a sort key's name appears. */
@@ -322,6 +331,8 @@ export function DiscoveryBoard({
    * board is showing before the first payload lands.
    */
   const board: BoardKind = discovery?.board ?? 'DAILY_RVOL';
+  // The grade chip exists only once the grade is wired (the board's rows say so).
+  const gradeWired = rows.some((row) => row.setupGradeWired);
   const move = baselineLabel(phase);
   /* The head over the trades column and the control that sorts it, one source. */
   const nowEntry = SORT_KEYS.find((entry) => entry.key === 'now');
@@ -379,7 +390,7 @@ export function DiscoveryBoard({
         ? { key, direction: current.direction === 'asc' ? 'desc' : 'asc' }
         : // Rank reads best ascending — #1 first. Everything else a trader
           // sorts by, they want the largest of first.
-          { key, direction: key === 'rank' ? 'asc' : 'desc' },
+          { key, direction: key === 'rank' || key === 'setupGrade' ? 'asc' : 'desc' },
     );
   }
 
@@ -508,7 +519,7 @@ export function DiscoveryBoard({
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] text-ink-3">Sort</span>
             <div className="flex overflow-hidden rounded-sm border border-line-2">
-              {SORT_KEYS.map((entry) => {
+              {SORT_KEYS.filter((entry) => entry.key !== 'setupGrade' || gradeWired).map((entry) => {
                 const active = entry.key === sort.key;
                 const resolved = resolveSortEntry(entry, phase, board);
                 return (
@@ -648,7 +659,12 @@ export function DiscoveryBoard({
                 * chip with the column would have left the evening board with
                 * no way back to its own ordering.
                 */}
-              <Th name="Ticker" resize={columnHandle('ticker')} measureHead={measureHead('ticker')}>
+              <Th
+                name="Ticker"
+                resize={columnHandle('ticker')}
+                measureHead={measureHead('ticker')}
+                sorted={activeColumn === 'ticker'}
+              >
                 Ticker
               </Th>
               {/*

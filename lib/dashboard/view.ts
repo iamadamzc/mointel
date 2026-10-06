@@ -4,7 +4,11 @@
  */
 
 import { resolveRisk } from '@/lib/dashboard/risk';
-import { matchesSetupGradeFilter, type SetupGradeFilter } from '@/lib/dashboard/setupGrade';
+import {
+  matchesSetupGradeFilter,
+  setupGradeRank,
+  type SetupGradeFilter,
+} from '@/lib/dashboard/setupGrade';
 import { nowReadingOf, nowSortTier, nowSortValue } from '@/lib/dashboard/nowReading';
 import { resolveWhy } from '@/lib/dashboard/why';
 import type { DeskRow } from '@/lib/dashboard/merge';
@@ -204,7 +208,8 @@ export type DiscoverySortKey =
   | 'sessionMove'
   | 'now'
   | 'price'
-  | 'float';
+  | 'float'
+  | 'setupGrade';
 
 export interface DiscoverySortState {
   key: DiscoverySortKey;
@@ -318,6 +323,16 @@ export function discoveryValueFor(
       // Research, not market state. Null whenever the source says UNKNOWN or
       // DIRTY FLOAT, which is a material share of rows.
       return row.displayedFloat;
+    case 'setupGrade': {
+      /*
+       * BEST FIRST: A, B, C, D, then "Not graded". A name with NO grade (the
+       * dash, or the grade not wired at all) has no value and sorts last in
+       * both directions, counted by `discoveryMissingCount`. "Not graded" is a
+       * reading the desk made, so it is placed (after D), not missing.
+       */
+      const stored = row.setupGradeWired ? row.setupGrade?.grade : undefined;
+      return stored === undefined || stored === 'NOT_YET' ? null : setupGradeRank(row.setupGrade);
+    }
     default:
       return null;
   }
