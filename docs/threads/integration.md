@@ -1619,6 +1619,15 @@ WEB FLOAT PAGE   Preview v2 from v16 on his private link (claude.ai/artifact/Pjm
                  marked; source docs/web/previews/are-float-quotes-real.html (ac288f16). Branch web/float-page 1f4654c7 keeps
                  v12 until HIS yes on v16 (Web's rule: public copy needs his yes before commit). PATH IS HIS (public copy):
                  Web put /are-float-quotes-real to him in Web's NEEDS YOU. My "APPROVED" RETRACTED to Design and to him.
+CUT 2 (TONIGHT)  HIS CHOICE "cut 2" read at his turn (transcript a55449cd, 2026-10-06T00:08:17.484Z, human): cut 2 is tonight's
+                 single release; cut 1 d1e7ba9d does NOT ship separately. Ops literal 10cb60c391a22ddeb425dd335e9dc1cf7a9a8bd4,
+                 tree 1554714b = d1e7ba9d + 17 picks of e0139dea..2eaad153 (-x, same order, verified). Ops gate: 250 files /
+                 3578 passed / 1 skipped, eslint/build/tsc 0 (clean worktree, npm ci). MY REPLAY: own detached scratch build,
+                 tree IDENTICAL; patch-ids equal 14, 3 context-only (+/- lines identical: 5e0f343e fe4ffea7 67da54f4); U+2014
+                 0 on 1988 added lines (control 730); market worker reads only tickers[].ticker from /api/dashboard
+                 (runtime.ts ~1942-1960), diagnose.ts length + meta.provider. ORDER APPROVED to Ops. Scratch removed.
+                 Writes/restart = his go in Ops's chat. Ops's answers on production-only code, claimQueuedJobs, range cache:
+                 ops.md local 7a1d31bd (to read).
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
