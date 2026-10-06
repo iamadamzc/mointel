@@ -188,6 +188,10 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
   it('W4: each move in a clause is read up to the next move, so a second move cannot hide behind the first one and its "with"', () => {
     expect(reasons('AAA leads, down 12 percent from the prior close with no news found, while BBB is up 51 percent after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
   });
+
+  it('W5: a placeholder copied from the prompt example is struck (Commercial 14a)', () => {
+    expect(reasons('BBB, up {percent} percent from the prior close, with {the news words given for that name}.', intraday)).toEqual(['FORBIDDEN_WORDING']);
+  });
 });
 
 const row = (ticker: string) => ({ ticker, assessmentRank: 1, price: 5, percentChange: 12, referenceBasis: 'PRIOR_SESSION', haltState: 'TRADING', changeSummary: '' }) as unknown as ReportFact;

@@ -374,6 +374,8 @@ export function narrativeFindings(
     }
   }
   out.push(...wordingFindings(text));
+  // The prompt's example is placeholders (Commercial 14): a copied "{percent}" has no digit for the number check.
+  if (/[{}]/.test(text)) out.push({ reason: 'FORBIDDEN_WORDING', detail: 'a template placeholder copied from the prompt' });
   return out;
 }
 
