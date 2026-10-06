@@ -382,6 +382,9 @@ describe('interpreter transport', () => {
   });
 });
 
+/** The evidence risk good example with its placeholder filled (the example as written is removed). */
+const FILLED_RISK = EVIDENCE_RISK_GOOD.replace('{amount}', '$25 million');
+
 /* -------------------------------------------------------------- guardrails */
 
 describe('structural guardrails', () => {
@@ -393,11 +396,11 @@ describe('structural guardrails', () => {
     expect(modal.ok).toBe(base.ok);
     expect(modal.dossier.evidenceRisk).toMatchObject({ text: null, removed: { rule: 'RISK_FORBIDDEN_WORDING' } });
     // An id outside the bundle removes the sentence; it does not REJECT the dossier as SOURCE_ID_MUST_EXIST would.
-    const foreign = validateDossier(dossier({ evidenceRisk: { text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [999] } }), bundle());
+    const foreign = validateDossier(dossier({ evidenceRisk: { text: FILLED_RISK, evidenceSourceIds: [999] } }), bundle());
     expect(foreign.violations).toEqual(base.violations);
     expect(foreign.dossier.evidenceRisk?.removed?.rule).toBe('RISK_REQUIRES_SOURCE');
-    const good = validateDossier(dossier({ evidenceRisk: { text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1] } }), bundle());
-    expect(good.dossier.evidenceRisk).toEqual({ text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1], removed: null });
+    const good = validateDossier(dossier({ evidenceRisk: { text: FILLED_RISK, evidenceSourceIds: [1] } }), bundle());
+    expect(good.dossier.evidenceRisk).toEqual({ text: FILLED_RISK, evidenceSourceIds: [1], removed: null });
   });
 
   it('normalises inline citation tokens out of the written prose, and keeps the cited ids', () => {
@@ -1011,9 +1014,9 @@ describe('interpretation pipeline', () => {
       return d;
     };
 
-    await interpretPipeline(db, new ScriptedInterpreter([withRisk(EVIDENCE_RISK_GOOD)]), null, { ticker: 'ACME', tradingDate: DATE });
+    await interpretPipeline(db, new ScriptedInterpreter([withRisk(FILLED_RISK)]), null, { ticker: 'ACME', tradingDate: DATE });
     const kept = readCurrentAnalysis(db, 'ACME')!;
-    expect(kept.dossier.evidenceRisk?.text).toBe(EVIDENCE_RISK_GOOD);
+    expect(kept.dossier.evidenceRisk?.text).toBe(FILLED_RISK);
     expect(kept.sourceIds).toContain(ids[2]);
 
     await interpretPipeline(db, new ScriptedInterpreter([withRisk('The shelf could expire unused.')]), null, { ticker: 'ACME', tradingDate: DATE, force: true });

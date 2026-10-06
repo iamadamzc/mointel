@@ -20,6 +20,8 @@ import type { ResearchDossier, SupplyBlock } from '@/lib/research/types';
  */
 
 const EM = String.fromCharCode(0x2014);
+/** A sentence in the good example's shape with its placeholder filled (the example as written is removed). */
+const FILLED = EVIDENCE_RISK_GOOD.replace('{amount}', '$25 million');
 const BUNDLE = { sources: [{ id: 1 }, { id: 2 }, { id: 3 }], reportedSharesOutstanding: null } as unknown as ResearchEvidenceBundle;
 const withReported = { ...BUNDLE, reportedSharesOutstanding: { shares: 9_000_000, asOf: '2026-06-30' } } as unknown as ResearchEvidenceBundle;
 const dossierWith = (sharesOutstandingDate: string | null) =>
@@ -36,17 +38,18 @@ const kept = (text: string, ids = [1], ledger: SupplyBlock[] = [], d = DOSSIER, 
 const words = (n: number) => `The filings list ${Array.from({ length: n - 3 }, () => 'shelf').join(' ')}.`;
 
 describe('validateEvidenceRisk', () => {
-  it("the design's good example survives, trimmed, with its ids (control)", () => {
-    expect(run(` ${EVIDENCE_RISK_GOOD} `)).toEqual({ text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1], removed: null });
+  it("a sentence in the good example's shape survives, trimmed, with its ids (control); the example copied as written is removed", () => {
+    expect(run(` ${FILLED} `)).toEqual({ text: FILLED, evidenceSourceIds: [1], removed: null });
+    expect(run(EVIDENCE_RISK_GOOD)?.removed).toMatchObject({ rule: 'RISK_FORBIDDEN_WORDING', detail: 'template placeholder' });
   });
 
   it('1: requires a source, and only an id in this bundle', () => {
-    expect(rule(EVIDENCE_RISK_GOOD, [])).toBe('RISK_REQUIRES_SOURCE');
-    expect(rule(EVIDENCE_RISK_GOOD, [2, 9])).toBe('RISK_REQUIRES_SOURCE');
-    expect(kept(EVIDENCE_RISK_GOOD, [2])).toBe(EVIDENCE_RISK_GOOD);
+    expect(rule(FILLED, [])).toBe('RISK_REQUIRES_SOURCE');
+    expect(rule(FILLED, [2, 9])).toBe('RISK_REQUIRES_SOURCE');
+    expect(kept(FILLED, [2])).toBe(FILLED);
     // The removal keeps the ids and the removed sentence for the audit.
-    expect(run(EVIDENCE_RISK_GOOD, [9])).toEqual({
-      text: null, evidenceSourceIds: [9], removed: { rule: 'RISK_REQUIRES_SOURCE', detail: 'source id 9 is not in the bundle', text: EVIDENCE_RISK_GOOD },
+    expect(run(FILLED, [9])).toEqual({
+      text: null, evidenceSourceIds: [9], removed: { rule: 'RISK_REQUIRES_SOURCE', detail: 'source id 9 is not in the bundle', text: FILLED },
     });
   });
 
@@ -119,10 +122,10 @@ describe('validateEvidenceRisk', () => {
 
 describe('evidenceRiskState', () => {
   it('NOT_YET before schema 3; PRODUCED with text; UNKNOWN when null or removed, naming the rule and never the removed text', () => {
-    const produced = { evidenceRisk: { text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1], removed: null } };
+    const produced = { evidenceRisk: { text: FILLED, evidenceSourceIds: [1], removed: null } };
     expect(evidenceRiskState(produced, 2)).toEqual({ state: 'NOT_YET' });
     expect(evidenceRiskState(produced, null)).toEqual({ state: 'NOT_YET' });
-    expect(evidenceRiskState(produced, 3)).toEqual({ state: 'PRODUCED', text: EVIDENCE_RISK_GOOD, evidenceSourceIds: [1] });
+    expect(evidenceRiskState(produced, 3)).toEqual({ state: 'PRODUCED', text: FILLED, evidenceSourceIds: [1] });
     const removed = { evidenceRisk: { text: null, evidenceSourceIds: [1], removed: { rule: 'RISK_SHARES_RULE' as const, detail: 'x', text: 'The float is 2 million.' } } };
     expect(evidenceRiskState(removed, 3)).toEqual({ state: 'UNKNOWN', removedBy: 'RISK_SHARES_RULE' });
     expect(evidenceRiskState({}, 3)).toEqual({ state: 'UNKNOWN', removedBy: null });

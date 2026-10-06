@@ -45,6 +45,8 @@ const M = [
   ['W25', 'lib/research/interpret/schema.ts', 'evidenceRisk: EVIDENCE_RISK,', '', 1, 'the schema no longer asks for the field', 'P1'],
   ['W26', 'lib/research/interpret/openaiInterpreter.ts', '${evidenceRiskPromptBlock()}', '', 1, 'the prompt no longer carries the rule', 'P1'],
   ['W27', ER, 'risk.text?.trim() || null', 'risk.text ?? null', 2, 'the text not trimmed; a blank read as a sentence', 'V1, V10'],
+  // Added with Commercial 7e's example change (6655d652), before any run; W1-W27 re-checked against the changed tests: unchanged.
+  ['W28', ER, "[/[{}]/, 'template placeholder'],", '', 1, 'rule 3: the copied placeholder admitted', 'V1'],
 ];
 
 if (process.argv.includes('--dry')) {

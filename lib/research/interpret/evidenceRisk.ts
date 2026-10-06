@@ -37,7 +37,9 @@ export const EVIDENCE_RISK_RULE = [
   'If the bundle does not establish a risk condition, set text null; null is never a claim that there is no risk.',
 ].join(' ');
 
-export const EVIDENCE_RISK_GOOD = 'The supply ledger shows an open at-the-market program of $25 million, with no sales recorded.';
+// Commercial 7e (6655d652): no figure and no stated absence in the example, which the prompt shows for every name
+// and no guardrail could catch if copied; the placeholder itself is removed if copied ("template placeholder").
+export const EVIDENCE_RISK_GOOD = 'The supply ledger shows an open at-the-market program of {amount}.';
 export const EVIDENCE_RISK_BAD = 'The open program may dilute holders.';
 
 /** The prompt's bullet: the rule, then one good and one bad example (design section 3). */
@@ -79,6 +81,8 @@ export const EVIDENCE_RISK_FORBIDDEN: Array<[RegExp, string]> = [
   [/\u2014|&mdash;|&#8212;|&#x2014;/i, 'em dash'],
   [/\s-\s/, 'spaced hyphen as a dash'],
   [/\bavoid\b/i, 'avoid'],
+  // The good example's "{amount}" copied as written (Commercial 7e removed the figure from the example).
+  [/[{}]/, 'template placeholder'],
   // Modals and likelihood. "May" before a number is the month ("May 5", "May 2026"), never the modal.
   [/\bmay\b(?!\s+\d)/i, 'modal or likelihood'],
   [/\b(?:might|could|should|would|can|likely|unlikely|probably|expected|poised|set to|about to|going to|bound to|soon|imminent|upcoming)\b/i, 'modal or likelihood'],
