@@ -15,6 +15,8 @@ import { HaltBadge } from '@/components/DecisionCells';
 import { AutomaticIntelligence } from '@/components/AutomaticIntelligence';
 import { DeskReadPanel } from '@/components/DeskRead';
 import { FocusToggle } from '@/components/FocusToggle';
+import { MorningCheck } from '@/components/MorningCheck';
+import type { MorningReadPayload } from '@/lib/market/types';
 import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
 import { COMPANY_WORDS, companyLine } from '@/lib/dashboard/companyLine';
 import { priceSourceTitle, telemetryTitle } from '@/lib/dashboard/feedBanner';
@@ -36,6 +38,8 @@ interface TickerDrawerProps {
   /** The merged desk row. May carry demand only, research only, or both. */
   row: DeskRow | null;
   research: StructuralResearch | undefined;
+  /** `MarketSnapshot.morningRead`: the Morning check's frame (absent: not wired). */
+  morningRead?: MorningReadPayload;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;
@@ -44,6 +48,7 @@ interface TickerDrawerProps {
 export function TickerDrawer({
   row,
   research,
+  morningRead,
   focused,
   onToggleFocus,
   onClose,
@@ -162,6 +167,8 @@ export function TickerDrawer({
           <DeskReadPanel read={buildDeskRead(row)} />
 
           {row.setupGradeWired ? <SetupGradeReadings grade={row.setupGrade} Section={Section} /> : null}
+
+          <MorningCheck payload={morningRead} ticker={row.ticker} Section={Section} />
 
           {/* ONE ladder: the stored resistance levels on its axis (his ruling 2026-10-02). */}
           <StoredLevelLadder

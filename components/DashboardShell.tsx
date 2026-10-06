@@ -609,6 +609,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       <TickerDrawer
         row={selectedRow}
         research={selectedTicker ? data.research[selectedTicker] : undefined}
+        morningRead={market.snapshot?.morningRead}
         focused={selectedTicker ? focus.isFocused(selectedTicker) : false}
         onToggleFocus={focus.toggle}
         onClose={() => setSelectedTicker(null)}
