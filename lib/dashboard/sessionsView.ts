@@ -25,7 +25,8 @@
  * happened before it started, so they read Unknown).
  *
  * Words: Marketing (`docs/marketing/drawer-row-5-words-2026-10-06.md` at
- * f35d945f, the FINAL state list and A6). None is a placeholder.
+ * 9f4f2196, after Commercial 9, 9b and 9d). No clock in any string: the real
+ * close can be early. A5 (coverage NONE after the bell) has no string: unreachable.
  */
 
 import { longDate } from '@/lib/dashboard/floatBound';
@@ -39,34 +40,34 @@ export const SESSIONS_WORDS = {
   unknown: 'Unknown',
   /** C1, C2: a close from the daily bar; the date is the bar's own trading date. */
   closeFromBar: (date: string) => `The regular-session close from the daily bar for ${date}.`,
-  /** C3: the provisional value, before the daily bar arrives. Says it can differ, never that it will be replaced. */
-  closeProvisional: (date: string) =>
-    `The last regular-session trade the desk saw, as of the 16:00 ET bell on ${date}. The daily bar's close can differ.`,
-  /** C5: a close whose source is not a daily bar: no source claim. */
-  closeOther: (date: string) => `The regular-session close for ${date}, as stored. The desk does not show its source.`,
+  /**
+   * C3: the provisional value, before the daily bar arrives. "Around the bell": the freeze can take a print
+   * up to a flush after it (worker/runtime.ts:1688). Says it can differ, never that it will be replaced.
+   */
+  closeProvisional: (date: string) => `The last trade the desk saw around the bell on ${date}. The daily bar's close can differ.`,
+  /** C5, split by source: the Sheet, or a value whose source was not recorded. */
+  closeFromSheet: (date: string) => `The close for ${date} as the Sheet recorded it.`,
+  closeUnsourced: (date: string) => `A close for ${date}. The desk did not record where it came from.`,
   /** C4. */
   closeMissing: (date: string) => `The desk has no regular-session close recorded for ${date}.`,
   /** No session captured at all. */
   closeNone: "Today's regular session has not closed",
   /** A1: "Today's" says whose after hours, so nothing about last evening is implied. */
-  afterHoursNotYet: "Today's after hours begins after the 16:00 ET close",
+  afterHoursNotYet: "Today's after hours begins after the regular-session close",
   /** A2: the close line sits ABOVE the after-hours line, which this string relies on. */
-  percentHover: (date: string) => `Measured from the regular-session close shown above, for ${date}.`,
+  percentHover: (date: string) => `Measured from the close shown above, for ${date}.`,
   /** A3: only the baseline is missing, so not "Unknown". */
   percentNoClose: 'No close',
   percentNoCloseHover: 'The desk has no regular-session close to measure the change from.',
-  volumeHover: 'Counts only trades after the 16:00 ET bell.',
+  volumeHover: 'Counts only trades after the bell.',
   /** A4. */
-  volumePartial: (date: string) =>
-    `The desk began recording after the bell on ${date}, so a volume would leave out the earlier trades.`,
+  volumePartial: (date: string) => `The desk did not see every trade after the bell on ${date}, so a volume would leave out some.`,
   /** PARTIAL with no trade seen: the price and percent, which are not about volume. */
   partialNoTradeSeen: (date: string) =>
-    `The desk began recording after the bell on ${date}, so it cannot say whether trades occurred before it started.`,
-  /** A5: one hover on all three Unknowns. */
-  afterHoursNotRecorded: (date: string) => `The desk was not recording after hours on ${date}.`,
-  /** A6: "seen": a claim about what the desk recorded, not about the market. */
-  noTradeSeen: 'No trade seen since the 16:00 ET bell',
-  noTradeSeenHover: (date: string) => `The desk was recording and saw no trade after the 16:00 ET bell on ${date}.`,
+    `The desk did not see every trade after the bell on ${date}, so it cannot show an after-hours price or change.`,
+  /** A6: a claim about the desk's record (afterHours.high null), not about the market. */
+  noTradeSeen: 'No after-hours trade recorded',
+  noTradeSeenHover: (date: string) => `The desk's after-hours figures for ${date} include no trade.`,
 } as const;
 
 const DAILY_BAR: ReadonlySet<RthCloseSource> = new Set(['alpaca-daily-bar-rth-close', 'alpaca-snapshot-prev-daily-bar']);
@@ -88,7 +89,8 @@ export interface AfterHoursLine extends SessionsLine {
 const day = (iso: string | null | undefined) => longDate(iso) ?? iso ?? 'an unknown date';
 
 function sourceHover(source: RthCloseSource | null, date: string): string {
-  return source !== null && DAILY_BAR.has(source) ? SESSIONS_WORDS.closeFromBar(date) : SESSIONS_WORDS.closeOther(date);
+  if (source !== null && DAILY_BAR.has(source)) return SESSIONS_WORDS.closeFromBar(date);
+  return source === 'sheet' ? SESSIONS_WORDS.closeFromSheet(date) : SESSIONS_WORDS.closeUnsourced(date);
 }
 
 export function closeLine(demand: DemandState): SessionsLine {
