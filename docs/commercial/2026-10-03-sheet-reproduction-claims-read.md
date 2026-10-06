@@ -427,3 +427,18 @@ Item 3.02 does not require a report for every unregistered sale. Form 8-K, Item 
 **What does not change.** 5p item 1: whether the 90-day maximum stands is his, with the 43-day BKYI case beside it. He ruled (2026-10-06, "keep 90, yes reset"; verified at his own turn: a human `enqueue` record in transcript d947056e at 2026-10-06T01:31:38.586Z, typed to Integration) that 90 stands; "yes reset" in the same line is Integration's seat reset. Nothing here reopens it. The note for him on the 90 days is Integration's to carry.
 
 **Dependency.** Form B (the S1 present-tense wording) is separate and unchanged.
+
+
+## 5r. The built form list, and the wording it licenses (5q required change 1 resolved), fourth tenure, 2026-10-06
+
+*Read: `lib/research/floatJob.ts` lines 84 to 148 at `46b00886` (research/float-job), opened by me; Integration's relay of the same list was not relied on.*
+
+**What the code does.** The check refuses when the submissions listing holds, filed on or after the count's as-of date (the count's own date inclusive) and up to the reading date D: a form that is exactly `424B1`, `424B4` or `424B5` (the code's own comment: "Final prospectuses for an offering or a shelf takedown. NOT 424B2, 424B3 (resale), S-1, S-3 or S-8"), or an `8-K` or `8-K/A` whose items include `3.02`. Every other form is not an event, including 424B2, 424B3, 424B7, 424B8, S-1, S-3 and S-8. The listing is the recent page only; if its earliest filing is later than the count date the job throws (`listingReaches`) and does not print a "no hit".
+
+**Verdict on 5q required change 1: the build matches the measured list, so the cure is (b).** The clause "no prospectus or prospectus supplement" is false of this build (a 424B3 supplement and a 424B2 pass the check). The words must name what is checked, in terms true of that list, and must not use "prospectus supplement" as the description of the checked set. A wording this seat would pass: "no final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date". "Filed since the count" is also acceptable and slightly understates the coverage (a filing on the count's own date refuses); the exact form is better.
+
+**Does a resale 424B3 have to refuse for the claim to be safe? No.** A 424B3 registers resale of shares that already exist, so it adds none; a private placement that created them reports on item 3.02 if it is large enough, and below that size (required change 2) it files nothing, so refusing on 424B3 would not close that gap either. The surface only has to say what is checked and what is not. No design change is asked of Research.
+
+**What the page may say about forms not checked.** Nothing is required. If Marketing wants to head off the "what about supplements" question, one true clause is: "resale prospectuses and routine prospectus supplements do not trigger it."
+
+**Still owed on required change 2.** The page sentence on private placements below the item 3.02 reporting size (1 percent of the class, 5 percent for a smaller reporting company). The one line for him waits on both.
