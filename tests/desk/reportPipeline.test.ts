@@ -199,6 +199,38 @@ describe('the report pipeline, v6 wiring', () => {
     expect(JSON.stringify(run.report)).not.toContain('[Source 7]');
   });
 
+  it('a recap (PREMARKET) run carries the computed footnote counts, equal to the facts (Integration 30th: pins the wiring)', async () => {
+    const db = fixture();
+    // The evening recap of DATE, targeting the next session; the same two names.
+    const recapAt = '2026-09-24T02:00:20.000Z'; // 22:00 ET on DATE
+    const id = claimAssessmentSlot(db, {
+      tradingDate: DATE, targetTradingDate: '2026-09-24', assessmentType: 'NEXT_DAY_RECAP', scheduledFor: '2026-09-24T02:00:00.000Z',
+      startedAt: '2026-09-24T02:00:00.000Z', generatedLate: false, sessionPhase: 'NEXT_DAY_PREP', board: 'DAILY_RVOL', rankingDefinition: 'Daily RVOL',
+    })!;
+    insertAssessmentTickers(db, id, [ticker('AAA', 1, null, 'NOT_ANALYZED'), ticker('BBB', 2, null, 'NOT_ANALYZED')]);
+    completeAssessment(db, id, {
+      completedAt: recapAt, status: 'COMPLETE', tickerCount: 2, modelCalls: 0, runtimeMs: 1,
+      marketFingerprint: null, researchFingerprint: null, notes: '', metadata: {},
+    });
+    // The 16:00 latch: NOCL traded with no close latched (noClose 1); REV is a 1-for-5 basis jump (splitExcluded 1); UPX counts.
+    const ts = db.prepare(
+      `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_low, rth_final_volume)
+       VALUES (?, ?, 'sip', '2026-09-23T20:00:00Z', ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    ts.run('NOCL', DATE, 5, 4, 1000, null, null, null, null);
+    ts.run('REV', DATE, 2.5, 0.5, 900, 2.5, 2.7, 2.4, 900);
+    ts.run('UPX', DATE, 4.4, 4, 900, 4.4, 4.5, 4, 900);
+
+    const read = readReportInputs(db, 'PREMARKET', DATE, { min: 1, max: 20 });
+    expect(read.ok).toBe(true);
+    if (!read.ok) return;
+    expect([read.inputs.narrative.noClose, read.inputs.narrative.splitExcluded]).toEqual([1, 1]);
+    const run = await runReport(db, { kind: 'PREMARKET', rangeId: '1-20', tradingDate: DATE, range: { min: 1, max: 20 } }, { writer, checker }, () => new Date(recapAt));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(run.report.narrativeFootnotes).toEqual({ noClose: 1, splitExcluded: 1 });
+  });
+
   it('a FRESH_FOUND catalyst the board calls OLD at the checkpoint is filed under OLDER NEWS and not counted fresh (Design, COLA)', async () => {
     // Researched as fresh, but the event is weeks before the checkpoint and the research does not say it explains the move.
     const db = fixture({ eventTimestamp: '2026-08-20', freshness: 'STALE', plausiblyExplainsMove: false });
