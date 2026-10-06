@@ -191,6 +191,21 @@ describe('readTopMovers, the volume floor (his "10% with 500k shares")', () => {
     ]);
   });
 
+  it('the close basis (Commercial 17b): only a PRIOR_SESSION move is a mover; CURRENT_SESSION and an unknown basis are refused', () => {
+    const db = temporaryDb();
+    upsertTickerSessions(
+      db,
+      [
+        state('PRIOR', 5, 40, 900, DATE, 1_000_000),
+        { ...state('CURRENT', 5, 90, 901, DATE, 1_000_000), referenceRthCloseBasis: 'CURRENT_SESSION' } as DemandState,
+        { ...state('NOBASIS', 5, 80, 902, DATE, 1_000_000), referenceRthCloseBasis: null } as DemandState,
+      ].map(toRow),
+    );
+    const tickers = readTopMovers(db, DATE, BAND, 10, 500_000, 15).map((s) => s.ticker);
+    db.close();
+    expect(tickers).toEqual(['PRIOR']);
+  });
+
   it('a floor of 0 keeps every row with a volume, and still drops a NULL volume', () => {
     const db = temporaryDb();
     seedVolumes(db);

@@ -51,7 +51,10 @@ export function selectMovers(
         state.percentChange >= minPct &&
         state.cumulativeVolume !== null &&
         Number.isFinite(state.cumulativeVolume) &&
-        state.cumulativeVolume >= minVolume,
+        state.cumulativeVolume >= minVolume &&
+        // "Up x% from the prior close" is only true on a PRIOR_SESSION basis; after the 22:00 recap the DAILY
+        // board can measure from today's close (Commercial 17b). readTopMovers applies the same condition.
+        state.referenceRthCloseBasis === 'PRIOR_SESSION',
     )
     .sort((a, b) => (b.percentChange as number) - (a.percentChange as number) || a.ticker.localeCompare(b.ticker))
     .slice(0, limit);
@@ -61,16 +64,32 @@ export function selectMovers(
  * The board plus up to `k` movers not already on it, in mover order, each
  * marked 'MOVER'. `movers` must already be the rule's order (`selectMovers`
  * or the store's `readTopMovers`, which sorts the same way).
+ *
+ * A mover ALREADY on the board (ranked) is marked `moving: true` on a copy of
+ * its row, in place; it is never added twice (IPDN 2026-10-06: +70%, RVOL rank
+ * 14, previously skipped with no mark; Integration 31st). The cap counts ADDED
+ * rows only, his "cap 15" (2026-10-01T15:53:57Z), so marking never displaces an
+ * addition, and the loop runs on past the cap so later ranked movers are still
+ * marked. Computed from the states of this read, never stored (Commercial 16):
+ * a row whose move falls under the floor is simply not selected next read.
  */
 export function addBoardMovers(states: DemandState[], movers: readonly DemandState[], k: number): DemandState[] {
   if (k <= 0) return states;
-  const onBoard = new Set(states.map((state) => state.ticker));
+  const ranked = new Set(states.map((state) => state.ticker));
+  const seen = new Set<string>();
+  const marked = new Set<string>();
   const added: DemandState[] = [];
   for (const mover of movers) {
-    if (added.length >= k) break;
-    if (onBoard.has(mover.ticker)) continue;
-    onBoard.add(mover.ticker);
-    added.push({ ...mover, boardReason: 'MOVER' });
+    if (seen.has(mover.ticker)) continue;
+    seen.add(mover.ticker);
+    if (ranked.has(mover.ticker)) {
+      marked.add(mover.ticker);
+    } else if (added.length < k) {
+      added.push({ ...mover, boardReason: 'MOVER' });
+    }
   }
-  return added.length > 0 ? [...states, ...added] : states;
+  if (marked.size === 0 && added.length === 0) return states;
+  const board =
+    marked.size === 0 ? states : states.map((state) => (marked.has(state.ticker) ? { ...state, moving: true as const } : state));
+  return added.length > 0 ? [...board, ...added] : board;
 }

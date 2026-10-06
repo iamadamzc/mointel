@@ -28,7 +28,8 @@ const state = (
   percentChange: number | null,
   rvolRank: number | null = null,
   cumulativeVolume: number | null = 1_000_000,
-) => ({ ticker, price, percentChange, rvolRank, cumulativeVolume }) as unknown as DemandState;
+) =>
+  ({ ticker, price, percentChange, rvolRank, cumulativeVolume, referenceRthCloseBasis: 'PRIOR_SESSION' }) as unknown as DemandState;
 
 const BAND = { min: 1, max: 20 };
 
@@ -114,5 +115,84 @@ describe('addBoardMovers', () => {
 
   it('k = 0 returns the board unchanged', () => {
     expect(addBoardMovers(board, [state('M1', 2, 90)], 0)).toBe(board);
+  });
+});
+
+/*
+ * THE RANKED MOVER (IPDN, 2026-10-06 08:05 ET: +70% on 19.3M shares, RVOL rank
+ * 14, so already among the internal 50 and given no mark at all). Integration
+ * 31st ruled: a ranked row the mover rule selects carries `moving: true`, in
+ * place, never as a second row; computed on this read from the states passed
+ * in, never stored (Commercial read 16), so a name whose move falls under the
+ * floor has no flag on the next read. The cap still counts ADDED rows only,
+ * his "cap 15" (2026-10-01T15:53:57Z), unchanged.
+ */
+describe('addBoardMovers, a mover already ranked', () => {
+  const ranked = [state('A', 5, 3, 1), state('IPDN', 5.27, 70, 14), state('B', 6, 1, 15)];
+
+  it('marks the ranked row moving: true in place, adds no second row, and leaves the input untouched', () => {
+    const out = addBoardMovers(ranked, [state('IPDN', 5.27, 70, 14)], 15);
+    expect(out.map((s) => s.ticker)).toEqual(['A', 'IPDN', 'B']);
+    expect(out[1].moving).toBe(true);
+    expect(out[1].boardReason).toBeUndefined();
+    expect(out[1].rvolRank).toBe(14);
+    expect(ranked[1].moving).toBeUndefined();
+  });
+
+  it('a ranked row the rule did not select has no moving key at all', () => {
+    const out = addBoardMovers(ranked, [state('IPDN', 5.27, 70, 14)], 15);
+    expect('moving' in out[0]).toBe(false);
+    expect('moving' in out[2]).toBe(false);
+  });
+
+  it('an ADDED mover is marked by boardReason, not moving', () => {
+    const out = addBoardMovers(ranked, [state('VEEA', 3.1, 42, 120)], 15);
+    const veea = out.find((s) => s.ticker === 'VEEA')!;
+    expect(veea.boardReason).toBe('MOVER');
+    expect('moving' in veea).toBe(false);
+  });
+
+  it('the cap counts added rows only: marking ranked movers never displaces an addition', () => {
+    const out = addBoardMovers(ranked, [state('IPDN', 5.27, 70, 14), state('M1', 2, 60), state('M2', 2, 50)], 2);
+    expect(out.map((s) => s.ticker)).toEqual(['A', 'IPDN', 'B', 'M1', 'M2']);
+    expect(out[1].moving).toBe(true);
+  });
+
+  it('a ranked mover that comes AFTER the cap is full is still marked (the cap stops additions, not the loop)', () => {
+    const out = addBoardMovers(ranked, [state('M1', 2, 90), state('M2', 2, 80), state('IPDN', 5.27, 70, 14)], 2);
+    expect(out.map((s) => s.ticker)).toEqual(['A', 'IPDN', 'B', 'M1', 'M2']);
+    expect(out[1].moving).toBe(true);
+  });
+
+  it('recomputed per read: the same row with no mover selected on the next read carries no flag', () => {
+    const first = addBoardMovers(ranked, [state('IPDN', 5.27, 70, 14)], 15);
+    expect(first[1].moving).toBe(true);
+    const next = addBoardMovers(ranked, selectMovers([state('IPDN', 2.1, 5, 14)], BAND, 10, 0, 65), 15);
+    expect('moving' in next[1]).toBe(false);
+  });
+
+  it('k = 0 (the rule off) marks nothing either', () => {
+    expect(addBoardMovers(ranked, [state('IPDN', 5.27, 70, 14)], 0)).toBe(ranked);
+  });
+});
+
+/*
+ * THE BASIS (Commercial 17b via Design): after the 22:00 recap the DAILY board
+ * can measure from TODAY's close (referenceRthCloseBasis CURRENT_SESSION) while
+ * "moving" says "from the prior close". The rule selects only PRIOR_SESSION.
+ */
+describe('selectMovers, the close basis', () => {
+  const withBasis = (ticker: string, pct: number, basis: 'PRIOR_SESSION' | 'CURRENT_SESSION' | null) =>
+    ({ ...state(ticker, 5, pct), referenceRthCloseBasis: basis }) as unknown as DemandState;
+
+  it('keeps PRIOR_SESSION, refuses CURRENT_SESSION and an unknown basis', () => {
+    const picked = selectMovers(
+      [withBasis('PRIOR', 40, 'PRIOR_SESSION'), withBasis('CURRENT', 90, 'CURRENT_SESSION'), withBasis('NOBASIS', 80, null)],
+      BAND,
+      10,
+      0,
+      15,
+    );
+    expect(picked.map((s) => s.ticker)).toEqual(['PRIOR']);
   });
 });

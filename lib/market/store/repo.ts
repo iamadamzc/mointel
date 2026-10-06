@@ -1159,6 +1159,7 @@ export function readTopMovers(
           AND ts.price >= @min AND ts.price <= @max
           AND ts.percent_change >= @minPct
           AND ts.cumulative_volume >= @minVolume
+          AND ts.reference_rth_close_basis = 'PRIOR_SESSION'
           AND NOT EXISTS (
                 SELECT 1 FROM universe u WHERE u.symbol = ts.symbol AND u.discovery_eligible = 0
               )
