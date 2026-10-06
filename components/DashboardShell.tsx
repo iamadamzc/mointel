@@ -8,6 +8,7 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { DeskEventFeed } from '@/components/DeskEventFeed';
 import { DiscoveryBoard } from '@/components/DiscoveryBoard';
 import { FilterBar } from '@/components/FilterBar';
+import { FilterBanner } from '@/components/FilterBanner';
 import { MarketSummary } from '@/components/MarketSummary';
 import { boardCounts } from '@/lib/dashboard/boardCounts';
 import { cyclePhaseOf } from '@/lib/dashboard/cycle';
@@ -33,6 +34,7 @@ import {
   selectFocusRows,
   type FilterState,
 } from '@/lib/dashboard/view';
+import { filterBannerView } from '@/lib/dashboard/filterBanner';
 import type { DashboardState } from '@/lib/data/types';
 import type { MarketHealthView } from '@/lib/market/health';
 import { emptyAssessmentPanel, type AssessmentPanel } from '@/lib/desk/view';
@@ -520,6 +522,14 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
               onSelect={setSelectedAssessment}
             />
           </div>
+        ) : null}
+
+        {selectedAssessment === null ? (
+          <FilterBanner
+            view={filterBannerView(filters, isFilterActive(filters), merged.discovery, discoveryRows)}
+            onClear={() => setFilters(DEFAULT_FILTERS)}
+            onSelect={setSelectedTicker}
+          />
         ) : null}
 
         {selectedAssessment === null ? (
