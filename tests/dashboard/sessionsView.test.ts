@@ -105,13 +105,12 @@ describe('the after-hours line (today only)', () => {
     expect(line.parts?.percent.state).toBe('PRODUCED');
   });
 
-  it('coverage NONE: every figure Unknown, one hover', () => {
-    expect(after({ coverage: 'NONE', volume: null })).toMatchObject({
-      state: 'UNKNOWN',
-      text: 'Unknown',
-      hover: 'The desk was not recording after hours on Aug 17, 2026.',
-      parts: null,
-    });
+  it('coverage NONE after the bell (unreachable live): every figure Unknown, and no claim about why', () => {
+    expect(after({ coverage: 'NONE', volume: null })).toEqual({ state: 'UNKNOWN', text: 'Unknown', hover: null, parts: null });
+  });
+
+  it('a simulator close never prints', () => {
+    expect(closeLine(demand({ referenceRthCloseSource: 'simulator' }))).toEqual({ state: 'UNKNOWN', text: 'Unknown', hover: null });
   });
 
   it('no after-hours trade seen: the regular session price is never printed as an after-hours price', () => {

@@ -92,6 +92,8 @@ function sourceHover(source: RthCloseSource | null, date: string): string {
 }
 
 export function closeLine(demand: DemandState): SessionsLine {
+  // A simulator close is never a market fact a reader may see (Commercial 9).
+  if (demand.referenceRthCloseSource === 'simulator') return { state: 'UNKNOWN', text: SESSIONS_WORDS.unknown, hover: null };
   const ref =
     demand.referenceRthClose !== null
       ? { close: demand.referenceRthClose, date: demand.referenceRthCloseDate, source: demand.referenceRthCloseSource }
@@ -123,7 +125,8 @@ export function afterHoursLine(demand: DemandState): AfterHoursLine {
   const today = day(demand.tradingDate);
   const ah = demand.afterHours;
   if (ah.coverage === 'NONE') {
-    return { state: 'UNKNOWN', text: SESSIONS_WORDS.unknown, hover: SESSIONS_WORDS.afterHoursNotRecorded(today), parts: null };
+    // Unreachable live: after the bell every ticker is PARTIAL or COMPLETE (engine.ts:799, 950). No claim for it.
+    return { state: 'UNKNOWN', text: SESSIONS_WORDS.unknown, hover: null, parts: null };
   }
   /*
    * `ah.high` stays null until an after-hours trade, bar or seed is seen
