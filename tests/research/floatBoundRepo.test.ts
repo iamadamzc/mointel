@@ -39,10 +39,11 @@ function row(asOfDate: string, overrides: Partial<FloatBoundRow> = {}): FloatBou
     holdings,
     splitSinceCount: 'NONE',
     announcedSplits: ['2026-01-05'],
+    issuanceFilings: [{ form: '424B5', filingDate: '2026-09-30', accession: 'p', items: '' }],
     analysisVersionId: 42,
     issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE',
     maxAgeDays: 90,
-    cell: floatCellFor({ cik: '555', count, holdings, splitSinceCount: 'NONE', ledger: [], asOfDate }),
+    cell: floatCellFor({ cik: '555', count, holdings, splitSinceCount: 'NONE', ledger: [], asOfDate, issuanceFiled: false }),
     computedAt: `${asOfDate}T23:00:00.000Z`,
     ...overrides,
   };

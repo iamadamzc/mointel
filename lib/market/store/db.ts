@@ -362,6 +362,7 @@ CREATE TABLE IF NOT EXISTS research_float_bounds (
   holdings_json       TEXT NOT NULL,
   split_since_count   TEXT NOT NULL,
   announced_splits_json TEXT,
+  issuance_filings_json TEXT NOT NULL,
   analysis_version_id INTEGER,
   issuance_rule       TEXT NOT NULL,
   max_age_days        INTEGER NOT NULL,

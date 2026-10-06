@@ -13,7 +13,7 @@
 import type { MarketDatabase } from '../market/store/db';
 import { readLatestFloatBound } from '../market/store/floatBoundRepo';
 import { readCurrentAnalyses } from '../market/store/researchRepo';
-import { FLOAT_REUSE_DAYS, floatCellFor, type FloatBoundRow } from './floatJob';
+import { FLOAT_REUSE_DAYS, floatCellFor, issuanceFiledIn, type FloatBoundRow } from './floatJob';
 import { readSpanBars } from './history';
 import type { FloatCell, FloatCellReason } from './insiderBound';
 import { splitProofFromBars, withAnnouncedSplits, type SpanBar } from './splitProof';
@@ -27,7 +27,9 @@ export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: readon
   if (row.asOfDate > d || wholeDays(row.asOfDate, d) > FLOAT_REUSE_DAYS) return { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' };
   const splitSinceCount =
     row.count.kind === 'COUNT' ? withAnnouncedSplits(splitProofFromBars(countSpanBars, d), row.announcedSplits, row.count.asOf, d) : row.splitSinceCount;
-  return floatCellFor({ cik: row.cik, count: row.count, holdings: row.holdings, splitSinceCount, ledger, asOfDate: d });
+  // Rule I-D re-applied at D over the stored filings; one made after the row's read is unseen (the reuse span bounds it).
+  const issuanceFiled = row.count.kind === 'COUNT' && issuanceFiledIn(row.issuanceFilings, row.count.asOf, d);
+  return floatCellFor({ cik: row.cik, count: row.count, holdings: row.holdings, splitSinceCount, ledger, asOfDate: d, issuanceFiled });
 }
 
 /**

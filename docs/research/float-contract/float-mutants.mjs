@@ -1,4 +1,7 @@
-// Float line mutants: every prediction committed BEFORE any run (commits d4c10c95, 968f641c, fdfdfcef and
+// Float line mutants: every prediction committed BEFORE any run. AMENDED before any run, after rule I-D's tests
+// changed the suite: F2 2->5, J1 2->7, RD1 1->5 (the original is kept as the 7th field and reported beside the result;
+// RD1's original 1 was already low before I-D: four existing tests read at exactly 4 days); D1-D9 added.
+// (commits d4c10c95, 968f641c, fdfdfcef and
 // build-plan-2026-10-05.md section 4 predicted the counts; this file makes each one an exact edit).
 // Run in an Ops slot, from A:/mointel-float:  node docs/research/float-contract/float-mutants.mjs <out-dir>
 // Each mutant: the `from` text must occur EXACTLY once (else the mutant is reported INVALID, never run), it is
@@ -19,7 +22,7 @@ const TESTS = ['filedCount', 'splitProof', 'spanBars', 'floatJob', 'floatBoundRe
 const M = [
   // build plan step 1: the selector
   ['F1', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '.filter((r) => r.filed < asOfDate)', 1, 'selector <= to <'],
-  ['F2', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '', 2, 'drop the filed filter'],
+  ['F2', 'lib/research/filedCount.ts', '.filter((r) => r.filed <= asOfDate)', '', 5, 'drop the filed filter', 2],
   ['F3', 'lib/research/filedCount.ts', "if (new Set(chosen.map((r) => r.accn)).size !== 1) return { kind: 'COUNT_SPLIT_ACROSS_FILINGS' };", '', 1, 'drop the one-accession check'],
   ['F4', 'lib/research/filedCount.ts', 'shares: chosen.reduce((sum, r) => sum + r.val, 0),', 'shares: chosen[0]!.val,', 1, 'sum to first value'],
   // build plan step 1: R0
@@ -33,7 +36,7 @@ const M = [
   ['B2', 'lib/research/history.ts', "WHERE symbol = ? AND trading_date <= ?').get(symbol, from)", "WHERE trading_date <= ?').get(from)", 1, 'drop the symbol filter in the start query'],
   ['B3', 'lib/research/history.ts', 'if (!start) return [];', '', 0, 'drop the empty-start guard (EQUIVALENT: BETWEEN NULL returns nothing)'],
   // build plan step 4: the job
-  ['J1', 'lib/research/floatJob.ts', 'export const FLOAT_MAX_AGE_DAYS = 90;', 'export const FLOAT_MAX_AGE_DAYS = 45;', 2, 'max age 90 to 45'],
+  ['J1', 'lib/research/floatJob.ts', 'export const FLOAT_MAX_AGE_DAYS = 90;', 'export const FLOAT_MAX_AGE_DAYS = 45;', 7, 'max age 90 to 45', 2],
   ['J2', 'lib/research/floatJob.ts', "export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_OR_POSSIBLY_ACTIVE';", "export const FLOAT_ISSUANCE_RULE: IssuanceRule = 'KNOWN_ACTIVE';", 1, 'issuance rule to KNOWN_ACTIVE'],
   ['J3', 'lib/research/floatJob.ts', 'const r0 = splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf);', 'const r0 = splitProofFromBars(deps.spanBars(symbol, holding.asOf, count.asOf), count.asOf);', 1, 'R1 instead of R0 for holdings'],
   ['J4', 'lib/research/floatJob.ts', 'companyfacts/CIK${pad10(cik)}.json`);', 'companyfacts/CIK${pad10(cik)}.json`).catch(() => ({}) as CompanyFactsShares);', 1, 'swallow the companyfacts error'],
@@ -54,8 +57,18 @@ const M = [
   ['RA4', 'lib/research/floatJob.ts', 'start, addDays(asOfDate, FLOAT_REUSE_DAYS))', 'start, asOfDate)', 1, 'R-A no reuse span on the fetch'],
   ['RA5', 'lib/research/floatJob.ts', 'const start = [count.asOf, ...found.map((h) => h.asOf)].sort()[0]!;', 'const start = [count.asOf].sort()[0]!;', 1, 'R-A holdings not combined into the fetch window'],
   // the reader (fdfdfcef)
-  ['RD1', 'lib/research/floatRead.ts', 'wholeDays(row.asOfDate, d) > FLOAT_REUSE_DAYS', 'wholeDays(row.asOfDate, d) >= FLOAT_REUSE_DAYS', 1, 'reader reuse > to >='],
+  ['RD1', 'lib/research/floatRead.ts', 'wholeDays(row.asOfDate, d) > FLOAT_REUSE_DAYS', 'wholeDays(row.asOfDate, d) >= FLOAT_REUSE_DAYS', 5, 'reader reuse > to >=', 1],
   ['RD2', 'lib/research/floatRead.ts', 'if (row.asOfDate > d || wholeDays(row.asOfDate, d) > FLOAT_REUSE_DAYS)', 'if (row.asOfDate > d)', 1, 'reader drops the reuse check'],
+  // Rule I-D (filed-issuance-registration-2026-10-06.md), predicted with its tests, before any run.
+  ['D1', 'lib/research/floatJob.ts', 'if (filingDate < from) continue;', 'if (filingDate <= from) continue;', 1, 'I-D listing excludes the count date'],
+  ['D2', 'lib/research/floatJob.ts', 'f.filingDate >= countAsOf && f.filingDate <= d', 'f.filingDate > countAsOf && f.filingDate <= d', 2, 'I-D window excludes the count date'],
+  ['D3', 'lib/research/floatJob.ts', 'f.filingDate >= countAsOf && f.filingDate <= d', 'f.filingDate >= countAsOf && f.filingDate < d', 1, 'I-D window excludes D'],
+  ['D4', 'lib/research/floatJob.ts', 'if (OFFERING_PROSPECTUS.has(form) || item302)', 'if (OFFERING_PROSPECTUS.has(form))', 2, 'I-D drops the 8-K item 3.02 test'],
+  ['D5', 'lib/research/floatJob.ts', ".includes('3.02');", '.length >= 0;', 1, 'I-D takes any 8-K'],
+  ['D6', 'lib/research/insiderBound.ts', 'if (input.issuanceFiled) return', 'if (false && input.issuanceFiled) return', 2, 'floatCell ignores I-D'],
+  ['D7', 'lib/research/floatJob.ts', 'if (!listingReaches(submissions, count.asOf)) throw', 'if (false) throw', 1, 'the listing-reach guard dropped'],
+  ['D8', 'lib/research/floatRead.ts', "const issuanceFiled = row.count.kind === 'COUNT' && issuanceFiledIn(", "const issuanceFiled = false && row.count.kind === 'COUNT' && issuanceFiledIn(", 1, 'the reader ignores I-D'],
+  ['D9', 'lib/research/floatJob.ts', '.reduce((min, d) => (d < min ? d : min)) <= date;', '.reduce((min, d) => (d < min ? d : min)) < date;', 1, 'listingReaches <= to <'],
   ['RD3', 'lib/research/floatRead.ts', "row.count.kind === 'COUNT' ? withAnnouncedSplits(splitProofFromBars(countSpanBars, d), row.announcedSplits, row.count.asOf, d) : row.splitSinceCount", 'row.splitSinceCount', 1, 'reader uses the stored split proof, not one recomputed at D'],
 ];
 
@@ -93,7 +106,7 @@ if (m0.failed !== 0 || m0.failedSuites !== 0) {
   throw new Error('M0 does not pass clean; no mutant run');
 }
 
-for (const [id, file, from, to, predicted, what] of M) {
+for (const [id, file, from, to, predicted, what, original] of M) {
   const original = fs.readFileSync(file);
   const text = original.toString('utf8');
   const hits = text.split(from).length - 1;
@@ -103,7 +116,7 @@ for (const [id, file, from, to, predicted, what] of M) {
   }
   fs.writeFileSync(file, text.replace(from, () => to));
   try {
-    results.push({ id, file, what, predicted, ...runTests(id) });
+    results.push({ id, file, what, predicted, ...(original === undefined ? {} : { originalPrediction: original }), ...runTests(id) });
   } finally {
     fs.writeFileSync(file, original);
   }

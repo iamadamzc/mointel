@@ -4,6 +4,9 @@ import {
   FLOAT_MAX_AGE_DAYS,
   computeFloatBound,
   floatCellFor,
+  issuanceFiledIn,
+  issuanceFilings,
+  listingReaches,
   section16Filings,
   type FloatJobDeps,
   type StoredHolding,
@@ -138,7 +141,7 @@ describe('computeFloatBound', () => {
 
 describe('floatCellFor: the job constants', () => {
   const count = (asOf: string) => ({ kind: 'COUNT' as const, shares: 1_000_000, asOf, filed: asOf, accession: 'a', form: '10-Q' });
-  const base = { cik: '1', holdings: [] as StoredHolding[], splitSinceCount: 'NONE' as const, ledger: [] as SupplyBlock[], asOfDate: AS_OF };
+  const base = { cik: '1', holdings: [] as StoredHolding[], splitSinceCount: 'NONE' as const, ledger: [] as SupplyBlock[], asOfDate: AS_OF, issuanceFiled: false };
 
   it('allows a count exactly 90 days old and refuses 91 (his ruling)', () => {
     expect(FLOAT_MAX_AGE_DAYS).toBe(90);
@@ -196,5 +199,87 @@ describe('computeFloatBound: rule R-A, announced splits refuse where stale bars 
     const row = await run(new Error('503'));
     expect(row.announcedSplits).toBeNull();
     expect(row.cell).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+  });
+});
+
+describe('rule I-D: a filed issuance after the count refuses (filed-issuance-registration-2026-10-06.md)', () => {
+  const listing = (rows: Array<[string, string, string?]>): SubmissionsRecent => ({
+    filings: {
+      recent: {
+        accessionNumber: rows.map((_, i) => `x${i}`),
+        form: rows.map((r) => r[0]),
+        filingDate: rows.map((r) => r[1]),
+        primaryDocument: rows.map(() => 'x.htm'),
+        items: rows.map((r) => r[2] ?? ''),
+      },
+    },
+  });
+
+  it('takes 424B1/4/5 and 8-K item 3.02 on or after the count date; not resale, registrations, plan shares or other items', () => {
+    const data = listing([
+      ['424B5', '2026-08-01'],
+      ['424B4', '2026-08-20'],
+      ['424B1', '2026-09-01'],
+      ['8-K', '2026-08-13', '3.02,9.01'],
+      ['8-K/A', '2026-08-14', '1.01, 3.02'],
+      ['424B5', '2026-07-31'],
+      ['424B3', '2026-08-05'],
+      ['424B2', '2026-08-05'],
+      ['S-3', '2026-08-05'],
+      ['S-1', '2026-08-05'],
+      ['S-8', '2026-08-05'],
+      ['8-K', '2026-08-06', '2.02,9.01'],
+    ]);
+    expect(issuanceFilings(data, COUNT_END).map((f) => `${f.form} ${f.filingDate}`)).toEqual([
+      '424B5 2026-08-01',
+      '424B4 2026-08-20',
+      '424B1 2026-09-01',
+      '8-K 2026-08-13',
+      '8-K/A 2026-08-14',
+    ]);
+  });
+
+  it('applies [count, D]: the count date and D refuse; the day before the count and a filing after D do not', () => {
+    const one = (date: string) => [{ form: '424B5', filingDate: date, accession: 'a', items: '' }];
+    expect(issuanceFiledIn(one(COUNT_END), COUNT_END, AS_OF)).toBe(true);
+    expect(issuanceFiledIn(one(AS_OF), COUNT_END, AS_OF)).toBe(true);
+    expect(issuanceFiledIn(one('2026-07-31'), COUNT_END, AS_OF)).toBe(false);
+    expect(issuanceFiledIn(one('2026-09-29'), COUNT_END, AS_OF)).toBe(false);
+  });
+
+  it('refuses as ISSUANCE_FILED ahead of the ledger (a clean, a missing and a flagged dossier) and stores the filing', async () => {
+    const r = submissions.filings.recent;
+    const withPlacement: SubmissionsRecent = {
+      filings: {
+        recent: {
+          accessionNumber: [...r.accessionNumber, '0001437749-26-027730'],
+          form: [...r.form, '8-K'],
+          filingDate: [...r.filingDate, '2026-08-13'],
+          primaryDocument: [...r.primaryDocument, 'k.htm'],
+          items: [...r.form.map(() => ''), '3.02'],
+        },
+      },
+    };
+    const d = deps({ getJson: async <T,>(url: string) => (url.includes('companyfacts') ? companyFacts : withPlacement) as T });
+    const flagged = [{ type: 'WARRANTS', status: 'KNOWN_ACTIVE' }] as unknown as SupplyBlock[];
+    for (const dos of [dossier(), null, dossier(flagged)]) {
+      const row = await computeFloatBound({ symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dos }, d);
+      expect(row.cell).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' });
+      expect(row.issuanceFilings).toEqual([{ form: '8-K', filingDate: '2026-08-13', accession: '0001437749-26-027730', items: '3.02' }]);
+    }
+  });
+
+  it('writes no row when the listing does not reach back to the count date ("no hit" is unproven)', async () => {
+    const late = listing([['4', '2026-08-02']]);
+    const d = deps({ getJson: async <T,>(url: string) => (url.includes('companyfacts') ? companyFacts : late) as T });
+    await expect(computeFloatBound({ symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dossier() }, d)).rejects.toThrow('does not reach the count date');
+    expect(listingReaches(late, '2026-08-02')).toBe(true);
+    expect(listingReaches(listing([]), COUNT_END)).toBe(false);
+  });
+
+  it('the base listing (Forms 4 and a 10-Q) has no hit and still produces', async () => {
+    const row = await computeFloatBound({ symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dossier() }, deps());
+    expect(row.issuanceFilings).toEqual([]);
+    expect(row.cell.state).toBe('PRODUCED');
   });
 });

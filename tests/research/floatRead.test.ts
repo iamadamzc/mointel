@@ -29,10 +29,11 @@ function row(overrides: Partial<FloatBoundRow> = {}): FloatBoundRow {
     holdings,
     splitSinceCount: 'NONE',
     announcedSplits: [],
+    issuanceFilings: [],
     analysisVersionId: 42,
     issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE',
     maxAgeDays: 90,
-    cell: floatCellFor({ cik: '555', count: COUNT, holdings, splitSinceCount: 'NONE', ledger: [], asOfDate: READ }),
+    cell: floatCellFor({ cik: '555', count: COUNT, holdings, splitSinceCount: 'NONE', ledger: [], asOfDate: READ, issuanceFiled: false }),
     computedAt: `${READ}T23:00:00.000Z`,
     ...overrides,
   };
@@ -66,6 +67,14 @@ describe('floatCellAt', () => {
     const old = { ...COUNT, asOf: '2026-06-30' };
     // Read 09-25 (87 days old then); at 09-29 the count is 91 days old.
     expect(floatCellAt(row({ count: old }), '2026-09-29', [], [{ date: '2026-06-30', close: 10, factor: 1 }, { date: '2026-09-29', close: 10, factor: 1 }])).toEqual({ state: 'CANNOT_VERIFY', reason: 'COUNT_TOO_OLD' });
+  });
+
+  it('rule I-D at D: a stored filing in [count, D] refuses as ISSUANCE_FILED; one dated after D does not, until D reaches it', () => {
+    const placement = (filingDate: string) => [{ form: '8-K', filingDate, accession: 'p', items: '3.02' }];
+    expect(floatCellAt(row({ issuanceFilings: placement('2026-08-01') }), '2026-09-29', [], flat('2026-09-29'))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' });
+    // Filed 09-28 (after the 09-25 read, known only to a row read later): at D 09-27 it is not yet in [count, D].
+    expect(floatCellAt(row({ issuanceFilings: placement('2026-09-28') }), '2026-09-27', [], flat('2026-09-27'))).toMatchObject({ state: 'PRODUCED' });
+    expect(floatCellAt(row({ issuanceFilings: placement('2026-09-28') }), '2026-09-29', [], flat('2026-09-29'))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' });
   });
 });
 

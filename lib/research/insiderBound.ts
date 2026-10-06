@@ -190,6 +190,8 @@ export type FloatCellReason =
   | 'COUNT_TOO_OLD'
   | 'ISSUANCE_FLAGGED'
   | 'ISSUANCE_NOT_CHECKED'
+  /** Rule I-D (filed-issuance-registration-2026-10-06.md): a 424B1/4/5 or an 8-K item 3.02 filed on or after the count's date. */
+  | 'ISSUANCE_FILED'
   | 'SPLIT_SINCE_COUNT'
   | 'BOUND_OUT_OF_RANGE'
   /** Contract 9b: the newest read of the filings is more than the reuse span before D. Set by the reader, never by `floatCell`. */
@@ -247,6 +249,11 @@ export interface FloatCellInput {
   /** null = no dossier as of the checkpoint (issuance was not checked). */
   ledger: readonly SupplyBlock[] | null;
   issuanceRule: IssuanceRule;
+  /**
+   * Rule I-D: a filing on or after the count's date reports an offering or a sale of equity. The job and the reader
+   * always pass it (`floatCellFor` requires it); absent only in the measurement scripts that predate the rule.
+   */
+  issuanceFiled?: boolean;
 }
 
 /**
@@ -257,6 +264,8 @@ export function floatCell(input: FloatCellInput): FloatCell {
   if (!input.cik) return { state: 'UNKNOWN', reason: 'NO_CIK' };
   if (input.spreadAcrossFilings) return { state: 'UNKNOWN', reason: 'COUNT_SPLIT_ACROSS_FILINGS' };
   if (!input.count) return { state: 'UNKNOWN', reason: 'NO_FILED_COUNT' };
+  // I-D before the ledger: a filing is the most specific and checkable cause (registration section 2).
+  if (input.issuanceFiled) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' };
   if (input.ledger === null) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' };
   if (issuanceFlagged(input.ledger, input.issuanceRule)) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' };
   if (input.splitSinceCount !== 'NONE') return { state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' };
