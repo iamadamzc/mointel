@@ -1,0 +1,151 @@
+{
+  "results": [
+    {
+      "id": "M0",
+      "predicted": 0,
+      "failed": 0,
+      "failedSuites": 0,
+      "total": 33
+    },
+    {
+      "id": "X1",
+      "file": "lib/desk/reports/check.ts",
+      "what": "no frame rule",
+      "predicted": 1,
+      "which": "W1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X2",
+      "file": "lib/desk/reports/check.ts",
+      "what": "\"after hours\" not a frame",
+      "predicted": 1,
+      "which": "W1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X3",
+      "file": "lib/desk/reports/check.ts",
+      "what": "no causal rule",
+      "predicted": 2,
+      "which": "W2, W4",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X4",
+      "file": "lib/desk/reports/check.ts",
+      "what": "a connective inside the news after \"with\" is struck",
+      "predicted": 1,
+      "which": "W3",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X5",
+      "file": "lib/desk/reports/check.ts",
+      "what": "\"on the day\" and \"after hours\" read as causes",
+      "predicted": 12,
+      "which": "L70, L75, L83, L96, L108, L114, L121, L133, L157, F16, W1, W3",
+      "failed": 12,
+      "failedSuites": 4,
+      "total": 33
+    },
+    {
+      "id": "X6",
+      "file": "lib/desk/reports/check.ts",
+      "what": "\"reporting on X\" read as a cause",
+      "predicted": 1,
+      "which": "W3",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X7",
+      "file": "lib/desk/reports/check.ts",
+      "what": "\"held on\" read as a cause",
+      "predicted": 3,
+      "which": "L140, L147, W3",
+      "failed": 3,
+      "failedSuites": 3,
+      "total": 33
+    },
+    {
+      "id": "X8",
+      "file": "lib/desk/reports/check.ts",
+      "what": "\"the following session\" read as a cause",
+      "predicted": 1,
+      "which": "W3",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X9",
+      "file": "lib/desk/reports/check.ts",
+      "what": "\"added 62 percent\" not a move",
+      "predicted": 1,
+      "which": "W1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X10",
+      "file": "lib/desk/reports/check.ts",
+      "what": "a semicolon does not end a clause",
+      "predicted": 1,
+      "which": "W1",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X11",
+      "file": "lib/desk/reports/check.ts",
+      "what": "only the first move in a clause is read",
+      "predicted": 1,
+      "which": "W4",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X12",
+      "file": "lib/desk/reports/writerV6.ts",
+      "what": "the causal prompt line gone",
+      "predicted": 1,
+      "which": "WP",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X13",
+      "file": "lib/desk/reports/writerV6.ts",
+      "what": "the frame prompt line gone",
+      "predicted": 1,
+      "which": "WP",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    },
+    {
+      "id": "X14",
+      "file": "lib/desk/reports/check.ts",
+      "what": "a copied placeholder passes",
+      "predicted": 1,
+      "which": "W5",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 33
+    }
+  ]
+}
