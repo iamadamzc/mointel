@@ -790,6 +790,7 @@ export function DiscoveryBoard({
                 afterHours={afterHours}
                 showFloat={showFloat}
                 phase={discovery?.sessionPhase ?? null}
+                dateShown={discovery?.tradingDate ?? null}
                 lead={lead}
                 activeColumn={activeColumn}
               />
@@ -909,6 +910,7 @@ function DiscoveryRow({
   afterHours,
   showFloat,
   phase,
+  dateShown,
   lead,
   activeColumn,
 }: {
@@ -924,6 +926,8 @@ function DiscoveryRow({
   afterHours: boolean;
   showFloat: boolean;
   phase: SessionPhase | null;
+  /** The board's own date (YYYY-MM-DD): what the float's 90-day rule is measured from. */
+  dateShown: string | null;
   lead: 'GAP' | 'MOVE';
   /** Which column the board is ordered by, so the accent can follow it. */
   activeColumn?: string;
@@ -1158,7 +1162,7 @@ function DiscoveryRow({
         // board does not have.
         <td className="num px-2 py-1 text-right align-middle">
           {row.floatBoundWired ? (
-            <FloatCell bound={row.floatBound} />
+            <FloatCell bound={row.floatBound} dateShown={dateShown} />
           ) : row.displayedFloat === null ? (
             /*
              * Three outcomes, and collapsing any two would lose the finding.

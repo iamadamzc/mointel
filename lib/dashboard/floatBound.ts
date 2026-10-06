@@ -24,17 +24,26 @@ import type { FloatCellReason } from '@/lib/research/insiderBound';
 
 export type FloatBoundState = 'PRODUCED' | 'UNKNOWN' | 'CANNOT_VERIFY' | 'NOT_YET';
 
+/**
+ * The stored causes: the eight `floatCell` produces, plus FILINGS_NOT_REREAD, the
+ * sixth Cannot verify reason of Marketing's v16 (shown when a stored row is more
+ * than four days older than the date shown). Research owns when it is stored.
+ */
+export type FloatBoundReason = FloatCellReason | 'FILINGS_NOT_REREAD';
+
 /** What the payload carries per ticker. Null, or absent, is NOT_YET: "Not computed". */
 export interface FloatBound {
   state: FloatBoundState;
   /** The stored cause, for UNKNOWN and CANNOT_VERIFY. */
-  reason: FloatCellReason | null;
+  reason: FloatBoundReason | null;
   /** Shares, only for PRODUCED. */
   bound: number | null;
   /** The filed count's as-of date, YYYY-MM-DD. */
   countAsOf: string | null;
   /** The dates the subtracted holdings were filed, YYYY-MM-DD. */
   holdingDates: string[];
+  /** The date the desk last read the company's filings, YYYY-MM-DD. */
+  fetchedOn: string | null;
 }
 
 export type FloatFaceKind = 'bound' | 'unknown' | 'cannotVerify' | 'notComputed';
@@ -51,17 +60,19 @@ export interface FloatCellView {
 }
 
 /**
- * The public page's route. PROVISIONAL until Web names it: the link and the page
- * must ship in one release, so this is the one value to confirm.
+ * The public page's route (Web's, 2026-10-05). A URL a stranger reads is public
+ * copy and is his to approve; if he renames it, this value and Web's route
+ * directory change in the same release, which must also carry the nginx
+ * exemption or the link 401s for a stranger.
  */
-export const FLOAT_PAGE_HREF = '/float';
+export const FLOAT_PAGE_HREF = '/are-float-quotes-real';
 
 export const FLOAT_PAGE_LINK_LEAD = 'Read how float numbers are made:';
 export const FLOAT_PAGE_LINK_LABEL = 'Are float quotes real?';
 
 /** The once-only legend under the board. Verbatim. */
 export const FLOAT_LEGEND =
-  "Float: computed from SEC filings. An upper bound when the filings line up. The date is the filed share count's.";
+  "Float: computed from SEC filings. An upper bound as of the date shown, when the filings line up. The date is the filed share count's.";
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -84,13 +95,17 @@ export function longDate(iso: string | null | undefined): string | null {
   return p ? `${MONTHS[p.m - 1]} ${p.d}, ${p.y}` : null;
 }
 
-const UNKNOWN_TEXT: Partial<Record<FloatCellReason, string>> = {
+const UNKNOWN_TEXT: Partial<Record<FloatBoundReason, string>> = {
   NO_FILED_COUNT: 'No filed share count.',
   NO_CIK: 'We could not match this name to an SEC filer, so there is no filed share count to start from.',
   COUNT_SPLIT_ACROSS_FILINGS: 'The filed share count is split across several filings, so no single count applies.',
 };
 
-function cannotVerifyText(reason: FloatCellReason | null, countDate: string | null): string {
+function cannotVerifyText(
+  reason: FloatBoundReason | null,
+  countDate: string | null,
+  fetchedDate: string | null,
+): string {
   switch (reason) {
     case 'COUNT_TOO_OLD':
       return `Cannot verify: the latest filed share count is from ${countDate ?? 'an unknown date'}, too old to rely on.`;
@@ -102,6 +117,8 @@ function cannotVerifyText(reason: FloatCellReason | null, countDate: string | nu
       return "Cannot verify: we have not yet reviewed this company's share supply, so share issuance was not checked.";
     case 'BOUND_OUT_OF_RANGE':
       return "Cannot verify: the computed figure did not pass the desk's own sanity check, so it is not shown.";
+    case 'FILINGS_NOT_REREAD':
+      return `Cannot verify: the desk has not read this company's filings since ${fetchedDate ?? 'an unknown date'}.`;
     default:
       // A cause this module has no words for must not borrow another's.
       return 'Cannot verify.';
@@ -116,7 +133,24 @@ const NOT_COMPUTED: FloatCellView = {
   paragraphs: ['The desk has not computed a float for this name.'],
 };
 
-export function floatCellView(bound: FloatBound | null | undefined): FloatCellView {
+/**
+ * Where the 90-day rule is measured FROM, in the words of the surface.
+ *
+ * On the live board it is "the date shown", with that date printed (the
+ * board's own date, `dateShown`); on reports, exports and stored copies it is
+ * "the checkpoint". Marketing v16, item 4: Design chooses by surface.
+ */
+export interface FloatSurface {
+  /** The live board's date, YYYY-MM-DD. Absent means a report, export or stored copy. */
+  dateShown?: string | null;
+}
+
+function measuredFrom(surface: FloatSurface): string {
+  const shown = longDate(surface.dateShown);
+  return surface.dateShown && shown ? `the date shown (${shown})` : 'the checkpoint';
+}
+
+export function floatCellView(bound: FloatBound | null | undefined, surface: FloatSurface = {}): FloatCellView {
   if (!bound || bound.state === 'NOT_YET') return NOT_COMPUTED;
   const countDate = longDate(bound.countAsOf);
 
@@ -129,20 +163,21 @@ export function floatCellView(bound: FloatBound | null | undefined): FloatCellVi
         face: 'Cannot verify',
         date: null,
         ariaLabel: 'float cannot be verified for this name',
-        paragraphs: [cannotVerifyText('BOUND_OUT_OF_RANGE', null)],
+        paragraphs: [cannotVerifyText('BOUND_OUT_OF_RANGE', null, null)],
       };
     }
     const compact = compactBound(bound.bound);
     const amount = compact.startsWith(BOUND_PREFIX) ? compact.slice(BOUND_PREFIX.length) : compact;
     const holdings = bound.holdingDates.map(longDate).filter((d): d is string => d !== null);
+    const fetched = longDate(bound.fetchedOn);
     return {
       kind: 'bound',
       face: compact,
       date: shortDate(bound.countAsOf),
-      ariaLabel: `no more than ${amount} shares, computed from SEC filings as of ${countDate}, when the filings line up`,
+      ariaLabel: `no more than ${amount} shares as of ${countDate}, computed from SEC filings, when the filings line up`,
       paragraphs: [
-        `The float is no more than ${amount} shares when the filings line up. Computed from the company's filed share count as of ${countDate}, less insider holdings filed on ${holdings.length > 0 ? holdings.join(', ') : 'the dates in the filings'}.`,
-        `Lined up means: a filed count dated ${countDate}, at most 90 days before the checkpoint, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count.`,
+        `No more than ${amount} shares as of ${countDate}, when the filings line up. Computed from the company's filed share count, less insider holdings filed on ${holdings.length > 0 ? holdings.join(', ') : 'the dates in the filings'}.${fetched ? ` Filings read on ${fetched}.` : ''}`,
+        `Lined up means: a filed count dated ${countDate}, at most 90 days before ${measuredFrom(surface)}, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count. Insider sales after the count date are not reflected.`,
       ],
     };
   }
@@ -162,7 +197,7 @@ export function floatCellView(bound: FloatBound | null | undefined): FloatCellVi
     face: 'Cannot verify',
     date: null,
     ariaLabel: 'float cannot be verified for this name',
-    paragraphs: [cannotVerifyText(bound.reason, countDate)],
+    paragraphs: [cannotVerifyText(bound.reason, countDate, longDate(bound.fetchedOn))],
   };
 }
 

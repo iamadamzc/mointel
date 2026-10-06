@@ -453,6 +453,7 @@ describe('the float on a desk row: two absences, as the grade', () => {
     bound: 8_100_000,
     countAsOf: '2026-09-22',
     holdingDates: ['2026-09-18'],
+    fetchedOn: '2026-10-05',
   };
 
   it('an absent or null map is not wired, an object (even empty) is wired, and a missing name is Not computed', async () => {
