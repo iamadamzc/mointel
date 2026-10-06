@@ -48,7 +48,7 @@ describe('the close line', () => {
     expect(line.text).toBe('$3.09, Aug 17, 2026');
     expect(line.text).not.toContain('2.50');
     expect(line.hover).toBe(
-      "The last regular-session trade the desk saw, as of the 16:00 ET bell on Aug 17, 2026. The daily bar's close can differ.",
+      "The last trade the desk saw around the bell on Aug 17, 2026. The daily bar's close can differ.",
     );
   });
 
@@ -60,10 +60,11 @@ describe('the close line', () => {
     });
   });
 
-  it('a close from the Sheet makes no daily-bar claim', () => {
-    const line = closeLine(demand({ referenceRthCloseSource: 'sheet' }));
-    expect(line.hover).toBe('The regular-session close for Aug 14, 2026, as stored. The desk does not show its source.');
-    expect(line.hover).not.toContain('daily bar');
+  it('a close not from a daily bar makes no daily-bar claim: the Sheet, or a source not recorded', () => {
+    expect(closeLine(demand({ referenceRthCloseSource: 'sheet' })).hover).toBe('The close for Aug 14, 2026 as the Sheet recorded it.');
+    expect(closeLine(demand({ referenceRthCloseSource: null })).hover).toBe(
+      'A close for Aug 14, 2026. The desk did not record where it came from.',
+    );
   });
 });
 
@@ -76,7 +77,7 @@ describe('the after-hours line (today only)', () => {
   it("before the bell: Not yet, worded as TODAY's after hours", () => {
     expect(afterHoursLine(demand())).toMatchObject({
       state: 'NOT_YET',
-      text: "Today's after hours begins after the 16:00 ET close",
+      text: "Today's after hours begins after the regular-session close",
       parts: null,
     });
   });
@@ -84,8 +85,8 @@ describe('the after-hours line (today only)', () => {
   it('complete coverage: price, percent from the close, volume, each with its hover', () => {
     const line = after({});
     expect(line.text).toBe('$3.48, +12.3% from the close, 1.25M shares');
-    expect(line.parts?.percent.hover).toBe('Measured from the regular-session close shown above, for Aug 17, 2026.');
-    expect(line.parts?.volume.hover).toBe('Counts only trades after the 16:00 ET bell.');
+    expect(line.parts?.percent.hover).toBe('Measured from the close shown above, for Aug 17, 2026.');
+    expect(line.parts?.volume.hover).toBe('Counts only trades after the bell.');
   });
 
   it("before today's close arrives: the percent cell reads No close (only its baseline is missing)", () => {
@@ -117,8 +118,8 @@ describe('the after-hours line (today only)', () => {
     const complete = after({ high: null, volume: 0 });
     expect(complete).toMatchObject({
       state: 'PRODUCED',
-      text: 'No trade seen since the 16:00 ET bell',
-      hover: 'The desk was recording and saw no trade after the 16:00 ET bell on Aug 17, 2026.',
+      text: 'No after-hours trade recorded',
+      hover: "The desk's after-hours figures for Aug 17, 2026 include no trade.",
       parts: null,
     });
     expect(complete.text).not.toContain('3.48');
@@ -126,7 +127,7 @@ describe('the after-hours line (today only)', () => {
     expect(partial.parts?.price.state).toBe('UNKNOWN');
     expect(partial.parts?.percent.state).toBe('UNKNOWN');
     // Price and percent say they cannot tell; only the volume speaks of leaving trades out.
-    const cannotTell = 'The desk began recording after the bell on Aug 17, 2026, so it cannot say whether trades occurred before it started.';
+    const cannotTell = 'The desk did not see every trade after the bell on Aug 17, 2026, so it cannot show an after-hours price or change.';
     expect(partial.parts?.price.hover).toBe(cannotTell);
     expect(partial.parts?.percent.hover).toBe(cannotTell);
     expect(partial.parts?.volume.hover).toBe(SESSIONS_WORDS.volumePartial('Aug 17, 2026'));
@@ -141,6 +142,8 @@ describe('words and placement', () => {
       .join(' ');
     expect(all).not.toContain(EM_DASH);
     expect(all).not.toMatch(/frozen at/i);
+    // No clock: the real close can be early (Commercial 9).
+    expect(all).not.toMatch(/\d{1,2}:\d{2}/);
     expect(all).not.toMatch(/\b(will|yet to|pending|soon)\b/i);
   });
 
