@@ -33,12 +33,17 @@ const NEXT_DAY_NOW = '2026-08-18T14:00:00.000Z';
 const produced = (ids = [7]): { evidenceRisk: EvidenceRisk } => ({
   evidenceRisk: { text: SENTENCE, evidenceSourceIds: ids, removed: null },
 });
+/*
+ * Research no longer stores the removed sentence (e0e96953), but a stored row is
+ * JSON read back without a type check, so the fixture still carries one: the
+ * surfaces must not depend on the writer for this.
+ */
 const removedByCheck = (): { evidenceRisk: EvidenceRisk } => ({
   evidenceRisk: {
     text: null,
     evidenceSourceIds: [7],
     removed: { rule: 'RISK_FORBIDDEN_WORDING', detail: 'modal or likelihood', text: REMOVED },
-  },
+  } as unknown as EvidenceRisk,
 });
 
 const view = (over: Partial<Parameters<typeof evidenceRiskView>[0]> = {}) =>
