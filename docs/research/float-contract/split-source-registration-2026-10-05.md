@@ -30,3 +30,7 @@ Raw output committed before it is read.
 ## 4. What this does not do
 
 It does not fix ingestion (Ops's, and a separate question: restating older bars after a split is a market-worker behaviour change). It does not cover a split Alpaca does not list (RFAI's shape); for that the bars remain the only source, and the hazard in section 1 stays for it. The ship ask for the float job states this residual.
+
+## Amendment 1 (2026-10-05, written with the code, before any measurement runs)
+
+The fetch window END is D plus the 4-day reuse span (contract 9b), not D: Alpaca publishes splits ahead of their ex-date (`splitRestate.ts`: Monday's were listed on the Saturday), so a reader reusing the row up to 4 days later can check the stored list against [count date, its own D] without a fetch. Its start is the earliest of the count's date and every holding's count-date (`h0`) as-of date. This can only add refusals. Residual, stated: a split announced AFTER the job ran and effective inside the reuse span is not in the stored list; for that case the reader has the bars (R1, with its price guard on the checkpoint's own bar) and nothing else. The job runs only with Alpaca credentials; without them it writes no row (NOT_YET), because a missing credential is a fact about the desk, not about the company.
