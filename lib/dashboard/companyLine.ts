@@ -4,13 +4,17 @@
  * its reason, NOT_YET). It replaces the Sheet's "Country of Origin, Company",
  * which is going away; the Sheet row is only a fallback while it still exists.
  *
- * THE COUNTRY IS THE SEC BUSINESS ADDRESS, NOT THE PLACE OF INCORPORATION, so a
- * bare country beside a name would read as origin; the hover says which.
- * `dossier.country` is model-written and mixed (EDGAR codes and written-out
- * names), so it goes through `countryName`, which never guesses: a value it
- * cannot decode is an absent country, not a wrong one.
+ * NO SEC CLAIM ON THE COUNTRY. `dossier.country` is a model-written string
+ * (EDGAR codes copied from the bundle, and written-out names such as "Cayman
+ * Islands"), checked against nothing, and the Sheet's fallback is not SEC at
+ * all. So a dossier country carries "as recorded in the desk's research" and a
+ * Sheet country carries no hover (Commercial 8a, 102596d0). The SEC sentence
+ * returns only when the registry's code reaches the payload and the row reads
+ * `edgarCountry` of it. `countryName` never guesses: a value it cannot decode
+ * is an absent country, not a wrong one.
  *
- * Words: Marketing's (drawer-rows-words-2026-10-05.md), in one place.
+ * Words: Marketing's (drawer-rows-words-2026-10-05.md); the country hover is
+ * Commercial's (8a).
  */
 
 import { withoutCitations } from '@/lib/research/citations';
@@ -22,7 +26,8 @@ export const COMPANY_WORDS = {
   /** No dossier at all. */
   notResearched: 'The desk has not researched this name.',
   countryAbsent: "Country: not in the desk's research",
-  countryHover: "Country is where the company's business address is, from its SEC filings.",
+  /** Only on a country from the dossier; a Sheet country has no hover. */
+  countryHover: "Country as recorded in the desk's research.",
 } as const;
 
 export type CompanyState = 'PRODUCED' | 'UNKNOWN' | 'NOT_YET';
@@ -35,6 +40,8 @@ export interface CompanyLine {
   country: string | null;
   /** The detail row for an absent country, only when there is a name. */
   countryNote: string | null;
+  /** True only when the shown country came from the dossier, not the Sheet: the hover's condition. */
+  countryFromDossier: boolean;
   /** The whole line as one string (the board's hover). Null unless PRODUCED. */
   hint: string | null;
 }
@@ -58,16 +65,18 @@ export function companyLine(input: {
   const name = clean(input.dossier?.companyName) ?? clean(input.sheetName);
   if (name === null) {
     return input.dossier === null
-      ? { state: 'NOT_YET', text: COMPANY_WORDS.notResearched, country: null, countryNote: null, hint: null }
-      : { state: 'UNKNOWN', text: COMPANY_WORDS.noName, country: null, countryNote: null, hint: null };
+      ? { state: 'NOT_YET', text: COMPANY_WORDS.notResearched, country: null, countryNote: null, countryFromDossier: false, hint: null }
+      : { state: 'UNKNOWN', text: COMPANY_WORDS.noName, country: null, countryNote: null, countryFromDossier: false, hint: null };
   }
-  const country = countryName(input.dossier?.country) ?? clean(input.sheetCountry);
+  const fromDossier = countryName(input.dossier?.country);
+  const country = fromDossier ?? clean(input.sheetCountry);
   const text = stop(name);
   return {
     state: 'PRODUCED',
     text,
     country: country ? stop(country) : null,
     countryNote: country ? null : COMPANY_WORDS.countryAbsent,
+    countryFromDossier: fromDossier !== null,
     hint: country ? `${text} ${stop(country)}` : text,
   };
 }
