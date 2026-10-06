@@ -563,18 +563,16 @@ function Demand({ row }: { row: DeskRow | null }) {
 
       <SessionsGroup demand={demand} />
 
+      {/*
+       * The close sentence (a fixed "16:00 ET", "regular-session close" for any source, the raw source
+       * constant) is gone: the Sessions group above carries the close, worded by source. The raw engine
+       * strings (baseline adjustment, volume source) went with it, having no reader's words (Integration 29th).
+       */}
       <p className="mt-3 text-[10px] leading-relaxed text-ink-3">
-        Baseline: {demand.baselineSessions ?? 0} eligible full sessions,{' '}
-        {demand.baselineAdjustment ?? 'unknown'}-adjusted, average{' '}
+        Baseline: {demand.baselineSessions ?? 0} eligible full sessions, average{' '}
         {formatCount(demand.baselineAverageVolume)} shares, calculated{' '}
-        {demand.baselineCalculatedAt ? new Date(demand.baselineCalculatedAt).toISOString() : '—'}.
-        Percent change measured against the{' '}
-        {demand.referenceRthCloseBasis === 'CURRENT_SESSION' ? 'current' : 'prior'} session&apos;s
-        16:00 ET regular-session close
-        {demand.referenceRthCloseDate ? ` (${demand.referenceRthCloseDate})` : ''}, source{' '}
-        {demand.referenceRthCloseSource ?? 'unknown'}. Prior session close{' '}
-        {formatPrice(demand.previousClose)}. Volume from{' '}
-        {demand.volumeSource ?? 'unknown source'}. Level 1 spread only. This is not depth.
+        {demand.baselineCalculatedAt ? new Date(demand.baselineCalculatedAt).toISOString() : '—'}. Prior session close{' '}
+        {formatPrice(demand.previousClose)}. Level 1 spread only. This is not depth.
       </p>
     </Section>
   );
