@@ -11,7 +11,7 @@
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { isMaterialConflict } from '@/lib/dashboard/intelligence';
-import { catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
+import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView } from '@/lib/dashboard/catalystView';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
@@ -25,16 +25,14 @@ import {
   type AutoIntelligence,
 } from '@/lib/research/view';
 
-/** Marketing's label for the catalyst's own source list (words requested 2026-10-05; not yet confirmed). */
-const CATALYST_SOURCES_LABEL = 'Sources for this catalyst';
-
 /** The catalyst's event time, as the evidence supports it (reads the clock here, not in render). */
 function eventTimeText(
   at: string | null | undefined,
   citedIds: readonly number[] | null | undefined,
   evidence: AutoIntelligence['evidence'],
-): string {
-  return eventTimeView(at, citedIds, evidence, Date.now()).text;
+): { text: string; hover: string | null } {
+  const view = eventTimeView(at, citedIds, evidence, Date.now());
+  return { text: view.text, hover: view.hover };
 }
 
 /** An instant a trader can act on: ET wall clock, with its age beside it. */
@@ -280,7 +278,7 @@ export function AutomaticIntelligence({
   comparison: SheetAutoComparison | null;
   structure: StructureSummary | null;
   Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
-  Field: (props: { label: string; value: string; numeric?: boolean }) => React.ReactElement;
+  Field: (props: { label: string; value: string; numeric?: boolean; title?: string }) => React.ReactElement;
   FieldLabel: (props: { children: React.ReactNode }) => React.ReactElement;
   ProseField: (props: {
     label: string;
@@ -412,13 +410,13 @@ export function AutomaticIntelligence({
         {/* ET wall clock with its age beside it. A raw UTC ISO string made the
             trader do timezone arithmetic to answer the only question that
             matters about a catalyst: how old is it. */}
-        <Field label="Event time" value={eventTime} />
+        <Field label="Event time" value={eventTime.text} title={eventTime.hover ?? undefined} />
         {/* The sources this catalyst's own conclusion rests on, not the ticker's whole list below. */}
         {catalystSourceList.length > 0 ? (
           <div className="mt-3">
             <FieldLabel>{CATALYST_SOURCES_LABEL}</FieldLabel>
             <ul className="mt-1 space-y-1">
-              {catalystSourceList.map(({ link, day, dateOnly }) => (
+              {catalystSourceList.map(({ link, day }) => (
                 <li key={link.id} className="text-[11px]">
                   <a
                     href={link.url}
@@ -426,13 +424,9 @@ export function AutomaticIntelligence({
                     rel="noopener noreferrer"
                     className="text-ink-1 underline decoration-dotted underline-offset-2"
                   >
-                    [{link.id}] {link.secForm ?? humanise(link.sourceType)}
-                    {link.title ? ` · ${link.title}` : ''}
+                    {day ? `${day}, ` : ''}
+                    {link.title ?? link.secForm ?? humanise(link.sourceType)}
                   </a>
-                  <span className="ml-1 text-ink-3">
-                    {day ? day : 'date not stated'}
-                    {dateOnly ? ' (date only)' : ''}
-                  </span>
                 </li>
               ))}
             </ul>

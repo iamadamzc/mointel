@@ -13,12 +13,10 @@
  * UNKNOWN precision, it prints the date only. A time the evidence cannot support
  * is never shown as a time.
  *
- * Words: the qualifiers are Marketing's. "(date only)" is the phrase the sources
- * list already uses; the rest are in one place below.
+ * Words: Marketing's (drawer-rows-words-2026-10-05.md), in one place below.
  */
 
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
-import { formatEtDay } from '@/lib/format';
 import type { EvidenceLink } from '@/lib/research/view';
 
 export type EventTimeKind = 'EXACT' | 'DATE_ONLY' | 'INFERRED' | 'NONE';
@@ -26,13 +24,26 @@ export type EventTimeKind = 'EXACT' | 'DATE_ONLY' | 'INFERRED' | 'NONE';
 export interface EventTimeView {
   kind: EventTimeKind;
   text: string;
+  /** A hover that says what the qualifier means; only for an inferred time. */
+  hover: string | null;
 }
 
 export const EVENT_TIME_WORDS = {
-  none: 'unknown',
-  dateOnly: '(date only)',
-  inferred: '(time inferred)',
+  none: 'No event time',
+  dateOnly: 'time not stated',
+  inferred: 'time inferred',
+  inferredHover:
+    'The source does not state a time. This time was taken from something next to the event, such as the time the filing was accepted.',
 } as const;
+
+const MONTH_DAY = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' });
+
+/** "Aug 17": the ET calendar day of an instant, or null when it cannot be read. */
+export function monthDay(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const at = new Date(iso);
+  return Number.isNaN(at.getTime()) ? null : MONTH_DAY.format(at);
+}
 
 function sameInstant(a: string, b: string): boolean {
   const x = Date.parse(a);
@@ -47,7 +58,7 @@ export function eventTimeView(
   nowMs: number,
 ): EventTimeView {
   if (!eventTimestamp || !Number.isFinite(Date.parse(eventTimestamp))) {
-    return { kind: 'NONE', text: EVENT_TIME_WORDS.none };
+    return { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
   }
   const wanted = new Set(citedIds ?? []);
   const match = evidence.find(
@@ -57,26 +68,31 @@ export function eventTimeView(
 
   if (precision === 'EXACT') {
     const stamp = etTimestamp(eventTimestamp);
-    if (!stamp) return { kind: 'NONE', text: EVENT_TIME_WORDS.none };
+    if (!stamp) return { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
     const age = relativeAge(eventTimestamp, nowMs);
-    return { kind: 'EXACT', text: age ? `${stamp} · ${age} ago` : stamp };
+    return { kind: 'EXACT', text: age ? `${stamp} · ${age} ago` : stamp, hover: null };
   }
   if (precision === 'INFERRED') {
     const stamp = etTimestamp(eventTimestamp);
-    if (stamp) return { kind: 'INFERRED', text: `${stamp} ${EVENT_TIME_WORDS.inferred}` };
+    if (stamp) {
+      return { kind: 'INFERRED', text: `${stamp}, ${EVENT_TIME_WORDS.inferred}`, hover: EVENT_TIME_WORDS.inferredHover };
+    }
   }
-  const day = formatEtDay(eventTimestamp);
+  const day = monthDay(eventTimestamp);
   return day
-    ? { kind: 'DATE_ONLY', text: `${day} ${EVENT_TIME_WORDS.dateOnly}` }
-    : { kind: 'NONE', text: EVENT_TIME_WORDS.none };
+    ? { kind: 'DATE_ONLY', text: `${day}, ${EVENT_TIME_WORDS.dateOnly}`, hover: null }
+    : { kind: 'NONE', text: EVENT_TIME_WORDS.none, hover: null };
 }
 
 export interface CatalystSource {
   link: EvidenceLink;
-  /** ET calendar day of the source, or null. */
+  /** "Aug 17", the ET calendar day of the source, or null. */
   day: string | null;
   dateOnly: boolean;
 }
+
+/** The label over the catalyst's own source list (Marketing). */
+export const CATALYST_SOURCES_LABEL = 'Sources the desk read';
 
 /** The sources the catalyst's own conclusion cites, in the order the dossier cites them. */
 export function catalystSources(
@@ -91,7 +107,7 @@ export function catalystSources(
     seen.add(id);
     const link = byId.get(id);
     if (!link) continue;
-    out.push({ link, day: formatEtDay(link.publishedAt), dateOnly: link.publishedPrecision === 'DATE_ONLY' });
+    out.push({ link, day: monthDay(link.publishedAt), dateOnly: link.publishedPrecision === 'DATE_ONLY' });
   }
   return out;
 }
