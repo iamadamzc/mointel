@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "id": "M0",
+      "predicted": 0,
+      "failed": 0,
+      "failedSuites": 0,
+      "total": 17
+    },
+    {
+      "id": "S4a",
+      "file": "lib/desk/reports/narrative.ts",
+      "what": "an intraday report carries empty footnotes",
+      "predicted": 2,
+      "which": "F, P",
+      "failed": 2,
+      "failedSuites": 4,
+      "total": 17
+    },
+    {
+      "id": "S4b",
+      "file": "lib/desk/reports/narrative.ts",
+      "what": "one null count hides the other",
+      "predicted": 1,
+      "which": "F",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 17
+    },
+    {
+      "id": "S4c",
+      "file": "lib/desk/reports/narrative.ts",
+      "what": "a null count read as zero",
+      "predicted": 1,
+      "which": "F",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 17
+    },
+    {
+      "id": "S4d",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "the report never carries the footnotes",
+      "predicted": 2,
+      "which": "P, R",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 17
+    },
+    {
+      "id": "S4e",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "the recap carries null footnotes",
+      "predicted": 1,
+      "which": "R",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 17
+    }
+  ]
+}
