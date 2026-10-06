@@ -6,8 +6,8 @@
  * float is the SEC upper bound", "always show it, it's key"; the filed count's
  * date goes ON the face under his 90-day ruling). The state is computed by
  * Research (`lib/research/insiderBound.ts` `floatCell`) and stored; this module
- * applies NO rule of its own. It turns the stored state into Marketing's v15
- * words (`docs/marketing/float-page-draft.md`, Commercial-passed): four faces,
+ * applies NO rule of its own. It turns the stored state into Marketing's words
+ * (`docs/marketing/float-page-draft.md`, v20 at 6fed4658; v19 Commercial-passed at 3763ef0c): four faces,
  * one string per stored cause, and the page link.
  *
  * Words are claims. Nothing here may say the column is populated, that a number
@@ -183,7 +183,7 @@ export function floatCellView(bound: FloatBound | null | undefined, surface: Flo
       ariaLabel: `no more than ${amount} shares as of ${countDate}, computed from SEC filings, when the filings line up`,
       paragraphs: [
         `No more than ${amount} shares as of ${countDate}, when the filings line up. Computed from the company's filed share count, less insider holdings filed on ${holdings.length > 0 ? holdings.join(', ') : 'the dates in the filings'}.${fetched ? ` Filings read on ${fetched}.` : ''}`,
-        `Lined up means: a filed count dated ${countDate}, at most 90 days before ${measuredFrom(surface)}, no share issuance the desk has flagged, no share split since the count, and holdings dated at or before the count. Insider sales after the count date are not reflected.`,
+        `Lined up means: a filed count dated ${countDate}, at most 90 days before ${measuredFrom(surface)}, no share issuance the desk has flagged, no final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date, no share split since the count, and holdings dated at or before the count. Insider sales after the count date are not reflected.`,
       ],
     };
   }

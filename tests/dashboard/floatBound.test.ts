@@ -84,6 +84,12 @@ describe('the bound face', () => {
     expect(text).toContain('a filed count dated Sep 22, 2026, at most 90 days before the checkpoint');
   });
 
+  it("names the filings check in the lined-up clause, in Marketing's v20 words (Commercial passed v19)", () => {
+    expect(floatCellView(produced()).paragraphs[1]).toBe(
+      'Lined up means: a filed count dated Sep 22, 2026, at most 90 days before the checkpoint, no share issuance the desk has flagged, no final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date, no share split since the count, and holdings dated at or before the count. Insider sales after the count date are not reflected.',
+    );
+  });
+
   it('never prints a bare number: a produced state with no usable date or number reads Cannot verify', () => {
     for (const bad of [produced({ countAsOf: null }), produced({ bound: null }), produced({ bound: 0 })]) {
       const v = floatCellView(bad);
