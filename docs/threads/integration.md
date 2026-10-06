@@ -1589,6 +1589,17 @@ INV Commercial   Blocks a ship: terms of sale (docs/legal/terms-of-sale-daily-pa
                  and measured; float CAN ship in FORM A before S1. When it exists: rubric page, entry-gate deviation from
                  12b, each new session-report sample, any outcome page. Commercial corrected its own piped-Python em-dash
                  counts; re-checked by byte grep: all passed files 0.
+ORPHAN SWEEP     His ask "anything approved no yet planned/built?". Swept the older APPROVED-NOT-BUILT registers (lines ~1246-3422)
+                 against the current live state + git grep:
+                 - DESK PERFORMANCE RECORD (his 2026-10-04T23:49:48Z "keep that for analysis on how we did"; desk_call_outcomes):
+                   NO code on main or production; in no current plan. -> Research asked to place it in its order.
+                 - HISTORY STORE: lib/research/historyStoreJob.ts + HISTORY_STORE_ENABLED in production 6e7fff84 AND the cut,
+                   ABSENT from main. Owed-to-main audit (24th) never closed. -> Ops asked (after the ship).
+                 - Session reports v6 steps 3-6 (Research): no commit seen since 759465bc; asked.
+                 - Unconfirmed: claimQueuedJobs long-lock throw, price-range cache fix (Ops); both-surfaces tag words
+                   (Marketing). Asked.
+                 - Done: gzip (present on main and production). His own: Benzinga reply (his to send, 2026-09-29 draft), SI
+                   label HOLD.
                  Marketing waits for ME to tell it Research has answered 5k item 4, then sends the one float batch. TRIGGER
                  IS MINE: on Research's answer, tell Marketing in the same turn.
 LEDGER           1. Recorded Marketing 415abee3 as cleared because it was the owner's own commit; the owner had not named
