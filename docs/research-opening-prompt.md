@@ -32,6 +32,7 @@ Everything for the float job is written on branch **`research/float-job`, tip `f
 3. Report tags (item 8): **a question is open with Integration**; the report code carries no Sheet priority, so the item would ADD the Setup grade to reports; do not build until answered.
 4. v6 narrative steps 3 to 6 on `research/reports-v6` (`A:/mointel-v6`, head `759465bc`): step 3 is next; step 6 needs a spend yes; no sample to him before step 4 prints the no-close and split-excluded footnotes (Integration's conditions, in the 2026-10-05T00:36Z hand-off block).
 5. The desk's performance record (`desk_call_outcomes`, approved 2026-10-04, not built, no file carries it): a pre-registered design note first, after v6 step 3 (PENDING BUILDS row 12).
+6. Warning Shot and Confirmation (his "yes, build both", 2026-10-06T00:22:29.450Z, verified): PENDING BUILDS rows 13 and 14, with their constraints; both live before Sheet plan step 4.
 
 ### How this seat failed, as mechanisms (all in its ERROR LEDGER)
 
