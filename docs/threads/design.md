@@ -67,6 +67,25 @@ for design documents.
 | 5b | Company-name casing | Not built; spec in the 09 archive (row 5b) | After v6 |
 | 5 | Follow-ups, not built | | Poll: a visible "not updating" state; the same abort pattern in `useDashboard`; the sorted `Now` header renders on three lines |
 
+### PENDING BUILDS FOR INTEGRATION (his direction 2026-10-05: everything planned is built, everything built is shipped)
+
+Everything of Design's that is approved and not built, each with what it waits on and whether it can start now. S3 plus B is built and replayed (tip `52cced3e`, in Integration's cut with Web's priority removal).
+
+| # | Build | Waits on | Can start now |
+| --- | --- | --- | --- |
+| P1 | **Float column always on, four faces, popover, the filed count's date on the face, tooltip link to the public page** (Marketing v15 words, Commercial-passed; fit measured: 79.8 of 86 px) | Research's float job and its payload field (shape is Research's; none exists); Web's public page route (link and page ship in ONE release); three popover clauses still waiting on Research per v15 (the filings-read date, insider sales after the count, the checkpoint date) | YES, against fixtures and the `floatCell` states already on main (`lib/research/insiderBound.ts`), hidden while the map is absent, the same not-wired rule as the grade |
+| P2 | **Visible "not updating" state on the board** (beta path T3) | Marketing's sentence for it | The detection and layout, yes; the words wait |
+| P3 | **Grade sort chip** (S3 spec item 3: a sort chip, never the default; `setupGradeRank` exists, the chip does not) | Nothing | YES. A new commit, so it rides a later cut than `52cced3e` |
+| P4 | **Setup grade on the frozen snapshot board** | The stored grade riding `/api/assessments` (Ops and Research) | No |
+| P5 | **Revised grade tag** (contract row 3: the 09:25 grade differs from the evening grade) | Ops storing the 09:25 grade and exposing both; a ruling that the tag exists; Marketing's words | No |
+| P6 | **Report window v6 samples** (render at 1,280 and 1,024, scan visible text and hover text, send Integration the paths) | The next Research seat's v2 narrative and step 4 footnotes | No |
+| P7 | **One both-surfaces wording change** (explains-the-move, three states) and **company-name casing** (spec in the 09 archive, row 5b) | v6 live; Marketing's words for the first | No |
+| P8 | **Moving label** `558d07a5` | The movers group on main, and a design for main's SQL-bounded range path (production's `rankInRange` returns an `all` field main's does not) | No |
+| P9 | **Row 5 follow-ups** (the sorted `Now` header renders on three lines; the same abort pattern in `useDashboard`) | Integration's approval: they were recorded as follow-ups, not approved work | YES once approved |
+| P10 | **Audit of the contract's FINAL mapping rows** (4, 5, 8, 9, 11 to 19, 21, 23, 24: which already show in the app) | Nothing | YES, a read, then builds for any gap |
+
+Not builds, owed as reads: a stored level in the ladder (any session after 10:00 ET), a no-grade row's aria-label, and the ship-night look at the inline briefing between 22:00 and 04:00 ET, all through a review link, never 07:00 to 10:00. NOT approved and so not listed above: the FINRA short-interest attribution (row FI).
+
 **Rules this seat learned, for the next one:**
 - **Read your opening prompt from `origin/main`, not the shared tree.** The shared `A:\mointel` lagged origin by a whole hand-off and held the previous seat's prompt.
 - **Find every seat by TITLE at each send.** In three days Ops, Integration (twice), Research (three times), Web and Marketing all changed ids; a message to an archived seat fails.
