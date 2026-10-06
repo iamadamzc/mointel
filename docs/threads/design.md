@@ -85,6 +85,19 @@ Everything of Design's that is approved and not built, each with what it waits o
 | P10 | **Audit of the contract's FINAL mapping rows** | **DONE.** Shown: 8, 9, 11, 16, 19, 23. Gaps, approved by Integration in this order: FIRST rows 4, 12, 14, 17, 21 (the Sheet feeds them today and they vanish at Sheet step 4), THEN 13, 15, 18, 5, 24. Row 21 STOPPED (the morning dossier version is not in any browser payload; a Research and Ops design); row 17 needs the `/levels` route to carry the checkpoint support; row 12's event time must stop printing a false clock for a date-only source; row 14's computed cycle is in the payload but the label "Former runner" changes meaning and is Integration's to rule. Words requested from Marketing | Build rows 4, 12, 14 once words arrive; rows 13, 15, 18, 5, 24 after |
 | DF | **DEFECT IN PRODUCTION, fixed locally:** the cycle badge hover printed the advance as a fraction without scaling, so a +53% run read "up 0.5%" (since 2026-08-24, commit 34c720f5; production 6e7fff84 carries it) | FIX `fae81306` (`lib/dashboard/cycle.ts` one line, regression test `tests/dashboard/cycleDetailUnits.test.ts` on the real resolver; fails on the old line). The phase and every rank or grade are unaffected (they use the retracement, and `advancePct` is read elsewhere only as a fraction). Told to Integration for him | Integration decides the cut that carries it; the whole chain is pinned at tag `design/next-cut-wip-fae81306` |
 
+**STRINGS DESIGN WROTE THAT NO ONE HAS WORDED** (counted from the code at tag `design/next-cut-gated-5831445d`; 17 strings, plus six group headings that are the Sheet's own names awaiting confirmation; each is a named constant or a literal in the file shown; Marketing words them, Commercial reads any that make a claim; none should reach a reader until worded):
+
+| Where | Strings |
+| --- | --- |
+| `components/DiscoveryBoard.tsx` (Grade sort chip) | the chip label `Grade`; its hover; the count word `no grade` (3) |
+| `components/FilterBar.tsx` | the filter group label `Setup grade` (1) |
+| `components/SessionReports.tsx` (InlineBriefing) | `Collapse`; `Show the briefing here` (2) |
+| `components/AutomaticIntelligence.tsx`, `lib/dashboard/cycleFacts.ts` | the section title `Cycle, from daily bars`; the no-current-run sentence; the labels `Phase` and `How it is measured` (4) |
+| `lib/dashboard/supplyGroups.ts` | the empty-group sentence (1); the six group headings (the Sheet's names) need confirming |
+| `lib/dashboard/produced.ts` | the `Produced` label and its hover (2) |
+| `components/SetupGradeBadge.tsx` | the drawer section title `Setup grade` (1) |
+| `components/MarketSummary.tsx` | the chip label `ranked`, its hover, and `Click to filter the board.` (3) |
+
 Not builds, owed as reads: a stored level in the ladder (any session after 10:00 ET), a no-grade row's aria-label, and the ship-night look at the inline briefing between 22:00 and 04:00 ET, all through a review link, never 07:00 to 10:00. NOT approved and so not listed above: the FINRA short-interest attribution (row FI).
 
 **Rules this seat learned, for the next one:**
