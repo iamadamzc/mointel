@@ -25,7 +25,7 @@
  * happened before it started, so they read Unknown).
  *
  * Words: Marketing (`docs/marketing/drawer-row-5-words-2026-10-06.md` at
- * 9f4f2196, after Commercial 9, 9b and 9d). No clock in any string: the real
+ * 9f4f2196 and 36ffacd2, after Commercial 9, 9b, 9d and 9g). No clock in any string: the real
  * close can be early. A5 (coverage NONE after the bell) has no string: unreachable.
  */
 
@@ -56,9 +56,16 @@ export const SESSIONS_WORDS = {
   afterHoursNotYet: "Today's after hours begins after the regular-session close",
   /** A2: the close line sits ABOVE the after-hours line, which this string relies on. */
   percentHover: (date: string) => `Measured from the close shown above, for ${date}.`,
-  /** A3: only the baseline is missing, so not "Unknown". */
+  /**
+   * A3, split by what the close line shows (Commercial 9f, 9h): beside the provisional trade, "No final
+   * close" (the change is measured only from the daily bar's close); with no close shown, "No close".
+   * Only the baseline is missing, so neither is "Unknown".
+   */
+  percentNoFinalClose: 'No final close',
+  percentNoFinalCloseHover: (date: string) =>
+    `The change is measured from the daily bar's close for ${date}, which the desk does not have.`,
   percentNoClose: 'No close',
-  percentNoCloseHover: 'The desk has no regular-session close to measure the change from.',
+  percentNoCloseHover: 'The desk has no close to measure the change from.',
   volumeHover: 'Counts only trades after the bell.',
   /** A4. */
   volumePartial: (date: string) => `The desk did not see every trade after the bell on ${date}, so a volume would leave out some.`,
@@ -145,6 +152,8 @@ export function afterHoursLine(demand: DemandState): AfterHoursLine {
   // Here coverage is PARTIAL: the desk cannot say whether a trade came before it started.
   const notSeen = unknown(SESSIONS_WORDS.partialNoTradeSeen(today));
   const closeDate = demand.referenceRthCloseBasis === 'CURRENT_SESSION' ? day(demand.referenceRthCloseDate) : null;
+  // The same test closeLine uses to show the provisional trade, so the two lines cannot disagree.
+  const provisionalShown = closeLine(demand).hover === SESSIONS_WORDS.closeProvisional(today);
 
   // A trade was seen but no price is held: there is no cause to state, so none is claimed.
   const price: SessionsLine = !tradedSinceBell
@@ -155,8 +164,10 @@ export function afterHoursLine(demand: DemandState): AfterHoursLine {
   const percent: SessionsLine = !tradedSinceBell
     ? notSeen
     : closeDate === null
-      ? // Only the baseline is missing, so the cell says that rather than "Unknown".
-        { state: 'UNKNOWN', text: SESSIONS_WORDS.percentNoClose, hover: SESSIONS_WORDS.percentNoCloseHover }
+      ? // Only the baseline is missing; the face follows what the close line beside it shows.
+        provisionalShown
+        ? { state: 'UNKNOWN', text: SESSIONS_WORDS.percentNoFinalClose, hover: SESSIONS_WORDS.percentNoFinalCloseHover(today) }
+        : { state: 'UNKNOWN', text: SESSIONS_WORDS.percentNoClose, hover: SESSIONS_WORDS.percentNoCloseHover }
       : ah.percentChange !== null
         ? { state: 'PRODUCED', text: `${formatSignedPercent(ah.percentChange)} from the close`, hover: SESSIONS_WORDS.percentHover(closeDate) }
         : unknown(null);
