@@ -28,7 +28,7 @@ const ENUM_PHRASE: Record<string, string> = {
   DISAGREE: 'disagree',
 
   /* Catalyst. */
-  NONE_FOUND: 'no catalyst found',
+  NONE_FOUND: 'no catalyst found in our sources',
   FRESH_FOUND: 'fresh catalyst found',
   SECONDARY_STALE: 'secondary and stale',
   LEGITIMATE_POSITIVE: 'legitimate positive',
