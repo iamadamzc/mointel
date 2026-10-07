@@ -43,6 +43,7 @@ import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
 import { NoopInterpreter } from '../lib/research/interpret/interpreter';
 import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
+import { runFloatJob } from '../lib/research/floatRun';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
 import { queueDiscoveryResearch, retireStrandedJobs, timeToIntelligence } from '../lib/research/queue';
 import { queueResolverRecovery } from '../lib/research/recovery';
@@ -85,6 +86,12 @@ const POLL_MS = Number(process.env.RESEARCH_POLL_MS ?? 5000);
 /** News re-check cadence. One data request per poll, no model. */
 const NEWS_RECHECK_MS = Number(process.env.RESEARCH_NEWS_RECHECK_SECONDS ?? 180) * 1000;
 const MAX_CYCLES = Number(process.env.RESEARCH_MAX_CYCLES ?? 0); // 0 = run forever
+/*
+ * The insider-only float bound (lib/research/floatRun.ts) runs after each job ONLY when this is "on". Off by default:
+ * it adds SEC fetches inside the job loop and its memory on the box is not yet measured; turning it on is Ops's call,
+ * after the RSS number, on his yes.
+ */
+const FLOAT_JOB = process.env.RESEARCH_FLOAT_JOB === 'on';
 
 function log(message: string): void {
   console.log(message);
@@ -203,6 +210,10 @@ async function main(): Promise<void> {
   const newsAdapters: NewsAdapter[] = newsCredentials
     ? [new AlpacaNewsAdapter(new AlpacaRestClient(newsCredentials))]
     : [];
+  // Rule R-A needs Alpaca's announced splits; without credentials the float job cannot vouch for a split and is skipped.
+  const floatSplits = FLOAT_JOB ? findAlpacaCredentials().credentials : null;
+  const floatSplitClient = floatSplits ? new AlpacaRestClient(floatSplits) : null;
+  if (FLOAT_JOB) log(`[research] float job: ${floatSplitClient ? 'on' : 'SKIPPED (no Alpaca credentials for announced splits)'}`);
   log(
     `[research] news: ${
       newsAdapters.length > 0
@@ -759,6 +770,9 @@ async function main(): Promise<void> {
             evidenceFingerprint: report.evidenceFingerprint,
             error: report.error,
           });
+
+          // After the job is complete, so the board never waits on it; runFloatJob never throws.
+          if (floatSplitClient) await runFloatJob(db, secClient, floatSplitClient, job.ticker, tradingDate, log);
 
           if (report.dossier) {
             // It works now, so whatever it failed on before is history.

@@ -13,8 +13,13 @@ const bound = (over: Partial<FloatBound> = {}): FloatBound => ({
   reason: null,
   bound: 8_100_000,
   countAsOf: '2026-09-22',
-  holdingDates: ['2026-09-18'],
-  fetchedOn: '2026-10-05',
+  countFiled: '2026-09-25',
+  subtractedHolders: 1,
+  filingsReadOn: '2026-10-05',
+  holdingsFiledOn: ['2026-09-18'],
+  countShares: 9_000_000,
+  countForm: '10-Q',
+  insiders: [],
   ...over,
 });
 
@@ -27,7 +32,10 @@ describe('FloatCell, server-rendered', () => {
     expect(html).toContain('>9/22<');
     expect(html).toContain('<button');
     expect(html).toContain('whitespace-nowrap');
-    expect(html).toContain('aria-label="no more than 8.10M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up"');
+    // v25: the claim's date is the board's ({D-label}; "the checkpoint" with no board date), the count's date an input.
+    expect(html).toContain(
+      'aria-label="no more than 8.10M shares as of the checkpoint, computed from the share count dated Sep 22, 2026 and insider holdings filed through Oct 5, 2026, when the filings line up; details on click"',
+    );
   });
 
   it('prints the words for the other states, and "Not computed" for no state at all', () => {
@@ -88,5 +96,10 @@ describe('the board shows the column always once wired, and the legend once', ()
     expect(board).toContain('row.floatBoundWired ? (');
     expect(board).toContain('<FloatCell bound={row.floatBound} dateShown={dateShown} />');
     expect(board).toContain('floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null');
+  });
+
+  it("wired, the header's hover is v25's line, never the vendor float's 'available to trade' title", () => {
+    expect(board).toContain('title={floatWired ? FLOAT_LEGEND : COLUMN_TITLE.float}');
+    expect(board).not.toContain('title={COLUMN_TITLE.float}');
   });
 });

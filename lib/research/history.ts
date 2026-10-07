@@ -13,6 +13,7 @@
 
 import { sessionEndUtc } from '../market/session';
 import type { MarketDatabase } from '../market/store/db';
+import type { SpanBar } from './splitProof';
 
 /** How much daily history is retained and summarised. Configurable. */
 export const DEFAULT_CYCLE_HISTORY_TRADING_DAYS = 90;
@@ -225,6 +226,27 @@ export function readSplitFactors(
           .all(symbol)
   ) as Array<{ tradingDate: string; splitFactor: number }>;
   return new Map(rows.map((row) => [row.tradingDate, row.splitFactor]));
+}
+
+/**
+ * The bars a float split proof reads (`splitProofR0`, `splitProofFromBars`): oldest first, from the last bar on or
+ * before `from` through `to`, nulls kept (a null factor is evidence the proof must see, never a row to skip). Empty
+ * when the symbol has no bar on or before `from`: the bars do not reach the span, and both proofs read UNPROVEN.
+ * The same query the validation and the R1 re-run used (`docs/research/float-contract/state-table-r1.ts`).
+ */
+export function readSpanBars(db: MarketDatabase, symbol: string, from: string, to: string): SpanBar[] {
+  const start = (
+    db.prepare('SELECT MAX(trading_date) AS d FROM daily_bars WHERE symbol = ? AND trading_date <= ?').get(symbol, from) as { d: string | null }
+  ).d;
+  if (!start) return [];
+  return db
+    .prepare(
+      `SELECT trading_date AS date, close, split_factor AS factor
+         FROM daily_bars
+        WHERE symbol = ? AND trading_date BETWEEN ? AND ?
+        ORDER BY trading_date`,
+    )
+    .all(symbol, start, to) as SpanBar[];
 }
 
 /**

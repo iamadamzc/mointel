@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   floatCell,
   holdingsAsOf,
+  holdingsAtBoth,
   issuanceFlagged,
   parseSection16,
   type FloatCellInput,
@@ -114,6 +115,19 @@ describe('holdingsAsOf: the holding must stand at or before the count date', () 
     );
     expect(rows[0]!.shares).toBe(140);
     expect(rows[0]!.accessions).toEqual(['0001', '0002']);
+  });
+
+  it('carries the FILED date of each chosen row, never its as-of date, and only the filings of the chosen rows', () => {
+    const rows = holdingsAsOf(
+      [
+        filing('0001', '2026-05-02', form({ body: tx('Common Stock', '2026-05-01', 600_000) })),
+        filing('0003', '2026-08-25', form({ body: tx('Common Stock', '2026-08-05', 650_000) })),
+      ],
+      COUNT_DATE,
+      WINDOW,
+    );
+    expect(rows[0]!.asOf).toBe('2026-08-05');
+    expect(rows[0]!.filingDates).toEqual(['2026-08-25']);
   });
 
   it('drops rows older than the filing window', () => {
@@ -239,8 +253,142 @@ describe('floatCell', () => {
     expect(unproven).toMatchObject({ state: 'PRODUCED', bound: 22_036_402, refused: [{ ownerCik: '9', why: 'SPLIT_UNPROVEN' }] });
   });
 
+  it('refuses a count from a foreign annual report (UNREGISTERED_SALE_NOT_CHECKABLE); admits a 10-Q, a 10-K or no form', () => {
+    const at = (form?: string) => floatCell(input({ count: { shares: 22_036_402, asOf: '2026-08-10', form } }));
+    for (const form of ['20-F', '20-F/A', '40-F', '40-F/A']) {
+      expect(at(form), form).toEqual({ state: 'CANNOT_VERIFY', reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    }
+    for (const form of ['10-Q', '10-K', undefined]) expect(at(form).state, String(form)).toBe('PRODUCED');
+  });
+
+  it('places the foreign-count refusal after a filed issuance and before no dossier, a flagged ledger and age', () => {
+    const foreign = { count: { shares: 22_036_402, asOf: '2026-08-10', form: '20-F' } };
+    expect(floatCell(input({ ...foreign, issuanceFiled: true }))).toMatchObject({ reason: 'ISSUANCE_FILED' });
+    expect(floatCell(input({ ...foreign, ledger: null }))).toMatchObject({ reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    expect(floatCell(input({ ...foreign, ledger: [block('ATM', 'KNOWN_ACTIVE')] }))).toMatchObject({ reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    expect(floatCell(input({ ...foreign, checkpointDate: '2027-01-01' }))).toMatchObject({ reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+  });
+
   it('fails its own range check: insiders at or above the count, or a count dated after the checkpoint', () => {
     expect(floatCell(input({ holdings: [holding('9', 22_036_402)] }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
     expect(floatCell(input({ count: { shares: 1000, asOf: '2026-12-01' } }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
+  });
+});
+
+/**
+ * Rule S1 (contract section 9a): per owner and class, subtract min(h0, hD). The defect it exists for: an insider who
+ * SOLD after the count was subtracted at the larger count-date holding, and the bound went too LOW.
+ */
+describe('holdingsAtBoth (rule S1)', () => {
+  const COUNT = '2026-08-01';
+  const D = '2026-09-28';
+  const WINDOW = '2024-09-28';
+  const row = (asOf: string, shares: number, title = 'common stock') => ({ asOf, title, shares });
+  const f = (accession: string, ownerCik: string, rows: Array<{ asOf: string; title: string; shares: number }>): OwnerFiling => ({
+    accession,
+    filingDate: rows[0]!.asOf,
+    parse: { ok: true, ownerCik, ownerName: null, rows },
+  });
+  const subtracted = (filings: OwnerFiling[]) => Object.fromEntries(holdingsAtBoth(filings, COUNT, D, WINDOW).map((h) => [h.ownerCik, h.shares]));
+
+  it('subtracts what is LEFT after a sale since the count', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])])).toEqual({ '1': 400 });
+  });
+
+  it("dates and files the holding ACTUALLY subtracted: hD after a sale, h0 after a purchase; asOf stays h0's for the split proof", () => {
+    const sale = holdingsAtBoth([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])], COUNT, D, WINDOW)[0]!;
+    expect([sale.shares, sale.heldAsOf, sale.filingDates, sale.accessions, sale.asOf]).toEqual([400, '2026-08-20', ['2026-08-20'], ['b'], '2026-07-01']);
+    const buy = holdingsAtBoth([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 2500)])], COUNT, D, WINDOW)[0]!;
+    expect([buy.shares, buy.heldAsOf, buy.filingDates, buy.accessions, buy.asOf]).toEqual([1000, '2026-07-01', ['2026-07-01'], ['a'], '2026-07-01']);
+  });
+
+  it('subtracts the count-date holding after a purchase or grant since the count', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 2500)])])).toEqual({ '1': 1000 });
+  });
+
+  it('is the count-date holding when nothing later was filed, and ignores a row dated after D', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)])])).toEqual({ '1': 1000 });
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-10-02', 10)])])).toEqual({ '1': 1000 });
+  });
+
+  it('subtracts one security filed under two titles ONCE (the KITT 2143744 shape), and the smaller of two unequal titles', () => {
+    const kitt = [
+      f('a', '1', [row('2026-06-01', 782_829, 'common stock, $0.0001 par value')]),
+      f('b', '1', [row('2026-06-01', 782_829, 'common stock')]),
+    ];
+    expect(subtracted(kitt)).toEqual({ '1': 782_829 });
+    const unequal = [f('a', '1', [row('2026-07-01', 900, 'common stock'), row('2026-07-01', 300, 'common stock, par value $0.001')])];
+    expect(subtracted(unequal)).toEqual({ '1': 300 });
+    const [h] = holdingsAtBoth(unequal, COUNT, D, WINDOW);
+    expect(h!.classes.map((c) => c.title)).toEqual(['common stock', 'common stock, par value $0.001']);
+    expect(h!.title).toBe('common stock, par value $0.001');
+    expect(holdingsAtBoth(kitt, COUNT, D, WINDOW)[0]!.title).toBe('common stock');
+  });
+
+  it('leaves a single-title owner as before', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])])).toEqual({ '1': 400 });
+  });
+
+  it('never subtracts an owner whose only rows are after the count', () => {
+    expect(subtracted([f('b', '2', [row('2026-08-20', 400)])])).toEqual({});
+  });
+
+  it('takes the minimum per CLASS, not on the owner total; then only the smallest title is subtracted', () => {
+    const filings = [
+      f('a', '1', [row('2026-07-01', 1000, 'common stock'), row('2026-07-01', 500, 'class b common stock')]),
+      f('b', '1', [row('2026-08-20', 200, 'common stock'), row('2026-08-20', 1300, 'class b common stock')]),
+    ];
+    // Owner total went 1,500 to 1,500; per class: min(1000, 200) = 200 and min(500, 1300) = 500. Before 2026-10-07 the
+    // two were summed (700); now only the smallest title is subtracted (200), never the sum (S1 result 72bf286c).
+    expect(subtracted(filings)).toEqual({ '1': 200 });
+    const [h] = holdingsAtBoth(filings, COUNT, D, WINDOW);
+    expect(h!.asOf).toBe('2026-07-01');
+    // The subtracted holding is the later one (200 < 1000): its date and its filing only (Commercial read 23).
+    expect(h!.heldAsOf).toBe('2026-08-20');
+    expect(h!.filingDates).toEqual(['2026-08-20']);
+    expect(h!.classes).toEqual([
+      { title: 'class b common stock', h0: 500, h0AsOf: '2026-07-01', hD: 1300, hDAsOf: '2026-08-20' },
+      { title: 'common stock', h0: 1000, h0AsOf: '2026-07-01', hD: 200, hDAsOf: '2026-08-20' },
+    ]);
+  });
+});
+
+/**
+ * Several rows of ONE filing on ONE date (a run of trades): the holding after the day is the last row, and the code
+ * takes the SMALLEST, which is never more than it in any order. Before the fix it took the FIRST, which over-subtracted
+ * 5 of 81 owners in the validation draws (S1 result 32f5e351, raw f1bef392). Fixtures are those five shapes.
+ */
+describe('same-day rows in one filing: the smallest, never the first', () => {
+  const day = (accession: string, filingDate: string, asOf: string, shares: number[], title = 'common stock'): OwnerFiling => ({
+    accession,
+    filingDate,
+    parse: { ok: true, ownerCik: '1', ownerName: null, rows: shares.map((n) => ({ asOf, title, shares: n })) },
+  });
+  const at = (filings: OwnerFiling[], cutoff: string) => holdingsAsOf(filings, cutoff, '2024-01-01')[0]!.shares;
+
+  it('takes the smallest on the five measured shapes (KITT, MX twice, TBPH twice)', () => {
+    expect(at([day('k', '2026-07-14', '2026-06-01', [815_368, 782_829])], '2026-08-12')).toBe(782_829);
+    expect(at([day('m1', '2025-01-03', '2024-12-31', [311_199, 301_950, 293_200])], '2026-07-31')).toBe(293_200);
+    expect(at([day('m2', '2025-03-04', '2025-03-01', [73_909, 70_742])], '2026-07-31')).toBe(70_742);
+    expect(at([day('t1', '2025-12-01', '2025-11-26', [60_204, 44_703], 'ordinary shares')], '2026-07-31')).toBe(44_703);
+    expect(at([day('t2', '2026-06-17', '2026-06-15', [242_442, 239_114, 232_457], 'ordinary shares')], '2026-07-31')).toBe(232_457);
+  });
+
+  it('gives the same answer in every row order', () => {
+    const orders = [[300, 200, 100], [300, 100, 200], [200, 300, 100], [200, 100, 300], [100, 300, 200], [100, 200, 300]];
+    for (const o of orders) expect(at([day('p', '2026-06-02', '2026-06-01', o)], '2026-07-01'), o.join(',')).toBe(100);
+  });
+
+  it('carries through S1: TBPH owner 1898490 subtracts 213,476, the holding after its last sale, not 223,461', () => {
+    const filings = [
+      day('t2', '2026-06-17', '2026-06-15', [242_442, 239_114, 232_457], 'ordinary shares'),
+      day('t3', '2026-09-17', '2026-09-15', [223_461, 220_133, 213_476], 'ordinary shares'),
+    ];
+    expect(holdingsAtBoth(filings, '2026-07-31', '2026-09-23', '2024-09-23')[0]!.shares).toBe(213_476);
+  });
+
+  it('leaves rows on different dates, and a same-date tie across filings, as before', () => {
+    expect(at([day('a', '2026-06-03', '2026-06-01', [100]), day('b', '2026-06-04', '2026-06-02', [300])], '2026-07-01')).toBe(300);
+    expect(at([day('a', '2026-06-02', '2026-06-01', [100]), day('b', '2026-06-03', '2026-06-01', [300])], '2026-07-01')).toBe(300);
   });
 });

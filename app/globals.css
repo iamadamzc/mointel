@@ -200,6 +200,21 @@ body {
 .legal-prose th, .legal-prose td { border-bottom: 1px solid var(--color-line); padding: 0.5rem 0.75rem 0.5rem 0; text-align: left; font-size: 0.9375rem; line-height: 1.5; color: var(--color-ink-1); vertical-align: top; }
 
 /*
+ * The explainer pages (docs/public/*.md) read in the legal frame, after the
+ * preview he approved (docs/web/previews/are-float-quotes-real.html): the first
+ * paragraph is the lede, and a list whose items open in bold is a two-column
+ * key, the bold term on the left and its text on the right (the text after the
+ * <strong> becomes its own grid item). One column on a phone.
+ */
+.explainer-prose h1 { margin-bottom: 2rem; }
+.explainer-prose h1 + p { font-size: 1.1875rem; color: var(--color-ink); }
+.explainer-prose ul { list-style: none; padding-left: 0; gap: 0; }
+.explainer-prose ul li { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 16px; padding-block: 14px; border-top: 1px solid var(--color-line); }
+.explainer-prose ul li:last-child { border-bottom: 1px solid var(--color-line); }
+.explainer-prose ul li > strong:first-child { font-family: var(--font-mono); font-size: 0.9375rem; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; padding-top: 0.12rem; }
+@media (max-width: 480px) { .explainer-prose ul li { grid-template-columns: 1fr; gap: 4px; } }
+
+/*
  * Printing a session briefing prints the briefing alone.
  *
  * Only while the reading panel is open: printing the desk otherwise is

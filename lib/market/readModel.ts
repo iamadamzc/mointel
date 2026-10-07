@@ -91,6 +91,7 @@ import {
 } from '../research/view';
 import type { DemandState, DiscoveryState, MarketFeedHealth, MarketSnapshot } from './types';
 import { catalystFreshFromUtc } from '../research/freshFrom';
+import { readFloatBoundsAt, type FloatBound } from '../research/floatRead';
 
 const globalStore = globalThis as typeof globalThis & {
   __momentumMarketDb?: { db: MarketDatabase; path: string } | null;
@@ -462,6 +463,70 @@ function readNowBuckets(
   }
 }
 
+/*
+ * THE FLOAT (his ruling 2026-10-05 "always show it, it's key"; "turn the float
+ * on" 2026-10-06): Research's `readFloatBoundsAt` for the board's symbols at D =
+ * the trading date the board shows. Sending the map, even with every symbol null,
+ * is what wires the Float column (`DeskRow.floatBoundWired`); a symbol with no
+ * stored row is null, NOT_YET, the common case on the first day. Cached a minute
+ * per store, date and symbol: the read parses each symbol's current dossier and
+ * its count-span bars, and every poll, the health probe, MCP and diagnostics
+ * build a snapshot. A read that throws marks every requested symbol with a fault
+ * entry that reads "Cannot verify" (state CANNOT_VERIFY, no reason): never
+ * "Not computed" (an absence) and never a hidden column (not wired).
+ */
+const FLOAT_TTL_MS = 60_000;
+let floatCache: { key: string; at: number; values: Map<string, FloatBound | null> } | null = null;
+
+export function resetFloatBoundsCache(): void {
+  floatCache = null;
+}
+
+const FLOAT_FAULT: FloatBound = {
+  state: 'CANNOT_VERIFY',
+  reason: null,
+  bound: null,
+  countAsOf: null,
+  countFiled: null,
+  subtractedHolders: 0,
+  filingsReadOn: '',
+  holdingsFiledOn: [],
+  countShares: null,
+  countForm: null,
+  insiders: [],
+};
+
+export function readFloatBounds(
+  db: MarketDatabase,
+  dbPath: string,
+  tradingDate: string,
+  symbols: readonly string[],
+  now: Date,
+): Record<string, FloatBound | null> {
+  const out: Record<string, FloatBound | null> = {};
+  if (!tradingDate) {
+    for (const symbol of symbols) out[symbol] = null;
+    return out;
+  }
+  const key = `${dbPath}|${tradingDate}`;
+  if (!floatCache || floatCache.key !== key || now.getTime() - floatCache.at >= FLOAT_TTL_MS) {
+    floatCache = { key, at: now.getTime(), values: new Map() };
+  }
+  const cache = floatCache;
+  const missing = symbols.filter((symbol) => !cache.values.has(symbol));
+  if (missing.length > 0) {
+    let read: Record<string, FloatBound | null>;
+    try {
+      read = readFloatBoundsAt(db, missing, tradingDate);
+    } catch {
+      read = Object.fromEntries(missing.map((symbol) => [symbol, FLOAT_FAULT]));
+    }
+    for (const symbol of missing) cache.values.set(symbol, read[symbol] ?? null);
+  }
+  for (const symbol of symbols) out[symbol] = cache.values.get(symbol) ?? null;
+  return out;
+}
+
 export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSnapshot {
   const config = loadMarketConfig();
   const fetchedAt = new Date().toISOString();
@@ -741,6 +806,13 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
        * session's.
        */
       catalystFreshFrom: catalystFreshFromUtc(db, tradingDate),
+      floatBounds: readFloatBounds(
+        db,
+        config.dbPath,
+        tradingDate,
+        states.map((state) => state.ticker),
+        new Date(),
+      ),
       fetchedAt,
     };
   } catch (error) {

@@ -20,7 +20,15 @@ import { describe, expect, it } from 'vitest';
 const root = process.cwd();
 const read = (rel: string) => fs.readFileSync(path.join(root, rel), 'utf8');
 
-const PUBLIC_SOURCES = ['app/page.tsx', 'app/privacy/page.tsx', 'app/terms/page.tsx', 'components/LegalPage.tsx'];
+const PUBLIC_SOURCES = [
+  'app/page.tsx',
+  'app/privacy/page.tsx',
+  'app/terms/page.tsx',
+  'components/LegalPage.tsx',
+  'components/SiteChrome.tsx',
+  'app/are-float-quotes-real/page.tsx',
+  'components/ExplainerPage.tsx',
+];
 
 describe('the board moved to /desk', () => {
   it('renders the dashboard at /desk and not at /', () => {
@@ -61,5 +69,15 @@ describe('the public pages', () => {
     expect(landing).toContain('href="/desk"');
     expect(landing).toContain('href="/privacy"');
     expect(landing).toContain('href="/terms"');
+  });
+});
+
+describe('the landing float sentence', () => {
+  // His ruling 2026-10-07T00:51:24.442Z ("hedge it"), Commercial read 20 (06fc8d28): a flat
+  // "No filing" stood on the word "current" alone; the hedge matches the float page's own.
+  it('is hedged to the filings we know of', () => {
+    const landing = read('app/page.tsx');
+    expect(landing).toContain('No filing we know of reports the current number of tradable shares.');
+    expect(landing).not.toContain('No filing reports the current number of tradable shares.');
   });
 });

@@ -787,7 +787,9 @@ export function DiscoveryBoard({
                   measureHead={measureHead('float')}
                   align="right"
                   sorted={activeColumn === 'float'}
-                  title={COLUMN_TITLE.float}
+                  // Wired, the column is the SEC bound, and COLUMN_TITLE.float (the vendor's figure, "actually
+                  // available to trade") is false of it: v25's header-or-legend line instead.
+                  title={floatWired ? FLOAT_LEGEND : COLUMN_TITLE.float}
                 >
                   Float
                 </Th>
