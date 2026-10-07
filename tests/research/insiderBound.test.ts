@@ -295,6 +295,13 @@ describe('holdingsAtBoth (rule S1)', () => {
     expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])])).toEqual({ '1': 400 });
   });
 
+  it("dates and files the holding ACTUALLY subtracted: hD after a sale, h0 after a purchase; asOf stays h0's for the split proof", () => {
+    const sale = holdingsAtBoth([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])], COUNT, D, WINDOW)[0]!;
+    expect([sale.shares, sale.heldAsOf, sale.filingDates, sale.accessions, sale.asOf]).toEqual([400, '2026-08-20', ['2026-08-20'], ['b'], '2026-07-01']);
+    const buy = holdingsAtBoth([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 2500)])], COUNT, D, WINDOW)[0]!;
+    expect([buy.shares, buy.heldAsOf, buy.filingDates, buy.accessions, buy.asOf]).toEqual([1000, '2026-07-01', ['2026-07-01'], ['a'], '2026-07-01']);
+  });
+
   it('subtracts the count-date holding after a purchase or grant since the count', () => {
     expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 2500)])])).toEqual({ '1': 1000 });
   });
@@ -336,7 +343,9 @@ describe('holdingsAtBoth (rule S1)', () => {
     expect(subtracted(filings)).toEqual({ '1': 200 });
     const [h] = holdingsAtBoth(filings, COUNT, D, WINDOW);
     expect(h!.asOf).toBe('2026-07-01');
-    expect(h!.filingDates).toEqual(['2026-07-01', '2026-08-20']);
+    // The subtracted holding is the later one (200 < 1000): its date and its filing only (Commercial read 23).
+    expect(h!.heldAsOf).toBe('2026-08-20');
+    expect(h!.filingDates).toEqual(['2026-08-20']);
     expect(h!.classes).toEqual([
       { title: 'class b common stock', h0: 500, h0AsOf: '2026-07-01', hD: 1300, hDAsOf: '2026-08-20' },
       { title: 'common stock', h0: 1000, h0AsOf: '2026-07-01', hD: 200, hDAsOf: '2026-08-20' },

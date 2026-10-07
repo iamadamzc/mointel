@@ -160,12 +160,16 @@ export interface ClassHolding {
 
 /**
  * An owner under rule S1: `shares` is what is subtracted, the SMALLEST over titles of min(h0, hD) (one title: that
- * title's); `asOf`, `accessions` and `filingDates` are that title's. `classes` keeps every title, for the record.
+ * title's). `asOf` is that title's count-date holding (h0), the span the job's split proof covers. `heldAsOf`,
+ * `accessions` and `filingDates` are those of the holding ACTUALLY subtracted, the smaller of h0 and hD (Commercial
+ * read 23, Integration's names ruling). `classes` keeps every title, for the record.
  */
 export interface S1Holding extends DatedHolding {
   classes: ClassHolding[];
   /** The title subtracted (the smallest, 2add4b2b). Optional: a row stored before it carries none. */
   title?: string;
+  /** The date of the holding subtracted (hD after a sale since the count, else h0). Optional, as `title`. */
+  heldAsOf?: string;
 }
 
 /**
@@ -177,7 +181,7 @@ export interface S1Holding extends DatedHolding {
  */
 export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: string, d: string, windowStart: string): S1Holding[] {
   const titles = [...new Set(filings.flatMap((f) => f.parse.rows.map((row) => row.title)))].sort();
-  type Titled = { holding: ClassHolding; accessions: string[]; filingDates: string[] };
+  type Titled = { holding: ClassHolding; heldAsOf: string; accessions: string[]; filingDates: string[] };
   const byOwner = new Map<string, { name: string | null; titled: Titled[] }>();
   for (const title of titles) {
     const only = filings.map((f) => ({ ...f, parse: { ...f.parse, rows: f.parse.rows.filter((row) => row.title === title) } }));
@@ -185,10 +189,13 @@ export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: strin
     for (const h0 of holdingsAsOf(only, countAsOf, windowStart)) {
       const hD = atD.get(h0.ownerCik) ?? h0;
       const entry = byOwner.get(h0.ownerCik) ?? { name: h0.ownerName, titled: [] };
+      // The holding subtracted is min(h0, hD); its date and filings, never the other's, describe it.
+      const taken = hD.shares < h0.shares ? hD : h0;
       entry.titled.push({
         holding: { title, h0: h0.shares, h0AsOf: h0.asOf, hD: hD.shares, hDAsOf: hD.asOf },
-        accessions: [...h0.accessions, ...hD.accessions],
-        filingDates: [...h0.filingDates, ...hD.filingDates],
+        heldAsOf: taken.asOf,
+        accessions: [...taken.accessions],
+        filingDates: [...taken.filingDates],
       });
       byOwner.set(h0.ownerCik, entry);
     }
@@ -205,6 +212,7 @@ export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: strin
         ownerName: e.name,
         shares: held(chosen),
         title: chosen.holding.title,
+        heldAsOf: chosen.heldAsOf,
         asOf: chosen.holding.h0AsOf,
         accessions: [...new Set(chosen.accessions)].sort(),
         filingDates: [...new Set(chosen.filingDates)].sort(),

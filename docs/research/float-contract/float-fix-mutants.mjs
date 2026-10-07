@@ -16,6 +16,8 @@
 // P1-P4, the click-through payload (variant A, his choice 2026-10-07T00:51:24.442Z): FR-EQ "carries the bound, the count
 // dates...", FR-INS "insiders: one row per insider" (floatRead.test.ts); FW-INS "carries the filed count and the insider
 // rows" (floatWiring.test.ts); IB-T2 also asserts the stored title.
+// H1, H2: the subtracted holding's date and filings (Commercial read 23): IB-H "dates and files the holding ACTUALLY
+// subtracted", IB-T1 now asserts heldAsOf and filingDates, FR-INS asserts heldAsOf.
 // Not mutated: the view test of the bare fallback (floatBound.test.ts), which pins words no code chooses.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -48,6 +50,8 @@ const M = [
   ['P2', FR, 'countShares: count?.shares ?? null', 'countShares: null', 2, 'the filed count shares never sent', 'FR-EQ, FR-INS'],
   ['P3', IB, 'title: chosen.holding.title,', '', 1, 'the subtracted title not stored', 'IB-T2'],
   ['P4', FB, 'insiders: Array.isArray(r.insiders) ? r.insiders.flatMap(insiderOf) : [],', 'insiders: [],', 1, 'the client drops the insider rows', 'FW-INS'],
+  ['H1', IB, 'const taken = hD.shares < h0.shares ? hD : h0;', 'const taken = h0;', 2, 'the count-date holding always dated and filed', 'IB-T1 (heldAsOf, filingDates), IB-H (sale)'],
+  ['H2', FR, 'heldAsOf: s?.heldAsOf ?? null,', 'heldAsOf: null,', 1, 'the insider row loses its date', 'FR-INS'],
   ['T1', IB, 'shares: held(chosen),', 'shares: e.titled.reduce((sum, t) => sum + held(t), 0),', 2, 'several titles summed again', 'IB-T1 (per class, now 200), IB-T2 (KITT shape and unequal titles)'],
 ];
 

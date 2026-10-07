@@ -83,6 +83,7 @@ function insiderOf(raw: unknown): FloatInsider[] {
       ownerName: typeof i.ownerName === 'string' ? i.ownerName : null,
       title: typeof i.title === 'string' ? i.title : null,
       shares: i.shares,
+      heldAsOf: isDate(i.heldAsOf) ? i.heldAsOf : null,
       filedOn: Array.isArray(i.filedOn) ? i.filedOn.filter(isDate) : [],
     },
   ];

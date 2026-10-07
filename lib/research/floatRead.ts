@@ -63,10 +63,14 @@ export interface FloatBound {
 
 export interface FloatInsider {
   ownerCik: string;
+  /** As filed (`rptOwnerName` of the first filing read for the owner, XML whitespace trimmed), or null; never normalised or inferred. */
   ownerName: string | null;
   /** Null for a row stored before the title was kept. */
   title: string | null;
   shares: number;
+  /** The date of the holding subtracted (the smaller of the count-date and the later holding); null on an older row. */
+  heldAsOf: string | null;
+  /** The filed dates of that holding's filings only. */
   filedOn: string[];
 }
 
@@ -77,7 +81,7 @@ function insidersOf(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' })
     .filter((h) => h.shares > 0)
     .map((h) => {
       const s = stored.get(h.ownerCik);
-      return { ownerCik: h.ownerCik, ownerName: h.ownerName, title: s?.title ?? null, shares: h.shares, filedOn: [...new Set(s?.filingDates ?? [])].sort() };
+      return { ownerCik: h.ownerCik, ownerName: h.ownerName, title: s?.title ?? null, shares: h.shares, heldAsOf: s?.heldAsOf ?? null, filedOn: [...new Set(s?.filingDates ?? [])].sort() };
     })
     .sort((a, b) => b.shares - a.shares || a.ownerCik.localeCompare(b.ownerCik));
 }

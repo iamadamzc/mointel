@@ -83,7 +83,7 @@ describe('guards: absent, malformed, extra fields', () => {
       countShares: 10_000_000,
       countForm: '10-Q',
       insiders: [
-        { ownerCik: '111', ownerName: 'A', title: 'common stock', shares: 400_000, filedOn: ['2026-07-20', 'Jul 20'] },
+        { ownerCik: '111', ownerName: 'A', title: 'common stock', shares: 400_000, heldAsOf: '2026-07-14', filedOn: ['2026-07-20', 'Jul 20'] },
         { ownerCik: 222, shares: 1 },
         { ownerCik: '333', shares: 'many' },
         'x',
@@ -91,7 +91,7 @@ describe('guards: absent, malformed, extra fields', () => {
     })!;
     expect(b.countShares).toBe(10_000_000);
     expect(b.countForm).toBe('10-Q');
-    expect(b.insiders).toEqual([{ ownerCik: '111', ownerName: 'A', title: 'common stock', shares: 400_000, filedOn: ['2026-07-20'] }]);
+    expect(b.insiders).toEqual([{ ownerCik: '111', ownerName: 'A', title: 'common stock', shares: 400_000, heldAsOf: '2026-07-14', filedOn: ['2026-07-20'] }]);
     const bare = normalizeFloatBound({ state: 'PRODUCED', countShares: 'ten', insiders: 'none' })!;
     expect([bare.countShares, bare.countForm, bare.insiders]).toEqual([null, null, []]);
   });
