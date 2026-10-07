@@ -27,6 +27,7 @@ import {
   reportLead,
   reportOpening,
   reportTitle,
+  researchWrittenAgainNote,
   sessionText,
   type BoardRange,
   type RangeChoice,
@@ -577,6 +578,7 @@ function ReportBody({
                         block={block}
                         report={report}
                         outsideRange={outsideBoardRange(priceOf(block.ticker), board, report.range)}
+                        nowMs={nowMs}
                         onSelectTicker={onSelectTicker}
                       />
                     </li>
@@ -619,14 +621,18 @@ function NameCard({
   block,
   report,
   outsideRange,
+  nowMs,
   onSelectTicker,
 }: {
   block: Extract<ReportBlock, { kind: 'NAME' }>;
   report: SessionReport;
   outsideRange: boolean;
+  /** The reader's clock: the evening note adds the date when the reader's ET day is not the note's. */
+  nowMs: number;
   onSelectTicker: (ticker: string) => void;
 }) {
   const company = companyText(block.company);
+  const writtenAgain = researchWrittenAgainNote(block.researchUpdatedAt, nowMs);
   const path = pathView(block.path, report);
   const tone =
     path?.direction === 'UP' ? 'text-pos' : path?.direction === 'DOWN' ? 'text-neg' : 'text-ink';
@@ -658,6 +664,10 @@ function NameCard({
           </Qualifier>
         ) : null}
       </div>
+
+      {/* EVENING: this name's research was written again after the checkpoint (its own line: a sentence,
+          too long for the header's one-word qualifiers). */}
+      {writtenAgain ? <p className="mt-1 text-[12px] text-ink-3 print:text-black">{writtenAgain}</p> : null}
 
       {block.tags ? <TagRow tags={block.tags} /> : null}
 
