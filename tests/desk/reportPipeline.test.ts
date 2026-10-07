@@ -212,14 +212,16 @@ describe('the report pipeline, v6 wiring', () => {
       completedAt: recapAt, status: 'COMPLETE', tickerCount: 2, modelCalls: 0, runtimeMs: 1,
       marketFingerprint: null, researchFingerprint: null, notes: '', metadata: {},
     });
-    // The 16:00 latch: NOCL traded with no close latched (noClose 1); REV is a 1-for-5 basis jump (splitExcluded 1); UPX counts.
+    // NOCL traded with no official close (noClose 1); REV is a 1-for-5 basis jump (splitExcluded 1); UPX counts.
+    // The close is the OFFICIAL one (reference_rth_close, CURRENT_SESSION, this date); here it equals the bell capture.
     const ts = db.prepare(
-      `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_low, rth_final_volume)
-       VALUES (?, ?, 'sip', '2026-09-23T20:00:00Z', ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_low, rth_final_volume,
+                                   reference_rth_close, reference_rth_close_date, reference_rth_close_basis)
+       VALUES (?, ?, 'sip', '2026-09-23T20:00:00Z', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     );
-    ts.run('NOCL', DATE, 5, 4, 1000, null, null, null, null);
-    ts.run('REV', DATE, 2.5, 0.5, 900, 2.5, 2.7, 2.4, 900);
-    ts.run('UPX', DATE, 4.4, 4, 900, 4.4, 4.5, 4, 900);
+    ts.run('NOCL', DATE, 5, 4, 1000, null, null, null, null, null, null, null);
+    ts.run('REV', DATE, 2.5, 0.5, 900, 2.5, 2.7, 2.4, 900, 2.5, DATE, 'CURRENT_SESSION');
+    ts.run('UPX', DATE, 4.4, 4, 900, 4.4, 4.5, 4, 900, 4.4, DATE, 'CURRENT_SESSION');
 
     const read = readReportInputs(db, 'PREMARKET', DATE, { min: 1, max: 20 });
     expect(read.ok).toBe(true);

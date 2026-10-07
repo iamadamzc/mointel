@@ -45,17 +45,32 @@ type Row = {
   low?: number | null;
   rthVol?: number | null;
   eligible?: 0 | 1;
+  /** The bell capture (`rth_final_close`); defaults to `close`. */
+  bell?: number | null;
+  /** The official close's basis and date; default CURRENT_SESSION on the trading date whenever `close` is set. */
+  basis?: string | null;
+  refDate?: string | null;
 };
+/** `close` is the OFFICIAL close (`reference_rth_close`, CURRENT_SESSION, this date) AND, unless `bell` says otherwise, the bell capture. */
 function seed(db: MarketDatabase, rows: Row[]) {
   const ts = db.prepare(
-    `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_low, rth_final_volume)
-     VALUES (@symbol, @date, 'sip', '2026-09-23T20:00:00Z', @price, @prev, @vol, @close, @high, @low, @rthVol)`,
+    `INSERT INTO ticker_session (symbol, trading_date, feed, updated_at, price, previous_close, cumulative_volume, rth_final_close, rth_final_high, rth_final_low, rth_final_volume,
+                                 reference_rth_close, reference_rth_close_date, reference_rth_close_source, reference_rth_close_basis)
+     VALUES (@symbol, @date, 'sip', '2026-09-23T20:00:00Z', @price, @prev, @vol, @bell, @high, @low, @rthVol,
+             @close, @refDate, 'alpaca-daily-bar-rth-close', @basis)`,
   );
   const uni = db.prepare(
     `INSERT INTO universe (symbol, source, updated_at, discovery_eligible) VALUES (?, 'test', '2026-09-23T00:00:00Z', ?)`,
   );
   for (const r of rows) {
-    ts.run({ date: DATE, price: null, prev: null, vol: null, close: null, high: null, low: null, rthVol: null, ...r });
+    const close = r.close ?? null;
+    ts.run({
+      date: DATE, price: null, prev: null, vol: null, high: null, low: null, rthVol: null, ...r,
+      close,
+      bell: r.bell !== undefined ? r.bell : close,
+      basis: r.basis !== undefined ? r.basis : close === null ? null : 'CURRENT_SESSION',
+      refDate: r.refDate !== undefined ? r.refDate : close === null ? null : DATE,
+    });
     if (r.eligible !== undefined) uni.run(r.symbol, r.eligible);
   }
 }
@@ -88,6 +103,56 @@ describe('readRecapCounts: F1, F6, F7 and G from the 16:00 latched values', () =
     const r = readRecapCounts(db, DATE, RANGE);
     expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 6, traded: 5, up: 3, down: 1 });
     expect([r.movers50, r.gaveBack, r.noClose]).toEqual([2, 1, 1]);
+    db.close();
+  });
+});
+
+describe('readRecapCounts: the CLOSE is the official close, never the bell capture (Path A; Ops 2026-10-07)', () => {
+  it('O1: counts read the official close where the bell capture differs', () => {
+    const db = store();
+    seed(db, [
+      // Bell 1.9 (down, gave it all back), official 2.6 (up, held half): the official close counts.
+      { symbol: 'OFF', prev: 2, close: 2.6, bell: 1.9, high: 3, rthVol: 900, price: 2.6, vol: 1000 },
+      // Bell 5.5 (up), official 4.5 (down).
+      { symbol: 'FLIP', prev: 5, close: 4.5, bell: 5.5, high: 5.6, rthVol: 100, price: 4.5, vol: 100 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 2, traded: 2, up: 1, down: 1 });
+    expect([r.movers50, r.gaveBack, r.keptHalf, r.noClose]).toEqual([1, 0, 1, 0]);
+    expect(r.movers.map((m) => [m.symbol, m.close])).toEqual([['OFF', 2.6]]);
+    db.close();
+  });
+
+  it('O2: no official close for THIS date is the noClose footnote, never a fallback to the bell capture', () => {
+    const db = store();
+    seed(db, [
+      // PRIOR_SESSION: yesterday's close, with a bell capture present.
+      { symbol: 'PRI', prev: 2, close: 2.2, bell: 3.1, basis: 'PRIOR_SESSION', high: 3.2, rthVol: 900, price: 3.1, vol: 900 },
+      // CURRENT_SESSION but dated another day.
+      { symbol: 'OLD', prev: 2, close: 2.2, bell: 3.1, refDate: '2026-09-22', high: 3.2, rthVol: 900, price: 3.1, vol: 900 },
+      // No official close at all, a bell capture present.
+      { symbol: 'NONE', prev: 2, close: null, bell: 3.1, high: 3.2, rthVol: 900, price: 3.1, vol: 900 },
+      // Control: the same row with its official close counts.
+      { symbol: 'OK', prev: 2, close: 3.1, high: 3.2, rthVol: 900, price: 3.1, vol: 900 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.noClose).toBe(3);
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 1, traded: 1, up: 1, down: 0 });
+    expect(r.movers.map((m) => m.symbol)).toEqual(['OK']);
+    db.close();
+  });
+
+  it('O3: the range is decided by the official close', () => {
+    const db = store();
+    seed(db, [
+      // Bell inside $1-$20, official outside: not counted, and not noClose (it has an official close).
+      { symbol: 'OUT', prev: 18, close: 21, bell: 19.5, high: 21.5, rthVol: 900, price: 21, vol: 900 },
+      // Bell outside, official inside: counted.
+      { symbol: 'IN', prev: 18, close: 19.5, bell: 21, high: 21.5, rthVol: 900, price: 19.5, vol: 900 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 1, traded: 1, up: 1, down: 0 });
+    expect(r.noClose).toBe(0);
     db.close();
   });
 });

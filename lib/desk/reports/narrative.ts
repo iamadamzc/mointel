@@ -21,10 +21,12 @@
  *   FROZEN range row (`desk_assessment_ranges`, its own `count_window`), F2 the
  *   leader (in-range rank 1), F10 the leader plus the next two covered names by
  *   move, F13 their change notes, F3 the fresh-news count among the covered.
- * - RECAP (premarket): F1, F6, F7, F15 and G from ONE source, the 16:00 values
- *   latched on `ticker_session` (`rth_final_*`, first-write, never overwritten),
- *   population = board eligibility with `rth_final_close` in range, split rows
- *   left out (below); F10, F10b, F12b, the context; F3; F9 the covered names.
+ * - RECAP (EVENING and its 10 pm edition): F1, F6, F7, F15 and G from ONE row
+ *   per name on `ticker_session`: the CLOSE is the OFFICIAL regular-session close
+ *   (`officialClose` below), the high, low and volume the 16:00 values latched
+ *   on `rth_final_*`; population = board eligibility with the official close in
+ *   range, split rows left out (below); F10, F10b, F12b, the context; F3; F9 the
+ *   covered names.
  *
  * THE SPLIT CHECK (recap). `ticker_session.previous_close` carried the PRE-split
  * close onto at least 12 effective dates (`docs/research/split-day-previous-
@@ -137,7 +139,7 @@ export interface NarrativeFacts {
   /** F6 / F7 / G, recap only. */
   movers50: number | null;
   gaveBack: number | null;
-  /** G: in-range names that traded but have no 16:00 close, so are outside the recap's counts. Never hidden. */
+  /** G: in-range names that traded but have no official close for the day, so are outside the recap's counts. Never hidden. */
   noClose: number | null;
   /** F9, recap only: the names the desk carries into the next session (this report's covered names). */
   tracking: string[] | null;
@@ -241,7 +243,8 @@ export function isSplitRow(
 interface SessionRow {
   symbol: string;
   previous_close: number | null;
-  rth_final_close: number | null;
+  /** The official close for THIS trading date, or null (see `OFFICIAL_CLOSE_SQL`). */
+  official_close: number | null;
   rth_final_high: number | null;
   rth_final_low: number | null;
   rth_final_volume: number | null;
@@ -274,11 +277,28 @@ export interface RecapCounts {
 /** At least this much of the peak gain kept at the close counts as "held half" (F15). */
 export const KEPT_HALF = 0.5;
 
-/** F1 (16:00 basis), F6, F7, F15 and G for the recap, in one read of the latched values. */
+/**
+ * The OFFICIAL regular-session close (Integration's Path A; Ops, 2026-10-07):
+ * `reference_rth_close` from Alpaca's daily bar (`reference_rth_close_source`
+ * 'alpaca-daily-bar-rth-close'), written about 16:02 ET (worker/runtime.ts,
+ * `setTodayRthClose`), before the 20:05 checkpoint, the 20:20 write and 22:00.
+ * Only when its basis is CURRENT_SESSION AND its date is this trading date: a
+ * PRIOR_SESSION row holds yesterday's close. Anything else is NO official close,
+ * and the name goes to the noClose footnote, outside every count; never a
+ * fallback to `rth_final_close`, the bell capture (Integration 30th's (C),
+ * confirmed by the 35th). Ops measured it equal to `daily_bars` on 361 of 363
+ * researched names over four dates (the two misses one split-adjusted bar);
+ * the bell capture equal on 98 of 363.
+ */
+const OFFICIAL_CLOSE_SQL = `CASE WHEN ts.reference_rth_close_basis = 'CURRENT_SESSION'
+                AND ts.reference_rth_close_date = ts.trading_date
+              THEN ts.reference_rth_close END`;
+
+/** F1 (official close basis), F6, F7, F15 and G for the recap, in one read per name. */
 export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: { min: number; max: number }): RecapCounts {
   const rows = db
     .prepare(
-      `SELECT ts.symbol, ts.previous_close, ts.rth_final_close, ts.rth_final_high, ts.rth_final_low,
+      `SELECT ts.symbol, ts.previous_close, ${OFFICIAL_CLOSE_SQL} AS official_close, ts.rth_final_high, ts.rth_final_low,
               ts.rth_final_volume, ts.price, ts.cumulative_volume
          FROM ticker_session ts
          LEFT JOIN universe u ON u.symbol = ts.symbol
@@ -292,12 +312,12 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
   const movers: DayMover[] = [];
 
   for (const r of rows) {
-    if (r.rth_final_close === null) {
+    if (r.official_close === null) {
       if (inside(r.price) && (r.cumulative_volume ?? 0) > 0) counts.noClose += 1;
       continue;
     }
-    if (!inside(r.rth_final_close)) continue;
-    const close = r.rth_final_close;
+    if (!inside(r.official_close)) continue;
+    const close = r.official_close;
     const prev = r.previous_close;
     const traded = (r.rth_final_volume ?? 0) > 0;
     if (
