@@ -46,6 +46,8 @@ for design documents.
 
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
+**TWELFTH SEAT, V6 RENDER HEAD NOW `792adb241480e89d95b61e3f157789472cfecfc7`** (tag `design/report-v6-labels-792adb24`): a comment naming the new section labels (Marketing 3025f5ee, Commercial 32a); nothing keys on heading text. Research commits the headings on top. Supersedes the head below.
+
 **TWELFTH SEAT, V6 RENDER HEAD NOW `f226c70b313bef31622a18511e2d8168a1a79b15`** (tag `design/report-v6-nocatalyst-f226c70b`): two commits on `c5e27749` for Commercial 32: NONE_FOUND phrase "no catalyst found in our sources" (re-pick of e90cc845) and WhyMarks `full` (report card full words; the board's Why badge keeps "no catalyst found" because the full words measure wider than the 130 px column at 1,024; control not reproduced, conclusion holds under both scales). Supersedes the head below.
 
 **TWELFTH SEAT, V6 RENDER HEAD NOW `c5e27749c2b4122120e89b6e3d88c28e6758f62f`** (tag `design/report-v6-final-c5e27749`) on Research's `research/reports-v6-a5` `93a4aa55`: eleven Design commits (`8df6fec9..6d704562` re-picked; render files identical). Marketing confirmed the three forms; Integration accepted section 4's rewording. Waits: Commercial's read of the built strings, the v6 gate (tsc there), his yes. Supersedes the head below.
