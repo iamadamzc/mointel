@@ -138,7 +138,10 @@ describe('pruning', () => {
     }
 
     expect(sh(PINS_SH, ['check'])).toContain('all pins satisfiable');
-  });
+    // Twenty-odd shell runs. Measured on the Windows gate PC, 2026-10-07: 10.9 s
+    // alone, 9.3 s beside runnerAlert, 10.4 s beside watchdog, and over the 30 s
+    // default twice in the full suite (load, not a defect). The bound is time only.
+  }, 120_000);
 
   it('still prunes unpinned releases beyond the keep count', () => {
     for (const sha of ['a1', 'b2', 'c3', 'd4', 'e5']) makeRelease(sha);
