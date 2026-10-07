@@ -27,7 +27,10 @@ import {
   reportLead,
   reportOpening,
   reportTitle,
+  replacesLine,
   researchWrittenAgainNote,
+  revisionLine,
+  cardRevisionMark,
   sessionText,
   type BoardRange,
   type RangeChoice,
@@ -480,6 +483,8 @@ function ReportBody({
   const v6 = isV6(report);
   const blocks = reportBlocks(report);
   const empty = emptyReportLine(report, blocks);
+  const names = blocks.flatMap((block) => (block.kind === 'NAME' ? [block.ticker] : []));
+  const editionLine = revisionLine(report, names, nowMs) ?? replacesLine(view.superseded, nowMs);
   // v6: computed sections with labels; v5 keeps (A)'s single list (its headings are model text).
   const groups = v6 ? reportGroups(report) : [{ label: null, blocks }];
   const hasNames = blocks.some((block) => block.kind === 'NAME');
@@ -542,6 +547,10 @@ function ReportBody({
         </div>
       </dl>
 
+      {/* Which edition this is (Marketing v2 at 98b22b36, Commercial 30a): the 10 pm edition's revision line from
+          `revisionOf`, else the older editions this one replaces. Under the time lines, never at the bottom. */}
+      {editionLine ? <p className="mt-1.5 text-[12px] text-ink-2 print:text-black">{editionLine}</p> : null}
+
       {/* v6 opens with THE SESSION (narrative or its designed absence, then the recap's
           footnotes), then the watch sentence as the lead-in to the cards (report-b-spec.md). */}
       {opening && opening.kind !== 'V5_OVERALL' ? (
@@ -601,12 +610,6 @@ function ReportBody({
         <p className="mt-5 text-[12px] text-ink-3 print:text-black">{FLOAT_FOOTER}</p>
       ) : null}
 
-      {view.superseded.length > 0 ? (
-        <p className="mt-5 text-[11px] text-ink-3">
-          Updated from the version written at{' '}
-          {view.superseded.map((older) => formatEtMinute(older.publishedAt) ?? '?').join(', ')}.
-        </p>
-      ) : null}
     </article>
   );
 }
@@ -617,7 +620,7 @@ function ReportBody({
  * last coloured by its direction against the prior close, with the two figures
  * computed from those points; then the writer's sentences.
  */
-function NameCard({
+export function NameCard({
   block,
   report,
   outsideRange,
@@ -633,6 +636,7 @@ function NameCard({
 }) {
   const company = companyText(block.company);
   const writtenAgain = researchWrittenAgainNote(block.researchUpdatedAt, nowMs);
+  const revised = cardRevisionMark(report, block.ticker, nowMs);
   const path = pathView(block.path, report);
   const tone =
     path?.direction === 'UP' ? 'text-pos' : path?.direction === 'DOWN' ? 'text-neg' : 'text-ink';
@@ -663,6 +667,7 @@ function NameCard({
             not in your range
           </Qualifier>
         ) : null}
+        {revised ? <Qualifier title={revised.title}>{revised.label}</Qualifier> : null}
       </div>
 
       {/* EVENING: this name's research was written again after the checkpoint (its own line: a sentence,
