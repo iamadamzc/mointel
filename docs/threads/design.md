@@ -46,6 +46,8 @@ for design documents.
 
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
+**TWELFTH SEAT (same id, reset 2026-10-07; no clock time stated, see the commit's own stamp):** MOVER RELEASE `ca3f0e99` IS LIVE (Integration's message: Ops /proc shows web/research/assess on it; market stays `10cb60c3`). FLOAT DESK STRINGS BUILT on `d66f211a`: tip `a66a27c0850158640a10322f7495ae1925027266`, tag `design/float-v25-strings-a66a27c0`, two commits, NOT GATED. `bcfd1330`: Integration 32nd points 2 to 5 (v25 popover, aria-label and legend verbatim; 424B2; the 20-F/40-F reason; a per-row "An insider" when no name is filed, capitalisation flagged; no per-row date because 1ee54def's row has none; a new guard: PRODUCED with an unparseable read date reads Cannot verify; floatDetails fixtures gain heldAsOf). `a66a27c0`: wired, the Float header hover is FLOAT_LEGEND, not the vendor title that says "actually available to trade". Sent to Integration with Web's open item: `app/are-float-quotes-real/page.tsx:16-17` metadata description still says "actually available to trade". Next: Commercial reads the built strings, the chain's one gate in Ops's slot, his yes by sha.
+
 **Nothing of Design's is running. Nothing built this tenure has been gated or run (every gate step is Ops's slot).** Three candidates, each on its own pushed tag, queued for Ops's gate in this order (Integration 29th): cut 4, then Warning Shot, then row 5. Integration replays each by literal sha; his yes ships.
 
 | Candidate | Tip (full sha) and tag | Base | What it is | Waits on |
