@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 
 import type {
   ReportRange,
@@ -14,16 +14,20 @@ import {
   coverageText,
   emptyReportLine,
   figureSegments,
+  narrativeFootnoteLines,
+  OPENING_WORDS,
   pathView,
   reportBlocks,
   reportCoverage,
   outsideBoardRange,
   reportLead,
+  reportOpening,
   reportTitle,
   sessionText,
   type BoardRange,
   type RangeChoice,
   type ReportBlock,
+  type ReportOpening,
   type ReportTimeline,
   type SlotView,
 } from '@/lib/dashboard/sessionReports';
@@ -465,6 +469,8 @@ function ReportBody({
   const ago = agoText(report.publishedAt, nowMs);
   const coverage = coverageText(reportCoverage(report));
   const lead = reportLead(report);
+  const opening = reportOpening(report);
+  const footnotes = narrativeFootnoteLines(report.narrativeFootnotes);
   const blocks = reportBlocks(report);
   const empty = emptyReportLine(report, blocks);
 
@@ -526,11 +532,17 @@ function ReportBody({
         </div>
       </dl>
 
+      {/* v6 opens with THE SESSION (narrative or its designed absence, then the recap's
+          footnotes), then the watch sentence as the lead-in to the cards (report-b-spec.md). */}
+      {opening && opening.kind !== 'V5_OVERALL' ? (
+        <ReportOpeningBlock opening={opening} footnotes={footnotes} />
+      ) : null}
+
       {/* v5 opens with the watch sentence, then the after-hours picture when the
           report has one; v4 with its headline. `reportLead` decides which. */}
       {lead ? <p className="mt-4 text-[15px] leading-snug text-ink print:text-black">{lead}</p> : null}
-      {typeof report.watchCount === 'number' && report.overall ? (
-        <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{report.overall}</p>
+      {opening?.kind === 'V5_OVERALL' ? (
+        <p className="mt-1 text-[15px] leading-snug text-ink print:text-black">{opening.text}</p>
       ) : null}
 
       {/* The section headings are HIDDEN (his "b", 2026-10-01T02:24:33Z): they
@@ -659,6 +671,48 @@ function NameCard({
         </div>
       ) : null}
     </article>
+  );
+}
+
+/**
+ * THE SESSION (report-b-spec.md, page order 2): a small label, then the narrative at 16 px, line
+ * height 1.6, ink-2, a 680 px measure, figures in ink semibold; or, with no narrative, the designed
+ * absence in 13 px ink-3, so the block never reads as a page that failed to load. The recap's
+ * footnotes sit under either, 12 px ink-3.
+ */
+export function ReportOpeningBlock({ opening, footnotes }: { opening: Exclude<ReportOpening, { kind: 'V5_OVERALL' }>; footnotes: string[] }) {
+  const labelId = useId();
+  return (
+    <section aria-labelledby={labelId} className="mt-4 max-w-[680px]">
+      <h3
+        id={labelId}
+        className="text-[11px] font-semibold tracking-[0.08em] text-ink-3 uppercase print:text-black"
+      >
+        {OPENING_WORDS.label}
+      </h3>
+      {opening.kind === 'NARRATIVE' ? (
+        <p className="mt-1.5 text-[16px] leading-[1.6] text-ink-2 print:text-black">
+          {figureSegments(opening.text).map((segment, index) =>
+            segment.figure ? (
+              <span key={index} className="font-semibold text-ink print:text-black">
+                {segment.text}
+              </span>
+            ) : (
+              segment.text
+            ),
+          )}
+        </p>
+      ) : (
+        <p className="mt-1.5 text-[13px] text-ink-3 print:text-black">{OPENING_WORDS.none}</p>
+      )}
+      {footnotes.length > 0 ? (
+        <ul className="mt-2 list-none space-y-0.5 p-0 text-[12px] leading-snug text-ink-3 print:text-black">
+          {footnotes.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
   );
 }
 
