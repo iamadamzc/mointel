@@ -145,13 +145,15 @@ describe('readRecapCounts: the CLOSE is the official close, never the bell captu
   it('O3: the range is decided by the official close', () => {
     const db = store();
     seed(db, [
-      // Bell inside $1-$20, official outside: not counted, and not noClose (it has an official close).
+      // Bell inside $1-$20 and UP, official outside: not counted, and not noClose (it has an official close).
       { symbol: 'OUT', prev: 18, close: 21, bell: 19.5, high: 21.5, rthVol: 900, price: 21, vol: 900 },
-      // Bell outside, official inside: counted.
-      { symbol: 'IN', prev: 18, close: 19.5, bell: 21, high: 21.5, rthVol: 900, price: 19.5, vol: 900 },
+      // Bell outside, official inside and DOWN: counted. The two move opposite ways, so a bell-based
+      // range reads up 1 down 0 and only the official one reads up 0 down 1 (the first O3 was symmetric
+      // and could not fail on the bell; mutant C4 found it).
+      { symbol: 'IN', prev: 20, close: 19.5, bell: 21, high: 21.5, rthVol: 900, price: 19.5, vol: 900 },
     ]);
     const r = readRecapCounts(db, DATE, RANGE);
-    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 1, traded: 1, up: 1, down: 0 });
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 1, traded: 1, up: 0, down: 1 });
     expect(r.noClose).toBe(0);
     db.close();
   });
