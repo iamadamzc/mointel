@@ -35,6 +35,30 @@ if ! git diff --quiet "$SHA" -- ':!*.md' ':!*.png'; then
   echo "[release] WARNING: tracked files differ from $SHORT — deploying the commit, not the working tree" >&2
 fi
 
+# ------------------------------------------------------- no password back ---
+#
+# Basic Auth came off the whole site with A5 (47f6aa24, 2026-10-07), installed
+# as an nginx-only reload. deploy.sh installs the SHIPPING release's
+# nginx-locations.conf, so a release that still carries the server-level
+# `auth_basic "..."` line puts the password back over every page on its deploy
+# and locks every tester out, silently. Read from the sha being shipped, before
+# anything touches the box; a file that cannot be read refuses too.
+# The per-location `auth_basic off;` lines are no-ops and do not count.
+# BASIC_AUTH_SHIP="<his word, and why>" ships one anyway, and says so.
+if ! LOCATIONS="$(git show "$SHA:deploy/aws/nginx-locations.conf" 2>/dev/null)"; then
+  echo "[release] could not read deploy/aws/nginx-locations.conf at $SHORT; nothing was shipped" >&2
+  exit 11
+fi
+if printf '%s\n' "$LOCATIONS" | grep -qE '^[[:space:]]*auth_basic[[:space:]]+"'; then
+  if [ -n "${BASIC_AUTH_SHIP:-}" ]; then
+    echo "[release] OVERRIDE: $SHORT sets server-level auth_basic; shipping it on: $BASIC_AUTH_SHIP" >&2
+  else
+    echo "[release] $SHORT sets a server-level auth_basic in nginx-locations.conf: its deploy would put the password back over the whole site" >&2
+    echo "[release] ship a release that descends from 47f6aa24, or set BASIC_AUTH_SHIP=\"<his word>\"; nothing was shipped" >&2
+    exit 11
+  fi
+fi
+
 # ------------------------------------------------------------ test gate ---
 #
 # The suite, lint and typecheck AT THIS SHA, in a detached worktree -- not at

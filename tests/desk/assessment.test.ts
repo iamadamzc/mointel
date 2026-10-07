@@ -14,6 +14,7 @@ import {
   detectChanges,
   encodeLevels,
   marketFingerprint,
+  supportCandidatesBelow,
 } from '@/lib/desk/assessment';
 import type { AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
 
@@ -322,5 +323,37 @@ describe('fingerprints', () => {
     const a = record({ ticker: 'AAA' });
     const b = record({ ticker: 'BBB' });
     expect(marketFingerprint([a, b])).toBe(marketFingerprint([b, a]));
+  });
+});
+
+describe('support candidates below price: the official close, not the bell capture', () => {
+  // VIVK-shaped: the bell captured 1.95, the official daily-bar close was 1.85.
+  const base = { price: 2.1, sessionLow: 1.6, referenceRthClose: 1.85, rthFinalClose: 1.95 };
+
+  it('after the bell, uses the official close and ignores the bell capture', () => {
+    const levels = supportCandidatesBelow({ ...base, referenceRthCloseBasis: 'CURRENT_SESSION' });
+    expect(levels).toContain(1.85);
+    expect(levels).not.toContain(1.95);
+    expect(Math.max(...levels)).toBe(1.85);
+  });
+
+  it('with no official close captured (prior-session basis), the bell capture still counts', () => {
+    const levels = supportCandidatesBelow({ ...base, referenceRthCloseBasis: 'PRIOR_SESSION' });
+    expect(levels).toContain(1.95);
+  });
+
+  it('drops nulls and anything at or above price', () => {
+    const levels = supportCandidatesBelow({
+      price: 1.85,
+      sessionLow: null,
+      referenceRthClose: 1.85,
+      rthFinalClose: null,
+      referenceRthCloseBasis: 'CURRENT_SESSION',
+    });
+    expect(levels).toEqual([]);
+  });
+
+  it('returns nothing without a price', () => {
+    expect(supportCandidatesBelow({ ...base, price: null, referenceRthCloseBasis: 'CURRENT_SESSION' })).toEqual([]);
   });
 });

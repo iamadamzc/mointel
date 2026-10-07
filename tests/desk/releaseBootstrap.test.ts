@@ -41,8 +41,16 @@ function writeStubs(options: {
   requiredEnv?: string;
   /** What the box says about each declared key; 'unreadable' prints nothing, as a failed ssh does. */
   envState?: 'present' | 'absent' | 'unreadable';
+  /**
+   * Contents of deploy/aws/nginx-locations.conf at the shipping sha. Default: a file with no
+   * server-level auth_basic. null makes `git show` fail, as it does when the path is absent.
+   */
+  nginxLocations?: string | null;
 }) {
   const requiredEnv = options.requiredEnv ?? '';
+  const nginxLocations =
+    options.nginxLocations === undefined ? 'location / {\n    proxy_pass http://mointel_app;\n}\n' : options.nginxLocations;
+  fs.writeFileSync(path.join(stubs, 'nginx-locations.conf'), nginxLocations ?? '', 'utf8');
   const envState = options.envState ?? 'present';
   const activeState = options.activeState ?? 'inactive';
   const liveRelease = options.liveRelease ?? '/opt/mointel/releases/abc1234def';
@@ -129,6 +137,7 @@ case "\$1" in
   show)
     case "\$2" in
       *required-env.txt) printf '%s' "${requiredEnv}" ;;
+      *nginx-locations.conf) ${nginxLocations === null ? 'exit 128' : `cat "${stubs.replace(/\\/g, '/')}/nginx-locations.conf"`} ;;
       *) echo "#!/usr/bin/env bash"; echo "exit 0" ;;
     esac
     ;;
@@ -450,5 +459,63 @@ describe('the deploy follower', () => {
     const script = fs.readFileSync(PUSH_RELEASE_SH, 'utf8');
     expect(script).toContain('${DEPLOY_FOLLOW_SECONDS:-1800}');
     expect(script).not.toContain('DEPLOY_FOLLOW_SECONDS:-900');
+  });
+});
+
+describe('the password stays off once it is off', () => {
+  // The server-level lines that A5 (47f6aa24) removed. A release still carrying them would put
+  // Basic Auth back over the whole site on its deploy and lock every tester out.
+  const WITH_PASSWORD =
+    '# shared locations\n\nauth_basic           "Momentum Intelligence Trading Desk";\n' +
+    'auth_basic_user_file /etc/nginx/mointel.htpasswd;\n\nlocation = / {\n    auth_basic off;\n}\n';
+  const WITHOUT_PASSWORD = '# shared locations\n\nlocation = / {\n    auth_basic off;\n}\n';
+
+  it('ships a release whose locations file has no server-level auth_basic (the control)', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, nginxLocations: WITHOUT_PASSWORD });
+
+    const result = run();
+
+    expect(result.status).toBe(0);
+    expect(transcript()).toContain('GIT archive');
+  });
+
+  it('refuses with exit 11 and touches nothing when the release still sets auth_basic at server level', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, nginxLocations: WITH_PASSWORD });
+
+    const result = run();
+
+    expect(result.status).toBe(11);
+    expect(result.output).toContain('auth_basic');
+    expect(transcript()).not.toContain('SSH');
+    expect(transcript()).not.toContain('GIT archive');
+  });
+
+  it('refuses when the locations file cannot be read: could not check is not clean', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, nginxLocations: null });
+
+    const result = run();
+
+    expect(result.status).toBe(11);
+    expect(transcript()).not.toContain('GIT archive');
+  });
+
+  it('ships a password-carrying release only with a stated reason, and says so', () => {
+    writeStubs({ deployedHasPreflight: true, preflightExit: 0, nginxLocations: WITH_PASSWORD });
+
+    const result = run({ BASIC_AUTH_SHIP: 'his word: put the password back' });
+
+    expect(result.status).toBe(0);
+    expect(result.output).toContain('his word: put the password back');
+    expect(transcript()).toContain('GIT archive');
+  });
+
+  it('is not fooled by the per-location "auth_basic off" lines', () => {
+    writeStubs({
+      deployedHasPreflight: true,
+      preflightExit: 0,
+      nginxLocations: '# a comment that says auth_basic "x"\nlocation = /privacy {\n    auth_basic off;\n}\n',
+    });
+
+    expect(run().status).toBe(0);
   });
 });
