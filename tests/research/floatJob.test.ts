@@ -215,7 +215,7 @@ describe('rule I-D: a filed issuance after the count refuses (filed-issuance-reg
     },
   });
 
-  it('takes 424B1/4/5 and 8-K item 3.02 on or after the count date; not resale, registrations, plan shares or other items', () => {
+  it('takes 424B1/2/4/5 and 8-K item 3.02 on or after the count date; not 424B3, registrations, plan shares or other items', () => {
     const data = listing([
       ['424B5', '2026-08-01'],
       ['424B4', '2026-08-20'],
@@ -236,6 +236,7 @@ describe('rule I-D: a filed issuance after the count refuses (filed-issuance-reg
       '424B1 2026-09-01',
       '8-K 2026-08-13',
       '8-K/A 2026-08-14',
+      '424B2 2026-08-05',
     ]);
   });
 

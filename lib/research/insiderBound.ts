@@ -202,7 +202,7 @@ export type FloatCellReason =
   | 'COUNT_TOO_OLD'
   | 'ISSUANCE_FLAGGED'
   | 'ISSUANCE_NOT_CHECKED'
-  /** Rule I-D (filed-issuance-registration-2026-10-06.md): a 424B1/4/5 or an 8-K item 3.02 filed on or after the count's date. */
+  /** Rule I-D (filed-issuance-registration-2026-10-06.md): a 424B1/2/4/5 or an 8-K item 3.02 filed on or after the count's date. */
   | 'ISSUANCE_FILED'
   | 'SPLIT_SINCE_COUNT'
   | 'BOUND_OUT_OF_RANGE'

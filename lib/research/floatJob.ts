@@ -57,7 +57,7 @@ export interface FloatBoundRow {
    */
   announcedSplits: string[] | null;
   /**
-   * Rule I-D: every 424B1/4/5 and 8-K item 3.02 in the submissions listing filed on or after the count's date, so a
+   * Rule I-D: every 424B1/2/4/5 and 8-K item 3.02 in the submissions listing filed on or after the count's date, so a
    * reader at a later D re-applies [count, D]. Empty when there was no count (nothing fetched).
    */
   issuanceFilings: IssuanceFiling[];
@@ -81,8 +81,12 @@ export interface IssuanceFiling {
   items: string;
 }
 
-/** Final prospectuses for an offering or a shelf takedown. NOT 424B2, 424B3 (resale), S-1, S-3 or S-8. */
-const OFFERING_PROSPECTUS = new Set(['424B1', '424B4', '424B5']);
+/**
+ * Final prospectuses for an offering or a shelf takedown. 424B2 added 2026-10-07 (Integration's call, on Commercial read
+ * 21: Rule 424(b)(2) is a primary shelf takedown; b2-count-result-2026-10-07.md found none in 60 windows). NOT 424B3
+ * (open: Commercial reads 424(b)(3) as a catch-all; its filings are being classified before any change), S-1, S-3, S-8.
+ */
+const OFFERING_PROSPECTUS = new Set(['424B1', '424B2', '424B4', '424B5']);
 
 export interface FloatJobDeps {
   getJson: <T>(url: string) => Promise<T>;
