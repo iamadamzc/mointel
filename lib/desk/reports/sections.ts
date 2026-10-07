@@ -16,14 +16,18 @@
 import type { ReportSection } from './contract';
 import type { ReportResearch } from './research';
 
-/** In display order. A name with no research at the checkpoint is NOT YET RESEARCHED. */
+/**
+ * In display order. A name with no research at the checkpoint is NOT RESEARCHED
+ * AT THIS CHECKPOINT. Words: Marketing 3025f5ee, passed by Commercial read 32a
+ * (9acd8adf; read 32, 6879deab, required three of them).
+ */
 export const SECTION_ORDER = [
-  { key: 'FRESH_FOUND', label: 'FRESH NEWS' },
-  { key: 'CONFLICTING', label: 'MIXED SIGNALS' },
-  { key: 'SECONDARY_STALE', label: 'OLDER NEWS' },
-  { key: 'NONE_FOUND', label: 'NO CATALYST FOUND' },
-  { key: 'UNKNOWN', label: 'UNCLEAR' },
-  { key: 'NOT_RESEARCHED', label: 'NOT YET RESEARCHED' },
+  { key: 'FRESH_FOUND', label: 'FRESH NEWS FOUND' },
+  { key: 'CONFLICTING', label: 'SOURCES CONFLICT' },
+  { key: 'SECONDARY_STALE', label: 'OLDER OR SECONDARY NEWS' },
+  { key: 'NONE_FOUND', label: 'NO CATALYST FOUND IN OUR SOURCES' },
+  { key: 'UNKNOWN', label: 'RESEARCH COULD NOT TELL' },
+  { key: 'NOT_RESEARCHED', label: 'NOT RESEARCHED AT THIS CHECKPOINT' },
 ] as const;
 
 export function sectionKey(research: ReportResearch | null | undefined): string {

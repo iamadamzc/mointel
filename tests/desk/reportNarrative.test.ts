@@ -264,7 +264,7 @@ function recapInput(olderHigh: number) {
       ['NAMM', dossier('SECONDARY_STALE', 'results')],
       ['AMOD', dossier('FRESH_FOUND', 'an MOU')],
       ['UNC', dossier('UNKNOWN', null)],
-      // NEW has no dossier: NOT YET RESEARCHED, never "no fresh news found"
+      // NEW has no dossier: NOT RESEARCHED AT THIS CHECKPOINT, never "no fresh news found"
     ]),
     tickers: [levelRow('NXL', 4.9, 10.98)],
     olderHighs: new Map([['NXL', olderHigh]]),

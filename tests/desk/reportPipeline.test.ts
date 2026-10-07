@@ -158,8 +158,8 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
     expect(run.report.sections.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
-      ['FRESH NEWS', ['AAA']],
-      ['NOT YET RESEARCHED', ['BBB']],
+      ['FRESH NEWS FOUND', ['AAA']],
+      ['NOT RESEARCHED AT THIS CHECKPOINT', ['BBB']],
     ]);
     const lines = run.report.sections.flatMap((s) => s.lines);
     expect(lines.find((l) => l.ticker === 'BBB')?.tags?.risk.code).toBe('NOT_RESEARCHED');
@@ -231,7 +231,7 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.report.narrativeFootnotes).toEqual({ noClose: 1, splitExcluded: 1 });
   });
 
-  it('a FRESH_FOUND catalyst the board calls OLD at the checkpoint is filed under OLDER NEWS and not counted fresh (Design, COLA)', async () => {
+  it('a FRESH_FOUND catalyst the board calls OLD at the checkpoint is filed under OLDER OR SECONDARY NEWS and not counted fresh (Design, COLA)', async () => {
     // Researched as fresh, but the event is weeks before the checkpoint and the research does not say it explains the move.
     const db = fixture({ eventTimestamp: '2026-08-20', freshness: 'STALE', plausiblyExplainsMove: false });
     const read = readReportInputs(db, 'INTO_POWER_HOUR', DATE, { min: 1, max: 20 });
@@ -244,8 +244,8 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
     expect(run.report.sections.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
-      ['OLDER NEWS', ['AAA']],
-      ['NOT YET RESEARCHED', ['BBB']],
+      ['OLDER OR SECONDARY NEWS', ['AAA']],
+      ['NOT RESEARCHED AT THIS CHECKPOINT', ['BBB']],
     ]);
   });
 });

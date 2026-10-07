@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { computedSections, sectionKey } from '@/lib/desk/reports/sections';
+import { computedSections, SECTION_ORDER, sectionKey } from '@/lib/desk/reports/sections';
 import type { ReportSection } from '@/lib/desk/reports/contract';
 import type { ReportResearch } from '@/lib/desk/reports/research';
 
@@ -10,7 +10,18 @@ const r = (status: string) => ({ catalyst: { status } }) as unknown as ReportRes
 const line = (ticker: string | null, text = `${ticker} line`) => ({ ticker, text, liveFeed: null });
 
 describe('computed section headings', () => {
-  it('maps each status, and no research, to its group; an unknown status is UNCLEAR', () => {
+  it('the six headings, in order, are the passed words (Marketing 3025f5ee, Commercial read 32a 9acd8adf)', () => {
+    expect(SECTION_ORDER.map((s) => [s.key, s.label])).toEqual([
+      ['FRESH_FOUND', 'FRESH NEWS FOUND'],
+      ['CONFLICTING', 'SOURCES CONFLICT'],
+      ['SECONDARY_STALE', 'OLDER OR SECONDARY NEWS'],
+      ['NONE_FOUND', 'NO CATALYST FOUND IN OUR SOURCES'],
+      ['UNKNOWN', 'RESEARCH COULD NOT TELL'],
+      ['NOT_RESEARCHED', 'NOT RESEARCHED AT THIS CHECKPOINT'],
+    ]);
+  });
+
+  it('maps each status, and no research, to its group; an unknown status is RESEARCH COULD NOT TELL', () => {
     expect(['FRESH_FOUND', 'CONFLICTING', 'SECONDARY_STALE', 'NONE_FOUND', 'UNKNOWN'].map((s) => sectionKey(r(s)))).toEqual([
       'FRESH_FOUND', 'CONFLICTING', 'SECONDARY_STALE', 'NONE_FOUND', 'UNKNOWN',
     ]);
@@ -32,16 +43,16 @@ describe('computed section headings', () => {
     ]);
     const out = computedSections(written, research);
     expect(out.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
-      ['FRESH NEWS', ['LGHL', 'NEWB']],
-      ['OLDER NEWS', ['GOW', 'CMCT']],
-      ['NOT YET RESEARCHED', ['ZZZ']],
+      ['FRESH NEWS FOUND', ['LGHL', 'NEWB']],
+      ['OLDER OR SECONDARY NEWS', ['GOW', 'CMCT']],
+      ['NOT RESEARCHED AT THIS CHECKPOINT', ['ZZZ']],
     ]);
   });
 
   it('a line with no ticker goes last under an EMPTY heading; a report with no lines has no sections', () => {
     const out = computedSections([{ heading: 'x', lines: [line(null, 'One unresolved line.'), line('A')] }], new Map([['A', r('NONE_FOUND')]]));
     expect(out.map((s) => [s.heading, s.lines.map((l) => l.text)])).toEqual([
-      ['NO CATALYST FOUND', ['A line']],
+      ['NO CATALYST FOUND IN OUR SOURCES', ['A line']],
       ['', ['One unresolved line.']],
     ]);
     expect(computedSections([], new Map())).toEqual([]);
