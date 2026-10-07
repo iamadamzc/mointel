@@ -71,3 +71,13 @@ describe('the public pages', () => {
     expect(landing).toContain('href="/terms"');
   });
 });
+
+describe('the landing float sentence', () => {
+  // His ruling 2026-10-07T00:51:24.442Z ("hedge it"), Commercial read 20 (06fc8d28): a flat
+  // "No filing" stood on the word "current" alone; the hedge matches the float page's own.
+  it('is hedged to the filings we know of', () => {
+    const landing = read('app/page.tsx');
+    expect(landing).toContain('No filing we know of reports the current number of tradable shares.');
+    expect(landing).not.toContain('No filing reports the current number of tradable shares.');
+  });
+});

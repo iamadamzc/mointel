@@ -277,7 +277,7 @@ export default function LandingPage() {
               ['Shares outstanding is never called float.', 'A count off a cover page is an upper bound on the float, and it is labelled as one. Every share an insider holds is inside it.'],
               ['Supply is two numbers, not one.', 'What is proven live, and what is filed at most. The gap between them is the desk’s uncertainty, printed as a width. It is never rounded to zero.'],
               ['A count from before a reverse split is never compared to one from after it.', 'A block counts against today’s shares only when the desk knows both were stated on the same basis. Unknown is not yes.'],
-              ['Every float is somebody’s computation. No filing reports the current number of tradable shares.', 'So the desk checks the float it is shown against the filed share count, and refuses the one that cannot be right. The rules are visible and a failure is detectable.'],
+              ['Every float is somebody’s computation. No filing we know of reports the current number of tradable shares.', 'So the desk checks the float it is shown against the filed share count, and refuses the one that cannot be right. The rules are visible and a failure is detectable.'],
             ].map(([title, body]) => (
               <div key={title}>
                 <h3 className="mb-1.5 text-lg font-semibold tracking-tight md:mb-2 md:text-xl">{title}</h3>
