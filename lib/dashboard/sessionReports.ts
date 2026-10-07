@@ -176,7 +176,7 @@ export type ReportOpening =
  * nothing (null), because it never had a narrative to lose.
  */
 export function reportOpening(report: Pick<SessionReport, 'narrative' | 'overall' | 'watchCount'>): ReportOpening | null {
-  if (report.narrative !== undefined) {
+  if (isV6(report)) {
     const text = typeof report.narrative === 'string' ? report.narrative.trim() : '';
     return text ? { kind: 'NARRATIVE', text } : { kind: 'NONE' };
   }
