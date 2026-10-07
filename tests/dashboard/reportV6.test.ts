@@ -87,7 +87,8 @@ describe('a card with no grade', () => {
 
 describe('the float footer', () => {
   it('is a verdict: no number and no em dash', () => {
-    expect(FLOAT_FOOTER).toBe('The desk cannot independently verify a float for any name in this report.');
+    // Commercial read 27 (a4fba766), Marketing confirmed, Integration ruled: says why the report has no float.
+    expect(FLOAT_FOOTER).toBe('This report states no float, and the desk cannot independently verify a float for any name in it.');
     expect(/\d/.test(FLOAT_FOOTER)).toBe(false);
     expect(FLOAT_FOOTER.includes(EM_DASH)).toBe(false);
   });
