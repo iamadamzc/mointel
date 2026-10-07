@@ -147,9 +147,9 @@ export function sectionLabel(heading: string, names: number): string | null {
 }
 
 /**
- * v6's opening block, "THE SESSION" (Design's option B, `docs/Design/report-b-spec.md`; his
- * "an opening with a general narrative of the session", 2026-10-01T01:44:16Z). PLACEHOLDER WORDS,
- * Marketing's to replace: the block's label and the line for a report with no narrative.
+ * v6's opening block, "SUMMARY" (Design's option B, `docs/Design/report-b-spec.md`; his
+ * "an opening with a general narrative of the session", 2026-10-01T01:44:16Z). WORDS:
+ * Marketing 03a32b00, passed by Commercial (read 26, 19117fc3): the label and the line for a report with no narrative.
  *
  * THE NO-NARRATIVE LINE IS TRUE OF BOTH CAUSES. The payload's `narrative` is null when the checker
  * struck it AND when the store held nothing to say (`contract.ts`); the strike list lives in the
@@ -157,8 +157,8 @@ export function sectionLabel(heading: string, names: number): string | null {
  * word either one. It speaks about the report, as EMPTY_SECTION_LINE does, never about the market.
  */
 export const OPENING_WORDS = {
-  label: 'The session',
-  none: 'No session summary in this report.',
+  label: 'Summary',
+  none: 'No summary in this report.',
 } as const;
 
 export type ReportOpening =
