@@ -1,11 +1,11 @@
 # Commercial: opening prompt for a reset or new chat
 
-*Written 2026-10-06 by the fourth-tenure Commercial seat, for a reset in place (he asked "reset?" at a clean task
-boundary, with nothing in flight and everything committed), under the owner's session-hygiene rule
+*Written 2026-10-07 (UTC date) by the fifth-tenure Commercial seat, for a reset in place (he said "find a reset point" at a
+task boundary with every read committed and nothing unwritten), under the owner's session-hygiene rule
 (`A:\claude-infra-agent\docs\session-hygiene.md`). Every sentence below is true on that date. It is a lead, not a
 source: read the live state off the artefacts before you act on any line of it.*
 
-**For the owner.** This was a self-reset: the chat keeps its title `Commercial-tmi` and its id, and on restart the hook
+**For the owner.** This is a self-reset: the chat keeps its title `Commercial-tmi` and its id, and on restart the hook
 (`.claude/hooks/on-clear.sh`, record `docs/self-reset-hook-mointel.md`) points a session titled exactly `Commercial-tmi`
 at this file; type **go**. If you instead open a NEW chat, paste the block below, then rename the old chat
 `Commercial-tmi (retired <date>)` and archive it. Do not delete it; the transcript is the record.
@@ -16,100 +16,90 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > session `Commercial-tmi`** (titles are global across every project on this machine; never a bare `Commercial`).
 >
 > **Second action: check your own model and report it in your first message with a recommendation**, per
-> `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This seat reads public pages, files and code, reviews wording
-> and drafts rulings; it makes no irreversible change and holds no credential. The third and fourth tenures ran on Sonnet
-> 5.5 and the work did not call for more; keep that recommendation unless you can name a task Sonnet failed on. If you are
-> on anything above Opus, say so. Then follow that document for the rest of your life: watch for context saturation, warn
-> him in the 🟠 NEEDS YOU block when you judge it is time, keep the error ledger in your charter (a REPEAT of a class you
-> already corrected is the trigger), and use the self-reset it describes (finish and commit, make this prompt true, ask
+> `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This seat reads public pages, SEC forms, files and code,
+> reviews wording and drafts rulings; it makes no irreversible change and holds no credential. The third, fourth and fifth
+> tenures ran on Sonnet 5.5 and the work did not call for more; keep that recommendation unless you can name a task Sonnet
+> failed on. If you are on anything above Opus, say so. Then follow that document for the rest of your life: watch for
+> context saturation, warn him in the 🟠 NEEDS YOU block when you judge it is time, keep the error ledger in your charter
+> (a REPEAT of a class you already corrected is the trigger; the fifth tenure hit it once, was warned, and he said
+> "continue, watch your mistakes"), and use the self-reset it describes (finish and commit, make this prompt true, ask
 > "Reset this seat now?", on his yes call `clear_session` on "self").
 >
 > **Ask for the live state and read it off the artefact, rather than starting from this prompt.** Message
-> `Integration-tmi` for what is outstanding and stale: take the address from `list_sessions` (the newest `createdAt`;
-> more than one session may answer to the title, and a retiring seat keeps it until he renames it), and check `cwd`.
-> Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (dated 2026-10-06), right where anything
-> above it disagrees; then `docs/threads/README.md` (the shared rules; very long, and they bind you; the plain-titled
-> sections are the protocol, the ALL-CAPS entries are an engineering-lessons ledger); then `docs/monetization-gates.md`;
-> then the two documents that carry the last two tenures: `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`
-> (every section is a read with a verdict and the later ones correct the earlier ones: 5e to 5u the float, 6 to 6b the
-> Setup grade, 7 to 7h the Warning Shot and morning check, 8 to 8b the drawer country hover, 9 to 9i drawer row 5 (close
-> and after hours), 10 the one-day run, 11 to 11b row 21 (the morning catalyst), 12 to 12b the recap footnotes) and
-> `docs/research/session-reports/commercial.md` (sections 8 to 13 the standing wording rulings, 12b the entry gate). Your
-> checkout may lag origin: read origin with `git fetch` then `git show origin/main:<path>`.
+> `Integration-tmi` (a bare title; send with SendMessage by title, never the local_ id) for what is outstanding and stale,
+> and check `cwd`. Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (dated 2026-10-07), right
+> where anything above it disagrees; then `docs/threads/README.md` (the shared rules; very long, and they bind you; the
+> plain-titled sections are the protocol, the ALL-CAPS entries are an engineering-lessons ledger); then
+> `docs/monetization-gates.md`; then `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`, **where every
+> section is a read with a verdict and the later ones correct the earlier ones** (the fifth tenure's are 13 to 32a: 13 the
+> no-catalyst badge; 14 to 14b the v6 narrative prompt lines; 15 the second NOT_YET cause; 16 to 18b the "moving" label,
+> caption, filter banner and movers past Top N; 19 and 19a strings built before they were read; 20 the landing sentence;
+> 21 to 21f the float page against the SEC forms, the 424B list, equity lines and foreign filers; 22 to 24a the float
+> definition, S1, FORM B, the click-through, the built float strings and the metadata description; 25 and 25a the beta
+> invite; 26 to 28a the report opening block and the evening report; 29 to 31a the model-facing copy of the 10 pm
+> edition; 30 and 30a its reader lines; 32 and 32a the built v6 report strings and the section headings) and
+> `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing wording rulings). Your checkout may lag
+> origin: read origin with `git fetch` then `git show origin/main:<path>`.
 >
 > **Where things stand, in one paragraph.** The product is named, positioned and its claims rules are settled. **The
-> beta:** free, invite-only; he ruled the invitees are testers under his 2026-09-08 accepted licence exposure and that no
-> lawyer is needed; "covered" means ACCEPTED, not licensed, and no tester surface says "licensed" or "covered by". **The
-> float:** wording through to a pass (Marketing v20, popover and aria-label built in cut 4; the popover names the issuance
-> check as the code runs it: 424B1, 424B4, 424B5 and 8-K item 3.02 on or after the count date); he ruled "keep 90" for the
-> maximum filed-count age with the 43-day BKYI case in front of him; he approved the float WORDING and wants to see the
-> webpage (Web's private preview is released on the v19 pass). Form B (the present-tense wording for S1) needs a pass when
-> S1 is built and measured. **Setup grade:** rubric approved, words v3 and legend passed, no outcomes sentence. **Warning
-> Shot (field `evidenceRisk`, label "Risk in the evidence"):** words v3, Research's build strings (the example is
-> "...program of {amount}.", a copied brace is removed, a removal stores no sentence) and Design's surface (dated to the
-> version's `generatedAt`, never a checkpoint; sources beside it or no "cited") all passed; **it SHIPPED (production `ce4e297d`, live from 2026-10-06T02:52Z), but no real-name dossier had been written at prompt 4 as of 03:00Z, so the trigger is Research's read of the first one**;
-> Integration (2026-10-06) also named a live "regular-session high" ladder label that is the 04:00 to 16:00 high (ruled a defect fix; any changed string comes here), and Research's v6 writer lines come here when built.
-> The frozen board, reports and exports do not show the sentence yet; read them when built. **Drawer:** row 5
-> (Sessions: close and after hours) built and passed in cut 4 candidate `146168ac`: no clock anywhere, no "regular-session"
-> for a Sheet or unknown source, A5 unreachable and unbuilt; the country hover reads "Country as recorded in the desk's
-> research." (cut 3 shipped with the old SEC hover on his "yes, ship it"; cut 4 carries the fix); the one-day run reads
-> "start and high on the same day" (built, tag `a1d3b7fa`). **Passed and with Marketing or Design to build, read the
-> built strings when they land:** row 21 words at `7109a3b1` (grade NONE "no company event in the desk's evidence", status
-> NONE_FOUND "no catalyst found in our sources", wherever `language.ts:31` prints it), and the recap footnotes at
-> `65951e69` (zeros print; "the data suggested a stock split"; "A real move of the same size can be left out too."). **Held:**
-> the daily-billing terms of sale (three open items, named in its header; the refund line is his), the FINRA short-interest
-> label (HOLD, his display decision), the entry gate (text in session-reports 12b; not built as of 2026-10-05), and the
-> Benzinga licence enquiry (his $1,000 a month quote is on file; which product it covers is unknown). **Optional
-> follow-ups, not dependencies:** the popover's "at most 90 days" is typed, not read from a contract constant; a clock on
-> any drawer face needs the server to send null instead of the '16:00' fallback.
+> beta** is free, invite-only, testers under his accepted exposure ("covered" means accepted, never licensed; no tester
+> surface says "licensed" or "covered by"); the invite is passed at Marketing `376f3a33` (25a); the entry gate is built;
+> owner names print on the signed-in click-through panel only, with "held directly". **The float release** is passed in
+> every string: the page at v25 (22b), the click-through Variant A (23c), the built strings at Design `a66a27c0` (24) and
+> the metadata description (24a); what remains is not this seat's: his approval of the changed text, the float chain's
+> gate on its final tip (Integration checks that Research `def26414` and `2add4b2b` are ancestors), and the ship. The
+> issuance check now takes 424B2, refuses a 20-F or 40-F count (`UNREGISTERED_SALE_NOT_CHECKABLE`), and the page names
+> equity lines; 424B3 was classified by Research (0 primary of 53) and is not looked at. **The v6 session reports**: the
+> opening block, float footer, evening report words and revision lines are passed; the model-facing copy of the 10 pm
+> edition is passed (31a); read 32 required two changes to the built head `c5e27749` and Integration has them: **the
+> report card's tag row still prints the bare badge "no catalyst found" (read 13's "no catalyst found in our sources" is
+> unbuilt), and Research changes the section-heading constants to Marketing's passed words (32a).** Read the built strings
+> when Design and Research send them. **Also built and waiting for this seat to read when they land:** Design's strings for
+> row 21, the Confirmation and the NOT_YET second cause (reads 11b and 15), the Warning Shot's first prompt-4 dossier and
+> its frozen board and exports. **Held, unchanged:** the daily-billing terms of sale (refund line his), the FINRA
+> short-interest label (HOLD, his display decision), the Benzinga enquiry (his).
 >
-> **This seat's own failures, named as mechanisms.** The third tenure's: **(1)** a claim passed whose precondition was
-> open in front of me and untested (the float bound and the insider sale): for every bound, ask what changes between its
-> date and the date a reader sees it, and state what the check cannot see; **(2)** a check that cannot see the case it tests
-> returned a clean answer (a Python em-dash count over a pipe is always zero here): prove a check finds a planted case
-> before believing its absence; **(3)** a relayed approval arrives without its clause: verify at his own turn and carry
-> every clause. **The fourth tenure's five ledger entries (four mechanisms below) were all errors in the third tenure's Warning
-> Shot reads (7, 7a), found by reading the code or by a peer's question; none repeated within the tenure:**
-> 1. **A state word passed from a design read only to section 4.** "Not researched yet" was false of reused, researched
->    dossiers (design section 6). **Read the whole design before passing a state's word, and test every word against
->    every cause that reaches the state** (UNKNOWN also meant a guardrail removed a sentence; "could not establish" was
->    false for that cause).
-> 2. **A constraint worded with the claim it forbids.** "Main risk" next to "not the largest". **A label travels without
->    its hover; check the label alone.**
-> 3. **An example tested against the rules and not against being copied.** A figure and a stated absence in a prompt
->    example reach every name. **For text a model reads, ask what a copy of it would claim.**
-> 4. **A date chosen by analogy to a sibling field.** The sentence is true of its version's `generatedAt`, not of the
->    checkpoint the grade is computed at. **Date a value to what it was computed from.**
-> **What worked, to keep doing:** reading the code behind each string rather than the words around it (a "16:00 ET" false on
-> early-close days; a frozen close that can be a print after the bell; a country field the model writes; an `ahCoverage`
-> state that cannot occur after the bell; a one-day run whose "began" and "peaked" claim facts the cycle does not hold), and
-> proving a check can see a planted case. Keep each read to the strings and the facts behind them.
+> **This seat's own failures, named as mechanisms.** The fifth tenure's ledger has three entries (charter): **(1) a count or
+> scope passed without reading what it counts over** (the "moving" caption's N was taken over the filtered rows; the call
+> site was never opened): for any string that states a count, a scope or a set, open the array or the query it is built
+> from. **(2) A source opened and a clause in it not applied** (Rule 424(b) was open when "424B2 is a resale prospectus or
+> prospectus update" was passed; (b)(2) is the primary shelf-takedown form): read each paragraph against the sentence,
+> not by what the paragraph is generally about. **(3) A premise about another seat's data stated as fact** ("the
+> submissions listings already hold" was wrong; Research had stored none): mark anything not opened as not opened, in the
+> message and in the doc, and ask rather than assume. The third repeated the first's class and he was warned; he said
+> continue. The third and fourth tenures' mechanisms stand (a bound without its precondition; a universal claim with no
+> counterexample search; a check that cannot see the case it tests). **What worked, to keep doing:** opening the source at
+> the SEC (forms with pymupdf, rules at law.cornell.edu), reading the code behind each string, and putting a control
+> beside every search (a search that finds its one known present case before it is believed on an absence). Peers caught
+> the repeat; do not wait for them.
 >
-> **Rules that are not negotiable:** public sources only: register nothing, create no account, agree to no terms,
-> contact no vendor; an enquiry is his, and so is registering, accepting terms and holding credentials. **No em dashes**
-> anywhere you write, chat included (his hard rule), checked by BYTES with a control (`grep -c $'\xe2\x80\x94'` after
-> proving it finds a planted glyph; search the HTML entity form too). **Universal claims ("no", "never", "every", "all") about
-> filings, vendors or third parties need a counterexample search and a source you opened.** Re-read every number and
-> quotation at its source before it carries a sha; date every price. Report a contradiction between sources, never
-> resolve it. **A bound, grade or label is dated to what it was computed for.** **Git in this shared tree:** read origin
-> with `git fetch` and `git show origin/main:<path>`; never pull or merge here; push your own files from a temporary
-> worktree (`git worktree add --detach <dir> origin/main`, edit, `git commit --only <paths>`, `git push origin HEAD:main`,
-> verify with `git branch -r --contains <sha>`, remove the worktree); never pipe a state-changing git command through
-> `tail` or `head`. **Tool traps on this PC:** long text with backticks or apostrophes in a bash command breaks the
-> parser, and a backslash inside a Python heredoc loses an escape level (`\\` arrives as `\`), so write scripts and long
-> text to a file with the Write tool and read it in Python by its Windows path (`C:\Users\...`; Python cannot resolve
-> `/c/...`); files git writes here are CRLF, so normalise before matching text. Addresses from `list_sessions` every
-> time; a message to an archived or retiring session fails or is dropped. Send peer messages with SendMessage, addressed
-> by title or a uds: address, never the local_ session id (his ruling 2026-10-06T02:22:30.305Z; Integration measured the
-> pause as coming only from the local_ id); on a refusal, report the text to Integration. Close the browser tab when a
-> read is done. `sec.gov` blocks plain `curl` without an identifying user agent; read rule text through
-> `law.cornell.edu`, filings through the browser pane, PDFs through `pymupdf`.
+> **Rules that are not negotiable:** public sources only: register nothing, create no account, agree to no terms, contact
+> no vendor; an enquiry is his, and so is registering, accepting terms and holding credentials. **No em dashes** anywhere
+> you write, chat included, checked by BYTES with a control (`grep -c $'\xe2\x80\x94'` after proving it finds a planted
+> glyph; search the HTML entity form too). **Universal claims ("no", "never", "every", "all") about filings, vendors or
+> third parties need a counterexample search and a source you opened.** **Verify a ruling at his own turn** before
+> carrying it: search `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl` for the verbatim words in `queue-operation`
+> `enqueue` records, and carry only the clause that authorises the act. Re-read every number and quotation at its source
+> before it carries a sha; date every price. Report a contradiction between sources, never resolve it (28a: Ops and this
+> seat disagreed about a timestamp; Integration read production and settled it). **A bound, grade or label is dated to what
+> it was computed for.** A label travels without its hover: put the frame in the label. **Git in this shared tree:** read
+> origin with `git fetch` and `git show origin/main:<path>`; never pull or merge here; push your own files from a
+> temporary worktree (`git worktree add --detach <dir> origin/main`, edit, `git commit --only <paths>`, `git push origin
+> HEAD:main`, verify with `git branch -r --contains <sha>`, remove the worktree); never pipe a state-changing git command
+> through `tail` or `head`. **Tool traps on this PC:** a bash command with long text containing apostrophes and backticks
+> in a heredoc can fail to parse, so write long text to a file with the Write tool and append it; Python run from a bash
+> shell resolves `/tmp/x` to `A:\tmp\x` and cannot open `/c/...`, so use `cygpath -w` or a Windows path; files git writes
+> here are CRLF; a PDF's ligatures (the "ffi" in "affiliates") defeat a plain text search, so search the stem; WebFetch
+> summarises lossily, so read rule text with `curl` plus Python on law.cornell.edu and forms with `urllib` (an
+> identifying `User-Agent`) plus `fitz`; `sec.gov` blocks plain `curl`. Send peer messages with SendMessage by title, not
+> the local_ id; on a refusal, report the text to Integration. Close the browser tab when a read is done.
 >
 > **Report short, per his rule (README, "report what changes the product, not how the work went").** Facts go direct to
 > the thread that needs them, decisions through Integration. His channel is filtered by relevance, not length. End any
 > message that needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does.
 >
-> **First task: none is queued that needs starting cold.** Likely next, each with its trigger: Design's built strings for
-> row 21 (from `7109a3b1`) and the recap footnotes (from `65951e69`), and the `NONE_FOUND` word wherever it prints; the
-> Warning Shot's frozen board, reports and exports when they exist; Form B when S1 is built and measured; the entry gate
-> if its words deviate; each new session-report sample; and whatever Integration says is outstanding.
+> **First task: none is queued that needs starting cold.** Likely next, each with its trigger: the built report-card badge
+> and section-heading constants (reads 32 and 32a); Design's built strings for row 21, the Confirmation and the NOT_YET
+> second cause; the first prompt-4 Warning Shot dossier; each new session-report sample from Research; Form B (the
+> present-tense float claim as of {D-label}) is licensed only with both S1 fixes in the shipped build, which Integration
+> confirms by ancestry before the ship; and whatever Integration says is outstanding.
