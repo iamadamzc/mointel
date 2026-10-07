@@ -31,13 +31,14 @@ import {
 } from '../../market/store/researchRepo';
 import type { ResearchAnalysisVersion, ResearchSource } from '../../research/types';
 import type { AssessmentType } from '../schedule';
-import { applyStrikes, checkReport, type CheckerModel, type Strike } from './check';
+import { applyStrikes, checkReport, draftLines, type CheckerModel, type Strike } from './check';
 import { isEveningRecap, type MissedCause, type ReportKind, type ReportPath, type SessionReport } from './contract';
 import { REPORT_NAME_CAP, reportFacts, type ReportFact } from './facts';
 import { catalystFreshFromUtc } from '../../research/freshFrom';
 import { narrativeFacts, narrativeFootnotes, type NarrativeFacts } from './narrative';
 import { reportPath } from './path';
 import { reportResearch, type ReportResearch } from './research';
+import { lineInputKey, narrativeInputKey, planRevision, readEveningEdition } from './revision';
 import { computedSections } from './sections';
 import { reportTags, type ReportTags } from './tags';
 import { readAfterHoursTotals, type AfterHoursTotals } from './totals';
@@ -326,55 +327,119 @@ export async function runReport(
   const read = readReportInputs(db, slot.kind, slot.tradingDate, slot.range, now());
   if (!read.ok) return { status: 'MISSED', cause: read.cause, diagnostics: null };
   const { inputs } = read;
+  const recap = isEveningRecap(slot.kind);
 
-  const writerStart = Date.now();
-  const written = await writeReportV6(
-    {
-      kind: slot.kind,
-      range: slot.range,
-      checkpoint: inputs.checkpoint,
-      facts: inputs.facts,
-      research: inputs.research,
-      paths: inputs.paths,
-      afterHoursTotals: inputs.afterHoursTotals,
-      narrative: inputs.narrative,
-    },
-    models.writer,
-    now,
-  );
-  const writerMs = Date.now() - writerStart;
-  if (!written.ok) return { status: 'MISSED', cause: written.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs: null } };
+  // Keys of each name's and the narrative's writer inputs, stored on EVENING and PREMARKET rows (never shown).
+  const current = new Map<string, { researchVersionId: number | null; inputKey: string }>();
+  if (recap) {
+    for (const fact of inputs.facts) {
+      const researchVersionId = inputs.researchVersions.get(fact.ticker)?.id ?? null;
+      const research = inputs.research.get(fact.ticker) ?? null;
+      const inputKey = lineInputKey(fact, research, inputs.paths.get(fact.ticker) ?? null, researchVersionId);
+      current.set(fact.ticker, { researchVersionId, inputKey });
+    }
+  }
+  const narrativeKey = narrativeInputKey(inputs.narrative);
 
-  const draft: ReportDraft = written.draft;
-  observe?.draft?.(draft);
-  const checkerStart = Date.now();
-  const checked = await checkReport(
-    {
-      kind: slot.kind,
-      range: slot.range,
-      checkpoint: inputs.checkpoint,
-      rows: inputs.facts,
-      draft,
-      research: inputs.research,
-      afterHoursTotals: inputs.afterHoursTotals,
-      // v6: present, so the narrative (id O) is traced against its computed facts.
-      narrative: inputs.narrative,
-    },
-    models.checker,
-    now,
-  );
-  const checkerMs = Date.now() - checkerStart;
-  if (!checked.ok) return { status: 'MISSED', cause: checked.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs } };
+  // The 10 pm edition (`revision.ts`): with a published 8:30 edition, only the CHANGED names are written and checked.
+  const edition = slot.kind === 'PREMARKET' ? readEveningEdition(db, slot.rangeId, slot.tradingDate) : null;
+  const plan = edition ? planRevision(edition, inputs.facts, current, narrativeKey) : null;
+  const toWrite = plan ? inputs.facts.filter((fact) => !plan.carried.has(fact.ticker)) : inputs.facts;
 
-  const diagnostics: ReportDiagnostics = {
-    lines: checked.lines,
-    strikes: checked.strikes.map(({ id, reason, by, detail }) => ({ id, reason, by, detail })),
-    writerMs,
-    checkerMs,
-  };
-  // v6: a struck name keeps its computed card with no prose, so cards = the narrative's covered names.
-  const applied = applyStrikes(draft, checked.strikes, now, { keepStruckCards: true });
-  if (!applied.ok) return { status: 'MISSED', cause: applied.cause, diagnostics };
+  let sections: Array<{ heading: string; lines: Array<{ ticker: string | null; text: string }> }>;
+  let narrative: string | null;
+  let watchCount: number;
+  let diagnostics: ReportDiagnostics;
+  if (plan && toWrite.length === 0 && !plan.narrativeChanged) {
+    // Nothing changed since 8:30: the 8:30 content, with no model call.
+    sections = [];
+    narrative = plan.edition.narrative ?? null;
+    watchCount = 0;
+    diagnostics = { lines: 0, strikes: [], writerMs: null, checkerMs: null };
+  } else {
+    const writerStart = Date.now();
+    const written = await writeReportV6(
+      {
+        kind: slot.kind,
+        range: slot.range,
+        checkpoint: inputs.checkpoint,
+        facts: toWrite,
+        research: inputs.research,
+        paths: inputs.paths,
+        afterHoursTotals: inputs.afterHoursTotals,
+        narrative: inputs.narrative,
+        ...(plan ? { revision: true } : {}),
+      },
+      models.writer,
+      now,
+    );
+    const writerMs = Date.now() - writerStart;
+    if (!written.ok) return { status: 'MISSED', cause: written.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs: null } };
+
+    // An unchanged narrative keeps its 8:30 words, so the writer's is neither checked nor used.
+    const draft: ReportDraft = plan && !plan.narrativeChanged ? { ...written.draft, overall: null } : written.draft;
+    observe?.draft?.(draft);
+    let strikes: Strike[] = [];
+    let checkedLines = 0;
+    let checkerMs: number | null = null;
+    if (draftLines(draft).length > 0) {
+      const checkerStart = Date.now();
+      const checked = await checkReport(
+        {
+          kind: slot.kind,
+          range: slot.range,
+          checkpoint: inputs.checkpoint,
+          // Every row, carried names included: a changed line may name one, and that is no uncovered ticker.
+          rows: inputs.facts,
+          draft,
+          research: inputs.research,
+          afterHoursTotals: inputs.afterHoursTotals,
+          // v6: present, so the narrative (id O) is traced against its computed facts.
+          narrative: inputs.narrative,
+        },
+        models.checker,
+        now,
+      );
+      checkerMs = Date.now() - checkerStart;
+      if (!checked.ok) return { status: 'MISSED', cause: checked.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs } };
+      strikes = checked.strikes;
+      checkedLines = checked.lines;
+    }
+
+    diagnostics = {
+      lines: checkedLines,
+      strikes: strikes.map(({ id, reason, by, detail }) => ({ id, reason, by, detail })),
+      writerMs,
+      checkerMs,
+    };
+    // v6: a struck name keeps its computed card with no prose, so cards = the narrative's covered names.
+    const applied = applyStrikes(draft, strikes, now, {
+      keepStruckCards: true,
+      linesElsewhere: plan !== null && plan.carried.size > 0,
+    });
+    if (!applied.ok) return { status: 'MISSED', cause: applied.cause, diagnostics };
+    sections = applied.sections;
+    narrative = plan && !plan.narrativeChanged ? (plan.edition.narrative ?? null) : applied.overall;
+    watchCount = applied.watchCount;
+  }
+
+  if (plan) {
+    // One edition: in 22:00 rank order, each unchanged name's 8:30 line VERBATIM, each changed name's new line,
+    // then any line with no ticker. Regrouped under computed headings below, as every report is.
+    const lines = sections.flatMap((section) => section.lines);
+    const rewritten = new Map(lines.filter((line) => line.ticker !== null).map((line) => [line.ticker!, line]));
+    const merged = [
+      ...inputs.facts.flatMap((fact) => {
+        const carried = plan.carried.get(fact.ticker);
+        if (carried) return [{ ticker: fact.ticker, text: carried.text }];
+        const line = rewritten.get(fact.ticker);
+        return line ? [line] : [];
+      }),
+      ...lines.filter((line) => line.ticker === null),
+    ];
+    sections = [{ heading: '', lines: merged }];
+    watchCount = new Set(merged.map((line) => line.ticker).filter((ticker) => ticker !== null)).size;
+  }
 
   const facts = new Map(inputs.facts.map((fact) => [fact.ticker, fact]));
   const publishedAt = now();
@@ -391,7 +456,7 @@ export async function runReport(
     // v6 fix (a): the surviving lines regrouped under COMPUTED headings (`sections.ts`),
     // after the strikes, so the checker's line ids never moved.
     sections: computedSections(
-      applied.sections.map((section) => ({
+      sections.map((section) => ({
         heading: section.heading,
         lines: section.lines.map((line) => ({
           ticker: line.ticker,
@@ -403,8 +468,11 @@ export async function runReport(
                 company: inputs.research.get(line.ticker)?.company ?? null,
                 path: inputs.paths.get(line.ticker) ?? null,
                 tags: inputs.tags.get(line.ticker) ?? null,
-                ...(isEveningRecap(slot.kind)
-                  ? { researchVersionId: inputs.researchVersions.get(line.ticker)?.id ?? null }
+                ...(recap
+                  ? {
+                      researchVersionId: current.get(line.ticker)?.researchVersionId ?? null,
+                      ...(current.has(line.ticker) ? { inputKey: current.get(line.ticker)!.inputKey } : {}),
+                    }
                   : {}),
                 ...(slot.kind === 'EVENING'
                   ? { researchUpdatedAt: inputs.researchVersions.get(line.ticker)?.updatedAt ?? null }
@@ -414,11 +482,19 @@ export async function runReport(
       })),
       inputs.research,
     ),
-    watchCount: applied.watchCount,
+    watchCount,
     // v6: the opening narrative REPLACES overall (contract.ts); the checker read it as id O.
-    narrative: applied.overall,
+    narrative,
     // Step 4: G and the split count, computed, beside the narrative and independent of its strike.
     narrativeFootnotes: narrativeFootnotes(inputs.narrative),
+    ...(recap ? { narrativeKey } : {}),
+    ...(slot.kind === 'PREMARKET'
+      ? {
+          revisionOf: plan
+            ? { publishedAt: plan.edition.publishedAt, changedTickers: plan.changedTickers, narrativeChanged: plan.narrativeChanged }
+            : null,
+        }
+      : {}),
   };
   return { status: 'PUBLISHED', report, diagnostics };
 }

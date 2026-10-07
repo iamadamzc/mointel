@@ -560,7 +560,7 @@ const CHECKER_SYSTEM = [
  */
 const KIND_MOMENT: Record<ReportKind, string> = {
   PREMARKET:
-    'the premarket briefing, built from the 22:00 recap after the after-hours session closed, for the premarket that follows; its percent changes are the after-hours move',
+    'the evening report as revised at 22:00, built from the 22:00 recap after the after-hours session closed at 20:00; its percent changes are the after-hours move',
   INTO_RTH: 'the briefing into the regular-session open, built at 09:25 for the 09:30 open',
   INTO_POWER_HOUR:
     'the briefing into power hour, built at 14:30 for the last hour of the regular session (15:00–16:00)',
@@ -597,9 +597,10 @@ const CHECKER_SYSTEM_V5 = [
 /**
  * v6's checker prompt version: P1 (the stability probe's passing arm,
  * `docs/research/reports-v6/probe-2026-10-02/result.md`, approved path
- * `design.md:98`) plus the narrative's model-read rules.
+ * `design.md:98`) plus the narrative's model-read rules. 7: the EVENING moment
+ * and PREMARKET's as the evening report's 10 pm edition (KIND_MOMENT).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 6;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 7;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -798,12 +799,20 @@ export function applyStrikes(
    * run v6). A line struck for naming a ticker the report does not cover
    * (NO_ROW_FOR_TICKER) is NOT kept: that would invent a card.
    */
-  options: { keepStruckCards?: boolean } = {},
+  options: {
+    keepStruckCards?: boolean;
+    /**
+     * The 10 pm edition (`revision.ts`): carried 8:30 lines make the report
+     * non-empty whatever this draft holds, so an all-struck or empty draft is
+     * not ALL_STRUCK.
+     */
+    linesElsewhere?: boolean;
+  } = {},
 ): CheckedReport {
   const struck = new Set<string>(strikes.map((strike) => strike.id));
   const uncovered = new Set<string>(strikes.filter((strike) => strike.reason === 'NO_ROW_FOR_TICKER').map((strike) => strike.id));
   const body = draftLines(draft).filter((line) => line.id !== 'O');
-  if (body.every((line) => struck.has(line.id))) {
+  if (!options.linesElsewhere && body.every((line) => struck.has(line.id))) {
     return { ok: false, cause: { kind: 'ALL_STRUCK', at: now().toISOString() } };
   }
   const sections = draft.sections.map((section, s) => ({

@@ -35,7 +35,7 @@ describe('the v5 models, built one way for the runner and every harness', () => 
 });
 
 describe('the v6 models', () => {
-  it('the writer asks for the v6 reply (narrative and lines, no headings), writer prompt 9 and checker prompt 6', async () => {
+  it('the writer asks for the v6 reply (narrative and lines, no headings), writer prompt 10 and checker prompt 7', async () => {
     const sent: Array<Record<string, unknown>> = [];
     const fetchImpl = (async (_url: string, init?: RequestInit) => {
       sent.push(JSON.parse(String(init?.body)));
@@ -50,8 +50,8 @@ describe('the v6 models', () => {
     expect(w!.text.format.name).toBe('report_draft_v6');
     expect(w!.text.format.schema.required).toEqual(['narrative', 'lines']);
     expect(JSON.stringify(w!.text.format.schema)).not.toMatch(/heading|overall/);
-    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '9' });
-    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '6' });
+    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '10' });
+    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '7' });
   });
 
   it('a reply the v6 schema admits is a reply parseDraftV6 accepts', () => {

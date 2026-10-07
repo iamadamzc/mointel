@@ -21,8 +21,10 @@ import type { ReportTags } from './tags';
 
 /**
  * EVENING is the 8:30 pm after-hours report from the 20:05 checkpoint (his
- * ruling "b", 2026-10-07T02:33:24.356Z). PREMARKET is the 22:00 recap's report;
- * its reframe as the evening report's 10 pm edition is a later commit.
+ * ruling "b", 2026-10-07T02:33:24.356Z). PREMARKET is the 22:00 recap's report,
+ * stored under its own kind and shown as the EVENING report's 10 pm edition
+ * (his "same report, just edited with new information", 1b67a4e0): it has no
+ * slot of its own, and the API files it under the same date's EVENING slot.
  */
 export type ReportKind = 'PREMARKET' | 'INTO_RTH' | 'INTO_POWER_HOUR' | 'AFTER_HOURS' | 'EVENING';
 
@@ -101,15 +103,38 @@ export interface ReportLine {
    */
   researchVersionId?: number | null;
   /**
+   * EVENING and PREMARKET, COMPUTED, never shown: a key of the writer's inputs for
+   * this name (`revision.ts` `lineInputKey`). The 10 pm edition carries a line
+   * verbatim only when this and `researchVersionId` match the 8:30 edition's.
+   */
+  inputKey?: string;
+  /**
    * EVENING, COMPUTED (Integration's ruling (iii), print condition Commercial's):
    * set only when the line uses a research version NEWER (by id) than the one
    * the checkpoint captured, read at the write moment; the value is that
-   * version's `generated_at` (ISO), which the surface prints as "research
-   * updated at h:mm". Null when the line uses the checkpoint's version. Absent
-   * on other kinds and on rows before EVENING.
+   * version's `generated_at` (ISO), which the surface prints in Marketing's
+   * passed words (2e386dc7, Commercial 28): "Research written again at {time}
+   * ET, after this checkpoint." Null when the line uses the checkpoint's
+   * version. Absent on other kinds, including the 10 pm edition (PREMARKET),
+   * whose lines all use what its own checkpoint captured, so those words would
+   * be false there; and absent on rows before EVENING.
    */
   researchUpdatedAt?: string | null;
   text: string;
+}
+
+/**
+ * The 10 pm edition (PREMARKET) of the evening report: which 8:30 edition it
+ * revises and what changed. Null on a 10 pm edition written in full because no
+ * 8:30 edition was published.
+ */
+export interface ReportRevision {
+  /** The 8:30 edition's `publishedAt`. */
+  publishedAt: string;
+  /** Names re-written and re-checked; every other name's line is the 8:30 line, verbatim. */
+  changedTickers: string[];
+  /** Whether the narrative was re-written; false means the 8:30 narrative, verbatim. */
+  narrativeChanged: boolean;
 }
 
 export interface ReportSection {
@@ -224,6 +249,10 @@ export interface SessionReport {
    * them, Design places them. Absent on rows before step 4.
    */
   narrativeFootnotes?: NarrativeFootnotes | null;
+  /** EVENING and PREMARKET, COMPUTED, never shown: a key of the narrative's inputs (`revision.ts`). */
+  narrativeKey?: string;
+  /** PREMARKET only, the 10 pm edition: what it revises (`ReportRevision`). Absent on other kinds. */
+  revisionOf?: ReportRevision | null;
 }
 
 export interface NarrativeFootnotes {

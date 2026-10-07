@@ -28,19 +28,17 @@ function published(kind: SessionReport['kind'], tradingDate: string): StoredRepo
 }
 
 describe('the report slots, from the latest recap', () => {
-  it('last night’s after-hours, evening and premarket, then today’s four, each with a 30-minute grace', () => {
+  it('last night’s after-hours and evening, then today’s four, each with a 30-minute grace; no premarket slot (its row is the 10 pm edition)', () => {
     const slots = reportSlots(RECAP, RANGES);
     expect(slots.map((s) => `${s.kind} ${s.tradingDate} ${s.scheduledFor}`)).toEqual([
       'AFTER_HOURS 2026-09-28 2026-09-28T20:00:00.000Z',
       'EVENING 2026-09-28 2026-09-29T00:05:00.000Z', // 20:05 ET, the AFTER_HOURS_CLOSE checkpoint
-      'PREMARKET 2026-09-28 2026-09-29T02:00:00.000Z',
       'INTO_RTH 2026-09-29 2026-09-29T13:25:00.000Z',
       'INTO_POWER_HOUR 2026-09-29 2026-09-29T18:30:00.000Z',
       'AFTER_HOURS 2026-09-29 2026-09-29T20:00:00.000Z',
       'EVENING 2026-09-29 2026-09-30T00:05:00.000Z',
     ]);
     for (const s of slots) expect(Date.parse(s.relevantUntil) - Date.parse(s.scheduledFor)).toBe(REPORT_GRACE_MS);
-    expect(slots[2]!.targetTradingDate).toBe('2026-09-29');
     expect(slots[1]!.targetTradingDate).toBeNull();
   });
 
@@ -65,18 +63,38 @@ describe('the payload', () => {
       missed_cause: JSON.stringify({ kind: 'WRITER_FAILED', at: '2026-09-29T13:26:00.000Z' }),
     };
     const other = { ...published('INTO_POWER_HOUR', '2026-09-29'), range_key: '20-50' };
-    const payload = buildReportsPayload(RECAP, [published('PREMARKET', '2026-09-28'), missed, other], RANGES, '1-20');
-    expect(payload.reports.map((r) => r.kind)).toEqual(['PREMARKET']);
+    const payload = buildReportsPayload(RECAP, [published('AFTER_HOURS', '2026-09-28'), missed, other], RANGES, '1-20');
+    expect(payload.reports.map((r) => r.kind)).toEqual(['AFTER_HOURS']);
     expect(payload.missedCauses).toEqual({ 'INTO_RTH:1-20:2026-09-29': { kind: 'WRITER_FAILED', at: '2026-09-29T13:26:00.000Z' } });
     expect(payload.defaultRangeId).toBe('1-20');
   });
 
-  it('the premarket report lands in the slot Design’s timeline shows (the keys agree)', () => {
+  it('a published 10 pm edition (a PREMARKET row) is filed under the same date’s EVENING slot, which Design’s timeline shows', () => {
     const payload = buildReportsPayload(RECAP, [published('PREMARKET', '2026-09-28')], RANGES, '1-20');
+    expect(payload.reports.map((r) => `${r.kind} ${r.tradingDate}`)).toEqual(['EVENING 2026-09-28']);
     const view = reportTimeline(payload, '1-20', Date.parse('2026-09-29T03:00:00.000Z'));
-    expect(view.current?.slot.kind).toBe('PREMARKET');
+    expect(view.current?.slot.kind).toBe('EVENING');
     expect(view.current?.state).toBe('PUBLISHED');
     expect(view.current?.report?.watchCount).toBe(1);
+  });
+
+  it('with both editions, the slot shows the 10 pm one and keeps the 8:30 one as superseded', () => {
+    const first = published('EVENING', '2026-09-28');
+    first.payload = JSON.stringify({ ...JSON.parse(first.payload!), publishedAt: '2026-09-29T00:21:00.000Z' });
+    const payload = buildReportsPayload(RECAP, [first, published('PREMARKET', '2026-09-28')], RANGES, '1-20');
+    const view = reportTimeline(payload, '1-20', Date.parse('2026-09-29T03:00:00.000Z'));
+    expect(view.current?.report?.publishedAt).toBe('2026-09-29T02:01:30.000Z');
+    expect(view.current?.superseded.map((r) => r.publishedAt)).toEqual(['2026-09-29T00:21:00.000Z']);
+  });
+
+  it('a missed 10 pm edition shows nothing: the 8:30 edition stands and its slot gets no cause', () => {
+    const missed: StoredReportRow = {
+      kind: 'PREMARKET', range_key: '1-20', trading_date: '2026-09-28', status: 'MISSED', payload: null,
+      missed_cause: JSON.stringify({ kind: 'WRITER_FAILED', at: '2026-09-29T02:01:00.000Z' }),
+    };
+    const payload = buildReportsPayload(RECAP, [published('EVENING', '2026-09-28'), missed], RANGES, '1-20');
+    expect(payload.reports.map((r) => r.kind)).toEqual(['EVENING']);
+    expect(payload.missedCauses).toEqual({});
   });
 });
 
@@ -103,7 +121,7 @@ describe('reading the store', () => {
 
   it('with the table, the latest recap at or before now decides the slots, and stored reports fill them', () => {
     const payload = readReportsPayload(store(true), new Date('2026-09-29T03:00:00Z'), RANGES, '1-20');
-    expect(payload?.slots).toHaveLength(7);
+    expect(payload?.slots).toHaveLength(6);
     expect(payload?.reports).toHaveLength(1);
     // Before that recap was scheduled, there is none to use.
     expect(readReportsPayload(store(true), new Date('2026-09-29T01:00:00Z'), RANGES, '1-20')?.slots).toEqual([]);

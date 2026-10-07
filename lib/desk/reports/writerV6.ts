@@ -38,10 +38,16 @@ import {
 import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 
 /** Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 9;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 10;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
+  /**
+   * The 10 pm edition (`revision.ts`): `facts` holds only the CHANGED names, the
+   * sheet says the others keep their 8:30 lines, and a reply with no lines is
+   * accepted (nothing changed but the narrative).
+   */
+  revision?: boolean;
 }
 
 /* ------------------------------------------------------------- narrative */
@@ -234,7 +240,7 @@ export function factSheetV6(fact: ReportFact, research: ReportResearch | null, p
 /* ----------------------------------------------------------------- prompt */
 
 const KIND_FRAME_V6: Record<ReportKind, string> = {
-  PREMARKET: 'Into the premarket, read the next morning: a recap of the regular session that closed, and the names the desk carries into the next one.',
+  PREMARKET: 'The evening report, revised at 22:00: a recap of the regular session that closed and the after-hours session that followed, and the names the desk carries into the next one.',
   INTO_RTH: 'Into the open: the session so far, and the catalysts our sources found.',
   INTO_POWER_HOUR: 'Into power hour: the session so far going into the last hour, and the catalysts our sources found.',
   AFTER_HOURS: 'Into after-hours: the regular session has closed; the catalysts our sources found.',
@@ -276,9 +282,12 @@ export const SYSTEM_V6 = [
 
 export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
   const time = etClock(new Date(input.checkpoint.completedAt)).slice(0, 5);
+  const none = input.revision
+    ? 'No name changed since the 8:30 pm edition: return "lines": [].'
+    : 'No names ranked in this range at this checkpoint.';
   const sheets =
     input.facts.length === 0
-      ? 'No names ranked in this range at this checkpoint.'
+      ? none
       : input.facts
           .map((fact) => factSheetV6(fact, input.research.get(fact.ticker) ?? null, input.paths.get(fact.ticker) ?? null).join('\n  '))
           .join('\n\n');
@@ -289,7 +298,9 @@ export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
     'NARRATIVE FACTS (word these and nothing else):',
     `  ${narrativeSheet(input.narrative).join('\n  ')}`,
     '',
-    'NAMES:',
+    input.revision
+      ? 'NAMES (only the names whose facts changed since the 8:30 pm edition; every other name keeps its 8:30 line and is not shown here):'
+      : 'NAMES:',
     sheets,
   ].join('\n');
   return { system: SYSTEM_V6, user };
@@ -298,7 +309,10 @@ export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
 /* ------------------------------------------------------------------ parse */
 
 /** A v6 reply as a draft: the narrative in `overall` (line id O), the lines as ONE section with no heading. */
-export function parseDraftV6(raw: string): { ok: true; draft: ReportDraft } | { ok: false; error: string } {
+export function parseDraftV6(
+  raw: string,
+  options: { allowNoLines?: boolean } = {},
+): { ok: true; draft: ReportDraft } | { ok: false; error: string } {
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw.trim().replace(/^```(?:json)?\s*|\s*```$/g, ''));
@@ -308,7 +322,7 @@ export function parseDraftV6(raw: string): { ok: true; draft: ReportDraft } | { 
   if (!isRecord(parsed)) return { ok: false, error: 'not an object' };
   const narrative = parsed.narrative === undefined || parsed.narrative === null ? null : parsed.narrative;
   if (narrative !== null && !nonEmpty(narrative)) return { ok: false, error: 'bad narrative' };
-  if (!Array.isArray(parsed.lines) || parsed.lines.length === 0) return { ok: false, error: 'no lines' };
+  if (!Array.isArray(parsed.lines) || (parsed.lines.length === 0 && !options.allowNoLines)) return { ok: false, error: 'no lines' };
   const lines: ReportDraft['sections'][number]['lines'] = [];
   for (const line of parsed.lines) {
     if (!isRecord(line) || !nonEmpty(line.text)) return { ok: false, error: 'line without text' };
@@ -329,7 +343,7 @@ export async function writeReportV6(input: WriterInputV6, model: ReportModel, no
   } catch {
     return { ok: false, cause: { kind: 'WRITER_FAILED', at: now().toISOString() } };
   }
-  const parsed = parseDraftV6(raw);
+  const parsed = parseDraftV6(raw, { allowNoLines: input.revision === true });
   if (!parsed.ok) return { ok: false, cause: { kind: 'WRITER_FAILED', at: now().toISOString() } };
   return { ok: true, draft: parsed.draft };
 }

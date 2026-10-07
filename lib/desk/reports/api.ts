@@ -12,9 +12,10 @@
  *
  * THE SLOTS COME FROM THE STORE, NOT A CALENDAR. The latest 22:00 recap at or
  * before now names the session it prepares (`target_trading_date`), which is
- * exactly the desk's rolled trading date. From it: last night's premarket,
- * after-hours and evening slots, and today's into-RTH, into-power-hour,
- * after-hours and evening.
+ * exactly the desk's rolled trading date. From it: last night's after-hours
+ * and evening slots, and today's into-RTH, into-power-hour, after-hours and
+ * evening. The 22:00 report is the evening report's 10 pm edition, in the
+ * evening slot.
  */
 
 import { etWallClockToUtc } from '../../market/session';
@@ -62,8 +63,8 @@ export function reportSlots(recap: RecapRef | null, ranges: readonly ReportRange
   for (const range of ranges) {
     out.push(slot('AFTER_HOURS', range.id, last, null, etWallClockToUtc(last, 16, 0)));
     // EVENING, like every slot, is due at its checkpoint (20:05); it is written from 20:20 and serves by 20:30.
+    // Its 10 pm edition is the PREMARKET row, which has no slot of its own (buildReportsPayload).
     out.push(slot('EVENING', range.id, last, null, etWallClockToUtc(last, 20, 5)));
-    out.push(slot('PREMARKET', range.id, last, today, new Date(recap.scheduledFor)));
     out.push(slot('INTO_RTH', range.id, today, null, etWallClockToUtc(today, 9, 25)));
     out.push(slot('INTO_POWER_HOUR', range.id, today, null, etWallClockToUtc(today, 14, 30)));
     out.push(slot('AFTER_HOURS', range.id, today, null, etWallClockToUtc(today, 16, 0)));
@@ -85,6 +86,12 @@ function parse<T>(text: string | null): T | null {
  * The payload, from the latest recap and the stored rows for its two dates.
  * A PUBLISHED row becomes a report; a MISSED row becomes the cause for its
  * slot. A row for a range or kind no longer configured is left out.
+ *
+ * A PREMARKET row is the evening report's 10 pm edition (his "same report,
+ * just edited with new information"): a PUBLISHED one is filed under the same
+ * date's EVENING slot, where the window shows the newest edition and keeps the
+ * 8:30 one as superseded; a MISSED one shows nothing, so the 8:30 edition
+ * stands (its cause stays in the row). Rows from before EVENING fold the same way.
  */
 export function buildReportsPayload(
   recap: RecapRef | null,
@@ -98,11 +105,14 @@ export function buildReportsPayload(
   const missedCauses: Record<string, MissedCause> = {};
   for (const row of rows) {
     if (!KINDS.includes(row.kind as ReportKind)) continue;
-    const key = reportKey({ kind: row.kind as ReportKind, rangeId: row.range_key, tradingDate: row.trading_date });
+    const edition = row.kind === 'PREMARKET';
+    if (edition && row.status !== 'PUBLISHED') continue;
+    const kind: ReportKind = edition ? 'EVENING' : (row.kind as ReportKind);
+    const key = reportKey({ kind, rangeId: row.range_key, tradingDate: row.trading_date });
     if (!wanted.has(key)) continue;
     if (row.status === 'PUBLISHED') {
       const report = parse<SessionReport>(row.payload);
-      if (report) reports.push(report);
+      if (report) reports.push(edition ? { ...report, kind } : report);
     } else if (row.status === 'MISSED') {
       const cause = parse<MissedCause>(row.missed_cause);
       if (cause) missedCauses[key] = cause;
