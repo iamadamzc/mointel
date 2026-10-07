@@ -51,6 +51,7 @@ const REASONS: FloatBoundReason[] = [
   'SPLIT_SINCE_COUNT',
   'BOUND_OUT_OF_RANGE',
   'FILINGS_NOT_REREAD',
+  'UNREGISTERED_SALE_NOT_CHECKABLE',
 ];
 /** Causes that share another's words by ruling, each with the cause whose words it takes. */
 const SHARED_BY_RULING: Partial<Record<FloatBoundReason, FloatBoundReason>> = {
@@ -66,42 +67,44 @@ describe('the bound face', () => {
     expect(v.date).toBe('9/22');
   });
 
-  it('words the claim as dated to the count, with the sales caveat, per v16', () => {
-    const text = floatCellView(produced()).paragraphs.join(' ');
-    expect(text).toContain('No more than 12.4M shares as of Sep 22, 2026, when the filings line up.');
+  it("words the claim as dated to the board's date (v25's {D-label}), with the definition and the unfiled-sale caveat", () => {
+    const text = floatCellView(produced(), { dateShown: '2026-10-06' }).paragraphs.join(' ');
+    expect(text).toContain(
+      'Taking float as shares outstanding less insider holdings, it is no more than 12.4M shares as of Oct 6, 2026, when the filings line up.',
+    );
+    expect(text).toContain('counting any sale dated on or before Oct 6, 2026 that was filed by Oct 5, 2026.');
     expect(text).toContain('Filings read on Oct 5, 2026.');
-    expect(text).toContain('Insider sales after the count date are not reflected.');
+    expect(text).toContain('A sale not yet filed cannot be seen.');
+    expect(text).not.toMatch(/holdings dated at or before the count|Insider sales after the count date|available to trade/);
   });
 
-  it('measures the 90 days from the date shown on the live board, printed, and from the checkpoint on reports and exports', () => {
-    expect(floatCellView(produced(), { dateShown: '2026-10-06' }).paragraphs.join(' ')).toContain(
-      'at most 90 days before the date shown (Oct 6, 2026)',
-    );
-    expect(floatCellView(produced()).paragraphs.join(' ')).toContain('at most 90 days before the checkpoint');
+  it('measures the 90 days from the date shown on the live board, and from the checkpoint on reports and exports', () => {
+    expect(floatCellView(produced(), { dateShown: '2026-10-06' }).paragraphs.join(' ')).toContain('at most 90 days before Oct 6, 2026,');
+    expect(floatCellView(produced()).paragraphs.join(' ')).toContain('at most 90 days before the checkpoint,');
     // A malformed board date must not print a half sentence.
-    expect(floatCellView(produced(), { dateShown: 'soon' }).paragraphs.join(' ')).toContain('before the checkpoint');
+    expect(floatCellView(produced(), { dateShown: 'soon' }).paragraphs.join(' ')).toContain('before the checkpoint,');
   });
 
-  it('carries the date in the accessible name, as Marketing worded it', () => {
-    expect(floatCellView(produced()).ariaLabel).toBe(
-      'no more than 12.4M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up; details on click',
+  it('carries both dates in the accessible name, as Marketing worded it (v25)', () => {
+    expect(floatCellView(produced(), { dateShown: '2026-10-06' }).ariaLabel).toBe(
+      'no more than 12.4M shares as of Oct 6, 2026, computed from the share count dated Sep 22, 2026 and insider holdings filed through Oct 5, 2026, when the filings line up; details on click',
     );
   });
 
-  it('the popover states the condition and the 90-day rule from the checkpoint', () => {
-    const text = floatCellView(produced()).paragraphs.join(' ');
-    expect(text).toContain("Computed from the company's filed share count, less insider holdings filed on Sep 18, 2026, Aug 30, 2026.");
-    expect(text).toContain('a filed count dated Sep 22, 2026, at most 90 days before the checkpoint');
+  it("the popover's first paragraph is v25's, verbatim", () => {
+    expect(floatCellView(produced(), { dateShown: '2026-10-06' }).paragraphs[0]).toBe(
+      "Taking float as shares outstanding less insider holdings, it is no more than 12.4M shares as of Oct 6, 2026, when the filings line up. Computed from the company's filed share count, less insider holdings as filed through Oct 5, 2026, counting any sale dated on or before Oct 6, 2026 that was filed by Oct 5, 2026. Filings read on Oct 5, 2026.",
+    );
   });
 
-  it("names the filings check in the lined-up clause, in Marketing's v20 words (Commercial passed v19)", () => {
-    expect(floatCellView(produced()).paragraphs[1]).toBe(
-      'Lined up means: a filed count dated Sep 22, 2026, at most 90 days before the checkpoint, no share issuance the desk has flagged, no final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date, no share split since the count, and holdings dated at or before the count. Insider sales after the count date are not reflected.',
+  it("names the filings check in the lined-up clause, in Marketing's v25 words, 424B2 included", () => {
+    expect(floatCellView(produced(), { dateShown: '2026-10-06' }).paragraphs[1]).toBe(
+      'Lined up means: a filed count dated Sep 22, 2026, at most 90 days before Oct 6, 2026, no share issuance the desk has flagged, no final prospectus for an offering of securities (SEC form 424B1, 424B2, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date, and no share split since the count. A sale not yet filed cannot be seen.',
     );
   });
 
   it('never prints a bare number: a produced state with no usable date or number reads Cannot verify', () => {
-    for (const bad of [produced({ countAsOf: null }), produced({ bound: null }), produced({ bound: 0 })]) {
+    for (const bad of [produced({ countAsOf: null }), produced({ bound: null }), produced({ bound: 0 }), produced({ filingsReadOn: '' })]) {
       const v = floatCellView(bad);
       expect(v.kind).toBe('cannotVerify');
       expect(v.date).toBeNull();
@@ -117,16 +120,16 @@ describe('the other three faces, one string per stored cause', () => {
     expect(floatCellView(refused('UNKNOWN', 'NO_FILED_COUNT')).face).toBe('Unknown');
   });
 
-  it('Cannot verify has six causes; a too-old count names its date and an unread filing names the read date', () => {
+  it('Cannot verify has seven causes; a too-old count names its date and an unread filing names the read date', () => {
     const old = floatCellView(refused('CANNOT_VERIFY', 'COUNT_TOO_OLD', { countAsOf: '2026-05-01' }));
     expect(old.face).toBe('Cannot verify');
     expect(old.paragraphs[0]).toBe('Cannot verify: the latest filed share count is from May 1, 2026, too old to rely on.');
     const seen = new Set(
-      (['COUNT_TOO_OLD', 'ISSUANCE_FLAGGED', 'SPLIT_SINCE_COUNT', 'ISSUANCE_NOT_CHECKED', 'BOUND_OUT_OF_RANGE', 'FILINGS_NOT_REREAD'] as const).map(
+      (['COUNT_TOO_OLD', 'ISSUANCE_FLAGGED', 'SPLIT_SINCE_COUNT', 'ISSUANCE_NOT_CHECKED', 'BOUND_OUT_OF_RANGE', 'FILINGS_NOT_REREAD', 'UNREGISTERED_SALE_NOT_CHECKABLE'] as const).map(
         (r) => floatCellView(refused('CANNOT_VERIFY', r, { countAsOf: '2026-05-01', filingsReadOn: '2026-09-30' })).paragraphs[0],
       ),
     );
-    expect(seen.size).toBe(6);
+    expect(seen.size).toBe(7);
     expect(floatCellView(refused('CANNOT_VERIFY', 'FILINGS_NOT_REREAD', { filingsReadOn: '2026-09-30' })).paragraphs[0]).toBe(
       "Cannot verify: the desk has not read this company's filings since Sep 30, 2026.",
     );
@@ -149,12 +152,12 @@ describe('the other three faces, one string per stored cause', () => {
     for (const s of strings) expect(s).not.toBe('Cannot verify.');
   });
 
-  it("UNREGISTERED_SALE_NOT_CHECKABLE has no words yet: the bare fallback, never another cause's", () => {
-    // Its words are Marketing's, with Commercial's pass (Integration, 2026-10-07). When they land, this test changes and
-    // the reason joins REASONS above.
+  it("a count from a Form 20-F or 40-F reads Commercial 21e's sentence (v25), not the bare fallback", () => {
     const v = floatCellView(refused('CANNOT_VERIFY', 'UNREGISTERED_SALE_NOT_CHECKABLE', { countAsOf: '2026-05-01' }));
     expect(v.face).toBe('Cannot verify');
-    expect(v.paragraphs[0]).toBe('Cannot verify.');
+    expect(v.paragraphs[0]).toBe(
+      "Cannot verify: this company's filed share count is from a Form 20-F or 40-F, whose filers are not required to file 8-Ks, so the desk does not check for unregistered share sales since the count.",
+    );
   });
 
   it('a filed issuance after the count reads the issued-since sentence, not the bare fallback', () => {
@@ -185,9 +188,9 @@ describe('no claim beyond the sources, no dashes, no result language', () => {
     }
   });
 
-  it('the legend is the approved sentence set, verbatim', () => {
+  it('the legend is the approved v25 sentence set, verbatim', () => {
     expect(FLOAT_LEGEND).toBe(
-      "Float: computed from SEC filings. An upper bound as of the date shown, when the filings line up. The date is the filed share count's.",
+      "Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.",
     );
   });
 });

@@ -7,7 +7,7 @@
  * date goes ON the face under his 90-day ruling). The state is computed by
  * Research (`lib/research/insiderBound.ts` `floatCell`) and stored; this module
  * applies NO rule of its own. It turns the stored state into Marketing's words
- * (`docs/marketing/float-page-draft.md`, v20 at 6fed4658; v19 Commercial-passed at 3763ef0c): four faces,
+ * (`docs/marketing/float-page-draft.md`, v25 at 5ea4f398, Commercial 22b; his yes 2026-10-07T00:58:05.615Z): four faces,
  * one string per stored cause, and the page link.
  *
  * Words are claims. Nothing here may say the column is populated, that a number
@@ -109,10 +109,12 @@ export interface FloatCellView {
  * docs/Design/float-cell-more-to-know-2026-10-07.md). Words: Marketing
  * docs/marketing/float-click-through-words-2026-10-07.md at 1ee54def, passed by Commercial (23b, 23c).
  * Commercial 23's build conditions, both enforced here:
- * - NO per-insider date prints (`S1Holding.asOf` is the count-date holding's date even when the
- *   later, smaller holding was subtracted), so a row is "{owner}: {shares} shares subtracted, held directly." only;
+ * - NO per-insider date prints: Research 1cfc0d14 now carries the subtracted holding's own date
+ *   (`heldAsOf`), but the passed row form has no date, so a row is "{owner}: {shares} shares subtracted,
+ *   held directly." only, until Marketing's words add one;
  * - owner NAMES only on the signed-in board ("not on the public page, in reports or in exports"):
  *   the caller passes `namesAllowed`, and SHOW_INSIDER_NAMES switches them off everywhere in one place.
+ *   An insider filed with no name reads "An insider" on that row only (Integration 32nd); the others keep theirs.
  * Never "at least", "probably", or "available to trade" as the thing bounded.
  */
 export const SHOW_INSIDER_NAMES = true;
@@ -141,6 +143,8 @@ export const FLOAT_DETAILS_WORDS = {
   insiders: (n: number, total: string, fetched: string, d: string) =>
     `${n} insider${n === 1 ? '' : 's'}, ${total} shares, as filed through ${fetched}. For each insider we take the smaller of their holding as of the count's date and their latest holding dated on or before ${d}, so a sale filed since the count is added back and a sale not yet filed cannot be seen.`,
   insiderRow: (owner: string, shares: string) => `${owner}: ${shares} shares subtracted, held directly.`,
+  /** The owner on a row whose filing carries no name (Marketing 1ee54def's no-name form, capitalised to open the row). */
+  unnamedInsider: 'An insider',
   notSubtractedLabel: 'Not subtracted',
   notSubtracted:
     "Indirect holdings, joint filings, the beneficial-ownership totals reported on Schedule 13D or 13G, owners with no holding on file as of the count's date or within the filing window, and holdings left out because of a share split. Leaving each of them out can only leave this figure higher than the true one, when the filings line up.",
@@ -169,9 +173,9 @@ export const FLOAT_PAGE_HREF = '/are-float-quotes-real';
 export const FLOAT_PAGE_LINK_LEAD = 'Read how float numbers are made:';
 export const FLOAT_PAGE_LINK_LABEL = 'Are float quotes real?';
 
-/** The once-only legend under the board. Verbatim. */
+/** The once-only legend under the board, and the column header's hover once the float is wired. v25, verbatim. */
 export const FLOAT_LEGEND =
-  "Float: computed from SEC filings. An upper bound as of the date shown, when the filings line up. The date is the filed share count's.";
+  "Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.";
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -221,6 +225,9 @@ function cannotVerifyText(
       return "Cannot verify: the computed figure did not pass the desk's own sanity check, so it is not shown.";
     case 'FILINGS_NOT_REREAD':
       return `Cannot verify: the desk has not read this company's filings since ${fetchedDate ?? 'an unknown date'}.`;
+    case 'UNREGISTERED_SALE_NOT_CHECKABLE':
+      // A count from a Form 20-F or 40-F (Research refuses by the count's form). Commercial 21e's words, v25.
+      return "Cannot verify: this company's filed share count is from a Form 20-F or 40-F, whose filers are not required to file 8-Ks, so the desk does not check for unregistered share sales since the count.";
     default:
       // A cause this module has no words for must not borrow another's.
       return 'Cannot verify.';
@@ -230,22 +237,14 @@ function cannotVerifyText(
 const NOT_COMPUTED_TEXT = 'The desk has not computed a float for this name.';
 
 /**
- * Where the 90-day rule is measured FROM, in the words of the surface.
- *
- * On the live board it is "the date shown", with that date printed (the
- * board's own date, `dateShown`); on reports, exports and stored copies it is
- * "the checkpoint". Marketing v16, item 4: Design chooses by surface.
+ * The surface the cell is on. The claim's one date, {D-label} (v25), is the board's
+ * own date where one is shown, and "the checkpoint" on reports, exports and stored copies.
  */
 export interface FloatSurface {
   /** The live board's date, YYYY-MM-DD. Absent means a report, export or stored copy. */
   dateShown?: string | null;
   /** True only on the signed-in board: owner names may print (Commercial 23b). Absent: no names. */
   namesAllowed?: boolean;
-}
-
-function measuredFrom(surface: FloatSurface): string {
-  const shown = longDate(surface.dateShown);
-  return surface.dateShown && shown ? `the date shown (${shown})` : 'the checkpoint';
 }
 
 export function floatCellView(raw: FloatBound | null | undefined, surface: FloatSurface = {}): FloatCellView {
@@ -269,9 +268,11 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
   const countDate = longDate(bound.countAsOf);
 
   if (bound.state === 'PRODUCED') {
-    // A produced state with no usable number or no count date must not print a bare "<= X":
-    // the date is part of the claim, so it reads as the check failing, never as a number.
-    if (bound.bound === null || !(bound.bound > 0) || countDate === null) {
+    // A produced state with no usable number, count date or read date must not print a bare "<= X":
+    // both dates are in the claim's words, so it reads as the check failing, never as a number.
+    // (Research's `toFloatBound` always sets the read date; only a malformed wire value lacks it.)
+    const fetched = longDate(bound.filingsReadOn);
+    if (bound.bound === null || !(bound.bound > 0) || countDate === null || fetched === null) {
       const reason = cannotVerifyText('BOUND_OUT_OF_RANGE', null, null);
       return {
         kind: 'cannotVerify',
@@ -284,16 +285,16 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
     }
     const compact = compactBound(bound.bound);
     const amount = compact.startsWith(BOUND_PREFIX) ? compact.slice(BOUND_PREFIX.length) : compact;
-    const holdings = bound.holdingsFiledOn.map(longDate).filter((d): d is string => d !== null);
-    const fetched = longDate(bound.filingsReadOn);
+    const d = dLabel(surface);
     return {
       kind: 'bound',
       face: compact,
       date: shortDate(bound.countAsOf),
-      ariaLabel: `no more than ${amount} shares as of ${countDate}, computed from SEC filings, when the filings line up`,
+      ariaLabel: `no more than ${amount} shares as of ${d}, computed from the share count dated ${countDate} and insider holdings filed through ${fetched}, when the filings line up`,
+      // The v25 popover, verbatim, split before "Lined up means".
       paragraphs: [
-        `No more than ${amount} shares as of ${countDate}, when the filings line up. Computed from the company's filed share count, less insider holdings filed on ${holdings.length > 0 ? holdings.join(', ') : 'the dates in the filings'}.${fetched ? ` Filings read on ${fetched}.` : ''}`,
-        `Lined up means: a filed count dated ${countDate}, at most 90 days before ${measuredFrom(surface)}, no share issuance the desk has flagged, no final prospectus for an offering of shares (SEC form 424B1, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date, no share split since the count, and holdings dated at or before the count. Insider sales after the count date are not reflected.`,
+        `Taking float as shares outstanding less insider holdings, it is no more than ${amount} shares as of ${d}, when the filings line up. Computed from the company's filed share count, less insider holdings as filed through ${fetched}, counting any sale dated on or before ${d} that was filed by ${fetched}. Filings read on ${fetched}.`,
+        `Lined up means: a filed count dated ${countDate}, at most 90 days before ${d}, no share issuance the desk has flagged, no final prospectus for an offering of securities (SEC form 424B1, 424B2, 424B4 or 424B5) and no report of an unregistered sale of shares (Form 8-K item 3.02) filed on or after the count date, and no share split since the count. A sale not yet filed cannot be seen.`,
       ],
       details: boundDetails(bound, amount, countDate, surface),
     };
@@ -325,8 +326,8 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
 /**
  * The panel for a PRODUCED bound. A row whose inputs are not on the payload is left out (an old row
  * with no count shares or form, a fetch date that does not parse), never filled with a placeholder.
- * Per-insider rows print only when `namesAllowed` and every subtracted insider has a name; otherwise
- * row 4 keeps its count and total and no row names anyone.
+ * Per-insider rows print only when `namesAllowed`; an insider with no filed name reads "An insider" on
+ * its own row. Where names may not print, row 4 keeps its count and total and no per-insider row prints.
  */
 function boundDetails(bound: FloatBound, amount: string, countDate: string, surface: FloatSurface): FloatDetails {
   const W = FLOAT_DETAILS_WORDS;
@@ -346,10 +347,10 @@ function boundDetails(bound: FloatBound, amount: string, countDate: string, surf
   rows.push({ label: W.notSubtractedLabel, text: W.notSubtracted });
   rows.push({ label: W.linedUpLabel, text: W.linedUp(countDate, d) });
   if (fetched) rows.push({ label: null, text: W.readOn(fetched) });
-  const named = SHOW_INSIDER_NAMES && surface.namesAllowed === true && subtracted.every((i) => i.ownerName);
+  const named = SHOW_INSIDER_NAMES && surface.namesAllowed === true;
   return {
     rows,
-    insiders: named ? subtracted.map((i) => W.insiderRow(i.ownerName as string, exactShares(i.shares))) : [],
+    insiders: named ? subtracted.map((i) => W.insiderRow(i.ownerName?.trim() || W.unnamedInsider, exactShares(i.shares))) : [],
   };
 }
 

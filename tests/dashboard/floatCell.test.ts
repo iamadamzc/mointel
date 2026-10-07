@@ -32,7 +32,10 @@ describe('FloatCell, server-rendered', () => {
     expect(html).toContain('>9/22<');
     expect(html).toContain('<button');
     expect(html).toContain('whitespace-nowrap');
-    expect(html).toContain('aria-label="no more than 8.10M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up; details on click"');
+    // v25: the claim's date is the board's ({D-label}; "the checkpoint" with no board date), the count's date an input.
+    expect(html).toContain(
+      'aria-label="no more than 8.10M shares as of the checkpoint, computed from the share count dated Sep 22, 2026 and insider holdings filed through Oct 5, 2026, when the filings line up; details on click"',
+    );
   });
 
   it('prints the words for the other states, and "Not computed" for no state at all', () => {

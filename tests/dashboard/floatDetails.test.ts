@@ -4,7 +4,8 @@ import { FLOAT_DETAILS_WORDS, SHOW_INSIDER_NAMES, floatCellView, type FloatBound
 
 /*
  * His Variant A click-through (2026-10-07T00:51:24.442Z, "A, hedge it"). Words: Marketing 1ee54def,
- * Commercial 23b/23c. Conditions: no per-insider date; owner names on the signed-in board only.
+ * Commercial 23b/23c. Conditions: no per-insider date (the passed row form has none, though Research
+ * 1cfc0d14 carries heldAsOf); owner names on the signed-in board only; no name filed: "An insider" on that row.
  */
 
 const EM_DASH = String.fromCharCode(0x2014);
@@ -20,8 +21,8 @@ const produced = (over: Partial<FloatBound> = {}): FloatBound => ({
   countShares: 13_000_000,
   countForm: '10-Q',
   insiders: [
-    { ownerCik: '1', ownerName: 'Jane Roe', title: 'common stock', shares: 500_000, filedOn: ['2026-09-18'] },
-    { ownerCik: '2', ownerName: 'John Doe', title: 'common stock', shares: 199_000, filedOn: ['2026-08-30'] },
+    { ownerCik: '1', ownerName: 'Jane Roe', title: 'common stock', shares: 500_000, heldAsOf: '2026-09-15', filedOn: ['2026-09-18'] },
+    { ownerCik: '2', ownerName: 'John Doe', title: 'common stock', shares: 199_000, heldAsOf: '2026-08-28', filedOn: ['2026-08-30'] },
   ],
   ...over,
 });
@@ -60,9 +61,16 @@ describe('Variant A panel on a bound face', () => {
     expect(floatCellView(produced(), { dateShown: '2026-10-06', namesAllowed: false }).details.insiders).toEqual([]);
   });
 
-  it('prints no names at all if any subtracted insider has none (no partial list)', () => {
-    const insiders = produced().insiders.map((i, n) => (n === 1 ? { ...i, ownerName: null } : i));
-    expect(floatCellView(produced({ insiders }), { namesAllowed: true }).details.insiders).toEqual([]);
+  it('an insider with no filed name reads "An insider" on that row only; the named rows keep their names', () => {
+    for (const missing of [null, '', '  ']) {
+      const insiders = produced().insiders.map((i, n) => (n === 1 ? { ...i, ownerName: missing } : i));
+      expect(floatCellView(produced({ insiders }), { namesAllowed: true }).details.insiders).toEqual([
+        'Jane Roe: 500,000 shares subtracted, held directly.',
+        'An insider: 199,000 shares subtracted, held directly.',
+      ]);
+      // Where names may not print, the fallback does not bring the rows back.
+      expect(floatCellView(produced({ insiders }), { namesAllowed: false }).details.insiders).toEqual([]);
+    }
   });
 
   it('leaves out a row whose inputs are missing, never a placeholder', () => {
