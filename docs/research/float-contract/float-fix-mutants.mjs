@@ -8,7 +8,9 @@
 // run, the failing-test count is recorded, and the file is restored byte for byte. M0 (no edit) runs first and must
 // fail 0 tests, or nothing else runs. --dry checks the matches only.
 // Test ids: IB-F1 "refuses a count from a foreign annual report", IB-F2 "places the foreign-count refusal"
-// (insiderBound.test.ts); FJ-F "passes the count's form", FJ-B2 "takes 424B1/2/4/5" (floatJob.test.ts).
+// (insiderBound.test.ts); FJ-F "passes the count's form", FJ-B2 "takes 424B1/2/4/5" (floatJob.test.ts); IB-SD1 "the five
+// measured shapes", IB-SD2 "every row order", IB-SD3 "carries through S1" (insiderBound.test.ts; IB-SD4, the unchanged
+// cases, survives by design). Added 2026-10-07 for the same-day fix (Integration's yes; S1 result 32f5e351).
 // Not mutated: the view test of the bare fallback (floatBound.test.ts), which pins words no code chooses.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -33,6 +35,7 @@ const M = [
   ['F1', IB, 'FOREIGN_ANNUAL_FORMS.has(input.count.form)', 'false', 3, 'a foreign count admitted', 'IB-F1, IB-F2, FJ-F'],
   ['F2', IB, "'40-F', '40-F/A']", "'40-F']", 1, 'a 40-F/A count admitted', 'IB-F1'],
   ['F3', FJ, ', form: input.count.form }', ' }', 1, 'floatCellFor drops the form', 'FJ-F'],
+  ['S1', IB, ' || (order === 0 && row.shares < current.row.shares)', '', 3, 'same-day rows back to the first row', 'IB-SD1, IB-SD2, IB-SD3'],
 ];
 
 if (process.argv.includes('--dry')) {

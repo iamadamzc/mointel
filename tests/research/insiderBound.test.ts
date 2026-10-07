@@ -324,3 +324,43 @@ describe('holdingsAtBoth (rule S1)', () => {
     ]);
   });
 });
+
+/**
+ * Several rows of ONE filing on ONE date (a run of trades): the holding after the day is the last row, and the code
+ * takes the SMALLEST, which is never more than it in any order. Before the fix it took the FIRST, which over-subtracted
+ * 5 of 81 owners in the validation draws (S1 result 32f5e351, raw f1bef392). Fixtures are those five shapes.
+ */
+describe('same-day rows in one filing: the smallest, never the first', () => {
+  const day = (accession: string, filingDate: string, asOf: string, shares: number[], title = 'common stock'): OwnerFiling => ({
+    accession,
+    filingDate,
+    parse: { ok: true, ownerCik: '1', ownerName: null, rows: shares.map((n) => ({ asOf, title, shares: n })) },
+  });
+  const at = (filings: OwnerFiling[], cutoff: string) => holdingsAsOf(filings, cutoff, '2024-01-01')[0]!.shares;
+
+  it('takes the smallest on the five measured shapes (KITT, MX twice, TBPH twice)', () => {
+    expect(at([day('k', '2026-07-14', '2026-06-01', [815_368, 782_829])], '2026-08-12')).toBe(782_829);
+    expect(at([day('m1', '2025-01-03', '2024-12-31', [311_199, 301_950, 293_200])], '2026-07-31')).toBe(293_200);
+    expect(at([day('m2', '2025-03-04', '2025-03-01', [73_909, 70_742])], '2026-07-31')).toBe(70_742);
+    expect(at([day('t1', '2025-12-01', '2025-11-26', [60_204, 44_703], 'ordinary shares')], '2026-07-31')).toBe(44_703);
+    expect(at([day('t2', '2026-06-17', '2026-06-15', [242_442, 239_114, 232_457], 'ordinary shares')], '2026-07-31')).toBe(232_457);
+  });
+
+  it('gives the same answer in every row order', () => {
+    const orders = [[300, 200, 100], [300, 100, 200], [200, 300, 100], [200, 100, 300], [100, 300, 200], [100, 200, 300]];
+    for (const o of orders) expect(at([day('p', '2026-06-02', '2026-06-01', o)], '2026-07-01'), o.join(',')).toBe(100);
+  });
+
+  it('carries through S1: TBPH owner 1898490 subtracts 213,476, the holding after its last sale, not 223,461', () => {
+    const filings = [
+      day('t2', '2026-06-17', '2026-06-15', [242_442, 239_114, 232_457], 'ordinary shares'),
+      day('t3', '2026-09-17', '2026-09-15', [223_461, 220_133, 213_476], 'ordinary shares'),
+    ];
+    expect(holdingsAtBoth(filings, '2026-07-31', '2026-09-23', '2024-09-23')[0]!.shares).toBe(213_476);
+  });
+
+  it('leaves rows on different dates, and a same-date tie across filings, as before', () => {
+    expect(at([day('a', '2026-06-03', '2026-06-01', [100]), day('b', '2026-06-04', '2026-06-02', [300])], '2026-07-01')).toBe(300);
+    expect(at([day('a', '2026-06-02', '2026-06-01', [100]), day('b', '2026-06-03', '2026-06-01', [300])], '2026-07-01')).toBe(300);
+  });
+});

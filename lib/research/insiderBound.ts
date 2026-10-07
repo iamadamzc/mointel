@@ -103,7 +103,8 @@ export interface DatedHolding extends OwnerHolding {
 /**
  * Per owner, per class, the latest row whose as-of date is ON OR BEFORE `cutoff` (the count's
  * as-of date), taken across every filing of that owner, including a filing made after the
- * cutoff (a late Form 4). Ties break to the later filing date, then accession. An owner with no
+ * cutoff (a late Form 4). Ties break to the later filing date, then accession; within one filing, to the smallest
+ * value on that date. An owner with no
  * eligible row is absent from the result, which leaves the bound higher.
  *
  * `windowStart` drops a row older than the filing window; such an owner is also not subtracted.
@@ -118,11 +119,14 @@ export function holdingsAsOf(filings: readonly OwnerFiling[], cutoff: string, wi
     for (const row of rows) {
       if (row.asOf > cutoff || row.asOf < windowStart) continue;
       const current = entry.titles.get(row.title);
+      const order = current ? (filing.filingDate + filing.accession).localeCompare(current.filingDate + current.accession) : 0;
+      // Several rows of one filing on one date (a run of trades): the SMALLEST, never the first. The holding after the
+      // day is the last row; the smallest is never more than it, in any row order, so the bound can only rise
+      // (S1 result 32f5e351: the first row over-subtracted 5 of 81 owners).
       const better =
         !current ||
         row.asOf > current.row.asOf ||
-        (row.asOf === current.row.asOf &&
-          (filing.filingDate + filing.accession).localeCompare(current.filingDate + current.accession) > 0);
+        (row.asOf === current.row.asOf && (order > 0 || (order === 0 && row.shares < current.row.shares)));
       if (better) entry.titles.set(row.title, { row, filingDate: filing.filingDate, accession: filing.accession });
     }
   }
