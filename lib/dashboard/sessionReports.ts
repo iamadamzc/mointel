@@ -459,14 +459,102 @@ const etMonthDay = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_Yor
  * Via Intl in the market zone, never offset arithmetic; ICU's narrow space before am/pm is normalised.
  */
 export function researchWrittenAgainNote(iso: string | null | undefined, nowMs: number): string | null {
+  const at = etStamp(iso, nowMs);
+  if (!at) return null;
+  return at.date
+    ? `Research written again ${at.date}, ${at.time} ET, after this checkpoint.`
+    : `Research written again at ${at.time} ET, after this checkpoint.`;
+}
+
+/**
+ * An instant as the reports print it: "8:12 pm", with "Oct 7" beside it only when the reader's ET day is
+ * not the instant's (the board's date rule; a stored copy read next morning never shows a bare clock).
+ * Null when the time does not parse: the caller omits the clause.
+ */
+export function etStamp(iso: string | null | undefined, nowMs: number): { time: string; date: string | null } | null {
   if (typeof iso !== 'string') return null;
   const at = new Date(iso);
   if (Number.isNaN(at.getTime())) return null;
   const time = etTime.format(at).replace(/\s+/g, ' ').replace(/\b(AM|PM)\b/, (m) => m.toLowerCase());
   const sameDay = formatEtDay(iso) === formatEtDay(new Date(nowMs).toISOString());
-  return sameDay
-    ? `Research written again at ${time} ET, after this checkpoint.`
-    : `Research written again ${etMonthDay.format(at)}, ${time} ET, after this checkpoint.`;
+  return { time, date: sameDay ? null : etMonthDay.format(at) };
+}
+
+/** "10:02 pm" or "Oct 7, 10:02 pm": the stamp as one phrase. */
+const stampText = (at: { time: string; date: string | null }) => (at.date ? `${at.date}, ${at.time}` : at.time);
+/** "at 10:02 pm" or "Oct 7, 10:02 pm": "at" only before a bare clock. */
+const atStamp = (at: { time: string; date: string | null }) => (at.date ? stampText(at) : `at ${at.time}`);
+
+/**
+ * The 10 pm edition's line (his "same report, just edited with new information"; Integration ruled it built,
+ * placed under the title's time lines). Words: Marketing v2 at 98b22b36, passed by Commercial 30a. Every
+ * string says what the REPORT did ("carried", "written for this edition"), never that the market, a name or a
+ * filing did or did not change (Commercial 29: the carry test cannot see a filing the research has not read).
+ * `changedTickers` includes a name new at 22:00, so nothing here says "again".
+ *
+ * Null when the payload carries no `revisionOf` (no 8:30 edition existed, or not a 10 pm edition) or an
+ * edition's time does not parse. `namesOnReport` is the distinct names the report shows: when every one of
+ * them is in `changedTickers`, the "others carry" clause is dropped.
+ */
+export function revisionLine(
+  report: Pick<SessionReport, 'publishedAt' | 'revisionOf'>,
+  namesOnReport: readonly string[],
+  nowMs: number,
+): string | null {
+  const revision = report.revisionOf;
+  if (!revision || typeof revision !== 'object') return null;
+  const now = etStamp(report.publishedAt, nowMs);
+  const before = etStamp(revision.publishedAt, nowMs);
+  if (!now || !before) return null;
+  const changed = changedSet(revision);
+  const summary = revision.narrativeChanged === true;
+  const others = namesOnReport.some((ticker) => !changed.has(ticker));
+  if (changed.size === 0 && !summary) {
+    return `Published again ${atStamp(now)} ET; every line and the summary are carried from the ${stampText(before)} edition.`;
+  }
+  const head = `Revised ${atStamp(now)} ET`;
+  if (changed.size === 0) {
+    return `${head}: the summary was written for this edition; every line is carried from the ${stampText(before)} edition.`;
+  }
+  const names = changed.size === 1 ? '1 name has' : `${changed.size} names have`;
+  const carry = others ? ` and the others carry their ${stampText(before)} line` : '';
+  return `${head}: ${names} a line written for this edition${carry}.${summary ? ' The summary was written for this edition.' : ''}`;
+}
+
+function changedSet(revision: { changedTickers?: unknown }): Set<string> {
+  return new Set(Array.isArray(revision.changedTickers) ? revision.changedTickers.filter((t): t is string => typeof t === 'string') : []);
+}
+
+/** The card mark on a name whose line was written for the 10 pm edition (Marketing v2 section 3). */
+export function cardRevisionMark(
+  report: Pick<SessionReport, 'publishedAt' | 'revisionOf'>,
+  ticker: string,
+  nowMs: number,
+): { label: string; title: string } | null {
+  const revision = report.revisionOf;
+  if (!revision || typeof revision !== 'object' || !changedSet(revision).has(ticker)) return null;
+  const now = etStamp(report.publishedAt, nowMs);
+  const before = etStamp(revision.publishedAt, nowMs);
+  if (!now || !before) return null;
+  return {
+    label: 'Line written for this edition',
+    title: `This line was written for the ${stampText(now)} ET edition, not carried from the ${stampText(before)} one.`,
+  };
+}
+
+/**
+ * The line for an older edition of the same slot, on the other kinds (and on an EVENING slot with no
+ * `revisionOf`): Marketing v2 section 4, passed by Commercial 30a. "Replaces", and `publishedAt` is what it
+ * prints. Null when there is no older edition or none of their times parse.
+ */
+export function replacesLine(superseded: readonly Pick<SessionReport, 'publishedAt'>[], nowMs: number): string | null {
+  const stamps = superseded.map((older) => etStamp(older.publishedAt, nowMs)).filter((at): at is NonNullable<typeof at> => at !== null);
+  if (stamps.length === 0) return null;
+  const list = stamps.map((at) => `${stampText(at)} ET`).join(', ');
+  const lead = stamps[0]!.date ? '' : 'at ';
+  return stamps.length === 1
+    ? `Replaces the edition published ${lead}${list}.`
+    : `Replaces the editions published ${lead}${list}.`;
 }
 
 /**
