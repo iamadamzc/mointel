@@ -120,6 +120,76 @@ export function reportLead(report: Pick<SessionReport, 'kind' | 'headline' | 'wa
 }
 
 /**
+ * v6's opening block, "THE SESSION" (Design's option B, `docs/Design/report-b-spec.md`; his
+ * "an opening with a general narrative of the session", 2026-10-01T01:44:16Z). PLACEHOLDER WORDS,
+ * Marketing's to replace: the block's label and the line for a report with no narrative.
+ *
+ * THE NO-NARRATIVE LINE IS TRUE OF BOTH CAUSES. The payload's `narrative` is null when the checker
+ * struck it AND when the store held nothing to say (`contract.ts`); the strike list lives in the
+ * run's diagnostics, never in the payload, so the surface cannot tell the two apart and must not
+ * word either one. It speaks about the report, as EMPTY_SECTION_LINE does, never about the market.
+ */
+export const OPENING_WORDS = {
+  label: 'The session',
+  none: 'No session summary in this report.',
+} as const;
+
+export type ReportOpening =
+  /** A v6 report whose narrative survived its checker. */
+  | { kind: 'NARRATIVE'; text: string }
+  /** A v6 report with no narrative: the designed state, never a blank. */
+  | { kind: 'NONE' }
+  /** A v5 report (no `narrative` key): its `overall` line, where it has one, as before v6. */
+  | { kind: 'V5_OVERALL'; text: string };
+
+/**
+ * Which opening a report shows. The marker for v6 is the `narrative` KEY: the pipeline writes it on
+ * every v6 row, a string or null, and a stored payload is parsed as written (`api.ts` `parse`), so a
+ * v5 row has no key at all. A v4 or v5 row without an `overall` line opens as it always has: with
+ * nothing (null), because it never had a narrative to lose.
+ */
+export function reportOpening(report: Pick<SessionReport, 'narrative' | 'overall' | 'watchCount'>): ReportOpening | null {
+  if (report.narrative !== undefined) {
+    const text = typeof report.narrative === 'string' ? report.narrative.trim() : '';
+    return text ? { kind: 'NARRATIVE', text } : { kind: 'NONE' };
+  }
+  if (typeof report.watchCount === 'number' && typeof report.overall === 'string' && report.overall.trim()) {
+    return { kind: 'V5_OVERALL', text: report.overall };
+  }
+  return null;
+}
+
+/**
+ * The recap's computed footnotes (v6 step 4), Marketing's words v5 at `65951e69` (Commercial's final
+ * ruling), verbatim. ZEROS PRINT and NULL PRINTS AS UNKNOWN, so a report with no footnotes is one
+ * from before step 4 or an intraday kind (the field is null or absent there), never "none left out".
+ * A value that is not a whole, non-negative count is read as unknown, never as a guessed number.
+ * Independent of the narrative's strike: they print under a struck narrative too.
+ */
+export function narrativeFootnoteLines(footnotes: SessionReport['narrativeFootnotes']): string[] {
+  if (!footnotes || typeof footnotes !== 'object') return [];
+  const count = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) && v >= 0 ? v : null);
+  const noClose = count(footnotes.noClose);
+  const split = count(footnotes.splitExcluded);
+  return [
+    noClose === null
+      ? 'How many names had volume but no recorded regular-session close is unknown.'
+      : noClose === 0
+        ? 'No names had volume but no recorded regular-session close.'
+        : noClose === 1
+          ? '1 name had volume but no recorded regular-session close, so it is not in the move counts.'
+          : `${noClose} names had volume but no recorded regular-session close, so they are not in the move counts.`,
+    split === null
+      ? 'How many rows were left out of the move counts and the named leaders by the split check is unknown.'
+      : split === 0
+        ? 'No rows were left out of the move counts and the named leaders by the split check.'
+        : split === 1
+          ? '1 row was left out of the move counts and the named leaders because the data suggested a stock split. The check can also leave out a real move of the same size.'
+          : `${split} rows were left out of the move counts and the named leaders because the data suggested a stock split. The check can also leave out a real move of the same size.`,
+  ];
+}
+
+/**
  * The company line: "{name}. {country}. {business}." with an absent part
  * dropped along with its full stop, never guessed (Marketing, d35e1bba). A
  * part that already ends a sentence ("Sangoma Technologies Corp.") takes no
