@@ -451,9 +451,10 @@ const etMonthDay = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_Yor
  * morning never shows a bare clock). Null when there is no newer version or the time does not parse.
  *
  * The PRINT CONDITION is Research's (a version newer BY ID than the checkpoint's, contract.ts), the form
- * Commercial 28a asked for. OPEN (28a): whether `generated_at` is the end of interpretation (Commercial's
- * reading at origin, then "written again at" is true) or its start (Ops's reading); Ops re-reads before the
- * evening ship, or the clock comes out of this sentence.
+ * Commercial 28a asked for. SETTLED (28a): `generated_at` is the END of interpretation,
+ * so "written again at {time}" is true. Read at production 098b8005: `lib/research/interpret/pipeline.ts`
+ * sets generatedAt at :383, after the awaited model calls (:245, :278, :340-348), and saves the version at
+ * :501; `worker/research.ts` (:727) passes no `now`. Integration read it; Ops withdrew its "start" reading.
  *
  * Via Intl in the market zone, never offset arithmetic; ICU's narrow space before am/pm is normalised.
  */
