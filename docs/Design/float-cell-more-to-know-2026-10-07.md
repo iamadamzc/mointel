@@ -30,6 +30,8 @@ A panel replacing today's popover paragraphs, about 300 px wide, label and value
 
 Refused faces (Unknown, Cannot verify) keep their one-sentence reason; the panel adds only the definition line and the link.
 
+**Per-insider rows show the SUBTRACTED title only** (Research 2add4b2b, relayed by Integration 32nd): for an insider with holdings in several security titles, only the smallest title is subtracted; `holdingsFiledOn`, `accessions` and `asOf` name that title's filings, while `classes` keeps every title. A row must print that title's shares and filings, never a sum over `classes`.
+
 **Needs, before Variant A can be built:** Research adds to `FloatBound` the filed count's shares and form and, if the per-insider rows are wanted, `{ name, shares, filedOn[] }` per subtracted holder (all already in the stored row's `holdings_json` and count columns, per the feasibility file). Then Design builds the panel from those fields with the same normalizer guards as today.
 
 ## 3. The click: Variant B (adds the large holders)
