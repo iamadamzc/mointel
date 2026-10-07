@@ -37,8 +37,11 @@ import {
 } from './writer';
 import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 
-/** Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 10;
+/**
+ * Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. 11: the recap sheet says the
+ * regular-session high (Commercial, 2026-10-07, with the switch to the regular-session high from minute_bars).
+ */
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 11;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -116,7 +119,7 @@ function supplyWords(supply: NonNullable<NarrativeFacts['context']>['openSupply'
 function recapSheet(facts: NarrativeFacts): string[] {
   const lines: string[] = [];
   if (facts.movers50 !== null) {
-    lines.push(`ran at least 50 percent above the prior close, on the day: ${n(facts.movers50)}`);
+    lines.push(`ran at least 50 percent above the prior close, on the day (by the regular-session high): ${n(facts.movers50)}`);
     if (facts.movers50 > 0) {
       if (facts.gaveBack !== null) lines.push(`of those, gave the entire move back (closed at or below the prior close): ${n(facts.gaveBack)}`);
       if (facts.keptHalf !== null) lines.push(`of those, kept at least half of the peak gain at the close: ${n(facts.keptHalf)}`);
@@ -125,7 +128,7 @@ function recapSheet(facts: NarrativeFacts): string[] {
   }
   for (const [i, m] of (facts.recapLeaders ?? []).entries()) {
     lines.push(
-      `named mover ${i + 1} (a covered 50 percent mover, by the day's high): ${m.ticker}, ran to ${wholePercent(m.highPct)} percent above the prior close and closed ${movedWords(m.closePct)} from the prior close; ${namedClauses(m)}`,
+      `named mover ${i + 1} (a covered 50 percent mover, by its regular-session high): ${m.ticker}, ran to ${wholePercent(m.highPct)} percent above the prior close and closed ${movedWords(m.closePct)} from the prior close; ${namedClauses(m)}`,
     );
   }
   if (facts.afterHours) {
@@ -145,10 +148,10 @@ function recapSheet(facts: NarrativeFacts): string[] {
   lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
   if (facts.context) {
     const c = facts.context;
-    const parts = [`${c.ticker} closed at ${price(c.close)}`, `its session high was ${price(c.sessionHigh)}`];
+    const parts = [`${c.ticker} closed at ${price(c.close)}`, `its regular-session high was ${price(c.sessionHigh)}`];
     if (c.support !== null) parts.push(`stored support ${price(c.support)}`);
     if (c.resistance !== null) parts.push(`stored resistance ${price(c.resistance)}`);
-    if (c.olderHigh !== null) parts.push(`an older high at ${price(c.olderHigh)} sits above the session high`);
+    if (c.olderHigh !== null) parts.push(`an older high at ${price(c.olderHigh)} sits above the regular-session high`);
     if (c.openSupply.length > 0) parts.push(`open supply: ${supplyWords(c.openSupply)}`);
     lines.push(`context into the next session (describe, never predict): ${parts.join('; ')}`);
   }

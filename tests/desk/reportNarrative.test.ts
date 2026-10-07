@@ -236,6 +236,19 @@ describe('readRecapCounts: the HIGH is the regular-session high from minute_bars
     expect(r.movers.map((m) => [m.symbol, m.high]).sort()).toEqual([['OPEN', 3.1], ['SHUT', 3.1]]);
   });
 
+  it('H5: a closing cross above every bar: the high is the official close, never under it (retention never above 1)', () => {
+    const db = store();
+    seed(db, [
+      // every bar tops at 2.9 (45 percent); the official close 3.1 (55 percent) printed in the 16:00 cross: a mover, kept it all
+      { symbol: 'CROSS', prev: 2, close: 3.1, high: 2.9, rthVol: 900, price: 3.1, vol: 900 },
+      // a mover on its bars (3.2) that closed above them (3.3): its high is the close, retention exactly 1
+      { symbol: 'OVER', prev: 2, close: 3.3, high: 3.2, rthVol: 900, price: 3.3, vol: 900 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.movers.map((m) => [m.symbol, m.high, m.retention]).sort()).toEqual([['CROSS', 3.1, 1], ['OVER', 3.3, 1]]);
+    expect([r.movers50, r.keptHalf, r.gaveBack]).toEqual([2, 2, 0]);
+  });
+
   it('H3b: with no calendar day the window closes at 16:00 ET', () => {
     const db = store();
     expect(regularSessionWindow(db, DATE)).toEqual({ start: `${DATE}T13:30:00.000Z`, end: `${DATE}T20:00:00.000Z` });

@@ -630,9 +630,10 @@ const CHECKER_SYSTEM_V5 = [
  * v6's checker prompt version: P1 (the stability probe's passing arm,
  * `docs/research/reports-v6/probe-2026-10-02/result.md`, approved path
  * `design.md:98`) plus the narrative's model-read rules. 7: the EVENING moment
- * and PREMARKET's as the evening report's 10 pm edition (KIND_MOMENT).
+ * and PREMARKET's as the evening report's 10 pm edition (KIND_MOMENT). 8: the narrative facts it is shown
+ * (`narrativeSheet`, the writer's own wording) now say the regular-session high (writer v6 11).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 7;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 8;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe

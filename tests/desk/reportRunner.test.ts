@@ -50,8 +50,8 @@ describe('the v6 models', () => {
     expect(w!.text.format.name).toBe('report_draft_v6');
     expect(w!.text.format.schema.required).toEqual(['narrative', 'lines']);
     expect(JSON.stringify(w!.text.format.schema)).not.toMatch(/heading|overall/);
-    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '10' });
-    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '7' });
+    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '11' });
+    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '8' });
   });
 
   it('a reply the v6 schema admits is a reply parseDraftV6 accepts', () => {

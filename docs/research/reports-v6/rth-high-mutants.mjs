@@ -8,7 +8,11 @@
 // Test ids (reportNarrative): H1 premarket spike / after-hours bar never a mover, a bar above the stored high counts;
 // H2 no RTH bar: out of the high-based figures, still up/down by close; H3 window 09:30 ET to the calendar's early
 // close, end exclusive, both edges decisive; H3b no calendar day: 16:00 ET; H4 named mover and context carry the
-// regular-session high.
+// regular-session high; H5 a closing cross above every bar: high = the official close, retention never above 1.
+// SECOND COMMIT (on 681410b4): Commercial's sheet words (writerV6.ts :119, :128, :148, :151), writer v6 10 -> 11,
+// checker v6 7 -> 8, and Integration's clamp (high = max(bar high, official close)). R3's target moved to `barHigh`;
+// R10, W1-W4, V1-V2 added; the test set adds reportWriterV6, reportCheckV6, reportRunner. All predictions are this
+// commit's, made before any run of it.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,14 +21,29 @@ const outDir = process.argv[2];
 if (!outDir) throw new Error('usage: rth-high-mutants.mjs <out-dir> [--dry]');
 fs.mkdirSync(outDir, { recursive: true });
 
-const TESTS = ['tests/desk/reportNarrative.test.ts', 'tests/desk/reportPipeline.test.ts'];
+const TESTS = [
+  'tests/desk/reportNarrative.test.ts',
+  'tests/desk/reportPipeline.test.ts',
+  'tests/desk/reportWriterV6.test.ts',
+  'tests/desk/reportCheckV6.test.ts',
+  'tests/desk/reportRunner.test.ts',
+];
 const NA = 'lib/desk/reports/narrative.ts';
+const WV = 'lib/desk/reports/writerV6.ts';
+const CK = 'lib/desk/reports/check.ts';
 
 // [id, file, from, to, predicted failing tests, what, which tests]
 const M = [
   ['R1', NA, 'AND ts < ?', 'AND ts <= ?', 1, 'the close bar (exactly at the close) counts', 'H3'],
   ['R2', NA, 'AND ts >= ?', 'AND ts > ?', 1, 'the 09:30 bar is dropped', 'H3'],
-  ['R3', NA, 'const high = regularSessionHigh(r.symbol);', 'const high = r.rth_final_high;', 4, 'the stored 04:00-16:00 high (the old code)', 'H1, H2, H3, H4'],
+  ['R3', NA, 'const barHigh = regularSessionHigh(r.symbol);', 'const barHigh = r.rth_final_high;', 4, 'the stored 04:00-16:00 high (the old code)', 'H1, H2, H3, H4'],
+  ['R10', NA, 'const high = Math.max(barHigh, close);', 'const high = barHigh;', 1, 'no clamp: a close above every bar', 'H5'],
+  ['W1', WV, 'by its regular-session high)', "by the day's high)", 1, 'named mover words reverted', 'writer recap sheet'],
+  ['W2', WV, 'its regular-session high was', 'its session high was', 1, 'context words reverted', 'writer recap sheet'],
+  ['W3', WV, 'on the day (by the regular-session high): ', 'on the day: ', 2, 'count words reverted', 'writer recap sheet, checker recap prompt'],
+  ['W4', WV, 'sits above the regular-session high', 'sits above the session high', 1, 'older-high words reverted', 'writer recap sheet'],
+  ['V1', WV, 'export const REPORT_WRITER_PROMPT_VERSION_V6 = 11;', 'export const REPORT_WRITER_PROMPT_VERSION_V6 = 10;', 1, 'writer version not bumped', 'runner pins'],
+  ['V2', CK, 'export const REPORT_CHECKER_PROMPT_VERSION_V6 = 8;', 'export const REPORT_CHECKER_PROMPT_VERSION_V6 = 7;', 1, 'checker version not bumped', 'runner pins'],
   [
     'R4',
     NA,

@@ -375,11 +375,14 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
     if (close > prev) counts.up += 1;
     if (close < prev) counts.down += 1;
     if (!(prev > 0)) continue;
-    const high = regularSessionHigh(r.symbol);
-    if (high === null) {
+    const barHigh = regularSessionHigh(r.symbol);
+    if (barHigh === null) {
       counts.noRegularSessionBars += 1;
       continue;
     }
+    // The 16:00 closing cross prints in no minute bar, so the official close can sit above every bar;
+    // the session's high is never below its own close (else retention > 1, "ran to 60 ... closed 63").
+    const high = Math.max(barHigh, close);
     if (!(high >= 1.5 * prev)) continue;
     const retention = (close - prev) / (high - prev);
     if (close <= prev) counts.gaveBack += 1;

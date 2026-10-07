@@ -90,19 +90,20 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
 
   it('recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts', () => {
     const sheet = narrativeSheet(recapV2);
-    expect(sheet).toContain('ran at least 50 percent above the prior close, on the day: 9');
+    expect(sheet).toContain('ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
     expect(sheet).toContain('of those, gave the entire move back (closed at or below the prior close): 0');
     expect(sheet).toContain('of those, kept at least half of the peak gain at the close: 4');
     expect(sheet).toContain('of those, the desk covers: 5');
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent from the prior close; news: fresh news found in our sources');
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('cycle: frontside with a warning');
+    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('(a covered 50 percent mover, by its regular-session high): NXL');
     const ah = sheet.find((l) => l.startsWith('after the close'))!;
     expect(ah).toContain('ALWAYS say "after the close" or "after hours"');
     expect(ah).toContain('AMOD, up 62 percent; news: fresh news found in our sources');
     expect(sheet).toContain('of the covered 50 percent movers, were not yet researched: 1 (a count, never names)');
     expect(sheet.join(' ')).not.toContain('had no fresh news found');
     const context = sheet.find((l) => l.startsWith('context into the next session'))!;
-    expect(context).toContain('NXL closed at $6.50; its session high was $10.98; stored support $4.90; stored resistance $10.98; an older high at $19.20 sits above the session high; open supply: ');
+    expect(context).toContain('NXL closed at $6.50; its regular-session high was $10.98; stored support $4.90; stored resistance $10.98; an older high at $19.20 sits above the regular-session high; open supply: ');
     expect(context).toMatch(/\(active\), .*\(possibly active\)$/);
     expect(sheet.at(-1)).toBe('names the desk carries into the next session: 3 (state the count only, never list them)');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|no regular-session close|split/);
