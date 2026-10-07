@@ -46,6 +46,8 @@ for design documents.
 
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
+**TWELFTH SEAT, V6 RENDER HEAD NOW `c5e27749c2b4122120e89b6e3d88c28e6758f62f`** (tag `design/report-v6-final-c5e27749`) on Research's `research/reports-v6-a5` `93a4aa55`: eleven Design commits (`8df6fec9..6d704562` re-picked; render files identical). Marketing confirmed the three forms; Integration accepted section 4's rewording. Waits: Commercial's read of the built strings, the v6 gate (tsc there), his yes. Supersedes the head below.
+
 **TWELFTH SEAT, V6 RENDER HEAD NOW `6d70456254de25054acdbb749a80357ada9d3680`** (tag `design/report-v6-revision-6d704562`, on `d2058379`): the 10 pm edition's revision line, card mark and "Replaces the edition published at" line (Marketing v2 98b22b36, Commercial 30a per Marketing), and the stored-22:00-row test. NEXT: when Integration names Research's next head (Commercial 29's narrative commit), re-pick `269b57e6..6d704562` onto it ONCE. Asked Marketing to confirm three forms (dated section 1 and hover, the multi-edition list, the lowercase mark). Supersedes the head below.
 
 **TWELFTH SEAT, V6 RENDER HEAD NOW `d205837970dcdd1c5c46fd58f73ca1c7b553a274`** (tag `design/report-v6-8df6-d2058379`) on Research's `research/reports-v6-a5` `8df6fec9` (Integration's base after the fork); render files identical to `e7fd678e`. tsc NOT run (Ops's slot; asked Integration). The 10 pm edition prints no per-line note (field set only for slot EVENING, pipeline.ts:477). Supersedes the head below.
