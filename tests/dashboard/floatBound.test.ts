@@ -19,6 +19,9 @@ const produced = (over: Partial<FloatBound> = {}): FloatBound => ({
   subtractedHolders: 2,
   filingsReadOn: '2026-10-05',
   holdingsFiledOn: ['2026-09-18', '2026-08-30'],
+  countShares: 14_000_000,
+  countForm: '10-Q',
+  insiders: [],
   ...over,
 });
 const refused = (state: 'UNKNOWN' | 'CANNOT_VERIFY', reason: FloatBoundReason, over: Partial<FloatBound> = {}): FloatBound => ({
@@ -30,6 +33,9 @@ const refused = (state: 'UNKNOWN' | 'CANNOT_VERIFY', reason: FloatBoundReason, o
   subtractedHolders: 0,
   filingsReadOn: '2026-10-05',
   holdingsFiledOn: [],
+  countShares: null,
+  countForm: null,
+  insiders: [],
   ...over,
 });
 

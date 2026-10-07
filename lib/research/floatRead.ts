@@ -51,6 +51,35 @@ export interface FloatBound {
    * for "less insider holdings filed on {dates}" (Integration 30th/31st, choice (a)). Never a holding's own `asOf`.
    */
   holdingsFiledOn: string[];
+  /** The filed share count's shares and the form it came from, whenever there is a count (as `countAsOf`); else null. */
+  countShares: number | null;
+  countForm: string | null;
+  /**
+   * PRODUCED only (else []): one row per insider subtracted (shares above zero), largest first, each with the SUBTRACTED
+   * title only (2add4b2b) and its filed dates. For the click-through, variant A (his choice, 2026-10-07T00:51:24.442Z).
+   */
+  insiders: FloatInsider[];
+}
+
+export interface FloatInsider {
+  ownerCik: string;
+  ownerName: string | null;
+  /** Null for a row stored before the title was kept. */
+  title: string | null;
+  shares: number;
+  filedOn: string[];
+}
+
+/** The insiders the bound subtracted, from the row's stored holdings, largest first (ties by CIK). */
+function insidersOf(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' }): FloatInsider[] {
+  const stored = new Map(row.holdings.map((h) => [h.ownerCik, h]));
+  return used.holdings
+    .filter((h) => h.shares > 0)
+    .map((h) => {
+      const s = stored.get(h.ownerCik);
+      return { ownerCik: h.ownerCik, ownerName: h.ownerName, title: s?.title ?? null, shares: h.shares, filedOn: [...new Set(s?.filingDates ?? [])].sort() };
+    })
+    .sort((a, b) => b.shares - a.shares || a.ownerCik.localeCompare(b.ownerCik));
 }
 
 /** The filed dates of the holdings the bound subtracted (shares above zero), read from the row's stored holdings. */
@@ -61,9 +90,10 @@ function filedOn(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' }): s
 
 export function toFloatBound(row: FloatBoundRow, cell: FloatCell): FloatBound {
   const count = row.count.kind === 'COUNT' ? row.count : null;
+  const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null };
   return cell.state === 'PRODUCED'
-    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell) }
-    : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [] };
+    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell) }
+    : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [], ...filed, insiders: [] };
 }
 
 function tablePresent(db: MarketDatabase): boolean {

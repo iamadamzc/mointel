@@ -75,6 +75,27 @@ describe("the cell reads Research's real FloatBound", () => {
 });
 
 describe('guards: absent, malformed, extra fields', () => {
+  it('carries the filed count and the insider rows; drops a malformed insider row, never inventing one', () => {
+    const b = normalizeFloatBound({
+      state: 'PRODUCED',
+      bound: 9_600_000,
+      countAsOf: '2026-08-01',
+      countShares: 10_000_000,
+      countForm: '10-Q',
+      insiders: [
+        { ownerCik: '111', ownerName: 'A', title: 'common stock', shares: 400_000, filedOn: ['2026-07-20', 'Jul 20'] },
+        { ownerCik: 222, shares: 1 },
+        { ownerCik: '333', shares: 'many' },
+        'x',
+      ],
+    })!;
+    expect(b.countShares).toBe(10_000_000);
+    expect(b.countForm).toBe('10-Q');
+    expect(b.insiders).toEqual([{ ownerCik: '111', ownerName: 'A', title: 'common stock', shares: 400_000, filedOn: ['2026-07-20'] }]);
+    const bare = normalizeFloatBound({ state: 'PRODUCED', countShares: 'ten', insiders: 'none' })!;
+    expect([bare.countShares, bare.countForm, bare.insiders]).toEqual([null, null, []]);
+  });
+
   it('absent or null is NOT_YET, "Not computed": the day-one common case', () => {
     for (const none of [null, undefined]) {
       expect(normalizeFloatBound(none)).toBeNull();

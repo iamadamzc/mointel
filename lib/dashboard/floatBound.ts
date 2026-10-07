@@ -22,7 +22,7 @@
  */
 
 import { BOUND_PREFIX, compactBound } from '@/lib/research/compactBound';
-import type { FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
+import type { FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
 import type { FloatCellReason } from '@/lib/research/insiderBound';
 
 /** Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed". */
@@ -50,6 +50,9 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
     subtractedHolders: 0,
     filingsReadOn: '',
     holdingsFiledOn: [],
+    countShares: null,
+    countForm: null,
+    insiders: [],
   };
   if (typeof raw !== 'object' || Array.isArray(raw)) return fault;
   const r = raw as Record<string, unknown>;
@@ -63,7 +66,26 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
     subtractedHolders: typeof r.subtractedHolders === 'number' ? r.subtractedHolders : 0,
     filingsReadOn: isDate(r.filingsReadOn) ? r.filingsReadOn : '',
     holdingsFiledOn: Array.isArray(r.holdingsFiledOn) ? r.holdingsFiledOn.filter(isDate) : [],
+    countShares: typeof r.countShares === 'number' && Number.isFinite(r.countShares) ? r.countShares : null,
+    countForm: typeof r.countForm === 'string' ? r.countForm : null,
+    // A malformed insider row is dropped, never shown with invented values.
+    insiders: Array.isArray(r.insiders) ? r.insiders.flatMap(insiderOf) : [],
   };
+}
+
+function insiderOf(raw: unknown): FloatInsider[] {
+  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return [];
+  const i = raw as Record<string, unknown>;
+  if (typeof i.ownerCik !== 'string' || typeof i.shares !== 'number' || !Number.isFinite(i.shares)) return [];
+  return [
+    {
+      ownerCik: i.ownerCik,
+      ownerName: typeof i.ownerName === 'string' ? i.ownerName : null,
+      title: typeof i.title === 'string' ? i.title : null,
+      shares: i.shares,
+      filedOn: Array.isArray(i.filedOn) ? i.filedOn.filter(isDate) : [],
+    },
+  ];
 }
 
 export type FloatFaceKind = 'bound' | 'unknown' | 'cannotVerify' | 'notComputed';

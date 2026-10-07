@@ -83,9 +83,12 @@ describe('toFloatBound (the payload Design builds from)', () => {
     const r = row();
     expect(toFloatBound(r, floatCellAt(r, '2026-09-29', [], flat('2026-09-29'))!)).toEqual({
       state: 'PRODUCED', reason: null, bound: 9_600_000, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 1, filingsReadOn: READ, holdingsFiledOn: ['2026-07-20', '2026-09-02'],
+      countShares: 10_000_000, countForm: '10-Q',
+      insiders: [{ ownerCik: '111', ownerName: 'A', title: null, shares: 400_000, filedOn: ['2026-07-20', '2026-09-02'] }],
     });
     expect(toFloatBound(r, { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' })).toEqual({
       state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD', bound: null, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 0, filingsReadOn: READ, holdingsFiledOn: [],
+      countShares: 10_000_000, countForm: '10-Q', insiders: [],
     });
   });
 
@@ -100,6 +103,24 @@ describe('toFloatBound (the payload Design builds from)', () => {
     const cell = floatCellFor({ cik: '555', count: COUNT, holdings: mixed, splitSinceCount: 'NONE', ledger: [], asOfDate: '2026-08-20', issuanceFiled: false });
     expect(cell.state).toBe('PRODUCED');
     expect(toFloatBound(row({ holdings: mixed, cell }), cell).holdingsFiledOn).toEqual(['2026-07-20', '2026-08-15', '2026-09-02']);
+  });
+
+  it('insiders: one row per insider subtracted, largest first, with the subtracted title and its filed dates; not a refused one, not a zero', () => {
+    const c = (title: string) => [{ title, h0: 1, h0AsOf: '2026-07-01', hD: 1, hDAsOf: '2026-07-01' }];
+    const mixed: StoredHolding[] = [
+      { ownerCik: '222', ownerName: 'B', shares: 100_000, asOf: '2026-07-01', accessions: ['b'], filingDates: ['2026-09-02', '2026-08-15'], split: 'NONE', classes: c('common stock'), title: 'common stock' },
+      { ownerCik: '111', ownerName: 'A', shares: 400_000, asOf: '2026-07-14', accessions: ['a'], filingDates: ['2026-07-20'], split: 'NONE', classes: c('common stock, $0.0001 par value'), title: 'common stock, $0.0001 par value' },
+      { ownerCik: '333', ownerName: 'C', shares: 200_000, asOf: '2026-06-01', accessions: ['c'], filingDates: ['2026-06-03'], split: 'FOUND', classes: c('common stock') },
+      { ownerCik: '444', ownerName: 'D', shares: 0, asOf: '2026-07-02', accessions: ['d'], filingDates: ['2026-07-03'], split: 'NONE', classes: c('common stock') },
+    ];
+    const cell = floatCellFor({ cik: '555', count: COUNT, holdings: mixed, splitSinceCount: 'NONE', ledger: [], asOfDate: '2026-08-20', issuanceFiled: false });
+    const b = toFloatBound(row({ holdings: mixed, cell }), cell);
+    expect(b.countShares).toBe(10_000_000);
+    expect(b.countForm).toBe('10-Q');
+    expect(b.insiders).toEqual([
+      { ownerCik: '111', ownerName: 'A', title: 'common stock, $0.0001 par value', shares: 400_000, filedOn: ['2026-07-20'] },
+      { ownerCik: '222', ownerName: 'B', title: 'common stock', shares: 100_000, filedOn: ['2026-08-15', '2026-09-02'] },
+    ]);
   });
 });
 

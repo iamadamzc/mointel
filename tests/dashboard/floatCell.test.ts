@@ -17,6 +17,9 @@ const bound = (over: Partial<FloatBound> = {}): FloatBound => ({
   subtractedHolders: 1,
   filingsReadOn: '2026-10-05',
   holdingsFiledOn: ['2026-09-18'],
+  countShares: 9_000_000,
+  countForm: '10-Q',
+  insiders: [],
   ...over,
 });
 

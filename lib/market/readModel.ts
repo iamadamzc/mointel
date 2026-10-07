@@ -488,6 +488,9 @@ const FLOAT_FAULT: FloatBound = {
   subtractedHolders: 0,
   filingsReadOn: '',
   holdingsFiledOn: [],
+  countShares: null,
+  countForm: null,
+  insiders: [],
 };
 
 export function readFloatBounds(

@@ -314,6 +314,8 @@ describe('holdingsAtBoth (rule S1)', () => {
     expect(subtracted(unequal)).toEqual({ '1': 300 });
     const [h] = holdingsAtBoth(unequal, COUNT, D, WINDOW);
     expect(h!.classes.map((c) => c.title)).toEqual(['common stock', 'common stock, par value $0.001']);
+    expect(h!.title).toBe('common stock, par value $0.001');
+    expect(holdingsAtBoth(kitt, COUNT, D, WINDOW)[0]!.title).toBe('common stock');
   });
 
   it('leaves a single-title owner as before', () => {

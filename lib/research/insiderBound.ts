@@ -164,6 +164,8 @@ export interface ClassHolding {
  */
 export interface S1Holding extends DatedHolding {
   classes: ClassHolding[];
+  /** The title subtracted (the smallest, 2add4b2b). Optional: a row stored before it carries none. */
+  title?: string;
 }
 
 /**
@@ -202,6 +204,7 @@ export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: strin
         ownerCik,
         ownerName: e.name,
         shares: held(chosen),
+        title: chosen.holding.title,
         asOf: chosen.holding.h0AsOf,
         accessions: [...new Set(chosen.accessions)].sort(),
         filingDates: [...new Set(chosen.filingDates)].sort(),

@@ -13,6 +13,9 @@
 // cases, survives by design). Added 2026-10-07 for the same-day fix (Integration's yes; S1 result 32f5e351).
 // T1, the several-titles fix (Integration's yes; S1 result 72bf286c): IB-T1 "takes the minimum per CLASS ... smallest title",
 // IB-T2 "subtracts one security filed under two titles ONCE"; "leaves a single-title owner as before" survives by design.
+// P1-P4, the click-through payload (variant A, his choice 2026-10-07T00:51:24.442Z): FR-EQ "carries the bound, the count
+// dates...", FR-INS "insiders: one row per insider" (floatRead.test.ts); FW-INS "carries the filed count and the insider
+// rows" (floatWiring.test.ts); IB-T2 also asserts the stored title.
 // Not mutated: the view test of the bare fallback (floatBound.test.ts), which pins words no code chooses.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -27,9 +30,12 @@ const TESTS = [
   'tests/research/floatJob.test.ts',
   'tests/research/floatRead.test.ts',
   'tests/dashboard/floatBound.test.ts',
+  'tests/dashboard/floatWiring.test.ts',
 ];
 const IB = 'lib/research/insiderBound.ts';
 const FJ = 'lib/research/floatJob.ts';
+const FR = 'lib/research/floatRead.ts';
+const FB = 'lib/dashboard/floatBound.ts';
 
 // [id, file, from, to, predicted failing tests, what, which tests]
 const M = [
@@ -38,6 +44,10 @@ const M = [
   ['F2', IB, "'40-F', '40-F/A']", "'40-F']", 1, 'a 40-F/A count admitted', 'IB-F1'],
   ['F3', FJ, ', form: input.count.form }', ' }', 1, 'floatCellFor drops the form', 'FJ-F'],
   ['S1', IB, ' || (order === 0 && row.shares < current.row.shares)', '', 3, 'same-day rows back to the first row', 'IB-SD1, IB-SD2, IB-SD3'],
+  ['P1', FR, 'insiders: insidersOf(row, cell) }', 'insiders: [] }', 2, 'the insider rows never sent', 'FR-EQ, FR-INS'],
+  ['P2', FR, 'countShares: count?.shares ?? null', 'countShares: null', 2, 'the filed count shares never sent', 'FR-EQ, FR-INS'],
+  ['P3', IB, 'title: chosen.holding.title,', '', 1, 'the subtracted title not stored', 'IB-T2'],
+  ['P4', FB, 'insiders: Array.isArray(r.insiders) ? r.insiders.flatMap(insiderOf) : [],', 'insiders: [],', 1, 'the client drops the insider rows', 'FW-INS'],
   ['T1', IB, 'shares: held(chosen),', 'shares: e.titled.reduce((sum, t) => sum + held(t), 0),', 2, 'several titles summed again', 'IB-T1 (per class, now 200), IB-T2 (KITT shape and unequal titles)'],
 ];
 
