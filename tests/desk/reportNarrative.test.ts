@@ -3,9 +3,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { openDatabase, type MarketDatabase } from '@/lib/market/store/db';
+import { openDatabase, setMeta, type MarketDatabase } from '@/lib/market/store/db';
 import { insertAssessmentRanges, type AssessmentTickerRecord } from '@/lib/market/store/assessmentRepo';
-import { narrativeFacts, narrativeFootnotes, readFrozenBreadth, readRecapCounts } from '@/lib/desk/reports/narrative';
+import { narrativeFacts, narrativeFootnotes, readFrozenBreadth, readRecapCounts, regularSessionWindow } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
 
@@ -50,7 +50,25 @@ type Row = {
   /** The official close's basis and date; default CURRENT_SESSION on the trading date whenever `close` is set. */
   basis?: string | null;
   refDate?: string | null;
+  /**
+   * The REGULAR-SESSION high, written as one minute bar inside 09:30-16:00 ET. Default: `high` whenever
+   * the row traded in RTH, so the stored and the regular-session high agree unless a test says otherwise.
+   * null = no regular-session bar at all.
+   */
+  rthHigh?: number | null;
+  /** A premarket minute bar (08:00 ET) with this high. */
+  preHigh?: number;
+  /** An after-hours minute bar (17:00 ET) with this high. */
+  ahHigh?: number;
 };
+
+/** One minute bar for `symbol` on DATE, stamped at its start (`ts`, UTC). */
+function minuteBar(db: MarketDatabase, symbol: string, ts: string, high: number) {
+  db.prepare(
+    `INSERT INTO minute_bars (symbol, trading_date, ts, open, high, low, close, volume, trade_count, vwap, source, received_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, 100, 1, ?, 'test', ?)`,
+  ).run(symbol, DATE, ts, high, high, high, high, high, ts);
+}
 /** `close` is the OFFICIAL close (`reference_rth_close`, CURRENT_SESSION, this date) AND, unless `bell` says otherwise, the bell capture. */
 function seed(db: MarketDatabase, rows: Row[]) {
   const ts = db.prepare(
@@ -72,10 +90,15 @@ function seed(db: MarketDatabase, rows: Row[]) {
       refDate: r.refDate !== undefined ? r.refDate : close === null ? null : DATE,
     });
     if (r.eligible !== undefined) uni.run(r.symbol, r.eligible);
+    // DATE is in EDT: 09:30-16:00 ET is 13:30Z-20:00Z.
+    const rthHigh = r.rthHigh !== undefined ? r.rthHigh : (r.rthVol ?? 0) > 0 ? (r.high ?? null) : null;
+    if (rthHigh !== null) minuteBar(db, r.symbol, `${DATE}T14:00:00.000Z`, rthHigh);
+    if (r.preHigh !== undefined) minuteBar(db, r.symbol, `${DATE}T12:00:00.000Z`, r.preHigh);
+    if (r.ahHigh !== undefined) minuteBar(db, r.symbol, `${DATE}T21:00:00.000Z`, r.ahHigh);
   }
 }
 
-describe('readRecapCounts: F1, F6, F7 and G from the 16:00 latched values', () => {
+describe('readRecapCounts: F1, F6, F7 and G (official close; regular-session high)', () => {
   it('counts one population and keeps every exclusion out of it', () => {
     const db = store();
     seed(db, [
@@ -156,6 +179,82 @@ describe('readRecapCounts: the CLOSE is the official close, never the bell captu
     expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 1, traded: 1, up: 0, down: 1 });
     expect(r.noClose).toBe(0);
     db.close();
+  });
+});
+
+describe('readRecapCounts: the HIGH is the regular-session high from minute_bars (Commercial 2026-10-07; Integration ruled (1))', () => {
+  it('H1: a premarket spike and an after-hours bar never make a 50 percent mover; a bar above the stored high counts (bars are the source)', () => {
+    const db = store();
+    seed(db, [
+      // stored high 3.4 from a PREMARKET spike; the regular session only reached 2.6: not a mover
+      { symbol: 'PRE', prev: 2, close: 2.5, high: 3.4, rthHigh: 2.6, preHigh: 3.4, rthVol: 900, price: 2.5, vol: 900 },
+      // control: the same 3.4 high reached IN the regular session: a mover
+      { symbol: 'CTRL', prev: 2, close: 2.5, high: 3.4, rthVol: 900, price: 2.5, vol: 900 },
+      // an after-hours print at 3.5 after a 2.6 regular session: not a mover
+      { symbol: 'AH', prev: 2, close: 2.5, high: 2.6, ahHigh: 3.5, rthVol: 900, price: 2.5, vol: 900 },
+      // the PCG.PRG case: a bar above the engine's stored high; the bar is the source
+      { symbol: 'BARUP', prev: 2, close: 2.5, high: 2.9, rthHigh: 3.1, rthVol: 900, price: 2.5, vol: 900 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.movers.map((m) => [m.symbol, m.high]).sort()).toEqual([['BARUP', 3.1], ['CTRL', 3.4]]);
+    expect(r.movers.find((m) => m.symbol === 'CTRL')!.highPct).toBeCloseTo(70, 10);
+    expect([r.movers50, r.noRegularSessionBars]).toEqual([2, 0]);
+    // breadth is by the close, untouched: all four up
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 4, traded: 4, up: 4, down: 0 });
+  });
+
+  it('H2: a counted name with no regular-session bar is left out of the high-based figures only, still counted by its close', () => {
+    const db = store();
+    seed(db, [
+      // official close, traded, stored high 2x: no RTH bar, so no mover, no gave-back, no kept-half
+      { symbol: 'NOBAR', prev: 2, close: 3, high: 4, rthHigh: null, rthVol: 900, price: 3, vol: 900 },
+      // the same with no bar and a close under the prior: still DOWN, still not "gave back"
+      { symbol: 'NOBARDN', prev: 2, close: 1.8, high: 4, rthHigh: null, rthVol: 900, price: 1.8, vol: 900 },
+    ]);
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.breadth).toEqual({ window: 'REGULAR_SESSION', eligible: 2, traded: 2, up: 1, down: 1 });
+    expect([r.movers50, r.gaveBack, r.keptHalf, r.noClose, r.noRegularSessionBars]).toEqual([0, 0, 0, 0, 2]);
+  });
+
+  it('H3: the window is 09:30 ET to the stored calendar close, end exclusive; an early close ends it there', () => {
+    const db = store();
+    seed(db, [
+      { symbol: 'OPEN', prev: 2, close: 2.5, high: 9, rthHigh: null, rthVol: 900, price: 2.5, vol: 900 },
+      { symbol: 'SHUT', prev: 2, close: 2.5, high: 9, rthHigh: null, rthVol: 900, price: 2.5, vol: 900 },
+    ]);
+    // OPEN: the decisive 3.1 is the 09:30 bar itself; the 09:29 bar (9) is premarket.
+    minuteBar(db, 'OPEN', `${DATE}T13:29:00.000Z`, 9);
+    minuteBar(db, 'OPEN', `${DATE}T13:30:00.000Z`, 3.1);
+    minuteBar(db, 'OPEN', `${DATE}T14:00:00.000Z`, 2.2);
+    // SHUT: the decisive 3.1 is the 12:59 bar; 13:00 (9) is after an early close.
+    minuteBar(db, 'SHUT', `${DATE}T15:00:00.000Z`, 2.2);
+    minuteBar(db, 'SHUT', `${DATE}T16:59:00.000Z`, 3.1);
+    minuteBar(db, 'SHUT', `${DATE}T17:00:00.000Z`, 9);
+    setMeta(db, 'calendar', JSON.stringify([{ date: DATE, close: '13:00' }]));
+    expect(regularSessionWindow(db, DATE)).toEqual({ start: `${DATE}T13:30:00.000Z`, end: `${DATE}T17:00:00.000Z` });
+    const r = readRecapCounts(db, DATE, RANGE);
+    expect(r.movers.map((m) => [m.symbol, m.high]).sort()).toEqual([['OPEN', 3.1], ['SHUT', 3.1]]);
+  });
+
+  it('H3b: with no calendar day the window closes at 16:00 ET', () => {
+    const db = store();
+    expect(regularSessionWindow(db, DATE)).toEqual({ start: `${DATE}T13:30:00.000Z`, end: `${DATE}T20:00:00.000Z` });
+  });
+
+  it('H4: the named mover and the context carry the regular-session high, not the premarket one', () => {
+    const db = store();
+    seed(db, [{ symbol: 'X', prev: 2, close: 3.528, high: 6, rthHigh: 5.13, preHigh: 6, low: 2.5, rthVol: 900, price: 3.5, vol: 900 }]);
+    const out = narrativeFacts(db, {
+      kind: 'PREMARKET',
+      tradingDate: DATE,
+      range: RANGE,
+      checkpointId: 1,
+      facts: [{ ticker: 'X', assessmentRank: 1, percentChange: 70, referenceBasis: 'CURRENT_SESSION', referenceClose: null, cycle: null, changeSummary: '' } as unknown as ReportFact],
+      research: new Map(),
+    });
+    expect(out.recapLeaders!.map((l) => [l.ticker, l.high])).toEqual([['X', 5.13]]);
+    expect(out.recapLeaders![0]!.highPct).toBeCloseTo(156.5, 6);
+    expect(out.context!.sessionHigh).toBe(5.13);
   });
 });
 

@@ -23,10 +23,15 @@
  *   move, F13 their change notes, F3 the fresh-news count among the covered.
  * - RECAP (EVENING and its 10 pm edition): F1, F6, F7, F15 and G from ONE row
  *   per name on `ticker_session`: the CLOSE is the OFFICIAL regular-session close
- *   (`officialClose` below), the high, low and volume the 16:00 values latched
- *   on `rth_final_*`; population = board eligibility with the official close in
- *   range, split rows left out (below); F10, F10b, F12b, the context; F3; F9 the
- *   covered names.
+ *   (`officialClose` below); the HIGH behind every high-based figure (F6, F7, F15,
+ *   F10's peak and the context's session high) is the REGULAR-SESSION high, read
+ *   from `minute_bars` (`regularSessionHigh` below), because `rth_final_high` is
+ *   the engine's 04:00-16:00 high with premarket included (Commercial's read,
+ *   2026-10-07; on 10-06, 567 of 2,854 counted names had a premarket high above
+ *   their regular-session high); the low and volume stay the 16:00 values latched
+ *   on `rth_final_*`, and the split check reads those latched values; population
+ *   = board eligibility with the official close in range, split rows left out
+ *   (below); F10, F10b, F12b, the context; F3; F9 the covered names.
  *
  * THE SPLIT CHECK (recap). `ticker_session.previous_close` carried the PRE-split
  * close onto at least 12 effective dates (`docs/research/split-day-previous-
@@ -44,9 +49,11 @@
 
 import type { MarketDatabase } from '../../market/store/db';
 import { rangeKey, readAssessmentRanges, type AssessmentTickerRecord } from '../../market/store/assessmentRepo';
+import { etWallClockToUtc } from '../../market/session';
 import { dailyBarBasis } from '../../research/history';
 import type { CatalystStatus, SupplyBlockStatus, SupplyBlockType } from '../../research/types';
 import { decodeLevels } from '../assessment';
+import { calendarDays } from '../checkpointDates';
 import { isEveningRecap, type NarrativeFootnotes, type ReportKind } from './contract';
 import type { ReportFact } from './facts';
 import type { ReportResearch } from './research';
@@ -149,7 +156,7 @@ export interface NarrativeFacts {
   keptHalf: number | null;
   /** F10, recap: how many of the 50 percent movers the desk covers. */
   coveredMovers: number | null;
-  /** F10, recap: the covered movers by the day's high, top 2. */
+  /** F10, recap: the covered movers by their regular-session high, top 2. */
   recapLeaders: RecapMover[] | null;
   /** F10b, recap: the top covered after-hours gainer not already named. */
   afterHours: AfterHoursMover | null;
@@ -252,7 +259,7 @@ interface SessionRow {
   cumulative_volume: number | null;
 }
 
-/** One latched 50 percent mover, on the day. */
+/** One 50 percent mover, on the day: `high` is its regular-session high (see the header). */
 export interface DayMover {
   symbol: string;
   previousClose: number;
@@ -270,8 +277,33 @@ export interface RecapCounts {
   noClose: number;
   splitExcluded: number;
   keptHalf: number;
+  /**
+   * Counted names (official close, traded) with no regular-session minute bar: left out of
+   * the high-based figures only (F6, F7, F15, F10), still counted in F1 by their close
+   * (Integration's ruling, 2026-10-07). Not a footnote; recorded for the record and tests.
+   */
+  noRegularSessionBars: number;
   /** Every counted 50 percent mover, for F10. */
   movers: DayMover[];
+}
+
+/** The regular session opens at 09:30 ET on every US trading day; early closes move only the close. */
+const RTH_OPEN: [number, number] = [9, 30];
+const RTH_CLOSE_DEFAULT: [number, number] = [16, 0];
+
+/**
+ * The regular session of `tradingDate` in UTC, [start, end): 09:30 ET to the stored
+ * calendar's close for that date (an early close at 13:00 ends it there), else 16:00 ET.
+ * Minute bars are stamped at their start, so the 15:59 bar is the last one inside.
+ */
+export function regularSessionWindow(db: MarketDatabase, tradingDate: string): { start: string; end: string } {
+  const close = calendarDays(db).find((day) => day.date === tradingDate)?.close ?? null;
+  const match = close ? /^(\d{1,2}):(\d{2})/.exec(close) : null;
+  const [h, m] = match ? [Number(match[1]), Number(match[2])] : RTH_CLOSE_DEFAULT;
+  return {
+    start: etWallClockToUtc(tradingDate, RTH_OPEN[0], RTH_OPEN[1]).toISOString(),
+    end: etWallClockToUtc(tradingDate, h, m).toISOString(),
+  };
 }
 
 /** At least this much of the peak gain kept at the close counts as "held half" (F15). */
@@ -308,8 +340,14 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
     .all(tradingDate) as SessionRow[];
 
   const inside = (value: number | null) => value !== null && value >= range.min && value <= range.max;
-  const counts = { eligible: 0, traded: 0, up: 0, down: 0, gaveBack: 0, noClose: 0, splitExcluded: 0, keptHalf: 0 };
+  const counts = { eligible: 0, traded: 0, up: 0, down: 0, gaveBack: 0, noClose: 0, splitExcluded: 0, keptHalf: 0, noRegularSessionBars: 0 };
   const movers: DayMover[] = [];
+
+  // One primary-key range read per counted name, (symbol, ts), never a scan of the day's bars.
+  const rthWindow = regularSessionWindow(db, tradingDate);
+  const regularHigh = db.prepare('SELECT MAX(high) AS high FROM minute_bars WHERE symbol = ? AND ts >= ? AND ts < ?');
+  const regularSessionHigh = (symbol: string): number | null =>
+    (regularHigh.get(symbol, rthWindow.start, rthWindow.end) as { high: number | null }).high;
 
   for (const r of rows) {
     if (r.official_close === null) {
@@ -336,8 +374,13 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
     if (prev === null) continue;
     if (close > prev) counts.up += 1;
     if (close < prev) counts.down += 1;
-    const high = r.rth_final_high;
-    if (!(prev > 0) || high === null || !(high >= 1.5 * prev)) continue;
+    if (!(prev > 0)) continue;
+    const high = regularSessionHigh(r.symbol);
+    if (high === null) {
+      counts.noRegularSessionBars += 1;
+      continue;
+    }
+    if (!(high >= 1.5 * prev)) continue;
     const retention = (close - prev) / (high - prev);
     if (close <= prev) counts.gaveBack += 1;
     if (retention >= KEPT_HALF) counts.keptHalf += 1;
@@ -359,6 +402,7 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
     noClose: counts.noClose,
     splitExcluded: counts.splitExcluded,
     keptHalf: counts.keptHalf,
+    noRegularSessionBars: counts.noRegularSessionBars,
     movers,
   };
 }
