@@ -28,17 +28,25 @@ function published(kind: SessionReport['kind'], tradingDate: string): StoredRepo
 }
 
 describe('the report slots, from the latest recap', () => {
-  it('last night’s after-hours and premarket, then today’s three, each with a 30-minute grace', () => {
+  it('last night’s after-hours, evening and premarket, then today’s four, each with a 30-minute grace', () => {
     const slots = reportSlots(RECAP, RANGES);
     expect(slots.map((s) => `${s.kind} ${s.tradingDate} ${s.scheduledFor}`)).toEqual([
       'AFTER_HOURS 2026-09-28 2026-09-28T20:00:00.000Z',
+      'EVENING 2026-09-28 2026-09-29T00:05:00.000Z', // 20:05 ET, the AFTER_HOURS_CLOSE checkpoint
       'PREMARKET 2026-09-28 2026-09-29T02:00:00.000Z',
       'INTO_RTH 2026-09-29 2026-09-29T13:25:00.000Z',
       'INTO_POWER_HOUR 2026-09-29 2026-09-29T18:30:00.000Z',
       'AFTER_HOURS 2026-09-29 2026-09-29T20:00:00.000Z',
+      'EVENING 2026-09-29 2026-09-30T00:05:00.000Z',
     ]);
     for (const s of slots) expect(Date.parse(s.relevantUntil) - Date.parse(s.scheduledFor)).toBe(REPORT_GRACE_MS);
-    expect(slots[1]!.targetTradingDate).toBe('2026-09-29');
+    expect(slots[2]!.targetTradingDate).toBe('2026-09-29');
+    expect(slots[1]!.targetTradingDate).toBeNull();
+  });
+
+  it('an EVENING row is filed under its slot', () => {
+    const payload = buildReportsPayload(RECAP, [published('EVENING', '2026-09-28')], RANGES, '1-20');
+    expect(payload.reports.map((r) => `${r.kind} ${r.tradingDate}`)).toEqual(['EVENING 2026-09-28']);
   });
 
   it('no recap, no slots', () => {
@@ -95,7 +103,7 @@ describe('reading the store', () => {
 
   it('with the table, the latest recap at or before now decides the slots, and stored reports fill them', () => {
     const payload = readReportsPayload(store(true), new Date('2026-09-29T03:00:00Z'), RANGES, '1-20');
-    expect(payload?.slots).toHaveLength(5);
+    expect(payload?.slots).toHaveLength(7);
     expect(payload?.reports).toHaveLength(1);
     // Before that recap was scheduled, there is none to use.
     expect(readReportsPayload(store(true), new Date('2026-09-29T01:00:00Z'), RANGES, '1-20')?.slots).toEqual([]);

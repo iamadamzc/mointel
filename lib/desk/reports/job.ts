@@ -25,10 +25,10 @@ import type { MarketDatabase } from '../../market/store/db';
 import type { CheckerModel } from './check';
 import type { ReportKind, ReportRange } from './contract';
 import type { ReportModelUsage } from './openaiReportModel';
-import { findCheckpoint, runReport, type ReportRun } from './pipeline';
+import { findCheckpoint, runReport, writeNotBefore, type ReportRun } from './pipeline';
 import type { ReportModel } from './writer';
 
-export const REPORT_KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'];
+export const REPORT_KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', 'EVENING'];
 
 /**
  * How far back a pass looks for a checkpoint with no report. Bounded so the
@@ -92,6 +92,9 @@ export function pendingReports(db: MarketDatabase, ranges: readonly ReportRange[
       const checkpoint = findCheckpoint(db, kind, tradingDate);
       if (!checkpoint || checkpoint.status === 'RUNNING') continue;
       if (checkpoint.scheduledFor < since || checkpoint.scheduledFor > now.toISOString()) continue;
+      // EVENING waits for research that finishes after its checkpoint (pipeline.ts WRITE_NOT_BEFORE).
+      const notBefore = writeNotBefore(kind, tradingDate);
+      if (notBefore && now.getTime() < notBefore.getTime()) continue;
       for (const range of ranges) {
         if (stored.get(kind, range.id, tradingDate)) continue;
         pending.push({ assessmentId: checkpoint.id, kind, tradingDate, range });

@@ -12,7 +12,7 @@
  * - INTRADAY (into RTH, into power hour, after-hours): the checkpoint row's own
  *   `reference_close` → `session_high` → `price`, and only on a PRIOR_SESSION
  *   basis, so the first point is the prior close.
- * - PREMARKET (from the 22:00 recap): the after-hours arc, today's close →
+ * - PREMARKET (from the 22:00 recap) and EVENING (from 20:05): the after-hours arc, today's close →
  *   the after-hours high → now. The recap row's `session_high` is ALL-SESSIONS
  *   (SANG: `session_low` $3.47 < `ah_low` $3.59, data-map-2026-09-30.md), so it
  *   cannot say whether the high came after the bell. The after-hours values
@@ -26,7 +26,7 @@
  */
 
 import { etMinutesOfDay } from '../../market/session';
-import type { PathBasis, ReportKind, ReportPath } from './contract';
+import { isEveningRecap, type PathBasis, type ReportKind, type ReportPath } from './contract';
 
 export interface PathRow {
   price: number | null;
@@ -54,14 +54,14 @@ function finite(value: number | null | undefined): value is number {
 export function reportPath(kind: ReportKind, row: PathRow, afterHours: AfterHoursArc | null): ReportPath | null {
   const now = row.price;
   const [from, high, fromBasis]: [number | null, number | null, PathBasis] =
-    kind === 'PREMARKET'
+    isEveningRecap(kind)
       ? [afterHours?.referenceClose ?? null, afterHours?.high ?? null, 'TODAY_CLOSE']
       : row.referenceBasis === 'PRIOR_SESSION'
         ? [row.referenceClose, row.sessionHigh, 'PRIOR_CLOSE']
         : [null, null, 'PRIOR_CLOSE'];
 
   if (!finite(from) || !finite(high) || !finite(now)) return null;
-  if (kind === 'PREMARKET') {
+  if (isEveningRecap(kind)) {
     const at = row.priceAt ? new Date(row.priceAt) : null;
     const minutes = at && !Number.isNaN(at.getTime()) ? etMinutesOfDay(at) : null;
     if (minutes === null || minutes < 16 * 60 || minutes > 20 * 60) return null;

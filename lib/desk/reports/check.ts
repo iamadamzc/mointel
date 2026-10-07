@@ -565,6 +565,8 @@ const KIND_MOMENT: Record<ReportKind, string> = {
   INTO_POWER_HOUR:
     'the briefing into power hour, built at 14:30 for the last hour of the regular session (15:00–16:00)',
   AFTER_HOURS: 'the briefing after the regular session closed at 16:00, into after-hours',
+  EVENING:
+    'the evening briefing, built from the 20:05 checkpoint after the after-hours session closed at 20:00, published by 20:30; its percent changes are the after-hours move',
 };
 
 /** The stored fields, rendered by the CHECKER -- never the writer's sheet. */

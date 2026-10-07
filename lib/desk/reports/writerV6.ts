@@ -238,6 +238,7 @@ const KIND_FRAME_V6: Record<ReportKind, string> = {
   INTO_RTH: 'Into the open: the session so far, and the catalysts our sources found.',
   INTO_POWER_HOUR: 'Into power hour: the session so far going into the last hour, and the catalysts our sources found.',
   AFTER_HOURS: 'Into after-hours: the regular session has closed; the catalysts our sources found.',
+  EVENING: 'The evening report, read tonight: a recap of the regular session that closed and the after-hours session that followed, and the names the desk carries into the next one.',
 };
 
 export const SYSTEM_V6 = [

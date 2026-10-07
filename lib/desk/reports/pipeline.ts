@@ -23,11 +23,16 @@ import {
   type AssessmentRecord,
   type AssessmentTickerRecord,
 } from '../../market/store/assessmentRepo';
-import { readAnalysisVersionsByIds, readSourceIdsForTicker, readSourcesByIds } from '../../market/store/researchRepo';
+import {
+  readAnalysisVersionsByIds,
+  readLatestAnalysesAsOf,
+  readSourceIdsForTicker,
+  readSourcesByIds,
+} from '../../market/store/researchRepo';
 import type { ResearchAnalysisVersion, ResearchSource } from '../../research/types';
 import type { AssessmentType } from '../schedule';
 import { applyStrikes, checkReport, type CheckerModel, type Strike } from './check';
-import type { MissedCause, ReportKind, ReportPath, SessionReport } from './contract';
+import { isEveningRecap, type MissedCause, type ReportKind, type ReportPath, type SessionReport } from './contract';
 import { REPORT_NAME_CAP, reportFacts, type ReportFact } from './facts';
 import { catalystFreshFromUtc } from '../../research/freshFrom';
 import { narrativeFacts, narrativeFootnotes, type NarrativeFacts } from './narrative';
@@ -47,7 +52,27 @@ const SOURCE: Record<ReportKind, { type: AssessmentType; at: [number, number] }>
   INTO_RTH: { type: 'OPEN_SPIKE_ASSESSMENT', at: [9, 25] },
   INTO_POWER_HOUR: { type: 'RTH_INTERVAL', at: [14, 30] },
   AFTER_HOURS: { type: 'RTH_CLOSE', at: [16, 0] },
+  EVENING: { type: 'AFTER_HOURS_CLOSE', at: [20, 5] },
 };
+
+/**
+ * The earliest ET moment a report may be WRITTEN, where it is later than its
+ * checkpoint. EVENING waits to 20:20 (Integration's ruling 2026-10-07): written
+ * at 20:06 no research version newer than the checkpoint's could exist yet, so
+ * the per-line "research updated" note could never fire. Ops's job timing,
+ * 09-30 to 10-06: every 20:05-queued job was terminal by 20:10:40 at worst; a
+ * write and check took 34-43 s (v5 rows, 10-02 snapshot), inside the 20:30
+ * serve-by.
+ */
+const WRITE_NOT_BEFORE: Partial<Record<ReportKind, [number, number]>> = {
+  EVENING: [20, 20],
+};
+
+/** When this report's slot may be written, or null when its checkpoint completing is enough. */
+export function writeNotBefore(kind: ReportKind, tradingDate: string): Date | null {
+  const at = WRITE_NOT_BEFORE[kind];
+  return at ? etWallClockToUtc(tradingDate, at[0], at[1]) : null;
+}
 
 /**
  * The moment each report serves, ET: published after it, the report is LATE
@@ -63,6 +88,9 @@ function servesBy(kind: ReportKind, stored: AssessmentRecord): Date {
       return etWallClockToUtc(stored.tradingDate, 15, 0);
     case 'AFTER_HOURS':
       return etWallClockToUtc(stored.tradingDate, 20, 0);
+    case 'EVENING':
+      // The checkpoint carries no target date (schedule.ts); it serves its own trading date.
+      return etWallClockToUtc(stored.tradingDate, 20, 30);
   }
 }
 
@@ -121,14 +149,29 @@ export interface ReportInputs {
   tags: Map<string, ReportTags>;
   /** v6: the opening narrative's computed facts (`narrative.ts`), shown to writer and checker alike. */
   narrative: NarrativeFacts;
+  /**
+   * Each covered name's research version as the report used it: its id (null
+   * when none), and `updatedAt`, set only when EVENING took a version newer by
+   * id than the checkpoint's (that version's `generated_at`).
+   */
+  researchVersions: Map<string, { id: number | null; updatedAt: string | null }>;
 }
 
-/** Everything a v5 report is written and checked from, or the observable reason there is nothing. */
+/**
+ * Everything a v5 report is written and checked from, or the observable reason there is nothing.
+ *
+ * `asOf` is the write moment. EVENING only (Integration's ruling (iii)): a name
+ * whose newest research version at `asOf` is newer, BY ID, than the one its
+ * checkpoint row captured is written from that newer version, and its line
+ * says when. Every other kind, and EVENING without `asOf`, reads the
+ * checkpoint's versions only (the as-of hook).
+ */
 export function readReportInputs(
   db: Database,
   kind: ReportKind,
   tradingDate: string,
   range: { min: number; max: number },
+  asOf?: Date,
 ): { ok: true; inputs: ReportInputs } | { ok: false; cause: MissedCause } {
   const source = SOURCE[kind];
   const stored = findCheckpoint(db, kind, tradingDate);
@@ -137,7 +180,7 @@ export function readReportInputs(
 
   // The board's latch: the evening board after the bell (the recap), the day board otherwise.
   const sessions = readSessionLatches(db, tradingDate, tickers.map((row) => row.ticker));
-  const evening = kind === 'PREMARKET';
+  const evening = isEveningRecap(kind);
   const latch = new Map(
     [...sessions.values()].map((row) => [
       row.symbol,
@@ -162,7 +205,19 @@ export function readReportInputs(
     .map((fact) => byTicker.get(fact.ticker)?.analysisVersionId ?? null)
     .filter((id): id is number => id !== null);
   const versions = readAnalysisVersionsByIds(db, versionIds);
-  const sourceIds = [...versions.values()].flatMap((version) => version.dossier.catalyst.evidenceSourceIds);
+
+  // EVENING's per-line update: the newer version by id, read at the write moment.
+  const newer = new Map<string, ResearchAnalysisVersion>();
+  if (kind === 'EVENING' && asOf) {
+    const latest = readLatestAnalysesAsOf(db, built.facts.map((fact) => fact.ticker), asOf.toISOString());
+    for (const fact of built.facts) {
+      const captured = byTicker.get(fact.ticker)?.analysisVersionId ?? null;
+      const candidate = latest.get(fact.ticker);
+      if (candidate && (captured === null || candidate.id > captured)) newer.set(fact.ticker, candidate);
+    }
+  }
+
+  const sourceIds = [...versions.values(), ...newer.values()].flatMap((version) => version.dossier.catalyst.evidenceSourceIds);
   const sources = new Map<number, ResearchSource>(readSourcesByIds(db, [...new Set(sourceIds)]).map((s) => [s.id, s]));
 
   const research = new Map<string, ReportResearch>();
@@ -170,15 +225,20 @@ export function readReportInputs(
   const tags = new Map<string, ReportTags>();
   /** The narrative's older high (v2 context), as of the checkpoint's dossier. Gated by the basis check in `narrative.ts`. */
   const olderHighs = new Map<string, number | null>();
+  const researchVersions = new Map<string, { id: number | null; updatedAt: string | null }>();
   const freshFrom = catalystFreshFromUtc(db, tradingDate);
   for (const fact of built.facts) {
     const row = byTicker.get(fact.ticker);
-    const version = row?.analysisVersionId != null ? versions.get(row.analysisVersionId) : undefined;
+    const updated = newer.get(fact.ticker);
+    const version = updated ?? (row?.analysisVersionId != null ? versions.get(row.analysisVersionId) : undefined);
+    researchVersions.set(fact.ticker, { id: version?.id ?? null, updatedAt: updated ? updated.generatedAt : null });
     const tag = reportTags({
+      // A newer version is an accepted dossier, so the captured job status is not read (intelligence.ts).
       status: row?.intelligenceStatus ?? null,
       dossier: version?.dossier ?? null,
       coverageIncomplete: version?.metadata.coverageIncomplete === true,
-      at: built.checkpoint.completedAt,
+      // An updated line is judged at the moment its research was read, the checkpoint's otherwise.
+      at: updated && asOf ? asOf.toISOString() : built.checkpoint.completedAt,
       catalystFreshFrom: freshFrom,
     });
     tags.set(fact.ticker, tag);
@@ -222,9 +282,10 @@ export function readReportInputs(
       tickers,
       research,
       paths,
-      afterHoursTotals: kind === 'PREMARKET' ? readAfterHoursTotals(db, tradingDate, range) : null,
+      afterHoursTotals: evening ? readAfterHoursTotals(db, tradingDate, range) : null,
       checkpoint: { id: built.checkpoint.id, type: source.type, completedAt: built.checkpoint.completedAt },
       tags,
+      researchVersions,
       narrative: narrativeFacts(db, {
         kind,
         tradingDate,
@@ -262,7 +323,7 @@ export async function runReport(
   /** Harnesses only: sees the unchecked draft. Never changes the run. */
   observe?: { draft?: (draft: ReportDraft) => void },
 ): Promise<ReportRun> {
-  const read = readReportInputs(db, slot.kind, slot.tradingDate, slot.range);
+  const read = readReportInputs(db, slot.kind, slot.tradingDate, slot.range, now());
   if (!read.ok) return { status: 'MISSED', cause: read.cause, diagnostics: null };
   const { inputs } = read;
 
@@ -342,6 +403,12 @@ export async function runReport(
                 company: inputs.research.get(line.ticker)?.company ?? null,
                 path: inputs.paths.get(line.ticker) ?? null,
                 tags: inputs.tags.get(line.ticker) ?? null,
+                ...(isEveningRecap(slot.kind)
+                  ? { researchVersionId: inputs.researchVersions.get(line.ticker)?.id ?? null }
+                  : {}),
+                ...(slot.kind === 'EVENING'
+                  ? { researchUpdatedAt: inputs.researchVersions.get(line.ticker)?.updatedAt ?? null }
+                  : {}),
               }),
         })),
       })),

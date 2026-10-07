@@ -185,6 +185,9 @@ const KIND_FRAME_V5: Record<ReportKind, string> = {
   INTO_RTH: 'Into the open: what moved in premarket, what went up and came back down, what held, and the catalysts our sources found.',
   INTO_POWER_HOUR: 'Into power hour: where the day’s names stand going into the last hour, and the catalysts our sources found.',
   AFTER_HOURS: 'Into after-hours: the regular session has closed; describe the session that ended, and the catalysts our sources found.',
+  // Compile-only: EVENING is written by v6. The same frame as PREMARKET, from the 20:05 checkpoint.
+  EVENING:
+    'The evening report, written from the checkpoint after the after-hours session completed. Percent changes are the AFTER-HOURS move, from that day’s own close; never call them a move from the prior close.',
 };
 
 export const SYSTEM_V5 = [

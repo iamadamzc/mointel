@@ -45,7 +45,7 @@ import { rangeKey, readAssessmentRanges, type AssessmentTickerRecord } from '../
 import { dailyBarBasis } from '../../research/history';
 import type { CatalystStatus, SupplyBlockStatus, SupplyBlockType } from '../../research/types';
 import { decodeLevels } from '../assessment';
-import type { NarrativeFootnotes, ReportKind } from './contract';
+import { isEveningRecap, type NarrativeFootnotes, type ReportKind } from './contract';
 import type { ReportFact } from './facts';
 import type { ReportResearch } from './research';
 import { reportableChangeNotes } from './writer';
@@ -170,7 +170,7 @@ export interface NarrativeFacts {
 }
 
 export function isRecap(kind: ReportKind): boolean {
-  return kind === 'PREMARKET';
+  return isEveningRecap(kind);
 }
 
 /**

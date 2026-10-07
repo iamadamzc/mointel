@@ -12,8 +12,9 @@
  *
  * THE SLOTS COME FROM THE STORE, NOT A CALENDAR. The latest 22:00 recap at or
  * before now names the session it prepares (`target_trading_date`), which is
- * exactly the desk's rolled trading date. From it: last night's premarket and
- * after-hours slots, and today's into-RTH, into-power-hour and after-hours.
+ * exactly the desk's rolled trading date. From it: last night's premarket,
+ * after-hours and evening slots, and today's into-RTH, into-power-hour,
+ * after-hours and evening.
  */
 
 import { etWallClockToUtc } from '../../market/session';
@@ -39,7 +40,7 @@ export interface RecapRef {
   scheduledFor: string;
 }
 
-const KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'];
+const KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', 'EVENING'];
 
 function slot(kind: ReportKind, rangeId: string, tradingDate: string, target: string | null, due: Date): ReportSlot {
   return {
@@ -60,10 +61,13 @@ export function reportSlots(recap: RecapRef | null, ranges: readonly ReportRange
   const out: ReportSlot[] = [];
   for (const range of ranges) {
     out.push(slot('AFTER_HOURS', range.id, last, null, etWallClockToUtc(last, 16, 0)));
+    // EVENING, like every slot, is due at its checkpoint (20:05); it is written from 20:20 and serves by 20:30.
+    out.push(slot('EVENING', range.id, last, null, etWallClockToUtc(last, 20, 5)));
     out.push(slot('PREMARKET', range.id, last, today, new Date(recap.scheduledFor)));
     out.push(slot('INTO_RTH', range.id, today, null, etWallClockToUtc(today, 9, 25)));
     out.push(slot('INTO_POWER_HOUR', range.id, today, null, etWallClockToUtc(today, 14, 30)));
     out.push(slot('AFTER_HOURS', range.id, today, null, etWallClockToUtc(today, 16, 0)));
+    out.push(slot('EVENING', range.id, today, null, etWallClockToUtc(today, 20, 5)));
   }
   return out;
 }

@@ -19,7 +19,21 @@
 import type { AssessmentType } from '../schedule';
 import type { ReportTags } from './tags';
 
-export type ReportKind = 'PREMARKET' | 'INTO_RTH' | 'INTO_POWER_HOUR' | 'AFTER_HOURS';
+/**
+ * EVENING is the 8:30 pm after-hours report from the 20:05 checkpoint (his
+ * ruling "b", 2026-10-07T02:33:24.356Z). PREMARKET is the 22:00 recap's report;
+ * its reframe as the evening report's 10 pm edition is a later commit.
+ */
+export type ReportKind = 'PREMARKET' | 'INTO_RTH' | 'INTO_POWER_HOUR' | 'AFTER_HOURS' | 'EVENING';
+
+/**
+ * The reports that recap the session that closed, after hours: the evening
+ * latch, the after-hours path and totals, and the recap narrative. EVENING
+ * (8:30 pm) and PREMARKET (22:00) share this content.
+ */
+export function isEveningRecap(kind: ReportKind): boolean {
+  return kind === 'PREMARKET' || kind === 'EVENING';
+}
 
 /** One of the configured report ranges. From config, never a literal in a component. */
 export interface ReportRange {
@@ -79,6 +93,22 @@ export interface ReportLine {
    * A null is never a false.
    */
   liveFeed: boolean | null;
+  /**
+   * EVENING and PREMARKET, COMPUTED, never shown: the research analysis version
+   * this line was written from, or null when it had none. The 10 pm edition
+   * decides "changed since the 8:30 edition" by this id. Absent on other kinds
+   * and on rows before EVENING.
+   */
+  researchVersionId?: number | null;
+  /**
+   * EVENING, COMPUTED (Integration's ruling (iii), print condition Commercial's):
+   * set only when the line uses a research version NEWER (by id) than the one
+   * the checkpoint captured, read at the write moment; the value is that
+   * version's `generated_at` (ISO), which the surface prints as "research
+   * updated at h:mm". Null when the line uses the checkpoint's version. Absent
+   * on other kinds and on rows before EVENING.
+   */
+  researchUpdatedAt?: string | null;
   text: string;
 }
 

@@ -924,6 +924,37 @@ export function readAnalysisVersionsByIds(
   return found;
 }
 
+/**
+ * Each ticker's newest analysis version generated at or before `asOf`, keyed by
+ * ticker. Live, this is the version the board shows (`saveAnalysisVersion` is
+ * the only writer of `current_version_id` and always points it at the row it
+ * appends, so the newest id is the current one); the `asOf` bound keeps a
+ * replay from reading a version written after its moment. For the EVENING
+ * report's per-line research update. Read-only.
+ */
+export function readLatestAnalysesAsOf(
+  db: MarketDatabase,
+  tickers: readonly string[],
+  asOf: string,
+): Map<string, ResearchAnalysisVersion> {
+  const found = new Map<string, ResearchAnalysisVersion>();
+  const unique = [...new Set(tickers)];
+  if (unique.length === 0 || !researchTablesPresent(db)) return found;
+
+  const placeholders = unique.map(() => '?').join(',');
+  const rows = db
+    .prepare(
+      `SELECT v.* FROM research_analysis_versions v
+         JOIN (SELECT ticker, MAX(id) AS id FROM research_analysis_versions
+                WHERE ticker IN (${placeholders}) AND generated_at <= ?
+                GROUP BY ticker) latest ON latest.id = v.id`,
+    )
+    .all(...unique, asOf) as VersionRow[];
+
+  for (const row of rows) found.set(row.ticker, toVersion(row));
+  return found;
+}
+
 /* ------------------------------------------------------------------- health */
 
 export function writeResearchHealth(db: MarketDatabase, health: ResearchHealth): void {

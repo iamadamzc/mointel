@@ -241,6 +241,9 @@ const KIND_FRAME: Record<ReportKind, string> = {
     'Into power hour. Where the day’s names stand going into the last hour: what held, what gave it back, and the catalysts our sources found.',
   AFTER_HOURS:
     'Into after-hours. The regular session has closed; describe the session that ended: what held into the close, what gave it back, and the catalysts our sources found.',
+  // Compile-only: EVENING is written by v6.
+  EVENING:
+    'The evening report. Built from the checkpoint after the after-hours session completed. Percent changes are the AFTER-HOURS move, from that day’s own close, and the sheet says so; never call them a move from the prior close.',
 };
 
 /**
