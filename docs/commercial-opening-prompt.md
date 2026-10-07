@@ -37,7 +37,7 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > 21 to 21f the float page against the SEC forms, the 424B list, equity lines and foreign filers; 22 to 24a the float
 > definition, S1, FORM B, the click-through, the built float strings and the metadata description; 25 and 25a the beta
 > invite; 26 to 28a the report opening block and the evening report; 29 to 31a the model-facing copy of the 10 pm
-> edition; 30 and 30a its reader lines; 32 and 32a the built v6 report strings and the section headings) and
+> edition; 30 and 30a its reader lines; 32 to 32b the built v6 report strings, the section headings and the card's no-catalyst mark) and
 > `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing wording rulings). Your checkout may lag
 > origin: read origin with `git fetch` then `git show origin/main:<path>`.
 >
@@ -51,10 +51,10 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > issuance check now takes 424B2, refuses a 20-F or 40-F count (`UNREGISTERED_SALE_NOT_CHECKABLE`), and the page names
 > equity lines; 424B3 was classified by Research (0 primary of 53) and is not looked at. **The v6 session reports**: the
 > opening block, float footer, evening report words and revision lines are passed; the model-facing copy of the 10 pm
-> edition is passed (31a); read 32 required two changes to the built head `c5e27749` and Integration has them: **the
-> report card's tag row still prints the bare badge "no catalyst found" (read 13's "no catalyst found in our sources" is
-> unbuilt), and Research changes the section-heading constants to Marketing's passed words (32a).** Read the built strings
-> when Design and Research send them. **Also built and waiting for this seat to read when they land:** Design's strings for
+> edition is passed (31a); read 32 required two changes to the built head `c5e27749`: **the report card's no-catalyst
+> mark is built in read 13's form and passed (32b; the board's Why badge keeps the short form with its hover as an
+> interim), and Research still changes the section-heading constants to Marketing's passed words (32a); I have not read
+> the built constants.** Read the built strings when Design and Research send them. **Also built and waiting for this seat to read when they land:** Design's strings for
 > row 21, the Confirmation and the NOT_YET second cause (reads 11b and 15), the Warning Shot's first prompt-4 dossier and
 > its frozen board and exports. **Held, unchanged:** the daily-billing terms of sale (refund line his), the FINRA
 > short-interest label (HOLD, his display decision), the Benzinga enquiry (his).
@@ -98,8 +98,8 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > the thread that needs them, decisions through Integration. His channel is filtered by relevance, not length. End any
 > message that needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does.
 >
-> **First task: none is queued that needs starting cold.** Likely next, each with its trigger: the built report-card badge
-> and section-heading constants (reads 32 and 32a); Design's built strings for row 21, the Confirmation and the NOT_YET
+> **First task: none is queued that needs starting cold.** Likely next, each with its trigger: the built section-heading
+> constants (read 32a); Design's built strings for row 21, the Confirmation and the NOT_YET
 > second cause; the first prompt-4 Warning Shot dossier; each new session-report sample from Research; Form B (the
 > present-tense float claim as of {D-label}) is licensed only with both S1 fixes in the shipped build, which Integration
 > confirms by ancestry before the ship; and whatever Integration says is outstanding.
