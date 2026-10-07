@@ -713,6 +713,12 @@ probe came before any edit, as the ledger says it must.**
 
 **Repeat reached:** per session-hygiene section 2, warned the owner and proposed a reset at the next task boundary (row 5's final words).
 
+**Twelfth seat (same id `local_83b5b7ec`, reset in place 2026-10-07).**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| bcfd1330 changed the float popover words and I reported the touched test files as run (floatBound, floatDetails, floatCell); floatWiring.test.ts also pinned the old popover ("filed on ...") and the retired-shape case, and failed 2 in Ops's gate. I had found callers by grepping tests for the exact strings I removed, not by listing every test file that imports the module | CLAIM-WIDER-THAN-OPENED (the ninth seat's class: a grep of chosen words stood in for the whole set) | **Yes, the ninth seat's class; first time this seat** | Ops's gate, relayed by Integration. **Rule: after changing a module's words, run every test file that imports the module (git grep the import), singly, with counts** |
+
 **Eighth seat RETIRED 2026-10-05 16:02 UTC on his "yes hand over"** (proposed after the unmeasured row-height claim reached him; no class repeated after its correction). Classes to watch: ASSERTED-UNMEASURED, STALE-LEAD-AS-SOURCE, EDIT-ANCHORED-MID-ROW, GATE-ORDER.
 
 **Render method that worked (for the next seat):** a `--require` clock shim in `NODE_OPTIONS` (`DESIGN_FAKE_NOW`) on the temporary `design-local` launch entry puts the local store's 2026-08-18 session on the DAY board at 14:45Z and on the evening board at 22:00Z; the hidden pane stops the poll, so for a local render only override `document.hidden`/`visibilityState` and dispatch `visibilitychange`.
