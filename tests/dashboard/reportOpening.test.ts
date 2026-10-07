@@ -125,6 +125,10 @@ describe('the window wires it in the spec order', () => {
 });
 
 describe('the words', () => {
+  it('the label and the empty line are Marketing 03a32b00, passed by Commercial 26, verbatim', () => {
+    expect(OPENING_WORDS).toEqual({ label: 'Summary', none: 'No summary in this report.' });
+  });
+
   it('no em dash in any string the block can print', () => {
     const all = [
       OPENING_WORDS.label,
