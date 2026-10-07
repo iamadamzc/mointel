@@ -40,6 +40,31 @@ export interface LevelSnapshot {
   label: string;
 }
 
+/**
+ * Price levels below the current price that can serve as support.
+ *
+ * Today's close comes from the reference close once the bell has passed
+ * (basis CURRENT_SESSION): that is Alpaca's official daily-bar close, written
+ * through on every flush. rth_final_close is the bell capture, frozen by design
+ * and often the last trade before the closing auction (measured 2026-10-06/07:
+ * it equals the official close on 2/8 to 45/121 names a day, the reference on
+ * all but a split basis). It counts only when no official close was captured.
+ */
+export function supportCandidatesBelow(input: {
+  price: number | null;
+  sessionLow: number | null;
+  referenceRthClose: number | null;
+  referenceRthCloseBasis: string | null;
+  rthFinalClose: number | null;
+}): number[] {
+  const { price } = input;
+  if (price === null) return [];
+  const bellCapture = input.referenceRthCloseBasis === 'CURRENT_SESSION' ? null : input.rthFinalClose;
+  return [input.sessionLow, input.referenceRthClose, bellCapture].filter(
+    (value): value is number => value !== null && value < price,
+  );
+}
+
 export function encodeLevels(levels: LevelSnapshot): string {
   return JSON.stringify(levels);
 }

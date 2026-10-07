@@ -75,6 +75,7 @@ import {
   encodeLevels,
   marketFingerprint,
   researchFingerprint,
+  supportCandidatesBelow,
 } from '../lib/desk/assessment';
 
 const POLL_MS = Number(process.env.ASSESSMENT_POLL_MS ?? 20_000);
@@ -247,9 +248,13 @@ function captureAssessment(
      * Research levels are folded in only when an analysis established them —
      * a 52-week high is not this session's resistance.
      */
-    const candidatesBelow = [row.session_low, row.reference_rth_close, row.rth_final_close].filter(
-      (value): value is number => value !== null && row.price !== null && value < row.price,
-    );
+    const candidatesBelow = supportCandidatesBelow({
+      price: row.price,
+      sessionLow: row.session_low,
+      referenceRthClose: row.reference_rth_close,
+      referenceRthCloseBasis: row.reference_rth_close_basis,
+      rthFinalClose: row.rth_final_close,
+    });
     const candidatesAbove = [
       row.session_high,
       dossier?.cycle.currentCycleHigh ?? null,
