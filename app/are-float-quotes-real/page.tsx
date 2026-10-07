@@ -11,9 +11,11 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Are float quotes real? | The Momentum Intelligence Trading Desk',
-  // The page's own first two sentences (approved text), not new copy.
+  // The page's own first two sentences, verbatim from the file (v25, his yes
+  // 2026-10-07T00:58:05.615Z), not new copy. tests/web/explainerPage.test.ts
+  // fails if the file's opening sentences and this string part.
   description:
-    'Float is the number of shares actually available to trade. You will see a float number quoted for many stocks, and no SEC filing we know of requires a count of floating shares.',
+    "Float is the number of a company's shares available for public trading. It is usually computed as shares outstanding less the shares held by insiders and other closely held or restricted shares.",
 };
 
 export default function AreFloatQuotesRealPage() {

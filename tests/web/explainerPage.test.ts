@@ -79,4 +79,17 @@ describe('the route', () => {
     expect(source).toContain("export const dynamic = 'force-dynamic'");
     expect(source).toContain("loadExplainer('are-float-quotes-real')");
   });
+
+  it("describes itself in search results with the file's own first two sentences", () => {
+    // The description is a second copy of the lede; v25 changed the lede and this copy kept the v20 claim
+    // "actually available to trade" until Design found it. It must follow the file, word for word.
+    const source = fs.readFileSync(path.join(process.cwd(), 'app/are-float-quotes-real/page.tsx'), 'utf8');
+    const file = fs.readFileSync(explainerPath('are-float-quotes-real'), 'utf8').replace(/\r\n/g, '\n');
+    const lede = file.split('\n# Are float quotes real?\n\n')[1].split('\n')[0];
+    const firstTwo = lede.match(/^(?:[^.]+\.\s*){2}/)![0].trim();
+    expect(firstTwo.split('. ').length).toBe(2);
+    const description = /description:\s*"([^"]*)",/.exec(source)?.[1];
+    expect(description).toBe(firstTwo);
+    expect(source).not.toContain('actually available to trade');
+  });
 });
