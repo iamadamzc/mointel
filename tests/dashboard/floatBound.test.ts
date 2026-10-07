@@ -84,7 +84,7 @@ describe('the bound face', () => {
 
   it('carries the date in the accessible name, as Marketing worded it', () => {
     expect(floatCellView(produced()).ariaLabel).toBe(
-      'no more than 12.4M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up',
+      'no more than 12.4M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up; details on click',
     );
   });
 
@@ -136,7 +136,7 @@ describe('the other three faces, one string per stored cause', () => {
     for (const none of [null, undefined]) {
       const v = floatCellView(none);
       expect(v.face).toBe('Not computed');
-      expect(v.ariaLabel).toBe('float not computed for this name');
+      expect(v.ariaLabel).toBe('float not computed for this name; details on click');
       expect(v.paragraphs).toEqual(['The desk has not computed a float for this name.']);
     }
   });
