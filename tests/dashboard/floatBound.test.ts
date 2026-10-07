@@ -143,6 +143,14 @@ describe('the other three faces, one string per stored cause', () => {
     for (const s of strings) expect(s).not.toBe('Cannot verify.');
   });
 
+  it('UNREGISTERED_SALE_NOT_CHECKABLE has no words yet: the bare fallback, never another cause's', () => {
+    // Its words are Marketing's, with Commercial's pass (Integration, 2026-10-07). When they land, this test changes and
+    // the reason joins REASONS above.
+    const v = floatCellView(refused('CANNOT_VERIFY', 'UNREGISTERED_SALE_NOT_CHECKABLE', { countAsOf: '2026-05-01' }));
+    expect(v.face).toBe('Cannot verify');
+    expect(v.paragraphs[0]).toBe('Cannot verify.');
+  });
+
   it('a filed issuance after the count reads the issued-since sentence, not the bare fallback', () => {
     const filed = floatCellView(refused('CANNOT_VERIFY', 'ISSUANCE_FILED', { countAsOf: '2026-05-01' }));
     expect(filed.face).toBe('Cannot verify');

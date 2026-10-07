@@ -204,6 +204,11 @@ export type FloatCellReason =
   | 'ISSUANCE_NOT_CHECKED'
   /** Rule I-D (filed-issuance-registration-2026-10-06.md): a 424B1/2/4/5 or an 8-K item 3.02 filed on or after the count's date. */
   | 'ISSUANCE_FILED'
+  /**
+   * Integration's ruling 2026-10-07, option (a) of foreign-filer-cell-2026-10-07.md: the count is from a 20-F or 40-F, so
+   * the company reports on Form 6-K, and I-D's 8-K item 3.02 half cannot run. A check that cannot run cannot clear a name.
+   */
+  | 'UNREGISTERED_SALE_NOT_CHECKABLE'
   | 'SPLIT_SINCE_COUNT'
   | 'BOUND_OUT_OF_RANGE'
   /** Contract 9b: the newest read of the filings is more than the reuse span before D. Set by the reader, never by `floatCell`. */
@@ -244,12 +249,16 @@ export function issuanceFlagged(ledger: readonly SupplyBlock[], rule: IssuanceRu
   });
 }
 
+/** Annual reports of a foreign private issuer, which reports on Form 6-K, never an 8-K item 3.02. */
+const FOREIGN_ANNUAL_FORMS = new Set(['20-F', '20-F/A', '40-F', '40-F/A']);
+
 const wholeDays = (from: string, to: string) => Math.floor((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
 export interface FloatCellInput {
   cik: string | null;
   /** null = no usable count; `spreadAcrossFilings` = the latest date's values come from several filings. */
-  count: { shares: number; asOf: string } | null;
+  /** `form` is the filing the count came from; `floatCellFor` always passes it. Absent only in measurement scripts. */
+  count: { shares: number; asOf: string; form?: string } | null;
   spreadAcrossFilings: boolean;
   checkpointDate: string;
   maxAgeDays: number;
@@ -278,6 +287,10 @@ export function floatCell(input: FloatCellInput): FloatCell {
   if (!input.count) return { state: 'UNKNOWN', reason: 'NO_FILED_COUNT' };
   // I-D before the ledger: a filing is the most specific and checkable cause (registration section 2).
   if (input.issuanceFiled) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' };
+  // After a filed issuance (the more specific cause), before "no dossier" (a structural gap, not a pending review).
+  if (input.count.form !== undefined && FOREIGN_ANNUAL_FORMS.has(input.count.form)) {
+    return { state: 'CANNOT_VERIFY', reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' };
+  }
   if (input.ledger === null) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' };
   if (issuanceFlagged(input.ledger, input.issuanceRule)) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' };
   if (input.splitSinceCount !== 'NONE') return { state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' };

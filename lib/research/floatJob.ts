@@ -228,7 +228,7 @@ export function floatCellFor(input: {
 }): FloatCell {
   return floatCell({
     cik: input.cik,
-    count: input.count.kind === 'COUNT' ? { shares: input.count.shares, asOf: input.count.asOf } : null,
+    count: input.count.kind === 'COUNT' ? { shares: input.count.shares, asOf: input.count.asOf, form: input.count.form } : null,
     spreadAcrossFilings: input.count.kind === 'COUNT_SPLIT_ACROSS_FILINGS',
     checkpointDate: input.asOfDate,
     maxAgeDays: FLOAT_MAX_AGE_DAYS,

@@ -253,6 +253,22 @@ describe('floatCell', () => {
     expect(unproven).toMatchObject({ state: 'PRODUCED', bound: 22_036_402, refused: [{ ownerCik: '9', why: 'SPLIT_UNPROVEN' }] });
   });
 
+  it('refuses a count from a foreign annual report (UNREGISTERED_SALE_NOT_CHECKABLE); admits a 10-Q, a 10-K or no form', () => {
+    const at = (form?: string) => floatCell(input({ count: { shares: 22_036_402, asOf: '2026-08-10', form } }));
+    for (const form of ['20-F', '20-F/A', '40-F', '40-F/A']) {
+      expect(at(form), form).toEqual({ state: 'CANNOT_VERIFY', reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    }
+    for (const form of ['10-Q', '10-K', undefined]) expect(at(form).state, String(form)).toBe('PRODUCED');
+  });
+
+  it('places the foreign-count refusal after a filed issuance and before no dossier, a flagged ledger and age', () => {
+    const foreign = { count: { shares: 22_036_402, asOf: '2026-08-10', form: '20-F' } };
+    expect(floatCell(input({ ...foreign, issuanceFiled: true }))).toMatchObject({ reason: 'ISSUANCE_FILED' });
+    expect(floatCell(input({ ...foreign, ledger: null }))).toMatchObject({ reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    expect(floatCell(input({ ...foreign, ledger: [block('ATM', 'KNOWN_ACTIVE')] }))).toMatchObject({ reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    expect(floatCell(input({ ...foreign, checkpointDate: '2027-01-01' }))).toMatchObject({ reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+  });
+
   it('fails its own range check: insiders at or above the count, or a count dated after the checkpoint', () => {
     expect(floatCell(input({ holdings: [holding('9', 22_036_402)] }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });
     expect(floatCell(input({ count: { shares: 1000, asOf: '2026-12-01' } }))).toEqual({ state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' });

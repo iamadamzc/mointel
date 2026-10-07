@@ -149,6 +149,11 @@ describe('floatCellFor: the job constants', () => {
     expect(floatCellFor({ ...base, count: count('2026-06-29') })).toEqual({ state: 'CANNOT_VERIFY', reason: 'COUNT_TOO_OLD' });
   });
 
+  it("passes the count's form: a 20-F count refuses as UNREGISTERED_SALE_NOT_CHECKABLE, the same count from a 10-Q is produced", () => {
+    expect(floatCellFor({ ...base, count: { ...count('2026-08-01'), form: '20-F' } })).toEqual({ state: 'CANNOT_VERIFY', reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' });
+    expect(floatCellFor({ ...base, count: count('2026-08-01') }).state).toBe('PRODUCED');
+  });
+
   it('refuses on a POSSIBLY_ACTIVE warrant block (the contract rule, not KNOWN_ACTIVE alone)', () => {
     const ledger = [{ type: 'WARRANTS', status: 'POSSIBLY_ACTIVE' }] as unknown as SupplyBlock[];
     expect(floatCellFor({ ...base, count: count('2026-08-01'), ledger })).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' });
