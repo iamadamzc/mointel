@@ -226,7 +226,7 @@ export function narrativeFootnoteLines(footnotes: SessionReport['narrativeFootno
  * board's Why cell holds the empty-cell glyph for a name with none (a column
  * needs a value in every row), but a card has no column, and "Catalyst" beside
  * that glyph reads as writing, which his no-em-dash rule forbids. The section
- * label already says why there is no grade (NOT YET RESEARCHED, UNCLEAR), and
+ * label already says why there is no grade (NOT RESEARCHED AT THIS CHECKPOINT, RESEARCH COULD NOT TELL), and
  * the board's marks (old, not the move) still print.
  */
 export function cardShowsGrade(grade: string): boolean {
