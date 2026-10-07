@@ -58,7 +58,9 @@ describe('ExplainerPage', () => {
 
   it('renders the file inside the legal frame, with a section index', () => {
     expect(markup).toContain('<h1>Are float quotes real?</h1>');
-    expect(markup).toContain('Float is the number of shares actually available to trade.');
+    // v25: the conventional definition, never "actually available to trade" (the outside review).
+    expect(markup).toContain('shares available for public trading. It is usually computed as shares outstanding');
+    expect(markup).not.toContain('actually available to trade');
     for (let n = 1; n <= SECTIONS.length; n += 1) expect(markup).toContain(`href="#s${n}"`);
     expect(markup).toContain('TMI TRADER');
     expect(markup).toContain('href="mailto:info@andromedagenius.com"');
