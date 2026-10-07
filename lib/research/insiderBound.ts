@@ -158,7 +158,10 @@ export interface ClassHolding {
   hDAsOf: string;
 }
 
-/** An owner under rule S1: `shares` is what is subtracted, the sum over classes of min(h0, hD); `asOf` is h0's. */
+/**
+ * An owner under rule S1: `shares` is what is subtracted, the SMALLEST over titles of min(h0, hD) (one title: that
+ * title's); `asOf`, `accessions` and `filingDates` are that title's. `classes` keeps every title, for the record.
+ */
 export interface S1Holding extends DatedHolding {
   classes: ClassHolding[];
 }
@@ -167,33 +170,44 @@ export interface S1Holding extends DatedHolding {
  * Rule S1 (registration docs/research/float-contract/insider-sale-registration-2026-10-05.md; contract section 9a).
  * Per owner and class: h0 by `holdingsAsOf` at the count's date, hD by `holdingsAsOf` at D, each one class at a time so
  * the selection is the validated one. Subtract min(h0, hD): a sale since the count subtracts what is left, a purchase
- * or grant subtracts h0. An owner or class with no h0 is not subtracted, whatever it filed later.
+ * or grant subtracts h0. An owner or class with no h0 is not subtracted, whatever it filed later. An owner with several
+ * titles subtracts only the smallest title's min(h0, hD), never their sum (2026-10-07, Integration's yes).
  */
 export function holdingsAtBoth(filings: readonly OwnerFiling[], countAsOf: string, d: string, windowStart: string): S1Holding[] {
   const titles = [...new Set(filings.flatMap((f) => f.parse.rows.map((row) => row.title)))].sort();
-  const byOwner = new Map<string, { name: string | null; classes: ClassHolding[]; accessions: Set<string>; filingDates: Set<string> }>();
+  type Titled = { holding: ClassHolding; accessions: string[]; filingDates: string[] };
+  const byOwner = new Map<string, { name: string | null; titled: Titled[] }>();
   for (const title of titles) {
     const only = filings.map((f) => ({ ...f, parse: { ...f.parse, rows: f.parse.rows.filter((row) => row.title === title) } }));
     const atD = new Map(holdingsAsOf(only, d, windowStart).map((h) => [h.ownerCik, h]));
     for (const h0 of holdingsAsOf(only, countAsOf, windowStart)) {
       const hD = atD.get(h0.ownerCik) ?? h0;
-      const entry = byOwner.get(h0.ownerCik) ?? { name: h0.ownerName, classes: [], accessions: new Set<string>(), filingDates: new Set<string>() };
-      entry.classes.push({ title, h0: h0.shares, h0AsOf: h0.asOf, hD: hD.shares, hDAsOf: hD.asOf });
-      for (const a of [...h0.accessions, ...hD.accessions]) entry.accessions.add(a);
-      for (const f of [...h0.filingDates, ...hD.filingDates]) entry.filingDates.add(f);
+      const entry = byOwner.get(h0.ownerCik) ?? { name: h0.ownerName, titled: [] };
+      entry.titled.push({
+        holding: { title, h0: h0.shares, h0AsOf: h0.asOf, hD: hD.shares, hDAsOf: hD.asOf },
+        accessions: [...h0.accessions, ...hD.accessions],
+        filingDates: [...h0.filingDates, ...hD.filingDates],
+      });
       byOwner.set(h0.ownerCik, entry);
     }
   }
+  const held = (t: Titled) => Math.min(t.holding.h0, t.holding.hD);
   return [...byOwner.entries()]
-    .map(([ownerCik, e]) => ({
-      ownerCik,
-      ownerName: e.name,
-      shares: e.classes.reduce((sum, c) => sum + Math.min(c.h0, c.hD), 0),
-      asOf: e.classes.map((c) => c.h0AsOf).sort().at(-1)!,
-      accessions: [...e.accessions].sort(),
-      filingDates: [...e.filingDates].sort(),
-      classes: e.classes,
-    }))
+    .map(([ownerCik, e]) => {
+      // Several titles: only the SMALLEST is subtracted. One security filed under two titles ("common stock" and
+      // "common stock, $0.0001 par value", KITT 2143744) was subtracted twice (S1 result 72bf286c); the smallest is never
+      // more than the true holding, whether the titles are variants or real classes. Titles are not normalised.
+      const chosen = e.titled.reduce((best, t) => (held(t) < held(best) ? t : best));
+      return {
+        ownerCik,
+        ownerName: e.name,
+        shares: held(chosen),
+        asOf: chosen.holding.h0AsOf,
+        accessions: [...new Set(chosen.accessions)].sort(),
+        filingDates: [...new Set(chosen.filingDates)].sort(),
+        classes: e.titled.map((t) => t.holding),
+      };
+    })
     .sort((a, b) => a.ownerCik.localeCompare(b.ownerCik));
 }
 

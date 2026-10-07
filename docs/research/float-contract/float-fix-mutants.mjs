@@ -11,6 +11,8 @@
 // (insiderBound.test.ts); FJ-F "passes the count's form", FJ-B2 "takes 424B1/2/4/5" (floatJob.test.ts); IB-SD1 "the five
 // measured shapes", IB-SD2 "every row order", IB-SD3 "carries through S1" (insiderBound.test.ts; IB-SD4, the unchanged
 // cases, survives by design). Added 2026-10-07 for the same-day fix (Integration's yes; S1 result 32f5e351).
+// T1, the several-titles fix (Integration's yes; S1 result 72bf286c): IB-T1 "takes the minimum per CLASS ... smallest title",
+// IB-T2 "subtracts one security filed under two titles ONCE"; "leaves a single-title owner as before" survives by design.
 // Not mutated: the view test of the bare fallback (floatBound.test.ts), which pins words no code chooses.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -36,6 +38,7 @@ const M = [
   ['F2', IB, "'40-F', '40-F/A']", "'40-F']", 1, 'a 40-F/A count admitted', 'IB-F1'],
   ['F3', FJ, ', form: input.count.form }', ' }', 1, 'floatCellFor drops the form', 'FJ-F'],
   ['S1', IB, ' || (order === 0 && row.shares < current.row.shares)', '', 3, 'same-day rows back to the first row', 'IB-SD1, IB-SD2, IB-SD3'],
+  ['T1', IB, 'shares: held(chosen),', 'shares: e.titled.reduce((sum, t) => sum + held(t), 0),', 2, 'several titles summed again', 'IB-T1 (per class, now 200), IB-T2 (KITT shape and unequal titles)'],
 ];
 
 if (process.argv.includes('--dry')) {

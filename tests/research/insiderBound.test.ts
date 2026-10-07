@@ -304,17 +304,34 @@ describe('holdingsAtBoth (rule S1)', () => {
     expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-10-02', 10)])])).toEqual({ '1': 1000 });
   });
 
+  it('subtracts one security filed under two titles ONCE (the KITT 2143744 shape), and the smaller of two unequal titles', () => {
+    const kitt = [
+      f('a', '1', [row('2026-06-01', 782_829, 'common stock, $0.0001 par value')]),
+      f('b', '1', [row('2026-06-01', 782_829, 'common stock')]),
+    ];
+    expect(subtracted(kitt)).toEqual({ '1': 782_829 });
+    const unequal = [f('a', '1', [row('2026-07-01', 900, 'common stock'), row('2026-07-01', 300, 'common stock, par value $0.001')])];
+    expect(subtracted(unequal)).toEqual({ '1': 300 });
+    const [h] = holdingsAtBoth(unequal, COUNT, D, WINDOW);
+    expect(h!.classes.map((c) => c.title)).toEqual(['common stock', 'common stock, par value $0.001']);
+  });
+
+  it('leaves a single-title owner as before', () => {
+    expect(subtracted([f('a', '1', [row('2026-07-01', 1000)]), f('b', '1', [row('2026-08-20', 400)])])).toEqual({ '1': 400 });
+  });
+
   it('never subtracts an owner whose only rows are after the count', () => {
     expect(subtracted([f('b', '2', [row('2026-08-20', 400)])])).toEqual({});
   });
 
-  it('takes the minimum per CLASS, not on the owner total', () => {
+  it('takes the minimum per CLASS, not on the owner total; then only the smallest title is subtracted', () => {
     const filings = [
       f('a', '1', [row('2026-07-01', 1000, 'common stock'), row('2026-07-01', 500, 'class b common stock')]),
       f('b', '1', [row('2026-08-20', 200, 'common stock'), row('2026-08-20', 1300, 'class b common stock')]),
     ];
-    // Owner total went 1,500 to 1,500; per class: min(1000, 200) + min(500, 1300) = 700.
-    expect(subtracted(filings)).toEqual({ '1': 700 });
+    // Owner total went 1,500 to 1,500; per class: min(1000, 200) = 200 and min(500, 1300) = 500. Before 2026-10-07 the
+    // two were summed (700); now only the smallest title is subtracted (200), never the sum (S1 result 72bf286c).
+    expect(subtracted(filings)).toEqual({ '1': 200 });
     const [h] = holdingsAtBoth(filings, COUNT, D, WINDOW);
     expect(h!.asOf).toBe('2026-07-01');
     expect(h!.filingDates).toEqual(['2026-07-01', '2026-08-20']);
