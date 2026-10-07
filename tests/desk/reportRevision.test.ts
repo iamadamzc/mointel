@@ -109,8 +109,10 @@ function checkpoint(db: MarketDatabase, type: string, scheduledFor: string, targ
 }
 
 const writerPrompts: string[] = [];
+const checkerPrompts: string[] = [];
 afterEach(() => {
   writerPrompts.length = 0;
+  checkerPrompts.length = 0;
 });
 
 /** Writes one line per name its sheet shows, saying which edition wrote it. */
@@ -127,10 +129,12 @@ function writer(edition: string, narrative: string | null = null) {
 /** Supports every line it is shown, except the ids in `strike`. */
 function checker(strike: string[] = []) {
   return {
-    complete: async (prompt: { system: string; user: string }) =>
-      JSON.stringify({
+    complete: async (prompt: { system: string; user: string }) => {
+      checkerPrompts.push(prompt.user);
+      return JSON.stringify({
         verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: !strike.includes(id), note: '' })),
-      }),
+      });
+    },
   };
 }
 
@@ -192,6 +196,9 @@ describe('the 10 pm edition carries unchanged names and rewrites changed ones', 
     expect(sent).toContain('only the names whose facts changed since the 8:30 pm edition');
     // Commercial read 29: the revised edition's narrative states no revision claim.
     expect(sent).toContain('Say nothing about what changed or was revised since the 8:30 pm edition; the narrative facts do not include it.');
+    // Commercial read 31: a revision is framed as one, by the writer and the checker.
+    expect(sent).toContain('The evening report, revised at 22:00:');
+    expect(checkerPrompts.at(-1)).toContain('Report: the evening report as revised at 22:00,');
     // The 10 pm edition prints no "written again after this checkpoint" note: its checkpoint captured these versions.
     for (const line of after.values()) expect(line).not.toHaveProperty('researchUpdatedAt');
     expect(after.get('BBB')!.researchVersionId).toBe(v2.id);
@@ -265,5 +272,10 @@ describe('with no 8:30 edition', () => {
     expect(sent).toContain('AAA: ranked #1');
     expect(sent).toContain('BBB: ranked #2');
     expect(sent).not.toContain('since the 8:30 pm edition');
+    // Commercial read 31: the first edition is never told it is a revision, by the writer's frame or the checker's moment.
+    expect(sent).toContain('The evening report, at 22:00:');
+    expect(sent).not.toMatch(/revised/i);
+    expect(checkerPrompts.at(-1)).toContain('Report: the evening report at 22:00,');
+    expect(checkerPrompts.at(-1)).not.toMatch(/revised/i);
   });
 });

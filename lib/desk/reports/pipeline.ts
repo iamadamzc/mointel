@@ -396,6 +396,8 @@ export async function runReport(
           afterHoursTotals: inputs.afterHoursTotals,
           // v6: present, so the narrative (id O) is traced against its computed facts.
           narrative: inputs.narrative,
+          // The 10 pm edition's moment says "revised" only when it revises an 8:30 edition (Commercial read 31).
+          revision: plan !== null,
         },
         models.checker,
         now,

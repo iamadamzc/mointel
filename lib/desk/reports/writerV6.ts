@@ -247,6 +247,14 @@ const KIND_FRAME_V6: Record<ReportKind, string> = {
   EVENING: 'The evening report, read tonight: a recap of the regular session that closed and the after-hours session that followed, and the names the desk carries into the next one.',
 };
 
+/** PREMARKET with no 8:30 edition to revise: the evening report's first edition, so not "revised" (Commercial read 31, f69a7129). */
+const PREMARKET_FULL_FRAME =
+  'The evening report, at 22:00: a recap of the regular session that closed and the after-hours session that followed, and the names the desk carries into the next one.';
+
+function kindFrame(input: Pick<WriterInputV6, 'kind' | 'revision'>): string {
+  return input.kind === 'PREMARKET' && !input.revision ? PREMARKET_FULL_FRAME : KIND_FRAME_V6[input.kind];
+}
+
 export const SYSTEM_V6 = [
   'You write a short session briefing for a momentum trader, in the voice of an assistant who did the work and is briefing plainly: specific, unhurried, candid about what the desk does not know. It is printed copy for a stranger, so it is tight.',
   '',
@@ -296,7 +304,7 @@ export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
           .map((fact) => factSheetV6(fact, input.research.get(fact.ticker) ?? null, input.paths.get(fact.ticker) ?? null).join('\n  '))
           .join('\n\n');
   const user = [
-    KIND_FRAME_V6[input.kind],
+    kindFrame(input),
     `Checkpoint time: ${time} ET.`,
     '',
     'NARRATIVE FACTS (word these and nothing else):',

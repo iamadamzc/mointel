@@ -201,9 +201,22 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
       'There were no changes in our sources.',
       'No names changed this evening.',
       'No name has changed this evening.',
+      // Read 31 (f69a7129), recommended and taken.
+      'There was no change in our sources.',
+      'Nothing has changed in our sources.',
+      'Nothing changed in our sources.',
+      'The board remains unchanged.',
+      'The board remain unchanged.',
+      'The board is still unchanged.',
+      'Since the earlier edition, our sources found more news.',
+      'Since the previous version, our sources found more news.',
+      'Since the first report, our sources found more news.',
+      'Since the prior edition, our sources found more news.',
     ]) {
       expect(reasons(text, recap)).toEqual(['REVISION_WORDING']);
     }
+    // The sheet's own frame is not a revision claim.
+    expect(reasons('Our sources found more news since the previous checkpoint.', recap)).not.toContain('REVISION_WORDING');
     expect(reasons('Since the 8:30 pm edition, our sources found more news.', recap)).toContain('REVISION_WORDING');
     expect(reasons(GOOD_RECAP, recap)).not.toContain('REVISION_WORDING');
     expect(reasons(GOOD_INTRADAY, intraday)).not.toContain('REVISION_WORDING');

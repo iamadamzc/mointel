@@ -103,6 +103,12 @@ export interface CheckInput {
    * reads the v6 prompt. Absent = v5, unchanged.
    */
   narrative?: NarrativeFacts | null;
+  /**
+   * The 10 pm edition revising a published 8:30 edition (`revision.ts`). A
+   * PREMARKET run without one is the evening report's first edition, and its
+   * moment does not say "revised" (Commercial read 31, f69a7129).
+   */
+  revision?: boolean;
 }
 
 /** The checker's model: same seam as the writer's, a different reply shape. */
@@ -312,11 +318,15 @@ function causalIn(segment: string): string | null {
  * Revision language (Commercial read 29, 4642de51, REQUIRED): the narrative facts
  * never say what changed or was revised since the 8:30 pm edition, so a
  * narrative that says so states what it was not given. Struck on every kind's
- * narrative: it is unsupported on any of them. LIMITS: the phrases Commercial
- * named and their plain variants only; a name line is not read (the requirement
+ * narrative: it is unsupported on any of them. Read 31 (f69a7129) recommended,
+ * taken: "no change", "nothing (has) changed", "remain(s)/still unchanged",
+ * "since the earlier/previous/first/prior edition/version/report" ("since the
+ * previous checkpoint" is a sheet frame and is NOT struck). LIMITS: the phrases
+ * Commercial named and their plain variants only; a name line is not read (the requirement
  * is the narrative's), and the model checker still reads the rest.
  */
-const REVISION = /\b(?:since (?:the )?8:30|no names? (?:have |has )?changed|unchanged since|revised with|updated with|no changes)\b/i;
+const REVISION =
+  /\b(?:since (?:the )?8:30|since the (?:earlier|previous|first|prior) (?:edition|version|report)|no names? (?:have |has )?changed|nothing (?:has )?changed|unchanged since|(?:remains?|still) unchanged|revised with|updated with|no changes?)\b/i;
 
 function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
@@ -583,6 +593,14 @@ const KIND_MOMENT: Record<ReportKind, string> = {
     'the evening briefing, built from the 20:05 checkpoint after the after-hours session closed at 20:00, published by 20:30; its percent changes are the after-hours move',
 };
 
+/** PREMARKET with no 8:30 edition to revise: the evening report's first edition (Commercial read 31). */
+const PREMARKET_FULL_MOMENT =
+  'the evening report at 22:00, built from the 22:00 recap after the after-hours session closed at 20:00; its percent changes are the after-hours move';
+
+function kindMoment(input: Pick<CheckInput, 'kind' | 'revision'>): string {
+  return input.kind === 'PREMARKET' && !input.revision ? PREMARKET_FULL_MOMENT : KIND_MOMENT[input.kind];
+}
+
 /** The stored fields, rendered by the CHECKER -- never the writer's sheet. */
 
 /** v5's checker prompt version; v4's stays `REPORT_CHECKER_PROMPT_VERSION` (2), which its frozen harnesses ran. */
@@ -690,7 +708,7 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
     .map((line) => `${line.id}${line.ticker ? ` [${line.ticker}]` : ''}: ${line.text}`)
     .join('\n');
   const user = [
-    `Report: ${KIND_MOMENT[input.kind]}. Range: $${input.range.min.toFixed(2)}–$${input.range.max.toFixed(2)}. Checkpoint time: ${time} ET.`,
+    `Report: ${kindMoment(input)}. Range: $${input.range.min.toFixed(2)}–$${input.range.max.toFixed(2)}. Checkpoint time: ${time} ET.`,
     `Stored rows (${input.rows.length}), the highest-ranked names in this range at that checkpoint:`,
     storedRows(input.rows),
     ...(input.research
