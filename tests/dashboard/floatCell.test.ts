@@ -32,7 +32,7 @@ describe('FloatCell, server-rendered', () => {
     expect(html).toContain('>9/22<');
     expect(html).toContain('<button');
     expect(html).toContain('whitespace-nowrap');
-    expect(html).toContain('aria-label="no more than 8.10M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up"');
+    expect(html).toContain('aria-label="no more than 8.10M shares as of Sep 22, 2026, computed from SEC filings, when the filings line up; details on click"');
   });
 
   it('prints the words for the other states, and "Not computed" for no state at all', () => {
