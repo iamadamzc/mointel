@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     'An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, what the share structure actually looks like, and what supply stands behind it.',
 };
 
-const INVITE = 'mailto:info@andromedagenius.com?subject=Invite%20request%20%E2%80%94%20TMI%20Trader';
+const INVITE = 'mailto:info@andromedagenius.com?subject=Invite%20request%3A%20TMI%20Trader';
 
 function Eyebrow({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (

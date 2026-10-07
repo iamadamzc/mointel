@@ -64,7 +64,7 @@ const SURFACES = [
 ];
 
 const EM = '—';
-const ENTITIES = [/&mdash;/g, /&#8212;/g, /&#x2014;/gi];
+const ENTITIES = [/&mdash;/g, /&#8212;/g, /&#x2014;/gi, /%E2%80%94/gi];
 
 /** Blank comment bodies, keeping newlines so reported line numbers stay true. */
 function stripComments(source: string, isMarkdown: boolean): string {
@@ -97,17 +97,22 @@ function isPlaceholderLine(line: string, isMarkdown: boolean): boolean {
   return !remaining.includes(EM) && !remaining.includes('&mdash;');
 }
 
+/** Every spelling of U+2014 becomes the glyph, so one decision covers them all. */
+function normalise(line: string): string {
+  return ENTITIES.reduce((text, re) => text.replace(re, EM), line);
+}
+
+function isProse(line: string, isMarkdown: boolean): boolean {
+  const text = normalise(line);
+  return text.includes(EM) && !isPlaceholderLine(text, isMarkdown);
+}
+
 function prosePositions(file: string): string[] {
   const source = readFileSync(file, 'utf8');
   const body = stripComments(source, file.endsWith('.md'));
   const hits: string[] = [];
   body.split('\n').forEach((line, i) => {
-    let found = line.includes(EM);
-    for (const re of ENTITIES) {
-      re.lastIndex = 0;
-      if (re.test(line)) found = true;
-    }
-    if (found && !isPlaceholderLine(line, file.endsWith('.md'))) hits.push(`${file}:${i + 1} ${line.trim().slice(0, 100)}`);
+    if (isProse(line, file.endsWith('.md'))) hits.push(`${file}:${i + 1} ${line.trim().slice(0, 100)}`);
   });
   return hits;
 }
@@ -139,6 +144,24 @@ describe('no em dash in anything a stranger reads', () => {
     const line = '<p>a sentence &mdash; and its aside</p>';
     expect(line.includes(EM)).toBe(false); // a U+2014 search finds nothing here
     expect(isPlaceholderLine(line, false)).toBe(false); // this check still catches it
+  });
+
+  /**
+   * THE NUMERIC AND PERCENT-ENCODED SPELLINGS. A mailto subject on the landing
+   * page carried `%E2%80%94` (U+2014 in a URL) into every invite email a visitor
+   * started, past every literal and entity sweep (Integration, 2026-10-07). And
+   * `&#8212;` / `&#x2014;` were FOUND by the scan but then waved through as
+   * placeholders, because the placeholder test only looked for the glyph and
+   * `&mdash;`. Every spelling is normalised to the glyph before either decision.
+   */
+  it.each([
+    ['a percent-encoded em dash in a URL', 'href="mailto:x@y.z?subject=Invite%20request%20%E2%80%94%20TMI"'],
+    ['the same, lower case', 'href="mailto:x@y.z?subject=Invite%20request%20%e2%80%94%20TMI"'],
+    ['a decimal entity in prose', '<p>a sentence &#8212; and its aside</p>'],
+    ['a hex entity in prose', '<p>a sentence &#x2014; and its aside</p>'],
+  ])('sees %s', (_name, line) => {
+    expect(line.includes(EM)).toBe(false); // a U+2014 search finds nothing here
+    expect(isProse(line, false)).toBe(true);
   });
 
   it('does not flag a glyph that is a cell of its own', () => {
