@@ -17,7 +17,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
-import { WhyCell } from '@/components/DecisionCells';
+import { NO_CATALYST_MARK, WhyCell, WhyMarks } from '@/components/DecisionCells';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { etDay, resolveWhy } from '@/lib/dashboard/why';
 import { normalizeSheetRows } from '@/lib/data/rows';
@@ -177,5 +177,22 @@ describe('a Sheet / desk disagreement on the catalyst', () => {
       },
     };
     expect(resolveWhy(agreed).disagreement).toBeNull();
+  });
+});
+
+describe('the no-catalyst mark: full words on the report card, the short form on the board (Integration, 2026-10-07)', () => {
+  const why = () => resolveWhy(row(intel({ days: 4, status: 'NONE_FOUND' })));
+
+  it("the report card (full) prints Commercial 13's words, no catalyst found in our sources", () => {
+    const html = renderToStaticMarkup(createElement(WhyMarks, { why: why(), full: true }));
+    expect(html).toContain('>no catalyst found in our sources<');
+    expect(NO_CATALYST_MARK.full).toBe('no catalyst found in our sources');
+  });
+
+  it("the board's Why cell keeps the short form, with the hover that says it searched its sources", () => {
+    const html = renderToStaticMarkup(createElement(WhyCell, { why: why() }));
+    expect(html).toContain('>no catalyst found<');
+    expect(html).not.toContain('in our sources<');
+    expect(html).toContain('The desk searched its sources and found no catalyst for this move.');
   });
 });

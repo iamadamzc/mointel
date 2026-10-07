@@ -800,7 +800,7 @@ function TagRow({ tags }: { tags: NonNullable<Extract<ReportBlock, { kind: 'NAME
             </span>
           </>
         ) : null}
-        <WhyMarks why={why} />
+        <WhyMarks why={why} full />
       </span>
       <span
         className={`flex items-baseline gap-1.5 border-l-2 pl-2 leading-tight ${RISK_TONE[risk.tone]} print:text-black`}

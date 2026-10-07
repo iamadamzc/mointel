@@ -398,12 +398,21 @@ export const WHY_TONE: Record<DeskWhy['tone'], string> = {
   dim: 'text-ink-3',
 };
 
+/** The no-catalyst mark: Commercial read 13's words, and the board's short form (Integration, 2026-10-07). */
+export const NO_CATALYST_MARK = { full: 'no catalyst found in our sources', short: 'no catalyst found' } as const;
+
 /**
  * The catalyst's warn marks, ONE source for the board's Why cell and the
  * session report's tag row (Integration's one-vocabulary call, 2026-10-02;
  * `docs/Design/report-b-spec.md`). A wording change here changes both.
+ *
+ * ONE EXCEPTION, `full`: the no-catalyst mark is Commercial 13's "no catalyst found in our sources" on the
+ * report card (a stored, printed report has no hover, and the report checker strikes a bare "no catalyst"),
+ * and stays "no catalyst found" on the board's Why cell, where the full words (9 px semibold, uppercase)
+ * measure wider than the column at the 1,024 floor and would wrap the row; the board keeps the hover that
+ * says "searched its sources". Integration's ruling, 2026-10-07.
  */
-export function WhyMarks({ why }: { why: DeskWhy }) {
+export function WhyMarks({ why, full = false }: { why: DeskWhy; full?: boolean }) {
   return (
     <>
       {why.explainsMove === false ? (
@@ -422,7 +431,7 @@ export function WhyMarks({ why }: { why: DeskWhy }) {
           className="text-[9px] font-semibold tracking-wide text-warn uppercase"
           title="The desk searched its sources and found no catalyst for this move."
         >
-          no catalyst found
+          {full ? NO_CATALYST_MARK.full : NO_CATALYST_MARK.short}
         </span>
       ) : null}
       {why.code === 'OLD_CATALYST' ? (
