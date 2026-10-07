@@ -23,7 +23,7 @@ import {
 import type { ReportTags } from '../desk/reports/tags';
 import { NOTHING_LINE } from '../desk/reports/writer';
 import { assessmentLabel } from '../desk/schedule';
-import { formatEtMinute, formatPrice } from '../format';
+import { formatEtDay, formatEtMinute, formatPrice } from '../format';
 import { withoutCitations } from '../research/citations';
 
 /**
@@ -69,6 +69,8 @@ const TITLE: Record<ReportKind, string> = {
   INTO_RTH: 'Into-the-open briefing',
   INTO_POWER_HOUR: 'Power-hour briefing',
   AFTER_HOURS: 'After-hours briefing',
+  // The 8:30 pm report (his "b", 2026-10-07T02:33:24.356Z). Marketing 2e386dc7, Commercial 28.
+  EVENING: 'Evening briefing',
 };
 
 export function reportTitle(kind: ReportKind): string {
@@ -81,6 +83,8 @@ const WATCH_INTO: Record<ReportKind, string> = {
   INTO_RTH: 'into the open',
   INTO_POWER_HOUR: 'into the last hour',
   AFTER_HOURS: 'into after-hours',
+  // "next", not "tomorrow's": true on a Friday evening (Commercial 28).
+  EVENING: 'into the next premarket',
 };
 
 /**
@@ -374,6 +378,11 @@ export type ReportBlock =
       texts: string[];
       /** v6: the board's own Why and Risk on the as-of research (`tags.ts`); null on v5 or when absent. */
       tags: ReportTags | null;
+      /**
+       * EVENING: the generated_at of a research version NEWER (by id) than the checkpoint's, when a line of
+       * this name used one; null otherwise (contract.ts). Printed through `researchWrittenAgainNote`.
+       */
+      researchUpdatedAt: string | null;
     }
   | { kind: 'PROSE'; text: string };
 
@@ -411,7 +420,7 @@ export function reportBlocks(report: Pick<SessionReport, 'sections'>): ReportBlo
       }
       let card = cards.get(line.ticker);
       if (!card) {
-        card = { kind: 'NAME', ticker: line.ticker, company: null, path: null, liveFeed: null, texts: [], tags: null };
+        card = { kind: 'NAME', ticker: line.ticker, company: null, path: null, liveFeed: null, texts: [], tags: null, researchUpdatedAt: null };
         cards.set(line.ticker, card);
         blocks.push(card);
       }
@@ -419,11 +428,44 @@ export function reportBlocks(report: Pick<SessionReport, 'sections'>): ReportBlo
       card.company ??= line.company ?? null;
       card.path ??= line.path ?? null;
       card.tags ??= line.tags ?? null;
+      card.researchUpdatedAt ??= typeof line.researchUpdatedAt === 'string' ? line.researchUpdatedAt : null;
     }
   }
   const feed = feedByName(report);
   for (const card of cards.values()) card.liveFeed = feed.get(card.ticker) ?? null;
   return blocks;
+}
+
+const etTime = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/New_York',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+});
+const etMonthDay = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' });
+
+/**
+ * The EVENING card's note, Marketing 2e386dc7 passed by Commercial 28, verbatim: "Research written again
+ * at {h:mm am/pm} ET, after this checkpoint.", and, when the reader's ET day is not the note's,
+ * "Research written again {Oct 7}, {h:mm am/pm} ET, after this checkpoint." (a stored copy read the next
+ * morning never shows a bare clock). Null when there is no newer version or the time does not parse.
+ *
+ * The PRINT CONDITION is Research's (a version newer BY ID than the checkpoint's, contract.ts), the form
+ * Commercial 28a asked for. OPEN (28a): whether `generated_at` is the end of interpretation (Commercial's
+ * reading at origin, then "written again at" is true) or its start (Ops's reading); Ops re-reads before the
+ * evening ship, or the clock comes out of this sentence.
+ *
+ * Via Intl in the market zone, never offset arithmetic; ICU's narrow space before am/pm is normalised.
+ */
+export function researchWrittenAgainNote(iso: string | null | undefined, nowMs: number): string | null {
+  if (typeof iso !== 'string') return null;
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return null;
+  const time = etTime.format(at).replace(/\s+/g, ' ').replace(/\b(AM|PM)\b/, (m) => m.toLowerCase());
+  const sameDay = formatEtDay(iso) === formatEtDay(new Date(nowMs).toISOString());
+  return sameDay
+    ? `Research written again at ${time} ET, after this checkpoint.`
+    : `Research written again ${etMonthDay.format(at)}, ${time} ET, after this checkpoint.`;
 }
 
 /**
