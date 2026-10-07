@@ -190,6 +190,8 @@ describe('the 10 pm edition carries unchanged names and rewrites changed ones', 
     expect(sent).toContain('BBB: ranked #2');
     expect(sent).not.toContain('AAA: ranked #1');
     expect(sent).toContain('only the names whose facts changed since the 8:30 pm edition');
+    // Commercial read 29: the revised edition's narrative states no revision claim.
+    expect(sent).toContain('Say nothing about what changed or was revised since the 8:30 pm edition; the narrative facts do not include it.');
     // The 10 pm edition prints no "written again after this checkpoint" note: its checkpoint captured these versions.
     for (const line of after.values()) expect(line).not.toHaveProperty('researchUpdatedAt');
     expect(after.get('BBB')!.researchVersionId).toBe(v2.id);

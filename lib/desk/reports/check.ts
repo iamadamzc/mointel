@@ -62,6 +62,8 @@ export type StrikeReason =
   /* deterministic, v6 narrative (Integration 30th's ruling on the writer comparison's verdict notes) */
   | 'UNFRAMED_PERCENT'
   | 'CAUSAL_WORDING'
+  /* deterministic, v6 narrative (Commercial read 29, 4642de51): no narrative fact says what changed since 8:30 */
+  | 'REVISION_WORDING'
   /* model */
   | 'UNSUPPORTED';
 
@@ -306,8 +308,20 @@ function causalIn(segment: string): string | null {
   return null;
 }
 
+/**
+ * Revision language (Commercial read 29, 4642de51, REQUIRED): the narrative facts
+ * never say what changed or was revised since the 8:30 pm edition, so a
+ * narrative that says so states what it was not given. Struck on every kind's
+ * narrative: it is unsupported on any of them. LIMITS: the phrases Commercial
+ * named and their plain variants only; a name line is not read (the requirement
+ * is the narrative's), and the model checker still reads the rest.
+ */
+const REVISION = /\b(?:since (?:the )?8:30|no names? (?:have |has )?changed|unchanged since|revised with|updated with|no changes)\b/i;
+
 function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
+  const revision = text.match(REVISION);
+  if (revision) out.push({ reason: 'REVISION_WORDING', detail: `"${revision[0]}"` });
   for (const clause of clausesOf(text)) {
     const moves = [...clause.matchAll(MOVE)];
     if (moves.length === 0) continue;

@@ -192,6 +192,23 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
   it('W5: a placeholder copied from the prompt example is struck (Commercial 14a)', () => {
     expect(reasons('BBB, up {percent} percent from the prior close, with {the news words given for that name}.', intraday)).toEqual(['FORBIDDEN_WORDING']);
   });
+
+  it('W6: revision language in the narrative is struck (REVISION_WORDING, Commercial read 29); the good narratives and plain near-misses are not', () => {
+    for (const text of [
+      'The board is unchanged since the evening report.',
+      'The recap was revised with new filings.',
+      'Our sources were updated with new filings.',
+      'There were no changes in our sources.',
+      'No names changed this evening.',
+      'No name has changed this evening.',
+    ]) {
+      expect(reasons(text, recap)).toEqual(['REVISION_WORDING']);
+    }
+    expect(reasons('Since the 8:30 pm edition, our sources found more news.', recap)).toContain('REVISION_WORDING');
+    expect(reasons(GOOD_RECAP, recap)).not.toContain('REVISION_WORDING');
+    expect(reasons(GOOD_INTRADAY, intraday)).not.toContain('REVISION_WORDING');
+    expect(reasons('Since the close, our sources found more news.', recap)).not.toContain('REVISION_WORDING');
+  });
 });
 
 const row = (ticker: string) => ({ ticker, assessmentRank: 1, price: 5, percentChange: 12, referenceBasis: 'PRIOR_SESSION', haltState: 'TRADING', changeSummary: '' }) as unknown as ReportFact;

@@ -280,6 +280,10 @@ export const SYSTEM_V6 = [
   '- Return JSON only: {"narrative": string | null, "lines": [{"ticker": string | null, "text": string}]}. "narrative" is null only when the narrative facts give nothing to say.',
 ].join('\n');
 
+/** Commercial read 29 (4642de51), REQUIRED: the revised edition's narrative states no revision claim (checker: REVISION_WORDING). */
+const REVISION_NARRATIVE_RULE =
+  'Say nothing about what changed or was revised since the 8:30 pm edition; the narrative facts do not include it.';
+
 export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
   const time = etClock(new Date(input.checkpoint.completedAt)).slice(0, 5);
   const none = input.revision
@@ -297,6 +301,7 @@ export function buildWriterPromptV6(input: WriterInputV6): WriterPrompt {
     '',
     'NARRATIVE FACTS (word these and nothing else):',
     `  ${narrativeSheet(input.narrative).join('\n  ')}`,
+    ...(input.revision ? [REVISION_NARRATIVE_RULE] : []),
     '',
     input.revision
       ? 'NAMES (only the names whose facts changed since the 8:30 pm edition; every other name keeps its 8:30 line and is not shown here):'
