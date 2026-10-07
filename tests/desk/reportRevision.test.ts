@@ -217,7 +217,8 @@ describe('the 10 pm edition carries unchanged names and rewrites changed ones', 
 describe('what counts as changed (condition 3): anything the writer is shown', () => {
   it('a note the writer is shown at 22:00 makes a name changed with the same version; the unchanged narrative keeps its 8:30 words', async () => {
     const { db, v1 } = fixture();
-    const first = await evening(db, [ticker('AAA', 1, v1.id, AH_CLOSE), ticker('BBB', 2, null, AH_CLOSE)]);
+    const first = await evening(db, [ticker('AAA', 1, v1.id, AH_CLOSE), ticker('BBB', 2, null, AH_CLOSE)], [], 'Our sources had little new this evening.');
+    expect(first.narrative).toBe('Our sources had little new this evening.');
     const second = await tenPm(
       db,
       [ticker('AAA', 1, v1.id, AH_CLOSE, { changeSummary: 'AAA: +3.5% since prior assessment.' }), ticker('BBB', 2, null, AH_CLOSE)],
