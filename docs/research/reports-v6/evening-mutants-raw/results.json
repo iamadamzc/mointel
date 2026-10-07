@@ -1,0 +1,156 @@
+{
+  "results": [
+    {
+      "id": "M0",
+      "predicted": 0,
+      "failed": 0,
+      "failedSuites": 0,
+      "total": 24
+    },
+    {
+      "id": "E1",
+      "file": "lib/desk/reports/job.ts",
+      "what": "no write-not-before in the runner",
+      "predicted": 1,
+      "which": "T2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E2",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "the captured version reads as updated",
+      "predicted": 3,
+      "which": "T4, T5, T8",
+      "failed": 3,
+      "failedSuites": 3,
+      "total": 24
+    },
+    {
+      "id": "E3",
+      "file": "lib/market/store/researchRepo.ts",
+      "what": "no as-of bound on the newest version",
+      "predicted": 2,
+      "which": "T4, T7",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E4",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "serves by 20:31",
+      "predicted": 1,
+      "which": "T9",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E5",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "written from 20:05",
+      "predicted": 2,
+      "which": "T1, T2",
+      "failed": 2,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E6",
+      "file": "lib/desk/reports/contract.ts",
+      "what": "EVENING without the recap content",
+      "predicted": 3,
+      "which": "T8, T10, T11",
+      "failed": 3,
+      "failedSuites": 3,
+      "total": 24
+    },
+    {
+      "id": "E7",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "researchUpdatedAt not emitted on EVENING",
+      "predicted": 1,
+      "which": "T8",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E8",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "no per-line update on EVENING",
+      "predicted": 2,
+      "which": "T3, T8",
+      "failed": 2,
+      "failedSuites": 3,
+      "total": 24
+    },
+    {
+      "id": "E9",
+      "file": "lib/desk/reports/api.ts",
+      "what": "no EVENING slot for today",
+      "predicted": 2,
+      "which": "A1, A3",
+      "failed": 2,
+      "failedSuites": 3,
+      "total": 24
+    },
+    {
+      "id": "E10",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "an updated line judged at the checkpoint",
+      "predicted": 0,
+      "which": "(none)",
+      "failed": 0,
+      "failedSuites": 0,
+      "total": 24
+    },
+    {
+      "id": "E11",
+      "file": "lib/desk/reports/job.ts",
+      "what": "the runner has no EVENING kind",
+      "predicted": 1,
+      "which": "T2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E12",
+      "file": "lib/desk/reports/api.ts",
+      "what": "the API drops EVENING rows",
+      "predicted": 1,
+      "which": "A2",
+      "failed": 1,
+      "failedSuites": 2,
+      "total": 24
+    },
+    {
+      "id": "E13",
+      "file": "lib/desk/reports/pipeline.ts",
+      "what": "EVENING reads the wrong checkpoint",
+      "predicted": 8,
+      "which": "T2, T3, T4, T5, T6, T8, T9, T10",
+      "failed": 8,
+      "failedSuites": 5,
+      "total": 24
+    }
+  ],
+  "summary": [
+    "E1 predicted 1 got 1 exact",
+    "E2 predicted 3 got 3 exact",
+    "E3 predicted 2 got 2 exact",
+    "E4 predicted 1 got 1 exact",
+    "E5 predicted 2 got 2 exact",
+    "E6 predicted 3 got 3 exact",
+    "E7 predicted 1 got 1 exact",
+    "E8 predicted 2 got 2 exact",
+    "E9 predicted 2 got 2 exact",
+    "E10 predicted 0 got 0 exact",
+    "E11 predicted 1 got 1 exact",
+    "E12 predicted 1 got 1 exact",
+    "E13 predicted 8 got 8 exact"
+  ]
+}
