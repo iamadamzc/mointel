@@ -52,7 +52,7 @@ function row(overrides: Partial<FloatBoundRow> = {}): FloatBoundRow {
 }
 
 describe("the cell reads Research's real FloatBound", () => {
-  it('a PRODUCED bound from toFloatBound prints the number, the filed dates of the holdings and the read date', () => {
+  it('a PRODUCED bound from toFloatBound prints the number and the read date in the v25 words (no per-holding dates)', () => {
     const r = row();
     const bound = toFloatBound(r, r.cell);
     expect(bound.state).toBe('PRODUCED');
@@ -61,7 +61,10 @@ describe("the cell reads Research's real FloatBound", () => {
     expect(v.face.startsWith(LE)).toBe(true);
     expect(v.date).toBe('8/1');
     const text = v.paragraphs.join(' ');
-    expect(text).toContain('less insider holdings filed on Jul 20, 2026, Sep 2, 2026.');
+    expect(text).toContain(
+      'less insider holdings as filed through Sep 25, 2026, counting any sale dated on or before the checkpoint that was filed by Sep 25, 2026.',
+    );
+    expect(text).not.toMatch(/Jul 20, 2026|Sep 2, 2026/);
     expect(text).toContain('Filings read on Sep 25, 2026.');
     expect(floatSortValue(bound)).toBe(bound.bound);
   });
@@ -123,10 +126,12 @@ describe('guards: absent, malformed, extra fields', () => {
   it('the retired provisional shape (holdingDates, fetchedOn) cannot throw: no dates claimed that the payload lacks', () => {
     const old = { state: 'PRODUCED', reason: null, bound: 9_600_000, countAsOf: '2026-08-01', holdingDates: ['2026-07-20'], fetchedOn: '2026-09-25' };
     const v = floatCellView(old as never);
-    expect(v.kind).toBe('bound');
-    const text = v.paragraphs.join(' ');
-    expect(text).toContain('less insider holdings filed on the dates in the filings.');
-    expect(text).not.toContain('Filings read on');
+    // No filingsReadOn: v25's words print the read date, so the cell refuses rather than claim one (bcfd1330's guard).
+    expect(v.kind).toBe('cannotVerify');
+    expect(v.face).toBe('Cannot verify');
+    expect(v.date).toBeNull();
+    const text = [v.ariaLabel, ...v.paragraphs, ...v.details.rows.map((r) => r.text)].join(' ');
+    expect(text).not.toMatch(/Filings read on|filed through|Sep 25|Jul 20|Aug 1/);
   });
 
   it('extra fields are ignored', () => {
