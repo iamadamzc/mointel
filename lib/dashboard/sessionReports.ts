@@ -134,10 +134,11 @@ export function isV6(report: Pick<SessionReport, 'narrative'>): boolean {
 }
 
 /**
- * The float statement, once per report and never per name (Marketing, final
- * wording; `report-b-spec.md`): a verdict, never a number.
+ * The float statement, once per report and never per name (`report-b-spec.md`): a verdict, never a
+ * number. Commercial read 27 (a4fba766) added the first clause once the desk began computing an SEC
+ * float bound elsewhere: it says why the report has none. Marketing confirmed it; Integration ruled.
  */
-export const FLOAT_FOOTER = 'The desk cannot independently verify a float for any name in this report.';
+export const FLOAT_FOOTER = 'This report states no float, and the desk cannot independently verify a float for any name in it.';
 
 /** A computed section's label, "LABEL · count" (names in it). The loose group's empty heading prints nothing. */
 export function sectionLabel(heading: string, names: number): string | null {
