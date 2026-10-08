@@ -46,7 +46,7 @@ for design documents.
 
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
-**BUILT, NOT GATED, the post-ship batch on cdf7f36b: head `7aac22eebf0c05ad02472749830c66fbaf89828f` (tag `design/post-ship-batch-7aac22ee`) = c93e94c3 (12-hour times: the briefing line, built on, written) -> 43eb6fba (all-unknown feed reads as absent, Commercial's scope) -> 7aac22ee (the legend cycle sentence). Rides the next release. The three APPROVED, NOT BUILT entries below are now built.**
+**BUILT, NOT GATED, the post-ship batch on cdf7f36b: head `3a5aca9d58242384dda67e5c73b737a9501f75a3` (tag `design/post-ship-batch-3a5aca9d`; adds 3a5aca9d: the missed-report sentence and the path label in 12-hour ET, no 24-hour time left on the report surface) = c93e94c3 (12-hour times: the briefing line, built on, written) -> 43eb6fba (all-unknown feed reads as absent, Commercial's scope) -> 7aac22ee (the legend cycle sentence). Rides the NEXT release with Research's Summary change (Integration). Range-field enumeration for Commercial: no gap (every Summary surface prints "covers {range}"; JSON carries range; no MCP report tool). The three APPROVED, NOT BUILT entries below are now built.**
 
 **APPROVED, NOT BUILT (Integration 35th): the briefing line's time and the report window's "built on" and "written" times in 12-hour ET (etStamp, the date rule), one commit on cdf7f36b AFTER tonight's ship is verified, with a test; rides the next release. Report 23 render accepted (8579afb0); Summary length and liveFeed null routed to Research.**
 
