@@ -40,8 +40,8 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 /**
  * Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. 11: the recap sheet says the
  * regular-session high (Commercial, 2026-10-07, with the switch to the regular-session high from minute_bars). 12: the
- * recap Summary is four sentences in Marketing's order (`docs/marketing/recap-four-sentence-shape-2026-10-08.md` v3,
- * 1251b30c; Integration's rulings 2026-10-08), intraday three; the recap sheet drops the next-session context, the
+ * recap Summary is four sentences in Marketing's order (`docs/marketing/recap-four-sentence-shape-2026-10-08.md` at
+ * 60d0dc7e; Integration's rulings 2026-10-08), intraday three; the recap sheet drops the next-session context, the
  * carried-names count and the F12b counts.
  */
 export const REPORT_WRITER_PROMPT_VERSION_V6 = 12;
@@ -114,7 +114,7 @@ function namedClauses(name: { status: string | null; summary: string | null; cyc
 
 /**
  * The recap's given facts (evening and premarket), v3: one group per Summary sentence. OUT since v3 (Marketing's
- * shape, 1251b30c): the next-session context (the cards carry it), the carried-names count (the same set as
+ * shape, 60d0dc7e): the next-session context (the cards carry it), the carried-names count (the same set as
  * `fresh.covered`, `narrative.ts`), and the F12b counts (each card carries its own name's state).
  */
 function recapSheet(facts: NarrativeFacts): string[] {

@@ -11,7 +11,7 @@
  */
 import { isEveningRecap, type ReportKind } from './contract';
 
-/** Recap 4 (Marketing's shape, 48dcad1a), intraday 3 (Integration's ruling, 2026-10-08). */
+/** Recap 4 (Marketing's shape, 60d0dc7e), intraday 3 (Integration's ruling, 2026-10-08). */
 export const NARRATIVE_MAX_SENTENCES = { recap: 4, intraday: 3 } as const;
 
 /** Words whose trailing full stop never ends a sentence here. Compared case-sensitively, without the stop. */
