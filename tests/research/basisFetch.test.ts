@@ -83,13 +83,14 @@ describe('basisFetchDue', () => {
     expect(basisFetchDue(db(), 'ACME').due).toBe(true);
   });
 
-  it('does not fire once a factor is established', () => {
+  it('does not fire once a factor is established through the last settled session', () => {
     const store = db();
     upsertDailyBars(store, [
       bar({ tradingDate: '2026-08-19', splitFactor: 2, source: 'alpaca-daily-deep' }),
     ]);
 
-    const decision = basisFetchDue(store, 'ACME');
+    // Wed 10:00 ET: the last settled session is Tue 08-19, which carries the factor.
+    const decision = basisFetchDue(store, 'ACME', new Date('2026-08-20T14:00:00Z'));
     expect(decision.due).toBe(false);
     expect(decision.reason).toContain('split basis established');
   });
@@ -111,8 +112,83 @@ describe('basisFetchDue', () => {
       bar({ tradingDate: '2026-08-19', splitFactor: null, source: 'alpaca-daily-bar' }),
     ]);
 
-    expect(basisFetchDue(store, 'ACME').due).toBe(false);
+    expect(basisFetchDue(store, 'ACME', new Date('2026-08-20T14:00:00Z')).due).toBe(false);
     expect(readSplitFactors(store, 'ACME').get('2026-08-19')).toBe(2);
+  });
+
+  it('fires again when the newest factor predates the last settled session', () => {
+    /*
+     * The stale basis (Research 263e556a). Only the deep pass derives a
+     * factor, and the shallow pass writes every later session with a null
+     * one, so a name established once and researched again weeks later
+     * carries no factor on its recent bars: the daily level ladder and the
+     * blue-sky ceiling drop them, and the float's split proof reads them as
+     * unproven. Re-arming on staleness is what refreshes them.
+     */
+    const store = db();
+    upsertDailyBars(store, [
+      bar({
+        tradingDate: '2026-08-19',
+        splitFactor: 1,
+        source: 'alpaca-daily-deep',
+        fetchedAt: '2026-08-20T01:00:00Z',
+      }),
+      bar({ tradingDate: '2026-08-20' }),
+      bar({ tradingDate: '2026-08-21' }),
+      bar({ tradingDate: '2026-08-24' }),
+    ]);
+
+    // Tue 08-25 10:00 ET: the last settled session is Mon 08-24, three sessions after the factor.
+    const decision = basisFetchDue(store, 'ACME', new Date('2026-08-25T14:00:00Z'));
+    expect(decision.due).toBe(true);
+    expect(decision.reason).toBe('split basis stale (last factor 2026-08-19, last settled 2026-08-24)');
+  });
+
+  it('is satisfied by a deep pass that reaches the last settled session', () => {
+    const store = db();
+    upsertDailyBars(store, [
+      bar({ tradingDate: '2026-08-19', splitFactor: 1, source: 'alpaca-daily-deep' }),
+      bar({ tradingDate: '2026-08-24' }),
+    ]);
+    const now = new Date('2026-08-25T14:00:00Z');
+    expect(basisFetchDue(store, 'ACME', now).due).toBe(true);
+
+    upsertDailyBars(store, [
+      bar({
+        tradingDate: '2026-08-24',
+        splitFactor: 1,
+        source: 'alpaca-daily-deep',
+        fetchedAt: '2026-08-25T14:00:05Z',
+      }),
+    ]);
+    const after = basisFetchDue(store, 'ACME', now);
+    expect(after.due).toBe(false);
+    expect(after.reason).toContain('split basis established');
+  });
+
+  it('holds a stale basis to one deep pass a day when the pass cannot reach the settled session', () => {
+    /*
+     * A deep pass today that returned no factor for the newest session (the
+     * daily bar not yet published, or no usable raw close) must not re-ask on
+     * every job the name gets today. The once-per-ET-day marker caps it, and
+     * the next day it is due again.
+     */
+    const store = db();
+    upsertDailyBars(store, [
+      bar({
+        tradingDate: '2026-08-19',
+        splitFactor: 1,
+        source: 'alpaca-daily-deep',
+        fetchedAt: '2026-08-25T14:00:05Z',
+      }),
+      bar({ tradingDate: '2026-08-24' }),
+    ]);
+
+    const sameDay = basisFetchDue(store, 'ACME', new Date('2026-08-25T18:00:00Z'));
+    expect(sameDay.due).toBe(false);
+    expect(sameDay.reason).toContain('already fetched today');
+
+    expect(basisFetchDue(store, 'ACME', new Date('2026-08-26T14:00:00Z')).due).toBe(true);
   });
 
   it('caps an underivable symbol at one fetch per day', () => {
@@ -213,7 +289,8 @@ describe('splitBasisSessions — the outcome the log line reports', () => {
       bar({ tradingDate: '2026-08-20', splitFactor: 1, source: 'alpaca-daily-deep' }),
     ]);
 
-    expect(basisFetchDue(store, 'ACME').reason).toBe(
+    // Fri 08-21 10:00 ET: the last settled session is 08-20, the newest factor.
+    expect(basisFetchDue(store, 'ACME', new Date('2026-08-21T14:00:00Z')).reason).toBe(
       `split basis established (${splitBasisSessions(store, 'ACME')} session(s))`,
     );
   });

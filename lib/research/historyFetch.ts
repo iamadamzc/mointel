@@ -396,22 +396,34 @@ export function splitBasisSessions(db: MarketDatabase, symbol: string): number {
  * and a young listing sits entirely inside the shallow window). The factor
  * itself is what the supply pair reads, so its presence is the test.
  *
- * Cost shape: two REST calls, close to once per ticker forever. A symbol whose
- * factors are underivable (no usable raw closes) would re-ask on every job, so
- * the deep pass's own once-per-day marker caps that at one fetch a day.
+ * A basis also goes STALE (Research 263e556a, ruled 2026-10-08): only the deep
+ * pass derives a factor, and the shallow pass writes every later session with
+ * a null one, so a name established weeks ago carries no factor on its recent
+ * bars. The daily level ladder and the blue-sky ceiling drop those bars, and
+ * the float's split proof reads them as unproven. So the basis counts as
+ * established only while its newest factor reaches the last settled session;
+ * older than that, the name is due again. The float job runs later in the
+ * same job, so it reads the refreshed factors.
  *
- * A split AFTER establishment is not re-fetched here: the stored series stays
- * internally consistent for the dates it covers, and `computeSupplyPair`
- * refuses to extrapolate past its end — operands beyond coverage read
- * unverifiable, never wrong. The blue-sky gate still refetches the runners.
+ * Cost shape: two REST calls per researched name per ET day at most (about
+ * 55 to 76 names a day in late September and early October 2026). A pass
+ * that cannot reach the settled session (the daily bar not yet published, or
+ * no usable raw closes) would re-ask on every job, so the deep pass's own
+ * once-per-day marker caps that at one fetch a day.
  */
 export function basisFetchDue(
   db: MarketDatabase,
   symbol: string,
   now: Date = new Date(),
 ): DeepHistoryDecision {
-  const established = splitBasisSessions(db, symbol);
-  if (established > 0) {
+  const settled = lastSettledTradingDate(now);
+  const newest = db
+    .prepare(
+      'SELECT MAX(trading_date) AS d FROM daily_bars WHERE symbol = ? AND split_factor IS NOT NULL',
+    )
+    .get(symbol) as { d: string | null };
+  if (newest.d !== null && newest.d >= settled) {
+    const established = splitBasisSessions(db, symbol);
     return { due: false, reason: `split basis established (${established} session(s))` };
   }
 
@@ -422,5 +434,7 @@ export function basisFetchDue(
     return { due: false, reason: 'deep history already fetched today' };
   }
 
-  return { due: true, reason: 'no split basis established' };
+  return newest.d === null
+    ? { due: true, reason: 'no split basis established' }
+    : { due: true, reason: `split basis stale (last factor ${newest.d}, last settled ${settled})` };
 }
