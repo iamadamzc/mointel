@@ -47,7 +47,8 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
  * 13: the intraday named-name line (Marketing, docs/marketing/writer-named-name-line-2026-10-08.md at 0fff788a; Integration's
  * ruling 2026-10-08 after report 25 ran 128 words, final at 151ca1bb): a catalyst clause only for fresh news, twelve words at
  * most; the narrative sheet hands over a catalyst for FRESH_FOUND only and words every state as the recap's sentence 2 does
- * ("no research at this checkpoint" for none).
+ * ("no research at this checkpoint" for none); no cycle label on any named name, and the after-hours line is the move only
+ * (Commercial's read of 9dc02974; still 13, which never ran).
  */
 export const REPORT_WRITER_PROMPT_VERSION_V6 = 13;
 
@@ -89,14 +90,6 @@ function movedWords(exact: number): string {
   return `${exact < 0 ? 'down' : 'up'} ${wholePercent(exact)} percent`;
 }
 
-/** The checkpoint row's cycle, humanised (v2 table: "the cycle label"). */
-const CYCLE_WORDS: Record<string, string> = {
-  GREEN_FRESH_FRONTSIDE: 'fresh frontside',
-  YELLOW_FRONTSIDE_WARNING: 'frontside with a warning',
-  RED_BACKSIDE: 'backside',
-  UNKNOWN: 'unclear',
-};
-
 const NEWS_WORDS: Record<string, string> = {
   FRESH_FOUND: 'fresh news found in our sources',
   SECONDARY_STALE: 'only older or secondary news in our sources',
@@ -105,8 +98,8 @@ const NEWS_WORDS: Record<string, string> = {
   UNKNOWN: 'research that could not tell',
 };
 
-/** One named name's catalyst clause and labels, as the model may word them. */
-function namedClauses(name: { status: string | null; summary: string | null; cycle: string | null }): string {
+/** One named name's news state and, for fresh news only, its catalyst clause. No cycle label (writer v6 13, Commercial). */
+function namedClauses(name: { status: string | null; summary: string | null }): string {
   const parts: string[] = [];
   if (name.status === null) parts.push('news: no research at this checkpoint');
   else {
@@ -114,7 +107,6 @@ function namedClauses(name: { status: string | null; summary: string | null; cyc
     // Writer v6 13 (Commercial's read): the catalyst is handed over for fresh news only, so older news is never in the sheet to restate.
     if (name.status === 'FRESH_FOUND' && name.summary) parts.push(`catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): ${name.summary}`);
   }
-  parts.push(`cycle: ${CYCLE_WORDS[name.cycle ?? 'UNKNOWN'] ?? 'unclear'}`);
   return parts.join('; ');
 }
 
@@ -141,7 +133,7 @@ function recapSheet(facts: NarrativeFacts): string[] {
   if (facts.afterHours) {
     const a = facts.afterHours;
     lines.push(
-      `after the close (from the 16:00 close to the last after-hours print; ALWAYS say "after the close" or "after hours", never mix it with the day's figures): ${a.ticker}, ${movedWords(a.percentChange)}; ${namedClauses(a)}`,
+      `after the close (from the 16:00 close to the last after-hours print; ALWAYS say "after the close" or "after hours", never mix it with the day's figures): ${a.ticker}, ${movedWords(a.percentChange)}`,
     );
   }
   lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);

@@ -77,16 +77,17 @@ const recapV2: NarrativeFacts = {
 };
 
 describe('narrativeSheet v2: the given facts, worded exactly as the model must use them', () => {
-  it('intraday: the leader, then the next covered gainer, whole percents with basis, news, cycle and change notes; nothing else', () => {
+  it('intraday: the leader, then the next covered gainer, whole percents with basis, news and change notes; no cycle label; nothing else', () => {
     const sheet = narrativeSheet(intradayV2);
     expect(sheet[0]).toBe(
-      'leader (ranked first in this range): AAA, up 68 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst\'s own figure): A distribution agreement.; cycle: fresh frontside',
+      'leader (ranked first in this range): AAA, up 68 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst\'s own figure): A distribution agreement.',
     );
-    expect(sheet[1]).toBe('next covered gainer (by move): BBB, up 51 percent from the prior close; news: no research at this checkpoint; cycle: unclear');
+    expect(sheet[1]).toBe('next covered gainer (by move): BBB, up 51 percent from the prior close; news: no research at this checkpoint');
     expect(sheet).toContain('since the previous checkpoint, BBB: printed a new high of day');
     // Writer v6 13: older news is worded as its state only; its summary is not handed over to restate.
     const stale = narrativeSheet({ ...intradayV2, intradayNamed: intradayV2.intradayNamed!.map((m) => ({ ...m, status: 'SECONDARY_STALE' as const })) });
-    expect(stale[0]).toContain('news: only older or secondary news in our sources; cycle:');
+    expect(stale[0]).toBe('leader (ranked first in this range): AAA, up 68 percent from the prior close; news: only older or secondary news in our sources');
+    expect(narrativeSheet(intradayV2).join(' ')).not.toContain('cycle:');
     expect(stale.join(' ')).not.toContain('catalyst (restate');
     expect(sheet).toContain('fresh news in our sources: 1 of the 12 names the desk covers');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|50 percent|carries into the next session/);
@@ -99,11 +100,12 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(sheet).toContain('of those, kept at least half of the peak gain at the close: 4');
     expect(sheet).toContain('of those, the desk covers: 5');
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent from the prior close; news: fresh news found in our sources');
-    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('cycle: frontside with a warning');
+    expect(sheet.join(' ')).not.toContain('cycle:');
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('(a covered 50 percent mover, by its regular-session high): NXL');
     const ah = sheet.find((l) => l.startsWith('after the close'))!;
     expect(ah).toContain('ALWAYS say "after the close" or "after hours"');
-    expect(ah).toContain('AMOD, up 62 percent; news: fresh news found in our sources');
+    // Writer v6 13: the after-hours line is the move only (recap sentence 3).
+    expect(ah.endsWith('AMOD, up 62 percent')).toBe(true);
     // Given in the facts and NOT printed since writer v6 12 (recapV2 carries an F12b count and a context).
     expect(sheet.join(' ')).not.toMatch(/of the covered 50 percent movers|context into the next session|carries into the next session|\$6\.50|\$4\.90|\$19\.20/);
     expect(sheet.at(-1)).toBe('fresh news in our sources: 2 of the 12 names the desk covers');

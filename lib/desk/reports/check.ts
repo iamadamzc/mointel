@@ -257,7 +257,8 @@ function givenNumbers(facts: NarrativeFacts): Set<number> {
  */
 function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates: Set<string> } {
   const out = { magnitudes: [] as number[], dates: new Set<string>() };
-  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? []), ...(facts.afterHours ? [facts.afterHours] : [])]) {
+  // Not the after-hours name: its sheet line is the move only (writer v6 13), so it hands over no summary to trace.
+  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? [])]) {
     if (!m.summary || m.status !== 'FRESH_FOUND') continue;
     const claims = claimsIn(m.summary);
     for (const number of claims.numbers) out.magnitudes.push(number.mantissa * number.unit);
@@ -637,7 +638,8 @@ const CHECKER_SYSTEM_V5 = [
  * (`narrativeSheet`, the writer's own wording) now say the regular-session high (writer v6 11). 9: the narrative
  * facts it is shown drop the next-session context, the carried-names count and the F12b counts (writer v6 12), and
  * its v6 rule no longer names the context. 10: the narrative facts it is shown word every news state as the recap's
- * sentence 2 does and carry a catalyst for fresh news only (writer v6 13), and the summary allowance follows them.
+ * sentence 2 does and carry a catalyst for fresh news only, no cycle label, and an after-hours line of the move only
+ * (writer v6 13), and the summary allowance follows them (still 10, which never ran).
  */
 export const REPORT_CHECKER_PROMPT_VERSION_V6 = 10;
 
