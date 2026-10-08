@@ -81,7 +81,7 @@ export const DASH = String.fromCharCode(0x2014);
  * first.
  */
 export const SETUP_GRADE_LEGEND =
-  'Setup grade is the desk\'s own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.';
+  'Setup grade is the desk\'s own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. An A needs a cycle the desk reads as strong and a C needs a cycle it reads as a backside, so a name whose cycle the desk cannot read is never graded A or C. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.';
 
 /** The five readings in words, one line per criterion (the drawer's detail lines). */
 export const READING_LINE: Record<Criterion, Record<StoredReading, string>> = {
