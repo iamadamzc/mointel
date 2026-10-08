@@ -1,7 +1,7 @@
 'use client';
 
 import { feedFailureLine } from '@/lib/dashboard/feedFailure';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AssessmentSelector, AssessmentSnapshotBoard } from '@/components/AssessmentHistory';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -42,7 +42,7 @@ import type { ResearchHealthView } from '@/lib/research/health';
 import type { MarketFeedHealth } from '@/lib/market/types';
 import { universeWarning } from '@/lib/dashboard/universe';
 import { chooseReportRange, reportTimeline } from '@/lib/dashboard/sessionReports';
-import { reportKey } from '@/lib/desk/reports/contract';
+import { editionIsRead, openOnLoad, reportMark, reportReadKey, tabTitle } from '@/lib/dashboard/reportNotice';
 import { useClock } from '@/lib/hooks/useClock';
 import { useDashboard } from '@/lib/hooks/useDashboard';
 import { useFocus } from '@/lib/hooks/useFocus';
@@ -231,6 +231,9 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   const closeReport = useCallback(() => setReportOpen(false), []);
   const [storedReportRange, setStoredReportRange] = useState<string | null>(null);
   const [readReports, setReadReports] = useState<string[]>([]);
+  // True once the read list has been read from storage: opening on load must never decide before it, or a
+  // report the viewer has read would count as unread and open over the board.
+  const [readLoaded, setReadLoaded] = useState(false);
   // Browser storage is read after mount so the server render and the first
   // client render agree.
   useEffect(() => {
@@ -242,6 +245,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     } catch {
       // Unreadable: nothing marked read, which only means the headline shows again.
     }
+    setReadLoaded(true);
   }, []);
   const { now, mounted } = useClock();
 
@@ -382,21 +386,45 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
       ? reportTimeline(reports, reportChoice.range.id, now)
       : null;
   const currentReport = timeline?.current?.report ?? null;
-  const currentReadKey = currentReport
-    ? `${reportKey(currentReport)}@${currentReport.publishedAt}`
-    : null;
+  const currentReadKey = currentReport ? reportReadKey(currentReport) : null;
+  // A "Published again" 10 pm edition counts as read when its 8:30 edition was (reportNotice.ts).
+  const currentRead =
+    currentReport !== null && timeline?.current
+      ? editionIsRead(currentReport, timeline.current.superseded, readReports)
+      : false;
+  // The new-report notice (his ask; Integration 35th's ruling A): only once the read list is loaded.
+  const mark = readLoaded && timeline ? reportMark(timeline.current, readReports, now) : null;
   const chooseReportRangeId = (rangeId: string) => {
     setStoredReportRange(rangeId);
     writeStored(REPORT_RANGE_KEY, rangeId);
   };
-  const openReport = () => {
-    setReportOpen(true);
+  const markCurrentRead = () => {
     if (currentReadKey && !readReports.includes(currentReadKey)) {
       const next = [...readReports, currentReadKey].slice(-20);
       setReadReports(next);
       writeStored(REPORT_READ_KEY, JSON.stringify(next));
     }
   };
+  const openReport = () => {
+    setReportOpen(true);
+    markCurrentRead();
+  };
+  /*
+   * OPENING ON THE CURRENT REPORT (his "when the system opens it should bring up the currently relevant
+   * report"): decided ONCE per page load, the first time the timeline and the read list both exist, never
+   * again on a poll (a report that arrives later gets the line's mark). `openOnLoad` holds the rule and his
+   * 07:00 to 10:00 ET weekday exception.
+   */
+  const openDecided = useRef(false);
+  useEffect(() => {
+    if (openDecided.current || !readLoaded || !timeline) return;
+    openDecided.current = true;
+    if (openOnLoad(timeline.current, readReports, now)) openReport();
+  });
+  // The tab title carries "(1) " while a report is marked (Marketing 36b37d86).
+  useEffect(() => {
+    document.title = tabTitle(document.title, mark !== null);
+  }, [mark]);
   const reportPanelOpen = reportOpen && timeline !== null && reportChoice?.kind === 'CHOSEN';
 
   return (
@@ -483,7 +511,9 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             onSelectTicker={setSelectedTicker}
             onOpenCheckpoint={setSelectedAssessment}
             onOpen={openReport}
-            read={currentReadKey !== null && readReports.includes(currentReadKey)}
+            read={currentRead}
+            mark={mark}
+            onDismiss={markCurrentRead}
           />
         ) : timeline && reportChoice ? (
           <BriefingLine
@@ -491,9 +521,15 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             choice={reportChoice}
             onChooseRange={chooseReportRangeId}
             onOpen={openReport}
-            read={currentReadKey !== null && readReports.includes(currentReadKey)}
+            read={currentRead}
+            mark={mark}
+            onDismiss={markCurrentRead}
           />
         ) : null}
+        {/* The notice for a reader who cannot see the accent: polite, the same words as the mark. */}
+        <p aria-live="polite" className="sr-only">
+          {mark?.announcement ?? ''}
+        </p>
 
         {/* The checkpoint selector sits with Discovery because that is what it
             replaces: choosing a past assessment swaps the live board for the

@@ -41,6 +41,7 @@ import {
 } from '@/lib/dashboard/sessionReports';
 import { RISK_TONE, WHY_TONE, WhyMarks } from '@/components/DecisionCells';
 import { formatEtMinute } from '@/lib/format';
+import { DISMISS_WORDS, type ReportMark } from '@/lib/dashboard/reportNotice';
 import { useModalFocus } from '@/lib/hooks/useModalFocus';
 
 /**
@@ -67,6 +68,8 @@ export function BriefingLine({
   onChooseRange,
   onOpen,
   read,
+  mark = null,
+  onDismiss,
 }: {
   timeline: ReportTimeline;
   choice: RangeChoice;
@@ -74,6 +77,10 @@ export function BriefingLine({
   onOpen: () => void;
   /** The viewer has opened the current report. */
   read: boolean;
+  /** The new-report notice (`reportMark`), or null. */
+  mark?: ReportMark | null;
+  /** Clears the mark without opening the report. */
+  onDismiss?: () => void;
 }) {
   if (choice.kind === 'STRADDLE') {
     return (
@@ -108,7 +115,8 @@ export function BriefingLine({
   const lead = current.report ? reportLead(current.report) : null;
 
   return (
-    <Band>
+    <Band marked={mark !== null}>
+      {mark ? <NoticeMark mark={mark} /> : null}
       <span className={published ? 'font-semibold text-ink' : 'text-ink-2'}>
         {briefingLineText(current)}
       </span>
@@ -123,6 +131,7 @@ export function BriefingLine({
 
       <span className="ml-auto flex shrink-0 items-center gap-3">
         <span className="text-[11px] text-ink-3">covers {choice.range.label}</span>
+        {mark && onDismiss ? <DismissButton onDismiss={onDismiss} /> : null}
         {canOpen ? (
           <button
             type="button"
@@ -161,6 +170,8 @@ export function InlineBriefing({
   onOpenCheckpoint,
   onOpen,
   read,
+  mark = null,
+  onDismiss,
 }: {
   timeline: ReportTimeline;
   choice: RangeChoice;
@@ -173,6 +184,8 @@ export function InlineBriefing({
   onOpenCheckpoint: (id: number) => void;
   onOpen: () => void;
   read: boolean;
+  mark?: ReportMark | null;
+  onDismiss?: () => void;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
@@ -188,6 +201,8 @@ export function InlineBriefing({
           onChooseRange={onChooseRange}
           onOpen={onOpen}
           read={read}
+          mark={mark}
+          onDismiss={onDismiss}
         />
         {collapsed && report ? (
           <div className="border-b border-line bg-desk px-4 py-1">
@@ -209,6 +224,8 @@ export function InlineBriefing({
     <section aria-label="Session briefing" className="border-b border-line bg-panel px-4 py-3 print:hidden">
       <div className="mb-2 flex items-center gap-2">
         <span className="text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase">Briefing</span>
+        {mark ? <NoticeMark mark={mark} /> : null}
+        {mark && onDismiss ? <DismissButton onDismiss={onDismiss} /> : null}
         {ranges.length > 1 ? (
           <span role="radiogroup" aria-label="Briefing range" className="ml-2 flex gap-1">
             {ranges.map((option) => (
@@ -254,17 +271,43 @@ export function InlineBriefing({
   );
 }
 
-function Band({ children }: { children: React.ReactNode }) {
+function Band({ children, marked = false }: { children: React.ReactNode; marked?: boolean }) {
+  // The new-report notice: an accent edge and tint on the line itself, never an overlay, and the line's
+  // height and layout never change (the 2 px edge is always there, transparent when unmarked).
   return (
     <section
       aria-label="Session briefing"
-      className="flex min-h-8 items-center gap-3 border-b border-line bg-desk px-4 py-1 text-[12px] print:hidden"
+      className={`flex min-h-8 items-center gap-3 border-b border-l-2 border-line px-4 py-1 text-[12px] print:hidden ${
+        marked ? 'border-l-accent bg-accent/10' : 'border-l-transparent bg-desk'
+      }`}
     >
       <span className="shrink-0 text-[11px] font-semibold tracking-[0.1em] text-ink-3 uppercase">
         Briefing
       </span>
       {children}
     </section>
+  );
+}
+
+/** "New" or "Revised", small text before the kind, never colour alone (Marketing 36b37d86). */
+function NoticeMark({ mark }: { mark: ReportMark }) {
+  return (
+    <span title={mark.title} className="shrink-0 text-[10px] font-semibold tracking-[0.08em] text-accent uppercase">
+      {mark.label}
+    </span>
+  );
+}
+
+function DismissButton({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onDismiss}
+      title={DISMISS_WORDS.title}
+      className="min-h-6 rounded-sm px-1.5 text-[11px] text-ink-3 hover:text-ink"
+    >
+      {DISMISS_WORDS.label}
+    </button>
   );
 }
 
