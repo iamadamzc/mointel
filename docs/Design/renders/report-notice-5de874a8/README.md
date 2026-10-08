@@ -1,0 +1,12 @@
+# Local render of 5de874a8 (the new-report notice and opening on load)
+
+Design-tmi, 2026-10-07 (UTC date), in Ops's PC slot after v6 (ea48b64b) was verified live. `next dev` on port 3100 from `A:\mointel-design` at 5de874a8 (parent ea48b64b), against a scratch copy of `data/market.db`, a local review token created in that copy, the built-in browser at 1,024 px wide, the real clock (Wednesday, about 8:35 pm ET). Copies deleted after.
+
+**Every report shown is a PATCHED PAYLOAD.** The local store has no `session_reports` table, so `/reports` answered 404 (the page then holds no timeline and makes no open-on-load decision). After load, `window.fetch` was patched in the page to answer `/reports` with a synthetic EVENING slot and report(s) built around the real clock; `document.hidden` was overridden so polls run with the pane hidden. The page's own code made every decision on its next 60 s poll.
+
+1. `1-opens-on-first-load-outside-window.jpg`: read list empty, the 8:30-style edition served, outside 07:00 to 10:00 ET: the report window opened by itself on the first payload; the edition was then in `mointel.reportsRead`.
+2. `2-revised-mark-on-line-board-uncovered.jpg` and `2b-...-zoom.png`: after Escape, a second, newer edition with `revisionOf.changedTickers` served: the window did NOT open (the decision is once per load); the line shows "Revised" with the accent edge and tint; the hover read "Revised edition published 8:32 pm ET. Not opened in this browser."; the tab title was "(1) The Momentum Intelligence Trading Desk"; the polite live region read "Revised report: Evening briefing, published 8:32 pm ET."; line height 32 px; the board below uncovered.
+3. `3-after-dismiss-line-zoom.png`: Dismiss clicked: mark, accent and "(1)" gone, the window not opened, the edition added to the read list, line height still 32 px.
+4. `4-mark-only-window-new-no-open.jpg`: the mark-only path. Produced by a TEMPORARY local edit, never committed: `MARK_ONLY_WINDOW` set to the whole day (0 to 24 h) so the real 8:35 pm Wednesday fell inside it; read list cleared; page reloaded; the 8:30-style edition served: the window did NOT open; the line shows "New" with the hover "Published 8:27 pm ET. Not opened in this browser."; the tab "(1)". The edit was reverted from a backup and the tree confirmed clean at 5de874a8.
+
+Noticed, not part of this change: the briefing line and the window's "written" line still print 24-hour times ("20:32 ET"), while the v6 report lines print "8:32 pm ET".
