@@ -81,3 +81,21 @@ describe('the landing float sentence', () => {
     expect(landing).not.toContain('No filing reports the current number of tradable shares.');
   });
 });
+
+describe('the landing float claims', () => {
+  // His "fix it now" 2026-10-08T00:33:23.478Z: the board shows a ceiling or a reason, never a
+  // verified float, so the landing and both canvases say what the cell says and link the float page.
+  const SOURCES = ['app/page.tsx', 'docs/web/canvas/Main.dc.html', 'docs/web/canvas/LandingMobile.dc.html'];
+
+  it.each(SOURCES)('%s claims no verified or actual float', (file) => {
+    const source = read(file);
+    expect(source).not.toMatch(/float actually is/i);
+    expect(source).not.toMatch(/Float [\d.]+M, verified/);
+    expect(source).not.toMatch(/share structure actually looks like/i);
+    expect(source).toContain('What the float can be at most, from the filings');
+  });
+
+  it.each(SOURCES)('%s links the float page', (file) => {
+    expect(read(file)).toMatch(/href="\/are-float-quotes-real"/);
+  });
+});

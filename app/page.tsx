@@ -16,7 +16,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'The Momentum Intelligence Trading Desk',
   description:
-    'An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, what the share structure actually looks like, and what supply stands behind it.',
+    'An intelligence desk for people who trade US small-cap momentum in the premarket: what is moving, why, where it sits in the cycle, what the share structure looks like from the filings, and what supply stands behind it.',
 };
 
 const INVITE = 'mailto:info@andromedagenius.com?subject=Invite%20request%3A%20TMI%20Trader';
@@ -97,8 +97,13 @@ export default function LandingPage() {
           </p>
           <p className="mb-7 max-w-[62ch] text-[17px] leading-relaxed text-ink-1 md:mb-10 md:text-[19px]">
             This tells you what the move is standing on. Whether there is a catalyst and how old it is. Where
-            it sits in the run. What the float actually is, and how many shares can reach the market that the
-            float does not count. Before you have to decide. Where it has nothing, it says so.
+            it sits in the run. What the float can be at most, from the filings, and how many shares can reach
+            the market that the float does not count. Before you have to decide. Where it has nothing, it says
+            so. A float number is an estimate someone computed, unless a filing happens to state it. Here is how
+            ours is made:{' '}
+            <Link href="/are-float-quotes-real" className="text-accent hover:underline">
+              Are float quotes real?
+            </Link>
           </p>
 
           <div className="flex flex-col gap-3 md:items-start md:gap-4">
@@ -161,7 +166,7 @@ export default function LandingPage() {
                   <th scope="row" className="border-b border-line py-4 pl-4 text-left font-mono text-sm font-medium text-ink">ABCD</th>
                   <td className="border-b border-line py-4 pr-3">Frontside, day 1</td>
                   <td className="border-b border-line py-4 pr-4">
-                    Float 3.2M, verified<br />
+                    Float Cannot verify<br />
                     <span className="text-warn">$50M ATM live</span>
                     <span className="text-ink-3">&nbsp;&middot;&nbsp; readout 06:12</span>
                   </td>
@@ -184,7 +189,7 @@ export default function LandingPage() {
                   <span className="ml-auto text-sm text-ink-3">Frontside, day 1</span>
                 </div>
                 <p className="text-sm leading-normal text-ink-1">
-                  Float 3.2M, verified &nbsp;&middot;&nbsp; <span className="text-warn">$50M ATM live</span>
+                  Float Cannot verify &nbsp;&middot;&nbsp; <span className="text-warn">$50M ATM live</span>
                 </p>
                 <p className="text-sm leading-normal text-ink-3">Structural readout 06:12</p>
               </div>
@@ -385,7 +390,7 @@ export default function LandingPage() {
             ['01', 'Which names are in play right now'],
             ['02', 'Why each one is moving'],
             ['03', 'Where it sits in the momentum cycle'],
-            ['04', 'What the share structure actually looks like'],
+            ['04', 'What the share structure looks like from the filings'],
             ['05', 'Whether the displayed float can be trusted'],
             ['06', 'Whether there is supply waiting behind the move'],
             ['07', 'The levels, and the warnings attached to them'],
