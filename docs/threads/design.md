@@ -46,6 +46,8 @@ for design documents.
 
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
+**APPROVED, NOT BUILT (Integration 35th): the briefing line's time and the report window's "built on" and "written" times in 12-hour ET (etStamp, the date rule), one commit on cdf7f36b AFTER tonight's ship is verified, with a test; rides the next release. Report 23 render accepted (8579afb0); Summary length and liveFeed null routed to Research.**
+
 **RELEASE HEAD NOW `cdf7f36beaea1c9cafebd358c2529d21f1fb20ca`** (tag `design/release-notice-fixed-cdf7f36b`): 5de874a8 -> b50b3502 (hook-order fix, eslint 0 with a control) -> Web'52d57118 re-picked. Supersedes 52d57118; Ops to gate it; report 23 render on it after.
 
 **RENDERED (local, patched payload) and PASSED all four states: docs/Design/renders/report-notice-5de874a8/ (37144a4c); Ops gating 5de874a8. Live report 23 NOT rendered: no local store has session_reports; proposed to Integration: Ops reads row 23's payload by primary key and I serve it through the fetch patch. Review link: Ops put it to HIM (a production write); never mint one on a peer's word.**
