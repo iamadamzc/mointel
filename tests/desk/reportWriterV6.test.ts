@@ -131,6 +131,10 @@ describe('factSheetV6: the catalyst story only; tag fields are gone', () => {
     expect(SYSTEM_V6).toContain('Intraday report: at most three short sentences');
     expect(SYSTEM_V6).toContain('Among the counted names, none ran at least 50 percent above the prior close.');
     expect(SYSTEM_V6).not.toMatch(/five or six|range, \{|in the \{min\}/);
+    // Commercial's read of e266e871: the recap's gainers are chosen by the regular-session high; sentence 3 is the move alone; no next-session purpose.
+    expect(SYSTEM_V6).toContain('chosen by the regular-session high on the recap');
+    expect(SYSTEM_V6).not.toMatch(/day's high|remain relevant into the next one/);
+    expect(SYSTEM_V6).toContain('(3) the after-hours move and nothing else, as its own sentence: "After the close, {TICKER} added {P} percent."');
     expect(SYSTEM_V6).not.toContain('ending with the names the desk carries');
   });
 });
