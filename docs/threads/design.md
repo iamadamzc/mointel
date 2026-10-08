@@ -46,6 +46,8 @@ for design documents.
 
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
+**BUILT, NOT GATED, the post-ship batch on cdf7f36b: head `7aac22eebf0c05ad02472749830c66fbaf89828f` (tag `design/post-ship-batch-7aac22ee`) = c93e94c3 (12-hour times: the briefing line, built on, written) -> 43eb6fba (all-unknown feed reads as absent, Commercial's scope) -> 7aac22ee (the legend cycle sentence). Rides the next release. The three APPROVED, NOT BUILT entries below are now built.**
+
 **APPROVED, NOT BUILT (Integration 35th): the briefing line's time and the report window's "built on" and "written" times in 12-hour ET (etStamp, the date rule), one commit on cdf7f36b AFTER tonight's ship is verified, with a test; rides the next release. Report 23 render accepted (8579afb0); Summary length and liveFeed null routed to Research.**
 
 **APPROVED, NOT BUILT (Integration 35th; Commercial PASS with its condition; source Research 347f167a, liveFeed null by construction, pipeline.ts:194-201):** an ALL-NULL liveFeed report reads as absent: drop the per-card "feed not recorded" mark and the header "live-data coverage not recorded for this report" ONLY when every named line is null (the null mark shows iff reportCoverage.unknown < named; coverageText's all-unknown branch returns null). Any true or false line keeps today's behaviour in full (null mark, "minute data", the counted header with "not recorded for N more"). Keep the true/false/null branches and the three-outcome coverageText. Tests: all-null, mixed, all-known. With or beside the 12-hour commit, after tonight's ship is verified.
