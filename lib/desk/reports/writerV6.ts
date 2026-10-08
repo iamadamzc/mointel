@@ -44,8 +44,12 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
  * 60d0dc7e; Integration's rulings 2026-10-08), intraday three; the recap sheet drops the next-session context, the
  * carried-names count and the F12b counts. Still 12 after Commercial's read of e266e871 (12 never ran): the GAINERS rule
  * says the regular-session high, sentence 3 is the after-hours move alone, and PURPOSE drops "into the next one".
+ * 13: the intraday named-name line (Marketing, docs/marketing/writer-named-name-line-2026-10-08.md at 0fff788a; Integration's
+ * ruling 2026-10-08 after report 25 ran 128 words, final at 151ca1bb): a catalyst clause only for fresh news, twelve words at
+ * most; the narrative sheet hands over a catalyst for FRESH_FOUND only and words every state as the recap's sentence 2 does
+ * ("no research at this checkpoint" for none).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 12;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 13;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -95,19 +99,20 @@ const CYCLE_WORDS: Record<string, string> = {
 
 const NEWS_WORDS: Record<string, string> = {
   FRESH_FOUND: 'fresh news found in our sources',
-  SECONDARY_STALE: 'only older or secondary news found in our sources',
+  SECONDARY_STALE: 'only older or secondary news in our sources',
   NONE_FOUND: 'no catalyst found in our sources',
-  CONFLICTING: 'the sources conflict',
-  UNKNOWN: 'the research could not tell',
+  CONFLICTING: 'sources that conflict',
+  UNKNOWN: 'research that could not tell',
 };
 
 /** One named name's catalyst clause and labels, as the model may word them. */
 function namedClauses(name: { status: string | null; summary: string | null; cycle: string | null }): string {
   const parts: string[] = [];
-  if (name.status === null) parts.push('research: not researched yet (say so, add nothing)');
+  if (name.status === null) parts.push('news: no research at this checkpoint');
   else {
     parts.push(`news: ${NEWS_WORDS[name.status] ?? humanise(name.status)}`);
-    if (name.summary) parts.push(`catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): ${name.summary}`);
+    // Writer v6 13 (Commercial's read): the catalyst is handed over for fresh news only, so older news is never in the sheet to restate.
+    if (name.status === 'FRESH_FOUND' && name.summary) parts.push(`catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): ${name.summary}`);
   }
   parts.push(`cycle: ${CYCLE_WORDS[name.cycle ?? 'UNKNOWN'] ?? 'unclear'}`);
   return parts.join('; ');
@@ -180,6 +185,7 @@ const NARRATIVE_RULES = [
   '- Every percent move carries its frame in the same sentence: "from the prior close" or "above the prior close"; an after-hours move "after the close" or "after hours". When a sentence states two moves, each carries its own frame.',
   '- No adjective the facts do not define ("busy", "quiet", "hot", "strong"). No forecast: support, resistance and supply are described, never "will hold", "should break" or "expect".',
   '- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence ("Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly "Among the counted names, none ran at least 50 percent above the prior close." and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by "with", never causal: "The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}." (one named mover: "The covered 50 percent mover with the highest peak was {T1}, with {state1}."), where each state is that name\'s OWN news as given: fresh news found: "fresh news found in our sources: {the catalyst in one short clause}"; no catalyst found: "no catalyst found in our sources"; only older or secondary news: "only older or secondary news in our sources"; the sources conflict: "sources that conflict"; the research could not tell: "research that could not tell"; not researched yet: "no research at this checkpoint". The sentence says nothing about any mover it does not name; never "biggest", "largest" or "top"; (3) the after-hours name, as its own sentence and about the after-hours move only, in the form "After the close, {TICKER} added {P} percent." with no news, no cycle and no other clause; (4) the fresh count over the covered names, as the sheet gives the pair: "{N} of the {M} names the desk covers had fresh news in our sources." (zero: "None of the names the desk covers had fresh news we could find."; one: "One of the {M} names the desk covers had fresh news in our sources."). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.',
+  '- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.',
   '- When a count is zero, say so plainly ("none of them gave the entire move back") and drop the clause that depends on it. Number agreement throughout.',
 ];
 

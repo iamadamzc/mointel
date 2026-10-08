@@ -251,11 +251,14 @@ function givenNumbers(facts: NarrativeFacts): Set<number> {
   return out;
 }
 
-/** The named names' catalyst summaries: their own figures (shortened as a name line may) and their dates. */
+/**
+ * The named names' catalyst summaries: their own figures (shortened as a name line may) and their dates. FRESH_FOUND
+ * only since writer v6 13: the sheet hands over no other summary, so a figure from older news has no source to trace to.
+ */
 function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates: Set<string> } {
   const out = { magnitudes: [] as number[], dates: new Set<string>() };
   for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? []), ...(facts.afterHours ? [facts.afterHours] : [])]) {
-    if (!m.summary) continue;
+    if (!m.summary || m.status !== 'FRESH_FOUND') continue;
     const claims = claimsIn(m.summary);
     for (const number of claims.numbers) out.magnitudes.push(number.mantissa * number.unit);
     for (const date of claims.dates) out.dates.add(date.value);
@@ -633,9 +636,10 @@ const CHECKER_SYSTEM_V5 = [
  * and PREMARKET's as the evening report's 10 pm edition (KIND_MOMENT). 8: the narrative facts it is shown
  * (`narrativeSheet`, the writer's own wording) now say the regular-session high (writer v6 11). 9: the narrative
  * facts it is shown drop the next-session context, the carried-names count and the F12b counts (writer v6 12), and
- * its v6 rule no longer names the context.
+ * its v6 rule no longer names the context. 10: the narrative facts it is shown word every news state as the recap's
+ * sentence 2 does and carry a catalyst for fresh news only (writer v6 13), and the summary allowance follows them.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 9;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 10;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe

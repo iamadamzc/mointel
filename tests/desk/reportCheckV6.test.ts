@@ -107,6 +107,10 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
     expect(reasons(GOOD_INTRADAY.replace('27,000 ounces', '28,000 ounces'), intraday)).toEqual(['NUMBER_WITHOUT_ROW']);
     // A change note's figure is given as the sheet prints it.
     expect(reasons(GOOD_INTRADAY.replace('32.2%', '32.5%'), intraday)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // Writer v6 13: a summary is traced for FRESH news only; the same figures from older news have no source and are struck.
+    const older = { ...intraday, intradayNamed: intraday.intradayNamed!.map((m) => ({ ...m, status: 'SECONDARY_STALE' as const })) };
+    expect(reasons(GOOD_INTRADAY, intraday)).toEqual([]);
+    expect(reasons(GOOD_INTRADAY, older)).toContain('NUMBER_WITHOUT_ROW');
   });
 
   it('G and the split count left the prose (N11 retired): omitting G is not struck; stating it is a number no fact gives', () => {

@@ -82,8 +82,12 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(sheet[0]).toBe(
       'leader (ranked first in this range): AAA, up 68 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst\'s own figure): A distribution agreement.; cycle: fresh frontside',
     );
-    expect(sheet[1]).toBe('next covered gainer (by move): BBB, up 51 percent from the prior close; research: not researched yet (say so, add nothing); cycle: unclear');
+    expect(sheet[1]).toBe('next covered gainer (by move): BBB, up 51 percent from the prior close; news: no research at this checkpoint; cycle: unclear');
     expect(sheet).toContain('since the previous checkpoint, BBB: printed a new high of day');
+    // Writer v6 13: older news is worded as its state only; its summary is not handed over to restate.
+    const stale = narrativeSheet({ ...intradayV2, intradayNamed: intradayV2.intradayNamed!.map((m) => ({ ...m, status: 'SECONDARY_STALE' as const })) });
+    expect(stale[0]).toContain('news: only older or secondary news in our sources; cycle:');
+    expect(stale.join(' ')).not.toContain('catalyst (restate');
     expect(sheet).toContain('fresh news in our sources: 1 of the 12 names the desk covers');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|50 percent|carries into the next session/);
   });
@@ -133,6 +137,8 @@ describe('factSheetV6: the catalyst story only; tag fields are gone', () => {
     expect(SYSTEM_V6).not.toMatch(/five or six|range, \{|in the \{min\}/);
     // Commercial's read of e266e871: the recap's gainers are chosen by the regular-session high; sentence 3 is the move alone; no next-session purpose.
     expect(SYSTEM_V6).toContain('chosen by the regular-session high on the recap');
+    // Writer v6 13 (report 25, 128 words): Marketing's intraday named-name line, verbatim (151ca1bb).
+    expect(SYSTEM_V6).toContain('- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.');
     expect(SYSTEM_V6).not.toMatch(/day's high|remain relevant into the next one/);
     expect(SYSTEM_V6).toContain('(3) the after-hours name, as its own sentence and about the after-hours move only, in the form "After the close, {TICKER} added {P} percent." with no news, no cycle and no other clause;');
     expect(SYSTEM_V6).not.toContain('ending with the names the desk carries');
