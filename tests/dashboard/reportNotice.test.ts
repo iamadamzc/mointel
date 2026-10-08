@@ -153,6 +153,16 @@ describe('opening on load', () => {
     expect(openOnLoad(null, [], ten)).toBe(false);
   });
 
+  it('the notice hooks sit ABOVE the shell early return (a hook after it changes the hook count and crashes the desk)', () => {
+    const shell = readFileSync('components/DashboardShell.tsx', 'utf8');
+    const early = shell.indexOf('  if (!data) {');
+    expect(early).toBeGreaterThan(0);
+    for (const hook of ['const openDecided = useRef(false);', 'document.title = tabTitle(document.title, mark !== null);']) {
+      expect(shell.indexOf(hook)).toBeGreaterThan(0);
+      expect(shell.indexOf(hook)).toBeLessThan(early);
+    }
+  });
+
   it('the shell decides once per load, after the read list is loaded, and never on a later poll', () => {
     const shell = readFileSync('components/DashboardShell.tsx', 'utf8');
     expect(shell).toContain('if (openDecided.current || !readLoaded || !timeline) return;');

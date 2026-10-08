@@ -309,6 +309,76 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
     [merged, selectedTicker],
   );
 
+  /*
+   * HOOK ORDER: the report block below holds a useRef and two useEffects, so it sits ABOVE the
+   * `!data` early return; hooks after an early return change the hook count when `data` arrives and
+   * React throws (Ops's lint gate on 5de874a8 caught it; nothing in it reads `data`).
+   */
+  /*
+   * Session briefings. Nothing mounts until the payload exists: "the route is
+   * not there" must never render as "today's briefing was missed".
+   */
+  // CUT-ONLY (the reports release on the production line): no board range.
+  // The price range control (5e8b13c3) does not ride, so the report range is
+  // the viewer's stored choice or the configured default, never the board's.
+  const board: { min: number; max: number } | null = null;
+  const reportChoice = reports
+    ? chooseReportRange({
+        ranges: reports.ranges,
+        defaultRangeId: reports.defaultRangeId,
+        stored: storedReportRange,
+        board,
+      })
+    : null;
+  const timeline =
+    reports && mounted && reportChoice?.kind === 'CHOSEN'
+      ? reportTimeline(reports, reportChoice.range.id, now)
+      : null;
+  const currentReport = timeline?.current?.report ?? null;
+  const currentReadKey = currentReport ? reportReadKey(currentReport) : null;
+  // A "Published again" 10 pm edition counts as read when its 8:30 edition was (reportNotice.ts).
+  const currentRead =
+    currentReport !== null && timeline?.current
+      ? editionIsRead(currentReport, timeline.current.superseded, readReports)
+      : false;
+  // The new-report notice (his ask; Integration 35th's ruling A): only once the read list is loaded.
+  const mark = readLoaded && timeline ? reportMark(timeline.current, readReports, now) : null;
+  const chooseReportRangeId = (rangeId: string) => {
+    setStoredReportRange(rangeId);
+    writeStored(REPORT_RANGE_KEY, rangeId);
+  };
+  const markCurrentRead = () => {
+    if (currentReadKey && !readReports.includes(currentReadKey)) {
+      const next = [...readReports, currentReadKey].slice(-20);
+      setReadReports(next);
+      writeStored(REPORT_READ_KEY, JSON.stringify(next));
+    }
+  };
+  const openReport = () => {
+    setReportOpen(true);
+    markCurrentRead();
+  };
+  /*
+   * OPENING ON THE CURRENT REPORT (his "when the system opens it should bring up the currently relevant
+   * report"): decided ONCE per page load, the first time the timeline and the read list both exist, never
+   * again on a poll (a report that arrives later gets the line's mark). `openOnLoad` holds the rule and his
+   * 07:00 to 10:00 ET weekday exception.
+   */
+  const openDecided = useRef(false);
+  useEffect(() => {
+    if (openDecided.current || !readLoaded || !timeline) return;
+    openDecided.current = true;
+    // Once per page load, in response to the reports payload arriving (async, after mount): the same
+    // shape as the read-list load above, which disables this rule for the same reason. The ref makes a
+    // cascade impossible: the setState runs at most once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (openOnLoad(timeline.current, readReports, now)) openReport();
+  });
+  // The tab title carries "(1) " while a report is marked (Marketing 36b37d86).
+  useEffect(() => {
+    document.title = tabTitle(document.title, mark !== null);
+  }, [mark]);
+
   if (!data) {
     return (
       <div className="flex h-screen items-center justify-center bg-desk">
@@ -365,66 +435,6 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   });
   const selectedAssessment = effectiveView(viewChoice, offHours, recapToOpen(assessments));
 
-  /*
-   * Session briefings. Nothing mounts until the payload exists: "the route is
-   * not there" must never render as "today's briefing was missed".
-   */
-  // CUT-ONLY (the reports release on the production line): no board range.
-  // The price range control (5e8b13c3) does not ride, so the report range is
-  // the viewer's stored choice or the configured default, never the board's.
-  const board: { min: number; max: number } | null = null;
-  const reportChoice = reports
-    ? chooseReportRange({
-        ranges: reports.ranges,
-        defaultRangeId: reports.defaultRangeId,
-        stored: storedReportRange,
-        board,
-      })
-    : null;
-  const timeline =
-    reports && mounted && reportChoice?.kind === 'CHOSEN'
-      ? reportTimeline(reports, reportChoice.range.id, now)
-      : null;
-  const currentReport = timeline?.current?.report ?? null;
-  const currentReadKey = currentReport ? reportReadKey(currentReport) : null;
-  // A "Published again" 10 pm edition counts as read when its 8:30 edition was (reportNotice.ts).
-  const currentRead =
-    currentReport !== null && timeline?.current
-      ? editionIsRead(currentReport, timeline.current.superseded, readReports)
-      : false;
-  // The new-report notice (his ask; Integration 35th's ruling A): only once the read list is loaded.
-  const mark = readLoaded && timeline ? reportMark(timeline.current, readReports, now) : null;
-  const chooseReportRangeId = (rangeId: string) => {
-    setStoredReportRange(rangeId);
-    writeStored(REPORT_RANGE_KEY, rangeId);
-  };
-  const markCurrentRead = () => {
-    if (currentReadKey && !readReports.includes(currentReadKey)) {
-      const next = [...readReports, currentReadKey].slice(-20);
-      setReadReports(next);
-      writeStored(REPORT_READ_KEY, JSON.stringify(next));
-    }
-  };
-  const openReport = () => {
-    setReportOpen(true);
-    markCurrentRead();
-  };
-  /*
-   * OPENING ON THE CURRENT REPORT (his "when the system opens it should bring up the currently relevant
-   * report"): decided ONCE per page load, the first time the timeline and the read list both exist, never
-   * again on a poll (a report that arrives later gets the line's mark). `openOnLoad` holds the rule and his
-   * 07:00 to 10:00 ET weekday exception.
-   */
-  const openDecided = useRef(false);
-  useEffect(() => {
-    if (openDecided.current || !readLoaded || !timeline) return;
-    openDecided.current = true;
-    if (openOnLoad(timeline.current, readReports, now)) openReport();
-  });
-  // The tab title carries "(1) " while a report is marked (Marketing 36b37d86).
-  useEffect(() => {
-    document.title = tabTitle(document.title, mark !== null);
-  }, [mark]);
   const reportPanelOpen = reportOpen && timeline !== null && reportChoice?.kind === 'CHOSEN';
 
   return (
