@@ -64,7 +64,9 @@ const recap: NarrativeFacts = {
 const reasons = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS).map((f) => f.reason);
 
 const GOOD_INTRADAY = 'AAA leads, down 12 percent from the prior close. BBB is up 51 percent from the prior close with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
-const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent above the prior close and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. Into today, NXL sits between $4.90 support and its $10.98 high, with an older high at $19.20 overhead. The desk carries 12 names into today.';
+const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent above the prior close and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. The desk carries 12 names into today.';
+/** The next-session context sentence, which left the recap sheet with writer v6 12 (Marketing's four sentences). */
+const CONTEXT_SENTENCE = 'Into today, NXL sits between $4.90 support and its $10.98 high, with an older high at $19.20 overhead.';
 
 describe('narrativeFindings: the narrative against its computed facts (v2)', () => {
   it('admits the templates worded from the given facts (controls)', () => {
@@ -75,7 +77,9 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
   it('N1/N2/N4/N9: a number that is no given fact, as the sheet prints it, is struck', () => {
     expect(reasons(GOOD_INTRADAY.replace('One of the 12', 'One of the 13'), intraday)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_RECAP.replace('156 percent', '157 percent'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
-    expect(reasons(GOOD_RECAP.replace('$4.90 support', '$4.95 support'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // Writer v6 12: the context's prices and the F12b counts are no longer given, so stating one is struck even when true.
+    expect(reasons(`${GOOD_RECAP} ${CONTEXT_SENTENCE}`, recap)).toContain('NUMBER_WITHOUT_ROW');
+    expect(reasons(`${GOOD_RECAP} 1 of the covered 50 percent movers was not yet researched.`, recap)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_RECAP.replace('added 62 percent', 'added 61 percent'), recap)).toEqual(['NUMBER_WITHOUT_ROW']);
     expect(reasons(GOOD_INTRADAY.replace('up 51 percent', 'up 52 percent'), intraday)).toEqual(['NUMBER_WITHOUT_ROW']);
   });
@@ -268,7 +272,8 @@ describe('ruleStrikes, v6', () => {
     // The checker sees the writer's WORDED facts, never raw JSON (voice run v6b struck a true recap narrative).
     const recapPrompt = buildCheckerPrompt({ ...input(GOOD_RECAP, 'x', recap), kind: 'PREMARKET' as const });
     expect(recapPrompt.user).toContain('ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
-    expect(recapPrompt.user).toContain('names the desk carries into the next session: 12');
+    expect(recapPrompt.user).toContain('fresh news in our sources: ');
+    expect(recapPrompt.user).not.toContain('carries into the next session');
     expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
     expect(v5.system).not.toContain('v6: THE NARRATIVE');

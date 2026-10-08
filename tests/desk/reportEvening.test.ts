@@ -226,6 +226,26 @@ describe('EVENING: the published report', () => {
   });
 });
 
+describe('EVENING: the Summary length backstop (writer v6 12)', () => {
+  const SIX = 'The session is summarised here. Our sources were read for each name. The cards below carry the detail. The desk covers the names below. The levels sit on the cards. The report ends here.';
+  const sixWriter = {
+    complete: async () =>
+      JSON.stringify({
+        narrative: SIX,
+        lines: [
+          { ticker: 'AAA', text: 'Our sources found an offering.' },
+          { ticker: 'BBB', text: 'Our sources found a merger.' },
+        ],
+      }),
+  };
+
+  it('a checked six-sentence narrative is published as its first four, verbatim; never struck', async () => {
+    const run = await runReport(fixture().db, SLOT, { writer: sixWriter, checker }, () => at('20:30'));
+    if (run.status !== 'PUBLISHED') throw new Error(`expected PUBLISHED, got ${JSON.stringify(run)}`);
+    expect(run.report.narrative).toBe('The session is summarised here. Our sources were read for each name. The cards below carry the detail. The desk covers the names below.');
+  });
+});
+
 describe('EVENING carries the evening recap content', () => {
   it('its narrative takes the recap branch (no intraday leader); the intraday control takes the other', () => {
     const evening = readReportInputs(fixture().db, 'EVENING', DATE, RANGE, at('20:00'));

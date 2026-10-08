@@ -88,7 +88,7 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|50 percent|carries into the next session/);
   });
 
-  it('recap: the pattern counts, the named mover, the labeled after-hours name, the three-state F12b, the context and the carried count; no range, breadth or footnote counts', () => {
+  it('recap (v3, four sentences): the pattern counts, the named mover, the labeled after-hours name and the fresh pair; no F12b, context, carried count, range, breadth or footnote counts', () => {
     const sheet = narrativeSheet(recapV2);
     expect(sheet).toContain('ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
     expect(sheet).toContain('of those, gave the entire move back (closed at or below the prior close): 0');
@@ -100,12 +100,9 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
     const ah = sheet.find((l) => l.startsWith('after the close'))!;
     expect(ah).toContain('ALWAYS say "after the close" or "after hours"');
     expect(ah).toContain('AMOD, up 62 percent; news: fresh news found in our sources');
-    expect(sheet).toContain('of the covered 50 percent movers, were not yet researched: 1 (a count, never names)');
-    expect(sheet.join(' ')).not.toContain('had no fresh news found');
-    const context = sheet.find((l) => l.startsWith('context into the next session'))!;
-    expect(context).toContain('NXL closed at $6.50; its regular-session high was $10.98; stored support $4.90; stored resistance $10.98; an older high at $19.20 sits above the regular-session high; open supply: ');
-    expect(context).toMatch(/\(active\), .*\(possibly active\)$/);
-    expect(sheet.at(-1)).toBe('names the desk carries into the next session: 3 (state the count only, never list them)');
+    // Given in the facts and NOT printed since writer v6 12 (recapV2 carries an F12b count and a context).
+    expect(sheet.join(' ')).not.toMatch(/of the covered 50 percent movers|context into the next session|carries into the next session|\$6\.50|\$4\.90|\$19\.20/);
+    expect(sheet.at(-1)).toBe('fresh news in our sources: 2 of the 12 names the desk covers');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|no regular-session close|split/);
   });
 });
@@ -128,7 +125,12 @@ describe('factSheetV6: the catalyst story only; tag fields are gone', () => {
     expect(factSheetV6(fact, null, null).join('\n')).toContain('research: not researched yet');
     expect(SYSTEM_V6).toContain('NEVER restate any of them');
     // Voice run v6 (e6d20f55): 'ending with the names the desk carries' made the model LIST the 12 tickers, and the checker struck the recap narrative.
-    expect(SYSTEM_V6).toContain('State the COUNT only and never list those tickers');
+    expect(SYSTEM_V6).toContain('never list the covered names');
+    // Writer v6 12: four recap sentences in Marketing's order; the old five-or-six rule is gone.
+    expect(SYSTEM_V6).toContain('Recap report (evening and premarket): at most FOUR sentences');
+    expect(SYSTEM_V6).toContain('Intraday report: at most three short sentences');
+    expect(SYSTEM_V6).toContain('Among the counted names, none ran at least 50 percent above the prior close.');
+    expect(SYSTEM_V6).not.toMatch(/five or six|range, \{|in the \{min\}/);
     expect(SYSTEM_V6).not.toContain('ending with the names the desk carries');
   });
 });

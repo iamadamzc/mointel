@@ -39,6 +39,7 @@ import { narrativeFacts, narrativeFootnotes, type NarrativeFacts } from './narra
 import { reportPath } from './path';
 import { reportResearch, type ReportResearch } from './research';
 import { lineInputKey, narrativeInputKey, planRevision, readEveningEdition } from './revision';
+import { capNarrative } from './sentences';
 import { computedSections } from './sections';
 import { reportTags, type ReportTags } from './tags';
 import { readAfterHoursTotals, type AfterHoursTotals } from './totals';
@@ -421,7 +422,8 @@ export async function runReport(
     });
     if (!applied.ok) return { status: 'MISSED', cause: applied.cause, diagnostics };
     sections = applied.sections;
-    narrative = plan && !plan.narrativeChanged ? (plan.edition.narrative ?? null) : applied.overall;
+    // The length backstop (`sentences.ts`): the checked narrative's first N sentences, never a strike of the whole.
+    narrative = plan && !plan.narrativeChanged ? (plan.edition.narrative ?? null) : capNarrative(slot.kind, applied.overall);
     watchCount = applied.watchCount;
   }
 

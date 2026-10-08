@@ -39,9 +39,12 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
 
 /**
  * Bumped whenever `SYSTEM_V6`, the sheets' wording or the reply shape changes. 11: the recap sheet says the
- * regular-session high (Commercial, 2026-10-07, with the switch to the regular-session high from minute_bars).
+ * regular-session high (Commercial, 2026-10-07, with the switch to the regular-session high from minute_bars). 12: the
+ * recap Summary is four sentences in Marketing's order (`docs/marketing/recap-four-sentence-shape-2026-10-08.md` v3,
+ * 1251b30c; Integration's rulings 2026-10-08), intraday three; the recap sheet drops the next-session context, the
+ * carried-names count and the F12b counts.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 11;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 12;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -109,13 +112,11 @@ function namedClauses(name: { status: string | null; summary: string | null; cyc
   return parts.join('; ');
 }
 
-function supplyWords(supply: NonNullable<NarrativeFacts['context']>['openSupply']): string {
-  return supply
-    .map((item) => `${humanise(item.type)} (${item.status === 'KNOWN_ACTIVE' ? 'active' : 'possibly active'})`)
-    .join(', ');
-}
-
-/** The recap's given facts (premarket), v2. */
+/**
+ * The recap's given facts (evening and premarket), v3: one group per Summary sentence. OUT since v3 (Marketing's
+ * shape, 1251b30c): the next-session context (the cards carry it), the carried-names count (the same set as
+ * `fresh.covered`, `narrative.ts`), and the F12b counts (each card carries its own name's state).
+ */
 function recapSheet(facts: NarrativeFacts): string[] {
   const lines: string[] = [];
   if (facts.movers50 !== null) {
@@ -137,25 +138,7 @@ function recapSheet(facts: NarrativeFacts): string[] {
       `after the close (from the 16:00 close to the last after-hours print; ALWAYS say "after the close" or "after hours", never mix it with the day's figures): ${a.ticker}, ${movedWords(a.percentChange)}; ${namedClauses(a)}`,
     );
   }
-  const counts: Array<[number | null, string]> = [
-    [facts.moversWithoutFresh, 'had no fresh news found'],
-    [facts.moversNotResearched, 'were not yet researched'],
-    [facts.moversUnclear, 'had research that could not tell'],
-  ];
-  for (const [count, words] of counts) {
-    if (count !== null && count > 0) lines.push(`of the covered 50 percent movers, ${words}: ${n(count)} (a count, never names)`);
-  }
   lines.push(`fresh news in our sources: ${n(facts.fresh.count)} of the ${n(facts.fresh.covered)} names the desk covers`);
-  if (facts.context) {
-    const c = facts.context;
-    const parts = [`${c.ticker} closed at ${price(c.close)}`, `its regular-session high was ${price(c.sessionHigh)}`];
-    if (c.support !== null) parts.push(`stored support ${price(c.support)}`);
-    if (c.resistance !== null) parts.push(`stored resistance ${price(c.resistance)}`);
-    if (c.olderHigh !== null) parts.push(`an older high at ${price(c.olderHigh)} sits above the regular-session high`);
-    if (c.openSupply.length > 0) parts.push(`open supply: ${supplyWords(c.openSupply)}`);
-    lines.push(`context into the next session (describe, never predict): ${parts.join('; ')}`);
-  }
-  if (facts.tracking !== null) lines.push(`names the desk carries into the next session: ${n(facts.tracking.length)} (state the count only, never list them)`);
   return lines;
 }
 
@@ -195,7 +178,7 @@ const NARRATIVE_RULES = [
   '- A move and its news sit side by side, never cause and effect: join them with "with" ("{ticker}, up {percent} percent from the prior close, with {the news words given for that name}"), never "after", "on", "following", "amid", "due to", "in response to", "in the wake of" or "on the back of" between a move and its news (the frames "after the close" and "after hours" are not this).',
   '- Every percent move carries its frame in the same sentence: "from the prior close" or "above the prior close"; an after-hours move "after the close" or "after hours". When a sentence states two moves, each carries its own frame.',
   '- No adjective the facts do not define ("busy", "quiet", "hot", "strong"). No forecast: support, resistance and supply are described, never "will hold", "should break" or "expect".',
-  '- Intraday report: two or three short sentences, the leader first. Recap report (premarket): five or six short sentences: open with the session\'s pattern, then the named movers and their news, then the after-hours name, then the context into the next session, and end with HOW MANY names the desk carries into the next session, framed as what the desk covers, never "your watchlist". State the COUNT only and never list those tickers: the cards below list them.',
+  '- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence ("Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly "Among the counted names, none ran at least 50 percent above the prior close." and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by "with", never causal: "The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}." (one named mover: "The covered 50 percent mover with the highest peak was {T1}, with {state1}."), where each state is that name\'s OWN news as given: fresh news found: "fresh news found in our sources: {the catalyst in one short clause}"; no catalyst found: "no catalyst found in our sources"; only older or secondary news: "only older or secondary news in our sources"; the sources conflict: "sources that conflict"; the research could not tell: "research that could not tell"; not researched yet: "no research at this checkpoint". The sentence says nothing about any mover it does not name; never "biggest", "largest" or "top"; (3) the after-hours name, as its own sentence beginning "After the close,"; (4) the fresh count over the covered names, as the sheet gives the pair: "{N} of the {M} names the desk covers had fresh news in our sources." (zero: "None of the names the desk covers had fresh news we could find."; one: "One of the {M} names the desk covers had fresh news in our sources."). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.',
   '- When a count is zero, say so plainly ("none of them gave the entire move back") and drop the clause that depends on it. Number agreement throughout.',
 ];
 

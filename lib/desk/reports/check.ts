@@ -30,7 +30,7 @@ import type { NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
 import { claimsIn, dateAllowed, etDayAndClock, roundsTo, traceLine } from './traced';
 import { narrativeSheet } from './writerV6';
-import { numbersIn, roundTo, stripTimestamps, verifyLine } from './verify';
+import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
 
 /* ------------------------------------------------------------------ types */
@@ -227,12 +227,14 @@ export function namedTickers(facts: NarrativeFacts): Set<string> {
  * the sheet does not give them, so the writer has nothing to copy them from and
  * a stated one is struck (Integration 28th's seam read: trace it or strike it).
  * G and the split count are not here either: computed footnotes (step 4).
+ * Not here since writer v6 12 (the recap's four sentences): the F12b counts, the
+ * carried-names count and the next-session context's prices, which the sheet no
+ * longer prints.
  */
 function givenNumbers(facts: NarrativeFacts): Set<number> {
   const out = new Set<number>([50, facts.fresh.count, facts.fresh.covered]);
   for (const value of [
     facts.movers50, facts.gaveBack, facts.keptHalf, facts.coveredMovers,
-    facts.moversWithoutFresh, facts.moversNotResearched, facts.moversUnclear, facts.tracking?.length ?? null,
   ]) {
     if (value !== null) out.add(value);
   }
@@ -246,8 +248,6 @@ function givenNumbers(facts: NarrativeFacts): Set<number> {
     out.add(sheetPercent(m.percentChange));
     for (const note of m.changeNotes) for (const claim of claimsIn(note).numbers) out.add(claim.mantissa * claim.unit);
   }
-  const c = facts.context;
-  if (c) for (const value of [c.close, c.sessionHigh, c.support, c.resistance, c.olderHigh]) if (value !== null) out.add(roundTo(value, 2));
   return out;
 }
 
@@ -631,9 +631,11 @@ const CHECKER_SYSTEM_V5 = [
  * `docs/research/reports-v6/probe-2026-10-02/result.md`, approved path
  * `design.md:98`) plus the narrative's model-read rules. 7: the EVENING moment
  * and PREMARKET's as the evening report's 10 pm edition (KIND_MOMENT). 8: the narrative facts it is shown
- * (`narrativeSheet`, the writer's own wording) now say the regular-session high (writer v6 11).
+ * (`narrativeSheet`, the writer's own wording) now say the regular-session high (writer v6 11). 9: the narrative
+ * facts it is shown drop the next-session context, the carried-names count and the F12b counts (writer v6 12), and
+ * its v6 rule no longer names the context.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 8;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 9;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -646,7 +648,7 @@ const CHECKER_SYSTEM_V6 = [
   "A catalyst status is the desk's own verdict on freshness under its rules; do not re-judge freshness from the dates in the research. A line matching its status's supported wording is supported even when the research names an older dated event.",
   "A null `sharesOutstanding` supports 'no share count is on file' (or 'no dated share count'); it never supports a number.",
   '',
-  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, the after-hours name labeled as after hours, and the context into the next session, described.',
+  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, and the after-hours name labeled as after hours.',
   'v6: it may also state an INTERPRETATION: a pattern or theme the given facts support (for example how many 50 percent movers kept half their peak gain against how many gave the move back, or what the named catalysts have in common). An interpretation is supported only when the same sentence names the given facts it rests on; one that rests on no named fact is UNSUPPORTED.',
   'v6: the narrative is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move", "on the news"), a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), a forecast about support, resistance or supply ("will hold", "should break", "expect"), an after-hours figure not labeled as after hours or mixed with the day\'s figures, or any claim the facts do not give.',
   'v6: each name line is the catalyst story only. Grade, fit to the move, structure, float, shares outstanding and supply are printed as tags beside it; a line that restates them must still be supported by the research like any other claim.',
