@@ -95,14 +95,14 @@ describe('reportTimeline: the six states', () => {
       at(PREMARKET, -60),
     );
     expect(before.current?.state).toBe('DUE');
-    expect(briefingLineText(before.current!)).toMatch(/due 22:05 ET/);
+    expect(briefingLineText(before.current!, at(PREMARKET, -60))).toMatch(/due 10:05 pm ET/);
   });
 
   it('due with no checked report is BEING CHECKED — never draft text', () => {
     const t = reportTimeline(payload([]), 'core', at(INTO_RTH, 2));
     expect(t.current?.slot.kind).toBe('INTO_RTH');
     expect(t.current?.state).toBe('CHECKING');
-    expect(briefingLineText(t.current!)).toBe('Into-the-open briefing · being checked');
+    expect(briefingLineText(t.current!, 0)).toBe('Into-the-open briefing · being checked');
   });
 
   it('a checked report is PUBLISHED, and a late one stays published with the flag', () => {
@@ -128,7 +128,7 @@ describe('reportTimeline: the six states', () => {
     );
     expect(t.current?.state).toBe('MISSED');
     expect(t.current?.missedReason).toBe('The 09:25 ET assessment did not finish.');
-    expect(briefingLineText(t.current!)).toMatch(/^No into-the-open briefing/);
+    expect(briefingLineText(t.current!, 0)).toMatch(/^No into-the-open briefing/);
   });
 
   it('no stored cause is no reason — "missed" and nothing guessed', () => {
@@ -284,11 +284,15 @@ describe('the words', () => {
 
   it('a checkpoint is named by its completed ET minute and label, never its id', () => {
     expect(
-      checkpointText({ type: 'OPEN_SPIKE_ASSESSMENT', completedAt: '2026-09-28T13:26:00Z' }),
-    ).toBe('09:26 ET open spike assessment');
+      checkpointText({ type: 'OPEN_SPIKE_ASSESSMENT', completedAt: '2026-09-28T13:26:00Z' }, Date.parse('2026-09-28T14:00:00Z')),
+    ).toBe('9:26 am ET open spike assessment');
     // The label's own clock is dropped so two times cannot disagree.
-    expect(checkpointText({ type: 'NEXT_DAY_RECAP', completedAt: '2026-09-26T02:03:00Z' })).toBe(
-      '22:03 ET recap',
+    expect(checkpointText({ type: 'NEXT_DAY_RECAP', completedAt: '2026-09-26T02:03:00Z' }, Date.parse('2026-09-26T03:00:00Z'))).toBe(
+      '10:03 pm ET recap',
+    );
+    // Read on another ET day, the date joins the time (the v6 report lines' rule).
+    expect(checkpointText({ type: 'NEXT_DAY_RECAP', completedAt: '2026-09-26T02:03:00Z' }, Date.parse('2026-09-26T14:00:00Z'))).toBe(
+      'Sep 25, 10:03 pm ET recap',
     );
   });
 

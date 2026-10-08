@@ -507,6 +507,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             onChooseRange={chooseReportRangeId}
             onOpen={openReport}
             read={false}
+            nowMs={now}
           />
         ) : timeline && reportChoice && offHours && reports ? (
           // Between sessions the briefing leads the page, laid out in it.
@@ -534,6 +535,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             read={currentRead}
             mark={mark}
             onDismiss={markCurrentRead}
+            nowMs={now}
           />
         ) : null}
         {/* The notice for a reader who cannot see the accent: polite, the same words as the mark. */}

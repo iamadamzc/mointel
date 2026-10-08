@@ -11,6 +11,7 @@ import {
   briefingLineText,
   cardShowsGrade,
   checkpointText,
+  etClockText,
   companyText,
   coverageText,
   emptyReportLine,
@@ -40,7 +41,6 @@ import {
   type SlotView,
 } from '@/lib/dashboard/sessionReports';
 import { RISK_TONE, WHY_TONE, WhyMarks } from '@/components/DecisionCells';
-import { formatEtMinute } from '@/lib/format';
 import { DISMISS_WORDS, type ReportMark } from '@/lib/dashboard/reportNotice';
 import { useModalFocus } from '@/lib/hooks/useModalFocus';
 
@@ -70,6 +70,7 @@ export function BriefingLine({
   read,
   mark = null,
   onDismiss,
+  nowMs,
 }: {
   timeline: ReportTimeline;
   choice: RangeChoice;
@@ -77,6 +78,8 @@ export function BriefingLine({
   onOpen: () => void;
   /** The viewer has opened the current report. */
   read: boolean;
+  /** The reader's clock: a time on another ET day carries its date. */
+  nowMs: number;
   /** The new-report notice (`reportMark`), or null. */
   mark?: ReportMark | null;
   /** Clears the mark without opening the report. */
@@ -118,7 +121,7 @@ export function BriefingLine({
     <Band marked={mark !== null}>
       {mark ? <NoticeMark mark={mark} /> : null}
       <span className={published ? 'font-semibold text-ink' : 'text-ink-2'}>
-        {briefingLineText(current)}
+        {briefingLineText(current, nowMs)}
       </span>
 
       {published && current.report?.late ? <Late /> : null}
@@ -203,6 +206,7 @@ export function InlineBriefing({
           read={read}
           mark={mark}
           onDismiss={onDismiss}
+          nowMs={nowMs}
         />
         {collapsed && report ? (
           <div className="border-b border-line bg-desk px-4 py-1">
@@ -457,7 +461,7 @@ export function ReportWindow({
           />
         ) : (
           <h2 ref={headingRef} tabIndex={-1} className="text-[13px] text-ink-2 outline-none">
-            {shown ? briefingLineText(shown) : 'No briefings for this range yet'}
+            {shown ? briefingLineText(shown, nowMs) : 'No briefings for this range yet'}
           </h2>
         )}
 
@@ -476,7 +480,7 @@ export function ReportWindow({
                       onClick={() => setPinned(view)}
                       className="min-h-6 text-left text-[12px] text-ink-2 hover:text-ink"
                     >
-                      {briefingLineText(view)}
+                      {briefingLineText(view, nowMs)}
                       {view.missedReason ? (
                         <span className="text-ink-3"> · {view.missedReason}</span>
                       ) : null}
@@ -517,7 +521,7 @@ function ReportBody({
   onOpenCheckpoint: (id: number) => void;
 }) {
   const session = sessionText(report.targetTradingDate ?? report.tradingDate);
-  const written = formatEtMinute(report.publishedAt);
+  const written = etClockText(report.publishedAt, nowMs);
   const ago = agoText(report.publishedAt, nowMs);
   const coverage = coverageText(reportCoverage(report));
   const lead = reportLead(report);
@@ -562,7 +566,7 @@ function ReportBody({
                   title="Open the frozen board this checkpoint recorded"
                   className="text-ink-2 underline decoration-line-2 underline-offset-2 hover:text-ink"
                 >
-                  {checkpointText(checkpoint)}
+                  {checkpointText(checkpoint, nowMs)}
                 </button>
               </span>
             ))}

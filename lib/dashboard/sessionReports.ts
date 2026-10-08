@@ -861,12 +861,25 @@ export function coverageText(coverage: ReportCoverage): string | null {
  * schedule label loses its own clock prefix ("22:00 recap" -> "recap") so the
  * line never prints two times that disagree.
  */
-export function checkpointText(ref: { type: Parameters<typeof assessmentLabel>[0]; completedAt: string }): string {
+export function checkpointText(
+  ref: { type: Parameters<typeof assessmentLabel>[0]; completedAt: string },
+  nowMs: number,
+): string {
   const label = assessmentLabel(ref.type)
     .replace(/^\d{2}:\d{2}\s+/, '')
     .toLowerCase();
-  const at = formatEtMinute(ref.completedAt);
+  const at = etClockText(ref.completedAt, nowMs);
   return at ? `${at} ${label}` : label;
+}
+
+/**
+ * A report time in the report's own clock style: "8:31 pm ET", with "Oct 7, " before it when the reader's ET
+ * day is not the time's (`etStamp`; Integration 35th: the briefing line and the window's "built on" and
+ * "written" times match the v6 report lines). Null when the time does not parse.
+ */
+export function etClockText(iso: string | null | undefined, nowMs: number): string | null {
+  const at = etStamp(iso, nowMs);
+  return at ? `${at.date ? `${at.date}, ` : ''}${at.time} ET` : null;
 }
 
 const sessionDay = new Intl.DateTimeFormat('en-US', {
@@ -904,11 +917,11 @@ export function agoText(iso: string, nowMs: number): string | null {
 /**
  * The briefing line's words, for every state. No state renders blank.
  */
-export function briefingLineText(view: SlotView): string {
+export function briefingLineText(view: SlotView, nowMs: number): string {
   const title = reportTitle(view.slot.kind);
   switch (view.state) {
     case 'DUE': {
-      const at = formatEtMinute(view.slot.scheduledFor);
+      const at = etClockText(view.slot.scheduledFor, nowMs);
       return at ? `${title} · due ${at}` : `${title} · not yet due`;
     }
     case 'CHECKING':
@@ -917,7 +930,7 @@ export function briefingLineText(view: SlotView): string {
       return `No ${title.toLowerCase()} for this session`;
     case 'PUBLISHED':
     case 'OVER': {
-      const at = view.report ? formatEtMinute(view.report.publishedAt) : null;
+      const at = view.report ? etClockText(view.report.publishedAt, nowMs) : null;
       if (!view.report) return `No ${title.toLowerCase()} for this session`;
       return at ? `${title} · ${at}` : title;
     }

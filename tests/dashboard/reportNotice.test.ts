@@ -202,6 +202,7 @@ describe('the marked line, server-rendered', () => {
         read: false,
         mark,
         onDismiss: () => {},
+        nowMs: THU_0930_ET,
       }),
     );
 
