@@ -57,6 +57,7 @@ import {
 } from '../lib/research/historyFetch';
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
 import { maybeStartHistoryStore } from '../lib/research/historyStoreJob';
+import { maybeStartBoardBasisPass } from '../lib/research/boardBasisPass';
 import { maybeStartLevelsRefresh } from '../lib/research/levelsRefreshJob';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
@@ -172,6 +173,18 @@ async function main(): Promise<void> {
    * kills a running child, so no exit orphans a writer.
    */
   const levelsRefresh = maybeStartLevelsRefresh(process.env, { log });
+
+  /*
+   * The board basis pass (lib/research/boardBasisPass.ts): every 5 min, a
+   * deep fetch for each board name whose split basis is due, so names the
+   * research queue never picks up stop showing stale levels and blue sky.
+   * ON unless BOARD_BASIS_PASS is "off". Both exits below stop it.
+   */
+  const boardBasis = maybeStartBoardBasisPass(process.env, {
+    db,
+    fetch: (store, ticker) => ensureDeepHistory(store, ticker),
+    log,
+  });
 
   const secClient = new SecClient({ config: config.sec });
   const tickerMap = new TickerMapCache(secClient);
@@ -410,6 +423,7 @@ async function main(): Promise<void> {
     reportLoop.stop();
     historyStore?.stop();
     levelsRefresh?.stop();
+    boardBasis?.stop();
     process.exit(0);
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
@@ -836,6 +850,7 @@ async function main(): Promise<void> {
   log('[research] worker stopped');
   historyStore?.stop();
   levelsRefresh?.stop();
+  boardBasis?.stop();
   db.close();
 }
 

@@ -4,6 +4,8 @@
  *   npx tsx worker/basis-backfill.ts               census only, read-only
  *   npx tsx worker/basis-backfill.ts --run         fetch, ~350ms between symbols
  *   npx tsx worker/basis-backfill.ts --run --pace-ms=500
+ *   npx tsx worker/basis-backfill.ts --board-sessions=5 [--run]
+ *                                                  board names of the last 5 sessions only
  *
  * The live worker establishes a basis for any name it researches from now on
  * (`basisFetchDue` in the job path). This covers the names researched BEFORE
@@ -31,21 +33,24 @@ loadWorkerEnv();
 
 import { basisFetchDue, ensureDeepHistory } from '../lib/research/historyFetch';
 import { openDatabase } from '../lib/market/store/db';
+import { boardTickers, isRateLimited } from '../lib/research/boardBasisPass';
 
 function parseArgs(argv: string[]) {
   let run = false;
   let paceMs = 350;
+  let boardSessions = 0;
   for (const arg of argv) {
     if (arg === '--run') run = true;
     else if (arg.startsWith('--pace-ms=')) paceMs = Number(arg.split('=')[1]) || paceMs;
+    else if (arg.startsWith('--board-sessions=')) boardSessions = Math.max(0, Math.floor(Number(arg.split('=')[1]) || 0));
   }
-  return { run, paceMs };
+  return { run, paceMs, boardSessions };
 }
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function main(): Promise<void> {
-  const { run, paceMs } = parseArgs(process.argv.slice(2));
+  const { run, paceMs, boardSessions } = parseArgs(process.argv.slice(2));
   const dbPath = process.env.MARKET_DB_PATH ?? 'data/market.db';
   const db = openDatabase(dbPath, {
     readonly: !run,
@@ -78,11 +83,19 @@ async function main(): Promise<void> {
     return;
   }
 
-  const researched = (
-    db.prepare('SELECT ticker FROM research_dossiers ORDER BY ticker').all() as Array<{
-      ticker: string;
-    }>
-  ).map((row) => row.ticker);
+  /*
+   * --board-sessions=N (ruled 2026-10-08): the board names of the last N
+   * sessions instead of every researched ticker. This also reaches board
+   * names that were never researched, which the dossier list cannot see.
+   */
+  const researched =
+    boardSessions > 0
+      ? boardTickers(db, boardSessions)
+      : (
+          db.prepare('SELECT ticker FROM research_dossiers ORDER BY ticker').all() as Array<{
+            ticker: string;
+          }>
+        ).map((row) => row.ticker);
 
   const due: string[] = [];
   let established = 0;
@@ -95,7 +108,11 @@ async function main(): Promise<void> {
   }
 
   console.log(`[basis] store ${dbPath}`);
-  console.log(`[basis] researched tickers ${researched.length}`);
+  console.log(
+    boardSessions > 0
+      ? `[basis] board tickers, last ${boardSessions} session(s) ${researched.length}`
+      : `[basis] researched tickers ${researched.length}`,
+  );
   console.log(`[basis] basis already established ${established}`);
   if (deferred > 0) console.log(`[basis] deep-fetched today, basis underivable so far ${deferred}`);
   console.log(`[basis] due for a basis fetch ${due.length} → ${due.length * 2} Alpaca REST calls`);
@@ -111,6 +128,13 @@ async function main(): Promise<void> {
   let splitEvents = 0;
   for (const [index, ticker] of due.entries()) {
     const result = await ensureDeepHistory(db, ticker);
+    if (isRateLimited(result)) {
+      // The REST client already retried with backoff: the shared key is under
+      // pressure and the market worker comes first. Stop; a re-run resumes.
+      failed += 1;
+      console.log(`[basis] ${ticker} RATE LIMITED, sweep stopped: ${result.detail}`);
+      break;
+    }
     const after = basisFetchDue(db, ticker);
     const outcome = !result.fetched
       ? ((failed += 1), 'FAILED')
