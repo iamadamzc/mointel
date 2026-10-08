@@ -685,7 +685,7 @@ export function NameCard({
   const company = companyText(block.company);
   const writtenAgain = researchWrittenAgainNote(block.researchUpdatedAt, nowMs);
   const revised = cardRevisionMark(report, block.ticker, nowMs);
-  const path = pathView(block.path, report);
+  const path = pathView(block.path, report, nowMs);
   const tone =
     path?.direction === 'UP' ? 'text-pos' : path?.direction === 'DOWN' ? 'text-neg' : 'text-ink';
 

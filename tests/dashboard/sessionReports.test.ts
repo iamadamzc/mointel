@@ -127,7 +127,7 @@ describe('reportTimeline: the six states', () => {
       at(INTO_RTH, 45),
     );
     expect(t.current?.state).toBe('MISSED');
-    expect(t.current?.missedReason).toBe('The 09:25 ET assessment did not finish.');
+    expect(t.current?.missedReason).toBe('The 9:25 am ET assessment did not finish.');
     expect(briefingLineText(t.current!, 0)).toMatch(/^No into-the-open briefing/);
   });
 
@@ -366,10 +366,10 @@ describe('missedCauseText: the trader words, keyed on kind only', () => {
   ];
 
   it("each cause reads as Design worded it, with the CHECKPOINT's time", () => {
-    expect(causes.map(missedCauseText)).toEqual([
-      'No 09:25 ET assessment ran.',
-      'No 09:25 ET assessment ran.',
-      'The 09:25 ET assessment did not finish.',
+    expect(causes.map((cause) => missedCauseText(cause))).toEqual([
+      'No 9:25 am ET assessment ran.',
+      'No 9:25 am ET assessment ran.',
+      'The 9:25 am ET assessment did not finish.',
       'The report could not be written.',
       'The report could not be checked, so it is not shown.',
       'Every line failed its check, so nothing is shown.',
@@ -377,12 +377,17 @@ describe('missedCauseText: the trader words, keyed on kind only', () => {
     ]);
   });
 
+  it('with the reader clock: the time alone on the same ET day, the date on another (12-hour ET)', () => {
+    expect(missedCauseText(causes[0], Date.parse('2026-09-28T15:00:00Z'))).toBe('No 9:25 am ET assessment ran.');
+    expect(missedCauseText(causes[2], Date.parse('2026-09-29T15:00:00Z'))).toBe('The Sep 28, 9:25 am ET assessment did not finish.');
+  });
+
   it('two diagnoses of a checkpoint that did not run read as ONE sentence', () => {
     expect(missedCauseText(causes[0])).toBe(missedCauseText(causes[1]));
   });
 
   it('never prints a kind, a status or an evidence code', () => {
-    for (const text of causes.map(missedCauseText)) {
+    for (const text of causes.map((cause) => missedCauseText(cause))) {
       expect(text).not.toMatch(/[A-Z]{2,}_[A-Z]/);
       expect(text).not.toMatch(/PARTIAL|FAILED|RUNNING|NO_ROW|RECORDED/);
     }

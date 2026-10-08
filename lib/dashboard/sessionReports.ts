@@ -23,7 +23,7 @@ import {
 import type { ReportTags } from '../desk/reports/tags';
 import { NOTHING_LINE } from '../desk/reports/writer';
 import { assessmentLabel } from '../desk/schedule';
-import { formatEtDay, formatEtMinute, formatPrice } from '../format';
+import { formatEtDay, formatPrice } from '../format';
 import { withoutCitations } from '../research/citations';
 
 /**
@@ -281,8 +281,9 @@ export function companyText(company: ReportCompany | null | undefined): string |
 export function pathText(
   path: ReportPath | null | undefined,
   report: Pick<SessionReport, 'checkpoints'>,
+  nowMs?: number,
 ): string | null {
-  const view = pathView(path, report);
+  const view = pathView(path, report, nowMs);
   if (!view) return null;
   return view.points.map((point) => `${point.price} ${point.label}`).join(' → ');
 }
@@ -319,6 +320,7 @@ export interface PathView {
 export function pathView(
   path: ReportPath | null | undefined,
   report: Pick<SessionReport, 'checkpoints'>,
+  nowMs?: number,
 ): PathView | null {
   if (!path) return null;
   const values = [path.from, path.high, path.now];
@@ -335,7 +337,7 @@ export function pathView(
       .filter((at) => Number.isFinite(Date.parse(at)))
       .sort((a, b) => Date.parse(a) - Date.parse(b))
       .at(-1);
-    const at = formatEtMinute(newest);
+    const at = etClockText(newest, nowMs);
     highLabel = 'high';
     lastLabel = at ? `at ${at}` : 'at the checkpoint';
   } else {
@@ -680,7 +682,7 @@ export function reportTimeline(
       state === 'MISSED' || (state === 'OVER' && !report)
         ? payload.missedCauses[reportKey(slot)]
         : undefined;
-    const missedReason = cause ? missedCauseText(cause) : null;
+    const missedReason = cause ? missedCauseText(cause, nowMs) : null;
 
     return { slot, state, report, superseded, missedReason };
   });
@@ -698,12 +700,12 @@ export function reportTimeline(
  * The time is the CHECKPOINT's scheduled time, carried on the cause -- "no
  * 09:25 assessment ran" names the assessment that did not run, not the slot.
  */
-export function missedCauseText(cause: MissedCause): string {
+export function missedCauseText(cause: MissedCause, nowMs?: number): string {
   switch (cause.kind) {
     case 'CHECKPOINT_NOT_RUN':
-      return `No ${formatEtMinute(cause.checkpoint.scheduledFor) ?? assessmentLabel(cause.checkpoint.type)} assessment ran.`;
+      return `No ${etClockText(cause.checkpoint.scheduledFor, nowMs) ?? assessmentLabel(cause.checkpoint.type)} assessment ran.`;
     case 'CHECKPOINT_INCOMPLETE':
-      return `The ${formatEtMinute(cause.checkpoint.scheduledFor) ?? assessmentLabel(cause.checkpoint.type)} assessment did not finish.`;
+      return `The ${etClockText(cause.checkpoint.scheduledFor, nowMs) ?? assessmentLabel(cause.checkpoint.type)} assessment did not finish.`;
     case 'WRITER_FAILED':
       return 'The report could not be written.';
     case 'CHECKER_FAILED':
@@ -892,8 +894,9 @@ export function checkpointText(
  * day is not the time's (`etStamp`; Integration 35th: the briefing line and the window's "built on" and
  * "written" times match the v6 report lines). Null when the time does not parse.
  */
-export function etClockText(iso: string | null | undefined, nowMs: number): string | null {
-  const at = etStamp(iso, nowMs);
+export function etClockText(iso: string | null | undefined, nowMs?: number): string | null {
+  // No reader clock: the time alone (the instant's own day, so no date is added).
+  const at = etStamp(iso, nowMs ?? (typeof iso === 'string' ? Date.parse(iso) : Number.NaN));
   return at ? `${at.date ? `${at.date}, ` : ''}${at.time} ET` : null;
 }
 

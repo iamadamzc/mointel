@@ -70,13 +70,13 @@ describe('the price path', () => {
   it('labels an intraday path prior close, high, and the checkpoint clock', () => {
     // 13:27Z is 09:27 EDT.
     expect(pathText(intraday, { checkpoints: [checkpoint('2026-09-28T13:27:10Z')] })).toBe(
-      '$3.59 prior close → $6.01 high → $5.10 at 09:27 ET',
+      '$3.59 prior close → $6.01 high → $5.10 at 9:27 am ET',
     );
   });
 
   it('takes the NEWEST checkpoint when a report read more than one, in any order', () => {
     const checkpoints = [checkpoint('2026-09-28T18:32:00Z', 2), checkpoint('2026-09-28T13:27:00Z', 1)];
-    expect(pathText(intraday, { checkpoints })).toBe('$3.59 prior close → $6.01 high → $5.10 at 14:32 ET');
+    expect(pathText(intraday, { checkpoints })).toBe('$3.59 prior close → $6.01 high → $5.10 at 2:32 pm ET');
   });
 
   it('never prints a bare last point, even with no readable checkpoint time', () => {
