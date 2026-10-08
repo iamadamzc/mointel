@@ -839,15 +839,30 @@ export function feedByName(report: Pick<SessionReport, 'sections'>): Map<string,
 }
 
 /**
+ * Whether a card prints "feed not recorded" for a name with no recorded feed: only while some name in the
+ * report HAS one (unknown < named). On an all-unknown report the mark would sit on every card and say
+ * nothing (see `coverageText`).
+ */
+export function feedUnknownShown(coverage: ReportCoverage): boolean {
+  return coverage.unknown < coverage.named;
+}
+
+/**
  * "5 of 7 names had live trade data" — over the report's own names.
  *
  * THREE OUTCOMES, NOT TWO: a count, a count with the unrecorded names said
- * aloud, and "not recorded" when the report could establish none of it. Null
- * when the report names no ticker.
+ * aloud, and none when the report could establish none of it. Null when the
+ * report names no ticker.
+ *
+ * ALL UNKNOWN READS AS ABSENT (Integration 35th; Commercial's condition): the
+ * evening reports record no feed by construction (Research 347f167a,
+ * pipeline.ts:194-201), so "not recorded" on every report says nothing; the
+ * header drops it, and `feedUnknownShown` drops the per-card mark with it. A
+ * report with any recorded feed keeps the counted forms in full.
  */
 export function coverageText(coverage: ReportCoverage): string | null {
   if (coverage.named <= 0) return null;
-  if (coverage.unknown === coverage.named) return 'live-data coverage not recorded for this report';
+  if (coverage.unknown === coverage.named) return null;
   const known = coverage.named - coverage.unknown;
   const noun = known === 1 ? 'name' : 'names';
   const base = `${coverage.withLiveFeed} of ${known} ${noun} had live trade data`;

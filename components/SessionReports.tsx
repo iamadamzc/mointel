@@ -12,6 +12,7 @@ import {
   cardShowsGrade,
   checkpointText,
   etClockText,
+  feedUnknownShown,
   companyText,
   coverageText,
   emptyReportLine,
@@ -704,7 +705,7 @@ export function NameCard({
             minute data
           </Qualifier>
         ) : null}
-        {block.liveFeed === null ? (
+        {block.liveFeed === null && feedUnknownShown(reportCoverage(report)) ? (
           <Qualifier title="This report could not record whether this name had a live trade feed. It does not mean the name had none.">
             feed not recorded
           </Qualifier>

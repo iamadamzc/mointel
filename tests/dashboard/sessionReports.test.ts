@@ -277,9 +277,8 @@ describe('the words', () => {
     });
     expect(coverage).toEqual({ named: 4, withLiveFeed: 2, unknown: 1 });
     expect(coverageText(coverage)).toBe('2 of 3 names had live trade data; not recorded for 1 more');
-    expect(coverageText({ named: 2, withLiveFeed: 0, unknown: 2 })).toBe(
-      'live-data coverage not recorded for this report',
-    );
+    // All unknown reads as absent (Integration 35th, Commercial's condition): no header text at all.
+    expect(coverageText({ named: 2, withLiveFeed: 0, unknown: 2 })).toBeNull();
   });
 
   it('a checkpoint is named by its completed ET minute and label, never its id', () => {
