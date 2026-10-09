@@ -23,6 +23,7 @@ export type RiskCode =
   | 'ANALYSIS_FAILED'
   | 'DIRTY_FLOAT'
   | 'SUPPLY_OVERHEAD'
+  | 'STRUCTURE_UNKNOWN'
   | 'STRUCTURE_CAUTION'
   | 'STRUCTURE_CLEAN';
 
@@ -85,6 +86,12 @@ export function knownSupplyShares(blocks: readonly SupplyBlock[]): number | null
   }
   return found ? total : null;
 }
+
+/**
+ * The STRUCTURE UNKNOWN chip's detail. A PLACEHOLDER until Marketing's words pass Commercial (asked by
+ * Integration 37th); tests/dashboard/riskStructureUnknown.test.ts is RED while it stands, so it cannot ship.
+ */
+export const STRUCTURE_UNKNOWN_DETAIL = 'PLACEHOLDER: words pending from Marketing.';
 
 /**
  * Resolves the one risk a row should lead with.
@@ -168,9 +175,23 @@ export function resolveRisk(row: DeskRow): DeskRisk {
   }
 
   /*
-   * NO STRUCTURE UNKNOWN CHIP. Only the Sheet's UNKNOWN_STRUCTURE could set it, and the desk has no trigger
-   * of its own; Integration 36th ruled it gone (the desk's own structure label covers the idea).
+   * THE DESK'S OWN UNKNOWN KEEPS A CHIP (Research's finding, Integration 37th's corrected ruling). The Sheet's
+   * UNKNOWN_STRUCTURE chip went with the Sheet, but the desk has its own trigger: a dossier that classified the
+   * structure UNKNOWN. With no warning it fell through to the green NO FLAG FOUND, "no structural problem
+   * established", beside a Desk Read saying no structural conclusion was reached. Dim, because it is an
+   * absence of a reading, not a finding about supply.
    */
+  if (structure?.structureClassification === 'UNKNOWN' && line === null) {
+    return {
+      code: 'STRUCTURE_UNKNOWN',
+      label: 'STRUCTURE UNKNOWN',
+      value: null,
+      detail: STRUCTURE_UNKNOWN_DETAIL,
+      tone: 'dim',
+      full,
+    };
+  }
+
   if (structure?.structureClassification === 'CAUTION' || line !== null) {
     return {
       code: 'STRUCTURE_CAUTION',
