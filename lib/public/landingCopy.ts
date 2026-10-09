@@ -267,5 +267,7 @@ export const ACCESS = {
     'Built for small-cap momentum traders, with catalyst details and grades, float structure background, SEC filing information, and several additional information points that help you make decisions on what to trade.',
     'Andromeda Genius, Inc., San Antonio, Texas.',
   ],
+  /** After the body, to /privacy: his "add it" 2026-10-09T02:27:20.760Z; Commercial read 43a's words. */
+  privacyLink: 'What we collect, and what we do not',
   cta: 'Ask for an invite',
 };

@@ -1,4 +1,5 @@
 import { BrandMark } from '@/components/BrandMark';
+import { LandingScreenshot, shotIsReady } from '@/components/LandingScreenshot';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -42,11 +43,15 @@ export const metadata: Metadata = {
 
 const INVITE = 'mailto:info@andromedagenius.com?subject=Invite%20request%3A%20TMI%20Trader';
 
-const ASPECT: Record<Shot['shape'], string> = {
-  board: 'aspect-[16/10]',
-  panel: 'aspect-[4/5]',
-  strip: 'aspect-[16/3]',
-};
+/**
+ * Text and images share a row only when the row has an image ready; a section whose images
+ * have not landed (LandingScreenshot renders nothing for them) lets its text take the width.
+ */
+function columns(shots: Shot[]): { text: string; images: string | null } {
+  return shots.some(shotIsReady)
+    ? { text: 'md:col-span-5', images: 'md:col-span-7' }
+    : { text: 'md:col-span-8', images: null };
+}
 
 function Eyebrow({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
@@ -54,37 +59,12 @@ function Eyebrow({ children, className = '' }: { children: React.ReactNode; clas
   );
 }
 
-function Screenshot({ shot }: { shot: Shot }) {
-  return (
-    <figure className="flex flex-col gap-2.5">
-      {shot.src ? (
-        // eslint-disable-next-line @next/next/no-img-element -- a static file, sized; no optimiser on this box.
-        <img
-          src={shot.src}
-          alt={shot.alt}
-          width={shot.width}
-          height={shot.height}
-          loading={shot.slot === 1 ? 'eager' : 'lazy'}
-          className="h-auto w-full rounded border border-line"
-        />
-      ) : (
-        <div
-          role="img"
-          aria-label={shot.alt}
-          data-shot-placeholder={shot.slot}
-          className={`w-full rounded border border-dashed border-line-2 bg-panel ${ASPECT[shot.shape]}`}
-        />
-      )}
-      <figcaption className="text-xs leading-normal text-ink-3">{shot.caption}</figcaption>
-    </figure>
-  );
-}
-
 function FeatureSection({ section, children }: { section: Section; children?: React.ReactNode }) {
+  const cols = columns(section.shots);
   return (
     <section id={section.id} className="border-t border-line px-5 py-10 md:px-24 md:py-20">
       <div className="grid items-start gap-7 md:grid-cols-12 md:gap-16">
-        <div className="flex flex-col gap-4 md:col-span-5 md:gap-5">
+        <div className={`flex flex-col gap-4 md:gap-5 ${cols.text}`}>
           <Eyebrow className="mb-0 md:mb-0">{section.eyebrow}</Eyebrow>
           <h2 className="text-[28px] font-semibold leading-[1.14] tracking-tight md:text-[34px]">{section.heading}</h2>
           {section.body.map((paragraph) => (
@@ -94,11 +74,13 @@ function FeatureSection({ section, children }: { section: Section; children?: Re
           ))}
           {children}
         </div>
-        <div className="flex flex-col gap-6 md:col-span-7 md:gap-8">
-          {section.shots.map((shot) => (
-            <Screenshot key={shot.slot} shot={shot} />
-          ))}
-        </div>
+        {cols.images && (
+          <div className={`flex flex-col gap-6 md:gap-8 ${cols.images}`}>
+            {section.shots.map((shot) => (
+              <LandingScreenshot key={shot.slot} shot={shot} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -116,6 +98,8 @@ function Rule({ text }: { text: string }) {
 }
 
 export default function LandingPage() {
+  const heroCols = columns([HERO_SHOT]);
+  const accessCols = columns([ACCESS_SHOT]);
   return (
     <div className="bg-desk text-ink">
       <header className="flex items-center justify-between gap-3 border-b border-line px-5 py-4 md:gap-8 md:px-24 md:py-5">
@@ -150,7 +134,7 @@ export default function LandingPage() {
 
       {/* 1. Hero */}
       <section className="grid gap-8 px-5 pb-9 pt-10 md:grid-cols-12 md:gap-12 md:px-24 md:pb-[72px] md:pt-[88px]">
-        <div className="md:col-span-5">
+        <div className={heroCols.text}>
           <Eyebrow className="md:mb-6">{HERO.eyebrow}</Eyebrow>
           <h1 className="mb-5 text-4xl font-semibold leading-[1.06] tracking-tight md:mb-7 md:text-[52px] md:leading-[1.04]">
             {HERO.heading}
@@ -181,9 +165,11 @@ export default function LandingPage() {
             <p className="max-w-[52ch] text-sm leading-normal text-ink-3">{HERO.accessLine}</p>
           </div>
         </div>
-        <div className="md:col-span-7">
-          <Screenshot shot={HERO_SHOT} />
-        </div>
+        {heroCols.images && (
+          <div className={heroCols.images}>
+            <LandingScreenshot shot={HERO_SHOT} />
+          </div>
+        )}
       </section>
 
       {/* 2 to 5 */}
@@ -232,7 +218,7 @@ export default function LandingPage() {
       {/* 11. Access */}
       <section id="access" className="border-t border-line px-5 py-10 md:px-24 md:py-20">
         <div className="grid items-start gap-8 md:grid-cols-12 md:gap-16">
-          <div className="md:col-span-5">
+          <div className={accessCols.text}>
             <Eyebrow>{ACCESS.eyebrow}</Eyebrow>
             <h2 className="mb-4 text-[26px] font-semibold leading-[1.18] tracking-tight md:mb-6 md:text-[30px]">
               {ACCESS.heading}
@@ -241,12 +227,17 @@ export default function LandingPage() {
               <p
                 key={paragraph.slice(0, 30)}
                 className={`text-base leading-relaxed md:text-[17px] ${index === 1 ? 'text-ink-1' : 'text-ink-2'} ${
-                  index === ACCESS.body.length - 1 ? 'mb-7 md:mb-8' : 'mb-4'
+                  'mb-4'
                 }`}
               >
                 {paragraph}
               </p>
             ))}
+            <p className="mb-7 text-base leading-relaxed md:mb-8 md:text-[17px]">
+              <Link href="/privacy" className="text-accent hover:underline">
+                {ACCESS.privacyLink}
+              </Link>
+            </p>
             <a
               href={INVITE}
               className="flex h-[52px] items-center justify-center rounded bg-ink px-6 text-[17px] font-semibold text-desk md:inline-flex md:h-12 md:text-base"
@@ -254,9 +245,11 @@ export default function LandingPage() {
               {ACCESS.cta}
             </a>
           </div>
-          <div className="md:col-span-7">
-            <Screenshot shot={ACCESS_SHOT} />
-          </div>
+          {accessCols.images && (
+            <div className={accessCols.images}>
+              <LandingScreenshot shot={ACCESS_SHOT} />
+            </div>
+          )}
         </div>
       </section>
 

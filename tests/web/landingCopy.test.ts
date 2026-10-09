@@ -13,7 +13,17 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 import LandingPage from '@/app/page';
+import { LandingScreenshot, shotIsReady } from '@/components/LandingScreenshot';
 import * as copy from '@/lib/public/landingCopy';
+import type { Shot } from '@/lib/public/landingCopy';
+
+const SHOTS: Shot[] = [
+  copy.HERO_SHOT,
+  copy.ACCESS_SHOT,
+  ...copy.FLOAT_SECTION.shots,
+  ...copy.SECTIONS.flatMap((s) => s.shots),
+  ...copy.LATER_SECTIONS.flatMap((s) => s.shots),
+];
 
 const CANVASES = ['docs/web/canvas/Main.dc.html', 'docs/web/canvas/LandingMobile.dc.html'];
 
@@ -52,28 +62,47 @@ describe('the landing copy', () => {
     expect(ALL).toContain('Who is running, and who is only loud.');
   });
 
-  it('is all on the rendered page', () => {
+  it('is all on the rendered page, except the words of slots whose image has not landed', () => {
     const page = readable(renderToStaticMarkup(LandingPage()));
-    expect(ALL.filter((s) => !page.includes(s))).toEqual([]);
+    const pending = new Set(SHOTS.filter((s) => !shotIsReady(s)).flatMap((s) => [s.caption, s.alt]));
+    expect(ALL.filter((s) => !pending.has(s) && !page.includes(s))).toEqual([]);
+  });
+});
+
+/**
+ * Commercial read 43 (268a988d): a slot without its image would print a literal "{date}" and an
+ * aria-label for an image that is not there. A slot renders only when it has a sized image AND
+ * a caption with its date and time filled; otherwise nothing, so sections ship as images land.
+ */
+describe('a screenshot slot', () => {
+  const READY: Shot = { slot: 99, shape: 'board', caption: 'The board at 07:41 ET on 2026-10-09.', alt: 'A board.', src: '/landing/x.webp', width: 2240, height: 1400 };
+
+  it('counts all sixteen slots', () => {
+    expect(SHOTS).toHaveLength(16);
   });
 
-  /**
-   * SHIP BLOCKER, RED ON PURPOSE UNTIL THE IMAGES LAND (Commercial read 43, 268a988d): an empty
-   * slot prints a literal "{date}" in its caption and an aria-label for an image that is not
-   * there. So every slot needs an image that has passed Commercial and a caption with its real
-   * date and time before the page can pass the gate.
-   */
-  it('has an image and a filled caption in every screenshot slot', () => {
-    const shots = [
-      copy.HERO_SHOT,
-      copy.ACCESS_SHOT,
-      ...copy.FLOAT_SECTION.shots,
-      ...copy.SECTIONS.flatMap((s) => s.shots),
-      ...copy.LATER_SECTIONS.flatMap((s) => s.shots),
-    ];
-    expect(shots.length).toBe(16);
-    expect(shots.filter((s) => !s.src || !s.width || !s.height).map((s) => s.slot)).toEqual([]);
-    expect(shots.filter((s) => /\{(date|time)\}/.test(s.caption)).map((s) => s.slot)).toEqual([]);
+  it('renders the image and its caption when ready', () => {
+    const html = renderToStaticMarkup(LandingScreenshot({ shot: READY }));
+    expect(html).toContain('src="/landing/x.webp"');
+    expect(html).toContain('alt="A board."');
+    expect(html).toContain('width="2240"');
+    expect(html).toContain('The board at 07:41 ET on 2026-10-09.');
+  });
+
+  it.each([
+    ['no image', { ...READY, src: undefined }],
+    ['no size', { ...READY, width: undefined }],
+    ['an unfilled {date}', { ...READY, caption: 'The board on {date}.' }],
+    ['an unfilled {time}', { ...READY, caption: 'The board at {time} ET.' }],
+  ])('renders nothing with %s', (_name, shot) => {
+    expect(LandingScreenshot({ shot: shot as Shot })).toBeNull();
+  });
+
+  it('leaves no placeholder, no {date} or {time}, and no alt for an absent image on the page', () => {
+    const html = renderToStaticMarkup(LandingPage());
+    expect(html).not.toMatch(/\{(date|time)\}/);
+    expect(html).not.toContain('data-shot-placeholder');
+    for (const shot of SHOTS.filter((s) => !shotIsReady(s))) expect(html).not.toContain(shot.alt.replace(/'/g, '&#x27;'));
   });
 
   it.each(CANVASES)('is all in %s', (file) => {
