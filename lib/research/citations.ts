@@ -51,6 +51,14 @@
 const CITATION =
   /([.!?])?\s*(?:\[(?:sources?\s*\d+(?:\s*[,;]\s*(?:sources?\s*)?\d+)*|\d+(?:\s*,\s*\d+)+|\d{5,})\]|\(sources?\s*\d+(?:\s*[,;]\s*(?:sources?\s*)?\d+)*\.?\))([.!?])?/gi;
 
+/**
+ * A SENTENCE made only of Source ids (AUID, census `cc67da67`: "... deficiency notices. Sources 129427, 129429."):
+ * at the start of the text or after a sentence stop, and ENDING at a stop or the end of the text. The ending is what
+ * keeps "Source 28817 provides ..." (an id as the subject of a sentence) untouched: removing it would break the
+ * sentence, so the interpreter prompt forbids that form instead. Integration's ruling 2026-10-09.
+ */
+const SOURCE_SENTENCE = /(^|[.!?])\s*sources?\s*\d+(?:\s*[,;]\s*(?:sources?\s*)?\d+)*\s*(?:[.!?](?=\s|$)|$)/gi;
+
 /** A lone bare number of 1 to 4 digits, removed only when it is a cited id. */
 const LONE_SHORT = /([.!?])?\s*\[(\d{1,4})\]([.!?])?/g;
 
@@ -62,9 +70,9 @@ const keepOneStop = (before: string | undefined, after: string | undefined): str
  * when given, also removes a lone short bracket holding one of those ids.
  */
 export function withoutCitations(text: string, citedIds?: ReadonlySet<number>): string {
-  const cleaned = text.replace(CITATION, (_token, before: string | undefined, after: string | undefined) =>
-    keepOneStop(before, after),
-  );
+  const cleaned = text
+    .replace(CITATION, (_token, before: string | undefined, after: string | undefined) => keepOneStop(before, after))
+    .replace(SOURCE_SENTENCE, (_token, before: string) => before);
   if (!citedIds || citedIds.size === 0) return cleaned;
   return cleaned.replace(
     LONE_SHORT,

@@ -80,8 +80,9 @@ support.
 Every material conclusion must cite the numeric source ids supplied in the
 bundle, in evidenceSourceIds. A claim with no source id will be rejected.
 Never refer to a source by its id in prose (not "Source 28817", not
-"(Source 28817)"): name what it is, for example the 10-Q or the company's
-press release.
+"(Source 28817)"). Name each source by the form or title the bundle gives it;
+never name a form the bundle does not state, and where it gives none, say a
+filing or a news item. For example: an 8-K, a press release.
 
 Distinctions that matter and are checked in software afterwards:
 

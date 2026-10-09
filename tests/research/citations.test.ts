@@ -20,8 +20,22 @@ describe('withoutCitations: the forms the XRTX census found (2026-10-09, 4b40764
     expect(withoutCitations('A (Source 1; Source 2) and B.')).toBe('A and B.');
   });
 
+  it('removes a sentence made only of Source ids (AUID), anywhere a sentence can start, and nothing else', () => {
+    expect(withoutCitations('and Nasdaq deficiency notices. Sources 129427, 129429, 129430.')).toBe('and Nasdaq deficiency notices.');
+    expect(withoutCitations('First claim. Sources 129435, 129438. Second claim.')).toBe('First claim. Second claim.');
+    expect(withoutCitations('Sources 1, 2.')).toBe('');
+    expect(withoutCitations('A claim. Source 7')).toBe('A claim.');
+    // An id as the SUBJECT is kept (removing it breaks the sentence); a prose bracket is kept.
+    expect(withoutCitations('Source 28817 provides weighted-average shares.')).toBe('Source 28817 provides weighted-average shares.');
+    expect(withoutCitations('A claim. Sources 12, 13 provide context.')).toBe('A claim. Sources 12, 13 provide context.');
+    expect(withoutCitations('calculated. [Market history in bundle; Sources 120463, 120460 provide context]')).toBe('calculated. [Market history in bundle; Sources 120463, 120460 provide context]');
+  });
+
   it('KEEPS a bare number list or figure in parentheses, and the bare sentence form (the prompt forbids it instead)', () => {
     expect(SYSTEM_PROMPT_A).toContain('Never refer to a source by its id in prose');
+    // Commercial's REQUIRED clause (read of 856f506c): name only a form the bundle states.
+    expect(SYSTEM_PROMPT_A.replace(/\s+/g, ' ')).toContain('Name each source by the form or title the bundle gives it; never name a form the bundle does not state, and where it gives none, say a filing or a news item.');
+    expect(SYSTEM_PROMPT_A).not.toContain('the 10-Q or');
     expect(withoutCitations('an offering of units (4,166,666 units).')).toBe('an offering of units (4,166,666 units).');
     expect(withoutCitations('a fee (1,000) and a year (2026).')).toBe('a fee (1,000) and a year (2026).');
     expect(withoutCitations('a range (1, 2, 3).')).toBe('a range (1, 2, 3).');
