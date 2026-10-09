@@ -823,13 +823,15 @@ export interface MarketSnapshot {
    * section 2). The stored enums pass through untouched; the display mapping
    * (AVOID shown as D) lives in `lib/dashboard/setupGrade.ts` and nowhere else.
    *
-   * OPTIONAL, AND TWO DIFFERENT ABSENCES: the WHOLE MAP absent means the grade is
-   * not wired (the columns and the checkpoint writer do not exist), and no
-   * surface shows a grade, a grade filter or the legend. Once the reader exists
-   * it always sends the map, even empty. Inside a sent map a symbol that is
-   * absent, or null, is NOT_YET (the dash, "no research at this checkpoint"); it
-   * is never read as a grade. The reader (`lib/market/readModel.ts`) fills it from the symbol's
-   * most recent COMPLETE checkpoint row once the columns exist.
+   * OPTIONAL. The WHOLE MAP is omitted until any COMPLETE checkpoint row
+   * carries a grade (schema v29 onward), and while it is omitted no surface
+   * shows a grade, a grade filter or the legend: an empty map would show every
+   * row as a dash with a false "no research" hover (Integration 35th, 2026-10-09).
+   * Inside a sent map, a symbol ABSENT has no row on any COMPLETE checkpoint, and
+   * a symbol NULL has a latest COMPLETE row with no readable grade (captured
+   * before v29, or a stored value the client cannot map); neither is ever read
+   * as a grade. The reader is `lib/market/setupGradesRead.ts`, from each symbol's
+   * most recent COMPLETE checkpoint row.
    */
   setupGrades?: Record<string, SetupGrade | null>;
   /**

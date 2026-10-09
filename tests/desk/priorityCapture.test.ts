@@ -223,4 +223,36 @@ describe('readSetupGrades', () => {
     expect(map.NEW!.grade).toBe('A');
     expect(map.OLD).toBeNull();
   });
+
+  it('reads an unknown stored grade as null, not as a grade', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'COMPLETE', `${D}T14:01:00.000Z`);
+    insertAssessmentTickers(db, id, [ticker(), ticker({ ticker: 'ODD' })]);
+    db.prepare(`UPDATE desk_assessment_tickers SET priority_grade = 'D' WHERE ticker = 'ODD'`).run();
+
+    const map = readSetupGrades(db, 'd', ['IVF', 'ODD'])!;
+    expect(map.IVF!.grade).toBe('A');
+    expect(map.ODD).toBeNull();
+  });
+
+  it('reads a basis missing a criterion, or with an unknown reading, as null', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'COMPLETE', `${D}T14:01:00.000Z`);
+    insertAssessmentTickers(db, id, [ticker(), ticker({ ticker: 'SHORT' }), ticker({ ticker: 'WORD' })]);
+    const basis = (symbol: string) =>
+      JSON.parse(
+        (db.prepare('SELECT priority_basis AS b FROM desk_assessment_tickers WHERE ticker = ?').get(symbol) as { b: string }).b,
+      ) as Record<string, string>;
+    const short = basis('SHORT');
+    delete short.supply;
+    const word = { ...basis('WORD'), volume: 'HIGH' };
+    const set = db.prepare('UPDATE desk_assessment_tickers SET priority_basis = ? WHERE ticker = ?');
+    set.run(JSON.stringify(short), 'SHORT');
+    set.run(JSON.stringify(word), 'WORD');
+
+    const map = readSetupGrades(db, 'e', ['IVF', 'SHORT', 'WORD'])!;
+    expect(map.IVF!.basis.supply).toBe('LIMITED');
+    expect(map.SHORT).toBeNull();
+    expect(map.WORD).toBeNull();
+  });
 });

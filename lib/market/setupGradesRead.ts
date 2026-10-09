@@ -20,7 +20,7 @@
  * that. The key read is one MAX over the checkpoint table (hundreds of rows).
  */
 
-import type { SetupGrade, StoredGrade, StoredReading } from '../dashboard/setupGrade';
+import { CRITERIA, type SetupGrade, type StoredGrade, type StoredReading } from '../dashboard/setupGrade';
 import type { MarketDatabase } from './store/db';
 
 /** A name no COMPLETE checkpoint ever held: left out of the map. */
@@ -39,13 +39,28 @@ export function resetSetupGradesCache(): void {
   cache = null;
 }
 
+const GRADES: ReadonlySet<string> = new Set<StoredGrade>(['A', 'B', 'C', 'AVOID', 'UNKNOWN', 'NOT_YET']);
+const READINGS: ReadonlySet<string> = new Set<StoredReading>(['STRONG', 'LIMITED', 'RISK', 'UNKNOWN', 'NOT_YET']);
+
+/**
+ * The stored basis, or null unless it carries every criterion with a known
+ * reading. A value the client cannot map reads as no grade, never as a grade.
+ */
 function parseBasis(text: string | null): SetupGrade['basis'] | null {
   if (text === null) return null;
+  let parsed: unknown;
   try {
-    return JSON.parse(text) as Record<keyof SetupGrade['basis'], StoredReading>;
+    parsed = JSON.parse(text);
   } catch {
     return null;
   }
+  if (parsed === null || typeof parsed !== 'object') return null;
+  const record = parsed as Record<string, unknown>;
+  for (const criterion of CRITERIA) {
+    const reading = record[criterion];
+    if (typeof reading !== 'string' || !READINGS.has(reading)) return null;
+  }
+  return Object.fromEntries(CRITERIA.map((criterion) => [criterion, record[criterion]])) as SetupGrade['basis'];
 }
 
 export function readSetupGrades(
@@ -94,7 +109,7 @@ export function readSetupGrades(
       const basis = parseBasis(row.basis);
       current.values.set(
         symbol,
-        row.grade === null || basis === null || row.rule === null || row.completedAt === null
+        row.grade === null || !GRADES.has(row.grade) || basis === null || row.rule === null || row.completedAt === null
           ? null
           : {
               grade: row.grade as StoredGrade,
