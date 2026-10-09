@@ -100,7 +100,7 @@ describe('the words', () => {
   it('labels the list "Sources the desk read" and prints each line as the date, then the title', () => {
     expect(CATALYST_SOURCES_LABEL).toBe('Sources the desk read');
     const source = readFileSync('components/AutomaticIntelligence.tsx', 'utf8');
-    expect(source).toContain("{day ? `${day}, ` : ''}");
-    expect(source).toContain('{link.title ?? link.secForm ?? humanise(link.sourceType)}');
+    // "{date}, {body}" is sourceLabel's now (tests/dashboard/sourceLabel.test.ts); the list renders its label.
+    expect(source).toContain('labelledNow(sources.map(({ link }) => link)).map(({ link, label }) =>');
   });
 });

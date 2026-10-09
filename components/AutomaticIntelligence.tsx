@@ -16,6 +16,7 @@ import { EVIDENCE_RISK_WORDS, evidenceRiskView } from '@/lib/dashboard/evidenceR
 import { CYCLE_WORDS, cycleFacts } from '@/lib/dashboard/cycleFacts';
 import { PRODUCED_WORDS, producedAt } from '@/lib/dashboard/produced';
 import { SUPPLY_GROUP_EMPTY, SUPPLY_GROUP_EMPTY_HOVER, supplyGroups } from '@/lib/dashboard/supplyGroups';
+import { SOURCE_LABEL_SEPARATOR, sourceLabels, type LabelledSource } from '@/lib/dashboard/sourceLabel';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
 import { drawerFloatLine } from '@/lib/dashboard/drawerFloat';
@@ -39,6 +40,11 @@ function eventTimeText(
 ): { text: string; hover: string | null } {
   const view = eventTimeView(at, citedIds, evidence, Date.now());
   return { text: view.text, hover: view.hover };
+}
+
+/** One list's source labels against the clock (the year rule), kept out of render. */
+function labelledNow(links: readonly AutoIntelligence['evidence'][number][]): LabelledSource[] {
+  return sourceLabels(links, Date.now());
 }
 
 /** `producedAt` against the clock, kept out of render. */
@@ -280,7 +286,7 @@ function ListField({
 }
 
 /**
- * A conclusion's own cited sources, "{date}, {title}" each, under its label.
+ * A conclusion's own cited sources, one `sourceLabel` each, under its label.
  * Renders nothing when none resolve, so no surface claims sources it does not show.
  */
 function SourceList({
@@ -297,7 +303,7 @@ function SourceList({
     <div className="mt-3">
       <FieldLabel>{label}</FieldLabel>
       <ul className="mt-1 space-y-1">
-        {sources.map(({ link, day }) => (
+        {labelledNow(sources.map(({ link }) => link)).map(({ link, label }) => (
           <li key={link.id} className="text-[11px]">
             <a
               href={link.url}
@@ -305,8 +311,7 @@ function SourceList({
               rel="noopener noreferrer"
               className="text-ink-1 underline decoration-dotted underline-offset-2"
             >
-              {day ? `${day}, ` : ''}
-              {link.title ?? link.secForm ?? humanise(link.sourceType)}
+              {label}
             </a>
           </li>
         ))}
@@ -616,46 +621,46 @@ export function AutomaticIntelligence({
                 </p>
               ) : (
                 <ul className="mt-1 space-y-1">
-                  {group.lines.map((line, index) => (
-                    <li key={index} className="text-[11px] text-ink-2">
-                      <span className="text-ink-1">{line.text}</span>
-                      {line.sourceIds.length > 0 ? (
-                        <span className="text-ink-3">
-                          {' · sources '}
-                          {line.sourceIds.map((id, at) => {
-                            const source = intel.evidence.find((item) => item.id === id);
-                            return (
-                              <span key={id}>
-                                {at > 0 ? ', ' : ''}
-                                {source ? (
-                                  <a
-                                    href={source.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="underline decoration-dotted underline-offset-2"
-                                  >
-                                    {id}
-                                  </a>
-                                ) : (
-                                  id
-                                )}
+                  {group.lines.map((line, index) => {
+                    // Labels, never the raw evidence ids; an id that resolves to no source prints nothing.
+                    const lineSources = labelledNow(
+                      line.sourceIds
+                        .map((id) => intel.evidence.find((item) => item.id === id))
+                        .filter((item): item is AutoIntelligence['evidence'][number] => item !== undefined),
+                    );
+                    return (
+                      <li key={index} className="text-[11px] text-ink-2">
+                        <span className="text-ink-1">{line.text}</span>
+                        {lineSources.length > 0 ? (
+                          <span className="text-ink-3">
+                            {' · sources '}
+                            {lineSources.map(({ link, label }, at) => (
+                              <span key={link.id}>
+                                {at > 0 ? SOURCE_LABEL_SEPARATOR : ''}
+                                <a
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="underline decoration-dotted underline-offset-2"
+                                >
+                                  {label}
+                                </a>
                               </span>
-                            );
-                          })}
-                        </span>
-                      ) : null}
-                    </li>
-                  ))}
-                  {group.links.map((source) => (
-                    <li key={`link-${source.id}`} className="text-[11px]">
+                            ))}
+                          </span>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                  {labelledNow(group.links).map(({ link, label }) => (
+                    <li key={`link-${link.id}`} className="text-[11px]">
                       <a
-                        href={source.url}
+                        href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-ink-1 underline decoration-dotted underline-offset-2"
                       >
-                        {source.secForm ? `${source.secForm}, ` : ''}
-                        {source.title ?? humanise(source.sourceType)}
+                        {label}
                       </a>
                     </li>
                   ))}
