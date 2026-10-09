@@ -45,6 +45,7 @@ import { readFileSync } from 'node:fs';
  */
 const SURFACES = [
   'app/page.tsx',
+  'lib/public/landingCopy.ts',
   'app/layout.tsx',
   'app/signin/page.tsx',
   'app/privacy/page.tsx',
@@ -125,10 +126,11 @@ describe('no em dash in anything a stranger reads', () => {
   }
 
   it('allows the empty-cell placeholder, per his ruling', () => {
-    // The example board's "no value" glyphs are still there and still pass.
-    const page = readFileSync('app/page.tsx', 'utf8');
-    expect(page).toContain('>&mdash;</td>');
+    // The landing's drawn example board, which carried the "no value" glyphs, left with
+    // the 2026-10-09 redo (screenshots replace it). The ruling is still a property of the scanner.
+    expect(isProse('<td className="py-4 pr-3 font-mono text-xs text-ink-3">&mdash;</td>', false)).toBe(false);
     expect(prosePositions('app/page.tsx')).toEqual([]);
+    expect(prosePositions('lib/public/landingCopy.ts')).toEqual([]);
   });
 
   /**
