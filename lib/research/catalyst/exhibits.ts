@@ -95,6 +95,17 @@ export function exhibitUrl(cik: string, accession: string, fileName: string): st
   ].join('/');
 }
 
+/**
+ * An exhibit's stored title, in Marketing's exact words (`docs/marketing/source-title-words-2026-10-09.md`
+ * at 7b332c27; Commercial read 50 passed): "{exhibitType} to {parentForm}", e.g. "EX-99.1 to 8-K". With no
+ * parent form, the exhibit type alone. No date or time: the drawer prints the date, and `publishedAt` holds
+ * the time. Rows stored before this keep "EX-99.1: 8-K {ISO time}"; the drawer labels those from fields.
+ */
+export function exhibitTitle(exhibitType: string, parentForm: string | null): string {
+  const form = parentForm?.trim() ?? '';
+  return form === '' ? exhibitType : `${exhibitType} to ${form}`;
+}
+
 export interface FilingIndexResponse {
   directory?: {
     name?: string;

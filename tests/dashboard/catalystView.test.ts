@@ -15,6 +15,7 @@ const link = (id: number, publishedAt: string | null, publishedPrecision: string
   accession: null,
   publishedAt,
   publishedPrecision,
+  exhibitType: null,
 });
 
 // 08:15 ET on 2026-08-17 (EDT).

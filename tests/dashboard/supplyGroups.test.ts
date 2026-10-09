@@ -15,6 +15,7 @@ const link = (id: number, secForm: string | null): EvidenceLink => ({
   accession: null,
   publishedAt: '2026-08-01T12:00:00.000Z',
   publishedPrecision: 'EXACT',
+  exhibitType: null,
 });
 
 const block = (type: SupplyBlockType, over: Partial<SupplyBlock> = {}): SupplyBlock => ({

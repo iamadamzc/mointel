@@ -77,6 +77,13 @@ export interface EvidenceLink {
   accession: string | null;
   publishedAt: string | null;
   publishedPrecision: string;
+  /**
+   * An SEC exhibit's type as the SEC declares it ("EX-99.1"), from the row's stored
+   * `metadata.exhibitType`; null for every other source. With `secForm` (the parent's form)
+   * the drawer builds "{exhibit} to {form}" from fields, so rows stored before the
+   * timestamp-free title (`exhibitTitle`) label cleanly too (Design's rule 3).
+   */
+  exhibitType: string | null;
 }
 
 export interface AutoIntelligence {
@@ -148,7 +155,14 @@ export function toEvidenceLink(source: ResearchSource): EvidenceLink {
     accession: source.accession,
     publishedAt: source.publishedAt,
     publishedPrecision: source.publishedPrecision,
+    exhibitType: storedExhibitType(source),
   };
+}
+
+function storedExhibitType(source: ResearchSource): string | null {
+  if (source.sourceType !== 'SEC_EXHIBIT') return null;
+  const type = source.metadata?.exhibitType;
+  return typeof type === 'string' && type.trim() !== '' ? type : null;
 }
 
 /** True when the dossier says nothing usable yet. */

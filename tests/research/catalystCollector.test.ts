@@ -696,6 +696,8 @@ describe('catalyst collection', () => {
     const stored = readSources(db, 'ACME').find((s) => s.sourceType === 'SEC_EXHIBIT')!;
     expect(stored.metadata.parentForm).toBe('8-K');
     expect(stored.metadata.exhibitType).toBe('EX-99.1');
+    // Marketing 7b332c27 / Commercial read 50: no date or time in the stored title.
+    expect(stored.title).toBe('EX-99.1 to 8-K');
     /*
      * THE PARENT HERE HAS NO ACCEPTANCE TIME, SO NEITHER HAS THE EXHIBIT.
      *
@@ -769,6 +771,8 @@ describe('catalyst collection', () => {
     // The instant itself survives the inheritance -- an INFERRED row is usable
     // for a latency measurement in a way an UNKNOWN one is not.
     expect(stored.publishedAt).toBe(acceptance);
+    // The instant lives in publishedAt only, never in the stored title (Marketing 7b332c27).
+    expect(stored.title).toBe('EX-99.1 to 8-K');
   });
 
   it('degrades gracefully when the IR site is unreachable', async () => {
