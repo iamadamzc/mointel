@@ -1,0 +1,19 @@
+# Feature screenshots, set of 2026-10-09 (in progress)
+
+Design-tmi. His ruling (Integration 35th's relay, his turn 2026-10-09T01:09:27.450Z): "do the badge, screenshot and front page. public screenshots can show any data." Real data appears here. **Nothing here is public until he approves the front-page copy.** List: Marketing's `docs/marketing/feature-accounting-2026-10-08.md` section 9 (197a701f); slots as Marketing's front-page copy names them (6389a013).
+
+**How they were produced.** Headless Chrome (the installed Chrome, a throwaway profile, never a signed-in profile) driven over the DevTools protocol, viewport 1,280 px wide at 2x pixel density, so each image is 2,560 px wide. The desk images come from **production through a read-only review link** (review session id 69, label `design`, minted 2026-10-08 21:12 ET for 2 hours; NOT YET REVOKED at this commit, revoked after tonight's last capture and recorded here then). Production's latest release tag at capture: `release/2026-10-08-3dd247c2` (read by `git ls-remote`; the page itself does not print a sha). The public pages were captured signed out. Times below are ET, read from the desk header in each image where it shows.
+
+| File | Slot | What it shows | Captured |
+| --- | --- | --- | --- |
+| `01a-board-after-hours-frozen-2000-float-faces.png` | S1 (stand-in), S5 | The After-hours Discovery board frozen at 20:00, Top 12, with the Float, Why, Risk and Cycle columns. All four float faces appear in one frame: a ceiling ("≤ 1.64M 9/1"), Unknown, Cannot verify, Not computed. Not an in-session board: S1 proper is retaken after 10:00 ET | 2026-10-08 21:12:55 ET, production |
+| `01b-board-after-hours-frozen-full-page.png` | as above | The same page at full length | as above |
+| `05b-float-click-through-panel.png` | S5 | The float click-through panel open on FLYE (a ceiling face): headline, definition, filed share count, insiders' holdings, not subtracted | 2026-10-08 21:13:42 ET, production |
+| `09-drawer-top-xrtx.png` | S9 | XRTX's drawer top: Desk Read, the level ladder, the blue-sky line ("BLUE-SKY LEVEL UNVERIFIED") | 2026-10-08 ~21:15 ET, production |
+| `10-drawer-middle-xrtx.png`, `10b-drawer-lower-xrtx.png` | S10 | XRTX's drawer: structural intelligence and the supply groups | as above |
+| `11-drawer-cycle-sessions-xrtx.png`, `11b-drawer-bottom-xrtx.png` | S11 | XRTX's drawer lower sections | as above |
+| `12-report-window-evening-opened-on-load.png` | S12 | The Evening briefing for Thu, Oct 8 as it opened by itself on first load (outside 07:00 to 10:00 ET): built on, written, covers $1 to $20, the Summary block (tonight's summary was struck by the checker, so it shows "No summary in this report."), both footnotes, the watch line, section "FRESH NEWS FOUND · 3", cards with tags and price paths | 2026-10-08 ~21:12 ET, production |
+| `16a-sign-in.png` | S16 | The sign-in page (`/signin`, where `/desk` sends a signed-out visitor) | 2026-10-08 21:11 ET, public |
+| `17-float-explainer.png` | S17 | The float explainer page `/are-float-quotes-real`, top 2,400 px | 2026-10-08 21:11 ET, public |
+
+**Still to take:** S1 (board in session, Top 12), S2 (a moving row and the caption), S3 (a filter on, the banner and its second line), S4 (counts strip with a chip active), S6 (Now live, and "not live"), S8 (Focus with two names pinned: a read-only review view cannot pin, so this needs his signed-in board or a local render), richer S9 to S11 on a researched name, all after 10:00 ET on a session day; S12 with a Summary present and S13 (the briefing line and the 10 pm revision line) after the 10 pm edition; S14 (the not-updating banner) only in a real outage, or a local render labelled as patched; S15 (frozen board with Back to live) when the board is empty between sessions; S16 entry gate (behind sign-in; a local render). Not taken: S7, the setup grade is hidden until grades are stored.
