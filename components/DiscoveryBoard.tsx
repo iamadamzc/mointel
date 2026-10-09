@@ -1116,14 +1116,14 @@ function DiscoveryRow({
         ) : null}
         {afterHours ? (
           // One line: a wrapped second line here made every row in the evening
-          // board taller than the same row during the day.
+          // board taller than the same row during the day. The volume only: the
+          // participation multiple is the PART/RVOL column's (his ask 2026-10-09,
+          // "unecessarily duplicated").
           <span
             className="num block truncate text-[10px] whitespace-nowrap text-ink-3"
-            title={`${formatCount(ah?.volume ?? null)} traded since the close · ${formatMultiple(
-              ah?.participation ?? null,
-            )} of a normal full day's volume`}
+            title={`${formatCount(ah?.volume ?? null)} traded since the close`}
           >
-            {formatCount(ah?.volume ?? null)} · {formatMultiple(ah?.participation ?? null)}
+            {formatCount(ah?.volume ?? null)}
           </span>
         ) : null}
       </td>
