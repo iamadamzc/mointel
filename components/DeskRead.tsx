@@ -198,46 +198,52 @@ export function DeskReadPanel({ read }: { read: DeskRead }) {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-        <Conclusion label="Cycle" value={read.cycle} />
-        <Conclusion label="Catalyst" value={read.catalyst} />
-        <Conclusion label="Structure" value={read.structure} />
-        {/* The same status object the drawer header and the board read. */}
-        <StatusBadge
-          label={read.intelligence.label}
-          tone={read.intelligence.tone as Tone}
-          title={read.intelligence.detail}
-        />
+      {/*
+        * HIS ORDER (2026-10-09, relayed by Integration 37th): why now, the structural warning, next up and
+        * down, the RVOL row, then the chips, all in this one box under the header. Each section draws its own
+        * top rule, so whichever renders first drops it (an empty narrative renders nothing).
+        */}
+      <div className="[&>*:first-child]:mt-0 [&>*:first-child]:border-t-0 [&>*:first-child]:pt-0">
+        <Narrative label="Why now" narrative={read.whyNow} />
+        <Narrative label="Structural warning" narrative={read.structuralWarning} warn />
+        <div className="mt-2.5 flex flex-col gap-1 border-t border-line pt-2">
+          <LevelRun label="Next up" levels={read.nextUp} tone="text-pos" />
+          <LevelRun label="Next down" levels={read.nextDown} tone="text-warn" />
+          {read.airPocketAbove || read.airPocketBelow ? (
+            <p className="mt-0.5 text-[10px] text-ink-3">
+              {[read.airPocketAbove, read.airPocketBelow].filter(Boolean).join(' · ')}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="mt-2.5 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-t border-line pt-2">
+          <Stat label="RVOL" value={formatMultiple(t.rvol)} />
+          <Stat label="Rank" value={t.rvolRank === null ? '—' : `#${t.rvolRank}`} tone="text-accent" />
+          <Stat
+            label="Spread"
+            value={t.spreadPct === null ? '—' : `${t.spreadPct.toFixed(2)}%`}
+            tone="text-ink-2"
+          />
+          <Stat label="Vol" value={formatCount(t.volume)} tone="text-ink-2" />
+          <Stat label="Hi" value={formatPrice(t.sessionHigh)} tone="text-ink-2" />
+          <Stat label="Lo" value={formatPrice(t.sessionLow)} tone="text-ink-2" />
+        </div>
+
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 border-t border-line pt-2">
+          <Conclusion label="Cycle" value={read.cycle} />
+          <Conclusion label="Catalyst" value={read.catalyst} />
+          <Conclusion label="Structure" value={read.structure} />
+          {/* The same status object the drawer header and the board read. */}
+          <StatusBadge
+            label={read.intelligence.label}
+            tone={read.intelligence.tone as Tone}
+            title={read.intelligence.detail}
+          />
+        </div>
+
+        {/* A ceiling reached is not a verdict that the name cannot be analysed. */}
+        {read.intelligence.status === 'FAILED' ? <RetryAnalysis ticker={read.ticker} /> : null}
       </div>
-
-      {/* A ceiling reached is not a verdict that the name cannot be analysed. */}
-      {read.intelligence.status === 'FAILED' ? <RetryAnalysis ticker={read.ticker} /> : null}
-
-      <div className="mt-2.5 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-t border-line pt-2">
-        <Stat label="RVOL" value={formatMultiple(t.rvol)} />
-        <Stat label="Rank" value={t.rvolRank === null ? '—' : `#${t.rvolRank}`} tone="text-accent" />
-        <Stat
-          label="Spread"
-          value={t.spreadPct === null ? '—' : `${t.spreadPct.toFixed(2)}%`}
-          tone="text-ink-2"
-        />
-        <Stat label="Vol" value={formatCount(t.volume)} tone="text-ink-2" />
-        <Stat label="Hi" value={formatPrice(t.sessionHigh)} tone="text-ink-2" />
-        <Stat label="Lo" value={formatPrice(t.sessionLow)} tone="text-ink-2" />
-      </div>
-
-      <div className="mt-2.5 flex flex-col gap-1 border-t border-line pt-2">
-        <LevelRun label="Next up" levels={read.nextUp} tone="text-pos" />
-        <LevelRun label="Next down" levels={read.nextDown} tone="text-warn" />
-        {read.airPocketAbove || read.airPocketBelow ? (
-          <p className="mt-0.5 text-[10px] text-ink-3">
-            {[read.airPocketAbove, read.airPocketBelow].filter(Boolean).join(' · ')}
-          </p>
-        ) : null}
-      </div>
-
-      <Narrative label="Why now" narrative={read.whyNow} />
-      <Narrative label="Structural warning" narrative={read.structuralWarning} warn />
     </section>
   );
 }
