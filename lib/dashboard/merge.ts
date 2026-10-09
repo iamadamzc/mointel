@@ -485,11 +485,7 @@ export function buildDeskRow(
     intelligence,
     provenance: comparison.provenance,
     comparison: research || intelligence?.analysis ? comparison : null,
-    intelligenceState: resolveIntelligenceState({
-      sheet: research,
-      intelligence,
-      comparison: research || intelligence?.analysis ? comparison : null,
-    }),
+    intelligenceState: resolveIntelligenceState({ intelligence }),
     // Server-resolved when the snapshot carried one. A row built without a
     // snapshot has no daily history to reason from, which is unavailable —
     // not open sky.

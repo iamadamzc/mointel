@@ -653,7 +653,7 @@ export function rowMatchesFilters(
     // The chip's own words: the risk cell is what says DIRTY FLOAT on screen.
     const code = resolveRisk(row).code;
     const dirty = code === 'DIRTY_FLOAT';
-    const unknown = code === 'STRUCTURE_UNKNOWN' || code === 'NOT_RESEARCHED';
+    const unknown = code === 'NOT_RESEARCHED';
     if (filters.structure === 'DIRTY' && !dirty) return false;
     if (filters.structure === 'UNKNOWN' && !unknown) return false;
     if (filters.structure === 'OTHER' && (dirty || unknown)) return false;

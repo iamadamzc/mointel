@@ -521,11 +521,7 @@ function Demand({ row }: { row: DeskRow | null }) {
           }
           numeric
         />
-        <Field
-          label="Displayed Float Turnover"
-          value={formatMultiple(row?.displayedFloatTurnover)}
-          numeric
-        />
+        {/* No float turnover (Sheet switch-off 3b; Marketing 644a67e0 S6): it divided by the Sheet's float. */}
         <Field label="Session High" value={formatPrice(demand.sessionHigh)} numeric />
         <Field label="Session Low" value={formatPrice(demand.sessionLow)} numeric />
         <Field

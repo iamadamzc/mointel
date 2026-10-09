@@ -33,11 +33,10 @@ import { levelDateSuffix, levelTagLead } from '@/lib/data/levelDate';
  * product rejects. Price history is what it was actually derived from, and it
  * is the one source on this list a trader can check himself.
  */
+// Desk only (step 3a; Marketing 644a67e0 S2, Commercial read 60): a desk conclusion carries no mark, since
+// there is no second source to tell it from; only a conclusion from price history says so.
 const PROVENANCE_MARK: Record<DeskConclusion['provenance'], string> = {
-  SHEET: 'outside',
-  AUTO: 'desk',
-  SHEET_AUTO: 'desk + outside',
-  CONFLICT: 'conflict',
+  AUTO: '',
   COMPUTED: 'price history',
   NONE: '',
 };
@@ -54,16 +53,7 @@ function Conclusion({ label, value }: { label: string; value: DeskConclusion }) 
         className="max-w-[220px]"
       />
       {mark ? (
-        <span
-          className={`text-[9px] uppercase tracking-wider ${
-            value.provenance === 'CONFLICT' ? 'text-warn' : 'text-ink-3'
-          }`}
-          title={
-            value.provenance === 'CONFLICT'
-              ? `The desk research concluded ${value.otherLabel ?? 'differently'}. Both are kept; see the comparison below.`
-              : mark
-          }
-        >
+        <span className="text-[9px] uppercase tracking-wider text-ink-3" title={mark}>
           {mark}
         </span>
       ) : null}
@@ -105,11 +95,9 @@ function LevelRun({ label, levels, tone }: { label: string; levels: DeskReadLeve
   );
 }
 
+// Desk only (step 3a; Marketing 644a67e0 S2): no "desk research" source word; only price history is named.
 const NARRATIVE_SOURCE: Record<DeskNarrative['provenance'], string> = {
-  SHEET: 'outside research',
-  AUTO: 'desk research',
-  SHEET_AUTO: 'desk + outside',
-  CONFLICT: 'desk vs outside',
+  AUTO: '',
   COMPUTED: 'price history',
   NONE: '',
 };
@@ -138,13 +126,15 @@ function Narrative({
         <span className={`text-[9px] tracking-[0.08em] uppercase ${warn ? 'text-warn' : 'text-ink-3'}`}>
           {label}
         </span>
-        <span className="text-[9px] tracking-wider text-ink-3 uppercase">
-          {NARRATIVE_SOURCE[narrative.provenance]}
-        </span>
+        {NARRATIVE_SOURCE[narrative.provenance] ? (
+          <span className="text-[9px] tracking-wider text-ink-3 uppercase">
+            {NARRATIVE_SOURCE[narrative.provenance]}
+          </span>
+        ) : null}
         {narrative.qualifier ? (
           <span
             className="rounded-sm border border-warn/30 px-1 text-[9px] tracking-wider text-warn uppercase"
-            title="Stated so a limitation in one source is visible without discarding what the other established"
+            title="Some sources could not be collected, so this may be missing something."
           >
             {narrative.qualifier}
           </span>
@@ -165,15 +155,6 @@ function Narrative({
         {narrative.text}
       </p>
 
-      {/* A disagreement is shown as a disagreement. No winner is chosen here. */}
-      {narrative.counterText ? (
-        <p className="mt-1.5 max-w-[70ch] border-l-2 border-warn/40 pl-2 text-[11px] leading-relaxed text-ink-3">
-          <span className="tracking-wider text-warn uppercase">
-            desk{narrative.counterLabel ? ` · ${narrative.counterLabel}` : ''}:
-          </span>{' '}
-          {narrative.counterText}
-        </p>
-      ) : null}
     </div>
   );
 }

@@ -23,7 +23,6 @@ export type RiskCode =
   | 'ANALYSIS_FAILED'
   | 'DIRTY_FLOAT'
   | 'SUPPLY_OVERHEAD'
-  | 'STRUCTURE_UNKNOWN'
   | 'STRUCTURE_CAUTION'
   | 'STRUCTURE_CLEAN';
 
@@ -134,17 +133,15 @@ export function resolveRisk(row: DeskRow): DeskRisk {
 
   const structure = row.intelligence?.analysis?.dossier.structure ?? null;
   const supplyShares = structure ? knownSupplyShares(structure.supplyLedger) : null;
-  const warning = row.research?.warning.current ?? null;
+  // Desk only (Sheet switch-off step 3a, Integration 36th): the warning and the classification are the
+  // desk's own dossier's. The Sheet's warning used to lead, and its DIRTY_FLOAT alone could set the chip.
   const structuralWarning = structure?.structuralWarnings[0] ?? null;
-  const full = warning ?? structuralWarning ?? structure?.summary ?? null;
-  const line = firstSentence(warning) ?? firstSentence(structuralWarning);
+  const full = structuralWarning ?? structure?.summary ?? null;
+  const line = firstSentence(structuralWarning);
 
-  // A dirty float is the strongest structural statement the desk makes, and it
-  // comes from the outside research or an accepted desk dossier, never from
-  // arithmetic.
-  const dirty =
-    row.research?.structure.state === 'DIRTY_FLOAT' ||
-    structure?.structureClassification === 'DIRTY_FLOAT';
+  // A dirty float is the strongest structural statement the desk makes, and it comes from an accepted desk
+  // dossier, never from arithmetic.
+  const dirty = structure?.structureClassification === 'DIRTY_FLOAT';
 
   if (dirty) {
     return {
@@ -171,67 +168,9 @@ export function resolveRisk(row: DeskRow): DeskRisk {
   }
 
   /*
-   * The Sheet's UNKNOWN_STRUCTURE only. The dossier's float is NOT a trigger.
-   *
-   * This also fired on `structure.displayedFloat === null`, which has been null
-   * on every stored version since id 237 (2026-08-20). That made FLOAT UNKNOWN
-   * true of every researched row, and a chip identical on every row cannot make
-   * rejection cheap, which is the one job this cell has. It short-circuited both
-   * branches below: STRUCTURE CAUTION never rendered, and neither did
-   * STRUCTURE_CLEAN — the only `tone: 'pos'` outcome in this function. The desk
-   * had no way to tell the trader a researched name was structurally clean for
-   * thirteen days.
-   *
-   * The two floats are different fields with the same name: `structure
-   * .displayedFloat` is the dossier's, null, and `row.displayedFloat` below is
-   * the Sheet's, populated — so the gate read one while the value it gated read
-   * the other.
-   *
-   * The chip stays correct while the desk has no float source. It is BECAUSE it
-   * is correct for everyone that it cannot be a per-row chip. Restore a
-   * dossier-float condition only when that float can vary.
-   *
-   * **It was called FLOAT UNKNOWN and it reads STRUCTURE.** The name was
-   * harmless while `displayedFloat` was null on 49 of 50 rows, because the two
-   * were absent together. Research's Sheet float parser takes top-50 coverage
-   * to about 12 of 50, and a row can carry UNKNOWN in the structure cell AND a
-   * parsed float in the float cell — different columns. The old detail said
-   * "No sourced float figure" and the same drawer would have rendered that
-   * float: a contradiction inside one screen.
-   *
-   * The gate is untouched; it was never wrong. Only the words were, and they
-   * were wrong about WHICH FIELD IS MISSING.
-   *
-   * The general form, which is the part worth carrying: **a condition
-   * unreachable because a field is universally absent becomes reachable the
-   * moment the field is populated.** Filling a data gap activates dormant code
-   * paths, and no grep for the field name finds them.
+   * NO STRUCTURE UNKNOWN CHIP. Only the Sheet's UNKNOWN_STRUCTURE could set it, and the desk has no trigger
+   * of its own; Integration 36th ruled it gone (the desk's own structure label covers the idea).
    */
-  const structureUnknown = row.research?.structure.state === 'UNKNOWN_STRUCTURE';
-
-  if (structureUnknown) {
-    return {
-      code: 'STRUCTURE_UNKNOWN',
-      label: 'STRUCTURE UNKNOWN',
-      value: null,
-      /*
-       * Says what is unknown rather than prescribing a size.
-       *
-       * The old sentence ended "size the position as if it could be large",
-       * which was advice about the FLOAT. It goes stale the moment a float
-       * appears beside it, and this chip is not about the float.
-       *
-       * "Outside research" rather than "the Sheet": the 16a vocabulary, and it
-       * falls out of use rather than needing renaming when the Sheet retires.
-       */
-      detail:
-        line ??
-        'The outside research did not establish the share structure. Nothing here is known about supply or dilution.',
-      tone: 'warn',
-      full,
-    };
-  }
-
   if (structure?.structureClassification === 'CAUTION' || line !== null) {
     return {
       code: 'STRUCTURE_CAUTION',
@@ -246,7 +185,8 @@ export function resolveRisk(row: DeskRow): DeskRisk {
   return {
     code: 'STRUCTURE_CLEAN',
     label: 'NO FLAG FOUND',
-    value: row.displayedFloat !== null ? `${formatShares(row.displayedFloat)} float` : null,
+    // No value (Marketing 644a67e0 S4, Commercial read 60): it printed the Sheet's float as a fact.
+    value: null,
     detail: 'Researched; no structural problem established.',
     tone: 'pos',
     full,

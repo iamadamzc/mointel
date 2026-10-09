@@ -170,46 +170,19 @@ function StructureSummaryBlock({
           <StatusBadge label={summary.label} tone={summary.tone as Tone} />
         </span>
         {/*
-          * ONE number and ONE verdict, with the bound cited inside it.
-          *
-          * The vendor's float is a CLAIM the desk borrows; the filed count is
-          * a BOUND the desk owns and the claim has to sit under. Laid out as
-          * two numbers they would read as two estimates of one quantity and
-          * invite splitting the difference — so the count appears only in the
-          * verdict's reason, where it is doing its actual job.
-          *
-          * The model's float confidence USED to sit here and was removed
-          * rather than moved: it describes the dossier's own extraction, and
-          * the number beside it is now the Sheet's. A confidence attached to a
-          * different number than the one it measured is worse than none.
+          * THE DESK'S FLOAT, AS ITS FLOAT CELL SHOWS IT (Sheet switch-off 3b; Marketing 644a67e0 S5, Commercial
+          * read 60): the cell's face and, on a bound, the filed count's date. It used to be the Sheet's float
+          * with a verdict against the filed count; with no Sheet float there is nothing to verdict. The model's
+          * float confidence stays off: it measured the dossier's extraction, not this bound.
           */}
         <span className="inline-flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
           <FieldLabel>Float</FieldLabel>
           <span
-            className={`num text-[12px] font-semibold ${
-              summary.float === 'Unknown' ? 'text-warn' : 'text-ink'
-            }`}
+            className={`num text-[12px] font-semibold ${summary.float.kind === 'bound' ? 'text-ink' : 'text-ink-3'}`}
           >
-            {summary.float}
+            {summary.float.face}
           </span>
-          {summary.floatCheck ? (
-            <>
-              <span
-                className={`text-[10px] tracking-wider uppercase ${
-                  summary.floatCheck.tone === 'neg' ? 'text-neg' : 'text-ink-3'
-                }`}
-              >
-                {summary.floatCheck.label}
-              </span>
-              <span
-                className={`text-[11px] ${
-                  summary.floatCheck.tone === 'neg' ? 'text-neg/90' : 'text-ink-3'
-                }`}
-              >
-                · {summary.floatCheck.reason}
-              </span>
-            </>
-          ) : null}
+          {summary.float.date ? <span className="text-[10px] text-ink-3">{summary.float.date}</span> : null}
         </span>
       </div>
 
@@ -764,7 +737,6 @@ export function AutomaticIntelligence({
       </Section>
 
       <Section title="Evidence & Provenance">
-        <Field label="Analysis source" value={humanise(intel.provenance)} />
         <Field label="Generated" value={generatedAt} />
         {produced ? <Field label={PRODUCED_WORDS.label} value={produced.text} title={PRODUCED_WORDS.hover} /> : null}
         <Field label="Model" value={intel.model ?? 'unknown'} />

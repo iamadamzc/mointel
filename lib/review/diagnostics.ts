@@ -551,11 +551,8 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
   const counts: Record<IntelligenceStatus, number> = {
     NOT_ANALYZED: 0,
     ANALYSIS_PENDING: 0,
-    PARTIAL_AUTO: 0,
-    AUTO: 0,
-    SHEET: 0,
-    SHEET_AUTO: 0,
-    CONFLICT: 0,
+    PARTLY_ANALYZED: 0,
+    ANALYZED: 0,
     FAILED: 0,
   };
   for (const row of merged.rows.values()) {

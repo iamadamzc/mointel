@@ -457,10 +457,9 @@ export function WhyCell({ why }: { why: DeskWhy }) {
   return (
     <div className="flex flex-col gap-px leading-tight">
       {/*
-        * WRAPS rather than overflowing: the rare row carrying NOT THE MOVE,
-        * OLD and the disagreement mark at once is wider than Why at the
-        * 1,024 floor, and a fixed cell does not clip -- it would lean into
-        * Risk.
+        * WRAPS rather than overflowing: the rare row carrying NOT THE MOVE
+        * and OLD at once is wider than Why at the 1,024 floor, and a fixed
+        * cell does not clip -- it would lean into Risk.
         */}
       <span className="flex flex-wrap items-baseline gap-x-1.5">
         {/*
@@ -503,21 +502,6 @@ export function WhyCell({ why }: { why: DeskWhy }) {
           </span>
         ) : null}
         <WhyMarks why={why} />
-        {/*
-          * THE SHEET AND THE DESK DISAGREE (his ruling 2026-09-29T14:46:55Z:
-          * mark it). The letter beside this is the Sheet's; this says what the
-          * desk's own research gives. Outlined and neutral, not warn: it is a
-          * fact about the two sources, not a verdict on the stock, and the
-          * row already spends its one saturated colour elsewhere.
-          */}
-        {why.disagreement ? (
-          <span
-            className="rounded-sm border border-line-2 px-1 text-[9px] font-semibold tracking-wide text-ink uppercase"
-            title={`The outside research sheet grades this catalyst ${why.disagreement.sheet}; the desk's own research grades it ${why.disagreement.desk}. The row shows the sheet's grade and headline; the drawer shows both sides.`}
-          >
-            sheet {why.disagreement.sheet} · desk {why.disagreement.desk}
-          </span>
-        ) : null}
       </span>
       {why.headline ? (
         <ClampedText text={why.headline} className="text-[11px] text-ink-2" />
