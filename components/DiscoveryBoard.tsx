@@ -1093,11 +1093,8 @@ function DiscoveryRow({
           setupGrade={row.setupGradeWired ? row.setupGrade : undefined}
           setupGradeNoneRecorded={row.setupGradeNoneRecorded}
           companyHint={
-            companyLine({
-              dossier: row.intelligence?.analysis?.dossier ?? null,
-              sheetName: row.researchRecord?.company,
-              sheetCountry: row.research?.country,
-            }).hint
+            // The desk's dossier only (Sheet switch-off 3c): no Sheet name or country fallback.
+            companyLine({ dossier: row.intelligence?.analysis?.dossier ?? null }).hint
           }
         />
         {moving ? (

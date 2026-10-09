@@ -11,7 +11,6 @@
  * are introduced here, and nothing infers a status independently.
  */
 
-import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import type { ResearchDossier } from '@/lib/research/types';
 import type { AutoIntelligence } from '@/lib/research/view';
 
@@ -79,35 +78,6 @@ export function missingCoreFields(dossier: ResearchDossier): string[] {
 
 export interface IntelligenceInput {
   intelligence: AutoIntelligence | null;
-}
-
-/**
- * Whether a disagreement is a real difference of judgement.
- *
- * `compareSheetAndAuto` records every field where the two sides landed
- * differently, including the case where the automatic layer simply had less to
- * work with — which it labels AUTO_INCOMPLETE, "its conclusion is the weaker
- * one". Presenting that as CONFLICT would be exactly the fake disagreement this
- * desk already ruled out: it would fire on most partially-covered names and
- * teach a trader to skip the warning that matters.
- *
- * The comparison itself is untouched; this only decides how loudly to show it.
- */
-export function isMaterialConflict(comparison: SheetAutoComparison | null): boolean {
-  if (!comparison?.conflict) return false;
-  return comparison.comparisons.some(
-    (item) => item.agreement === 'DISAGREE' && item.reason !== 'AUTO_INCOMPLETE',
-  );
-}
-
-/** The fields where both sides had evidence and still disagreed. */
-export function materialConflictFields(comparison: SheetAutoComparison | null): Set<string> {
-  if (!comparison) return new Set();
-  return new Set(
-    comparison.comparisons
-      .filter((item) => item.agreement === 'DISAGREE' && item.reason !== 'AUTO_INCOMPLETE')
-      .map((item) => item.field),
-  );
 }
 
 export function resolveIntelligenceState(input: IntelligenceInput): IntelligenceState {

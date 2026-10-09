@@ -4,11 +4,8 @@ import { useEffect, useRef } from 'react';
 
 import {
   StatusBadge,
-  StructureBadge,
-  catalystTone,
   changeTone,
   sessionTone,
-  structureTone,
   type Tone,
 } from '@/components/StatusBadge';
 import { HaltBadge } from '@/components/DecisionCells';
@@ -31,8 +28,7 @@ import {
   footnoteCloseSentence,
 } from '@/lib/dashboard/sessionsView';
 import type { DemandState } from '@/lib/market/types';
-import type { CycleLevels } from '@/lib/data/cycleLevels';
-import type { MomentumTicker, StructuralResearch } from '@/lib/data/types';
+import type { StructuralResearch } from '@/lib/data/types';
 import {
   formatCount,
   formatEtTimestamp,
@@ -186,7 +182,6 @@ export function TickerDrawer({
             floatBound={row.floatBound}
             floatBoundWired={row.floatBoundWired}
             checkpointAt={row.setupGradeWired ? (row.setupGrade?.checkpointCompletedAt ?? null) : null}
-            comparison={row.comparison}
             structure={buildStructureSummary(row)}
             Section={Section}
             Field={Field}
@@ -194,32 +189,12 @@ export function TickerDrawer({
             ProseField={ProseField}
           />
 
-          {ticker ? (
-            <>
-              <MomentumCycle ticker={ticker} research={research} levels={row.cycleLevels} />
-
-              <Collapsible title="Sheet Research (verbatim)">
-                <Overview ticker={ticker} research={research} />
-                <Catalyst ticker={ticker} research={research} />
-                <StructuralIntelligence ticker={ticker} research={research} />
-                <Levels ticker={ticker} research={research} />
-                <SheetDeskNotes ticker={ticker} research={research} />
-
-                {!research ? (
-                  <p className="mt-4 rounded-sm border border-dashed border-warn/40 bg-warn/8 px-3 py-2 text-[11px] text-warn">
-                    No RESEARCH record found for {ticker.ticker}. Only TODAY data is shown.
-                  </p>
-                ) : (
-                  <p className="mt-2 text-[10px] text-ink-3">
-                    RESEARCH record: row {research.sourceRow}, report date{' '}
-                    {research.reportDate || 'unknown'}. TODAY row {ticker.sourceRow}.
-                  </p>
-                )}
-              </Collapsible>
-            </>
-          ) : row.intelligenceState.status === 'NOT_ANALYZED' ? (
-            <NotAnalyzedPanel symbol={row.ticker} research={research} />
-          ) : null}
+          {/*
+            * NO SHEET SECTIONS (Sheet switch-off step 3c, Integration 36th): "Sheet Research (verbatim)", the
+            * Sheet's cycle panel, its levels and desk notes, and the RESEARCH/TODAY row lines are gone. The
+            * desk's own panels above carry the catalyst, structure, supply, cycle (from daily bars) and float.
+            */}
+          {row.intelligenceState.status === 'NOT_ANALYZED' ? <NotAnalyzedPanel symbol={row.ticker} /> : null}
 
           <Collapsible title={telemetryTitle(feedBanner)}>
             <Demand row={row} />
@@ -234,29 +209,7 @@ export function TickerDrawer({
  * Shown for a ticker the market feed discovered but the research desk has not
  * analyzed. It states exactly that, rather than inventing a classification.
  */
-function NotAnalyzedPanel({
-  symbol,
-  research,
-}: {
-  symbol: string;
-  research: StructuralResearch | undefined;
-}) {
-  if (research) {
-    return (
-      <Section title="Structural Analysis">
-        <p className="mb-3 text-[12px] text-ink-2">
-          {symbol} is not on today&apos;s TODAY sheet, but an earlier RESEARCH record exists
-          (report date {research.reportDate || 'unknown'}). Treat it as historical, not as a
-          current desk read.
-        </p>
-        <ProseField label="Company" value={research.company} />
-        <ProseField label="Warning Flags" value={research.warningFlags} className="mt-3" tone="warn" />
-        <ProseField label="Supply Evidence" value={research.supplyEvidence} className="mt-3" />
-        <ProseField label="Analyst Notes" value={research.analystNotes} className="mt-3" />
-      </Section>
-    );
-  }
-
+function NotAnalyzedPanel({ symbol }: { symbol: string }) {
   return (
     <Section title="Structural Analysis">
       <div className="flex flex-wrap items-center gap-2">
@@ -292,11 +245,8 @@ function DrawerHeader({
   // The same projection the board used to pick this row's price.
   const t = row.telemetry;
   const conclusions = resolveConclusions(row);
-  const company = companyLine({
-    dossier: row.intelligence?.analysis?.dossier ?? null,
-    sheetName: research?.company,
-    sheetCountry: ticker?.country,
-  });
+  // The desk's dossier only (Sheet switch-off 3c): no Sheet name or country fallback.
+  const company = companyLine({ dossier: row.intelligence?.analysis?.dossier ?? null });
 
   return (
     <div className="border-b border-line-2 bg-panel-2 px-5 py-3">
@@ -318,23 +268,14 @@ function DrawerHeader({
               {row.ticker}
             </h2>
             {row.setupGradeWired ? <SetupGradeBadge grade={row.setupGrade} noneRecorded={row.setupGradeNoneRecorded} /> : null}
-            {ticker ? (
-              <>
-                {/* The same resolved cycle the board and the Desk Read show.
-                    This badge read the Sheet's classification directly, so it
-                    survived the cutover onto the computed phase and would have
-                    contradicted the panel a few lines below it. */}
-                <StatusBadge
-                  label={conclusions.cycle.label}
-                  tone={conclusions.cycle.tone as Tone}
-                  title={conclusions.cycle.title ?? conclusions.cycle.label}
-                />
-              </>
-            ) : null}
-            {/* The status comes from the shared projection. This header used to
-                decide for itself that a ticker with no sheet row was
-                unanalyzed, contradicting the accepted automatic intelligence
-                rendered a few lines below it. */}
+            {/* The same resolved cycle the board and the Desk Read show, on every row: it was shown only
+                when a Sheet row existed, though the cycle is computed from daily bars (3c). */}
+            <StatusBadge
+              label={conclusions.cycle.label}
+              tone={conclusions.cycle.tone as Tone}
+              title={conclusions.cycle.title ?? conclusions.cycle.label}
+            />
+            {/* The status comes from the shared projection, never decided here. */}
             <StatusBadge
               label={row.intelligenceState.label}
               tone={row.intelligenceState.tone as Tone}
@@ -584,305 +525,6 @@ function Demand({ row }: { row: DeskRow | null }) {
   );
 }
 
-function Overview({
-  ticker,
-  research,
-}: {
-  ticker: MomentumTicker;
-  research: StructuralResearch | undefined;
-}) {
-  return (
-    <Section title="Overview">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
-        {/* Named as the Sheet's, because it is. The desk's own cycle is
-            arithmetic now and shows in the header badge above; an unqualified
-            "Cycle" here would contradict it in the same drawer. */}
-        <Field label="Cycle (sheet)" value={ticker.cycle.raw} />
-        <Field label="Country" value={ticker.country || research?.country || ''} />
-        <Field label={`Price (${ticker.price.session})`} value={ticker.price.display} numeric />
-        <Field label={`Change (${ticker.changePct.session})`} value={ticker.changePct.display} numeric />
-        <Field label={`Volume (${ticker.volume.session})`} value={ticker.volume.display} numeric />
-        <Field label="RTH Close" value={ticker.rthClose.display} numeric />
-        <Field label="Float (TODAY)" value={ticker.float.display} numeric />
-        <Field label="Float (RESEARCH)" value={research?.float.display ?? ''} numeric />
-        <Field label="Shares Outstanding" value={research?.sharesOutstanding.display ?? ''} numeric />
-        <Field label="Float Source Date" value={research?.floatSourceDate ?? ''} numeric />
-      </div>
-
-      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
-        <div>
-          <FieldLabel>Float Quality</FieldLabel>
-          <div className="mt-1 flex items-center gap-2">
-            {research?.floatQualityRaw ? (
-              <StatusBadge
-                label={research.floatQualityRaw}
-                tone={structureTone(research.floatQualityState)}
-              />
-            ) : (
-              <span className="text-[12px] text-ink-3">Not stated in RESEARCH</span>
-            )}
-          </div>
-        </div>
-        <ProseField label="Overhang / Float" value={research?.overhangFloat ?? ''} />
-      </div>
-
-      {research?.floatSourceUrls.length ? (
-        <LinkList label="Float Sources" urls={research.floatSourceUrls} />
-      ) : null}
-    </Section>
-  );
-}
-
-function Catalyst({
-  ticker,
-  research,
-}: {
-  ticker: MomentumTicker;
-  research: StructuralResearch | undefined;
-}) {
-  return (
-    <Section title="Catalyst">
-      <div className="flex flex-wrap items-center gap-2">
-        <StatusBadge
-          label={ticker.catalyst.gradeRaw || 'No grade'}
-          tone={catalystTone(ticker.catalyst.gradeBucket)}
-        />
-        {ticker.catalyst.hasPremarketUpdate ? (
-          <StatusBadge label="Premarket update" tone="accent" />
-        ) : null}
-        {ticker.catalyst.latestTime ? (
-          <span className="num text-[11px] text-ink-3">{ticker.catalyst.latestTime}</span>
-        ) : null}
-      </div>
-
-      <ProseField
-        label={ticker.catalyst.hasPremarketUpdate ? 'Latest Update (PM)' : 'Latest Catalyst'}
-        value={ticker.catalyst.latest}
-        className="mt-3"
-      />
-
-      {ticker.catalyst.hasPremarketUpdate ? (
-        <ProseField
-          label="Original Catalyst"
-          value={ticker.catalyst.original}
-          hint={ticker.catalyst.originalTime}
-          className="mt-3"
-        />
-      ) : null}
-
-      <ProseField
-        label="Catalyst Details (RESEARCH)"
-        value={research?.catalystDetails ?? ''}
-        hint={research?.catalystTimestamp}
-        className="mt-3"
-      />
-
-      {research?.catalystSourceUrls.length ? (
-        <LinkList label="Catalyst Sources" urls={research.catalystSourceUrls} />
-      ) : null}
-    </Section>
-  );
-}
-
-/**
- * Current-cycle levels and historical resistance are presented as separate
- * concepts. A 52-week high is not the high of the move happening now, and the
- * distance to it is not a current giveback — showing them interchangeably is
- * what this section exists to prevent.
- */
-function MomentumCycle({
-  ticker,
-  research,
-  levels,
-}: {
-  ticker: MomentumTicker;
-  research: StructuralResearch | undefined;
-  levels: CycleLevels;
-}) {
-  const { currentCycleHigh, historicalResistance, unverifiedRunHigh, sheetReportedFlush } = levels;
-
-  return (
-    <Section title="Momentum Cycle">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-4">
-        <Field
-          label="Cycle Classification"
-          value={research?.cycleClassificationRaw || ticker.cycle.raw}
-        />
-        {currentCycleHigh ? (
-          <Field label="Current Cycle High" value={currentCycleHigh.raw} numeric />
-        ) : (
-          <div className="min-w-0">
-            <FieldLabel>Current Cycle High</FieldLabel>
-            <div className="mt-1 text-[12px] leading-snug text-ink-3">Not established</div>
-          </div>
-        )}
-        {levels.givebackFromCurrentCycleHighPct !== null ? (
-          <Field
-            label="Current Giveback"
-            value={`${levels.givebackFromCurrentCycleHighPct.toFixed(1)}%`}
-            numeric
-          />
-        ) : null}
-      </div>
-
-      {historicalResistance ? (
-        <div className="mt-3 rounded-sm border border-line bg-panel/60 px-3 py-2">
-          <div className="flex flex-wrap items-baseline gap-2">
-            <FieldLabel>Historical Resistance</FieldLabel>
-            <span className="num text-[13px] font-semibold text-ink">
-              {historicalResistance.value !== null
-                ? formatPrice(historicalResistance.value)
-                : historicalResistance.raw}
-            </span>
-            {historicalResistance.label ? (
-              <StatusBadge label={historicalResistance.label} tone="dim" />
-            ) : null}
-          </div>
-          <p className="mt-1 text-[11px] leading-relaxed text-ink-3">
-            {historicalResistance.raw} · {historicalResistance.field}. {historicalResistance.reason}.
-            This is a prior level, not the high of the current move.
-          </p>
-          {sheetReportedFlush && sheetReportedFlush.basisKind === 'HISTORICAL' ? (
-            <p className="mt-1 text-[11px] leading-relaxed text-ink-3">
-              Sheet-reported distance from that historical level: {sheetReportedFlush.raw} (raw sheet
-              value, retained for audit; not a current-cycle giveback).
-            </p>
-          ) : null}
-        </div>
-      ) : null}
-
-      {unverifiedRunHigh ? (
-        <div className="mt-3">
-          <FieldLabel>Recent Run High (unverified basis)</FieldLabel>
-          <p className="num mt-1 text-[12px] text-ink-2">
-            {unverifiedRunHigh.raw}{' '}
-            <span className="text-[11px] text-ink-3">
-              ({unverifiedRunHigh.field}); nothing establishes whether this belongs to the current
-              cycle
-            </span>
-          </p>
-          {sheetReportedFlush && sheetReportedFlush.basisKind !== 'HISTORICAL' ? (
-            <p className="mt-1 text-[11px] text-ink-3">
-              Sheet-reported flush from that level: {sheetReportedFlush.raw}.
-            </p>
-          ) : null}
-        </div>
-      ) : null}
-
-      <ProseField label="Cycle Reasoning" value={research?.cycleReasoning ?? ''} className="mt-3" />
-      <ProseField label="Recent Major Runs" value={research?.recentMajorRuns ?? ''} className="mt-3" />
-      <ProseField
-        label="Historical Runner Notes"
-        value={research?.historicalRunnerNotes ?? ''}
-        className="mt-3"
-      />
-      <ProseField label="Prior Runner (TODAY)" value={ticker.priorRunner} className="mt-3" />
-      <ProseField label="Split History" value={research?.splitHistory ?? ''} className="mt-3" />
-    </Section>
-  );
-}
-
-function StructuralIntelligence({
-  ticker,
-  research,
-}: {
-  ticker: MomentumTicker;
-  research: StructuralResearch | undefined;
-}) {
-  return (
-    <Section title="Structural Intelligence">
-      <div className="flex flex-wrap items-center gap-2">
-        <StructureBadge
-          state={ticker.structure.state}
-          raw={ticker.structure.raw || ticker.structure.floatRaw}
-        />
-        {ticker.structure.floatRaw ? (
-          <span className="num text-[11px] text-ink-3">TODAY float cell: {ticker.structure.floatRaw}</span>
-        ) : null}
-      </div>
-
-      <ProseField label="Structure Flags (TODAY)" value={ticker.structure.raw} className="mt-3" />
-      <ProseField label="Supply Evidence" value={research?.supplyEvidence ?? ''} className="mt-3" />
-      <ProseField
-        label="Registration / Prospectus"
-        value={research?.registrationProspectus ?? ''}
-        className="mt-3"
-      />
-      <ProseField
-        label="Offerings / ATM / PIPE"
-        value={research?.offeringsAtmPipe ?? ''}
-        className="mt-3"
-      />
-      <ProseField
-        label="Warrants / Convertibles"
-        value={research?.warrantsConvertibles ?? ''}
-        className="mt-3"
-      />
-      <ProseField
-        label="Other Share Structure"
-        value={research?.otherShareStructure ?? ''}
-        className="mt-3"
-      />
-      <ProseField label="8-K / 6-K" value={research?.currentReports ?? ''} className="mt-3" />
-      <ProseField
-        label="Warning Flags"
-        value={research?.warningFlags ?? ''}
-        className="mt-3"
-        tone="warn"
-      />
-
-      {research?.structureSourceUrls.length ? (
-        <LinkList label="Structure Sources" urls={research.structureSourceUrls} />
-      ) : null}
-    </Section>
-  );
-}
-
-function Levels({
-  ticker,
-  research,
-}: {
-  ticker: MomentumTicker;
-  research: StructuralResearch | undefined;
-}) {
-  // The normalised ladder is rendered above; these are the verbatim source
-  // cells, kept so a trader can audit what the ladder was built from.
-  return (
-    <Section title="Level Sources (verbatim)">
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <ProseField label="Key Levels (TODAY)" value={ticker.keyLevels} numeric />
-        <ProseField label="Daily Resistance" value={research?.dailyResistance ?? ''} numeric />
-        <ProseField label="Daily Support" value={research?.dailySupport ?? ''} numeric />
-      </div>
-    </Section>
-  );
-}
-
-/** The sheet's own notes. Distinct from the live Desk Read at the top. */
-function SheetDeskNotes({
-  ticker,
-  research,
-}: {
-  ticker: MomentumTicker;
-  research: StructuralResearch | undefined;
-}) {
-  return (
-    <Section title="Desk Notes (Sheet)">
-      <ProseField
-        label={ticker.warning.source === 'PM' ? 'Current Warning (PM)' : 'Current Warning'}
-        value={ticker.warning.current}
-        tone="warn"
-      />
-      {ticker.warning.source === 'PM' && ticker.warning.original ? (
-        <ProseField label="Original Warning Shot" value={ticker.warning.original} className="mt-3" />
-      ) : null}
-      <ProseField label="Confirmation" value={ticker.confirmation} className="mt-3" />
-      <ProseField label="Analyst Notes (RESEARCH)" value={research?.analystNotes ?? ''} className="mt-3" />
-      <ProseField label="Notes (TODAY)" value={ticker.notes} className="mt-3" />
-    </Section>
-  );
-}
-
 /**
  * A Tier 3 group: present, complete, and out of the way until asked for.
  *
@@ -1016,24 +658,3 @@ function ProseField({
   );
 }
 
-function LinkList({ label, urls }: { label: string; urls: string[] }) {
-  return (
-    <div className="mt-3">
-      <FieldLabel>{label}</FieldLabel>
-      <ul className="mt-1 space-y-1">
-        {urls.map((url) => (
-          <li key={url}>
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[11px] break-all text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
-            >
-              {url}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
