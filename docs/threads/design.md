@@ -774,6 +774,14 @@ The week-by-week working record to 2026-09-21 is in
 "why is it like that"; every conclusion is also in a commit message, with the
 code beside it. Rulings that still bind were carried above.
 
+## Keep any text simple: his rule, 2026-10-09
+
+**His words, verbatim** (Integration chat, user turn 2026-10-09T21:52:19.522Z, recorded in `docs/threads/README.md`): *"'The board ranks the common stocks and ADRs the desk tracks' this is uncessarily complex. rule for any text: keep it simple. 4 things are mentioned here where onnly two are necessary. board, desk, stocks, adrs. just say the board ranks tickers...."*
+
+- Covers everything: on-screen labels, hovers and captions, product copy, and every message a seat writes to him.
+- Name only what the sentence needs. Count the nouns a reader must hold and cut each one the meaning survives without.
+- For this seat that means every string I build or propose, and every line I send toward him.
+
 ## Reporting to him — his rule, 2026-09-25
 
 **HIS WORDS, VERBATIM, AND THEY OVERRIDE EVERY REPORTING HABIT BELOW:**
