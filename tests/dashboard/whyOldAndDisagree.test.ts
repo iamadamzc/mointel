@@ -5,14 +5,15 @@
  *    move) stops leading with its grade: the letter DIMS and the headline reads
  *    "No fresh catalyst · latest: <date> · <summary>". `OLD` stays; rows where
  *    no catalyst was found are unchanged.
- * 2. When the Sheet and the desk's own research disagree on the catalyst, the
- *    Discovery row MARKS it. The row's letter and headline come from the Sheet
- *    first, so the disagreement was visible only in the drawer.
+ * 2. (Superseded by the Sheet switch-off, step 3a, Integration 36th.) The
+ *    Sheet/desk disagreement mark is gone with the Sheet's letter: the row is
+ *    the desk's own.
  *
  * Every case is checked from both sides: the row that should change and the
  * row that should not.
  */
 
+import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
@@ -136,47 +137,32 @@ describe('an OLD catalyst row', () => {
   });
 });
 
-describe('a Sheet / desk disagreement on the catalyst', () => {
-  it('is marked with both letters when the families differ', () => {
-    const why = resolveWhy(row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0, explainsMove: true }), { grade: 'C' }));
-    // The row's own letter is still the Sheet's, as before...
-    expect(why.grade).toBe('C');
-    // ...and now it says the desk disagrees.
-    expect(why.disagreement).toEqual({ sheet: 'C', desk: 'A' });
+/*
+ * DESK ONLY (Sheet switch-off step 3a, Integration 36th). The row's letter and headline were the Sheet's
+ * when it had one, and the desk's stood as a "sheet C · desk A" mark: the hover he named ("users dont know
+ * the difference between the sheet and the desk"). Now the row is the desk's, and the mark is gone.
+ */
+describe('the Why cell is the desk own, whatever the Sheet says', () => {
+  it('shows the desk letter and headline, not the Sheet ones, and no mark', () => {
+    const why = resolveWhy(row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0, explainsMove: true }), { grade: 'C', line: 'Sheet line' }));
+    expect(why.grade).toBe('A');
+    expect(why.headline).not.toContain('Sheet line');
+    expect(why).not.toHaveProperty('disagreement');
     const html = renderToStaticMarkup(createElement(WhyCell, { why }));
-    expect(html).toContain('>sheet C · desk A</span>');
+    expect(html).not.toMatch(/sheet|· desk/i);
   });
 
-  it('is not marked when they agree', () => {
-    const why = resolveWhy(row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0, explainsMove: true }), { grade: 'A' }));
-    expect(why.disagreement).toBeNull();
-    expect(renderToStaticMarkup(createElement(WhyCell, { why }))).not.toContain('· desk');
+  it('a Sheet grade with no desk dossier is not a grade: the row reads not researched', () => {
+    const why = resolveWhy(row({ ...intel({ days: 0 }), analysis: null } as AutoIntelligence, { grade: 'A', line: 'Sheet line' }));
+    expect(why.code).toBe('NOT_RESEARCHED');
+    expect(why.grade).toBe('—');
+    expect(why.headline).toBe('Not researched');
   });
 
-  it('is not marked when only one side has a grade', () => {
-    expect(resolveWhy(row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0 }))).disagreement).toBeNull();
-  });
-
-  it('prints the desk NONE as "none", never as a second C', () => {
-    const why = resolveWhy(row(intel({ grade: 'NONE', days: 0, explainsMove: true }), { grade: 'C' }));
-    expect(why.disagreement).toEqual({ sheet: 'C', desk: 'none' });
-  });
-
-  it('follows the merge verdict, so the row and the drawer cannot disagree about it', () => {
-    const r = row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0, explainsMove: true }), { grade: 'C' });
-    const catalyst = r.comparison?.comparisons.find((c) => c.field === 'catalyst');
-    expect(catalyst?.agreement).toBe('DISAGREE');
-    // Flip the merge's verdict and the mark follows it.
-    const agreed = {
-      ...r,
-      comparison: r.comparison && {
-        ...r.comparison,
-        comparisons: r.comparison.comparisons.map((c) =>
-          c.field === 'catalyst' ? { ...c, agreement: 'AGREE' as const } : c,
-        ),
-      },
-    };
-    expect(resolveWhy(agreed).disagreement).toBeNull();
+  it('the no-catalyst hover names no outside source (Marketing 644a67e0 S1, Commercial read 60)', () => {
+    const source = readFileSync('lib/dashboard/why.ts', 'utf8');
+    expect(source).toContain("title: 'The desk has not established a catalyst for this name.',");
+    expect(source).not.toContain('outside research');
   });
 });
 

@@ -216,8 +216,8 @@ describe('Desk Read construction', () => {
     expect(read.telemetry.source).toBe('ALPACA');
     expect(read.telemetry.rvolRank).toBe(88);
 
-    // Catalyst comes from the sheet; the sheet states no structure, so the
-    // automatic conclusion fills that slot rather than leaving it blank.
+    // Catalyst and structure are the desk's own (Sheet switch-off 3a): the Sheet
+    // row beside them is ignored.
     //
     // Cycle is no longer among them: it is computed from bars and leaves the
     // Sheet/Auto axis entirely. With no computed history on this fixture it
@@ -225,6 +225,7 @@ describe('Desk Read construction', () => {
     expect(read.cycle.label).toBe('CYCLE NOT ESTABLISHED');
     expect(read.cycle.provenance).toBe('NONE');
     expect(read.catalyst.label).toContain('A');
+    expect(read.catalyst.provenance).toBe('AUTO');
     expect(read.structure.label).toBe('CAUTION');
     expect(read.structure.provenance).toBe('AUTO');
   });
@@ -246,21 +247,26 @@ describe('Desk Read construction', () => {
     expect(read.structure.label).toBe('NOT ANALYZED');
   });
 
-  it('keeps both conclusions and flags the conflict', () => {
-    // Sheet says the structure is fine; the automatic layer says DIRTY FLOAT.
+  it('a Sheet view never replaces or contests the desk own (3a)', () => {
+    // Sheet says the structure is clean; the desk says DIRTY FLOAT. The desk's stands, alone.
     const row = buildDeskRow(
       'FIEE',
-      sheet({ structureFlags: 'CLEAN — no shelf or ATM located' }),
+      sheet({ structureFlags: 'CLEAN: no shelf or ATM located', catalystGrade: 'C' }),
       null,
       demand(),
       intelligence({ structure: { ...dossier().structure, structureClassification: 'DIRTY_FLOAT' } }),
     );
     const read = buildDeskRead(row);
+    expect(read.structure.label).toBe('DIRTY FLOAT');
+    expect(read.structure.provenance).toBe('AUTO');
+    expect(read.structure).not.toHaveProperty('otherLabel');
+    expect(read.catalyst.label).not.toMatch(/^C/);
+  });
 
-    expect(read.structure.provenance).toBe('CONFLICT');
-    // The human conclusion still leads; the automatic one is retained beside it.
-    expect(read.structure.label).toBe('CLEAN');
-    expect(read.structure.otherLabel).toBe('DIRTY FLOAT');
+  it('a Sheet row alone is no conclusion', () => {
+    const read = buildDeskRead(buildDeskRow('FIEE', sheet(), null, demand()));
+    expect(read.catalyst.label).toBe('NOT ANALYZED');
+    expect(read.structure.label).toBe('NOT ANALYZED');
   });
 });
 
@@ -298,228 +304,42 @@ describe('Desk Read level selection', () => {
   });
 });
 
-/* ------------------------------------------------------------ why now / risk */
+/* --------------------------------------------------------- narrative (desk) */
 
-describe('Desk Read narrative fields', () => {
-  it('uses the agreed automatic summary when both sources are usable', () => {
+describe('Desk Read narratives are the desk own (Sheet switch-off 3a)', () => {
+  it('Why Now is the dossier catalyst summary, never the Sheet line', () => {
     const read = buildDeskRead(
-      buildDeskRow('FIEE', sheet({ catalyst: 'Friday earnings remain fresh.' }), null, demand(), intelligence()),
+      buildDeskRow('FIEE', sheet({ catalyst: 'Sheet catalyst line' }), null, demand(), intelligence()),
     );
-
-    expect(read.whyNow.provenance).toBe('SHEET_AUTO');
     expect(read.whyNow.text).toBe('Fiscal-year results released Friday after the close.');
+    expect(read.whyNow.provenance).toBe('AUTO');
     expect(read.whyNow.qualifier).toBeNull();
+    expect(read.whyNow).not.toHaveProperty('counterText');
   });
 
-  it('falls back to the sheet catalyst text', () => {
+  it('invents nothing when the desk states no catalyst', () => {
     const read = buildDeskRead(
-      buildDeskRow('FIEE', sheet({ catalyst: 'Contract award announced premarket.' }), null, demand()),
+      buildDeskRow('FIEE', sheet({ catalyst: 'Sheet catalyst line' }), null, demand(), intelligence({
+        catalyst: { ...dossier().catalyst, summary: '' },
+      })),
     );
-
-    expect(read.whyNow.provenance).toBe('SHEET');
-    expect(read.whyNow.text).toBe('Contract award announced premarket.');
-  });
-
-  it('invents nothing when no source states a catalyst', () => {
-    const read = buildDeskRead(buildDeskRow('FIEE', sheet({ catalyst: '' }), null, demand()));
-
     expect(read.whyNow.text).toBeNull();
     expect(read.whyNow.provenance).toBe('NONE');
   });
 
-  it('quotes a structural warning that exists and none when it does not', () => {
-    const withWarning = buildDeskRead(
-      buildDeskRow('FIEE', sheet(), null, demand(), intelligence()),
+  it('the structural warning is the dossier first warning, never the Sheet flags', () => {
+    const read = buildDeskRead(
+      buildDeskRow('FIEE', sheet({ structureFlags: 'DIRTY FLOAT: Sheet flag' }), null, demand(), intelligence()),
     );
-    expect(withWarning.structuralWarning.provenance).toBe('AUTO');
-    expect(withWarning.structuralWarning.text).toContain('Public float is unresolved');
-
-    const withoutWarning = buildDeskRead(buildDeskRow('FIEE', sheet(), null, demand()));
-    expect(withoutWarning.structuralWarning.text).toBeNull();
-  });
-});
-
-/* ---------------------------------------------------------- merged narrative */
-
-/**
- * The contradiction these close: the Desk Read badge read A — STRONG/FRESH from
- * the human review while the Why Now line underneath it said no company
- * explanation could be established, because the automatic text won simply by
- * existing. A source's own admission of incomplete coverage is not evidence
- * against the other side's conclusion.
- */
-describe('merged Why Now', () => {
-  const incompleteAuto = () => ({
-    ...intelligence({
-      catalyst: {
-        ...dossier().catalyst,
-        catalystGrade: 'UNKNOWN' as const,
-        catalystStatus: 'UNKNOWN' as const,
-        summary:
-          'Catalyst coverage is incomplete: the bundle contains no company/news catalyst source.',
-      },
-    }),
-    coverageIncomplete: true,
+    expect(read.structuralWarning.text).toContain('capacity, not confirmed selling');
+    expect(read.structuralWarning.text).not.toContain('Sheet flag');
   });
 
-  it('keeps the human catalyst when automatic coverage is incomplete', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ catalyst: 'Friday earnings remain fresh; no new weekend filing found.' }),
-      null,
-      demand(),
-      incompleteAuto(),
-    );
-    const read = buildDeskRead(row);
-
-    expect(read.whyNow.text).toBe('Friday earnings remain fresh; no new weekend filing found.');
-    expect(read.whyNow.provenance).toBe('SHEET');
-    expect(read.whyNow.qualifier).toBe('AUTO COVERAGE INCOMPLETE');
-    // The automatic layer's own limitation must not become the headline.
-    expect(read.whyNow.text).not.toContain('coverage is incomplete');
-  });
-
-  it('does not downgrade a known catalyst to UNKNOWN', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ catalyst: 'Friday earnings remain fresh.' }),
-      null,
-      demand(),
-      incompleteAuto(),
-    );
-
-    // The badge keeps the reviewed grade; only the narrative is qualified.
-    expect(buildDeskRead(row).catalyst.label).toContain('A');
-  });
-
-  it('uses the agreed conclusion when both sources are usable', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ catalyst: 'Friday earnings remain fresh.' }),
-      null,
-      demand(),
-      intelligence(),
-    );
-    const read = buildDeskRead(row);
-
-    expect(read.whyNow.provenance).toBe('SHEET_AUTO');
-    expect(read.whyNow.qualifier).toBeNull();
-  });
-
-  it('shows a conflict as a conflict, without picking a winner', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ catalystGrade: 'C — WEAK/NONE', catalyst: 'No verifiable catalyst located.' }),
-      null,
-      demand(),
-      intelligence(),
-    );
-    const read = buildDeskRead(row);
-
-    expect(read.whyNow.provenance).toBe('CONFLICT');
-    expect(read.whyNow.qualifier).toBe('SOURCES DISAGREE');
-    // Both readings survive on screen.
-    expect(read.whyNow.text).toBe('No verifiable catalyst located.');
-    expect(read.whyNow.counterText).toBe('Fiscal-year results released Friday after the close.');
-  });
-
-  it('uses the automatic reading when the sheet is silent', () => {
-    const read = buildDeskRead(buildDeskRow('FIEE', null, null, demand(), intelligence()));
-
-    expect(read.whyNow.provenance).toBe('AUTO');
-    expect(read.whyNow.text).toBe('Fiscal-year results released Friday after the close.');
-  });
-});
-
-describe('merged structural warning', () => {
-  it('keeps the human structural intelligence when automatic coverage is incomplete', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ structureFlags: 'DIRTY FLOAT — 22.47M-share resale tape' }),
-      null,
-      demand(),
-      { ...intelligence(), coverageIncomplete: true },
-    );
-    const read = buildDeskRead(row);
-
-    // A sheet DIRTY_FLOAT must not quietly read as the automatic CAUTION.
-    expect(read.structuralWarning.text).toContain('DIRTY FLOAT');
-    expect(read.structuralWarning.provenance).toBe('SHEET');
-    expect(read.structuralWarning.qualifier).toBe('AUTO COVERAGE INCOMPLETE');
-    expect(read.structure.label).toBe('DIRTY FLOAT');
-  });
-
-  it('uses the automatic warning when the sheet states no structure', () => {
-    const read = buildDeskRead(buildDeskRow('FIEE', sheet(), null, demand(), intelligence()));
-
-    expect(read.structuralWarning.provenance).toBe('AUTO');
-    expect(read.structuralWarning.text).toContain('Public float is unresolved');
-  });
-});
-
-/* ------------------------------------------------------ sheet / auto display */
-
-/**
- * Which of the four states the drawer must render.
- *
- * Agreement collapses to a provenance mark, a conflict opens the comparison
- * table, and a one-sided ticker says so plainly. Incomplete automatic coverage
- * must never be dressed up as a disagreement.
- */
-describe('Sheet / AUTO display state', () => {
-  it('reports agreement compactly', () => {
-    const row = buildDeskRow('FIEE', sheet(), null, demand(), intelligence());
-
-    expect(row.provenance).toBe('SHEET_AUTO_AGREE');
-    expect(row.comparison?.conflict).toBe(false);
-    expect(buildDeskRead(row).catalyst.provenance).toBe('SHEET_AUTO');
-  });
-
-  it('reports a conflict with both sides intact', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ cycle: '🔴 BACKSIDE' }),
-      null,
-      demand(),
-      intelligence(),
-    );
-
-    expect(row.provenance).toBe('CONFLICT');
-    expect(row.comparison?.conflict).toBe(true);
-
-    const cycle = row.comparison!.comparisons.find((item) => item.field === 'cycle')!;
-    expect(cycle.sheet).toBe('RED_BACKSIDE');
-    expect(cycle.auto).toBe('GREEN_FRESH_FRONTSIDE');
-    expect(cycle.reason).toBe('INTERPRETATION_DIFFERENCE');
-  });
-
-  it('reports AUTO when only the automatic layer has looked', () => {
-    const row = buildDeskRow('FIEE', null, null, demand(), intelligence());
-
-    expect(row.provenance).toBe('AUTO');
-    expect(row.comparison?.comparisons ?? []).toHaveLength(0);
-    expect(buildDeskRead(row).catalyst.provenance).toBe('AUTO');
-  });
-
-  it('reports SHEET when only the human review exists', () => {
-    const row = buildDeskRow('FIEE', sheet(), null, demand());
-
-    expect(row.provenance).toBe('SHEET');
-    expect(buildDeskRead(row).catalyst.provenance).toBe('SHEET');
-  });
-
-  it('does not turn incomplete automatic coverage into a disagreement', () => {
-    const partial = {
-      ...intelligence({
-        cycle: { ...dossier().cycle, cycleClassification: 'UNKNOWN' as const },
-      }),
-      coverageIncomplete: true,
-    };
-    const row = buildDeskRow('FIEE', sheet(), null, demand(), partial);
-
-    const cycle = row.comparison!.comparisons.find((item) => item.field === 'cycle')!;
-    expect(cycle.agreement).toBe('SHEET_ONLY');
-    expect(row.comparison?.conflict).toBe(false);
+  it('incomplete coverage is disclosed in the passed words (Marketing 36d1d600, Commercial read 60a)', () => {
+    const intel = { ...intelligence(), coverageIncomplete: true };
+    const read = buildDeskRead(buildDeskRow('FIEE', null, null, demand(), intel));
+    expect(read.whyNow.qualifier).toBe('SOURCE COVERAGE INCOMPLETE');
+    expect(read.structuralWarning.qualifier).toBe('SOURCE COVERAGE INCOMPLETE');
   });
 });
 
@@ -531,7 +351,9 @@ describe('structural summary', () => {
     const summary = buildStructureSummary(row)!;
 
     expect(summary.classification).toBe('CAUTION');
-    expect(summary.float).toBe('Unknown');
+    // The float cell's own view (3b, Marketing 644a67e0 S5); unwired, the desk has computed none.
+    expect(summary.float).toEqual({ face: 'Not computed', date: null, kind: 'notComputed' });
+    expect(summary).not.toHaveProperty('floatCheck');
     expect(summary.floatConfidence).toBe('UNKNOWN');
 
     expect(summary.supply).toEqual([
@@ -565,7 +387,6 @@ describe('cycle is outside the Sheet/Auto axis', () => {
       buildDeskRow('FIEE', sheet({ cycle: '🔴 BACKSIDE' }), null, demand(), intelligence()),
     ]) {
       expect(['COMPUTED', 'NONE']).toContain(buildDeskRead(row).cycle.provenance);
-      expect(buildDeskRead(row).cycle.otherLabel).toBeNull();
     }
   });
 
