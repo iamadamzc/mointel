@@ -57,6 +57,25 @@ describe('the landing copy', () => {
     expect(ALL.filter((s) => !page.includes(s))).toEqual([]);
   });
 
+  /**
+   * SHIP BLOCKER, RED ON PURPOSE UNTIL THE IMAGES LAND (Commercial read 43, 268a988d): an empty
+   * slot prints a literal "{date}" in its caption and an aria-label for an image that is not
+   * there. So every slot needs an image that has passed Commercial and a caption with its real
+   * date and time before the page can pass the gate.
+   */
+  it('has an image and a filled caption in every screenshot slot', () => {
+    const shots = [
+      copy.HERO_SHOT,
+      copy.ACCESS_SHOT,
+      ...copy.FLOAT_SECTION.shots,
+      ...copy.SECTIONS.flatMap((s) => s.shots),
+      ...copy.LATER_SECTIONS.flatMap((s) => s.shots),
+    ];
+    expect(shots.length).toBe(16);
+    expect(shots.filter((s) => !s.src || !s.width || !s.height).map((s) => s.slot)).toEqual([]);
+    expect(shots.filter((s) => /\{(date|time)\}/.test(s.caption)).map((s) => s.slot)).toEqual([]);
+  });
+
   it.each(CANVASES)('is all in %s', (file) => {
     const canvas = readable(fs.readFileSync(file, 'utf8'));
     // The section links are desktop-only (md:inline on the page); the phone canvas draws none.
