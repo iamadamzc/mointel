@@ -10,8 +10,13 @@ import {
   type AssessmentTickerRecord,
 } from '@/lib/market/store/assessmentRepo';
 import { openDatabase, SCHEMA_VERSION, type MarketDatabase } from '@/lib/market/store/db';
-import { readSetupGrades, resetSetupGradesCache } from '@/lib/market/setupGradesRead';
-import { PRIORITY_RULE, priorityGrade } from '@/lib/research/priorityGrade';
+import { GRADES, READINGS, readSetupGrades, resetSetupGradesCache } from '@/lib/market/setupGradesRead';
+import {
+  PRIORITY_RULE,
+  priorityGrade,
+  type PriorityGrade as PriorityGradeValue,
+  type Reading as PriorityReading,
+} from '@/lib/research/priorityGrade';
 
 /**
  * The Priority badge, end to end on the store (his "do the badge", 2026-10-09;
@@ -254,5 +259,53 @@ describe('readSetupGrades', () => {
     expect(map.IVF!.basis.supply).toBe('LIMITED');
     expect(map.SHORT).toBeNull();
     expect(map.WORD).toBeNull();
+  });
+
+  it('logs each null by cause, so a stored grade the client cannot show is counted', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'COMPLETE', `${D}T14:01:00.000Z`);
+    insertAssessmentTickers(db, id, [ticker(), ticker({ ticker: 'ODD' })]);
+    db.prepare(`UPDATE desk_assessment_tickers SET priority_grade = 'D' WHERE ticker = 'ODD'`).run();
+    db.prepare(`INSERT INTO desk_assessment_tickers (assessment_id, ticker) VALUES (?, 'OLD')`).run(id);
+
+    const lines: string[] = [];
+    readSetupGrades(db, 'f', ['IVF', 'ODD', 'OLD', 'NONE'], (line) => lines.push(line));
+    expect(lines).toEqual([
+      '[grades] read 4 name(s): 1 graded; null by cause: UNGRADED 1, UNKNOWN_GRADE 1, BAD_BASIS 0, NO_RULE 0, NO_COMPLETED_AT 0',
+    ]);
+    // A repeat read of the same names inside the same checkpoint is cached and logs nothing.
+    readSetupGrades(db, 'f', ['IVF', 'ODD'], (line) => lines.push(line));
+    expect(lines).toHaveLength(1);
+  });
+});
+
+describe('stored grade values', () => {
+  it('accepts every grade the writer can store', () => {
+    /*
+     * The writer's type, as a Record, so tsc refuses this literal when a grade
+     * is added to PriorityGrade; the assertion then fails until the reader's
+     * GRADES learns it too (Commercial 47a: a stored grade outside GRADES reads
+     * as "no setup grade recorded", which would be false).
+     */
+    const written: Record<PriorityGradeValue, true> = {
+      A: true,
+      B: true,
+      C: true,
+      AVOID: true,
+      UNKNOWN: true,
+      NOT_YET: true,
+    };
+    for (const grade of Object.keys(written)) expect(GRADES.has(grade)).toBe(true);
+  });
+
+  it('accepts every reading the writer can store', () => {
+    const written: Record<PriorityReading, true> = {
+      STRONG: true,
+      LIMITED: true,
+      RISK: true,
+      UNKNOWN: true,
+      NOT_YET: true,
+    };
+    for (const reading of Object.keys(written)) expect(READINGS.has(reading)).toBe(true);
   });
 });

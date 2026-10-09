@@ -39,8 +39,36 @@ export function resetSetupGradesCache(): void {
   cache = null;
 }
 
-const GRADES: ReadonlySet<string> = new Set<StoredGrade>(['A', 'B', 'C', 'AVOID', 'UNKNOWN', 'NOT_YET']);
-const READINGS: ReadonlySet<string> = new Set<StoredReading>(['STRONG', 'LIMITED', 'RISK', 'UNKNOWN', 'NOT_YET']);
+/*
+ * Every stored value, as a Record keyed by the type, so tsc rejects a missing
+ * or extra member: a new StoredGrade or StoredReading cannot ship without its
+ * entry here (Commercial 47a, Integration 36th). A Set literal typed
+ * Set<StoredGrade> did not enforce that: it accepts a subset.
+ */
+const GRADE_VALUES: Record<StoredGrade, true> = {
+  A: true,
+  B: true,
+  C: true,
+  AVOID: true,
+  UNKNOWN: true,
+  NOT_YET: true,
+};
+const READING_VALUES: Record<StoredReading, true> = {
+  STRONG: true,
+  LIMITED: true,
+  RISK: true,
+  UNKNOWN: true,
+  NOT_YET: true,
+};
+export const GRADES: ReadonlySet<string> = new Set(Object.keys(GRADE_VALUES));
+export const READINGS: ReadonlySet<string> = new Set(Object.keys(READING_VALUES));
+
+/**
+ * Why a stored row read as null. UNGRADED is expected (rows captured before
+ * v29); every other cause is a stored grade the client cannot show, so the
+ * board would say no grade was recorded when one was. Zero is expected.
+ */
+export type RejectCause = 'UNGRADED' | 'UNKNOWN_GRADE' | 'BAD_BASIS' | 'NO_RULE' | 'NO_COMPLETED_AT';
 
 /**
  * The stored basis, or null unless it carries every criterion with a known
@@ -67,6 +95,7 @@ export function readSetupGrades(
   db: MarketDatabase,
   dbPath: string,
   symbols: readonly string[],
+  log: (line: string) => void = (line) => console.log(line),
 ): Record<string, SetupGrade | null> | undefined {
   const newest = db
     .prepare(`SELECT MAX(id) AS id FROM desk_assessments WHERE status = 'COMPLETE'`)
@@ -98,6 +127,14 @@ export function readSetupGrades(
         ORDER BY a.id DESC
         LIMIT 1`,
     );
+    const rejected: Record<RejectCause, number> = {
+      UNGRADED: 0,
+      UNKNOWN_GRADE: 0,
+      BAD_BASIS: 0,
+      NO_RULE: 0,
+      NO_COMPLETED_AT: 0,
+    };
+    let graded = 0;
     for (const symbol of missing) {
       const row = latest.get(symbol) as
         | { grade: string | null; basis: string | null; rule: string | null; completedAt: string | null }
@@ -107,18 +144,41 @@ export function readSetupGrades(
         continue;
       }
       const basis = parseBasis(row.basis);
-      current.values.set(
-        symbol,
-        row.grade === null || !GRADES.has(row.grade) || basis === null || row.rule === null || row.completedAt === null
-          ? null
-          : {
-              grade: row.grade as StoredGrade,
-              basis,
-              rule: row.rule,
-              checkpointCompletedAt: row.completedAt,
-            },
-      );
+      const cause: RejectCause | null =
+        row.grade === null
+          ? 'UNGRADED'
+          : !GRADES.has(row.grade)
+            ? 'UNKNOWN_GRADE'
+            : basis === null
+              ? 'BAD_BASIS'
+              : row.rule === null
+                ? 'NO_RULE'
+                : row.completedAt === null
+                  ? 'NO_COMPLETED_AT'
+                  : null;
+      if (cause !== null || basis === null) {
+        rejected[cause ?? 'BAD_BASIS'] += 1;
+        current.values.set(symbol, null);
+        continue;
+      }
+      graded += 1;
+      current.values.set(symbol, {
+        grade: row.grade as StoredGrade,
+        basis,
+        rule: row.rule as string,
+        checkpointCompletedAt: row.completedAt as string,
+      });
     }
+    /*
+     * One line per fill (a fill happens when a checkpoint completes or a new
+     * name appears, never on every request), so a stored grade the client
+     * cannot show is counted where Ops reads the journal. Zero is expected
+     * for every cause except UNGRADED.
+     */
+    log(
+      `[grades] read ${missing.length} name(s): ${graded} graded; null by cause: ` +
+        (Object.keys(rejected) as RejectCause[]).map((c) => `${c} ${rejected[c]}`).join(', '),
+    );
   }
 
   const out: Record<string, SetupGrade | null> = {};
