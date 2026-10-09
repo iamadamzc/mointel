@@ -473,6 +473,9 @@ describe('resolveWhy', () => {
   it('distinguishes not-researched from no-catalyst-found', () => {
     const notResearched = resolveWhy(buildDeskRow('SUGP', null, null, demand(), null), NOW);
     expect(notResearched.code).toBe('NOT_RESEARCHED');
+    // Commercial's words, ruled by Integration 35th: no "yet", which implied research was coming.
+    expect(notResearched.headline).toBe('Not researched');
+    expect(notResearched.title).toBe('Not researched, so there is no catalyst grade and no freshness to colour.');
 
     const noCatalyst = resolveWhy(
       buildDeskRow(
