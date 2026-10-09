@@ -16,4 +16,12 @@ Design-tmi. His ruling (Integration 35th's relay, his turn 2026-10-09T01:09:27.4
 | `16a-sign-in.png` | S16 | The sign-in page (`/signin`, where `/desk` sends a signed-out visitor) | 2026-10-08 21:11 ET, public |
 | `17-float-explainer.png` | S17 | The float explainer page `/are-float-quotes-real`, top 2,400 px | 2026-10-08 21:11 ET, public |
 
+**Second pass, review link id 70** (his yes, Integration chat 2026-10-09T01:59:40Z, "yes create review link"; minted 22:53:23 ET, 1 hour, REVOKED 22:54:33 ET, dead by content). The review band was hidden with injected CSS on that one element before each capture; everything else renders as on a signed-in desk. Production `f531e1af` (verified live by Ops and Integration).
+
+| File | Slot | What it shows | Captured |
+| --- | --- | --- | --- |
+| `15-between-sessions-inline-briefing-and-frozen-board.png` | S15 | Between sessions (NEXT-DAY PREP): the inline briefing leading the page (the Evening briefing for Fri, Oct 9, its 10 pm edition) above the frozen board with Back to live. 2,560 x 1,600 | 2026-10-08 22:54:18 ET (desk header), production |
+
+Taken and NOT kept: S12 and S13 from link 70. The capture selector picked the report's scrolling content (3,744 css px tall) instead of the visible modal box, so the images are mostly unpainted; my tool's error, fixed (the selector now refuses anything taller than the viewport). Retake with the next link. Also seen: the 10 pm edition's revision line said the summary was written for this edition while the Summary block read "No summary in this report." (the rewrite was struck); ruled by Integration 36th, words asked of Marketing.
+
 **Still to take:** S1 (board in session, Top 12), S2 (a moving row and the caption), S3 (a filter on, the banner and its second line), S4 (counts strip with a chip active), S6 (Now live, and "not live"), S8 (Focus with two names pinned: a read-only review view cannot pin, so this needs his signed-in board or a local render), richer S9 to S11 on a researched name, all after 10:00 ET on a session day; S12 with a Summary present and S13 (the briefing line and the 10 pm revision line) after the 10 pm edition; S14 (the not-updating banner) only in a real outage, or a local render labelled as patched; S15 (frozen board with Back to live) when the board is empty between sessions; S16 entry gate (behind sign-in; a local render). Not taken: S7, the setup grade is hidden until grades are stored.
