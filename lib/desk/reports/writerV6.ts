@@ -48,9 +48,12 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
  * ruling 2026-10-08 after report 25 ran 128 words, final at 151ca1bb): a catalyst clause only for fresh news, twelve words at
  * most; the narrative sheet hands over a catalyst for FRESH_FOUND only and words every state as the recap's sentence 2 does
  * ("no research at this checkpoint" for none); no cycle label on any named name, and the after-hours line is the move only
- * (Commercial's read of 9dc02974; still 13, which never ran).
+ * (Commercial's read of 9dc02974; still 13, which never ran). 14: every claim a rule makes the model write is a given
+ * fact (the 10-08 EVENING Summary was struck: "the highest peaks" was true but not on the sheet): the named movers'
+ * labels state their rank by peak, the 50 percent count states it is among the counted names, and the name rule says
+ * how each kind's names were chosen (an intraday leader is chosen by rank and may be down).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 13;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 14;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -118,7 +121,7 @@ function namedClauses(name: { status: string | null; summary: string | null }): 
 function recapSheet(facts: NarrativeFacts): string[] {
   const lines: string[] = [];
   if (facts.movers50 !== null) {
-    lines.push(`ran at least 50 percent above the prior close, on the day (by the regular-session high): ${n(facts.movers50)}`);
+    lines.push(`among the counted names, ran at least 50 percent above the prior close, on the day (by the regular-session high): ${n(facts.movers50)}`);
     if (facts.movers50 > 0) {
       if (facts.gaveBack !== null) lines.push(`of those, gave the entire move back (closed at or below the prior close): ${n(facts.gaveBack)}`);
       if (facts.keptHalf !== null) lines.push(`of those, kept at least half of the peak gain at the close: ${n(facts.keptHalf)}`);
@@ -127,7 +130,7 @@ function recapSheet(facts: NarrativeFacts): string[] {
   }
   for (const [i, m] of (facts.recapLeaders ?? []).entries()) {
     lines.push(
-      `named mover ${i + 1} (a covered 50 percent mover, by its regular-session high): ${m.ticker}, ran to ${wholePercent(m.highPct)} percent above the prior close and closed ${movedWords(m.closePct)} from the prior close; ${namedClauses(m)}`,
+      `named mover ${i + 1} (of the covered 50 percent movers, the ${i === 0 ? 'highest' : 'second-highest'} peak above the prior close): ${m.ticker}, ran to ${wholePercent(m.highPct)} percent above the prior close and closed ${movedWords(m.closePct)} from the prior close; ${namedClauses(m)}`,
     );
   }
   if (facts.afterHours) {
@@ -170,7 +173,7 @@ const NARRATIVE_RULES = [
   '- PURPOSE: explain what happened in the session, for readers following small-cap momentum. It is documentation and analysis, never a recommendation.',
   '- FACTS, INTERPRETATION AND OPEN QUESTIONS stay separate. Facts: word only the given narrative facts. Interpretation: you may name the pattern the given counts support (for example how many 50 percent movers kept half their peak gain against how many gave it back), and it must rest on the given counts and say so; nothing may rest on nothing. Open questions: what the facts say is not known stays not known.',
   '- Every number is a given number, written exactly as given. Percents are whole numbers as given; never add decimals, never round, never compute. Counts may be spelled out ("nine") or written as digits.',
-  '- Name ONLY the tickers the narrative facts name. They are GAINERS, chosen by the regular-session high on the recap and by the move intraday: never call them the biggest movers in both directions, never "every mover" or "all the runners".',
+  '- Name ONLY the tickers the narrative facts name. They are the names the sheet names: on the recap, GAINERS chosen by their regular-session peak; intraday, the leader ranked first in this range (it may be down) and the next covered gainers by move: never call them the biggest movers in both directions, never "every mover" or "all the runners".',
   '- After-hours figures are ALWAYS labeled "after the close" or "after hours" and never mixed with the day\'s figures.',
   '- A catalyst is news FOUND in our sources, never a cause: never "drove", "sparked", "fueled", "behind the move", "on the news".',
   '- A move and its news sit side by side, never cause and effect: join them with "with" ("{ticker}, up {percent} percent from the prior close, with {the news words given for that name}"), never "after", "on", "following", "amid", "due to", "in response to", "in the wake of" or "on the back of" between a move and its news (the frames "after the close" and "after hours" are not this).',

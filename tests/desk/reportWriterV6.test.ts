@@ -95,19 +95,22 @@ describe('narrativeSheet v2: the given facts, worded exactly as the model must u
 
   it('recap (v3, four sentences): the pattern counts, the named mover, the labeled after-hours name and the fresh pair; no F12b, context, carried count, range, breadth or footnote counts', () => {
     const sheet = narrativeSheet(recapV2);
-    expect(sheet).toContain('ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
+    expect(sheet).toContain('among the counted names, ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
     expect(sheet).toContain('of those, gave the entire move back (closed at or below the prior close): 0');
     expect(sheet).toContain('of those, kept at least half of the peak gain at the close: 4');
     expect(sheet).toContain('of those, the desk covers: 5');
     expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('NXL, ran to 156 percent above the prior close and closed up 76 percent from the prior close; news: fresh news found in our sources');
     expect(sheet.join(' ')).not.toContain('cycle:');
-    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('(a covered 50 percent mover, by its regular-session high): NXL');
+    // Writer v6 14: the rank by peak is a given fact, so "the highest peaks" (sentence 2) is supported (10-08 EVENING strike).
+    expect(sheet.find((l) => l.startsWith('named mover 1'))).toContain('(of the covered 50 percent movers, the highest peak above the prior close): NXL');
+    const two = narrativeSheet({ ...recapV2, recapLeaders: [recapV2.recapLeaders![0]!, { ...recapV2.recapLeaders![0]!, ticker: 'SSM', highPct: 130.3 }] });
+    expect(two.find((l) => l.startsWith('named mover 2'))).toContain('(of the covered 50 percent movers, the second-highest peak above the prior close): SSM');
     const ah = sheet.find((l) => l.startsWith('after the close'))!;
     expect(ah).toContain('ALWAYS say "after the close" or "after hours"');
     // Writer v6 13: the after-hours line is the move only (recap sentence 3).
     expect(ah.endsWith('AMOD, up 62 percent')).toBe(true);
     // Given in the facts and NOT printed since writer v6 12 (recapV2 carries an F12b count and a context).
-    expect(sheet.join(' ')).not.toMatch(/of the covered 50 percent movers|context into the next session|carries into the next session|\$6\.50|\$4\.90|\$19\.20/);
+    expect(sheet.join(' ')).not.toMatch(/of the covered 50 percent movers, (?:had|were)|context into the next session|carries into the next session|\$6\.50|\$4\.90|\$19\.20/);
     expect(sheet.at(-1)).toBe('fresh news in our sources: 2 of the 12 names the desk covers');
     expect(sheet.join(' ')).not.toMatch(/range:|breadth|no regular-session close|split/);
   });
@@ -138,7 +141,7 @@ describe('factSheetV6: the catalyst story only; tag fields are gone', () => {
     expect(SYSTEM_V6).toContain('Among the counted names, none ran at least 50 percent above the prior close.');
     expect(SYSTEM_V6).not.toMatch(/five or six|range, \{|in the \{min\}/);
     // Commercial's read of e266e871: the recap's gainers are chosen by the regular-session high; sentence 3 is the move alone; no next-session purpose.
-    expect(SYSTEM_V6).toContain('chosen by the regular-session high on the recap');
+    expect(SYSTEM_V6).toContain('on the recap, GAINERS chosen by their regular-session peak; intraday, the leader ranked first in this range (it may be down)');
     // Writer v6 13 (report 25, 128 words): Marketing's intraday named-name line, verbatim (151ca1bb).
     expect(SYSTEM_V6).toContain('- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.');
     expect(SYSTEM_V6).not.toMatch(/day's high|remain relevant into the next one/);
@@ -151,7 +154,7 @@ describe('SYSTEM_V6 narrative rules v2 (his example prompt folded in, 2026-10-03
   it('carries the purpose, the facts / interpretation / open-question split, gainers only and the after-hours label; drops the G sentence rule', () => {
     expect(SYSTEM_V6).toContain('PURPOSE: explain what happened in the session');
     expect(SYSTEM_V6).toContain('FACTS, INTERPRETATION AND OPEN QUESTIONS stay separate');
-    expect(SYSTEM_V6).toContain('They are GAINERS');
+    expect(SYSTEM_V6).toContain('GAINERS chosen by their regular-session peak');
     expect(SYSTEM_V6).toContain('After-hours figures are ALWAYS labeled');
     expect(SYSTEM_V6).toContain('Percents are whole numbers as given');
     expect(SYSTEM_V6).not.toContain('no regular-session close');

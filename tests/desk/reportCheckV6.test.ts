@@ -275,7 +275,7 @@ describe('ruleStrikes, v6', () => {
     expect(v6.user).toContain('Narrative facts for the narrative line (id O)');
     // The checker sees the writer's WORDED facts, never raw JSON (voice run v6b struck a true recap narrative).
     const recapPrompt = buildCheckerPrompt({ ...input(GOOD_RECAP, 'x', recap), kind: 'PREMARKET' as const });
-    expect(recapPrompt.user).toContain('ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
+    expect(recapPrompt.user).toContain('among the counted names, ran at least 50 percent above the prior close, on the day (by the regular-session high): 9');
     expect(recapPrompt.user).toContain('fresh news in our sources: ');
     expect(recapPrompt.user).not.toContain('carries into the next session');
     expect(recapPrompt.user).not.toContain('"movers50"');

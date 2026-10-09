@@ -639,9 +639,10 @@ const CHECKER_SYSTEM_V5 = [
  * facts it is shown drop the next-session context, the carried-names count and the F12b counts (writer v6 12), and
  * its v6 rule no longer names the context. 10: the narrative facts it is shown word every news state as the recap's
  * sentence 2 does and carry a catalyst for fresh news only, no cycle label, and an after-hours line of the move only
- * (writer v6 13), and the summary allowance follows them (still 10, which never ran).
+ * (writer v6 13), and the summary allowance follows them (still 10, which never ran). 11: the facts it is shown state
+ * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 10;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 11;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
