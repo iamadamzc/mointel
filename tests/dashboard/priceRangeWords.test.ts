@@ -19,8 +19,14 @@ describe('the price selector words', () => {
   });
 
   it('P2 and P5: no bound is typed as a literal', () => {
+    // Code only: a doc comment may name an example amount.
+    const code = (path: string) =>
+      read(path)
+        .split('\n')
+        .filter((line) => !/^\s*(\/\/|\*|\/\*)/.test(line))
+        .join('\n');
     for (const path of ['components/PriceRangeControl.tsx', 'lib/dashboard/boardRange.ts']) {
-      expect(read(path)).not.toMatch(/\$0\.25|\$50\b/);
+      expect(code(path)).not.toMatch(/\$0\.25|\$50\b/);
     }
     expect(read('lib/dashboard/boardRange.ts')).toContain('within ${rangeLabel(bounds)}.');
     expect(rangeLabel({ min: 0.25, max: 50 })).toBe('$0.25–$50');

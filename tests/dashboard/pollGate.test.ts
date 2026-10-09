@@ -112,7 +112,9 @@ describe('the market hook uses the gate', () => {
   });
 
   it('forces only the first load of a query; ticks and visibility never force', () => {
-    expect(src).toMatch(/void load\(symbolsKey, true\);/);
-    expect(src.match(/void load\(symbolsKey, false\)/g)?.length).toBe(2);
+    // The range rides the same gate (the price selector): a new range is a change of query, so it re-runs
+    // the effect and its first load forces; ticks and visibility still never force.
+    expect(src).toMatch(/void load\(symbolsKey, rangeKey, true\);/);
+    expect(src.match(/void load\(symbolsKey, rangeKey, false\)/g)?.length).toBe(2);
   });
 });
