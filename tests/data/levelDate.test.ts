@@ -15,7 +15,7 @@ import {
   levelTagLead,
   sheetCalendarDate,
 } from '@/lib/data/levelDate';
-import { buildLevelMap, toCompactRow } from '@/lib/data/priceLevels';
+import { buildLevelMap, clusterLevels, toCompactRow, type PriceLevel } from '@/lib/data/priceLevels';
 
 const NOW = Date.parse('2026-10-09T12:00:00Z');
 
@@ -97,6 +97,33 @@ describe('OFAL: the levels carry the RESEARCH row date', () => {
     const compact = toCompactRow(map, 5);
     expect(compact.nextUp.some((level) => level.sourceDate === '2026-08-13')).toBe(true);
     expect(compact.nextUp.find((level) => level.price === '0.610')?.sourceDate ?? null).toBeNull();
+  });
+
+  it('a mixed zone is not dated; its members carry their own (Commercial read 57)', () => {
+    const member = (price: number, type: PriceLevel['type'], sourceDate: string | null, priority: number): PriceLevel => ({
+      price,
+      label: type,
+      type,
+      direction: 'BELOW',
+      source: sourceDate ? 'SHEET_DAILY_SUPPORT' : 'SESSION',
+      priority,
+      note: null,
+      distanceAbs: 0.1,
+      distancePct: 5,
+      clustered: false,
+      clusterId: null,
+      relationshipToPrice: 'SUPPORT_BELOW',
+      stateLabel: null,
+      sourceDate,
+    });
+    const [mixed] = clusterLevels([member(1.23, 'SUPPORT', '2026-08-13', 1), member(1.235, 'LOD', null, 2)], 'BELOW');
+    expect(mixed.members).toHaveLength(2);
+    expect(mixed.sourceDate).toBeNull();
+    expect(mixed.members.map((m) => m.sourceDate)).toEqual(['2026-08-13', null]);
+    const [same] = clusterLevels([member(1.23, 'SUPPORT', '2026-08-13', 1), member(1.235, 'SUPPORT', '2026-08-13', 2)], 'BELOW');
+    expect(same.sourceDate).toBe('2026-08-13');
+    const [differ] = clusterLevels([member(1.23, 'SUPPORT', '2026-08-13', 1), member(1.235, 'SUPPORT', '2026-09-01', 2)], 'BELOW');
+    expect(differ.sourceDate).toBeNull();
   });
 
   it('control: with no research date, no level carries one', () => {

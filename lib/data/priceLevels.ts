@@ -124,7 +124,7 @@ export interface LevelZone {
   /** Relationship of the zone's dominant level. */
   relationshipToPrice: LevelRelationship;
   stateLabel: string | null;
-  /** The dominant level's source date (its type is the one the zone prints). */
+  /** The members' source date when every member carries the same one; null otherwise (members carry their own). */
   sourceDate: string | null;
   label: string;
 }
@@ -667,7 +667,11 @@ export function clusterLevels(levels: PriceLevel[], direction: LevelDirection): 
       dominantType: dominant.type,
       relationshipToPrice: dominant.relationshipToPrice,
       stateLabel: dominant.stateLabel,
-      sourceDate: dominant.sourceDate,
+      // A zone is dated only when EVERY member carries that same date (Commercial read 57): a dated Sheet
+      // support zoned with a level from today's bars must not read the fresh one as weeks old.
+      sourceDate: members.every((m) => m.sourceDate !== null && m.sourceDate === members[0].sourceDate)
+        ? members[0].sourceDate
+        : null,
       label: isZone
         ? `${low.toFixed(2)}–${high.toFixed(2)} ${TYPE_LABEL[dominant.type]} zone`
         : `${dominant.price.toFixed(2)} ${TYPE_LABEL[dominant.type]}`,
