@@ -12,7 +12,9 @@ TEXT: docs/marketing/float-page-draft.md section 3 at v25 (5ea4f398, Commercial
 "What a number does not tell you" at v19 2026-10-06T01:43:24.491Z ("yes to v19")
 and at v20 2026-10-06T02:17:32.593Z ("yes to v20"), then v25, the rewrite after
 the outside review, 2026-10-07T00:58:05.615Z ("yes", answering "yes float
-text"), each after a preview with the changes marked. Any word changed
+text"), each after a preview with the changes marked; then the Unknown line in
+"What you see in the cell" (Marketing a21558ba, Commercial 54), 2026-10-09T11:45:34.249Z
+("yes to the float page change", shown the exact line at 10:40:01Z). Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -47,7 +49,7 @@ We start with the latest filed share count we have for the company. From it we s
 The cell shows one of four things.
 
 - **≤ 12.3M** (the number varies). Taking float as shares outstanding less insider holdings, it is no more than that, when the filings line up. The date of the filed count is shown beside it.
-- **Unknown.** There is no single filed share count to start from: the company has none on file, we could not match it to an SEC filer, or its count is split across several filings.
+- **Unknown.** The desk could not start from a single filed share count: the company has none on file, we could not match it to an SEC filer, SEC's company-facts data returned nothing for it, or its count is split across several filings.
 - **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, the desk has not read the company's filings since the date given in the detail, shares may have been issued since, a split may have changed the share units, we did not check for issuance, the count is from a Form 20-F or 40-F and we do not check for unregistered sales, or the figure did not pass our own sanity check. The reason is in the detail.
 - **Not computed.** We have not computed this name. That is different from Unknown.
 
