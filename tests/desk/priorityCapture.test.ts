@@ -133,8 +133,9 @@ describe('v29 schema', () => {
     fresh.close();
 
     const db = openDatabase(file);
-    expect(SCHEMA_VERSION).toBe(29);
-    expect(db.pragma('user_version', { simple: true })).toBe(29);
+    // v30 (the performance record) followed; a v28 store now upgrades to the current version.
+    expect(SCHEMA_VERSION).toBeGreaterThanOrEqual(29);
+    expect(db.pragma('user_version', { simple: true })).toBe(SCHEMA_VERSION);
     const columns = (db.prepare('PRAGMA table_info(desk_assessment_tickers)').all() as Array<{ name: string }>).map(
       (c) => c.name,
     );

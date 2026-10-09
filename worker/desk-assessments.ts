@@ -59,6 +59,8 @@ import {
   nextTradingDate,
 } from '../lib/desk/checkpointDates';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
+import { floatAtCapture } from '../lib/research/floatCapture';
+import { maybeRunCallOutcomes } from '../lib/desk/performance/job';
 import { resolveDisplayStatus } from '../lib/research/view';
 import {
   buildSchedule,
@@ -269,8 +271,16 @@ function captureAssessment(
 
     const evidenceHash = computeEvidenceFingerprint(readSources(db, row.symbol));
 
+    /*
+     * The board's Float cell at THIS checkpoint, frozen with the row (performance record A8): a later float write
+     * cannot change what the checkpoint showed. Never throws.
+     */
+    const capturedFloat = floatAtCapture(db, row.symbol, scheduled.tradingDate, dossier?.structure.supplyLedger ?? null);
+
     const record: AssessmentTickerRecord = {
       ticker: row.symbol,
+      floatState: capturedFloat.state,
+      floatReason: capturedFloat.reason,
       assessmentRank: assessmentRank ?? null,
       // Identical here, and kept separate anyway: an experimental ordering must
       // never be mistaken for the board the desk was actually showing.
@@ -716,6 +726,14 @@ function captureAndPersist(
       experimental: scheduled.type === 'OPEN_SPIKE_ASSESSMENT' ? 'ORDERING_UNVALIDATED' : null,
     },
   });
+
+  /*
+   * The performance record (design note section 5): after the 22:00 recap, every call whose outcome session is this
+   * trading date gets its outcome. Default OFF behind PERFORMANCE_RECORD; it never fails the checkpoint.
+   */
+  if (scheduled.type === 'NEXT_DAY_RECAP') {
+    maybeRunCallOutcomes(process.env, db, scheduled.tradingDate, log);
+  }
 
   const top = records.filter((record) => record.assessmentRank !== null).slice(0, 3);
   insertDeskEvents(db, [

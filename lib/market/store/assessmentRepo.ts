@@ -103,6 +103,12 @@ export interface AssessmentTickerRecord {
   ahReferenceClose?: number | null;
   ahHigh?: number | null;
   ahLow?: number | null;
+  /**
+   * The board's Float cell at this checkpoint (v30, performance record A8), computed once at capture by
+   * `floatAtCapture`. Optional: absent writes NULL, which the record reads as FLOAT_NOT_FROZEN.
+   */
+  floatState?: string | null;
+  floatReason?: string | null;
 }
 
 interface AssessmentRow {
@@ -356,7 +362,8 @@ export function insertAssessmentTickers(
       level_summary, halt_state, focus, warnings,
       changed_fields, change_summary,
       ah_reference_close, ah_high, ah_low,
-      priority_grade, priority_basis, priority_rule
+      priority_grade, priority_basis, priority_rule,
+      float_state, float_reason
     ) VALUES (
       @assessmentId, @ticker, @assessmentRank, @liveSessionRank, @price, @percentChange,
       @rvol, @rvolRank, @ahPercentChange, @ahVolume, @ahParticipation, @ahRank,
@@ -367,7 +374,8 @@ export function insertAssessmentTickers(
       @levelSummary, @haltState, @focus, @warnings,
       @changedFields, @changeSummary,
       @ahReferenceClose, @ahHigh, @ahLow,
-      @priorityGrade, @priorityBasis, @priorityRule
+      @priorityGrade, @priorityBasis, @priorityRule,
+      @floatState, @floatReason
     )
     ON CONFLICT (assessment_id, ticker) DO NOTHING
   `);
@@ -429,6 +437,8 @@ export function insertAssessmentTickers(
         priorityGrade: priority.grade,
         priorityBasis: JSON.stringify(priority.basis),
         priorityRule: priority.rule,
+        floatState: row.floatState ?? null,
+        floatReason: row.floatReason ?? null,
       });
     }
   });

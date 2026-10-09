@@ -16,7 +16,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 29;
+export const SCHEMA_VERSION = 30;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -707,11 +707,73 @@ CREATE TABLE IF NOT EXISTS desk_assessment_tickers (
   priority_grade       TEXT,
   priority_basis       TEXT,
   priority_rule        TEXT,
+  -- The board's Float cell at this checkpoint (v30), written ONCE at capture
+  -- from the newest float row on or before the checkpoint's date and the
+  -- checkpoint's own dossier ledger, never updated (performance record A8).
+  -- NULL on rows captured before v30; the record reads that as FLOAT_NOT_FROZEN.
+  float_state          TEXT,
+  float_reason         TEXT,
   PRIMARY KEY (assessment_id, ticker),
   FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
 );
 CREATE INDEX IF NOT EXISTS idx_desk_assessment_tickers_ticker
   ON desk_assessment_tickers (ticker);
+-- The desk's performance record (v30; docs/research/performance-record/
+-- design-note-2026-10-06.md as amended at f544af1a). One row per CALL: a row
+-- of a COMPLETE NEXT_DAY_RECAP, PREMARKET_0700 or OPEN_SPIKE_ASSESSMENT
+-- checkpoint, with the call copied from its frozen row and each outcome beside
+-- its own state (PRODUCED, NOT_YET, UNKNOWN) and reason. Never a zero for a
+-- missing value. Written by the assess worker after the 22:00 recap, and by
+-- the replay tool; shown nowhere on the board.
+CREATE TABLE IF NOT EXISTS desk_call_outcomes (
+  assessment_id          INTEGER NOT NULL,
+  ticker                 TEXT NOT NULL,
+  assessment_type        TEXT NOT NULL,
+  trading_date           TEXT NOT NULL,
+  outcome_date           TEXT NOT NULL,
+  completed_at           TEXT NOT NULL,
+  rank                   INTEGER,
+  price                  REAL,
+  reference_basis        TEXT,
+  reference_close        REAL,
+  catalyst               TEXT,
+  structure              TEXT,
+  cycle                  TEXT,
+  analysis_version_id    INTEGER,
+  priority_grade         TEXT NOT NULL,
+  priority_basis         TEXT,
+  priority_rule          TEXT,
+  float_state            TEXT NOT NULL,
+  float_reason           TEXT,
+  session_state          TEXT NOT NULL,
+  session_reason         TEXT,
+  high_0400_close_pct    REAL,
+  high_0400_close_state  TEXT NOT NULL,
+  high_0400_close_reason TEXT,
+  high_after_call_pct    REAL,
+  high_after_call_state  TEXT NOT NULL,
+  high_after_call_reason TEXT,
+  high_0700_1000_pct     REAL,
+  high_0700_1000_state   TEXT NOT NULL,
+  high_0700_1000_reason  TEXT,
+  close_pct              REAL,
+  close_state            TEXT NOT NULL,
+  close_reason           TEXT,
+  retention              REAL,
+  retention_state        TEXT NOT NULL,
+  retention_reason       TEXT,
+  giveback               REAL,
+  giveback_state         TEXT NOT NULL,
+  giveback_reason        TEXT,
+  best_rank_after        INTEGER,
+  best_rank_after_state  TEXT NOT NULL,
+  spike_fade             INTEGER,
+  spike_fade_state       TEXT NOT NULL,
+  spike_fade_reason      TEXT,
+  computed_at            TEXT NOT NULL,
+  job_version            INTEGER NOT NULL,
+  PRIMARY KEY (assessment_id, ticker)
+);
 -- One row per configured price range per checkpoint (v28). Frozen at capture
 -- so a report read later states what the checkpoint saw.
 --
@@ -967,6 +1029,9 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'desk_assessment_tickers', column: 'priority_grade', definition: 'TEXT' },
   { table: 'desk_assessment_tickers', column: 'priority_basis', definition: 'TEXT' },
   { table: 'desk_assessment_tickers', column: 'priority_rule', definition: 'TEXT' },
+  // v30: the Float cell frozen on each checkpoint row (performance record A8).
+  { table: 'desk_assessment_tickers', column: 'float_state', definition: 'TEXT' },
+  { table: 'desk_assessment_tickers', column: 'float_reason', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
