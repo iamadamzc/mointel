@@ -21,7 +21,8 @@ export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 3;
 // 3: the business line, and no em dash in any text written (his rulings
 //    2026-09-30T10:42:25Z and 10:43:39Z). The grade text is unchanged from 2.
 // 4: the evidence risk rule (`evidenceRisk.ts`), with schema 3, in one change.
-export const INTERPRETER_PROMPT_VERSION = 4;
+// 5: no source id in prose; ids belong in evidenceSourceIds (Integration's ruling 2026-10-09, the XRTX finding).
+export const INTERPRETER_PROMPT_VERSION = 5;
 
 const CONFIDENCE = ['HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'] as const;
 

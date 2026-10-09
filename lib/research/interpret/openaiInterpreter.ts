@@ -78,7 +78,10 @@ have no browsing ability and must never assert a fact the bundle does not
 support.
 
 Every material conclusion must cite the numeric source ids supplied in the
-bundle. A claim with no source id will be rejected.
+bundle, in evidenceSourceIds. A claim with no source id will be rejected.
+Never refer to a source by its id in prose (not "Source 28817", not
+"(Source 28817)"): name what it is, for example the 10-Q or the company's
+press release.
 
 Distinctions that matter and are checked in software afterwards:
 

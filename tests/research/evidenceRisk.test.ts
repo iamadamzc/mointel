@@ -135,7 +135,7 @@ describe('evidenceRiskState', () => {
 describe('the schema and the prompt (schema 3, prompt 4)', () => {
   it('asks for evidenceRisk under its neutral key, the text nullable and described with the rule, in both prompt variants', () => {
     expect(AUTOMATIC_DOSSIER_SCHEMA_VERSION).toBe(3);
-    expect(INTERPRETER_PROMPT_VERSION).toBe(4);
+    expect(INTERPRETER_PROMPT_VERSION).toBe(5);
     const schema = AUTOMATIC_DOSSIER_SCHEMA as {
       required: string[];
       properties: Record<string, { required: string[]; properties: Record<string, { type: unknown; description?: string }> }>;

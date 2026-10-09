@@ -1001,7 +1001,7 @@ describe('interpretation pipeline', () => {
 
     const current = readCurrentAnalysis(db, 'ACME')!;
     expect(current.metadata.schemaVersion).toBe(3);
-    expect(current.metadata.promptVersion).toBe(4);
+    expect(current.metadata.promptVersion).toBe(5);
     expect((current.metadata.metrics as { inputTokens: number }).inputTokens).toBe(1000);
   });
 

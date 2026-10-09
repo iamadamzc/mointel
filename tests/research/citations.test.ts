@@ -2,12 +2,32 @@ import { describe, expect, it } from 'vitest';
 
 import { companyText } from '@/lib/dashboard/sessionReports';
 import { citedSourceIds, withoutCitations, withoutCitationsDeep } from '@/lib/research/citations';
+import { SYSTEM_PROMPT_A } from '@/lib/research/interpret/openaiInterpreter';
 
 /*
  * The citation-token pattern (`lib/research/citations.ts`): what it admits and
  * what it refuses, on the two production forms (Design's find, 2026-10-01) and
  * on brackets that are NOT citations.
  */
+
+describe('withoutCitations: the forms the XRTX census found (2026-10-09, 4b407649)', () => {
+  it('removes the Source-prefixed form in parentheses, with an inner stop, and semicolons in either bracket', () => {
+    expect(withoutCitations('ance hardware and computing equipment. (Source 12298)')).toBe('ance hardware and computing equipment.');
+    expect(withoutCitations('mission-critical applications (Source 138091).')).toBe('mission-critical applications.');
+    expect(withoutCitations('no transaction was announced (Sources 138096, 138131).')).toBe('no transaction was announced.');
+    expect(withoutCitations('wearable robotics. (Source 93163.)')).toBe('wearable robotics.');
+    expect(withoutCitations('not yet closed in the cited filing. [Source 79129; Source 79145]')).toBe('not yet closed in the cited filing.');
+    expect(withoutCitations('A (Source 1; Source 2) and B.')).toBe('A and B.');
+  });
+
+  it('KEEPS a bare number list or figure in parentheses, and the bare sentence form (the prompt forbids it instead)', () => {
+    expect(SYSTEM_PROMPT_A).toContain('Never refer to a source by its id in prose');
+    expect(withoutCitations('an offering of units (4,166,666 units).')).toBe('an offering of units (4,166,666 units).');
+    expect(withoutCitations('a fee (1,000) and a year (2026).')).toBe('a fee (1,000) and a year (2026).');
+    expect(withoutCitations('a range (1, 2, 3).')).toBe('a range (1, 2, 3).');
+    expect(withoutCitations('Source 28817 provides weighted-average shares.')).toBe('Source 28817 provides weighted-average shares.');
+  });
+});
 
 describe('withoutCitations: the two production forms', () => {
   it('removes "[Source N]" with the space before it (TGE, version 2624)', () => {

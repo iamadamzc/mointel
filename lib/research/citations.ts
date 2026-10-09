@@ -24,6 +24,12 @@
  * "[NASDAQ: TGE]", "[Q3]"), and any other punctuation inside ("[$1.2M]",
  * "[1-3]").
  *
+ * ALSO (2026-10-09, the XRTX census `4b407649`: 169 of 181 escaped ids): the Source-prefixed form in PARENTHESES,
+ * "(Source 12298)", "(Sources 138096, 138131)", "(Source 93163.)", and a semicolon between Source ids in either
+ * bracket, "[Source 79129; Source 79145]". NOT a bare number list in parentheses: "(1,000)" or "(4,166,666 units)"
+ * can be a real figure. NOT the bare form "Source 28817 provides ...": removing it breaks the sentence; the interpreter
+ * prompt forbids it instead (`openaiInterpreter.ts`, INTERPRETER_PROMPT_VERSION 5).
+ *
  * UNLESS THE TEXT'S OWN CITED IDS ARE KNOWN. A lone 1-to-4-digit bracket whose
  * value is one of the dossier's `evidenceSourceIds` IS a citation, whatever it
  * looks like: "...must not be treated as float. [2040]" (BLND) is source 2040,
@@ -43,7 +49,7 @@
  */
 
 const CITATION =
-  /([.!?])?\s*\[(?:sources?\s*\d+(?:\s*,\s*(?:sources?\s*)?\d+)*|\d+(?:\s*,\s*\d+)+|\d{5,})\]([.!?])?/gi;
+  /([.!?])?\s*(?:\[(?:sources?\s*\d+(?:\s*[,;]\s*(?:sources?\s*)?\d+)*|\d+(?:\s*,\s*\d+)+|\d{5,})\]|\(sources?\s*\d+(?:\s*[,;]\s*(?:sources?\s*)?\d+)*\.?\))([.!?])?/gi;
 
 /** A lone bare number of 1 to 4 digits, removed only when it is a cited id. */
 const LONE_SHORT = /([.!?])?\s*\[(\d{1,4})\]([.!?])?/g;
