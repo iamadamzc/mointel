@@ -189,11 +189,11 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       age: null,
       ageIsPriorClose: false,
       eventAt: null,
-      headline: 'Not researched yet.',
+      headline: 'Not researched',
       explainsMove: null,
       freshness: null,
       tone: 'dim',
-      title: 'Not researched yet, so there is no catalyst grade and no freshness to colour.',
+      title: 'Not researched, so there is no catalyst grade and no freshness to colour.',
       disagreement: null,
     };
   }
