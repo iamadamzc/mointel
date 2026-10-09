@@ -787,19 +787,17 @@ export function DiscoveryBoard({
                 align="right"
                 sorted={activeColumn === 'now'}
                 title={nowCopy.title ?? nowEntry?.title}
+                /*
+                 * The lag, on the header rather than in the tooltip alone.
+                 * The newest slot is two minutes old and he discovered that
+                 * by hovering. §10 rules out hover-only, and this column was
+                 * on the wrong side of a rule already enforced on the Move
+                 * control. The span stays in the title -- this is the offset,
+                 * which is the part that changes how the bars are read.
+                 */
+                sub={nowCopy.sub}
               >
                 {nowEntry ? resolveSortEntry(nowEntry, phase, board).label : 'Now'}
-                {/*
-                  * The lag, on the header rather than in the tooltip alone.
-                  * The newest slot is two minutes old and he discovered that
-                  * by hovering. §10 rules out hover-only, and this column was
-                  * on the wrong side of a rule already enforced on the Move
-                  * control. The span stays in the title -- this is the offset,
-                  * which is the part that changes how the bars are read.
-                  */}
-                <span className="block text-[9px] font-normal tracking-normal normal-case text-ink-3">
-                  {nowCopy.sub}
-                </span>
               </Th>
               {showFloat ? (
                 <Th
@@ -891,6 +889,9 @@ export function DiscoveryBoard({
   );
 }
 
+/** The second line under a head word (the `Now` lag): small, unforced case. */
+const SUB_LINE_CLASS = 'block text-[9px] font-normal tracking-normal normal-case text-ink-3';
+
 function Th({
   children,
   className = '',
@@ -901,8 +902,15 @@ function Th({
   name,
   resize,
   measureHead,
+  sub,
 }: {
   children: React.ReactNode;
+  /**
+   * A second line under the head word. It renders AFTER the sort caret, so the
+   * caret stays on the word's line: as a child, the caret followed the block
+   * sub-line and the sorted `Now` head read NOW / -1m / caret on three lines.
+   */
+  sub?: React.ReactNode;
   className?: string;
   align?: 'right';
   srOnly?: boolean;
@@ -942,6 +950,7 @@ function Th({
     >
       {srOnly ? <span className="sr-only">{children}</span> : children}
       {sorted && !srOnly ? <span aria-hidden="true"> ▼</span> : null}
+      {sub && !srOnly ? <span className={SUB_LINE_CLASS}>{sub}</span> : null}
       {measureHead ? (
         /*
          * THE HEADER AS IT RENDERS WHEN SORTED, caret included, laid out off
@@ -957,6 +966,7 @@ function Th({
         >
           {children}
           <span> ▼</span>
+          {sub ? <span className={SUB_LINE_CLASS}>{sub}</span> : null}
         </span>
       ) : null}
       {resize ? <ColumnResizeHandle label={(name ?? '').split(',')[0]} {...resize} /> : null}
