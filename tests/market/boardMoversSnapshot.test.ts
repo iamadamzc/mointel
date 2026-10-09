@@ -174,6 +174,9 @@ describe('big movers on the live board', () => {
     expect(tickers(discovery.ranked).slice(50)).toEqual(['VEEA', 'SMALL', 'MID']);
     expect(discovery.ranked.slice(0, 50).every((s) => s.boardReason === undefined)).toBe(true);
     expect(demand.VEEA?.boardReason).toBe('MOVER');
+    // Movers now come from readTopMovers on this path too (the SQL range read has no `all`); each carries its
+    // IN-RANGE daily rank (R01..R50, then VEEA 0.58, MILD 0.4, MID 0.2, SMALL 0.1), never the band's 120 / 130 / 200.
+    expect([demand.VEEA?.rvolRank, demand.MID?.rvolRank, demand.SMALL?.rvolRank]).toEqual([51, 53, 54]);
   });
 
   it('off when BOARD_MOVERS_K is 0, and never on the after-hours board', () => {
