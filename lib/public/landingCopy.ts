@@ -120,7 +120,8 @@ export const SECTIONS: Section[] = [
         // Marketing 8d9f3aba, Commercial 49/49b. Design 10c cropped (2969f578), a production capture of 2026-10-08.
         slot: 10,
         shape: 'panel',
-        caption: "A name's structure label and potential supply on October 8, 2026: DIRTY FLOAT, Float Unknown, supply by kind with a status for each, and a note that the reported shares outstanding predate a September issuance. A dated example, not a record or a prediction.",
+        // Caption swapped on his "4, yes" 2026-10-09T15:40:36.706Z (61dbff4c, answering 14:31:20Z): Marketing 9f433d71 v3, Commercial 56/56a.
+        caption: 'Where new shares could come from, for one stock, shown October 8, 2026: a recent offering, other issued shares, warrants and a registered resale, each marked known or possibly active. The desk labels the float DIRTY FLOAT, shows it as Unknown, and notes that the latest reported share count is older than the September issuance. A dated example, not a record or a prediction.',
         alt: 'The top of the Structural intelligence section of a ticker drawer: a DIRTY FLOAT label, Float Unknown, a table of known and potential supply by kind with a status for each, and a note that the reported shares outstanding predate the September issuance.',
         src: '/landing/supply-drawer.webp',
         width: 1600,
