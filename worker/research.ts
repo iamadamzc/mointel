@@ -58,6 +58,7 @@ import {
 import { openDatabase, getMeta, type MarketDatabase } from '../lib/market/store/db';
 import { maybeStartHistoryStore } from '../lib/research/historyStoreJob';
 import { maybeStartBoardBasisPass } from '../lib/research/boardBasisPass';
+import { countingSec, maybeStartBoardFloatPass } from '../lib/research/boardFloatPass';
 import { maybeStartLevelsRefresh } from '../lib/research/levelsRefreshJob';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
@@ -227,6 +228,22 @@ async function main(): Promise<void> {
   const floatSplits = FLOAT_JOB ? findAlpacaCredentials().credentials : null;
   const floatSplitClient = floatSplits ? new AlpacaRestClient(floatSplits) : null;
   if (FLOAT_JOB) log(`[research] float job: ${floatSplitClient ? 'on' : 'SKIPPED (no Alpaca credentials for announced splits)'}`);
+
+  /*
+   * The board float pass (lib/research/boardFloatPass.ts; his "yes", Integration chat 2026-10-09T01:13:13Z): every
+   * 5 min, a float job for each board name with research and no current float row, once per name per trading date,
+   * stopping on the first that stores nothing. Only when the float job itself is on. BOARD_FLOAT_PASS=off disables
+   * it. Both exits below stop it.
+   */
+  const boardFloatRequests = { requests: 0 };
+  const boardFloat = floatSplitClient
+    ? maybeStartBoardFloatPass(process.env, {
+        db,
+        run: (ticker, date) => runFloatJob(db, countingSec(secClient, boardFloatRequests), floatSplitClient, ticker, date, log),
+        counter: boardFloatRequests,
+        log,
+      })
+    : null;
   log(
     `[research] news: ${
       newsAdapters.length > 0
@@ -424,6 +441,7 @@ async function main(): Promise<void> {
     historyStore?.stop();
     levelsRefresh?.stop();
     boardBasis?.stop();
+    boardFloat?.stop();
     process.exit(0);
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
@@ -851,6 +869,7 @@ async function main(): Promise<void> {
   historyStore?.stop();
   levelsRefresh?.stop();
   boardBasis?.stop();
+  boardFloat?.stop();
   db.close();
 }
 
