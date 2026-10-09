@@ -144,6 +144,7 @@ function level(price: number, type: PriceLevel['type'], priority: number): Price
     clusterId: null,
     relationshipToPrice: 'UNKNOWN',
     stateLabel: null,
+    sourceDate: null,
   };
 }
 

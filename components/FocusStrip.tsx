@@ -21,6 +21,7 @@ import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
 import { buildDeskRead, type DeskRead, type DeskReadLevel } from '@/lib/dashboard/deskRead';
 import type { DeskRow } from '@/lib/dashboard/merge';
 import { formatMultiple, formatPrice, formatSignedPercent } from '@/lib/format';
+import { levelDateSuffix, levelTagLead } from '@/lib/data/levelDate';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 
 interface FocusStripProps {
@@ -122,8 +123,8 @@ function NearestLevel({ level, sign }: { level: DeskReadLevel | undefined; sign:
   return (
     <span className="num truncate text-[10px] text-ink-2">
       <span className="text-ink-3">{sign}</span> <span className="text-ink-1">{level.price}</span>{' '}
-      <span className="text-ink-3">{level.type}</span>
-      {level.stateLabel ? <span className="text-warn"> {level.stateLabel}</span> : null}{' '}
+      <span className="text-ink-3">{level.type}{levelDateSuffix(level.sourceDate)}</span>
+      {level.stateLabel ? <span className="text-warn">{levelTagLead(level.sourceDate)}{level.stateLabel}</span> : null}{' '}
       <span className={sign === '▲' ? 'text-pos' : 'text-warn'}>{level.distance}</span>
     </span>
   );

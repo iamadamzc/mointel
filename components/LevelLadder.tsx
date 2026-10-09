@@ -16,6 +16,7 @@ import { useState } from 'react';
 
 import type { CompactLevel, LevelMap, LevelZone } from '@/lib/data/priceLevels';
 import { levelTypeLabel, toCompactRow } from '@/lib/data/priceLevels';
+import { levelDateHoverSuffix, levelDateSuffix, levelTagLead } from '@/lib/data/levelDate';
 import { ClampedText } from '@/components/ClampedText';
 import { describeBlueSkyWindow, type BlueSkyState } from '@/lib/market/blueSky';
 import { deepCeilingTitle } from '@/lib/dashboard/blueSkyView';
@@ -49,7 +50,13 @@ function CompactSide({
   // Plain-text copy for the hover title, so clipping never loses a level.
   const full = levels
     .map((level) =>
-      [level.price, level.type, level.stateLabel, level.distance].filter(Boolean).join(' '),
+      [
+        level.price,
+        `${level.type}${levelDateHoverSuffix(level.sourceDate)}${level.stateLabel ? `${levelTagLead(level.sourceDate)}${level.stateLabel}` : ''}`,
+        level.distance,
+      ]
+        .filter(Boolean)
+        .join(' '),
     )
     .join(' · ');
 
@@ -66,8 +73,8 @@ function CompactSide({
             <span key={index}>
               {index > 0 ? <span className="text-ink-3"> · </span> : null}
               <span className="text-ink-1">{level.price}</span>{' '}
-              <span className="text-ink-3">{level.type}</span>
-              {level.stateLabel ? <span className="text-warn"> {level.stateLabel}</span> : null}{' '}
+              <span className="text-ink-3">{level.type}{levelDateSuffix(level.sourceDate)}</span>
+              {level.stateLabel ? <span className="text-warn">{levelTagLead(level.sourceDate)}{level.stateLabel}</span> : null}{' '}
               <span className={distanceClass}>{level.distance}</span>
             </span>
           ))}
@@ -123,6 +130,7 @@ function ZoneRow({ zone, side }: { zone: LevelZone; side: 'ABOVE' | 'BELOW' }) {
       <span className="w-[110px] shrink-0 text-[10px] uppercase tracking-wide text-ink-2">
         {levelTypeLabel(zone.dominantType)}
         {isZone ? ' zone' : ''}
+        {levelDateSuffix(zone.sourceDate)}
       </span>
 
       <span className="w-[92px] shrink-0 text-[9px] uppercase tracking-wider text-warn">
@@ -143,7 +151,7 @@ function ZoneRow({ zone, side }: { zone: LevelZone; side: 'ABOVE' | 'BELOW' }) {
         text={
           isZone
             ? zone.members
-                .map((member) => `${priceText(member.price)} ${levelTypeLabel(member.type)}`)
+                .map((member) => `${priceText(member.price)} ${levelTypeLabel(member.type)}${levelDateSuffix(member.sourceDate)}`)
                 .join(' · ')
             : (zone.members[0]?.note ?? '')
         }
