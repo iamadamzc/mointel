@@ -11,6 +11,7 @@ import 'server-only';
 import { loadMarketConfig } from './config';
 import { projectMarketHealth } from './health';
 import { resolveActiveBoard } from './board';
+import { readSetupGrades } from './setupGradesRead';
 import {
   resolveCycleHistory,
   todayQualifiesAsCycleStart,
@@ -812,6 +813,13 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
         tradingDate,
         states.map((state) => state.ticker),
         new Date(),
+      ),
+      // Omitted (undefined) until a checkpoint row carries a grade, so every
+      // grade surface stays hidden until then (lib/market/setupGradesRead.ts).
+      setupGrades: readSetupGrades(
+        db,
+        config.dbPath,
+        states.map((state) => state.ticker),
       ),
       fetchedAt,
     };

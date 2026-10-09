@@ -13,6 +13,7 @@
  *      (trading date, type, scheduled time), and only the store can settle it.
  */
 
+import { priorityGrade } from '../../research/priorityGrade';
 import type { MarketDatabase } from './db';
 
 export function assessmentTablesPresent(db: MarketDatabase): boolean {
@@ -354,7 +355,8 @@ export function insertAssessmentTickers(
       analysis_version_id, evidence_fingerprint, cycle_fingerprint,
       level_summary, halt_state, focus, warnings,
       changed_fields, change_summary,
-      ah_reference_close, ah_high, ah_low
+      ah_reference_close, ah_high, ah_low,
+      priority_grade, priority_basis, priority_rule
     ) VALUES (
       @assessmentId, @ticker, @assessmentRank, @liveSessionRank, @price, @percentChange,
       @rvol, @rvolRank, @ahPercentChange, @ahVolume, @ahParticipation, @ahRank,
@@ -364,13 +366,29 @@ export function insertAssessmentTickers(
       @analysisVersionId, @evidenceFingerprint, @cycleFingerprint,
       @levelSummary, @haltState, @focus, @warnings,
       @changedFields, @changeSummary,
-      @ahReferenceClose, @ahHigh, @ahLow
+      @ahReferenceClose, @ahHigh, @ahLow,
+      @priorityGrade, @priorityBasis, @priorityRule
     )
     ON CONFLICT (assessment_id, ticker) DO NOTHING
   `);
 
   const run = db.transaction((batch: readonly AssessmentTickerRecord[]) => {
     for (const row of batch) {
+      /*
+       * The Priority grade, computed ONCE here from this row's own values and
+       * frozen with it (field contract section 2). Every input is on the row
+       * being written, so nothing is read later that the checkpoint did not see.
+       */
+      const priority = priorityGrade({
+        hasDossier: row.analysisVersionId !== null,
+        cycle: row.cycle,
+        catalyst: row.catalyst,
+        structure: row.structure,
+        rvol: row.rvol,
+        spreadPct: row.spreadPct,
+        volume: row.volume,
+        price: row.price,
+      });
       statement.run({
         assessmentId,
         ticker: row.ticker,
@@ -408,6 +426,9 @@ export function insertAssessmentTickers(
         ahReferenceClose: row.ahReferenceClose ?? null,
         ahHigh: row.ahHigh ?? null,
         ahLow: row.ahLow ?? null,
+        priorityGrade: priority.grade,
+        priorityBasis: JSON.stringify(priority.basis),
+        priorityRule: priority.rule,
       });
     }
   });

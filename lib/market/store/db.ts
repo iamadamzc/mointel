@@ -16,7 +16,7 @@ import Database from 'better-sqlite3';
 
 export type MarketDatabase = Database.Database;
 
-export const SCHEMA_VERSION = 28;
+export const SCHEMA_VERSION = 29;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -700,6 +700,13 @@ CREATE TABLE IF NOT EXISTS desk_assessment_tickers (
   ah_reference_close   REAL,
   ah_high              REAL,
   ah_low               REAL,
+  -- The Priority grade (v29), computed ONCE at capture from this row's own
+  -- stored values by lib/research/priorityGrade.ts and frozen with it: the
+  -- grade, the five readings it rests on (JSON), and the rule set's name.
+  -- NULL on rows captured before v29; a reader treats NULL as no grade.
+  priority_grade       TEXT,
+  priority_basis       TEXT,
+  priority_rule        TEXT,
   PRIMARY KEY (assessment_id, ticker),
   FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
 );
@@ -956,6 +963,10 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'desk_assessment_tickers', column: 'ah_high', definition: 'REAL' },
   { table: 'desk_assessment_tickers', column: 'ah_low', definition: 'REAL' },
   { table: 'issuer_registry', column: 'sic_description', definition: 'TEXT' },
+  // v29: the Priority grade frozen on each checkpoint row.
+  { table: 'desk_assessment_tickers', column: 'priority_grade', definition: 'TEXT' },
+  { table: 'desk_assessment_tickers', column: 'priority_basis', definition: 'TEXT' },
+  { table: 'desk_assessment_tickers', column: 'priority_rule', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

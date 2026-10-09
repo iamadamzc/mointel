@@ -113,8 +113,9 @@ describe('v28 schema', () => {
     fresh.close();
 
     const db = openDatabase(file);
-    expect(SCHEMA_VERSION).toBe(28);
-    expect(db.pragma('user_version', { simple: true })).toBe(28);
+    // v29 (the Priority grade) followed; a v27 store now upgrades to the current version.
+    expect(SCHEMA_VERSION).toBeGreaterThanOrEqual(28);
+    expect(db.pragma('user_version', { simple: true })).toBe(SCHEMA_VERSION);
     const columns = (table: string) =>
       (db.prepare(`PRAGMA table_info(${table})`).all() as Array<{ name: string }>).map((c) => c.name);
     expect(columns('desk_assessment_ranges')).toContain('top_tickers');
