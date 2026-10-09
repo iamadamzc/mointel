@@ -18,7 +18,9 @@ import { PRODUCED_WORDS, producedAt } from '@/lib/dashboard/produced';
 import { SUPPLY_GROUP_EMPTY, SUPPLY_GROUP_EMPTY_HOVER, supplyGroups } from '@/lib/dashboard/supplyGroups';
 import { humanise } from '@/lib/dashboard/language';
 import { catalystEvidenceLatest } from '@/lib/dashboard/merge';
-import { floatBoundReading, noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
+import { drawerFloatLine } from '@/lib/dashboard/drawerFloat';
+import type { FloatBound } from '@/lib/dashboard/floatBound';
+import { noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import { formatEtDay } from '@/lib/format';
 import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
@@ -322,8 +324,13 @@ export function AutomaticIntelligence({
   FieldLabel,
   ProseField,
   checkpointAt = null,
+  floatBound = null,
+  floatBoundWired = false,
 }: {
   intel: AutoIntelligence | null;
+  /** The board cell's stored float state: the drawer's float line follows its verdict (drawerFloat.ts). */
+  floatBound?: FloatBound | null;
+  floatBoundWired?: boolean;
   /** The checkpoint the setup grade rests on (ISO), when the grade is wired. Row 24. */
   checkpointAt?: string | null;
   comparison: SheetAutoComparison | null;
@@ -378,7 +385,8 @@ export function AutomaticIntelligence({
    * the silence beside it reads as a failure of the row rather than as the
    * absence of established blocks. THEY DO NOT SHARE AN INPUT.
    */
-  const bound = floatBoundReading(structure.supplyPair);
+  // The board cell's verdict decides: where it refuses, no ceiling here, its reason instead (drawerFloat.ts).
+  const bound = drawerFloatLine(structure.supplyPair, floatBound, floatBoundWired);
   const noDenominator = supply ? null : noDenominatorNote(structure.supplyLedger.length);
 
   /*
