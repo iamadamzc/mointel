@@ -48,8 +48,8 @@ describe('the desk UNKNOWN structure', () => {
     expect(resolveRisk(row('CLEAN')).code).toBe('STRUCTURE_CLEAN');
   });
 
-  // RED ON PURPOSE until Marketing's words pass Commercial: the placeholder must never ship.
-  it('ships with passed words, not the placeholder', () => {
-    expect(STRUCTURE_UNKNOWN_DETAIL).not.toMatch(/PLACEHOLDER/);
+  it('carries the passed words (Marketing a73aa6ed, Commercial read 65), never a placeholder', () => {
+    expect(STRUCTURE_UNKNOWN_DETAIL).toBe('The desk researched this name and could not establish its structure.');
+    expect(resolveRisk(row('UNKNOWN')).detail).toBe(STRUCTURE_UNKNOWN_DETAIL);
   });
 });

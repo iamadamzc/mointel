@@ -87,11 +87,8 @@ export function knownSupplyShares(blocks: readonly SupplyBlock[]): number | null
   return found ? total : null;
 }
 
-/**
- * The STRUCTURE UNKNOWN chip's detail. A PLACEHOLDER until Marketing's words pass Commercial (asked by
- * Integration 37th); tests/dashboard/riskStructureUnknown.test.ts is RED while it stands, so it cannot ship.
- */
-export const STRUCTURE_UNKNOWN_DETAIL = 'PLACEHOLDER: words pending from Marketing.';
+/** The STRUCTURE UNKNOWN chip's detail (Marketing a73aa6ed, Commercial read 65). */
+export const STRUCTURE_UNKNOWN_DETAIL = 'The desk researched this name and could not establish its structure.';
 
 /**
  * Resolves the one risk a row should lead with.
@@ -174,12 +171,24 @@ export function resolveRisk(row: DeskRow): DeskRisk {
     };
   }
 
+  if (structure?.structureClassification === 'CAUTION' || line !== null) {
+    return {
+      code: 'STRUCTURE_CAUTION',
+      label: 'STRUCTURE CAUTION',
+      value: null,
+      detail: line ?? 'Structure is cautionary rather than clean.',
+      tone: 'warn',
+      full,
+    };
+  }
+
   /*
    * THE DESK'S OWN UNKNOWN KEEPS A CHIP (Research's finding, Integration 37th's corrected ruling). The Sheet's
    * UNKNOWN_STRUCTURE chip went with the Sheet, but the desk has its own trigger: a dossier that classified the
    * structure UNKNOWN. With no warning it fell through to the green NO FLAG FOUND, "no structural problem
    * established", beside a Desk Read saying no structural conclusion was reached. Dim, because it is an
-   * absence of a reading, not a finding about supply.
+   * absence of a reading, not a finding about supply. After the supply and caution branches (Commercial
+   * read 65), so a warning line always wins.
    */
   if (structure?.structureClassification === 'UNKNOWN' && line === null) {
     return {
@@ -188,17 +197,6 @@ export function resolveRisk(row: DeskRow): DeskRisk {
       value: null,
       detail: STRUCTURE_UNKNOWN_DETAIL,
       tone: 'dim',
-      full,
-    };
-  }
-
-  if (structure?.structureClassification === 'CAUTION' || line !== null) {
-    return {
-      code: 'STRUCTURE_CAUTION',
-      label: 'STRUCTURE CAUTION',
-      value: null,
-      detail: line ?? 'Structure is cautionary rather than clean.',
-      tone: 'warn',
       full,
     };
   }
