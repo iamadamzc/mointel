@@ -21,6 +21,7 @@ const link = (id: number, publishedAt: string | null = '2026-08-17T12:15:00.000Z
   accession: null,
   publishedAt,
   publishedPrecision: 'EXACT',
+  exhibitType: null,
 });
 
 const SENTENCE = 'The supply ledger shows an open at-the-market program of $40 million.';

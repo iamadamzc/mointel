@@ -76,6 +76,7 @@ import {
   type CatalystSourceDiscoveryProvider,
 } from './discovery';
 import {
+  exhibitTitle,
   exhibitUrl,
   filingIndexHtmlUrl,
   parseFilingIndexHtml,
@@ -465,7 +466,7 @@ export async function collectCatalystEvidence(
           collected.push({
             ticker,
             sourceType: 'SEC_EXHIBIT',
-            title: `${exhibit.type}: ${filing.secForm} ${filing.publishedAt ?? ''}`.trim(),
+            title: exhibitTitle(exhibit.type, filing.secForm),
             url,
             // The exhibit inherits its parent filing's date: the exhibit file
             // itself carries no publication time of its own.
