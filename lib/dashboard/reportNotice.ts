@@ -11,7 +11,7 @@
  */
 
 import { reportKey, type SessionReport } from '../desk/reports/contract';
-import { etStamp, reportTitle, type SlotView } from './sessionReports';
+import { etStamp, reportTitle, revisionChange, type SlotView } from './sessionReports';
 
 /** The key a report is marked read under: its slot and the edition's publish time (the shell's key since v5). */
 export function reportReadKey(report: Pick<SessionReport, 'kind' | 'rangeId' | 'tradingDate' | 'publishedAt'>): string {
@@ -19,11 +19,13 @@ export function reportReadKey(report: Pick<SessionReport, 'kind' | 'rangeId' | '
 }
 
 /** Whether the 10 pm edition wrote anything for itself: lines or the summary (`revisionOf`). */
-function revisionWroteSomething(report: Pick<SessionReport, 'revisionOf'>): boolean {
-  const revision = report.revisionOf;
-  if (!revision || typeof revision !== 'object') return false;
-  const changed = Array.isArray(revision.changedTickers) && revision.changedTickers.some((t) => typeof t === 'string');
-  return changed || revision.narrativeChanged === true;
+/**
+ * Whether the 10 pm edition's text differs from the earlier edition's, by the SAME answer the revision line
+ * uses (`revisionChange`): names written, a summary written and present, or a summary the earlier edition
+ * had and this one does not. A struck rewrite with nothing else changed is not a revision.
+ */
+function revisionWroteSomething(report: SessionReport, superseded: readonly SessionReport[]): boolean {
+  return revisionChange(report, superseded)?.differs === true;
 }
 
 /**
@@ -36,7 +38,7 @@ function revisionWroteSomething(report: Pick<SessionReport, 'revisionOf'>): bool
 export function editionIsRead(report: SessionReport, superseded: readonly SessionReport[], read: readonly string[]): boolean {
   if (read.includes(reportReadKey(report))) return true;
   const revision = report.revisionOf;
-  if (!revision || typeof revision !== 'object' || revisionWroteSomething(report)) return false;
+  if (!revision || typeof revision !== 'object' || revisionWroteSomething(report, superseded)) return false;
   const original = superseded.find((older) => older.publishedAt === revision.publishedAt);
   return original !== undefined && read.includes(reportReadKey(original));
 }
@@ -62,7 +64,7 @@ export function reportMark(current: SlotView | null, read: readonly string[], no
   if (editionIsRead(report, current.superseded, read)) return null;
   const at = etStamp(report.publishedAt, nowMs);
   const when = at ? (at.date ? `${at.date}, ${at.time}` : at.time) : null;
-  const revised = revisionWroteSomething(report);
+  const revised = revisionWroteSomething(report, current.superseded);
   const title = reportTitle(report.kind);
   if (revised) {
     return {

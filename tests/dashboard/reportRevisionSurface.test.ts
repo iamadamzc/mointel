@@ -9,7 +9,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
 import { NameCard } from '@/components/SessionReports';
-import { cardRevisionMark, replacesLine, reportBlocks, reportTimeline, revisionLine } from '@/lib/dashboard/sessionReports';
+import { cardRevisionMark, replacesLine, reportBlocks, reportTimeline, revisionChange, revisionLine } from '@/lib/dashboard/sessionReports';
 import { buildReportsPayload, type StoredReportRow } from '@/lib/desk/reports/api';
 import type { SessionReport } from '@/lib/desk/reports/contract';
 import { DEFAULT_REPORT_RANGES } from '@/lib/desk/reports/ranges';
@@ -21,10 +21,14 @@ const EIGHT_THIRTY = '2026-09-29T00:30:00.000Z';
 const SAME_EVENING = Date.parse('2026-09-29T03:00:00.000Z'); // 11:00 pm ET, Sep 28
 const NEXT_MORNING = Date.parse('2026-09-29T12:00:00.000Z'); // 8:00 am ET, Sep 29
 
-const edition = (changedTickers: string[], narrativeChanged: boolean) => ({
+// This edition has a summary unless a test says otherwise (Integration 36th: "written" needs it present).
+const edition = (changedTickers: string[], narrativeChanged: boolean, narrative: string | null = 'A summary.') => ({
   publishedAt: TEN,
+  narrative,
+  watchCount: 2,
   revisionOf: { publishedAt: EIGHT_THIRTY, changedTickers, narrativeChanged },
 });
+const earlierWith = (narrative: string | null) => [{ publishedAt: EIGHT_THIRTY, narrative, watchCount: 2 }];
 
 describe('the revision line', () => {
   it('nothing written for this edition: published again, everything carried', () => {
@@ -83,6 +87,60 @@ describe('the revision line', () => {
       expect(s).not.toMatch(/again,|written again|changed|updated|no change/i);
       expect(s.includes(EM_DASH)).toBe(false);
     }
+  });
+});
+
+describe('the revision line when this edition has no summary (Marketing v3 e54872b4, Commercial read 45)', () => {
+  it('names written and the rewrite empty: the "summary written" sentence is dropped (live 2026-10-08 case)', () => {
+    expect(revisionLine(edition(['AAA'], true, null), ['AAA', 'BBB'], SAME_EVENING, earlierWith(null))).toBe(
+      'Revised at 10:02 pm ET: 1 name has a line written for this edition and the others carry their 8:30 pm line. This edition has no summary.',
+    );
+    expect(revisionLine(edition(['AAA'], true, null), ['AAA', 'BBB'], SAME_EVENING, earlierWith('Earlier summary.'))).toBe(
+      'Revised at 10:02 pm ET: 1 name has a line written for this edition and the others carry their 8:30 pm line. This edition has no summary, and the 8:30 pm edition had one.',
+    );
+  });
+
+  it('case 2: nothing written, neither edition has a summary', () => {
+    expect(revisionLine(edition([], true, null), ['AAA'], SAME_EVENING, earlierWith(null))).toBe(
+      'Published again at 10:02 pm ET; every line is carried from the 8:30 pm edition. Neither edition has a summary.',
+    );
+    // narrativeChanged false with no summary never claims "every line and the summary are carried".
+    expect(revisionLine(edition([], false, null), ['AAA'], SAME_EVENING, earlierWith(null))).toBe(
+      'Published again at 10:02 pm ET; every line is carried from the 8:30 pm edition. Neither edition has a summary.',
+    );
+  });
+
+  it('case 3: nothing written, this edition has none and the earlier one had one', () => {
+    expect(revisionLine(edition([], true, null), ['AAA'], SAME_EVENING, earlierWith('Earlier summary.'))).toBe(
+      'Revised at 10:02 pm ET: this edition has no summary, and the 8:30 pm edition had one. Every line is carried from the 8:30 pm edition.',
+    );
+  });
+
+  it('the earlier edition not on the page: the fallback, never a claim about it', () => {
+    const fallback = 'Published again at 10:02 pm ET; every line is carried from the 8:30 pm edition. This edition has no summary.';
+    expect(revisionLine(edition([], true, null), ['AAA'], SAME_EVENING)).toBe(fallback);
+    expect(revisionLine(edition([], true, null), ['AAA'], SAME_EVENING, [{ publishedAt: 'other', narrative: 'x', watchCount: 1 }])).toBe(fallback);
+    expect(revisionLine(edition(['AAA'], true, null), ['AAA', 'BBB'], SAME_EVENING)).toBe(
+      'Revised at 10:02 pm ET: 1 name has a line written for this edition and the others carry their 8:30 pm line. This edition has no summary.',
+    );
+  });
+
+  it('an earlier edition from before v6 (an overall line, or no narrative key) is unknown: the fallback', () => {
+    const fallback = 'Published again at 10:02 pm ET; every line is carried from the 8:30 pm edition. This edition has no summary.';
+    expect(revisionLine(edition([], true, null), ['AAA'], SAME_EVENING, [{ publishedAt: EIGHT_THIRTY, overall: 'Old line.', watchCount: 2 }])).toBe(fallback);
+    expect(revisionLine(edition([], true, null), ['AAA'], SAME_EVENING, [{ publishedAt: EIGHT_THIRTY, watchCount: 2 }])).toBe(fallback);
+    expect(revisionChange(edition([], true, null), [{ publishedAt: EIGHT_THIRTY, overall: 'Old line.', watchCount: 2 }])?.earlierHas).toBeNull();
+  });
+
+  it('whitespace-only counts as no summary, by the same test as "No summary in this report."', () => {
+    expect(revisionLine(edition([], true, '   '), ['AAA'], SAME_EVENING, earlierWith('  '))).toContain('Neither edition has a summary.');
+  });
+
+  it('the notice and the line agree: a struck rewrite alone is not a revision; a dropped summary is', () => {
+    expect(revisionChange(edition([], true, null), earlierWith(null))?.differs).toBe(false);
+    expect(revisionChange(edition([], true, null), earlierWith('Earlier summary.'))?.differs).toBe(true);
+    expect(revisionChange(edition([], true, 'New.'), earlierWith(null))?.differs).toBe(true);
+    expect(revisionChange(edition(['AAA'], false, null), earlierWith(null))?.differs).toBe(true);
   });
 });
 

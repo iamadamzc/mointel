@@ -532,7 +532,7 @@ function ReportBody({
   const blocks = reportBlocks(report);
   const empty = emptyReportLine(report, blocks);
   const names = blocks.flatMap((block) => (block.kind === 'NAME' ? [block.ticker] : []));
-  const editionLine = revisionLine(report, names, nowMs) ?? replacesLine(view.superseded, nowMs);
+  const editionLine = revisionLine(report, names, nowMs, view.superseded) ?? replacesLine(view.superseded, nowMs);
   // v6: computed sections with labels; v5 keeps (A)'s single list (its headings are model text).
   const groups = v6 ? reportGroups(report) : [{ label: null, blocks }];
   const hasNames = blocks.some((block) => block.kind === 'NAME');

@@ -53,6 +53,8 @@ const tenPm = (changedTickers: string[], narrativeChanged: boolean) =>
     kind: 'EVENING',
     tradingDate: '2026-10-07',
     publishedAt: '2026-10-08T02:02:00.000Z',
+    // A summary is present in the 10 pm edition (a struck rewrite is tested in reportRevisionSurface).
+    narrative: 'Summary.',
     revisionOf: { publishedAt: EIGHT_THIRTY.publishedAt, changedTickers, narrativeChanged },
   });
 

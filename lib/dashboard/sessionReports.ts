@@ -498,29 +498,100 @@ const atStamp = (at: { time: string; date: string | null }) => (at.date ? stampT
  * edition's time does not parse. `namesOnReport` is the distinct names the report shows: when every one of
  * them is in `changedTickers`, the "others carry" clause is dropped.
  */
-export function revisionLine(
-  report: Pick<SessionReport, 'publishedAt' | 'revisionOf'>,
-  namesOnReport: readonly string[],
-  nowMs: number,
-): string | null {
+/**
+ * What the 10 pm edition changed, ONE answer for the revision line and the new-report notice (so they
+ * cannot disagree). `narrativeChanged` is the pipeline's PLAN flag: true even when the rewritten summary
+ * was then struck to null (Integration 36th), so "the summary was written for this edition" needs this
+ * edition's summary to be present. Whether the earlier edition had one is read ONLY from that edition's own
+ * stored report, matched by revisionOf.publishedAt among the slot's older editions, with the same test that
+ * prints "No summary in this report." (Commercial read 45); null when that edition is not on the page.
+ */
+export interface RevisionChange {
+  changed: Set<string>;
+  /** This edition has a summary. */
+  thisHas: boolean;
+  /** The earlier edition had one; null when it is not available to the page. */
+  earlierHas: boolean | null;
+  /** The summary was written for this edition and is present. */
+  summaryWritten: boolean;
+  /** The edition's text differs from the earlier edition's: the notice marks it "Revised". */
+  differs: boolean;
+}
+
+export function revisionChange(
+  report: Pick<SessionReport, 'revisionOf' | 'narrative' | 'overall' | 'watchCount'>,
+  earlier: readonly Pick<SessionReport, 'publishedAt' | 'narrative' | 'overall' | 'watchCount'>[] = [],
+): RevisionChange | null {
   const revision = report.revisionOf;
   if (!revision || typeof revision !== 'object') return null;
-  const now = etStamp(report.publishedAt, nowMs);
-  const before = etStamp(revision.publishedAt, nowMs);
-  if (!now || !before) return null;
   const changed = changedSet(revision);
-  const summary = revision.narrativeChanged === true;
-  const others = namesOnReport.some((ticker) => !changed.has(ticker));
-  if (changed.size === 0 && !summary) {
-    return `Published again ${atStamp(now)} ET; every line and the summary are carried from the ${stampText(before)} edition.`;
-  }
+  const thisHas = reportOpening(report)?.kind === 'NARRATIVE';
+  const original = earlier.find((older) => older.publishedAt === revision.publishedAt);
+  // Only a v6 answer licenses a claim about the earlier edition (Commercial read 45a): NARRATIVE or NONE.
+  // A v5 row (an overall line, or no opening at all) is unknown, so the fallback words are used.
+  const earlierKind = original ? reportOpening(original)?.kind : undefined;
+  const earlierHas = earlierKind === 'NARRATIVE' ? true : earlierKind === 'NONE' ? false : null;
+  const summaryWritten = revision.narrativeChanged === true && thisHas;
+  const summaryDropped = !thisHas && earlierHas === true;
+  return { changed, thisHas, earlierHas, summaryWritten, differs: changed.size > 0 || summaryWritten || summaryDropped };
+}
+
+/**
+ * The 10 pm edition's line (his "same report, just edited with new information"; Integration ruled it built,
+ * placed under the title's time lines). Words: Marketing v2 at 98b22b36 (Commercial 30a) and v3 at e54872b4
+ * for an edition with no summary (Commercial 45). Every string says what the REPORT holds, never why: the
+ * word for a struck summary stays out (OPENING_WORDS). `changedTickers` includes a name new at 22:00, so
+ * nothing here says "again". The no-summary test on THIS edition runs first, so an edition without a summary
+ * can never print "every line and the summary are carried".
+ *
+ * Null when the payload carries no `revisionOf` (no 8:30 edition existed, or not a 10 pm edition) or an
+ * edition's time does not parse. `namesOnReport` is the distinct names the report shows: when every one of
+ * them is in `changedTickers`, the "others carry" clause is dropped. `earlier` is the slot's older editions
+ * (`SlotView.superseded`).
+ */
+export function revisionLine(
+  report: Pick<SessionReport, 'publishedAt' | 'revisionOf' | 'narrative' | 'overall' | 'watchCount'>,
+  namesOnReport: readonly string[],
+  nowMs: number,
+  earlier: readonly Pick<SessionReport, 'publishedAt' | 'narrative' | 'overall' | 'watchCount'>[] = [],
+): string | null {
+  const change = revisionChange(report, earlier);
+  if (!change || !report.revisionOf) return null;
+  const now = etStamp(report.publishedAt, nowMs);
+  const before = etStamp(report.revisionOf.publishedAt, nowMs);
+  if (!now || !before) return null;
+  const { changed, thisHas, earlierHas, summaryWritten } = change;
   const head = `Revised ${atStamp(now)} ET`;
-  if (changed.size === 0) {
-    return `${head}: the summary was written for this edition; every line is carried from the ${stampText(before)} edition.`;
+  const was = stampText(before);
+  const others = namesOnReport.some((ticker) => !changed.has(ticker));
+  const namesSentence = () => {
+    const names = changed.size === 1 ? '1 name has' : `${changed.size} names have`;
+    const carry = others ? ` and the others carry their ${was} line` : '';
+    return `${head}: ${names} a line written for this edition${carry}.`;
+  };
+
+  if (!thisHas) {
+    if (changed.size > 0) {
+      return earlierHas === true
+        ? `${namesSentence()} This edition has no summary, and the ${was} edition had one.`
+        : `${namesSentence()} This edition has no summary.`;
+    }
+    if (earlierHas === false) {
+      return `Published again ${atStamp(now)} ET; every line is carried from the ${was} edition. Neither edition has a summary.`;
+    }
+    if (earlierHas === true) {
+      return `${head}: this edition has no summary, and the ${was} edition had one. Every line is carried from the ${was} edition.`;
+    }
+    return `Published again ${atStamp(now)} ET; every line is carried from the ${was} edition. This edition has no summary.`;
   }
-  const names = changed.size === 1 ? '1 name has' : `${changed.size} names have`;
-  const carry = others ? ` and the others carry their ${stampText(before)} line` : '';
-  return `${head}: ${names} a line written for this edition${carry}.${summary ? ' The summary was written for this edition.' : ''}`;
+
+  if (changed.size === 0 && !summaryWritten) {
+    return `Published again ${atStamp(now)} ET; every line and the summary are carried from the ${was} edition.`;
+  }
+  if (changed.size === 0) {
+    return `${head}: the summary was written for this edition; every line is carried from the ${was} edition.`;
+  }
+  return `${namesSentence()}${summaryWritten ? ' The summary was written for this edition.' : ''}`;
 }
 
 function changedSet(revision: { changedTickers?: unknown }): Set<string> {
