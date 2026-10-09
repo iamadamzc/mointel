@@ -127,6 +127,11 @@ export function sameAnnouncement(
   if (a.contentHash && a.contentHash === b.contentHash) {
     return { same: true, confidence: 'HIGH', reason: 'identical normalised content' };
   }
+  // Exhibits of one filing are one announcement, keyed by its accession: the exhibit title
+  // ("EX-99.1 to 8-K", `exhibitTitle`) carries no headline words, so the headline test cannot see it.
+  if (a.sourceType === 'SEC_EXHIBIT' && b.sourceType === 'SEC_EXHIBIT' && a.accession && a.accession === b.accession) {
+    return { same: true, confidence: 'HIGH', reason: 'exhibits of one filing' };
+  }
 
   const similarity = headlineSimilarity(a.title ?? '', b.title ?? '');
   if (similarity < CLUSTER_SIMILARITY_THRESHOLD) {
@@ -180,7 +185,17 @@ export function selectCanonical(members: ClusterableSource[]): ClusterableSource
 }
 
 function clusterIdFor(ticker: string, canonical: ClusterableSource): string {
-  const basis = `${ticker}|${normaliseHeadline(canonical.title ?? '')}|${canonical.publishedAt ?? ''}`;
+  const headline = normaliseHeadline(canonical.title ?? '');
+  /*
+   * An exhibit whose title has no headline words (every title `exhibitTitle` writes) takes its id
+   * from its filing's accession, so two filings' exhibits published at one instant never share an id.
+   * Stored rows keep their ids under this rule (replay on the 10-07 copy,
+   * docs/research/source-titles/exhibit-cluster-replay.py: 10,450 of 10,450 catalyst rows' stored ids
+   * reproduced), which matters because the catalyst fingerprint hashes the id.
+   */
+  const key =
+    headline === '' && canonical.sourceType === 'SEC_EXHIBIT' && canonical.accession ? canonical.accession : headline;
+  const basis = `${ticker}|${key}|${canonical.publishedAt ?? ''}`;
   return createHash('sha256').update(basis).digest('hex').slice(0, 16);
 }
 
