@@ -61,6 +61,9 @@ function timeWithAge(at: string | null | undefined): string {
   return age ? `${stamp} · ${age} ago` : stamp;
 }
 
+/** What a float leaves out, under the drawer's float (Marketing 955b3749, Commercial read 66). */
+export const FLOAT_LEAVES_OUT = 'What a float leaves out: warrants, convertible notes and share-sale programs. Each can add shares.';
+
 /** The supply picture as a ledger, above the model's prose. */
 function StructureSummaryBlock({
   summary,
@@ -92,6 +95,8 @@ function StructureSummaryBlock({
           {summary.float.date ? <span className="text-[10px] text-ink-3">{summary.float.date}</span> : null}
         </span>
       </div>
+      {/* The same sentence on every drawer: a general statement, not a finding about this name (his ask, 2026-10-09). */}
+      <p className="m-0 mt-1 text-[11px] text-ink-3">{FLOAT_LEAVES_OUT}</p>
 
       {summary.supply.length > 0 ? (
         <div className="mt-2 border-t border-line pt-2">
