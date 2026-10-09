@@ -2,7 +2,13 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+// Each case spawns Git Bash several times. Alone a case takes seconds, but beside the
+// other shell-script suites under full-suite load it ran 20-40 s against the 30 s
+// default and failed the gate on time alone (Ops, 2026-10-08). Integration ruled a
+// per-file timeout for these four files.
+vi.setConfig({ testTimeout: 120_000 });
 
 /**
  * Retention is not allowed to remove the release you would roll back to.
