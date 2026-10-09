@@ -202,6 +202,8 @@ const UNKNOWN_TEXT: Partial<Record<FloatBoundReason, string>> = {
   NO_FILED_COUNT: 'No filed share count.',
   NO_CIK: 'We could not match this name to an SEC filer, so there is no filed share count to start from.',
   COUNT_SPLIT_ACROSS_FILINGS: 'The filed share count is split across several filings, so no single count applies.',
+  // Marketing fd7b7322, Commercial read 54 (7e0ac597): stored only on SEC's 404 from companyfacts (floatJob.ts).
+  COMPANY_FACTS_NOT_AVAILABLE: "We could not read a filed share count for this name: SEC's company-facts data returned nothing for it.",
 };
 
 function cannotVerifyText(

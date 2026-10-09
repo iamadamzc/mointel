@@ -12,6 +12,7 @@ import {
   type StoredHolding,
   type SubmissionsRecent,
 } from '@/lib/research/floatJob';
+import { SecRequestError } from '@/lib/research/sec/client';
 import type { SpanBar } from '@/lib/research/splitProof';
 import type { SupplyBlock } from '@/lib/research/types';
 
@@ -122,6 +123,55 @@ describe('computeFloatBound', () => {
   it('writes no row when companyfacts cannot be fetched: a failed fetch is not "no filed count"', async () => {
     const failing = deps({ getJson: async () => Promise.reject(new Error('503')) });
     await expect(computeFloatBound({ symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dossier() }, failing)).rejects.toThrow('503');
+  });
+
+  /*
+   * SEC's 404 on companyfacts is an ANSWER (Integration 36th, 2026-10-09: MTR, CIK 313364, a current filer whose
+   * companyfacts returns 404). Stored as UNKNOWN / COMPANY_FACTS_NOT_AVAILABLE, so the name is not retried daily and
+   * the board float pass does not stop on it. Any other status still writes no row.
+   */
+  const COMPANY_FACTS_URL = 'https://data.sec.gov/api/xbrl/companyfacts/CIK0000000555.json';
+  const secRefusing = (status: number) => {
+    const requested: string[] = [];
+    const d = deps({
+      getJson: async (url: string) => {
+        requested.push(url);
+        throw new SecRequestError(`SEC responded ${status}`, status, url);
+      },
+    });
+    return { d, requested };
+  };
+
+  it("stores UNKNOWN COMPANY_FACTS_NOT_AVAILABLE on SEC's 404, and reads nothing further", async () => {
+    const { d, requested } = secRefusing(404);
+    const row = await computeFloatBound({ symbol: 'MTR', cik: '555', asOfDate: AS_OF, dossier: dossier() }, d);
+    expect(row.count).toEqual({ kind: 'COMPANY_FACTS_NOT_AVAILABLE' });
+    expect(row.cell).toEqual({ state: 'UNKNOWN', reason: 'COMPANY_FACTS_NOT_AVAILABLE' });
+    expect(row.holdings).toEqual([]);
+    // Only the companyfacts request: no submissions, no Form 4, no split read.
+    expect(requested).toEqual([COMPANY_FACTS_URL]);
+    expect(d.urls).toEqual([]);
+  });
+
+  it('still writes no row on any other SEC status', async () => {
+    for (const status of [403, 500]) {
+      await expect(
+        computeFloatBound({ symbol: 'MTR', cik: '555', asOfDate: AS_OF, dossier: dossier() }, secRefusing(status).d),
+      ).rejects.toThrow(`SEC responded ${status}`);
+    }
+  });
+
+  it('reads the stored COMPANY_FACTS_NOT_AVAILABLE row back as the same cell (the reader re-derives it)', () => {
+    const cell = floatCellFor({
+      cik: '555',
+      count: { kind: 'COMPANY_FACTS_NOT_AVAILABLE' },
+      holdings: [],
+      splitSinceCount: 'UNPROVEN',
+      ledger: [],
+      asOfDate: AS_OF,
+      issuanceFiled: false,
+    });
+    expect(cell).toEqual({ state: 'UNKNOWN', reason: 'COMPANY_FACTS_NOT_AVAILABLE' });
   });
 
   it('reads NO_CIK and fetches nothing when the dossier carries no SEC identifier', async () => {

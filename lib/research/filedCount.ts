@@ -22,7 +22,12 @@ export interface CompanyFactsShares {
 export type FiledCount =
   | { kind: 'COUNT'; shares: number; asOf: string; filed: string; accession: string; form: string }
   | { kind: 'NO_FILED_COUNT' }
-  | { kind: 'COUNT_SPLIT_ACROSS_FILINGS' };
+  | { kind: 'COUNT_SPLIT_ACROSS_FILINGS' }
+  /**
+   * SEC answered the companyfacts request with 404 (Integration 36th's ruling, 2026-10-09, MTR): nothing could be read,
+   * which is NOT "no filed count" (it says nothing about what the company filed). See `computeFloatBound`.
+   */
+  | { kind: 'COMPANY_FACTS_NOT_AVAILABLE' };
 
 /**
  * Only what had been FILED by `asOfDate` (a later filing is look-ahead). The latest period end; at that end the latest

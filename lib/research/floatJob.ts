@@ -11,6 +11,11 @@
  * submissions request that throws aborts the call (no row, the cell stays NOT_YET); only a fetched answer of "no count"
  * is UNKNOWN / NO_FILED_COUNT. The validation recorded a fetch error as NO_FILED_COUNT, which was harmless in a sample
  * and would be a false sentence on the board.
+ *
+ * One answer is not a failure: SEC's 404 on companyfacts (the client records it as reachable, `sec/client.ts`). It is
+ * stored as UNKNOWN / COMPANY_FACTS_NOT_AVAILABLE, a statement about what the desk could read, never about what the
+ * company filed (Integration 36th, 2026-10-09: MTR's 404 stored no row, so it stayed a candidate and stopped the board
+ * float pass every day). Every other error still aborts the call.
  */
 import {
   floatCell,
@@ -23,6 +28,7 @@ import {
   type SplitProof,
 } from './insiderBound';
 import { selectFiledCount, type CompanyFactsShares, type FiledCount } from './filedCount';
+import { SecRequestError } from './sec/client';
 import { splitProofFromBars, splitProofR0, withAnnouncedSplits, type SpanBar } from './splitProof';
 import type { SupplyBlock } from './types';
 
@@ -171,9 +177,15 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   let issuanceList: IssuanceFiling[] = [];
 
   if (cik) {
-    // A throw here propagates: a failed fetch is not "no count".
-    const facts = await deps.getJson<CompanyFactsShares>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${pad10(cik)}.json`);
-    count = selectFiledCount(facts, asOfDate);
+    // A throw here propagates: a failed fetch is not "no count". SEC's 404 is an answer, stored as such (header).
+    let facts: CompanyFactsShares | null;
+    try {
+      facts = await deps.getJson<CompanyFactsShares>(`https://data.sec.gov/api/xbrl/companyfacts/CIK${pad10(cik)}.json`);
+    } catch (error) {
+      if (!(error instanceof SecRequestError && error.status === 404)) throw error;
+      facts = null;
+    }
+    count = facts === null ? { kind: 'COMPANY_FACTS_NOT_AVAILABLE' } : selectFiledCount(facts, asOfDate);
     if (count.kind === 'COUNT') {
       const since = addDays(asOfDate, -FLOAT_WINDOW_DAYS);
       const submissions = await deps.getJson<SubmissionsRecent>(`https://data.sec.gov/submissions/CIK${pad10(cik)}.json`);
@@ -230,6 +242,7 @@ export function floatCellFor(input: {
     cik: input.cik,
     count: input.count.kind === 'COUNT' ? { shares: input.count.shares, asOf: input.count.asOf, form: input.count.form } : null,
     spreadAcrossFilings: input.count.kind === 'COUNT_SPLIT_ACROSS_FILINGS',
+    companyFactsNotAvailable: input.count.kind === 'COMPANY_FACTS_NOT_AVAILABLE',
     checkpointDate: input.asOfDate,
     maxAgeDays: FLOAT_MAX_AGE_DAYS,
     holdings: input.holdings,

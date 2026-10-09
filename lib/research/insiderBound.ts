@@ -240,6 +240,8 @@ export type FloatCellReason =
   | 'UNREGISTERED_SALE_NOT_CHECKABLE'
   | 'SPLIT_SINCE_COUNT'
   | 'BOUND_OUT_OF_RANGE'
+  /** SEC answered companyfacts with 404: no count could be READ (says nothing about what was filed). Integration 36th, MTR. */
+  | 'COMPANY_FACTS_NOT_AVAILABLE'
   /** Contract 9b: the newest read of the filings is more than the reuse span before D. Set by the reader, never by `floatCell`. */
   | 'FILINGS_NOT_REREAD';
 
@@ -289,6 +291,8 @@ export interface FloatCellInput {
   /** `form` is the filing the count came from; `floatCellFor` always passes it. Absent only in measurement scripts. */
   count: { shares: number; asOf: string; form?: string } | null;
   spreadAcrossFilings: boolean;
+  /** SEC's companyfacts answered 404 (`floatCellFor` always passes it; absent only in measurement scripts). */
+  companyFactsNotAvailable?: boolean;
   checkpointDate: string;
   maxAgeDays: number;
   holdings: readonly OwnerHolding[];
@@ -312,6 +316,7 @@ export interface FloatCellInput {
  */
 export function floatCell(input: FloatCellInput): FloatCell {
   if (!input.cik) return { state: 'UNKNOWN', reason: 'NO_CIK' };
+  if (input.companyFactsNotAvailable) return { state: 'UNKNOWN', reason: 'COMPANY_FACTS_NOT_AVAILABLE' };
   if (input.spreadAcrossFilings) return { state: 'UNKNOWN', reason: 'COUNT_SPLIT_ACROSS_FILINGS' };
   if (!input.count) return { state: 'UNKNOWN', reason: 'NO_FILED_COUNT' };
   // I-D before the ledger: a filing is the most specific and checkable cause (registration section 2).

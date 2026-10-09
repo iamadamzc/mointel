@@ -52,7 +52,11 @@ const REASONS: FloatBoundReason[] = [
   'BOUND_OUT_OF_RANGE',
   'FILINGS_NOT_REREAD',
   'UNREGISTERED_SALE_NOT_CHECKABLE',
+  'COMPANY_FACTS_NOT_AVAILABLE',
 ];
+/** The causes stored with the UNKNOWN state; every other cause is CANNOT_VERIFY. */
+const UNKNOWN_REASONS = new Set<FloatBoundReason>(['NO_FILED_COUNT', 'NO_CIK', 'COUNT_SPLIT_ACROSS_FILINGS', 'COMPANY_FACTS_NOT_AVAILABLE']);
+const stateOf = (r: FloatBoundReason) => (UNKNOWN_REASONS.has(r) ? 'UNKNOWN' : 'CANNOT_VERIFY');
 /** Causes that share another's words by ruling, each with the cause whose words it takes. */
 const SHARED_BY_RULING: Partial<Record<FloatBoundReason, FloatBoundReason>> = {
   ISSUANCE_FILED: 'ISSUANCE_FLAGGED', // Commercial 5p, bbfb7a17
@@ -113,11 +117,17 @@ describe('the bound face', () => {
 });
 
 describe('the other three faces, one string per stored cause', () => {
-  it('Unknown has three causes, each its own words', () => {
+  it('Unknown has four causes, each its own words', () => {
     expect(floatCellView(refused('UNKNOWN', 'NO_FILED_COUNT')).paragraphs).toEqual(['No filed share count.']);
     expect(floatCellView(refused('UNKNOWN', 'NO_CIK')).paragraphs[0]).toContain('could not match this name to an SEC filer');
     expect(floatCellView(refused('UNKNOWN', 'COUNT_SPLIT_ACROSS_FILINGS')).paragraphs[0]).toContain('split across several filings');
     expect(floatCellView(refused('UNKNOWN', 'NO_FILED_COUNT')).face).toBe('Unknown');
+  });
+
+  it("SEC's companyfacts 404 reads Marketing's sentence (fd7b7322, Commercial read 54), never the no-filed-count fallback", () => {
+    const v = floatCellView(refused('UNKNOWN', 'COMPANY_FACTS_NOT_AVAILABLE'));
+    expect(v.face).toBe('Unknown');
+    expect(v.paragraphs[0]).toBe("We could not read a filed share count for this name: SEC's company-facts data returned nothing for it.");
   });
 
   it('Cannot verify has seven causes; a too-old count names its date and an unread filing names the read date', () => {
@@ -146,7 +156,7 @@ describe('the other three faces, one string per stored cause', () => {
 
   it('every stored cause has words, and none shares a face or a string with a different cause', () => {
     const strings = REASONS.map((r) =>
-      floatCellView(refused(r.startsWith('NO_') || r === 'COUNT_SPLIT_ACROSS_FILINGS' ? 'UNKNOWN' : 'CANNOT_VERIFY', r, { countAsOf: '2026-05-01' })).paragraphs[0],
+      floatCellView(refused(stateOf(r), r, { countAsOf: '2026-05-01' })).paragraphs[0],
     );
     expect(new Set(strings).size).toBe(REASONS.length - Object.keys(SHARED_BY_RULING).length);
     for (const s of strings) expect(s).not.toBe('Cannot verify.');
@@ -178,7 +188,7 @@ describe('no claim beyond the sources, no dashes, no result language', () => {
     for (const v of [
       floatCellView(produced()),
       floatCellView(null),
-      ...REASONS.map((r) => floatCellView(refused(r.startsWith('NO_') ? 'UNKNOWN' : 'CANNOT_VERIFY', r, { countAsOf: '2026-05-01' }))),
+      ...REASONS.map((r) => floatCellView(refused(stateOf(r), r, { countAsOf: '2026-05-01' }))),
     ]) {
       all.push(v.face, v.ariaLabel, ...v.paragraphs);
     }
