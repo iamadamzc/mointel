@@ -116,10 +116,15 @@ export const SECTIONS: Section[] = [
     ],
     shots: [
       {
+        // His "yes to images" 2026-10-09T03:34:17.401Z (61dbff4c): caption and alt as put to him,
+        // Marketing 8d9f3aba, Commercial 49/49b. Design 10c cropped (2969f578), a production capture of 2026-10-08.
         slot: 10,
         shape: 'panel',
-        caption: 'The supply groups and the one risk the evidence shows, {date}. A dated example, not a record or a prediction.',
-        alt: 'A drawer section listing supply in six labelled groups, and a one-sentence risk statement with its sources.',
+        caption: "A name's structure label and potential supply on October 8, 2026: DIRTY FLOAT, Float Unknown, supply by kind with a status for each, and a note that the reported shares outstanding predate a September issuance. A dated example, not a record or a prediction.",
+        alt: 'The top of the Structural intelligence section of a ticker drawer: a DIRTY FLOAT label, Float Unknown, a table of known and potential supply by kind with a status for each, and a note that the reported shares outstanding predate the September issuance.',
+        src: '/landing/supply-drawer.webp',
+        width: 1600,
+        height: 486,
       },
     ],
   },
@@ -238,10 +243,14 @@ export const HERO_SHOT: Shot = {
 };
 
 export const ACCESS_SHOT: Shot = {
+  // His "yes to images" 2026-10-09T03:34:17.401Z: caption "The sign-in page."; Design 16a (26f70e57), /signin signed out.
   slot: 16,
   shape: 'panel',
-  caption: 'Sign-in, then the one-time disclaimer.',
+  caption: 'The sign-in page.',
   alt: 'The sign-in page with a Sign in with Google button.',
+  src: '/landing/sign-in.webp',
+  width: 1600,
+  height: 1000,
 };
 
 export const NAV = { how: 'How it works', float: 'The float', not: "What it isn't", desk: 'Open the desk' };
