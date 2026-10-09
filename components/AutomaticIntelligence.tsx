@@ -86,7 +86,7 @@ function StructureSummaryBlock({
           * float confidence stays off: it measured the dossier's extraction, not this bound.
           */}
         <span className="inline-flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
-          <FieldLabel>Float</FieldLabel>
+          <FieldLabel>TMI Float</FieldLabel>
           <span
             className={`num text-[12px] font-semibold ${summary.float.kind === 'bound' ? 'text-ink' : 'text-ink-3'}`}
           >

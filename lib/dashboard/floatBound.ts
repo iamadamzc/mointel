@@ -133,7 +133,8 @@ export interface FloatDetails {
 
 export const FLOAT_DETAILS_WORDS = {
   headline: (x: string, d: string) =>
-    `Taking float as shares outstanding less insider holdings, at most ${x} shares as of ${d}, when the filings line up.`,
+    // TMI Float (his yes 2026-10-09T22:52:40.779Z; Marketing 00130acf, Commercial read 67).
+    `TMI Float, shares outstanding less insider holdings: no more than ${x} shares as of ${d}, when the filings line up.`,
   definitionLabel: 'Float, taking it as shares outstanding less insider holdings',
   definition:
     'The number above subtracts only the insider holdings the desk can see, so it is an upper bound on that figure, not on the shares that can trade on a given day, which can be more, because insiders can sell.',
@@ -175,7 +176,7 @@ export const FLOAT_PAGE_LINK_LABEL = 'Are float quotes real?';
 
 /** The once-only legend under the board, and the column header's hover once the float is wired. v25, verbatim. */
 export const FLOAT_LEGEND =
-  "Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.";
+  "TMI Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.";
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -236,7 +237,7 @@ function cannotVerifyText(
   }
 }
 
-const NOT_COMPUTED_TEXT = 'The desk has not computed a float for this name.';
+const NOT_COMPUTED_TEXT = 'The desk has not computed a TMI Float for this name.';
 
 /**
  * The surface the cell is on. The claim's one date, {D-label} (v25), is the board's
@@ -262,7 +263,7 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
       kind: 'notComputed',
       face: 'Not computed',
       date: null,
-      ariaLabel: 'float not computed for this name',
+      ariaLabel: 'TMI Float not computed for this name',
       paragraphs: [NOT_COMPUTED_TEXT],
       details: refusedDetails(NOT_COMPUTED_TEXT),
     };

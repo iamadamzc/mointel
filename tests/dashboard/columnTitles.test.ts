@@ -148,9 +148,8 @@ describe('"if it makes sense" is his limiter and it is enforced', () => {
     expect(COLUMN_TITLE.risk).toMatch(/not evidence anyone|permission to sell/i);
     // RISK: an unestablished structure is not a cleared one.
     expect(COLUMN_TITLE.risk).toMatch(/not the same as finding nothing/i);
-    // FLOAT: what a float IS, and that blank does not mean small.
-    expect(COLUMN_TITLE.float).toMatch(/available to trade/i);
-    expect(COLUMN_TITLE.float).toMatch(/never that the float is small/i);
+    // FLOAT: the vendor "Free float" title is gone with the Sheet; the header reads FLOAT_LEGEND (TMI Float).
+    expect(COLUMN_TITLE).not.toHaveProperty('float');
   });
 });
 

@@ -98,8 +98,8 @@ describe('the board shows the column always once wired, and the legend once', ()
     expect(board).toContain('floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null');
   });
 
-  it("wired, the header's hover is v25's line, never the vendor float's 'available to trade' title", () => {
-    expect(board).toContain('title={floatWired ? FLOAT_LEGEND : COLUMN_TITLE.float}');
-    expect(board).not.toContain('title={COLUMN_TITLE.float}');
+  it("the header's hover is the TMI Float legend, never the vendor float's title (gone with the Sheet)", () => {
+    expect(board).toContain('title={FLOAT_LEGEND}');
+    expect(board).not.toContain('COLUMN_TITLE.float');
   });
 });

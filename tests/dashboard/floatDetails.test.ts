@@ -41,7 +41,7 @@ describe('Variant A panel on a bound face', () => {
       null,
     ]);
     expect(v.details.rows[0].text).toBe(
-      'Taking float as shares outstanding less insider holdings, at most 12.4M shares as of Oct 6, 2026, when the filings line up.',
+      'TMI Float, shares outstanding less insider holdings: no more than 12.4M shares as of Oct 6, 2026, when the filings line up.',
     );
     expect(v.details.rows[2].text).toBe('13,000,000 shares as of Sep 22, 2026, from a 10-Q filed Sep 25, 2026.');
     expect(v.details.rows[3].text).toMatch(/^2 insiders, 699,000 shares, as filed through Oct 5, 2026\. For each insider/);
@@ -93,7 +93,7 @@ describe('refused faces and the marker', () => {
       { label: null, text: 'No filed share count.' },
       { label: FLOAT_DETAILS_WORDS.definitionLabel, text: FLOAT_DETAILS_WORDS.definition },
     ]);
-    expect(floatCellView(null).details.rows[0].text).toBe('The desk has not computed a float for this name.');
+    expect(floatCellView(null).details.rows[0].text).toBe('The desk has not computed a TMI Float for this name.');
   });
 
   it('every face ends its accessible name with "; details on click"', () => {

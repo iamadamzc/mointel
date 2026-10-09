@@ -149,8 +149,8 @@ describe('the other three faces, one string per stored cause', () => {
     for (const none of [null, undefined]) {
       const v = floatCellView(none);
       expect(v.face).toBe('Not computed');
-      expect(v.ariaLabel).toBe('float not computed for this name; details on click');
-      expect(v.paragraphs).toEqual(['The desk has not computed a float for this name.']);
+      expect(v.ariaLabel).toBe('TMI Float not computed for this name; details on click');
+      expect(v.paragraphs).toEqual(['The desk has not computed a TMI Float for this name.']);
     }
   });
 
@@ -200,7 +200,7 @@ describe('no claim beyond the sources, no dashes, no result language', () => {
 
   it('the legend is the approved v25 sentence set, verbatim', () => {
     expect(FLOAT_LEGEND).toBe(
-      "Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.",
+      "TMI Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.",
     );
   });
 });
