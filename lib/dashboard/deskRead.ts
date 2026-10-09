@@ -67,6 +67,8 @@ export interface DeskReadLevel {
   type: string;
   /** "LOST SUPPORT" / "PRICE ABOVE" when the relationship is not ordinary. */
   stateLabel: string | null;
+  /** The source's own date, YYYY-MM-DD, or null; rendered with `levelDateText`. */
+  sourceDate: string | null;
   distance: string;
   distancePct: string;
 }
@@ -326,6 +328,7 @@ function toReadLevel(zone: LevelZone, sign: '+' | '-'): DeskReadLevel {
         : format(zone.nearestPrice),
     type: levelTypeLabel(zone.dominantType),
     stateLabel: zone.stateLabel,
+    sourceDate: zone.sourceDate,
     distance: zone.distanceAbs === null ? '—' : `${sign}${zone.distanceAbs.toFixed(2)}`,
     distancePct: zone.distancePct === null ? '—' : `${zone.distancePct.toFixed(1)}%`,
   };

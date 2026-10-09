@@ -103,6 +103,8 @@ export interface PriceLevel {
   relationshipToPrice: LevelRelationship;
   /** Short tag for display, e.g. "LOST SUPPORT". Null when ordinary. */
   stateLabel: string | null;
+  /** The source's own date, YYYY-MM-DD, for a level from a dated source (the Sheet RESEARCH row); else null. */
+  sourceDate: string | null;
 }
 
 /** A group of levels close enough to act as one zone. */
@@ -122,6 +124,8 @@ export interface LevelZone {
   /** Relationship of the zone's dominant level. */
   relationshipToPrice: LevelRelationship;
   stateLabel: string | null;
+  /** The dominant level's source date (its type is the one the zone prints). */
+  sourceDate: string | null;
   label: string;
 }
 
@@ -399,6 +403,11 @@ export interface LevelMapInput {
   keyLevels?: string | null;
   dailyResistance?: string | null;
   dailySupport?: string | null;
+  /**
+   * The RESEARCH row's own report date, YYYY-MM-DD (`sheetCalendarDate`), carried onto the daily support
+   * and resistance levels built from that row (Integration 36th (a)). Null: those levels carry no date.
+   */
+  sheetResearchDate?: string | null;
   /** Historical resistance from research. Never treated as a session level. */
   cycleLevels?: CycleLevels | null;
   /**
@@ -424,6 +433,7 @@ function makeLevel(
   type: PriceLevelType,
   source: LevelSource,
   note: string | null,
+  sourceDate: string | null = null,
 ): PriceLevel {
   return {
     price: Math.round(price * 10000) / 10000,
@@ -433,6 +443,7 @@ function makeLevel(
     source,
     priority: TYPE_PRIORITY[type],
     note,
+    sourceDate,
     distanceAbs: null,
     distancePct: null,
     clustered: false,
@@ -530,11 +541,13 @@ function collectLevels(input: LevelMapInput): { levels: PriceLevel[]; unparsed: 
     unparsed.push(`key levels: ${(input.keyLevels ?? '').trim().slice(0, 60)}`);
   }
 
+  // The RESEARCH row's levels carry that row's report date (Integration 36th (a)).
+  const researchDate = input.sheetResearchDate ?? null;
   for (const price of parsePrices(input.dailyResistance ?? '')) {
-    levels.push(makeLevel(price, 'RESISTANCE', 'SHEET_DAILY_RESISTANCE', 'daily resistance'));
+    levels.push(makeLevel(price, 'RESISTANCE', 'SHEET_DAILY_RESISTANCE', 'daily resistance', researchDate));
   }
   for (const price of parsePrices(input.dailySupport ?? '')) {
-    levels.push(makeLevel(price, 'SUPPORT', 'SHEET_DAILY_SUPPORT', 'daily support'));
+    levels.push(makeLevel(price, 'SUPPORT', 'SHEET_DAILY_SUPPORT', 'daily support', researchDate));
   }
 
   /*
@@ -654,6 +667,7 @@ export function clusterLevels(levels: PriceLevel[], direction: LevelDirection): 
       dominantType: dominant.type,
       relationshipToPrice: dominant.relationshipToPrice,
       stateLabel: dominant.stateLabel,
+      sourceDate: dominant.sourceDate,
       label: isZone
         ? `${low.toFixed(2)}–${high.toFixed(2)} ${TYPE_LABEL[dominant.type]} zone`
         : `${dominant.price.toFixed(2)} ${TYPE_LABEL[dominant.type]}`,
@@ -744,6 +758,8 @@ export interface CompactLevel {
   type: string;
   /** "LOST SUPPORT" / "PRICE ABOVE", when the relationship is not ordinary. */
   stateLabel: string | null;
+  /** The source's own date, YYYY-MM-DD, or null; rendered with `levelDateText`. */
+  sourceDate: string | null;
   /** Signed distance, e.g. "+0.28". */
   distance: string;
   distancePct: string;
@@ -777,6 +793,7 @@ function toCompact(zone: LevelZone, sign: '+' | '-'): CompactLevel {
       : formatPrice(zone.nearestPrice),
     type: TYPE_LABEL[zone.dominantType],
     stateLabel: zone.stateLabel,
+    sourceDate: zone.sourceDate,
     distance: zone.distanceAbs === null ? '—' : `${sign}${zone.distanceAbs.toFixed(2)}`,
     distancePct: zone.distancePct === null ? '—' : `${zone.distancePct.toFixed(1)}%`,
     isZone: zone.members.length > 1,

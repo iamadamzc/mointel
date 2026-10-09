@@ -23,6 +23,7 @@ import type {
   DeskReadLevel,
 } from '@/lib/dashboard/deskRead';
 import { formatCount, formatMultiple, formatPrice, formatSignedPercent, quietFor } from '@/lib/format';
+import { levelDateSuffix, levelTagLead } from '@/lib/data/levelDate';
 
 /*
  * `COMPUTED` reads "price history" rather than "computed".
@@ -93,8 +94,8 @@ function LevelRun({ label, levels, tone }: { label: string; levels: DeskReadLeve
             <span key={index}>
               {index > 0 ? <span className="text-ink-3"> → </span> : null}
               <span className="text-ink font-semibold">{level.price}</span>{' '}
-              <span className="text-ink-3">{level.type}</span>
-              {level.stateLabel ? <span className="text-warn"> {level.stateLabel}</span> : null}{' '}
+              <span className="text-ink-3">{level.type}{levelDateSuffix(level.sourceDate)}</span>
+              {level.stateLabel ? <span className="text-warn">{levelTagLead(level.sourceDate)}{level.stateLabel}</span> : null}{' '}
               <span className={tone}>{level.distance}</span>
             </span>
           ))}

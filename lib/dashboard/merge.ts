@@ -16,6 +16,7 @@ import {
 } from '@/lib/research/float';
 import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
+import { sheetCalendarDate } from '@/lib/data/levelDate';
 import { buildTelemetry, type MarketTelemetry } from '@/lib/dashboard/telemetry';
 import {
   resolveNowCapture,
@@ -477,6 +478,8 @@ export function buildDeskRow(
       keyLevels: research?.keyLevels ?? null,
       dailyResistance: researchRecord?.dailyResistance ?? null,
       dailySupport: researchRecord?.dailySupport ?? null,
+      // The RESEARCH row's own date travels with its levels (Integration 36th (a), OFAL).
+      sheetResearchDate: sheetCalendarDate(researchRecord?.reportDate),
       cycleLevels: cycleLevels,
     }),
     intelligence,
