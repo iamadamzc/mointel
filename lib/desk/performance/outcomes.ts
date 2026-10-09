@@ -15,7 +15,7 @@
  * frozen row and never recomputed or back-filled (A3, A8): a value computed later would be look-ahead.
  */
 
-import { isSplitRow } from '../reports/narrative';
+import { SPLIT_JUMP, isSplitRow } from '../reports/narrative';
 import type { MarketDatabase } from '../../market/store/db';
 import { etWallClockToUtc, sessionEndUtc } from '../../market/session';
 
@@ -137,16 +137,16 @@ function regularHighBar(db: MarketDatabase, symbol: string, date: string): { ts:
   );
 }
 
-function bestRankAfter(db: MarketDatabase, call: CallRow, outcomeDate: string): number | null {
+function bestRankAfter(db: MarketDatabase, call: CallRow, outcomeDate: string, now: Date): number | null {
   return (
     db
       .prepare(
         `SELECT MIN(t.assessment_rank) AS r
            FROM desk_assessment_tickers t JOIN desk_assessments a ON a.id = t.assessment_id
           WHERE t.ticker = ? AND a.status = 'COMPLETE' AND a.trading_date = ?
-            AND a.completed_at > ? AND t.assessment_rank IS NOT NULL`,
+            AND a.completed_at > ? AND a.completed_at <= ? AND t.assessment_rank IS NOT NULL`,
       )
-      .get(call.ticker, outcomeDate, call.completedAt) as { r: number | null }
+      .get(call.ticker, outcomeDate, call.completedAt, now.toISOString()) as { r: number | null }
   ).r;
 }
 
@@ -167,9 +167,13 @@ export function computeCallOutcome(db: MarketDatabase, call: CallRow, now: Date)
    * NOT_YET until the official close exists or the outcome session has ended (20:00 ET, sessionEndUtc). A1 says
    * "the outcome date is today or later"; read literally, a name that never gets an official close would be written
    * NOT_YET at the 22:00 run and never revisited, since the job runs once per date. After the session ends a missing
-   * official close is UNKNOWN NO_OFFICIAL_CLOSE. A6 (iii) holds: at 15:59 ET every outcome is NOT_YET.
+   * official close is UNKNOWN NO_OFFICIAL_CLOSE (A9). And ALWAYS NOT_YET before 16:00 ET of the outcome date, even
+   * when the store already holds the close (a replay with its clock set to 15:59 ET must not read values from after its
+   * own clock: A6 (iii), Research's read of 16468606).
    */
-  const pending = (session?.official_close ?? null) === null && now.getTime() < sessionEndUtc(outcomeDate).getTime();
+  const beforeClose = now.getTime() < etWallClockToUtc(outcomeDate, 16, 0).getTime();
+  const pending =
+    beforeClose || ((session?.official_close ?? null) === null && now.getTime() < sessionEndUtc(outcomeDate).getTime());
   if (pending) {
     return {
       ...base,
@@ -185,7 +189,7 @@ export function computeCallOutcome(db: MarketDatabase, call: CallRow, now: Date)
     };
   }
 
-  const rank = bestRankAfter(db, call, outcomeDate);
+  const rank = bestRankAfter(db, call, outcomeDate, now);
   const bestRank = rank === null ? { value: null, state: 'NOT_RANKED' as const } : { value: rank, state: 'PRODUCED' as const };
 
   const refuse = (reason: string): CallOutcome => ({
@@ -212,6 +216,18 @@ export function computeCallOutcome(db: MarketDatabase, call: CallRow, now: Date)
     Math.abs(session.previous_close - call.referenceClose) / call.referenceClose > BASIS_TOLERANCE
   ) {
     return refuse('BASIS_MISMATCH');
+  }
+  /*
+   * Without an official close, isSplitRow cannot run, but its jump test needs no close: a session that jumped past the
+   * split ratio with no close to confirm it is refused, never measured on a possibly split basis (Research's read).
+   */
+  if (
+    session.previous_close !== null &&
+    session.previous_close > 0 &&
+    session.official_close === null &&
+    (session.rth_final_low > SPLIT_JUMP * session.previous_close || session.rth_final_high < session.previous_close / SPLIT_JUMP)
+  ) {
+    return refuse('SPLIT_UNCHECKED');
   }
   if (
     session.previous_close !== null &&

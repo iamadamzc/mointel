@@ -304,6 +304,49 @@ describe('outcomes', () => {
     expect(out.bestRankAfter.state).toBe('NOT_YET');
   });
 
+  it('control (iii) on stored data: at 15:59 ET everything is NOT_YET even though the store already holds the close', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'PREMARKET_0700', '2026-10-06', '2026-10-06T11:00:30.000Z');
+    insertAssessmentTickers(db, id, [ticker({ referenceBasis: 'PRIOR_SESSION' })]);
+    session(db, '2026-10-06', { previousClose: 2, high: 3, low: 1.9, official: 2.5 });
+    bar(db, '2026-10-06', '2026-10-06T19:58:00.000Z', 2.9); // 15:58 ET
+
+    const out = computeCallOutcome(db, call(db, id), new Date('2026-10-06T19:59:00Z'))!;
+    const states = [out.session, out.high0400Close, out.highAfterCall, out.high0700To1000, out.close, out.retention, out.giveback, out.spikeFade].map(
+      (o) => o.state,
+    );
+    expect(new Set(states)).toEqual(new Set(['NOT_YET']));
+  });
+
+  it('counts only checkpoints completed by its own clock for the best rank after the call', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'PREMARKET_0700', '2026-10-06', '2026-10-06T11:00:30.000Z');
+    insertAssessmentTickers(db, id, [ticker({ referenceBasis: 'PRIOR_SESSION' })]);
+    session(db, '2026-10-06', { previousClose: 2, high: 3, low: 1.9, official: 2.5 });
+    const early = checkpoint(db, 'RTH_INTERVAL', '2026-10-06', '2026-10-06T14:00:30.000Z');
+    insertAssessmentTickers(db, early, [ticker({ assessmentRank: 3 })]);
+    const late = checkpoint(db, 'AFTER_HOURS_CLOSE', '2026-10-06', '2026-10-06T22:00:30.000Z'); // 18:00 ET
+    insertAssessmentTickers(db, late, [ticker({ assessmentRank: 1 })]);
+
+    // 17:00 ET: after the close, before the later checkpoint.
+    expect(computeCallOutcome(db, call(db, id), new Date('2026-10-06T21:00:00Z'))!.bestRankAfter).toEqual({ value: 3, state: 'PRODUCED' });
+    expect(computeCallOutcome(db, call(db, id), AFTER)!.bestRankAfter).toEqual({ value: 1, state: 'PRODUCED' });
+  });
+
+  it('refuses a session that jumped past the split ratio when no official close can confirm it', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'NEXT_DAY_RECAP', '2026-10-05', '2026-10-06T02:00:10.000Z', '2026-10-06');
+    insertAssessmentTickers(db, id, [ticker()]);
+    // Prior close 2, the whole session above 3.6 (1.8 x): a reverse split, unconfirmed without a close.
+    session(db, '2026-10-06', { previousClose: 2, high: 8, low: 3.8, official: null, basis: 'PRIOR_SESSION' });
+    bar(db, '2026-10-06', '2026-10-06T14:00:00.000Z', 8);
+
+    const out = computeCallOutcome(db, call(db, id), AFTER)!;
+    expect(out.session).toEqual({ value: null, state: 'UNKNOWN', reason: 'SPLIT_UNCHECKED' });
+    expect(out.high0400Close.reason).toBe('SPLIT_UNCHECKED');
+    expect(out.highAfterCall.reason).toBe('SPLIT_UNCHECKED');
+  });
+
   it('control (iv): the 07:00 ET boundary follows the date (EST after 2026-11-01)', () => {
     const db = openDatabase(temporaryPath());
     const id = checkpoint(db, 'NEXT_DAY_RECAP', '2026-11-03', '2026-11-04T03:00:10.000Z', '2026-11-04');
