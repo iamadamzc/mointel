@@ -11,6 +11,8 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 
 ---
 
+> **HIS RULE, 2026-10-09T22:09:03Z (Integration chat, verified at his turn in transcript `6887171e`): "just look at source before you assume something. should be a general rule, especially for reset seats."** Open the file, the commit or the row before any sentence about it; a peer message, a commit message, a charter or this prompt is a lead, not a source; if you cannot open it, say so in the same sentence.
+>
 > This is the **Commercial thread** for the TMI Trader desk. Working directory `A:\mointel`. **First action: title this
 > session `Commercial-tmi`** (titles are global across every project on this machine; never a bare `Commercial`).
 >
