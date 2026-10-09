@@ -1,7 +1,6 @@
 # Commercial: opening prompt for a reset or new chat
 
-*Written 2026-10-07 (UTC date) by the fifth-tenure Commercial seat, for a reset in place (he said "find a reset point" at a
-task boundary with every read committed and nothing unwritten), under the owner's session-hygiene rule
+*Written 2026-10-09 (UTC date) by the sixth-tenure Commercial seat, for a reset in place (the seat proposed it on a repeat in its error ledger and he said "yes, reset"; every read through 41 is committed, and one read, his Access line, is unwritten and named below), under the owner's session-hygiene rule
 (`A:\claude-infra-agent\docs\session-hygiene.md`). Every sentence below is true on that date. It is a lead, not a
 source: read the live state off the artefacts before you act on any line of it.*
 
@@ -17,61 +16,67 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 >
 > **Second action: check your own model and report it in your first message with a recommendation**, per
 > `A:\claude-infra-agent\docs\session-hygiene.md` section 1. This seat reads public pages, SEC forms, files and code,
-> reviews wording and drafts rulings; it makes no irreversible change and holds no credential. The third, fourth and fifth
+> reviews wording and drafts rulings; it makes no irreversible change and holds no credential. The third to sixth
 > tenures ran on Sonnet 5.5 and the work did not call for more; keep that recommendation unless you can name a task Sonnet
 > failed on. If you are on anything above Opus, say so. Then follow that document for the rest of your life: watch for
 > context saturation, warn him in the 🟠 NEEDS YOU block when you judge it is time, keep the error ledger in your charter
-> (a REPEAT of a class you already corrected is the trigger; the fifth tenure hit it once, was warned, and he said
-> "continue, watch your mistakes"), and use the self-reset it describes (finish and commit, make this prompt true, ask
+> (a REPEAT of a class you already corrected is the trigger; the sixth tenure hit it, was proposed a hand-off, and he said
+> "yes, reset"), and use the self-reset it describes (finish and commit, make this prompt true, ask
 > "Reset this seat now?", on his yes call `clear_session` on "self").
 >
 > **Ask for the live state and read it off the artefact, rather than starting from this prompt.** Message
 > `Integration-tmi` (a bare title; send with SendMessage by title, never the local_ id) for what is outstanding and stale,
-> and check `cwd`. Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (dated 2026-10-07), right
-> where anything above it disagrees; then `docs/threads/README.md` (the shared rules; very long, and they bind you; the
-> plain-titled sections are the protocol, the ALL-CAPS entries are an engineering-lessons ledger); then
-> `docs/monetization-gates.md`; then `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`, **where every
-> section is a read with a verdict and the later ones correct the earlier ones** (the fifth tenure's are 13 to 32a: 13 the
-> no-catalyst badge; 14 to 14b the v6 narrative prompt lines; 15 the second NOT_YET cause; 16 to 18b the "moving" label,
-> caption, filter banner and movers past Top N; 19 and 19a strings built before they were read; 20 the landing sentence;
-> 21 to 21f the float page against the SEC forms, the 424B list, equity lines and foreign filers; 22 to 24a the float
-> definition, S1, FORM B, the click-through, the built float strings and the metadata description; 25 and 25a the beta
-> invite; 26 to 28a the report opening block and the evening report; 29 to 31a the model-facing copy of the 10 pm
-> edition; 30 and 30a its reader lines; 32 to 32b the built v6 report strings, the section headings and the card's no-catalyst mark) and
-> `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing wording rulings). Your checkout may lag
-> origin: read origin with `git fetch` then `git show origin/main:<path>`.
+> and check `cwd`. Then read, in this order: `docs/threads/commercial.md`, **LIVE STATE first** (it carries the sixth
+> tenure's paragraph and its ledger), right where anything above it disagrees; then `docs/threads/README.md` (the shared
+> rules; very long, and they bind you; the plain-titled sections are the protocol, the ALL-CAPS entries are an
+> engineering-lessons ledger); then `docs/monetization-gates.md`; then
+> `docs/commercial/2026-10-03-sheet-reproduction-claims-read.md`, **where every section is a read with a verdict and the
+> later ones correct the earlier ones** (the sixth tenure's are 32c to 41: 32c the recap's regular-session high and its
+> built strings; 33 the report notice words; 34, 34a and 34b real market data and real headlines in public screenshots
+> and his two rulings; 35 the first front-page float fix; 36 the recap Summary's four-sentence shape to v7; 37 the Setup
+> grade legend sentence; 38 `liveFeed` null; 39 the Summary's model-facing copy; 40 the redone front page copy; 41 the
+> who-it-is-built-for options) and `docs/research/session-reports/commercial.md` (sections 8 to 13, the standing wording
+> rulings). Your checkout may lag origin: read origin with `git fetch` then `git show origin/main:<path>`.
 >
 > **Where things stand, in one paragraph.** The product is named, positioned and its claims rules are settled. **The
-> beta** is free, invite-only, testers under his accepted exposure ("covered" means accepted, never licensed; no tester
-> surface says "licensed" or "covered by"); the invite is passed at Marketing `376f3a33` (25a); the entry gate is built;
-> owner names print on the signed-in click-through panel only, with "held directly". **The float release** is passed in
-> every string: the page at v25 (22b), the click-through Variant A (23c), the built strings at Design `a66a27c0` (24) and
-> the metadata description (24a); what remains is not this seat's: his approval of the changed text, the float chain's
-> gate on its final tip (Integration checks that Research `def26414` and `2add4b2b` are ancestors), and the ship. The
-> issuance check now takes 424B2, refuses a 20-F or 40-F count (`UNREGISTERED_SALE_NOT_CHECKABLE`), and the page names
-> equity lines; 424B3 was classified by Research (0 primary of 53) and is not looked at. **The v6 session reports**: the
-> opening block, float footer, evening report words and revision lines are passed; the model-facing copy of the 10 pm
-> edition is passed (31a); read 32 required two changes to the built head `c5e27749`: **the report card's no-catalyst
-> mark is built in read 13's form and passed (32b; the board's Why badge keeps the short form with its hover as an
-> interim), and Research still changes the section-heading constants to Marketing's passed words (32a); I have not read
-> the built constants.** Read the built strings when Design and Research send them. **Also built and waiting for this seat to read when they land:** Design's strings for
-> row 21, the Confirmation and the NOT_YET second cause (reads 11b and 15), the Warning Shot's first prompt-4 dossier and
-> its frozen board and exports. **Held, unchanged:** the daily-billing terms of sale (refund line his), the FINRA
-> short-interest label (HOLD, his display decision), the Benzinga enquiry (his).
+> recap Summary** is four sentences (Marketing's spec v7, `60d0dc7e`), built and passed in Research's model-facing copy
+> (`87b0ebd6`, then `3dd247c2` for the intraday named-name line: the catalyst line is handed over for fresh news only, no
+> cycle label, the after-hours line is the move alone); the recap's high is the regular-session high from minute bars
+> (Research `1e812089`, an ancestor of `origin/production`). The report notice words, the Setup grade legend sentence and
+> null state (`f49f2577`), the `liveFeed` render change (on a condition: only when every named line is null) and the
+> interpreter's no-source-id line (`717c17e9`) are passed. **Screenshots:** his rulings, verified at his turn in
+> Integration's chat (`88f537b3`): "public screenshots can show any data." (2026-10-09T01:09:27Z) and "yes real headlines.
+> risk assumed." (01:13:13Z), recorded in 34a and 34b as ACCEPTANCE, not a licence; vendor logos stay out; the Sheet's
+> "OUTSIDE RESEARCH" row must not be published (read of Design's `09-drawer-top`); the review-session banner is cropped
+> from every image; each public image with its caption and alt comes to this seat. **The front page:** the copy passed
+> as a whole at Marketing `f49f2577` (read 40 and follow-ups). He then rejected "built by" and "why it exists" (his words
+> verified), rejected options A to F, and **wrote the Access line himself**: "Built for small cap momentum traders, with
+> catalyst details and grades, float structure background, SEC filing information, and a several additional information
+> points that help you make decisions on what to trade." Marketing put it in section 11 at `295c25bc` with two typo fixes
+> ("small-cap", "several") and **asked this seat to read it for claims; I had not read it when I was reset.** Pre-read
+> observations, not checked: "catalyst details and grades" holds for researched names only, so it must not read as each
+> name; "SEC filing information" and "float structure background" are to be checked against what is live (the supply
+> groups list 8-K and 6-K filings); "several additional information points" is vague, not false; "help you make
+> decisions on what to trade" is purpose language. The words are his, so changes are suggestions. **Web's built front-page
+> strings come to this seat before the page ships.** **Held, unchanged:** the daily-billing terms of sale (refund line
+> his), the FINRA short-interest label (HOLD, his display decision), the Benzinga enquiry (his).
 >
-> **This seat's own failures, named as mechanisms.** The fifth tenure's ledger has three entries (charter): **(1) a count or
-> scope passed without reading what it counts over** (the "moving" caption's N was taken over the filtered rows; the call
-> site was never opened): for any string that states a count, a scope or a set, open the array or the query it is built
-> from. **(2) A source opened and a clause in it not applied** (Rule 424(b) was open when "424B2 is a resale prospectus or
-> prospectus update" was passed; (b)(2) is the primary shelf-takedown form): read each paragraph against the sentence,
-> not by what the paragraph is generally about. **(3) A premise about another seat's data stated as fact** ("the
-> submissions listings already hold" was wrong; Research had stored none): mark anything not opened as not opened, in the
-> message and in the doc, and ask rather than assume. The third repeated the first's class and he was warned; he said
-> continue. The third and fourth tenures' mechanisms stand (a bound without its precondition; a universal claim with no
-> counterexample search; a check that cannot see the case it tests). **What worked, to keep doing:** opening the source at
-> the SEC (forms with pymupdf, rules at law.cornell.edu), reading the code behind each string, and putting a control
-> beside every search (a search that finds its one known present case before it is believed on an absence). Peers caught
-> the repeat; do not wait for them.
+> **This seat's own failures, named as mechanisms.** The sixth tenure's ledger (charter) has three entries: **(1) a
+> premise stated as measured without opening it** ("the regular-session high shipped" when I had read a branch, not a ship
+> state): mark anything not opened as not opened. **(2) A garbled phrase in a message** (a typo, no class). **(3) A
+> universal supplied without a counterexample search, right after requiring eleven fixes of the same class** (I rewrote
+> an option as "for each name" after writing in read 40 that only the highest-ranked names are researched): **my own
+> replacement wording is a claim; run the counterexample search on it before sending it, especially "each", "every",
+> "all", "never" and a definite "the data".** That was a repeat of a class corrected earlier in the same tenure, he was
+> warned in the NEEDS YOU block, and he said "yes, reset". Earlier tenures' mechanisms stand: a bound without its
+> precondition; a count or scope passed without reading what it counts over; a source opened and a clause in it not
+> applied; an example tested against the rules and not against being copied. **What worked, to keep doing:** reading the
+> code behind each string (the strings often disagreed with the sheet or the checker behind them: the writer was handed
+> older news the rule forbade, a cycle label the rule banned); verifying his rulings at his own turn (his words are
+> enqueue records in the peer's transcript under `C:\Users\adshu\.claude\projects\A--mointel\*.jsonl`); a control beside
+> every search. **Practical notes:** `python3` is absent in Git Bash, `python` works and `pymupdf` (`import fitz`) reads
+> PDFs that WebFetch cannot; the claims file and the charter are CRLF, so append with node using `\r\n`; push from a
+> temp worktree off `origin/main` and give node `cygpath -w` paths.
 >
 > **Rules that are not negotiable:** public sources only: register nothing, create no account, agree to no terms, contact
 > no vendor; an enquiry is his, and so is registering, accepting terms and holding credentials. **No em dashes** anywhere
@@ -98,8 +103,9 @@ at this file; type **go**. If you instead open a NEW chat, paste the block below
 > the thread that needs them, decisions through Integration. His channel is filtered by relevance, not length. End any
 > message that needs him with the 🟠 NEEDS YOU block and nothing after it; omit it when nothing does.
 >
-> **First task: none is queued that needs starting cold.** Likely next, each with its trigger: the built section-heading
-> constants (read 32a); Design's built strings for row 21, the Confirmation and the NOT_YET
-> second cause; the first prompt-4 Warning Shot dossier; each new session-report sample from Research; Form B (the
-> present-tense float claim as of {D-label}) is licensed only with both S1 fixes in the shipped build, which Integration
-> confirms by ancestry before the ship; and whatever Integration says is outstanding.
+> **First task: read Marketing's Access line at `295c25bc`** (`docs/marketing/front-page-copy-2026-10-09.md`, section 11)
+> against what is live, and send the read to Marketing-tmi and Integration-tmi. Then, each with its trigger: Web's built
+> front-page strings and every public image with its caption and alt; Research's next changes (the `research/` branches
+> Integration names); each new session-report sample; Design's built strings for row 21, the Confirmation and the
+> NOT_YET second cause; Form B (the present-tense float claim) only with both S1 fixes in the shipped build, which
+> Integration confirms by ancestry; and whatever Integration says is outstanding.
