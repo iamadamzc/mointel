@@ -62,10 +62,16 @@ describe('the drawer float line', () => {
     expect(drawerFloatLine(worxPair, refused('CANNOT_VERIFY', 'SPLIT_SINCE_COUNT'), true)?.sentence).toMatch(/share split/);
   });
 
-  it('a produced cell, or "Not computed", leaves the drawer line unchanged', () => {
+  it('a produced cell leaves the drawer line unchanged', () => {
     const produced = { ...refused('CANNOT_VERIFY', 'X'), state: 'PRODUCED', reason: null, bound: 80_000, countShares: 89_789, countForm: '10-Q', countFiled: '2026-08-14' } as unknown as FloatBound;
     expect(drawerFloatLine(worxPair, produced, true)?.refusedByCell).toBe(false);
-    expect(drawerFloatLine(worxPair, null, true)?.sentence).toBe('Float is at most 89,789 shares outstanding');
+    expect(drawerFloatLine(worxPair, produced, true)?.sentence).toBe('Float is at most 89,789 shares outstanding');
+  });
+
+  it('wired with no row ("Not computed"): no ceiling, the cell sentence (Integration 36th (a))', () => {
+    for (const cell of [null, undefined]) {
+      expect(drawerFloatLine(worxPair, cell, true)).toMatchObject({ sentence: 'The desk has not computed a float for this name.', refusedByCell: true, tone: 'dim', detail: null });
+    }
   });
 
   it('no share-count pair: no line at all, whatever the cell says', () => {
