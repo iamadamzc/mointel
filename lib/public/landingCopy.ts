@@ -260,7 +260,7 @@ export const HERO = {
   eyebrow: 'US SMALL CAPS · 04:00 ET ONWARD',
   heading: "Intelligence on what's moving.",
   lead: 'It is 07:15, a name is running, and nothing you can find explains it.',
-  body: 'This is the board for that moment. It takes the names already running and puts what the desk knows about each one next to the price: whether there is a catalyst and how old it is, where the name sits in its run, what the float can be at most, and what supply stands behind it. Where it has nothing, it says so. A float number is an estimate someone computed, unless a filing happens to state it. Here is how ours is made:',
+  body: 'This is the board for that moment. It takes the names already running and puts what the desk knows about each one next to the price: whether there is a catalyst and how old it is, where the name sits in its run, what the float can be at most, and what supply stands behind it. Where it has nothing, it says so. A float number is an estimate someone computed, unless a filing happens to state it. Here is how the TMI Float is made:',
   link: 'Are float quotes real?',
   ctaPrimary: 'Ask for an invite',
   ctaSecondary: 'Already have access? Open the desk',

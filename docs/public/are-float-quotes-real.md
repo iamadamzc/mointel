@@ -48,7 +48,7 @@ So a float number on a quote page is an estimate someone computed, unless a fili
 
 ## How we do it
 
-Ours is an estimate too. Here is what it is computed from and how we show it.
+The TMI Float is an estimate too. Here is what it is computed from and how we show it.
 
 We start with the latest filed share count we have for the company. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own. For each insider we take the smaller of two holdings: their holding as of the count's date, and their latest holding dated on or before the date of the board or report. So a sale an insider has filed since the count is added back, and a sale not yet filed cannot be seen. When the filings line up, and taking float as shares outstanding less insider holdings, the true float is at most what is left.
 
