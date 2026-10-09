@@ -99,7 +99,7 @@ async function main(): Promise<void> {
 
   const due: string[] = [];
   let established = 0;
-  let deferred = 0; // deep fetch already ran today without establishing a basis
+  let deferred = 0; // deep fetch already ran today; the once-per-ET-day cap holds it until tomorrow
   for (const ticker of researched) {
     const decision = basisFetchDue(db, ticker);
     if (decision.due) due.push(ticker);
@@ -114,7 +114,9 @@ async function main(): Promise<void> {
       : `[basis] researched tickers ${researched.length}`,
   );
   console.log(`[basis] basis already established ${established}`);
-  if (deferred > 0) console.log(`[basis] deep-fetched today, basis underivable so far ${deferred}`);
+  // Not a failure: a name fetched earlier today reads stale once the session
+  // settles at 20:00 ET, and the cap defers its next fetch to tomorrow.
+  if (deferred > 0) console.log(`[basis] deep-fetched today, next fetch tomorrow (once-a-day cap) ${deferred}`);
   console.log(`[basis] due for a basis fetch ${due.length} → ${due.length * 2} Alpaca REST calls`);
 
   if (!run) {
