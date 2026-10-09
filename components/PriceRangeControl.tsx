@@ -59,7 +59,7 @@ export function PriceRangeControl({
         <button
           type="button"
           onClick={open}
-          title={`Choose the price range this board ranks in. Anything from ${rangeLabel(bounds)}.`}
+          title={`Choose the price range this board ranks in, within ${rangeLabel(bounds)}.`}
           className={`num min-h-6 rounded-sm border px-1.5 text-[11px] font-semibold ${
             isDefault
               ? 'border-line-2 bg-panel-2 text-ink-2 hover:text-ink'

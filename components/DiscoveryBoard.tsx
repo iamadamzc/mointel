@@ -446,7 +446,7 @@ export function DiscoveryBoard({
             ? `${afterHours ? 'AH participation rank' : 'Daily RVOL rank'} · ${rangeLabel({
                 min: discovery.priceMin,
                 max: discovery.priceMax,
-              })} · top ${Math.min(size, discovery.rankedCount)} of ${discovery.rankedCount.toLocaleString()}`
+              })} · top ${Math.min(size, discovery.rankedCount)} of ${discovery.rankedCount.toLocaleString()} ranked`
             : 'Ranking not loaded'}
           {movers ? (
             <span className="text-accent" title={movers.title}>
