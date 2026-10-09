@@ -136,7 +136,7 @@ export const FLOAT_SECTION = {
   eyebrow: 'THE FLOAT, HONESTLY',
   heading: 'A ceiling, with its reasons.',
   body: [
-    'The float column does not quote a float. It shows a ceiling, "≤ 12.4M", with the date of the filed share count beside it, or Unknown, Cannot verify or Not computed, each with its reason. Click it and see what it is made of: the filed count, the insiders subtracted, what is not subtracted, and when the filings were read.',
+    'The TMI Float column does not give an exact figure. It shows a ceiling, "≤ 12.4M", with the date of the filed share count beside it, or Unknown, Cannot verify or Not computed, each with its reason. Click it and see what it is made of: the filed count, the insiders subtracted, what is not subtracted, and when the filings were read.',
     "No filing we know of reports the current number of tradable shares. A float is somebody's computation unless a filing states it, and the desk labels its own as one.",
   ],
   link: 'Are float quotes real?',

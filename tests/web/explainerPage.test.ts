@@ -66,6 +66,8 @@ describe('ExplainerPage', () => {
     expect(markup).not.toContain('There is no single filed share count to start from');
     // His "1, yes" 2026-10-09T22:45:50.617Z: what a float leaves out, directly under the lede.
     expect(markup).toMatch(/It is worth knowing what those numbers are\.<\/p>\s*<p>A float counts the shares available to trade\. It leaves out warrants, convertible notes and share-sale programs, which can add shares\. In small caps, that is decision information, not fine print\.<\/p>/);
+    // His "yes" 2026-10-09T22:52:40.779Z: TMI Float defined once, right after that paragraph.
+    expect(markup).toMatch(/not fine print\.<\/p>\s*<p>TMI Float is this desk&#39;s definition of float: shares outstanding less the shares insiders hold\. The desk can only subtract the holdings insiders report directly, so it shows an upper bound, with the date of the filed share count\. When it cannot be computed it says Unknown, Cannot verify or Not computed, and gives the reason\.<\/p>/);
     for (let n = 1; n <= SECTIONS.length; n += 1) expect(markup).toContain(`href="#s${n}"`);
     expect(markup).toContain('TMI TRADER');
     expect(markup).toContain('href="mailto:info@andromedagenius.com"');
