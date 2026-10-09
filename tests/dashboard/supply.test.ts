@@ -236,7 +236,8 @@ describe('the card renders the bound without implying a reading it does not have
 
   it('renders the bound', async () => {
     const source = await read();
-    expect(source).toContain('floatBoundReading(structure.supplyPair)');
+    // Through drawerFloatLine since Integration 36th: the reading, unless the wired board cell refuses.
+    expect(source).toContain('drawerFloatLine(structure.supplyPair, floatBound, floatBoundWired)');
     expect(source).toContain('{bound.sentence}');
   });
 

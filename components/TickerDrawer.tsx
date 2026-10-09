@@ -183,6 +183,8 @@ export function TickerDrawer({
 
           <AutomaticIntelligence
             intel={row.intelligence}
+            floatBound={row.floatBound}
+            floatBoundWired={row.floatBoundWired}
             checkpointAt={row.setupGradeWired ? (row.setupGrade?.checkpointCompletedAt ?? null) : null}
             comparison={row.comparison}
             structure={buildStructureSummary(row)}
