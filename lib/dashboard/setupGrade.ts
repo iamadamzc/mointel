@@ -69,6 +69,12 @@ const READING_SENTENCE: Record<'A' | 'B' | 'C' | 'D', string> = {
 
 export const NOT_GRADED_REASON = 'Fewer than three of the five criteria could be read.';
 export const NO_RESEARCH_TOOLTIP = 'The desk has no research on this name at this checkpoint.';
+/**
+ * The NULL grade: the name's latest checkpoint row predates grading (Ops's reader at f531e1af returns null
+ * for it). The face stays the dash; the words say only that none was recorded. Marketing 05169816 (v5),
+ * Commercial read 42.
+ */
+export const NONE_RECORDED_TOOLTIP = 'The desk recorded no setup grade at this checkpoint.';
 /** The board's own empty-cell glyph (U+2014), built by code so no source line carries it. */
 export const DASH = String.fromCharCode(0x2014);
 
@@ -81,7 +87,7 @@ export const DASH = String.fromCharCode(0x2014);
  * first.
  */
 export const SETUP_GRADE_LEGEND =
-  'Setup grade is the desk\'s own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. An A needs a cycle the desk reads as strong and a C needs a cycle it reads as a backside, so a name whose cycle the desk cannot read is never graded A or C. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.';
+  'Setup grade is the desk\'s own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. An A needs a cycle the desk reads as strong and a C needs a cycle it reads as a backside, so a name whose cycle the desk cannot read is never graded A or C. A dash in this column means no grade was recorded for the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.';
 
 /** The five readings in words, one line per criterion (the drawer's detail lines). */
 export const READING_LINE: Record<Criterion, Record<StoredReading, string>> = {
@@ -187,7 +193,21 @@ const DASH_VIEW: SetupGradeView = {
 };
 
 /** The one mapping. `nowIso` only frames the checkpoint time (today or dated). */
-export function setupGradeView(grade: SetupGrade | null | undefined, nowIso: string): SetupGradeView {
+const NONE_RECORDED_VIEW: SetupGradeView = {
+  kind: 'dash',
+  label: DASH,
+  letter: null,
+  tone: 'dim',
+  tooltip: NONE_RECORDED_TOOLTIP,
+  ariaLabel: 'Setup grade: none recorded',
+};
+
+/**
+ * `noneRecorded`: the payload carried an explicit NULL for the name (a checkpoint row from before grading),
+ * not an absent key (no checkpoint row) and not NOT_YET (no research). Same dash, its own words.
+ */
+export function setupGradeView(grade: SetupGrade | null | undefined, nowIso: string, noneRecorded = false): SetupGradeView {
+  if (!grade && noneRecorded) return NONE_RECORDED_VIEW;
   if (!grade || grade.grade === 'NOT_YET') return DASH_VIEW;
   const when = checkpointTimeET(grade.checkpointCompletedAt, nowIso);
   const basis = basisLine(grade.basis);

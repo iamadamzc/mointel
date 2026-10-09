@@ -95,7 +95,7 @@ describe('setupGradeView: stored enums to the words, one mapping', () => {
 describe('the standing legend', () => {
   it('is the approved sentence set, with the outcomes clause deleted and the cycle sentence added (Marketing f7aba89b, Commercial PASS)', () => {
     expect(SETUP_GRADE_LEGEND).toBe(
-      "Setup grade is the desk's own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. An A needs a cycle the desk reads as strong and a C needs a cycle it reads as a backside, so a name whose cycle the desk cannot read is never graded A or C. A dash in this column means the desk has no research on the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.",
+      "Setup grade is the desk's own automatic reading of five criteria at the checkpoint shown: cycle, catalyst, relative volume, liquidity and share supply. It is the same for every reader. It is not a prediction and not a recommendation. An A needs a cycle the desk reads as strong and a C needs a cycle it reads as a backside, so a name whose cycle the desk cannot read is never graded A or C. A dash in this column means no grade was recorded for the name at that checkpoint. Not graded means fewer than three of the five criteria could be read.",
     );
   });
 

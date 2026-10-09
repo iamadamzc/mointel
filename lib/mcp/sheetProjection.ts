@@ -39,9 +39,10 @@ export function setupGradeForTools(
   grade: SetupGrade | null | undefined,
   wired: boolean,
   nowIso: string,
+  noneRecorded = false,
 ): SetupGradeForTools | undefined {
   if (!wired) return undefined;
-  const view = setupGradeView(grade, nowIso);
+  const view = setupGradeView(grade, nowIso, noneRecorded);
   return {
     stored: grade ?? null,
     label: view.label,

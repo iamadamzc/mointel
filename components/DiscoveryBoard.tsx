@@ -212,7 +212,7 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     // Marketing, grade-sort-chip-words-2026-10-06.md (02ec44ab). The last sentence is Commercial's to keep or cut.
     label: 'Setup grade',
     title:
-      'Sorted by setup grade: A first, then B, C, D, Not graded. Names with no research at this checkpoint are last. The grade is the desk\'s reading, not a recommendation.',
+      'Sorted by setup grade: A first, then B, C, D, Not graded. Names showing a dash are last. The grade is the desk\'s reading, not a recommendation.',
     metric: 'setup grade, A first',
     column: 'ticker',
   },
@@ -253,9 +253,9 @@ const MISSING_NOUN: Partial<Record<DiscoverySortKey, string>> = {
  * and it names the checkpoint, since research missing at one may exist at another.
  */
 const SETUP_GRADE_MISSING = {
-  text: (n: number) => `${n} with no research at this checkpoint`,
+  text: (n: number) => `${n} showing a dash at this checkpoint`,
   hover:
-    'Names with a dash in the Setup grade column: the desk has no research on them at this checkpoint. Names marked Not graded are not counted here.',
+    'Names with a dash in the Setup grade column: no grade was recorded for them at this checkpoint. Names marked Not graded are not counted here.',
 } as const;
 
 /** One reader for every place a sort key's name appears. */
@@ -1091,6 +1091,7 @@ function DiscoveryRow({
           ageSeconds={t.ageSeconds}
           retention={retention}
           setupGrade={row.setupGradeWired ? row.setupGrade : undefined}
+          setupGradeNoneRecorded={row.setupGradeNoneRecorded}
           companyHint={
             companyLine({
               dossier: row.intelligence?.analysis?.dossier ?? null,

@@ -170,7 +170,7 @@ export function TickerDrawer({
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-4 pb-10">
           <DeskReadPanel read={buildDeskRead(row)} />
 
-          {row.setupGradeWired ? <SetupGradeReadings grade={row.setupGrade} Section={Section} /> : null}
+          {row.setupGradeWired ? <SetupGradeReadings grade={row.setupGrade} noneRecorded={row.setupGradeNoneRecorded} Section={Section} /> : null}
 
           {/* ONE ladder: the stored resistance levels on its axis (his ruling 2026-10-02). */}
           <StoredLevelLadder
@@ -315,7 +315,7 @@ function DrawerHeader({
             >
               {row.ticker}
             </h2>
-            {row.setupGradeWired ? <SetupGradeBadge grade={row.setupGrade} /> : null}
+            {row.setupGradeWired ? <SetupGradeBadge grade={row.setupGrade} noneRecorded={row.setupGradeNoneRecorded} /> : null}
             {ticker ? (
               <>
                 {/* The same resolved cycle the board and the Desk Read show.

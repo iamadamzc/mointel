@@ -184,6 +184,8 @@ export interface DeskRow {
    * false, because every researched name would otherwise read as having none.
    */
   setupGradeWired: boolean;
+  /** The payload carried an explicit null for this name: its latest checkpoint row predates grading. */
+  setupGradeNoneRecorded: boolean;
   /** The stored float state, or null (NOT_YET: "Not computed"). Only meaningful when `floatBoundWired`. */
   floatBound: FloatBound | null;
   /** The snapshot carries a float map (not null, even empty). False keeps today's Float column. */
@@ -490,6 +492,8 @@ export function buildDeskRow(
     // not open sky.
     blueSky,
     setupGrade: context.setupGrade ?? null,
+    // Kept apart before the ?? above collapses them: null (a pre-grading row) is not absent (no row).
+    setupGradeNoneRecorded: context.setupGrade === null,
     setupGradeWired: context.setupGradeWired ?? false,
     floatBound: context.floatBound ?? null,
     floatBoundWired: context.floatBoundWired ?? false,

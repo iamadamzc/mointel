@@ -24,10 +24,19 @@ import {
  * and a dash. A produced-but-unreadable name never prints a dash, and a name
  * with no research never reads "Not graded".
  */
-export function SetupGradeBadge({ grade, className = '' }: { grade: SetupGrade | null | undefined; className?: string }) {
+export function SetupGradeBadge({
+  grade,
+  noneRecorded = false,
+  className = '',
+}: {
+  grade: SetupGrade | null | undefined;
+  /** The payload's explicit null (a pre-grading checkpoint row): the dash with its own words. */
+  noneRecorded?: boolean;
+  className?: string;
+}) {
   // Only the label is rendered on the server; the tooltip text, which frames the
   // checkpoint time against "now", is built when the popover opens.
-  const label = setupGradeView(grade, new Date(0).toISOString());
+  const label = setupGradeView(grade, new Date(0).toISOString(), noneRecorded);
   const tone: Tone = label.tone;
   const face =
     label.kind === 'letter'
@@ -42,15 +51,15 @@ export function SetupGradeBadge({ grade, className = '' }: { grade: SetupGrade |
       triggerClassName={`${face} ${className}`}
       trigger={label.label}
     >
-      <SetupGradeTooltip grade={grade} />
+      <SetupGradeTooltip grade={grade} noneRecorded={noneRecorded} />
     </Popover>
   );
 }
 
-function SetupGradeTooltip({ grade }: { grade: SetupGrade | null | undefined }) {
+function SetupGradeTooltip({ grade, noneRecorded }: { grade: SetupGrade | null | undefined; noneRecorded: boolean }) {
   // Built here, inside the open popover, so the clock is read on the client and
   // never during server rendering.
-  const view = setupGradeView(grade, new Date().toISOString());
+  const view = setupGradeView(grade, new Date().toISOString(), noneRecorded);
   return <p className="m-0">{view.tooltip}</p>;
 }
 
@@ -62,12 +71,14 @@ function SetupGradeTooltip({ grade }: { grade: SetupGrade | null | undefined }) 
  */
 export function SetupGradeReadings({
   grade,
+  noneRecorded = false,
   Section,
 }: {
   grade: SetupGrade | null | undefined;
+  noneRecorded?: boolean;
   Section: React.ComponentType<{ title: string; children: React.ReactNode }>;
 }) {
-  const view = setupGradeView(grade, new Date().toISOString());
+  const view = setupGradeView(grade, new Date().toISOString(), noneRecorded);
   return (
     <Section title="Setup grade">
       <p className="mt-0 mb-2 text-[12px] leading-relaxed text-ink-1">{view.tooltip}</p>

@@ -622,6 +622,7 @@ export function TickerCell({
   ageSeconds,
   retention,
   setupGrade,
+  setupGradeNoneRecorded = false,
   companyHint,
 }: {
   ticker: string;
@@ -632,6 +633,8 @@ export function TickerCell({
   retention?: string | null;
   /** The stored setup grade (null or absent is NOT_YET: the dash). */
   setupGrade?: SetupGrade | null;
+  /** The payload's explicit null for this name (a pre-grading checkpoint row). */
+  setupGradeNoneRecorded?: boolean;
   /** "Name. Country." as a hover on the ticker (contract row 4); absent when the desk has no name. */
   companyHint?: string | null;
 }) {
@@ -646,7 +649,7 @@ export function TickerCell({
         <span className="text-[15px] font-bold tracking-tight text-ink" title={companyHint ?? undefined}>
           {ticker}
         </span>
-        {setupGrade !== undefined ? <SetupGradeBadge grade={setupGrade} /> : null}
+        {setupGrade !== undefined ? <SetupGradeBadge grade={setupGrade} noneRecorded={setupGradeNoneRecorded} /> : null}
         {stale ? (
           <span
             className="text-[9px] font-semibold tracking-wide text-warn uppercase"
