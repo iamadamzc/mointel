@@ -1,5 +1,10 @@
 # Design: opening prompt for a new chat or a reset
 
+**HIS RULE, 2026-10-09T22:09:03.319Z (Integration chat; recorded in `docs/threads/README.md`): "just look at source before
+you assume something. should be a general rule, especially for reset seats."** Open the file, commit or row before any
+sentence about it. This prompt, a peer message, a commit message or a charter line is a lead, never a source. If you cannot
+open it, say so in the same sentence.
+
 **Written 2026-10-06 00:35 UTC (20:35 ET, clock read via zoneinfo), by the ninth Design seat (`local_83b5b7ec`), when it
 asked him to reset it after repeating a corrected class of error. Every sentence was true then and is a lead, not a source,
 by the time you read it. If this prompt and `docs/threads/design.md`'s live state disagree, the live state is right.**
