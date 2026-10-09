@@ -14,7 +14,9 @@ and at v20 2026-10-06T02:17:32.593Z ("yes to v20"), then v25, the rewrite after
 the outside review, 2026-10-07T00:58:05.615Z ("yes", answering "yes float
 text"), each after a preview with the changes marked; then the Unknown line in
 "What you see in the cell" (Marketing a21558ba, Commercial 54), 2026-10-09T11:45:34.249Z
-("yes to the float page change", shown the exact line at 10:40:01Z). Any word changed
+("yes to the float page change", shown the exact line at 10:40:01Z); then the paragraph
+under the lede, "A float counts the shares available to trade..." (Marketing 955b3749,
+Commercial 66), 2026-10-09T22:45:50.617Z ("1, yes", shown the exact line). Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -31,6 +33,8 @@ No em dash anywhere in this file (his hard rule; tests/web/emDash.test.ts).
 # Are float quotes real?
 
 Float is the number of a company's shares available for public trading. It is usually computed as shares outstanding less the shares held by insiders and other closely held or restricted shares. This desk computes an upper bound on that computed figure from SEC filings, subtracting only the insider holdings it can see. The shares that can trade on a given day can be more, because insiders can sell. You will see a float number quoted for many stocks, and no SEC filing we know of requires a count of floating shares. It is worth knowing what those numbers are.
+
+A float counts the shares available to trade. It leaves out warrants, convertible notes and share-sale programs, which can add shares. In small caps, that is decision information, not fine print.
 
 ## Where a float number comes from
 
