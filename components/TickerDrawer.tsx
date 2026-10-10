@@ -28,7 +28,6 @@ import {
   footnoteCloseSentence,
 } from '@/lib/dashboard/sessionsView';
 import type { DemandState } from '@/lib/market/types';
-import type { StructuralResearch } from '@/lib/data/types';
 import {
   formatCount,
   formatEtTimestamp,
@@ -40,7 +39,6 @@ import {
 interface TickerDrawerProps {
   /** The merged desk row. May carry demand only, research only, or both. */
   row: DeskRow | null;
-  research: StructuralResearch | undefined;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;
@@ -48,7 +46,6 @@ interface TickerDrawerProps {
 
 export function TickerDrawer({
   row,
-  research,
   focused,
   onToggleFocus,
   onClose,
@@ -126,8 +123,6 @@ export function TickerDrawer({
 
   if (!row) return null;
 
-  const ticker = row.research;
-
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
@@ -146,7 +141,6 @@ export function TickerDrawer({
       >
         <DrawerHeader
           row={row}
-          research={research}
           focused={focused}
           onToggleFocus={onToggleFocus}
           onClose={onClose}
@@ -227,14 +221,12 @@ function NotAnalyzedPanel({ symbol }: { symbol: string }) {
 
 function DrawerHeader({
   row,
-  research,
   focused,
   onToggleFocus,
   onClose,
   headingRef,
 }: {
   row: DeskRow;
-  research: StructuralResearch | undefined;
   focused: boolean;
   onToggleFocus: (ticker: string) => void;
   onClose: () => void;

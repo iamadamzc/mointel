@@ -191,53 +191,19 @@ function sheetRow(float: string) {
   return normalizeSheetRows([row], []).tickers[0]!;
 }
 
+/*
+ * DESK ONLY (Sheet switch-off 3b; Marketing 644a67e0 S5, Commercial read 60; Research's read). The drawer's
+ * structure float was the Sheet's, with a verdict against the filed count. It is the float cell's own view
+ * now, and with no Sheet float there is nothing to judge, so no verdict is built.
+ */
 describe('one float for the whole desk', () => {
-  it('judges and shows the ROW float, not the dossier extraction', () => {
-    /*
-     * The two fields share a name and are different numbers: the board sorts,
-     * divides turnover by and prints the row's float, while the dossier's
-     * reaches no other surface. A drawer showing the second put two values for
-     * one field on two screens — F-19 — and a verdict computed on one of them
-     * printed beside the other would be worse than the defect it replaces.
-     */
-    const row = buildDeskRow(
-      'ZOOZ',
-      sheetRow('5.53M'),
-      null,
-      null,
-      intelligence(9_900_000),
-      null,
-      { tradingDate: '2026-09-21' },
-    );
-    const summary = buildStructureSummary(row)!;
-
-    expect(row.displayedFloat).toBe(5_530_000);
-    expect(summary.float).toBe('5,530,000');
-    expect(summary.floatCheck!.float).toBe('5.53M');
-    expect(summary.floatCheck!.reason).not.toContain('9.9');
-  });
-
-  it('shows no verdict where there is no float, and does not invent Unknown into one', () => {
-    const row = buildDeskRow('ZOOZ', sheetRow(''), null, null, intelligence(null), null, {
+  it('the drawer structure float is the TMI Float cell view, never the Sheet float or the dossier extraction', () => {
+    const row = buildDeskRow('ZOOZ', sheetRow('5.53M'), null, null, intelligence(9_900_000), null, {
       tradingDate: '2026-09-21',
     });
     const summary = buildStructureSummary(row)!;
 
-    expect(summary.float).toBe('Unknown');
-    expect(summary.floatCheck).toBeNull();
-  });
-
-  it('reports CANNOT VERIFY, not a pass, when the session date is absent', () => {
-    const row = buildDeskRow(
-      'ZOOZ',
-      sheetRow('5.53M'),
-      null,
-      null,
-      intelligence(null),
-      null,
-      {},
-    );
-
-    expect(buildStructureSummary(row)!.floatCheck!.label).toBe('CANNOT VERIFY');
+    expect(summary.float).toEqual({ face: 'Not computed', date: null, kind: 'notComputed' });
+    expect(summary).not.toHaveProperty('floatCheck');
   });
 });

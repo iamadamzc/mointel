@@ -348,58 +348,24 @@ describe('resolveRisk', () => {
     expect(risk.tone).toBe('pos');
   });
 
+  /*
+   * DESK ONLY (Sheet switch-off 3a). STRUCTURE UNKNOWN comes from the desk's own UNKNOWN classification now,
+   * dim (Integration 37th; Marketing a73aa6ed, Commercial read 65); the Sheet's UNKNOWN STRUCTURE sets nothing.
+   */
   it('says the structure is unknown rather than staying quiet about it', () => {
     const risk = resolveRisk(
-      buildDeskRow('SUGP', sheet({ structure: 'UNKNOWN STRUCTURE' }), null, demand(), intelligence()),
+      buildDeskRow('SUGP', null, null, demand(), intelligence({ structure: { structureClassification: 'UNKNOWN' } })),
     );
     expect(risk.code).toBe('STRUCTURE_UNKNOWN');
-    expect(risk.tone).toBe('warn');
+    expect(risk.tone).toBe('dim');
   });
 
-  /*
-   * The chip read STRUCTURE and was called FLOAT.
-   *
-   * Harmless while `displayedFloat` was null on 49 of 50 rows — the two were
-   * absent together. The Sheet float parser takes coverage to about 12 of 50,
-   * and the structure cell and the float cell are DIFFERENT COLUMNS, so a row
-   * can carry UNKNOWN in one and a parsed float in the other. The old detail
-   * said "No sourced float figure" while the same drawer rendered that float.
-   *
-   * This asserts the row that makes it visible: structure unknown, float
-   * KNOWN. The chip must still fire — the gate was never wrong — and must not
-   * deny a figure the desk is showing.
-   */
-  it('never denies a float it has, when structure is unknown and float is not', () => {
-    const row = buildDeskRow(
-      'SUGP',
-      sheet({ structure: 'UNKNOWN STRUCTURE', float: '5,200,000' }),
-      null,
-      demand(),
-      intelligence(),
-    );
-    const risk = resolveRisk(row);
-
-    /*
-     * The premise, asserted before the thing it enables. Without this the test
-     * passes on a row that has no float, proving nothing about a contradiction
-     * that needs one -- a check that cannot fail.
-     */
-    expect(row.displayedFloat).toBe(5_200_000);
-
-    expect(risk.code).toBe('STRUCTURE_UNKNOWN');
-    expect(risk.detail).not.toMatch(/no sourced float|float figure/i);
-    expect(risk.detail).toMatch(/structure/i);
-  });
-
-  /*
-   * The advice went with the name. "Size the position as if it could be large"
-   * was about the FLOAT, and it goes stale the moment one appears beside it.
-   */
-  it('states what is unknown rather than prescribing a size', () => {
+  it('a Sheet UNKNOWN STRUCTURE sets nothing: the desk reading stands', () => {
     const risk = resolveRisk(
-      buildDeskRow('SUGP', sheet({ structure: 'UNKNOWN STRUCTURE' }), null, demand(), intelligence()),
+      buildDeskRow('SUGP', sheet({ structure: 'UNKNOWN STRUCTURE', float: '5,200,000' }), null, demand(), intelligence()),
     );
-    expect(risk.detail).not.toMatch(/size the position/i);
+    expect(risk.code).toBe('STRUCTURE_CAUTION');
+    expect(risk.value).toBeNull();
   });
 
   it('gives the row a readable line and keeps the full text for the drawer', () => {
@@ -408,10 +374,10 @@ describe('resolveRisk', () => {
     const risk = resolveRisk(
       buildDeskRow(
         'SUGP',
-        sheet({ structure: 'DIRTY FLOAT', warning: long }),
+        null,
         null,
         demand(),
-        intelligence({ structure: { structureClassification: 'DIRTY_FLOAT' } }),
+        intelligence({ structure: { structureClassification: 'DIRTY_FLOAT', structuralWarnings: [long] } }),
       ),
     );
     expect(risk.detail).toBe('DIRTY FLOAT is high-risk here.');

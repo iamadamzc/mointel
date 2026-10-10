@@ -27,7 +27,9 @@ function row(
 ): DeskRow {
   return {
     ticker,
-    displayedFloat: fields.float ?? null,
+    // The desk's TMI Float (Sheet switch-off 3c): a PRODUCED bound sorts; the Sheet's float no longer does.
+    floatBoundWired: true,
+    floatBound: fields.float == null ? null : { state: 'PRODUCED', bound: fields.float },
     demand: fields.ahRank === undefined ? null : { afterHours: { rank: fields.ahRank } },
     telemetry: {
       ticker,

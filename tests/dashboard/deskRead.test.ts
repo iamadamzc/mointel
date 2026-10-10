@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { buildDeskRead, buildStructureSummary } from '@/lib/dashboard/deskRead';
 import { buildDeskRow } from '@/lib/dashboard/merge';
+import { buildLevelMap } from '@/lib/data/priceLevels';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
@@ -224,7 +225,7 @@ describe('Desk Read construction', () => {
     // reads unresolved rather than falling back to either side.
     expect(read.cycle.label).toBe('CYCLE NOT ESTABLISHED');
     expect(read.cycle.provenance).toBe('NONE');
-    expect(read.catalyst.label).toContain('A');
+    expect(read.catalyst.label).toContain('STRONG');
     expect(read.catalyst.provenance).toBe('AUTO');
     expect(read.structure.label).toBe('CAUTION');
     expect(read.structure.provenance).toBe('AUTO');
@@ -283,16 +284,20 @@ describe('Desk Read level selection', () => {
   });
 
   it('carries the relationship overlay without changing the level type', () => {
-    const row = buildDeskRow(
-      'FIEE',
-      sheet({ keyLevels: '$6.00 support' }),
-      null,
-      demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 }),
-    );
-    const read = buildDeskRead(row);
+    // The Sheet's levels no longer reach the ladder (3c), so the overlay is built on a level map directly.
+    const row = buildDeskRow('FIEE', null, null, demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 }));
+    const levelMap = buildLevelMap({ currentPrice: 5.7, dailySupport: '6.00', includeRoundLevels: false });
+    const read = buildDeskRead({ ...row, levelMap });
 
     const support = read.nextUp.find((level) => level.type === 'support');
     expect(support?.stateLabel).toBe('LOST SUPPORT');
+  });
+
+  it('the Sheet levels never reach the Desk Read (3c)', () => {
+    const read = buildDeskRead(
+      buildDeskRow('FIEE', sheet({ keyLevels: '$6.00 support' }), null, demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 })),
+    );
+    expect([...read.nextUp, ...read.nextDown].some((level) => level.type === 'support')).toBe(false);
   });
 
   it('reports an empty side rather than fabricating a level', () => {

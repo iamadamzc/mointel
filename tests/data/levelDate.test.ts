@@ -135,8 +135,10 @@ describe('OFAL: the levels carry the RESEARCH row date', () => {
 describe('wired', () => {
   const read = (path: string) => readFileSync(path, 'utf8').replace(/\r\n/g, '\n');
 
-  it('merge passes the RESEARCH row date', () => {
-    expect(read('lib/dashboard/merge.ts')).toContain('sheetResearchDate: sheetCalendarDate(researchRecord?.reportDate)');
+  it('merge passes no Sheet levels and no Sheet date (Sheet switch-off 3c: old Sheet levels come out)', () => {
+    const merge = read('lib/dashboard/merge.ts');
+    expect(merge).not.toContain('sheetResearchDate');
+    expect(merge).not.toMatch(/dailySupport: researchRecord|keyLevels: research/);
   });
 
   it('every level renderer prints it after the type', () => {

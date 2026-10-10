@@ -139,8 +139,8 @@ describe('resolveComputedCycle', () => {
     const conclusion = resolveComputedCycle(history(arc()));
     expect(conclusion).not.toBeNull();
     expect(conclusion?.provenance).toBe('COMPUTED');
-    // Arithmetic has nothing to disagree with. A cycle conflict is a fiction.
-    expect(conclusion?.otherLabel).toBeNull();
+    // Arithmetic has nothing to disagree with: a conclusion carries no counterparty field at all.
+    expect(conclusion).not.toHaveProperty('otherLabel');
     expect(conclusion?.label).toBe('BACKSIDE');
   });
 

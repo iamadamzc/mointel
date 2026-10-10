@@ -78,9 +78,9 @@ describe('sorting by float', () => {
     expect(discoveryMissingCount(rows, 'float', 'DAILY_RVOL')).toBe(2);
   });
 
-  it('not wired: unchanged, the Sheet float', () => {
+  it('not wired: no value, never the Sheet float (Sheet switch-off 3c)', () => {
     const r = row('AAA', bound({ bound: 3_000_000 }), false, 42);
-    expect(discoveryValueFor(r, 'float', 'DAILY_RVOL')).toBe(42);
+    expect(discoveryValueFor(r, 'float', 'DAILY_RVOL')).toBeNull();
   });
 });
 
@@ -92,9 +92,9 @@ describe('the board shows the column always once wired, and the legend once', ()
     expect(board).toContain("const showFloat = floatWired || SORT_KEYS.find((entry) => entry.key === sort.key)?.column === 'float';");
   });
 
-  it('renders the new cell only when wired, and the legend under the board', () => {
-    expect(board).toContain('row.floatBoundWired ? (');
-    expect(board).toContain('<FloatCell bound={row.floatBound} dateShown={dateShown} />');
+  it('renders the TMI Float cell (Not computed when unwired, never the Sheet float), and the legend under the board', () => {
+    expect(board).toContain('<FloatCell bound={row.floatBoundWired ? row.floatBound : null} dateShown={dateShown} />');
+    expect(board).not.toContain('formatCount(row.displayedFloat)');
     expect(board).toContain('floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null');
   });
 

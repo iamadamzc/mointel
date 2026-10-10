@@ -293,10 +293,15 @@ describe('normalized intelligence status', () => {
   });
 
   it('no state value or label carries the old words', () => {
-    for (const row of [
+    const complete = dossier({ cycle: { ...dossier().cycle, cycleClassification: 'RED_BACKSIDE' } });
+    const rows = [
       buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART' })),
       buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART', coverageIncomplete: true })),
-    ]) {
+      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART', dossier: complete })),
+    ];
+    // Both analysed states are covered: the mutant that put "AUTO" back on ANALYZED alone slipped past this.
+    expect(rows.map((row) => row.intelligenceState.status)).toEqual(['PARTLY_ANALYZED', 'PARTLY_ANALYZED', 'ANALYZED']);
+    for (const row of rows) {
       expect(row.intelligenceState.status).not.toMatch(/AUTO|SHEET|CONFLICT/);
       expect(row.intelligenceState.label).not.toMatch(/AUTO|SHEET|CONFLICT/);
     }
