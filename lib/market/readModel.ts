@@ -46,12 +46,13 @@ import {
   readDeskEvents,
   loadMinuteBars,
   readDemandStates,
-  readRangeCandidates,
   readFeedHealth,
+  readSessionStates,
   readTopMovers,
 } from './store/repo';
-import { addBoardMovers, moversLogGate, moversLogLine, selectMovers } from './boardMovers';
-import { rankInRange, resolveRequestedRange, sameRange } from './rangeRank';
+import { heldRangeBoard, heldRanks } from './heldRanks';
+import { addBoardMovers, moversLogGate, moversLogLine } from './boardMovers';
+import { markAboveRange, rankLists, resolveRequestedRange, sameRange, scrubBandOrdinals } from './rangeRank';
 import { attachNowBuckets } from './nowBuckets';
 import {
   loadFeedIntervals,
@@ -180,6 +181,8 @@ function emptyDiscovery(config: ReturnType<typeof loadMarketConfig>): DiscoveryS
       max: config.boardRangeMax ?? config.discoveryPriceMax,
     },
     rangeDefault: { min: config.boardDefaultMin, max: config.boardDefaultMax },
+    rangeEnabled: !config.boardRangeOff,
+    rangePending: false,
     ordinalsOmitted: false,
     ranked: [],
     calculatedAt: null,
@@ -613,14 +616,37 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       max: config.boardRangeMax ?? band.max,
     };
     const rangeDefault = { min: config.boardDefaultMin, max: config.boardDefaultMax };
-    const served = options.range
-      ? resolveRequestedRange(options.range, rangeBounds, rangeDefault)
-      : band;
-    const inRange = !sameRange(served, band);
+    /*
+     * RANK ONCE (his "rank once version", 2026-10-10; lib/market/heldRanks.ts). A viewer range is served from the
+     * engine's own stored rank order, held in memory by a worker thread and filtered here: no per-viewer sort or
+     * scan. Any board request keeps the list warm. With no fresh list (cold, stale, a dead thread) the band board is
+     * served, honestly labelled as the band, with `rangePending`; the next poll normally carries the range. The kill
+     * switch serves the band board and hides the control.
+     */
+    const requested =
+      options.range && !config.boardRangeOff
+        ? resolveRequestedRange(options.range, rangeBounds, rangeDefault)
+        : band;
+    const wantsRange = !sameRange(requested, band);
+    const held = heldRanks();
+    if (!config.boardRangeOff) held.touch(config.dbPath, tradingDate);
+    const heldList = wantsRange ? held.get(tradingDate) : null;
+    const rangePending = wantsRange && heldList === null;
+    const served = heldList ? requested : band;
+    const inRange = heldList !== null;
 
-    const rangeRanking = inRange
-      ? rankInRange(
-          readRangeCandidates(db, tradingDate, served),
+    const rangeBoard = heldList
+      ? heldRangeBoard(
+          heldList,
+          served,
+          { limit: config.internalRank, afterHours: board === 'AFTER_HOURS' },
+          (symbols) => readSessionStates(db, tradingDate, symbols),
+        )
+      : null;
+    const rangeRanking = rangeBoard
+      ? rankLists(
+          rangeBoard.day,
+          rangeBoard.evening,
           readDemandStates(db, tradingDate, {
             limit: 0,
             extraSymbols: options.extraSymbols,
@@ -628,6 +654,7 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
           }),
           board,
           config.internalRank,
+          rangeBoard,
         )
       : null;
 
@@ -649,28 +676,31 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
      * capture never comes through here.
      */
     const moverLimit = config.internalRank + config.boardMoversK;
-    const movers =
+    /*
+     * One read on both paths: `readTopMovers` over the SERVED range (the SQL twin of selectMovers, the same filter
+     * and order). On a viewer range the engine's band ordinals are wrong for that range, so each mover is scrubbed and
+     * carries its IN-RANGE daily rank from the range read's full order, as `rankInRange(...).all` gave it before the
+     * SQL order. Only the daily board takes movers, and its rank column reads rvolRank alone (view.ts:366-368).
+     */
+    const storedMovers =
       board !== 'DAILY_RVOL' || config.boardMoversK <= 0
         ? []
-        : rangeRanking
-          ? selectMovers(
-              rangeRanking.all,
-              served,
-              config.boardMoversMinPct,
-              config.boardMoversMinVolume,
-              moverLimit,
-            )
-          : readTopMovers(
-              db,
-              tradingDate,
-              served,
-              config.boardMoversMinPct,
-              config.boardMoversMinVolume,
-              moverLimit,
-            );
+        : readTopMovers(
+            db,
+            tradingDate,
+            served,
+            config.boardMoversMinPct,
+            config.boardMoversMinVolume,
+            moverLimit,
+          );
+    const movers = rangeBoard
+      ? storedMovers.map((state) => ({ ...scrubBandOrdinals(state), rvolRank: rangeBoard.dayRanks.get(state.ticker) ?? null }))
+      : storedMovers;
     const states = addBoardMovers(boardStates, movers, config.boardMoversK);
     // The server's mover decisions, once a minute at most (Integration 32nd, option b; see moversLogLine).
     if (board === 'DAILY_RVOL' && moversLogDue(Date.now())) console.log(moversLogLine(states));
+
+    markAboveRange(states, served);
 
     // Ticker freshness is judged per ticker, never from the connection alone.
     const nowMs = Date.now();
@@ -750,6 +780,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       priceMax: served.max,
       rangeBounds,
       rangeDefault,
+      rangeEnabled: !config.boardRangeOff,
+      rangePending,
       ordinalsOmitted: inRange,
       ranked,
       calculatedAt: summary.calculatedAt ?? null,

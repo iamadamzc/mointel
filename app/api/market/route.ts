@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { gateApiRequest } from '@/lib/auth/requestGate';
+import { boardRangeRequest } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 
 // Market state is read from the local store on every request; freshness is
@@ -14,11 +15,9 @@ export async function GET(request: Request) {
 
   const params = new URL(request.url).searchParams;
   const symbols = params.get('symbols');
-  // The viewer's price range (Design, 4b7fca4). Absent = the engine's own band.
-  const range =
-    params.has('min') || params.has('max')
-      ? { min: params.get('min'), max: params.get('max') }
-      : null;
+  // The viewer's price range (Design, 4b7fca4). Absent = the board default
+  // ($1-$20, his ruling), never the engine's band; see boardRangeRequest.
+  const range = boardRangeRequest(params);
   const extraSymbols = symbols
     ? symbols
         .split(',')

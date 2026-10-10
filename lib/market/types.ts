@@ -486,6 +486,21 @@ export interface DemandState {
    * Both are therefore captured at the transition and then left alone.
    */
   deadAtRank?: number | null;
+  /**
+   * Whether the name held ANY rank when it died -- the graveyard's "could he
+   * have been looking at this?" (`graveyard.ts`), which it used to read off
+   * `deadAtRank` being present. A fact, not an ordinal, so it survives a viewer
+   * range where `deadAtRank` is omitted (`lib/market/rangeRank.ts`); without it
+   * the graveyard would read "nothing died" on every re-ranked board.
+   */
+  diedWhileRanked?: boolean;
+  /**
+   * RANKED while priced above the range the board was drawn from -- held there
+   * by the latch (it qualified inside the range, then ran). Design renders
+   * "above your range". Set by the server because a PINNED name can sit above
+   * the range too, unranked, and price alone cannot tell the two apart.
+   */
+  aboveRangeLatched?: boolean;
   deadAtPeakTrades?: number | null;
   /**
    * Price at the death, and the field that lets the graveyard show a MISS.
@@ -584,6 +599,17 @@ export interface DiscoveryState {
   /** What a viewer may ask for, and what the board opens on. Config, not literals. */
   rangeBounds: { min: number; max: number };
   rangeDefault: { min: number; max: number };
+  /**
+   * False when the price range control is switched off (BOARD_RANGE_OFF=1): the server serves the band board
+   * whatever was asked, and the client hides the control. Absent on an older payload: treat as true.
+   */
+  rangeEnabled?: boolean;
+  /**
+   * True when the viewer asked for a range and the server could not serve it yet: the held rank list
+   * (lib/market/heldRanks.ts) was cold or stale, so this payload is the BAND board (priceMin / priceMax say so).
+   * The next poll, about a second later, normally carries the range. Absent on an older payload: false.
+   */
+  rangePending?: boolean;
   /**
    * True when the served range differs from the band the engine ranked in, so
    * every stored ordinal (previous rank, rank change, entered rank, rank at

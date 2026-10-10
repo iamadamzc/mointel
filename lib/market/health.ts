@@ -179,7 +179,11 @@ export function projectMarketHealth(options: {
       ...base,
       state: 'OFFLINE',
       label: 'Market: worker offline',
-      detail: health.lastError ?? 'Start it with npm run market:alpaca',
+      // No command. A second market worker silently displaces production's only
+      // SIP connection, so an instruction here is advice to break the feed
+      // (audit F-12). State the condition and its consequence.
+      detail:
+        health.lastError ?? 'The market feed is not connected. Prices and Discovery cannot update until it reconnects.',
       tone: 'neg',
       live: false,
     };

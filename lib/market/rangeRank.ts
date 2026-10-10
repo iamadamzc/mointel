@@ -11,14 +11,19 @@
  * THE RANKING IS THE ENGINE'S OWN. `rankByRvol` and `rankByAfterHours` are the
  * functions the engine ranks with; this module feeds them a different
  * population and nothing else, so a range equal to the engine's band would
- * reproduce its order rather than approximate it. Two differences are stated,
- * not hidden:
- *   - NO LATCH. The engine keeps a name that qualified in ITS band and ran
- *     through the top. That latch was earned in a different band; carrying it
- *     here would rank a name outside the viewer's range. In a viewer's range a
- *     name that runs through the top leaves it.
- *   - The population is what the store holds: tracked names. Hence the bounds
- *     in `config.ts` stay inside the band the engine captures.
+ * reproduce its order rather than approximate it.
+ *
+ * THE LATCH, SCOPED TO THE VIEWER'S RANGE. The engine keeps a name that
+ * qualified in its band and then ran through the top ("a $4 stock that rips to
+ * $25 does not vanish at the moment it starts" -- Design). Here a name stays
+ * when it is latched AND its qualification price lies inside the viewer's
+ * range: it qualified at a price the viewer asked for, then ran. A latch earned
+ * at a price outside the viewer's range does not carry. Qualification only
+ * happens inside the engine's band, so for a range reaching past that band
+ * the latch covers only its overlap -- stated, not hidden.
+ *
+ * The population is what the store holds: tracked names. Hence the bounds in
+ * `config.ts` stay inside the band the engine captures.
  *
  * STORED ORDINALS ARE OMITTED, NOT RE-LABELLED (research.md, decided
  * 2026-09-26). previous ranks, rank changes, entered ranks, the rank at
@@ -76,6 +81,26 @@ export function resolveRequestedRange(
   return range.min < range.max ? range : safeDefault;
 }
 
+/**
+ * The board's request, from its query string. ALWAYS a request -- never null.
+ *
+ * His ruling, 2026-09-26: "The one to 20 is the default setting for the
+ * board." So a board request with no `min`/`max` is a request for the board
+ * default, which `resolveRequestedRange` serves; it is not a request for the
+ * engine's band.
+ *
+ * THIS IS THE BOARD ROUTE'S RULE, NOT `getMarketSnapshot`'s. The no-argument
+ * callers -- health, the MCP tools, diagnostics -- describe the ENGINE, and the
+ * band is the engine's truth; flipping the read model's own default would
+ * silently change what those report.
+ */
+export function boardRangeRequest(params: URLSearchParams): {
+  min: string | null;
+  max: string | null;
+} {
+  return { min: params.get('min'), max: params.get('max') };
+}
+
 /** A copy with every band ordinal removed. */
 export function scrubBandOrdinals(state: DemandState): DemandState {
   const copy: DemandState = {
@@ -108,70 +133,124 @@ export interface RangeRanking {
   rankedCount: number;
   /** How many tracked, rank-eligible names are priced inside the range. */
   eligibleCount: number;
-  /**
-   * Every in-range candidate with its IN-RANGE ranks set, so the live board
-   * can pick big movers from it with their band rank (`boardMovers.ts`).
-   * Additive: the checkpoint capture does not read it.
-   */
-  all: DemandState[];
+  // `all` (every in-range candidate, for the big movers) went with the SQL order: the range path reads its movers with
+  // `readTopMovers` over the served range and gives each its in-range day rank (`heldRangeBoard`'s dayRanks; readModel).
 }
 
+/**
+ * THE REFERENCE: ranks an unbounded candidate set in memory. Production reads
+ * the engine's stored rank order, filtered to the range (`heldRangeBoard`,
+ * rank once, Ops's <20 ms gate), and `rankLists`; a test holds the two to the
+ * same board.
+ */
 export function rankInRange(
   candidates: readonly DemandState[],
   extras: readonly DemandState[],
   board: 'DAILY_RVOL' | 'AFTER_HOURS',
   limit: number,
+  range: PriceRange,
 ): RangeRanking {
-  const scrubbed = candidates.map(scrubBandOrdinals);
+  const inside = (price: number | null | undefined) =>
+    price !== null && price !== undefined && price >= range.min && price <= range.max;
 
-  const day = rankByRvol(scrubbed.map((state) => ({ symbol: state.ticker, rvol: state.rvol })));
-  const evening = rankByAfterHours(
-    scrubbed
+  // The engine's eligibility, with its latch scoped to the viewer's range.
+  const dayEligible = candidates.filter(
+    (state) =>
+      state.rvol !== null &&
+      Number.isFinite(state.rvol) &&
+      (inside(state.price) || (state.latched && inside(state.qualified?.price))),
+  );
+  // Evening ranks only on the after-hours board, as `heldRangeBoard` does:
+  // before 16:00 the session's after-hours figures do not exist yet.
+  const eveningEligible = candidates.filter(
+    (state) =>
+      board === 'AFTER_HOURS' &&
       // The engine's rule: a name that has not traded since the bell is not on
       // the after-hours board.
-      .filter((state) => (state.afterHours.participation ?? 0) > 0)
-      .map((state) => ({
-        symbol: state.ticker,
-        participation: state.afterHours.participation,
-        percentChange: state.afterHours.percentChange,
-        volume: state.afterHours.volume,
-      })),
+      (state.afterHours.participation ?? 0) > 0 &&
+      (inside(state.price) ||
+        (state.afterHours.latched && inside(state.afterHours.qualificationPrice))),
   );
 
-  for (const state of scrubbed) {
-    state.rvolRank = day.get(state.ticker)?.rank ?? null;
-    state.afterHours.rank = evening.get(state.ticker)?.rank ?? null;
-  }
+  return rankLists(dayEligible, eveningEligible, extras, board, limit, {
+    dayCount: dayEligible.length,
+    eveningCount: eveningEligible.length,
+  });
+}
 
-  const byDay = scrubbed
-    .filter((state) => state.rvolRank !== null)
-    .sort((a, b) => (a.rvolRank as number) - (b.rvolRank as number));
-  const byEvening = scrubbed
-    .filter((state) => state.afterHours.rank !== null)
-    .sort((a, b) => (a.afterHours.rank as number) - (b.afterHours.rank as number));
+/**
+ * Ranks two already-eligible lists with the engine's functions and assembles
+ * the payload. The lists may be capped (SQL) or whole (the reference); the
+ * counts are supplied because only the caller knows the uncapped totals.
+ */
+export function rankLists(
+  dayEligible: readonly DemandState[],
+  eveningEligible: readonly DemandState[],
+  extras: readonly DemandState[],
+  board: 'DAILY_RVOL' | 'AFTER_HOURS',
+  limit: number,
+  counts: { dayCount: number; eveningCount: number },
+): RangeRanking {
+  const byTicker = new Map<string, DemandState>();
+  const scrubbedOf = (state: DemandState) => {
+    const held = byTicker.get(state.ticker);
+    if (held) return held;
+    const copy = scrubBandOrdinals(state);
+    byTicker.set(state.ticker, copy);
+    return copy;
+  };
 
-  const active = board === 'AFTER_HOURS' ? byEvening : byDay;
-  const ranked = active.slice(0, limit);
+  const day = rankByRvol(dayEligible.map((state) => ({ symbol: state.ticker, rvol: state.rvol })));
+  const evening = rankByAfterHours(
+    eveningEligible.map((state) => ({
+      symbol: state.ticker,
+      participation: state.afterHours.participation,
+      percentChange: state.afterHours.percentChange,
+      volume: state.afterHours.volume,
+    })),
+  );
+
+  const byDay = dayEligible
+    .map(scrubbedOf)
+    .filter((state) => day.has(state.ticker))
+    .sort((a, b) => day.get(a.ticker)!.rank - day.get(b.ticker)!.rank)
+    .slice(0, limit);
+  const byEvening = eveningEligible
+    .map(scrubbedOf)
+    .filter((state) => evening.has(state.ticker))
+    .sort((a, b) => evening.get(a.ticker)!.rank - evening.get(b.ticker)!.rank)
+    .slice(0, limit);
+  for (const state of byDay) state.rvolRank = day.get(state.ticker)!.rank;
+  for (const state of byEvening) state.afterHours.rank = evening.get(state.ticker)!.rank;
+
+  const ranked = board === 'AFTER_HOURS' ? byEvening : byDay;
 
   // As the store does after the bell: the day's leaders ride along as context.
   const selected = new Map(ranked.map((state) => [state.ticker, state]));
   if (board === 'AFTER_HOURS') {
-    for (const state of byDay.slice(0, limit)) {
-      if (!selected.has(state.ticker)) selected.set(state.ticker, state);
-    }
+    for (const state of byDay) if (!selected.has(state.ticker)) selected.set(state.ticker, state);
   }
   for (const extra of extras) {
-    if (!selected.has(extra.ticker)) {
-      const inRange = scrubbed.find((state) => state.ticker === extra.ticker);
-      selected.set(extra.ticker, inRange ?? scrubBandOrdinals(extra));
-    }
+    if (!selected.has(extra.ticker)) selected.set(extra.ticker, scrubbedOf(extra));
   }
 
+  const eligible = new Set([...dayEligible, ...eveningEligible].map((state) => state.ticker));
   return {
     states: [...selected.values()],
     ranked,
-    rankedCount: active.length,
-    eligibleCount: scrubbed.length,
-    all: scrubbed,
+    rankedCount: board === 'AFTER_HOURS' ? counts.eveningCount : counts.dayCount,
+    eligibleCount: Math.max(eligible.size, counts.dayCount, counts.eveningCount),
   };
+}
+
+/**
+ * Marks the ranked rows priced above the served range: the latch holding a
+ * runner. Pinned rows are unranked, so they are never marked, whatever their
+ * price. Applied on both paths -- the engine's band latches the same way.
+ */
+export function markAboveRange(states: readonly DemandState[], range: PriceRange): void {
+  for (const state of states) {
+    const ranked = state.rvolRank !== null || state.afterHours.rank !== null;
+    state.aboveRangeLatched = ranked && state.price !== null && state.price > range.max;
+  }
 }

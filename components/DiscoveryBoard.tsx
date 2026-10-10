@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { ColumnResizeHandle } from '@/components/ColumnResizeHandle';
 import { DEFAULT_WIDTHS, type DiscoveryColumnKey } from '@/lib/dashboard/columnWidths';
 import { useColumnWidths, type ColumnHandle } from '@/lib/hooks/useColumnWidths';
+import { PriceRangeControl } from '@/components/PriceRangeControl';
+import { rangeLabel, type PriceRange } from '@/lib/dashboard/boardRange';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import { ActivitySparkline } from '@/components/ActivitySparkline';
 import { NowSparkline } from '@/components/NowSparkline';
@@ -288,6 +290,8 @@ interface DiscoveryBoardProps {
   changedTickers: Set<string>;
   /** The `Now` column's 10 s capture state, resolved once in `mergeDesk`. */
   nowCapture: NowCapture;
+  /** The viewer's range. Null returns to the default. Absent: no control (review, older payloads). */
+  onRangeChange?: (range: PriceRange | null) => void;
 }
 
 /**
@@ -315,6 +319,7 @@ export function DiscoveryBoard({
   changedTickers,
   nowCapture,
   boardRows,
+  onRangeChange,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
@@ -438,9 +443,10 @@ export function DiscoveryBoard({
         </h2>
         <span className="text-[11px] text-ink-3">
           {discovery
-            ? afterHours
-              ? `AH participation rank · $${discovery.priceMin}–$${discovery.priceMax}`
-              : `Daily RVOL rank · $${discovery.priceMin}–$${discovery.priceMax}`
+            ? `${afterHours ? 'AH participation rank' : 'Daily RVOL rank'} · ${rangeLabel({
+                min: discovery.priceMin,
+                max: discovery.priceMax,
+              })} · top ${Math.min(size, discovery.rankedCount)} of ${discovery.rankedCount.toLocaleString()} ranked`
             : 'Ranking not loaded'}
           {movers ? (
             <span className="text-accent" title={movers.title}>
@@ -449,6 +455,21 @@ export function DiscoveryBoard({
             </span>
           ) : null}
         </span>
+
+        {/*
+          * The range control. Its label is the range SERVED, not the one it
+          * holds, and the caption beside it says how many names that range
+          * ranked, so a name past the cap is a number on screen rather than
+          * a silent absence.
+          */}
+        {discovery && onRangeChange && discovery.rangeBounds && discovery.rangeDefault ? (
+          <PriceRangeControl
+            served={{ min: discovery.priceMin, max: discovery.priceMax }}
+            bounds={discovery.rangeBounds}
+            defaultRange={discovery.rangeDefault}
+            onChange={onRangeChange}
+          />
+        ) : null}
 
         {frozen ? (
           <span
@@ -766,19 +787,17 @@ export function DiscoveryBoard({
                 align="right"
                 sorted={activeColumn === 'now'}
                 title={nowCopy.title ?? nowEntry?.title}
+                /*
+                 * The lag, on the header rather than in the tooltip alone.
+                 * The newest slot is two minutes old and he discovered that
+                 * by hovering. §10 rules out hover-only, and this column was
+                 * on the wrong side of a rule already enforced on the Move
+                 * control. The span stays in the title -- this is the offset,
+                 * which is the part that changes how the bars are read.
+                 */
+                sub={nowCopy.sub}
               >
                 {nowEntry ? resolveSortEntry(nowEntry, phase, board).label : 'Now'}
-                {/*
-                  * The lag, on the header rather than in the tooltip alone.
-                  * The newest slot is two minutes old and he discovered that
-                  * by hovering. §10 rules out hover-only, and this column was
-                  * on the wrong side of a rule already enforced on the Move
-                  * control. The span stays in the title -- this is the offset,
-                  * which is the part that changes how the bars are read.
-                  */}
-                <span className="block text-[9px] font-normal tracking-normal normal-case text-ink-3">
-                  {nowCopy.sub}
-                </span>
               </Th>
               {showFloat ? (
                 <Th
@@ -870,6 +889,9 @@ export function DiscoveryBoard({
   );
 }
 
+/** The second line under a head word (the `Now` lag): small, unforced case. */
+const SUB_LINE_CLASS = 'block text-[9px] font-normal tracking-normal normal-case text-ink-3';
+
 function Th({
   children,
   className = '',
@@ -880,8 +902,15 @@ function Th({
   name,
   resize,
   measureHead,
+  sub,
 }: {
   children: React.ReactNode;
+  /**
+   * A second line under the head word. It renders AFTER the sort caret, so the
+   * caret stays on the word's line: as a child, the caret followed the block
+   * sub-line and the sorted `Now` head read NOW / -1m / caret on three lines.
+   */
+  sub?: React.ReactNode;
   className?: string;
   align?: 'right';
   srOnly?: boolean;
@@ -921,6 +950,7 @@ function Th({
     >
       {srOnly ? <span className="sr-only">{children}</span> : children}
       {sorted && !srOnly ? <span aria-hidden="true"> ▼</span> : null}
+      {sub && !srOnly ? <span className={SUB_LINE_CLASS}>{sub}</span> : null}
       {measureHead ? (
         /*
          * THE HEADER AS IT RENDERS WHEN SORTED, caret included, laid out off
@@ -936,6 +966,7 @@ function Th({
         >
           {children}
           <span> ▼</span>
+          {sub ? <span className={SUB_LINE_CLASS}>{sub}</span> : null}
         </span>
       ) : null}
       {resize ? <ColumnResizeHandle label={(name ?? '').split(',')[0]} {...resize} /> : null}
