@@ -39,11 +39,13 @@ NEW_RULE = """AND (
 OLD_RULE = """AND NOT EXISTS (
                 SELECT 1 FROM universe u WHERE u.symbol = ts.symbol AND u.discovery_eligible = 0
               )"""
-# This PC checks repo.ts out with CRLF; a multi-line replacement written with LF would match nothing and read as
-# a survivor. Use the file's own line ending.
-if b'\r\n' in (ROOT / REPO).read_bytes():
-    NEW_RULE = NEW_RULE.replace('\n', '\r\n')
-    OLD_RULE = OLD_RULE.replace('\n', '\r\n')
+# CRLF: the base harness matches on LF-normalised text and writes back with the file's own line ends
+# (exhibit-title-mutants.py main). An earlier commit here converted these strings to CRLF as well, which made U2
+# match nothing; the base's exactly-once assert stopped the run before any survivor was counted.
+#
+# AFTER THE FIRST RUN (prediction kept as written): U1 killed 2, not 1. The second kill is the limit test: with
+# NOTTRADABLE (+60%) admitted, the top 2 become BIG, NOTTRADABLE instead of BIG, TIEA. A real kill; my prediction
+# missed that NOTTRADABLE outranks TIEA.
 base.TESTS = [
     'tests/market/topMovers.test.ts',
     'tests/market/boardMoversSnapshot.test.ts',
