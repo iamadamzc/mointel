@@ -134,13 +134,14 @@ export interface RangeRanking {
   /** How many tracked, rank-eligible names are priced inside the range. */
   eligibleCount: number;
   // `all` (every in-range candidate, for the big movers) went with the SQL order: the range path reads its movers with
-  // `readTopMovers` over the served range and gives each its in-range day rank (`readRangeBoard`'s dayRanks; readModel).
+  // `readTopMovers` over the served range and gives each its in-range day rank (`heldRangeBoard`'s dayRanks; readModel).
 }
 
 /**
  * THE REFERENCE: ranks an unbounded candidate set in memory. Production reads
- * through `readRangeBoard` (ordered and capped in SQL, Ops's <20 ms gate) and
- * `rankLists`; a test holds the two to the same board.
+ * the engine's stored rank order, filtered to the range (`heldRangeBoard`,
+ * rank once, Ops's <20 ms gate), and `rankLists`; a test holds the two to the
+ * same board.
  */
 export function rankInRange(
   candidates: readonly DemandState[],
@@ -159,7 +160,7 @@ export function rankInRange(
       Number.isFinite(state.rvol) &&
       (inside(state.price) || (state.latched && inside(state.qualified?.price))),
   );
-  // Evening ranks only on the after-hours board, as `readRangeBoard` does:
+  // Evening ranks only on the after-hours board, as `heldRangeBoard` does:
   // before 16:00 the session's after-hours figures do not exist yet.
   const eveningEligible = candidates.filter(
     (state) =>

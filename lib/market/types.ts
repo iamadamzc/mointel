@@ -600,6 +600,17 @@ export interface DiscoveryState {
   rangeBounds: { min: number; max: number };
   rangeDefault: { min: number; max: number };
   /**
+   * False when the price range control is switched off (BOARD_RANGE_OFF=1): the server serves the band board
+   * whatever was asked, and the client hides the control. Absent on an older payload: treat as true.
+   */
+  rangeEnabled?: boolean;
+  /**
+   * True when the viewer asked for a range and the server could not serve it yet: the held rank list
+   * (lib/market/heldRanks.ts) was cold or stale, so this payload is the BAND board (priceMin / priceMax say so).
+   * The next poll, about a second later, normally carries the range. Absent on an older payload: false.
+   */
+  rangePending?: boolean;
+  /**
    * True when the served range differs from the band the engine ranked in, so
    * every stored ordinal (previous rank, rank change, entered rank, rank at
    * qualification, the rank a dead name held) was removed and `rvolRank` /

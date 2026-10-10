@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { openDatabase, setMeta } from '@/lib/market/store/db';
 import { upsertTickerSessions } from '@/lib/market/store/repo';
 import { getMarketSnapshot } from '@/lib/market/readModel';
+import { heldRanks } from '@/lib/market/heldRanks';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import type { DemandState } from '@/lib/market/types';
@@ -29,6 +30,7 @@ const saved = Object.fromEntries(ENV.map((key) => [key, process.env[key]]));
 
 afterEach(() => {
   vi.useRealTimers();
+  heldRanks().close();
   for (const key of ENV) {
     if (saved[key] === undefined) delete process.env[key];
     else process.env[key] = saved[key];
@@ -120,7 +122,9 @@ function seed(bandMin: number): string {
   rows.push(state('SMALL', 4, 0.1, 200, 21));
   rows.push(state('MID', 4, 0.2, 130, 19.9));
   rows.push(state('THIN', 4, 0.05, 300, 30, 100_000));
-  rows.push(state('MILD', 4, 0.4, 110, 9.9));
+  // Band ranks in the engine's RVOL order (VEEA 0.58 above MILD 0.4): a viewer range reads this stored order
+  // (rank once, heldRanks.ts), so a fixture may not store an order the engine could never write. Was 110.
+  rows.push(state('MILD', 4, 0.4, 125, 9.9));
   rows.push(state('DEAR', 25, 0.3, 140, 90));
   upsertTickerSessions(db, rows.map((row) => toRow(row)));
   db.close();
@@ -164,10 +168,12 @@ describe('big movers on the live board', () => {
     expect(tickers(getMarketSnapshot({}).discovery.ranked).slice(50)).toEqual(['VEEA', 'SMALL']);
   });
 
-  it('SET RANGE ($1-$20 over a $0.25 band): the same movers, after the in-range 50', () => {
+  it('SET RANGE ($1-$20 over a $0.25 band): the same movers, after the in-range 50', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(RTH);
     seed(0.25);
+    // Rank once: the first range request warms the held list (and is served the band); the next is the range.
+    if (getMarketSnapshot({ range: { min: '1', max: '20' } }).discovery.rangePending) await heldRanks().next();
     const { discovery, demand } = getMarketSnapshot({ range: { min: '1', max: '20' } });
     expect(discovery.ordinalsOmitted).toBe(true);
     expect(discovery.ranked).toHaveLength(53);

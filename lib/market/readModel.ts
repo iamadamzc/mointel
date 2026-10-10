@@ -46,11 +46,11 @@ import {
   readDeskEvents,
   loadMinuteBars,
   readDemandStates,
-  readIneligibleSymbols,
-  readRangeBoard,
   readFeedHealth,
+  readSessionStates,
   readTopMovers,
 } from './store/repo';
+import { heldRangeBoard, heldRanks } from './heldRanks';
 import { addBoardMovers, moversLogGate, moversLogLine } from './boardMovers';
 import { markAboveRange, rankLists, resolveRequestedRange, sameRange, scrubBandOrdinals } from './rangeRank';
 import { attachNowBuckets } from './nowBuckets';
@@ -124,24 +124,6 @@ function resetConnection(): void {
   globalStore.__momentumMarketDb = null;
 }
 
-/**
- * The universe's ineligible symbols, held for a minute. The range read needs
- * them on every poll; the universe changes about daily; re-reading per request
- * cost ~3 ms of Ops's 20 ms budget (measured on the local store copy).
- */
-const INELIGIBLE_TTL_MS = 60_000;
-let ineligibleCache: { db: MarketDatabase; at: number; set: Set<string> } | null = null;
-
-function ineligibleSymbols(db: MarketDatabase): Set<string> {
-  const now = Date.now();
-  if (ineligibleCache && ineligibleCache.db === db && now - ineligibleCache.at < INELIGIBLE_TTL_MS) {
-    return ineligibleCache.set;
-  }
-  const set = readIneligibleSymbols(db);
-  ineligibleCache = { db, at: now, set };
-  return set;
-}
-
 function offlineHealth(reason: string): MarketFeedHealth {
   return {
     mode: 'OFFLINE',
@@ -199,6 +181,8 @@ function emptyDiscovery(config: ReturnType<typeof loadMarketConfig>): DiscoveryS
       max: config.boardRangeMax ?? config.discoveryPriceMax,
     },
     rangeDefault: { min: config.boardDefaultMin, max: config.boardDefaultMax },
+    rangeEnabled: !config.boardRangeOff,
+    rangePending: false,
     ordinalsOmitted: false,
     ranked: [],
     calculatedAt: null,
@@ -632,17 +616,32 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       max: config.boardRangeMax ?? band.max,
     };
     const rangeDefault = { min: config.boardDefaultMin, max: config.boardDefaultMax };
-    const served = options.range
-      ? resolveRequestedRange(options.range, rangeBounds, rangeDefault)
-      : band;
-    const inRange = !sameRange(served, band);
+    /*
+     * RANK ONCE (his "rank once version", 2026-10-10; lib/market/heldRanks.ts). A viewer range is served from the
+     * engine's own stored rank order, held in memory by a worker thread and filtered here: no per-viewer sort or
+     * scan. Any board request keeps the list warm. With no fresh list (cold, stale, a dead thread) the band board is
+     * served, honestly labelled as the band, with `rangePending`; the next poll normally carries the range. The kill
+     * switch serves the band board and hides the control.
+     */
+    const requested =
+      options.range && !config.boardRangeOff
+        ? resolveRequestedRange(options.range, rangeBounds, rangeDefault)
+        : band;
+    const wantsRange = !sameRange(requested, band);
+    const held = heldRanks();
+    if (!config.boardRangeOff) held.touch(config.dbPath, tradingDate);
+    const heldList = wantsRange ? held.get(tradingDate) : null;
+    const rangePending = wantsRange && heldList === null;
+    const served = heldList ? requested : band;
+    const inRange = heldList !== null;
 
-    const rangeBoard = inRange
-      ? readRangeBoard(db, tradingDate, served, {
-          limit: config.internalRank,
-          afterHours: board === 'AFTER_HOURS',
-          ineligible: ineligibleSymbols(db),
-        })
+    const rangeBoard = heldList
+      ? heldRangeBoard(
+          heldList,
+          served,
+          { limit: config.internalRank, afterHours: board === 'AFTER_HOURS' },
+          (symbols) => readSessionStates(db, tradingDate, symbols),
+        )
       : null;
     const rangeRanking = rangeBoard
       ? rankLists(
@@ -781,6 +780,8 @@ export function getMarketSnapshot(options: MarketSnapshotOptions = {}): MarketSn
       priceMax: served.max,
       rangeBounds,
       rangeDefault,
+      rangeEnabled: !config.boardRangeOff,
+      rangePending,
       ordinalsOmitted: inRange,
       ranked,
       calculatedAt: summary.calculatedAt ?? null,

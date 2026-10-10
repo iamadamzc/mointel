@@ -5,11 +5,20 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { openDatabase, setMeta } from '@/lib/market/store/db';
 import {
-  readIneligibleSymbols,
-  readRangeBoard,
   readRangeCandidates,
+  readSessionStates,
   upsertTickerSessions,
 } from '@/lib/market/store/repo';
+import {
+  AH_WALK,
+  DAY_WALK,
+  heldBoardFromRows,
+  heldRangeBoard,
+  heldRanks,
+  type HeldList,
+} from '@/lib/market/heldRanks';
+import { rankByRvol } from '@/lib/market/rvol';
+import { rankByAfterHours } from '@/lib/market/afterHours';
 import {
   boardRangeRequest,
   markAboveRange,
@@ -18,7 +27,7 @@ import {
   resolveRequestedRange,
   scrubBandOrdinals,
 } from '@/lib/market/rangeRank';
-import { getMarketSnapshot } from '@/lib/market/readModel';
+import { getMarketSnapshot, type MarketSnapshotOptions } from '@/lib/market/readModel';
 import { openTradesStore, setLastFlushMs, upsertFeedIntervals } from '@/lib/market/store/trades';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
@@ -37,6 +46,7 @@ const savedDbPath = process.env.MARKET_DB_PATH;
 
 afterEach(() => {
   process.env.MARKET_DB_PATH = savedDbPath;
+  heldRanks().close();
   while (files.length) {
     try {
       fs.rmSync(path.dirname(files.pop()!), { recursive: true, force: true });
@@ -45,6 +55,18 @@ afterEach(() => {
     }
   }
 });
+
+/**
+ * A range board is served from the held rank list (rank once, lib/market/heldRanks.ts), which a worker thread fills
+ * a moment after the first request. So: ask once (that payload is the band, with rangePending), wait for the list,
+ * ask again.
+ */
+async function warmSnapshot(options: MarketSnapshotOptions) {
+  const first = getMarketSnapshot(options);
+  if (!first.discovery.rangePending) return first;
+  await heldRanks().next();
+  return getMarketSnapshot(options);
+}
 
 function temporaryPath() {
   const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-range-')), 'market.db');
@@ -306,11 +328,11 @@ describe('the store and the snapshot', () => {
     expect(snapshot.discovery.rangeBounds).toEqual({ min: 0.25, max: 20 });
   });
 
-  it('THE DEFAULT $1-$20 IS RE-RANKED: it differs from the $0.25-$20 band the ordinals came from', () => {
+  it('THE DEFAULT $1-$20 IS RE-RANKED: it differs from the $0.25-$20 band the ordinals came from', async () => {
     const file = temporaryPath();
     seed(file);
     process.env.MARKET_DB_PATH = file;
-    const snapshot = getMarketSnapshot({ range: { min: '1', max: '20' } });
+    const snapshot = await warmSnapshot({ range: { min: '1', max: '20' } });
     const discovery = snapshot.discovery;
     expect(discovery.ordinalsOmitted).toBe(true);
     expect([discovery.priceMin, discovery.priceMax]).toEqual([1, 20]);
@@ -371,11 +393,11 @@ describe('the store and the snapshot', () => {
     }
   });
 
-  it('THE BOARD ROUTE WITH NO PARAMS SERVES HIS $1-$20 DEFAULT, not the band (his ruling 2026-09-26)', () => {
+  it('THE BOARD ROUTE WITH NO PARAMS SERVES HIS $1-$20 DEFAULT, not the band (his ruling 2026-09-26)', async () => {
     const file = temporaryPath();
     seed(file);
     process.env.MARKET_DB_PATH = file;
-    const snapshot = getMarketSnapshot({ range: boardRangeRequest(new URLSearchParams('')) });
+    const snapshot = await warmSnapshot({ range: boardRangeRequest(new URLSearchParams('')) });
     const discovery = snapshot.discovery;
     expect([discovery.priceMin, discovery.priceMax]).toEqual([1, 20]);
     expect(discovery.ordinalsOmitted).toBe(true);
@@ -395,13 +417,103 @@ describe('the store and the snapshot', () => {
     expect(snapshot.discovery.ordinalsOmitted).toBe(false);
     expect(changeOf(snapshot.discovery.board, snapshot.discovery.ranked[0])).toBe(3);
   });
+
+  it('COLD: before the held list exists, a range request gets the BAND board, labelled as the band, rangePending', () => {
+    const file = temporaryPath();
+    seed(file);
+    process.env.MARKET_DB_PATH = file;
+    const discovery = getMarketSnapshot({ range: { min: '1', max: '20' } }).discovery;
+    expect(discovery.rangePending).toBe(true);
+    expect(discovery.rangeEnabled).toBe(true);
+    expect([discovery.priceMin, discovery.priceMax]).toEqual([0.25, 20]);
+    expect(discovery.ordinalsOmitted).toBe(false);
+    expect(discovery.ranked.map((s) => s.ticker)).toEqual(['PENNY', 'AAA', 'BBB']);
+  });
+
+  it('WARM: the range is served and rangePending is false', async () => {
+    const file = temporaryPath();
+    seed(file);
+    process.env.MARKET_DB_PATH = file;
+    const discovery = (await warmSnapshot({ range: { min: '1', max: '20' } })).discovery;
+    expect(discovery.rangePending).toBe(false);
+    expect([discovery.priceMin, discovery.priceMax]).toEqual([1, 20]);
+  });
+
+  it('THE KILL SWITCH (BOARD_RANGE_OFF=1): any range is ignored, the band is served, the control is told to hide', async () => {
+    const file = temporaryPath();
+    seed(file);
+    process.env.MARKET_DB_PATH = file;
+    const saved = process.env.BOARD_RANGE_OFF;
+    process.env.BOARD_RANGE_OFF = '1';
+    try {
+      const discovery = (await warmSnapshot({ range: { min: '1', max: '20' } })).discovery;
+      expect(discovery.rangeEnabled).toBe(false);
+      expect(discovery.rangePending).toBe(false);
+      expect([discovery.priceMin, discovery.priceMax]).toEqual([0.25, 20]);
+      expect(discovery.ranked.map((s) => s.ticker)).toEqual(['PENNY', 'AAA', 'BBB']);
+    } finally {
+      if (saved === undefined) delete process.env.BOARD_RANGE_OFF;
+      else process.env.BOARD_RANGE_OFF = saved;
+    }
+  });
 });
 
-describe('the SQL path is the reference board', () => {
+/**
+ * The engine's stored ranks, as recompute and the after-hours pass leave them (engine.ts): the band is the store's
+ * $0.25-$20; a name is ranked when it has an RVOL (day) or participation above 0 (evening), is priced inside the
+ * band or latched, and is in the eligible set. The held path reads these, so a fixture must store the engine's own
+ * order, not arbitrary ranks.
+ */
+const BAND = { min: 0.25, max: 20 };
+function engineRanked(rows: DemandState[], ineligible: ReadonlySet<string>): DemandState[] {
+  const inBand = (price: number | null) => price !== null && price >= BAND.min && price <= BAND.max;
+  const day = rankByRvol(
+    rows
+      .filter((r) => r.price !== null && (inBand(r.price) || r.latched) && !ineligible.has(r.ticker))
+      .map((r) => ({ symbol: r.ticker, rvol: r.rvol })),
+  );
+  const evening = rankByAfterHours(
+    rows
+      .filter(
+        (r) =>
+          r.afterHours.participation !== null &&
+          r.afterHours.participation > 0 &&
+          r.price !== null &&
+          (inBand(r.price) || r.afterHours.latched) &&
+          !ineligible.has(r.ticker),
+      )
+      .map((r) => ({
+        symbol: r.ticker,
+        participation: r.afterHours.participation,
+        percentChange: r.afterHours.percentChange,
+        volume: r.afterHours.volume,
+      })),
+  );
+  return rows.map((r) => ({
+    ...r,
+    rvolRank: day.get(r.ticker)?.rank ?? null,
+    afterHours: { ...r.afterHours, rank: evening.get(r.ticker)?.rank ?? null },
+  }));
+}
+
+type RawWalkRow = readonly [string, number | null, number | null, number | null];
+
+/** The worker's two walks, run on this thread: the held list as the worker would post it. */
+function heldFromStore(db: ReturnType<typeof openDatabase>): HeldList {
+  return {
+    tradingDate: DATE,
+    readAt: Date.now(),
+    receivedAt: performance.now(),
+    day: heldBoardFromRows(db.prepare(DAY_WALK).raw(true).all(DATE) as RawWalkRow[]),
+    ah: heldBoardFromRows(db.prepare(AH_WALK).raw(true).all(DATE) as RawWalkRow[]),
+  };
+}
+
+describe('the held path is the reference board (rank once)', () => {
   /*
-   * Production reads through readRangeBoard (ordered and capped in SQL, Ops's
-   * <20 ms gate); rankInRange ranks everything in memory. Same board, or the
-   * fast path is a different product.
+   * Production reads a viewer range from the engine's stored rank order, filtered (heldRanks.ts); rankInRange
+   * re-ranks the range's candidates in memory. Same board, or the held path is a different product. This is the
+   * premise of rank once: the engine's band order, restricted to a range, IS the in-range order.
    */
   function populate(file: string) {
     const db = openDatabase(file);
@@ -409,7 +521,7 @@ describe('the SQL path is the reference board', () => {
     for (let i = 0; i < 90; i += 1) {
       const price = 0.3 + ((i * 37) % 300) / 10; // $0.30 .. $30.20
       const rvol = i % 11 === 0 ? null : ((i * 53) % 97) / 7;
-      const row = state(`S${String(i).padStart(3, '0')}`, price, rvol, i + 1);
+      const row = state(`S${String(i).padStart(3, '0')}`, price, rvol, null);
       // Some runners latched at a price inside $1-$20 and now above it.
       if (i % 9 === 0) row.qualified = { at: '2026-09-28T13:40:00.000Z', price: 5, rvol, rank: 3 };
       else row.latched = false;
@@ -423,10 +535,10 @@ describe('the SQL path is the reference board', () => {
       };
       rows.push(row);
     }
-    // An exact RVOL tie across the cut, broken by symbol.
+    // An exact RVOL tie across the cut, broken by symbol, and a high-RVOL warrant inside the range: the engine
+    // never ranks the warrant, and the reference excludes it by its universe row.
     rows.push(state('TIEA', 4, 13.5, null), state('TIEB', 4, 13.5, null));
-    upsertTickerSessions(db, rows.map(toRow));
-    // A high-RVOL warrant inside the range: must be excluded by both paths.
+    upsertTickerSessions(db, engineRanked(rows, new Set(['TIEA'])).map(toRow));
     db.prepare(
       `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
        VALUES ('TIEA', 'test', '2026-09-28T00:00:00Z', 'WARRANT', 0)`,
@@ -435,33 +547,38 @@ describe('the SQL path is the reference board', () => {
   }
 
   for (const board of ['DAILY_RVOL', 'AFTER_HOURS'] as const) {
-    it(`${board}: same tickers, same ranks, same counts, at a cap that cuts the list`, () => {
-      const db = populate(temporaryPath());
-      const range = { min: 1, max: 20 };
-      const limit = 25;
-      const reference = rankInRange(readRangeCandidates(db, DATE, range), [], board, limit, range);
-      const sql = readRangeBoard(db, DATE, range, {
-        limit,
-        afterHours: board === 'AFTER_HOURS',
-        ineligible: readIneligibleSymbols(db),
-      });
-      const fast = rankLists(sql.day, sql.evening, [], board, limit, sql);
-      db.close();
+    for (const range of [
+      { min: 1, max: 20 },
+      { min: 0.5, max: 5 },
+      { min: 0.26, max: 19.99 },
+    ]) {
+      it(`${board} $${range.min}-$${range.max}: same tickers, same ranks, same counts, at a cap that cuts the list`, () => {
+        const db = populate(temporaryPath());
+        const limit = 25;
+        const reference = rankInRange(readRangeCandidates(db, DATE, range), [], board, limit, range);
+        const held = heldRangeBoard(
+          heldFromStore(db),
+          range,
+          { limit, afterHours: board === 'AFTER_HOURS' },
+          (symbols) => readSessionStates(db, DATE, symbols),
+        );
+        const fast = rankLists(held.day, held.evening, [], board, limit, held);
+        // Every in-range name's daily rank, not only the top: the range's big movers carry it.
+        const allDay = rankInRange(readRangeCandidates(db, DATE, range), [], 'DAILY_RVOL', 10_000, range);
+        db.close();
 
-      const view = (r: typeof reference) =>
-        r.ranked.map((s) => [s.ticker, s.rvolRank, s.afterHours.rank]);
-      expect(reference.ranked.length).toBe(limit);
-      expect(fast.ranked.some((s) => s.ticker === 'TIEA')).toBe(false);
-      expect(view(fast)).toEqual(view(reference));
-      expect(fast.rankedCount).toBe(reference.rankedCount);
-      expect(fast.states.map((s) => s.ticker).sort()).toEqual(
-        reference.states.map((s) => s.ticker).sort(),
-      );
-    });
+        const view = (r: typeof reference) => r.ranked.map((s) => [s.ticker, s.rvolRank, s.afterHours.rank]);
+        expect(fast.ranked.some((s) => s.ticker === 'TIEA')).toBe(false);
+        expect(view(fast)).toEqual(view(reference));
+        expect(fast.rankedCount).toBe(reference.rankedCount);
+        expect(fast.states.map((s) => s.ticker).sort()).toEqual(reference.states.map((s) => s.ticker).sort());
+        expect([...held.dayRanks.entries()]).toEqual(allDay.ranked.map((s) => [s.ticker, s.rvolRank]));
+      });
+    }
   }
 });
 
-describe('the SQL cut honours the engine tie-breaks', () => {
+describe('the held cut honours the engine tie-breaks', () => {
   it('after hours: equal participation is cut by |AH %|, then AH volume, exactly as the engine ranks', () => {
     const db = openDatabase(temporaryPath());
     const tied = (ticker: string, percentChange: number, volume: number) => {
@@ -470,12 +587,15 @@ describe('the SQL cut honours the engine tie-breaks', () => {
       return row;
     };
     // Engine order: PTB (|9|), PTC (|3|, vol 900), PTA (|3|, vol 100).
-    upsertTickerSessions(db, [tied('PTA', 3, 100), tied('PTB', -9, 100), tied('PTC', 3, 900)].map(toRow));
+    upsertTickerSessions(db, engineRanked([tied('PTA', 3, 100), tied('PTB', -9, 100), tied('PTC', 3, 900)], new Set()).map(toRow));
     const range = { min: 1, max: 20 };
-    const sql = readRangeBoard(db, DATE, range, { limit: 2, afterHours: true, ineligible: new Set() });
+    const held = heldRangeBoard(heldFromStore(db), range, { limit: 2, afterHours: true }, (symbols) =>
+      readSessionStates(db, DATE, symbols),
+    );
     const reference = rankInRange(readRangeCandidates(db, DATE, range), [], 'AFTER_HOURS', 2, range);
     db.close();
-    expect(sql.evening.map((s) => s.ticker)).toEqual(['PTB', 'PTC']);
+    expect(held.evening.map((s) => s.ticker)).toEqual(['PTB', 'PTC']);
+    expect(held.eveningCount).toBe(3);
     expect(reference.ranked.map((s) => s.ticker)).toEqual(['PTB', 'PTC']);
   });
 });

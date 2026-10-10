@@ -53,8 +53,8 @@ export function captureRanges(
 ): AssessmentRangeRecord[] {
   const countWindow = board.board === 'AFTER_HOURS' ? 'AFTER_HOURS' : 'SESSION_TO_DATE';
   return ranges.map((range) => {
-    // The in-memory reference; the live board reads the same ranking through readRangeBoard + rankLists, and
-    // tests/market/rangeRank.test.ts holds the two paths to the same board.
+    // The in-memory reference; the live board reads the same ranking from the engine's stored rank order
+    // (heldRanks.ts, rank once) + rankLists, and tests/market/rangeRank.test.ts holds the two to the same board.
     const ranking = rankInRange(
       readRangeCandidates(db, tradingDate, range),
       [],
