@@ -65,7 +65,7 @@ export const SECTIONS: Section[] = [
     body: [
       // Commercial's registered plain statement, verbatim (docs/commercial/2026-09-08-product-name.md 2e item 2).
       'The Momentum Intelligence Trading Desk is built for people who trade $1–$20 small-cap momentum in the premarket. It is not a scanner and it is not a signal service: it takes the names that are already moving and puts everything the desk knows about each one on a single shared board. Why it is moving, where it sits in the cycle, what the share structure is, and what supply stands behind it. Where it has nothing, it says so.',
-      "The board ranks the common stocks and ADRs the desk tracks, priced $1 to $20, by how much each has traded against its own twenty-session norm. A name shows up as it crosses into the day's runners. A name the desk has qualified stays tracked for the session, so the one that went quiet at 08:10 is ranked again the moment it picks up at 09:20. A name making a large move from the prior close is marked moving and kept on the board even when its volume rank is low.",
+      "The board ranks tickers by how much each has traded against its own twenty-session norm. A name shows up as it crosses into the day's runners. A name the desk has qualified stays tracked for the session, so the one that went quiet at 08:10 is ranked again the moment it picks up at 09:20. A name making a large move from the prior close is marked moving and kept on the board even when its volume rank is low.",
       'The Now column counts trades in the last ten seconds, a different question from volume for the day; when the count stops it says "not live" and shows nothing.',
     ],
     shots: [
