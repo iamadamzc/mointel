@@ -46,6 +46,13 @@ OLD_RULE = """AND NOT EXISTS (
 # AFTER THE FIRST RUN (prediction kept as written): U1 killed 2, not 1. The second kill is the limit test: with
 # NOTTRADABLE (+60%) admitted, the top 2 become BIG, NOTTRADABLE instead of BIG, TIEA. A real kill; my prediction
 # missed that NOTTRADABLE outranks TIEA.
+#
+# SECOND RUN (16cadfe6, all four): U1 2, U2 4, U3 9, U4 1 = 16 of 15 predicted; every mutant killed.
+#   U2 +1: the same limit test as U1 (NOTTRADABLE admitted by the old rule too).
+#   U3 -1: the SET RANGE snapshot test survives, and should. At 6c06a013 a viewer range takes its movers from
+#          selectMovers(rangeRanking.all) (readModel.ts, the range branch), built on readRangeCandidates, not from
+#          readTopMovers, so this fix cannot reach it. That path still admits a symbol with no universe row:
+#          option (b), put to Integration 37th, not in this commit.
 base.TESTS = [
     'tests/market/topMovers.test.ts',
     'tests/market/boardMoversSnapshot.test.ts',
