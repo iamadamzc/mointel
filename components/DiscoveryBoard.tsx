@@ -292,6 +292,9 @@ interface DiscoveryBoardProps {
   nowCapture: NowCapture;
   /** The viewer's range. Null returns to the default. Absent: no control (review, older payloads). */
   onRangeChange?: (range: PriceRange | null) => void;
+  /** The viewer's stored range, and whether the server could not serve it yet (rank once). */
+  chosenRange?: PriceRange | null;
+  rangePending?: boolean;
 }
 
 /**
@@ -320,6 +323,8 @@ export function DiscoveryBoard({
   nowCapture,
   boardRows,
   onRangeChange,
+  chosenRange = null,
+  rangePending = false,
 }: DiscoveryBoardProps) {
   const [size, setSize] = useState<ViewSize>(12);
   const [sort, setSort] = useState<DiscoverySortState>(DISCOVERY_DEFAULT_SORT);
@@ -462,12 +467,14 @@ export function DiscoveryBoard({
           * ranked, so a name past the cap is a number on screen rather than
           * a silent absence.
           */}
-        {discovery && onRangeChange && discovery.rangeBounds && discovery.rangeDefault ? (
+        {/* Hidden when Ops switches ranges off (rank once: `rangeEnabled` false, the board is the band). */}
+        {discovery && onRangeChange && discovery.rangeEnabled !== false && discovery.rangeBounds && discovery.rangeDefault ? (
           <PriceRangeControl
             served={{ min: discovery.priceMin, max: discovery.priceMax }}
             bounds={discovery.rangeBounds}
             defaultRange={discovery.rangeDefault}
             onChange={onRangeChange}
+            pending={rangePending && chosenRange ? chosenRange : null}
           />
         ) : null}
 

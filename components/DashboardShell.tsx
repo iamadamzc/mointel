@@ -629,6 +629,8 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
             changedTickers={feed.changedTickers}
             nowCapture={merged.nowCapture}
             onRangeChange={changeBoardRange}
+            chosenRange={boardRange}
+            rangePending={market.rangePending}
           />
         ) : (
           <AssessmentSnapshotBoard key={selectedAssessment} id={selectedAssessment} />

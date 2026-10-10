@@ -9,6 +9,7 @@ import {
 } from '@/lib/dashboard/feedFailure';
 
 import { rangeQuery, type PriceRange } from '@/lib/dashboard/boardRange';
+import { acceptPayload, isRangePending } from '@/lib/dashboard/rangePending';
 import { pollDecision } from '@/lib/dashboard/pollGate';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 import type { MarketSnapshot } from '@/lib/market/types';
@@ -24,6 +25,8 @@ export interface MarketFeedState {
   snapshot: MarketSnapshot | null;
   failure: FeedFailure | null;
   loading: boolean;
+  /** The server could not serve the viewer's range yet (rank once); the control shows its loading mark. */
+  rangePending: boolean;
 }
 
 export function useMarket(
@@ -35,6 +38,9 @@ export function useMarket(
   const [snapshot, setSnapshot] = useState<MarketSnapshot | null>(null);
   const [failure, setFailure] = useState<FeedFailure | null>(null);
   const [loading, setLoading] = useState(true);
+  const [rangePending, setRangePending] = useState(false);
+  // Pending payloads held back in a row (rangePending.ts): bounded, so a cold list cannot freeze the board.
+  const heldRef = useRef(0);
 
   const symbolsKey = extraSymbols.join(',');
   const rangeKey = rangeQuery(range);
@@ -79,8 +85,14 @@ export function useMarket(
       const payload = (await response.json()) as MarketSnapshot;
       if (!mountedRef.current) return;
 
-      setSnapshot(payload);
+      setRangePending(isRangePending(payload));
       setFailure(null);
+      // A pending range is not shown as the viewer's: keep the previous table, or the loading state.
+      const decision = acceptPayload(payload, heldRef.current);
+      heldRef.current = decision.heldInARow;
+      if (!decision.accept) return;
+      setSnapshot(payload);
+      setLoading(false);
     } catch (error) {
       if ((error as Error).name === 'AbortError') return;
       if (!mountedRef.current) return;
@@ -89,7 +101,8 @@ export function useMarket(
       // Free the slot only if it is still ours; a replaced request must not
       // clear its replacement.
       if (inflightRef.current === flight) inflightRef.current = null;
-      if (mountedRef.current) setLoading(false);
+      // A held-back pending payload leaves the loading state as it was; everything else ends it.
+      if (mountedRef.current && heldRef.current === 0) setLoading(false);
     }
   }, [apiBase]);
 
@@ -120,5 +133,5 @@ export function useMarket(
     };
   }, [load, symbolsKey, rangeKey]);
 
-  return { snapshot, failure, loading };
+  return { snapshot, failure, loading, rangePending };
 }
