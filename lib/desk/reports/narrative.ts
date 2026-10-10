@@ -48,6 +48,7 @@
  */
 
 import type { MarketDatabase } from '../../market/store/db';
+import { rankEligibleSql } from '../../market/store/eligibility';
 import { rangeKey, readAssessmentRanges, type AssessmentTickerRecord } from '../../market/store/assessmentRepo';
 import { etWallClockToUtc } from '../../market/session';
 import { dailyBarBasis } from '../../research/history';
@@ -333,9 +334,8 @@ export function readRecapCounts(db: MarketDatabase, tradingDate: string, range: 
       `SELECT ts.symbol, ts.previous_close, ${OFFICIAL_CLOSE_SQL} AS official_close, ts.rth_final_high, ts.rth_final_low,
               ts.rth_final_volume, ts.price, ts.cumulative_volume
          FROM ticker_session ts
-         LEFT JOIN universe u ON u.symbol = ts.symbol
         WHERE ts.trading_date = ?
-          AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
+          AND ${rankEligibleSql('ts')}`,
     )
     .all(tradingDate) as SessionRow[];
 

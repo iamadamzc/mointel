@@ -7,9 +7,11 @@
  * (data-map-2026-09-30.md, "The overall second sentence").
  *
  * THE POPULATION, as ruled (data map, Research's answers to Ops's DDL draft):
- * - the BOARD'S eligibility, exactly as `repo.ts` reads it: a symbol absent
- *   from `universe` counts, one marked `discovery_eligible = 0` does not. The
- *   first count this seat's predecessor sent included ETFs and warrants.
+ * - the ENGINE'S eligibility (`rankEligibleSql`, market/store/eligibility.ts;
+ *   Integration 37th, 2026-10-10): an eligible tradable universe row, unless no
+ *   such row exists at all. Until then a symbol absent from `universe` counted,
+ *   which let preferreds and warrants the board never ranks into these totals.
+ *   The first count this seat's predecessor sent included ETFs and warrants.
  * - the price AT CAPTURE inside the range, bounds inclusive, a null price
  *   excluded, and NO LATCH: a deliberate difference from the board's list,
  *   which keeps a name that qualified in range and ran through its top.
@@ -22,6 +24,8 @@
  * report reads the frozen row, this is the source, and it only holds while
  * the date's rows are retained.
  */
+
+import { rankEligibleSql } from '../../market/store/eligibility';
 
 export interface AfterHoursTotals {
   eligible: number;
@@ -46,11 +50,10 @@ export function readAfterHoursTotals(
               COALESCE(SUM(COALESCE(ts.ah_participation, 0) > 0 AND ts.ah_percent_change > 0), 0) AS up,
               COALESCE(SUM(COALESCE(ts.ah_participation, 0) > 0 AND ts.ah_percent_change < 0), 0) AS down
          FROM ticker_session ts
-         LEFT JOIN universe u ON u.symbol = ts.symbol
         WHERE ts.trading_date = @date
           AND ts.price IS NOT NULL
           AND ts.price >= @min AND ts.price <= @max
-          AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
+          AND ${rankEligibleSql('ts')}`,
     )
     .get({ date: tradingDate, min: range.min, max: range.max }) as AfterHoursTotals;
   return { eligible: row.eligible, traded: row.traded, up: row.up, down: row.down };
