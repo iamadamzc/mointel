@@ -216,6 +216,15 @@ describe('the store and the snapshot', () => {
       `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
        VALUES ('WARRANT', 'test', '2026-09-28T00:00:00Z', 'WARRANT', 0)`,
     ).run();
+    // The common names are in the engine's eligible set, as on the box (5,926 on 2026-10-09). With only the
+    // WARRANT row the set would be empty, and an empty set is the engine's no-filter fallback, which the
+    // movers read now mirrors (readTopMovers, Integration 37th 2026-10-10).
+    for (const symbol of ['PENNY', 'AAA', 'BBB', 'ABOVE']) {
+      db.prepare(
+        `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
+         VALUES (?, 'test', '2026-09-28T00:00:00Z', 'COMMON', 1)`,
+      ).run(symbol);
+    }
     db.close();
   }
 

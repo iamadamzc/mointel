@@ -1132,10 +1132,19 @@ export function readRangeCandidates(
  *
  * Its own read because the default board takes readDemandStates' top-N path,
  * which never sees a name ranked below the limit; a full band read on every
- * poll would cost more than this bounded one. Eligibility is NOT EXISTS on
+ * poll would cost more than this bounded one. Eligibility is an EXISTS on
  * universe's primary key, written last, so it is only evaluated for rows that
- * already passed the cheap filters, rather than a join per row. A symbol with
- * no universe row is kept, as readRangeCandidates keeps it.
+ * already passed the cheap filters, rather than a join per row.
+ *
+ * ELIGIBLE IS THE ENGINE'S SET, NOT "NOT INELIGIBLE" (Integration 37th ruled it
+ * a live defect, 2026-10-10). The engine ranks only symbols in
+ * readDiscoveryEligibleSymbols (tradable = 1 AND discovery_eligible = 1), and
+ * drops the filter only when that whole set is empty (worker/runtime.ts:606).
+ * This read used to drop only rows marked ineligible, so a symbol with NO
+ * universe row passed: on 2026-10-09, 10 such day names in the band, preferreds
+ * and warrants among them (TCBI.PRB, GPUS.PRD, EOSEW), which the board itself
+ * never ranks. The second clause is the engine's empty-set fallback; it does
+ * not depend on the row, so SQLite evaluates it once.
  *
  * `minVolume` is his "10% with 500k shares" (2026-10-01): today's cumulative
  * volume at or above it. A row with no cumulative volume fails it (NULL >= n is
@@ -1160,8 +1169,12 @@ export function readTopMovers(
           AND ts.percent_change >= @minPct
           AND ts.cumulative_volume >= @minVolume
           AND ts.reference_rth_close_basis = 'PRIOR_SESSION'
-          AND NOT EXISTS (
-                SELECT 1 FROM universe u WHERE u.symbol = ts.symbol AND u.discovery_eligible = 0
+          AND (
+                EXISTS (
+                  SELECT 1 FROM universe u
+                   WHERE u.symbol = ts.symbol AND u.tradable = 1 AND u.discovery_eligible = 1
+                )
+             OR NOT EXISTS (SELECT 1 FROM universe WHERE tradable = 1 AND discovery_eligible = 1)
               )
         ORDER BY ts.percent_change DESC, ts.symbol ASC
         LIMIT @limit`,

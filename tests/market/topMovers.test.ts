@@ -110,18 +110,25 @@ function seed(db: ReturnType<typeof temporaryDb>) {
       state('HIGH', 25, 150, 3), // above the band: out
       state('NOPRICE', null, 90, 5), // no price: out
       state('WARRANT', 3, 200, null), // universe-ineligible: out
-      state('UNKNOWN', 2, 30, null), // no universe row: kept
+      // No universe row: OUT, as the engine never ranks it (worker/runtime.ts:606). It was kept until
+      // Integration 37th ruled that a live defect (2026-10-10).
+      state('UNKNOWN', 2, 30, null),
+      state('NOTTRADABLE', 4, 60, null), // eligible class but not tradable: out, as the engine's set
       state('TIEB', 7, 50, 60),
       state('TIEA', 7, 50, 61),
       state('YESTERDAY', 3, 500, 1, '2026-09-30'), // another day: out
     ].map(toRow),
   );
   const universe = db.prepare(
-    `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
-     VALUES (?, 'test', '2026-10-01T00:00:00Z', ?, ?)`,
+    `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible, tradable)
+     VALUES (?, 'test', '2026-10-01T00:00:00Z', ?, ?, ?)`,
   );
-  universe.run('WARRANT', 'WARRANT', 0);
-  universe.run('VEEA', 'COMMON', 1);
+  universe.run('WARRANT', 'WARRANT', 0, 1);
+  universe.run('NOTTRADABLE', 'COMMON', 1, 0);
+  // Every other name the test expects is common equity the engine would rank.
+  for (const symbol of ['VEEA', 'BIG', 'MID', 'EDGE', 'SMALL', 'PENNY', 'HIGH', 'NOPRICE', 'TIEA', 'TIEB', 'YESTERDAY']) {
+    universe.run(symbol, 'COMMON', 1, 1);
+  }
 }
 
 describe('readTopMovers', () => {
@@ -135,10 +142,29 @@ describe('readTopMovers', () => {
       ['TIEA', 50],
       ['TIEB', 50],
       ['VEEA', 42.4],
-      ['UNKNOWN', 30],
       ['MID', 25],
       ['EDGE', 20],
     ]);
+  });
+
+  it('keeps every name when the universe has no eligible member at all (the engine drops the filter then)', () => {
+    const db = temporaryDb();
+    seed(db);
+    db.prepare('UPDATE universe SET discovery_eligible = 0').run();
+    const movers = readTopMovers(db, DATE, BAND, 20, 0, 50).map((s) => s.ticker);
+    db.close();
+    // The engine: `discoveryEligible.size === 0 || has(symbol)` -- an empty set ranks everything, so the
+    // ineligible WARRANT, the row-less UNKNOWN and the untradable name all come back, in % order.
+    expect(movers).toEqual(['WARRANT', 'BIG', 'NOTTRADABLE', 'TIEA', 'TIEB', 'VEEA', 'UNKNOWN', 'MID', 'EDGE']);
+  });
+
+  it('an eligible row that is not tradable does not count toward the set (the set is still empty)', () => {
+    const db = temporaryDb();
+    seed(db);
+    db.prepare("UPDATE universe SET discovery_eligible = 0 WHERE symbol <> 'NOTTRADABLE'").run();
+    const movers = readTopMovers(db, DATE, BAND, 20, 0, 50).map((s) => s.ticker);
+    db.close();
+    expect(movers).toEqual(['WARRANT', 'BIG', 'NOTTRADABLE', 'TIEA', 'TIEB', 'VEEA', 'UNKNOWN', 'MID', 'EDGE']);
   });
 
   it('reaches a name the RVOL top-N never would (VEEA at rank 120)', () => {
