@@ -77,6 +77,12 @@ export interface MarketConfig {
   /** The range the board opens on. His ruling: $1-$20. Clamped into the bounds above. */
   boardDefaultMin: number;
   boardDefaultMax: number;
+  /**
+   * The price range control's kill switch (BOARD_RANGE_OFF=1; rank once, Integration 37th 2026-10-10): the server
+   * ignores any requested range, serves the engine's band board, and tells the client to hide the control. An env
+   * change and a web restart, no deploy; the market worker is untouched either way.
+   */
+  boardRangeOff: boolean;
   /** Target number of eligible full sessions in an RVOL baseline. */
   baselineSessions: number;
   /** Symbols per multi-symbol REST request. */
@@ -136,6 +142,7 @@ export function loadMarketConfig(env: NodeJS.ProcessEnv = process.env): MarketCo
     boardRangeMax: env.BOARD_RANGE_MAX ? num(env.BOARD_RANGE_MAX, 0) : null,
     boardDefaultMin: num(env.BOARD_DEFAULT_MIN, 1),
     boardDefaultMax: num(env.BOARD_DEFAULT_MAX, 20),
+    boardRangeOff: env.BOARD_RANGE_OFF === '1',
     baselineSessions: num(env.RVOL_BASELINE_SESSIONS, 20),
     restBatchSize: num(env.ALPACA_REST_BATCH_SIZE, 200),
     restConcurrency: num(env.ALPACA_REST_CONCURRENCY, 4),

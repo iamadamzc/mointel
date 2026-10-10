@@ -48,11 +48,16 @@ function published(rangeId: string, min: number, max: number): StoredReportRow {
 }
 
 describe('the reports cut with no board range', () => {
-  it('the shell passes no board range, and nothing imports the price range control', () => {
+  /*
+   * The price selector now ships (his "ship that if its built", 2026-10-09), so the SHELL imports the board
+   * range for the board itself. The REPORTS still take no board range: the panel shows the default range's
+   * reports, labelled with their own range, whatever range a viewer sets on the board.
+   */
+  it('the reports get no board range, and the reports code does not import the price range control', () => {
     const shell = source('components/DashboardShell.tsx');
     expect(shell).toMatch(/const board: \{ min: number; max: number \} \| null = null;/);
     expect(shell).not.toMatch(/discovery\.priceMin/);
-    for (const file of ['components/DashboardShell.tsx', 'components/SessionReports.tsx', 'lib/dashboard/sessionReports.ts']) {
+    for (const file of ['components/SessionReports.tsx', 'lib/dashboard/sessionReports.ts']) {
       expect(source(file), file).not.toMatch(/dashboard\/boardRange/);
     }
   });

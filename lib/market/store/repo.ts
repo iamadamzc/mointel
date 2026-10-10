@@ -753,6 +753,7 @@ export function rowToDemandState(row: TickerSessionRow, nowMs: number): DemandSt
       : undefined,
     deadSince: row.dead_since,
     deadAtRank: row.dead_at_rank,
+    diedWhileRanked: row.dead_at_rank !== null && row.dead_at_rank !== undefined,
     deadAtPeakTrades: row.dead_at_peak_trades,
     deadAtPrice: row.dead_at_price,
     deathCount: row.death_count ?? undefined,
@@ -1101,11 +1102,12 @@ export function readDemandStates(
 }
 
 /**
- * Every tracked row priced inside [min, max] that may compete for a rank, for
- * ranking INSIDE a viewer's range (`lib/market/rangeRank.ts`) and the
- * checkpoint's range capture. Eligibility is the engine's own rule
- * (`rankEligibleSql`, store/eligibility.ts): a symbol with no universe row is
- * NOT kept unless the engine has no eligible set at all.
+ * Every tracked row priced inside [min, max] -- or LATCHED at a qualification
+ * price inside it -- that may compete for a rank, for ranking INSIDE a viewer's
+ * range (`lib/market/rangeRank.ts`) and the checkpoint's range capture.
+ * Eligibility is the engine's own rule (`rankEligibleSql`, store/eligibility.ts):
+ * a symbol with no universe row is NOT kept unless the engine has no eligible
+ * set at all.
  */
 export function readRangeCandidates(
   db: MarketDatabase,
@@ -1116,11 +1118,17 @@ export function readRangeCandidates(
   const rows = db
     .prepare(
       `SELECT ts.* FROM ticker_session ts
-        WHERE ts.trading_date = ?
-          AND ts.price IS NOT NULL AND ts.price >= ? AND ts.price <= ?
+        WHERE ts.trading_date = @date
+          AND ts.price IS NOT NULL
+          AND (
+                (ts.price >= @min AND ts.price <= @max)
+             OR (ts.latched = 1 AND ts.qualified_price >= @min AND ts.qualified_price <= @max)
+             OR (ts.ah_latched = 1
+                 AND ts.ah_qualification_price >= @min AND ts.ah_qualification_price <= @max)
+          )
           AND ${rankEligibleSql('ts')}`,
     )
-    .all(tradingDate, range.min, range.max) as TickerSessionRow[];
+    .all({ date: tradingDate, min: range.min, max: range.max }) as TickerSessionRow[];
   return rows.map((row) => rowToDemandState(row, nowMs));
 }
 
@@ -1167,6 +1175,37 @@ export function readTopMovers(
     )
     .all({ date: tradingDate, min: band.min, max: band.max, minPct, minVolume, limit }) as TickerSessionRow[];
   return rows.map((row) => rowToDemandState(row, nowMs));
+}
+
+/**
+ * Full rows for `symbols` on `tradingDate`, in the order given; a symbol with no row is skipped.
+ *
+ * The range board's second step (lib/market/heldRanks.ts, rank once): the held list gives the order and the top
+ * names, and only those rows are read, by primary key. It replaces readRangeBoard, whose per-request order scans
+ * failed the 20 ms gate on the box (Ops, 2026-10-10 00:07Z run) and which kept symbols with no universe row that
+ * the engine never ranks.
+ */
+export function readSessionStates(
+  db: MarketDatabase,
+  tradingDate: string,
+  symbols: readonly string[],
+): DemandState[] {
+  if (symbols.length === 0) return [];
+  const nowMs = Date.now();
+  const bySymbol = new Map(
+    (
+      db
+        .prepare(
+          `SELECT * FROM ticker_session
+            WHERE trading_date = ? AND symbol IN (${symbols.map(() => '?').join(',')})`,
+        )
+        .all(tradingDate, ...symbols) as TickerSessionRow[]
+    ).map((row) => [row.symbol, row]),
+  );
+  return symbols
+    .map((symbol) => bySymbol.get(symbol))
+    .filter((row): row is TickerSessionRow => row !== undefined)
+    .map((row) => rowToDemandState(row, nowMs));
 }
 
 export function countTrackedSymbols(db: MarketDatabase, tradingDate: string): number {

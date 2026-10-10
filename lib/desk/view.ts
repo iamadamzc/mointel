@@ -82,9 +82,9 @@ export function projectSchedulerHealth(options: {
     return {
       state: 'OFFLINE',
       label: 'Assessments: scheduler offline',
+      // No command: this is a trader's tooltip, not an operator's runbook (audit F-12).
       detail:
-        'No desk assessment worker has reported. Scheduled checkpoints are not being taken. ' +
-        'Start the desk with npm run desk, or the worker alone with npm run assessments.',
+        'No desk assessment worker has reported. Scheduled checkpoints are not being taken.',
       tone: 'neg',
       running: false,
     };

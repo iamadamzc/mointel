@@ -344,10 +344,14 @@ function Demand({ row }: { row: DeskRow | null }) {
   if (!demand) {
     return (
       <Section title="Demand · Alpaca">
-        <p className="text-[12px] text-ink-3">
-          No live market state for this ticker. Start the market worker with{' '}
-          <code className="text-ink-2">npm run market:alpaca</code> to populate demand telemetry.
-        </p>
+        {/*
+          * No command. The board lost its worker-start command to audit F-12 --
+          * a second market worker silently displaces production's only SIP
+          * connection -- and this copy of it survived here. It also blamed the
+          * worker for a name the feed simply is not tracking, which is the
+          * common case.
+          */}
+        <p className="text-[12px] text-ink-3">No live market data for this ticker.</p>
       </Section>
     );
   }
@@ -406,54 +410,20 @@ function Demand({ row }: { row: DeskRow | null }) {
           value={demand.rvolRank !== null ? `#${demand.rvolRank}` : 'Unranked'}
           numeric
         />
-        <Field
-          label="Rank Change"
-          /*
-           * ZERO IS NOT RENDERED AS A MEASUREMENT, because here it is not one.
-           *
-           * `rankChange` is movement since the PREVIOUS ENGINE TICK
-           * (`rvol.ts:154`, `engine.ts:1265`), and the engine re-ranks
-           * continuously — so between two consecutive ticks a name's rank
-           * almost never differs and the flush stores 0. Measured: **45,249
-           * non-null rows and not one non-zero**, while ranks demonstrably
-           * move.
-           *
-           * This printed "0" on every name, every time — asserting *this name's
-           * rank has not moved* about names whose rank is moving. **Zero is a
-           * measurement and this one was an artifact of the interval.**
-           *
-           * The board already renders nothing here (its arrow is gated on
-           * falsiness), so THE BOARD WAS CORRECT AND THE DRAWER WAS THE ONE
-           * MAKING A CLAIM. This brings the two into agreement that nothing is
-           * known — which is a different act from hiding a writer defect behind
-           * a reader.
-           *
-           * **Not waiting for the writer**, because "repair it" is not a bug
-           * fix: making the field mean rank movement requires deciding over what
-           * interval — since session start, since board entry, since last flush
-           * — and that is an unmade design decision. Waiting means printing a
-           * false measurement indefinitely.
-           *
-           * **WHEN THE INTERVAL IS SETTLED, BOTH SURFACES NEED REVISITING
-           * TOGETHER** — this suppression AND the board's falsiness gate, which
-           * would also swallow a legitimate 0.
-           */
-          value={
-            demand.rvolRankChange === null
-              ? 'New'
-              : demand.rvolRankChange === 0
-                ? '—'
-                : demand.rvolRankChange > 0
-                  ? `+${demand.rvolRankChange}`
-                  : String(demand.rvolRankChange)
-          }
-          title={
-            demand.rvolRankChange === 0
-              ? 'Not shown: rank change is measured since the previous engine tick, an interval over which it is always zero. Not a reading that this name has not moved.'
-              : undefined
-          }
-          numeric
-        />
+        {/*
+          * NO RANK CHANGE LINE. HIS RULING, 2026-09-29T02:06:46Z: "yes remove it",
+          * answering "Remove the 'Rank Change' line from the stock detail drawer?"
+          *
+          * It never showed a real change: `rvolRankChange` is movement since the
+          * previous engine tick, always 0 in 45,249 stored rows, so it rendered a
+          * dash or `New`. And on a board ranked inside the viewer's price range
+          * the server nulls it, so after the $1-$20 default every drawer would
+          * have read `New` -- every stock claiming it had just arrived. A field
+          * that can only say nothing or say something false is removed, not
+          * reworded. If rank movement is ever wanted, it needs an interval
+          * decided first (since open? since entry?), and then a field that
+          * measures it.
+          */}
         {/* No float turnover (Sheet switch-off 3b; Marketing 644a67e0 S6): it divided by the Sheet's float. */}
         <Field label="Session High" value={formatPrice(demand.sessionHigh)} numeric />
         <Field label="Session Low" value={formatPrice(demand.sessionLow)} numeric />
