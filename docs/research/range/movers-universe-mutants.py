@@ -1,4 +1,7 @@
-"""Mutants for the movers universe fix (Research, 2026-10-10; Integration 37th ruled the live defect): readTopMovers
+"""SUPERSEDED by eligibility-mutants.py (the rule moved into lib/market/store/eligibility.ts; these patterns no
+longer match). Kept for its recorded runs.
+
+Mutants for the movers universe fix (Research, 2026-10-10; Integration 37th ruled the live defect): readTopMovers
 admits a symbol only when it is in the engine's eligible set (a universe row with tradable = 1 AND
 discovery_eligible = 1), and drops the filter only when that whole set is empty (worker/runtime.ts:606).
 
