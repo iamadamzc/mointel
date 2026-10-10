@@ -211,6 +211,8 @@ describe('the store and the snapshot', () => {
       toRow(state('BBB', 12, 6, 3)),
       toRow(state('WARRANT', 5, 30, null)),
       toRow(state('ABOVE', 25, 50, null)),
+      // No universe row: never ranked by the engine, so never a range candidate (Integration 37th, 2026-10-10).
+      toRow(state('NOROW', 6, 40, null)),
     ]);
     db.prepare(
       `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)

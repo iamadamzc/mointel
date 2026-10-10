@@ -5,6 +5,7 @@
 
 import type { MarketDatabase } from './db';
 import { withBusyRetry } from './busy';
+import { rankEligibleSql } from './eligibility';
 import {
   VWAP_LABEL,
   type SessionOpen,
@@ -1101,10 +1102,10 @@ export function readDemandStates(
 
 /**
  * Every tracked row priced inside [min, max] that may compete for a rank, for
- * ranking INSIDE a viewer's range (`lib/market/rangeRank.ts`). A security the
- * universe marks ineligible is excluded here exactly as the engine excludes it;
- * a symbol with no universe row is kept, as the engine keeps it when it has no
- * classification evidence.
+ * ranking INSIDE a viewer's range (`lib/market/rangeRank.ts`) and the
+ * checkpoint's range capture. Eligibility is the engine's own rule
+ * (`rankEligibleSql`, store/eligibility.ts): a symbol with no universe row is
+ * NOT kept unless the engine has no eligible set at all.
  */
 export function readRangeCandidates(
   db: MarketDatabase,
@@ -1115,10 +1116,9 @@ export function readRangeCandidates(
   const rows = db
     .prepare(
       `SELECT ts.* FROM ticker_session ts
-         LEFT JOIN universe u ON u.symbol = ts.symbol
         WHERE ts.trading_date = ?
           AND ts.price IS NOT NULL AND ts.price >= ? AND ts.price <= ?
-          AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
+          AND ${rankEligibleSql('ts')}`,
     )
     .all(tradingDate, range.min, range.max) as TickerSessionRow[];
   return rows.map((row) => rowToDemandState(row, nowMs));
@@ -1134,17 +1134,9 @@ export function readRangeCandidates(
  * which never sees a name ranked below the limit; a full band read on every
  * poll would cost more than this bounded one. Eligibility is an EXISTS on
  * universe's primary key, written last, so it is only evaluated for rows that
- * already passed the cheap filters, rather than a join per row.
- *
- * ELIGIBLE IS THE ENGINE'S SET, NOT "NOT INELIGIBLE" (Integration 37th ruled it
- * a live defect, 2026-10-10). The engine ranks only symbols in
- * readDiscoveryEligibleSymbols (tradable = 1 AND discovery_eligible = 1), and
- * drops the filter only when that whole set is empty (worker/runtime.ts:606).
- * This read used to drop only rows marked ineligible, so a symbol with NO
- * universe row passed: on 2026-10-09, 10 such day names in the band, preferreds
- * and warrants among them (TCBI.PRB, GPUS.PRD, EOSEW), which the board itself
- * never ranks. The second clause is the engine's empty-set fallback; it does
- * not depend on the row, so SQLite evaluates it once.
+ * already passed the cheap filters, rather than a join per row. ELIGIBLE IS THE
+ * ENGINE'S SET (`rankEligibleSql`, store/eligibility.ts; Integration 37th,
+ * 2026-10-10): this read used to admit a symbol with no universe row.
  *
  * `minVolume` is his "10% with 500k shares" (2026-10-01): today's cumulative
  * volume at or above it. A row with no cumulative volume fails it (NULL >= n is
@@ -1169,13 +1161,7 @@ export function readTopMovers(
           AND ts.percent_change >= @minPct
           AND ts.cumulative_volume >= @minVolume
           AND ts.reference_rth_close_basis = 'PRIOR_SESSION'
-          AND (
-                EXISTS (
-                  SELECT 1 FROM universe u
-                   WHERE u.symbol = ts.symbol AND u.tradable = 1 AND u.discovery_eligible = 1
-                )
-             OR NOT EXISTS (SELECT 1 FROM universe WHERE tradable = 1 AND discovery_eligible = 1)
-              )
+          AND ${rankEligibleSql('ts')}
         ORDER BY ts.percent_change DESC, ts.symbol ASC
         LIMIT @limit`,
     )

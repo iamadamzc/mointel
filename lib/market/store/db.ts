@@ -778,8 +778,10 @@ CREATE TABLE IF NOT EXISTS desk_call_outcomes (
 -- so a report read later states what the checkpoint saw.
 --
 -- COUNTS: ticker_session rows for the parent's trading_date, eligible the way
--- the board is (readRangeCandidates: no universe row, or discovery_eligible =
--- 1), price at capture inside [range_min, range_max] inclusive; a NULL price
+-- the engine ranks (rankEligibleSql, store/eligibility.ts: a universe row with
+-- tradable = 1 and discovery_eligible = 1, unless no such row exists at all;
+-- rows captured before 2026-10-10's fix also counted symbols with no universe
+-- row), price at capture inside [range_min, range_max] inclusive; a NULL price
 -- is outside. AFTER_HOURS: traded = ah_participation > 0, up/down = sign of
 -- ah_percent_change. SESSION_TO_DATE (04:00 ET to capture): traded =
 -- cumulative_volume > 0, up/down = sign of percent_change (prior close). up

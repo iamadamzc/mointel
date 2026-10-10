@@ -15,6 +15,7 @@
 
 import { priorityGrade } from '../../research/priorityGrade';
 import type { MarketDatabase } from './db';
+import { rankEligibleSql } from './eligibility';
 
 export function assessmentTablesPresent(db: MarketDatabase): boolean {
   const row = db
@@ -718,8 +719,10 @@ export function rangeKey(range: { min: number; max: number }): string {
 /**
  * The frozen "overall" counts for one range at one checkpoint.
  *
- * Population: ticker_session rows for the date, eligible the way the board is
- * (readRangeCandidates: no universe row, or discovery_eligible = 1), price
+ * Population: ticker_session rows for the date, eligible the way the engine
+ * ranks (`rankEligibleSql`, store/eligibility.ts: an eligible tradable universe
+ * row, unless the engine has no eligible set at all; until 2026-10-10 a symbol
+ * with no universe row was counted too), price
  * inside [min, max] inclusive; a NULL price is outside. Price is price at
  * capture, with no latch: these count the market in the range, not the board.
  * up and down count traded names only.
@@ -742,10 +745,9 @@ export function computeRangeCounts(
               COALESCE(SUM(CASE WHEN ${traded} AND ${change} < 0 THEN 1 ELSE 0 END), 0) AS down,
               COALESCE(SUM(CASE WHEN ${seeded} THEN 1 ELSE 0 END), 0) AS seeded
          FROM ticker_session ts
-         LEFT JOIN universe u ON u.symbol = ts.symbol
         WHERE ts.trading_date = ?
           AND ts.price IS NOT NULL AND ts.price >= ? AND ts.price <= ?
-          AND (u.discovery_eligible IS NULL OR u.discovery_eligible = 1)`,
+          AND ${rankEligibleSql('ts')}`,
     )
     .get(tradingDate, range.min, range.max) as {
     eligible: number;

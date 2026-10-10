@@ -87,16 +87,19 @@ function seed(db: ReturnType<typeof openDatabase>, rows: Seed[]) {
 
 const POPULATION: Seed[] = [
   // Inside $1-$20.
-  { symbol: 'UPUP', price: 5, rvol: 9, percentChange: 12, cumulativeVolume: 1000, ahParticipation: 0.5, ahPercentChange: 3, ahVolume: 500 },
-  { symbol: 'DOWN', price: 2, rvol: 4, percentChange: -8, cumulativeVolume: 500, volumeBaseThrough: `${D}T14:00:00.000Z`, ahParticipation: 0.2, ahPercentChange: -1, ahVolume: 100 },
-  { symbol: 'FLAT', price: 10, rvol: 2, percentChange: 0, cumulativeVolume: 50, ahParticipation: 0, ahPercentChange: null },
-  { symbol: 'NOTR', price: 7, rvol: null, percentChange: 3, cumulativeVolume: 0 },
+  // Common equity in the engine's eligible set (eligible: 1), as on the box.
+  { symbol: 'UPUP', price: 5, rvol: 9, percentChange: 12, cumulativeVolume: 1000, ahParticipation: 0.5, ahPercentChange: 3, ahVolume: 500, eligible: 1 },
+  { symbol: 'DOWN', price: 2, rvol: 4, percentChange: -8, cumulativeVolume: 500, volumeBaseThrough: `${D}T14:00:00.000Z`, ahParticipation: 0.2, ahPercentChange: -1, ahVolume: 100, eligible: 1 },
+  { symbol: 'FLAT', price: 10, rvol: 2, percentChange: 0, cumulativeVolume: 50, ahParticipation: 0, ahPercentChange: null, eligible: 1 },
+  { symbol: 'NOTR', price: 7, rvol: null, percentChange: 3, cumulativeVolume: 0, eligible: 1 },
   // Bounds are inclusive.
-  { symbol: 'EDGE', price: 20, rvol: 6, percentChange: 1, cumulativeVolume: 10, ahParticipation: 0.1, ahPercentChange: 2, ahVolume: 10 },
+  { symbol: 'EDGE', price: 20, rvol: 6, percentChange: 1, cumulativeVolume: 10, ahParticipation: 0.1, ahPercentChange: 2, ahVolume: 10, eligible: 1 },
   // Outside: priced out, NULL price, ineligible.
-  { symbol: 'HIGH', price: 25, rvol: 50, percentChange: 40, cumulativeVolume: 9999 },
-  { symbol: 'NOPR', price: null, rvol: 30, percentChange: 5, cumulativeVolume: 10 },
+  { symbol: 'HIGH', price: 25, rvol: 50, percentChange: 40, cumulativeVolume: 9999, eligible: 1 },
+  { symbol: 'NOPR', price: null, rvol: 30, percentChange: 5, cumulativeVolume: 10, eligible: 1 },
   { symbol: 'INEL', price: 3, rvol: 40, percentChange: 9, cumulativeVolume: 10, eligible: 0 },
+  // No universe row: outside, as the engine never ranks it (Integration 37th, 2026-10-10). Counted until then.
+  { symbol: 'NORW', price: 4, rvol: 45, percentChange: 6, cumulativeVolume: 100, ahParticipation: 0.9, ahPercentChange: 4, ahVolume: 900 },
 ];
 
 describe('v28 schema', () => {
@@ -172,7 +175,7 @@ describe('computeRangeCounts', () => {
     const db = openDatabase(temporaryPath());
     seed(db, POPULATION);
     expect(computeRangeCounts(db, D, { min: 1, max: 20 }, 'SESSION_TO_DATE')).toEqual({
-      // UPUP DOWN FLAT NOTR EDGE; not HIGH (priced out), NOPR (no price), INEL (ineligible).
+      // UPUP DOWN FLAT NOTR EDGE; not HIGH (priced out), NOPR (no price), INEL (ineligible), NORW (no universe row).
       eligible: 5,
       // NOTR has zero volume.
       traded: 4,
@@ -194,6 +197,17 @@ describe('computeRangeCounts', () => {
       down: 1,
       volumeBaseSeeded: 0,
     });
+    db.close();
+  });
+});
+
+describe("computeRangeCounts, the engine's empty-set fallback", () => {
+  it('with no eligible universe row at all, every priced name in range counts, as the engine ranks them all', () => {
+    const db = openDatabase(temporaryPath());
+    seed(db, POPULATION);
+    db.prepare('UPDATE universe SET discovery_eligible = 0').run();
+    // UPUP DOWN FLAT NOTR EDGE INEL NORW.
+    expect(computeRangeCounts(db, D, { min: 1, max: 20 }, 'SESSION_TO_DATE').eligible).toBe(7);
     db.close();
   });
 });
