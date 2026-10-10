@@ -204,14 +204,27 @@ function settleNote(config: ActivityConfig): string {
  * "nothing happened", which is true; a flat price beside nothing at all is a
  * claim the price line has no business making.
  */
-export function windowSlots(now: number, config: ActivityConfig): string[] {
+export function windowSlots(now: number, config: ActivityConfig): readonly string[] {
+  /*
+   * MEMOIZED, because the engine asks this for every ticker on every flush (twice: the verdict and the price
+   * window) and the answer depends only on the minute and the window's shape. Building it per ticker was a
+   * measured share of the 1 s flush, which runs on the SIP socket's thread (Ops flush profile, 2026-10-10,
+   * docs/ops-readings/flush-profile-2026-10-10.txt). The key is the whole input: the minute `now` falls in
+   * plus every config field the loop reads. The result is shared, hence `readonly`.
+   */
+  const minute = Math.floor(now / 60_000);
   const span = Math.max(config.deadMinutes, config.reviveMinutes);
+  const key = `${minute}|${config.settleMinutes}|${span}`;
+  if (slotsMemo !== null && slotsMemo.key === key) return slotsMemo.slots;
   const slots: string[] = [];
   for (let back = config.settleMinutes + span; back > config.settleMinutes; back -= 1) {
     slots.push(minuteSlot(now - back * 60_000));
   }
+  slotsMemo = { key, slots };
   return slots;
 }
+
+let slotsMemo: { key: string; slots: readonly string[] } | null = null;
 
 /**
  * Closes over the same slots, trimmed to the first minute that TRADED.

@@ -144,12 +144,32 @@ export function vwapSessionForTs(
   return null;
 }
 
-/** The instant a session's VWAP window opens, in UTC milliseconds. */
+/**
+ * The instant a session's VWAP window opens, in UTC milliseconds.
+ *
+ * MEMOIZED by its whole input (session, trading date, close minutes): the engine asks for it per ticker per
+ * flush, and each answer costs Intl date formatting (etWallClockToUtc -> etOffsetMs -> etFields), a measured
+ * share of the 1 s flush on the SIP thread (Ops flush profile, 2026-10-10). The answer is a constant for a
+ * given input, so the cache cannot change a result. Bounded: cleared when it grows past a few days' keys.
+ */
 export function vwapSessionStartMs(
   session: VwapSession,
   tradingDate: string,
   closeMinutes: number = RTH_END_MIN,
 ): number {
+  const key = `${session}|${tradingDate}|${closeMinutes}`;
+  const hit = sessionStartMemo.get(key);
+  if (hit !== undefined) return hit;
+  const value = computeVwapSessionStartMs(session, tradingDate, closeMinutes);
+  if (sessionStartMemo.size >= SESSION_START_MEMO_MAX) sessionStartMemo.clear();
+  sessionStartMemo.set(key, value);
+  return value;
+}
+
+const SESSION_START_MEMO_MAX = 64;
+const sessionStartMemo = new Map<string, number>();
+
+function computeVwapSessionStartMs(session: VwapSession, tradingDate: string, closeMinutes: number): number {
   switch (session) {
     case 'PREMARKET':
       return etWallClockToUtc(tradingDate, 4, 0).getTime();
