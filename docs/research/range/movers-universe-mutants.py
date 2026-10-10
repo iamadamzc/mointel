@@ -39,6 +39,11 @@ NEW_RULE = """AND (
 OLD_RULE = """AND NOT EXISTS (
                 SELECT 1 FROM universe u WHERE u.symbol = ts.symbol AND u.discovery_eligible = 0
               )"""
+# This PC checks repo.ts out with CRLF; a multi-line replacement written with LF would match nothing and read as
+# a survivor. Use the file's own line ending.
+if b'\r\n' in (ROOT / REPO).read_bytes():
+    NEW_RULE = NEW_RULE.replace('\n', '\r\n')
+    OLD_RULE = OLD_RULE.replace('\n', '\r\n')
 base.TESTS = [
     'tests/market/topMovers.test.ts',
     'tests/market/boardMoversSnapshot.test.ts',
