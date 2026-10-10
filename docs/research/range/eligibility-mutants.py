@@ -18,6 +18,11 @@ PREDICTED KILLS (failed tests), written before any run:
                                                                    universe rows; assessmentRanges fallback 1)
   E6 the fallback's set drops tradable = 1                       1  (topMovers: untradable alone)
   TOTAL 25
+
+AFTER THE RUN (d34c260b + this harness, prediction kept as written): 27 of 25, every mutant killed, 5 of 6 exact.
+  E3 killed 5, not 3: (1) topMovers' limit test, the SAME extra kill U2 showed in movers-universe-mutants.py, which
+  I failed to carry into this prediction; (2) rangeRank's WITHOUT-a-range snapshot: NOROW, the row-less name added
+  to that fixture in d34c260b, is also a +100% mover, so the old rule puts it on the default board's movers.
 """
 import importlib.util
 import pathlib
