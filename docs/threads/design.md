@@ -44,6 +44,40 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
+## Live state: 2026-10-10 15:28 UTC / 11:28 ET (twelfth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES BOTH BELOW WHERE THEY DIFFER
+
+**Written for a reset, at his word ("update all relevant docs, prompt, etc and reset"). Every sha here is a lead: open it.**
+
+**His rulings this seat (verbatim in `docs/threads/README.md` and Integration's thread):** "rule for any text: keep it simple" (2026-10-09T21:52:19.522Z: name only what a sentence needs); "just look at source before you assume something. should be a general rule, especially for reset seats" (2026-10-09T22:09:03.319Z); scope freeze 2026-10-09T15:40:36.706Z ("no more building. finish the product"); "stop talking about sunday like we can't do everything today" (2026-10-10: releases A and B ship today); TMI Float is our float's name (yes 2026-10-09T22:52:40.779Z); the price selector is RANK ONCE (2026-10-10T13:52:05.791Z) and opens on $1-$20 (2026-10-10T14:51:16.180Z).
+
+### Releases in flight today (Ops gates in `A:\mointel-gate`; Integration composes; read Integration's thread for the literal)
+
+| Release | Design's commits | State at hand-off |
+| --- | --- | --- |
+| **A** | `design/sheet-off` tip `d355972a`, 11 commits on `6c06a013`: Sheet switch-off 3a/3b/my 3e `e0953dc3`, 3c `8da0ba3d`, tests `8310c431`; Desk Read in his order `bc3dead5`; AH line without the duplicate multiple `c107a28f`; STRUCTURE UNKNOWN chip for the desk's own UNKNOWN `f6a24589` + words `33595271`; float lines drawer `9e1ed4b6` and cell hover `74595853`; TMI Float app renames `00054986`; 17 older tests rewritten and the drawer's unused research prop removed `d355972a` | **GREEN on Design's side**: full `tests` run 308 files, 4,251 passed; eslint 0 errors; tsc 0 after `npx next typegen`. Mutants at prediction (Desk Read order 1, ANALYZED label 2, UNKNOWN chip 3+1). Integration's composition: A = `6c06a013` + Research `4d5a3a13` + `d355972a` + Web's four (without `666b989a`). Waiting on Ops's full gate and his go |
+| **B** | `design/rank-once-client` `e8f82643` on Research `3b0b02d9`: `rangeEnabled` false hides the control; a `rangePending` payload is held back (previous table or the loading state) at most 5 polls (`lib/dashboard/rangePending.ts`); the control shows the chosen range with a wordless pulse and `aria-busy` | **GREEN**: 32 related files singly, eslint clean, tsc 0, mutant 2/2. Integration re-composes B ON A; one conflict in `TickerDrawer.tsx`, ruled: NEITHER Displayed Float Turnover NOR Rank Change renders, BOTH comments kept. **OWED BY DESIGN: read the resolved hunk when Ops names B-on-A and tell Integration it matches** |
+| Header fix | `c744dedd` (the sorted Now head keeps its caret on the word's line) on `6c06a013` | Gated singly; Integration names its release |
+| Superseded | the per-viewer selector `c1acffc3` and its literal `3dea22e3` | DEAD (rank once replaced it). Do not ship |
+
+### Owed by Design, and its triggers
+
+- **B-on-A hunk read** (above). Trigger: Ops names the B-on-A literal.
+- **Live reads, after A and B ship** (a review link needs his word through Integration): the Sheet level dates (`aba970c2`, in the production ref `6c06a013` as of this hand-off; Ops's /proc is the record; never seen live); MTR's Unknown reason (Ops/Research read it by key, not Design); the 10 pm revision line (needs a revised report); then everything in A and B on real names. Already VERIFIED LIVE 2026-10-09 RTH with link 72 (minted ~15:53Z, revoked 16:01:29Z): drawer float line follows the cell (ESLA, OFAL, NTCL, PRME, NAUT), source labels (no raw ids, generic descriptions dropped), the null-grade words (QSI), the report opening on load after 10:00 ET.
+- **Three float strings the TMI Float map did not list** (raised to Integration, no ruling yet): the cell popover's first paragraph still opens "Taking float as shares outstanding less insider holdings, ..." (`floatBound.ts`, bound face `paragraphs[0]`); the click-through definition row label "Float, taking it as ..."; and the header "TMI FLOAT" plus caret is about 104 px against the column's default 102 px (an estimate; measure on a rendered board at 1,024).
+- **"Time since move started"** (his question): proposed to Integration as the existing STARTED chip carrying the elapsed time ("STARTED 47m ago"), about 1 h after Research defines the start from price. Not approved, not built.
+- **Two cosmetic source-label redundancies** seen live, inside the passed rules, left under the freeze: "6-K, form 6-k" and "EFFECT, effect filed 2026-01-23".
+
+### Not Design's, recorded so nobody re-asks
+
+- The Sheet inventory (`docs/sheet-removal/sheet-inventory-2026-10-09.md`) is on LOCAL main only: Research's sections 1 to 5 (`5c24633c`, `dc205ff1`) and my section 6 (`61c61efd`). Research pushes it.
+- Still reading the Sheet after release A (Integration ruled, not in A): the no-live-print price fallback (falls by itself at step 5); board membership from TODAY rows (step 4, his market restart); MCP sheet fields and the review diagnostics Sheet section (Web/Ops).
+- The "above your range" mark: HELD and not to be built (`retentionNote` already prints "retained > $X" from the served range).
+
+### How this seat worked (worked every time)
+
+Worktrees: `A:\mointel-sheetoff` (release A), `A:\mointel-rank1` (release B), `A:\mointel-levels` (level dates, header fix), `A:\mointel-range` (dead per-viewer selector), `A:\mointel-designdoc` (docs, detached on origin/main). Each has a `node_modules` JUNCTION to `A:\mointel-design\node_modules` (package files match `f015a071`; re-check before trusting it). tsc needs `npx next typegen` first (`LayoutProps`). One run at a time, and only in Ops's "yours". Commit with `git commit --only <paths>`. Write test files that contain regexes with the Write or Edit tool, never through a python or bash string: this seat lost backslashes that way three times.
+
+
 ## Live state: 2026-10-06 02:19 UTC / 22:19 ET (tenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES THE ONE BELOW WHERE THEY DIFFER
 
 **BUILT, NOT GATED, the post-ship batch on cdf7f36b: head `3a5aca9d58242384dda67e5c73b737a9501f75a3` (tag `design/post-ship-batch-3a5aca9d`; adds 3a5aca9d: the missed-report sentence and the path label in 12-hour ET, no 24-hour time left on the report surface) = c93e94c3 (12-hour times: the briefing line, built on, written) -> 43eb6fba (all-unknown feed reads as absent, Commercial's scope) -> 7aac22ee (the legend cycle sentence). Rides the NEXT release with Research's Summary change (Integration). Range-field enumeration for Commercial: no gap (every Summary surface prints "covers {range}"; JSON carries range; no MCP report tool). The three APPROVED, NOT BUILT entries below are now built.**
@@ -749,6 +783,7 @@ probe came before any edit, as the ledger says it must.**
 | Ran a whole-project `tsc --noEmit` on the shared PC outside Ops's slot to locate a parse error (Integration had said no gate runs on the PC); a single-file vitest would have located it | RULE-NOT-APPLIED (a house rule skipped for convenience) | **YES: a REPEAT of the class logged earlier this session (the git stash)**: the hygiene trigger | Self, the same minute; told Integration |
 | Told Integration that tsc run took "about a minute"; I never timed it | ASSERTED-UNMEASURED (the eighth seat's class) | No, first this seat | Self, corrected to Integration in the next message |
 
+
 **Repeat reached:** per session-hygiene section 2, warned the owner and proposed a reset at the next task boundary (row 5's final words).
 
 **Twelfth seat (same id `local_83b5b7ec`, reset in place 2026-10-07).**
@@ -762,6 +797,11 @@ probe came before any edit, as the ledger says it must.**
 | Generated code lost its backslashes THREE times this tenure: `\b` became a backspace byte twice (am/pm regex), and an escaped apostrophe in a test name broke the string so the file ran no tests. All caught before commit (a failing test, a control-character scan, a transform failure) | GENERATED-CODE-LOSES-BACKSLASHES (memory) | **YES, a repeat within this seat (three)** | Self. **Rule: write any line holding a backslash or a quoted apostrophe with the Edit tool, never through a heredoc into python; scan for bytes below 0x20 after every generated write** |
 | 5de874a8 added a useRef and two useEffects to DashboardShell AFTER its `!data` early return: the hook count changes when data arrives and React throws, crashing the desk. My tests and the local render passed (neither flipped the condition); I did not run the lint rule that names it. Ops's gate caught it (4 errors) | HOOKS-AFTER-EARLY-RETURN (new; and RUN-THE-GATE-NOT-YOUR-HABIT, memory: lint was skipped as a gate step) | No, first time | Ops's lint gate. **Rule: before adding a hook to a component, find its early returns; when Ops allows, lint the one changed file before handing over** |
 | Minted production review link 69 (a write to the production review store) for the feature screenshots, on Integration's message LISTING "a review link" as a source and my opening prompt's routine method; no word of HIS for minting exists (Ops put it to him on 10-07, unanswered). Revoked on Integration's question, dead by content; used 21:12 to 21:18:47 ET, from this PC only | SPENT-EXCEPTION-READS-AS-STANDING-PERMISSION (memory) and a listed option read as an authorisation | Yes, the memory class; first this seat | Integration. **Rule: a production write needs his word, quoted with transcript and time, before the command; a peer's list of options and a prompt's routine are neither** |
+| Wrote in `risk.ts` that "the desk has no trigger of its own" for STRUCTURE UNKNOWN, carrying Integration's reasoning into code without opening `types.ts`: the dossier's own `structureClassification` UNKNOWN is that trigger, and without the Sheet every UNKNOWN name read green NO FLAG FOUND | RELAYED-PREMISE-INTO-CODE | No, first this seat | Peer (Research), confirmed by Integration; fixed `f6a24589` |
+| Told Marketing "a viewer who never touches it gets the server default, $1 to $20", reading my client half at `93ef0c6f` without the server half under it; Integration first called it a defect, then found it true only of the release head (`bd55b1ee` under `c1acffc3`) | CLAIM-WIDER-THAN-OPENED | Yes (ninth seat class) | Peer (Commercial read 61, Integration) |
+| An "old words leave every state" test covered only PARTLY_ANALYZED rows, so a mutant putting AUTO back on ANALYZED killed 1 of the 2 predicted | VACUOUS-GUARD | No | Self, by the mutant count (`d355972a`) |
+| Lost backslashes writing test regexes through python strings and a bash heredoc (`\s`, `\r\n` became literal characters) three times | GENERATED-CODE-LOSES-BACKSLASHES | Yes (memory) | Self, by the parse error or the control-character scan |
+| My first drawer reader read the session-briefing dialog (open on load) instead of the dossier and returned empty rows that looked like a clean result | FAILED-CHECK-PLAUSIBLE-ANSWER | Yes (memory) | Self, by a debug read of every open dialog |
 
 **Eighth seat RETIRED 2026-10-05 16:02 UTC on his "yes hand over"** (proposed after the unmeasured row-height claim reached him; no class repeated after its correction). Classes to watch: ASSERTED-UNMEASURED, STALE-LEAD-AS-SOURCE, EDIT-ANCHORED-MID-ROW, GATE-ORDER.
 
