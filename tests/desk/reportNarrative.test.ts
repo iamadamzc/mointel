@@ -44,7 +44,8 @@ type Row = {
   high?: number | null;
   low?: number | null;
   rthVol?: number | null;
-  eligible?: 0 | 1;
+  /** The universe row's discovery_eligible; null = NO universe row. Default 1: common equity the engine ranks. */
+  eligible?: 0 | 1 | null;
   /** The bell capture (`rth_final_close`); defaults to `close`. */
   bell?: number | null;
   /** The official close's basis and date; default CURRENT_SESSION on the trading date whenever `close` is set. */
@@ -89,7 +90,7 @@ function seed(db: MarketDatabase, rows: Row[]) {
       basis: r.basis !== undefined ? r.basis : close === null ? null : 'CURRENT_SESSION',
       refDate: r.refDate !== undefined ? r.refDate : close === null ? null : DATE,
     });
-    if (r.eligible !== undefined) uni.run(r.symbol, r.eligible);
+    if (r.eligible !== null) uni.run(r.symbol, r.eligible ?? 1);
     // DATE is in EDT: 09:30-16:00 ET is 13:30Z-20:00Z.
     const rthHigh = r.rthHigh !== undefined ? r.rthHigh : (r.rthVol ?? 0) > 0 ? (r.high ?? null) : null;
     if (rthHigh !== null) minuteBar(db, r.symbol, `${DATE}T14:00:00.000Z`, rthHigh);
@@ -116,6 +117,8 @@ describe('readRecapCounts: F1, F6, F7 and G (official close; regular-session hig
       { symbol: 'DEAR', prev: 20, close: 31, high: 32, rthVol: 900, price: 31, vol: 900 },
       // ineligible on the board
       { symbol: 'ETF', prev: 2, close: 3.2, high: 3.4, rthVol: 900, eligible: 0, price: 3.2, vol: 900 },
+      // NO universe row: the engine never ranks it, so not counted (Integration 37th, 2026-10-10; counted until then)
+      { symbol: 'NOROW', prev: 2, close: 3.2, high: 3.4, rthVol: 900, eligible: null, price: 3.2, vol: 900 },
       // G: traded, in range, NO 16:00 close
       { symbol: 'GAP', prev: 3, close: null, price: 3.3, vol: 500 },
       // BOUNDARIES: a 45% high is not a 50% mover (pins the 1.5x threshold) ...
