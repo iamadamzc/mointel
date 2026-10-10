@@ -104,7 +104,8 @@ describe('focus cards', () => {
     const read = buildDeskRead(card);
     expect(read.telemetry).toBe(card.telemetry);
     expect(read.intelligence).toBe(card.intelligenceState);
-    expect(read.whyNow.text).toBe('Earnings released after Friday close.');
+    // Desk only (Sheet switch-off 3a): with no desk dossier there is no Why Now, whatever the Sheet says.
+    expect(read.whyNow.text).toBeNull();
   });
 
   it('keeps a focused name that is no longer ranked', async () => {

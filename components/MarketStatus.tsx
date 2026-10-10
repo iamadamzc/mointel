@@ -175,7 +175,9 @@ function universeLabel(mode: DiscoveryState['universeMode']): string {
     case 'DEGRADED_NO_WILDCARD':
       return 'Universe: no wildcard';
     case 'SHEET_ONLY':
-      return 'Universe: sheet only';
+      // Sheet switch-off 3e: the header no longer names the Sheet. This state is a degraded universe, and
+      // reads as one, in the words the other degraded state already uses.
+      return 'Universe: degraded';
     case 'SIMULATED':
       return 'Universe: simulated';
     default:

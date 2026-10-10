@@ -11,6 +11,9 @@ import {
 } from '@/lib/dashboard/floatBound';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
 
+/** What the float on the cell leaves out (his yes 2026-10-09T22:45:50.617Z; Marketing 955b3749, Commercial read 66). */
+export const FLOAT_TOOLTIP_LEAVES_OUT = 'Warrants, convertible notes and share-sale programs are not in it, and can add shares.';
+
 /**
  * The Float cell: the SEC upper bound, or one of three one-line words, with the
  * filed count's date beside the number and everything else in a popover.
@@ -76,6 +79,8 @@ export function FloatCell({
           </p>
         ),
       )}
+      {/* Before the page link, on a number only: "it" is the number on the cell (Marketing 955b3749, Commercial read 66). */}
+      {view.kind === 'bound' ? <p className="m-0 mb-2">{FLOAT_TOOLTIP_LEAVES_OUT}</p> : null}
       <p className="m-0 text-ink-2">
         {FLOAT_PAGE_LINK_LEAD}{' '}
         <a href={FLOAT_PAGE_HREF} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">

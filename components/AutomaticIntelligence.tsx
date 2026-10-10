@@ -10,7 +10,6 @@
 
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
-import { isMaterialConflict } from '@/lib/dashboard/intelligence';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView, type CatalystSource } from '@/lib/dashboard/catalystView';
 import { EVIDENCE_RISK_WORDS, evidenceRiskView } from '@/lib/dashboard/evidenceRiskView';
 import { CYCLE_WORDS, cycleFacts } from '@/lib/dashboard/cycleFacts';
@@ -24,7 +23,6 @@ import type { FloatBound } from '@/lib/dashboard/floatBound';
 import { noDenominatorNote, supplyReading } from '@/lib/dashboard/supply';
 import { etTimestamp, relativeAge } from '@/lib/dashboard/why';
 import { formatEtDay } from '@/lib/format';
-import type { SheetAutoComparison } from '@/lib/research/merge/sheetAuto';
 import {
   CATALYST_GRADE_LABEL,
   CYCLE_LABEL,
@@ -63,96 +61,8 @@ function timeWithAge(at: string | null | undefined): string {
   return age ? `${stamp} · ${age} ago` : stamp;
 }
 
-/**
- * Sheet / AUTO reconciliation, sized to the finding.
- *
- * A full four-column table permanently open said "look here" on every ticker,
- * including the ones where the two sides simply agree — which is not news and
- * does not need a block. Agreement collapses to a provenance mark with the
- * table one click away; a real conflict keeps the table open, because the
- * disagreement IS the finding and must not be tucked behind a disclosure.
- *
- * Neither side is ever resolved away.
- */
-function SheetVsAuto({
-  comparison,
-  Section,
-}: {
-  comparison: SheetAutoComparison;
-  Section: (props: { title: string; children: React.ReactNode }) => React.ReactElement;
-}) {
-  const disagreements = comparison.comparisons.filter((item) => item.agreement === 'DISAGREE');
-  // A coverage gap on the automatic side is not a dispute worth a banner; the
-  // reason column below still records every difference either way.
-  const conflict = isMaterialConflict(comparison);
-
-  const table = (
-    <table className="w-full text-[11px]">
-      <thead>
-        <tr className="text-ink-3">
-          <th className="py-1 text-left font-normal">Field</th>
-          <th className="py-1 text-left font-normal">Outside research</th>
-          <th className="py-1 text-left font-normal">Desk research</th>
-          <th className="py-1 text-left font-normal">Reason</th>
-        </tr>
-      </thead>
-      <tbody>
-        {comparison.comparisons.map((item) => (
-          <tr key={item.field} className={item.agreement === 'DISAGREE' ? 'text-warn' : 'text-ink-2'}>
-            <td className="py-0.5 pr-2">{item.field}</td>
-            {/* Both sides in words. These are classification values, and
-                YELLOW_FRONTSIDE_WARNING is not a thing anybody says. */}
-            <td className="py-0.5 pr-2">{item.sheet ? humanise(item.sheet) : '—'}</td>
-            <td className="py-0.5 pr-2">{item.auto ? humanise(item.auto) : '—'}</td>
-            <td className="py-0.5 text-ink-3">
-              {humanise(item.agreement === 'DISAGREE' ? item.reason : item.agreement)}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-
-  if (!conflict) {
-    // Agreement, AUTO-only and SHEET-only all reduce to a single mark. Partial
-    // automatic coverage is stated as partial, never dressed up as a dispute.
-    return (
-      <Section title="Provenance">
-        <div className="flex flex-wrap items-center gap-2">
-          <StatusBadge label={humanise(comparison.provenance)} tone="dim" />
-          <span className="text-[10px] text-ink-3">
-            the outside research and the desk research do not materially disagree
-          </span>
-        </div>
-        <details className="mt-2">
-          <summary className="cursor-pointer text-[10px] tracking-wide text-ink-3 uppercase hover:text-ink-2">
-            Field comparison
-          </summary>
-          <div className="mt-2">{table}</div>
-        </details>
-      </Section>
-    );
-  }
-
-  return (
-    <Section title="Desk vs outside">
-      <div className="flex flex-wrap items-center gap-2">
-        <StatusBadge label="Conflict" tone="warn" />
-        <span className="text-[10px] tracking-wide text-warn uppercase">
-          both conclusions retained · neither side is overwritten
-        </span>
-      </div>
-
-      <div className="mt-3">{table}</div>
-
-      {disagreements.length > 0 ? (
-        <p className="mt-2 max-w-[78ch] text-[11px] text-ink-2">
-          {disagreements.map((item) => `${item.field}: ${item.detail}`).join(' · ')}
-        </p>
-      ) : null}
-    </Section>
-  );
-}
+/** What a float leaves out, under the drawer's float (Marketing 955b3749, Commercial read 66). */
+export const FLOAT_LEAVES_OUT = 'What a float leaves out: warrants, convertible notes and share-sale programs. Each can add shares.';
 
 /** The supply picture as a ledger, above the model's prose. */
 function StructureSummaryBlock({
@@ -170,48 +80,23 @@ function StructureSummaryBlock({
           <StatusBadge label={summary.label} tone={summary.tone as Tone} />
         </span>
         {/*
-          * ONE number and ONE verdict, with the bound cited inside it.
-          *
-          * The vendor's float is a CLAIM the desk borrows; the filed count is
-          * a BOUND the desk owns and the claim has to sit under. Laid out as
-          * two numbers they would read as two estimates of one quantity and
-          * invite splitting the difference — so the count appears only in the
-          * verdict's reason, where it is doing its actual job.
-          *
-          * The model's float confidence USED to sit here and was removed
-          * rather than moved: it describes the dossier's own extraction, and
-          * the number beside it is now the Sheet's. A confidence attached to a
-          * different number than the one it measured is worse than none.
+          * THE DESK'S FLOAT, AS ITS FLOAT CELL SHOWS IT (Sheet switch-off 3b; Marketing 644a67e0 S5, Commercial
+          * read 60): the cell's face and, on a bound, the filed count's date. It used to be the Sheet's float
+          * with a verdict against the filed count; with no Sheet float there is nothing to verdict. The model's
+          * float confidence stays off: it measured the dossier's extraction, not this bound.
           */}
         <span className="inline-flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
-          <FieldLabel>Float</FieldLabel>
+          <FieldLabel>TMI Float</FieldLabel>
           <span
-            className={`num text-[12px] font-semibold ${
-              summary.float === 'Unknown' ? 'text-warn' : 'text-ink'
-            }`}
+            className={`num text-[12px] font-semibold ${summary.float.kind === 'bound' ? 'text-ink' : 'text-ink-3'}`}
           >
-            {summary.float}
+            {summary.float.face}
           </span>
-          {summary.floatCheck ? (
-            <>
-              <span
-                className={`text-[10px] tracking-wider uppercase ${
-                  summary.floatCheck.tone === 'neg' ? 'text-neg' : 'text-ink-3'
-                }`}
-              >
-                {summary.floatCheck.label}
-              </span>
-              <span
-                className={`text-[11px] ${
-                  summary.floatCheck.tone === 'neg' ? 'text-neg/90' : 'text-ink-3'
-                }`}
-              >
-                · {summary.floatCheck.reason}
-              </span>
-            </>
-          ) : null}
+          {summary.float.date ? <span className="text-[10px] text-ink-3">{summary.float.date}</span> : null}
         </span>
       </div>
+      {/* The same sentence on every drawer: a general statement, not a finding about this name (his ask, 2026-10-09). */}
+      <p className="m-0 mt-1 text-[11px] text-ink-3">{FLOAT_LEAVES_OUT}</p>
 
       {summary.supply.length > 0 ? (
         <div className="mt-2 border-t border-line pt-2">
@@ -322,7 +207,6 @@ function SourceList({
 
 export function AutomaticIntelligence({
   intel,
-  comparison,
   structure: structureSummary,
   Section,
   Field,
@@ -338,7 +222,6 @@ export function AutomaticIntelligence({
   floatBoundWired?: boolean;
   /** The checkpoint the setup grade rests on (ISO), when the grade is wired. Row 24. */
   checkpointAt?: string | null;
-  comparison: SheetAutoComparison | null;
   structure: StructureSummary | null;
   Section: (props: { title: string; titleHover?: string; children: React.ReactNode }) => React.ReactElement;
   Field: (props: { label: string; value: string; numeric?: boolean; title?: string }) => React.ReactElement;
@@ -427,7 +310,7 @@ export function AutomaticIntelligence({
    * implementation, no drift.
    *
    * It was already computed at `merge.ts:270` and consumed only by the
-   * sheet-vs-auto comparison. Nothing rendered it, so the trader read a
+   * old Sheet comparison. Nothing rendered it, so the trader read a
    * catalyst summary with no way to see how old the evidence under it was —
    * which is what he asked for: "the sources should be dated, this is not the
    * latest news."
@@ -444,9 +327,6 @@ export function AutomaticIntelligence({
 
   return (
     <>
-      {comparison && comparison.comparisons.length > 0 ? (
-        <SheetVsAuto comparison={comparison} Section={Section} />
-      ) : null}
       <Section title="Why It Is Moving">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge label={CATALYST_GRADE_LABEL[catalyst.catalystGrade]} tone="dim" />
@@ -764,7 +644,6 @@ export function AutomaticIntelligence({
       </Section>
 
       <Section title="Evidence & Provenance">
-        <Field label="Analysis source" value={humanise(intel.provenance)} />
         <Field label="Generated" value={generatedAt} />
         {produced ? <Field label={PRODUCED_WORDS.label} value={produced.text} title={PRODUCED_WORDS.hover} /> : null}
         <Field label="Model" value={intel.model ?? 'unknown'} />

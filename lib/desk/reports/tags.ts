@@ -60,7 +60,7 @@ export function reportTags(input: ReportTagInput): ReportTags {
     coverageIncomplete: input.coverageIncomplete,
     analysis: dossier ? { dossier } : null,
   } as unknown as AutoIntelligence;
-  const intelligenceState = resolveIntelligenceState({ sheet: null, intelligence, comparison: null });
+  const intelligenceState = resolveIntelligenceState({ intelligence });
   const row = {
     intelligenceState,
     intelligence,

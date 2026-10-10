@@ -176,7 +176,7 @@ function intelligence(options: {
 }
 
 describe('normalized intelligence status', () => {
-  it('calls accepted-but-incomplete automatic work PARTIAL AUTO, not unanalyzed', () => {
+  it('calls accepted-but-incomplete desk work PARTLY ANALYZED, not unanalyzed', () => {
     /*
      * The live contradiction: a drawer header reading NOT YET ANALYZED above a
      * Desk Read that already carried an automatic catalyst grade and an
@@ -184,8 +184,8 @@ describe('normalized intelligence status', () => {
      */
     const row = buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART' }));
 
-    expect(row.intelligenceState.status).toBe('PARTIAL_AUTO');
-    expect(row.intelligenceState.label).toBe('PARTIAL AUTO');
+    expect(row.intelligenceState.status).toBe('PARTLY_ANALYZED');
+    expect(row.intelligenceState.label).toBe('PARTLY ANALYZED');
     expect(row.intelligenceState.label).not.toBe('NOT YET ANALYZED');
     expect(row.intelligenceState.missingAutoFields).toEqual(['cycle']);
     expect(row.intelligenceState.hasAuto).toBe(true);
@@ -203,7 +203,7 @@ describe('normalized intelligence status', () => {
     expect(read.cycle.label).not.toBe('NOT ANALYZED');
   });
 
-  it('calls a complete dossier AUTO', () => {
+  it('calls a complete dossier ANALYZED', () => {
     const complete = dossier({
       cycle: { ...dossier().cycle, cycleClassification: 'RED_BACKSIDE' },
     });
@@ -215,7 +215,8 @@ describe('normalized intelligence status', () => {
       intelligence({ ticker: 'PART', dossier: complete }),
     );
 
-    expect(row.intelligenceState.status).toBe('AUTO');
+    expect(row.intelligenceState.status).toBe('ANALYZED');
+    expect(row.intelligenceState.label).toBe('ANALYZED');
     expect(row.intelligenceState.autoComplete).toBe(true);
   });
 
@@ -231,7 +232,7 @@ describe('normalized intelligence status', () => {
       intelligence({ ticker: 'PART', dossier: complete, coverageIncomplete: true }),
     );
 
-    expect(row.intelligenceState.status).toBe('PARTIAL_AUTO');
+    expect(row.intelligenceState.status).toBe('PARTLY_ANALYZED');
   });
 
   it('reports ANALYSIS PENDING while a job runs with nothing accepted', () => {
@@ -264,79 +265,18 @@ describe('normalized intelligence status', () => {
     expect(row.intelligenceState.status).toBe('NOT_ANALYZED');
   });
 
-  it('distinguishes sheet-only, both, and conflict', () => {
+  /*
+   * DESK ONLY (Sheet switch-off step 3a, Integration 36th; words Marketing 644a67e0 S3, Commercial read 60).
+   * The Sheet's states and their sentences are gone and the old words leave the value too (read 60 (a)):
+   * a Sheet row beside the desk's dossier changes nothing, and a Sheet row alone is not analysis.
+   */
+  it('a Sheet row changes nothing: the state is the desk own', () => {
     const sheetOnly = buildDeskRow('PART', sheet('PART'), null, demand('PART'));
-    expect(sheetOnly.intelligenceState.status).toBe('SHEET');
+    expect(sheetOnly.intelligenceState.status).toBe('NOT_ANALYZED');
 
-    // Agreeing catalyst families; the automatic cycle is simply unestablished,
-    // which is a coverage gap rather than a disagreement.
     const both = buildDeskRow(
       'PART',
-      sheet('PART'),
-      null,
-      demand('PART'),
-      intelligence({
-        ticker: 'PART',
-        dossier: dossier({ catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' } }),
-      }),
-    );
-    expect(both.intelligenceState.status).toBe('SHEET_AUTO');
-
-    const conflicting = buildDeskRow(
-      'PART',
       sheet('PART', '🔴 BACKSIDE'),
-      null,
-      demand('PART'),
-      intelligence({
-        ticker: 'PART',
-        dossier: dossier({
-          cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
-        }),
-      }),
-    );
-    expect(conflicting.intelligenceState.status).toBe('CONFLICT');
-  });
-
-  /* ----------------------------------------------------------------------- *
-   * THE TWO READS ARE NOT INDEPENDENT
-   * ----------------------------------------------------------------------- */
-
-  it('discloses that the desk read normally saw the outside one', () => {
-    /*
-     * `research-interpret.ts:166` passes the Sheet's prior human analysis into
-     * the interpreter unless `omitSheetPrior` is set, and `config.ts:182` leaves
-     * that OFF. The config says it outright: "the automatic catalyst grade is
-     * not independent of it."
-     *
-     * SO THE WEIGHTS RUN OPPOSITE TO WHAT THE BADGE IMPLIES. Agreement may be
-     * the model restating a conclusion it was shown; a conflict happened DESPITE
-     * being shown it. `SHEET + AUTO` reads as two sources adding up, and that is
-     * the case the dependency weakens.
-     */
-    const NOTE = 'normally produced with the outside one in evidence';
-
-    /*
-     * BOTH ARMS OF `SHEET_AUTO`, because the badge word is the same on each and
-     * the word is what implies two sources. Only the arm that actually asserts
-     * agreement carries the second clause.
-     */
-    const partial = buildDeskRow(
-      'PART',
-      sheet('PART'),
-      null,
-      demand('PART'),
-      intelligence({
-        ticker: 'PART',
-        dossier: dossier({ catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' } }),
-      }),
-    );
-    expect(partial.intelligenceState.status).toBe('SHEET_AUTO');
-    expect(partial.intelligenceState.detail).toContain(NOTE);
-    expect(partial.intelligenceState.detail).not.toContain('not two independent sources');
-
-    const agreeing = buildDeskRow(
-      'PART',
-      sheet('PART'),
       null,
       demand('PART'),
       intelligence({
@@ -347,81 +287,24 @@ describe('normalized intelligence status', () => {
         }),
       }),
     );
-    expect(agreeing.intelligenceState.status).toBe('SHEET_AUTO');
-    expect(agreeing.intelligenceState.detail).toContain(NOTE);
-    expect(agreeing.intelligenceState.detail).toContain('not two independent sources');
-
-    const conflicting = buildDeskRow(
-      'PART',
-      sheet('PART', '🔴 BACKSIDE'),
-      null,
-      demand('PART'),
-      intelligence({
-        ticker: 'PART',
-        dossier: dossier({
-          cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
-        }),
-      }),
-    );
-    expect(conflicting.intelligenceState.status).toBe('CONFLICT');
-    expect(conflicting.intelligenceState.detail).toContain(NOTE);
-    expect(conflicting.intelligenceState.detail).toContain('despite');
+    expect(both.intelligenceState.status).toBe('ANALYZED');
+    expect(both.intelligenceState.detail).not.toMatch(/outside|sheet/i);
+    expect(both.intelligenceState).not.toHaveProperty('hasSheet');
   });
 
-  it('never claims corroboration, and never sizes what nobody measured', () => {
-    /*
-     * The failure here is a WORD rather than a branch, and it arrives when
-     * someone shortens the sentence. `corroborates` and `confirms` put the false
-     * frame back; a magnitude word would state as measured a thing whose control
-     * arm (`RESEARCH_OMIT_SHEET_PRIOR=1`) has never been run.
-     */
-    /*
-     * THE COMPLETE ARM, deliberately. The first version of this guard used a
-     * partial dossier -- the arm that reports a coverage gap and never asserts
-     * agreement at all -- so corroboration language could have been added to the
-     * agreeing arm without it firing. Caught by mutation: rewording that arm to
-     * "corroborates" killed a different test and left this one green.
-     */
-    const agreeing = buildDeskRow(
-      'PART',
-      sheet('PART'),
-      null,
-      demand('PART'),
-      intelligence({
-        ticker: 'PART',
-        dossier: dossier({
-          catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' },
-          cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
-        }),
-      }),
-    );
-    expect(agreeing.intelligenceState.status).toBe('SHEET_AUTO');
-    const text = agreeing.intelligenceState.detail.toLowerCase();
-
-    expect(text).not.toContain('corroborat');
-    expect(text).not.toContain('confirms');
-    for (const sized of ['usually', 'often', 'rarely', 'mostly', 'largely', 'slightly']) {
-      expect(text, sized).not.toContain(sized);
+  it('no state value or label carries the old words', () => {
+    const complete = dossier({ cycle: { ...dossier().cycle, cycleClassification: 'RED_BACKSIDE' } });
+    const rows = [
+      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART' })),
+      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART', coverageIncomplete: true })),
+      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART', dossier: complete })),
+    ];
+    // Both analysed states are covered: the mutant that put "AUTO" back on ANALYZED alone slipped past this.
+    expect(rows.map((row) => row.intelligenceState.status)).toEqual(['PARTLY_ANALYZED', 'PARTLY_ANALYZED', 'ANALYZED']);
+    for (const row of rows) {
+      expect(row.intelligenceState.status).not.toMatch(/AUTO|SHEET|CONFLICT/);
+      expect(row.intelligenceState.label).not.toMatch(/AUTO|SHEET|CONFLICT/);
     }
-  });
-
-  it('does not turn incomplete automatic coverage into a conflict', () => {
-    /*
-     * The automatic layer reaching a weaker conclusion because it saw less is
-     * a coverage gap. Reporting it as CONFLICT would fire on most partially
-     * covered names and drown the disagreements that matter.
-     */
-    const row = buildDeskRow(
-      'PART',
-      sheet('PART'),
-      null,
-      demand('PART'),
-      intelligence({ ticker: 'PART', coverageIncomplete: true }),
-    );
-
-    expect(row.comparison?.conflict).toBe(true);
-    expect(row.comparison?.conflictReasons).toContain('AUTO_INCOMPLETE');
-    expect(row.intelligenceState.status).not.toBe('CONFLICT');
   });
 
   it('names each unresolved dimension rather than the whole ticker', () => {
@@ -506,12 +389,8 @@ describe('normalized intelligence status', () => {
     // The drawer header, the board cell and the Desk Read all read this same
     // object rather than each inferring a status of their own.
     expect(buildDeskRead(row).intelligence).toBe(row.intelligenceState);
-    expect(
-      resolveIntelligenceState({
-        sheet: null,
-        intelligence: intelligence({ ticker: 'PART' }),
-        comparison: row.comparison,
-      }).status,
-    ).toBe(row.intelligenceState.status);
+    expect(resolveIntelligenceState({ intelligence: intelligence({ ticker: 'PART' }) }).status).toBe(
+      row.intelligenceState.status,
+    );
   });
 });

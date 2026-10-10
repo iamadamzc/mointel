@@ -65,17 +65,6 @@ export interface DeskWhy {
    * where the two could drift apart.
    */
   title: string;
-  /**
-   * The Sheet and the desk's own research disagree on this catalyst: the
-   * letter each gives. Null when they agree, or when either has no grade.
-   *
-   * HIS RULING, 2026-09-29T14:46:55Z ("2, your recs": mark it). The row's
-   * letter and headline come from the Sheet first, so a disagreement was
-   * invisible on the board and visible only in the drawer. READ FROM THE
-   * MERGE'S `comparison`, never judged here, so the row and the drawer cannot
-   * disagree about whether the two disagree.
-   */
-  disagreement: { sheet: string; desk: string } | null;
 }
 
 const MINUTE = 60_000;
@@ -194,7 +183,6 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       freshness: null,
       tone: 'dim',
       title: 'Not researched, so there is no catalyst grade and no freshness to colour.',
-      disagreement: null,
     };
   }
 
@@ -210,26 +198,20 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       freshness: null,
       tone: 'dim',
       title: 'The desk is looking for the catalyst now. Nothing here is a grade yet.',
-      disagreement: null,
     };
   }
 
   const catalyst = row.intelligence?.analysis?.dossier.catalyst ?? null;
-  const sheetGrade = row.research?.catalyst.gradeBucket ?? null;
-  const grade =
-    sheetGrade && sheetGrade !== 'UNCLASSIFIED'
-      ? sheetGrade
-      : catalyst
-        ? gradeLetter(catalyst.catalystGrade)
-        : '—';
+  // Desk only (Sheet switch-off step 3a, Integration 36th): the letter and the headline are the desk's own.
+  // The Sheet's used to lead, so on a name where the two differed the row showed the Sheet's answer.
+  const grade = catalyst ? gradeLetter(catalyst.catalystGrade) : '—';
 
-  const headline =
-    row.research?.catalyst.latest?.trim() || catalyst?.summary?.trim() || null;
+  const headline = catalyst?.summary?.trim() || null;
 
   const eventAt = catalyst?.eventTimestamp ?? null;
   const age = relativeAge(eventAt, nowMs);
 
-  if (!catalyst && (!sheetGrade || sheetGrade === 'UNCLASSIFIED')) {
+  if (!catalyst) {
     return {
       code: 'UNKNOWN',
       grade: '—',
@@ -240,8 +222,8 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
       explainsMove: null,
       freshness: null,
       tone: 'dim',
-      title: 'No catalyst established for this name, from either the outside research or the desk.',
-      disagreement: null,
+      // Marketing 644a67e0 S1, Commercial read 60.
+      title: 'The desk has not established a catalyst for this name.',
     };
   }
 
@@ -392,21 +374,6 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
     ? `No fresh catalyst · latest: ${[day, summary].filter(Boolean).join(' · ') || 'no summary'}`
     : null;
 
-  const catalystComparison =
-    row.comparison?.comparisons.find((c) => c.field === 'catalyst' && c.agreement === 'DISAGREE') ?? null;
-  const sheetLetter = sheetGrade && sheetGrade !== 'UNCLASSIFIED' ? sheetGrade : null;
-  // `gradeLetter` folds NONE into C; the comparison does not, so a desk
-  // "none" printed as C would mark a disagreement between two C's.
-  const deskLetter = catalyst
-    ? catalyst.catalystGrade === 'NONE'
-      ? 'none'
-      : gradeLetter(catalyst.catalystGrade)
-    : null;
-  const disagreement =
-    catalystComparison && sheetLetter && deskLetter && deskLetter !== '—'
-      ? { sheet: sheetLetter, desk: deskLetter }
-      : null;
-
   return {
     code: nothingFound ? 'NO_FRESH_CATALYST' : onlyOld ? 'OLD_CATALYST' : 'GRADED',
     grade,
@@ -423,7 +390,6 @@ export function resolveWhy(row: DeskRow, nowMs: number = Date.now()): DeskWhy {
     freshness,
     tone: onlyOld ? 'dim' : tone,
     title: onlyOld ? oldTitle(grade) : whyTitle(grade, freshness, priorClose),
-    disagreement,
   };
 }
 

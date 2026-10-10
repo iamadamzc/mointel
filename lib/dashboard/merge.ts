@@ -16,7 +16,6 @@ import {
 } from '@/lib/research/float';
 import { deriveCycleLevels, type CycleLevels } from '@/lib/data/cycleLevels';
 import { buildLevelMap, type LevelMap } from '@/lib/data/priceLevels';
-import { sheetCalendarDate } from '@/lib/data/levelDate';
 import { buildTelemetry, type MarketTelemetry } from '@/lib/dashboard/telemetry';
 import {
   resolveNowCapture,
@@ -398,11 +397,9 @@ export function buildDeskRow(
   // Resolved before the level map so a verified ceiling can join the ladder.
   const blueSky = context.blueSky ?? resolveBlueSky(UNAVAILABLE_THRESHOLD, telemetry.price);
 
-  const cycleLevels = deriveCycleLevels({
-    ticker: research,
-    research: researchRecord,
-    currentPrice: telemetry.price,
-  });
+  // No Sheet cycle levels (Sheet switch-off 3c): the cycle comes from daily bars, and the research-derived
+  // historical high and giveback no longer reach the ladder, the drawer or MCP.
+  const cycleLevels = deriveCycleLevels({ ticker: null, research: null, currentPrice: telemetry.price });
 
   // Sheet research is read-only input here. Nothing in this function writes to
   // it, and a disagreement never resolves by discarding one side.
@@ -475,21 +472,14 @@ export function buildDeskRow(
       sessionLow: telemetry.sessionLow,
       referenceRthClose: demand?.referenceRthClose ?? null,
       referenceBasis: demand?.referenceRthCloseBasis ?? null,
-      keyLevels: research?.keyLevels ?? null,
-      dailyResistance: researchRecord?.dailyResistance ?? null,
-      dailySupport: researchRecord?.dailySupport ?? null,
-      // The RESEARCH row's own date travels with its levels (Integration 36th (a), OFAL).
-      sheetResearchDate: sheetCalendarDate(researchRecord?.reportDate),
+      // NO SHEET LEVELS (Sheet switch-off 3c; his yes to step 2 put as "old Sheet levels come out"): the
+      // TODAY key levels and the RESEARCH daily support and resistance no longer reach the ladder.
       cycleLevels: cycleLevels,
     }),
     intelligence,
     provenance: comparison.provenance,
     comparison: research || intelligence?.analysis ? comparison : null,
-    intelligenceState: resolveIntelligenceState({
-      sheet: research,
-      intelligence,
-      comparison: research || intelligence?.analysis ? comparison : null,
-    }),
+    intelligenceState: resolveIntelligenceState({ intelligence }),
     // Server-resolved when the snapshot carried one. A row built without a
     // snapshot has no daily history to reason from, which is unavailable —
     // not open sky.

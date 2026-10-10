@@ -436,10 +436,9 @@ export function discoveryValueFor(
     case 'price':
       return row.telemetry.price;
     case 'float':
-      // Research, not market state. Null whenever the source says UNKNOWN or
-      // DIRTY FLOAT, which is a material share of rows.
-      // WIRED: the SEC upper bound, only where PRODUCED (a refused or absent float has no number).
-      return row.floatBoundWired ? floatSortValue(row.floatBound) : row.displayedFloat;
+      // The desk's TMI Float only (Sheet switch-off 3c): the SEC upper bound where PRODUCED; a refused, absent
+      // or unwired float has no number. The Sheet's float no longer sorts.
+      return row.floatBoundWired ? floatSortValue(row.floatBound) : null;
     case 'setupGrade': {
       /*
        * BEST FIRST: A, B, C, D, then "Not graded". A name with NO grade (the

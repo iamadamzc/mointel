@@ -206,7 +206,8 @@ const SORT_KEYS: ReadonlyArray<SortEntry> = [
     column: 'now',
   },
   { key: 'price', label: 'Price', title: 'Last price', column: 'price' },
-  { key: 'float', label: 'Float', title: 'Displayed float. Not known for every name.', column: 'float' },
+  // TMI Float (his yes 2026-10-09T22:52:40.779Z; Marketing 00130acf, Commercial read 67).
+  { key: 'float', label: 'TMI Float', title: 'TMI Float, from SEC filings. Not shown for every name.', column: 'float' },
   {
     key: 'setupGrade',
     // Marketing, grade-sort-chip-words-2026-10-06.md (02ec44ab). The last sentence is Commercial's to keep or cut.
@@ -782,16 +783,15 @@ export function DiscoveryBoard({
               </Th>
               {showFloat ? (
                 <Th
-                  name="Float"
+                  name="TMI Float"
                   resize={columnHandle('float')}
                   measureHead={measureHead('float')}
                   align="right"
                   sorted={activeColumn === 'float'}
-                  // Wired, the column is the SEC bound, and COLUMN_TITLE.float (the vendor's figure, "actually
-                  // available to trade") is false of it: v25's header-or-legend line instead.
-                  title={floatWired ? FLOAT_LEGEND : COLUMN_TITLE.float}
+                  // The column is always the desk's TMI Float now; the vendor's "Free float" title went with the Sheet.
+                  title={FLOAT_LEGEND}
                 >
-                  Float
+                  TMI Float
                 </Th>
               ) : null}
               <Th
@@ -1093,11 +1093,8 @@ function DiscoveryRow({
           setupGrade={row.setupGradeWired ? row.setupGrade : undefined}
           setupGradeNoneRecorded={row.setupGradeNoneRecorded}
           companyHint={
-            companyLine({
-              dossier: row.intelligence?.analysis?.dossier ?? null,
-              sheetName: row.researchRecord?.company,
-              sheetCountry: row.research?.country,
-            }).hint
+            // The desk's dossier only (Sheet switch-off 3c): no Sheet name or country fallback.
+            companyLine({ dossier: row.intelligence?.analysis?.dossier ?? null }).hint
           }
         />
         {moving ? (
@@ -1119,14 +1116,14 @@ function DiscoveryRow({
         ) : null}
         {afterHours ? (
           // One line: a wrapped second line here made every row in the evening
-          // board taller than the same row during the day.
+          // board taller than the same row during the day. The volume only: the
+          // participation multiple is the PART/RVOL column's (his ask 2026-10-09,
+          // "unecessarily duplicated").
           <span
             className="num block truncate text-[10px] whitespace-nowrap text-ink-3"
-            title={`${formatCount(ah?.volume ?? null)} traded since the close · ${formatMultiple(
-              ah?.participation ?? null,
-            )} of a normal full day's volume`}
+            title={`${formatCount(ah?.volume ?? null)} traded since the close`}
           >
-            {formatCount(ah?.volume ?? null)} · {formatMultiple(ah?.participation ?? null)}
+            {formatCount(ah?.volume ?? null)}
           </span>
         ) : null}
       </td>
@@ -1214,46 +1211,9 @@ function DiscoveryRow({
         // what it is; a permanent column would spend width the eight-field
         // board does not have.
         <td className="num px-2 py-1 text-right align-middle">
-          {row.floatBoundWired ? (
-            <FloatCell bound={row.floatBound} dateShown={dateShown} />
-          ) : row.displayedFloat === null ? (
-            /*
-             * Three outcomes, and collapsing any two would lose the finding.
-             *
-             * A REFUSED float renders as the verdict, never as the number with
-             * a mark beside it — `6,109 ⚠` still scans AS 6,109, and the mark
-             * is exactly what a scanning eye drops. The digits appear only in
-             * the hover, as the evidence FOR the verdict rather than as a
-             * reading.
-             *
-             * A missing float stays "unknown". Rendering a detection as an
-             * absence would make the strongest structural finding on the board
-             * look identical to never having looked.
-             */
-            row.floatAssessment && row.floatAssessment.verdict !== 'CONSISTENT' ? (
-              <span
-                className="text-[11px] font-semibold text-neg"
-                title={`Float refused: ${row.floatAssessment.detail}. The number is not used for sorting or turnover.`}
-              >
-                {row.floatAssessment.verdict === 'IMPOSSIBLE' ? 'impossible' : 'units?'}
-              </span>
-            ) : (
-              <span className="text-[11px] text-warn" title="No float on file for this name.">
-                unknown
-              </span>
-            )
-          ) : (
-            <span
-              className="text-[12px] text-ink"
-              title={
-                row.floatAssessment
-                  ? `Checked against the share count stated beside it: ${row.floatAssessment.detail}.`
-                  : 'The Sheet states no share count beside this float, so it is unchecked.'
-              }
-            >
-              {formatCount(row.displayedFloat)}
-            </span>
-          )}
+          {/* The desk's TMI Float only (Sheet switch-off 3c): unwired, the cell reads Not computed; the Sheet's
+              float and its checks are gone. */}
+          <FloatCell bound={row.floatBoundWired ? row.floatBound : null} dateShown={dateShown} />
         </td>
       ) : null}
 

@@ -174,7 +174,6 @@ export function resolveComputedCycle(history: CycleHistory | null | undefined): 
       tone: cyclePhaseTone('DAY_ONE'),
       provenance: 'COMPUTED',
       title: null,
-      otherLabel: null,
     };
   }
 
@@ -183,8 +182,6 @@ export function resolveComputedCycle(history: CycleHistory | null | undefined): 
     tone: cyclePhaseTone(phase),
     provenance: 'COMPUTED',
     title: cycleDetail(history.current),
-    // Nothing to disagree with. Arithmetic has no counterparty.
-    otherLabel: null,
   };
 }
 

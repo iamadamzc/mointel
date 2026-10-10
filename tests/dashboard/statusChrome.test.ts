@@ -199,10 +199,12 @@ describe('status chrome shows only what varies', () => {
    * trader's screen. Its healthy text is a pure constant: the provider does not
    * change and "current" is the state it holds all day.
    */
-  it('hides the sheet freshness label in its healthy state', async () => {
+  it('shows no Sheet freshness label at all (Sheet switch-off 3e)', async () => {
     const source = await read('components/DataFreshness.tsx');
-    expect(source).toContain("{degraded ? 'Research: Google Sheet · Stale' : null}");
-    expect(source).not.toMatch(/Research: Google Sheet · \{degraded/);
+    expect(source).toContain("if (meta.provider !== 'mock') return null;");
+    expect(source).not.toContain("'Research: Google Sheet");
+    expect(source).not.toContain('>Sheet sync<');
+    expect(source).not.toContain('Google Sheet research is current');
   });
 
   it('hides the research label in its nominal IDLE state', async () => {

@@ -70,7 +70,7 @@ describe('the drawer float line', () => {
 
   it('wired with no row ("Not computed"): no ceiling, the cell sentence (Integration 36th (a))', () => {
     for (const cell of [null, undefined]) {
-      expect(drawerFloatLine(worxPair, cell, true)).toMatchObject({ sentence: 'The desk has not computed a float for this name.', refusedByCell: true, tone: 'dim', detail: null });
+      expect(drawerFloatLine(worxPair, cell, true)).toMatchObject({ sentence: 'The desk has not computed a TMI Float for this name.', refusedByCell: true, tone: 'dim', detail: null });
     }
   });
 
