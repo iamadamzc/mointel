@@ -316,6 +316,11 @@ describe('the store and the snapshot', () => {
     const runner = state('RUNNER', 25, 9, 4);
     runner.qualified = { at: '2026-09-28T13:40:00.000Z', price: 4, rvol: 3, rank: 4 };
     upsertTickerSessions(db, [toRow(runner)]);
+    // In the engine's eligible set, as every name the engine ranks is (release A's rule).
+    db.prepare(
+      `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
+       VALUES ('RUNNER', 'test', '2026-09-28T00:00:00Z', 'COMMON', 1)`,
+    ).run();
     const tickers = readRangeCandidates(db, DATE, { min: 1, max: 20 }).map((s) => s.ticker).sort();
     db.close();
     expect(tickers).toEqual(['AAA', 'BBB', 'RUNNER']);
@@ -554,6 +559,13 @@ describe('the held path is the reference board (rank once)', () => {
       `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
        VALUES ('TIEA', 'test', '2026-09-28T00:00:00Z', 'WARRANT', 0)`,
     ).run();
+    // Every other name is common equity in the engine's eligible set (release A's rule: with only the warrant's row
+    // the set would be empty, which is the engine's no-filter fallback).
+    const eligible = db.prepare(
+      `INSERT INTO universe (symbol, source, updated_at, classification, discovery_eligible)
+       VALUES (?, 'test', '2026-09-28T00:00:00Z', 'COMMON', 1)`,
+    );
+    for (const row of rows) if (row.ticker !== 'TIEA') eligible.run(row.ticker);
     return db;
   }
 
