@@ -22,8 +22,14 @@ export function PriceRangeControl({
   bounds,
   defaultRange,
   onChange,
+  pending = null,
 }: {
   served: PriceRange;
+  /**
+   * The viewer's chosen range while the server could not serve it yet (rank once, `rangePending`): shown on
+   * the control with a loading mark, never presented as served by the rows (rangePending.ts). Null otherwise.
+   */
+  pending?: PriceRange | null;
   bounds: PriceRange;
   defaultRange: PriceRange;
   /** Null returns to the default. */
@@ -34,11 +40,12 @@ export function PriceRangeControl({
   const [maxText, setMaxText] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const isDefault = sameRange(served, defaultRange);
+  const shown = pending ?? served;
+  const isDefault = sameRange(shown, defaultRange);
 
   const open = () => {
-    setMinText(String(served.min));
-    setMaxText(String(served.max));
+    setMinText(String(shown.min));
+    setMaxText(String(shown.max));
     setError(null);
     setEditing(true);
   };
@@ -59,6 +66,7 @@ export function PriceRangeControl({
         <button
           type="button"
           onClick={open}
+          aria-busy={pending ? true : undefined}
           title={`Choose the price range this board ranks in, within ${rangeLabel(bounds)}.`}
           className={`num min-h-6 rounded-sm border px-1.5 text-[11px] font-semibold ${
             isDefault
@@ -66,7 +74,9 @@ export function PriceRangeControl({
               : 'border-accent/50 bg-accent/15 text-accent'
           }`}
         >
-          {rangeLabel(served)}
+          {rangeLabel(shown)}
+          {/* The loading mark: no words, a pulsing dot while the chosen range is on its way. */}
+          {pending ? <span aria-hidden="true" className="ml-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent align-middle" /> : null}
         </button>
         {isDefault ? null : (
           <button
