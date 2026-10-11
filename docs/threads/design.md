@@ -44,7 +44,25 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state: 2026-10-10 15:28 UTC / 11:28 ET (twelfth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES BOTH BELOW WHERE THEY DIFFER
+## Live state: 2026-10-11 01:51 UTC / Sat 21:51 ET (thirteenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES ALL BELOW WHERE THEY DIFFER
+
+**Written for a reset at his word ("you need to reset at a stopping point"). Every sha is a lead: open it.**
+
+**Production:** release A `1b217b64` live 2026-10-10 15:58Z; release B (rank once) `fe1f1c69` live, his "go fe1f1c69" 23:17:15.430Z; production ref named by Integration afterwards `0a87f63c` (Web's front-page words on top). Read these from Ops's /proc, not from here.
+
+**MORNING CONFIRMATION (rows 22 + 21), his "yes to all" item 4 (Integration chat, user uuid 017b113b, 2026-10-11T01:21:43.286Z, verified by this seat in the transcript):**
+- Literal for Ops's gate: `cdd8fe9dc66afa7d17e5f629f51d3cac89bb8866`, local tag `design/confirmation-on-f7667663-cdd8fe9d`, branch `design/confirmation-on-f7667663`, worktree `A:\mointel-confd`. 8 Design commits on Research `f7667663` (branch `research/confirmation-on-0a87f63c`, 11 commits on production `0a87f63c`). NOT PUSHED on purpose: it carries Research's unpushed commits; Ops gates from the shared `.git`.
+- Chain: 327b8093 (0647c688 type + view), 332753a9 (0fa0e80c tests), 3df23ad0 (7639c7cf row 21 view), aebfe741 (02aee0a1 snapshot wiring; readModel.ts conflict resolved additively, float + grade reads kept), 96cb984f (3c100997 drawer section after SetupGradeReadings, before the level ladder; the drawer's removed `research` prop dropped), 8206e775 (5ac7a9f4 six-row rule; also carries d96f6e55's change, see ledger), 26af8542 (wiring test, Integration's ruling on M2), cdd8fe9d (no "Compared" under Unknown, Commercial read 70). DROPPED as superseded by shipped work: e90cc845, 675c32b1, 3af346e0 (Integration ruled).
+- Verified: 41 related test files 628/628 at 8206e775; then the 4 morning files 28/28 at cdd8fe9d; tsc 0 with a planted-error control seen; eslint 0 errors (one pre-existing warning in readModel.ts at f7667663); mutants M1 1/1, M2 1/1 (after the wiring test), M3 1/1. Local render (store copy ending 2026-10-07, so every compared name reads Unknown GRADE_NOT_STORED, honest for pre-schema-29 rows) plus each ruled row by patching the payload: all as ruled.
+- NEXT: Ops's full gate on cdd8fe9d; Integration replays; his go by sha. Real stored grades are first seen live on Monday's link (below). Range-only names (Integration's note): the view reads only the ticker lists; no such name existed in the copy to render.
+
+**MONDAY LINK (his "revie w ling", Design chat 2026-10-11T00:15:21.275Z, verified by Integration):** ONE review link, Monday, minted only once the premarket board has ranked rows, read BEFORE 07:00 ET or else AFTER 10:00 ET, 2 h, revoke as soon as read, mint/revoke times to Integration and Ops, ask Ops "yours" first. Open every `<details>` before reading (closed sections are invisible to innerText). Read each as SEEN / NOT SEEN with the element read: (1) TMI Float header + cell hover; (2) STRUCTURE UNKNOWN chip on a board row + hover (the drawer shows only the Desk Read's Structure words, not the chip); (3) the AH line under the ticker, volume only; (4) drawer Demand section opened: Rank Change and Displayed Float Turnover both gone; (5) the price picker: opens $1-$20, change range, pending mark, caption names the served range. If Confirmation has shipped by then, also the Morning check section on real grades.
+
+**Link 73 (2026-10-10, minted 16:02:13Z, revoked 16:06:33Z, dead by content):** release A read on a weekend board. Desk Read order and the drawer's TMI Float lines SEEN. Its "no Float Turnover" and "no Rank Change" were VACUOUS (closed `<details>`), corrected to Integration.
+
+**Tools:** `cdp.mjs`, `mkplan.mjs`, `mkplan-local.mjs` in this seat's scratchpad (`505d552d...`); the clock shim is `clock-shim.cjs` there. Turbopack refuses a `node_modules` junction: render from `A:\mointel-design` checked out detached (it is back on `design/drawer-float-verdict` 42777682).
+
+## Live state: 2026-10-10 15:28 UTC / 11:28 ET (twelfth seat, same id local_83b5b7ec; clock read via zoneinfo). SUPERSEDED BY THE BLOCK ABOVE WHERE THEY DIFFER
 
 **Written for a reset, at his word ("update all relevant docs, prompt, etc and reset"). Every sha here is a lead: open it.**
 
@@ -785,6 +803,14 @@ probe came before any edit, as the ledger says it must.**
 
 
 **Repeat reached:** per session-hygiene section 2, warned the owner and proposed a reset at the next task boundary (row 5's final words).
+
+**Thirteenth seat (same id `local_83b5b7ec`, reset in place 2026-10-10).**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Reported to Integration that link 73 SAW no Displayed Float Turnover and no Rank Change in the drawer; both live in the Demand section inside a closed `<details>`, which innerText leaves out, so the count could only answer 0 | FAILED-CHECK-RETURNS-PLAUSIBLE (memory) | Yes, the memory class; first this seat | Self, answering Integration's question about Rank Change. **Rule: open every `<details>` before a DOM read, and put a control (a field known present) through the same reader** |
+| Told Integration d96f6e55 and 3af346e0 "diverge" and d96f6e55 is "dead"; `merge-base --is-ancestor 3af346e0 d96f6e55` was false because the ancestry runs the OTHER way (d96f6e55 is an ancestor of 3af346e0). No build effect: the skipped commit made 5ac7a9f4 conflict; resolved files byte-identical to 3af346e0 | CLAIM-WIDER-THAN-OPENED (a one-direction check read as a two-way answer) | Yes, the ninth seat's class; first this seat | Self, from the unexpected conflict. **Rule: for "are these on one line", run is-ancestor both ways, or `git log A..B` and `B..A`** |
+| My first M2 (snapshot field dropped) killed 0: the four snapshot tests call readMorningRead directly; no test read the field through getMarketSnapshot | VACUOUS-GUARD (found by the mutant count) | Yes, the class | Self, by prediction. Fixed by the wiring test 26af8542 (M2 1/1) |
 
 **Twelfth seat (same id `local_83b5b7ec`, reset in place 2026-10-07).**
 

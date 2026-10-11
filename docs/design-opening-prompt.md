@@ -5,8 +5,8 @@ you assume something. should be a general rule, especially for reset seats."** O
 sentence about it. This prompt, a peer message, a commit message or a charter line is a lead, never a source. If you cannot
 open it, say so in the same sentence.
 
-**Written 2026-10-10 15:28 UTC (11:28 ET, clock read via zoneinfo), by the twelfth Design seat (`local_83b5b7ec`), at his
-word: "update all relevant docs, prompt, etc and reset". Every sentence was true then and is a lead, not a source, by the
+**Written 2026-10-11 01:51 UTC (Sat 21:51 ET, clock read via zoneinfo), by the thirteenth Design seat (`local_83b5b7ec`),
+at his word: "you need to reset at a stopping point". Every sentence was true then and is a lead, not a source, by the
 time you read it. If this prompt and `docs/threads/design.md`'s live state disagree, the live state is right.**
 
 **Read THIS FILE FROM `origin/main`** (`git fetch` then `git show origin/main:docs/design-opening-prompt.md`): the shared tree
@@ -33,16 +33,19 @@ type anything.** The twelfth seat lost most of a day to this.
 **Step 2: check your own model**, then follow `A:\claude-infra-agent\docs\session-hygiene.md` (context, the error ledger,
 hand-off, the NEEDS YOU block).
 
-**Step 3: read, in this order.** `docs/threads/design.md`: the LIVE STATE at the top (2026-10-10), the error ledger's
-"Twelfth seat" table. Then `docs/threads/README.md` (his rules: keep any text simple, look at the source, no em dashes, five
+**Step 3: read, in this order.** `docs/threads/design.md`: the LIVE STATE at the top (2026-10-11), the error ledger's
+"Thirteenth seat" and "Twelfth seat" tables. Then `docs/threads/README.md` (his rules: keep any text simple, look at the source, no em dashes, five
 seats one `.git`). Then Integration's thread for today's release literals. `docs/sheet-removal/sheet-inventory-2026-10-09.md`
 is on local main only until Research pushes it; read it there (section 6 is Design's surfaces).
 
-**Step 4, first task: the open item Design owes today.** Integration is composing release A (`6c06a013` + Research
-`4d5a3a13` + Design `d355972a` + Web's four) and release B (rank once, re-composed ON A). When Ops names the B-on-A literal,
-READ the one resolved hunk in `components/TickerDrawer.tsx` and tell Integration whether it matches the ruling: NEITHER
-"Displayed Float Turnover" NOR "Rank Change" renders, BOTH explanatory comments kept. Then the live reads in the live state's
-"Owed by Design" list, after A and B ship, each through ONE review link on his word relayed by Integration.
+**Step 4, first task: two open items (details in the live state).** (1) MORNING CONFIRMATION: Design's literal
+`cdd8fe9d` (local tag `design/confirmation-on-f7667663-cdd8fe9d`, not pushed on purpose) is with Ops's full gate; answer any
+gate finding, then Integration replays and he gives the go by sha. (2) THE MONDAY LINK: his yes for ONE review link
+(2026-10-11T00:15:21.275Z) to read five items on Monday's premarket board, before 07:00 ET or after 10:00 ET, only once the
+board has ranked rows, asking Ops "yours" first; open every `<details>` before reading. Releases A and B are live.
+
+**What the thirteenth seat did:** read B-on-A's drawer hunk (matched); read release A live on link 73; rebuilt the Morning
+Confirmation surface on Research's rebased head with a wiring test and the "no Compared under Unknown" fix.
 
 **What the twelfth seat built (all on pushed `design/*` branches; see the live state for every sha):** release A on
 `design/sheet-off` (Sheet switch-off 3a, 3b, 3c and Design's 3e; the Desk Read in his order; the AH line without the
