@@ -111,7 +111,10 @@ function view(
     labelHover: evening ? MORNING_CHECK_WORDS.labelHover(evening) : MORNING_CHECK_WORDS.labelHoverNoTimes,
     face,
     detail,
-    compared: evening && morning ? MORNING_CHECK_WORDS.compared(evening, morning) : null,
+    // No "Compared" under Unknown: every Unknown cause returns before any part is compared
+    // (morningRead.ts, GRADE_NOT_STORED, NOT_GRADED, VERSION_UNREADABLE), so the line would
+    // claim a comparison that did not happen (Commercial read 70, Integration).
+    compared: state !== 'UNKNOWN' && evening && morning ? MORNING_CHECK_WORDS.compared(evening, morning) : null,
     changes,
   };
 }

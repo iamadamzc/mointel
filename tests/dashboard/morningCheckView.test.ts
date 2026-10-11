@@ -117,6 +117,18 @@ describe('the states, in Marketing v3 words', () => {
     }
   });
 
+  it('no Unknown cause prints "Compared": nothing was compared (Commercial read 70)', () => {
+    for (const reason of ['GRADE_NOT_STORED', 'NOT_GRADED', 'VERSION_UNREADABLE'] as const) {
+      const v = morningCheckView(frame({ ABC: conf({ state: 'UNKNOWN', reason }) }), 'ABC', NOW);
+      expect(v.state).toBe('UNKNOWN');
+      expect(v.compared).toBeNull();
+      expect(JSON.stringify(v)).not.toContain('Compared');
+    }
+    // CONTROL: the same frame and times on a compared state do print the line, so the check can see it.
+    const control = morningCheckView(frame({ ABC: conf({ state: 'CONFIRMED' }) }), 'ABC', NOW);
+    expect(control.compared).toMatch(/^Compared: /);
+  });
+
   it('REVISED lists each changed part from and to, in display words, the grade through the one mapping', () => {
     const v = morningCheckView(
       frame({
