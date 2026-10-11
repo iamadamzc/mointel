@@ -214,9 +214,9 @@ describe('morningReadOf: the server read', () => {
     expect(late.morningAt).toBe(MORNING_AT);
     expect(late.eveningAt).toBe(EVENING_AT);
     expect(late.eveningTickers).toEqual(['ACME', 'BETA']);
-    // No stored grade column yet: every pair is UNKNOWN, never confirmed; no research cited: no PM update.
+    // Capture stores NOT_YET for a row with no research (priorityGrade rule 0): UNKNOWN, never confirmed; no research cited: no PM update.
     expect(late.byTicker.get('ACME')).toEqual({
-      confirmation: { state: 'UNKNOWN', reason: 'GRADE_NOT_STORED', changes: [], eveningAt: EVENING_AT, morningAt: MORNING_AT },
+      confirmation: { state: 'UNKNOWN', reason: 'NOT_GRADED', changes: [], eveningAt: EVENING_AT, morningAt: MORNING_AT },
       pmCatalyst: { state: 'NO_MORNING_RESEARCH', reason: null, catalyst: null, catalystChanged: null, generatedAt: null },
     });
   });
@@ -249,6 +249,32 @@ describe('morningReadOf: the server read', () => {
     expect(read.eveningTickers).not.toContain('NEWCO');
     expect([...read.morningTickers, ...read.eveningTickers]).not.toContain('ZZZ');
     expect([...read.byTicker.keys()]).toEqual(['ACME']);
+  });
+
+  it('reads the stored Priority grade column: equal stored grades are compared, a NULL column is GRADE_NOT_STORED', () => {
+    const evening = checkpoint('NEXT_DAY_RECAP', '2026-10-05', D, EVENING_AT, ['ACME', 'BETA']);
+    const morning = checkpoint('PREMARKET_0700', D, null, MORNING_AT, ['ACME', 'BETA']);
+    const setGrade = (id: number, ticker: string, grade: string | null) =>
+      db.prepare('UPDATE desk_assessment_tickers SET priority_grade = ? WHERE assessment_id = ? AND ticker = ?').run(grade, id, ticker);
+    setGrade(evening, 'ACME', 'B');
+    setGrade(morning, 'ACME', 'B');
+    setGrade(evening, 'BETA', null);
+    setGrade(morning, 'BETA', 'A');
+    const read = morningReadOf(db, D, '2026-10-06T12:00:00.000Z');
+    // Same grade, same (null) version, no job between: not re-checked, so never CONFIRMED.
+    expect(read.byTicker.get('ACME')!.confirmation.state).toBe('NOT_RECHECKED');
+    expect(read.byTicker.get('BETA')!.confirmation).toMatchObject({ state: 'UNKNOWN', reason: 'GRADE_NOT_STORED' });
+  });
+
+  it('a changed stored Priority grade is REVISED with the change named', () => {
+    const evening = checkpoint('NEXT_DAY_RECAP', '2026-10-05', D, EVENING_AT, ['ACME']);
+    const morning = checkpoint('PREMARKET_0700', D, null, MORNING_AT, ['ACME']);
+    db.prepare("UPDATE desk_assessment_tickers SET priority_grade = 'A' WHERE assessment_id = ?").run(evening);
+    db.prepare("UPDATE desk_assessment_tickers SET priority_grade = 'C' WHERE assessment_id = ?").run(morning);
+    expect(morningReadOf(db, D, '2026-10-06T12:00:00.000Z').byTicker.get('ACME')!.confirmation).toMatchObject({
+      state: 'REVISED',
+      changes: [{ part: 'PRIORITY_GRADE', from: 'A', to: 'C' }],
+    });
   });
 
   it('nothing stored for D: an empty frame', () => {

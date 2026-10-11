@@ -27,9 +27,11 @@ export const NOT_A_GRADE: ReadonlySet<string> = new Set(['UNKNOWN', 'NOT_YET']);
 export type CallCheckpoint = Pick<AssessmentRecord, 'id' | 'assessmentType' | 'tradingDate' | 'targetTradingDate' | 'completedAt' | 'status'>;
 
 /**
- * One name's row on a checkpoint. `priorityGrade` is Ops's column (PENDING
- * BUILDS row 9): absent (undefined) on every row until it ships, and null on a
- * row it did not grade; either reads GRADE_NOT_STORED.
+ * One name's row on a checkpoint. `priorityGrade` is Ops's column
+ * `desk_assessment_tickers.priority_grade` (schema 29), which
+ * `readAssessmentTickers` does not map, so `morningReadOf` reads it itself
+ * (`withPriorityGrades`). Null on a row stored before the column; absent or
+ * null reads GRADE_NOT_STORED.
  */
 export interface CallRow {
   ticker: string;
@@ -72,10 +74,10 @@ export interface PmCatalyst {
   state: PmCatalystState;
   reason: 'VERSION_UNREADABLE' | 'VERSION_ORDER' | null;
   /**
-   * NEWER only. `eventClock` is always null in this build: the reports' rule
-   * (a clock only when a cited exact source carries it, `eventWhen`) is on
-   * `research/reports-v6`, not on main, so this never prints a clock it cannot
-   * vouch for; the date is `eventEtDate`, the board's own reader.
+   * NEWER only. `eventClock` is always null in this build. The reports' rule (a
+   * clock only when a cited exact source carries it) is now in production as
+   * `eventWhen` (lib/desk/reports/traced.ts), but this read does not use it, so
+   * it never prints a clock; the date is `eventEtDate`, the board's own reader.
    */
   catalyst: { summary: string | null; status: string | null; grade: string | null; eventDate: string | null; eventClock: null } | null;
   /** NEWER only: whether any catalyst part of spec section 2 differs from the evening's. */
@@ -229,6 +231,18 @@ export function pmCatalystOf(input: MorningInput): PmCatalyst {
   };
 }
 
+/** The checkpoint's rows with each one's stored Priority grade (null when the row has none stored). */
+function withPriorityGrades(db: MarketDatabase, assessmentId: number, rows: readonly CallRow[]): CallRow[] {
+  const grades = new Map(
+    (
+      db
+        .prepare('SELECT ticker, priority_grade AS grade FROM desk_assessment_tickers WHERE assessment_id = ?')
+        .all(assessmentId) as Array<{ ticker: string; grade: string | null }>
+    ).map((row) => [row.ticker, row.grade]),
+  );
+  return rows.map((row) => ({ ...row, priorityGrade: grades.get(row.ticker) ?? null }));
+}
+
 /**
  * The server read for D at `at` (spec section 7): the latest COMPLETE morning
  * checkpoint of D completed at or before `at`, the COMPLETE evening recap
@@ -258,8 +272,8 @@ export function morningReadOf(db: MarketDatabase, d: string, at: string): Mornin
     .get(EVENING_TYPE, d) as { id: number } | undefined;
   const morningCheckpoint = morningId ? readAssessment(db, morningId.id) : null;
   const eveningCheckpoint = eveningId ? readAssessment(db, eveningId.id) : null;
-  const morningRows = morningCheckpoint ? (readAssessmentTickers(db, morningCheckpoint.id) as CallRow[]) : [];
-  const eveningList = eveningCheckpoint ? (readAssessmentTickers(db, eveningCheckpoint.id) as CallRow[]) : [];
+  const morningRows = morningCheckpoint ? withPriorityGrades(db, morningCheckpoint.id, readAssessmentTickers(db, morningCheckpoint.id)) : [];
+  const eveningList = eveningCheckpoint ? withPriorityGrades(db, eveningCheckpoint.id, readAssessmentTickers(db, eveningCheckpoint.id)) : [];
   const out: MorningRead = {
     morningAt: morningCheckpoint ? morningCheckpoint.completedAt : null,
     eveningAt: eveningCheckpoint ? eveningCheckpoint.completedAt : null,

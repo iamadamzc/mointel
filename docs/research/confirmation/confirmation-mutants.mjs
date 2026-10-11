@@ -1,12 +1,14 @@
 // Confirmation + row 21 (lib/desk/morningRead.ts) mutants: every prediction committed WITH the code and tests, BEFORE
-// any run. Predicted counts are FAILING TESTS in tests/desk/morningRead.test.ts (16 tests since the frame), traced per test.
-// Run in an Ops slot, from A:/mointel-conf:  node docs/research/confirmation/confirmation-mutants.mjs <out-dir> [--dry]
+// any run. Predicted counts are FAILING TESTS in tests/desk/morningRead.test.ts (18 tests since the stored-grade read), traced per test.
+// Run in an Ops slot, from the worktree root (A:/mointel-conf2 since the rebuild on 0a87f63c):
+//   node docs/research/confirmation/confirmation-mutants.mjs <out-dir> [--dry]
 // Each `from` must occur EXACTLY once (else INVALID, never run); the edit is applied, the test file runs, the
 // failing-test count is recorded against the prediction, and the file is restored byte for byte. M0 (no edit) runs
 // first and must fail 0 tests, or nothing else runs. --dry checks the matches only and runs no test.
 // Test ids in "which": C1 NO_EVENING_CALL, C2 NOT_YET, C3 GRADE_NOT_STORED, C3b NOT_GRADED, C4 VERSION_UNREADABLE, C5 REVISED on the
 // grade, C6 REVISED on each catalyst part, C7 NOT_RECHECKED, C8 CONFIRMED, P1 row 21's empty states, P2 NEWER,
-// P3 row 21 UNKNOWN, DB1 the server read pairs and omits, DB2 no evening recap (the frame), DB3 the three absences, DB4 the empty frame.
+// P3 row 21 UNKNOWN, DB1 the server read pairs and omits, DB2 no evening recap (the frame), DB3 the three absences, DB4 the empty frame,
+// DB5 the stored grade read (equal grades NOT_RECHECKED, a NULL column GRADE_NOT_STORED), DB6 a changed stored grade REVISED.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -62,7 +64,21 @@ const M = [
   // now at the research-jobs read, since research_jobs is in the base schema).
   ['K33', MR, 'eveningTickers: eveningList.map((row) => row.ticker),', 'eveningTickers: [],', 2, 'no evening names listed', 'DB1, DB3'],
   ['K34', MR, 'const eveningList = eveningCheckpoint ?', 'const eveningList = eveningCheckpoint && morningCheckpoint ?', 1, 'the evening names listed only once a morning checkpoint exists', 'DB3'],
+  // Rebuilt on production 0a87f63c (his "yes to all", 2026-10-11T01:21:43.286Z): Ops's priority_grade column (schema 29)
+  // now exists and capture fills it, so morningReadOf reads it (withPriorityGrades). Predictions re-traced BEFORE the run.
+  // DB1's rows now carry the stored NOT_YET (no research version, priorityGrade rule 0): UNKNOWN NOT_GRADED, not
+  // GRADE_NOT_STORED. So: K5 loses DB1 and gains DB5 (BETA null vs A read as a change): 2 (C3, DB5). K7 2 (C5, DB6).
+  // K15 2 (C7, DB5: ACME B/B with no re-check becomes CONFIRMED). K22 3 -> 5 (DB5 and DB6 find no morning checkpoint and
+  // throw). K24 1 -> 2 and K26 1 -> 2 (DB1's NOT_YET pair falls through to NOT_RECHECKED). The rest unchanged.
+  // These K-row predictions above are kept as written; RESULTS are read against the values in this block where they differ.
+  ['K35', MR, 'priorityGrade: grades.get(row.ticker) ?? null', 'priorityGrade: null', 3, 'the stored grade never read', 'DB1, DB5, DB6'],
+  // Full-table read: the map takes each ticker's LAST row in rowid order (the morning checkpoint is written after the
+  // evening one), so both sides carry the morning grade.
+  ['K36', MR, 'priority_grade AS grade FROM desk_assessment_tickers WHERE assessment_id = ?', 'priority_grade AS grade FROM desk_assessment_tickers WHERE 1 = 1 OR assessment_id = ?', 2, "another checkpoint's grade read", 'DB5, DB6'],
 ];
+// Re-traced predictions on 0a87f63c, which override the K-row numbers above.
+const RETRACED = { K5: 2, K7: 2, K15: 2, K22: 5, K24: 2, K26: 2 };
+for (const m of M) if (m[0] in RETRACED) m[4] = RETRACED[m[0]];
 
 if (process.argv.includes('--dry')) {
   let bad = 0;
