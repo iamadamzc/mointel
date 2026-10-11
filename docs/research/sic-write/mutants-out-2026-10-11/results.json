@@ -1,0 +1,36 @@
+[
+  {
+    "id": "M0",
+    "predicted": 0,
+    "failed": 0,
+    "failedSuites": 0,
+    "total": 106
+  },
+  {
+    "id": "S1",
+    "predicted": 2,
+    "failed": 2,
+    "failedSuites": 5,
+    "total": 106,
+    "what": "the label never bound",
+    "which": "W, C1"
+  },
+  {
+    "id": "S2",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 3,
+    "total": 106,
+    "what": "the update keeps the old value: a name stored before the fix never fills forward (a fresh insert still writes)",
+    "which": "W"
+  },
+  {
+    "id": "S3",
+    "predicted": 2,
+    "failed": 2,
+    "failedSuites": 5,
+    "total": 106,
+    "what": "the column dropped from the INSERT values",
+    "which": "W, C1"
+  }
+]
