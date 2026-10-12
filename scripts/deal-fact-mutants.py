@@ -61,18 +61,29 @@ MUTANTS = [
 
 
 def run_tests():
+    """Failing count = failed tests + test FILES that failed (a file that cannot load runs no tests and must not read as 0).
+
+    Run 4 (aaf4fa85) counted tests only: a test file that failed to load read as '0 failing' at baseline and for most mutants.
+    """
     out = subprocess.run(['npx', 'vitest', 'run', *TESTS], capture_output=True, text=True, encoding='utf-8', errors='replace', shell=True)
     text = out.stdout + out.stderr
-    m = re.search(r'Tests\s+(?:(\d+) failed \| )?(\d+) passed', text)
-    if not m:
-        return None, text[-800:]
-    return int(m.group(1) or 0), None
+    files = re.search(r'Test Files\s+([^\n]*)', text)
+    tests = re.search(r'\n\s*Tests\s+([^\n]*)', text)
+    if not files:
+        return None, None, text[-800:]
+
+    def count(line, word):
+        m = re.search(r'(\d+) ' + word, line or '')
+        return int(m.group(1)) if m else 0
+
+    failed = count(files.group(1), 'failed') + count(tests.group(1) if tests else '', 'failed')
+    return failed, count(tests.group(1) if tests else '', 'passed'), None
 
 
 def main():
-    base, err = run_tests()
-    print(f'M0 unmutated: {base} failing (expect 0)' + (f' PARSE ERROR {err}' if err else ''))
-    if base != 0:
+    base, passed, err = run_tests()
+    print(f'M0 unmutated: {base} failing, {passed} passing (expect 0 failing and every file loaded)' + (f' PARSE ERROR {err}' if err else ''))
+    if base != 0 or not passed:
         sys.exit('baseline not green; no mutants run')
     results = []
     for name, path, old, new, predicted, why in MUTANTS:
@@ -85,7 +96,7 @@ def main():
             continue
         open(path, 'wb').write(text.replace(old, new).encode('utf-8'))
         try:
-            failed, err = run_tests()
+            failed, _passed, err = run_tests()
         finally:
             open(path, 'wb').write(original)
         restored = open(path, 'rb').read() == original

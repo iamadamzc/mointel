@@ -1,0 +1,5 @@
+sites matched: 1
+M0 unmutated: 1 failing, 44 passing (expect 0 failing and every file loaded)
+baseline not green; no mutants run
+harness exit code: 1 (expect non-zero: baseline refused)
+restored identical bytes: True

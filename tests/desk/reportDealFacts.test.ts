@@ -125,7 +125,7 @@ describe('the citation condition (read 75b, ruled 2026-10-12)', () => {
 });
 
 describe('the writer is told exactly what the checker admits (Integration: they change together)', () => {
-  const rule = SYSTEM_V6.find((line) => line.startsWith('- Advice or action words:'))!;
+  const rule = SYSTEM_V6.split('\n').find((line) => line.startsWith('- Advice or action words:'))!;
   const quoted = (part: string) => [...part.matchAll(/"([^"]+)"/g)].map((m) => m[1]!);
   const allowed = quoted(rule.slice(rule.indexOf('One exception'), rule.indexOf('Never "sell"')));
   const never = quoted(rule.slice(rule.indexOf('Never "sell"')));
