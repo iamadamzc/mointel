@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-TESTS = ['tests/desk/reportDealFacts.test.ts', 'tests/desk/reportPipeline.test.ts']
+TESTS = ['tests/desk/reportDealFacts.test.ts', 'tests/desk/reportPipeline.test.ts', 'tests/desk/reportTraced.test.ts']
 CHECK = 'lib/desk/reports/check.ts'
 PIPE = 'lib/desk/reports/pipeline.ts'
 
@@ -44,6 +44,10 @@ MUTANTS = [
     ('M10 shapes never applied', CHECK,
      "const dealTested = dealFactsAllowed(line.ticker, input.research) ? withoutDealFacts(line.text) : line.text;",
      "const dealTested = line.text;", 'many', 'all 46 real lines, the passing gate tests'),
+    # Added after Integration's ruling on the bare noun (2026-10-12), before the second run.
+    ('M11 bare noun plan admitted', CHECK,
+     "|obligated|plans|intends?|",
+     "|obligated|plans?|intends?|", 1, 'the v5 pin "A plan to sell shares." on SANG (reportTraced.test.ts:183)'),
 ]
 
 
