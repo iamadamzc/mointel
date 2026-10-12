@@ -1,0 +1,664 @@
+{
+  "record": {
+    "phase": 2,
+    "tag": "p2-2026-10-06-INTO_RTH-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L7",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.",
+    "costUsd": 0.35277,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 26147,
+        "outputTokens": 1826,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19315,
+        "role": "checker"
+      }
+    ]
+  },
+  "draft": {
+    "headline": "",
+    "overall": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "XHG",
+            "text": "Secondary coverage dated October 6 reports that XChange TEC intends to reduce mainland China operations, explore U.S. AI-business expansion, and invest between $5 million and $10 million in the U.S. market. The reports describe a strategic shift toward U.S. AI-business expansion, while the bundle contains no underlying company announcement and does not state the timing, funding source, operational scope, or execution milestones."
+          },
+          {
+            "ticker": "LCFY",
+            "text": "The catalyst is not fresh: secondary coverage reported that Locafy agreed to acquire Map Labs assets and its customer base for potential cash consideration of up to $3 million, with expected additions of about $2 million in ARR and about $900,000 in EBIT. The bundle has no primary release, SEC filing, or transaction agreement for the terms, and does not establish whether the acquisition has closed."
+          },
+          {
+            "ticker": "BRN",
+            "text": "On October 5, 2026, Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, including C$4 million in cash and a 5% gross overriding royalty, with a buyer option to acquire the royalty for C$5 million after closing. The announced asset disposition includes defined cash consideration and a retained royalty interest with a buyout option, while the closing date, final adjustments, and exercise of the option are not established in the bundle."
+          },
+          {
+            "ticker": "AIIO",
+            "text": "Robo.ai reported September revenue exceeding US$100 million and stated that it expects approximately US$600 million in full-year 2026 revenue. The company-specific update provides a reported monthly revenue figure and a full-year revenue expectation, but the bundle does not include an audited financial statement validating the September figure."
+          },
+          {
+            "ticker": "VIVK",
+            "text": "The catalyst is not fresh: secondary coverage reported that Vivakor signed a non-binding indication of interest to acquire 100% of Direct Midstream's membership interests, with financial terms undisclosed. The available evidence does not establish primary-source verification, definitive-agreement status, required approvals, or closing conditions."
+          },
+          {
+            "ticker": "SXTP",
+            "text": "Secondary coverage on October 6 focused on SXTP's planned presentation of interim analysis data from its tafenoquine babesiosis clinical trial, but the supplied evidence does not contain the interim results. The milestone is company-specific clinical development, while the bundle does not provide the analysis results, DSMB recommendation, or a primary release reporting the presentation outcome."
+          },
+          {
+            "ticker": "IPDN",
+            "text": "On October 5, PDN Intelligence entered agreements to acquire one NVIDIA B300 system for $588,581.99 for lease to Goodwill Labs and lend Goodwill $588,849.23 to finance a second system, totaling about $1.177 million of initial commitments for two systems. The agreements provide a quantified, company-specific step in the announced GPU infrastructure strategy involving two NVIDIA B300 systems, while deployment timing, lease and loan economics, and generated revenue are not established."
+          },
+          {
+            "ticker": "KAPA",
+            "text": "Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison. The company disclosed a quantified, statistically significant interim clinical result from its ongoing Phase 2 program, while the bundle does not provide the sample size, full underlying dataset, subsequent regulatory outcomes, or final trial results."
+          },
+          {
+            "ticker": "AIXI",
+            "text": "The catalyst is not fresh: the October 1 semiannual filing reported a 99.12% year-over-year revenue decline and stated that the group relied on financing activities, including convertible notes, to support operations. The filing supplied current operating and financing disclosures, but the evidence does not identify a favorable company-specific event explaining the current move or provide intraday timing linking the filing to it."
+          },
+          {
+            "ticker": "OLOX",
+            "text": "No catalyst found in our sources. The bundle records 112.5% above the reference regular-hours close, 9.11 million shares traded, and a $2.245 session high, while secondary coverage identified OLOX as an after-hours mover."
+          },
+          {
+            "ticker": "AVBP",
+            "text": "Research is not on file at this checkpoint; no dossier was available."
+          },
+          {
+            "ticker": "OSTX",
+            "text": "Research is not on file at this checkpoint; no dossier was available."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.\",\"lines\":[{\"ticker\":\"XHG\",\"text\":\"Secondary coverage dated October 6 reports that XChange TEC intends to reduce mainland China operations, explore U.S. AI-business expansion, and invest between $5 million and $10 million in the U.S. market. The reports describe a strategic shift toward U.S. AI-business expansion, while the bundle contains no underlying company announcement and does not state the timing, funding source, operational scope, or execution milestones.\"},{\"ticker\":\"LCFY\",\"text\":\"The catalyst is not fresh: secondary coverage reported that Locafy agreed to acquire Map Labs assets and its customer base for potential cash consideration of up to $3 million, with expected additions of about $2 million in ARR and about $900,000 in EBIT. The bundle has no primary release, SEC filing, or transaction agreement for the terms, and does not establish whether the acquisition has closed.\"},{\"ticker\":\"BRN\",\"text\":\"On October 5, 2026, Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, including C$4 million in cash and a 5% gross overriding royalty, with a buyer option to acquire the royalty for C$5 million after closing. The announced asset disposition includes defined cash consideration and a retained royalty interest with a buyout option, while the closing date, final adjustments, and exercise of the option are not established in the bundle.\"},{\"ticker\":\"AIIO\",\"text\":\"Robo.ai reported September revenue exceeding US$100 million and stated that it expects approximately US$600 million in full-year 2026 revenue. The company-specific update provides a reported monthly revenue figure and a full-year revenue expectation, but the bundle does not include an audited financial statement validating the September figure.\"},{\"ticker\":\"VIVK\",\"text\":\"The catalyst is not fresh: secondary coverage reported that Vivakor signed a non-binding indication of interest to acquire 100% of Direct Midstream's membership interests, with financial terms undisclosed. The available evidence does not establish primary-source verification, definitive-agreement status, required approvals, or closing conditions.\"},{\"ticker\":\"SXTP\",\"text\":\"Secondary coverage on October 6 focused on SXTP's planned presentation of interim analysis data from its tafenoquine babesiosis clinical trial, but the supplied evidence does not contain the interim results. The milestone is company-specific clinical development, while the bundle does not provide the analysis results, DSMB recommendation, or a primary release reporting the presentation outcome.\"},{\"ticker\":\"IPDN\",\"text\":\"On October 5, PDN Intelligence entered agreements to acquire one NVIDIA B300 system for $588,581.99 for lease to Goodwill Labs and lend Goodwill $588,849.23 to finance a second system, totaling about $1.177 million of initial commitments for two systems. The agreements provide a quantified, company-specific step in the announced GPU infrastructure strategy involving two NVIDIA B300 systems, while deployment timing, lease and loan economics, and generated revenue are not established.\"},{\"ticker\":\"KAPA\",\"text\":\"Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison. The company disclosed a quantified, statistically significant interim clinical result from its ongoing Phase 2 program, while the bundle does not provide the sample size, full underlying dataset, subsequent regulatory outcomes, or final trial results.\"},{\"ticker\":\"AIXI\",\"text\":\"The catalyst is not fresh: the October 1 semiannual filing reported a 99.12% year-over-year revenue decline and stated that the group relied on financing activities, including convertible notes, to support operations. The filing supplied current operating and financing disclosures, but the evidence does not identify a favorable company-specific event explaining the current move or provide intraday timing linking the filing to it.\"},{\"ticker\":\"OLOX\",\"text\":\"No catalyst found in our sources. The bundle records 112.5% above the reference regular-hours close, 9.11 million shares traded, and a $2.245 session high, while secondary coverage identified OLOX as an after-hours mover.\"},{\"ticker\":\"AVBP\",\"text\":\"Research is not on file at this checkpoint; no dossier was available.\"},{\"ticker\":\"OSTX\",\"text\":\"Research is not on file at this checkpoint; no dossier was available.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-06",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 656,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-10-06T13:25:20.028Z"
+        }
+      ],
+      "publishedAt": "2026-10-12T21:17:10.962Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "XHG",
+              "liveFeed": null,
+              "text": "Secondary coverage dated October 6 reports that XChange TEC intends to reduce mainland China operations, explore U.S. AI-business expansion, and invest between $5 million and $10 million in the U.S. market. The reports describe a strategic shift toward U.S. AI-business expansion, while the bundle contains no underlying company announcement and does not state the timing, funding source, operational scope, or execution milestones.",
+              "company": {
+                "name": "XChange TEC.INC",
+                "country": "China",
+                "business": null
+              },
+              "path": {
+                "from": 1.9,
+                "high": 4.31,
+                "now": 3.0391,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "47m",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 8:38 AM ET",
+                  "headline": "Secondary news coverage dated October 6 reports that XChange TEC intends to reduce mainland China operations, explore U.S. AI-business expansion, and invest between $5 million and $10 million in the U.S. market. No primary company release is included in the bundle.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "5.81M sh",
+                  "detail": "The $100,000,000 VG committed-equity facility and 5,813,953 potential commitment ADSs sit under an effective registration, but the bundle does not establish whether the purchase conditions were satisfied or whether any ADSs were sold.",
+                  "tone": "warn",
+                  "full": "The $100,000,000 VG committed-equity facility and 5,813,953 potential commitment ADSs sit under an effective registration, but the bundle does not establish whether the purchase conditions were satisfied or whether any ADSs were sold."
+                }
+              }
+            },
+            {
+              "ticker": "BRN",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "BARNWELL INDUSTRIES INC",
+                "country": "United States",
+                "business": "Barnwell Industries holds Canadian oil and natural gas operations and Hawaii real-estate development interests, both of which it has been selling."
+              },
+              "path": {
+                "from": 0.9372,
+                "high": 1.25,
+                "now": 0.9995,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 4, 8:00 PM ET",
+                  "headline": "On October 5, 2026, Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, subject to working-capital and indebtedness adjustments. The consideration includes C$4 million cash and a 5% gross overriding royalty, with the buyer holding an option after closing to acquire the royalty for C$5 million.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "5.06M sh supply",
+                  "detail": "An at-the-market facility had issued 1,810,496 shares through the May 2026 disclosure, and its remaining availability at the bundle date is not established.",
+                  "tone": "neg",
+                  "full": "An at-the-market facility had issued 1,810,496 shares through the May 2026 disclosure, and its remaining availability at the bundle date is not established."
+                }
+              }
+            },
+            {
+              "ticker": "AIIO",
+              "liveFeed": null,
+              "text": "Robo.ai reported September revenue exceeding US$100 million and stated that it expects approximately US$600 million in full-year 2026 revenue. The company-specific update provides a reported monthly revenue figure and a full-year revenue expectation, but the bundle does not include an audited financial statement validating the September figure.",
+              "company": {
+                "name": "ROBO.AI INC.",
+                "country": null,
+                "business": "Robo.ai is a technology group building intelligent infrastructure across artificial intelligence, robotics and smart mobility, advanced manufacturing, and digital platforms."
+              },
+              "path": {
+                "from": 1.11,
+                "high": 1.45,
+                "now": 1.23,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "3h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 6:00 AM ET",
+                  "headline": "Robo.ai reported September revenue exceeding US$100 million and stated that it expects approximately US$600 million of full-year 2026 revenue.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "35.9M sh",
+                  "detail": "The bundle does not provide a dated outstanding-share total or a stated public float.",
+                  "tone": "warn",
+                  "full": "The bundle does not provide a dated outstanding-share total or a stated public float."
+                }
+              }
+            },
+            {
+              "ticker": "SXTP",
+              "liveFeed": null,
+              "text": "Secondary coverage on October 6 focused on SXTP's planned presentation of interim analysis data from its tafenoquine babesiosis clinical trial, but the supplied evidence does not contain the interim results. The milestone is company-specific clinical development, while the bundle does not provide the analysis results, DSMB recommendation, or a primary release reporting the presentation outcome.",
+              "company": {
+                "name": "60 DEGREES PHARMACEUTICALS, INC.",
+                "country": "United States",
+                "business": "60 Degrees Pharmaceuticals develops and commercializes medicines for vector-borne disease."
+              },
+              "path": {
+                "from": 1.44,
+                "high": 1.84,
+                "now": 1.11,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "4h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 5:02 AM ET",
+                  "headline": "Secondary coverage on October 6 focused on SXTP's planned presentation of interim analysis data from its tafenoquine babesiosis clinical trial; the supplied evidence does not contain the interim results. The company had previously disclosed its FDA priority-voucher statement of interest and an anticipated DSMB interim analysis.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "3.11M sh",
+                  "detail": "An effective resale registration covers up to 1,769,593 shares, including warrant and pre-funded-warrant underlying shares.",
+                  "tone": "warn",
+                  "full": "An effective resale registration covers up to 1,769,593 shares, including warrant and pre-funded-warrant underlying shares."
+                }
+              }
+            },
+            {
+              "ticker": "IPDN",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Professional Diversity Network, Inc.",
+                "country": "United States",
+                "business": "Professional Diversity Network is a technology holding company focused on AI technologies and AI-powered solutions."
+              },
+              "path": {
+                "from": 3.1,
+                "high": 7.1,
+                "now": 6.4046,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 4, 8:00 PM ET",
+                  "headline": "On October 5, PDN Intelligence entered agreements to acquire one NVIDIA B300 system for $588,581.99 for lease to Goodwill Labs and lend Goodwill $588,849.23 to finance a second system, totaling about $1.177 million of initial commitments for two systems.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "14.3M sh supply",
+                  "detail": "The only reported shares-outstanding figure is 14,450,323 as of August 14, 2026, before the September 11, 2026 1-for-30 reverse split.",
+                  "tone": "neg",
+                  "full": "The only reported shares-outstanding figure is 14,450,323 as of August 14, 2026, before the September 11, 2026 1-for-30 reverse split."
+                }
+              }
+            },
+            {
+              "ticker": "KAPA",
+              "liveFeed": null,
+              "text": "Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison. The company disclosed a quantified, statistically significant interim clinical result from its ongoing Phase 2 program, while the bundle does not provide the sample size, full underlying dataset, subsequent regulatory outcomes, or final trial results.",
+              "company": {
+                "name": "Kairos Pharma, LTD.",
+                "country": "United States",
+                "business": "Kairos Pharma is a clinical-stage biopharmaceutical company developing treatments intended to address drug resistance in cancer."
+              },
+              "path": {
+                "from": 1.55,
+                "high": 1.95,
+                "now": 1.6,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "2h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 7:30 AM ET",
+                  "headline": "Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "4.26M sh",
+                  "detail": "The reported 23,697,683 shares outstanding figure is dated before the September 2026 1-for-7 reverse split and is not a post-split reconciled outstanding-share count.",
+                  "tone": "warn",
+                  "full": "The reported 23,697,683 shares outstanding figure is dated before the September 2026 1-for-7 reverse split and is not a post-split reconciled outstanding-share count."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "LCFY",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Locafy Ltd",
+                "country": "Australia",
+                "business": "Locafy provides SaaS technology for location-based SEO and answer engine optimization for local, national and brand-focused businesses."
+              },
+              "path": {
+                "from": 2.34,
+                "high": 3.28,
+                "now": 2.3,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "1h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 8:02 AM ET",
+                  "headline": "Secondary coverage reported that Locafy agreed to acquire Map Labs assets and its customer base for potential cash consideration of up to $3 million, with the deal expected to add about $2 million of ARR and about $900,000 of EBIT. No primary company release or filing for this transaction appears in the bundle.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "An effective F-3 registers up to $100 million of securities for offerings from time to time.",
+                  "tone": "warn",
+                  "full": "An effective F-3 registers up to $100 million of securities for offerings from time to time."
+                }
+              }
+            },
+            {
+              "ticker": "VIVK",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: secondary coverage reported that Vivakor signed a non-binding indication of interest to acquire 100% of Direct Midstream's membership interests, with financial terms undisclosed. The available evidence does not establish primary-source verification, definitive-agreement status, required approvals, or closing conditions.",
+              "company": {
+                "name": "Vivakor, Inc.",
+                "country": "United States",
+                "business": "Vivakor provides energy transportation, storage, reuse and remediation services."
+              },
+              "path": {
+                "from": 4.84,
+                "high": 6.5061,
+                "now": 5.11,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "24m",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 9:01 AM ET",
+                  "headline": "Secondary coverage reported that Vivakor signed a non-binding indication of interest to acquire 100% of Direct Midstream's membership interests; financial terms were not disclosed, and no primary-source filing or company release for this reported October 6 event is in the bundle.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "140K sh supply",
+                  "detail": "The latest stated post-split share count was an approximate 598,794 shares following the October 5, 2026 1-for-15 reverse split.",
+                  "tone": "neg",
+                  "full": "The latest stated post-split share count was an approximate 598,794 shares following the October 5, 2026 1-for-15 reverse split."
+                }
+              }
+            },
+            {
+              "ticker": "AIXI",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: the October 1 semiannual filing reported a 99.12% year-over-year revenue decline and stated that the group relied on financing activities, including convertible notes, to support operations. The filing supplied current operating and financing disclosures, but the evidence does not identify a favorable company-specific event explaining the current move or provide intraday timing linking the filing to it.",
+              "company": {
+                "name": "Xiao-I Corp",
+                "country": "China",
+                "business": "Xiao-I provides artificial intelligence technology in China."
+              },
+              "path": {
+                "from": 1.51,
+                "high": 4.47,
+                "now": 3.14,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 4:31 PM ET",
+                  "headline": "No fresh catalyst · latest: Oct 1 · The October 1 semiannual filing reported a 99.12% year-over-year revenue decline and stated that the group relied on financing activities, including convertible notes, to support operations.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "160.2M sh supply",
+                  "detail": "An August 2026 convertible note with $4.33 million original principal has ADS conversion shares covered by a prospectus supplement.",
+                  "tone": "neg",
+                  "full": "An August 2026 convertible note with $4.33 million original principal has ADS conversion shares covered by a prospectus supplement."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NO CATALYST FOUND IN OUR SOURCES",
+          "lines": [
+            {
+              "ticker": "OLOX",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "OLENOX INDUSTRIES INC.",
+                "country": "United States",
+                "business": "Olenox is an integrated energy and infrastructure company operating across oil and natural gas, energy services, power generation, modular infrastructure and digital compute."
+              },
+              "path": {
+                "from": 0.88,
+                "high": 2.245,
+                "now": 1.4697,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Coverage is adequate, and no fresh company-specific event was located for the October 6 move; the latest primary issuer update in the bundle reported August Bitcoin production on September 17, while October 5 to 6 coverage identifies OLOX as an after-hours mover without identifying a new issuer event.",
+                  "explainsMove": true,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": null,
+                  "detail": "Debt and Series C preferred stock conversions into common equity occurred after June 2026, but the corresponding common-share amount is not disclosed in the supplied evidence.",
+                  "tone": "neg",
+                  "full": "Debt and Series C preferred stock conversions into common equity occurred after June 2026, but the corresponding common-share amount is not disclosed in the supplied evidence."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "AVBP",
+              "liveFeed": null,
+              "text": "Research is not on file at this checkpoint; no dossier was available.",
+              "company": null,
+              "path": {
+                "from": 28.46,
+                "high": 28.7,
+                "now": 11.7882,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "OSTX",
+              "liveFeed": null,
+              "text": "Research is not on file at this checkpoint; no dossier was available.",
+              "company": null,
+              "path": {
+                "from": 1.6,
+                "high": 2.06,
+                "now": 1.77,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L2",
+          "reason": "SHARES_UNDATED",
+          "by": "rule",
+          "detail": "1799055"
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"sell\""
+        },
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "enter/entry: \"entered\""
+        },
+        {
+          "id": "S1L7",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "enter/entry: \"entered\""
+        },
+        {
+          "id": "S1L10",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "112.5"
+        },
+        {
+          "id": "S1L10",
+          "reason": "NUMBER_NOT_IN_ROW",
+          "by": "rule",
+          "detail": "9.11 million"
+        }
+      ],
+      "writerMs": 5,
+      "checkerMs": 19320
+    }
+  }
+}

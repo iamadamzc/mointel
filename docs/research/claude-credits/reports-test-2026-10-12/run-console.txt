@@ -1,0 +1,19 @@
+phase 1 2026-10-02 PREMARKET: spend $0.6815
+phase 1 2026-10-05 PREMARKET: spend $1.3971
+phase 1 2026-10-06 PREMARKET: spend $2.0505
+phase 1 2026-10-02 INTO_RTH: spend $2.8332
+phase 1 2026-10-05 INTO_RTH: spend $3.5236
+phase 1 2026-10-06 INTO_RTH: spend $4.0736
+phase 1 2026-10-02 INTO_POWER_HOUR: spend $4.6070
+phase 1 2026-10-05 INTO_POWER_HOUR: spend $5.0786
+phase 1 2026-10-06 INTO_POWER_HOUR: spend $5.7060
+phase 1 2026-10-02 AFTER_HOURS: spend $6.2432
+phase 1 2026-10-05 AFTER_HOURS: spend $6.7400
+phase 1 2026-10-06 AFTER_HOURS: spend $7.3466
+phase 2 2026-10-02 PREMARKET: spend $7.9324
+phase 2 2026-10-05 PREMARKET: spend $8.5445
+phase 2 2026-10-06 PREMARKET: spend $9.1105
+phase 2 2026-10-02 INTO_RTH: spend $9.6709
+phase 2 2026-10-05 INTO_RTH: spend $10.2992
+phase 2 2026-10-06 INTO_RTH: spend $10.7922
+wrote docs/research/claude-credits/reports-test-2026-10-12/raw; spend $10.7922

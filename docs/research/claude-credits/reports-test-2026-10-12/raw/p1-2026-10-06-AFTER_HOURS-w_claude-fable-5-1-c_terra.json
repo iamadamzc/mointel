@@ -1,0 +1,655 @@
+{
+  "record": {
+    "phase": 1,
+    "tag": "p1-2026-10-06-AFTER_HOURS-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-06",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L9",
+      "S1L10",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG led the range, up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and reduction of mainland China operations. Among the next covered gainers, IPDN was up 50 percent from the prior close, with fresh news found in our sources: a lease and loan covering two NVIDIA B300 GPU systems, and OLOX was up 45 percent from the prior close, with no catalyst found in our sources. 8 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.382824,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 9147,
+        "outputTokens": 4873,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 51362,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17840,
+        "outputTokens": 1002,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 761,
+        "durationMs": 9235,
+        "role": "checker"
+      }
+    ]
+  },
+  "draft": {
+    "headline": "",
+    "overall": "XHG led the range, up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and reduction of mainland China operations. Among the next covered gainers, IPDN was up 50 percent from the prior close, with fresh news found in our sources: a lease and loan covering two NVIDIA B300 GPU systems, and OLOX was up 45 percent from the prior close, with no catalyst found in our sources. 8 of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "XHG",
+            "text": "The company announced a proposed expansion of its U.S. AI business, a planned reduction of its mainland China operations and an intended U.S. investment of $5 million to $10 million, in a release timed 08:30 ET October 6, 2026, though the primary newswire copy in our bundle carries no recorded publication timestamp. The desk reads it as a proposed strategic shift with a stated investment range, not a completed investment, contract or regulatory approval; the name is up 11.7% since the previous checkpoint."
+          },
+          {
+            "ticker": "LCFY",
+            "text": "Locafy announced a definitive agreement, filed on a 6-K at 09:29 ET October 6, 2026, to acquire Map Labs' assets and customer base for up to $3.0 million in cash, $2.0 million upfront and up to $1.0 million contingent on performance, with the company stating the business is expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT. The desk notes the deal is subject to customary closing conditions, with no closing date given and no indication whether the contingent portion becomes payable."
+          },
+          {
+            "ticker": "BRN",
+            "text": "Barnwell agreed on October 5, 2026 to sell its Canadian oil and natural gas business for a C$9 million base price, made up of C$4 million in cash plus a 5% gross overriding royalty and a buyer option to purchase that royalty after closing for C$5 million, disclosed on an 8-K at 06:30 ET October 6, 2026. The desk reads it as an asset sale with stated base consideration and a cash component, subject to closing conditions and working-capital and indebtedness adjustments, with no closing date or final net proceeds on file."
+          },
+          {
+            "ticker": "SMXT",
+            "text": "This is not a fresh catalyst: the latest company-specific item in our sources is the August 2026 Nasdaq noncompliance notice for the delayed June 30 Form 10-Q, filed at 17:15 ET August 21, 2026, following a one-for-12 reverse split meant to address minimum bid price compliance. The desk sees a listing-compliance matter rather than an operating catalyst, with unusually elevated relative volume this session and no buyer, news trigger or order-flow attribution identified for the demand."
+          },
+          {
+            "ticker": "KAPA",
+            "text": "Kairos reported positive, statistically significant interim efficacy data from its Phase 2 trial of ENV-105 with apalutamide in metastatic castration-resistant prostate cancer, on an 8-K at 07:30 ET October 6, 2026, with secondary coverage at 07:31 ET citing a 17.7-month median progression-free survival versus 2 months. The desk notes the interim update was reported on the same date as the observed price and volume activity, and that the primary excerpt does not give sample size, follow-up duration or full statistical results."
+          },
+          {
+            "ticker": "AIIO",
+            "text": "Robo.ai reported September revenue above US$100 million and said it expects approximately US$600 million of revenue for full-year 2026, in a release at 06:00 ET October 6, 2026. The desk reads it as a company-specific monthly revenue figure and a full-year expectation, with no audited financial statement in the bundle to validate the September number."
+          },
+          {
+            "ticker": "AIFA",
+            "text": "This is not a fresh catalyst: the latest item is an October 4 conference update, published at 17:33 ET October 4, 2026, in which AIFA said two Teach OS modules were live, four more were under development and a formal launch was expected in the near term. The desk sees a product-development update and a near-term launch expectation, with no revenue, customer, contract-value or launch-date figures and nothing in the bundle quantifying the commercial impact."
+          },
+          {
+            "ticker": "AVBP",
+            "text": "Not researched yet; there is no dossier for this name at this checkpoint."
+          },
+          {
+            "ticker": "VIVK",
+            "text": "Secondary reports at 09:01 ET October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of the outstanding membership interests of Direct Midstream, with financial terms not disclosed. The desk reads it as a potential acquisition with no purchase price or definitive agreement reported, no primary company release or SEC filing in the bundle, and no disclosed closing conditions or timing."
+          },
+          {
+            "ticker": "IPDN",
+            "text": "PDN Intelligence on October 5 entered an equipment lease for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, roughly $1.177 million of initial capital commitments, disclosed on an 8-K at 07:24 ET October 6, 2026 alongside a company release at 07:18 ET. The desk reads it as a documented AI infrastructure transaction for two systems, with nothing on deployment completion, utilization, revenue or the source of financing."
+          },
+          {
+            "ticker": "SXTP",
+            "text": "The company reported on October 6, on an 8-K at 07:45 ET October 6, 2026, that it intends to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind it, report primary and secondary endpoint results in January 2027 and request a pre-sNDA meeting with the FDA that month, with no endpoint results disclosed. The desk reads it as a readout and FDA meeting-request timeline, with no unblinded results, no sNDA acceptance and no approval outcome on file."
+          },
+          {
+            "ticker": "OLOX",
+            "text": "No catalyst found in our sources: coverage is adequate, the latest primary issuer update is the August production report of 15.63 Bitcoin mined, published at 09:00 ET September 17, 2026, and October 5 to 6 coverage flags OLOX as an after-hours mover without identifying a new issuer event. The desk notes the live demand has no identified source in the bundle, and the name lost $1.31 support since the previous checkpoint."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"XHG led the range, up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and reduction of mainland China operations. Among the next covered gainers, IPDN was up 50 percent from the prior close, with fresh news found in our sources: a lease and loan covering two NVIDIA B300 GPU systems, and OLOX was up 45 percent from the prior close, with no catalyst found in our sources. 8 of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"XHG\",\"text\":\"The company announced a proposed expansion of its U.S. AI business, a planned reduction of its mainland China operations and an intended U.S. investment of $5 million to $10 million, in a release timed 08:30 ET October 6, 2026, though the primary newswire copy in our bundle carries no recorded publication timestamp. The desk reads it as a proposed strategic shift with a stated investment range, not a completed investment, contract or regulatory approval; the name is up 11.7% since the previous checkpoint.\"},{\"ticker\":\"LCFY\",\"text\":\"Locafy announced a definitive agreement, filed on a 6-K at 09:29 ET October 6, 2026, to acquire Map Labs' assets and customer base for up to $3.0 million in cash, $2.0 million upfront and up to $1.0 million contingent on performance, with the company stating the business is expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT. The desk notes the deal is subject to customary closing conditions, with no closing date given and no indication whether the contingent portion becomes payable.\"},{\"ticker\":\"BRN\",\"text\":\"Barnwell agreed on October 5, 2026 to sell its Canadian oil and natural gas business for a C$9 million base price, made up of C$4 million in cash plus a 5% gross overriding royalty and a buyer option to purchase that royalty after closing for C$5 million, disclosed on an 8-K at 06:30 ET October 6, 2026. The desk reads it as an asset sale with stated base consideration and a cash component, subject to closing conditions and working-capital and indebtedness adjustments, with no closing date or final net proceeds on file.\"},{\"ticker\":\"SMXT\",\"text\":\"This is not a fresh catalyst: the latest company-specific item in our sources is the August 2026 Nasdaq noncompliance notice for the delayed June 30 Form 10-Q, filed at 17:15 ET August 21, 2026, following a one-for-12 reverse split meant to address minimum bid price compliance. The desk sees a listing-compliance matter rather than an operating catalyst, with unusually elevated relative volume this session and no buyer, news trigger or order-flow attribution identified for the demand.\"},{\"ticker\":\"KAPA\",\"text\":\"Kairos reported positive, statistically significant interim efficacy data from its Phase 2 trial of ENV-105 with apalutamide in metastatic castration-resistant prostate cancer, on an 8-K at 07:30 ET October 6, 2026, with secondary coverage at 07:31 ET citing a 17.7-month median progression-free survival versus 2 months. The desk notes the interim update was reported on the same date as the observed price and volume activity, and that the primary excerpt does not give sample size, follow-up duration or full statistical results.\"},{\"ticker\":\"AIIO\",\"text\":\"Robo.ai reported September revenue above US$100 million and said it expects approximately US$600 million of revenue for full-year 2026, in a release at 06:00 ET October 6, 2026. The desk reads it as a company-specific monthly revenue figure and a full-year expectation, with no audited financial statement in the bundle to validate the September number.\"},{\"ticker\":\"AIFA\",\"text\":\"This is not a fresh catalyst: the latest item is an October 4 conference update, published at 17:33 ET October 4, 2026, in which AIFA said two Teach OS modules were live, four more were under development and a formal launch was expected in the near term. The desk sees a product-development update and a near-term launch expectation, with no revenue, customer, contract-value or launch-date figures and nothing in the bundle quantifying the commercial impact.\"},{\"ticker\":\"AVBP\",\"text\":\"Not researched yet; there is no dossier for this name at this checkpoint.\"},{\"ticker\":\"VIVK\",\"text\":\"Secondary reports at 09:01 ET October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of the outstanding membership interests of Direct Midstream, with financial terms not disclosed. The desk reads it as a potential acquisition with no purchase price or definitive agreement reported, no primary company release or SEC filing in the bundle, and no disclosed closing conditions or timing.\"},{\"ticker\":\"IPDN\",\"text\":\"PDN Intelligence on October 5 entered an equipment lease for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, roughly $1.177 million of initial capital commitments, disclosed on an 8-K at 07:24 ET October 6, 2026 alongside a company release at 07:18 ET. The desk reads it as a documented AI infrastructure transaction for two systems, with nothing on deployment completion, utilization, revenue or the source of financing.\"},{\"ticker\":\"SXTP\",\"text\":\"The company reported on October 6, on an 8-K at 07:45 ET October 6, 2026, that it intends to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind it, report primary and secondary endpoint results in January 2027 and request a pre-sNDA meeting with the FDA that month, with no endpoint results disclosed. The desk reads it as a readout and FDA meeting-request timeline, with no unblinded results, no sNDA acceptance and no approval outcome on file.\"},{\"ticker\":\"OLOX\",\"text\":\"No catalyst found in our sources: coverage is adequate, the latest primary issuer update is the August production report of 15.63 Bitcoin mined, published at 09:00 ET September 17, 2026, and October 5 to 6 coverage flags OLOX as an after-hours mover without identifying a new issuer event. The desk notes the live demand has no identified source in the bundle, and the name lost $1.31 support since the previous checkpoint.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "AFTER_HOURS",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-06",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 669,
+          "type": "RTH_CLOSE",
+          "completedAt": "2026-10-06T20:00:14.974Z"
+        }
+      ],
+      "publishedAt": "2026-10-12T21:14:12.343Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "XHG",
+              "liveFeed": null,
+              "text": "The company announced a proposed expansion of its U.S. AI business, a planned reduction of its mainland China operations and an intended U.S. investment of $5 million to $10 million, in a release timed 08:30 ET October 6, 2026, though the primary newswire copy in our bundle carries no recorded publication timestamp. The desk reads it as a proposed strategic shift with a stated investment range, not a completed investment, contract or regulatory approval; the name is up 11.7% since the previous checkpoint.",
+              "company": {
+                "name": "XChange TEC.INC",
+                "country": "China",
+                "business": "XChange TEC operates an insurance agency and insurance technology business in the PRC."
+              },
+              "path": {
+                "from": 1.9,
+                "high": 5.51,
+                "now": 2.38,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "8h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 8:30 AM ET",
+                  "headline": "The company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "5.81M sh",
+                  "detail": "The latest explicitly reported shares-outstanding datapoint in the bundle is dated September 30, 2022 and predates the January 2025 100,000-for-1 share consolidation.",
+                  "tone": "warn",
+                  "full": "The latest explicitly reported shares-outstanding datapoint in the bundle is dated September 30, 2022 and predates the January 2025 100,000-for-1 share consolidation."
+                }
+              }
+            },
+            {
+              "ticker": "LCFY",
+              "liveFeed": null,
+              "text": "Locafy announced a definitive agreement, filed on a 6-K at 09:29 ET October 6, 2026, to acquire Map Labs' assets and customer base for up to $3.0 million in cash, $2.0 million upfront and up to $1.0 million contingent on performance, with the company stating the business is expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT. The desk notes the deal is subject to customary closing conditions, with no closing date given and no indication whether the contingent portion becomes payable.",
+              "company": {
+                "name": "Locafy Ltd",
+                "country": "Australia",
+                "business": "Locafy is a SaaS company providing location-based search engine optimization and answer engine optimization solutions."
+              },
+              "path": {
+                "from": 2.34,
+                "high": 3.28,
+                "now": 1.94,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 9:29 AM ET",
+                  "headline": "On October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company stated the acquired business is expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The $100 million shelf capacity and $588,883 ATM capacity are dollar capacities, not share counts.",
+                  "tone": "warn",
+                  "full": "The $100 million shelf capacity and $588,883 ATM capacity are dollar capacities, not share counts."
+                }
+              }
+            },
+            {
+              "ticker": "BRN",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "BARNWELL INDUSTRIES INC",
+                "country": "United States",
+                "business": "Barnwell Industries is selling its Canadian oil and natural gas business as part of a strategic repositioning."
+              },
+              "path": {
+                "from": 0.9372,
+                "high": 1.25,
+                "now": 0.9575,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "9h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 6:30 AM ET",
+                  "headline": "On October 5, 2026, Barnwell entered an agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, consisting of C$4 million cash plus a 5% gross overriding royalty and a buyer option to acquire that royalty after closing for C$5 million, subject to adjustments and closing conditions.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "1.81M sh",
+                  "detail": "The latest reported outstanding-share figure is 14,434,310 as of August 10, 2026, not as of the October 2026 market session.",
+                  "tone": "warn",
+                  "full": "The latest reported outstanding-share figure is 14,434,310 as of August 10, 2026, not as of the October 2026 market session."
+                }
+              }
+            },
+            {
+              "ticker": "KAPA",
+              "liveFeed": null,
+              "text": "Kairos reported positive, statistically significant interim efficacy data from its Phase 2 trial of ENV-105 with apalutamide in metastatic castration-resistant prostate cancer, on an 8-K at 07:30 ET October 6, 2026, with secondary coverage at 07:31 ET citing a 17.7-month median progression-free survival versus 2 months. The desk notes the interim update was reported on the same date as the observed price and volume activity, and that the primary excerpt does not give sample size, follow-up duration or full statistical results.",
+              "company": {
+                "name": "Kairos Pharma, LTD.",
+                "country": "United States",
+                "business": "Kairos Pharma is a clinical-stage biopharmaceutical company developing treatments intended to address cancer drug resistance."
+              },
+              "path": {
+                "from": 1.55,
+                "high": 2.16,
+                "now": 1.125,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "9h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 7:30 AM ET",
+                  "headline": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "510K sh",
+                  "detail": "The reported 23,697,683 shares outstanding are dated August 12, 2026 and precede the announced 1-for-7 reverse split expected September 1, 2026, so the bundle does not provide a post-split reported outstanding-share count.",
+                  "tone": "warn",
+                  "full": "The reported 23,697,683 shares outstanding are dated August 12, 2026 and precede the announced 1-for-7 reverse split expected September 1, 2026, so the bundle does not provide a post-split reported outstanding-share count."
+                }
+              }
+            },
+            {
+              "ticker": "AIIO",
+              "liveFeed": null,
+              "text": "Robo.ai reported September revenue above US$100 million and said it expects approximately US$600 million of revenue for full-year 2026, in a release at 06:00 ET October 6, 2026. The desk reads it as a company-specific monthly revenue figure and a full-year expectation, with no audited financial statement in the bundle to validate the September number.",
+              "company": {
+                "name": "ROBO.AI INC.",
+                "country": null,
+                "business": "Robo.ai is a technology group building intelligent infrastructure across artificial intelligence, robotics and smart mobility, advanced manufacturing, and digital platforms."
+              },
+              "path": {
+                "from": 1.11,
+                "high": 1.45,
+                "now": 1.13,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "10h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 6:00 AM ET",
+                  "headline": "Robo.ai reported September revenue exceeding US$100 million and stated that it expects approximately US$600 million of full-year 2026 revenue.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "35.9M sh",
+                  "detail": "The bundle does not provide a dated outstanding-share total or a stated public float.",
+                  "tone": "warn",
+                  "full": "The bundle does not provide a dated outstanding-share total or a stated public float."
+                }
+              }
+            },
+            {
+              "ticker": "VIVK",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Vivakor, Inc.",
+                "country": "United States",
+                "business": "Vivakor provides energy transportation, storage, reuse and remediation services."
+              },
+              "path": {
+                "from": 4.84,
+                "high": 6.5061,
+                "now": 4.725,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "7h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 9:01 AM ET",
+                  "headline": "Secondary reports on October 6 said Vivakor entered an indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed; the available reporting characterizes the transaction as non-binding.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The company announced three reverse stock splits during 2026: 1-for-200, 1-for-20 and 1-for-15.",
+                  "tone": "warn",
+                  "full": "The company announced three reverse stock splits during 2026: 1-for-200, 1-for-20 and 1-for-15."
+                }
+              }
+            },
+            {
+              "ticker": "IPDN",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Professional Diversity Network, Inc.",
+                "country": "United States",
+                "business": "Professional Diversity Network is a technology holding company focused on applying AI technologies and AI-powered solutions."
+              },
+              "path": {
+                "from": 3.1,
+                "high": 7.1,
+                "now": 4.64,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "9h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 7:24 AM ET",
+                  "headline": "On October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "476K sh",
+                  "detail": "The reported 14,450,323 shares outstanding date is August 14, 2026 and predates the September 11, 2026 1-for-30 reverse split.",
+                  "tone": "warn",
+                  "full": "The reported 14,450,323 shares outstanding date is August 14, 2026 and predates the September 11, 2026 1-for-30 reverse split."
+                }
+              }
+            },
+            {
+              "ticker": "SXTP",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "60 DEGREES PHARMACEUTICALS, INC.",
+                "country": "United States",
+                "business": "60 Degrees Pharmaceuticals develops and commercializes medicines for vector-borne disease, including tafenoquine for severe babesiosis research."
+              },
+              "path": {
+                "from": 1.44,
+                "high": 1.84,
+                "now": 1.125,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "8h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 7:45 AM ET",
+                  "headline": "On October 6, the company reported that it intends to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind the study, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed in this update.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "2.92M sh",
+                  "detail": "No float figure is stated in the bundle.",
+                  "tone": "warn",
+                  "full": "No float figure is stated in the bundle."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "SMXT",
+              "liveFeed": null,
+              "text": "This is not a fresh catalyst: the latest company-specific item in our sources is the August 2026 Nasdaq noncompliance notice for the delayed June 30 Form 10-Q, filed at 17:15 ET August 21, 2026, following a one-for-12 reverse split meant to address minimum bid price compliance. The desk sees a listing-compliance matter rather than an operating catalyst, with unusually elevated relative volume this session and no buyer, news trigger or order-flow attribution identified for the demand.",
+              "company": {
+                "name": "SolarMax Technology, Inc.",
+                "country": "United States",
+                "business": "SolarMax is an integrated solar energy company that sells and installs solar and backup battery systems and owns renewable-energy projects."
+              },
+              "path": {
+                "from": 2.37,
+                "high": 3.69,
+                "now": 3.43,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "46d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 21, 5:15 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 21 · The latest company-specific event in the collected sources is the August 2026 Nasdaq noncompliance notice for the delayed June 30 Form 10-Q, after the company effected a one-for-12 reverse split intended to support minimum-bid-price compliance. No newer company-specific positive event appears in the adequate source coverage. The current session instead shows strong live demand, with the stock up 35.0% from the reference close and daily RVOL of 117.8.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The reported 56,906,572 shares outstanding date to May 11, 2026 and predate the August 13, 2026 one-for-12 reverse split.",
+                  "tone": "warn",
+                  "full": "The reported 56,906,572 shares outstanding date to May 11, 2026 and predate the August 13, 2026 one-for-12 reverse split."
+                }
+              }
+            },
+            {
+              "ticker": "AIFA",
+              "liveFeed": null,
+              "text": "This is not a fresh catalyst: the latest item is an October 4 conference update, published at 17:33 ET October 4, 2026, in which AIFA said two Teach OS modules were live, four more were under development and a formal launch was expected in the near term. The desk sees a product-development update and a near-term launch expectation, with no revenue, customer, contract-value or launch-date figures and nothing in the bundle quantifying the commercial impact.",
+              "company": {
+                "name": "All In FutureTech Alliance, Inc.",
+                "country": "United States",
+                "business": "AIFA develops artificial-intelligence-enabled services and platforms across education and workforce development, media and creator services, and global business services."
+              },
+              "path": {
+                "from": 5.88,
+                "high": 8.93,
+                "now": 7.65,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "2d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 4, 5:33 PM ET",
+                  "headline": "On October 4, AIFA announced product progress at its first annual Las Vegas conference, stating that two Teach OS modules were live, four additional modules remained under development, and a formal launch was expected in the near term.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "12.0M sh",
+                  "detail": "The reported 6,420,316 shares outstanding as of August 4, 2026 is not a float figure.",
+                  "tone": "warn",
+                  "full": "The reported 6,420,316 shares outstanding as of August 4, 2026 is not a float figure."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NO CATALYST FOUND IN OUR SOURCES",
+          "lines": [
+            {
+              "ticker": "OLOX",
+              "liveFeed": null,
+              "text": "No catalyst found in our sources: coverage is adequate, the latest primary issuer update is the August production report of 15.63 Bitcoin mined, published at 09:00 ET September 17, 2026, and October 5 to 6 coverage flags OLOX as an after-hours mover without identifying a new issuer event. The desk notes the live demand has no identified source in the bundle, and the name lost $1.31 support since the previous checkpoint.",
+              "company": {
+                "name": "OLENOX INDUSTRIES INC.",
+                "country": "United States",
+                "business": "Olenox is an integrated energy and infrastructure company operating across oil and natural gas, energy services, power generation, modular infrastructure and digital compute."
+              },
+              "path": {
+                "from": 0.88,
+                "high": 2.245,
+                "now": 1.28,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Coverage is adequate, and no fresh company-specific event was located for the October 6 move; the latest primary issuer update in the bundle reported August Bitcoin production on September 17, while October 5 to 6 coverage identifies OLOX as an after-hours mover without identifying a new issuer event.",
+                  "explainsMove": true,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": null,
+                  "detail": "Debt and Series C preferred stock conversions into common equity occurred after June 2026, but the corresponding common-share amount is not disclosed in the supplied evidence.",
+                  "tone": "neg",
+                  "full": "Debt and Series C preferred stock conversions into common equity occurred after June 2026, but the corresponding common-share amount is not disclosed in the supplied evidence."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "AVBP",
+              "liveFeed": null,
+              "text": "Not researched yet; there is no dossier for this name at this checkpoint.",
+              "company": null,
+              "path": {
+                "from": 28.46,
+                "high": 28.7,
+                "now": 15.08,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "XHG led the range, up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and reduction of mainland China operations. Among the next covered gainers, IPDN was up 50 percent from the prior close, with fresh news found in our sources: a lease and loan covering two NVIDIA B300 GPU systems, and OLOX was up 45 percent from the prior close, with no catalyst found in our sources. 8 of the 12 names the desk covers had fresh news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L3",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"sell\""
+        },
+        {
+          "id": "S1L9",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "enter/entry: \"entered\""
+        },
+        {
+          "id": "S1L10",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "enter/entry: \"entered\""
+        },
+        {
+          "id": "S1L11",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored 8-K source has only a date-only ET reading; it does not support saying the 8-K was at 07:45 ET."
+        }
+      ],
+      "writerMs": 51362,
+      "checkerMs": 9242
+    }
+  }
+}

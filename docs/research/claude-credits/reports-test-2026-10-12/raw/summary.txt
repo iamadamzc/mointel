@@ -1,0 +1,63 @@
+store ../mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z
+days 2026-10-02, 2026-10-05, 2026-10-06; kinds PREMARKET, INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS; range $1-$20; one run per arm per input
+phase 1 writers gpt-5.6-luna (control), claude-opus-5-5, claude-fable-5-1 at effort high; checker gpt-5.6-terra
+phase 2 checkers claude-opus-5-5, claude-fable-5-1 at effort high on luna's replayed draft; terra's check is phase 1's luna row
+stop $12: a batch launches only if spend + its worst case fits
+
+p1-2026-10-02-PREMARKET-w_luna-c_terra: PUBLISHED; 4 of 13 lines struck (Summary struck); $0.0491; tokens writer:gpt-5.6-luna:6771/2311 checker:gpt-5.6-terra:18885/598
+p1-2026-10-02-PREMARKET-w_claude-opus-5-5-c_terra: PUBLISHED; 3 of 13 lines struck; $0.1682; tokens writer:claude-opus-5-5:10196/3878 checker:gpt-5.6-terra:18982/988
+p1-2026-10-02-PREMARKET-w_claude-fable-5-1-c_terra: PUBLISHED; 2 of 13 lines struck; $0.4642; tokens writer:claude-fable-5-1:10196/6155 checker:gpt-5.6-terra:19563/1283
+p1-2026-10-05-PREMARKET-w_luna-c_terra: PUBLISHED; 0 of 13 lines struck; $0.0479; tokens writer:gpt-5.6-luna:7120/2062 checker:gpt-5.6-terra:19085/484
+p1-2026-10-05-PREMARKET-w_claude-opus-5-5-c_terra: PUBLISHED; 2 of 13 lines struck; $0.1914; tokens writer:claude-opus-5-5:10726/4967 checker:gpt-5.6-terra:19292/885
+p1-2026-10-05-PREMARKET-w_claude-fable-5-1-c_terra: PUBLISHED; 1 of 13 lines struck; $0.4763; tokens writer:claude-fable-5-1:10726/6306 checker:gpt-5.6-terra:19541/1224
+p1-2026-10-06-PREMARKET-w_luna-c_terra: PUBLISHED; 1 of 13 lines struck; $0.0538; tokens writer:gpt-5.6-luna:6252/2859 checker:gpt-5.6-terra:19729/807
+p1-2026-10-06-PREMARKET-w_claude-opus-5-5-c_terra: PUBLISHED; 1 of 13 lines struck; $0.1809; tokens writer:claude-opus-5-5:9342/4521 checker:gpt-5.6-terra:19792/1127
+p1-2026-10-06-PREMARKET-w_claude-fable-5-1-c_terra: PUBLISHED; 2 of 13 lines struck; $0.4187; tokens writer:claude-fable-5-1:9342/5437 checker:gpt-5.6-terra:20184/1089
+p1-2026-10-02-INTO_RTH-w_luna-c_terra: PUBLISHED; 2 of 13 lines struck; $0.0541; tokens writer:gpt-5.6-luna:6704/3139 checker:gpt-5.6-terra:19659/810
+p1-2026-10-02-INTO_RTH-w_claude-opus-5-5-c_terra: PUBLISHED; 3 of 13 lines struck; $0.1914; tokens writer:claude-opus-5-5:10207/4567 checker:gpt-5.6-terra:19963/1608
+p1-2026-10-02-INTO_RTH-w_claude-fable-5-1-c_terra: PUBLISHED; 1 of 13 lines struck; $0.5371; tokens writer:claude-fable-5-1:10207/7648 checker:gpt-5.6-terra:20500/969
+p1-2026-10-05-INTO_RTH-w_luna-c_terra: PUBLISHED; 4 of 13 lines struck; $0.0478; tokens writer:gpt-5.6-luna:7141/2457 checker:gpt-5.6-terra:18939/459
+p1-2026-10-05-INTO_RTH-w_claude-opus-5-5-c_terra: PUBLISHED; 5 of 13 lines struck; $0.1945; tokens writer:claude-opus-5-5:10833/4905 checker:gpt-5.6-terra:19120/1235
+p1-2026-10-05-INTO_RTH-w_claude-fable-5-1-c_terra: PUBLISHED; 6 of 13 lines struck (Summary struck); $0.4482; tokens writer:claude-fable-5-1:10833/5737 checker:gpt-5.6-terra:19597/1152
+p1-2026-10-06-INTO_RTH-w_luna-c_terra: PUBLISHED; 4 of 13 lines struck; $0.0437; tokens writer:gpt-5.6-luna:5686/2552 checker:gpt-5.6-terra:16813/488
+p1-2026-10-06-INTO_RTH-w_claude-opus-5-5-c_terra: PUBLISHED; 4 of 13 lines struck; $0.1660; tokens writer:claude-opus-5-5:8626/4386 checker:gpt-5.6-terra:17051/805
+p1-2026-10-06-INTO_RTH-w_claude-fable-5-1-c_terra: PUBLISHED; 4 of 13 lines struck; $0.3403; tokens writer:claude-fable-5-1:8626/4219 checker:gpt-5.6-terra:17165/727
+p1-2026-10-02-INTO_POWER_HOUR-w_luna-c_terra: PUBLISHED; 1 of 13 lines struck; $0.0419; tokens writer:gpt-5.6-luna:5703/2552 checker:gpt-5.6-terra:14700/688
+p1-2026-10-02-INTO_POWER_HOUR-w_claude-opus-5-5-c_terra: PUBLISHED; 0 of 13 lines struck; $0.1462; tokens writer:claude-opus-5-5:8640/3689 checker:gpt-5.6-terra:14904/671
+p1-2026-10-02-INTO_POWER_HOUR-w_claude-fable-5-1-c_terra: PUBLISHED; 0 of 13 lines struck; $0.3454; tokens writer:claude-fable-5-1:8640/4359 checker:gpt-5.6-terra:15093/907
+p1-2026-10-05-INTO_POWER_HOUR-w_luna-c_terra: PUBLISHED; 1 of 13 lines struck; $0.0353; tokens writer:gpt-5.6-luna:4994/2507 checker:gpt-5.6-terra:12049/596
+p1-2026-10-05-INTO_POWER_HOUR-w_claude-opus-5-5-c_terra: PUBLISHED; 1 of 13 lines struck; $0.1298; tokens writer:claude-opus-5-5:7529/3306 checker:gpt-5.6-terra:12137/776
+p1-2026-10-05-INTO_POWER_HOUR-w_claude-fable-5-1-c_terra: PUBLISHED; 2 of 13 lines struck; $0.3064; tokens writer:claude-fable-5-1:7529/3857 checker:gpt-5.6-terra:12279/1145
+p1-2026-10-06-INTO_POWER_HOUR-w_luna-c_terra: PUBLISHED; 5 of 13 lines struck; $0.0457; tokens writer:gpt-5.6-luna:6033/2324 checker:gpt-5.6-terra:17246/604
+p1-2026-10-06-INTO_POWER_HOUR-w_claude-opus-5-5-c_terra: PUBLISHED; 3 of 13 lines struck; $0.1822; tokens writer:claude-opus-5-5:9066/4880 checker:gpt-5.6-terra:17671/1085
+p1-2026-10-06-INTO_POWER_HOUR-w_claude-fable-5-1-c_terra: PUBLISHED; 3 of 13 lines struck; $0.3994; tokens writer:claude-fable-5-1:9066/5272 checker:gpt-5.6-terra:17619/829
+p1-2026-10-02-AFTER_HOURS-w_luna-c_terra: PUBLISHED; 0 of 13 lines struck; $0.0397; tokens writer:gpt-5.6-luna:5654/1837 checker:gpt-5.6-terra:14575/603
+p1-2026-10-02-AFTER_HOURS-w_claude-opus-5-5-c_terra: PUBLISHED; 1 of 13 lines struck; $0.1478; tokens writer:claude-opus-5-5:8601/3792 checker:gpt-5.6-terra:14756/671
+p1-2026-10-02-AFTER_HOURS-w_claude-fable-5-1-c_terra: PUBLISHED; 1 of 13 lines struck; $0.3497; tokens writer:claude-fable-5-1:8601/4465 checker:gpt-5.6-terra:14978/870
+p1-2026-10-05-AFTER_HOURS-w_luna-c_terra: PUBLISHED; 3 of 13 lines struck; $0.0407; tokens writer:gpt-5.6-luna:4896/2343 checker:gpt-5.6-terra:12190/1046
+p1-2026-10-05-AFTER_HOURS-w_claude-opus-5-5-c_terra: PUBLISHED; 2 of 13 lines struck; $0.1370; tokens writer:claude-opus-5-5:7359/3770 checker:gpt-5.6-terra:12294/632
+p1-2026-10-05-AFTER_HOURS-w_claude-fable-5-1-c_terra: PUBLISHED; 3 of 13 lines struck; $0.3191; tokens writer:claude-fable-5-1:7359/4078 checker:gpt-5.6-terra:12437/1398
+p1-2026-10-06-AFTER_HOURS-w_luna-c_terra: PUBLISHED; 5 of 13 lines struck (Summary struck); $0.0455; tokens writer:gpt-5.6-luna:6082/2818 checker:gpt-5.6-terra:17323/523
+p1-2026-10-06-AFTER_HOURS-w_claude-opus-5-5-c_terra: PUBLISHED; 4 of 13 lines struck; $0.1783; tokens writer:claude-opus-5-5:9147/4821 checker:gpt-5.6-terra:17740/814
+p1-2026-10-06-AFTER_HOURS-w_claude-fable-5-1-c_terra: PUBLISHED; 4 of 13 lines struck; $0.3828; tokens writer:claude-fable-5-1:9147/4873 checker:gpt-5.6-terra:17840/1002
+
+p2-2026-10-02-PREMARKET-w_luna-replayed-c_claude-opus-5-5: PUBLISHED; 4 of 13 lines struck (Summary struck); $0.1600; tokens checker:claude-opus-5-5:29562/2089
+p2-2026-10-02-PREMARKET-w_luna-replayed-c_claude-fable-5-1: PUBLISHED; 4 of 13 lines struck (Summary struck); $0.4258; tokens checker:claude-fable-5-1:29562/2603
+p2-2026-10-05-PREMARKET-w_luna-replayed-c_claude-opus-5-5: PUBLISHED; 0 of 13 lines struck; $0.1608; tokens checker:claude-opus-5-5:29643/2111
+p2-2026-10-05-PREMARKET-w_luna-replayed-c_claude-fable-5-1: PUBLISHED; 2 of 13 lines struck; $0.4513; tokens checker:claude-fable-5-1:29643/3097
+p2-2026-10-06-PREMARKET-w_luna-replayed-c_claude-opus-5-5: MISSED {"kind":"CHECKER_FAILED","at":"2026-10-12T21:15:51.911Z"}; 0 of 13 lines struck; $0.1622; tokens checker:claude-opus-5-5:30598/1989
+p2-2026-10-06-PREMARKET-w_luna-replayed-c_claude-fable-5-1: PUBLISHED; 1 of 13 lines struck; $0.4038; tokens checker:claude-fable-5-1:30598/1957
+p2-2026-10-02-INTO_RTH-w_luna-replayed-c_claude-opus-5-5: PUBLISHED; 1 of 13 lines struck; $0.1563; tokens checker:claude-opus-5-5:30907/1635
+p2-2026-10-02-INTO_RTH-w_luna-replayed-c_claude-fable-5-1: PUBLISHED; 1 of 13 lines struck; $0.4041; tokens checker:claude-fable-5-1:30907/1901
+p2-2026-10-05-INTO_RTH-w_luna-replayed-c_claude-opus-5-5: PUBLISHED; 4 of 13 lines struck; $0.1575; tokens checker:claude-opus-5-5:29574/1958
+p2-2026-10-05-INTO_RTH-w_luna-replayed-c_claude-fable-5-1: PUBLISHED; 4 of 13 lines struck; $0.4708; tokens checker:claude-fable-5-1:29574/3502
+p2-2026-10-06-INTO_RTH-w_luna-replayed-c_claude-opus-5-5: PUBLISHED; 4 of 13 lines struck; $0.1402; tokens checker:claude-opus-5-5:26147/1781
+p2-2026-10-06-INTO_RTH-w_luna-replayed-c_claude-fable-5-1: PUBLISHED; 4 of 13 lines struck; $0.3528; tokens checker:claude-fable-5-1:26147/1826
+p2-2026-10-02-INTO_POWER_HOUR: NOT RUN, spend $10.7922 + worst case $1.4280 exceeds the $12 stop
+p2-2026-10-05-INTO_POWER_HOUR: NOT RUN, spend $10.7922 + worst case $1.4280 exceeds the $12 stop
+p2-2026-10-06-INTO_POWER_HOUR: NOT RUN, spend $10.7922 + worst case $1.4280 exceeds the $12 stop
+p2-2026-10-02-AFTER_HOURS: NOT RUN, spend $10.7922 + worst case $1.4280 exceeds the $12 stop
+p2-2026-10-05-AFTER_HOURS: NOT RUN, spend $10.7922 + worst case $1.4280 exceeds the $12 stop
+p2-2026-10-06-AFTER_HOURS: NOT RUN, spend $10.7922 + worst case $1.4280 exceeds the $12 stop
+
+TOTAL spend $10.7922

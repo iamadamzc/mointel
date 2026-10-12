@@ -1,0 +1,102 @@
+{
+  "record": {
+    "phase": 2,
+    "tag": "p2-2026-10-06-PREMARKET-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "MISSED {\"kind\":\"CHECKER_FAILED\",\"at\":\"2026-10-12T21:15:51.911Z\"}",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": null,
+    "costUsd": 0.162172,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30598,
+        "outputTokens": 1989,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20048,
+        "role": "checker"
+      }
+    ]
+  },
+  "draft": {
+    "headline": "",
+    "overall": "Among the counted names, 11 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI business expansion and planned reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of the VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. After the close, MTEN added 83 percent. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "LCFY",
+            "text": "At 09:29 ET on October 6, 2026, Locafy announced an agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million tied to performance, with expected additions of about $2.0 million in ARR and about $900,000 in 2026 EBIT. The acquisition is subject to closing conditions, and the evidence does not establish a closing date or whether the contingent consideration becomes payable."
+          },
+          {
+            "ticker": "VCIG",
+            "text": "At 15:50 ET on October 6, 2026, VCI Global announced the launch of the VGAIN Compute AI Token Platform as an expansion into AI infrastructure and LLM services. The announcement presents a new AI and LLM-related platform launch, but operating, customer, revenue, and transaction-value metrics are not provided."
+          },
+          {
+            "ticker": "XHG",
+            "text": "At 08:30 ET on October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. The announcement combines that planned initiative and investment range with the operational reduction, while the bundle does not include a company SEC filing confirming the expansion, funding source, implementation timetable, or financial effect."
+          },
+          {
+            "ticker": "MTEN",
+            "text": "At 16:30 ET on October 6, 2026, the company reported completion of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen. The desk treats it as a material company-specific transaction disclosed in a current report, but the acquired businesses' financial contribution and operating terms are not established."
+          },
+          {
+            "ticker": "BIYA",
+            "text": "On September 29, 2026, BIYA reported H1 FY2026 net loss of $2.37 million versus $4.71 million in the comparative period, basic and diluted loss per share of $(0.54) versus $(96.15), and sales of $756,805. The improved per-share result is a fresh company-specific result, but the filing reports ongoing losses and possible future equity or convertible financing dilution."
+          },
+          {
+            "ticker": "SXTC",
+            "text": "This is older or secondary news, not a fresh catalyst: on September 16, 2026, the SEC declared effective an F-3 tied to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity; the facility's disclosed aggregate principal amount was up to $31.5 million. The effectiveness supports legal resale eligibility, but the evidence does not confirm sales under the registration."
+          },
+          {
+            "ticker": "SMXT",
+            "text": "This is older or secondary news, not a fresh catalyst: the latest company-specific event was an August 2026 Nasdaq noncompliance notice concerning the delayed June 30 Form 10-Q, after a one-for-12 reverse split. The collected event is a Nasdaq listing-compliance matter rather than a fresh operating catalyst, while the current session has unusually elevated relative volume."
+          },
+          {
+            "ticker": "BURU",
+            "text": "This is older or secondary news, not a fresh catalyst: secondary coverage reported that Nuburu unveiled Site Dome and submitted its first proposal to an aerospace-defense customer, while a recent SEC filing disclosed changes to warrant valuation provisions and registration-related obligations for certain holders. The proposal is a company-specific commercial-development item, but it is not a disclosed order or contract and lacks primary-source confirmation."
+          },
+          {
+            "ticker": "CRBU",
+            "text": "The research reached no conclusion about a fresh catalyst. The latest SEC-filed update located was the August 13, 2026 second-quarter results and business update, covering ongoing clinical programs and H2 2026 data expectations; its connection to the observed price action is unestablished."
+          },
+          {
+            "ticker": "KAPA",
+            "text": "At 07:30 ET on October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial, with secondary coverage reporting 17.7-month median progression-free survival versus 2 months. The desk treats this as a company-specific Phase 2 interim efficacy update, but the primary-source excerpt does not provide the trial sample size, follow-up duration, or full statistical results."
+          },
+          {
+            "ticker": "NEPH",
+            "text": "This name was not researched yet, and no dossier was available at this checkpoint."
+          },
+          {
+            "ticker": "TRVI",
+            "text": "This is older or secondary news, not a fresh catalyst: on August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial, with a second Phase 3 IPF trial expected to begin in the second half of 2026. The update concerns ongoing advancement of Haduvio across those studies, but no later company-specific event explains the observed session activity."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"Among the counted names, 11 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI business expansion and planned reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of the VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. After the close, MTEN added 83 percent. 6 of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"LCFY\",\"text\":\"At 09:29 ET on October 6, 2026, Locafy announced an agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million tied to performance, with expected additions of about $2.0 million in ARR and about $900,000 in 2026 EBIT. The acquisition is subject to closing conditions, and the evidence does not establish a closing date or whether the contingent consideration becomes payable.\"},{\"ticker\":\"VCIG\",\"text\":\"At 15:50 ET on October 6, 2026, VCI Global announced the launch of the VGAIN Compute AI Token Platform as an expansion into AI infrastructure and LLM services. The announcement presents a new AI and LLM-related platform launch, but operating, customer, revenue, and transaction-value metrics are not provided.\"},{\"ticker\":\"XHG\",\"text\":\"At 08:30 ET on October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. The announcement combines that planned initiative and investment range with the operational reduction, while the bundle does not include a company SEC filing confirming the expansion, funding source, implementation timetable, or financial effect.\"},{\"ticker\":\"MTEN\",\"text\":\"At 16:30 ET on October 6, 2026, the company reported completion of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen. The desk treats it as a material company-specific transaction disclosed in a current report, but the acquired businesses' financial contribution and operating terms are not established.\"},{\"ticker\":\"BIYA\",\"text\":\"On September 29, 2026, BIYA reported H1 FY2026 net loss of $2.37 million versus $4.71 million in the comparative period, basic and diluted loss per share of $(0.54) versus $(96.15), and sales of $756,805. The improved per-share result is a fresh company-specific result, but the filing reports ongoing losses and possible future equity or convertible financing dilution.\"},{\"ticker\":\"SXTC\",\"text\":\"This is older or secondary news, not a fresh catalyst: on September 16, 2026, the SEC declared effective an F-3 tied to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity; the facility's disclosed aggregate principal amount was up to $31.5 million. The effectiveness supports legal resale eligibility, but the evidence does not confirm sales under the registration.\"},{\"ticker\":\"SMXT\",\"text\":\"This is older or secondary news, not a fresh catalyst: the latest company-specific event was an August 2026 Nasdaq noncompliance notice concerning the delayed June 30 Form 10-Q, after a one-for-12 reverse split. The collected event is a Nasdaq listing-compliance matter rather than a fresh operating catalyst, while the current session has unusually elevated relative volume.\"},{\"ticker\":\"BURU\",\"text\":\"This is older or secondary news, not a fresh catalyst: secondary coverage reported that Nuburu unveiled Site Dome and submitted its first proposal to an aerospace-defense customer, while a recent SEC filing disclosed changes to warrant valuation provisions and registration-related obligations for certain holders. The proposal is a company-specific commercial-development item, but it is not a disclosed order or contract and lacks primary-source confirmation.\"},{\"ticker\":\"CRBU\",\"text\":\"The research reached no conclusion about a fresh catalyst. The latest SEC-filed update located was the August 13, 2026 second-quarter results and business update, covering ongoing clinical programs and H2 2026 data expectations; its connection to the observed price action is unestablished.\"},{\"ticker\":\"KAPA\",\"text\":\"At 07:30 ET on October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial, with secondary coverage reporting 17.7-month median progression-free survival versus 2 months. The desk treats this as a company-specific Phase 2 interim efficacy update, but the primary-source excerpt does not provide the trial sample size, follow-up duration, or full statistical results.\"},{\"ticker\":\"NEPH\",\"text\":\"This name was not researched yet, and no dossier was available at this checkpoint.\"},{\"ticker\":\"TRVI\",\"text\":\"This is older or secondary news, not a fresh catalyst: on August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial, with a second Phase 3 IPF trial expected to begin in the second half of 2026. The update concerns ongoing advancement of Haduvio across those studies, but no later company-specific event explains the observed session activity.\"}]}",
+  "result": {
+    "status": "MISSED",
+    "cause": {
+      "kind": "CHECKER_FAILED",
+      "at": "2026-10-12T21:15:51.911Z"
+    },
+    "diagnostics": {
+      "lines": 0,
+      "strikes": [],
+      "writerMs": 3001,
+      "checkerMs": 20055
+    }
+  }
+}

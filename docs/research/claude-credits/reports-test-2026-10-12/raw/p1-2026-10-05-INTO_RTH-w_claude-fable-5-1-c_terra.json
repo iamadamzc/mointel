@@ -1,0 +1,690 @@
+{
+  "record": {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_RTH-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L1",
+      "S1L5",
+      "S1L9",
+      "S1L11",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "costUsd": 0.448198,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 10833,
+        "outputTokens": 5737,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 61535,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19597,
+        "outputTokens": 1152,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 859,
+        "durationMs": 11883,
+        "role": "checker"
+      }
+    ]
+  },
+  "draft": {
+    "headline": "",
+    "overall": "MI leads this range, up 213 percent from the prior close, with fresh news found in our sources: a disclosed agreement to sell Class A shares in a private placement. The next covered gainers by move are SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources, and APUS, up 64 percent from the prior close, with fresh news found in our sources: an agreement with BlockAssure to build and operate an insurance network. 3 of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "MI",
+            "text": "Up 221.3% since the previous checkpoint and printed a new high of day. The catalyst in our sources is a 6-K filed at 16:20 ET on September 30, 2026, in which NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million in a private placement subject to closing conditions, not reported as a completed issuance; the desk reads the proposed placement as large next to the last reported outstanding count, which is stale and cannot set a dilution percentage, with the purchase price below the market price in hand, and our sources do not report whether the placement closed, whether shares were issued, or when any issued shares could be resold."
+          },
+          {
+            "ticker": "ALEC",
+            "text": "The catalyst in our sources is an 8-K at 07:00 ET on October 5, 2026 disclosing a September 30, 2026 license agreement with Genentech covering certain GCase candidates, under which Genentech leads development, regulatory, manufacturing and commercialization while Alector retains its Alector Brain Carrier platform and rights to its wholly owned pipeline, and Alector said the deal extends its cash runway into 2029. The desk reads it as a company-specific validation and funding-runway event for a development-stage neurodegeneration name, with the upfront payment, milestones, royalties and total transaction value not stated in our sources."
+          },
+          {
+            "ticker": "VRAX",
+            "text": "Printed a new high of day. This is not a fresh catalyst: the latest commercial news in our sources is the July 9, 2026 Fosun Diagnostics commercial supply agreement and a July 16 shareholder update, both stale against the market date, while the September filings cover an effective warrant-resale registration and ATM capacity rather than new business; the desk reads the Fosun agreement as a legitimate commercial-expansion story that is not timely enough to explain the present move, and our sources do not say whether it has produced material revenue."
+          },
+          {
+            "ticker": "QTEX",
+            "text": "This is not a fresh catalyst: QTREX reported in a 6-K at 13:20 ET on October 1, 2026 that a leading quantum computing company independently tested its cryogenic interconnect at 20 mK and measured over 100 dB of channel isolation across the 4 to 8 GHz qubit band, and said it was finalizing a binding definitive agreement with that unnamed company, with the name and full agreement to be disclosed within weeks. The desk reads the isolation result as the material metric behind a concrete quantum-infrastructure story, while the counterparty identity, contract value and any commercial economics are not disclosed, and the agreement was not reported as executed."
+          },
+          {
+            "ticker": "EZRA",
+            "text": "This is not a fresh catalyst: Reliance reported on October 1, 2026 that it completed the sale of Altruis Benefit Consulting for $8 million in cash plus a potential earnout of up to $1 million, and a secondary report at 08:23 ET on October 5, 2026 said the company repaid its approximately $4.4 million Oak Street term loan in full with no term debt outstanding. The desk reads the sale as material cash proceeds and the repayment as deleveraging, noting the repayment rests only on secondary coverage and that our sources do not show how much of the proceeds remains after debt, costs and holdbacks."
+          },
+          {
+            "ticker": "SAIQ",
+            "text": "Down 37.5% since the previous checkpoint. This is not a fresh catalyst: WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026 and its ordinary shares began Nasdaq trading as SAIQ on October 2, per 6-K filings, with no transaction value or operating result stated in the primary excerpts; the desk reads the listing as a corporate transition that can concentrate attention and trading in the first sessions, with no primary-source valuation, redemption outcome, post-closing cash or capitalization detail in our sources."
+          },
+          {
+            "ticker": "APUS",
+            "text": "The catalyst in our sources is MindWave's announced agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network, which secondary coverage at 08:03 ET on October 5, 2026 describes as a two-year contract with MindWave to receive 20% of the planned token supply and fees not disclosed. The desk reads it as a new customer agreement for MindWave's technology-services business with a token component, leaving the direct financial impact unquantified since cash fees, token valuation and sale restrictions are not stated, and our sources do not show whether the move began before or after the announcement."
+          },
+          {
+            "ticker": "ICU",
+            "text": "ICU is not researched yet; there is no dossier at this checkpoint."
+          },
+          {
+            "ticker": "RETO",
+            "text": "Printed a new high of day. This is not a fresh catalyst: ReTo announced at 11:03 ET on September 29, 2026 a 1-for-20 reverse split effective October 2, following a September 18 announcement of a $15 million registered direct offering of 10,000,000 Class A shares and 10,000,000 warrants whose closing is not reported in our sources, and a halt at 19:50 ET on October 1, 2026 was labeled news pending with no underlying news in the bundle; the desk reads the split as arriving alongside recently announced potential share and warrant issuance, with the offering close, any issued-share total and any warrant exercises unreported."
+          },
+          {
+            "ticker": "VEEA",
+            "text": "Printed a new high of day. This is not a fresh catalyst: on October 1, 2026 Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores, with secondary coverage that day pairing the announcement with an approximately 48% stock move; the desk reads the planned deployment as a potentially material commercial use of VeeaONE, while contract value, schedule, purchase commitments, exclusivity and expected revenue are not disclosed in our sources."
+          },
+          {
+            "ticker": "VCIG",
+            "text": "Down 18.0% since the previous checkpoint and lost $1.17 support. This is not a fresh catalyst: a 6-K at 10:32 ET on September 30, 2026 disclosed a September 23 equity purchase agreement giving VCIG the right, subject to conditions, to direct Hudson Global Ventures to buy up to $125 million of ordinary shares, along with Dune and FirstFire convertible-note deals, and a September 29 F-1 seeks registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion shares; the desk reads it as financing with large dollar capacity and substantial potential issuance if conditions, registration, conversion or exercise requirements are met, with no put notice, no ELOC purchase and no F-1 effectiveness shown in our sources."
+          },
+          {
+            "ticker": "ONEN",
+            "text": "Printed a new high of day. The research could not tell whether a catalyst is at work: SEC filings, including an 8-K at 16:30 ET on September 23, 2026, document completion of the business combination, the renaming of HVII as ONE Nuclear Energy Inc., the Nasdaq listing of ONEN and approximately $146.5 million of redemption payments, but coverage is SEC-only with no newsroom or newswire sources, so the desk reads it as a completed de-SPAC that followed heavy redemptions and may shape post-combination trading, without being able to tie the timing of the current move to that closing."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"MI leads this range, up 213 percent from the prior close, with fresh news found in our sources: a disclosed agreement to sell Class A shares in a private placement. The next covered gainers by move are SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources, and APUS, up 64 percent from the prior close, with fresh news found in our sources: an agreement with BlockAssure to build and operate an insurance network. 3 of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"MI\",\"text\":\"Up 221.3% since the previous checkpoint and printed a new high of day. The catalyst in our sources is a 6-K filed at 16:20 ET on September 30, 2026, in which NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million in a private placement subject to closing conditions, not reported as a completed issuance; the desk reads the proposed placement as large next to the last reported outstanding count, which is stale and cannot set a dilution percentage, with the purchase price below the market price in hand, and our sources do not report whether the placement closed, whether shares were issued, or when any issued shares could be resold.\"},{\"ticker\":\"ALEC\",\"text\":\"The catalyst in our sources is an 8-K at 07:00 ET on October 5, 2026 disclosing a September 30, 2026 license agreement with Genentech covering certain GCase candidates, under which Genentech leads development, regulatory, manufacturing and commercialization while Alector retains its Alector Brain Carrier platform and rights to its wholly owned pipeline, and Alector said the deal extends its cash runway into 2029. The desk reads it as a company-specific validation and funding-runway event for a development-stage neurodegeneration name, with the upfront payment, milestones, royalties and total transaction value not stated in our sources.\"},{\"ticker\":\"VRAX\",\"text\":\"Printed a new high of day. This is not a fresh catalyst: the latest commercial news in our sources is the July 9, 2026 Fosun Diagnostics commercial supply agreement and a July 16 shareholder update, both stale against the market date, while the September filings cover an effective warrant-resale registration and ATM capacity rather than new business; the desk reads the Fosun agreement as a legitimate commercial-expansion story that is not timely enough to explain the present move, and our sources do not say whether it has produced material revenue.\"},{\"ticker\":\"QTEX\",\"text\":\"This is not a fresh catalyst: QTREX reported in a 6-K at 13:20 ET on October 1, 2026 that a leading quantum computing company independently tested its cryogenic interconnect at 20 mK and measured over 100 dB of channel isolation across the 4 to 8 GHz qubit band, and said it was finalizing a binding definitive agreement with that unnamed company, with the name and full agreement to be disclosed within weeks. The desk reads the isolation result as the material metric behind a concrete quantum-infrastructure story, while the counterparty identity, contract value and any commercial economics are not disclosed, and the agreement was not reported as executed.\"},{\"ticker\":\"EZRA\",\"text\":\"This is not a fresh catalyst: Reliance reported on October 1, 2026 that it completed the sale of Altruis Benefit Consulting for $8 million in cash plus a potential earnout of up to $1 million, and a secondary report at 08:23 ET on October 5, 2026 said the company repaid its approximately $4.4 million Oak Street term loan in full with no term debt outstanding. The desk reads the sale as material cash proceeds and the repayment as deleveraging, noting the repayment rests only on secondary coverage and that our sources do not show how much of the proceeds remains after debt, costs and holdbacks.\"},{\"ticker\":\"SAIQ\",\"text\":\"Down 37.5% since the previous checkpoint. This is not a fresh catalyst: WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026 and its ordinary shares began Nasdaq trading as SAIQ on October 2, per 6-K filings, with no transaction value or operating result stated in the primary excerpts; the desk reads the listing as a corporate transition that can concentrate attention and trading in the first sessions, with no primary-source valuation, redemption outcome, post-closing cash or capitalization detail in our sources.\"},{\"ticker\":\"APUS\",\"text\":\"The catalyst in our sources is MindWave's announced agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network, which secondary coverage at 08:03 ET on October 5, 2026 describes as a two-year contract with MindWave to receive 20% of the planned token supply and fees not disclosed. The desk reads it as a new customer agreement for MindWave's technology-services business with a token component, leaving the direct financial impact unquantified since cash fees, token valuation and sale restrictions are not stated, and our sources do not show whether the move began before or after the announcement.\"},{\"ticker\":\"ICU\",\"text\":\"ICU is not researched yet; there is no dossier at this checkpoint.\"},{\"ticker\":\"RETO\",\"text\":\"Printed a new high of day. This is not a fresh catalyst: ReTo announced at 11:03 ET on September 29, 2026 a 1-for-20 reverse split effective October 2, following a September 18 announcement of a $15 million registered direct offering of 10,000,000 Class A shares and 10,000,000 warrants whose closing is not reported in our sources, and a halt at 19:50 ET on October 1, 2026 was labeled news pending with no underlying news in the bundle; the desk reads the split as arriving alongside recently announced potential share and warrant issuance, with the offering close, any issued-share total and any warrant exercises unreported.\"},{\"ticker\":\"VEEA\",\"text\":\"Printed a new high of day. This is not a fresh catalyst: on October 1, 2026 Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores, with secondary coverage that day pairing the announcement with an approximately 48% stock move; the desk reads the planned deployment as a potentially material commercial use of VeeaONE, while contract value, schedule, purchase commitments, exclusivity and expected revenue are not disclosed in our sources.\"},{\"ticker\":\"VCIG\",\"text\":\"Down 18.0% since the previous checkpoint and lost $1.17 support. This is not a fresh catalyst: a 6-K at 10:32 ET on September 30, 2026 disclosed a September 23 equity purchase agreement giving VCIG the right, subject to conditions, to direct Hudson Global Ventures to buy up to $125 million of ordinary shares, along with Dune and FirstFire convertible-note deals, and a September 29 F-1 seeks registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion shares; the desk reads it as financing with large dollar capacity and substantial potential issuance if conditions, registration, conversion or exercise requirements are met, with no put notice, no ELOC purchase and no F-1 effectiveness shown in our sources.\"},{\"ticker\":\"ONEN\",\"text\":\"Printed a new high of day. The research could not tell whether a catalyst is at work: SEC filings, including an 8-K at 16:30 ET on September 23, 2026, document completion of the business combination, the renaming of HVII as ONE Nuclear Energy Inc., the Nasdaq listing of ONEN and approximately $146.5 million of redemption payments, but coverage is SEC-only with no newsroom or newswire sources, so the desk reads it as a completed de-SPAC that followed heavy redemptions and may shape post-combination trading, without being able to tie the timing of the current move to that closing.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_RTH",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-05",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 636,
+          "type": "OPEN_SPIKE_ASSESSMENT",
+          "completedAt": "2026-10-05T13:25:14.070Z"
+        }
+      ],
+      "publishedAt": "2026-10-12T21:07:36.616Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "MI",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "NFT Ltd",
+                "country": "Hong Kong",
+                "business": "NFT Ltd operates an online platform for artists, art dealers and art investors to list and trade valuable artwork."
+              },
+              "path": {
+                "from": 0.894,
+                "high": 4.42,
+                "now": 2.7989,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 4:20 PM ET",
+                  "headline": "On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The filing describes a private placement subject to closing conditions, not a confirmed completed issuance. This is substantial prospective share supply and is materially dilutive if closed. Sources 120500 and 120515.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "80.9M sh",
+                  "detail": "NFT Ltd disclosed a September 30 agreement for a potential 80,000,000-share private placement at $0.45 per share.",
+                  "tone": "warn",
+                  "full": "NFT Ltd disclosed a September 30 agreement for a potential 80,000,000-share private placement at $0.45 per share. Closing and issuance remain unconfirmed, but the prospective supply is material. Sources 120500 and 120515."
+                }
+              }
+            },
+            {
+              "ticker": "ALEC",
+              "liveFeed": null,
+              "text": "The catalyst in our sources is an 8-K at 07:00 ET on October 5, 2026 disclosing a September 30, 2026 license agreement with Genentech covering certain GCase candidates, under which Genentech leads development, regulatory, manufacturing and commercialization while Alector retains its Alector Brain Carrier platform and rights to its wholly owned pipeline, and Alector said the deal extends its cash runway into 2029. The desk reads it as a company-specific validation and funding-runway event for a development-stage neurodegeneration name, with the upfront payment, milestones, royalties and total transaction value not stated in our sources.",
+              "company": {
+                "name": "Alector, Inc.",
+                "country": "United States",
+                "business": "Alector is a biotechnology company developing therapies intended to counteract neurodegeneration, including programs using its blood-brain barrier delivery platform."
+              },
+              "path": {
+                "from": 1.81,
+                "high": 3.51,
+                "now": 2.86,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "2h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 5, 7:00 AM ET",
+                  "headline": "Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech will lead development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline. Alector said the partnership extends its cash runway into 2029. The agreement was publicly disclosed October 5.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Alector has a May 2026 ATM program permitting up to $125.0 million of common-stock sales.",
+                  "tone": "warn",
+                  "full": "Alector has a May 2026 ATM program permitting up to $125.0 million of common-stock sales. This represents potential new supply, not confirmed issuance."
+                }
+              }
+            },
+            {
+              "ticker": "APUS",
+              "liveFeed": null,
+              "text": "The catalyst in our sources is MindWave's announced agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network, which secondary coverage at 08:03 ET on October 5, 2026 describes as a two-year contract with MindWave to receive 20% of the planned token supply and fees not disclosed. The desk reads it as a new customer agreement for MindWave's technology-services business with a token component, leaving the direct financial impact unquantified since cash fees, token valuation and sale restrictions are not stated, and our sources do not show whether the move began before or after the announcement.",
+              "company": {
+                "name": "Apimeds Pharmaceuticals US, Inc.",
+                "country": "United States",
+                "business": "Through its wholly owned MindWave subsidiary, the company provides blockchain software development and technology services."
+              },
+              "path": {
+                "from": 3.22,
+                "high": 7,
+                "now": 5.29,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 5, 8:03 AM ET",
+                  "headline": "MindWave announced an agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network. Secondary coverage describes it as a two-year contract and says MindWave is to receive 20% of planned token supply, while fees were not disclosed.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "No reported share count or stated public float is supplied, so float and dilution ratios cannot be reconciled.",
+                  "tone": "warn",
+                  "full": "No reported share count or stated public float is supplied, so float and dilution ratios cannot be reconciled."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "VRAX",
+              "liveFeed": null,
+              "text": "Printed a new high of day. This is not a fresh catalyst: the latest commercial news in our sources is the July 9, 2026 Fosun Diagnostics commercial supply agreement and a July 16 shareholder update, both stale against the market date, while the September filings cover an effective warrant-resale registration and ATM capacity rather than new business; the desk reads the Fosun agreement as a legitimate commercial-expansion story that is not timely enough to explain the present move, and our sources do not say whether it has produced material revenue.",
+              "company": {
+                "name": "Virax Biolabs Group Ltd",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 2.2,
+                "high": 3.06,
+                "now": 2.48,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "88d",
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No fresh catalyst · latest: No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.23M sh supply",
+                  "detail": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares.",
+                  "tone": "neg",
+                  "full": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares. It therefore should not be treated as a current fully diluted count."
+                }
+              }
+            },
+            {
+              "ticker": "QTEX",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "QTREX Quantum Ltd.",
+                "country": null,
+                "business": "QTREX develops quantum connectivity and additive-manufacturing electronics solutions for next-generation hardware markets."
+              },
+              "path": {
+                "from": 1.1,
+                "high": 1.68,
+                "now": 1.3378,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 1:20 PM ET",
+                  "headline": "QTREX reported that a leading quantum computing company independently tested its cryogenic interconnect at 20 mK, finding over 100 dB channel isolation across the 4 to 8 GHz qubit band. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, with the name and full agreement to be disclosed within weeks. The technical result is company-specific and primary-source verified, but the agreement was not yet executed and no commercial value was disclosed.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "11.1M sh",
+                  "detail": "A registered direct offering of 11,111,111 ordinary shares at $0.90 per share was reported as completed in August 2026, creating material recent share issuance.",
+                  "tone": "warn",
+                  "full": "A registered direct offering of 11,111,111 ordinary shares at $0.90 per share was reported as completed in August 2026, creating material recent share issuance."
+                }
+              }
+            },
+            {
+              "ticker": "EZRA",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Reliance Global Group, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 2.2,
+                "high": 2.7,
+                "now": 2.17,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "Reliance completed the sale of Altruis Benefit Consulting for $8 million in cash plus a potential earnout of up to $1 million. A subsequent secondary report said the company repaid its approximately $4.4 million Oak Street term loan in full and had no outstanding term debt.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "21.6M sh supply",
+                  "detail": "Reported shares outstanding of 1,002,998 are dated July 30, 2026 and predate the effective registration covering up to 6,107,568 additional White Lion ELOC shares.",
+                  "tone": "neg",
+                  "full": "Reported shares outstanding of 1,002,998 are dated July 30, 2026 and predate the effective registration covering up to 6,107,568 additional White Lion ELOC shares."
+                }
+              }
+            },
+            {
+              "ticker": "SAIQ",
+              "liveFeed": null,
+              "text": "Down 37.5% since the previous checkpoint. This is not a fresh catalyst: WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026 and its ordinary shares began Nasdaq trading as SAIQ on October 2, per 6-K filings, with no transaction value or operating result stated in the primary excerpts; the desk reads the listing as a corporate transition that can concentrate attention and trading in the first sessions, with no primary-source valuation, redemption outcome, post-closing cash or capitalization detail in our sources.",
+              "company": {
+                "name": "WISeSat.Space Holdings Corp.",
+                "country": "British Virgin Islands",
+                "business": "WISeSat.Space is a space technology company focused on post-quantum cryptography secure satellite communications and Internet of Things connectivity."
+              },
+              "path": {
+                "from": 1.85,
+                "high": 18.39,
+                "now": 7.15,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 8:00 PM ET",
+                  "headline": "WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. This is a verifiable company-specific listing and business-combination event, but the primary-source excerpts do not state a transaction value or other material operating result that would support a STRONG grade.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "No reported shares outstanding or stated public float is available in the bundle, so float and float-to-outstanding reconciliation cannot be performed.",
+                  "tone": "warn",
+                  "full": "No reported shares outstanding or stated public float is available in the bundle, so float and float-to-outstanding reconciliation cannot be performed."
+                }
+              }
+            },
+            {
+              "ticker": "RETO",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "ReTo Eco-Solutions, Inc.",
+                "country": "China",
+                "business": "ReTo Eco-Solutions manufactures and distributes eco-friendly construction materials and intelligent equipment in China."
+              },
+              "path": {
+                "from": 1.55,
+                "high": 2.48,
+                "now": 2.05,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "6d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 29, 11:03 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 29 · The identified company events are structural and financing-related: ReTo announced a 1-for-20 reverse split effective October 2, after announcing a $15 million registered direct offering for 10,000,000 Class A shares and 10,000,000 warrants. The offering announcement is primary-source evidence, but its closing is not confirmed in the supplied evidence. A later trading halt was labeled news pending, with no underlying news disclosed in the bundle.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "20.0M sh supply",
+                  "detail": "No float figure is stated in the supplied evidence, so outstanding shares and float cannot be reconciled.",
+                  "tone": "neg",
+                  "full": "No float figure is stated in the supplied evidence, so outstanding shares and float cannot be reconciled."
+                }
+              }
+            },
+            {
+              "ticker": "VEEA",
+              "liveFeed": null,
+              "text": "Printed a new high of day. This is not a fresh catalyst: on October 1, 2026 Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores, with secondary coverage that day pairing the announcement with an approximately 48% stock move; the desk reads the planned deployment as a potentially material commercial use of VeeaONE, while contract value, schedule, purchase commitments, exclusivity and expected revenue are not disclosed in our sources.",
+              "company": {
+                "name": "VEEA INC.",
+                "country": "United States",
+                "business": "Veea provides AI-driven, cybersecure edge infrastructure for enterprises, service providers and public-sector organizations."
+              },
+              "path": {
+                "from": 3.33,
+                "high": 6,
+                "now": 5.4214,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:00 AM ET",
+                  "headline": "On October 1, 2026, Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores. The primary company announcement supplies a material deployment number, while secondary coverage associated it with an approximately 48% stock move.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Veea announced a 1-for-20 reverse stock split, with post-split trading expected to begin August 31, 2026.",
+                  "tone": "warn",
+                  "full": "Veea announced a 1-for-20 reverse stock split, with post-split trading expected to begin August 31, 2026."
+                }
+              }
+            },
+            {
+              "ticker": "VCIG",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "VCI Global Ltd",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 1.37,
+                "high": 1.4,
+                "now": 0.9998,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 10:32 AM ET",
+                  "headline": "On September 23, disclosed September 30, VCIG entered an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares. The same 6-K disclosed Dune and FirstFire convertible-note transactions, and the related September 29 F-1 seeks registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. This is fresh, company-specific financing and potential share supply, rather than an operational catalyst.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "103.5M sh supply",
+                  "detail": "The August 24 reverse split was expressly implemented to comply with Nasdaq's minimum bid-price requirement, reducing shares outstanding from approximately 18,997,434 to approximately 1,266,496.",
+                  "tone": "neg",
+                  "full": "The August 24 reverse split was expressly implemented to comply with Nasdaq's minimum bid-price requirement, reducing shares outstanding from approximately 18,997,434 to approximately 1,266,496."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "RESEARCH COULD NOT TELL",
+          "lines": [
+            {
+              "ticker": "ONEN",
+              "liveFeed": null,
+              "text": "Printed a new high of day. The research could not tell whether a catalyst is at work: SEC filings, including an 8-K at 16:30 ET on September 23, 2026, document completion of the business combination, the renaming of HVII as ONE Nuclear Energy Inc., the Nasdaq listing of ONEN and approximately $146.5 million of redemption payments, but coverage is SEC-only with no newsroom or newswire sources, so the desk reads it as a completed de-SPAC that followed heavy redemptions and may shape post-combination trading, without being able to tie the timing of the current move to that closing.",
+              "company": {
+                "name": "ONE Nuclear Energy Inc.",
+                "country": "United States",
+                "business": "ONE Nuclear is developing utility-scale power projects using natural-gas generation and advanced small modular reactor technologies."
+              },
+              "path": {
+                "from": 1.87,
+                "high": 2.4,
+                "now": 2.1804,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "—",
+                  "age": "12d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 23, 4:30 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 23 · SEC filings document completion of the business combination, the renaming of HVII as ONE Nuclear Energy Inc., Nasdaq listing of ONEN, and approximately $146.5 million of redemption payments on September 23, 2026. This is a material corporate transition, but catalyst coverage is SEC-only and lacks company newsroom or newswire coverage, so the evidence cannot establish whether this was the fresh driver of the observed move.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "No reported post-closing shares-outstanding count is available in the evidence bundle.",
+                  "tone": "warn",
+                  "full": "No reported post-closing shares-outstanding count is available in the evidence bundle."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "ICU",
+              "liveFeed": null,
+              "text": "ICU is not researched yet; there is no dossier at this checkpoint.",
+              "company": null,
+              "path": {
+                "from": 4.69,
+                "high": 5.15,
+                "now": 3.63,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": null,
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "O",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"sell\""
+        },
+        {
+          "id": "S1L1",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"sell\""
+        },
+        {
+          "id": "S1L5",
+          "reason": "SHARES_UNDATED",
+          "by": "rule",
+          "detail": "1002998"
+        },
+        {
+          "id": "S1L9",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "a halt with no halt observed"
+        },
+        {
+          "id": "S1L11",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "buy/sell: \"buy\""
+        },
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The exact 16:20 ET timestamp is for a REPORT OF FOREIGN PRIVATE ISSUER source, not a source identified as a 6-K; the cited 6-K source has only a date-level time."
+        },
+        {
+          "id": "S1L4",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The 6-K source is dated October 1 but has no 13:20 ET clock time; the 13:20 ET event time cannot support calling it a 6-K filed at that time."
+        }
+      ],
+      "writerMs": 61536,
+      "checkerMs": 11888
+    }
+  }
+}

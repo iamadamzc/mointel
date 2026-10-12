@@ -1,0 +1,2498 @@
+[
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-PREMARKET-w_luna-c_terra",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L6",
+      "S1L8",
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L12",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "costUsd": 0.0490734,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6771,
+        "outputTokens": 2311,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1311,
+        "durationMs": 29766,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18885,
+        "outputTokens": 598,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 387,
+        "durationMs": 6062,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-PREMARKET-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L2",
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L2",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L12",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE that brought its subsidiary 3,170 Bitcoin, and CYCU, with fresh news found in our sources: a Nasdaq notice that it had regained compliance with the $1.00 minimum-bid requirement. After the close, MI added 14 percent. Six of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.168164,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 10196,
+        "outputTokens": 3878,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 37010,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18982,
+        "outputTokens": 988,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 777,
+        "durationMs": 9968,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-PREMARKET-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L12",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, six ran at least 50 percent above the prior close, four of them names the desk covers, and five of the six kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were AMOD, which ran to 308 percent above the prior close and closed up 198 percent from the prior close, with fresh news found in our sources: Alpha Modus reported completing a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, which ran to 84 percent above the prior close and closed up 42 percent from the prior close, with fresh news found in our sources: Cycurion disclosed regaining compliance with the Nasdaq minimum-bid requirement. After the close, MI added 14 percent. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.46423200000000003,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 10196,
+        "outputTokens": 6155,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 68267,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19563,
+        "outputTokens": 1283,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 1034,
+        "durationMs": 12334,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-PREMARKET-w_luna-c_terra",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.047876400000000006,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 7120,
+        "outputTokens": 2062,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 899,
+        "durationMs": 24769,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19085,
+        "outputTokens": 484,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 273,
+        "durationMs": 4237,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-PREMARKET-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.191448,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 10726,
+        "outputTokens": 4967,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 42658,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19292,
+        "outputTokens": 885,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 674,
+        "durationMs": 8724,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-PREMARKET-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, which ran to 1066 percent above the prior close and closed up 683 percent from the prior close, with only older or secondary news in our sources, and VRAX, which ran to 52 percent above the prior close and closed up 9 percent from the prior close, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.47633,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 10726,
+        "outputTokens": 6306,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 67943,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19541,
+        "outputTokens": 1224,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 982,
+        "durationMs": 11873,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-PREMARKET-w_luna-c_terra",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L11",
+        "reason": "NOT_SELF_CONTAINED",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 11 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI business expansion and planned reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of the VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. After the close, MTEN added 83 percent. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.0538232,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6252,
+        "outputTokens": 2859,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1627,
+        "durationMs": 33902,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19729,
+        "outputTokens": 807,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 596,
+        "durationMs": 7366,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-PREMARKET-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 11 ran at least 50 percent above the prior close, and five of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were XHG, with fresh news found in our sources: a proposed U.S. AI business expansion alongside a planned reduction of mainland China operations, and VCIG, with fresh news found in our sources: the launch of an AI token platform. After the close, MTEN added 83 percent. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.180896,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 9342,
+        "outputTokens": 4521,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 39972,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19792,
+        "outputTokens": 1127,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 891,
+        "durationMs": 10724,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-PREMARKET-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6",
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L12",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 11 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI business expansion with planned investment of $5 million to $10 million alongside a gradual reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of its VGAIN Compute AI Token Platform. After the close, MTEN added 83 percent. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.41870599999999997,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 9342,
+        "outputTokens": 5437,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 57501,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20184,
+        "outputTokens": 1089,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 839,
+        "durationMs": 12181,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-INTO_RTH-w_luna-c_terra",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L7",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "AMOD, up 200 percent from the prior close, with Alpha Modus reporting completion of its bitcoin-backed PIPE transaction. AIXI, up 39 percent from the prior close, with a filing reporting first-half revenue down about 99.12% year over year. SDEV was up 38 percent from the prior close, with no catalyst found in our sources; 7 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.0541456,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6704,
+        "outputTokens": 3139,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 2344,
+        "durationMs": 30150,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19659,
+        "outputTokens": 810,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 569,
+        "durationMs": 8086,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-INTO_RTH-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L7",
+      "S1L2",
+      "S1L8"
+    ],
+    "strikes": [
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L8",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "AMOD, up 200 percent from the prior close and ranked first in this range, with fresh news found in our sources: Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30. AIXI, up 39 percent from the prior close, with fresh news found in our sources: a semi-annual filing reporting lower revenue and a shareholder loss. SDEV, up 38 percent from the prior close, with no catalyst found in our sources.",
+    "costUsd": 0.19139,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 10207,
+        "outputTokens": 4567,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 38362,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19963,
+        "outputTokens": 1608,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 1340,
+        "durationMs": 16155,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-INTO_RTH-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "AMOD leads the range, up 200 percent from the prior close, with fresh news found in our sources: completion of its bitcoin-backed PIPE transaction on September 30. AIXI is up 39 percent from the prior close, with fresh news found in our sources: a semi-annual filing reporting first-half revenue down about 99.12% year over year, and SDEV is up 38 percent from the prior close, with no catalyst found in our sources. 7 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.537098,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 10207,
+        "outputTokens": 7648,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 79753,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 20500,
+        "outputTokens": 969,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 758,
+        "durationMs": 8841,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_RTH-w_luna-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L3",
+      "S1L5",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 213 percent from the prior close, with fresh news found in our sources: a private placement agreement for Class A shares to non-U.S. purchasers. SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources. APUS, up 64 percent from the prior close, with fresh news found in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain.",
+    "costUsd": 0.0477626,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 7141,
+        "outputTokens": 2457,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1401,
+        "durationMs": 22346,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18939,
+        "outputTokens": 459,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 248,
+        "durationMs": 4463,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_RTH-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L5",
+      "S1L9",
+      "S1L11",
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, ranked first in this range, is up 213 percent from the prior close, with fresh news found in our sources: an agreed private placement of Class A shares to non-U.S. purchasers. The next covered gainers by move are SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources, and APUS, up 64 percent from the prior close, with fresh news found in our sources: an agreement to build and operate an insurance network for BlockAssure. 3 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.194492,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 10833,
+        "outputTokens": 4905,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 39934,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19120,
+        "outputTokens": 1235,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 996,
+        "durationMs": 12659,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_RTH-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L1",
+      "S1L5",
+      "S1L9",
+      "S1L11",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "costUsd": 0.448198,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 10833,
+        "outputTokens": 5737,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 61535,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19597,
+        "outputTokens": 1152,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 859,
+        "durationMs": 11883,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-INTO_RTH-w_luna-c_terra",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L7",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.",
+    "costUsd": 0.0436816,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5686,
+        "outputTokens": 2552,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1538,
+        "durationMs": 23937,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 16813,
+        "outputTokens": 488,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 277,
+        "durationMs": 4342,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-INTO_RTH-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L7",
+      "S1L8"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, ranked first in this range, is up 60 percent from the prior close, with fresh news found in our sources: secondary reports of a planned U.S. AI expansion and investment. The next covered gainers by move are AIXI, up 108 percent from the prior close, with only older or secondary news in our sources, and IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements to acquire and finance two NVIDIA B300 systems. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.165986,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 8626,
+        "outputTokens": 4386,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 35644,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17051,
+        "outputTokens": 805,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 594,
+        "durationMs": 8330,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-INTO_RTH-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L7",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "The leader in this range is XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary reports of a planned U.S. AI expansion and investment. The next covered gainers by move are AIXI, up 108 percent from the prior close, with only older or secondary news in our sources, and IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements to acquire and finance two NVIDIA B300 systems. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.34026399999999996,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 8626,
+        "outputTokens": 4219,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 44885,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17165,
+        "outputTokens": 727,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 516,
+        "durationMs": 7347,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-INTO_POWER_HOUR-w_luna-c_terra",
+    "day": "2026-10-02",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "ZNB is up 29 percent from the prior close, with only older or secondary news in our sources. AMOD is up 181 percent from the prior close, with fresh news found in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE; AIXI is up 56 percent from the prior close, with fresh news found in our sources: the company furnished its semi-annual report. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.041859,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5703,
+        "outputTokens": 2552,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1735,
+        "durationMs": 22813,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14700,
+        "outputTokens": 688,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 477,
+        "durationMs": 6838,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-INTO_POWER_HOUR-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-02",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB, ranked first in this range, was up 29 percent from the prior close, with only older or secondary news in our sources. The next covered gainers were AMOD, up 181 percent from the prior close, with fresh news found in our sources (a completed shares-for-Bitcoin private placement adding Bitcoin to a subsidiary), and AIXI, up 56 percent from the prior close, with fresh news found in our sources (a semi-annual report showing a half-year loss and convertible-note financing). Five of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.1462,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 8640,
+        "outputTokens": 3689,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 30176,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14904,
+        "outputTokens": 671,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 460,
+        "durationMs": 6786,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-INTO_POWER_HOUR-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-02",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB, ranked first in this range, is up 29 percent from the prior close, with only older or secondary news in our sources. AMOD is up 181 percent from the prior close, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE bringing 3,170 Bitcoin to a subsidiary, and AIXI is up 56 percent from the prior close, with fresh news found in our sources: a semi-annual report showing a $17.21 million shareholder loss. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.34542,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 8640,
+        "outputTokens": 4359,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 44177,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15093,
+        "outputTokens": 907,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 516,
+        "durationMs": 9235,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_POWER_HOUR-w_luna-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 806 percent from the prior close and down 12.4% since the previous checkpoint, with only older or secondary news in our sources. QTEX, up 44 percent from the prior close, with only older or secondary news in our sources. ALEC, up 20 percent from the prior close, with fresh news found in our sources: a September 30 license agreement with Genentech covering certain GCase candidates; fresh news was found for 2 of the 12 names the desk covers.",
+    "costUsd": 0.0352572,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4994,
+        "outputTokens": 2507,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1766,
+        "durationMs": 23150,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 12049,
+        "outputTokens": 596,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 248,
+        "durationMs": 5194,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_POWER_HOUR-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, ranked first in this range, was up 806 percent from the prior close, with only older or secondary news in our sources. QTEX was up 44 percent from the prior close, with only older or secondary news in our sources, and ALEC was up 20 percent from the prior close, with fresh news found in our sources: a license agreement with Genentech covering certain GCase candidates. Two of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.129822,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 7529,
+        "outputTokens": 3306,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 27130,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 12137,
+        "outputTokens": 776,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 433,
+        "durationMs": 7577,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-INTO_POWER_HOUR-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-05",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI leads this range, up 806 percent from the prior close, with only older or secondary news in our sources. The next covered gainers are QTEX, up 44 percent from the prior close, with only older or secondary news in our sources, and ALEC, up 20 percent from the prior close, with fresh news found in our sources: a license agreement with Genentech covering certain GCase candidates. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.306438,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 7529,
+        "outputTokens": 3857,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 39335,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 12279,
+        "outputTokens": 1145,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 777,
+        "durationMs": 11027,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-INTO_POWER_HOUR-w_luna-c_terra",
+    "day": "2026-10-06",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L5",
+      "S1L8",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 5 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI-business expansion and planned reduction of mainland China operations. OLOX, up 66 percent from the prior close, with no catalyst found in our sources. IPDN, up 40 percent from the prior close, with fresh news found in our sources: an equipment lease and financing arrangement for two NVIDIA B300 systems.",
+    "costUsd": 0.045735399999999996,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6033,
+        "outputTokens": 2324,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1468,
+        "durationMs": 22317,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17246,
+        "outputTokens": 604,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 258,
+        "durationMs": 6913,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-INTO_POWER_HOUR-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-06",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L8",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, ranked first in this range, is up 5 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and reduced mainland China operations. OLOX is up 66 percent from the prior close, with no catalyst found in our sources, and IPDN is up 40 percent from the prior close, with fresh news found in our sources: an equipment lease and loan for NVIDIA B300 systems. 8 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.182226,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 9066,
+        "outputTokens": 4880,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 39936,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17671,
+        "outputTokens": 1085,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 861,
+        "durationMs": 11040,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-INTO_POWER_HOUR-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-06",
+    "kind": "INTO_POWER_HOUR",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L8",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, ranked first in this range, was up 5 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and planned reduction of mainland China operations. The next covered gainers by move were OLOX, up 66 percent from the prior close, with no catalyst found in our sources, and IPDN, up 40 percent from the prior close, with fresh news found in our sources: an equipment lease and loan financing for NVIDIA B300 GPU systems. 8 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.399446,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 9066,
+        "outputTokens": 5272,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 53852,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17619,
+        "outputTokens": 829,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 618,
+        "durationMs": 10443,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-AFTER_HOURS-w_luna-c_terra",
+    "day": "2026-10-02",
+    "kind": "AFTER_HOURS",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB was up 41 percent from the prior close, with only older or secondary news in our sources. AMOD was up 199 percent from the prior close, with fresh news found in our sources: Alpha Modus reported a completed shares-for-Bitcoin PIPE involving 3,170 Bitcoin. AIXI was up 48 percent from the prior close, with fresh news found in our sources: the company furnished its semi-annual report after the October 1 session.",
+    "costUsd": 0.0397212,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5654,
+        "outputTokens": 1837,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1061,
+        "durationMs": 16903,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14575,
+        "outputTokens": 603,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 379,
+        "durationMs": 5724,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-AFTER_HOURS-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-02",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "ZNB, ranked first in this range, was up 41 percent from the prior close, with only older or secondary news in our sources. AMOD was up 199 percent from the prior close, with fresh news found in our sources (the company reported completing a shares-for-Bitcoin PIPE), and AIXI was up 48 percent from the prior close, with fresh news found in our sources (a semi-annual report showing a first-half loss and convertible-note financing). 5 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.147808,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 8601,
+        "outputTokens": 3792,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 31725,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14756,
+        "outputTokens": 671,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 376,
+        "durationMs": 6913,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-02-AFTER_HOURS-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-02",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "ZNB, up 41 percent from the prior close, with only older or secondary news in our sources. AMOD, up 199 percent from the prior close, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE bringing 3,170 Bitcoin to its subsidiary, and AIXI, up 48 percent from the prior close, with fresh news found in our sources: a semi-annual report showing a $17.21 million loss. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.34965599999999997,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 8601,
+        "outputTokens": 4465,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 47059,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14978,
+        "outputTokens": 870,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 500,
+        "durationMs": 8966,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-AFTER_HOURS-w_luna-c_terra",
+    "day": "2026-10-05",
+    "kind": "AFTER_HOURS",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6",
+      "S1L2",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L10",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 667 percent from the prior close, with only older or secondary news in our sources; it was up 11.4% since the previous checkpoint. QTEX, up 43 percent from the prior close, with only older or secondary news in our sources; APT, up 15 percent from the prior close, with research that could not tell. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.040722799999999997,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4896,
+        "outputTokens": 2343,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1527,
+        "durationMs": 23009,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 12190,
+        "outputTokens": 1046,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 629,
+        "durationMs": 10078,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-AFTER_HOURS-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-05",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, ranked first in this range, was up 667 percent from the prior close, with only older or secondary news in our sources. The next covered gainers by move were QTEX, up 43 percent from the prior close, with only older or secondary news in our sources, and APT, up 15 percent from the prior close, with research that could not tell. Two of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.137008,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 7359,
+        "outputTokens": 3770,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 30806,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 12294,
+        "outputTokens": 632,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 279,
+        "durationMs": 5746,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-05-AFTER_HOURS-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-05",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L6",
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, the leader ranked first in this range, closed up 667 percent from the prior close, with only older or secondary news in our sources. The next covered gainers by move were QTEX, up 43 percent from the prior close, with only older or secondary news in our sources, and APT, up 15 percent from the prior close, with research that could not tell. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.31914000000000003,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 7359,
+        "outputTokens": 4078,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 44329,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 12437,
+        "outputTokens": 1398,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 1005,
+        "durationMs": 14189,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-AFTER_HOURS-w_luna-c_terra",
+    "day": "2026-10-06",
+    "kind": "AFTER_HOURS",
+    "writer": "luna",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L5",
+      "S1L9",
+      "S1L10",
+      "O"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "costUsd": 0.04552,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6082,
+        "outputTokens": 2818,
+        "cachedInputTokens": 2006,
+        "reasoningTokens": 1929,
+        "durationMs": 28853,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17323,
+        "outputTokens": 523,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 280,
+        "durationMs": 6276,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-AFTER_HOURS-w_claude-opus-5-5-c_terra",
+    "day": "2026-10-06",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-opus-5-5",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L8",
+      "S1L9",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "NOT_SELF_CONTAINED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, ranked first in this range, was up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and a planned China operations reduction. The next covered gainers by move were IPDN, up 50 percent from the prior close, with fresh news found in our sources (an equipment lease and a loan tied to NVIDIA B300 systems), and OLOX, up 45 percent from the prior close, with no catalyst found in our sources. 8 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.17825599999999997,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 9147,
+        "outputTokens": 4821,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 38795,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17740,
+        "outputTokens": 814,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 603,
+        "durationMs": 8043,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 1,
+    "tag": "p1-2026-10-06-AFTER_HOURS-w_claude-fable-5-1-c_terra",
+    "day": "2026-10-06",
+    "kind": "AFTER_HOURS",
+    "writer": "claude-fable-5-1",
+    "checker": "terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L9",
+      "S1L10",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG led the range, up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and reduction of mainland China operations. Among the next covered gainers, IPDN was up 50 percent from the prior close, with fresh news found in our sources: a lease and loan covering two NVIDIA B300 GPU systems, and OLOX was up 45 percent from the prior close, with no catalyst found in our sources. 8 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.382824,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 9147,
+        "outputTokens": 4873,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 51362,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 17840,
+        "outputTokens": 1002,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 761,
+        "durationMs": 9235,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-02-PREMARKET-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L6",
+      "S1L8",
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L12",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "costUsd": 0.160028,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 29562,
+        "outputTokens": 2089,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20557,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-02-PREMARKET-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L6",
+      "S1L8",
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L6",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L8",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L12",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "costUsd": 0.42577,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 29562,
+        "outputTokens": 2603,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 26845,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-05-PREMARKET-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.160792,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 29643,
+        "outputTokens": 2111,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18259,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-05-PREMARKET-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6",
+      "S1L8"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      },
+      {
+        "id": "S1L8",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.45128,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 29643,
+        "outputTokens": 3097,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 34733,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-06-PREMARKET-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "MISSED {\"kind\":\"CHECKER_FAILED\",\"at\":\"2026-10-12T21:15:51.911Z\"}",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": null,
+    "costUsd": 0.162172,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30598,
+        "outputTokens": 1989,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20048,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-06-PREMARKET-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L11",
+        "reason": "NOT_SELF_CONTAINED",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 11 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI business expansion and planned reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of the VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. After the close, MTEN added 83 percent. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.40383,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 30598,
+        "outputTokens": 1957,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20013,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-02-INTO_RTH-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "AMOD, up 200 percent from the prior close, with Alpha Modus reporting completion of its bitcoin-backed PIPE transaction. AIXI, up 39 percent from the prior close, with a filing reporting first-half revenue down about 99.12% year over year. SDEV was up 38 percent from the prior close, with no catalyst found in our sources; 7 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.156328,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30907,
+        "outputTokens": 1635,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16091,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-02-INTO_RTH-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "AMOD, up 200 percent from the prior close, with Alpha Modus reporting completion of its bitcoin-backed PIPE transaction. AIXI, up 39 percent from the prior close, with a filing reporting first-half revenue down about 99.12% year over year. SDEV was up 38 percent from the prior close, with no catalyst found in our sources; 7 of the 12 names the desk covers had fresh news in our sources.",
+    "costUsd": 0.40412,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 30907,
+        "outputTokens": 1901,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19909,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-05-INTO_RTH-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L3",
+      "S1L5",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "UNSUPPORTED",
+        "by": "model"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 213 percent from the prior close, with fresh news found in our sources: a private placement agreement for Class A shares to non-U.S. purchasers. SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources. APUS, up 64 percent from the prior close, with fresh news found in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain.",
+    "costUsd": 0.157456,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 29574,
+        "outputTokens": 1958,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17888,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-05-INTO_RTH-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L3",
+      "S1L5",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L11",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 213 percent from the prior close, with fresh news found in our sources: a private placement agreement for Class A shares to non-U.S. purchasers. SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources. APUS, up 64 percent from the prior close, with fresh news found in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain.",
+    "costUsd": 0.47084,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 29574,
+        "outputTokens": 3502,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 39684,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-06-INTO_RTH-w_luna-replayed-c_claude-opus-5-5",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L7",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.",
+    "costUsd": 0.140208,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 26147,
+        "outputTokens": 1781,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16576,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "phase": 2,
+    "tag": "p2-2026-10-06-INTO_RTH-w_luna-replayed-c_claude-fable-5-1",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "writer": "luna-replayed",
+    "checker": "claude-fable-5-1",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L3",
+      "S1L7",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L7",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      },
+      {
+        "id": "S1L10",
+        "reason": "NUMBER_NOT_IN_ROW",
+        "by": "rule"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a planned shift toward U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources. IPDN, up 107 percent from the prior close, with fresh news found in our sources: agreements cover one NVIDIA B300 system and financing for a second.",
+    "costUsd": 0.35277,
+    "usage": [
+      {
+        "model": "claude-fable-5-1",
+        "inputTokens": 26147,
+        "outputTokens": 1826,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19315,
+        "role": "checker"
+      }
+    ]
+  }
+]

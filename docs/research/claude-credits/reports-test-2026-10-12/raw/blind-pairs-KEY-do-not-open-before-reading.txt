@@ -1,0 +1,12 @@
+pair 2026-10-02 PREMARKET: SKIPPED, a Summary is missing (luna absent, claude-opus-5-5 present)
+PAIR 1: A = luna, B = claude-fable-5-1
+PAIR 2: A = luna, B = claude-opus-5-5
+PAIR 3: A = luna, B = claude-fable-5-1
+PAIR 4: A = luna, B = claude-opus-5-5
+PAIR 5: A = luna, B = claude-fable-5-1
+PAIR 6: A = claude-opus-5-5, B = luna
+PAIR 7: A = luna, B = claude-fable-5-1
+PAIR 8: A = luna, B = claude-opus-5-5
+PAIR 9: A = luna, B = claude-fable-5-1
+PAIR 10: A = claude-opus-5-5, B = luna
+pair 2026-10-06 AFTER_HOURS: SKIPPED, a Summary is missing (luna absent, claude-fable-5-1 present)
