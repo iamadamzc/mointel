@@ -1,0 +1,207 @@
+[
+  {
+    "id": "M0",
+    "predicted": 0,
+    "failed": 0,
+    "failedSuites": 0,
+    "total": 130
+  },
+  {
+    "id": "K1",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "NONE_FOUND does not set NO_CATALYST",
+    "which": "G4"
+  },
+  {
+    "id": "K2",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "NO_CATALYST never written",
+    "which": "G4"
+  },
+  {
+    "id": "K3",
+    "predicted": 4,
+    "failed": 4,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "a located catalyst loses its tags",
+    "which": "G1, G2, G3, G9"
+  },
+  {
+    "id": "K4",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "NO_CATALYST survives on a located catalyst",
+    "which": "G3"
+  },
+  {
+    "id": "K5",
+    "predicted": 3,
+    "failed": 3,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "an unestablished catalyst keeps its topics",
+    "which": "G5, G6, G8"
+  },
+  {
+    "id": "K6",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "a pre-4 dossier is given tags",
+    "which": "G7"
+  },
+  {
+    "id": "K7",
+    "predicted": 4,
+    "failed": 4,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "the model's no-event word is stored",
+    "which": "G2, G4, G5, G6"
+  },
+  {
+    "id": "K8",
+    "predicted": 5,
+    "failed": 5,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "the model's not-a-deal word is stored",
+    "which": "G2, G3, G4, G5, G6"
+  },
+  {
+    "id": "K9",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "a substantive topic also listed as passing",
+    "which": "G1"
+  },
+  {
+    "id": "K10",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "a repeated topic counted twice",
+    "which": "G2"
+  },
+  {
+    "id": "K11",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "the model may pick NO_CATALYST",
+    "which": "S1"
+  },
+  {
+    "id": "K12",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "the model has no word for \"no event\"",
+    "which": "S1"
+  },
+  {
+    "id": "K13",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "the prompt carries no tag rules",
+    "which": "S3"
+  },
+  {
+    "id": "K14",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "the tie rule dropped",
+    "which": "S3"
+  },
+  {
+    "id": "K15",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "a pre-4 version reads as tags",
+    "which": "S4"
+  },
+  {
+    "id": "K16",
+    "predicted": 3,
+    "failed": 3,
+    "failedSuites": 6,
+    "total": 130,
+    "what": "the schema change without its version bump",
+    "which": "S1, E1, P1"
+  },
+  {
+    "id": "K17",
+    "predicted": 3,
+    "failed": 3,
+    "failedSuites": 6,
+    "total": 130,
+    "what": "the prompt change without its version bump",
+    "which": "S1, E1, P1"
+  },
+  {
+    "id": "K19",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "read 73 A2: an uncited catalyst keeps its tags",
+    "which": "G8"
+  },
+  {
+    "id": "K20",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "read 73 D: a deal status on a non-deal event",
+    "which": "G9"
+  },
+  {
+    "id": "K21",
+    "predicted": 2,
+    "failed": 2,
+    "failedSuites": 4,
+    "total": 130,
+    "what": "a government award loses its deal status",
+    "which": "G9, S5"
+  },
+  {
+    "id": "K22",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "read 73 A1: the no-inference rule dropped",
+    "which": "S3"
+  },
+  {
+    "id": "K18",
+    "predicted": 1,
+    "failed": 1,
+    "failedSuites": 2,
+    "total": 130,
+    "what": "a topic he ruled in goes missing",
+    "which": "S2"
+  }
+]

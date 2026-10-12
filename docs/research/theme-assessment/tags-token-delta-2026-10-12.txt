@@ -1,0 +1,10 @@
+Catalyst tags token delta, 2026-10-12 (script scripts/research/tags-token-delta.ts at edd1bbec; Ops's slot).
+Input the model reads: SYSTEM_PROMPT_A + JSON of AUTOMATIC_DOSSIER_SCHEMA (the same for every bundle).
+base 2714cfa3 (A:/mointel-sicfix2): {"schemaVersion":3,"promptVersion":5,"promptChars":6436,"schemaChars":8311,"totalChars":14747}
+head (A:/mointel-tags):             {"schemaVersion":4,"promptVersion":6,"promptChars":10098,"schemaChars":9975,"totalChars":20073}
+delta: +5,326 characters (prompt +3,662, schema +1,664); about +1,330 input tokens at 4 characters a token (ESTIMATE: no tokenizer installed).
+Real research calls, PC copy data/market-prod-2026-10-07.db, research_analysis_versions since 2026-10-06 with metadata.metrics:
+153 versions (gpt-5.6-terra, gpt-5.6-sol); input tokens median 12,546 (min 6,383, max 33,356); output median 2,951.
+So the input delta is about +11 percent of a median call. Output delta not measured (needs a paid call); estimate +20 to 40 tokens.
+Cost (ESTIMATE; terra prices as recorded $2 / $12 per million, cached prefix $0.20; about 110 write-ups a trading day; 21 days):
+input uncached about $0.29 a day, cached about $0.03; output about $0.04; about $1.50 to $8 a month. The sizing (cd4b2b0e) said +550-650 input tokens and $1-4 a month: the 25 definitions and the deal rules are about twice that.
