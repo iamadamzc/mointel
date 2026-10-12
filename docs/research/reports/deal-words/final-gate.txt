@@ -1,0 +1,28 @@
+== run 5 at 45d38340, 2026-10-12T21:58:32Z
+M0 unmutated: 0 failing, 126 passing (expect 0 failing and every file loaded)
+M1 no enter shapes: 28 failing, predicted many (every real line with "entered" fails, and the neutral-cue test): KILLED; restored True
+M2 gate always open: 5 failing, predicted 3 (neither; no research and v4; no ticker and narrative): KILLED (count differs from prediction); restored True
+M3 gate ignores supply: 2 failing, predicted 1 (supply only): KILLED (count differs from prediction); restored True
+M4 any supply block counts: 3 failing, predicted 1 (neither (its block has no filing)): KILLED (count differs from prediction); restored True
+M5 every rule tests the remainder: 2 failing, predicted 1 (the quiet test): KILLED (count differs from prediction); restored True
+M6 enter cue is blank: 13 failing, predicted many (neutral-cue test and real "entered an agreement to sell" lines): KILLED; restored True
+M7 into is not excluded: 3 failing, predicted 2 (negative "agreed to sell into strength" in the fixture and in the remainder test): KILLED (count differs from prediction); restored True
+M8 pronouns may be a party: 3 failing, predicted 2 (fixture negative "It confirmed it had broken out" and the confirmed test): KILLED (count differs from prediction); restored True
+M9 struck text not stored: 2 failing, predicted 1 (the pipeline struck-text test): KILLED (count differs from prediction); restored True
+M10 shapes never applied: 54 failing, predicted many (all 46 real lines, the passing gate tests): KILLED; restored True
+M11 intent and possession nouns admitted: 9 failing, predicted 6 (fixture: a plan, an offer, an option, the right, plans to sell (5); the v5 SANG pin (1)): KILLED (count differs from prediction); restored True
+M12 direct without a named party: 2 failing, predicted 1 (fixture: "Analysts direct investors to buy shares."): KILLED (count differs from prediction); restored True
+M13 writer told a shape the checker strikes: 2 failing, predicted 1 (the coupling test (list and checker pass)): KILLED (count differs from prediction); restored True
+13 of 13 killed and restored
+== parity (75c), 68 cases
+deal fact (raw): 46 cases, 0 still struck (TypeScript)
+advice negative: 22 cases, 22 still struck (TypeScript)
+PARITY: all 68 cases agree
+== final gate
+eslint exit 0
+tsc exit 0
+[pins] FAILED: release deadbee is not materialised under C:\Users\adshu\AppData\Local\Temp\mointel-releases-0xtwBY\releases
+[pins] FAILED: one or more pins are not satisfiable
+ Test Files  114 passed (114)
+      Tests  1791 passed (1791)
+end 2026-10-12T22:02:13Z

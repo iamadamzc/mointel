@@ -1,0 +1,32 @@
+== control
+sites matched: 1
+M0 unmutated: 1 failing, 44 passing (expect 0 failing and every file loaded)
+baseline not green; no mutants run
+harness exit code: 1 (expect non-zero: baseline refused)
+restored identical bytes: True
+== run 6 at 1da07a6f, 2026-10-12T22:02:40Z
+M0 unmutated: 0 failing, 126 passing (expect 0 failing and every file loaded)
+M1 no enter shapes: 27 failing, predicted many (every real line with "entered" fails, and the neutral-cue test): KILLED; restored True
+M2 gate always open: 4 failing, predicted 3 (neither; no research and v4; no ticker and narrative): KILLED (count differs from prediction); restored True
+M3 gate ignores supply: 1 failing, predicted 1 (supply only): KILLED; restored True
+M4 any supply block counts: 2 failing, predicted 1 (neither (its block has no filing)): KILLED (count differs from prediction); restored True
+M5 every rule tests the remainder: 1 failing, predicted 1 (the quiet test): KILLED; restored True
+M6 enter cue is blank: 12 failing, predicted many (neutral-cue test and real "entered an agreement to sell" lines): KILLED; restored True
+M7 into is not excluded: 2 failing, predicted 2 (negative "agreed to sell into strength" in the fixture and in the remainder test): KILLED; restored True
+M8 pronouns may be a party: 2 failing, predicted 2 (fixture negative "It confirmed it had broken out" and the confirmed test): KILLED; restored True
+M9 struck text not stored: 1 failing, predicted 1 (the pipeline struck-text test): KILLED; restored True
+M10 shapes never applied: 53 failing, predicted many (all 46 real lines, the passing gate tests): KILLED; restored True
+M11 intent and possession nouns admitted: 7 failing, predicted 6 (fixture: a plan, an offer, an option, the right, plans to sell (5); the v5 SANG pin (1)): KILLED (count differs from prediction); restored True
+M12 direct without a named party: 1 failing, predicted 1 (fixture: "Analysts direct investors to buy shares."): KILLED; restored True
+M13 writer told a shape the checker strikes: 1 failing, predicted 1 (the coupling test (list and checker pass)): KILLED; restored True
+13 of 13 killed and restored
+
+NOTES (written after run 6). Predictions were not changed after any run.
+- M2 (4 vs 3) and M4 (2 vs 1): the extra failure is the control test "every real deal line was struck before the
+  shapes", which runs on ticker NONE; both mutants admit NONE.
+- M11 (7 vs 6): the extra failure is the writer coupling test's "never" examples ("a plan to sell", "an offer to
+  sell"), which the mutant admits. The coupling test was added after M11's prediction was written.
+- Run 4 (aaf4fa85) is VOID: the harness counted failed tests only, and a test file that failed to load read as
+  "0 failing". Fixed at 45d38340; the control (harness-control.txt) shows the harness now refuses that baseline.
+- Run 5 counted failed files on top of failed tests; fixed at 1da07a6f. Run 6 is the record.
+- Final gate (final-gate.txt) ran at 45d38340; 1da07a6f and this commit change only the mutant script and raw files.

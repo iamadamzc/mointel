@@ -1,0 +1,19 @@
+== run 3 at 838a1a39, 2026-10-12T21:49:45Z
+M0 unmutated: 0 failing (expect 0)
+M1 no enter shapes: 26 failing, predicted many (every real line with "entered" fails, and the neutral-cue test): KILLED; restored True
+M2 gate always open: 4 failing, predicted 3 (neither; no research and v4; no ticker and narrative): KILLED (count differs from prediction); restored True
+M3 gate ignores supply: 1 failing, predicted 1 (supply only): KILLED; restored True
+M4 any supply block counts: 2 failing, predicted 1 (neither (its block has no filing)): KILLED (count differs from prediction); restored True
+M5 every rule tests the remainder: 1 failing, predicted 1 (the quiet test): KILLED; restored True
+M6 enter cue is blank: 12 failing, predicted many (neutral-cue test and real "entered an agreement to sell" lines): KILLED; restored True
+M7 into is not excluded: 2 failing, predicted 2 (negative "agreed to sell into strength" in the fixture and in the remainder test): KILLED; restored True
+M8 pronouns may be a party: 2 failing, predicted 2 (fixture negative "It confirmed it had broken out" and the confirmed test): KILLED; restored True
+M9 struck text not stored: 1 failing, predicted 1 (the pipeline struck-text test): KILLED; restored True
+M10 shapes never applied: 52 failing, predicted many (all 46 real lines, the passing gate tests): KILLED; restored True
+M11 intent and possession nouns admitted: 6 failing, predicted 6 (fixture: a plan, an offer, an option, the right, plans to sell (5); the v5 SANG pin (1)): KILLED; restored True
+M12 direct without a named party: 1 failing, predicted 1 (fixture: "Analysts direct investors to buy shares."): KILLED; restored True
+12 of 12 killed and restored
+== parity with Commercial's Python (75c, a42e45ca), 68 cases
+deal fact (raw): 46 cases, 0 still struck (TypeScript)
+advice negative: 22 cases, 22 still struck (TypeScript)
+PARITY: all 68 cases agree
