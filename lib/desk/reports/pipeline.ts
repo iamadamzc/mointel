@@ -304,7 +304,12 @@ export function readReportInputs(
 
 export interface ReportDiagnostics {
   lines: number;
-  strikes: Array<Pick<Strike, 'id' | 'reason' | 'by' | 'detail'>>;
+  /**
+   * `text`: the struck line's words as the writer wrote them, so a strike can be
+   * read back from the store (the published payload keeps no struck prose).
+   * Never shown to users. Null only for an id the draft does not carry.
+   */
+  strikes: Array<Pick<Strike, 'id' | 'reason' | 'by' | 'detail'> & { text: string | null }>;
   writerMs: number | null;
   checkerMs: number | null;
 }
@@ -409,9 +414,10 @@ export async function runReport(
       checkedLines = checked.lines;
     }
 
+    const struckText = new Map(draftLines(draft).map((line) => [line.id, line.text] as const));
     diagnostics = {
       lines: checkedLines,
-      strikes: strikes.map(({ id, reason, by, detail }) => ({ id, reason, by, detail })),
+      strikes: strikes.map(({ id, reason, by, detail }) => ({ id, reason, by, detail, text: struckText.get(id) ?? null })),
       writerMs,
       checkerMs,
     };

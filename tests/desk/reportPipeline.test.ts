@@ -190,6 +190,18 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.report.sections.flatMap((s) => s.lines.map((l) => l.ticker))).toEqual(['AAA', 'BBB']);
   });
 
+  it('diagnostics keep each struck line\'s words, which the published report drops (his question 2026-10-12)', async () => {
+    const db = fixture();
+    const struck = NARRATIVE.replace('up 13 percent', 'up 14 percent');
+    const line = 'Our sources found a contract award [Source 7].';
+    const run = await runReport(db, SLOT, { writer: writerWith(struck, line), checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(run.report.narrative).toBeNull();
+    expect(run.diagnostics.strikes.find((s) => s.id === 'O')?.text).toBe(struck);
+    expect(run.diagnostics.strikes.find((s) => s.reason === 'CITATION_TOKEN')?.text).toBe(line);
+  });
+
   it('a citation token in a name line is struck end to end', async () => {
     const db = fixture();
     const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE, 'Our sources found a contract award [Source 7].'), checker }, () => new Date(COMPLETED));

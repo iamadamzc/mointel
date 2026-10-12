@@ -204,6 +204,61 @@ const CLOCK = /\b(\d{1,2}):(\d{2})\b/g;
 /** A percent framed from the prior session, said on a row whose basis is not that. */
 const PRIOR_FRAME = /\b(?:prior|previous) (?:close|session)\b/i;
 
+/**
+ * A company's own deal, stated as a fact, is observed state, not advice
+ * (Commercial read 75, his yes 2026-10-12 via Integration; the reports test
+ * `8f6c9282` found the advice-word rule striking deal facts for every writer).
+ * Each shape is REMOVED before the three rules below test the remainder, so a
+ * line carrying an allowed shape AND a banned use is still struck. The shapes
+ * are read 75a's, ported from `docs/commercial/2026-10-12-deal-fact-shapes-check.py`
+ * (tested there on the 46 real struck lines of raw `656f461b`).
+ */
+const MONTH = '(?:January|February|March|April|May|June|July|August|September|October|November|December)';
+const DEAL_NOUNS =
+  '(?:agreement|contract|facility|arrangement|lease|licen[cs]e|merger|purchase|sale|offering|plan|term sheet|letter of intent|indication of interest|memorandum|settlement|loan|placement|subscription|partnership|joint venture)';
+/** A named party is never a pronoun or the stock itself ("It confirmed it had broken out" stays struck). */
+const NOT_A_PARTY = '(?!(?:It|This|That|He|She|They|Price|The stock|The name|The move)\\b)';
+
+/** Entering an agreement. Replaced by a neutral " agreement " so the sell/buy shape still sees its cue. */
+export const DEAL_ENTER_SHAPES: readonly RegExp[] = [
+  new RegExp(String.raw`\b(?:entered|enters|entering)\s+(?:into\s+)?(?:a|an|the|its|their)\s+(?:[\w\-,$.%]+\s+){0,6}?` + DEAL_NOUNS + String.raw`\b`, 'gi'),
+  /\b(?:entered|enters|entering)\s+(?:into\s+)?(?:[\w-]+\s+){0,3}?(?:agreements|contracts|arrangements|leases|licen[cs]es)\b/gi,
+  /\bentry into (?:a|an|the)\s+(?:[\w-]+\s+){0,6}?agreement\b/gi,
+  new RegExp(String.raw`\b(?:agreement|contract|lease|arrangement),?\s+entered\s+(?:on\s+)?` + MONTH + String.raw`\s+\d{1,2}\b`, 'gi'),
+];
+
+/** The deal itself, a resale's term of art, and "confirmed" as a reporting verb. Removed. */
+export const DEAL_FACT_SHAPES: readonly RegExp[] = [
+  // A cue up to 60 characters before "to sell" / "to buy", never "into ..." or "the news/rip/pop/spike/dip".
+  /\b(?:agree[ds]?|agreements?|contracts?|deals?|offers?|options?|right|obligation|obligated|plans?|intends?|proposes?|seeks?|offered|allow(?:s|ed|ing)|enabl(?:es|ed|ing)|permit(?:s|ted|ting)|direct)\b[^.;]{0,60}?\bto (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/gi,
+  /\bselling (?:stockholders?|shareholders?|securityholders?|security holders?)\b/gi,
+  // Case-sensitive: the company, management, or a named party of one to four capitalised words.
+  new RegExp('(?:[Tt]he company|[Mm]anagement|' + NOT_A_PARTY + String.raw`[A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3}) confirmed (?:that|it (?:had|has))\b`, 'g'),
+];
+
+/** The FORBIDDEN rules the deal-fact shapes relax; every other rule tests the whole line. */
+const DEAL_FACT_LABELS: ReadonlySet<string> = new Set(['buy/sell', 'enter/entry', 'prediction or certainty']);
+
+export function withoutDealFacts(text: string): string {
+  const entered = DEAL_ENTER_SHAPES.reduce((rest, shape) => rest.replace(shape, ' agreement '), text);
+  return DEAL_FACT_SHAPES.reduce((rest, shape) => rest.replace(shape, ' '), entered);
+}
+
+/**
+ * Read 75 counts a deal fact only on a CITED line. A v6 line carries no source
+ * id (one in the prose is struck, CITATION_TOKEN), so "cited" is the line's
+ * ticker having research at the checkpoint with at least one cited catalyst
+ * source OR at least one supply block that names its filing (a financing rests
+ * on the supply block): Commercial read 75b, ruled by Integration 2026-10-12.
+ * A line with no ticker (the narrative, the headline) keeps every deal word struck.
+ */
+export function dealFactsAllowed(ticker: string | null, research: CheckInput['research']): boolean {
+  if (ticker === null || !research) return false;
+  const found = research.get(ticker);
+  if (!found) return false;
+  return found.catalyst.sources.length > 0 || found.structure.supply.some((block) => block.sourceFiling !== null);
+}
+
 /** The label of the FORBIDDEN rule the v6 narrative is exempt from: it states GIVEN counts of names. */
 const NAME_COUNT_LABEL = 'a count of names (computed, never written)';
 
@@ -445,10 +500,11 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     const row = line.ticker === null ? null : input.rows.find((r) => r.ticker === line.ticker) ?? null;
 
     const v6Narrative = line.id === 'O' && input.narrative ? input.narrative : null;
+    const dealTested = dealFactsAllowed(line.ticker, input.research) ? withoutDealFacts(line.text) : line.text;
     for (const [shape, label] of FORBIDDEN) {
       // The v6 narrative states GIVEN counts of names ("the 12 names the desk covers"); its numbers are traced below instead.
       if (v6Narrative && label === NAME_COUNT_LABEL) continue;
-      const match = line.text.match(shape);
+      const match = (DEAL_FACT_LABELS.has(label) ? dealTested : line.text).match(shape);
       if (match) hit('FORBIDDEN_WORDING', `${label}: "${match[0]}"`);
     }
     // v6: a citation token in any line is struck (queue item (1)(d)'s checker guard).
