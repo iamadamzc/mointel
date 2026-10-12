@@ -251,12 +251,25 @@ export function readReportInputs(
        * ONE freshness verdict, the board's, AS OF THE CHECKPOINT (Design's catch,
        * 2026-10-03: PREMARKET filed COLA under FRESH NEWS while its own tag said
        * OLD, a Sep 11 catalyst on the 10-01 recap). The dossier's FRESH_FOUND was
-       * judged when the research ran; the board re-judges it at the checkpoint
-       * (why.ts OLD_CATALYST: stale by time and not explaining the move). Where
-       * they differ the report takes the board's, ONCE, here, so the section, the
-       * narrative's fresh count, the writer's sheet and the checker all agree.
+       * judged when the research ran; the board re-judges it at the checkpoint.
+       * Where they differ the report takes the board's, ONCE, here, so the section,
+       * the narrative's fresh count, the writer's sheet and the checker all agree.
+       *
+       * EITHER of two board readings demotes (Integration's ruling, 2026-10-12):
+       * - the card's FRESHNESS is STALE, older than yesterday, whether or not the
+       *   research says the event explains the move. "FRESH NEWS FOUND" and the
+       *   fresh count are age claims. JONE on the 10-05 recap: a 34-day-old event
+       *   said to explain the move kept FRESH_FOUND, because the badge code below
+       *   is withheld for an explained move, and the report called it fresh while
+       *   its own card said STALE. RECENT (yesterday) stays fresh.
+       * - the card's code is OLD_CATALYST (why.ts: stale by time and not
+       *   explaining the move), the original rule, kept. Today it is implied by
+       *   the first (why.ts:360 sets OLD_CATALYST only on STALE), so it is kept
+       *   for the case where why.ts changes, not for any row it decides now.
+       * The board itself is unchanged; this decides only the report's reading.
        */
-      const staleNow = found.catalyst.status === 'FRESH_FOUND' && tag.why.code === 'OLD_CATALYST';
+      const staleNow =
+        found.catalyst.status === 'FRESH_FOUND' && (tag.why.freshness === 'STALE' || tag.why.code === 'OLD_CATALYST');
       research.set(fact.ticker, staleNow ? { ...found, catalyst: { ...found.catalyst, status: 'SECONDARY_STALE' } } : found);
     }
     const session = sessions.get(fact.ticker);

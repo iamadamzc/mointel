@@ -262,4 +262,36 @@ describe('the report pipeline, v6 wiring', () => {
       ['NOT RESEARCHED AT THIS CHECKPOINT', ['BBB']],
     ]);
   });
+
+  it('a FRESH_FOUND catalyst the board bands STALE is demoted even when the research says it explains the move (Integration, JONE)', async () => {
+    // JONE on the 10-05 recap: a 34-day-old event, explainsMove true, so the card is GRADED (not OLD) but its freshness is STALE.
+    const db = fixture({ eventTimestamp: '2026-08-20', freshness: 'STALE', plausiblyExplainsMove: true });
+    const read = readReportInputs(db, 'INTO_POWER_HOUR', DATE, { min: 1, max: 20 });
+    expect(read.ok).toBe(true);
+    if (!read.ok) return;
+    expect(read.inputs.tags.get('AAA')?.why.code).toBe('GRADED');
+    expect(read.inputs.tags.get('AAA')?.why.freshness).toBe('STALE');
+    expect(read.inputs.research.get('AAA')?.catalyst.status).toBe('SECONDARY_STALE');
+    expect(read.inputs.narrative.fresh).toEqual({ count: 0, covered: 2 });
+    const run = await runReport(db, SLOT, { writer, checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    expect(run.report.sections.map((s) => [s.heading, s.lines.map((l) => l.ticker)])).toEqual([
+      ['OLDER OR SECONDARY NEWS', ['AAA']],
+      ['NOT RESEARCHED AT THIS CHECKPOINT', ['BBB']],
+    ]);
+  });
+
+  it.each([
+    ['RECENT (yesterday)', '2026-09-22', 'RECENT'],
+    ['FRESH (today)', '2026-09-23', 'FRESH'],
+  ])('a FRESH_FOUND catalyst the board bands %s stays fresh (Integration, JONE ruling)', (_label, eventTimestamp, band) => {
+    const db = fixture({ eventTimestamp, plausiblyExplainsMove: true });
+    const read = readReportInputs(db, 'INTO_POWER_HOUR', DATE, { min: 1, max: 20 });
+    expect(read.ok).toBe(true);
+    if (!read.ok) return;
+    expect(read.inputs.tags.get('AAA')?.why.freshness).toBe(band);
+    expect(read.inputs.research.get('AAA')?.catalyst.status).toBe('FRESH_FOUND');
+    expect(read.inputs.narrative.fresh).toEqual({ count: 1, covered: 2 });
+  });
 });
