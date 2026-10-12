@@ -1,0 +1,31 @@
+PHASE 1: writer arms, checker terra (same 12 inputs where run)
+  writer luna: inputs 12, errors 0, published 12, MISSED 0; lines struck 30 of 156 (19.2%); by rule 30, by model 4; Summary struck 2 of 12; cost $0.5452 ($0.0454 a report)
+    reasons: {'FORBIDDEN_WORDING': 22, 'NUMBER_NOT_IN_ROW': 5, 'UNSUPPORTED': 4, 'SHARES_UNDATED': 2, 'NOT_SELF_CONTAINED': 1}
+    mean tokens writer in/out 6086/2480, checker in/out 16766/642
+  writer claude-opus-5-5: inputs 12, errors 0, published 12, MISSED 0; lines struck 29 of 156 (18.6%); by rule 29, by model 4; Summary struck 0 of 12; cost $2.0137 ($0.1678 a report)
+    reasons: {'FORBIDDEN_WORDING': 25, 'UNSUPPORTED': 4, 'SHARES_UNDATED': 2, 'NUMBER_NOT_IN_ROW': 1, 'NOT_SELF_CONTAINED': 1}
+    mean tokens writer in/out 9189/4290, checker in/out 16975/941
+  writer claude-fable-5-1: inputs 12, errors 0, published 12, MISSED 0; lines struck 29 of 156 (18.6%); by rule 24, by model 10; Summary struck 1 of 12; cost $4.7878 ($0.3990 a report)
+    reasons: {'FORBIDDEN_WORDING': 22, 'UNSUPPORTED': 10, 'SHARES_UNDATED': 2}
+    mean tokens writer in/out 9189/5200, checker in/out 17233/1050
+
+PHASE 2: checker arms on luna's replayed draft; terra = phase 1's luna row on the SAME inputs
+  checker terra (phase 1, 6 inputs matched): inputs 6, errors 0, published 6, MISSED 0; lines struck 15 of 78 (19.2%); by rule 16, by model 1; Summary struck 1 of 6; cost $0.2964 ($0.0494 a report)
+    reasons: {'FORBIDDEN_WORDING': 10, 'NUMBER_NOT_IN_ROW': 3, 'SHARES_UNDATED': 2, 'NOT_SELF_CONTAINED': 1, 'UNSUPPORTED': 1}
+    mean tokens writer in/out 6612/2563, checker in/out 18852/608
+  checker claude-opus-5-5: inputs 6, errors 0, published 5, MISSED 1; lines struck 13 of 78 (16.7%); by rule 15, by model 1; Summary struck 1 of 6; cost $0.9370 ($0.1562 a report)
+    reasons: {'FORBIDDEN_WORDING': 10, 'NUMBER_NOT_IN_ROW': 3, 'SHARES_UNDATED': 2, 'UNSUPPORTED': 1}
+    mean tokens writer in/out None/None, checker in/out 29405/1927
+  checker claude-fable-5-1: inputs 6, errors 0, published 6, MISSED 0; lines struck 16 of 78 (20.5%); by rule 16, by model 2; Summary struck 1 of 6; cost $2.5086 ($0.4181 a report)
+    reasons: {'FORBIDDEN_WORDING': 10, 'NUMBER_NOT_IN_ROW': 3, 'UNSUPPORTED': 2, 'SHARES_UNDATED': 2, 'NOT_SELF_CONTAINED': 1}
+    mean tokens writer in/out None/None, checker in/out 29405/2481
+
+PHASE 2 per input: model-struck line ids (terra | opus | fable)
+  2026-10-02 INTO_RTH: ['S1L11'] | [] | []
+  2026-10-02 PREMARKET: [] | [] | []
+  2026-10-05 INTO_RTH: [] | ['S1L11'] | []
+  2026-10-05 PREMARKET: [] | [] | ['S1L6', 'S1L8']
+  2026-10-06 INTO_RTH: [] | [] | []
+  2026-10-06 PREMARKET: [] | [] | []
+
+TOTAL cost $10.7922 over 48 runs

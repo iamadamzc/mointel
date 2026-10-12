@@ -1,0 +1,3 @@
+luna: struck 30 of 156; struck ONLY by sell/entered 13; without them 17 of 156 (10.9%); sell/entered strike entries 16
+claude-opus-5-5: struck 29 of 156; struck ONLY by sell/entered 12; without them 17 of 156 (10.9%); sell/entered strike entries 16
+claude-fable-5-1: struck 29 of 156; struck ONLY by sell/entered 11; without them 18 of 156 (11.5%); sell/entered strike entries 14
