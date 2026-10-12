@@ -76,8 +76,11 @@ def run_tests():
         m = re.search(r'(\d+) ' + word, line or '')
         return int(m.group(1)) if m else 0
 
-    failed = count(files.group(1), 'failed') + count(tests.group(1) if tests else '', 'failed')
-    return failed, count(tests.group(1) if tests else '', 'passed'), None
+    failed_tests = count(tests.group(1) if tests else '', 'failed')
+    failed_files = count(files.group(1), 'failed')
+    # Predictions count failing TESTS; a file that cannot load runs none, so it counts once on its own.
+    loaded_files_failed = failed_files if failed_tests == 0 else 0
+    return failed_tests + loaded_files_failed, count(tests.group(1) if tests else '', 'passed'), None
 
 
 def main():
