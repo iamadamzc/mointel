@@ -53,6 +53,10 @@ MUTANTS = [
      r"{0,3} to (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/g,",
      r"{0,3} to (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/gi,", 1,
      'fixture: "Analysts direct investors to buy shares."'),
+    # Added with the writer-checker coupling test, before the fourth run: the mismatch head 838a1a39 shipped to the gate.
+    ('M13 writer told a shape the checker strikes', 'lib/desk/reports/writerV6.ts',
+     '"an agreement to sell", "selling stockholders"',
+     '"an agreement to sell", "plans to sell", "selling stockholders"', 1, 'the coupling test (list and checker pass)'),
 ]
 
 

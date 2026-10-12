@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { dealFactsAllowed, ruleStrikes, withoutDealFacts, type CheckInput } from '@/lib/desk/reports/check';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
+import { SYSTEM_V6 } from '@/lib/desk/reports/writerV6';
 import FIXTURE from './fixtures/deal-fact-lines-2026-10-12.json';
 
 /*
@@ -120,6 +121,25 @@ describe('the citation condition (read 75b, ruled 2026-10-12)', () => {
     expect(adviceStrikes(DEAL, null).length).toBe(2);
     const narrative = ruleStrikes(input([], MAP, `DEAL leads; ${DEAL}`)).filter((s) => s.id === 'O' && s.reason === 'FORBIDDEN_WORDING');
     expect(narrative.map((s) => s.detail)).toEqual(expect.arrayContaining(['buy/sell: "sell"', 'enter/entry: "entered"']));
+  });
+});
+
+describe('the writer is told exactly what the checker admits (Integration: they change together)', () => {
+  const rule = SYSTEM_V6.find((line) => line.startsWith('- Advice or action words:'))!;
+  const quoted = (part: string) => [...part.matchAll(/"([^"]+)"/g)].map((m) => m[1]!);
+  const allowed = quoted(rule.slice(rule.indexOf('One exception'), rule.indexOf('Never "sell"')));
+  const never = quoted(rule.slice(rule.indexOf('Never "sell"')));
+
+  it('names the allowed shapes, and each one passes the checker in a name\'s own line', () => {
+    expect(allowed).toEqual(['agreed to sell', 'an agreement to sell', 'selling stockholders', 'entered into an agreement']);
+    for (const phrase of allowed) expect(adviceStrikes(`Barnwell ${phrase} its Canadian business.`)).toEqual([]);
+  });
+
+  it('each example the writer is told never to use strikes', () => {
+    expect(never.length).toBeGreaterThan(0);
+    for (const phrase of never.filter((p) => /\b(?:sell|buy|entered)\b/.test(p))) {
+      expect(adviceStrikes(`Barnwell disclosed ${phrase} its Canadian business.`).length).toBeGreaterThan(0);
+    }
   });
 });
 

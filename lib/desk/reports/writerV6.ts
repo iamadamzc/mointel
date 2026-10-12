@@ -265,7 +265,7 @@ export const SYSTEM_V6 = [
   '- An agreement or a plan is what was agreed or announced ("agreed to acquire"), never "will". Never "confirmed": say "reported by the company". An analyst rating of Buy or Sell is "a positive (or negative) analyst rating".',
   '',
   'NEVER',
-  '- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name\'s own deal from its sources, stated as a fact in that name\'s line, in these shapes only: "agreed to sell", "an agreement to sell", "plans to sell", "selling stockholders", "entered into an agreement". Never "sell" or "buy" in any other place, and never "entered" except into an agreement.',
+  '- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name\'s own deal from its sources, stated as a fact in that name\'s line, in these shapes only, with the company or a named party doing it: "agreed to sell", "an agreement to sell", "selling stockholders", "entered into an agreement". Never "sell" or "buy" in any other place (never "a plan to sell" or "an offer to sell"), and never "entered" except into an agreement.',
   '- A float number, or a share count called float.',
   '- Shorting or fading as a trade. The reader is long-only.',
   '- "no catalyst" on its own; it is always "no catalyst found in our sources". Never "the real catalyst".',
