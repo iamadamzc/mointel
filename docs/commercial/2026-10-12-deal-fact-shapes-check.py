@@ -13,7 +13,10 @@ ENTER_SHAPES = [
     re.compile(r"\b(?:agreement|contract|lease|arrangement),?\s+entered\s+(?:on\s+)?" + MONTH + r"\s+\d{1,2}\b", re.I),
 ]
 OTHER_SHAPES = [
-    re.compile(r"\b(?:agree[ds]?|agreements?|contracts?|deals?|offers?|options?|right|obligation|obligated|plans?|intends?|proposes?|seeks?|offered|allow(?:s|ed|ing)|enabl(?:es|ed|ing)|permit(?:s|ted|ting)|direct)\b[^.;]{0,60}?\bto (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)", re.I),
+    # Read 75c: only the cues the 46 real lines need (ablation: agree/agrees/agreed, agreement(s), "direct <Named party>").
+    # Agentless intent nouns (plan, offer, option, right, obligation) are NOT cues: they state capacity or intent, not a fact.
+    re.compile(r"\b(?:agree[ds]?|agreements?)\b[^.;]{0,60}?\bto (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)", re.I),
+    re.compile(r"\bdirect [A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3} to (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)"),
     re.compile(r"\bselling (?:stockholders?|shareholders?|securityholders?|security holders?)\b", re.I),
     re.compile(r"(?:[Tt]he company|[Mm]anagement|" + PRON + r"[A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3}) confirmed (?:that|it (?:had|has))\b"),
 ]
@@ -69,6 +72,12 @@ if __name__ == '__main__':
         "It confirmed it had broken out.",
         "Consider buying here.",
         "The company entered the premarket list.",
+        "A plan to sell shares.",
+        "An offer to sell shares.",
+        "An option to sell shares.",
+        "The right to sell shares.",
+        "Plans to sell shares were filed.",
+        "Analysts direct investors to buy shares.",
         "The name entered at the open and traders should buy the dip.",
         "NFT Ltd entered an agreement to sell shares; traders should sell into the rip.",
     ]
