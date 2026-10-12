@@ -62,6 +62,18 @@ export const CATALYST_DEAL_STATUSES = ['PROPOSED', 'SIGNED', 'COMPLETED', 'UPDAT
 export type CatalystDealStatus = (typeof CATALYST_DEAL_STATUSES)[number];
 
 /**
+ * The event types a deal status may sit on (Commercial read 73, D: non-null only for deal-type events). A government
+ * grant or procurement award is a deal; a policy change under the same type carries none, which the model decides.
+ */
+export const DEAL_EVENTS: ReadonlySet<string> = new Set([
+  'COMMERCIAL_AGREEMENT',
+  'PARTNERSHIP',
+  'M_AND_A_STRATEGIC',
+  'FINANCING_CAPITAL',
+  'GOVERNMENT_POLICY',
+]);
+
+/**
  * The model's words for "none", strings because every enum in this schema is strings (a null inside a strict enum
  * has no precedent here). The guardrail turns each into null; neither is ever stored.
  */
@@ -89,7 +101,8 @@ export function catalystThemePromptBlock(): string {
   const events = CATALYST_EVENTS.map((event) => `    ${event.id}: ${event.covers}`).join('\n');
   return [
     '- The catalyst tags describe the EVENT the cited catalyst source reports: what the company announced, signed,',
-    '  acquired or launched, not a word that appears in the source, and never the company\'s industry alone. Tag',
+    '  acquired or launched, not a word that appears in the source. Never infer a topic from what the company',
+    '  usually does, from its industry, or from anything outside the cited source. Tag',
     `  only when catalystStatus is FRESH_FOUND or SECONDARY_STALE; otherwise empty lists, ${MODEL_NO_EVENT} and`,
     `  ${MODEL_NOT_A_DEAL}.`,
     '  catalystThemes: every topic the event is substantively about, from this list (empty when none applies):',
@@ -99,10 +112,13 @@ export function catalystThemePromptBlock(): string {
     '  award from a government body is GOVERNMENT_POLICY; one from a company is COMMERCIAL_AGREEMENT; working',
     '  together with no purchase committed is PARTNERSHIP.',
     events,
-    '  catalystDealStatus, for an event that is a deal: PROPOSED (a letter of intent, a non-binding proposal, an',
-    '  offer not yet accepted), SIGNED (a definitive agreement not yet closed), COMPLETED (closed, consummated or',
-    '  delivered), UPDATED (an amendment, extension or restatement of a deal announced earlier, or earlier news',
-    `  headlined again); ${MODEL_NOT_A_DEAL} when the event is not a deal.`,
+    '  catalystDealStatus, only for an event that is a deal (an agreement, partnership, acquisition or merger,',
+    '  financing, or government grant or award), and only from the cited source\'s own words: PROPOSED (announced',
+    '  intent: a letter of intent, a non-binding proposal, an offer not yet accepted), SIGNED (the source says a',
+    '  definitive agreement was signed and not yet closed), COMPLETED (the source says it closed, was consummated or',
+    '  was delivered), UPDATED (only when the source itself says it amends, extends or revises an earlier',
+    '  agreement; an old deal headlined again is NOT UPDATED). Otherwise, and for any other event,',
+    `  ${MODEL_NOT_A_DEAL}.`,
   ].join('\n');
 }
 

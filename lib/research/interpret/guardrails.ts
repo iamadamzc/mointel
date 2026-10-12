@@ -14,7 +14,7 @@
 import type { ResearchEvidenceBundle } from './bundle';
 import { withoutCitationsDeep } from '../citations';
 import { resolveCatalystFreshness } from '../time';
-import { MODEL_NO_EVENT, MODEL_NOT_A_DEAL, NO_CATALYST } from './catalystTheme';
+import { DEAL_EVENTS, MODEL_NO_EVENT, MODEL_NOT_A_DEAL, NO_CATALYST } from './catalystTheme';
 import { validateEvidenceRisk } from './evidenceRisk';
 import type {
   Confidence,
@@ -434,8 +434,10 @@ export function validateDossier(
   /*
    * The catalyst tags follow the FINAL status (after the downgrades above), so a counted tag can never contradict the
    * catalyst it describes (`catalystTheme.ts`; Commercial read 72, condition 2). NO_CATALYST is set HERE, from
-   * NONE_FOUND, never by the model. Tags survive only on a located catalyst (FRESH_FOUND, SECONDARY_STALE);
-   * CONFLICTING and UNKNOWN store none. Absent tags (a version before schema 4) are left absent: never invented.
+   * NONE_FOUND, never by the model. Tags survive only on a located catalyst (FRESH_FOUND, SECONDARY_STALE) WITH a cited
+   * source (Commercial read 73, A2: the tags rest on catalyst.evidenceSourceIds); CONFLICTING, UNKNOWN and an uncited
+   * catalyst store none. A deal status survives only on a deal-type event (read 73, D). Absent tags (a version before
+   * schema 4) are left absent: never invented.
    */
   if (catalyst.catalystThemes !== undefined) {
     // The model's "none" words are never stored.
@@ -466,7 +468,7 @@ export function validateDossier(
       catalyst.catalystPassingThemes = [];
       catalyst.catalystEvent = NO_CATALYST;
       catalyst.catalystDealStatus = null;
-    } else if (status === 'FRESH_FOUND' || status === 'SECONDARY_STALE') {
+    } else if ((status === 'FRESH_FOUND' || status === 'SECONDARY_STALE') && catalyst.evidenceSourceIds.length > 0) {
       // The model's enum excludes NO_CATALYST; this guards a value that reached here some other way.
       if (catalyst.catalystEvent === NO_CATALYST) {
         violations.push(
@@ -479,14 +481,26 @@ export function validateDossier(
         );
         catalyst.catalystEvent = null;
       }
+      if (catalyst.catalystDealStatus != null && !DEAL_EVENTS.has(catalyst.catalystEvent ?? '')) {
+        violations.push(
+          violation(
+            'CATALYST_TAGS_DEAL_NOT_A_DEAL',
+            'DOWNGRADE',
+            'catalyst.catalystDealStatus',
+            `catalystDealStatus ${catalyst.catalystDealStatus} on catalystEvent ${catalyst.catalystEvent ?? 'none'}, which is not a deal.`,
+          ),
+        );
+        catalyst.catalystDealStatus = null;
+      }
     } else {
       if (tagged) {
+        const uncited = catalyst.evidenceSourceIds.length === 0 ? ' and no cited source' : '';
         violations.push(
           violation(
             'CATALYST_TAGS_NOT_ESTABLISHED',
             'DOWNGRADE',
             'catalyst.catalystThemes',
-            `catalyst tags with catalystStatus ${status}: the tags of an unestablished catalyst are not established.`,
+            `catalyst tags with catalystStatus ${status}${uncited}: the tags of an unestablished catalyst are not established.`,
           ),
         );
       }

@@ -2156,9 +2156,24 @@ describe('the catalyst tags follow the final catalyst status', () => {
   });
 
   it('G3 removes NO_CATALYST from a located catalyst', () => {
-    const result = validateDossier(withTags({ ...tagged, catalystEvent: 'NO_CATALYST' }), bundle());
+    const result = validateDossier(withTags({ ...tagged, catalystEvent: 'NO_CATALYST', catalystDealStatus: 'NOT_A_DEAL' }), bundle());
     expect(tagsOf(result).event).toBeNull();
     expect(tagRules(result)).toEqual(['CATALYST_TAGS_CONTRADICT_STATUS']);
+  });
+
+  it('G8 a located catalyst with NO cited source stores no tags (Commercial read 73, A2)', () => {
+    const result = validateDossier(withTags(tagged, { evidenceSourceIds: [] }), bundle());
+    expect(tagsOf(result)).toEqual({ themes: null, passing: null, event: null, deal: null });
+    expect(tagRules(result)).toEqual(['CATALYST_TAGS_NOT_ESTABLISHED']);
+  });
+
+  it('G9 a deal status survives only on a deal-type event (Commercial read 73, D)', () => {
+    const results = validateDossier(withTags({ ...tagged, catalystEvent: 'FINANCIAL_RESULTS_OUTLOOK', catalystDealStatus: 'SIGNED' }), bundle());
+    expect(tagsOf(results)).toEqual({ themes: ['AI'], passing: [], event: 'FINANCIAL_RESULTS_OUTLOOK', deal: null });
+    expect(tagRules(results)).toEqual(['CATALYST_TAGS_DEAL_NOT_A_DEAL']);
+    const award = validateDossier(withTags({ ...tagged, catalystEvent: 'GOVERNMENT_POLICY', catalystDealStatus: 'COMPLETED' }), bundle());
+    expect(tagsOf(award).deal).toBe('COMPLETED');
+    expect(tagRules(award)).toEqual([]);
   });
 
   it('G4 NO_CATALYST is set by code from NONE_FOUND, with no topic, whatever the model said', () => {

@@ -5,6 +5,7 @@ import {
   CATALYST_EVENTS,
   CATALYST_THEME_IDS,
   CATALYST_THEMES,
+  DEAL_EVENTS,
   MODEL_DEAL_ENUM,
   MODEL_EVENT_ENUM,
   MODEL_NO_EVENT,
@@ -84,6 +85,17 @@ describe('the catalyst tags', () => {
     expect(block).toContain('government body is GOVERNMENT_POLICY');
     expect(block).toContain('only in passing');
     expect(block).not.toContain(NO_CATALYST);
+    // Commercial read 73: A1 (no inference outside the source) and D (deal status from the source's own words).
+    expect(block).toContain('Never infer a topic from what the company');
+    expect(block).toContain('anything outside the cited source');
+    expect(block).toContain("only from the cited source's own words");
+    expect(block).toContain('an old deal headlined again is NOT UPDATED');
+  });
+
+  it('S5 the deal-type events (Commercial read 73, D)', () => {
+    expect([...DEAL_EVENTS].sort()).toEqual(
+      ['COMMERCIAL_AGREEMENT', 'FINANCING_CAPITAL', 'GOVERNMENT_POLICY', 'M_AND_A_STRATEGIC', 'PARTNERSHIP'].sort(),
+    );
   });
 
   it('S4 reads a version before schema 4 as NOT_TAGGED, and stored tags as themselves', () => {

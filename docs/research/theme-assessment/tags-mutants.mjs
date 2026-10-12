@@ -7,7 +7,10 @@
 // Test ids: interpret.test.ts "the catalyst tags follow the final catalyst status": G1 keeps a located catalyst's tags,
 // G2 none-words to null and a repeated topic dropped, G3 NO_CATALYST removed from a located catalyst, G4 NO_CATALYST by
 // code from NONE_FOUND, G5 UNKNOWN and CONFLICTING store none, G6 status after its own downgrade, G7 never invents;
-// P1 "records schema, prompt version and usage". catalystTheme.test.ts: S1 schema, S2 lists, S3 prompt, S4 reader.
+// G8 an uncited catalyst stores no tags, G9 deal status only on a deal-type event (both Commercial read 73);
+// P1 "records schema, prompt version and usage". catalystTheme.test.ts: S1 schema, S2 lists, S3 prompt, S4 reader,
+// S5 the deal-type events. Re-traced for Commercial read 73 (A1, A2, D) BEFORE any run: K3 3 -> 4 (G9), K5 2 -> 3 (G8),
+// K8 4 -> 5 (G3: a kept NOT_A_DEAL on a nulled event trips the deal guard); K19-K22 added.
 // evidenceRisk.test.ts: E1 the version pin.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -28,19 +31,19 @@ const M = [
   ['K1', G, "if (status === 'NONE_FOUND') {", 'if (false) {', 1, 'NONE_FOUND does not set NO_CATALYST', 'G4'],
   ['K2', G, 'catalyst.catalystEvent = NO_CATALYST;', '', 1, 'NO_CATALYST never written', 'G4'],
   // G1, G2 and G3 all reach the last branch: nulls and NOT_ESTABLISHED.
-  ['K3', G, "} else if (status === 'FRESH_FOUND' || status === 'SECONDARY_STALE') {", '} else if (false) {', 3,
-    'a located catalyst loses its tags', 'G1, G2, G3'],
+  ['K3', G, "} else if ((status === 'FRESH_FOUND' || status === 'SECONDARY_STALE') && catalyst.evidenceSourceIds.length > 0) {", '} else if (false) {', 4,
+    'a located catalyst loses its tags', 'G1, G2, G3, G9'],
   ['K4', G, 'if (catalyst.catalystEvent === NO_CATALYST) {', 'if (false) {', 1, 'NO_CATALYST survives on a located catalyst', 'G3'],
   // G5: topics stay on UNKNOWN / CONFLICTING (quiet: [] not null); G6: [] not null.
-  ['K5', G, 'catalyst.catalystThemes = null;', '', 2, 'an unestablished catalyst keeps its topics', 'G5, G6'],
+  ['K5', G, 'catalyst.catalystThemes = null;', '', 3, 'an unestablished catalyst keeps its topics', 'G5, G6, G8'],
   // Only G7 has no tag fields among the tag tests. A wider kill would be another test comparing a whole validated
   // catalyst object (not traced; a DIFF here names it).
   ['K6', G, 'if (catalyst.catalystThemes !== undefined) {', 'if (true) {', 1, 'a pre-4 dossier is given tags', 'G7'],
   // G2 (NOT_LOCATED kept), G4 quiet, G5 quiet and G6 (the none-word counts as a tag, so a finding is raised).
   ['K7', G, 'if ((catalyst.catalystEvent as string | null | undefined) === MODEL_NO_EVENT) catalyst.catalystEvent = null;', '', 4,
     "the model's no-event word is stored", 'G2, G4, G5, G6'],
-  ['K8', G, 'if ((catalyst.catalystDealStatus as string | null | undefined) === MODEL_NOT_A_DEAL) catalyst.catalystDealStatus = null;', '', 4,
-    "the model's not-a-deal word is stored", 'G2, G4, G5, G6'],
+  ['K8', G, 'if ((catalyst.catalystDealStatus as string | null | undefined) === MODEL_NOT_A_DEAL) catalyst.catalystDealStatus = null;', '', 5,
+    "the model's not-a-deal word is stored", 'G2, G3, G4, G5, G6'],
   ['K9', G, '.filter((t) => !themes.includes(t))', '', 1, 'a substantive topic also listed as passing', 'G1'],
   ['K10', G, 'const themes = [...new Set(catalyst.catalystThemes ?? [])];', 'const themes = [...(catalyst.catalystThemes ?? [])];', 1,
     'a repeated topic counted twice', 'G2'],
@@ -56,6 +59,12 @@ const M = [
     'the schema change without its version bump', 'S1, E1, P1'],
   ['K17', S, 'export const INTERPRETER_PROMPT_VERSION = 6;', 'export const INTERPRETER_PROMPT_VERSION = 5;', 3,
     'the prompt change without its version bump', 'S1, E1, P1'],
+  ['K19', G, ') && catalyst.evidenceSourceIds.length > 0) {', ')) {', 1, 'read 73 A2: an uncited catalyst keeps its tags', 'G8'],
+  ['K20', G, "if (catalyst.catalystDealStatus != null && !DEAL_EVENTS.has(catalyst.catalystEvent ?? '')) {", 'if (false) {', 1,
+    'read 73 D: a deal status on a non-deal event', 'G9'],
+  ['K21', C, "  'GOVERNMENT_POLICY',", '', 2, 'a government award loses its deal status', 'G9, S5'],
+  ['K22', C, "'  usually does, from its industry, or from anything outside the cited source. Tag',", "'  Tag',", 1,
+    'read 73 A1: the no-inference rule dropped', 'S3'],
   ['K18', C, "  { id: 'DRONES', covers: 'uncrewed aerial and other uncrewed vehicles, commercial or military' },", '', 1,
     'a topic he ruled in goes missing', 'S2'],
 ];
