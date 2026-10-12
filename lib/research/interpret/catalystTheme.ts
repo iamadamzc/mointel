@@ -83,17 +83,21 @@ export const MODEL_NOT_A_DEAL = 'NOT_A_DEAL';
 export const MODEL_EVENT_ENUM: readonly string[] = [...CATALYST_EVENTS.map((event) => event.id), MODEL_NO_EVENT];
 export const MODEL_DEAL_ENUM: readonly string[] = [...CATALYST_DEAL_STATUSES, MODEL_NOT_A_DEAL];
 
-/** The schema descriptions: what the model is told in the schema, matching the prompt block. */
+/**
+ * The schema descriptions: what the model is told in the schema, matching the prompt block. The "only when
+ * catalystStatus is FRESH_FOUND or SECONDARY_STALE" clause lives once, in the prompt; the code enforces it
+ * (Integration's trim, on Commercial read 74).
+ */
 export const CATALYST_THEMES_DESCRIPTION =
   'The topics the event in the cited catalyst source is substantively about; several when the link is substantive; ' +
-  'empty when it is about none of them, or when catalystStatus is not FRESH_FOUND or SECONDARY_STALE.';
+  'empty when it is about none of them.';
 export const CATALYST_PASSING_THEMES_DESCRIPTION =
   'Topics the cited source only mentions in passing. Never a topic already in catalystThemes. Empty when none.';
-export const CATALYST_EVENT_DESCRIPTION =
-  `What happened, one type. ${MODEL_NO_EVENT} when catalystStatus is not FRESH_FOUND or SECONDARY_STALE.`;
+export const CATALYST_EVENT_DESCRIPTION = 'What happened, one type.';
+/** Commercial read 74 (required): the none-value covers a deal whose status is on no list item. Stored as null. */
 export const CATALYST_DEAL_STATUS_DESCRIPTION =
-  `Where the deal in the event stands. ${MODEL_NOT_A_DEAL} when the event is not a deal, or when catalystStatus is ` +
-  'not FRESH_FOUND or SECONDARY_STALE.';
+  `Where the deal in the event stands. ${MODEL_NOT_A_DEAL}: not a deal, or the source states no status from this list ` +
+  '(for example a terminated deal).';
 
 /** The prompt's rule, in both variants. */
 export function catalystThemePromptBlock(): string {
@@ -115,10 +119,10 @@ export function catalystThemePromptBlock(): string {
     '  catalystDealStatus, only for an event that is a deal (an agreement, partnership, acquisition or merger,',
     '  financing, or government grant or award), and only from the cited source\'s own words: PROPOSED (announced',
     '  intent: a letter of intent, a non-binding proposal, an offer not yet accepted), SIGNED (the source says a',
-    '  definitive agreement was signed and not yet closed), COMPLETED (the source says it closed, was consummated or',
-    '  was delivered), UPDATED (only when the source itself says it amends, extends or revises an earlier',
-    '  agreement; an old deal headlined again is NOT UPDATED). Otherwise, and for any other event,',
-    `  ${MODEL_NOT_A_DEAL}.`,
+    '  definitive agreement was signed and not yet completed), COMPLETED (the source says it closed, was consummated',
+    '  or was fulfilled), UPDATED (only when the source itself says it amends, extends or revises an earlier',
+    '  agreement; an old deal headlined again is NOT UPDATED).',
+    `  ${MODEL_NOT_A_DEAL}: not a deal, or the source states no status from this list (for example a terminated deal).`,
   ].join('\n');
 }
 
@@ -135,6 +139,9 @@ export interface CatalystTags {
  * - nulls: written, not established (the catalyst status was CONFLICTING or UNKNOWN). A counter reads these as
  *   "not tagged", never as "no topic".
  * - themes []: tagged, about none of the topics (a NONE_FOUND name carries [] with event NO_CATALYST).
+ * - dealStatus null reads as "no status" wherever counted, never as "not a deal": it covers not a deal, a deal whose
+ *   status is on no list item (a terminated deal), and an unestablished catalyst (Commercial read 74).
+ * - OTHER_MATERIAL is internal: never printed as "material" (Commercial read 74).
  */
 export function catalystTagsOf(dossier: {
   catalyst: {

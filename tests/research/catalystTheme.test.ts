@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  CATALYST_DEAL_STATUS_DESCRIPTION,
   CATALYST_DEAL_STATUSES,
+  CATALYST_EVENT_DESCRIPTION,
+  CATALYST_THEMES_DESCRIPTION,
   CATALYST_EVENTS,
   CATALYST_THEME_IDS,
   CATALYST_THEMES,
@@ -90,6 +93,20 @@ describe('the catalyst tags', () => {
     expect(block).toContain('anything outside the cited source');
     expect(block).toContain("only from the cited source's own words");
     expect(block).toContain('an old deal headlined again is NOT UPDATED');
+    // Commercial read 74: the none-value covers a status on no list item; "completed" and "fulfilled" wording.
+    const none = `${MODEL_NOT_A_DEAL}: not a deal, or the source states no status from this list (for example a terminated deal).`;
+    expect(block).toContain(none);
+    expect(CATALYST_DEAL_STATUS_DESCRIPTION).toContain(none.slice(0, -1));
+    expect(block).toContain('signed and not yet completed');
+    expect(block).toContain('or was fulfilled');
+    expect(block).not.toContain('delivered');
+  });
+
+  it('S6 the schema descriptions carry no status clause: it lives once, in the prompt (Integration\'s trim)', () => {
+    for (const text of [CATALYST_THEMES_DESCRIPTION, CATALYST_EVENT_DESCRIPTION, CATALYST_DEAL_STATUS_DESCRIPTION]) {
+      expect(text).not.toContain('FRESH_FOUND');
+    }
+    expect(catalystThemePromptBlock()).toContain('only when catalystStatus is FRESH_FOUND or SECONDARY_STALE');
   });
 
   it('S5 the deal-type events (Commercial read 73, D)', () => {

@@ -9,7 +9,7 @@
 // code from NONE_FOUND, G5 UNKNOWN and CONFLICTING store none, G6 status after its own downgrade, G7 never invents;
 // G8 an uncited catalyst stores no tags, G9 deal status only on a deal-type event (both Commercial read 73);
 // P1 "records schema, prompt version and usage". catalystTheme.test.ts: S1 schema, S2 lists, S3 prompt, S4 reader,
-// S5 the deal-type events. Re-traced for Commercial read 73 (A1, A2, D) BEFORE any run: K3 3 -> 4 (G9), K5 2 -> 3 (G8),
+// S5 the deal-type events, S6 descriptions without the status clause. Re-traced for Commercial read 73 (A1, A2, D) BEFORE any run: K3 3 -> 4 (G9), K5 2 -> 3 (G8),
 // K8 4 -> 5 (G3: a kept NOT_A_DEAL on a nulled event trips the deal guard); K19-K22 added.
 // evidenceRisk.test.ts: E1 the version pin.
 import { execFileSync } from 'node:child_process';
@@ -65,6 +65,12 @@ const M = [
   ['K21', C, "  'GOVERNMENT_POLICY',", '', 2, 'a government award loses its deal status', 'G9, S5'],
   ['K22', C, "'  usually does, from its industry, or from anything outside the cited source. Tag',", "'  Tag',", 1,
     'read 73 A1: the no-inference rule dropped', 'S3'],
+  // Commercial read 74 / Integration's trim, added before the re-run.
+  ['K23', C, "  `  ${MODEL_NOT_A_DEAL}: not a deal, or the source states no status from this list (for example a terminated deal).`,", "  `  ${MODEL_NOT_A_DEAL}.`,", 1,
+    'read 74: the none-value loses "no status from this list"', 'S3'],
+  ['K24', C, "export const CATALYST_EVENT_DESCRIPTION = 'What happened, one type.';",
+    "export const CATALYST_EVENT_DESCRIPTION = 'What happened, one type. NOT_LOCATED when catalystStatus is not FRESH_FOUND or SECONDARY_STALE.';", 1,
+    'the trimmed status clause back in a description', 'S6'],
   ['K18', C, "  { id: 'DRONES', covers: 'uncrewed aerial and other uncrewed vehicles, commercial or military' },", '', 1,
     'a topic he ruled in goes missing', 'S2'],
 ];
