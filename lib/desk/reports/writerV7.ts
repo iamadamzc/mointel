@@ -31,8 +31,12 @@ import { NOTHING_LINE, framedChange, price, reportableChangeNotes, type ReportMo
 import { dayWords } from './writerV5';
 import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
 
-/** Bumped whenever `SYSTEM_V7`, the sheets' wording or the reply shape changes. 1: the first draft, for the test. */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 1;
+/**
+ * Bumped whenever `SYSTEM_V7`, the sheets' wording or the reply shape changes. 1: the first draft. 2: Commercial read 81
+ * (REQUIRED): a date's "on" is not a join; whyTradersMayCare leaves the sheet and the prompt forbids the desk's reading of
+ * significance; a named recap mover is a COVERED 50 percent mover; a no-card-path price is stated in the past tense.
+ */
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 2;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -122,9 +126,9 @@ export function factSheetV7(fact: ReportFact, research: ReportResearch | null, p
   if (path) {
     lines.push(`the card above your line prints the prices and the move; in words it shows: ${cardMoveWords(path)}`);
   } else {
-    if (fact.price !== null) lines.push(`no card path is printed for this name, so you may state its price: ${price(fact.price)}`);
+    if (fact.price !== null) lines.push(`no card path is printed for this name, so you may state its price, in the past tense: ${price(fact.price)}`);
     const change = framedChange(fact);
-    if (change) lines.push(`change (no card path, so you may state it): ${change}`);
+    if (change) lines.push(`change (no card path, so you may state it, in the past tense): ${change}`);
   }
   const notes = reportableChangeNotes(fact.changeSummary);
   if (notes.length > 0) lines.push(`since the previous checkpoint: ${notes.join('; ')}`);
@@ -140,7 +144,7 @@ export function factSheetV7(fact: ReportFact, research: ReportResearch | null, p
     for (const source of catalyst.sources) {
       lines.push(`cited source: "${source.title ?? 'untitled'}", ${dayWords(sourceWhen(source).date) ?? 'undated'}`);
     }
-    if (catalyst.whyTradersMayCare) lines.push(`what the desk makes of it (restate, never add to it, repeat none of its numbers): ${catalyst.whyTradersMayCare}`);
+    // whyTradersMayCare is NOT given (Commercial read 81, REQUIRED): it is the desk's reading of significance and of what traders may care about.
     if (catalyst.unknowns.length > 0) lines.push(`what the desk does not have (repeat none of its numbers): ${catalyst.unknowns.join('; ')}`);
   }
   if (fact.haltState === 'HALTED') lines.push('halt: halted at this checkpoint');
@@ -165,17 +169,18 @@ export const SYSTEM_V7 = [
   'You are a financial news desk reporter on air at a small-cap trading desk, writing a short session report: a Summary of the session and one line per name. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape, and let each line and the Summary read as coherent, human speech, not a stack of separate sentences. Coherence lives within a line: a name\'s line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.',
   '',
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
-  '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
+  '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
   '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.',
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',
-  'EACH NAME\'S LINE must include the name and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is the news itself (a placement, an ATM program, a reverse split). A few words on the move are fine, only as the card shows it, using only up, down, higher, lower or little changed; never a price or a percent while the card prints them. For a name with no news to report, say its ruled state phrase exactly and nothing more:',
+  'EACH NAME\'S LINE must include the name and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is the news itself (a placement, an ATM program, a reverse split). A few words on the move are fine, only as the card shows it, using only up, down, higher, lower or little changed; never a price or a percent while the card prints them (only where the sheet says no card path is printed may its price and change be stated). For a name with no news to report, say its ruled state phrase exactly and nothing more:',
   `"${RULED_STATE_PHRASES.NOT_RESEARCHED}", "${RULED_STATE_PHRASES.NONE_FOUND}", "${RULED_STATE_PHRASES.UNKNOWN}". Never invent or pad news.`,
   '',
   'WHAT MUST STAY TRUE, whatever the style:',
   '- Use only the facts given. Copy every number and date exactly; never compute one. A catalyst figure may be shortened to one decimal with a unit ("$46.8M"). Restate stored text in your own words; never quote it.',
   '- Attribute what you report ("the company said", "our sources show", "secondary coverage reported"), and say "in our sources" only where a claim would otherwise read as about the market. A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported".',
-  `- State a move and its news in separate clauses. Never join them with ${quoted(NEVER_JOIN)}. A headline is never a cause.`,
+  `- State a move and its news in separate clauses. Never join them with ${quoted(NEVER_JOIN)}; these words are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"). A headline is never a cause.`,
+  '- Restate what the source reports and its terms, never the desk\'s reading of what it may mean or what traders, investors or the market may think, do or care about.',
   '- Never say what the stock will do or what anyone should do: no buy, sell, enter, exit, add, watch, take it, get in, short or fade. The one exception is a name\'s own deal in its own line, as a fact with the company or a named party doing it: "agreed to sell", "an agreement to sell", "selling stockholders", "entered into an agreement".',
   '- Never address the reader ("you", "stay with us", "back to you"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define ("surging", "hot", "busy", "quiet", "pop", "clearly").',
   '- Say a rank as a rank ("ranked first in this range"), never "led", "top" or "biggest". Never a count of names in a name line, never "every name" or "all the movers", never "the real catalyst".',

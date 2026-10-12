@@ -12,6 +12,10 @@ CONTROLS = [
     ('C3 a v6 state phrase handed back in the sheet', "fresh: our sources found a fresh catalyst", "fresh news found in our sources", 'no v6 per-state phrase'),
     ('C4 an em dash in the system prompt', "never robotic.", "never robotic" + chr(0x2014) + ".", 'no em dash'),
     ('C5 a clock time in the sheet', "lines.push(`event date: ${eventDate}`);", "lines.push(`event date: ${eventDate} 07:00`);", 'never their clock'),
+    # Commercial read 81 (REQUIRED): the desk's reading of significance stays out of the sheet.
+    ('C6 whyTradersMayCare handed back', "    // whyTradersMayCare is NOT given",
+     "    if (catalyst.whyTradersMayCare) lines.push(`what the desk makes of it: ${catalyst.whyTradersMayCare}`);\n    // whyTradersMayCare is NOT given",
+     'reading of significance'),
 ]
 
 for name, old, new, test_name in CONTROLS:

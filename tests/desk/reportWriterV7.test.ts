@@ -65,7 +65,7 @@ const research = {
   catalyst: {
     status: 'FRESH_FOUND', grade: 'STRONG', summary: 'A license agreement with Genentech.', eventTimestamp: '2026-10-05T11:00:00Z',
     sources: [{ title: 'Alector 8-K', publishedAt: '2026-10-05T11:00:00Z', precision: 'EXACT' }],
-    whyTradersMayCare: null, unknowns: [], plausiblyExplainsMove: true,
+    whyTradersMayCare: 'Which may shape views of the combined company.', unknowns: [], plausiblyExplainsMove: true,
   },
   structure: { classification: 'CLEAN', sharesOutstanding: null, supply: [] },
 } as unknown as ReportResearch;
@@ -133,8 +133,16 @@ describe('v7 name sheet: no figure while the card prints one, and no clock time'
 
   it('with no card path: the price and the framed change may be stated', () => {
     const text = factSheetV7(fact, research, null).join('\n');
-    expect(text).toContain('you may state its price: $5.00');
-    expect(text).toContain('change (no card path, so you may state it):');
+    expect(text).toContain('you may state its price, in the past tense: $5.00');
+    expect(text).toContain('change (no card path, so you may state it, in the past tense):');
+  });
+
+  it("never hands over the desk's reading of significance (whyTradersMayCare; Commercial read 81)", () => {
+    for (const path of [pathOf(10, 19.4, 12), null]) {
+      const text = factSheetV7(fact, research, path).join('\n');
+      expect(text).not.toContain('Which may shape views');
+      expect(text).not.toContain('what the desk makes of it');
+    }
   });
 
   it('gives the event and source DATE, never their clock, though both are exact', () => {
@@ -189,6 +197,12 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(SYSTEM_V7).toContain('using only up, down, higher, lower or little changed');
     expect(SYSTEM_V7).not.toMatch(/\{[A-Za-z0-9]+\}/); // no {placeholder} template
     expect(SYSTEM_V7).not.toContain('at most FOUR sentences');
+  });
+
+  it("carries Commercial read 81's three required rules", () => {
+    expect(SYSTEM_V7).toContain('these words are forbidden only where they connect a move to news, and a date\'s "on" is fine');
+    expect(SYSTEM_V7).toContain("never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about");
+    expect(SYSTEM_V7).toContain('each called a covered 50 percent mover (never the highest peaks among all movers)');
   });
 
   it('is shorter than v6, and has no em dash', () => {

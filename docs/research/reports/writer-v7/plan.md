@@ -28,11 +28,13 @@ Tests `tests/desk/reportWriterV7.test.ts`, 14 (v6's 9 still pass). Five controls
 | 3. Move words only up, down, higher, lower, little changed | Not checked anywhere; the rule's MOVE pattern even reads "jumped" and "surged" as moves | Only the prompt |
 | 4. The ruled state phrases exactly | In part: a bare "no catalyst" is struck (:171); the model checker holds UNKNOWN to "no conclusion" (:692). "Not researched at this checkpoint" is not checked | Only the prompt, for exactness |
 
-## Three points for Commercial's read of the text
+## Commercial read 81 (PASS with three required changes, applied in prompt version 2)
 
-1. A name with no card path may still state its price and change (v6's rule); the voice's "never a price" assumes the card prints one. Keep, or drop?
-2. The recap sheet no longer gives "of those, the desk covers" (coveredMovers); Marketing's must-include list does not name it. Keep it out?
-3. When the price is under the high by less than 1.0 percent, the sheet says "say nothing about the high". Is that the right reading of "only as the card shows"?
+1. A date's "on" is not a join: the join list is forbidden only where it connects a move to news ("On October 5, the company disclosed" is the date form).
+2. whyTradersMayCare leaves the sheet (it carries the desk's reading of significance and of what traders may care about), and the prompt says: restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.
+3. A named recap mover is called a covered 50 percent mover.
+
+Its answers to my three questions: a name with no card path keeps its price and framed change, in the past tense, only where the sheet says so (yes); coveredMovers stays out of the recap sheet (yes); under the high by less than 1.0 percent, say nothing about the high (yes).
 
 ## The test plan (needs his yes on spend before any run)
 
