@@ -1,0 +1,25 @@
+
+ FAIL  tests/desk/reportTraced.test.ts > voice run v5 (b94988f): each false strike and gap it found, pinned > admits the ruled "not proof of selling", and still strikes selling as a trade word
+AssertionError: expected '' to contain 'buy/sell'
+
+- Expected
++ Received
+
+- buy/sell
+
+ ❯ tests/desk/reportTraced.test.ts:183:52
+    181|     expect(on('Registered-resale capacity the desk cannot quantify: ca…
+    182|     expect(on('Holders were selling into the move.').join(' ')).toCont…
+    183|     expect(on('A plan to sell shares.').join(' ')).toContain('buy/sell…
+       |                                                    ^
+    184|   });
+    185|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 112 passed (114)
+      Tests  2 failed | 1780 passed (1782)
+   Start at  17:36:25
+   Duration  154.32s (transform 25.40s, setup 0ms, import 68.38s, tests 477.13s, environment 52ms)
+

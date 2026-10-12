@@ -1,0 +1,11 @@
+== eslint on touched files
+eslint exit 0
+== tsc
+app/layout.tsx(49,50): error TS2304: Cannot find name 'LayoutProps'.
+tsc exit 2
+typegen exit 0
+== tsc after typegen
+tsc exit 0
+== control: planted error in check.ts
+1
+restored identical bytes

@@ -1,0 +1,17 @@
+M0 unmutated: 0 failing (expect 0)
+M1 no enter shapes: 26 failing, predicted many (every real line with "entered" fails, and the neutral-cue test): KILLED; restored True
+M2 gate always open: 4 failing, predicted 3 (neither; no research and v4; no ticker and narrative): KILLED (count differs from prediction); restored True
+M3 gate ignores supply: 1 failing, predicted 1 (supply only): KILLED; restored True
+M4 any supply block counts: 2 failing, predicted 1 (neither (its block has no filing)): KILLED (count differs from prediction); restored True
+M5 every rule tests the remainder: 1 failing, predicted 1 (the quiet test): KILLED; restored True
+M6 enter cue is blank: 12 failing, predicted many (neutral-cue test and real "entered an agreement to sell" lines): KILLED; restored True
+M7 into is not excluded: 2 failing, predicted 2 (negative "agreed to sell into strength" in the fixture and in the remainder test): KILLED; restored True
+M8 pronouns may be a party: 2 failing, predicted 2 (fixture negative "It confirmed it had broken out" and the confirmed test): KILLED; restored True
+M9 struck text not stored: 1 failing, predicted 1 (the pipeline struck-text test): KILLED; restored True
+M10 shapes never applied: 51 failing, predicted many (all 46 real lines, the passing gate tests): KILLED; restored True
+10 of 10 killed and restored
+
+NOTE (written after the run): M2 and M4 each killed one test more than predicted. In both, the extra failure is the
+control test "every real deal line was struck before the shapes", which runs the 46 lines on ticker NONE (research with
+a supply block that names no filing). M2 opens the gate for every ticker and M4 counts any supply block, so NONE is
+admitted and the control fails. The prediction missed that the control also depends on the gate.
