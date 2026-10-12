@@ -1,5 +1,5 @@
 {
-  "source": "Research raw 656f461b (reports test 2026-10-12): every distinct draft line struck as FORBIDDEN_WORDING that carries buy, sell, enter or confirmed (Commercial read 75a extraction)",
+  "source": "Research raw 656f461b (reports test 2026-10-12): every distinct draft line struck as FORBIDDEN_WORDING that carries buy, sell, enter or confirmed (Commercial read 75a extraction); advice and agentless sentences from read 75c (a42e45ca)",
   "dealFacts": [
     "Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule after its stock closed above $1.00 for 10 consecutive trading days following the August 28, 2026 1-for-8 reverse split. The notice addresses an immediate bid-price compliance issue and permits continued Nasdaq trading, with the monitor and reverse-split context qualifying the picture.",
     "TNL Mediagene announced at 05:30 ET on October 2, 2026 a definitive agreement, dated September 30, to sell its Japanese business to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million, following a special-committee process and fairness opinion. The desk reads it as a concrete strategic transaction rather than a promotional update, with closing timing and use of proceeds not given; down 13.5% since the previous checkpoint.",
@@ -63,6 +63,12 @@
     "It confirmed it had broken out.",
     "Consider buying here.",
     "The company entered the premarket list.",
+    "A plan to sell shares.",
+    "An offer to sell shares.",
+    "An option to sell shares.",
+    "The right to sell shares.",
+    "Plans to sell shares were filed.",
+    "Analysts direct investors to buy shares.",
     "The name entered at the open and traders should buy the dip.",
     "NFT Ltd entered an agreement to sell shares; traders should sell into the rip."
   ]

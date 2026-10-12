@@ -66,9 +66,15 @@ function adviceStrikes(text: string, ticker: string | null = 'DEAL', map: Readon
 }
 
 describe('deal facts on a cited line pass the advice-word rule', () => {
-  it('the fixture is the real set: 46 struck deal lines and 16 advice sentences', () => {
+  it('the fixture is the real set: 46 struck deal lines and 22 advice and agentless sentences (read 75c)', () => {
     expect(FIXTURE.dealFacts).toHaveLength(46);
-    expect(FIXTURE.adviceNegatives).toHaveLength(16);
+    expect(FIXTURE.adviceNegatives).toHaveLength(22);
+  });
+
+  it('KNOWN PASS, accepted (read 75c, Integration\'s ruling): the cue verb with a non-company agent is left to the model checker', () => {
+    // No writer has produced this; the model checker's UNSUPPORTED read is what catches it, not a regex.
+    // Pinned so a later change cannot hide that it passes the rules.
+    expect(adviceStrikes('Traders agreed to sell the stock at the open.')).toEqual([]);
   });
 
   it.each(FIXTURE.dealFacts.map((text, i) => [i, text]))('real deal line %i passes on a cited ticker', (_i, text) => {

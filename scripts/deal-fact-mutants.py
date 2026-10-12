@@ -33,8 +33,8 @@ MUTANTS = [
      "rest.replace(shape, ' agreement ')",
      "rest.replace(shape, ' ')", 'many', 'neutral-cue test and real "entered an agreement to sell" lines'),
     ('M7 into is not excluded', CHECK,
-     r"\bto (?:sell|buy)\b(?! into\b)",
-     r"\bto (?:sell|buy)\b", 2, 'negative "agreed to sell into strength" in the fixture and in the remainder test'),
+     r"(?:agree[ds]?|agreements?)\b[^.;]{0,60}?\bto (?:sell|buy)\b(?! into\b)",
+     r"(?:agree[ds]?|agreements?)\b[^.;]{0,60}?\bto (?:sell|buy)\b", 2, 'negative "agreed to sell into strength" in the fixture and in the remainder test'),
     ('M8 pronouns may be a party', CHECK,
      "'(?:[Tt]he company|[Mm]anagement|' + NOT_A_PARTY + String.raw",
      "'(?:[Tt]he company|[Mm]anagement|' + String.raw", 2, 'fixture negative "It confirmed it had broken out" and the confirmed test'),
@@ -44,10 +44,15 @@ MUTANTS = [
     ('M10 shapes never applied', CHECK,
      "const dealTested = dealFactsAllowed(line.ticker, input.research) ? withoutDealFacts(line.text) : line.text;",
      "const dealTested = line.text;", 'many', 'all 46 real lines, the passing gate tests'),
-    # Added after Integration's ruling on the bare noun (2026-10-12), before the second run.
-    ('M11 bare noun plan admitted', CHECK,
-     "|obligated|plans|intends?|",
-     "|obligated|plans?|intends?|", 1, 'the v5 pin "A plan to sell shares." on SANG (reportTraced.test.ts:183)'),
+    # Rewritten for read 75c's narrowed cues (Integration's ruling 2026-10-12), before the third run.
+    ('M11 intent and possession nouns admitted', CHECK,
+     r"/\b(?:agree[ds]?|agreements?)\b[^.;]",
+     r"/\b(?:agree[ds]?|agreements?|plans?|offers?|options?|right)\b[^.;]", 6,
+     'fixture: a plan, an offer, an option, the right, plans to sell (5); the v5 SANG pin (1)'),
+    ('M12 direct without a named party', CHECK,
+     r"{0,3} to (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/g,",
+     r"{0,3} to (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/gi,", 1,
+     'fixture: "Analysts direct investors to buy shares."'),
 ]
 
 

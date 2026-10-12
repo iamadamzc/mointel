@@ -230,9 +230,13 @@ export const DEAL_ENTER_SHAPES: readonly RegExp[] = [
 /** The deal itself, a resale's term of art, and "confirmed" as a reporting verb. Removed. */
 export const DEAL_FACT_SHAPES: readonly RegExp[] = [
   // A cue up to 60 characters before "to sell" / "to buy", never "into ..." or "the news/rip/pop/spike/dip".
-  // "plans" is the verb only (read 75's S3, agent-led; Integration's ruling 2026-10-12): an agentless "a plan to
-  // sell shares" on a resale name is the intention to sell that "capacity, not proof of selling" forbids.
-  /\b(?:agree[ds]?|agreements?|contracts?|deals?|offers?|options?|right|obligation|obligated|plans|intends?|proposes?|seeks?|offered|allow(?:s|ed|ing)|enabl(?:es|ed|ing)|permit(?:s|ted|ting)|direct)\b[^.;]{0,60}?\bto (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/gi,
+  // Read 75c: only the cues the real lines need. No intent or possession noun ("a plan", "an offer", "the
+  // right" to sell): on a resale name an agentless intention to sell is what "capacity, not proof of selling"
+  // forbids. A cue joins only when a real line needs it, and then with a company or named party as agent.
+  /\b(?:agree[ds]?|agreements?)\b[^.;]{0,60}?\bto (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/gi,
+  // Case-sensitive: "direct" only with a named party ("direct Hudson Global Ventures to buy"), never
+  // "Analysts direct investors to buy".
+  /\bdirect [A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3} to (?:sell|buy)\b(?! into\b)(?! the (?:news|rip|pop|spike|dip)\b)/g,
   /\bselling (?:stockholders?|shareholders?|securityholders?|security holders?)\b/gi,
   // Case-sensitive: the company, management, or a named party of one to four capitalised words.
   new RegExp('(?:[Tt]he company|[Mm]anagement|' + NOT_A_PARTY + String.raw`[A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3}) confirmed (?:that|it (?:had|has))\b`, 'g'),
