@@ -12,17 +12,20 @@ import { pathToFileURL } from 'node:url';
 const root = path.resolve(process.argv[2] ?? '.');
 const load = (file: string) => import(pathToFileURL(path.join(root, file)).href);
 
-const interpreter = await load('lib/research/interpret/openaiInterpreter.ts');
-const schema = await load('lib/research/interpret/schema.ts');
-const prompt: string = interpreter.SYSTEM_PROMPT_A;
-const json = JSON.stringify(schema.AUTOMATIC_DOSSIER_SCHEMA);
-console.log(
-  JSON.stringify({
-    root,
-    schemaVersion: schema.AUTOMATIC_DOSSIER_SCHEMA_VERSION,
-    promptVersion: schema.INTERPRETER_PROMPT_VERSION,
-    promptChars: prompt.length,
-    schemaChars: json.length,
-    totalChars: prompt.length + json.length,
-  }),
-);
+// No top-level await: this module compiles to CommonJS here.
+void (async () => {
+  const interpreter = await load('lib/research/interpret/openaiInterpreter.ts');
+  const schema = await load('lib/research/interpret/schema.ts');
+  const prompt: string = interpreter.SYSTEM_PROMPT_A;
+  const json = JSON.stringify(schema.AUTOMATIC_DOSSIER_SCHEMA);
+  console.log(
+    JSON.stringify({
+      root,
+      schemaVersion: schema.AUTOMATIC_DOSSIER_SCHEMA_VERSION,
+      promptVersion: schema.INTERPRETER_PROMPT_VERSION,
+      promptChars: prompt.length,
+      schemaChars: json.length,
+      totalChars: prompt.length + json.length,
+    }),
+  );
+})();
