@@ -8,3 +8,11 @@ Real research calls, PC copy data/market-prod-2026-10-07.db, research_analysis_v
 So the input delta is about +11 percent of a median call. Output delta not measured (needs a paid call); estimate +20 to 40 tokens.
 Cost (ESTIMATE; terra prices as recorded $2 / $12 per million, cached prefix $0.20; about 110 write-ups a trading day; 21 days):
 input uncached about $0.29 a day, cached about $0.03; output about $0.04; about $1.50 to $8 a month. The sizing (cd4b2b0e) said +550-650 input tokens and $1-4 a month: the 25 definitions and the deal rules are about twice that.
+
+RE-MEASURED after Commercial read 74 (head 8bdb873a, same script edd1bbec):
+head: {"schemaVersion":4,"promptVersion":6,"promptChars":10156,"schemaChars":9842,"totalChars":19998}
+delta vs base 14,747: +5,251 characters (prompt +3,720, schema +1,531); about +1,313 input tokens (ESTIMATE, 4 characters a token).
+CACHED PREFIX, measured on real calls (PC copy, research_analysis_versions since 2026-10-06): 139 of 153 calls carried cached
+input tokens, median 3,009, 14 none. The instructions and schema are identical on every call and precede the evidence input,
+so about 91 percent of calls bill the fixed part at the cached rate. Cost ESTIMATE at that share: input about $0.05 a day,
+output about $0.04 a day (output delta not measured, +20 to 40 tokens assumed): about $0.09 a day, about $2 a month.
