@@ -1020,8 +1020,8 @@ describe('interpretation pipeline', () => {
     });
 
     const current = readCurrentAnalysis(db, 'ACME')!;
-    expect(current.metadata.schemaVersion).toBe(3);
-    expect(current.metadata.promptVersion).toBe(5);
+    expect(current.metadata.schemaVersion).toBe(4);
+    expect(current.metadata.promptVersion).toBe(6);
     expect((current.metadata.metrics as { inputTokens: number }).inputTokens).toBe(1000);
   });
 
@@ -2114,5 +2114,87 @@ describe('the supply overhang verdict on the dossier', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+/* ------------------------------------------------------- catalyst tags (schema 4) */
+
+describe('the catalyst tags follow the final catalyst status', () => {
+  const withTags = (tags: Record<string, unknown> | undefined, catalyst: Partial<ResearchDossier['catalyst']> = {}) => {
+    const base = dossier();
+    const next = { ...base, catalyst: { ...base.catalyst, ...catalyst } } as ResearchDossier;
+    if (tags !== undefined) Object.assign(next.catalyst, tags);
+    return next;
+  };
+  const asTold = { catalystThemes: [], catalystPassingThemes: [], catalystEvent: 'NOT_LOCATED', catalystDealStatus: 'NOT_A_DEAL' };
+  const tagged = { catalystThemes: ['AI'], catalystPassingThemes: [], catalystEvent: 'COMMERCIAL_AGREEMENT', catalystDealStatus: 'SIGNED' };
+  const tagRules = (result: ReturnType<typeof validateDossier>) =>
+    result.violations.filter((v) => v.rule.startsWith('CATALYST_TAGS')).map((v) => v.rule);
+  const tagsOf = (result: ReturnType<typeof validateDossier>) => {
+    const c = result.dossier.catalyst;
+    return { themes: c.catalystThemes, passing: c.catalystPassingThemes, event: c.catalystEvent, deal: c.catalystDealStatus };
+  };
+  const none = { catalystStatus: 'NONE_FOUND' as const, catalystType: 'NONE_IDENTIFIED' as const, evidenceSourceIds: [] };
+
+  it('G1 keeps the tags of a located catalyst; a substantive topic is not also "in passing"', () => {
+    const result = validateDossier(
+      withTags({ ...tagged, catalystThemes: ['AI', 'SEMICONDUCTORS_COMPUTING'], catalystPassingThemes: ['AI', 'CRYPTO'] }),
+      bundle(),
+    );
+    expect(tagsOf(result)).toEqual({ themes: ['AI', 'SEMICONDUCTORS_COMPUTING'], passing: ['CRYPTO'], event: 'COMMERCIAL_AGREEMENT', deal: 'SIGNED' });
+    expect(tagRules(result)).toEqual([]);
+    const stale = validateDossier(withTags(tagged, { catalystStatus: 'SECONDARY_STALE' }), bundle());
+    expect(tagsOf(stale).themes).toEqual(['AI']);
+  });
+
+  it('G2 stores the model\'s "none" words as null, keeps an empty topic list, and drops a repeated topic', () => {
+    const result = validateDossier(withTags({ ...asTold, catalystThemes: ['AI', 'AI'] }), bundle());
+    expect(tagsOf(result)).toEqual({ themes: ['AI'], passing: [], event: null, deal: null });
+    expect(tagRules(result)).toEqual([]);
+    const empty = validateDossier(withTags(asTold), bundle());
+    expect(tagsOf(empty).themes).toEqual([]);
+  });
+
+  it('G3 removes NO_CATALYST from a located catalyst', () => {
+    const result = validateDossier(withTags({ ...tagged, catalystEvent: 'NO_CATALYST' }), bundle());
+    expect(tagsOf(result).event).toBeNull();
+    expect(tagRules(result)).toEqual(['CATALYST_TAGS_CONTRADICT_STATUS']);
+  });
+
+  it('G4 NO_CATALYST is set by code from NONE_FOUND, with no topic, whatever the model said', () => {
+    const quiet = validateDossier(withTags(asTold, none), bundle());
+    expect(tagsOf(quiet)).toEqual({ themes: [], passing: [], event: 'NO_CATALYST', deal: null });
+    expect(tagRules(quiet)).toEqual([]);
+    const loud = validateDossier(withTags(tagged, none), bundle());
+    expect(tagsOf(loud)).toEqual({ themes: [], passing: [], event: 'NO_CATALYST', deal: null });
+    expect(tagRules(loud)).toEqual(['CATALYST_TAGS_CONTRADICT_STATUS']);
+  });
+
+  it('G5 UNKNOWN and CONFLICTING store no tags', () => {
+    const empty = { themes: null, passing: null, event: null, deal: null };
+    const unknown = validateDossier(withTags(tagged, { catalystStatus: 'UNKNOWN', evidenceSourceIds: [] }), bundle());
+    expect(tagsOf(unknown)).toEqual(empty);
+    expect(tagRules(unknown)).toEqual(['CATALYST_TAGS_NOT_ESTABLISHED']);
+    const conflicting = validateDossier(withTags(tagged, { catalystStatus: 'CONFLICTING' }), bundle());
+    expect(tagsOf(conflicting)).toEqual(empty);
+    expect(tagRules(conflicting)).toEqual(['CATALYST_TAGS_NOT_ESTABLISHED']);
+    const quiet = validateDossier(withTags(asTold, { catalystStatus: 'UNKNOWN', evidenceSourceIds: [] }), bundle());
+    expect(tagsOf(quiet)).toEqual(empty);
+    expect(tagRules(quiet)).toEqual([]);
+  });
+
+  it('G6 reads the status AFTER its own downgrade: NONE_FOUND on incomplete coverage becomes UNKNOWN and stores no tags, not NO_CATALYST', () => {
+    const result = validateDossier(withTags(asTold, none), incompleteBundle());
+    expect(result.dossier.catalyst.catalystStatus).toBe('UNKNOWN');
+    expect(tagsOf(result)).toEqual({ themes: null, passing: null, event: null, deal: null });
+    expect(tagRules(result)).toEqual([]);
+  });
+
+  it('G7 never invents tags on a dossier that has none (a version before schema 4)', () => {
+    const result = validateDossier(withTags(undefined, none), bundle());
+    for (const key of ['catalystThemes', 'catalystPassingThemes', 'catalystEvent', 'catalystDealStatus']) {
+      expect(key in result.dossier.catalyst).toBe(false);
+    }
+    expect(tagRules(result)).toEqual([]);
   });
 });

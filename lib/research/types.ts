@@ -12,6 +12,7 @@
  */
 
 import type { FloatBasis } from './float';
+import type { CatalystDealStatus, CatalystEvent, CatalystTheme } from './interpret/catalystTheme';
 import type { SupplyOverhangAssessment, SupplyPair } from './supply';
 import type { CycleHistory } from '../market/cycle';
 import type { TimePrecision } from './time';
@@ -484,6 +485,14 @@ export type CycleClassification =
 export interface CatalystFindings {
   catalystStatus: CatalystStatus;
   catalystType: CatalystType;
+  /**
+   * The catalyst tags (schema 4, `interpret/catalystTheme.ts`). All absent on a version written before schema 4
+   * (read as NOT_TAGGED, never filled in later); null when written but not established (the guardrail).
+   */
+  catalystThemes?: CatalystTheme[] | null;
+  catalystPassingThemes?: CatalystTheme[] | null;
+  catalystEvent?: CatalystEvent | null;
+  catalystDealStatus?: CatalystDealStatus | null;
   catalystGrade: CatalystGrade;
   summary: string | null;
   eventTimestamp: string | null;

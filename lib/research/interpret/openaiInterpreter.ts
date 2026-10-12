@@ -16,6 +16,7 @@ import { describeFailure, readProviderFailure } from '../providerError';
 import type { ResearchDossier } from '../types';
 import type { ResearchEvidenceBundle } from './bundle';
 import { catalystGradePromptBlock } from './catalystGrades';
+import { catalystThemePromptBlock } from './catalystTheme';
 import { evidenceRiskPromptBlock } from './evidenceRisk';
 import {
   AUTOMATIC_DOSSIER_SCHEMA,
@@ -113,6 +114,7 @@ Distinctions that matter and are checked in software afterwards:
   trader can read at a glance. Ground it in sicDescription and the filings in
   the bundle. Do not add products, customers, partners or markets the bundle
   does not name. If the bundle does not establish it, leave it null.
+${catalystThemePromptBlock()}
 ${evidenceRiskPromptBlock()}
 - Never write the em dash character (Unicode U+2014) in any text field. Use a
   comma, a colon, a full stop or parentheses instead, never a spaced hyphen.

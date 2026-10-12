@@ -14,6 +14,7 @@
 import type { ResearchEvidenceBundle } from './bundle';
 import { withoutCitationsDeep } from '../citations';
 import { resolveCatalystFreshness } from '../time';
+import { MODEL_NO_EVENT, MODEL_NOT_A_DEAL, NO_CATALYST } from './catalystTheme';
 import { validateEvidenceRisk } from './evidenceRisk';
 import type {
   Confidence,
@@ -428,6 +429,72 @@ export function validateDossier(
       ),
     );
     catalyst.catalystStatus = 'UNKNOWN';
+  }
+
+  /*
+   * The catalyst tags follow the FINAL status (after the downgrades above), so a counted tag can never contradict the
+   * catalyst it describes (`catalystTheme.ts`; Commercial read 72, condition 2). NO_CATALYST is set HERE, from
+   * NONE_FOUND, never by the model. Tags survive only on a located catalyst (FRESH_FOUND, SECONDARY_STALE);
+   * CONFLICTING and UNKNOWN store none. Absent tags (a version before schema 4) are left absent: never invented.
+   */
+  if (catalyst.catalystThemes !== undefined) {
+    // The model's "none" words are never stored.
+    if ((catalyst.catalystEvent as string | null | undefined) === MODEL_NO_EVENT) catalyst.catalystEvent = null;
+    if ((catalyst.catalystDealStatus as string | null | undefined) === MODEL_NOT_A_DEAL) catalyst.catalystDealStatus = null;
+    // Each topic once; a topic named substantive is never also "in passing".
+    const themes = [...new Set(catalyst.catalystThemes ?? [])];
+    catalyst.catalystThemes = themes;
+    catalyst.catalystPassingThemes = [...new Set(catalyst.catalystPassingThemes ?? [])].filter((t) => !themes.includes(t));
+    const tagged =
+      themes.length > 0 ||
+      catalyst.catalystPassingThemes.length > 0 ||
+      (catalyst.catalystEvent ?? null) !== null ||
+      (catalyst.catalystDealStatus ?? null) !== null;
+    const status = catalyst.catalystStatus;
+    if (status === 'NONE_FOUND') {
+      if (tagged && catalyst.catalystEvent !== NO_CATALYST) {
+        violations.push(
+          violation(
+            'CATALYST_TAGS_CONTRADICT_STATUS',
+            'DOWNGRADE',
+            'catalyst.catalystThemes',
+            'catalyst tags with catalystStatus NONE_FOUND; the code sets no topic and NO_CATALYST.',
+          ),
+        );
+      }
+      catalyst.catalystThemes = [];
+      catalyst.catalystPassingThemes = [];
+      catalyst.catalystEvent = NO_CATALYST;
+      catalyst.catalystDealStatus = null;
+    } else if (status === 'FRESH_FOUND' || status === 'SECONDARY_STALE') {
+      // The model's enum excludes NO_CATALYST; this guards a value that reached here some other way.
+      if (catalyst.catalystEvent === NO_CATALYST) {
+        violations.push(
+          violation(
+            'CATALYST_TAGS_CONTRADICT_STATUS',
+            'DOWNGRADE',
+            'catalyst.catalystEvent',
+            `catalystEvent NO_CATALYST with catalystStatus ${status}.`,
+          ),
+        );
+        catalyst.catalystEvent = null;
+      }
+    } else {
+      if (tagged) {
+        violations.push(
+          violation(
+            'CATALYST_TAGS_NOT_ESTABLISHED',
+            'DOWNGRADE',
+            'catalyst.catalystThemes',
+            `catalyst tags with catalystStatus ${status}: the tags of an unestablished catalyst are not established.`,
+          ),
+        );
+      }
+      catalyst.catalystThemes = null;
+      catalyst.catalystPassingThemes = null;
+      catalyst.catalystEvent = null;
+      catalyst.catalystDealStatus = null;
+    }
   }
 
   /* ------------------------------------------------------------ structure */

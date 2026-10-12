@@ -12,17 +12,30 @@
  */
 
 import { catalystGradeSchemaDescription } from './catalystGrades';
+import {
+  CATALYST_DEAL_STATUS_DESCRIPTION,
+  CATALYST_EVENT_DESCRIPTION,
+  CATALYST_PASSING_THEMES_DESCRIPTION,
+  CATALYST_THEME_IDS,
+  CATALYST_THEMES_DESCRIPTION,
+  MODEL_DEAL_ENUM,
+  MODEL_EVENT_ENUM,
+} from './catalystTheme';
 import { EVIDENCE_RISK_RULE } from './evidenceRisk';
 
 // 2: `businessDescription` added (his ruling 2026-09-30T10:42:25Z).
 // 3: `evidenceRisk` added (contract row 20; his ruling 2026-10-06T00:22:29.450Z, "yes, build both").
-export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 3;
+// 4: the catalyst tags added: catalystThemes, catalystPassingThemes, catalystEvent, catalystDealStatus (the theme line,
+//    option C; his yes 2026-10-11T20:04:41.211Z and his list review, "yes to both" 2026-10-12T17:19:00.133Z;
+//    `catalystTheme.ts`).
+export const AUTOMATIC_DOSSIER_SCHEMA_VERSION = 4;
 // 2: catalyst grades defined (his ruling 2026-09-29T14:46:55Z, `catalystGrades.ts`).
 // 3: the business line, and no em dash in any text written (his rulings
 //    2026-09-30T10:42:25Z and 10:43:39Z). The grade text is unchanged from 2.
 // 4: the evidence risk rule (`evidenceRisk.ts`), with schema 3, in one change.
 // 5: no source id in prose; ids belong in evidenceSourceIds (Integration's ruling 2026-10-09, the XRTX finding).
-export const INTERPRETER_PROMPT_VERSION = 5;
+// 6: the catalyst tag rules (`catalystTheme.ts`), with schema 4, in one change.
+export const INTERPRETER_PROMPT_VERSION = 6;
 
 const CONFIDENCE = ['HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'] as const;
 
@@ -85,6 +98,21 @@ const CATALYST = required({
     type: 'string',
     enum: ['NEWS_DRIVEN', 'FLOW_DOMINANT', 'SECONDARY_STALE', 'NONE_IDENTIFIED', 'UNKNOWN'],
   },
+  // The model's list excludes NO_CATALYST, which only the guardrail sets (Commercial read 72, condition 2).
+  // The catalyst tags (`catalystTheme.ts`). The model's enums exclude NO_CATALYST, which only the guardrail sets
+  // (Commercial read 72, condition 2); its "none" words are strings the guardrail turns into null.
+  catalystThemes: {
+    type: 'array',
+    description: CATALYST_THEMES_DESCRIPTION,
+    items: { type: 'string', enum: [...CATALYST_THEME_IDS] },
+  },
+  catalystPassingThemes: {
+    type: 'array',
+    description: CATALYST_PASSING_THEMES_DESCRIPTION,
+    items: { type: 'string', enum: [...CATALYST_THEME_IDS] },
+  },
+  catalystEvent: { type: 'string', description: CATALYST_EVENT_DESCRIPTION, enum: [...MODEL_EVENT_ENUM] },
+  catalystDealStatus: { type: 'string', description: CATALYST_DEAL_STATUS_DESCRIPTION, enum: [...MODEL_DEAL_ENUM] },
   catalystGrade: {
     type: 'string',
     // The same text the prompt carries (`catalystGrades.ts`), so the model is
