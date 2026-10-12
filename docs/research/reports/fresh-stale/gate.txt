@@ -1,0 +1,10 @@
+== at 895e19ce, 2026-10-12, Ops's slot
+== vitest tests/desk tests/research (22:27:07Z to 22:29:36Z), exit 0
+ Test Files  114 passed (114)
+      Tests  1794 passed (1794)
+   Duration  146.98s (transform 20.12s, setup 0ms, import 58.46s, tests 487.17s, environment 48ms)
+(the [preflight] BLOCKED and [pins] FAILED lines in the log are printed by the desk release tests by design; every file passed)
+== next typegen exit 0; tsc --noEmit exit 0
+== tsc control: a planted type error in pipeline.ts was reported (1 line), bytes restored identical (cmp)
+== eslint lib/desk/reports/pipeline.ts tests/desk/reportPipeline.test.ts exit 0
+== vitest tests/desk/reportPipeline.test.ts: 1 file, 11 passed
