@@ -1,0 +1,8 @@
+== SSE parse check, 2026-10-12T20:56:39Z, offline
+PASS good stream, 7-byte chunks (splits a multi-byte char and the separators): text="{\"narrative\":\"A é\",\"lines\":[]}" error=null usage=8123/3456 records=1
+PASS good stream, one chunk: text="{\"narrative\":\"A é\",\"lines\":[]}" error=null usage=8123/3456 records=1
+PASS refusal: text=null error="stop_reason refusal" usage=8123/3456 records=1
+PASS stream cut before message_delta: output unknown, so the stop charges the worst case: text=null error="stop_reason missing" usage=8123/null records=1
+PASS HTTP 401: usage recorded as unknown: text=null error="HTTP 401 authentication_error: invalid x-api-key" usage=null/null records=1
+ALL 5 PASS
+exit 0

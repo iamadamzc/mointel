@@ -1,0 +1,22 @@
+== readNamedKey proof on fake files, 2026-10-12T20:53:21Z, at 2714cfa3 + uncommitted reader
+blank lines, CRLF, four names: PASS (returned the expected fake key)
+name with a colon, LF: PASS (returned the expected fake key)
+name absent: PASS (threw: key file: the name line matched 0 times, expected exactly 1)
+name twice: PASS (threw: key file: the name line matched 2 times, expected exactly 1)
+name is the last line: PASS (threw: key file: no non-blank line after the name line)
+next non-blank line is another name: PASS (threw: key file: the line after the name line is not shaped like a key)
+a key line mentioning the name does not match: PASS (returned the expected fake key)
+ALL 7 CASES PASS
+exit 0
+== CONTROL: mutant takes the very next line, blank or not (the layout assumption behind the 2026-10-12 print); expect case 1 to FAIL
+mutant sites matched: 1
+blank lines, CRLF, four names: FAIL (threw: key file: the line after the name line is not shaped like a key)
+name with a colon, LF: PASS (returned the expected fake key)
+name absent: PASS (threw: key file: the name line matched 0 times, expected exactly 1)
+name twice: PASS (threw: key file: the name line matched 2 times, expected exactly 1)
+name is the last line: PASS (threw: key file: the line after the name line is not shaped like a key)
+next non-blank line is another name: PASS (threw: key file: the line after the name line is not shaped like a key)
+a key line mentioning the name does not match: PASS (returned the expected fake key)
+1 OF 7 CASES FAIL
+exit 1
+== restored: identical bytes
