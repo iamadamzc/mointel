@@ -416,9 +416,8 @@ export const FILED_COUNT_RULE = {
 } as const;
 
 /*
- * DRAFT WORDS, DESIGN'S PLACEHOLDERS: Marketing words every string below and Commercial reads them; they go to him
- * before ship (Integration's order: build, then words). Each is written to Commercial 89e's conditions so the
- * draft is true, but none is passed copy.
+ * MARKETING'S WORDS, docs/marketing/float-fix1-words-2026-10-13.md at 2aff6193 (items 1 to 12), for Commercial's
+ * read against 89e and then his eye before ship. NOT YET PASSED.
  */
 export const FILED_COUNT_WORDS = {
   unit: 'sh',
@@ -426,18 +425,18 @@ export const FILED_COUNT_WORDS = {
   what: (date: string) => `The company's filed share count as of ${date}, with no insider holdings subtracted. It is not a TMI Float.`,
   /** The issuance causes' caveat (the stored reason says shares may have been issued since). */
   mayBeHigher: 'The true share count may be higher.',
-  preSplit: 'This count may be in share units from before a share split.',
+  preSplit: 'This count may be in pre-split share units.',
   splitNotChecked: 'The desk has not checked for a share split since this count.',
   noRecord: 'We have no record of a share split check for this count.',
   tooOld: (date: string, days: number) => `This count is from ${date}, more than ${days} days ago.`,
   headline: (shares: string, asOf: string, form: string | null, filed: string | null) =>
-    `The desk could not verify a TMI Float for this name. The latest filed share count is ${shares} shares as of ${asOf}${form && filed ? `, from a ${form} filed ${filed}` : ''}.`,
-  definitionLabel: 'TMI Float, which this number is not',
+    `The desk could not verify a TMI Float for this name. The company's filed share count is ${shares} shares as of ${asOf}${form && filed ? `, from a ${form} filed ${filed}` : ''}.`,
+  definitionLabel: 'What a TMI Float is',
   definition:
     'A TMI Float is shares outstanding less the insider holdings the desk can see. The number on this cell is the filed share count with nothing subtracted.',
   aria: (shares: string, date: string) => `filed share count ${shares} as of ${date}; TMI Float could not be verified`,
   /** One sentence after FLOAT_LEGEND, where the legend and the header hover print. */
-  legend: "Where a TMI Float cannot be verified, the cell may show the company's filed share count instead, marked with an icon. It is shares outstanding with no insider holdings subtracted, and it is not a TMI Float.",
+  legend: "Where a TMI Float cannot be verified, the cell may show the company's filed share count with an icon. Nothing is subtracted from it, so it is not a TMI Float.",
 } as const;
 
 /** The 90 days of his ruling, for the warning's words only (Research decides TOO_OLD; FLOAT_MAX_AGE_DAYS). */
