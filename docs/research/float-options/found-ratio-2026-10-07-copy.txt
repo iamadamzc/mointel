@@ -1,0 +1,22 @@
+store ../mointel/data/market-prod-2026-10-07.db; board date 2026-10-07; refused rows with a filed count and split FOUND: 20
+{"found":20,"barsStep":19,"barsNullFactor":18,"announcedInSpan":20,"both":19,"announcedOnly":1,"barsOnly":0,"ratioFromBars":1}
+ALP: count 2026-03-31; bars 131 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-09-09; reason UNREGISTERED_SALE_NOT_CHECKABLE
+BIYA: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-07-13; reason UNREGISTERED_SALE_NOT_CHECKABLE
+BURU: count 2026-08-12; bars 0; factor step no; first/last factor ratio none; announced ex-dates in span 2026-09-02; reason ISSUANCE_FLAGGED
+BYAH: count 2024-10-31; bars 483 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-02-20, 2026-08-06; reason ISSUANCE_FILED
+FRGT: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-05-18; reason UNREGISTERED_SALE_NOT_CHECKABLE
+KAPA: count 2026-08-12; bars 39 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-09-01; reason ISSUANCE_FLAGGED
+KIDZ: count 2026-03-31; bars 131 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-06-08, 2026-08-13; reason ISSUANCE_FILED
+LGCL: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-09-01; reason ISSUANCE_FILED
+MI: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-05-18; reason ISSUANCE_FILED
+MTEN: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-01-26; reason ISSUANCE_FILED
+MTNB: count 2026-08-10; bars 41 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-09-28; reason SPLIT_SINCE_COUNT
+PAVS: count 2026-03-31; bars 131 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-03-31, 2026-06-29; reason ISSUANCE_FILED
+RUBI: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-02-12, 2026-04-09, 2026-06-26; reason ISSUANCE_FILED
+SMXT: count 2026-05-11; bars 103 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-08-13; reason ISSUANCE_FLAGGED
+SXTC: count 2026-03-31; bars 131 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-08-10; reason ISSUANCE_FILED
+VCIG: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-02-27, 2026-08-24; reason ISSUANCE_FILED
+WETO: count 2025-06-30; bars 320 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-08-03; reason ISSUANCE_FILED
+XHG: count 2022-09-30; bars 1007 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2024-11-08, 2025-05-09; reason ISSUANCE_FILED
+YAAS: count 2025-09-30; bars 256; factor step yes; first/last factor ratio 5.0000; announced ex-dates in span 2025-09-30, 2026-07-30; reason ISSUANCE_FILED
+YXT: count 2025-12-31; bars 192 (a null factor); factor step yes; first/last factor ratio none; announced ex-dates in span 2026-07-14; reason ISSUANCE_FILED

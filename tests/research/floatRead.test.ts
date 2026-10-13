@@ -111,11 +111,18 @@ describe('countChecksAt (float fix 1: both checks on every row, computed where t
     expect(countChecksAt(row(), D, flat(D))).toEqual({ split: 'NONE', age: 'WITHIN' });
   });
 
-  it('NOT_RUN only where nothing could be computed: no row, no filed count, or the filings not re-read', () => {
+  it('NOT_RUN only where it could not be computed: both with no row or no filed count', () => {
     expect(countChecksAt(null, D, [])).toEqual(CHECKS_NOT_RUN);
     expect(countChecksAt(row({ count: { kind: 'NO_FILED_COUNT' } }), D, [])).toEqual(CHECKS_NOT_RUN);
-    expect(countChecksAt(row(), '2026-09-30', flat('2026-09-30'))).toEqual(CHECKS_NOT_RUN);
     expect(CHECKS_NOT_RUN).toEqual({ split: 'NOT_RUN', age: 'NOT_RUN' });
+  });
+
+  it('FILINGS_NOT_REREAD (Integration 39th): the age is still computed; the split stays NOT_RUN even where the bars are flat', () => {
+    // Read 09-25, D 09-30: not reused. The count is 60 days old at D.
+    expect(floatCellAt(row(), '2026-09-30', [], flat('2026-09-30'))).toEqual({ state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' });
+    expect(countChecksAt(row(), '2026-09-30', flat('2026-09-30'))).toEqual({ split: 'NOT_RUN', age: 'WITHIN' });
+    const old = { ...COUNT, asOf: '2026-06-01' };
+    expect(countChecksAt(row({ count: old }), '2026-09-30', [{ date: '2026-06-01', close: 10, factor: 1 }, { date: '2026-09-30', close: 10, factor: 1 }])).toEqual({ split: 'NOT_RUN', age: 'TOO_OLD' });
   });
 });
 

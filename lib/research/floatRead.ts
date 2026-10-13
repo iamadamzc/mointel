@@ -46,8 +46,9 @@ export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: readon
  * them is Design's view, under his later ruling (same chat, uuid 867ffe18, 2026-10-13T09:57:22.409Z: "3, no show a number
  * and another icon with a link and a tooltip, yes, with warning"), not this file's. `floatCell` stops at the first
  * failing check in the prereg's order, so a row refused for issuance never REPORTS its split or age; both are computed
- * here with the same inputs and code. NOT_RUN only where a check could not be computed: no filed count, or the filings
- * not re-read (FILINGS_NOT_REREAD). Stored state, reasons and the precedence are unchanged.
+ * here with the same inputs and code. NOT_RUN only where a check could not be computed: both with no filed count; the
+ * split alone when the filings were not re-read (FILINGS_NOT_REREAD), whose age is still computed (Integration 39th).
+ * Stored state, reasons and the precedence are unchanged.
  */
 export interface FloatCountChecks {
   /** The split check between the filed count's date and D. */
@@ -59,12 +60,14 @@ export interface FloatCountChecks {
 export const CHECKS_NOT_RUN: FloatCountChecks = { split: 'NOT_RUN', age: 'NOT_RUN' };
 
 export function countChecksAt(row: FloatBoundRow | null, d: string, countSpanBars: readonly SpanBar[]): FloatCountChecks {
-  if (!row || row.count.kind !== 'COUNT' || notReused(row, d)) return CHECKS_NOT_RUN;
+  if (!row || row.count.kind !== 'COUNT') return CHECKS_NOT_RUN;
   const days = wholeDays(row.count.asOf, d);
-  return {
-    split: splitSinceCountAt({ ...row, count: row.count }, d, countSpanBars),
-    age: days < 0 ? 'AFTER_DATE' : days > FLOAT_MAX_AGE_DAYS ? 'TOO_OLD' : 'WITHIN',
-  };
+  const age = days < 0 ? 'AFTER_DATE' : days > FLOAT_MAX_AGE_DAYS ? 'TOO_OLD' : 'WITHIN';
+  // FILINGS_NOT_REREAD (Integration 39th): the age is arithmetic on the count's date and D, so it is still known. The
+  // split is not: the row's announced splits were read only through its own read date, and rule R-A needs both
+  // sources, so the bars alone could say NONE across a split announced since.
+  if (notReused(row, d)) return { split: 'NOT_RUN', age };
+  return { split: splitSinceCountAt({ ...row, count: row.count }, d, countSpanBars), age };
 }
 
 /**
