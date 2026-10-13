@@ -261,6 +261,30 @@ export function claimQueuedJobs(
   return withBusyRetry('claimQueuedJobs', claim);
 }
 
+/**
+ * The claim, for the worker loop: an exhausted busy returns 'busy' instead of
+ * throwing.
+ *
+ * Unlike a job write, a failed claim leaves nothing behind. Select and update
+ * share one transaction, so a busy that outlasts the retries rolls the whole
+ * claim back and every job stays QUEUED. There is no half-done state to
+ * surface, and letting the throw escape only took the worker down. The loop
+ * waits a poll and claims again. Anything that is not busy still throws.
+ */
+export function tryClaimQueuedJobs(
+  db: MarketDatabase,
+  tradingDate: string,
+  limit: number,
+  startedAt: string,
+): ResearchJob[] | 'busy' {
+  try {
+    return claimQueuedJobs(db, tradingDate, limit, startedAt);
+  } catch (error) {
+    if (isBusy(error)) return 'busy';
+    throw error;
+  }
+}
+
 export function updateJobStatus(
   db: MarketDatabase,
   id: number,
