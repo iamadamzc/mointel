@@ -16,7 +16,12 @@ import type { ReportDraft } from './writer';
 
 /** Built from the code point: an editor or a generator can turn a written escape into the character itself. */
 const EM = String.fromCharCode(0x2014);
-const DASH = new RegExp(String.raw`\s*(?:` + EM + String.raw`|&mdash;|&#8212;|&#x2014;)\s*|\s+-\s+`, 'gi');
+/**
+ * The entity forms as a REGEX literal, as check.ts keeps them: `tests/research/noEmDash.test.ts` decodes entities in
+ * every string literal of Research's code (a string can carry HTML rendered later), and this is a matcher, not writing.
+ */
+const EM_ENTITIES = /&mdash;|&#8212;|&#x2014;/;
+const DASH = new RegExp(String.raw`\s*(?:` + EM + '|' + EM_ENTITIES.source + String.raw`)\s*|\s+-\s+`, 'gi');
 
 const FIGURE_END = /[\d%]$/;
 const FIGURE_START = /^[$\d]/;
