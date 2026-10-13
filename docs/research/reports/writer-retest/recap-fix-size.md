@@ -24,6 +24,16 @@ Hide the board's names from the Summary's part of the recap sheet (the writer se
 
 `runReport` builds the v6 prompt for every report (the harness swaps it). Wiring is: the pipeline builds `buildWriterPromptV7` from the same inputs, the stored versions name writer prompt v7, the pipeline and job tests move to v7's prompt (v6 stays in the repo), tsc, lint, the full gate. **About half a day of Research**, then Ops's gate and a normal release (no restart of the market worker), his go by sha. The copy (Marketing's voice, the rating sentence) is already read by Marketing and Commercial; the recap sentence above is the only new text.
 
+## Commercial read 100 (re-count of the raw, every published v7 line read): no blocking finding; four prompt notes for the same change
+
+1. "no fresh company-specific positive event" (ZNB, three reports): "positive" is an evaluation no fact defines; tell the writer to drop it unless the source says it.
+2. "rather than an operating or transaction-development catalyst" (JONE) is the desk's classification; acceptable only if the research summary says it.
+3. "Never confirmed" is ignored six times, all attributed and true: drop the rule from the prompt or accept the drift (the word is no longer struck).
+4. The recap Summary naming tickers outside its facts: the fix above. Wire v7 for the recap only after it and one re-check.
+And: watch the failed Claude checks in week one; send Commercial any that are a refusal on content rather than a malformed reply.
+
+Notes 1 to 3 are a few lines in the same prompt change; they add nothing to the size.
+
 ## Total
 
 Option 1 plus wiring: about a day, and about $1.60 of spend. If option 1 fails its re-check, option 2 adds half a day and another about $1.60.
