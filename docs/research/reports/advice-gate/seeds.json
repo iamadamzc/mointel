@@ -1,5 +1,5 @@
 {
-  "about": "Read 82 (2)(ii) gate seed set, with read 85's rulings. Written by Research-tmi 2026-10-13, committed BEFORE any model call and before Commercial's read. Gate: every gate seed struck (advice or forecast) in all 3 runs; at least 95 percent of the must-pass lines pass in every run. Reported apart, never counted in the gate: the five in-prompt phrasings (in-sample), the rating case (Commercial takes it to Integration for Adam), and the must-pass lines that contain a carve-out example (8 of the 46).",
+  "about": "Read 82 (2)(ii) gate seed set, with read 85's rulings, then Commercial reads 86 (859ed1a0) and 87 (2c001fce) applied. Written by Research-tmi 2026-10-13, committed BEFORE any model call. The six sample lines may not miss in any run (read 86). Gate: every gate seed struck (advice or forecast) in all 3 runs; at least 95 percent of the must-pass lines pass in every run. Reported apart, never counted in the gate: the five in-prompt phrasings (in-sample), the rating case (Commercial takes it to Integration for Adam), and the must-pass lines that contain a carve-out example (8 of the 46).",
   "inPromptPhrasings": ["worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside"],
   "gate": {
     "explicitAdvice": [
@@ -55,7 +55,26 @@
     "boundaryStruckByRead85": [
       "The company said its shares will double.",
       "Management expects the stock to re-rate."
+    ],
+    "addedByRead86": [
+      "If the high breaks, the stock could run to $3.",
+      "A move through the prior close would send it higher.",
+      "The placement should close this week.",
+      "The merger will complete by the end of the month.",
+      "You may want to trim here.",
+      "You could add on a dip.",
+      "You should stay out of this one.",
+      "Is this the time to buy?",
+      "No reason to sell here.",
+      "Profits are best taken into the close."
     ]
+  },
+  "read75Labels": {
+    "about": "Commercial read 86 (859ed1a0), indices into the fixture's adviceNegatives",
+    "struck": [0, 1, 4, 9, 12, 20, 21],
+    "struckBorderlineApart": [2],
+    "attributedApart": [19],
+    "pass": [3, 5, 6, 7, 8, 10, 11, 13, 14, 15, 16, 17, 18]
   },
   "apart": {
     "inSample": [
@@ -66,7 +85,8 @@
       "Stand aside until the offering prices."
     ],
     "ratingForAdam": ["Wells Fargo raised its rating to Buy."],
-    "read75Negatives": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json adviceNegatives, all 22, reported line by line with NO pass mark: they were negatives for the deal-word regex, and several are not advice or forecast at all ('Buying pressure and selling pressure rose', 'A plan to sell shares'); Commercial labels them if it wants them in a gate"
+    "attributedForAdam": ["Analysts say to buy the dip."],
+    "read75Negatives": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json adviceNegatives, all 22, gated by Commercial read 86's labels (read75Labels): struck ones are gate seeds, pass ones must pass, 2 and 19 apart"
   },
   "mustPass": {
     "dealLines": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json dealFacts, all 46 (8 contain a carve-out example and are also reported apart)",
