@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { readableSnapshot } from '@/lib/dashboard/merge';
 import { boardRangeRequest } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 import { guardReviewApi, REVIEW_HEADERS } from '@/lib/review/access';
@@ -37,5 +38,7 @@ export async function GET(
   // board he does not have (Design, 2026-09-29).
   const range = boardRangeRequest(searchParams);
 
-  return NextResponse.json(getMarketSnapshot({ extraSymbols, range }), { headers: REVIEW_HEADERS });
+  return NextResponse.json(readableSnapshot(getMarketSnapshot({ extraSymbols, range })), {
+    headers: REVIEW_HEADERS,
+  });
 }
