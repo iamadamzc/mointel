@@ -131,8 +131,10 @@ describe('the writer is told exactly what the checker admits (Integration: they 
   const never = quoted(rule.slice(rule.indexOf('Never "sell"')));
 
   it('names the allowed shapes, and each one passes the checker in a name\'s own line', () => {
-    expect(allowed).toEqual(['agreed to sell', 'an agreement to sell', 'selling stockholders', 'entered into an agreement']);
-    for (const phrase of allowed) expect(adviceStrikes(`Barnwell ${phrase} its Canadian business.`)).toEqual([]);
+    expect(allowed).toEqual(['agreed to sell', 'an agreement to sell', 'selling stockholders', 'entered into an agreement', 'Wells Fargo raised its rating to Buy']);
+    for (const phrase of allowed.slice(0, 4)) expect(adviceStrikes(`Barnwell ${phrase} its Canadian business.`)).toEqual([]);
+    // Version 16 (his yes fbafcf83): the writer's rating example passes the checker as written.
+    expect(adviceStrikes(`${allowed[4]}.`)).toEqual([]);
   });
 
   it('each example the writer is told never to use strikes', () => {
@@ -166,5 +168,39 @@ describe('the remainder is tested, and only the three advice rules are relaxed',
     expect(adviceStrikes('It confirmed it had broken out.').length).toBe(1);
     expect(adviceStrikes('The stock confirmed that support held.').length).toBe(1);
     expect(adviceStrikes('The catalyst was confirmed.').length).toBe(1);
+  });
+});
+
+describe('a named analyst rating change is reporting, not advice (his yes fbafcf83; Commercial read 88 (5))', () => {
+  it('passes the advice-word rule on a cited name line', () => {
+    for (const text of [
+      'Wells Fargo raised its rating to Buy.',
+      'On October 1, Wells Fargo raised its rating to Buy.',
+      'H.C. Wainwright upgraded the stock to Buy from Neutral.',
+      'Benchmark initiated coverage of the company with a Buy rating.',
+      'Maxim Group downgraded the shares to Sell.',
+      'Roth Capital reiterated its Buy rating on the stock.',
+    ]) {
+      expect(adviceStrikes(text)).toEqual([]);
+    }
+  });
+
+  it('an instruction, an unnamed crowd, a pronoun, a lowercase rating or anything left after the rating stays struck', () => {
+    for (const text of [
+      'Analysts say to buy the dip.',
+      'Analysts raised their rating to Buy.',
+      'It upgraded to Buy, so buy the stock.',
+      'Wells Fargo raised its rating to Buy, so buy the stock.',
+      'Upgrade to Buy now.',
+      'Wells Fargo says buy the stock.',
+      'Wells Fargo raised its rating to buy.',
+    ]) {
+      expect(adviceStrikes(text).length).toBeGreaterThan(0);
+    }
+  });
+
+  it('on a line with no cited research, or with no ticker, the word list still strikes it (scope unchanged)', () => {
+    expect(adviceStrikes('Wells Fargo raised its rating to Buy.', 'NONE').length).toBe(1);
+    expect(adviceStrikes('Wells Fargo raised its rating to Buy.', null).length).toBe(1);
   });
 });

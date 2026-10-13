@@ -227,6 +227,32 @@ export const DEAL_ENTER_SHAPES: readonly RegExp[] = [
   new RegExp(String.raw`\b(?:agreement|contract|lease|arrangement),?\s+entered\s+(?:on\s+)?` + MONTH + String.raw`\s+\d{1,2}\b`, 'gi'),
 ];
 
+/**
+ * A NAMED analyst's or firm's rating change, stated as a fact: reporting, not advice. His yes (Integration chat
+ * 1f30f0a2, user uuid fbafcf83, 2026-10-13T09:39:59.808Z, "2, yes", to "May reports state analyst rating changes, like
+ * 'Wells Fargo raised its rating to Buy.'? ... reported as the analyst's view, never as advice to the reader"); Commercial
+ * read 88 (8aefeb53) RULED (5): an attributed rating or target change is reporting, an attributed instruction to readers
+ * is not. Case-sensitive: the party is one to four capitalised words and never a pronoun or an unnamed crowd
+ * ("Analysts", "Some"), and the rating is a capitalised label. "Analysts say to buy the dip" stays struck, and so does
+ * anything left after the shape is removed ("..., so buy the stock").
+ */
+const RATING_LABEL =
+  '(?:Strong Buy|Speculative Buy|Buy|Strong Sell|Sell|Hold|Outperform|Underperform|Overweight|Underweight|Equal-Weight|Neutral|Market Perform|Sector Perform|Accumulate|Reduce)';
+const ANALYST_RATING_CHANGE = new RegExp(
+  NOT_A_PARTY +
+    String.raw`(?!(?:Analysts?|Brokers?|Some|Several|Many|Most|Traders?|Investors?)\b)[A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3} ` +
+    String.raw`(?:raised|lowered|upgraded|downgraded|cut|kept|reiterated|maintained|initiated|started|resumed|reaffirmed|assigned)` +
+    // "raised its rating to Buy", "upgraded the stock to Buy", "initiated coverage of the company with a Buy rating" ...
+    String.raw`(?:(?: (?:coverage of|its|their|the|a|an)(?: [\w-]+){0,4}?)?(?: rating)?(?: on [^.;]{1,40}?)? (?:to|at|with|of) (?:an? )?` +
+    RATING_LABEL +
+    String.raw`(?: rating)?` +
+    // ... or the label before the word: "reiterated its Buy rating".
+    String.raw`| (?:its|their|a|an) ` +
+    RATING_LABEL +
+    String.raw` rating)\b`,
+  'g',
+);
+
 /** The deal itself, a resale's term of art, and "confirmed" as a reporting verb. Removed. */
 export const DEAL_FACT_SHAPES: readonly RegExp[] = [
   // A cue up to 60 characters before "to sell" / "to buy", never "into ..." or "the news/rip/pop/spike/dip".
@@ -240,6 +266,7 @@ export const DEAL_FACT_SHAPES: readonly RegExp[] = [
   /\bselling (?:stockholders?|shareholders?|securityholders?|security holders?)\b/gi,
   // Case-sensitive: the company, management, or a named party of one to four capitalised words.
   new RegExp('(?:[Tt]he company|[Mm]anagement|' + NOT_A_PARTY + String.raw`[A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3}) confirmed (?:that|it (?:had|has))\b`, 'g'),
+  ANALYST_RATING_CHANGE,
 ];
 
 /** The FORBIDDEN rules the deal-fact shapes relax; every other rule tests the whole line. */

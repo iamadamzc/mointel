@@ -53,9 +53,10 @@ import { dayWords, STATUS_WORDS, type WriterInputV5 } from './writerV5';
  * labels state their rank by peak, the 50 percent count states it is among the counted names, and the name rule says
  * how each kind's names were chosen (an intraday leader is chosen by rank and may be down). 15: a name's own deal may be
  * stated in the shapes the checker now admits (Commercial read 75, his yes 2026-10-12), so the writer is not told to
- * avoid what the checker allows.
+ * avoid what the checker allows. 16: a NAMED analyst's or firm's rating change may be stated as that firm's view (his
+ * yes fbafcf83, 2026-10-13; Commercial read 88 (5)), the shape the checker now admits (`check.ts` ANALYST_RATING_CHANGE).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V6 = 15;
+export const REPORT_WRITER_PROMPT_VERSION_V6 = 16;
 
 export interface WriterInputV6 extends WriterInputV5 {
   narrative: NarrativeFacts;
@@ -265,7 +266,7 @@ export const SYSTEM_V6 = [
   '- An agreement or a plan is what was agreed or announced ("agreed to acquire"), never "will". Never "confirmed": say "reported by the company". An analyst rating of Buy or Sell is "a positive (or negative) analyst rating".',
   '',
   'NEVER',
-  '- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name\'s own deal from its sources, stated as a fact in that name\'s line, in these shapes only, with the company or a named party doing it: "agreed to sell", "an agreement to sell", "selling stockholders", "entered into an agreement". Never "sell" or "buy" in any other place (never "a plan to sell" or "an offer to sell"), and never "entered" except into an agreement.',
+  '- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name\'s own deal from its sources, stated as a fact in that name\'s line, in these shapes only, with the company or a named party doing it: "agreed to sell", "an agreement to sell", "selling stockholders", "entered into an agreement". A named analyst firm\'s rating change is also a fact you may state in that name\'s line, as the firm\'s view, with the firm named and the rating capitalised: "Wells Fargo raised its rating to Buy". Never "sell" or "buy" in any other place (never "a plan to sell" or "an offer to sell"), and never "entered" except into an agreement.',
   '- A float number, or a share count called float.',
   '- Shorting or fading as a trade. The reader is long-only.',
   '- "no catalyst" on its own; it is always "no catalyst found in our sources". Never "the real catalyst".',
