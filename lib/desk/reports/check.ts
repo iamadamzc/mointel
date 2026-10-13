@@ -28,7 +28,7 @@ import { withoutCitations } from '../../research/citations';
 import type { ReportFact } from './facts';
 import type { NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
-import { claimsIn, dateAllowed, etDayAndClock, roundsTo, traceLine } from './traced';
+import { claimsIn, dateAllowed, etDayAndClock, eventWhen, roundsTo, sourceWhen, traceLine } from './traced';
 import { narrativeSheet } from './writerV6';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
@@ -103,6 +103,12 @@ export interface CheckInput {
    * reads the v6 prompt. Absent = v5, unchanged.
    */
   narrative?: NarrativeFacts | null;
+  /**
+   * The narrative facts worded EXACTLY as this report's writer was given them. Absent = writer v6's `narrativeSheet`,
+   * production's writer. A caller with another writer passes that writer's sheet (writer v7's `narrativeSheetV7`): the
+   * 10-13 writer test (45c16b15) checked the v7 Summary against v6's sheet, which the v7 writer never saw.
+   */
+  narrativeSheet?: readonly string[];
   /**
    * The 10 pm edition revising a published 8:30 edition (`revision.ts`). A
    * PREMARKET run without one is the evening report's first edition, and its
@@ -316,14 +322,35 @@ function givenNumbers(facts: NarrativeFacts): Set<number> {
  * The named names' catalyst summaries: their own figures (shortened as a name line may) and their dates. FRESH_FOUND
  * only since writer v6 13: the sheet hands over no other summary, so a figure from older news has no source to trace to.
  */
-function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates: Set<string> } {
+function summaryAllowance(facts: NarrativeFacts, research?: ReadonlyMap<string, ReportResearch>): { magnitudes: number[]; dates: Set<string> } {
   const out = { magnitudes: [] as number[], dates: new Set<string>() };
-  // Not the after-hours name: its sheet line is the move only (writer v6 13), so it hands over no summary to trace.
-  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? [])]) {
-    if (!m.summary || m.status !== 'FRESH_FOUND') continue;
-    const claims = claimsIn(m.summary);
+  const harvest = (text: string | null) => {
+    if (!text) return;
+    const claims = claimsIn(text);
     for (const number of claims.numbers) out.magnitudes.push(number.mantissa * number.unit);
     for (const date of claims.dates) out.dates.add(date.value);
+  };
+  // Not the after-hours name: its sheet line is the move only (writer v6 13), so it hands over no summary to trace.
+  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? [])]) {
+    if (m.status === 'FRESH_FOUND') harvest(m.summary);
+  }
+  // Integration's ruling (2026-10-13, from the writer v7 test 45c16b15): the Summary may restate EVERY named name's own
+  // catalyst, whatever its status, as that name's stored research states it: its summary, its cited sources' titles and
+  // dates, and its event date. Never the unknowns (the desk does not have them), never the structure, never an unnamed
+  // name's research.
+  if (research) {
+    for (const ticker of namedTickers(facts)) {
+      const catalyst = research.get(ticker)?.catalyst;
+      if (!catalyst) continue;
+      harvest(catalyst.summary);
+      for (const source of catalyst.sources) {
+        harvest(source.title);
+        const when = sourceWhen(source);
+        if (when.date) out.dates.add(when.date);
+      }
+      const event = eventWhen(catalyst);
+      if (event.date) out.dates.add(event.date);
+    }
   }
   return out;
 }
@@ -435,10 +462,11 @@ export function narrativeFindings(
   text: string,
   facts: NarrativeFacts,
   tickers: readonly string[],
+  research?: ReadonlyMap<string, ReportResearch>,
 ): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
   const given = givenNumbers(facts);
-  const summary = summaryAllowance(facts);
+  const summary = summaryAllowance(facts, research);
   const claims = claimsIn(text);
   for (const claim of claims.numbers) {
     const isGiven = claim.unit === 1 && given.has(claim.mantissa);
@@ -530,7 +558,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     }
 
     if (v6Narrative) {
-      for (const finding of narrativeFindings(line.text, v6Narrative, tickers)) hit(finding.reason, finding.detail);
+      for (const finding of narrativeFindings(line.text, v6Narrative, tickers, input.research)) hit(finding.reason, finding.detail);
       continue;
     }
     if (line.id === 'O') {
@@ -702,9 +730,11 @@ const CHECKER_SYSTEM_V5 = [
  * its v6 rule no longer names the context. 10: the narrative facts it is shown word every news state as the recap's
  * sentence 2 does and carry a catalyst for fresh news only, no cycle label, and an after-hours line of the move only
  * (writer v6 13), and the summary allowance follows them (still 10, which never ran). 11: the facts it is shown state
- * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14).
+ * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14). 12: the
+ * narrative may restate a NAMED name's own catalyst as its stored research states it, whatever its status (Integration's
+ * ruling 2026-10-13; the rule half is `summaryAllowance`), and the facts it is shown are the sheet the writer got.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 11;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 12;
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -717,7 +747,7 @@ const CHECKER_SYSTEM_V6 = [
   "A catalyst status is the desk's own verdict on freshness under its rules; do not re-judge freshness from the dates in the research. A line matching its status's supported wording is supported even when the research names an older dated event.",
   "A null `sharesOutstanding` supports 'no share count is on file' (or 'no dated share count'); it never supports a number.",
   '',
-  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, and the after-hours name labeled as after hours.',
+  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, and the after-hours name labeled as after hours. For a ticker the narrative facts name, it may also restate that name\'s own catalyst as its stored research above states it (what happened, with its figures and dates), never another name\'s.',
   'v6: it may also state an INTERPRETATION: a pattern or theme the given facts support (for example how many 50 percent movers kept half their peak gain against how many gave the move back, or what the named catalysts have in common). An interpretation is supported only when the same sentence names the given facts it rests on; one that rests on no named fact is UNSUPPORTED.',
   'v6: the narrative is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move", "on the news"), a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), a forecast about support, resistance or supply ("will hold", "should break", "expect"), an after-hours figure not labeled as after hours or mixed with the day\'s figures, or any claim the facts do not give.',
   'v6: each name line is the catalyst story only. Grade, fit to the move, structure, float, shares outstanding and supply are printed as tags beside it; a line that restates them must still be supported by the research like any other claim.',
@@ -791,7 +821,7 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
           input.narrative
             ? // Worded EXACTLY as the writer was given them. Voice run v6b (801efe6e): shown as raw JSON, the model could not map "9 ran past
             // 50 percent" to movers50 or "the desk carries 12" to tracking, and struck a narrative that stated only given facts.
-            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${narrativeSheet(input.narrative).join('\n  ')}`
+            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${(input.narrativeSheet ?? narrativeSheet(input.narrative)).join('\n  ')}`
             : input.afterHoursTotals
               ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
               : 'After-hours totals: none given, so any count in an overall line is unsupported.',

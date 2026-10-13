@@ -4,6 +4,7 @@ import { applyStrikes, buildCheckerPrompt, narrativeFindings, ruleStrikes, type 
 import type { ReportDraft } from '@/lib/desk/reports/writer';
 import type { NarrativeFacts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
+import type { ReportResearch } from '@/lib/desk/reports/research';
 
 /*
  * Checker v6: the narrative ('O') traced against its computed facts (seeds N1-N4,
@@ -111,6 +112,36 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
     const older = { ...intraday, intradayNamed: intraday.intradayNamed!.map((m) => ({ ...m, status: 'SECONDARY_STALE' as const })) };
     expect(reasons(GOOD_INTRADAY, intraday)).toEqual([]);
     expect(reasons(GOOD_INTRADAY, older)).toContain('NUMBER_WITHOUT_ROW');
+  });
+
+  it("Integration's ruling (2026-10-13): EVERY named name's own catalyst may be restated from its stored research, whatever its status; an unnamed name's, the unknowns and the structure may not", () => {
+    const catalyst = (summary: string, title: string, at: string, unknowns: string[] = []) =>
+      ({
+        catalyst: {
+          status: 'SECONDARY_STALE', grade: 'WEAK', summary, eventTimestamp: at, sources: [{ title, publishedAt: at, precision: 'DATE_ONLY' }],
+          whyTradersMayCare: null, unknowns, plausiblyExplainsMove: false,
+        },
+        structure: { classification: 'CLEAN', sharesOutstanding: { count: 41_200_000, asOf: '2026-08-14' }, supply: [] },
+      }) as unknown as ReportResearch;
+    const research = new Map<string, ReportResearch>([
+      // AAA is named (the intraday leader) with NONE_FOUND on the sheet; its stored research still has older news.
+      ['AAA', catalyst('A $5.2 million purchase order from a utility.', 'AAA 8-K', '2026-09-28T12:00:00Z', ['the order value for 2027, $9.9 million or more'])],
+      // CCC is in the rows but not named by the narrative facts.
+      ['CCC', catalyst('A $7.7 million registered direct offering.', 'CCC 424B5', '2026-09-25T12:00:00Z')],
+    ]);
+    const withResearch = (text: string) => narrativeFindings(text, intraday, TICKERS, research).map((f) => f.reason);
+    const named = `${GOOD_INTRADAY} AAA's latest news in our sources was a $5.2 million purchase order, dated September 28.`;
+    expect(withResearch(named)).toEqual([]);
+    // Without the research the same sentence has no source (the rule before the ruling).
+    expect(reasons(named, intraday)).toEqual(expect.arrayContaining(['NUMBER_WITHOUT_ROW', 'DATE_NOT_TRACED']));
+    // An unnamed name's figure and date stay struck.
+    expect(withResearch(`${GOOD_INTRADAY} A $7.7 million offering was dated September 25.`)).toEqual(['NUMBER_WITHOUT_ROW', 'DATE_NOT_TRACED']);
+    // The unknowns and the structure are not catalyst facts.
+    expect(withResearch(`${GOOD_INTRADAY} AAA's order may reach $9.9 million.`)).toEqual(['NUMBER_WITHOUT_ROW']);
+    expect(withResearch(`${GOOD_INTRADAY} AAA had 41,200,000 shares outstanding.`)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // The production path: ruleStrikes hands the check's research to the narrative's trace.
+    const viaRules = ruleStrikes({ ...input(named, 'x', intraday), research }).filter((s) => s.id === 'O');
+    expect(viaRules).toEqual([]);
   });
 
   it('G and the split count left the prose (N11 retired): omitting G is not struck; stating it is a number no fact gives', () => {
@@ -281,6 +312,16 @@ describe('ruleStrikes, v6', () => {
     expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
+  });
+
+  it("shows the narrative sheet the writer actually got when the caller passes one; v6's otherwise (the 10-13 writer test)", () => {
+    const given = ['a sheet line only another writer was given: AAA, down 12 percent from the prior close'];
+    const other = buildCheckerPrompt({ ...input(GOOD_INTRADAY, 'x', intraday), narrativeSheet: given });
+    expect(other.user).toContain(`worded exactly as the writer was given them:\n  ${given[0]}`);
+    expect(other.user).not.toContain('fresh news in our sources: ');
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
+    expect(v6.user).not.toContain(given[0]);
+    expect(v6.user).toContain('fresh news in our sources: ');
   });
 });
 
