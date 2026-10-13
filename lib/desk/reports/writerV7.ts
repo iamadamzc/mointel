@@ -39,8 +39,11 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * "exception" becomes plain guidance (no word is struck). 4: aligned with the voice doc at 6992c911 (Integration,
  * 2026-10-13): Marketing's character paragraph and specimen verbatim (no move in a name line, except the one sentence
  * that nothing in our sources tied the move to the news); the rules the paragraph already states are not repeated.
+ * 5: Marketing's voice-fidelity read of 4 (2026-10-13): the rules first and the voice paragraph and specimen LAST;
+ * amounts said as on air ("$46.8 million", not "$46.8M"); the no-card-path case worded as the card rule's condition;
+ * the specimen's ALEC line opens on the news (Integration's cut); Commercial read 84's REQUIRED deal-status line.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 4;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 5;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -173,22 +176,20 @@ export const VOICE_PARAGRAPH = [
   `What must stay true, whatever the style: attribute what you report ("the company said", "our sources show", "secondary coverage reported") and say "in our sources" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer ("you", "stay with us", "back to you"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define ("surging", "hot", "busy", "quiet"). Say a rank as a rank ("ranked first in this range"), never "led" or "biggest". Speak of the checkpoint in the past tense ("was up", "had fresh news"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as "2:30 PM". Make each name's line stand on its own: open it with the company or the news, never with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.`,
 ].join('\n\n');
 
-/** The specimen, VERBATIM from the same doc (its bold markers dropped): one example of the voice, not a template. */
+/**
+ * The specimen, VERBATIM from the same doc (its bold markers dropped), except ONE cut: ALEC's opening sentence "ALEC had
+ * fresh news in our sources." (Integration's ruling, 2026-10-13, on Marketing's read: the only sample line that opened on
+ * a state phrase, so a model would repeat it on every fresh name). One example of the voice, not a template.
+ */
 export const VOICE_SPECIMEN = [
   `Summary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
-  `ALEC. ALEC had fresh news in our sources. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.`,
+  `ALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.`,
   `MI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.`,
   `QTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.`,
 ].join('\n\n');
 
 export const SYSTEM_V7 = [
   'You write a short session report: a Summary of the session and one line per name.',
-  '',
-  VOICE_PARAGRAPH,
-  '',
-  'ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (a report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given):',
-  '',
-  VOICE_SPECIMEN,
   '',
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
   '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
@@ -197,16 +198,22 @@ export const SYSTEM_V7 = [
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',
   'USING THE FACTS:',
-  '- Use only the facts given. Copy every number and date exactly; never compute one. A catalyst figure may be shortened to one decimal with a unit ("$46.8M"). Restate stored text in your own words; never quote it.',
-  '- Only where a name\'s sheet says no card path is printed may its price and change be stated, in the past tense.',
-  '- A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.',
+  '- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most ("$46.8 million"). Restate stored text in your own words; never quote it.',
+  '- The voice below keeps the move out of a name line because the card prints it above the line. Where a name\'s sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.',
+  '- A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.',
   '- Restate what the source reports and its terms, never the desk\'s reading of what it may mean or what traders, investors or the market may think, do or care about.',
-  `- The joining words above are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
+  `- The joining words in the voice below are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
   '- Never "still", "remains" or "continues"; never "top"; never a count of names in a name line, "every name", "all the movers" or "the real catalyst".',
   '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
   '',
   'REPLY',
   `- JSON only: {"narrative": string | null, "lines": [{"ticker": string | null, "text": string}]}, one line per name. With no names, one line: {"ticker": null, "text": "${NOTHING_LINE}"}. "narrative" is null only when the narrative facts give nothing to say.`,
+  '',
+  VOICE_PARAGRAPH,
+  '',
+  'ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (a report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given):',
+  '',
+  VOICE_SPECIMEN,
 ].join('\n');
 
 const KIND_FRAME_V7: Record<ReportKind, string> = {

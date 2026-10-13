@@ -199,7 +199,10 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(SYSTEM_V7).not.toMatch(/off the high|at the high|little changed|up from the prior close and/);
     // Version 3 and his rule (c6b4168d): a named name's own news may enter the Summary; a deal is a fact, advice never.
     expect(SYSTEM_V7).toContain("you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section)");
-    expect(SYSTEM_V7).toContain('A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.');
+    expect(SYSTEM_V7).toContain('A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it.');
+    expect(SYSTEM_V7).toContain('Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.');
+    // Commercial read 84 (REQUIRED): a deal keeps its status; "a deal is a fact" must not upgrade a proposal.
+    expect(SYSTEM_V7).toContain('Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so.');
     // Commercial read 83: the old "nothing downstream strikes a word" sentence is false while the fact checks stay.
     expect(SYSTEM_V7).toContain('write with care, because figures, dates and tickers are checked against the data');
     expect(SYSTEM_V7).not.toContain('nothing downstream strikes');
@@ -210,14 +213,20 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
 
   it('carries the voice paragraph and the specimen, and the specimen name lines say nothing about the move (Commercial read 83)', () => {
     expect(SYSTEM_V7).toContain(VOICE_PARAGRAPH);
-    expect(SYSTEM_V7).toContain(VOICE_SPECIMEN);
+    // Marketing's read of version 4: the voice is the last thing the model reads, after the rules and the reply shape.
+    expect(SYSTEM_V7.endsWith(VOICE_SPECIMEN)).toBe(true);
+    expect(SYSTEM_V7.indexOf(VOICE_PARAGRAPH)).toBeGreaterThan(SYSTEM_V7.indexOf('REPLY'));
+    expect(SYSTEM_V7).toContain('as you would on air, shortened to one decimal at most ("$46.8 million")');
+    expect(SYSTEM_V7).not.toContain('$46.8M');
     const names = VOICE_SPECIMEN.split('\n\n').filter((line) => !line.startsWith('Summary.'));
     expect(names.map((line) => line.split('.')[0])).toEqual(['ALEC', 'MI', 'QTEX']);
     for (const line of names) expect(line).not.toMatch(/percent|%|\bup from\b|\bdown from\b|\bhigh\b|prior close/);
+    // Integration's cut: no specimen name line opens on a state phrase, which a model would repeat name after name.
+    for (const line of names) expect(line.split('. ').slice(1).join('. ')).not.toMatch(/^\w+ had fresh news/);
   });
 
   it("carries Commercial read 81's three required rules", () => {
-    expect(SYSTEM_V7).toContain('The joining words above are forbidden only where they connect a move to news, and a date\'s "on" is fine');
+    expect(SYSTEM_V7).toContain('The joining words in the voice below are forbidden only where they connect a move to news, and a date\'s "on" is fine');
     expect(SYSTEM_V7).toContain("never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about");
     expect(SYSTEM_V7).toContain('each called a covered 50 percent mover (never the highest peaks among all movers)');
   });

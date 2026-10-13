@@ -25,3 +25,14 @@ C6 whyTradersMayCare handed back: exit 1; the expected test failed: True; restor
 == eslint lib/desk/reports/writerV7.ts tests/desk/reportWriterV7.test.ts scripts/report-writer-v7-test.ts scripts/readNamedKey.ts: exit 0
 == dry run (dry-v4/summary.txt), --env-file as the paid run uses, 01:54:26Z to 01:55:11Z, exit 0: 48 of 48 PUBLISHED, 0 PROMPT_MISMATCH, spend 0. (A first dry run without --env-file at 01:53:19Z named the writer gpt-5.6-terra, the default when the environment does not set it; stub models, so no effect; discarded.)
 == prompt chars: v7 system 7,214 (version 2 was 5,089; the specimen and the verbatim paragraph add it) vs v6 8,477; user v7 9,567 to 16,540 vs v6 12,076 to 21,533 (all 48)
+
+== re-gate of prompt version 5 (Marketing's voice read of 4; Integration's cut of the specimen's "ALEC had fresh news in our sources."; Commercial read 84's REQUIRED deal-status line), 2026-10-13T01:59:25Z to 02:01:53Z (date -u), Ops's slot ("yours")
+== order: rules and reply shape first, the voice paragraph and specimen LAST (the prompt ends on the specimen)
+== verbatim against git show 6992c911: paragraph blocks 3 of 3; specimen blocks 3 of 4 verbatim, the 4th (ALEC) equal to the doc with only the ruled sentence cut; 0 em dash; no non-ASCII
+== vitest tests/desk/reportWriterV7.test.ts tests/desk/reportWriterV6.test.ts: Test Files 2 passed (2), Tests 25 passed (25)
+== mutants, each killed: allowed move sentence removed (1 test); a hand-off back in ALEC (1); the cut ALEC sentence restored (1); the deal-status line removed (1); "$46.8M" back (1); the voice paragraph also placed first (4); "due to" dropped (1); a second clock time (1); the old "nothing downstream strikes" sentence (1); restored identical
+== python -I scripts/writer-v7-controls.py: C1 to C6 each failed the expected test, restored True
+== tsc --noEmit exit 0; control: a planted type error reported (1), restored identical
+== eslint lib/desk/reports/writerV7.ts tests/desk/reportWriterV7.test.ts scripts/report-writer-v7-test.ts scripts/readNamedKey.ts: exit 0
+== dry run (dry-v5/summary.txt), --env-file, 02:01:07Z to 02:01:53Z, exit 0: 48 of 48 PUBLISHED, 0 PROMPT_MISMATCH, spend 0
+== prompt chars: v7 system 7,481 vs v6 8,477; user v7 9,567 to 16,540 vs v6 12,076 to 21,533 (all 48; the sheets are unchanged from version 4)
