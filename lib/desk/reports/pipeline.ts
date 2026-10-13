@@ -33,6 +33,7 @@ import type { ResearchAnalysisVersion, ResearchSource } from '../../research/typ
 import type { AssessmentType } from '../schedule';
 import { applyStrikes, checkReport, draftLines, type CheckerModel, type Strike } from './check';
 import { isEveningRecap, type MissedCause, type ReportKind, type ReportPath, type SessionReport } from './contract';
+import { replaceDraftDashes, type DashReplacement } from './dashes';
 import { REPORT_NAME_CAP, reportFacts, type ReportFact } from './facts';
 import { catalystFreshFromUtc } from '../../research/freshFrom';
 import { narrativeFacts, narrativeFootnotes, type NarrativeFacts } from './narrative';
@@ -325,6 +326,11 @@ export interface ReportDiagnostics {
   strikes: Array<Pick<Strike, 'id' | 'reason' | 'by' | 'detail'> & { text: string | null }>;
   writerMs: number | null;
   checkerMs: number | null;
+  /**
+   * The lines whose dashes were replaced before the check (`dashes.ts`), each with the writer's own words: the
+   * per-report count Integration asked for and the measure Commercial read 82 asked for. Absent when none changed.
+   */
+  dashes?: DashReplacement[];
 }
 
 export type ReportRun =
@@ -396,8 +402,10 @@ export async function runReport(
     if (!written.ok) return { status: 'MISSED', cause: written.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs: null } };
 
     // An unchanged narrative keeps its 8:30 words, so the writer's is neither checked nor used.
-    const draft: ReportDraft = plan && !plan.narrativeChanged ? { ...written.draft, overall: null } : written.draft;
-    observe?.draft?.(draft);
+    const kept: ReportDraft = plan && !plan.narrativeChanged ? { ...written.draft, overall: null } : written.draft;
+    observe?.draft?.(kept);
+    // Dashes are replaced, not struck (his ruling 71876cfd; `dashes.ts`), BEFORE the check, so the checker reads what publishes.
+    const { draft, replaced: dashes } = replaceDraftDashes(kept);
     let strikes: Strike[] = [];
     let checkedLines = 0;
     let checkerMs: number | null = null;
@@ -433,6 +441,7 @@ export async function runReport(
       strikes: strikes.map(({ id, reason, by, detail }) => ({ id, reason, by, detail, text: struckText.get(id) ?? null })),
       writerMs,
       checkerMs,
+      ...(dashes.length > 0 ? { dashes } : {}),
     };
     // v6: a struck name keeps its computed card with no prose, so cards = the narrative's covered names.
     const applied = applyStrikes(draft, strikes, now, {

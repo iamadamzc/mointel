@@ -13,6 +13,7 @@ import {
   parseVerdicts,
   ruleStrikes,
   VERDICT_SCHEMA_V6,
+  WORD_LIST_STRIKES,
   type Strike,
 } from '@/lib/desk/reports/check';
 import type { ReportDraft } from '@/lib/desk/reports/writer';
@@ -77,6 +78,8 @@ const recap: NarrativeFacts = {
   context: { ticker: 'NXL', sessionHigh: 10.98, close: 7.55, support: 4.9, resistance: 10.98, olderHigh: 19.2, openSupply: [] },
 };
 const reasons = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS).map((f) => f.reason);
+/** CAUSAL_WORDING is on the word list (`WORD_LIST_STRIKES`, off): its own tests run it with the list ON, the switch-back path. */
+const causalOn = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS, undefined, true).map((f) => f.reason);
 
 const GOOD_INTRADAY = 'AAA leads, down 12 percent from the prior close. BBB is up 51 percent from the prior close with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
 const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent above the prior close and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. The desk carries 12 names into today.';
@@ -224,22 +227,22 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
 
   it('W2: a connective that makes the news the cause is struck (CAUSAL_WORDING)', () => {
     for (const word of ['after', 'on', 'following', 'amid', 'due to', 'on the back of', 'in response to', 'in the wake of']) {
-      expect(reasons(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
+      expect(causalOn(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
     }
-    expect(reasons('BBB printed a new high after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
+    expect(causalOn('BBB printed a new high after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
   });
 
   it('W3: not causal: "with", a connective inside the news, a frame, a particle, "the following", a topic', () => {
-    expect(reasons('BBB is up 51 percent from the prior close, with fresh news on first-half results.', intraday)).toEqual([]);
-    expect(reasons('BBB is up 51 percent from the prior close with news of a split amid a financing.', intraday)).toEqual([]);
-    expect(reasons('NXL ran to 156 percent above the prior close and closed up 76 percent on the day.', recap)).toEqual([]);
-    expect(reasons('Of the movers that ran at least 50 percent above the prior close, most held on.', recap)).toEqual([]);
-    expect(reasons('BBB is up 51 percent from the prior close into the following session.', intraday)).toEqual([]);
-    expect(reasons('BBB is up 51 percent from the prior close, and reporting on first-half results was found in our sources.', intraday)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close, with fresh news on first-half results.', intraday)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close with news of a split amid a financing.', intraday)).toEqual([]);
+    expect(causalOn('NXL ran to 156 percent above the prior close and closed up 76 percent on the day.', recap)).toEqual([]);
+    expect(causalOn('Of the movers that ran at least 50 percent above the prior close, most held on.', recap)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close into the following session.', intraday)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close, and reporting on first-half results was found in our sources.', intraday)).toEqual([]);
   });
 
   it('W4: each move in a clause is read up to the next move, so a second move cannot hide behind the first one and its "with"', () => {
-    expect(reasons('AAA leads, down 12 percent from the prior close with no news found, while BBB is up 51 percent after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
+    expect(causalOn('AAA leads, down 12 percent from the prior close with no news found, while BBB is up 51 percent after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
   });
 
   it('W5: a placeholder copied from the prompt example is struck (Commercial 14a)', () => {
@@ -336,6 +339,66 @@ describe('ruleStrikes, v6', () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
     expect(v6.user).not.toContain(given[0]);
     expect(v6.user).toContain('fresh news in our sources: ');
+  });
+});
+
+describe('the word list switch (his rule c6b4168d; Integration 2026-10-13; read 82 (2)(iii): one change restores it)', () => {
+  // One line per word rule the switch turns off, each struck today with the word list on.
+  const WORD_LINES = [
+    'Holders may want to sell into strength.',
+    'A good entry for the name.',
+    'Time to exit the position.',
+    'One to watch into the close.',
+    'Add to a position on any dip.',
+    'Short it on the next pop.',
+    'The company will close the deal.',
+    'Every name on the list had news.',
+    'The real catalyst was the filing.',
+    'There was no catalyst for the move.',
+    'A quiet session for the name.',
+    'Its status was FRESH_FOUND in our sources.',
+    'The contract could drive further gains.',
+    `The company said ${String.fromCharCode(0x2014)} in a filing.`,
+    'The company said - in a filing.',
+  ];
+  const strikesOn = (text: string, wordList?: boolean) =>
+    ruleStrikes(input(GOOD_INTRADAY, text, intraday), wordList === undefined ? {} : { wordList }).filter((s) => s.id === 'S1L1');
+
+  it('is OFF, for v6 checks', () => {
+    expect(WORD_LIST_STRIKES).toBe(false);
+  });
+
+  it('off: no word rule strikes a name line; ON restores every one of them (FORBIDDEN_WORDING)', () => {
+    for (const text of WORD_LINES) {
+      expect(strikesOn(text).map((s) => s.reason)).not.toContain('FORBIDDEN_WORDING');
+      expect(strikesOn(text, true).map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
+    }
+  });
+
+  it('off: LEANS_ON_ANOTHER and CAUSAL_WORDING do not strike; ON restores both', () => {
+    expect(strikesOn('It filed an 8-K.').map((s) => s.reason)).not.toContain('NOT_SELF_CONTAINED');
+    expect(strikesOn('It filed an 8-K.', true).map((s) => s.reason)).toContain('NOT_SELF_CONTAINED');
+    const causal = GOOD_INTRADAY.replace('up 51 percent from the prior close with', 'up 51 percent from the prior close after');
+    expect(narrativeFindings(causal, intraday, TICKERS).map((f) => f.reason)).not.toContain('CAUSAL_WORDING');
+    expect(narrativeFindings(causal, intraday, TICKERS, undefined, true).map((f) => f.reason)).toContain('CAUSAL_WORDING');
+  });
+
+  it('off: every fact check still strikes (a count of names, a halt not observed, another ticker, a citation, a placeholder, a clock, revision, an unframed percent)', () => {
+    expect(strikesOn('One of the 12 names had news.').map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
+    expect(strikesOn('The name was halted.').map((s) => s.detail)).toContain('a halt with no halt observed');
+    expect(strikesOn('BBB filed an 8-K.').map((s) => s.reason)).toContain('NOT_SELF_CONTAINED');
+    expect(strikesOn('Our sources found a contract award [Source 7].').map((s) => s.reason)).toContain('CITATION_TOKEN');
+    const narrative = (text: string) => narrativeFindings(text, intraday, TICKERS).map((f) => f.reason);
+    expect(narrative(`${GOOD_INTRADAY} {placeholder}`)).toContain('FORBIDDEN_WORDING');
+    expect(narrative(`${GOOD_INTRADAY} Nothing has changed in our sources.`)).toContain('REVISION_WORDING');
+    expect(narrative(GOOD_INTRADAY.replace('down 12 percent from the prior close', 'down 12 percent'))).toContain('UNFRAMED_PERCENT');
+    const clock = ruleStrikes(input(`${GOOD_INTRADAY} As of 10:15 the board held.`, 'x', intraday)).filter((s) => s.id === 'O');
+    expect(clock.map((s) => s.reason)).toContain('TIME_NOT_CHECKPOINT');
+  });
+
+  it('a v4 or v5 check (no narrative) keeps the word list whatever the switch says: only v6 asks read 82\'s questions', () => {
+    const v5 = ruleStrikes(input(GOOD_INTRADAY, 'Holders may want to sell into strength.', null), { wordList: false });
+    expect(v5.filter((s) => s.id === 'S1L1').map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
   });
 });
 

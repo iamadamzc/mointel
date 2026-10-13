@@ -153,6 +153,36 @@ export function draftLines(draft: ReportDraft): DraftLine[] {
 /* ------------------------------------------------------ deterministic rules */
 
 /**
+ * THE WORD LIST SWITCH, the ONE change that restores the word list (read 82 (2)(iii)). His rule (Research chat
+ * 39e1d5a3, uuid c6b4168d, 2026-10-13T01:29:23.576Z): "i recommend we dont strike words. the model should be smart
+ * enough to follow a rule given appropriate instruction." Integration's scope (2026-10-13, after Commercial read 82):
+ * the rules named in `WORD_LIST_LABELS`, CAUSAL_WORDING and LEANS_ON_ANOTHER stop striking; their guidance is in the
+ * writer prompt, advice and forecast are read 82's model read (`SECOND_READ_V6`), and self-containedness is its third
+ * question. Every fact check stays whatever this says. Dashes are replaced before the check (`dashes.ts`), not struck.
+ * true = every one of them strikes again, exactly as before.
+ */
+export const WORD_LIST_STRIKES = false;
+
+/** The FORBIDDEN rules the switch turns off (Integration's GO list, 2026-10-13); the others are fact checks and stay. */
+export const WORD_LIST_LABELS: ReadonlySet<string> = new Set([
+  'buy/sell',
+  'enter/entry',
+  'exit',
+  'directive',
+  'short/fade as a trade',
+  'prediction or certainty',
+  'completeness',
+  '"real" catalyst',
+  'bare "no catalyst"',
+  '"quiet"',
+  'engine constant',
+  'fit stated as a forecast',
+  // Replaced before the check (`dashes.ts`); struck again only with the word list.
+  'em dash',
+  'spaced hyphen as a dash',
+]);
+
+/**
  * Wording no line may carry, each from a ruled source (`marketing.md` "The
  * words the voice NEVER uses", `commercial.md`, the writer's NEVER list).
  * Precise shapes rather than bare words, because a false strike fails the
@@ -423,7 +453,7 @@ function causalIn(segment: string): string | null {
 const REVISION =
   /\b(?:since (?:the )?8:30|since the (?:earlier|previous|first|prior) (?:edition|version|report)|no names? (?:have |has )?changed|nothing (?:has )?changed|unchanged since|(?:remains?|still) unchanged|revised with|updated with|no changes?)\b/i;
 
-function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: string }> {
+function wordingFindings(text: string, wordList: boolean): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
   const revision = text.match(REVISION);
   if (revision) out.push({ reason: 'REVISION_WORDING', detail: `"${revision[0]}"` });
@@ -432,6 +462,8 @@ function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: st
     if (moves.length === 0) continue;
     const percent = moves.find((m) => /percent/i.test(m[0]));
     if (percent && !FRAME.test(clause)) out.push({ reason: 'UNFRAMED_PERCENT', detail: `"${percent[0]}" with no frame in its clause` });
+    // CAUSAL_WORDING is on the word list (`WORD_LIST_STRIKES`); a stated cause is still the model's UNSUPPORTED read.
+    if (!wordList) continue;
     for (let i = 0; i < moves.length; i += 1) {
       const end = moves[i]!.index! + moves[i]![0].length;
       const word = causalIn(clause.slice(end, moves[i + 1]?.index ?? clause.length));
@@ -466,6 +498,7 @@ export function narrativeFindings(
   facts: NarrativeFacts,
   tickers: readonly string[],
   research?: ReadonlyMap<string, ReportResearch>,
+  wordList: boolean = WORD_LIST_STRIKES,
 ): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
   const given = givenNumbers(facts);
@@ -493,7 +526,7 @@ export function narrativeFindings(
       out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ${phrase} vs ${value}` });
     }
   }
-  out.push(...wordingFindings(text));
+  out.push(...wordingFindings(text, wordList));
   // The prompt's example is placeholders (Commercial 14): a copied "{percent}" has no digit for the number check.
   if (/[{}]/.test(text)) out.push({ reason: 'FORBIDDEN_WORDING', detail: 'a template placeholder copied from the prompt' });
   return out;
@@ -526,10 +559,15 @@ function tickerRe(ticker: string): RegExp {
   return new RegExp(`(?<![A-Za-z0-9.])${ticker.replace(/[.\-]/g, '\\$&')}(?![A-Za-z0-9])`);
 }
 
-export function ruleStrikes(input: CheckInput): Strike[] {
+/**
+ * `wordList`: whether the word list strikes (`WORD_LIST_STRIKES`). Only a v6 check (a narrative given) can switch it
+ * off, because only the v6 checker asks read 82's questions; a v4 or v5 check keeps every word rule.
+ */
+export function ruleStrikes(input: CheckInput, options: { wordList?: boolean } = {}): Strike[] {
   const strikes: Strike[] = [];
   const time = etClock(new Date(input.checkpoint.completedAt)).slice(0, 5);
   const tickers = input.rows.map((row) => row.ticker);
+  const wordList = !input.narrative || (options.wordList ?? WORD_LIST_STRIKES);
 
   for (const line of draftLines(input.draft)) {
     const hit = (reason: StrikeReason, detail: string) =>
@@ -541,6 +579,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     for (const [shape, label] of FORBIDDEN) {
       // The v6 narrative states GIVEN counts of names ("the 12 names the desk covers"); its numbers are traced below instead.
       if (v6Narrative && label === NAME_COUNT_LABEL) continue;
+      if (!wordList && WORD_LIST_LABELS.has(label)) continue;
       const match = (DEAL_FACT_LABELS.has(label) ? dealTested : line.text).match(shape);
       if (match) hit('FORBIDDEN_WORDING', `${label}: "${match[0]}"`);
     }
@@ -561,7 +600,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     }
 
     if (v6Narrative) {
-      for (const finding of narrativeFindings(line.text, v6Narrative, tickers, input.research)) hit(finding.reason, finding.detail);
+      for (const finding of narrativeFindings(line.text, v6Narrative, tickers, input.research, wordList)) hit(finding.reason, finding.detail);
       continue;
     }
     if (line.id === 'O') {
@@ -614,7 +653,8 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     // NOT required: that the text names its own ticker. The surface prints
     // `line.ticker` as the line's lead (`SessionReports.tsx` report lines),
     // so a line that omits it is still about one named name.
-    if (LEANS_ON_ANOTHER.test(line.text.trim())) hit('NOT_SELF_CONTAINED', 'opens on another line');
+    // On the word list (Integration's ruling): with it off, the model's self-containedness answer carries this.
+    if (wordList && LEANS_ON_ANOTHER.test(line.text.trim())) hit('NOT_SELF_CONTAINED', 'opens on another line');
     const others = tickers.filter((t) => t !== line.ticker && tickerRe(t).test(line.text));
     if (others.length > 0) hit('NOT_SELF_CONTAINED', `also names ${others.join(', ')}`);
   }

@@ -205,6 +205,27 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.diagnostics.strikes.find((s) => s.reason === 'CITATION_TOKEN')?.text).toBe(line);
   });
 
+  it('a dash is REPLACED before the check, never struck: the published line has a comma, and diagnostics keep the writer\'s words (his ruling 71876cfd)', async () => {
+    const db = fixture();
+    const em = String.fromCharCode(0x2014);
+    const line = `Our sources found a contract award ${em} a two-year supply deal - with a utility.`;
+    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE, line), checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    const published = run.report.sections.flatMap((s) => s.lines).find((l) => l.ticker === 'AAA')?.text;
+    expect(published).toBe('Our sources found a contract award, a two-year supply deal, with a utility.');
+    expect(run.diagnostics.strikes.filter((s) => s.text === line || s.text === published)).toEqual([]);
+    expect(run.diagnostics.dashes).toEqual([{ id: expect.stringMatching(/^S\d+L\d+$/), before: line }]);
+    // The prose only: the tag's empty-grade cell is the one glyph his rule names as an exception.
+    const prose = [run.report.narrative ?? '', ...run.report.sections.flatMap((s) => s.lines.map((l) => l.text))];
+    expect(prose.join('\n')).not.toContain(em);
+  });
+
+  it('no dash, no dashes field in diagnostics', async () => {
+    const run = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE), checker }, () => new Date(COMPLETED));
+    expect(run.status === 'PUBLISHED' && 'dashes' in run.diagnostics).toBe(false);
+  });
+
   it('a citation token in a name line is struck end to end', async () => {
     const db = fixture();
     const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE, 'Our sources found a contract award [Source 7].'), checker }, () => new Date(COMPLETED));
