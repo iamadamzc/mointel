@@ -40,9 +40,11 @@ export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: readon
 }
 
 /**
- * The two checks a face needs before it may print the FILED count on a refused row (float fix 1: his "3, yes",
+ * Both results the face needs to decide how it shows the FILED count on a refused row (float fix 1: his "3, yes",
  * Integration chat 1f30f0a2, user uuid fbafcf83, 2026-10-13T09:39:59.808Z; Integration 39th's ruling, option (i), payload
- * only; Commercial read 89b; the shape agreed with Design and Integration 2026-10-13). `floatCell` stops at the first
+ * only; the shape agreed with Design and Integration 2026-10-13). The payload carries the results; WHAT the face does with
+ * them is Design's view, under his later ruling (same chat, uuid 867ffe18, 2026-10-13T09:57:22.409Z: "3, no show a number
+ * and another icon with a link and a tooltip, yes, with warning"), not this file's. `floatCell` stops at the first
  * failing check in the prereg's order, so a row refused for issuance never REPORTS its split or age; both are computed
  * here with the same inputs and code. NOT_RUN only where a check could not be computed: no filed count, or the filings
  * not re-read (FILINGS_NOT_REREAD). Stored state, reasons and the precedence are unchanged.
@@ -50,7 +52,7 @@ export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: readon
 export interface FloatCountChecks {
   /** The split check between the filed count's date and D. */
   split: SplitProof | 'NOT_RUN';
-  /** The count's age at D against FLOAT_MAX_AGE_DAYS (90): AFTER_DATE is a count dated after D, never printable. */
+  /** The count's age at D against FLOAT_MAX_AGE_DAYS (90): AFTER_DATE is a count dated after D (the cell's look-ahead fault). */
   age: 'WITHIN' | 'TOO_OLD' | 'AFTER_DATE' | 'NOT_RUN';
 }
 
@@ -93,8 +95,8 @@ export interface FloatBound {
    */
   insiders: FloatInsider[];
   /**
-   * Every row Research builds, PRODUCED included (`countChecksAt`): the face prints the filed count on a refused row only
-   * on split NONE and age WITHIN. Optional in the TYPE only, for objects built elsewhere (a synthesized cell, an older
+   * Every row Research builds, PRODUCED included (`countChecksAt`): the split and age results for the filed count; how the
+   * face shows the count (and which results carry a warning) is Design's view. Optional in the TYPE only, for objects built elsewhere (a synthesized cell, an older
    * stored payload); Design's reader takes a missing value as NOT_RUN, the value that claims least.
    */
   countChecks?: FloatCountChecks;
