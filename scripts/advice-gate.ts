@@ -38,7 +38,8 @@ import { openDatabase, type MarketDatabase } from '../lib/market/store/db';
 import { readReportModelConfig } from '../lib/research/config';
 
 const RANGE = { min: 1, max: 20 };
-const STOP_AT = 3;
+/** The hard stop in dollars; --stop=<n> lowers it (read 88's re-run runs with --stop=2). Never above his $3. */
+const STOP_AT = Math.min(3, Number(process.argv.find((a) => a.startsWith('--stop='))?.slice(7) ?? 3));
 const RUNS = 3;
 const SEED = 20261013;
 const MAX_NAME_LINES = 11;
@@ -50,7 +51,10 @@ const WORST_CHECK = (26_000 * PRICE_TERRA.input + 10_000 * PRICE_TERRA.output) /
 
 const DAYS = ['2026-10-02', '2026-10-05', '2026-10-06'];
 const KINDS: ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'];
-const BASES = DAYS.flatMap((day) => KINDS.map((kind) => ({ day, kind, tag: `${day}-${kind}-v6-w_luna` })));
+/** --seeds=<file> (default seeds.json) and --reports=<n> (default all 12, in this order): read 88's re-run uses fewer. */
+const ARG = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+const SEEDS_FILE = ARG('seeds') ?? 'docs/research/reports/advice-gate/seeds.json';
+const BASES = DAYS.flatMap((day) => KINDS.map((kind) => ({ day, kind, tag: `${day}-${kind}-v6-w_luna` }))).slice(0, Number(ARG('reports') ?? 12));
 
 type Kind = 'gate' | 'deal' | 'sample' | 'read75pass' | 'apart';
 type Position = 'opening' | 'middle' | 'end' | 'whole';
@@ -61,6 +65,8 @@ interface Sentence {
   text: string;
   /** A deal line that holds one of the carve-out's examples (`DEAL_EXAMPLES`): also reported apart, as in-sample. */
   holdsExample: boolean;
+  /** False for a gate seed planted again as in-sample (read 88): reported, never in the verdict. */
+  counted: boolean;
 }
 interface Placement {
   base: number;
@@ -96,10 +102,11 @@ function shuffled<T>(items: readonly T[], next: () => number): T[] {
 }
 
 function loadSentences(): Sentence[] {
-  const seeds = JSON.parse(fs.readFileSync('docs/research/reports/advice-gate/seeds.json', 'utf8')) as {
+  const seeds = JSON.parse(fs.readFileSync(SEEDS_FILE, 'utf8')) as {
     gate: Record<string, string[]>;
     apart: { inSample: string[]; ratingForAdam: string[]; attributedForAdam: string[] };
-    read75Labels: { struck: number[]; struckBorderlineApart: number[]; attributedApart: number[]; pass: number[] };
+    read75Labels: { struck: number[]; struckBorderlineApart: number[]; attributedApart: number[]; pass: number[]; notUsed?: number[] };
+    inSampleOriginals?: string[];
     mustPass: { sampleLines: string[] };
   };
   const fixture = JSON.parse(fs.readFileSync('tests/desk/fixtures/deal-fact-lines-2026-10-12.json', 'utf8')) as {
@@ -107,12 +114,13 @@ function loadSentences(): Sentence[] {
     adviceNegatives: string[];
   };
   const labels = seeds.read75Labels;
-  const labelled = [...labels.struck, ...labels.struckBorderlineApart, ...labels.attributedApart, ...labels.pass].sort((a, b) => a - b);
+  const labelled = [...labels.struck, ...labels.struckBorderlineApart, ...labels.attributedApart, ...labels.pass, ...(labels.notUsed ?? [])].sort((a, b) => a - b);
   if (labelled.join() !== fixture.adviceNegatives.map((_, i) => i).join()) throw new Error('read 75 labels do not cover the 22 negatives exactly once');
 
   const out: Sentence[] = [];
-  const add = (kind: Kind, group: string, text: string, holdsExample = false) => out.push({ n: out.length, kind, group, text, holdsExample });
+  const add = (kind: Kind, group: string, text: string, holdsExample = false, counted = true) => out.push({ n: out.length, kind, group, text, holdsExample, counted });
   for (const [group, list] of Object.entries(seeds.gate)) for (const text of list) add('gate', group, text);
+  for (const text of seeds.inSampleOriginals ?? []) add('gate', 'in-sample original (read 88), not counted', text, false, false);
   for (const i of labels.struck) add('gate', `read75 #${i}`, fixture.adviceNegatives[i]!);
   for (const text of fixture.dealFacts) add('deal', 'deal', text, DEAL_EXAMPLES.some((e) => text.includes(e)));
   for (const text of seeds.mustPass.sampleLines) add('sample', 'sample', text);
@@ -365,12 +373,13 @@ async function main() {
   const samples = sentences.filter((s) => s.kind === 'sample');
   const read75pass = sentences.filter((s) => s.kind === 'read75pass');
   const runIdx = Array.from({ length: RUNS }, (_, r) => r);
-  const gateHeld = gate.every((s) => runsOf(s).length === RUNS && runsOf(s).every((a) => a?.struck === true));
+  const counted = gate.filter((s) => s.counted);
+  const gateHeld = counted.every((s) => runsOf(s).length === RUNS && runsOf(s).every((a) => a?.struck === true));
   const mustHeld = runIdx.every((r) => passedIn(mustPass, r) >= need(mustPass));
   const samplesHeld = runIdx.every((r) => samples.every((s) => !failsIn(s, r)));
   const read75Held = runIdx.every((r) => passedIn(read75pass, r) >= READ75_NEED);
 
-  log.push('', `GATE SEEDS: ${gate.filter((s) => runsOf(s).every((a) => a?.struck === true) && runsOf(s).length === RUNS).length} of ${gate.length} struck in all ${RUNS} runs (X struck, . passed, ? not measured)`);
+  log.push('', `GATE SEEDS: ${counted.filter((s) => runsOf(s).every((a) => a?.struck === true) && runsOf(s).length === RUNS).length} of ${counted.length} counted struck in all ${RUNS} runs (X struck, . passed, ? not measured)`);
   for (const s of gate) log.push(row(s));
   log.push('', `MUST PASS (${mustPass.length}): passed per run, after own-draft re-reads, ${runIdx.map((r) => passedIn(mustPass, r)).join(', ')}; need ${need(mustPass)} in every run; the six sample lines may not miss in any run`);
   const outside = mustPass.filter((s) => !s.holdsExample);
