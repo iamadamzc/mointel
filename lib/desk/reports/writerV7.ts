@@ -35,8 +35,11 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * Bumped whenever `SYSTEM_V7`, the sheets' wording or the reply shape changes. 1: the first draft. 2: Commercial read 81
  * (REQUIRED): a date's "on" is not a join; whyTradersMayCare leaves the sheet and the prompt forbids the desk's reading of
  * significance; a named recap mover is a COVERED 50 percent mover; a no-card-path price is stated in the past tense.
+ * 3: the 10-13 test (45c16b15) and his rule "dont strike words" (c6b4168d): the move and high words leave the name
+ * sheet (the line is the news); the Summary may restate a named name's own news from its research; the deal
+ * "exception" becomes plain guidance (no word is struck).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 2;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 3;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -105,26 +108,14 @@ export function narrativeSheetV7(facts: NarrativeFacts): string[] {
 }
 
 /**
- * The move as the card shows it, in words (no figure): direction from the card's "vs prior close" figure and the high
- * from its "under the high" figure, both rounded to one decimal exactly as `sessionReports.ts` pathView prints them.
- * "off the high" only at 1.0 or more under it; "at the high" only when the card prints that (0.0 under).
+ * One name's facts for v7: the news story. The move is NOT handed over (version 3): the card prints it, the checker is
+ * not given the evening card's after-hours high (the 10-13 test struck 52 lines on it), and the same move words handed
+ * to every name became the new repeated phrase (the NEWS_WORDS defect in a new place).
  */
-export function cardMoveWords(path: ReportPath): string {
-  const changePct = Math.round(((path.now - path.from) / path.from) * 1000) / 10;
-  const underPct = Math.round(((path.high - path.now) / path.high) * 1000) / 10;
-  const afterHours = path.fromBasis === 'TODAY_CLOSE';
-  const from = afterHours ? 'from the regular-session close, after hours' : 'from the prior close';
-  const direction = changePct > 0 ? `up ${from}` : changePct < 0 ? `down ${from}` : `little changed ${from}`;
-  const high = afterHours ? 'the after-hours high' : 'the high';
-  const at = underPct <= 0 ? `at ${high}` : underPct >= 1 ? `off ${high}` : `near ${high} but not at it (say nothing about ${high})`;
-  return `${direction}; ${at}`;
-}
-
-/** One name's facts for v7: the news story, and the move as words only. */
 export function factSheetV7(fact: ReportFact, research: ReportResearch | null, path: ReportPath | null): string[] {
   const lines: string[] = [`${fact.ticker}: ranked #${fact.assessmentRank} in this range`];
   if (path) {
-    lines.push(`the card above your line prints the prices and the move; in words it shows: ${cardMoveWords(path)}`);
+    lines.push('the card above your line prints the prices and the move: do not restate them');
   } else {
     if (fact.price !== null) lines.push(`no card path is printed for this name, so you may state its price, in the past tense: ${price(fact.price)}`);
     const change = framedChange(fact);
@@ -171,9 +162,10 @@ export const SYSTEM_V7 = [
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
   '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
   '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.',
+  '- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name\'s facts on another, and never mention a name the narrative facts do not name.',
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',
-  'EACH NAME\'S LINE must include the name and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is the news itself (a placement, an ATM program, a reverse split). A few words on the move are fine, only as the card shows it, using only up, down, higher, lower or little changed; never a price or a percent while the card prints them (only where the sheet says no card path is printed may its price and change be stated). For a name with no news to report, say its ruled state phrase exactly and nothing more:',
+  'EACH NAME\'S LINE must include the name and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is the news itself (a placement, an ATM program, a reverse split). The card prints the prices and the move above the line, so the line is the news: never restate the move, a price or a percent from it (only where the sheet says no card path is printed may its price and change be stated, in the past tense). For a name with no news to report, say its ruled state phrase exactly and nothing more:',
   `"${RULED_STATE_PHRASES.NOT_RESEARCHED}", "${RULED_STATE_PHRASES.NONE_FOUND}", "${RULED_STATE_PHRASES.UNKNOWN}". Never invent or pad news.`,
   '',
   'WHAT MUST STAY TRUE, whatever the style:',
@@ -181,11 +173,11 @@ export const SYSTEM_V7 = [
   '- Attribute what you report ("the company said", "our sources show", "secondary coverage reported"), and say "in our sources" only where a claim would otherwise read as about the market. A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported".',
   `- State a move and its news in separate clauses. Never join them with ${quoted(NEVER_JOIN)}; these words are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"). A headline is never a cause.`,
   '- Restate what the source reports and its terms, never the desk\'s reading of what it may mean or what traders, investors or the market may think, do or care about.',
-  '- Never say what the stock will do or what anyone should do: no buy, sell, enter, exit, add, watch, take it, get in, short or fade. The one exception is a name\'s own deal in its own line, as a fact with the company or a named party doing it: "agreed to sell", "an agreement to sell", "selling stockholders", "entered into an agreement".',
+  '- Never say what the stock will do or what anyone should do: no recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words. A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it.',
   '- Never address the reader ("you", "stay with us", "back to you"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define ("surging", "hot", "busy", "quiet", "pop", "clearly").',
   '- Say a rank as a rank ("ranked first in this range"), never "led", "top" or "biggest". Never a count of names in a name line, never "every name" or "all the movers", never "the real catalyst".',
   `- Speak of the checkpoint in the past tense ("was up", "had fresh news"), and never "still", "remains" or "continues". Anchor every time to a date; never write a clock time. Open each line with its own ticker, never with ${quoted(NEVER_OPEN)}.`,
-  '- "off the high" and "at the high" only as the card shows. No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
+  '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
   '',
   'REPLY',
   `- JSON only: {"narrative": string | null, "lines": [{"ticker": string | null, "text": string}]}, one line per name. With no names, one line: {"ticker": null, "text": "${NOTHING_LINE}"}. "narrative" is null only when the narrative facts give nothing to say.`,

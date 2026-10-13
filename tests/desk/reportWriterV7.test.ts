@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildWriterPromptV7,
-  cardMoveWords,
   factSheetV7,
   narrativeSheetV7,
   NEVER_JOIN,
@@ -125,10 +124,12 @@ describe('v7 hands the model facts, not words', () => {
 });
 
 describe('v7 name sheet: no figure while the card prints one, and no clock time', () => {
-  it('with a card path: the move in words, no percent, no price', () => {
-    const text = factSheetV7(fact, research, pathOf(10, 19.4, 12)).join('\n');
-    expect(text).toContain('in words it shows: up from the prior close; off the high');
-    expect(text).not.toMatch(/percent|%|\$/);
+  it('with a card path: no move words at all (version 3), no percent, no price', () => {
+    for (const path of [pathOf(10, 19.4, 12), pathOf(4, 5, 5, 'TODAY_CLOSE')]) {
+      const text = factSheetV7(fact, research, path).join('\n');
+      expect(text).toContain('the card above your line prints the prices and the move: do not restate them');
+      expect(text).not.toMatch(/percent|%|\$|\bhigh\b|\bup from\b|\bdown from\b|after-hours/);
+    }
   });
 
   it('with no card path: the price and the framed change may be stated', () => {
@@ -150,16 +151,6 @@ describe('v7 name sheet: no figure while the card prints one, and no clock time'
     expect(text).toContain('event date: October 5');
     expect(text).toContain('cited source: "Alector 8-K", October 5');
     expect(text).not.toMatch(/\b\d{1,2}:\d{2}\b/);
-  });
-
-  it('cardMoveWords follows the card: off the high at 1.0 percent under or more, at the high at 0.0, otherwise nothing about the high', () => {
-    expect(cardMoveWords(pathOf(1, 2, 1.5))).toBe('up from the prior close; off the high');
-    expect(cardMoveWords(pathOf(1, 2, 2))).toBe('up from the prior close; at the high');
-    expect(cardMoveWords(pathOf(100, 120, 119.5))).toBe('up from the prior close; near the high but not at it (say nothing about the high)');
-    expect(cardMoveWords(pathOf(100, 100, 99))).toBe('down from the prior close; off the high');
-    expect(cardMoveWords(pathOf(100, 100, 99.05))).toBe('down from the prior close; off the high'); // the card prints 1.0% under
-    expect(cardMoveWords(pathOf(100, 100.5, 100.04))).toBe('little changed from the prior close; near the high but not at it (say nothing about the high)');
-    expect(cardMoveWords(pathOf(4, 5, 5, 'TODAY_CLOSE'))).toBe('up from the regular-session close, after hours; at the after-hours high');
   });
 
   it('no clock time anywhere in the system prompt or the sheets', () => {
@@ -194,7 +185,13 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(SYSTEM_V7).toContain('financial news desk reporter');
     expect(SYSTEM_V7).toContain('never robotic');
     expect(SYSTEM_V7).toContain('coherent');
-    expect(SYSTEM_V7).toContain('using only up, down, higher, lower or little changed');
+    // Version 3: the line is the news; the move is the card's.
+    expect(SYSTEM_V7).toContain('so the line is the news: never restate the move, a price or a percent from it');
+    expect(SYSTEM_V7).not.toMatch(/off the high|at the high|little changed/);
+    // Version 3 and his rule (c6b4168d): a named name's own news may enter the Summary; a deal is a fact, advice never.
+    expect(SYSTEM_V7).toContain("you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section)");
+    expect(SYSTEM_V7).toContain('no recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words. A deal is a fact');
+    expect(SYSTEM_V7).not.toContain('The one exception is');
     expect(SYSTEM_V7).not.toMatch(/\{[A-Za-z0-9]+\}/); // no {placeholder} template
     expect(SYSTEM_V7).not.toContain('at most FOUR sentences');
   });
