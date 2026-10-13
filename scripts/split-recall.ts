@@ -12,7 +12,7 @@
  * for the same symbols and dates, and the API's answer (rows, or the refusal) is recorded as the source for their names.
  *
  * Read-only: the store copy, and Alpaca REST GETs (no stream; the one SIP connection is untouched). No model, no spend.
- *   node --env-file=../mointel/.env.local --import tsx scripts/split-recall.ts <store-copy> <out-dir>
+ *   node --env-file=../mointel/.env.local --import tsx scripts/split-recall.ts <store-copy> <out-dir> [--creds-root=../mointel]
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -40,7 +40,9 @@ const shift = (iso: string, days: number) => new Date(Date.parse(iso) + days * D
 async function main() {
   const [dbPath, out] = process.argv.slice(2);
   if (!dbPath || !out) throw new Error('usage: split-recall.ts <store-copy> <out-dir>');
-  const credentials = findAlpacaCredentials().credentials;
+  // --creds-root=<dir>: where the desk's Alpaca key file lives (a worktree has none); never printed.
+  const credsRoot = process.argv.find((a) => a.startsWith('--creds-root='))?.slice('--creds-root='.length) ?? process.cwd();
+  const credentials = findAlpacaCredentials(credsRoot).credentials;
   if (!credentials) throw new Error('no Alpaca credentials; nothing run');
   fs.mkdirSync(out, { recursive: true });
   const db = openDatabase(dbPath, { readonly: true, skipSchema: true });
