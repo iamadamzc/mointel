@@ -239,7 +239,10 @@ export const DEAL_ENTER_SHAPES: readonly RegExp[] = [
 const RATING_LABEL =
   '(?:Strong Buy|Speculative Buy|Buy|Strong Sell|Sell|Hold|Outperform|Underperform|Overweight|Underweight|Equal-Weight|Neutral|Market Perform|Sector Perform|Accumulate|Reduce)';
 const ANALYST_RATING_CHANGE = new RegExp(
-  NOT_A_PARTY +
+  // Commercial read 90 (89271b69), advisory: the party starts a word and follows no capitalised word, so the match
+  // cannot slide past an excluded crowd word ("Traders Union upgraded the stock to Buy" stays struck).
+  String.raw`(?<![\w&.'-])(?<![A-Z][\w&.'-]* )` +
+    NOT_A_PARTY +
     String.raw`(?!(?:Analysts?|Brokers?|Some|Several|Many|Most|Traders?|Investors?)\b)[A-Z][\w&.'-]*(?: [A-Z][\w&.'-]*){0,3} ` +
     String.raw`(?:raised|lowered|upgraded|downgraded|cut|kept|reiterated|maintained|initiated|started|resumed|reaffirmed|assigned)` +
     // "raised its rating to Buy", "upgraded the stock to Buy", "initiated coverage of the company with a Buy rating" ...

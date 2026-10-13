@@ -135,6 +135,9 @@ describe('the writer is told exactly what the checker admits (Integration: they 
     for (const phrase of allowed.slice(0, 4)) expect(adviceStrikes(`Barnwell ${phrase} its Canadian business.`)).toEqual([]);
     // Version 16 (his yes fbafcf83): the writer's rating example passes the checker as written.
     expect(adviceStrikes(`${allowed[4]}.`)).toEqual([]);
+    // Read 90 (REQUIRED): the older rule no longer contradicts it; it covers a rating with no firm named.
+    expect(SYSTEM_V6).toContain('An analyst rating of Buy or Sell with no firm named is "a positive (or negative) analyst rating".');
+    expect(SYSTEM_V6).not.toContain('An analyst rating of Buy or Sell is "a positive');
   });
 
   it('each example the writer is told never to use strikes', () => {
@@ -194,6 +197,8 @@ describe('a named analyst rating change is reporting, not advice (his yes fbafcf
       'Upgrade to Buy now.',
       'Wells Fargo says buy the stock.',
       'Wells Fargo raised its rating to buy.',
+      // Read 90: the match may not slide past an excluded crowd word to a later capitalised word.
+      'Traders Union upgraded the stock to Buy.',
     ]) {
       expect(adviceStrikes(text).length).toBeGreaterThan(0);
     }
