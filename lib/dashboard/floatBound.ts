@@ -22,7 +22,7 @@
  */
 
 import { BOUND_PREFIX, compactBound } from '@/lib/research/compactBound';
-import type { FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
+import type { FloatCountChecks, FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
 import type { FloatCellReason } from '@/lib/research/insiderBound';
 
 /** Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed". */
@@ -70,7 +70,20 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
     countForm: typeof r.countForm === 'string' ? r.countForm : null,
     // A malformed insider row is dropped, never shown with invented values.
     insiders: Array.isArray(r.insiders) ? r.insiders.flatMap(insiderOf) : [],
+    // Absent stays absent: "no record of a check" is a different sentence from a recorded NOT_RUN (Commercial 89e).
+    ...(checksOf(r.countChecks) ? { countChecks: checksOf(r.countChecks)! } : {}),
   };
+}
+
+const SPLITS: ReadonlySet<string> = new Set(['NONE', 'FOUND', 'UNPROVEN', 'NOT_RUN']);
+const AGES: ReadonlySet<string> = new Set(['WITHIN', 'TOO_OLD', 'AFTER_DATE', 'NOT_RUN']);
+
+/** Research's `countChecks`, or undefined when absent or malformed (either value outside its union): no record. */
+function checksOf(raw: unknown): FloatCountChecks | undefined {
+  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const c = raw as Record<string, unknown>;
+  if (typeof c.split !== 'string' || !SPLITS.has(c.split) || typeof c.age !== 'string' || !AGES.has(c.age)) return undefined;
+  return { split: c.split as FloatCountChecks['split'], age: c.age as FloatCountChecks['age'] };
 }
 
 function insiderOf(raw: unknown): FloatInsider[] {
@@ -89,14 +102,20 @@ function insiderOf(raw: unknown): FloatInsider[] {
   ];
 }
 
-export type FloatFaceKind = 'bound' | 'unknown' | 'cannotVerify' | 'notComputed';
+/** `filedCount`: a refused row printing the company's FILED share count (float fix 1); never a bound, never sorted. */
+export type FloatFaceKind = 'bound' | 'filedCount' | 'unknown' | 'cannotVerify' | 'notComputed';
+
+/** The filed-count face's one icon: `caveat` (checks passed, refused for another reason) or `warning`. */
+export type FiledCountIcon = 'caveat' | 'warning';
 
 export interface FloatCellView {
   kind: FloatFaceKind;
-  /** The number on the face ("≤ 12.3M") or the word. */
+  /** The number on the face ("≤ 12.3M", "12.3M sh") or the word. */
   face: string;
   /** The filed count's date beside the number (m/d), bound face only. */
   date: string | null;
+  /** The filed-count face's icon and its hover; null on every other face. */
+  icon: { kind: FiledCountIcon; title: string } | null;
   ariaLabel: string;
   /** The popover's paragraphs, before the page link (kept for surfaces that print prose). */
   paragraphs: string[];
@@ -263,6 +282,7 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
       kind: 'notComputed',
       face: 'Not computed',
       date: null,
+      icon: null,
       ariaLabel: 'TMI Float not computed for this name',
       paragraphs: [NOT_COMPUTED_TEXT],
       details: refusedDetails(NOT_COMPUTED_TEXT),
@@ -281,6 +301,7 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
         kind: 'cannotVerify',
         face: 'Cannot verify',
         date: null,
+        icon: null,
         ariaLabel: 'float cannot be verified for this name',
         paragraphs: [reason],
         details: refusedDetails(reason),
@@ -293,6 +314,7 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
       kind: 'bound',
       face: compact,
       date: shortDate(bound.countAsOf),
+      icon: null,
       ariaLabel: `no more than ${amount} shares as of ${d}, computed from the share count dated ${countDate} and insider holdings filed through ${fetched}, when the filings line up`,
       // The v25 popover, verbatim, split before "Lined up means".
       paragraphs: [
@@ -309,6 +331,7 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
       kind: 'unknown',
       face: 'Unknown',
       date: null,
+      icon: null,
       ariaLabel: 'float unknown for this name',
       paragraphs: [reason],
       details: refusedDetails(reason),
@@ -316,10 +339,13 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
   }
 
   const reason = cannotVerifyText(bound.reason, countDate, longDate(bound.filingsReadOn));
+  const filed = filedCountFace(bound, reason);
+  if (filed) return filed;
   return {
     kind: 'cannotVerify',
     face: 'Cannot verify',
     date: null,
+    icon: null,
     ariaLabel: 'float cannot be verified for this name',
     paragraphs: [reason],
     details: refusedDetails(reason),
@@ -365,6 +391,115 @@ function refusedDetails(reason: string): FloatDetails {
       { label: FLOAT_DETAILS_WORDS.definitionLabel, text: FLOAT_DETAILS_WORDS.definition },
     ],
     insiders: [],
+  };
+}
+
+/*
+ * FLOAT FIX 1: THE FILED COUNT ON A REFUSED ROW. His "3, yes, when can't verify place a very small icon or somethign
+ * with a tooltip and link toexplanation" (Integration chat, 2026-10-13T09:39:59.808Z) and his ruling on the two cases
+ * put to him, "3, no show a number and another icon with a link and a tooltip, yes, with warning"
+ * (2026-10-13T09:57:22.409Z): a refused row with a filed count prints that count, never as a TMI Float, with ONE
+ * icon: `caveat` where the split and age checks both passed, `warning` where either did not or was not recorded.
+ * Still the word, with no number: no filed count, a count dated after the board date, BOUND_OUT_OF_RANGE (the count
+ * itself is suspect: insiderBound.ts look-ahead and bound <= 0; Integration 39th), the no-reason fault.
+ * Research computes the checks (`countChecks`, ba6afbba); this module applies no rule of its own beyond the table.
+ * Commercial reads 89 to 89e: the unit on the face, "filed" and the date in the hover, the warning says its case
+ * plainly, never "current", "latest" or "float" for the count; sort, filter and comparison stay bounds only.
+ */
+export const FILED_COUNT_RULE = {
+  /** Reasons that never print the count. */
+  noNumberReasons: new Set<FloatBoundReason>(['BOUND_OUT_OF_RANGE']),
+  /** Ages that never print the count. */
+  noNumberAges: new Set<FloatCountChecks['age']>(['AFTER_DATE']),
+  /** The checks under which the icon is the caveat; anything else, or no record, is the warning. */
+  caveat: (checks: FloatCountChecks) => checks.split === 'NONE' && checks.age === 'WITHIN',
+} as const;
+
+/*
+ * DRAFT WORDS, DESIGN'S PLACEHOLDERS: Marketing words every string below and Commercial reads them; they go to him
+ * before ship (Integration's order: build, then words). Each is written to Commercial 89e's conditions so the
+ * draft is true, but none is passed copy.
+ */
+export const FILED_COUNT_WORDS = {
+  unit: 'sh',
+  /** The hover's first line on either icon: what the number is, with its date. */
+  what: (date: string) => `The company's filed share count as of ${date}, with no insider holdings subtracted. It is not a TMI Float.`,
+  /** The issuance causes' caveat (the stored reason says shares may have been issued since). */
+  mayBeHigher: 'The true share count may be higher.',
+  preSplit: 'This count may be in share units from before a share split.',
+  splitNotChecked: 'The desk has not checked for a share split since this count.',
+  noRecord: 'We have no record of a share split check for this count.',
+  tooOld: (date: string, days: number) => `This count is from ${date}, more than ${days} days ago.`,
+  headline: (shares: string, asOf: string, form: string | null, filed: string | null) =>
+    `The desk could not verify a TMI Float for this name. The latest filed share count is ${shares} shares as of ${asOf}${form && filed ? `, from a ${form} filed ${filed}` : ''}.`,
+  definitionLabel: 'TMI Float, which this number is not',
+  definition:
+    'A TMI Float is shares outstanding less the insider holdings the desk can see. The number on this cell is the filed share count with nothing subtracted.',
+  aria: (shares: string, date: string) => `filed share count ${shares} as of ${date}; TMI Float could not be verified`,
+  /** One sentence after FLOAT_LEGEND, where the legend and the header hover print. */
+  legend: "Where a TMI Float cannot be verified, the cell may show the company's filed share count instead, marked with an icon. It is shares outstanding with no insider holdings subtracted, and it is not a TMI Float.",
+} as const;
+
+/** The 90 days of his ruling, for the warning's words only (Research decides TOO_OLD; FLOAT_MAX_AGE_DAYS). */
+const COUNT_MAX_AGE_DAYS = 90;
+
+const ISSUANCE_REASONS: ReadonlySet<string> = new Set(['ISSUANCE_FILED', 'ISSUANCE_FLAGGED', 'ISSUANCE_NOT_CHECKED', 'UNREGISTERED_SALE_NOT_CHECKABLE']);
+
+/**
+ * A share count, compact, ROUNDED TO NEAREST at three significant digits ("12.3M", "842K", "1.20B"). Not
+ * `compactBound`: that rounds UP because "no more than" must never understate; a filed count is not a bound.
+ */
+export function compactCount(shares: number): string {
+  const units: Array<[string, number]> = [['K', 1e3], ['M', 1e6], ['B', 1e9], ['T', 1e12]];
+  const whole = Math.round(shares);
+  if (whole < 1000) return String(whole);
+  let i = units.findIndex(([, size], k) => whole < size * 1000 || k === units.length - 1);
+  let text = (whole / units[i]![1]).toPrecision(3);
+  // Rounding can carry into the next unit (999,600 is "1.00e+3" K): show it in that unit instead ("1.00M").
+  if (Number(text) >= 1000 && i < units.length - 1) {
+    i += 1;
+    text = (whole / units[i]![1]).toPrecision(3);
+  }
+  return `${text}${units[i]![0]}`;
+}
+
+function filedCountFace(bound: FloatBound, reason: string): FloatCellView | null {
+  const W = FILED_COUNT_WORDS;
+  if (bound.state !== 'CANNOT_VERIFY' || bound.reason === null || FILED_COUNT_RULE.noNumberReasons.has(bound.reason)) return null;
+  if (bound.countShares === null || !(bound.countShares > 0)) return null;
+  const asOf = longDate(bound.countAsOf);
+  if (asOf === null) return null;
+  const checks = bound.countChecks;
+  if (checks && FILED_COUNT_RULE.noNumberAges.has(checks.age)) return null;
+
+  const warnings: string[] = [];
+  if (!checks) warnings.push(W.noRecord);
+  else {
+    if (checks.split === 'FOUND' || checks.split === 'UNPROVEN') warnings.push(W.preSplit);
+    if (checks.split === 'NOT_RUN') warnings.push(W.splitNotChecked);
+    if (checks.age === 'TOO_OLD') warnings.push(W.tooOld(asOf, COUNT_MAX_AGE_DAYS));
+  }
+  const icon: FiledCountIcon = checks && FILED_COUNT_RULE.caveat(checks) ? 'caveat' : 'warning';
+  const higher = ISSUANCE_REASONS.has(bound.reason) ? [W.mayBeHigher] : [];
+  const lines = [W.what(asOf), reason, ...higher, ...(icon === 'warning' ? warnings : [])];
+  const count = compactCount(bound.countShares);
+  const exact = Math.round(bound.countShares).toLocaleString('en-US');
+  return {
+    kind: 'filedCount',
+    face: `${count} ${W.unit}`,
+    date: null,
+    icon: { kind: icon, title: lines.join(' ') },
+    ariaLabel: [W.aria(count, asOf), reason, ...higher, ...(icon === 'warning' ? warnings : [])].join('; '),
+    // The drawer prints paragraphs[0] for any face that is not a bound: the stored reason, as before (Commercial (b)).
+    paragraphs: [reason],
+    details: {
+      rows: [
+        { label: null, text: W.headline(exact, asOf, bound.countForm, longDate(bound.countFiled)) },
+        { label: null, text: [reason, ...higher, ...(icon === 'warning' ? warnings : [])].join(' ') },
+        { label: W.definitionLabel, text: W.definition },
+      ],
+      insiders: [],
+    },
   };
 }
 

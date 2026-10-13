@@ -8,6 +8,7 @@
  * Summaries only — no chain of thought is surfaced.
  */
 
+import { FiledCountMark } from '@/components/FloatCell';
 import { StatusBadge, type Tone } from '@/components/StatusBadge';
 import type { StructureSummary } from '@/lib/dashboard/deskRead';
 import { CATALYST_SOURCES_LABEL, catalystSources, eventTimeView, type CatalystSource } from '@/lib/dashboard/catalystView';
@@ -88,11 +89,14 @@ function StructureSummaryBlock({
         <span className="inline-flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
           <FieldLabel>TMI Float</FieldLabel>
           <span
-            className={`num text-[12px] font-semibold ${summary.float.kind === 'bound' ? 'text-ink' : 'text-ink-3'}`}
+            className={`num text-[12px] font-semibold ${summary.float.kind === 'bound' ? 'text-ink' : summary.float.kind === 'filedCount' ? 'text-ink-2' : 'text-ink-3'}`}
+            aria-label={summary.float.icon ? summary.float.ariaLabel : undefined}
           >
             {summary.float.face}
           </span>
           {summary.float.date ? <span className="text-[10px] text-ink-3">{summary.float.date}</span> : null}
+          {/* Float fix 1: the board's filed-count icon and hover, the same face on both surfaces (Integration 39th). */}
+          {summary.float.icon ? <FiledCountMark kind={summary.float.icon.kind} title={summary.float.icon.title} /> : null}
         </span>
       </div>
       {/* The same sentence on every drawer: a general statement, not a finding about this name (his ask, 2026-10-09). */}

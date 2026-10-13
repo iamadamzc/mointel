@@ -74,7 +74,8 @@ export interface StructureSummary {
    * on a bound, the filed count's date. It was the Sheet's float with a check against the filed count; with
    * no Sheet float there is nothing to check (Research), so the check is gone.
    */
-  float: { face: string; date: string | null; kind: FloatCellView['kind'] };
+  /** The board cell's own face; `icon` and `ariaLabel` carry the filed-count face's warning in words (float fix 1). */
+  float: { face: string; date: string | null; kind: FloatCellView['kind']; icon: FloatCellView['icon']; ariaLabel: string };
   /**
    * The model's confidence in the DOSSIER's float extraction.
    *
@@ -300,7 +301,7 @@ export function buildStructureSummary(row: DeskRow): StructureSummary | null {
     // The float cell's own view when the float is wired; unwired, the desk has computed none.
     float: (() => {
       const view = floatCellView(row.floatBoundWired ? row.floatBound : null);
-      return { face: view.face, date: view.date, kind: view.kind };
+      return { face: view.face, date: view.date, kind: view.kind, icon: view.icon, ariaLabel: view.ariaLabel };
     })(),
     floatConfidence: structure.floatConfidence,
     supply: structure.supplyLedger.map((block) => ({
