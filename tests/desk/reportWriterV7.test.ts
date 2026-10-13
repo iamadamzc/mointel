@@ -8,6 +8,7 @@ import {
   narrativeSheetV7,
   NEVER_JOIN,
   NEVER_OPEN,
+  RATING_SENTENCE,
   RULED_STATE_PHRASES,
   SYSTEM_V7,
   VOICE_PARAGRAPH,
@@ -203,6 +204,13 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(SYSTEM_V7).toContain('Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.');
     // Commercial read 84 (REQUIRED): a deal keeps its status; "a deal is a fact" must not upgrade a proposal.
     expect(SYSTEM_V7).toContain('Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so.');
+    // Version 6: Marketing's rating sentence with read 91's addition, verbatim, in USING THE FACTS (never in the voice paragraph).
+    expect(RATING_SENTENCE).toBe(
+      "A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.",
+    );
+    expect(SYSTEM_V7).toContain(`- ${RATING_SENTENCE}`);
+    expect(SYSTEM_V7.indexOf(RATING_SENTENCE)).toBeLessThan(SYSTEM_V7.indexOf(VOICE_PARAGRAPH));
+    expect(VOICE_PARAGRAPH).not.toContain('rating change');
     // Commercial read 83: the old "nothing downstream strikes a word" sentence is false while the fact checks stay.
     expect(SYSTEM_V7).toContain('write with care, because figures, dates and tickers are checked against the data');
     expect(SYSTEM_V7).not.toContain('nothing downstream strikes');

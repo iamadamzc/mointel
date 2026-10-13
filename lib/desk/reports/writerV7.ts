@@ -42,8 +42,9 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * 5: Marketing's voice-fidelity read of 4 (2026-10-13): the rules first and the voice paragraph and specimen LAST;
  * amounts said as on air ("$46.8 million", not "$46.8M"); the no-card-path case worded as the card rule's condition;
  * the specimen's ALEC line opens on the news (Integration's cut); Commercial read 84's REQUIRED deal-status line.
+ * 6: the rating sentence (`RATING_SENTENCE`; his yes fbafcf83, Marketing cf2491a5, Commercial read 91 e7a377a7).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 5;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 6;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -188,6 +189,14 @@ export const VOICE_SPECIMEN = [
   `QTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.`,
 ].join('\n\n');
 
+/**
+ * A named analyst firm's rating change (his yes, Integration chat 1f30f0a2, uuid fbafcf83, "2, yes"), Marketing's sentence
+ * (cf2491a5) with Commercial read 91's addition "that our sources report" (e7a377a7), VERBATIM. In USING THE FACTS, never in
+ * the approved voice paragraph (read 91). The checker half is ANALYST_RATING_CHANGE on research/rating-carve-out-on-2fa909bf.
+ */
+export const RATING_SENTENCE =
+  "A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.";
+
 export const SYSTEM_V7 = [
   'You write a short session report: a Summary of the session and one line per name.',
   '',
@@ -201,6 +210,7 @@ export const SYSTEM_V7 = [
   '- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most ("$46.8 million"). Restate stored text in your own words; never quote it.',
   '- The voice below keeps the move out of a name line because the card prints it above the line. Where a name\'s sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.',
   '- A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.',
+  `- ${RATING_SENTENCE}`,
   '- Restate what the source reports and its terms, never the desk\'s reading of what it may mean or what traders, investors or the market may think, do or care about.',
   `- The joining words in the voice below are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
   '- Never "still", "remains" or "continues"; never "top"; never a count of names in a name line, "every name", "all the movers" or "the real catalyst".',
