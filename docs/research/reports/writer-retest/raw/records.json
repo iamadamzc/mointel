@@ -1,0 +1,2317 @@
+[
+  {
+    "tag": "2026-10-02-PREMARKET-v6-w_luna",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, with fresh news found in our sources: Cycurion disclosed that Nasdaq confirmed it had regained compliance with the minimum-bid requirement. After the close, MI added 14 percent. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "VCIG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SILO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMTK": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BRAI": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "MTNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WHG": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 19898,
+    "costUsd": 0.17968800000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6926,
+        "outputTokens": 2409,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1315,
+        "durationMs": 25730,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30818,
+        "outputTokens": 2607,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 22311,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-PREMARKET-v7-w_luna",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "125 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "100,000,000 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "10.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "3,412,970 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "2.93 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "4.40 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "300,000 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "1.51 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "30,000,000 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "15,127,662 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "2,516,786 is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "August 17, 2026 is in no named catalyst"
+      },
+      {
+        "id": "O",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "September 18, 2026 is in no named catalyst"
+      },
+      {
+        "id": "O",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "September 29 is in no named catalyst"
+      },
+      {
+        "id": "O",
+        "reason": "NOT_SELF_CONTAINED",
+        "by": "rule",
+        "detail": "names VCIG, ZNB, SILO, SMTK in the narrative"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The 'Intraday, VCIG ranked first… followed by ZNB, SILO, AMOD, SMTK and CYCU' sentence is not among the narrative facts. The ranks are the 22:00 checkpoint's, not intraday. The catalyst restatements for VCIG, ZNB, SILO and SMTK cover tickers the narrative facts do not name."
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "names": {
+      "VCIG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SILO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMTK": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BRAI": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "MTNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WHG": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 14715,
+    "costUsd": 0.1694926,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5413,
+        "outputTokens": 2575,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 1195,
+        "durationMs": 29536,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31205,
+        "outputTokens": 2025,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16179,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v6-w_luna",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6",
+      "S1L7",
+      "S1L8",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Date 'September 8, 2026' contradicts the ET reading of the event and source time (22:51 ET on 2026-09-07)."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "whyTradersMayCare says the approval 'may affect' perceptions; the line states it as definitely 'affecting perceptions'. The research also says the approval was announced on August 25, not that it took place that day."
+      },
+      {
+        "id": "S1L8",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Date 'April 1, 2026' contradicts the ET reading of the event time (20:00 ET on 2026-03-31). The price and the rest of the line are supported."
+      },
+      {
+        "id": "S1L9",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "'provided commercial expansion across six Southeast Asian markets' states actual expansion as fact; the research says only that it provided a commercial-expansion narrative."
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "XCH": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "HSCS": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "CTVA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "GLXG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLN": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": false
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "POLA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NIQ": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 21533,
+    "costUsd": 0.2011742,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 7265,
+        "outputTokens": 2791,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1625,
+        "durationMs": 23165,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30778,
+        "outputTokens": 3663,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 33622,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-w_luna",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "MISSED {\"kind\":\"CHECKER_FAILED\",\"at\":\"2026-10-13T20:26:12.364Z\"}",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": null,
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "XCH": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "HSCS": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "CTVA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "GLXG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLN": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": false
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "POLA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NIQ": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 16540,
+    "costUsd": 0.1760932,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5790,
+        "outputTokens": 2216,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 1108,
+        "durationMs": 21340,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30629,
+        "outputTokens": 2488,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23976,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v6-w_luna",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L9",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Research says the update 'may be relevant background'; the line asserts it 'is relevant background', a firmer judgement than the research holds."
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 11 ran at least 50 percent above the prior close, none of them gave the entire move back, and 5 of them kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and planned reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of its VGAIN Compute AI Token Platform. After the close, MTEN added 83 percent. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "LCFY": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VCIG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "MTEN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BIYA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SXTC": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SMXT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "BURU": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CRBU": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NEPH": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "TRVI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 17571,
+    "costUsd": 0.187967,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6407,
+        "outputTokens": 2198,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1034,
+        "durationMs": 18690,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31647,
+        "outputTokens": 2873,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 27014,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-w_luna",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "3.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "2.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "1.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NOT_SELF_CONTAINED",
+        "by": "rule",
+        "detail": "names LCFY in the narrative"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "\"gave the entire move back\" with no count, but the count is 0"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "LCFY is not a ticker named in the narrative facts, so restating its catalyst is unsupported. 'Intraday' misframes its rank, which is the 22:00 checkpoint in-range rank, not an intraday one. The other figures match the narrative facts."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research gives no date for the reverse split; 'on August 11, 2026' is unsupported."
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "names": {
+      "LCFY": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VCIG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "MTEN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BIYA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SXTC": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SMXT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "BURU": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CRBU": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NEPH": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "TRVI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 13231,
+    "costUsd": 0.1746618,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5039,
+        "outputTokens": 2225,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 1187,
+        "durationMs": 23101,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31391,
+        "outputTokens": 2271,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 26234,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v6-w_luna",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says these negatives 'can materially affect' liquidity, valuation and supply; the line says they are 'affecting' them, stating an effect on the stock as fact."
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORECAST",
+        "by": "model",
+        "detail": "The listing may increase visibility"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "AMOD, up 200 percent from the prior close, with fresh news found in our sources: Alpha Modus reported completion of its bitcoin-backed PIPE transaction. AIXI, up 39 percent from the prior close, with fresh news found in our sources: its filing reported lower revenue, financing reliance and a substantial shareholder loss; SDEV, up 38 percent from the prior close, with no catalyst found in our sources. Seven of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "SGRX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "TNMG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SORA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "GOW": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "LOCL": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "SSM": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SDEV": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 20099,
+    "costUsd": 0.188857,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6849,
+        "outputTokens": 2226,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1318,
+        "durationMs": 17934,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 32224,
+        "outputTokens": 2796,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 25438,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v7-w_luna",
+    "day": "2026-10-02",
+    "kind": "INTO_RTH",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close. On September 30, Alpha Modus completed its bitcoin-backed PIPE transaction, previously described as adding 3,170 Bitcoin valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close; its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12 percent year over year after it discontinued low-margin cloud-platform resale activities, and that financing including convertible notes may dilute shareholders upon conversion.",
+    "names": {
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "SGRX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "TNMG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SORA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "GOW": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "LOCL": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "SSM": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SDEV": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 15577,
+    "costUsd": 0.1735032,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5554,
+        "outputTokens": 1317,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 589,
+        "durationMs": 13952,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31888,
+        "outputTokens": 2163,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20903,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_RTH-v6-w_luna",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L5",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 213 percent from the prior close, with only older or secondary news in our sources. SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources. APUS, up 64 percent from the prior close, with fresh news found in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ALEC": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "EZRA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SAIQ": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "APUS": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "ICU": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "RETO": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VEEA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VCIG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ONEN": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 21066,
+    "costUsd": 0.1784942,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 7187,
+        "outputTokens": 2494,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1370,
+        "durationMs": 21275,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30626,
+        "outputTokens": 2578,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23169,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_RTH-v7-w_luna",
+    "day": "2026-10-05",
+    "kind": "INTO_RTH",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L5",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI ranked first in this range, up 213 percent from the prior close; our sources found only older or secondary news. On September 30, 2026, NFT Ltd disclosed a private placement agreement for 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close, with only older or secondary news in our sources.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ALEC": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "EZRA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SAIQ": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "APUS": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "ICU": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "RETO": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VEEA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VCIG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ONEN": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 16204,
+    "costUsd": 0.19138539999999998,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5775,
+        "outputTokens": 1912,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 854,
+        "durationMs": 18446,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30454,
+        "outputTokens": 3306,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 39987,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_RTH-v6-w_luna",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1799055"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 60 percent from the prior close, with fresh news found in our sources: secondary coverage reports a U.S. AI-business expansion. AIXI, up 108 percent from the prior close, with only older or secondary news in our sources, and IPDN, up 107 percent from the prior close, with fresh news found in our sources: PDN Intelligence entered agreements involving two NVIDIA B300 systems. 6 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "LCFY": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "BRN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIIO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VIVK": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SXTP": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "IPDN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "AVBP": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "OSTX": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 15262,
+    "costUsd": 0.153559,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5831,
+        "outputTokens": 2454,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1531,
+        "durationMs": 23343,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27142,
+        "outputTokens": 2044,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17479,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_RTH-v7-w_luna",
+    "day": "2026-10-06",
+    "kind": "INTO_RTH",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1799055"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG ranked first in this range, up 60 percent from the prior close. Secondary coverage dated October 6, 2026 reported that XChange TEC intends to reduce mainland China operations, explore expanding its AI business in the U.S., and invest between $5 million and $10 million in the U.S. market. AIXI was the next covered gainer, up 108 percent from the prior close and down 14.4% since the previous checkpoint; its October 1, 2026 semiannual filing reported a 99.12% year-over-year revenue decline and reliance on financing activities including convertible notes.",
+    "names": {
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "LCFY": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "BRN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIIO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VIVK": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SXTP": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "IPDN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "AVBP": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "OSTX": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 11946,
+    "costUsd": 0.1535726,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4735,
+        "outputTokens": 1658,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 779,
+        "durationMs": 17591,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 26999,
+        "outputTokens": 2132,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17570,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+    "day": "2026-10-02",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB is up 29 percent from the prior close, with only older or secondary news in our sources. AMOD is up 181 percent from the prior close, with fresh news found in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE; AIXI is up 56 percent from the prior close, with fresh news found in our sources: the company furnished its semi-annual report. Fresh news was found for 5 of the 12 names the desk covers.",
+    "names": {
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "TRAD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "INAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "GLED": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "FACT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WENC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 15564,
+    "costUsd": 0.1424896,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5848,
+        "outputTokens": 1830,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 958,
+        "durationMs": 18503,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 24081,
+        "outputTokens": 2140,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18016,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7-w_luna",
+    "day": "2026-10-02",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB ranked first in this range, up 29 percent from the prior close, and our sources found only older or secondary news. AMOD was up 181 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. AIXI was up 56 percent from the prior close; its semi-annual report disclosed a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described financing through convertible notes that may dilute existing holders upon conversion.",
+    "names": {
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "TRAD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "INAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "GLED": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "FACT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WENC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 11858,
+    "costUsd": 0.1465184,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4718,
+        "outputTokens": 1329,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 557,
+        "durationMs": 14972,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23915,
+        "outputTokens": 2416,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19567,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+    "day": "2026-10-05",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L11",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The test figures are supported, but 'so this is not a fresh catalyst' adds a reason the research does not give: SECONDARY_STALE is the desk's own verdict and is not attributed to the unexecuted agreement."
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI, up 806 percent from the prior close, with only older or secondary news in our sources. QTEX, up 44 percent from the prior close, with only older or secondary news in our sources. ALEC, up 20 percent from the prior close, with fresh news found in our sources: a September 30 license agreement with Genentech covering certain GCase candidates.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ALEC": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "GSRF": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "VNME": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "APT": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "DBCA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "OTGA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "JONE": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "TDWD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 12641,
+    "costUsd": 0.1301422,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5149,
+        "outputTokens": 1987,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1349,
+        "durationMs": 22883,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19507,
+        "outputTokens": 2435,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21334,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_POWER_HOUR-v7-w_luna",
+    "day": "2026-10-05",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L10",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "September 3, 2026"
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "MI ranked first in this range, up 806 percent from the prior close, with only older or secondary news in our sources. QTEX was up 44 percent from the prior close with only older or secondary news in our sources. ALEC was up 20 percent from the prior close and had fresh news in our sources: Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech handling development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline; Alector said the partnership extends its cash runway into 2029.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ALEC": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "GSRF": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "VNME": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "APT": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "DBCA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "OTGA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "JONE": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "TDWD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 10043,
+    "costUsd": 0.1135706,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4247,
+        "outputTokens": 1371,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 772,
+        "durationMs": 17041,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19444,
+        "outputTokens": 1665,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 13800,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+    "day": "2026-10-06",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L4",
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says Barnwell entered the agreement on October 5, 2026; 06:30 ET on October 6 is the filing time, not when the agreement was entered."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research ties the noncompliance notice to the delayed 10-Q only; the reverse split came before it, and the research does not connect the notice to the split."
+      },
+      {
+        "id": "S1L10",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says PDN Intelligence entered the lease on October 5; 07:24 ET on October 6 is the filing time."
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 5 percent from the prior close, with a proposed U.S. AI expansion and planned China-operations reduction. OLOX, up 66 percent from the prior close, with no catalyst found in our sources. IPDN, up 40 percent from the prior close, with an equipment lease and financing commitments for two NVIDIA B300 systems.",
+    "names": {
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "LCFY": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BRN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMXT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIIO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIFA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VIVK": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AVBP": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "IPDN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SXTP": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 16380,
+    "costUsd": 0.165312,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6178,
+        "outputTokens": 2757,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1726,
+        "durationMs": 28635,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27982,
+        "outputTokens": 2442,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21385,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7-w_luna",
+    "day": "2026-10-06",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, with fresh news that the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news that PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system and agreed to lend funds for a second system, representing approximately $1.177 million of initial capital commitments.",
+    "names": {
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "LCFY": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BRN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMXT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIIO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIFA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VIVK": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AVBP": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "IPDN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SXTP": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 12756,
+    "costUsd": 0.152579,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4993,
+        "outputTokens": 1577,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 760,
+        "durationMs": 17693,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27647,
+        "outputTokens": 1955,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16357,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-AFTER_HOURS-v6-w_luna",
+    "day": "2026-10-02",
+    "kind": "AFTER_HOURS",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "MISSED {\"kind\":\"CHECKER_FAILED\",\"at\":\"2026-10-13T20:26:12.364Z\"}",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": null,
+    "names": {
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "TRAD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "INAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "FACT": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "GLED": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WENC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 15427,
+    "costUsd": 0.14060740000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5799,
+        "outputTokens": 2363,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1552,
+        "durationMs": 26110,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23963,
+        "outputTokens": 2038,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 26178,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-AFTER_HOURS-v7-w_luna",
+    "day": "2026-10-02",
+    "kind": "AFTER_HOURS",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB ranked first in this range, up 41 percent from the prior close, with only older or secondary news in our sources. AMOD was the next covered gainer, up 199 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. AIXI was the next named gainer, up 48 percent from the prior close; its semi-annual filing reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described financing through convertible notes that may dilute existing holders upon conversion.",
+    "names": {
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "TRAD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "INAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "FACT": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "GLED": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WENC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 11880,
+    "costUsd": 0.134695,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4703,
+        "outputTokens": 1182,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 480,
+        "durationMs": 12483,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23759,
+        "outputTokens": 1865,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 15249,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-AFTER_HOURS-v6-w_luna",
+    "day": "2026-10-05",
+    "kind": "AFTER_HOURS",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "MISSED {\"kind\":\"CHECKER_FAILED\",\"at\":\"2026-10-13T20:26:12.364Z\"}",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": null,
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ALEC": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "GSRF": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "APT": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "VNME": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "DBCA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "OTGA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "JONE": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "RAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 12076,
+    "costUsd": 0.8031858000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5051,
+        "outputTokens": 1813,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1082,
+        "durationMs": 19286,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19739,
+        "outputTokens": null,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 8208,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-AFTER_HOURS-v7-w_luna",
+    "day": "2026-10-05",
+    "kind": "AFTER_HOURS",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "MI ranked first in this range, up 667 percent from the prior close, and was up 11.4% since the previous checkpoint. Our sources found only older or secondary news: on September 30, 2026, NFT Ltd entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions, and on October 5 the company said it knew of no undisclosed information or business development accounting for the unusual trading. QTEX was up 43 percent from the prior close; on October 1, the company reported an interconnect test at 20 mK with more than 100 dB of channel isolation across the 4 to 8 GHz qubit band and said it was finalizing a binding definitive agreement with the unnamed testing company.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ALEC": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "GSRF": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "APT": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "VNME": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "DBCA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "OTGA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "JONE": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "RAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 9567,
+    "costUsd": 0.1140394,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4175,
+        "outputTokens": 1737,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 987,
+        "durationMs": 19802,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19750,
+        "outputTokens": 1606,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16582,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-AFTER_HOURS-v6-w_luna",
+    "day": "2026-10-06",
+    "kind": "AFTER_HOURS",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "XHG, up 25 percent from the prior close, with the company announcing a proposed U.S. AI-business expansion and planned mainland China reductions. IPDN, up 50 percent from the prior close, with PDN Intelligence entering an equipment lease, agreeing to finance a second system. OLOX, up 45 percent from the prior close, with no catalyst found in our sources.",
+    "names": {
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "LCFY": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BRN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMXT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIIO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIFA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "AVBP": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "VIVK": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "IPDN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SXTP": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 16566,
+    "costUsd": 0.1636294,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6227,
+        "outputTokens": 2930,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 2057,
+        "durationMs": 32084,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27887,
+        "outputTokens": 2366,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19209,
+        "role": "checker"
+      }
+    ]
+  }
+]
