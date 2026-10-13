@@ -280,6 +280,36 @@ describe('the report pipeline, v6 wiring', () => {
       expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'reply: not a verdict for every line', reply: 'I cannot check this.' } });
     });
 
+    it('the fallback is asked the IDENTICAL prompt Claude was, system and user, after a failed call or a failed reply (his "option b, but use the same prompt", uuid 41e3ed79)', async () => {
+      type Prompt = { system: string; user: string };
+      const firstFailures: Array<(prompt: Prompt) => Promise<string>> = [
+        async () => {
+          throw new Error('claude: HTTP 529');
+        },
+        async () => 'I cannot check this.',
+      ];
+      for (const firstFails of firstFailures) {
+        const seen: Prompt[] = [];
+        const recording = (reply: (prompt: Prompt) => Promise<string>) => ({
+          complete: async (prompt: Prompt) => {
+            seen.push(prompt);
+            return reply(prompt);
+          },
+        });
+        const run = await runReport(
+          fixture(),
+          SLOT,
+          { writer: writerWith(NARRATIVE), checker: recording(firstFails), checkerFallback: recording((prompt) => checker.complete(prompt)), checkerNames: names },
+          () => new Date(COMPLETED),
+        );
+        expect(run.status).toBe('PUBLISHED');
+        expect(seen).toHaveLength(2);
+        expect(seen[0].system.length).toBeGreaterThan(0);
+        expect(seen[0].user.length).toBeGreaterThan(0);
+        expect(seen[1]).toEqual(seen[0]);
+      }
+    });
+
     it('BOTH failing is CHECKER_FAILED (closed), with both recorded; nothing publishes', async () => {
       const run = await runReport(
         fixture(),
