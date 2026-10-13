@@ -146,7 +146,7 @@ describe('readReportModelConfig', () => {
   it('splits the pair: writer on the cheap tier, checker on the interpreter tier', () => {
     expect(
       readReportModelConfig(env({ OPENAI_API_KEY: 'k', OPENAI_RESEARCH_MODEL: 'terra', OPENAI_CHANGE_DETECT_MODEL: 'luna' })),
-    ).toEqual({ apiKey: 'k', writerModel: 'luna', checkerModel: 'terra' });
+    ).toEqual({ apiKey: 'k', writerModel: 'luna', checkerModel: 'terra', claudeChecker: null });
   });
 
   it('explicit report models win, and every tier falls back to the research model', () => {
@@ -157,10 +157,17 @@ describe('readReportModelConfig', () => {
         OPENAI_REPORT_WRITER_MODEL: 'w',
         OPENAI_REPORT_CHECKER_MODEL: 'c',
       })),
-    ).toEqual({ apiKey: null, writerModel: 'w', checkerModel: 'c' });
+    ).toEqual({ apiKey: null, writerModel: 'w', checkerModel: 'c', claudeChecker: null });
     expect(readReportModelConfig(env({ OPENAI_RESEARCH_MODEL: 'terra' }))).toMatchObject({
       writerModel: 'terra',
       checkerModel: 'terra',
     });
+  });
+  it("the Claude checker reads ONLY the Reports key by its own name; the old unsuffixed name never turns it on", () => {
+    expect(readReportModelConfig(env({ ANTHROPIC_API_KEY_REPORTS: ' rk ' })).claudeChecker).toEqual({ apiKey: 'rk', model: 'claude-opus-5-5' });
+    expect(readReportModelConfig(env({ ANTHROPIC_API_KEY_REPORTS: 'rk', REPORT_CHECKER_CLAUDE_MODEL: 'claude-sonnet-5-5' })).claudeChecker).toEqual({ apiKey: 'rk', model: 'claude-sonnet-5-5' });
+    const oldName = ['ANTHROPIC', 'API', 'KEY'].join('_');
+    expect(readReportModelConfig(env({ [oldName]: 'old' })).claudeChecker).toBeNull();
+    expect(readReportModelConfig(env({ ANTHROPIC_API_KEY_REPORTS: '  ' })).claudeChecker).toBeNull();
   });
 });

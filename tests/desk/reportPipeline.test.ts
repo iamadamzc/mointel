@@ -130,7 +130,10 @@ const checker = {
   complete: async (prompt: { system: string; user: string }) => {
     prompts.push({ role: 'checker', ...prompt });
     return JSON.stringify({
-      verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: true, note: '' })),
+      // v6 13: every verdict carries read 82's answers (all "no" here).
+      verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({
+        id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '',
+      })),
     });
   },
 };
@@ -200,6 +203,168 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.report.narrative).toBeNull();
     expect(run.diagnostics.strikes.find((s) => s.id === 'O')?.text).toBe(struck);
     expect(run.diagnostics.strikes.find((s) => s.reason === 'CITATION_TOKEN')?.text).toBe(line);
+  });
+
+  it('a dash is REPLACED before the check, never struck: the published line has a comma, and diagnostics keep the writer\'s words (his ruling 71876cfd)', async () => {
+    const db = fixture();
+    const em = String.fromCharCode(0x2014);
+    const line = `Our sources found a contract award ${em} a two-year supply deal - with a utility.`;
+    const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE, line), checker }, () => new Date(COMPLETED));
+    expect(run.status).toBe('PUBLISHED');
+    if (run.status !== 'PUBLISHED') return;
+    const published = run.report.sections.flatMap((s) => s.lines).find((l) => l.ticker === 'AAA')?.text;
+    expect(published).toBe('Our sources found a contract award, a two-year supply deal, with a utility.');
+    expect(run.diagnostics.strikes.filter((s) => s.text === line || s.text === published)).toEqual([]);
+    expect(run.diagnostics.dashes).toEqual([{ id: expect.stringMatching(/^S\d+L\d+$/), before: line }]);
+    // The prose only: the tag's empty-grade cell is the one glyph his rule names as an exception.
+    const prose = [run.report.narrative ?? '', ...run.report.sections.flatMap((s) => s.lines.map((l) => l.text))];
+    expect(prose.join('\n')).not.toContain(em);
+  });
+
+  it('no dash, no dashes field in diagnostics', async () => {
+    const run = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE), checker }, () => new Date(COMPLETED));
+    expect(run.status === 'PUBLISHED' && 'dashes' in run.diagnostics).toBe(false);
+  });
+
+  describe('the Claude checker and its OpenAI fallback (his "move it", uuid e51e9b47)', () => {
+    const names = { primary: 'claude-opus-5-5', fallback: 'gpt-terra' };
+    const counted = () => {
+      let calls = 0;
+      return {
+        complete: async (prompt: { system: string; user: string }) => {
+          calls += 1;
+          return checker.complete(prompt);
+        },
+        get calls() {
+          return calls;
+        },
+      };
+    };
+    const failing = (error: Error) => ({
+      complete: async () => {
+        throw error;
+      },
+    });
+
+    it('Claude checks: the record says so, and the fallback is never called', async () => {
+      const fallback = counted();
+      const run = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE), checker, checkerFallback: fallback, checkerNames: names }, () => new Date(COMPLETED));
+      expect(run.status).toBe('PUBLISHED');
+      expect(run.diagnostics?.checker).toEqual({ ran: 'claude-opus-5-5' });
+      expect(fallback.calls).toBe(0);
+    });
+
+    it('a failed Claude CALL (no credits, rate limit, timeout, refusal) is checked on OpenAI, never silently: the failure is kept', async () => {
+      const fallback = counted();
+      const run = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE), checker: failing(new Error('claude: HTTP 400 billing_error')), checkerFallback: fallback, checkerNames: names },
+        () => new Date(COMPLETED),
+      );
+      expect(run.status).toBe('PUBLISHED');
+      expect(fallback.calls).toBe(1);
+      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 400 billing_error', reply: null }, wordList: true });
+    });
+
+    it('a Claude REPLY that is not a verdict for every line falls back too, and the reply is kept', async () => {
+      const fallback = counted();
+      const run = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE), checker: { complete: async () => 'I cannot check this.' }, checkerFallback: fallback, checkerNames: names },
+        () => new Date(COMPLETED),
+      );
+      expect(run.status).toBe('PUBLISHED');
+      expect(fallback.calls).toBe(1);
+      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'reply: not a verdict for every line', reply: 'I cannot check this.' }, wordList: true });
+    });
+
+    it('the fallback is asked the IDENTICAL prompt Claude was, system and user, after a failed call or a failed reply (his "option b, but use the same prompt", uuid 41e3ed79)', async () => {
+      type Prompt = { system: string; user: string };
+      const firstFailures: Array<(prompt: Prompt) => Promise<string>> = [
+        async () => {
+          throw new Error('claude: HTTP 529');
+        },
+        async () => 'I cannot check this.',
+      ];
+      for (const firstFails of firstFailures) {
+        const seen: Prompt[] = [];
+        const recording = (reply: (prompt: Prompt) => Promise<string>) => ({
+          complete: async (prompt: Prompt) => {
+            seen.push(prompt);
+            return reply(prompt);
+          },
+        });
+        const run = await runReport(
+          fixture(),
+          SLOT,
+          { writer: writerWith(NARRATIVE), checker: recording(firstFails), checkerFallback: recording((prompt) => checker.complete(prompt)), checkerNames: names },
+          () => new Date(COMPLETED),
+        );
+        expect(run.status).toBe('PUBLISHED');
+        expect(seen).toHaveLength(2);
+        expect(seen[0].system.length).toBeGreaterThan(0);
+        expect(seen[0].user.length).toBeGreaterThan(0);
+        expect(seen[1]).toEqual(seen[0]);
+      }
+    });
+
+    it('one rule: a report an OpenAI checker decides keeps the word list, fallback or no Reports key; a Claude-checked report runs without it (result-terra.md)', async () => {
+      // "It filed an 8-K." leans on another line: a word-list rule (LEANS_ON_ANOTHER), struck only with the list on.
+      const leans = (run: Awaited<ReturnType<typeof runReport>>) =>
+        (run.diagnostics?.strikes ?? []).filter((s) => s.by === 'rule' && s.reason === 'NOT_SELF_CONTAINED');
+      const withClaude = { primary: 'claude', fallback: 'openai' } as const;
+      const fellBack = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker: failing(new Error('claude: HTTP 529')), checkerFallback: counted(), checkerNames: names, checkerVendors: withClaude },
+        () => new Date(COMPLETED),
+      );
+      expect(fellBack.diagnostics?.checker?.wordList).toBe(true);
+      expect(leans(fellBack)).toHaveLength(1);
+
+      const claude = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker, checkerFallback: counted(), checkerNames: names, checkerVendors: withClaude },
+        () => new Date(COMPLETED),
+      );
+      expect(claude.diagnostics?.checker).toEqual({ ran: 'claude-opus-5-5' });
+      expect(leans(claude)).toHaveLength(0);
+
+      // No Reports key: OpenAI checks alone and decides every report (Integration's ruling on the no-key path).
+      const noKey = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker, checkerNames: { primary: 'gpt-terra', fallback: null }, checkerVendors: { primary: 'openai', fallback: null } },
+        () => new Date(COMPLETED),
+      );
+      expect(noKey.diagnostics?.checker).toEqual({ ran: 'gpt-terra', wordList: true });
+      expect(leans(noKey)).toHaveLength(1);
+
+      // A harness that names no vendors: the first checker runs as the switch says (off).
+      const unnamed = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker }, () => new Date(COMPLETED));
+      expect(leans(unnamed)).toHaveLength(0);
+    });
+
+    it('BOTH failing is CHECKER_FAILED (closed), with both recorded; nothing publishes', async () => {
+      const run = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE), checker: failing(new Error('claude: HTTP 529')), checkerFallback: failing(new Error('openai down')), checkerNames: names },
+        () => new Date(COMPLETED),
+      );
+      expect(run.status).toBe('MISSED');
+      expect(run.status === 'MISSED' && run.cause.kind).toBe('CHECKER_FAILED');
+      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 529', reply: null }, wordList: true });
+    });
+
+    it('with no fallback (no Reports key) a failed check is CHECKER_FAILED as before, and no checker record is invented', async () => {
+      const run = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE), checker: failing(new Error('x')) }, () => new Date(COMPLETED));
+      expect(run.status).toBe('MISSED');
+      expect(run.diagnostics).toEqual({ lines: 0, strikes: [], writerMs: expect.any(Number), checkerMs: expect.any(Number) });
+    });
   });
 
   it('a citation token in a name line is struck end to end', async () => {

@@ -115,7 +115,7 @@ function stubModels() {
     },
     checker: {
       complete: async (prompt: { user: string }) =>
-        JSON.stringify({ verdicts: [...new Set(prompt.user.match(/^(?:O|S[0-9]+L[0-9]+)(?![A-Za-z0-9])/gm) ?? [])].map((id) => ({ id, supported: true, note: '' })) }),
+        JSON.stringify({ verdicts: [...new Set(prompt.user.match(/^(?:O|S[0-9]+L[0-9]+)(?![A-Za-z0-9])/gm) ?? [])].map((id) => ({ id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '' })) }),
     },
   };
 }

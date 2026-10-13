@@ -79,7 +79,7 @@ function stubModels() {
     },
     checker: {
       complete: async (prompt: { user: string }) =>
-        JSON.stringify({ verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: true, note: '' })) }),
+        JSON.stringify({ verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '' })) }),
     },
   };
 }

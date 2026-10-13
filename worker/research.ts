@@ -408,12 +408,15 @@ async function main(): Promise<void> {
       writerPrompt: REPORT_WRITER_PROMPT_VERSION_V6,
       checkerPrompt: REPORT_CHECKER_PROMPT_VERSION_V6,
       writerModel: reportModelConfig.writerModel,
-      checkerModel: reportModelConfig.checkerModel,
+      // The configured first checker; each stored report records the checker that actually ran (job.ts).
+      checkerModel: reportModelConfig.claudeChecker?.model ?? reportModelConfig.checkerModel,
     },
     log,
   });
   log(
-    `[reports] runner started: writer ${reportModelConfig.writerModel}, checker ${reportModelConfig.checkerModel}`,
+    reportModelConfig.claudeChecker
+      ? `[reports] runner started: writer ${reportModelConfig.writerModel}, checker ${reportModelConfig.claudeChecker.model} (Reports key), fallback ${reportModelConfig.checkerModel}`
+      : `[reports] runner started: writer ${reportModelConfig.writerModel}, checker ${reportModelConfig.checkerModel} (no Reports key: OpenAI only)`,
   );
 
   /*

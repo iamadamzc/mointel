@@ -37,7 +37,11 @@ async function main() {
   for (const kind of KINDS) {
     const stored = JSON.parse(fs.readFileSync(path.join(storedDir, `v6-${kind}.json`), 'utf8')) as Stored;
     const draft = stored.draft;
-    const modelStrikes = new Map(stored.result.diagnostics.strikes.filter((s) => s.by === 'model').map((s) => [s.id, s.detail]));
+    const byModel = stored.result.diagnostics.strikes.filter((s) => s.by === 'model');
+    const modelStrikes = new Map(byModel.filter((s) => s.reason === 'UNSUPPORTED').map((s) => [s.id, s.detail]));
+    // v6 13: read 82's answers come back as the stored strikes they made (none in a run stored before 13).
+    const said = (id: string, reason: string) => byModel.some((s) => s.id === id && s.reason === reason);
+    const phrase = (id: string) => byModel.find((s) => s.id === id && s.reason !== 'UNSUPPORTED')?.detail ?? '';
     const writer = {
       complete: async () => JSON.stringify({ narrative: draft.overall ?? null, lines: draft.sections.flatMap((s) => s.lines) }),
     };
@@ -48,6 +52,10 @@ async function main() {
             id,
             supported: !modelStrikes.has(id),
             note: modelStrikes.get(id) ?? '',
+            advice: said(id, 'ADVICE'),
+            forecast: said(id, 'FORECAST'),
+            leansOnAnother: said(id, 'NOT_SELF_CONTAINED'),
+            phrase: phrase(id),
           })),
         }),
     };

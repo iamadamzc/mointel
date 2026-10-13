@@ -33,6 +33,7 @@ import type { ResearchAnalysisVersion, ResearchSource } from '../../research/typ
 import type { AssessmentType } from '../schedule';
 import { applyStrikes, checkReport, draftLines, type CheckerModel, type Strike } from './check';
 import { isEveningRecap, type MissedCause, type ReportKind, type ReportPath, type SessionReport } from './contract';
+import { replaceDraftDashes, type DashReplacement } from './dashes';
 import { REPORT_NAME_CAP, reportFacts, type ReportFact } from './facts';
 import { catalystFreshFromUtc } from '../../research/freshFrom';
 import { narrativeFacts, narrativeFootnotes, type NarrativeFacts } from './narrative';
@@ -325,6 +326,37 @@ export interface ReportDiagnostics {
   strikes: Array<Pick<Strike, 'id' | 'reason' | 'by' | 'detail'> & { text: string | null }>;
   writerMs: number | null;
   checkerMs: number | null;
+  /**
+   * The lines whose dashes were replaced before the check (`dashes.ts`), each with the writer's own words: the
+   * per-report count Integration asked for and the measure Commercial read 82 asked for. Absent when none changed.
+   */
+  dashes?: DashReplacement[];
+  /**
+   * Which checker checked this report, when the models name their checkers: `ran` is the model that produced the
+   * verdicts (or, on a MISSED run, the last one tried). `fallbackFrom` is set when the first checker failed and its
+   * fallback ran: the failed model, what failed, and its reply when it gave one (the reply kept on failure, his "move
+   * it", uuid e51e9b47; Integration's build terms). `wordList` is true when the fallback ran, because a fallback check
+   * keeps the word list (option A: the OpenAI fallback failed the read 82 gate, `result-terra.md`).
+   */
+  checker?: { ran: string; fallbackFrom?: { model: string; failure: string; reply: string | null }; wordList?: true };
+}
+
+/** A checker that remembers its last reply or failure, so a failed check can be recorded before the fallback runs. */
+function recordingChecker(model: CheckerModel): CheckerModel & { reply: string | null; failure: string | null } {
+  const recorder = {
+    reply: null as string | null,
+    failure: null as string | null,
+    async complete(prompt: Parameters<CheckerModel['complete']>[0]): Promise<string> {
+      try {
+        recorder.reply = await model.complete(prompt);
+        return recorder.reply;
+      } catch (error) {
+        recorder.failure = `call: ${error instanceof Error ? error.message : String(error)}`;
+        throw error;
+      }
+    },
+  };
+  return recorder;
 }
 
 export type ReportRun =
@@ -332,13 +364,29 @@ export type ReportRun =
   | { status: 'MISSED'; cause: MissedCause; diagnostics: ReportDiagnostics | null };
 
 /**
+ * Whose checker each is. A report an OpenAI checker decides, first checker or fallback, keeps the word list
+ * (Integration's ruling after the terra gate failed, `result-terra.md`: OpenAI failed read 82's gate, Claude passed it).
+ * Absent (harnesses, older callers): the first checker runs without it and a fallback keeps it.
+ */
+export type CheckerVendors = { primary: 'claude' | 'openai'; fallback: 'openai' | null };
+
+/**
  * One slot: write, check, apply. No retry here: a retry is a spend decision
- * and belongs to the runner that owns the slot's timing.
+ * and belongs to the runner that owns the slot's timing. The one exception is
+ * ruled: a failed check falls back to `checkerFallback` when the models carry
+ * one (his "move it": "OpenAI taking over automatically whenever a Claude check
+ * fails or the credits run out"). Both failing is CHECKER_FAILED, as before.
  */
 export async function runReport(
   db: Database,
   slot: { kind: ReportKind; rangeId: string; tradingDate: string; range: { min: number; max: number } },
-  models: { writer: ReportModel; checker: CheckerModel },
+  models: {
+    writer: ReportModel;
+    checker: CheckerModel;
+    checkerFallback?: CheckerModel;
+    checkerNames?: { primary: string; fallback: string | null };
+    checkerVendors?: CheckerVendors;
+  },
   now: () => Date = () => new Date(),
   /** Harnesses only: sees the unchecked draft. Never changes the run. */
   observe?: { draft?: (draft: ReportDraft) => void },
@@ -396,33 +444,55 @@ export async function runReport(
     if (!written.ok) return { status: 'MISSED', cause: written.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs: null } };
 
     // An unchanged narrative keeps its 8:30 words, so the writer's is neither checked nor used.
-    const draft: ReportDraft = plan && !plan.narrativeChanged ? { ...written.draft, overall: null } : written.draft;
-    observe?.draft?.(draft);
+    const kept: ReportDraft = plan && !plan.narrativeChanged ? { ...written.draft, overall: null } : written.draft;
+    observe?.draft?.(kept);
+    // Dashes are replaced, not struck (his ruling 71876cfd; `dashes.ts`), BEFORE the check, so the checker reads what publishes.
+    const { draft, replaced: dashes } = replaceDraftDashes(kept);
     let strikes: Strike[] = [];
     let checkedLines = 0;
     let checkerMs: number | null = null;
+    let checker: ReportDiagnostics['checker'];
     if (draftLines(draft).length > 0) {
       const checkerStart = Date.now();
-      const checked = await checkReport(
-        {
-          kind: slot.kind,
-          range: slot.range,
-          checkpoint: inputs.checkpoint,
-          // Every row, carried names included: a changed line may name one, and that is no uncovered ticker.
-          rows: inputs.facts,
-          draft,
-          research: inputs.research,
-          afterHoursTotals: inputs.afterHoursTotals,
-          // v6: present, so the narrative (id O) is traced against its computed facts.
-          narrative: inputs.narrative,
-          // The 10 pm edition's moment says "revised" only when it revises an 8:30 edition (Commercial read 31).
-          revision: plan !== null,
-        },
-        models.checker,
-        now,
-      );
+      // One rule (Integration, after the terra gate failed): a report an OpenAI checker decides keeps the word list.
+      const primaryWordList = models.checkerVendors?.primary === 'openai';
+      const fallbackWordList = (models.checkerVendors?.fallback ?? 'openai') === 'openai';
+      checker = models.checkerNames ? { ran: models.checkerNames.primary, ...(primaryWordList ? { wordList: true as const } : {}) } : undefined;
+      const checkInput = {
+        kind: slot.kind,
+        range: slot.range,
+        checkpoint: inputs.checkpoint,
+        // Every row, carried names included: a changed line may name one, and that is no uncovered ticker.
+        rows: inputs.facts,
+        draft,
+        research: inputs.research,
+        afterHoursTotals: inputs.afterHoursTotals,
+        // v6: present, so the narrative (id O) is traced against its computed facts.
+        narrative: inputs.narrative,
+        // The 10 pm edition's moment says "revised" only when it revises an 8:30 edition (Commercial read 31).
+        revision: plan !== null,
+      };
+      const first = recordingChecker(models.checker);
+      // Only ever turns the list ON: otherwise `WORD_LIST_STRIKES` decides, so the one-change switch back still works.
+      let checked = await checkReport(checkInput, first, now, primaryWordList ? { wordList: true } : {});
+      // The ruled fallback: ANY failed check (a failed call, a refusal, a reply that is not a verdict for every line)
+      // is checked again on the fallback, and the failure and the first reply are kept.
+      if (!checked.ok && checked.cause.kind === 'CHECKER_FAILED' && models.checkerFallback) {
+        checker = {
+          ran: models.checkerNames?.fallback ?? 'fallback',
+          fallbackFrom: {
+            model: models.checkerNames?.primary ?? 'primary',
+            failure: first.failure ?? 'reply: not a verdict for every line',
+            reply: first.reply,
+          },
+          ...(fallbackWordList ? { wordList: true as const } : {}),
+        };
+        checked = await checkReport(checkInput, models.checkerFallback, now, fallbackWordList ? { wordList: true } : {});
+      }
       checkerMs = Date.now() - checkerStart;
-      if (!checked.ok) return { status: 'MISSED', cause: checked.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs } };
+      if (!checked.ok) {
+        return { status: 'MISSED', cause: checked.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs, ...(checker ? { checker } : {}) } };
+      }
       strikes = checked.strikes;
       checkedLines = checked.lines;
     }
@@ -433,6 +503,8 @@ export async function runReport(
       strikes: strikes.map(({ id, reason, by, detail }) => ({ id, reason, by, detail, text: struckText.get(id) ?? null })),
       writerMs,
       checkerMs,
+      ...(dashes.length > 0 ? { dashes } : {}),
+      ...(checker ? { checker } : {}),
     };
     // v6: a struck name keeps its computed card with no prose, so cards = the narrative's covered names.
     const applied = applyStrikes(draft, strikes, now, {
