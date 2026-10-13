@@ -53,7 +53,7 @@ describe('his ruling: the count prints with the WARNING icon when a check failed
     ['split FOUND', 'SPLIT_SINCE_COUNT', { split: 'FOUND', age: 'WITHIN' }, FILED_COUNT_WORDS.preSplit],
     ['split UNPROVEN', 'SPLIT_SINCE_COUNT', { split: 'UNPROVEN', age: 'WITHIN' }, FILED_COUNT_WORDS.preSplit],
     ['split NOT_RUN', 'FILINGS_NOT_REREAD', { split: 'NOT_RUN', age: 'NOT_RUN' }, FILED_COUNT_WORDS.splitNotChecked],
-    ['age TOO_OLD', 'COUNT_TOO_OLD', { split: 'NONE', age: 'TOO_OLD' }, FILED_COUNT_WORDS.tooOld('Sep 22, 2026', 90)],
+    ['age TOO_OLD', 'ISSUANCE_FLAGGED', { split: 'NONE', age: 'TOO_OLD' }, FILED_COUNT_WORDS.tooOld('Sep 22, 2026', 90)],
   ];
   for (const [name, reason, checks, words] of cases) {
     it(`${name}: number, warning icon, the case said plainly in the hover and the accessible name`, () => {
@@ -61,9 +61,27 @@ describe('his ruling: the count prints with the WARNING icon when a check failed
       expect(view.kind).toBe('filedCount');
       expect(view.icon?.kind).toBe('warning');
       expect(view.icon?.title).toContain(words);
-      expect(view.ariaLabel).toContain(words);
+      expect(view.ariaLabel).toContain(words.replace(/\.$/, ''));
     });
   }
+
+  it('COUNT_TOO_OLD says the age once: its stored reason, not the warning line again', () => {
+    const view = floatCellView(refused('COUNT_TOO_OLD', { split: 'NONE', age: 'TOO_OLD' }));
+    expect(view.icon?.kind).toBe('warning');
+    expect(view.icon?.title).toContain('too old to rely on');
+    expect(view.icon?.title).not.toContain(FILED_COUNT_WORDS.tooOld('Sep 22, 2026', 90));
+  });
+
+  it('another reason with an old count still carries the age warning', () => {
+    const view = floatCellView(refused('FILINGS_NOT_REREAD', { split: 'NOT_RUN', age: 'TOO_OLD' }));
+    expect(view.icon?.title).toContain(FILED_COUNT_WORDS.tooOld('Sep 22, 2026', 90));
+  });
+
+  it('the accessible name never reads a full stop before a semicolon', () => {
+    for (const checks of [PASSED, { split: 'FOUND', age: 'TOO_OLD' } as FloatCountChecks, undefined]) {
+      expect(floatCellView(refused('ISSUANCE_FLAGGED', checks)).ariaLabel).not.toContain('.;');
+    }
+  });
 
   it('an ABSENT countChecks is the warning with the no-record words (his: "there may have been a split, needs verification")', () => {
     const view = floatCellView(refused('ISSUANCE_FLAGGED', undefined));

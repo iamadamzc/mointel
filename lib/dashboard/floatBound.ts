@@ -478,7 +478,8 @@ function filedCountFace(bound: FloatBound, reason: string): FloatCellView | null
   else {
     if (checks.split === 'FOUND' || checks.split === 'UNPROVEN') warnings.push(W.preSplit);
     if (checks.split === 'NOT_RUN') warnings.push(W.splitNotChecked);
-    if (checks.age === 'TOO_OLD') warnings.push(W.tooOld(asOf, COUNT_MAX_AGE_DAYS));
+    // Not on COUNT_TOO_OLD: its stored reason already says the count is too old (Integration 39th, render 2026-10-13).
+    if (checks.age === 'TOO_OLD' && bound.reason !== 'COUNT_TOO_OLD') warnings.push(W.tooOld(asOf, COUNT_MAX_AGE_DAYS));
   }
   const icon: FiledCountIcon = checks && FILED_COUNT_RULE.caveat(checks) ? 'caveat' : 'warning';
   const higher = ISSUANCE_REASONS.has(bound.reason) ? [W.mayBeHigher] : [];
@@ -490,7 +491,8 @@ function filedCountFace(bound: FloatBound, reason: string): FloatCellView | null
     face: `${count} ${W.unit}`,
     date: null,
     icon: { kind: icon, title: lines.join(' ') },
-    ariaLabel: [W.aria(count, asOf), reason, ...higher, ...(icon === 'warning' ? warnings : [])].join('; '),
+    // Each sentence's own full stop is dropped before "; ", so a screen reader never hears ".;" (render 2026-10-13).
+    ariaLabel: [W.aria(count, asOf), reason, ...higher, ...(icon === 'warning' ? warnings : [])].map((s) => s.replace(/\.$/, '')).join('; '),
     // The drawer prints paragraphs[0] for any face that is not a bound: the stored reason, as before (Commercial (b)).
     paragraphs: [reason],
     details: {
