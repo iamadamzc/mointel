@@ -28,7 +28,7 @@ import { withoutCitations } from '../../research/citations';
 import type { ReportFact } from './facts';
 import type { NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
-import { claimsIn, dateAllowed, etDayAndClock, roundsTo, traceLine } from './traced';
+import { claimsIn, dateAllowed, etDayAndClock, eventWhen, roundsTo, sourceWhen, traceLine } from './traced';
 import { narrativeSheet } from './writerV6';
 import { numbersIn, stripTimestamps, verifyLine } from './verify';
 import { NOTHING_LINE, type ReportDraft, type WriterPrompt } from './writer';
@@ -65,7 +65,10 @@ export type StrikeReason =
   /* deterministic, v6 narrative (Commercial read 29, 4642de51): no narrative fact says what changed since 8:30 */
   | 'REVISION_WORDING'
   /* model */
-  | 'UNSUPPORTED';
+  | 'UNSUPPORTED'
+  /* model, v6 13: read 82's independent read (advice; a forecast or promise). A model NOT_SELF_CONTAINED is its third question. */
+  | 'ADVICE'
+  | 'FORECAST';
 
 export interface Strike {
   id: LineId;
@@ -103,6 +106,12 @@ export interface CheckInput {
    * reads the v6 prompt. Absent = v5, unchanged.
    */
   narrative?: NarrativeFacts | null;
+  /**
+   * The narrative facts worded EXACTLY as this report's writer was given them. Absent = writer v6's `narrativeSheet`,
+   * production's writer. A caller with another writer passes that writer's sheet (writer v7's `narrativeSheetV7`): the
+   * 10-13 writer test (45c16b15) checked the v7 Summary against v6's sheet, which the v7 writer never saw.
+   */
+  narrativeSheet?: readonly string[];
   /**
    * The 10 pm edition revising a published 8:30 edition (`revision.ts`). A
    * PREMARKET run without one is the evening report's first edition, and its
@@ -142,6 +151,37 @@ export function draftLines(draft: ReportDraft): DraftLine[] {
 }
 
 /* ------------------------------------------------------ deterministic rules */
+
+/**
+ * THE WORD LIST SWITCH, the ONE change that restores the word list (read 82 (2)(iii)). His rule (Research chat
+ * 39e1d5a3, uuid c6b4168d, 2026-10-13T01:29:23.576Z): "i recommend we dont strike words. the model should be smart
+ * enough to follow a rule given appropriate instruction." Integration's scope (2026-10-13, after Commercial read 82):
+ * the rules named in `WORD_LIST_LABELS`, CAUSAL_WORDING and LEANS_ON_ANOTHER stop striking; their guidance is in the
+ * writer prompt, advice and forecast are read 82's model read (`SECOND_READ_V6`), and self-containedness is its third
+ * question. Every fact check stays whatever this says. Dashes are replaced before the check (`dashes.ts`), not struck.
+ * true = every one of them strikes again, exactly as before.
+ */
+export const WORD_LIST_STRIKES = false;
+
+/** The FORBIDDEN rules the switch turns off (Integration's GO list, 2026-10-13); the others are fact checks and stay. */
+export const WORD_LIST_LABELS: ReadonlySet<string> = new Set([
+  'buy/sell',
+  'enter/entry',
+  'exit',
+  'directive',
+  'short/fade as a trade',
+  'prediction or certainty',
+  'completeness',
+  '"real" catalyst',
+  'bare "no catalyst"',
+  '"quiet"',
+  // Not 'engine constant': an internal identifier printed to a reader is a code leak, not a word, and no model read
+  // asks about it, so it strikes on every report (Commercial read 97 advisory; Integration's ruling, 2026-10-13).
+  'fit stated as a forecast',
+  // Replaced before the check (`dashes.ts`); struck again only with the word list.
+  'em dash',
+  'spaced hyphen as a dash',
+]);
 
 /**
  * Wording no line may carry, each from a ruled source (`marketing.md` "The
@@ -346,14 +386,35 @@ function givenNumbers(facts: NarrativeFacts): Set<number> {
  * The named names' catalyst summaries: their own figures (shortened as a name line may) and their dates. FRESH_FOUND
  * only since writer v6 13: the sheet hands over no other summary, so a figure from older news has no source to trace to.
  */
-function summaryAllowance(facts: NarrativeFacts): { magnitudes: number[]; dates: Set<string> } {
+function summaryAllowance(facts: NarrativeFacts, research?: ReadonlyMap<string, ReportResearch>): { magnitudes: number[]; dates: Set<string> } {
   const out = { magnitudes: [] as number[], dates: new Set<string>() };
-  // Not the after-hours name: its sheet line is the move only (writer v6 13), so it hands over no summary to trace.
-  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? [])]) {
-    if (!m.summary || m.status !== 'FRESH_FOUND') continue;
-    const claims = claimsIn(m.summary);
+  const harvest = (text: string | null) => {
+    if (!text) return;
+    const claims = claimsIn(text);
     for (const number of claims.numbers) out.magnitudes.push(number.mantissa * number.unit);
     for (const date of claims.dates) out.dates.add(date.value);
+  };
+  // Not the after-hours name: its sheet line is the move only (writer v6 13), so it hands over no summary to trace.
+  for (const m of [...(facts.recapLeaders ?? []), ...(facts.intradayNamed ?? [])]) {
+    if (m.status === 'FRESH_FOUND') harvest(m.summary);
+  }
+  // Integration's ruling (2026-10-13, from the writer v7 test 45c16b15): the Summary may restate EVERY named name's own
+  // catalyst, whatever its status, as that name's stored research states it: its summary, its cited sources' titles and
+  // dates, and its event date. Never the unknowns (the desk does not have them), never the structure, never an unnamed
+  // name's research.
+  if (research) {
+    for (const ticker of namedTickers(facts)) {
+      const catalyst = research.get(ticker)?.catalyst;
+      if (!catalyst) continue;
+      harvest(catalyst.summary);
+      for (const source of catalyst.sources) {
+        harvest(source.title);
+        const when = sourceWhen(source);
+        if (when.date) out.dates.add(when.date);
+      }
+      const event = eventWhen(catalyst);
+      if (event.date) out.dates.add(event.date);
+    }
   }
   return out;
 }
@@ -423,7 +484,7 @@ function causalIn(segment: string): string | null {
 const REVISION =
   /\b(?:since (?:the )?8:30|since the (?:earlier|previous|first|prior) (?:edition|version|report)|no names? (?:have |has )?changed|nothing (?:has )?changed|unchanged since|(?:remains?|still) unchanged|revised with|updated with|no changes?)\b/i;
 
-function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: string }> {
+function wordingFindings(text: string, wordList: boolean): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
   const revision = text.match(REVISION);
   if (revision) out.push({ reason: 'REVISION_WORDING', detail: `"${revision[0]}"` });
@@ -432,6 +493,8 @@ function wordingFindings(text: string): Array<{ reason: StrikeReason; detail: st
     if (moves.length === 0) continue;
     const percent = moves.find((m) => /percent/i.test(m[0]));
     if (percent && !FRAME.test(clause)) out.push({ reason: 'UNFRAMED_PERCENT', detail: `"${percent[0]}" with no frame in its clause` });
+    // CAUSAL_WORDING is on the word list (`WORD_LIST_STRIKES`); a stated cause is still the model's UNSUPPORTED read.
+    if (!wordList) continue;
     for (let i = 0; i < moves.length; i += 1) {
       const end = moves[i]!.index! + moves[i]![0].length;
       const word = causalIn(clause.slice(end, moves[i + 1]?.index ?? clause.length));
@@ -465,10 +528,12 @@ export function narrativeFindings(
   text: string,
   facts: NarrativeFacts,
   tickers: readonly string[],
+  research?: ReadonlyMap<string, ReportResearch>,
+  wordList: boolean = WORD_LIST_STRIKES,
 ): Array<{ reason: StrikeReason; detail: string }> {
   const out: Array<{ reason: StrikeReason; detail: string }> = [];
   const given = givenNumbers(facts);
-  const summary = summaryAllowance(facts);
+  const summary = summaryAllowance(facts, research);
   const claims = claimsIn(text);
   for (const claim of claims.numbers) {
     const isGiven = claim.unit === 1 && given.has(claim.mantissa);
@@ -492,7 +557,7 @@ export function narrativeFindings(
       out.push({ reason: 'NUMBER_WITHOUT_ROW', detail: `${said} ${phrase} vs ${value}` });
     }
   }
-  out.push(...wordingFindings(text));
+  out.push(...wordingFindings(text, wordList));
   // The prompt's example is placeholders (Commercial 14): a copied "{percent}" has no digit for the number check.
   if (/[{}]/.test(text)) out.push({ reason: 'FORBIDDEN_WORDING', detail: 'a template placeholder copied from the prompt' });
   return out;
@@ -525,10 +590,15 @@ function tickerRe(ticker: string): RegExp {
   return new RegExp(`(?<![A-Za-z0-9.])${ticker.replace(/[.\-]/g, '\\$&')}(?![A-Za-z0-9])`);
 }
 
-export function ruleStrikes(input: CheckInput): Strike[] {
+/**
+ * `wordList`: whether the word list strikes (`WORD_LIST_STRIKES`). Only a v6 check (a narrative given) can switch it
+ * off, because only the v6 checker asks read 82's questions; a v4 or v5 check keeps every word rule.
+ */
+export function ruleStrikes(input: CheckInput, options: { wordList?: boolean } = {}): Strike[] {
   const strikes: Strike[] = [];
   const time = etClock(new Date(input.checkpoint.completedAt)).slice(0, 5);
   const tickers = input.rows.map((row) => row.ticker);
+  const wordList = !input.narrative || (options.wordList ?? WORD_LIST_STRIKES);
 
   for (const line of draftLines(input.draft)) {
     const hit = (reason: StrikeReason, detail: string) =>
@@ -540,6 +610,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     for (const [shape, label] of FORBIDDEN) {
       // The v6 narrative states GIVEN counts of names ("the 12 names the desk covers"); its numbers are traced below instead.
       if (v6Narrative && label === NAME_COUNT_LABEL) continue;
+      if (!wordList && WORD_LIST_LABELS.has(label)) continue;
       const match = (DEAL_FACT_LABELS.has(label) ? dealTested : line.text).match(shape);
       if (match) hit('FORBIDDEN_WORDING', `${label}: "${match[0]}"`);
     }
@@ -560,7 +631,7 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     }
 
     if (v6Narrative) {
-      for (const finding of narrativeFindings(line.text, v6Narrative, tickers)) hit(finding.reason, finding.detail);
+      for (const finding of narrativeFindings(line.text, v6Narrative, tickers, input.research, wordList)) hit(finding.reason, finding.detail);
       continue;
     }
     if (line.id === 'O') {
@@ -613,7 +684,8 @@ export function ruleStrikes(input: CheckInput): Strike[] {
     // NOT required: that the text names its own ticker. The surface prints
     // `line.ticker` as the line's lead (`SessionReports.tsx` report lines),
     // so a line that omits it is still about one named name.
-    if (LEANS_ON_ANOTHER.test(line.text.trim())) hit('NOT_SELF_CONTAINED', 'opens on another line');
+    // On the word list (Integration's ruling): with it off, the model's self-containedness answer carries this.
+    if (wordList && LEANS_ON_ANOTHER.test(line.text.trim())) hit('NOT_SELF_CONTAINED', 'opens on another line');
     const others = tickers.filter((t) => t !== line.ticker && tickerRe(t).test(line.text));
     if (others.length > 0) hit('NOT_SELF_CONTAINED', `also names ${others.join(', ')}`);
   }
@@ -641,6 +713,36 @@ export const VERDICT_SCHEMA = {
           id: { type: 'string' },
           supported: { type: 'boolean' },
           note: { type: 'string' },
+        },
+      },
+    },
+  },
+} as const;
+
+/**
+ * v6 13: the verdict with read 82's independent read (Commercial `db4f572d`, 82a `2f1136cb`; his yes to the plan,
+ * Integration chat 5544e519, uuid 71430cf6): per line, advice and forecast as yes/no with the quoted phrase, and the
+ * self-containedness question that replaces the LEANS_ON_ANOTHER word list (Integration's ruling, 2026-10-13).
+ */
+export const VERDICT_SCHEMA_V6 = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['verdicts'],
+  properties: {
+    verdicts: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['id', 'supported', 'note', 'advice', 'forecast', 'leansOnAnother', 'phrase'],
+        properties: {
+          id: { type: 'string' },
+          supported: { type: 'boolean' },
+          note: { type: 'string' },
+          advice: { type: 'boolean' },
+          forecast: { type: 'boolean' },
+          leansOnAnother: { type: 'boolean' },
+          phrase: { type: 'string' },
         },
       },
     },
@@ -732,9 +834,69 @@ const CHECKER_SYSTEM_V5 = [
  * its v6 rule no longer names the context. 10: the narrative facts it is shown word every news state as the recap's
  * sentence 2 does and carry a catalyst for fresh news only, no cycle label, and an after-hours line of the move only
  * (writer v6 13), and the summary allowance follows them (still 10, which never ran). 11: the facts it is shown state
- * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14).
+ * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14). 12: the
+ * narrative may restate a NAMED name's own catalyst as its stored research states it, whatever its status (Integration's
+ * ruling 2026-10-13; the rule half is `summaryAllowance`), and the facts it is shown are the sheet the writer got.
+ * 13: read 82's independent read in the same call (`SECOND_READ_V6`, `VERDICT_SCHEMA_V6`). 14: Commercial read 85
+ * (bac7a1ea): the attributed-statement carve-out (REQUIRED) and its own-share-price limit (3a); "names another ticker
+ * on the board" (REQUIRED); the "confirmed" example labelled as a counterparty's own action. 15: read 86 (859ed1a0)
+ * widens the own-share-price sentence to a named company's or source's statements. 16: read 88 (8aefeb53) widens
+ * the advice question by class (`OPINION_CLAUSE`: the desk's own opinion of price, value, attractiveness or suitability).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 11;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 16;
+
+/**
+ * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
+ * (`tests/desk/fixtures/deal-fact-lines-2026-10-12.json`, lines 0, 3, 6, 26, 27, 42; each example is an exact
+ * substring of its line, and together they occur in 8 of the 46, so the gate reports the other 38 apart). The third
+ * question is the self-containedness read that replaces LEANS_ON_ANOTHER (Integration's ruling, 2026-10-13; read 82
+ * (1): "a line must stand alone on its card"). Asked in the SAME call as the support read (read 82 option A, sized in
+ * the writer v7 branch's advice-gate-size.md); each answer is independent of "supported".
+ */
+export const ADVICE_QUESTION =
+  'does this text tell, suggest or imply that a reader should or could buy, sell, enter, exit, add to, hold, avoid, short, fade, chase, wait for or watch a security, or recommend any action on it';
+export const FORECAST_QUESTION = 'does it predict or promise what a price will do or any outcome';
+/**
+ * Commercial read 88 (8aefeb53), RULED after the gate (ee069a35) missed valuation and suitability seeds: the advice
+ * question widened BY CLASS, not by word. Appended to read 82's question, which stays verbatim.
+ */
+export const OPINION_CLAUSE = "or give the desk's own opinion of a security's price, value or attractiveness, or of who it suits";
+export const DEAL_EXAMPLES = [
+  'Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule',
+  'VCIG may, subject to conditions, direct Hudson Global Ventures to buy up to $125 million of ordinary shares',
+  'NFT Ltd disclosed an agreement to sell Class A ordinary shares to non-U.S. purchasers at $0.45 per share',
+  'Vivakor entered a non-binding indication of interest to acquire all of Direct Midstream',
+  'it entered an equipment lease for one NVIDIA B300 eight-GPU system and agreed to lend funds to finance a second',
+  'Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business',
+] as const;
+
+/** Commercial read 85 (bac7a1ea), REQUIRED, verbatim: an attributed statement is a fact about what was said. */
+export const ATTRIBUTED_CARVE_OUT =
+  "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.";
+/** Read 85 3(a), its ruling put as a rule; CONFIRMED by read 86 (859ed1a0), widened to "a named company's or source's statements". */
+export const OWN_PRICE_NOT_COVERED =
+  "The carve-out covers a named company's or source's statements about its business and events and an attributed analyst target, not a promise about the company's own share price: \"the company said its shares will double\" is a forecast.";
+
+/**
+ * Read 82's two questions and their carve-outs as the checker asks them. Exported so the night scan (`nightScan.ts`,
+ * read 82 (iii)) asks the SAME questions in the same words; `SECOND_READ_V6` is built from them.
+ */
+export const ADVICE_ASK = `- "advice": ${ADVICE_QUESTION}, ${OPINION_CLAUSE}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`;
+export const FORECAST_ASK = `- "forecast": ${FORECAST_QUESTION}?`;
+export const NOT_ADVICE_CARVE_OUTS = [
+  `NOT ADVICE AND NOT A FORECAST: a company's or a counterparty's own action stated as a fact. Six examples from real lines: ${DEAL_EXAMPLES.map((e, i) => (i === 0 ? `"${e}" (an example of a counterparty's own action)` : `"${e}"`)).join('; ')}. The same words aimed at a reader ("sell into strength") are advice.`,
+  `${ATTRIBUTED_CARVE_OUT} ${OWN_PRICE_NOT_COVERED}`,
+] as const;
+
+const SECOND_READ_V6 = [
+  'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
+  ADVICE_ASK,
+  FORECAST_ASK,
+  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board)? Always false for the narrative and the headline.',
+  'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
+  ...NOT_ADVICE_CARVE_OUTS,
+  'v6 REPLY, replacing the shape above: JSON only, {"verdicts": [{"id": string, "supported": boolean, "note": string, "advice": boolean, "forecast": boolean, "leansOnAnother": boolean, "phrase": string}]}, one verdict per id, every id exactly once.',
+];
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -747,10 +909,12 @@ const CHECKER_SYSTEM_V6 = [
   "A catalyst status is the desk's own verdict on freshness under its rules; do not re-judge freshness from the dates in the research. A line matching its status's supported wording is supported even when the research names an older dated event.",
   "A null `sharesOutstanding` supports 'no share count is on file' (or 'no dated share count'); it never supports a number.",
   '',
-  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, and the after-hours name labeled as after hours.',
+  'v6: THE NARRATIVE (id O) replaces the overall line. Its FACTS may be ONLY the narrative facts given below: their counts, the named tickers with their moves, news and catalyst clause, and the after-hours name labeled as after hours. For a ticker the narrative facts name, it may also restate that name\'s own catalyst as its stored research above states it (what happened, with its figures and dates), never another name\'s.',
   'v6: it may also state an INTERPRETATION: a pattern or theme the given facts support (for example how many 50 percent movers kept half their peak gain against how many gave the move back, or what the named catalysts have in common). An interpretation is supported only when the same sentence names the given facts it rests on; one that rests on no named fact is UNSUPPORTED.',
   'v6: the narrative is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move", "on the news"), a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), a forecast about support, resistance or supply ("will hold", "should break", "expect"), an after-hours figure not labeled as after hours or mixed with the day\'s figures, or any claim the facts do not give.',
   'v6: each name line is the catalyst story only. Grade, fit to the move, structure, float, shares outstanding and supply are printed as tags beside it; a line that restates them must still be supported by the research like any other claim.',
+  '',
+  ...SECOND_READ_V6,
 ].join('\n');
 
 /** Each time with its ET reading beside the raw UTC: voice run v5's checker read 09:40Z as 09:40 ET. */
@@ -821,7 +985,7 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
           input.narrative
             ? // Worded EXACTLY as the writer was given them. Voice run v6b (801efe6e): shown as raw JSON, the model could not map "9 ran past
             // 50 percent" to movers50 or "the desk carries 12" to tracking, and struck a narrative that stated only given facts.
-            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${narrativeSheet(input.narrative).join('\n  ')}`
+            `Narrative facts for the narrative line (id O), worded exactly as the writer was given them:\n  ${(input.narrativeSheet ?? narrativeSheet(input.narrative)).join('\n  ')}`
             : input.afterHoursTotals
               ? `After-hours totals for the overall line: ${JSON.stringify(input.afterHoursTotals)}`
               : 'After-hours totals: none given, so any count in an overall line is unsupported.',
@@ -835,9 +999,23 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
   return { system, user };
 }
 
-type ParsedVerdicts = { ok: true; unsupported: Array<{ id: LineId; note: string }> } | { ok: false; error: string };
+/** A yes on one of read 82's questions (v6 13): the line is struck, with the quoted phrase. */
+export interface SecondReadFlag {
+  id: LineId;
+  reason: 'ADVICE' | 'FORECAST' | 'NOT_SELF_CONTAINED';
+  phrase: string;
+}
 
-export function parseVerdicts(raw: string, ids: readonly LineId[]): ParsedVerdicts {
+type ParsedVerdicts =
+  | { ok: true; unsupported: Array<{ id: LineId; note: string }>; flagged?: SecondReadFlag[] }
+  | { ok: false; error: string };
+
+/**
+ * `secondRead` (v6 13): every verdict MUST carry the three booleans and the phrase, or the reply fails closed like any
+ * other malformed verdict: a missing answer is no check, not a "no". The self-containedness answer counts for name
+ * lines only (the prompt says false for the narrative and the headline; a stray true there is ignored, not struck).
+ */
+export function parseVerdicts(raw: string, ids: readonly LineId[], options: { secondRead?: boolean } = {}): ParsedVerdicts {
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw.trim().replace(/^```(?:json)?\s*|\s*```$/g, ''));
@@ -850,28 +1028,43 @@ export function parseVerdicts(raw: string, ids: readonly LineId[]): ParsedVerdic
   const expected = new Set<string>(ids);
   const seen = new Set<string>();
   const unsupported: Array<{ id: LineId; note: string }> = [];
+  const flagged: SecondReadFlag[] = [];
   for (const verdict of verdicts) {
-    const v = verdict as { id?: unknown; supported?: unknown; note?: unknown };
+    const v = verdict as { id?: unknown; supported?: unknown; note?: unknown; advice?: unknown; forecast?: unknown; leansOnAnother?: unknown; phrase?: unknown };
     if (typeof v.id !== 'string' || typeof v.supported !== 'boolean') return { ok: false, error: 'bad verdict' };
     if (!expected.has(v.id)) return { ok: false, error: `unknown id ${v.id}` };
     if (seen.has(v.id)) return { ok: false, error: `duplicate id ${v.id}` };
     seen.add(v.id);
     if (!v.supported) unsupported.push({ id: v.id as LineId, note: typeof v.note === 'string' ? v.note : '' });
+    if (options.secondRead) {
+      if (typeof v.advice !== 'boolean' || typeof v.forecast !== 'boolean' || typeof v.leansOnAnother !== 'boolean' || typeof v.phrase !== 'string') {
+        return { ok: false, error: `no second read for ${v.id}` };
+      }
+      const id = v.id as LineId;
+      if (v.advice) flagged.push({ id, reason: 'ADVICE', phrase: v.phrase });
+      if (v.forecast) flagged.push({ id, reason: 'FORECAST', phrase: v.phrase });
+      if (v.leansOnAnother && id.startsWith('S')) flagged.push({ id, reason: 'NOT_SELF_CONTAINED', phrase: v.phrase });
+    }
   }
   if (seen.size !== expected.size) return { ok: false, error: 'a line has no verdict' };
-  return { ok: true, unsupported };
+  return options.secondRead ? { ok: true, unsupported, flagged } : { ok: true, unsupported };
 }
 
 /* ------------------------------------------------------------------ check */
 
+/**
+ * `options.wordList`: passed to `ruleStrikes`. The pipeline sets it true for a check on the OpenAI fallback, which
+ * failed the read 82 gate (`result-terra.md`); his option A as Integration put it to him (fail branch of 41e3ed79).
+ */
 export async function checkReport(
   input: CheckInput,
   model: CheckerModel,
   now: () => Date = () => new Date(),
+  options: { wordList?: boolean } = {},
 ): Promise<CheckResult> {
   const failed = (): CheckResult => ({ ok: false, cause: { kind: 'CHECKER_FAILED', at: now().toISOString() } });
   const lines = draftLines(input.draft);
-  const strikes = ruleStrikes(input);
+  const strikes = ruleStrikes(input, options);
 
   let raw: string;
   try {
@@ -879,10 +1072,14 @@ export async function checkReport(
   } catch {
     return failed();
   }
-  const verdicts = parseVerdicts(raw, lines.map((line) => line.id));
+  // v6 13: a v6 check (a narrative given) asks read 82's questions in the same call and requires their answers.
+  const verdicts = parseVerdicts(raw, lines.map((line) => line.id), { secondRead: Boolean(input.narrative) });
   if (!verdicts.ok) return failed();
   for (const { id, note } of verdicts.unsupported) {
     strikes.push({ id, reason: 'UNSUPPORTED', by: 'model', detail: note });
+  }
+  for (const { id, reason, phrase } of verdicts.flagged ?? []) {
+    strikes.push({ id, reason, by: 'model', detail: phrase });
   }
   return { ok: true, strikes, lines: lines.length };
 }

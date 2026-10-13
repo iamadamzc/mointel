@@ -111,6 +111,25 @@ describe('credentials never reach the browser (requirement 33)', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('keeps the Claude report checker and its key out of every client-side module (his "move it", uuid e51e9b47)', () => {
+    const clientDirs = ['components', 'app', path.join('lib', 'hooks'), path.join('lib', 'dashboard')].map((dir) => path.join(ROOT, dir));
+    const offenders: string[] = [];
+    for (const dir of clientDirs) {
+      for (const file of walk(dir, ['.ts', '.tsx'])) {
+        const source = fs.readFileSync(file, 'utf8');
+        if (/anthropicReportModel|ANTHROPIC_API_KEY/.test(source)) offenders.push(path.relative(ROOT, file));
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it('no lib or worker file reads ANTHROPIC_API_KEY: only the Reports-TMI key by its own name (Integration\'s ruling)', () => {
+    const files = [...walk(path.join(ROOT, 'lib'), ['.ts']), ...walk(path.join(ROOT, 'worker'), ['.ts'])];
+    const offenders = files.filter((file) => /ANTHROPIC_API_KEY(?!_REPORTS)/.test(fs.readFileSync(file, 'utf8'))).map((file) => path.relative(ROOT, file));
+    expect(offenders).toEqual([]);
+    expect(files.some((file) => /ANTHROPIC_API_KEY_REPORTS/.test(fs.readFileSync(file, 'utf8')))).toBe(true);
+  });
+
   it('keeps the market read model server-only', () => {
     const readModel = fs.readFileSync(path.join(ROOT, 'lib', 'market', 'readModel.ts'), 'utf8');
     expect(readModel).toMatch(/import 'server-only'/);

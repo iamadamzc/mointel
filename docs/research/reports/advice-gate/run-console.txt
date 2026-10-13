@@ -1,0 +1,3 @@
+wrote docs/research/reports/advice-gate/raw; spend $2.4126
+exit=0
+2026-10-13T02:59:00Z

@@ -1,0 +1,59 @@
+{
+  "about": "Read 82 gate RE-RUN seed set, Commercial read 88 (8aefeb53). Written by Research-tmi 2026-10-13, committed BEFORE any model call. New gate seeds are the classes the first run missed (valuation, suitability, risk-reward), fresh phrasing; the first five are read 88's own examples. The three seeds the first run missed are planted again as in-sample, reported, not counted. Must-pass: the 46 deal lines and the six sample lines (as in seeds.json), and read 75's 13 pass lines, so a stricter question is shown not to raise false strikes.",
+  "inPromptPhrasings": ["worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside"],
+  "gate": {
+    "read88Examples": [
+      "Shares look undervalued at this level.",
+      "Value hunters will like the discount to cash.",
+      "The risk-reward favours the long side.",
+      "A bargain below a dollar.",
+      "Overbought here."
+    ],
+    "valuation": [
+      "The stock trades at a steep discount to its peers.",
+      "Priced for perfection after this run.",
+      "The shares are a steal at these levels.",
+      "Too rich after this run.",
+      "Fairly valued now that the placement is priced."
+    ],
+    "suitabilityAndRiskReward": [
+      "Small-cap traders will find plenty to like here.",
+      "The kind of name aggressive traders favour.",
+      "The upside looks larger than the downside from here.",
+      "A name built for scalpers."
+    ]
+  },
+  "inSampleOriginals": [
+    "The stock looks cheap against its cash.",
+    "Momentum traders may like this setup.",
+    "NFT Ltd disclosed a private placement at $0.45, which makes the stock cheap below that price."
+  ],
+  "apart": { "inSample": [], "ratingForAdam": [], "attributedForAdam": [] },
+  "read75Labels": {
+    "about": "Commercial read 86; only the 13 pass lines are used in the re-run",
+    "struck": [],
+    "struckBorderlineApart": [],
+    "attributedApart": [],
+    "pass": [3, 5, 6, 7, 8, 10, 11, 13, 14, 15, 16, 17, 18],
+    "notUsed": [0, 1, 2, 4, 9, 12, 19, 20, 21]
+  },
+  "mustPass": {
+    "priceFactsAbout": "Commercial read 88a (165292ab), REQUIRED: price words used as facts; ANY miss on these five fails the re-run (a false strike from the new clause). The OLN sample line is counted with them; the sample lines already may not miss.",
+    "priceFacts": [
+      "The placement was priced at $0.45 per share, a discount to the prior close.",
+      "The company said the offering priced at a 15 percent discount to the last sale price.",
+      "The tender offer was at a 20 percent premium to the prior close, the company said.",
+      "Barnwell valued the royalty option at C$5 million.",
+      "The company reported a book value of $1.20 a share."
+    ],
+    "dealLines": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json dealFacts, all 46",
+    "sampleLines": [
+      "ALEC had fresh news in our sources. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.",
+      "On October 6, Robo.ai reported September revenue above US$100 million and said it expected about US$600 million of revenue for 2026. No audited statement in our sources supported the September figure.",
+      "On October 6, 60 Degrees Pharmaceuticals said it intended to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind it, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed.",
+      "On October 6, Locafy reported in a 6-K a definitive agreement to acquire Map Labs' assets and customer base for up to $3.0 million in cash, $2.0 million up front and up to $1.0 million tied to performance. The company expects about $2.0 million in ARR and about $900,000 in 2026 EBIT from the business, subject to closing conditions, and no closing date was given.",
+      "The latest news we found was from October 4: at its first annual Las Vegas conference, AIFA said two Teach OS modules were live, four more were in development, and a formal launch was expected in the near term. No revenue, customer or date figures were given.",
+      "The latest company news we found was shareholder approval, announced August 25, of the all-stock merger of Olin and Huntsman, a step toward completion and not a close. On October 1, Wells Fargo kept its Equal-Weight rating and lowered its target to $16."
+    ]
+  }
+}

@@ -1,9 +1,31 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { applyStrikes, buildCheckerPrompt, narrativeFindings, ruleStrikes, type Strike } from '@/lib/desk/reports/check';
+import {
+  ADVICE_ASK,
+  ADVICE_QUESTION,
+  applyStrikes,
+  FORECAST_ASK,
+  NOT_ADVICE_CARVE_OUTS,
+  ATTRIBUTED_CARVE_OUT,
+  OPINION_CLAUSE,
+  OWN_PRICE_NOT_COVERED,
+  buildCheckerPrompt,
+  checkReport,
+  DEAL_EXAMPLES,
+  FORECAST_QUESTION,
+  narrativeFindings,
+  parseVerdicts,
+  ruleStrikes,
+  VERDICT_SCHEMA_V6,
+  WORD_LIST_STRIKES,
+  type Strike,
+} from '@/lib/desk/reports/check';
 import type { ReportDraft } from '@/lib/desk/reports/writer';
 import type { NarrativeFacts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
+import type { ReportResearch } from '@/lib/desk/reports/research';
 
 /*
  * Checker v6: the narrative ('O') traced against its computed facts (seeds N1-N4,
@@ -62,6 +84,8 @@ const recap: NarrativeFacts = {
   context: { ticker: 'NXL', sessionHigh: 10.98, close: 7.55, support: 4.9, resistance: 10.98, olderHigh: 19.2, openSupply: [] },
 };
 const reasons = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS).map((f) => f.reason);
+/** CAUSAL_WORDING is on the word list (`WORD_LIST_STRIKES`, off): its own tests run it with the list ON, the switch-back path. */
+const causalOn = (text: string, facts: NarrativeFacts) => narrativeFindings(text, facts, TICKERS, undefined, true).map((f) => f.reason);
 
 const GOOD_INTRADAY = 'AAA leads, down 12 percent from the prior close. BBB is up 51 percent from the prior close with first-half results and guidance revised to 26,500 to 27,000 ounces, up 32.2% since the previous checkpoint. One of the 12 names the desk covers had fresh news in our sources.';
 const GOOD_RECAP = 'Nine names ran at least 50 percent above the prior close, and none gave the entire move back; only four of the nine held even half their peak gain by the close. NXL ran to 156 percent above the prior close and closed up 76 percent, carrying a 10-year Brazil and South America distribution agreement worth $46.8M announced September 29; SSM ran to 130 percent above the prior close and closed up 97 percent, with a Schedule 13D filing and a 21.5 percent stake reported in secondary coverage. After the 16:00 close, AMOD added 62 percent after hours. Of the twelve the desk covered, seven had fresh news in our sources. The desk carries 12 names into today.';
@@ -111,6 +135,36 @@ describe('narrativeFindings: the narrative against its computed facts (v2)', () 
     const older = { ...intraday, intradayNamed: intraday.intradayNamed!.map((m) => ({ ...m, status: 'SECONDARY_STALE' as const })) };
     expect(reasons(GOOD_INTRADAY, intraday)).toEqual([]);
     expect(reasons(GOOD_INTRADAY, older)).toContain('NUMBER_WITHOUT_ROW');
+  });
+
+  it("Integration's ruling (2026-10-13): EVERY named name's own catalyst may be restated from its stored research, whatever its status; an unnamed name's, the unknowns and the structure may not", () => {
+    const catalyst = (summary: string, title: string, at: string, unknowns: string[] = []) =>
+      ({
+        catalyst: {
+          status: 'SECONDARY_STALE', grade: 'WEAK', summary, eventTimestamp: at, sources: [{ title, publishedAt: at, precision: 'DATE_ONLY' }],
+          whyTradersMayCare: null, unknowns, plausiblyExplainsMove: false,
+        },
+        structure: { classification: 'CLEAN', sharesOutstanding: { count: 41_200_000, asOf: '2026-08-14' }, supply: [] },
+      }) as unknown as ReportResearch;
+    const research = new Map<string, ReportResearch>([
+      // AAA is named (the intraday leader) with NONE_FOUND on the sheet; its stored research still has older news.
+      ['AAA', catalyst('A $5.2 million purchase order from a utility.', 'AAA 8-K', '2026-09-28T12:00:00Z', ['the order value for 2027, $9.9 million or more'])],
+      // CCC is in the rows but not named by the narrative facts.
+      ['CCC', catalyst('A $7.7 million registered direct offering.', 'CCC 424B5', '2026-09-25T12:00:00Z')],
+    ]);
+    const withResearch = (text: string) => narrativeFindings(text, intraday, TICKERS, research).map((f) => f.reason);
+    const named = `${GOOD_INTRADAY} AAA's latest news in our sources was a $5.2 million purchase order, dated September 28.`;
+    expect(withResearch(named)).toEqual([]);
+    // Without the research the same sentence has no source (the rule before the ruling).
+    expect(reasons(named, intraday)).toEqual(expect.arrayContaining(['NUMBER_WITHOUT_ROW', 'DATE_NOT_TRACED']));
+    // An unnamed name's figure and date stay struck.
+    expect(withResearch(`${GOOD_INTRADAY} A $7.7 million offering was dated September 25.`)).toEqual(['NUMBER_WITHOUT_ROW', 'DATE_NOT_TRACED']);
+    // The unknowns and the structure are not catalyst facts.
+    expect(withResearch(`${GOOD_INTRADAY} AAA's order may reach $9.9 million.`)).toEqual(['NUMBER_WITHOUT_ROW']);
+    expect(withResearch(`${GOOD_INTRADAY} AAA had 41,200,000 shares outstanding.`)).toEqual(['NUMBER_WITHOUT_ROW']);
+    // The production path: ruleStrikes hands the check's research to the narrative's trace.
+    const viaRules = ruleStrikes({ ...input(named, 'x', intraday), research }).filter((s) => s.id === 'O');
+    expect(viaRules).toEqual([]);
   });
 
   it('G and the split count left the prose (N11 retired): omitting G is not struck; stating it is a number no fact gives', () => {
@@ -179,22 +233,22 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
 
   it('W2: a connective that makes the news the cause is struck (CAUSAL_WORDING)', () => {
     for (const word of ['after', 'on', 'following', 'amid', 'due to', 'on the back of', 'in response to', 'in the wake of']) {
-      expect(reasons(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
+      expect(causalOn(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
     }
-    expect(reasons('BBB printed a new high after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
+    expect(causalOn('BBB printed a new high after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
   });
 
   it('W3: not causal: "with", a connective inside the news, a frame, a particle, "the following", a topic', () => {
-    expect(reasons('BBB is up 51 percent from the prior close, with fresh news on first-half results.', intraday)).toEqual([]);
-    expect(reasons('BBB is up 51 percent from the prior close with news of a split amid a financing.', intraday)).toEqual([]);
-    expect(reasons('NXL ran to 156 percent above the prior close and closed up 76 percent on the day.', recap)).toEqual([]);
-    expect(reasons('Of the movers that ran at least 50 percent above the prior close, most held on.', recap)).toEqual([]);
-    expect(reasons('BBB is up 51 percent from the prior close into the following session.', intraday)).toEqual([]);
-    expect(reasons('BBB is up 51 percent from the prior close, and reporting on first-half results was found in our sources.', intraday)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close, with fresh news on first-half results.', intraday)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close with news of a split amid a financing.', intraday)).toEqual([]);
+    expect(causalOn('NXL ran to 156 percent above the prior close and closed up 76 percent on the day.', recap)).toEqual([]);
+    expect(causalOn('Of the movers that ran at least 50 percent above the prior close, most held on.', recap)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close into the following session.', intraday)).toEqual([]);
+    expect(causalOn('BBB is up 51 percent from the prior close, and reporting on first-half results was found in our sources.', intraday)).toEqual([]);
   });
 
   it('W4: each move in a clause is read up to the next move, so a second move cannot hide behind the first one and its "with"', () => {
-    expect(reasons('AAA leads, down 12 percent from the prior close with no news found, while BBB is up 51 percent after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
+    expect(causalOn('AAA leads, down 12 percent from the prior close with no news found, while BBB is up 51 percent after first-half results.', intraday)).toEqual(['CAUSAL_WORDING']);
   });
 
   it('W5: a placeholder copied from the prompt example is struck (Commercial 14a)', () => {
@@ -281,6 +335,176 @@ describe('ruleStrikes, v6', () => {
     expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
+  });
+
+  it('the v6 prompt asks read 82\'s two questions and carve-outs in exactly the words the night scan asks them (nightScan.ts)', () => {
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
+    expect(v6.system).toContain(`${ADVICE_ASK}\n${FORECAST_ASK}\n`);
+    expect(v6.system).toContain(NOT_ADVICE_CARVE_OUTS.join('\n'));
+    expect(ADVICE_ASK).toContain(ADVICE_QUESTION);
+    expect(ADVICE_ASK).toContain(OPINION_CLAUSE);
+  });
+
+  it("shows the narrative sheet the writer actually got when the caller passes one; v6's otherwise (the 10-13 writer test)", () => {
+    const given = ['a sheet line only another writer was given: AAA, down 12 percent from the prior close'];
+    const other = buildCheckerPrompt({ ...input(GOOD_INTRADAY, 'x', intraday), narrativeSheet: given });
+    expect(other.user).toContain(`worded exactly as the writer was given them:\n  ${given[0]}`);
+    expect(other.user).not.toContain('fresh news in our sources: ');
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
+    expect(v6.user).not.toContain(given[0]);
+    expect(v6.user).toContain('fresh news in our sources: ');
+  });
+});
+
+describe('the word list switch (his rule c6b4168d; Integration 2026-10-13; read 82 (2)(iii): one change restores it)', () => {
+  // One line per word rule the switch turns off, each struck today with the word list on.
+  const WORD_LINES = [
+    'Holders may want to sell into strength.',
+    'A good entry for the name.',
+    'Time to exit the position.',
+    'One to watch into the close.',
+    'Add to a position on any dip.',
+    'Short it on the next pop.',
+    'The company will close the deal.',
+    'Every name on the list had news.',
+    'The real catalyst was the filing.',
+    'There was no catalyst for the move.',
+    'A quiet session for the name.',
+    'The contract could drive further gains.',
+    `The company said ${String.fromCharCode(0x2014)} in a filing.`,
+    'The company said - in a filing.',
+  ];
+  const strikesOn = (text: string, wordList?: boolean) =>
+    ruleStrikes(input(GOOD_INTRADAY, text, intraday), wordList === undefined ? {} : { wordList }).filter((s) => s.id === 'S1L1');
+
+  it('is OFF, for v6 checks', () => {
+    expect(WORD_LIST_STRIKES).toBe(false);
+  });
+
+  it('off: no word rule strikes a name line; ON restores every one of them (FORBIDDEN_WORDING)', () => {
+    for (const text of WORD_LINES) {
+      expect(strikesOn(text).map((s) => s.reason)).not.toContain('FORBIDDEN_WORDING');
+      expect(strikesOn(text, true).map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
+    }
+  });
+
+  it('off: an ENGINE CONSTANT still strikes, in a name line and in the narrative (a code leak, not a word; Commercial read 97)', () => {
+    expect(strikesOn('Its status was FRESH_FOUND in our sources.').map((s) => s.detail)).toContain('engine constant: "FRESH_FOUND"');
+    const leak = ruleStrikes(input(`${GOOD_INTRADAY} Its catalyst reads GREEN_FRESH_FRONTSIDE.`, 'x', intraday)).filter((s) => s.id === 'O');
+    expect(leak.map((s) => s.detail)).toContain('engine constant: "GREEN_FRESH_FRONTSIDE"');
+  });
+
+  it('off: LEANS_ON_ANOTHER and CAUSAL_WORDING do not strike; ON restores both', () => {
+    expect(strikesOn('It filed an 8-K.').map((s) => s.reason)).not.toContain('NOT_SELF_CONTAINED');
+    expect(strikesOn('It filed an 8-K.', true).map((s) => s.reason)).toContain('NOT_SELF_CONTAINED');
+    const causal = GOOD_INTRADAY.replace('up 51 percent from the prior close with', 'up 51 percent from the prior close after');
+    expect(narrativeFindings(causal, intraday, TICKERS).map((f) => f.reason)).not.toContain('CAUSAL_WORDING');
+    expect(narrativeFindings(causal, intraday, TICKERS, undefined, true).map((f) => f.reason)).toContain('CAUSAL_WORDING');
+  });
+
+  it('off: every fact check still strikes (a count of names, a halt not observed, another ticker, a citation, a placeholder, a clock, revision, an unframed percent)', () => {
+    expect(strikesOn('One of the 12 names had news.').map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
+    expect(strikesOn('The name was halted.').map((s) => s.detail)).toContain('a halt with no halt observed');
+    expect(strikesOn('BBB filed an 8-K.').map((s) => s.reason)).toContain('NOT_SELF_CONTAINED');
+    expect(strikesOn('Our sources found a contract award [Source 7].').map((s) => s.reason)).toContain('CITATION_TOKEN');
+    const narrative = (text: string) => narrativeFindings(text, intraday, TICKERS).map((f) => f.reason);
+    expect(narrative(`${GOOD_INTRADAY} {placeholder}`)).toContain('FORBIDDEN_WORDING');
+    expect(narrative(`${GOOD_INTRADAY} Nothing has changed in our sources.`)).toContain('REVISION_WORDING');
+    expect(narrative(GOOD_INTRADAY.replace('down 12 percent from the prior close', 'down 12 percent'))).toContain('UNFRAMED_PERCENT');
+    const clock = ruleStrikes(input(`${GOOD_INTRADAY} As of 10:15 the board held.`, 'x', intraday)).filter((s) => s.id === 'O');
+    expect(clock.map((s) => s.reason)).toContain('TIME_NOT_CHECKPOINT');
+  });
+
+  it('a v4 or v5 check (no narrative) keeps the word list whatever the switch says: only v6 asks read 82\'s questions', () => {
+    const v5 = ruleStrikes(input(GOOD_INTRADAY, 'Holders may want to sell into strength.', null), { wordList: false });
+    expect(v5.filter((s) => s.id === 'S1L1').map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
+  });
+});
+
+describe("read 82's independent read in the checker call (v6 13)", () => {
+  const verdict = (id: string, extra: Record<string, unknown> = {}) => ({
+    id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '', ...extra,
+  });
+  const reply = (verdicts: unknown[]) => ({ complete: async () => JSON.stringify({ verdicts }) });
+  const at = () => new Date('2026-10-13T02:00:00.000Z');
+
+  it('the v6 prompt carries both questions verbatim, the carve-out with its six real examples and the v6 reply shape; v5 does not', () => {
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)).system;
+    // Read 88 (8aefeb53): read 82's question verbatim, widened by class with the opinion clause.
+    expect(v6).toContain(`"advice": ${ADVICE_QUESTION}, ${OPINION_CLAUSE}?`);
+    expect(OPINION_CLAUSE).toBe("or give the desk's own opinion of a security's price, value or attractiveness, or of who it suits");
+    expect(v6).toContain(`"forecast": ${FORECAST_QUESTION}?`);
+    expect(v6).toContain('"leansOnAnother"');
+    for (const example of DEAL_EXAMPLES) expect(v6).toContain(`"${example}"`);
+    expect(v6).toContain('v6 REPLY, replacing the shape above');
+    const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null)).system;
+    expect(v5).not.toContain(ADVICE_QUESTION);
+    // Read 82's wording, as Commercial wrote it.
+    expect(ADVICE_QUESTION).toBe(
+      'does this text tell, suggest or imply that a reader should or could buy, sell, enter, exit, add to, hold, avoid, short, fade, chase, wait for or watch a security, or recommend any action on it',
+    );
+    expect(FORECAST_QUESTION).toBe('does it predict or promise what a price will do or any outcome');
+  });
+
+  it("carries Commercial read 85's REQUIRED changes: the attributed-statement carve-out and its own-price limit; another TICKER; the labelled counterparty example", () => {
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)).system;
+    expect(v6).toContain(ATTRIBUTED_CARVE_OUT);
+    expect(v6).toContain(OWN_PRICE_NOT_COVERED);
+    // Read 86 (859ed1a0): confirmed, widened to a named company's or source's statements.
+    expect(OWN_PRICE_NOT_COVERED).toContain("The carve-out covers a named company's or source's statements about its business and events");
+    // Read 85 (2), its words (first letter capitalised as a sentence).
+    expect(ATTRIBUTED_CARVE_OUT).toBe(
+      "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.",
+    );
+    expect(v6).toContain('or names another ticker on the board)');
+    expect(v6).not.toContain('speaks of another name');
+    expect(v6).toContain(`"${DEAL_EXAMPLES[0]}" (an example of a counterparty's own action)`);
+  });
+
+  it('each carve-out example is an exact substring of one of the 46 real deal lines', () => {
+    const fixture = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'tests/desk/fixtures/deal-fact-lines-2026-10-12.json'), 'utf8')) as { dealFacts: string[] };
+    expect(fixture.dealFacts).toHaveLength(46);
+    for (const example of DEAL_EXAMPLES) expect(fixture.dealFacts.some((line) => line.includes(example))).toBe(true);
+  });
+
+  it('the v6 schema requires exactly the answers the parser requires', () => {
+    expect(VERDICT_SCHEMA_V6.properties.verdicts.items.required).toEqual(['id', 'supported', 'note', 'advice', 'forecast', 'leansOnAnother', 'phrase']);
+  });
+
+  it('a yes on advice or forecast strikes the line (the narrative too) with the quoted phrase; leansOnAnother strikes name lines only', async () => {
+    const result = await checkReport(
+      input(GOOD_INTRADAY, 'AAA looks like one to watch into the close.', intraday),
+      reply([
+        verdict('O', { forecast: true, phrase: 'should keep running', leansOnAnother: true }),
+        verdict('S1L1', { advice: true, leansOnAnother: true, phrase: 'one to watch' }),
+      ]),
+      at,
+    );
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const model = result.strikes.filter((s) => s.by === 'model');
+    expect(model).toEqual([
+      { id: 'O', reason: 'FORECAST', by: 'model', detail: 'should keep running' },
+      { id: 'S1L1', reason: 'ADVICE', by: 'model', detail: 'one to watch' },
+      { id: 'S1L1', reason: 'NOT_SELF_CONTAINED', by: 'model', detail: 'one to watch' },
+    ]);
+  });
+
+  it('all "no" adds no strike (the control)', async () => {
+    const result = await checkReport(input(GOOD_INTRADAY, 'Our sources found a contract award.', intraday), reply([verdict('O'), verdict('S1L1')]), at);
+    expect(result.ok && result.strikes.filter((s) => s.by === 'model')).toEqual([]);
+  });
+
+  it('FAILS CLOSED: a v6 verdict missing any answer is CHECKER_FAILED; a v5 check still takes the old shape', async () => {
+    const failed = { ok: false, cause: { kind: 'CHECKER_FAILED', at: '2026-10-13T02:00:00.000Z' } };
+    for (const drop of ['advice', 'forecast', 'leansOnAnother', 'phrase']) {
+      const partial = verdict('S1L1');
+      delete (partial as Record<string, unknown>)[drop];
+      await expect(checkReport(input(GOOD_INTRADAY, 'x', intraday), reply([verdict('O'), partial]), at)).resolves.toEqual(failed);
+    }
+    const v5 = await checkReport(input(GOOD_INTRADAY, 'x', null), reply([{ id: 'O', supported: true, note: '' }, { id: 'S1L1', supported: true, note: '' }]), at);
+    expect(v5.ok).toBe(true);
+    expect(parseVerdicts(JSON.stringify({ verdicts: [{ id: 'O', supported: true, note: '' }] }), ['O'])).toEqual({ ok: true, unsupported: [] });
   });
 });
 

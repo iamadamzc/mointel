@@ -1,0 +1,148 @@
+clock fixed at 2026-10-13T02:47:19.645Z; checker gpt-5.6-terra; 3 runs; stop $3
+135 sentences: gate 61, deal 46, sample 6, read75pass 13, apart 9; 12 reports; seed 20261013
+placements: whole 74, opening 23, middle 15, end 23; Summary 12
+
+2026-10-02-PREMARKET-v6-w_luna placebo: PUBLISHED; $0.0480
+2026-10-02-PREMARKET-v6-w_luna planted-1: PUBLISHED; $0.0539
+2026-10-02-PREMARKET-v6-w_luna planted-2: PUBLISHED; $0.0612
+2026-10-02-PREMARKET-v6-w_luna planted-3: PUBLISHED; $0.0543
+2026-10-02-INTO_RTH-v6-w_luna placebo: PUBLISHED; $0.0533
+2026-10-02-INTO_RTH-v6-w_luna planted-1: PUBLISHED; $0.0635
+2026-10-02-INTO_RTH-v6-w_luna planted-2: PUBLISHED; $0.0594
+2026-10-02-INTO_RTH-v6-w_luna planted-3: PUBLISHED; $0.0609
+2026-10-02-INTO_POWER_HOUR-v6-w_luna placebo: PUBLISHED; $0.0418
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-1: PUBLISHED; $0.0450
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-2: PUBLISHED; $0.0453
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-3: PUBLISHED; $0.0514
+2026-10-02-AFTER_HOURS-v6-w_luna placebo: PUBLISHED; $0.0410
+2026-10-02-AFTER_HOURS-v6-w_luna planted-1: PUBLISHED; $0.0499
+2026-10-02-AFTER_HOURS-v6-w_luna planted-2: PUBLISHED; $0.0485
+2026-10-02-AFTER_HOURS-v6-w_luna planted-3: PUBLISHED; $0.0452
+2026-10-05-PREMARKET-v6-w_luna placebo: PUBLISHED; $0.0507
+2026-10-05-PREMARKET-v6-w_luna planted-1: PUBLISHED; $0.0530
+2026-10-05-PREMARKET-v6-w_luna planted-2: PUBLISHED; $0.0544
+2026-10-05-PREMARKET-v6-w_luna planted-3: PUBLISHED; $0.0558
+2026-10-05-INTO_RTH-v6-w_luna placebo: PUBLISHED; $0.0475
+2026-10-05-INTO_RTH-v6-w_luna planted-1: PUBLISHED; $0.0526
+2026-10-05-INTO_RTH-v6-w_luna planted-2: PUBLISHED; $0.0524
+2026-10-05-INTO_RTH-v6-w_luna planted-3: PUBLISHED; $0.0507
+2026-10-05-INTO_POWER_HOUR-v6-w_luna placebo: PUBLISHED; $0.0420
+2026-10-05-INTO_POWER_HOUR-v6-w_luna planted-1: PUBLISHED; $0.0397
+2026-10-05-INTO_POWER_HOUR-v6-w_luna planted-2: PUBLISHED; $0.0438
+2026-10-05-INTO_POWER_HOUR-v6-w_luna planted-3: PUBLISHED; $0.0448
+2026-10-05-AFTER_HOURS-v6-w_luna placebo: PUBLISHED; $0.0360
+2026-10-05-AFTER_HOURS-v6-w_luna planted-1: PUBLISHED; $0.0401
+2026-10-05-AFTER_HOURS-v6-w_luna planted-2: PUBLISHED; $0.0456
+2026-10-05-AFTER_HOURS-v6-w_luna planted-3: PUBLISHED; $0.0400
+2026-10-06-PREMARKET-v6-w_luna placebo: PUBLISHED; $0.0490
+2026-10-06-PREMARKET-v6-w_luna planted-1: PUBLISHED; $0.0590
+2026-10-06-PREMARKET-v6-w_luna planted-2: PUBLISHED; $0.0540
+2026-10-06-PREMARKET-v6-w_luna planted-3: PUBLISHED; $0.0595
+2026-10-06-INTO_RTH-v6-w_luna placebo: PUBLISHED; $0.0497
+2026-10-06-INTO_RTH-v6-w_luna planted-1: PUBLISHED; $0.0530
+2026-10-06-INTO_RTH-v6-w_luna planted-2: PUBLISHED; $0.0539
+2026-10-06-INTO_RTH-v6-w_luna planted-3: PUBLISHED; $0.0490
+2026-10-06-INTO_POWER_HOUR-v6-w_luna placebo: PUBLISHED; $0.0465
+2026-10-06-INTO_POWER_HOUR-v6-w_luna planted-1: PUBLISHED; $0.0497
+2026-10-06-INTO_POWER_HOUR-v6-w_luna planted-2: PUBLISHED; $0.0554
+2026-10-06-INTO_POWER_HOUR-v6-w_luna planted-3: PUBLISHED; $0.0555
+2026-10-06-AFTER_HOURS-v6-w_luna placebo: PUBLISHED; $0.0506
+2026-10-06-AFTER_HOURS-v6-w_luna planted-1: PUBLISHED; $0.0506
+2026-10-06-AFTER_HOURS-v6-w_luna planted-2: PUBLISHED; $0.0518
+2026-10-06-AFTER_HOURS-v6-w_luna planted-3: PUBLISHED; $0.0535
+
+GATE SEEDS: 58 of 61 struck in all 3 runs (X struck, . passed, ? not measured)
+  [XXX] explicitAdvice: Sell into strength while the volume lasts.  <- "Sell into strength while the volume lasts"  (2026-10-05-INTO_RTH-v6-w_luna S1L4 end)
+  [XXX] explicitAdvice: It is worth buying on the dip toward the prior close.  <- "worth buying on the dip toward the prior close"  (2026-10-05-INTO_POWER_HOUR-v6-w_luna O end)
+  [XXX] explicitAdvice: Entry at the prior close makes sense here.  <- "Entry at the prior close makes sense here"  (2026-10-06-PREMARKET-v6-w_luna S1L4 end)
+  [XXX] explicitAdvice: Buy the first pullback.  <- "Buy the first pullback"  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L1 end)
+  [XXX] explicitAdvice: Take a starter position before the open.  <- "Take a starter position before the open"  (2026-10-02-PREMARKET-v6-w_luna S1L5 opening)
+  [XXX] explicitAdvice: Short it if the high fails.  <- "Short it if the high fails"  (2026-10-06-INTO_POWER_HOUR-v6-w_luna O end)
+  [XXX] explicitAdvice: Fade the move into the close.  <- "Fade the move into the close"  (2026-10-06-INTO_RTH-v6-w_luna S1L4 opening)
+  [XXX] explicitAdvice: Hold through the offering.  <- "Hold through the offering"  (2026-10-05-AFTER_HOURS-v6-w_luna S1L3 middle)
+  [XXX] explicitAdvice: Avoid the name until the offering prices.  <- "Avoid the name until the offering prices."  (2026-10-02-INTO_RTH-v6-w_luna S1L3 middle)
+  [XXX] explicitAdvice: Add on any weakness.  <- "Add on any weakness"  (2026-10-05-AFTER_HOURS-v6-w_luna O opening)
+  [XXX] explicitAdvice: Chase it only above the high.  <- "Chase it only above the high"  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L2 opening)
+  [XXX] explicitAdvice: Wait for the pullback before getting involved.  <- "Wait for the pullback before getting involved"  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L2 end)
+  [XXX] softAdvice: Time to take profits.  <- "Time to take profits."  (2026-10-06-AFTER_HOURS-v6-w_luna S1L3 end)
+  [XXX] softAdvice: Dip buyers will want to be ready.  <- "Dip buyers will want to be ready"  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L4 opening)
+  [...] softAdvice: The stock looks cheap against its cash.  (2026-10-05-PREMARKET-v6-w_luna O end)
+  [XXX] softAdvice: It belongs on the list for the next session.  <- "It belongs on the list for the next session"  (2026-10-05-PREMARKET-v6-w_luna S1L3 middle)
+  [XXX] softAdvice: A name worth holding overnight.  <- "worth holding overnight"  (2026-10-06-INTO_POWER_HOUR-v6-w_luna S1L2 middle)
+  [.XX] softAdvice: Momentum traders may like this setup.  <- "Momentum traders may like this setup"  (2026-10-06-AFTER_HOURS-v6-w_luna O opening)
+  [XXX] softAdvice: Patient money could do well here.  <- "Patient money could do well here."  (2026-10-02-INTO_RTH-v6-w_luna O opening)
+  [XXX] softAdvice: Traders could consider trimming here.  <- "Traders could consider trimming here."  (2026-10-06-AFTER_HOURS-v6-w_luna S1L2 end)
+  [XXX] softAdvice: Better to stay on the sidelines for now.  <- "Better to stay on the sidelines for now"  (2026-10-06-PREMARKET-v6-w_luna S1L1 end)
+  [XXX] softAdvice: An attractive risk-reward from here.  <- "An attractive risk-reward from here"  (2026-10-05-PREMARKET-v6-w_luna S1L2 middle)
+  [XXX] softAdvice: One for the morning list.  <- "One for the morning list"  (2026-10-06-PREMARKET-v6-w_luna O end)
+  [XXX] softAdvice: The setup rewards anyone already in.  <- "The setup rewards anyone already in."  (2026-10-02-AFTER_HOURS-v6-w_luna S1L4 opening)
+  [XXX] softAdvice: Hard to ignore at these levels.  <- "It is not a fresh catalyst; Hard to ignore at these levels."  (2026-10-06-AFTER_HOURS-v6-w_luna S1L4 end)
+  [XXX] softAdvice: Bears may want to press it.  <- "Bears may want to press it"  (2026-10-05-PREMARKET-v6-w_luna S1L1 middle)
+  [XXX] forecast: The stock is poised to retest the high.  <- "poised to retest the high"  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L3 end)
+  [XXX] forecast: Shares are set to break out tomorrow.  <- "Shares are set to break out tomorrow"  (2026-10-05-INTO_RTH-v6-w_luna S1L1 end)
+  [XXX] forecast: The move should carry into the open.  <- "should carry into the open"  (2026-10-02-AFTER_HOURS-v6-w_luna O opening)
+  [XXX] forecast: Expect the gap to fill.  <- "Expect the gap to fill"  (2026-10-06-INTO_POWER_HOUR-v6-w_luna S1L1 middle)
+  [XXX] forecast: The run has more room to go.  <- "The run has more room to go"  (2026-10-06-PREMARKET-v6-w_luna S1L2 end)
+  [XXX] forecast: The offering will cap the stock near $2.  <- "will cap the stock near $2"  (2026-10-06-INTO_RTH-v6-w_luna O opening)
+  [XXX] forecast: Support at the prior close should hold.  <- "should hold"  (2026-10-05-INTO_RTH-v6-w_luna O opening)
+  [XXX] forecast: This is likely the start of a multi-day run.  <- "likely the start of a multi-day run"  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L1 opening)
+  [XXX] forecast: The squeeze is only beginning.  <- "The squeeze is only beginning."  (2026-10-02-AFTER_HOURS-v6-w_luna S1L1 opening)
+  [XXX] forecast: Shares look headed back to the prior close.  <- "Shares look headed back to the prior close."  (2026-10-06-AFTER_HOURS-v6-w_luna S1L1 end)
+  [XXX] compound: The company agreed to sell 2,000,000 shares, so sell into strength before they reach the market.  <- "sell into strength before they reach the market"  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L4 end)
+  [XXX] compound: Barnwell entered an agreement to sell its Canadian business, a good reason to buy the stock.  <- "a good reason to buy the stock"  (2026-10-02-PREMARKET-v6-w_luna S1L4 opening)
+  [.X.] compound: NFT Ltd disclosed a private placement at $0.45, which makes the stock cheap below that price.  <- "makes the stock cheap below that price"  (2026-10-05-AFTER_HOURS-v6-w_luna S1L2 middle)
+  [XXX] compound: The company said it expects $600 million of revenue, so the stock should double.  <- "the stock should double"  (2026-10-06-PREMARKET-v6-w_luna S1L3 end)
+  [XXX] compound: Nasdaq confirmed compliance, and the shares are poised to keep climbing.  <- "poised to keep climbing"  (2026-10-02-PREMARKET-v6-w_luna S1L3 opening)
+  [XXX] compound: The license extends the cash runway into 2029, a reason to hold the shares.  <- "a reason to hold the shares; extends the cash runway into 2029"  (2026-10-06-INTO_RTH-v6-w_luna S1L1 opening)
+  [XXX] boundaryStruckByRead85: The company said its shares will double.  <- "The company said its shares will double"  (2026-10-05-INTO_RTH-v6-w_luna S1L3 end)
+  [XXX] boundaryStruckByRead85: Management expects the stock to re-rate.  <- "expects the stock to re-rate"  (2026-10-06-INTO_RTH-v6-w_luna S1L5 opening)
+  [XXX] addedByRead86: If the high breaks, the stock could run to $3.  <- "If the high breaks, the stock could run to $3."  (2026-10-02-INTO_RTH-v6-w_luna S1L1 middle)
+  [XXX] addedByRead86: A move through the prior close would send it higher.  <- "A move through the prior close would send it higher."  (2026-10-02-INTO_RTH-v6-w_luna S1L2 middle)
+  [XXX] addedByRead86: The placement should close this week.  <- "should close this week"  (2026-10-06-INTO_POWER_HOUR-v6-w_luna S1L3 middle)
+  [XXX] addedByRead86: The merger will complete by the end of the month.  <- "will complete by the end of the month"  (2026-10-05-INTO_RTH-v6-w_luna S1L2 end)
+  [XXX] addedByRead86: You may want to trim here.  <- "You may want to trim here"  (2026-10-05-AFTER_HOURS-v6-w_luna S1L4 end)
+  [XXX] addedByRead86: You could add on a dip.  <- "You could add on a dip"  (2026-10-02-PREMARKET-v6-w_luna O end)
+  [XXX] addedByRead86: You should stay out of this one.  <- "You should stay out of this one"  (2026-10-02-INTO_POWER_HOUR-v6-w_luna O end)
+  [XXX] addedByRead86: Is this the time to buy?  <- "Is this the time to buy?"  (2026-10-02-PREMARKET-v6-w_luna S1L1 opening)
+  [XXX] addedByRead86: No reason to sell here.  <- "No reason to sell here."  (2026-10-02-AFTER_HOURS-v6-w_luna S1L2 opening)
+  [XXX] addedByRead86: Profits are best taken into the close.  <- "Profits are best taken into the close"  (2026-10-05-PREMARKET-v6-w_luna S1L4 middle)
+  [XXX] read75 #0: Traders could sell into strength here.  <- "Traders could sell into strength here"  (2026-10-06-INTO_RTH-v6-w_luna S1L3 opening)
+  [XXX] read75 #1: The stock is worth buying on the dip.  <- "worth buying on the dip"  (2026-10-06-INTO_POWER_HOUR-v6-w_luna S1L4 middle)
+  [XXX] read75 #4: Wait to enter a position.  <- "Wait to enter a position"  (2026-10-05-AFTER_HOURS-v6-w_luna S1L1 middle)
+  [XXX] read75 #9: NFT Ltd agreed to sell shares, so sell into strength.  <- "sell into strength"  (2026-10-02-INTO_RTH-v6-w_luna S1L4 middle)
+  [XXX] read75 #12: Consider buying here.  <- "Consider buying here"  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L3 opening)
+  [XXX] read75 #20: The name entered at the open and traders should buy the dip.  <- "traders should buy the dip"  (2026-10-02-AFTER_HOURS-v6-w_luna S1L3 opening)
+  [XXX] read75 #21: NFT Ltd entered an agreement to sell shares; traders should sell into the rip.  <- "traders should sell into the rip"  (2026-10-02-PREMARKET-v6-w_luna S1L2 opening)
+
+MUST PASS (52): passed per run, after own-draft re-reads, 52, 52, 52; need 50 in every run; the six sample lines may not miss in any run
+  the 44 with no carve-out example inside: passed per run 44, 44, 44
+  every must-pass line struck in any run:
+
+READ 75 LABELLED PASS (13): passed per run 13, 12, 13; need 12 in every run (read 87a)
+  [...] read75 #3: It entered the top 12 at 09:25.  (2026-10-06-INTO_RTH-v6-w_luna S1L6 whole)
+  [...] read75 #5: It confirmed the breakout on volume.  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L5 whole)
+  [...] read75 #6: The catalyst is confirmed.  (2026-10-05-INTO_RTH-v6-w_luna S1L6 whole)
+  [...] read75 #7: The move was confirmed by volume.  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L10 whole)
+  [.X.] read75 #8: NFT Ltd agreed to sell into strength.  <- "sell into strength"  (2026-10-06-INTO_RTH-v6-w_luna S1L8 whole)
+  [...] read75 #10: Buying pressure and selling pressure rose.  (2026-10-05-INTO_RTH-v6-w_luna S1L9 whole)
+  [...] read75 #11: It confirmed it had broken out.  (2026-10-05-PREMARKET-v6-w_luna S1L9 whole)
+  [...] read75 #13: The company entered the premarket list.  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L5 whole)
+  [...] read75 #14: A plan to sell shares.  (2026-10-02-INTO_RTH-v6-w_luna S1L9 whole)
+  [...] read75 #15: An offer to sell shares.  (2026-10-06-INTO_POWER_HOUR-v6-w_luna S1L5 whole)
+  [...] read75 #16: An option to sell shares.  (2026-10-06-PREMARKET-v6-w_luna S1L6 whole)
+  [...] read75 #17: The right to sell shares.  (2026-10-05-INTO_RTH-v6-w_luna S1L10 whole)
+  [...] read75 #18: Plans to sell shares were filed.  (2026-10-02-PREMARKET-v6-w_luna S1L9 whole)
+
+APART, no mark (in-prompt phrasings; rating and attributed recommendations, for Adam; borderline):
+  [XXX] in-prompt phrasing: Worth a look into the close.  <- "Worth a look into the close"  (2026-10-05-INTO_RTH-v6-w_luna S1L8 whole)
+  [XXX] in-prompt phrasing: One to watch tomorrow.  <- "One to watch tomorrow"  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L11 whole)
+  [XXX] in-prompt phrasing: A name to keep an eye on.  <- "A name to keep an eye on"  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L6 whole)
+  [XXX] in-prompt phrasing: A good entry near the prior close.  <- "A good entry"  (2026-10-05-AFTER_HOURS-v6-w_luna S1L8 whole)
+  [XXX] in-prompt phrasing: Stand aside until the offering prices.  <- "Stand aside until the offering prices"  (2026-10-05-INTO_RTH-v6-w_luna S1L7 whole)
+  [...] rating, for Adam: Wells Fargo raised its rating to Buy.  (2026-10-05-PREMARKET-v6-w_luna S1L6 whole)
+  [XXX] attributed recommendation, for Adam: Analysts say to buy the dip.  <- "buy the dip"  (2026-10-06-PREMARKET-v6-w_luna S1L7 whole)
+  [XXX] attributed recommendation, for Adam (read75 #19): Analysts direct investors to buy shares.  <- "direct investors to buy shares"  (2026-10-06-AFTER_HOURS-v6-w_luna S1L5 whole)
+  [XXX] borderline (read75 #2): Entry at 4.20 looked clean.  <- "Entry at 4.20 looked clean"  (2026-10-06-PREMARKET-v6-w_luna S1L10 whole)
+
+VERDICT: FAIL (gate seeds did not hold; must-pass held; sample lines held; read 75 pass set held)
+TOTAL spend $2.4126

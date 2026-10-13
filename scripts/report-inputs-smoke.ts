@@ -60,7 +60,7 @@ async function endToEnd() {
     const checker = {
       complete: async (prompt: { user: string }) => {
         const ids = [...prompt.user.matchAll(/^(S\d+L\d+|O|H)(?: \[|:)/gm)].map((m) => m[1]);
-        return JSON.stringify({ verdicts: ids.map((id) => ({ id, supported: true, note: '' })) });
+        return JSON.stringify({ verdicts: ids.map((id) => ({ id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '' })) });
       },
     };
     const run = await runReport(db, { kind, rangeId: '1-20', tradingDate: date, range: { min: Number(min), max: Number(max) } }, { writer, checker });
