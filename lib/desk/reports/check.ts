@@ -809,9 +809,10 @@ const CHECKER_SYSTEM_V5 = [
  * 13: read 82's independent read in the same call (`SECOND_READ_V6`, `VERDICT_SCHEMA_V6`). 14: Commercial read 85
  * (bac7a1ea): the attributed-statement carve-out (REQUIRED) and its own-share-price limit (3a); "names another ticker
  * on the board" (REQUIRED); the "confirmed" example labelled as a counterparty's own action. 15: read 86 (859ed1a0)
- * widens the own-share-price sentence to a named company's or source's statements.
+ * widens the own-share-price sentence to a named company's or source's statements. 16: read 88 (8aefeb53) widens
+ * the advice question by class (`OPINION_CLAUSE`: the desk's own opinion of price, value, attractiveness or suitability).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 15;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 16;
 
 /**
  * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
@@ -824,6 +825,11 @@ export const REPORT_CHECKER_PROMPT_VERSION_V6 = 15;
 export const ADVICE_QUESTION =
   'does this text tell, suggest or imply that a reader should or could buy, sell, enter, exit, add to, hold, avoid, short, fade, chase, wait for or watch a security, or recommend any action on it';
 export const FORECAST_QUESTION = 'does it predict or promise what a price will do or any outcome';
+/**
+ * Commercial read 88 (8aefeb53), RULED after the gate (ee069a35) missed valuation and suitability seeds: the advice
+ * question widened BY CLASS, not by word. Appended to read 82's question, which stays verbatim.
+ */
+export const OPINION_CLAUSE = "or give the desk's own opinion of a security's price, value or attractiveness, or of who it suits";
 export const DEAL_EXAMPLES = [
   'Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule',
   'VCIG may, subject to conditions, direct Hudson Global Ventures to buy up to $125 million of ordinary shares',
@@ -842,7 +848,7 @@ export const OWN_PRICE_NOT_COVERED =
 
 const SECOND_READ_V6 = [
   'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
-  `- "advice": ${ADVICE_QUESTION}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`,
+  `- "advice": ${ADVICE_QUESTION}, ${OPINION_CLAUSE}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`,
   `- "forecast": ${FORECAST_QUESTION}?`,
   '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board)? Always false for the narrative and the headline.',
   'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',

@@ -6,6 +6,7 @@ import {
   ADVICE_QUESTION,
   applyStrikes,
   ATTRIBUTED_CARVE_OUT,
+  OPINION_CLAUSE,
   OWN_PRICE_NOT_COVERED,
   buildCheckerPrompt,
   checkReport,
@@ -413,7 +414,9 @@ describe("read 82's independent read in the checker call (v6 13)", () => {
 
   it('the v6 prompt carries both questions verbatim, the carve-out with its six real examples and the v6 reply shape; v5 does not', () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)).system;
-    expect(v6).toContain(`"advice": ${ADVICE_QUESTION}?`);
+    // Read 88 (8aefeb53): read 82's question verbatim, widened by class with the opinion clause.
+    expect(v6).toContain(`"advice": ${ADVICE_QUESTION}, ${OPINION_CLAUSE}?`);
+    expect(OPINION_CLAUSE).toBe("or give the desk's own opinion of a security's price, value or attractiveness, or of who it suits");
     expect(v6).toContain(`"forecast": ${FORECAST_QUESTION}?`);
     expect(v6).toContain('"leansOnAnother"');
     for (const example of DEAL_EXAMPLES) expect(v6).toContain(`"${example}"`);
