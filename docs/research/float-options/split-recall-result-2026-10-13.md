@@ -33,6 +33,20 @@ So read 98's bar for (a) is not met by this list as it stands: the page could cl
 - **(b): restate only where the bars prove the span** (1 of 20 cells on 10-07); or
 - **(a) plus a second source** for spans without bar factors (none identified; the SEC filings could name a split, which the stated-count read already opens for some names).
 
+## By direction (Commercial read 102, from the same raw `047e08c0`, no new run)
+
+Direction from the factor: it falls at a reverse split (BTCT 600 to 20 at a 1-for-30) and rises at a forward one.
+
+| Window (ex-date of the step) | Forward: listed of bar-detected | Reverse: listed of bar-detected |
+|---|---|---|
+| All, 2016 to 2026-10-07 | 11 of 15 (73.3%) | 760 of 929 (81.8%) |
+| 2025-01-01 to 2026-10-07 | **2 of 2** | 476 of 516 (92.2%) |
+| 9 months before 2026-10-07 (from 2026-01-07) | **1 of 1** | 289 of 304 (95.1%) |
+
+Misses in 2025 to 2026: all 40 are reverse splits (14 symbols with other Alpaca splits, 26 with none); no forward split was missed.
+
+**Against read 102's pre-registered bar** (forward recall at least 95% over at least 20 forward splits): **there are only 2 forward splits in 2025 to 2026, so the bar cannot be met.** Every miss in the window is a reverse split, which leaves the count on the old, larger basis, so the bound is too HIGH (true, loose). The case that makes it false, a missed forward split, is rare in this universe (15 in ten years against 929 reverse) and its miss rate is not measurable here. By read 102: the hover keeps the plain limit and the public page says how few forward splits were measured, or use (b). Ticker changes are not determinable from this raw (it asked only for split types); "symbol has no Alpaca split" is the nearest proxy.
+
 ## Against the predictions
 
 1. K small: **failed** (944).
