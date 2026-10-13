@@ -198,7 +198,10 @@ const writer = {
 const checker = {
   complete: async (prompt: { system: string; user: string }) =>
     JSON.stringify({
-      verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: true, note: '' })),
+      // v6 13: every verdict carries read 82's answers (all "no" here).
+      verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({
+        id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '',
+      })),
     }),
 };
 const SLOT = { kind: 'EVENING' as const, rangeId: '1-20', tradingDate: DATE, range: RANGE };

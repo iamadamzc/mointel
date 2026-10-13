@@ -132,7 +132,7 @@ function checker(strike: string[] = []) {
     complete: async (prompt: { system: string; user: string }) => {
       checkerPrompts.push(prompt.user);
       return JSON.stringify({
-        verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: !strike.includes(id), note: '' })),
+        verdicts: [...new Set(prompt.user.match(/^(?:O|S\d+L\d+)\b/gm) ?? [])].map((id) => ({ id, supported: !strike.includes(id), note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '' })),
       });
     },
   };

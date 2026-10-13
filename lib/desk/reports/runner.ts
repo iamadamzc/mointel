@@ -12,7 +12,7 @@
  * overall sentence. Found before the first v5 model call.
  */
 
-import { REPORT_CHECKER_PROMPT_VERSION_V5, REPORT_CHECKER_PROMPT_VERSION_V6, VERDICT_SCHEMA } from './check';
+import { REPORT_CHECKER_PROMPT_VERSION_V5, REPORT_CHECKER_PROMPT_VERSION_V6, VERDICT_SCHEMA, VERDICT_SCHEMA_V6 } from './check';
 import { OpenAiReportModel, type ReportModelUsage } from './openaiReportModel';
 import { REPORT_WRITER_PROMPT_VERSION_V5 } from './writerV5';
 import { REPORT_WRITER_PROMPT_VERSION_V6 } from './writerV6';
@@ -128,7 +128,7 @@ export function createReportModelsV6(
       model: config.checkerModel,
       timeoutMs: 180_000,
       fetchImpl: config.fetchImpl,
-      format: { name: 'report_verdicts', schema: VERDICT_SCHEMA, promptVersion: REPORT_CHECKER_PROMPT_VERSION_V6 },
+      format: { name: 'report_verdicts', schema: VERDICT_SCHEMA_V6, promptVersion: REPORT_CHECKER_PROMPT_VERSION_V6 },
       onUsage,
     }),
   };

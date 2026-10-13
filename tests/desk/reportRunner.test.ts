@@ -51,7 +51,10 @@ describe('the v6 models', () => {
     expect(w!.text.format.schema.required).toEqual(['narrative', 'lines']);
     expect(JSON.stringify(w!.text.format.schema)).not.toMatch(/heading|overall/);
     expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '15' });
-    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '12' });
+    expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '13' });
+    // v6 13: the v6 checker asks for read 82's answers in its schema.
+    expect(c!.text.format.schema.required).toEqual(['verdicts']);
+    expect(JSON.stringify(c!.text.format.schema)).toContain('"leansOnAnother"');
   });
 
   it('a reply the v6 schema admits is a reply parseDraftV6 accepts', () => {

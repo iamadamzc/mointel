@@ -1,6 +1,20 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { applyStrikes, buildCheckerPrompt, narrativeFindings, ruleStrikes, type Strike } from '@/lib/desk/reports/check';
+import {
+  ADVICE_QUESTION,
+  applyStrikes,
+  buildCheckerPrompt,
+  checkReport,
+  DEAL_EXAMPLES,
+  FORECAST_QUESTION,
+  narrativeFindings,
+  parseVerdicts,
+  ruleStrikes,
+  VERDICT_SCHEMA_V6,
+  type Strike,
+} from '@/lib/desk/reports/check';
 import type { ReportDraft } from '@/lib/desk/reports/writer';
 import type { NarrativeFacts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
@@ -322,6 +336,76 @@ describe('ruleStrikes, v6', () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
     expect(v6.user).not.toContain(given[0]);
     expect(v6.user).toContain('fresh news in our sources: ');
+  });
+});
+
+describe("read 82's independent read in the checker call (v6 13)", () => {
+  const verdict = (id: string, extra: Record<string, unknown> = {}) => ({
+    id, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '', ...extra,
+  });
+  const reply = (verdicts: unknown[]) => ({ complete: async () => JSON.stringify({ verdicts }) });
+  const at = () => new Date('2026-10-13T02:00:00.000Z');
+
+  it('the v6 prompt carries both questions verbatim, the carve-out with its six real examples and the v6 reply shape; v5 does not', () => {
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)).system;
+    expect(v6).toContain(`"advice": ${ADVICE_QUESTION}?`);
+    expect(v6).toContain(`"forecast": ${FORECAST_QUESTION}?`);
+    expect(v6).toContain('"leansOnAnother"');
+    for (const example of DEAL_EXAMPLES) expect(v6).toContain(`"${example}"`);
+    expect(v6).toContain('v6 REPLY, replacing the shape above');
+    const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null)).system;
+    expect(v5).not.toContain(ADVICE_QUESTION);
+    // Read 82's wording, as Commercial wrote it.
+    expect(ADVICE_QUESTION).toBe(
+      'does this text tell, suggest or imply that a reader should or could buy, sell, enter, exit, add to, hold, avoid, short, fade, chase, wait for or watch a security, or recommend any action on it',
+    );
+    expect(FORECAST_QUESTION).toBe('does it predict or promise what a price will do or any outcome');
+  });
+
+  it('each carve-out example is an exact substring of one of the 46 real deal lines', () => {
+    const fixture = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'tests/desk/fixtures/deal-fact-lines-2026-10-12.json'), 'utf8')) as { dealFacts: string[] };
+    expect(fixture.dealFacts).toHaveLength(46);
+    for (const example of DEAL_EXAMPLES) expect(fixture.dealFacts.some((line) => line.includes(example))).toBe(true);
+  });
+
+  it('the v6 schema requires exactly the answers the parser requires', () => {
+    expect(VERDICT_SCHEMA_V6.properties.verdicts.items.required).toEqual(['id', 'supported', 'note', 'advice', 'forecast', 'leansOnAnother', 'phrase']);
+  });
+
+  it('a yes on advice or forecast strikes the line (the narrative too) with the quoted phrase; leansOnAnother strikes name lines only', async () => {
+    const result = await checkReport(
+      input(GOOD_INTRADAY, 'AAA looks like one to watch into the close.', intraday),
+      reply([
+        verdict('O', { forecast: true, phrase: 'should keep running', leansOnAnother: true }),
+        verdict('S1L1', { advice: true, leansOnAnother: true, phrase: 'one to watch' }),
+      ]),
+      at,
+    );
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const model = result.strikes.filter((s) => s.by === 'model');
+    expect(model).toEqual([
+      { id: 'O', reason: 'FORECAST', by: 'model', detail: 'should keep running' },
+      { id: 'S1L1', reason: 'ADVICE', by: 'model', detail: 'one to watch' },
+      { id: 'S1L1', reason: 'NOT_SELF_CONTAINED', by: 'model', detail: 'one to watch' },
+    ]);
+  });
+
+  it('all "no" adds no strike (the control)', async () => {
+    const result = await checkReport(input(GOOD_INTRADAY, 'Our sources found a contract award.', intraday), reply([verdict('O'), verdict('S1L1')]), at);
+    expect(result.ok && result.strikes.filter((s) => s.by === 'model')).toEqual([]);
+  });
+
+  it('FAILS CLOSED: a v6 verdict missing any answer is CHECKER_FAILED; a v5 check still takes the old shape', async () => {
+    const failed = { ok: false, cause: { kind: 'CHECKER_FAILED', at: '2026-10-13T02:00:00.000Z' } };
+    for (const drop of ['advice', 'forecast', 'leansOnAnother', 'phrase']) {
+      const partial = verdict('S1L1');
+      delete (partial as Record<string, unknown>)[drop];
+      await expect(checkReport(input(GOOD_INTRADAY, 'x', intraday), reply([verdict('O'), partial]), at)).resolves.toEqual(failed);
+    }
+    const v5 = await checkReport(input(GOOD_INTRADAY, 'x', null), reply([{ id: 'O', supported: true, note: '' }, { id: 'S1L1', supported: true, note: '' }]), at);
+    expect(v5.ok).toBe(true);
+    expect(parseVerdicts(JSON.stringify({ verdicts: [{ id: 'O', supported: true, note: '' }] }), ['O'])).toEqual({ ok: true, unsupported: [] });
   });
 });
 

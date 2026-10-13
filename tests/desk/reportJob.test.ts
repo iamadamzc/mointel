@@ -314,7 +314,10 @@ function scriptedModels(calls: { writer: number; checker: number }) {
       complete: async (prompt: { user: string }) => {
         calls.checker += 1;
         const ids = [...prompt.user.matchAll(/^(S\d+L\d+|O|H)(?: \[|:)/gm)].map((m) => m[1]);
-        return JSON.stringify({ verdicts: ids.map((verdict) => ({ id: verdict, supported: true, note: '' })) });
+        // v6 13: every verdict carries read 82's answers (all "no" here).
+        return JSON.stringify({
+          verdicts: ids.map((verdict) => ({ id: verdict, supported: true, note: '', advice: false, forecast: false, leansOnAnother: false, phrase: '' })),
+        });
       },
     },
   });

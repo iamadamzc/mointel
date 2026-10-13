@@ -65,7 +65,10 @@ export type StrikeReason =
   /* deterministic, v6 narrative (Commercial read 29, 4642de51): no narrative fact says what changed since 8:30 */
   | 'REVISION_WORDING'
   /* model */
-  | 'UNSUPPORTED';
+  | 'UNSUPPORTED'
+  /* model, v6 13: read 82's independent read (advice; a forecast or promise). A model NOT_SELF_CONTAINED is its third question. */
+  | 'ADVICE'
+  | 'FORECAST';
 
 export interface Strike {
   id: LineId;
@@ -645,6 +648,36 @@ export const VERDICT_SCHEMA = {
   },
 } as const;
 
+/**
+ * v6 13: the verdict with read 82's independent read (Commercial `db4f572d`, 82a `2f1136cb`; his yes to the plan,
+ * Integration chat 5544e519, uuid 71430cf6): per line, advice and forecast as yes/no with the quoted phrase, and the
+ * self-containedness question that replaces the LEANS_ON_ANOTHER word list (Integration's ruling, 2026-10-13).
+ */
+export const VERDICT_SCHEMA_V6 = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['verdicts'],
+  properties: {
+    verdicts: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['id', 'supported', 'note', 'advice', 'forecast', 'leansOnAnother', 'phrase'],
+        properties: {
+          id: { type: 'string' },
+          supported: { type: 'boolean' },
+          note: { type: 'string' },
+          advice: { type: 'boolean' },
+          forecast: { type: 'boolean' },
+          leansOnAnother: { type: 'boolean' },
+          phrase: { type: 'string' },
+        },
+      },
+    },
+  },
+} as const;
+
 const CHECKER_SYSTEM = [
   'You check a short market briefing against the stored rows it was written from. You do not edit it. For EVERY numbered line you return a verdict: supported true only if every claim in the line is supported by the stored rows below; otherwise false, with a short note naming the unsupported claim. When a claim cannot be traced to a stored field, it is unsupported.',
   '',
@@ -733,8 +766,39 @@ const CHECKER_SYSTEM_V5 = [
  * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14). 12: the
  * narrative may restate a NAMED name's own catalyst as its stored research states it, whatever its status (Integration's
  * ruling 2026-10-13; the rule half is `summaryAllowance`), and the facts it is shown are the sheet the writer got.
+ * 13: read 82's independent read in the same call (`SECOND_READ_V6`, `VERDICT_SCHEMA_V6`).
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 12;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 13;
+
+/**
+ * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
+ * (`tests/desk/fixtures/deal-fact-lines-2026-10-12.json`, lines 0, 3, 6, 26, 27, 42; each example is an exact
+ * substring of its line, and together they occur in 8 of the 46, so the gate reports the other 38 apart). The third
+ * question is the self-containedness read that replaces LEANS_ON_ANOTHER (Integration's ruling, 2026-10-13; read 82
+ * (1): "a line must stand alone on its card"). Asked in the SAME call as the support read (read 82 option A, sized in
+ * the writer v7 branch's advice-gate-size.md); each answer is independent of "supported".
+ */
+export const ADVICE_QUESTION =
+  'does this text tell, suggest or imply that a reader should or could buy, sell, enter, exit, add to, hold, avoid, short, fade, chase, wait for or watch a security, or recommend any action on it';
+export const FORECAST_QUESTION = 'does it predict or promise what a price will do or any outcome';
+export const DEAL_EXAMPLES = [
+  'Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule',
+  'VCIG may, subject to conditions, direct Hudson Global Ventures to buy up to $125 million of ordinary shares',
+  'NFT Ltd disclosed an agreement to sell Class A ordinary shares to non-U.S. purchasers at $0.45 per share',
+  'Vivakor entered a non-binding indication of interest to acquire all of Direct Midstream',
+  'it entered an equipment lease for one NVIDIA B300 eight-GPU system and agreed to lend funds to finance a second',
+  'Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business',
+] as const;
+
+const SECOND_READ_V6 = [
+  'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
+  `- "advice": ${ADVICE_QUESTION}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`,
+  `- "forecast": ${FORECAST_QUESTION}?`,
+  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or speaks of another name)? Always false for the narrative and the headline.',
+  'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
+  `NOT ADVICE AND NOT A FORECAST: a company's or a counterparty's own action stated as a fact. Six examples from real lines: ${DEAL_EXAMPLES.map((e) => `"${e}"`).join('; ')}. The same words aimed at a reader ("sell into strength") are advice.`,
+  'v6 REPLY, replacing the shape above: JSON only, {"verdicts": [{"id": string, "supported": boolean, "note": string, "advice": boolean, "forecast": boolean, "leansOnAnother": boolean, "phrase": string}]}, one verdict per id, every id exactly once.',
+];
 
 /**
  * v6 = v5's text, then P1's two sentences VERBATIM (`design.md:94`, as the probe
@@ -751,6 +815,8 @@ const CHECKER_SYSTEM_V6 = [
   'v6: it may also state an INTERPRETATION: a pattern or theme the given facts support (for example how many 50 percent movers kept half their peak gain against how many gave the move back, or what the named catalysts have in common). An interpretation is supported only when the same sentence names the given facts it rests on; one that rests on no named fact is UNSUPPORTED.',
   'v6: the narrative is UNSUPPORTED if it states a cause for a move ("drove", "sparked", "behind the move", "on the news"), a judgement of the session ("busy", "quiet", "hot", "strong", "weak"), a forecast about support, resistance or supply ("will hold", "should break", "expect"), an after-hours figure not labeled as after hours or mixed with the day\'s figures, or any claim the facts do not give.',
   'v6: each name line is the catalyst story only. Grade, fit to the move, structure, float, shares outstanding and supply are printed as tags beside it; a line that restates them must still be supported by the research like any other claim.',
+  '',
+  ...SECOND_READ_V6,
 ].join('\n');
 
 /** Each time with its ET reading beside the raw UTC: voice run v5's checker read 09:40Z as 09:40 ET. */
@@ -835,9 +901,23 @@ export function buildCheckerPrompt(input: CheckInput): WriterPrompt {
   return { system, user };
 }
 
-type ParsedVerdicts = { ok: true; unsupported: Array<{ id: LineId; note: string }> } | { ok: false; error: string };
+/** A yes on one of read 82's questions (v6 13): the line is struck, with the quoted phrase. */
+export interface SecondReadFlag {
+  id: LineId;
+  reason: 'ADVICE' | 'FORECAST' | 'NOT_SELF_CONTAINED';
+  phrase: string;
+}
 
-export function parseVerdicts(raw: string, ids: readonly LineId[]): ParsedVerdicts {
+type ParsedVerdicts =
+  | { ok: true; unsupported: Array<{ id: LineId; note: string }>; flagged?: SecondReadFlag[] }
+  | { ok: false; error: string };
+
+/**
+ * `secondRead` (v6 13): every verdict MUST carry the three booleans and the phrase, or the reply fails closed like any
+ * other malformed verdict: a missing answer is no check, not a "no". The self-containedness answer counts for name
+ * lines only (the prompt says false for the narrative and the headline; a stray true there is ignored, not struck).
+ */
+export function parseVerdicts(raw: string, ids: readonly LineId[], options: { secondRead?: boolean } = {}): ParsedVerdicts {
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw.trim().replace(/^```(?:json)?\s*|\s*```$/g, ''));
@@ -850,16 +930,26 @@ export function parseVerdicts(raw: string, ids: readonly LineId[]): ParsedVerdic
   const expected = new Set<string>(ids);
   const seen = new Set<string>();
   const unsupported: Array<{ id: LineId; note: string }> = [];
+  const flagged: SecondReadFlag[] = [];
   for (const verdict of verdicts) {
-    const v = verdict as { id?: unknown; supported?: unknown; note?: unknown };
+    const v = verdict as { id?: unknown; supported?: unknown; note?: unknown; advice?: unknown; forecast?: unknown; leansOnAnother?: unknown; phrase?: unknown };
     if (typeof v.id !== 'string' || typeof v.supported !== 'boolean') return { ok: false, error: 'bad verdict' };
     if (!expected.has(v.id)) return { ok: false, error: `unknown id ${v.id}` };
     if (seen.has(v.id)) return { ok: false, error: `duplicate id ${v.id}` };
     seen.add(v.id);
     if (!v.supported) unsupported.push({ id: v.id as LineId, note: typeof v.note === 'string' ? v.note : '' });
+    if (options.secondRead) {
+      if (typeof v.advice !== 'boolean' || typeof v.forecast !== 'boolean' || typeof v.leansOnAnother !== 'boolean' || typeof v.phrase !== 'string') {
+        return { ok: false, error: `no second read for ${v.id}` };
+      }
+      const id = v.id as LineId;
+      if (v.advice) flagged.push({ id, reason: 'ADVICE', phrase: v.phrase });
+      if (v.forecast) flagged.push({ id, reason: 'FORECAST', phrase: v.phrase });
+      if (v.leansOnAnother && id.startsWith('S')) flagged.push({ id, reason: 'NOT_SELF_CONTAINED', phrase: v.phrase });
+    }
   }
   if (seen.size !== expected.size) return { ok: false, error: 'a line has no verdict' };
-  return { ok: true, unsupported };
+  return options.secondRead ? { ok: true, unsupported, flagged } : { ok: true, unsupported };
 }
 
 /* ------------------------------------------------------------------ check */
@@ -879,10 +969,14 @@ export async function checkReport(
   } catch {
     return failed();
   }
-  const verdicts = parseVerdicts(raw, lines.map((line) => line.id));
+  // v6 13: a v6 check (a narrative given) asks read 82's questions in the same call and requires their answers.
+  const verdicts = parseVerdicts(raw, lines.map((line) => line.id), { secondRead: Boolean(input.narrative) });
   if (!verdicts.ok) return failed();
   for (const { id, note } of verdicts.unsupported) {
     strikes.push({ id, reason: 'UNSUPPORTED', by: 'model', detail: note });
+  }
+  for (const { id, reason, phrase } of verdicts.flagged ?? []) {
+    strikes.push({ id, reason, by: 'model', detail: phrase });
   }
   return { ok: true, strikes, lines: lines.length };
 }
