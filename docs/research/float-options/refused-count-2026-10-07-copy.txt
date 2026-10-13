@@ -1,0 +1,10 @@
+store ../mointel/data/market-prod-2026-10-07.db; board date 2026-10-07; float rows read 55 (PRODUCED 5, refused 50)
+reason | refused | with a filed count | of those, older than 90 days | of those, split NONE | would print (NONE and WITHIN)
+ISSUANCE_FLAGGED | 17 | 17 | 1 | 5 | 5
+ISSUANCE_FILED | 16 | 16 | 15 | 1 | 1
+UNREGISTERED_SALE_NOT_CHECKABLE | 10 | 10 | 10 | 0 | 0
+NO_FILED_COUNT | 4 | 0 | 0 | 0 | 0
+SPLIT_SINCE_COUNT | 2 | 2 | 0 | 0 | 0
+COUNT_TOO_OLD | 1 | 1 | 1 | 1 | 0
+TOTAL | 50 | 46 | 27 | 7 | 6
+split results among refused rows with a count: NONE 7, FOUND 20, UNPROVEN 19, NOT_RUN 0

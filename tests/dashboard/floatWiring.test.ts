@@ -8,7 +8,7 @@ import { readFloatBounds, resetFloatBoundsCache } from '@/lib/market/readModel';
 import { openDatabase, type MarketDatabase } from '@/lib/market/store/db';
 import { writeFloatBound } from '@/lib/market/store/floatBoundRepo';
 import { floatCellFor, type FloatBoundRow, type StoredHolding } from '@/lib/research/floatJob';
-import { toFloatBound } from '@/lib/research/floatRead';
+import { CHECKS_NOT_RUN, toFloatBound } from '@/lib/research/floatRead';
 
 /*
  * The float wiring (Integration 31st): Research's real FloatBound, built by its own
@@ -54,7 +54,7 @@ function row(overrides: Partial<FloatBoundRow> = {}): FloatBoundRow {
 describe("the cell reads Research's real FloatBound", () => {
   it('a PRODUCED bound from toFloatBound prints the number and the read date in the v25 words (no per-holding dates)', () => {
     const r = row();
-    const bound = toFloatBound(r, r.cell);
+    const bound = toFloatBound(r, r.cell, CHECKS_NOT_RUN);
     expect(bound.state).toBe('PRODUCED');
     const v = floatCellView(bound);
     expect(v.kind).toBe('bound');
@@ -71,7 +71,7 @@ describe("the cell reads Research's real FloatBound", () => {
 
   it('a refused bound from toFloatBound reads its own cause', () => {
     const r = row({ count: { kind: 'NO_FILED_COUNT' }, holdings: [], cell: { state: 'UNKNOWN', reason: 'NO_FILED_COUNT' } });
-    const v = floatCellView(toFloatBound(r, r.cell));
+    const v = floatCellView(toFloatBound(r, r.cell, CHECKS_NOT_RUN));
     expect(v.kind).toBe('unknown');
     expect(v.paragraphs).toEqual(['No filed share count.']);
   });
@@ -136,7 +136,7 @@ describe('guards: absent, malformed, extra fields', () => {
 
   it('extra fields are ignored', () => {
     const r = row();
-    const bound = { ...toFloatBound(r, r.cell), surprise: { nested: true } };
+    const bound = { ...toFloatBound(r, r.cell, CHECKS_NOT_RUN), surprise: { nested: true } };
     expect(floatCellView(bound as never).kind).toBe('bound');
   });
 });

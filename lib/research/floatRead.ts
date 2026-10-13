@@ -13,23 +13,56 @@
 import type { MarketDatabase } from '../market/store/db';
 import { readLatestFloatBound } from '../market/store/floatBoundRepo';
 import { readCurrentAnalyses } from '../market/store/researchRepo';
-import { FLOAT_REUSE_DAYS, floatCellFor, issuanceFiledIn, type FloatBoundRow } from './floatJob';
+import { FLOAT_MAX_AGE_DAYS, FLOAT_REUSE_DAYS, floatCellFor, issuanceFiledIn, type FloatBoundRow } from './floatJob';
 import { readSpanBars } from './history';
-import type { FloatCell, FloatCellReason } from './insiderBound';
+import type { FloatCell, FloatCellReason, SplitProof } from './insiderBound';
 import { splitProofFromBars, withAnnouncedSplits, type SpanBar } from './splitProof';
 import type { SupplyBlock } from './types';
 
 const wholeDays = (from: string, to: string) => Math.floor((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
+/** A row read more than the reuse span before D, or after it, is not reused (contract 9b). */
+const notReused = (row: FloatBoundRow, d: string) => row.asOfDate > d || wholeDays(row.asOfDate, d) > FLOAT_REUSE_DAYS;
+
+/** The split proof between the filed count's date and D: the ONE computation the cell and `countChecks` share. */
+function splitSinceCountAt(row: FloatBoundRow & { count: { kind: 'COUNT'; asOf: string } }, d: string, countSpanBars: readonly SpanBar[]): SplitProof {
+  return withAnnouncedSplits(splitProofFromBars(countSpanBars, d), row.announcedSplits, row.count.asOf, d);
+}
+
 /** The cell at D. `row` is the newest stored row on or before D (null: the job has not run, NOT_YET). */
 export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: readonly SupplyBlock[] | null, countSpanBars: readonly SpanBar[]): FloatCell | null {
   if (!row) return null;
-  if (row.asOfDate > d || wholeDays(row.asOfDate, d) > FLOAT_REUSE_DAYS) return { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' };
-  const splitSinceCount =
-    row.count.kind === 'COUNT' ? withAnnouncedSplits(splitProofFromBars(countSpanBars, d), row.announcedSplits, row.count.asOf, d) : row.splitSinceCount;
+  if (notReused(row, d)) return { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' };
+  const splitSinceCount = row.count.kind === 'COUNT' ? splitSinceCountAt({ ...row, count: row.count }, d, countSpanBars) : row.splitSinceCount;
   // Rule I-D re-applied at D over the stored filings; one made after the row's read is unseen (the reuse span bounds it).
   const issuanceFiled = row.count.kind === 'COUNT' && issuanceFiledIn(row.issuanceFilings, row.count.asOf, d);
   return floatCellFor({ cik: row.cik, count: row.count, holdings: row.holdings, splitSinceCount, ledger, asOfDate: d, issuanceFiled });
+}
+
+/**
+ * The two checks a face needs before it may print the FILED count on a refused row (float fix 1: his "3, yes",
+ * Integration chat 1f30f0a2, user uuid fbafcf83, 2026-10-13T09:39:59.808Z; Integration 39th's ruling, option (i), payload
+ * only; Commercial read 89b; the shape agreed with Design and Integration 2026-10-13). `floatCell` stops at the first
+ * failing check in the prereg's order, so a row refused for issuance never REPORTS its split or age; both are computed
+ * here with the same inputs and code. NOT_RUN only where a check could not be computed: no filed count, or the filings
+ * not re-read (FILINGS_NOT_REREAD). Stored state, reasons and the precedence are unchanged.
+ */
+export interface FloatCountChecks {
+  /** The split check between the filed count's date and D. */
+  split: SplitProof | 'NOT_RUN';
+  /** The count's age at D against FLOAT_MAX_AGE_DAYS (90): AFTER_DATE is a count dated after D, never printable. */
+  age: 'WITHIN' | 'TOO_OLD' | 'AFTER_DATE' | 'NOT_RUN';
+}
+
+export const CHECKS_NOT_RUN: FloatCountChecks = { split: 'NOT_RUN', age: 'NOT_RUN' };
+
+export function countChecksAt(row: FloatBoundRow | null, d: string, countSpanBars: readonly SpanBar[]): FloatCountChecks {
+  if (!row || row.count.kind !== 'COUNT' || notReused(row, d)) return CHECKS_NOT_RUN;
+  const days = wholeDays(row.count.asOf, d);
+  return {
+    split: splitSinceCountAt({ ...row, count: row.count }, d, countSpanBars),
+    age: days < 0 ? 'AFTER_DATE' : days > FLOAT_MAX_AGE_DAYS ? 'TOO_OLD' : 'WITHIN',
+  };
 }
 
 /**
@@ -59,6 +92,12 @@ export interface FloatBound {
    * title only (2add4b2b) and its filed dates. For the click-through, variant A (his choice, 2026-10-07T00:51:24.442Z).
    */
   insiders: FloatInsider[];
+  /**
+   * Every row Research builds, PRODUCED included (`countChecksAt`): the face prints the filed count on a refused row only
+   * on split NONE and age WITHIN. Optional in the TYPE only, for objects built elsewhere (a synthesized cell, an older
+   * stored payload); Design's reader takes a missing value as NOT_RUN, the value that claims least.
+   */
+  countChecks?: FloatCountChecks;
 }
 
 export interface FloatInsider {
@@ -92,9 +131,9 @@ function filedOn(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' }): s
   return [...new Set(row.holdings.filter((h) => subtracted.has(h.ownerCik)).flatMap((h) => h.filingDates))].sort();
 }
 
-export function toFloatBound(row: FloatBoundRow, cell: FloatCell): FloatBound {
+export function toFloatBound(row: FloatBoundRow, cell: FloatCell, countChecks: FloatCountChecks): FloatBound {
   const count = row.count.kind === 'COUNT' ? row.count : null;
-  const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null };
+  const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null, countChecks };
   return cell.state === 'PRODUCED'
     ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell) }
     : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [], ...filed, insiders: [] };
@@ -125,7 +164,7 @@ export function readFloatBoundsAt(db: MarketDatabase, symbols: readonly string[]
     }
     const ledger = dossiers.get(symbol)?.dossier.structure.supplyLedger ?? null;
     const bars = row.count.kind === 'COUNT' ? readSpanBars(db, symbol, row.count.asOf, d) : [];
-    out[symbol] = toFloatBound(row, floatCellAt(row, d, ledger, bars)!);
+    out[symbol] = toFloatBound(row, floatCellAt(row, d, ledger, bars)!, countChecksAt(row, d, bars));
   }
   return out;
 }

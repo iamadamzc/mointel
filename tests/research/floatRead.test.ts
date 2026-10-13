@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { openDatabase } from '@/lib/market/store/db';
 import { writeFloatBound } from '@/lib/market/store/floatBoundRepo';
 import { floatCellFor, type FloatBoundRow, type StoredHolding } from '@/lib/research/floatJob';
-import { floatCellAt, readFloatBoundsAt, toFloatBound } from '@/lib/research/floatRead';
+import { CHECKS_NOT_RUN, countChecksAt, floatCellAt, readFloatBoundsAt, toFloatBound } from '@/lib/research/floatRead';
 import type { SpanBar } from '@/lib/research/splitProof';
 import type { SupplyBlock } from '@/lib/research/types';
 
@@ -78,17 +78,58 @@ describe('floatCellAt', () => {
   });
 });
 
+describe('countChecksAt (float fix 1: both checks on every row, computed where they can be)', () => {
+  const D = '2026-09-29';
+  const ledger = [{ type: 'ATM', status: 'KNOWN_ACTIVE' }] as unknown as SupplyBlock[];
+
+  it("Design's gate: a REFUSED row with a filed count, no split and a count within 90 days is NONE / WITHIN", () => {
+    const r = row();
+    // Refused for issuance, so floatCell never reached its split and age steps.
+    expect(floatCellAt(r, D, ledger, flat(D))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' });
+    expect(countChecksAt(r, D, flat(D))).toEqual({ split: 'NONE', age: 'WITHIN' });
+    const placement = [{ form: '8-K', filingDate: '2026-08-01', accession: 'p', items: '3.02' }];
+    const filed = row({ issuanceFilings: placement });
+    expect(floatCellAt(filed, D, [], flat(D))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' });
+    expect(countChecksAt(filed, D, flat(D))).toEqual({ split: 'NONE', age: 'WITHIN' });
+  });
+
+  it('reports the split and age the cell would have reached: FOUND on an announced split, TOO_OLD past 90 days, AFTER_DATE for a count dated after D', () => {
+    expect(countChecksAt(row({ announcedSplits: ['2026-09-28'] }), D, flat(D))).toEqual({ split: 'FOUND', age: 'WITHIN' });
+    expect(countChecksAt(row({ announcedSplits: null }), D, flat(D)).split).toBe('UNPROVEN');
+    const old = { ...COUNT, asOf: '2026-06-30' };
+    expect(countChecksAt(row({ count: old }), D, [{ date: '2026-06-30', close: 10, factor: 1 }, { date: D, close: 10, factor: 1 }])).toEqual({ split: 'NONE', age: 'TOO_OLD' });
+    // 90 days exactly is still within (the cell refuses only above maxAgeDays).
+    const edge = { ...COUNT, asOf: '2026-07-01' };
+    expect(countChecksAt(row({ count: edge }), D, [{ date: '2026-07-01', close: 10, factor: 1 }, { date: D, close: 10, factor: 1 }]).age).toBe('WITHIN');
+    const ahead = { ...COUNT, asOf: '2026-09-30' };
+    expect(countChecksAt(row({ count: ahead }), D, flat(D)).age).toBe('AFTER_DATE');
+  });
+
+  it('agrees with the cell wherever the cell reaches the checks (same inputs, same code)', () => {
+    expect(floatCellAt(row({ announcedSplits: ['2026-09-28'] }), D, [], flat(D))).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+    expect(floatCellAt(row(), D, [], flat(D))).toMatchObject({ state: 'PRODUCED' });
+    expect(countChecksAt(row(), D, flat(D))).toEqual({ split: 'NONE', age: 'WITHIN' });
+  });
+
+  it('NOT_RUN only where nothing could be computed: no row, no filed count, or the filings not re-read', () => {
+    expect(countChecksAt(null, D, [])).toEqual(CHECKS_NOT_RUN);
+    expect(countChecksAt(row({ count: { kind: 'NO_FILED_COUNT' } }), D, [])).toEqual(CHECKS_NOT_RUN);
+    expect(countChecksAt(row(), '2026-09-30', flat('2026-09-30'))).toEqual(CHECKS_NOT_RUN);
+    expect(CHECKS_NOT_RUN).toEqual({ split: 'NOT_RUN', age: 'NOT_RUN' });
+  });
+});
+
 describe('toFloatBound (the payload Design builds from)', () => {
   it('carries the bound, the count dates and the read date when PRODUCED; null bound and a reason otherwise', () => {
     const r = row();
-    expect(toFloatBound(r, floatCellAt(r, '2026-09-29', [], flat('2026-09-29'))!)).toEqual({
+    expect(toFloatBound(r, floatCellAt(r, '2026-09-29', [], flat('2026-09-29'))!, countChecksAt(r, '2026-09-29', flat('2026-09-29')))).toEqual({
       state: 'PRODUCED', reason: null, bound: 9_600_000, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 1, filingsReadOn: READ, holdingsFiledOn: ['2026-07-20', '2026-09-02'],
-      countShares: 10_000_000, countForm: '10-Q',
+      countShares: 10_000_000, countForm: '10-Q', countChecks: { split: 'NONE', age: 'WITHIN' },
       insiders: [{ ownerCik: '111', ownerName: 'A', title: null, shares: 400_000, heldAsOf: null, filedOn: ['2026-07-20', '2026-09-02'] }],
     });
-    expect(toFloatBound(r, { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' })).toEqual({
+    expect(toFloatBound(r, { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' }, CHECKS_NOT_RUN)).toEqual({
       state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD', bound: null, countAsOf: '2026-08-01', countFiled: '2026-08-10', subtractedHolders: 0, filingsReadOn: READ, holdingsFiledOn: [],
-      countShares: 10_000_000, countForm: '10-Q', insiders: [],
+      countShares: 10_000_000, countForm: '10-Q', insiders: [], countChecks: { split: 'NOT_RUN', age: 'NOT_RUN' },
     });
   });
 
@@ -102,7 +143,7 @@ describe('toFloatBound (the payload Design builds from)', () => {
     ];
     const cell = floatCellFor({ cik: '555', count: COUNT, holdings: mixed, splitSinceCount: 'NONE', ledger: [], asOfDate: '2026-08-20', issuanceFiled: false });
     expect(cell.state).toBe('PRODUCED');
-    expect(toFloatBound(row({ holdings: mixed, cell }), cell).holdingsFiledOn).toEqual(['2026-07-20', '2026-08-15', '2026-09-02']);
+    expect(toFloatBound(row({ holdings: mixed, cell }), cell, CHECKS_NOT_RUN).holdingsFiledOn).toEqual(['2026-07-20', '2026-08-15', '2026-09-02']);
   });
 
   it('insiders: one row per insider subtracted, largest first, with the subtracted title and its filed dates; not a refused one, not a zero', () => {
@@ -114,7 +155,7 @@ describe('toFloatBound (the payload Design builds from)', () => {
       { ownerCik: '444', ownerName: 'D', shares: 0, asOf: '2026-07-02', accessions: ['d'], filingDates: ['2026-07-03'], split: 'NONE', classes: c('common stock') },
     ];
     const cell = floatCellFor({ cik: '555', count: COUNT, holdings: mixed, splitSinceCount: 'NONE', ledger: [], asOfDate: '2026-08-20', issuanceFiled: false });
-    const b = toFloatBound(row({ holdings: mixed, cell }), cell);
+    const b = toFloatBound(row({ holdings: mixed, cell }), cell, CHECKS_NOT_RUN);
     expect(b.countShares).toBe(10_000_000);
     expect(b.countForm).toBe('10-Q');
     expect(b.insiders).toEqual([
@@ -147,7 +188,11 @@ describe('readFloatBoundsAt', () => {
     writeFloatBound(store, row({ count: { kind: 'NO_FILED_COUNT' }, holdings: [], cell: { state: 'UNKNOWN', reason: 'NO_FILED_COUNT' } }));
     const read = readFloatBoundsAt(store, ['ACME', 'NONE'], '2026-09-26');
     expect(read.NONE).toBeNull();
-    expect(read.ACME).toMatchObject({ state: 'UNKNOWN', reason: 'NO_FILED_COUNT', filingsReadOn: READ });
+    expect(read.ACME).toMatchObject({ state: 'UNKNOWN', reason: 'NO_FILED_COUNT', filingsReadOn: READ, countChecks: { split: 'NOT_RUN', age: 'NOT_RUN' } });
+    // A stored row WITH a count reaches the board with its checks computed (not NOT_RUN); no bars are stored here, so
+    // the split is unproven, and the 56-day-old count is within 90 days.
+    writeFloatBound(store, row({ symbol: 'CNT' }));
+    expect(readFloatBoundsAt(store, ['CNT'], '2026-09-26').CNT?.countChecks).toEqual({ split: 'UNPROVEN', age: 'WITHIN' });
     store.exec('DROP TABLE research_float_bounds');
     expect(readFloatBoundsAt(store, ['ACME'], '2026-09-26')).toEqual({ ACME: null });
   });
