@@ -60,6 +60,9 @@ for design documents.
 
 **Fourteenth seat (same id, reset 2026-10-11; state from Ops and Integration messages, not re-read on the box):** cdd8fe9d gated GREEN by Ops (full 321 files, 4352/4353, build, tsc, eslint rc=0); his "go, yes, yes." in Ops's chat 2026-10-11T18:39:58.612Z (per Integration, transcript 50b2f3c3); Ops deploying web-only from 18:41:10Z. Production before it: web/research/assess `0a87f63c`, market `367f4b8a` (Ops /proc). Owed by Design: only the Monday link, six items.
 
+**2026-10-13 (fourteenth seat):** the Monday 10-12 link NEVER RAN (no wake-up was set; this seat's defect). His "5, yes." (Integration chat, user uuid fbafcf83, 2026-10-13T09:39:59.808Z) re-approves it INSIDE 07:00-10:00 ET today, light reads only; a one-shot session cron fires 07:12 ET.
+**FLOAT FIX 1 (his "3, yes, when can't verify place a very small icon ... with a tooltip and link to explanation", same turn), SKETCH STAGE, NOT BUILT.** Ruled so far (Integration 39th, Commercial reads 89 and 89a): A refused row prints the company's filed share count with a UNIT ("12.4M sh" / "o/s" / "shs", Marketing picks, max 9 characters), no "≤", ink-2, plus a small icon; "filed" and the date go in the hover and panel. The header stays "TMI Float", and FLOAT_LEGEND gains a sentence (filed count, no insiders subtracted, not a TMI Float). NO NUMBER for SPLIT_SINCE_COUNT (recommended; his answer pending), BOUND_OUT_OF_RANGE (insiderBound.ts:333 look-ahead, :345 bound <= 0), COUNT_TOO_OLD (Commercial 89a), the fault case, or ANY row whose split result is not NONE. BLOCKER: floatCell returns at the first failing check and the split check comes after the issuance, 20-F and not-checked reasons; FILINGS_NOT_REREAD returns before floatCell (floatRead.ts:27). So Research must carry the split result on refused rows through toFloatBound (Integration ruled option i); a missing field means no number. Until then no row prints a number. Same release: the float page's "Cannot verify" definition, landingCopy.ts:139, Main.dc.html and LandingMobile.dc.html, a panel headline of the cell's own, an aria-label in words, tests pinning sort, filter and Desk Read to bounds only, and the drawer keeping the reason line by kind. Widths measured (Geist Mono in the pane, control 78.8 vs recorded 79.8): "12.4M sh"+icon 63.9, "12.4M o/s"+icon 70.4, with date 91-97 (no), "Cannot verify"+icon 96.3 (no; asked Commercial whether the word or the icon alone).
+
 **Link 73 (2026-10-10, minted 16:02:13Z, revoked 16:06:33Z, dead by content):** release A read on a weekend board. Desk Read order and the drawer's TMI Float lines SEEN. Its "no Float Turnover" and "no Rank Change" were VACUOUS (closed `<details>`), corrected to Integration.
 
 **Tools:** `cdp.mjs`, `mkplan.mjs`, `mkplan-local.mjs` in this seat's scratchpad (`505d552d...`); the clock shim is `clock-shim.cjs` there. Turbopack refuses a `node_modules` junction: render from `A:\mointel-design` checked out detached (it is back on `design/drawer-float-verdict` 42777682).
@@ -805,6 +808,13 @@ probe came before any edit, as the ledger says it must.**
 
 
 **Repeat reached:** per session-hygiene section 2, warned the owner and proposed a reset at the next task boundary (row 5's final words).
+
+**Fourteenth seat (same id `local_83b5b7ec`, reset in place 2026-10-11).**
+
+| Error (asserted vs true) | Type | Already logged? | Caught by |
+| --- | --- | --- | --- |
+| Told him and Integration I would read the approved review link "on Monday" and set no wake-up; the seat had no turn on 10-12 and the six reads never happened | PROMISE-WITHOUT-TRIGGER (new; memory a-promise-needs-a-wake-up) | No | Integration, 10-13. **Rule: a time-bound promise gets its scheduled wake-up in the same turn** |
+| Told Integration BOUND_OUT_OF_RANGE means "the count is fine, the insider subtraction failed", unopened; insiderBound.ts:333/:345 make the count itself suspect. Integration ruled on it, then re-ruled. Nothing built | CLAIM-WIDER-THAN-OPENED (the ninth seat's class) | Yes, the class; first this seat | Commercial read 89. **Rule: open the line that sets a reason before saying what it means** |
 
 **Thirteenth seat (same id `local_83b5b7ec`, reset in place 2026-10-10).**
 
