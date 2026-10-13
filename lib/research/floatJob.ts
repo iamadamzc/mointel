@@ -29,6 +29,8 @@ import {
 } from './insiderBound';
 import { selectFiledCount, type CompanyFactsShares, type FiledCount } from './filedCount';
 import { SecRequestError } from './sec/client';
+import { htmlToText } from './sec/documents';
+import { newestStatedCount, statedCountFilings, type StatedCountCheck } from './statedCount';
 import { splitProofFromBars, splitProofR0, withAnnouncedSplits, type SpanBar } from './splitProof';
 import type { SupplyBlock } from './types';
 
@@ -54,6 +56,11 @@ export interface FloatBoundRow {
   asOfDate: string;
   cik: string | null;
   count: FiledCount;
+  /**
+   * Fix 2 piece 2: the read of later filings for a newer stated count (`statedCount.ts`), with the SEC cover count it
+   * started from. When `found` is set, `count` IS that stated count. Null when there was no cover count (nothing read).
+   */
+  statedCount: (StatedCountCheck & { cover: { shares: number; asOf: string; filed: string; accession: string; form: string } }) | null;
   holdings: StoredHolding[];
   splitSinceCount: SplitProof;
   /**
@@ -119,6 +126,11 @@ export function section16XmlUrl(cik: string, accession: string, primaryDocument:
   return `https://www.sec.gov/Archives/edgar/data/${cik}/${accession.replace(/-/g, '')}/${primaryDocument.replace(/^xsl[^/]*\//, '')}`;
 }
 
+/** A filing's primary document. */
+export function filingDocumentUrlFor(cik: string, accession: string, primaryDocument: string): string {
+  return `https://www.sec.gov/Archives/edgar/data/${cik}/${accession.replace(/-/g, '')}/${primaryDocument}`;
+}
+
 /** Forms 3, 4, 5 and their amendments filed in [since, until], from the submissions listing (recent page only). */
 export function section16Filings(data: SubmissionsRecent, since: string, until: string): Array<{ accession: string; form: string; filingDate: string; primaryDocument: string }> {
   const r = data.filings.recent;
@@ -175,6 +187,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   let splitSinceCount: SplitProof = 'UNPROVEN';
   let announcedSplits: string[] | null = [];
   let issuanceList: IssuanceFiling[] = [];
+  let statedCount: FloatBoundRow['statedCount'] = null;
 
   if (cik) {
     // A throw here propagates: a failed fetch is not "no count". SEC's 404 is an answer, stored as such (header).
@@ -191,6 +204,16 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
       const submissions = await deps.getJson<SubmissionsRecent>(`https://data.sec.gov/submissions/CIK${pad10(cik)}.json`);
       // Rule I-D: a listing that does not reach the count's date cannot prove "no filed issuance": no row, like a failed fetch.
       if (!listingReaches(submissions, count.asOf)) throw new Error(`submissions listing for ${symbol} does not reach the count date ${count.asOf}`);
+      // Fix 2 piece 2: a later filing's dated count replaces the cover's, and everything below is measured from its date.
+      const cover = count;
+      const check = await newestStatedCount(
+        statedCountFilings(submissions, cover.asOf, asOfDate),
+        async (c) => htmlToText(await deps.getText(filingDocumentUrlFor(cik, c.accession, c.primaryDocument))),
+        cover.asOf,
+        asOfDate,
+      );
+      statedCount = { ...check, cover: { shares: cover.shares, asOf: cover.asOf, filed: cover.filed, accession: cover.accession, form: cover.form } };
+      if (check.found) count = { kind: 'COUNT', ...check.found };
       issuanceList = issuanceFilings(submissions, count.asOf);
       const owners: OwnerFiling[] = [];
       for (const meta of section16Filings(submissions, since, asOfDate)) {
@@ -224,7 +247,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
 
   const issuanceFiled = count.kind === 'COUNT' && issuanceFiledIn(issuanceList, count.asOf, asOfDate);
   const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: input.dossier?.ledger ?? null, asOfDate, issuanceFiled });
-  return { ...base, count, holdings, splitSinceCount, announcedSplits, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
+  return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
 }
 
 /** The cell from stored inputs: the one place `floatCell` is called with the job's constants. */

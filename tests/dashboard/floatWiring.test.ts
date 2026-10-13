@@ -42,6 +42,7 @@ function row(overrides: Partial<FloatBoundRow> = {}): FloatBoundRow {
     splitSinceCount: 'NONE',
     announcedSplits: [],
     issuanceFilings: [],
+    statedCount: null,
     analysisVersionId: 42,
     issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE',
     maxAgeDays: 90,

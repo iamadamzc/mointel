@@ -363,6 +363,7 @@ CREATE TABLE IF NOT EXISTS research_float_bounds (
   split_since_count   TEXT NOT NULL,
   announced_splits_json TEXT,
   issuance_filings_json TEXT NOT NULL,
+  stated_count_json   TEXT,
   analysis_version_id INTEGER,
   issuance_rule       TEXT NOT NULL,
   max_age_days        INTEGER NOT NULL,
@@ -1034,6 +1035,8 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   // v30: the Float cell frozen on each checkpoint row (performance record A8).
   { table: 'desk_assessment_tickers', column: 'float_state', definition: 'TEXT' },
   { table: 'desk_assessment_tickers', column: 'float_reason', definition: 'TEXT' },
+  // Float fix 2 piece 2: the read of later filings for a newer stated share count (`lib/research/statedCount.ts`).
+  { table: 'research_float_bounds', column: 'stated_count_json', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

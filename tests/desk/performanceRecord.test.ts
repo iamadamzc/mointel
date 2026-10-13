@@ -187,6 +187,7 @@ describe('the float frozen at capture (A8)', () => {
     splitSinceCount: 'NONE',
     announcedSplits: [],
     issuanceFilings: [],
+    statedCount: null,
     analysisVersionId: 7,
     issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE',
     maxAgeDays: 90,
