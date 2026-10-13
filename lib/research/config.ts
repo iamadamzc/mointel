@@ -172,16 +172,29 @@ export interface ReportModelConfig {
   apiKey: string | null;
   writerModel: string;
   checkerModel: string;
+  /**
+   * The report checker on Claude, with the OpenAI checker above as its fallback (his "move it", Integration chat
+   * 1f30f0a2, user uuid e51e9b47, 2026-10-13T10:12:11.529Z; sizing 16a7f9e1). The key is read ONLY from
+   * `ANTHROPIC_API_KEY_REPORTS`, the Reports-TMI key (Integration's ruling); the old unsuffixed name is never read
+   * (`tests/security.test.ts`). Null when that key is absent: the OpenAI checker then runs alone, exactly as before, and
+   * no other key is tried.
+   */
+  claudeChecker: { apiKey: string; model: string } | null;
 }
+
+/** The Claude checker's model unless `REPORT_CHECKER_CLAUDE_MODEL` names another (sizing 16a7f9e1: Opus 5.5, high effort). */
+export const DEFAULT_CLAUDE_CHECKER_MODEL = 'claude-opus-5-5';
 
 export function readReportModelConfig(env: NodeJS.ProcessEnv = process.env): ReportModelConfig {
   const apiKey = env.OPENAI_API_KEY?.trim();
   const researchModel = env.OPENAI_RESEARCH_MODEL?.trim() || DEFAULT_RESEARCH_MODEL;
   const cheap = env.OPENAI_CHANGE_DETECT_MODEL?.trim() || researchModel;
+  const claudeKey = env.ANTHROPIC_API_KEY_REPORTS?.trim();
   return {
     apiKey: apiKey ? apiKey : null,
     writerModel: env.OPENAI_REPORT_WRITER_MODEL?.trim() || cheap,
     checkerModel: env.OPENAI_REPORT_CHECKER_MODEL?.trim() || researchModel,
+    claudeChecker: claudeKey ? { apiKey: claudeKey, model: env.REPORT_CHECKER_CLAUDE_MODEL?.trim() || DEFAULT_CLAUDE_CHECKER_MODEL } : null,
   };
 }
 

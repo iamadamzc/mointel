@@ -25,7 +25,7 @@ import type { MarketDatabase } from '../../market/store/db';
 import type { CheckerModel } from './check';
 import type { ReportKind, ReportRange } from './contract';
 import type { ReportModelUsage } from './openaiReportModel';
-import { findCheckpoint, runReport, writeNotBefore, type ReportRun } from './pipeline';
+import { findCheckpoint, runReport, writeNotBefore, type CheckerVendors, type ReportRun } from './pipeline';
 import type { ReportModel } from './writer';
 
 export const REPORT_KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', 'EVENING'];
@@ -41,6 +41,12 @@ export const REPORT_LOOKBACK_MS = 12 * 60 * 60_000;
 export interface ReportModels {
   writer: ReportModel;
   checker: CheckerModel;
+  /** The checker that checks the report when `checker` fails (the Claude checker's OpenAI fallback); absent = none. */
+  checkerFallback?: CheckerModel;
+  /** The two checkers' model names, for `ReportDiagnostics.checker` and the stored versions. */
+  checkerNames?: { primary: string; fallback: string | null };
+  /** Whose checker each is: a report an OpenAI checker decides keeps the word list (`CheckerVendors`). */
+  checkerVendors?: CheckerVendors;
 }
 
 /** Recorded on every row, so a report can be traced to the prompts and models that wrote it. */
@@ -219,7 +225,8 @@ export async function runReportForAssessment(
     range,
     assessment,
     run,
-    versions,
+    // The checker that actually checked this report (Claude, or its OpenAI fallback), not only the one configured.
+    versions: run.diagnostics?.checker ? { ...versions, checkerModel: run.diagnostics.checker.ran } : versions,
     usage,
     createdAt: now().toISOString(),
   });

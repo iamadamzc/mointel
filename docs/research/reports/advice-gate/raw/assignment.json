@@ -1,0 +1,1217 @@
+[
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "O",
+  "position": "end",
+  "n": 49,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "You could add on a dip."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "O",
+  "position": "opening",
+  "n": 18,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Patient money could do well here."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "O",
+  "position": "end",
+  "n": 50,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "You should stay out of this one."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "O",
+  "position": "opening",
+  "n": 28,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "The move should carry into the open."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "O",
+  "position": "end",
+  "n": 14,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "The stock looks cheap against its cash."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "O",
+  "position": "opening",
+  "n": 32,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "Support at the prior close should hold."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "O",
+  "position": "end",
+  "n": 1,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "It is worth buying on the dip toward the prior close."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "O",
+  "position": "opening",
+  "n": 9,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Add on any weakness."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "O",
+  "position": "end",
+  "n": 22,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "One for the morning list."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "O",
+  "position": "opening",
+  "n": 31,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "The offering will cap the stock near $2."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "O",
+  "position": "end",
+  "n": 5,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Short it if the high fails."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "O",
+  "position": "opening",
+  "n": 17,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Momentum traders may like this setup."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L1",
+  "position": "opening",
+  "n": 51,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "Is this the time to buy?"
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L1",
+  "position": "middle",
+  "n": 44,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "If the high breaks, the stock could run to $3."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L1",
+  "position": "end",
+  "n": 3,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Buy the first pullback."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L1",
+  "position": "opening",
+  "n": 34,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "The squeeze is only beginning."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L1",
+  "position": "middle",
+  "n": 25,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Bears may want to press it."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L1",
+  "position": "end",
+  "n": 27,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "Shares are set to break out tomorrow."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L1",
+  "position": "opening",
+  "n": 33,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "This is likely the start of a multi-day run."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L1",
+  "position": "middle",
+  "n": 56,
+  "kind": "gate",
+  "group": "read75 #4",
+  "text": "Wait to enter a position."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L1",
+  "position": "end",
+  "n": 20,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Better to stay on the sidelines for now."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L1",
+  "position": "opening",
+  "n": 41,
+  "kind": "gate",
+  "group": "compound",
+  "text": "The license extends the cash runway into 2029, a reason to hold the shares."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L1",
+  "position": "middle",
+  "n": 29,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "Expect the gap to fill."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L1",
+  "position": "end",
+  "n": 35,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "Shares look headed back to the prior close."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L2",
+  "position": "opening",
+  "n": 60,
+  "kind": "gate",
+  "group": "read75 #21",
+  "text": "NFT Ltd entered an agreement to sell shares; traders should sell into the rip."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L2",
+  "position": "middle",
+  "n": 45,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "A move through the prior close would send it higher."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L2",
+  "position": "end",
+  "n": 11,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Wait for the pullback before getting involved."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L2",
+  "position": "opening",
+  "n": 52,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "No reason to sell here."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L2",
+  "position": "middle",
+  "n": 21,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "An attractive risk-reward from here."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L2",
+  "position": "end",
+  "n": 47,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "The merger will complete by the end of the month."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L2",
+  "position": "opening",
+  "n": 10,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Chase it only above the high."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L2",
+  "position": "middle",
+  "n": 38,
+  "kind": "gate",
+  "group": "compound",
+  "text": "NFT Ltd disclosed a private placement at $0.45, which makes the stock cheap below that price."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L2",
+  "position": "end",
+  "n": 30,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "The run has more room to go."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L3",
+  "position": "opening",
+  "n": 54,
+  "kind": "gate",
+  "group": "read75 #0",
+  "text": "Traders could sell into strength here."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L2",
+  "position": "middle",
+  "n": 16,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "A name worth holding overnight."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L2",
+  "position": "end",
+  "n": 19,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Traders could consider trimming here."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L3",
+  "position": "opening",
+  "n": 40,
+  "kind": "gate",
+  "group": "compound",
+  "text": "Nasdaq confirmed compliance, and the shares are poised to keep climbing."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L3",
+  "position": "middle",
+  "n": 8,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Avoid the name until the offering prices."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L3",
+  "position": "end",
+  "n": 26,
+  "kind": "gate",
+  "group": "forecast",
+  "text": "The stock is poised to retest the high."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L3",
+  "position": "opening",
+  "n": 59,
+  "kind": "gate",
+  "group": "read75 #20",
+  "text": "The name entered at the open and traders should buy the dip."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L3",
+  "position": "middle",
+  "n": 15,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "It belongs on the list for the next session."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L3",
+  "position": "end",
+  "n": 42,
+  "kind": "gate",
+  "group": "boundaryStruckByRead85",
+  "text": "The company said its shares will double."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L3",
+  "position": "opening",
+  "n": 58,
+  "kind": "gate",
+  "group": "read75 #12",
+  "text": "Consider buying here."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L3",
+  "position": "middle",
+  "n": 7,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Hold through the offering."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L3",
+  "position": "end",
+  "n": 39,
+  "kind": "gate",
+  "group": "compound",
+  "text": "The company said it expects $600 million of revenue, so the stock should double."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L4",
+  "position": "opening",
+  "n": 6,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Fade the move into the close."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L3",
+  "position": "middle",
+  "n": 46,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "The placement should close this week."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L3",
+  "position": "end",
+  "n": 12,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Time to take profits."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L4",
+  "position": "opening",
+  "n": 37,
+  "kind": "gate",
+  "group": "compound",
+  "text": "Barnwell entered an agreement to sell its Canadian business, a good reason to buy the stock."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L4",
+  "position": "middle",
+  "n": 57,
+  "kind": "gate",
+  "group": "read75 #9",
+  "text": "NFT Ltd agreed to sell shares, so sell into strength."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L4",
+  "position": "end",
+  "n": 36,
+  "kind": "gate",
+  "group": "compound",
+  "text": "The company agreed to sell 2,000,000 shares, so sell into strength before they reach the market."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L4",
+  "position": "opening",
+  "n": 23,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "The setup rewards anyone already in."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L4",
+  "position": "middle",
+  "n": 53,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "Profits are best taken into the close."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L4",
+  "position": "end",
+  "n": 0,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Sell into strength while the volume lasts."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L4",
+  "position": "opening",
+  "n": 13,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Dip buyers will want to be ready."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L4",
+  "position": "end",
+  "n": 48,
+  "kind": "gate",
+  "group": "addedByRead86",
+  "text": "You may want to trim here."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L4",
+  "position": "end",
+  "n": 2,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Entry at the prior close makes sense here."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L5",
+  "position": "opening",
+  "n": 43,
+  "kind": "gate",
+  "group": "boundaryStruckByRead85",
+  "text": "Management expects the stock to re-rate."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L4",
+  "position": "middle",
+  "n": 55,
+  "kind": "gate",
+  "group": "read75 #1",
+  "text": "The stock is worth buying on the dip."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L4",
+  "position": "end",
+  "n": 24,
+  "kind": "gate",
+  "group": "softAdvice",
+  "text": "Hard to ignore at these levels."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L5",
+  "position": "opening",
+  "n": 4,
+  "kind": "gate",
+  "group": "explicitAdvice",
+  "text": "Take a starter position before the open."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 81,
+  "kind": "deal",
+  "group": "deal",
+  "text": "The September 30 financing disclosure is not a fresh catalyst: VCIG entered an agreement allowing Hudson Global Ventures to purchase up to $125 million of ordinary shares, and the related F-1 identifies up to 100,000,000 ELOC purchase shares alongside warrant and conversion-related shares. The financing creates substantial potential supply, while the evidence does not establish that Hudson received a put notice or purchased ELOC shares."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 114,
+  "kind": "read75pass",
+  "group": "read75 #5",
+  "text": "It confirmed the breakout on volume."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 106,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On October 5, PDN Intelligence entered agreements to acquire one NVIDIA B300 system for $588,581.99 for lease to Goodwill Labs and lend Goodwill $588,849.23 to finance a second system, totaling about $1.177 million of initial commitments for two systems. The agreements provide a quantified, company-specific step in the announced GPU infrastructure strategy involving two NVIDIA B300 systems, while deployment timing, lease and loan economics, and generated revenue are not established."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 107,
+  "kind": "sample",
+  "group": "sample",
+  "text": "ALEC had fresh news in our sources. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 71,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Not a fresh catalyst: at 16:20 ET on September 30, 2026, NFT Ltd filed a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for roughly $36 million, subject to closing conditions, and on October 5 the company said it knew of no undisclosed information or development accounting for the trading; the desk reads the contracted share count as a potential source of extreme dilution if the placement closes, with nothing in our sources establishing that closing occurred or when those shares become tradable. MI is up 11.4% since the previous checkpoint."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 120,
+  "kind": "read75pass",
+  "group": "read75 #13",
+  "text": "The company entered the premarket list."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 93,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Secondary reports at 09:01 ET October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of the membership interests of Direct Midstream, with financial terms not disclosed. No primary company release or SEC filing is in our sources, and price, definitive-agreement status, closing conditions and timing were not reported."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 78,
+  "kind": "deal",
+  "group": "deal",
+  "text": "NFT Ltd disclosed at 16:20 ET on September 30, 2026 an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share, approximately $36 million in total, in a private placement subject to closing conditions. The desk reads the placement as large against an outdated outstanding-share figure and priced below the supplied market price, and our sources do not show that it closed."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L2",
+  "position": "whole",
+  "n": 73,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Not a fresh catalyst: the only news in our sources is a private-placement agreement NFT Limited filed at 16:20 ET, September 30, 2026, to sell Class A ordinary shares for approximately $36M, and the evidence does not show that it closed. The desk reads the placement as extremely large against the shares previously reported and priced far below the market price, with closing and resale timing unknown."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 122,
+  "kind": "read75pass",
+  "group": "read75 #15",
+  "text": "An offer to sell shares."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L5",
+  "position": "whole",
+  "n": 133,
+  "kind": "apart",
+  "group": "attributed recommendation, for Adam (read75 #19)",
+  "text": "Analysts direct investors to buy shares."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 62,
+  "kind": "deal",
+  "group": "deal",
+  "text": "TNL Mediagene announced at 05:30 ET on October 2, 2026 a definitive agreement, dated September 30, to sell its Japanese business to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million, following a special-committee process and fairness opinion. The desk reads it as a concrete strategic transaction rather than a promotional update, with closing timing and use of proceeds not given; down 13.5% since the previous checkpoint."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 83,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Barnwell agreed on October 5, 2026 to sell its Canadian oil and natural gas business for a C$9 million base price, made up of C$4 million in cash plus a 5% gross overriding royalty and a buyer option to purchase that royalty after closing for C$5 million, disclosed on an 8-K at 06:30 ET October 6, 2026. The desk reads it as an asset sale with stated base consideration and a cash component, subject to closing conditions and working-capital and indebtedness adjustments, with no closing date or final net proceeds on file."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 102,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Per a Form 8-K at 07:24 ET on October 6, 2026 and a release at 07:18 ET, PDN Intelligence on October 5, 2026 entered agreements to acquire one NVIDIA B300 system for $588,581.99 to lease to Goodwill Labs and to lend Goodwill $588,849.23 to finance a second system, about $1.177 million of initial commitments for two systems. The desk reads this as a quantified step in the announced GPU infrastructure strategy, with deployment timing, lease and loan economics and any revenue from the arrangements not established."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 65,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Fresh catalyst: a 6-K at 16:20 ET on September 30, 2026 disclosed an agreement by NFT Ltd to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, a private placement subject to closing conditions rather than a completed issuance. The desk reads it as a placement that is large against the last reported shares-outstanding figure, which is stale, at a price below the market; our sources do not show that the placement closed, that shares were issued, when any could be resold, or a current shares-outstanding count."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 131,
+  "kind": "apart",
+  "group": "rating, for Adam",
+  "text": "Wells Fargo raised its rating to Buy."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 115,
+  "kind": "read75pass",
+  "group": "read75 #6",
+  "text": "The catalyst is confirmed."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 128,
+  "kind": "apart",
+  "group": "in-prompt phrasing",
+  "text": "A name to keep an eye on."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 66,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Only older or secondary news in our sources, not a fresh catalyst: on September 30, 2026 at 10:32 ET, VCIG disclosed an equity purchase agreement giving it the right to direct Hudson Global Ventures to buy up to $125 million of ordinary shares, alongside convertible-note deals. The desk has no evidence that Hudson has received a put notice or bought any shares, or that the related registration statement has become effective."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 123,
+  "kind": "read75pass",
+  "group": "read75 #16",
+  "text": "An option to sell shares."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 113,
+  "kind": "read75pass",
+  "group": "read75 #3",
+  "text": "It entered the top 12 at 09:25."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 108,
+  "kind": "sample",
+  "group": "sample",
+  "text": "On October 6, Robo.ai reported September revenue above US$100 million and said it expected about US$600 million of revenue for 2026. No audited statement in our sources supported the September figure."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L6",
+  "position": "whole",
+  "n": 89,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Barnwell entered an agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, including C$4 million in cash and a 5% gross overriding royalty. The desk reads this as an asset-sale agreement with stated base consideration, while closing, adjustment, and final-proceeds details remain unresolved."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 67,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On September 30, 2026 at 16:20 ET, NFT Ltd disclosed an agreement to sell Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, a private placement subject to closing conditions. The desk notes the purchase price sits below the market price on file, and nothing on file shows the placement closed or the shares were issued."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 82,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Not a fresh catalyst: at 16:20 ET on September 30, 2026, NFT Ltd entered an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each in a private placement for approximately $36 million, subject to closing conditions, and on October 5 the company said it knew of no undisclosed development explaining the unusual trading. The desk reads the placement as potentially extreme dilution against the shares reported outstanding if it closes, and the evidence does not show that it closed; up 57.3% since the previous checkpoint."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 88,
+  "kind": "deal",
+  "group": "deal",
+  "text": "PDN Intelligence disclosed in an 8-K at 07:24 ET on October 6, 2026 that on October 5 it entered an equipment lease for one NVIDIA B300 eight-GPU system and agreed to lend funds to finance a second, about $1.2M in initial capital commitments. The desk reads it as a company-specific AI infrastructure transaction with stated commitments, and the evidence does not show deployment, utilization, revenue or the source of the financing."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 91,
+  "kind": "deal",
+  "group": "deal",
+  "text": "PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. The filing documents a company-specific AI infrastructure transaction, while deployment, utilization, revenue, and financing-source details are not established."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 96,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Secondary reports at 09:01 ET on October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed. The desk reads it as a potential acquisition of all membership interests with no purchase price or definitive agreement reported, and no primary company release or SEC filing in our sources."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 130,
+  "kind": "apart",
+  "group": "in-prompt phrasing",
+  "text": "Stand aside until the offering prices."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 98,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Barnwell agreed to sell its Canadian oil and natural gas business for C$9 million of base consideration, including C$4 million in cash, a 5% gross overriding royalty, and a buyer option to acquire that royalty for C$5 million. Closing conditions and adjustments apply, and the evidence does not establish a closing date or final net proceeds."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 69,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On October 2, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00. The disclosure removed the immediate minimum-bid-price deficiency, while the reported 48% reaction made it an identifiable session catalyst."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 132,
+  "kind": "apart",
+  "group": "attributed recommendation, for Adam",
+  "text": "Analysts say to buy the dip."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 77,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Down 18.0% since the previous checkpoint and lost $1.17 support. This is not a fresh catalyst: a 6-K at 10:32 ET on September 30, 2026 disclosed a September 23 equity purchase agreement giving VCIG the right, subject to conditions, to direct Hudson Global Ventures to buy up to $125 million of ordinary shares, along with Dune and FirstFire convertible-note deals, and a September 29 F-1 seeks registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion shares; the desk reads it as financing with large dollar capacity and substantial potential issuance if conditions, registration, conversion or exercise requirements are met, with no put notice, no ELOC purchase and no F-1 effectiveness shown in our sources."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 72,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Down 12.4% since the previous checkpoint. Not a fresh catalyst: the latest item in our sources is a September 30 private-placement agreement, disclosed in a 6-K at 16:20 ET on September 30, 2026, to sell 80,000,000 Class A ordinary shares at $0.45 each for about $36 million; the desk reads it as a very large dilutive financing priced far below the market rather than a positive operating event, and our sources do not establish that it closed or when purchasers can resell the shares."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L7",
+  "position": "whole",
+  "n": 75,
+  "kind": "deal",
+  "group": "deal",
+  "text": "MI leads this range, up 213 percent from the prior close, with fresh news found in our sources: a disclosed agreement to sell Class A shares in a private placement. The next covered gainers by move are SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources, and APUS, up 64 percent from the prior close, with fresh news found in our sources: an agreement with BlockAssure to build and operate an insurance network. 3 of the 12 names the desk covers had fresh news in our sources."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 94,
+  "kind": "deal",
+  "group": "deal",
+  "text": "PDN Intelligence on October 5 entered an equipment lease for one NVIDIA B300 eight-GPU system at $588,581.99 and agreed to lend $588,849.23 to finance a second system, about $1.177 million of initial capital commitments, per an 8-K at 07:24 ET October 6, 2026. Our sources do not establish deployment, utilization, revenue or how the commitments are financed."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 111,
+  "kind": "sample",
+  "group": "sample",
+  "text": "The latest news we found was from October 4: at its first annual Las Vegas conference, AIFA said two Teach OS modules were live, four more were in development, and a formal launch was expected in the near term. No revenue, customer or date figures were given."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 99,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Secondary reports said Vivakor entered a non-binding indication of interest to acquire all outstanding membership interests in Direct Midstream, with financial terms undisclosed. No primary company release or SEC filing is included, and the reports do not establish definitive-agreement status, closing conditions, or timing."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 63,
+  "kind": "deal",
+  "group": "deal",
+  "text": "At 05:30 ET, October 2, 2026, TNL Mediagene announced a definitive agreement to sell its Japanese business for $5.5 million. The sale is a concrete strategic transaction rather than a promotional operating update, while closing, proceeds use and continuing-operations effects are not provided."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 104,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On October 5, PDN Intelligence entered agreements to buy one NVIDIA B300 system for $588,581.99 to lease to Goodwill Labs and to lend Goodwill $588,849.23 toward a second system, about $1.2M of initial commitments in total, reported by the company in an 8-K at 07:24 ET October 6, 2026. The desk reads it as a quantified step in the company's announced GPU infrastructure strategy; deployment timing, the lease and loan economics, and any revenue from the arrangements are not established."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 126,
+  "kind": "apart",
+  "group": "in-prompt phrasing",
+  "text": "Worth a look into the close."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 80,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On September 30, 2026, NFT Ltd disclosed a private placement agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. The filing describes prospective share supply and materially dilutive terms if closed, while the bundle does not confirm closing, issuance, resale timing, or a current shares-outstanding figure."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 129,
+  "kind": "apart",
+  "group": "in-prompt phrasing",
+  "text": "A good entry near the prior close."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 90,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Secondary reports said Vivakor entered a non-binding indication of interest to acquire all outstanding membership interests in Direct Midstream, with financial terms undisclosed. The reports describe a potential acquisition without a reported purchase price or definitive agreement."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 117,
+  "kind": "read75pass",
+  "group": "read75 #8",
+  "text": "NFT Ltd agreed to sell into strength."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 70,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On September 30, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. The proposed placement is substantial prospective share supply and materially dilutive if it closes, but the bundle does not confirm completion or issuance."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L8",
+  "position": "whole",
+  "n": 76,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Up 221.3% since the previous checkpoint and printed a new high of day. The catalyst in our sources is a 6-K filed at 16:20 ET on September 30, 2026, in which NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million in a private placement subject to closing conditions, not reported as a completed issuance; the desk reads the proposed placement as large next to the last reported outstanding count, which is stale and cannot set a dilution percentage, with the purchase price below the market price in hand, and our sources do not report whether the placement closed, whether shares were issued, or when any issued shares could be resold."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 125,
+  "kind": "read75pass",
+  "group": "read75 #18",
+  "text": "Plans to sell shares were filed."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 121,
+  "kind": "read75pass",
+  "group": "read75 #14",
+  "text": "A plan to sell shares."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 95,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Barnwell agreed on October 5, 2026 to sell its Canadian oil and natural gas business for a C$9 million base price, made up of C$4 million cash plus a 5% gross overriding royalty the buyer has an option to acquire after closing for C$5 million, per an 8-K at 06:30 ET on October 6, 2026. The desk reads it as an announced asset sale with stated base consideration and a cash component, subject to closing conditions and adjustments, with no closing date or final net proceeds given."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 97,
+  "kind": "deal",
+  "group": "deal",
+  "text": "PDN Intelligence on October 5 entered an equipment lease for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second, about $1.177 million of initial commitments in total, per an 8-K at 07:24 ET on October 6, 2026. The desk reads it as a company-specific AI infrastructure transaction, with no deployment, utilization, revenue or financing source established in our sources."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 119,
+  "kind": "read75pass",
+  "group": "read75 #11",
+  "text": "It confirmed it had broken out."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 118,
+  "kind": "read75pass",
+  "group": "read75 #10",
+  "text": "Buying pressure and selling pressure rose."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 84,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Secondary reports at 09:01 ET October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire 100% of the outstanding membership interests of Direct Midstream, with financial terms not disclosed. The desk reads it as a potential acquisition with no purchase price or definitive agreement reported, no primary company release or SEC filing in the bundle, and no disclosed closing conditions or timing."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 92,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Barnwell agreed on October 5, 2026 to sell its Canadian oil and natural gas business for a C$9 million base price, made up of C$4 million cash plus a 5% gross overriding royalty with a buyer option to purchase that royalty after closing for C$5 million, per an 8-K at 06:30 ET October 6, 2026. The sale is subject to closing conditions and working-capital and indebtedness adjustments, and our sources state no closing date or final net proceeds."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 103,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On October 5, 2026, Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base price, subject to working-capital and debt adjustments, made up of C$4 million in cash and a 5% gross overriding royalty that the buyer has an option to acquire for C$5 million after closing, reported by the company in an 8-K at 06:30 ET October 6, 2026. The desk reads it as a defined asset sale with a royalty interest attached; the closing date, final adjustments and any use of the buyout option are not established, and the name is down 10.8% since the previous checkpoint."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 64,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Not a fresh catalyst: the latest item in our sources is a 6-K at 10:32 ET on September 30, 2026 disclosing a September 23 equity purchase agreement under which VCIG may, subject to conditions, direct Hudson Global Ventures to buy up to $125 million of ordinary shares, alongside Dune and FirstFire convertible notes and a September 29 F-1 seeking registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion shares. The desk reads it as large financing capacity and potential supply if conditions, registration, conversion or exercise terms are met; our sources do not show a put notice, any Hudson purchase, F-1 effectiveness, or whether the move reflects the financing disclosure rather than order flow."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 85,
+  "kind": "deal",
+  "group": "deal",
+  "text": "PDN Intelligence on October 5 entered an equipment lease for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, roughly $1.177 million of initial capital commitments, disclosed on an 8-K at 07:24 ET October 6, 2026 alongside a company release at 07:18 ET. The desk reads it as a documented AI infrastructure transaction for two systems, with nothing on deployment completion, utilization, revenue or the source of financing."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L9",
+  "position": "whole",
+  "n": 61,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule after its stock closed above $1.00 for 10 consecutive trading days following the August 28, 2026 1-for-8 reverse split. The notice addresses an immediate bid-price compliance issue and permits continued Nasdaq trading, with the monitor and reverse-split context qualifying the picture."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 110,
+  "kind": "sample",
+  "group": "sample",
+  "text": "On October 6, Locafy reported in a 6-K a definitive agreement to acquire Map Labs' assets and customer base for up to $3.0 million in cash, $2.0 million up front and up to $1.0 million tied to performance. The company expects about $2.0 million in ARR and about $900,000 in 2026 EBIT from the business, subject to closing conditions, and no closing date was given."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 101,
+  "kind": "deal",
+  "group": "deal",
+  "text": "An 8-K at 06:30 ET on October 6, 2026 reports that on October 5, 2026 Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base price subject to working-capital and indebtedness adjustments, with C$4 million in cash plus a 5% gross overriding royalty that the buyer holds an option to acquire after closing for C$5 million. The desk reads this as a disposition with defined cash consideration and a retained royalty with a buyout option, with the closing date, final adjustments and any exercise of the option not established; down 10.8% since the previous checkpoint."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 116,
+  "kind": "read75pass",
+  "group": "read75 #7",
+  "text": "The move was confirmed by volume."
+ },
+ {
+  "base": "2026-10-02-AFTER_HOURS-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 87,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Secondary reports at 09:01 ET on October 6, 2026 said Vivakor entered a non-binding indication of interest to acquire all of Direct Midstream, with financial terms undisclosed. The desk reads it as a potential acquisition with no purchase price or definitive agreement reported, and no primary company release or SEC filing for it is in our sources."
+ },
+ {
+  "base": "2026-10-05-PREMARKET-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 74,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Our sources found only older or secondary news, not a fresh catalyst: on September 30, NFT Limited entered an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The proposed issuance is described as large relative to the reported share base and priced below the market-state price; closing and resale timing are unknown."
+ },
+ {
+  "base": "2026-10-05-INTO_RTH-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 124,
+  "kind": "read75pass",
+  "group": "read75 #17",
+  "text": "The right to sell shares."
+ },
+ {
+  "base": "2026-10-05-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 105,
+  "kind": "deal",
+  "group": "deal",
+  "text": "On October 5, 2026, Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, including C$4 million in cash and a 5% gross overriding royalty, with a buyer option to acquire the royalty for C$5 million after closing. The announced asset disposition includes defined cash consideration and a retained royalty interest with a buyout option, while the closing date, final adjustments, and exercise of the option are not established in the bundle."
+ },
+ {
+  "base": "2026-10-05-AFTER_HOURS-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 112,
+  "kind": "sample",
+  "group": "sample",
+  "text": "The latest company news we found was shareholder approval, announced August 25, of the all-stock merger of Olin and Huntsman, a step toward completion and not a close. On October 1, Wells Fargo kept its Equal-Weight rating and lowered its target to $16."
+ },
+ {
+  "base": "2026-10-06-PREMARKET-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 134,
+  "kind": "apart",
+  "group": "borderline (read75 #2)",
+  "text": "Entry at 4.20 looked clean."
+ },
+ {
+  "base": "2026-10-06-INTO_RTH-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 86,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Barnwell disclosed in an 8-K at 06:30 ET on October 6, 2026 an agreement, entered October 5, to sell its Canadian oil and natural gas business for a C$9 million base price: C$4 million in cash plus a 5% gross overriding royalty that the buyer has the option to acquire after closing for C$5 million. The desk reads it as an announced asset sale with stated base consideration and a cash component, subject to closing conditions and adjustments, with no closing date or final net proceeds stated."
+ },
+ {
+  "base": "2026-10-06-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 79,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Not a fresh catalyst: VCIG disclosed at 10:32 ET on September 30, 2026 an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to buy up to $125 million of ordinary shares, along with Dune and FirstFire convertible notes, and a September 29 F-1 seeks to register up to 100,000,000 ELOC purchase shares. The desk reads this as financing rather than operating news, and our sources show no put notice and no effective registration."
+ },
+ {
+  "base": "2026-10-06-AFTER_HOURS-v6-w_luna",
+  "id": "S1L10",
+  "position": "whole",
+  "n": 100,
+  "kind": "deal",
+  "group": "deal",
+  "text": "PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. The evidence does not establish deployment completion, system utilization, revenue, or the source of financing."
+ },
+ {
+  "base": "2026-10-02-PREMARKET-v6-w_luna",
+  "id": "S1L11",
+  "position": "whole",
+  "n": 68,
+  "kind": "deal",
+  "group": "deal",
+  "text": "Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE, and CYCU, with fresh news found in our sources: Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement. After the close, MI added 14 percent. 6 of the 12 names the desk covers had fresh news in our sources."
+ },
+ {
+  "base": "2026-10-02-INTO_RTH-v6-w_luna",
+  "id": "S1L11",
+  "position": "whole",
+  "n": 109,
+  "kind": "sample",
+  "group": "sample",
+  "text": "On October 6, 60 Degrees Pharmaceuticals said it intended to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind it, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed."
+ },
+ {
+  "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+  "id": "S1L11",
+  "position": "whole",
+  "n": 127,
+  "kind": "apart",
+  "group": "in-prompt phrasing",
+  "text": "One to watch tomorrow."
+ }
+]
