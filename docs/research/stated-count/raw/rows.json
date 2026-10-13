@@ -1,0 +1,6183 @@
+[
+ {
+  "ticker": "AHL.PRE",
+  "cik": null,
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": "no CIK"
+ },
+ {
+  "ticker": "APUS",
+  "cik": "0001894525",
+  "cover": {
+   "shares": 1509118,
+   "asOf": "2026-08-12",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 6,
+    "opened": 6,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "AQB",
+  "cik": "0001603978",
+  "cover": {
+   "shares": 5147204,
+   "asOf": "2026-08-04",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ARAY",
+  "cik": "0001138723",
+  "cover": {
+   "shares": 119439307,
+   "asOf": "2026-08-21",
+   "filed": "2026-08-27"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ARTC",
+  "cik": "0002086545",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ATLQ",
+  "cik": "0002128739",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "AVX",
+  "cik": "0001826397",
+  "cover": {
+   "shares": 7397383,
+   "asOf": "2026-08-12",
+   "filed": "2026-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 5,
+    "opened": 5,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "BCBP",
+  "cik": "0001228454",
+  "cover": {
+   "shares": 18101822,
+   "asOf": "2026-08-01",
+   "filed": "2026-08-10"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 6,
+    "opened": 6,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": {
+     "shares": 18101822,
+     "asOf": "2026-09-11"
+    }
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 18101822,
+     "asOf": "2026-08-14"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": {
+     "shares": 30751822,
+     "asOf": "2026-10-01"
+    }
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "BMGL",
+  "cik": "0002004489",
+  "cover": {
+   "shares": 18785750,
+   "asOf": "2025-06-30",
+   "filed": "2026-03-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 10,
+    "opened": 10,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "BOLT",
+  "cik": "0001641281",
+  "cover": {
+   "shares": 1926345,
+   "asOf": "2026-08-04",
+   "filed": "2026-08-11"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "BRIA",
+  "cik": "0002000230",
+  "cover": {
+   "shares": 25000000,
+   "asOf": "2025-03-31",
+   "filed": "2025-07-22"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 6,
+    "opened": 6,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "BYAH",
+  "cik": "0001986247",
+  "cover": {
+   "shares": 29374403,
+   "asOf": "2025-04-30",
+   "filed": "2025-08-26"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 1,
+    "unread": 1,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 7,
+    "opened": 3,
+    "unread": 4,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 26,
+    "opened": 18,
+    "unread": 8,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 13,
+  "error": null
+ },
+ {
+  "ticker": "CCTG",
+  "cik": "0001931717",
+  "cover": {
+   "shares": 11581250,
+   "asOf": "2024-03-31",
+   "filed": "2024-07-22"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 8,
+    "opened": 8,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 13,
+    "opened": 13,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CLLS",
+  "cik": "0001627281",
+  "cover": {
+   "shares": 100339441,
+   "asOf": "2025-12-31",
+   "filed": "2026-03-20"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 20,
+    "opened": 20,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CLRO",
+  "cik": "0000840715",
+  "cover": {
+   "shares": 2675412,
+   "asOf": "2026-08-14",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 2675412,
+     "asOf": "2026-09-04"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CMCT",
+  "cik": "0000908311",
+  "cover": {
+   "shares": 2947493,
+   "asOf": "2026-08-06",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CNTB",
+  "cik": "0001835268",
+  "cover": {
+   "shares": 62974309,
+   "asOf": "2026-07-31",
+   "filed": "2026-08-12"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CTVA",
+  "cik": "0001755672",
+  "cover": {
+   "shares": 667196000,
+   "asOf": "2026-07-24",
+   "filed": "2026-07-31"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 19,
+    "opened": 19,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CWD",
+  "cik": "0001627282",
+  "cover": {
+   "shares": 10384653,
+   "asOf": "2026-08-11",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "CYAB",
+  "cik": "0002032341",
+  "cover": {
+   "shares": 17597071,
+   "asOf": "2026-08-12",
+   "filed": "2026-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": {
+     "shares": 34784611,
+     "asOf": "2026-10-07"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "DAIC",
+  "cik": "0002033770",
+  "cover": {
+   "shares": 2337767,
+   "asOf": "2026-09-24",
+   "filed": "2026-10-02"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "DAVA",
+  "cik": "0001656081",
+  "cover": {
+   "shares": 55718456,
+   "asOf": "2021-06-30",
+   "filed": "2021-09-28"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 0,
+    "unread": 1,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 22,
+    "opened": 4,
+    "unread": 18,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 47,
+    "opened": 19,
+    "unread": 28,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 4,
+    "opened": 2,
+    "unread": 2,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 49,
+  "error": null
+ },
+ {
+  "ticker": "DBRG",
+  "cik": "0001679688",
+  "cover": {
+   "shares": 187495281,
+   "asOf": "2026-07-31",
+   "filed": "2026-08-04"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "DPU",
+  "cik": "0001938865",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "DTSS",
+  "cik": "0002110423",
+  "cover": {
+   "shares": 18333333,
+   "asOf": "2015-10-29",
+   "filed": "2026-10-02"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "EDBL",
+  "cik": "0001809750",
+  "cover": {
+   "shares": 1951509,
+   "asOf": "2026-08-06",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "EHGO",
+  "cik": "0001879754",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ELMT",
+  "cik": "0002101698",
+  "cover": {
+   "shares": 30459498,
+   "asOf": "2026-08-10",
+   "filed": "2026-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 7,
+    "opened": 7,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ELPW",
+  "cik": "0002015691",
+  "cover": {
+   "shares": 58056099,
+   "asOf": "2025-09-19",
+   "filed": "2025-09-22"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 6,
+    "opened": 4,
+    "unread": 2,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 8,
+    "opened": 6,
+    "unread": 2,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 31,
+    "opened": 14,
+    "unread": 17,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 21,
+  "error": null
+ },
+ {
+  "ticker": "EMIS",
+  "cik": "0002075816",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ERNA",
+  "cik": "0000748592",
+  "cover": {
+   "shares": 1632411,
+   "asOf": "2026-08-06",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "FACT",
+  "cik": "0002028935",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "FCHL",
+  "cik": "0002023796",
+  "cover": {
+   "shares": 17000000,
+   "asOf": "2025-12-31",
+   "filed": "2026-06-12"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "FEBO",
+  "cik": "0001957001",
+  "cover": {
+   "shares": 11062500,
+   "asOf": "2024-12-31",
+   "filed": "2025-05-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 11,
+    "opened": 11,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "FFAI",
+  "cik": "0001805521",
+  "cover": {
+   "shares": 29516511,
+   "asOf": "2021-08-13",
+   "filed": "2021-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 257,
+    "opened": 19,
+    "unread": 238,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 47,
+    "opened": 1,
+    "unread": 46,
+    "newest": {
+     "shares": 424283679,
+     "asOf": "2026-07-05"
+    }
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 31,
+    "opened": 3,
+    "unread": 28,
+    "newest": {
+     "shares": 6126954,
+     "asOf": "2026-09-14"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 26,
+    "opened": 1,
+    "unread": 25,
+    "newest": {
+     "shares": 346155245,
+     "asOf": "2026-06-17"
+    }
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 33,
+    "opened": 0,
+    "unread": 33,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 25,
+    "opened": 1,
+    "unread": 24,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 394,
+  "error": null
+ },
+ {
+  "ticker": "FHTX",
+  "cik": "0001822462",
+  "cover": {
+   "shares": 59385315,
+   "asOf": "2026-07-31",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "FLUX",
+  "cik": "0001083743",
+  "cover": {
+   "shares": 21621642,
+   "asOf": "2026-08-14",
+   "filed": "2026-08-20"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "GDHG",
+  "cik": "0001928340",
+  "cover": {
+   "shares": 51750000,
+   "asOf": "2024-03-31",
+   "filed": "2024-07-30"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 6,
+    "opened": 2,
+    "unread": 4,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 6,
+    "opened": 4,
+    "unread": 2,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 6,
+    "opened": 0,
+    "unread": 6,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 43,
+    "opened": 18,
+    "unread": 25,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 3,
+    "opened": 1,
+    "unread": 2,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 39,
+  "error": null
+ },
+ {
+  "ticker": "GLOO",
+  "cik": "0002069785",
+  "cover": {
+   "shares": 8345221,
+   "asOf": "2025-10-31",
+   "filed": "2025-12-23"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 8,
+    "opened": 8,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 13108949,
+     "asOf": "2026-05-15"
+    }
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": {
+     "shares": 13108949,
+     "asOf": "2026-05-15"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 13108949,
+     "asOf": "2026-05-15"
+    }
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "GMHS",
+  "cik": "0002000530",
+  "cover": {
+   "shares": 75409060,
+   "asOf": "2024-06-30",
+   "filed": "2025-01-30"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 12,
+    "opened": 12,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "HAO",
+  "cik": "0001954594",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "HGTY",
+  "cik": "0001840776",
+  "cover": {
+   "shares": 346801330,
+   "asOf": "2026-06-30",
+   "filed": "2026-08-05"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "HTCR",
+  "cik": "0001892322",
+  "cover": {
+   "shares": 1515328,
+   "asOf": "2026-08-13",
+   "filed": "2026-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "HVII",
+  "cik": "0001846416",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "IDAC",
+  "cik": "0002090441",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "IPVV",
+  "cik": "0002105274",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ITG",
+  "cik": "0002110117",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "JZXN",
+  "cik": "0001816172",
+  "cover": {
+   "shares": 1255785,
+   "asOf": "2025-10-31",
+   "filed": "2026-02-24"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 5,
+    "opened": 5,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "KALA",
+  "cik": "0001479419",
+  "cover": {
+   "shares": 19339786,
+   "asOf": "2026-08-14",
+   "filed": "2026-08-19"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": {
+     "shares": 19339786,
+     "asOf": "2026-09-24"
+    }
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "KDK",
+  "cik": "0001853138",
+  "cover": {
+   "shares": 200618170,
+   "asOf": "2026-07-31",
+   "filed": "2026-08-07"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "KIDZ",
+  "cik": "0002022308",
+  "cover": {
+   "shares": 1174718,
+   "asOf": "2026-03-31",
+   "filed": "2026-04-01"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 14,
+    "opened": 14,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 6,
+    "opened": 3,
+    "unread": 3,
+    "newest": {
+     "shares": 5226094,
+     "asOf": "2026-07-21"
+    }
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": {
+     "shares": 2055159,
+     "asOf": "2026-07-14"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 4,
+    "opened": 3,
+    "unread": 1,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 4,
+  "error": null
+ },
+ {
+  "ticker": "KNRX",
+  "cik": "0001982960",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "KXIN",
+  "cik": "0001713539",
+  "cover": {
+   "shares": 5489162,
+   "asOf": "2024-12-31",
+   "filed": "2025-03-31"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 13,
+    "opened": 13,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "LABT",
+  "cik": "0002079272",
+  "cover": {
+   "shares": 2369688,
+   "asOf": "2026-08-03",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "LFS",
+  "cik": "0002030277",
+  "cover": {
+   "shares": 26160619,
+   "asOf": "2025-12-31",
+   "filed": "2026-04-08"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 9,
+    "opened": 9,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "LHSW",
+  "cik": "0002004024",
+  "cover": {
+   "shares": 52000000,
+   "asOf": "2025-03-31",
+   "filed": "2025-08-15"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 22,
+    "opened": 21,
+    "unread": 1,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 1,
+  "error": null
+ },
+ {
+  "ticker": "LOBO",
+  "cik": "0001932072",
+  "cover": {
+   "shares": 12568514,
+   "asOf": "2025-12-31",
+   "filed": "2026-04-28"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "LXEH",
+  "cik": "0001814067",
+  "cover": {
+   "shares": 116667000,
+   "asOf": "2023-12-31",
+   "filed": "2024-05-15"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 21,
+    "opened": 20,
+    "unread": 1,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 1,
+  "error": null
+ },
+ {
+  "ticker": "MI",
+  "cik": "0001958713",
+  "cover": {
+   "shares": 14318410,
+   "asOf": "2025-12-31",
+   "filed": "2026-05-01"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 6,
+    "opened": 6,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "MKDW",
+  "cik": "0001991332",
+  "cover": {
+   "shares": 141039933,
+   "asOf": "2025-12-31",
+   "filed": "2026-04-30"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 7,
+    "opened": 7,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "MKZR",
+  "cik": "0001550913",
+  "cover": {
+   "shares": 2774688,
+   "asOf": "2026-09-28",
+   "filed": "2026-09-28"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "MNR",
+  "cik": "0001980088",
+  "cover": {
+   "shares": 166948094,
+   "asOf": "2026-07-31",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "MSS",
+  "cik": "0001892292",
+  "cover": {
+   "shares": 17450476,
+   "asOf": "2024-08-06",
+   "filed": "2024-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 40,
+    "opened": 17,
+    "unread": 23,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": {
+     "shares": 22229652,
+     "asOf": "2025-12-30"
+    }
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 6,
+    "opened": 2,
+    "unread": 4,
+    "newest": {
+     "shares": 22229652,
+     "asOf": "2025-12-10"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 5,
+    "opened": 2,
+    "unread": 3,
+    "newest": {
+     "shares": 4052694,
+     "asOf": "2026-06-22"
+    }
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 8,
+    "opened": 2,
+    "unread": 6,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 36,
+  "error": null
+ },
+ {
+  "ticker": "NAMI",
+  "cik": "0001967631",
+  "cover": {
+   "shares": 1423285396,
+   "asOf": "2025-12-31",
+   "filed": "2026-04-28"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 5,
+    "opened": 5,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NEXR",
+  "cik": "0001885408",
+  "cover": {
+   "shares": 250727,
+   "asOf": "2025-12-31",
+   "filed": "2026-04-01"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 16,
+    "opened": 16,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NICM",
+  "cik": "0001526475",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": "SEC responded 404"
+ },
+ {
+  "ticker": "NIVF",
+  "cik": "0001981662",
+  "cover": {
+   "shares": 26736,
+   "asOf": "2025-12-31",
+   "filed": "2026-09-10"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NOMA",
+  "cik": "0001994214",
+  "cover": {
+   "shares": 15283529,
+   "asOf": "2026-08-14",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NSLR",
+  "cik": "0001509470",
+  "cover": {
+   "shares": 26473222,
+   "asOf": "2026-09-23",
+   "filed": "2026-09-23"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 26473222,
+     "asOf": "2026-09-30"
+    }
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": {
+   "shares": 26473222,
+   "asOf": "2026-06-30"
+  },
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NSTR",
+  "cik": null,
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": "no CIK"
+ },
+ {
+  "ticker": "NTIC",
+  "cik": "0000875582",
+  "cover": {
+   "shares": 9496439,
+   "asOf": "2026-07-09",
+   "filed": "2026-07-09"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NUWE",
+  "cik": "0001506492",
+  "cover": {
+   "shares": 3647264,
+   "asOf": "2026-08-10",
+   "filed": "2026-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "NXAT",
+  "cik": "0002000756",
+  "cover": {
+   "shares": 64221193,
+   "asOf": "2025-12-31",
+   "filed": "2026-05-15"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 13,
+    "opened": 13,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ONFO",
+  "cik": "0001825452",
+  "cover": {
+   "shares": 2452712,
+   "asOf": "2026-08-19",
+   "filed": "2026-08-19"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 2499248,
+     "asOf": "2026-09-21"
+    }
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "PDM",
+  "cik": "0001042776",
+  "cover": {
+   "shares": 125019003,
+   "asOf": "2026-04-29",
+   "filed": "2026-04-30"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 6,
+    "opened": 6,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "PLUT",
+  "cik": "0001933021",
+  "cover": {
+   "shares": 15350000,
+   "asOf": "2025-12-31",
+   "filed": "2026-05-11"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "PRFX",
+  "cik": "0001801834",
+  "cover": {
+   "shares": 830613,
+   "asOf": "2025-12-31",
+   "filed": "2026-03-26"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 15,
+    "opened": 15,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "RGNT",
+  "cik": "0001912966",
+  "cover": {
+   "shares": 5179378,
+   "asOf": "2025-12-31",
+   "filed": "2026-02-27"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 11,
+    "opened": 11,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "RMSG",
+  "cik": "0001983324",
+  "cover": {
+   "shares": 4821281,
+   "asOf": "2025-03-31",
+   "filed": "2026-01-27"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 16,
+    "opened": 16,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "RTAC",
+  "cik": "0002035173",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "RUM",
+  "cik": "0001830081",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "RWT",
+  "cik": "0000930236",
+  "cover": {
+   "shares": 125612432,
+   "asOf": "2026-08-05",
+   "filed": "2026-08-05"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "SER",
+  "cik": "0001708599",
+  "cover": {
+   "shares": 25400473,
+   "asOf": "2026-08-10",
+   "filed": "2026-08-13"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 3,
+    "opened": 3,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": {
+     "shares": 25400473,
+     "asOf": "2026-08-21"
+    }
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "SFWL",
+  "cik": "0001863218",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "SGLY",
+  "cik": "0001422892",
+  "cover": {
+   "shares": 5403788,
+   "asOf": "2026-09-28",
+   "filed": "2026-09-29"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "SUIG",
+  "cik": "0001425355",
+  "cover": {
+   "shares": 76802872,
+   "asOf": "2026-08-03",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "SUNE",
+  "cik": "0000022701",
+  "cover": {
+   "shares": 6513108,
+   "asOf": "2026-08-05",
+   "filed": "2026-08-12"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "SWRD",
+  "cik": "0001795851",
+  "cover": {
+   "shares": 211149963,
+   "asOf": "2026-08-12",
+   "filed": "2026-08-14"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 12,
+    "opened": 12,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 7,
+    "opened": 7,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "TDTH",
+  "cik": "0001983550",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "THH",
+  "cik": "0002044241",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": "SEC responded 404"
+ },
+ {
+  "ticker": "TLSI",
+  "cik": "0001826667",
+  "cover": {
+   "shares": 61574600,
+   "asOf": "2026-08-04",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "TORO",
+  "cik": "0001941131",
+  "cover": {
+   "shares": 34559330,
+   "asOf": "2026-06-30",
+   "filed": "2026-10-09"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "UAC",
+  "cik": "0002098669",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "VCIG",
+  "cik": "0001930510",
+  "cover": {
+   "shares": 26310352,
+   "asOf": "2025-12-31",
+   "filed": "2026-07-15"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "VEEA",
+  "cik": "0001840317",
+  "cover": {
+   "shares": 62214156,
+   "asOf": "2026-08-10",
+   "filed": "2026-08-12"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 7,
+    "opened": 7,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "VIVK",
+  "cik": "0001450704",
+  "cover": {
+   "shares": 8183626,
+   "asOf": "2026-08-18",
+   "filed": "2026-08-19"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 4,
+    "opened": 4,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "WCT",
+  "cik": "0001990251",
+  "cover": {
+   "shares": 51265000,
+   "asOf": "2025-06-30",
+   "filed": "2025-10-17"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 19,
+    "opened": 19,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 1,
+    "opened": 1,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "WHLR",
+  "cik": "0001527541",
+  "cover": {
+   "shares": 1931568,
+   "asOf": "2026-08-04",
+   "filed": "2026-08-06"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 13,
+    "opened": 5,
+    "unread": 8,
+    "newest": {
+     "shares": 1506932,
+     "asOf": "2026-10-05"
+    }
+   },
+   "424B1-5": {
+    "later": 44,
+    "opened": 20,
+    "unread": 24,
+    "newest": {
+     "shares": 1506932,
+     "asOf": "2026-10-05"
+    }
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 32,
+  "error": null
+ },
+ {
+  "ticker": "YI",
+  "cik": "0001738906",
+  "cover": null,
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ },
+ {
+  "ticker": "ZTG",
+  "cik": "0002011458",
+  "cover": {
+   "shares": 11583839,
+   "asOf": "2025-09-30",
+   "filed": "2026-01-20"
+  },
+  "perFamily": {
+   "8-K": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "424B1-5": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "S-1/S-3/F-1/F-3 (+/A)": {
+    "later": 2,
+    "opened": 2,
+    "unread": 0,
+    "newest": null
+   },
+   "DEF/PRE 14A/14C": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "SC 13D/13G (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "10-Q/10-K (+/A)": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   },
+   "6-K": {
+    "later": 8,
+    "opened": 8,
+    "unread": 0,
+    "newest": null
+   },
+   "20-F/40-F": {
+    "later": 0,
+    "opened": 0,
+    "unread": 0,
+    "newest": null
+   }
+  },
+  "news": null,
+  "capped": 0,
+  "error": null
+ }
+]

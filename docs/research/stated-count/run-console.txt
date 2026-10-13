@@ -1,0 +1,3 @@
+wrote docs/research/stated-count/raw; 100 names; 916 SEC requests
+exit=0
+2026-10-13T15:25:09Z

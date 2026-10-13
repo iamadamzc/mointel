@@ -1,0 +1,28 @@
+population: a fixed sample of 100 of 474 names ranked top 12 in any checkpoint from 2026-09-09 with a dossier, on ../mointel/data/market-prod-2026-10-07.db; with a cover count 78; no CIK 2; read errors 2
+SEC requests made 916 (cached reads not counted); at most 25 later filings opened a name, newest first
+
+form | names with a later filing | filings later than the cover count | opened | unread | names with a NEWER stated count | of those, newer by > 30 days | of those, differs from the cover by > 10%
+8-K | 42 | 456 | 187 | 269 | 2 | 1 | 1
+424B1-5 | 31 | 158 | 77 | 81 | 6 | 6 | 5
+S-1/S-3/F-1/F-3 (+/A) | 32 | 113 | 73 | 40 | 8 | 5 | 5
+DEF/PRE 14A/14C | 12 | 46 | 17 | 29 | 6 | 6 | 4
+SC 13D/13G (+/A) | 3 | 61 | 4 | 57 | 0 | 0 | 0
+10-Q/10-K (+/A) | 5 | 39 | 9 | 30 | 0 | 0 | 0
+6-K | 30 | 418 | 338 | 80 | 0 | 0 | 0
+20-F/40-F | 13 | 23 | 19 | 4 | 0 | 0 | 0
+stored news and press-release excerpts | - | - | - | - | 0 | 0 | 0
+ANY form | - | - | - | - | 12 | 9 | 7
+
+per name with a newer stated count (cover -> newest stated):
+  BCBP: 18101822 as of 2026-08-01 -> 30751822 as of 2026-10-01
+  CLRO: 2675412 as of 2026-08-14 -> 2675412 as of 2026-09-04
+  CYAB: 17597071 as of 2026-08-12 -> 34784611 as of 2026-10-07
+  FFAI: 29516511 as of 2021-08-13 -> 6126954 as of 2026-09-14
+  GLOO: 8345221 as of 2025-10-31 -> 13108949 as of 2026-05-15
+  KALA: 19339786 as of 2026-08-14 -> 19339786 as of 2026-09-24
+  KIDZ: 1174718 as of 2026-03-31 -> 5226094 as of 2026-07-21
+  MSS: 17450476 as of 2024-08-06 -> 4052694 as of 2026-06-22
+  NSLR: 26473222 as of 2026-09-23 -> 26473222 as of 2026-09-30
+  ONFO: 2452712 as of 2026-08-19 -> 2499248 as of 2026-09-21
+  SER: 25400473 as of 2026-08-10 -> 25400473 as of 2026-08-21
+  WHLR: 1931568 as of 2026-08-04 -> 1506932 as of 2026-10-05

@@ -81,7 +81,32 @@ const secPushback = (error: unknown) =>
 const familyOf = (form: string) => FAMILIES.find(([, re]) => re.test(form))?.[0] ?? null;
 const days = (from: string, to: string) => Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
+/**
+ * --control: the matcher against sentences whose answer is known (EZRA's filings as Integration read them on
+ * 2026-10-13, and forms the pattern must refuse), so a zero in the table can be told from a matcher that never fires.
+ */
+const CONTROLS: Array<[string, Stated | null]> = [
+  ['As of August 26, 2026, there were 1,679,936 shares of common stock issued and outstanding.', { shares: 1_679_936, asOf: '2026-08-26' }],
+  ['There were 1,601,770 shares of common stock issued and outstanding as of August 6, 2026.', { shares: 1_601_770, asOf: '2026-08-06' }],
+  ['As of September 30, 2026, we had 26,473,222 shares of our common stock outstanding.', { shares: 26_473_222, asOf: '2026-09-30' }],
+  ['The company sold 251,666 shares of common stock to the investor.', null],
+  ['As of August 26, 2026, there were 1,679,936 warrants outstanding.', null],
+];
+
+function control(): void {
+  let failed = 0;
+  for (const [sentence, expected] of CONTROLS) {
+    const found = statedCounts(sentence);
+    const ok = expected === null ? found.length === 0 : found.length === 1 && found[0]!.shares === expected.shares && found[0]!.asOf === expected.asOf;
+    if (!ok) failed += 1;
+    console.log(`${ok ? 'ok  ' : 'FAIL'} ${JSON.stringify(found)} <- ${sentence.slice(0, 90)}`);
+  }
+  console.log(`control: ${CONTROLS.length - failed} of ${CONTROLS.length} as expected`);
+  if (failed > 0) process.exit(1);
+}
+
 async function main() {
+  if (process.argv.includes('--control')) return control();
   const [dbPath, since, out] = process.argv.slice(2);
   if (!dbPath || !since || !out) throw new Error('usage: stated-count-survey.ts <store-copy> <since> <out-dir>');
   fs.mkdirSync(out, { recursive: true });
