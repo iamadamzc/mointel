@@ -23,6 +23,24 @@ describe('the matcher (the survey control, unchanged)', () => {
     expect(statedCounts('As of August 26, 2026, there were 1,679,936 warrants outstanding.')).toEqual([]);
   });
 
+  it('never takes a count of SOME shares or of one class among several (Commercial read 101); the two good shapes still pass', () => {
+    const must = [
+      '5,000,000 shares of common stock underlying warrants outstanding as of September 1, 2026.',
+      '1,000,000 shares of common stock reserved for issuance under our plan, none outstanding as of September 1, 2026.',
+      '4,000,000 shares of common stock held by non-affiliates outstanding as of September 1, 2026.',
+      'As of September 1, 2026, there were 300,000 shares of common stock held in treasury outstanding.',
+      '1,200,000 shares of common stock issuable on conversion of preferred stock outstanding as of September 1, 2026.',
+      '3,000,000 shares of common stock into which our notes are convertible, outstanding as of September 1, 2026.',
+      '10,000,000 shares of Class A common stock and 5,000,000 shares of Class B common stock outstanding as of September 1, 2026.',
+      'As of September 1, 2026, there were 10,000,000 shares of Class A common stock outstanding and 5,000,000 shares of Class B common stock outstanding.',
+      '2,000,000 shares of common stock subject to options outstanding as of September 1, 2026.',
+    ];
+    for (const sentence of must) expect(statedCounts(sentence)).toEqual([]);
+    // Controls: the cover style and the "As of DATE, there were N shares ... issued and outstanding" style.
+    expect(statedCounts('There were 14,000,000 shares of common stock issued and outstanding as of September 1, 2026.')).toEqual([{ shares: 14_000_000, asOf: '2026-09-01' }]);
+    expect(statedCounts('As of September 1, 2026, there were 14,000,000 shares of common stock issued and outstanding.')).toEqual([{ shares: 14_000_000, asOf: '2026-09-01' }]);
+  });
+
   it('never takes a post-offering figure, which assumes full sale (Commercial read 99 (1)), but keeps the dated base count beside it', () => {
     const prospectus =
       '10,000,000 shares of common stock to be outstanding after this offering, based on 8,000,000 shares of common stock outstanding as of September 1, 2026.';

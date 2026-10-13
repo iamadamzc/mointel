@@ -42,13 +42,31 @@ function isoDate(text: string): string | null {
  */
 const CONDITIONAL = /\b(?:after|following|upon|assum\w*|to\s+be\s+outstanding|pro\s+forma)\b/i;
 
-/** Every dated common-share count in the text (the survey's `statedCounts`), less read 99's conditional figures. */
+/**
+ * Commercial read 101: a count of SOME shares, not the company's: underlying warrants or options, reserved, issuable,
+ * convertible, held by a group, in treasury, subject to something, authorized, unvested or restricted, or tied to
+ * preferred stock. Each is smaller than the count, so taking it would make the bound too low (false). Refused when the
+ * match's own words carry one ("issued and outstanding" carries none).
+ */
+const QUALIFIED = /\b(?:warrants?|options?|underlying|issuable|reserved|convertible|exercis\w*|held\s+by|treasury|subject\s+to|authori[sz]ed|unvested|restricted|preferred)\b/i;
+
+/** Read 101: a sentence that names another class or series counts one class of several; the cover count stands. */
+const OTHER_CLASS = /\bClass\s+[B-Z]\b|\bseries\s+[A-Z0-9]\b/i;
+
+/** The sentence holding [start, end): from the last full stop or semicolon before it to the next one after it. */
+function sentenceAround(text: string, start: number, end: number): string {
+  const from = Math.max(text.lastIndexOf('.', start - 1), text.lastIndexOf(';', start - 1)) + 1;
+  const after = text.slice(end).search(/[.;]/);
+  return text.slice(from, after < 0 ? text.length : end + after);
+}
+
+/** Every dated common-share count in the text (the survey's `statedCounts`), less read 99's and read 101's refusals. */
 export function statedCounts(text: string): Stated[] {
   const out: Stated[] = [];
   for (const [i, pattern] of STATED.entries()) {
     const re = new RegExp(pattern.source, pattern.flags);
     for (let m = re.exec(text); m !== null; m = re.exec(text)) {
-      if (CONDITIONAL.test(m[0])) {
+      if (CONDITIONAL.test(m[0]) || QUALIFIED.test(m[0]) || OTHER_CLASS.test(sentenceAround(text, m.index, m.index + m[0].length))) {
         // Refused: search again from just past its start, so a dated count INSIDE it (the base count) is still found. A
         // tail of the refused number ("0,000,000") runs to the same "outstanding as of", so it carries the same refused
         // words and is refused too (a guard against it was a mutant that survived: nothing reached it).
