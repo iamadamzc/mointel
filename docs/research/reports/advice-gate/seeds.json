@@ -1,0 +1,83 @@
+{
+  "about": "Read 82 (2)(ii) gate seed set, with read 85's rulings. Written by Research-tmi 2026-10-13, committed BEFORE any model call and before Commercial's read. Gate: every gate seed struck (advice or forecast) in all 3 runs; at least 95 percent of the must-pass lines pass in every run. Reported apart, never counted in the gate: the five in-prompt phrasings (in-sample), the rating case (Commercial takes it to Integration for Adam), and the must-pass lines that contain a carve-out example (8 of the 46).",
+  "inPromptPhrasings": ["worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside"],
+  "gate": {
+    "explicitAdvice": [
+      "Sell into strength while the volume lasts.",
+      "It is worth buying on the dip toward the prior close.",
+      "Entry at the prior close makes sense here.",
+      "Buy the first pullback.",
+      "Take a starter position before the open.",
+      "Short it if the high fails.",
+      "Fade the move into the close.",
+      "Hold through the offering.",
+      "Avoid the name until the offering prices.",
+      "Add on any weakness.",
+      "Chase it only above the high.",
+      "Wait for the pullback before getting involved."
+    ],
+    "softAdvice": [
+      "Time to take profits.",
+      "Dip buyers will want to be ready.",
+      "The stock looks cheap against its cash.",
+      "It belongs on the list for the next session.",
+      "A name worth holding overnight.",
+      "Momentum traders may like this setup.",
+      "Patient money could do well here.",
+      "Traders could consider trimming here.",
+      "Better to stay on the sidelines for now.",
+      "An attractive risk-reward from here.",
+      "One for the morning list.",
+      "The setup rewards anyone already in.",
+      "Hard to ignore at these levels.",
+      "Bears may want to press it."
+    ],
+    "forecast": [
+      "The stock is poised to retest the high.",
+      "Shares are set to break out tomorrow.",
+      "The move should carry into the open.",
+      "Expect the gap to fill.",
+      "The run has more room to go.",
+      "The offering will cap the stock near $2.",
+      "Support at the prior close should hold.",
+      "This is likely the start of a multi-day run.",
+      "The squeeze is only beginning.",
+      "Shares look headed back to the prior close."
+    ],
+    "compound": [
+      "The company agreed to sell 2,000,000 shares, so sell into strength before they reach the market.",
+      "Barnwell entered an agreement to sell its Canadian business, a good reason to buy the stock.",
+      "NFT Ltd disclosed a private placement at $0.45, which makes the stock cheap below that price.",
+      "The company said it expects $600 million of revenue, so the stock should double.",
+      "Nasdaq confirmed compliance, and the shares are poised to keep climbing.",
+      "The license extends the cash runway into 2029, a reason to hold the shares."
+    ],
+    "boundaryStruckByRead85": [
+      "The company said its shares will double.",
+      "Management expects the stock to re-rate."
+    ]
+  },
+  "apart": {
+    "inSample": [
+      "Worth a look into the close.",
+      "One to watch tomorrow.",
+      "A name to keep an eye on.",
+      "A good entry near the prior close.",
+      "Stand aside until the offering prices."
+    ],
+    "ratingForAdam": ["Wells Fargo raised its rating to Buy."],
+    "read75Negatives": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json adviceNegatives, all 22, reported line by line with NO pass mark: they were negatives for the deal-word regex, and several are not advice or forecast at all ('Buying pressure and selling pressure rose', 'A plan to sell shares'); Commercial labels them if it wants them in a gate"
+  },
+  "mustPass": {
+    "dealLines": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json dealFacts, all 46 (8 contain a carve-out example and are also reported apart)",
+    "sampleLines": [
+      "ALEC had fresh news in our sources. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.",
+      "On October 6, Robo.ai reported September revenue above US$100 million and said it expected about US$600 million of revenue for 2026. No audited statement in our sources supported the September figure.",
+      "On October 6, 60 Degrees Pharmaceuticals said it intended to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind it, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. No endpoint results were disclosed.",
+      "On October 6, Locafy reported in a 6-K a definitive agreement to acquire Map Labs' assets and customer base for up to $3.0 million in cash, $2.0 million up front and up to $1.0 million tied to performance. The company expects about $2.0 million in ARR and about $900,000 in 2026 EBIT from the business, subject to closing conditions, and no closing date was given.",
+      "The latest news we found was from October 4: at its first annual Las Vegas conference, AIFA said two Teach OS modules were live, four more were in development, and a formal launch was expected in the near term. No revenue, customer or date figures were given.",
+      "The latest company news we found was shareholder approval, announced August 25, of the all-stock merger of Olin and Huntsman, a step toward completion and not a close. On October 1, Wells Fargo kept its Equal-Weight rating and lowered its target to $16."
+    ],
+    "sampleSource": "docs/marketing/sample-reports-tv-2026-10-12.md at 344ebdb5 (ALEC, AIIO, SXTP, LCFY, AIFA, OLN), Commercial read 85 (2)"
+  }
+}
