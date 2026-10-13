@@ -1,0 +1,17 @@
+== re-gate at 878b706a (v7 prompt version 2 from e941f505, plus the test harness), 2026-10-13T01:06:31Z to 01:07:39Z (date -u), Ops's slot after the three ships
+== vitest tests/desk/reportWriterV7.test.ts tests/desk/reportWriterV6.test.ts: Test Files 2 passed (2), Tests 25 passed (25)
+== python -I scripts/writer-v7-controls.py
+C1 a CAUSAL connective missing from NEVER_JOIN: exit 1; the expected test failed: True; restored True
+C2 an opening missing from NEVER_OPEN: exit 1; the expected test failed: True; restored True
+C3 a v6 state phrase handed back in the sheet: exit 1; the expected test failed: True; restored True
+C4 an em dash in the system prompt: exit 1; the expected test failed: True; restored True
+C5 a clock time in the sheet: exit 1; the expected test failed: True; restored True
+C6 whyTradersMayCare handed back: exit 1; the expected test failed: True; restored True
+== next typegen exit 0; tsc --noEmit exit 0 (tsconfig includes **/*.ts, scripts too)
+== tsc control: a planted type error in scripts/report-writer-v7-test.ts was reported (1 line); bytes restored identical (cmp)
+== eslint lib/desk/reports/writerV7.ts tests/desk/reportWriterV7.test.ts scripts/report-writer-v7-test.ts scripts/readNamedKey.ts: exit 0
+(The controls ran a second time by my mistake at about 01:08Z, a command meant only to write this file; worktree clean after, git status empty.)
+== dry run at 878b706a, 2026-10-13T01:08:23Z to 01:09:12Z, exit 0: 48 of 48 PUBLISHED, 0 PROMPT_MISMATCH (the pipeline's v6 prompt equals the harness's on all 12 inputs), spend 0
+== prompt chars: v7 system 5,089 (after read 81) vs v6 8,477; user v7 10,122-17,550 vs v6 12,076-21,533
+== clock-like strings in the v7 sheets: 64, ALL in stored cited-source titles that carry an ISO timestamp (e.g. 'EX-99.2: 8-K 2026-10-02T13:13:26.000Z'); v7 adds none of its own; v6 sheets 352. Not stripped in this version; the tabulator counts clock times in the writers' output.
+== v6 per-state phrases in the v7 sheets: 0 (v6 sheets: 29)

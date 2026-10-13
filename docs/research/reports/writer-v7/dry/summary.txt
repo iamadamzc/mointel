@@ -1,0 +1,55 @@
+store ../mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; clock fixed at 2026-10-13T01:08:24.173Z
+days 2026-10-02, 2026-10-05, 2026-10-06; kinds PREMARKET, INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS; range $1-$20; one run per arm per input
+arms: prompt v6 and v7 (version 2) x writers gpt-5.6-luna, claude-opus-5-5 at effort high; checker gpt-5.6-terra on every arm
+stop $7: a batch launches only if spend + its worst case fits; DRY: stub models, nothing spent
+
+2026-10-02-PREMARKET-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+19898; tokens 
+2026-10-02-PREMARKET-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+19898; tokens 
+2026-10-02-PREMARKET-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+15615; tokens 
+2026-10-02-PREMARKET-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+15615; tokens 
+2026-10-05-PREMARKET-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+21533; tokens 
+2026-10-05-PREMARKET-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+21533; tokens 
+2026-10-05-PREMARKET-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+17550; tokens 
+2026-10-05-PREMARKET-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+17550; tokens 
+2026-10-06-PREMARKET-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+17571; tokens 
+2026-10-06-PREMARKET-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+17571; tokens 
+2026-10-06-PREMARKET-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+14227; tokens 
+2026-10-06-PREMARKET-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+14227; tokens 
+2026-10-02-INTO_RTH-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+20099; tokens 
+2026-10-02-INTO_RTH-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+20099; tokens 
+2026-10-02-INTO_RTH-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+16034; tokens 
+2026-10-02-INTO_RTH-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+16034; tokens 
+2026-10-05-INTO_RTH-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+21066; tokens 
+2026-10-05-INTO_RTH-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+21066; tokens 
+2026-10-05-INTO_RTH-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+16654; tokens 
+2026-10-05-INTO_RTH-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+16654; tokens 
+2026-10-06-INTO_RTH-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+15262; tokens 
+2026-10-06-INTO_RTH-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+15262; tokens 
+2026-10-06-INTO_RTH-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+12396; tokens 
+2026-10-06-INTO_RTH-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+12396; tokens 
+2026-10-02-INTO_POWER_HOUR-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+15564; tokens 
+2026-10-02-INTO_POWER_HOUR-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+15564; tokens 
+2026-10-02-INTO_POWER_HOUR-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+12442; tokens 
+2026-10-02-INTO_POWER_HOUR-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+12442; tokens 
+2026-10-05-INTO_POWER_HOUR-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+12641; tokens 
+2026-10-05-INTO_POWER_HOUR-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+12641; tokens 
+2026-10-05-INTO_POWER_HOUR-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+10633; tokens 
+2026-10-05-INTO_POWER_HOUR-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+10633; tokens 
+2026-10-06-INTO_POWER_HOUR-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+16380; tokens 
+2026-10-06-INTO_POWER_HOUR-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+16380; tokens 
+2026-10-06-INTO_POWER_HOUR-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+13210; tokens 
+2026-10-06-INTO_POWER_HOUR-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+13210; tokens 
+2026-10-02-AFTER_HOURS-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+15427; tokens 
+2026-10-02-AFTER_HOURS-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+15427; tokens 
+2026-10-02-AFTER_HOURS-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+12394; tokens 
+2026-10-02-AFTER_HOURS-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+12394; tokens 
+2026-10-05-AFTER_HOURS-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+12076; tokens 
+2026-10-05-AFTER_HOURS-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+12076; tokens 
+2026-10-05-AFTER_HOURS-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+10122; tokens 
+2026-10-05-AFTER_HOURS-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+10122; tokens 
+2026-10-06-AFTER_HOURS-v6-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+16566; tokens 
+2026-10-06-AFTER_HOURS-v6-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 8477+16566; tokens 
+2026-10-06-AFTER_HOURS-v7-w_luna: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+13398; tokens 
+2026-10-06-AFTER_HOURS-v7-w_claude-opus-5-5: PUBLISHED; 0 of 12 lines struck; $0.0000; prompt chars 5089+13398; tokens 
+
+TOTAL spend $0.0000 (dry: stub models, nothing spent)
