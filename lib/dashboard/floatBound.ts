@@ -426,8 +426,10 @@ export const FILED_COUNT_WORDS = {
   /** The issuance causes' caveat (the stored reason says shares may have been issued since). */
   mayBeHigher: 'The true share count may be higher.',
   preSplit: 'This count may be in pre-split share units.',
-  splitNotChecked: 'The desk has not checked for a share split since this count.',
-  noRecord: 'We have no record of a share split check for this count.',
+  // His words, 2026-10-13T10:28:14.413Z (Integration chat): "dont say "the desk has not checked..." say "there may
+  // have been a split, needs verification"". The no-record case reads the same to a user (Integration 39th).
+  splitNotChecked: 'There may have been a split, needs verification.',
+  noRecord: 'There may have been a split, needs verification.',
   tooOld: (date: string, days: number) => `This count is from ${date}, more than ${days} days ago.`,
   headline: (shares: string, asOf: string, form: string | null, filed: string | null) =>
     `The desk could not verify a TMI Float for this name. The company's filed share count is ${shares} shares as of ${asOf}${form && filed ? `, from a ${form} filed ${filed}` : ''}.`,

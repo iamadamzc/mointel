@@ -65,11 +65,12 @@ describe('his ruling: the count prints with the WARNING icon when a check failed
     });
   }
 
-  it('an ABSENT countChecks is the warning with "no record", never "has not checked" (Commercial 89e)', () => {
+  it('an ABSENT countChecks is the warning with the no-record words (his: "there may have been a split, needs verification")', () => {
     const view = floatCellView(refused('ISSUANCE_FLAGGED', undefined));
     expect(view.icon?.kind).toBe('warning');
     expect(view.icon?.title).toContain(FILED_COUNT_WORDS.noRecord);
-    expect(view.icon?.title).not.toContain(FILED_COUNT_WORDS.splitNotChecked);
+    expect(view.icon?.title).toContain('There may have been a split, needs verification.');
+    expect(view.icon?.title).not.toMatch(/has not checked/i);
   });
 
   it('a MALFORMED countChecks reads as absent (no record)', () => {
