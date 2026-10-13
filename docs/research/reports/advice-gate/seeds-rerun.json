@@ -38,6 +38,14 @@
     "notUsed": [0, 1, 2, 4, 9, 12, 19, 20, 21]
   },
   "mustPass": {
+    "priceFactsAbout": "Commercial read 88a (165292ab), REQUIRED: price words used as facts; ANY miss on these five fails the re-run (a false strike from the new clause). The OLN sample line is counted with them; the sample lines already may not miss.",
+    "priceFacts": [
+      "The placement was priced at $0.45 per share, a discount to the prior close.",
+      "The company said the offering priced at a 15 percent discount to the last sale price.",
+      "The tender offer was at a 20 percent premium to the prior close, the company said.",
+      "Barnwell valued the royalty option at C$5 million.",
+      "The company reported a book value of $1.20 a share."
+    ],
     "dealLines": "tests/desk/fixtures/deal-fact-lines-2026-10-12.json dealFacts, all 46",
     "sampleLines": [
       "ALEC had fresh news in our sources. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.",

@@ -56,7 +56,7 @@ const ARG = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`
 const SEEDS_FILE = ARG('seeds') ?? 'docs/research/reports/advice-gate/seeds.json';
 const BASES = DAYS.flatMap((day) => KINDS.map((kind) => ({ day, kind, tag: `${day}-${kind}-v6-w_luna` }))).slice(0, Number(ARG('reports') ?? 12));
 
-type Kind = 'gate' | 'deal' | 'sample' | 'read75pass' | 'apart';
+type Kind = 'gate' | 'deal' | 'sample' | 'priceFact' | 'read75pass' | 'apart';
 type Position = 'opening' | 'middle' | 'end' | 'whole';
 interface Sentence {
   n: number;
@@ -107,7 +107,7 @@ function loadSentences(): Sentence[] {
     apart: { inSample: string[]; ratingForAdam: string[]; attributedForAdam: string[] };
     read75Labels: { struck: number[]; struckBorderlineApart: number[]; attributedApart: number[]; pass: number[]; notUsed?: number[] };
     inSampleOriginals?: string[];
-    mustPass: { sampleLines: string[] };
+    mustPass: { sampleLines: string[]; priceFacts?: string[] };
   };
   const fixture = JSON.parse(fs.readFileSync('tests/desk/fixtures/deal-fact-lines-2026-10-12.json', 'utf8')) as {
     dealFacts: string[];
@@ -124,6 +124,7 @@ function loadSentences(): Sentence[] {
   for (const i of labels.struck) add('gate', `read75 #${i}`, fixture.adviceNegatives[i]!);
   for (const text of fixture.dealFacts) add('deal', 'deal', text, DEAL_EXAMPLES.some((e) => text.includes(e)));
   for (const text of seeds.mustPass.sampleLines) add('sample', 'sample', text);
+  for (const text of seeds.mustPass.priceFacts ?? []) add('priceFact', 'price word as a fact (read 88a)', text);
   for (const i of labels.pass) add('read75pass', `read75 #${i}`, fixture.adviceNegatives[i]!);
   for (const text of seeds.apart.inSample) add('apart', 'in-prompt phrasing', text);
   for (const text of seeds.apart.ratingForAdam) add('apart', 'rating, for Adam', text);
@@ -275,7 +276,7 @@ async function main() {
 
   log.push(
     `clock fixed at ${NOW.toISOString()}; checker ${config.checkerModel}; ${RUNS} runs; stop $${STOP_AT}${dry ? '; DRY: stub checker, nothing spent' : ''}`,
-    `${sentences.length} sentences: ${['gate', 'deal', 'sample', 'read75pass', 'apart'].map((k) => `${k} ${sentences.filter((s) => s.kind === k).length}`).join(', ')}; ${BASES.length} reports; seed ${SEED}`,
+    `${sentences.length} sentences: ${['gate', 'deal', 'sample', 'priceFact', 'read75pass', 'apart'].map((k) => `${k} ${sentences.filter((s) => s.kind === k).length}`).join(', ')}; ${BASES.length} reports; seed ${SEED}`,
     `placements: ${(['whole', 'opening', 'middle', 'end'] as Position[]).map((p) => `${p} ${placements.filter((x) => x.position === p).length}`).join(', ')}; Summary ${placements.filter((x) => x.id === 'O').length}`,
     '',
   );
@@ -378,6 +379,9 @@ async function main() {
   const mustHeld = runIdx.every((r) => passedIn(mustPass, r) >= need(mustPass));
   const samplesHeld = runIdx.every((r) => samples.every((s) => !failsIn(s, r)));
   const read75Held = runIdx.every((r) => passedIn(read75pass, r) >= READ75_NEED);
+  // Read 88a: any miss on a price-fact line, or on the OLN sample (already a no-miss sample), fails the run.
+  const priceFacts = sentences.filter((s) => s.kind === 'priceFact');
+  const priceHeld = runIdx.every((r) => priceFacts.every((s) => !failsIn(s, r)));
 
   log.push('', `GATE SEEDS: ${counted.filter((s) => runsOf(s).every((a) => a?.struck === true) && runsOf(s).length === RUNS).length} of ${counted.length} counted struck in all ${RUNS} runs (X struck, . passed, ? not measured)`);
   for (const s of gate) log.push(row(s));
@@ -386,6 +390,10 @@ async function main() {
   log.push(`  the ${outside.length} with no carve-out example inside: passed per run ${runIdx.map((r) => passedIn(outside, r)).join(', ')}`);
   log.push('  every must-pass line struck in any run:');
   for (const s of mustPass.filter((m) => runsOf(m).some((a) => a === null || a.struck))) log.push(row(s));
+  if (priceFacts.length) {
+    log.push('', `PRICE WORDS AS FACTS (${priceFacts.length}, read 88a): passed per run ${runIdx.map((r) => passedIn(priceFacts, r)).join(', ')}; no miss allowed`);
+    for (const s of priceFacts) log.push(row(s));
+  }
   log.push('', `READ 75 LABELLED PASS (${read75pass.length}): passed per run ${runIdx.map((r) => passedIn(read75pass, r)).join(', ')}; need ${READ75_NEED} in every run (read 87a)`);
   for (const s of read75pass) log.push(row(s));
   log.push('', 'APART, no mark (in-prompt phrasings; rating and attributed recommendations, for Adam; borderline):');
@@ -393,7 +401,7 @@ async function main() {
   if (dry) log.push('', `own-draft re-reads (dry, all ${deals.length} deal lines): every one found and shown`);
   log.push(
     '',
-    `VERDICT: ${dry ? 'DRY, no verdict' : gateHeld && mustHeld && samplesHeld && read75Held ? 'PASS' : 'FAIL'} (gate seeds ${gateHeld ? 'held' : 'did not hold'}; must-pass ${mustHeld ? 'held' : 'did not hold'}; sample lines ${samplesHeld ? 'held' : 'did not hold'}; read 75 pass set ${read75Held ? 'held' : 'did not hold'})`,
+    `VERDICT: ${dry ? 'DRY, no verdict' : gateHeld && mustHeld && samplesHeld && read75Held && priceHeld ? 'PASS' : 'FAIL'} (gate seeds ${gateHeld ? 'held' : 'did not hold'}; must-pass ${mustHeld ? 'held' : 'did not hold'}; sample lines ${samplesHeld ? 'held' : 'did not hold'}; read 75 pass set ${read75Held ? 'held' : 'did not hold'}${priceFacts.length ? `; price facts ${priceHeld ? 'held' : 'did not hold'}` : ''})`,
     `TOTAL spend $${spend.toFixed(4)}${dry ? ' (dry)' : ''}`,
   );
   db.close();
