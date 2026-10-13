@@ -103,6 +103,28 @@ export interface FloatBound {
    * stored payload); Design's reader takes a missing value as NOT_RUN, the value that claims least.
    */
   countChecks?: FloatCountChecks;
+  /**
+   * L7 (his "yes to all three", 2026-10-13T21:36:56.972Z; Research's "Design adds it"): where the count came from.
+   * `stated`: a later filing states it, and the count fields ARE that filing's (form, filed, asOf). The rest is the read
+   * of later filings (`StatedCountCheck`). Absent when the row has no read (an older row, or no cover count): today's words.
+   */
+  countSource?: FloatCountSource;
+}
+
+export interface FloatCountSource {
+  stated: boolean;
+  read: number;
+  unread: number;
+  capped: number;
+  /** The newest date that carried different counts (none used), or null. */
+  conflictAsOf: string | null;
+}
+
+/** The row's later-filing read, for the face (L7). Undefined when the row has none. */
+export function countSourceOf(row: FloatBoundRow): FloatCountSource | undefined {
+  const s = row.statedCount;
+  if (!s) return undefined;
+  return { stated: s.found != null, read: s.read, unread: s.unread, capped: s.capped, conflictAsOf: s.conflict?.asOf ?? null };
 }
 
 export interface FloatInsider {
@@ -138,7 +160,8 @@ function filedOn(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' }): s
 
 export function toFloatBound(row: FloatBoundRow, cell: FloatCell, countChecks: FloatCountChecks): FloatBound {
   const count = row.count.kind === 'COUNT' ? row.count : null;
-  const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null, countChecks };
+  const source = countSourceOf(row);
+  const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null, countChecks, ...(source ? { countSource: source } : {}) };
   return cell.state === 'PRODUCED'
     ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell) }
     : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [], ...filed, insiders: [] };
