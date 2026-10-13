@@ -808,9 +808,10 @@ const CHECKER_SYSTEM_V5 = [
  * ruling 2026-10-13; the rule half is `summaryAllowance`), and the facts it is shown are the sheet the writer got.
  * 13: read 82's independent read in the same call (`SECOND_READ_V6`, `VERDICT_SCHEMA_V6`). 14: Commercial read 85
  * (bac7a1ea): the attributed-statement carve-out (REQUIRED) and its own-share-price limit (3a); "names another ticker
- * on the board" (REQUIRED); the "confirmed" example labelled as a counterparty's own action.
+ * on the board" (REQUIRED); the "confirmed" example labelled as a counterparty's own action. 15: read 86 (859ed1a0)
+ * widens the own-share-price sentence to a named company's or source's statements.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 14;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 15;
 
 /**
  * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
@@ -835,9 +836,9 @@ export const DEAL_EXAMPLES = [
 /** Commercial read 85 (bac7a1ea), REQUIRED, verbatim: an attributed statement is a fact about what was said. */
 export const ATTRIBUTED_CARVE_OUT =
   "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.";
-/** Read 85 3(a), its ruling put as a rule: the carve-out covers statements about the business and an attributed analyst target. */
+/** Read 85 3(a), its ruling put as a rule; CONFIRMED by read 86 (859ed1a0), widened to "a named company's or source's statements". */
 export const OWN_PRICE_NOT_COVERED =
-  "The carve-out covers a company's statements about its business and events and an attributed analyst target, not a promise about its own share price: \"the company said its shares will double\" is a forecast.";
+  "The carve-out covers a named company's or source's statements about its business and events and an attributed analyst target, not a promise about the company's own share price: \"the company said its shares will double\" is a forecast.";
 
 const SECOND_READ_V6 = [
   'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',

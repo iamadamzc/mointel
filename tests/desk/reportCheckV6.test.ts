@@ -431,6 +431,8 @@ describe("read 82's independent read in the checker call (v6 13)", () => {
     const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)).system;
     expect(v6).toContain(ATTRIBUTED_CARVE_OUT);
     expect(v6).toContain(OWN_PRICE_NOT_COVERED);
+    // Read 86 (859ed1a0): confirmed, widened to a named company's or source's statements.
+    expect(OWN_PRICE_NOT_COVERED).toContain("The carve-out covers a named company's or source's statements about its business and events");
     // Read 85 (2), its words (first letter capitalised as a sentence).
     expect(ATTRIBUTED_CARVE_OUT).toBe(
       "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.",
