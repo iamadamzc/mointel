@@ -28,18 +28,28 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { DEAL_EXAMPLES, type CheckerModel } from '../lib/desk/reports/check';
+import { AnthropicReportModel } from '../lib/desk/reports/anthropicReportModel';
+import { DEAL_EXAMPLES, VERDICT_SCHEMA_V6, type CheckerModel } from '../lib/desk/reports/check';
 import type { ReportKind } from '../lib/desk/reports/contract';
 import type { ReportModelUsage } from '../lib/desk/reports/openaiReportModel';
 import { runReport, type ReportRun } from '../lib/desk/reports/pipeline';
-import { createReportModelsV6 } from '../lib/desk/reports/runner';
+import { CLAUDE_CHECKER_TIMEOUT_MS, createReportModelsV6 } from '../lib/desk/reports/runner';
+import { readNamedKey } from './readNamedKey';
 import type { ReportModel } from '../lib/desk/reports/writer';
 import { openDatabase, type MarketDatabase } from '../lib/market/store/db';
 import { readReportModelConfig } from '../lib/research/config';
 
 const RANGE = { min: 1, max: 20 };
-/** The hard stop in dollars; --stop=<n> lowers it (read 88's re-run runs with --stop=2). Never above his $3. */
-const STOP_AT = Math.min(3, Number(process.argv.find((a) => a.startsWith('--stop='))?.slice(7) ?? 3));
+/**
+ * --claude: the gate on the CLAUDE checker (his "move it", Integration chat 1f30f0a2, uuid e51e9b47; Integration's
+ * terms: Opus 5.5 only, the Tests-TMI key read by name from --key-file=<path>, NO fallback so a Claude failure counts
+ * against the run, stop $8). Without it the gate is terra's, as it ran on 10-13.
+ */
+const CLAUDE = process.argv.includes('--claude');
+const KEY_FILE = process.argv.find((a) => a.startsWith('--key-file='))?.slice('--key-file='.length);
+const CLAUDE_MODEL = 'claude-opus-5-5';
+/** The hard stop in dollars; --stop=<n> lowers it. Never above his cap: $3 for terra, $8 for the Claude gate. */
+const STOP_AT = Math.min(CLAUDE ? 8 : 3, Number(process.argv.find((a) => a.startsWith('--stop='))?.slice(7) ?? (CLAUDE ? 8 : 3)));
 const RUNS = 3;
 const SEED = 20261013;
 const MAX_NAME_LINES = 11;
@@ -47,7 +57,11 @@ const PASS_SHARE = 0.95;
 /** Read 87a (Commercial): the 13 read-75 pass lines need at least 12 of 13 in every run; each miss is listed and judged. */
 const READ75_NEED = 12;
 const PRICE_TERRA = { input: 2, output: 12 };
-const WORST_CHECK = (26_000 * PRICE_TERRA.input + 10_000 * PRICE_TERRA.output) / 1e6;
+/** Opus 5.5, $4 / $20 per million tokens (the bundled Claude API reference, cached 2026-10-06). */
+const PRICE_OPUS = { input: 4, output: 20 };
+const PRICE = CLAUDE ? PRICE_OPUS : PRICE_TERRA;
+/** The reservation before each check: the 10-12 Claude checker averaged 29,405 in / 1,927 out, so this is well above it. */
+const WORST_CHECK = CLAUDE ? (40_000 * PRICE.input + 12_000 * PRICE.output) / 1e6 : (26_000 * PRICE.input + 10_000 * PRICE.output) / 1e6;
 
 const DAYS = ['2026-10-02', '2026-10-05', '2026-10-06'];
 const KINDS: ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'];
@@ -214,7 +228,10 @@ async function main() {
   if (!dbPath || !v7Raw || !reportsRaw || !out) throw new Error('usage: advice-gate.ts <db> <v7-raw-dir> <10-12-raw-dir> <out-dir> [--dry]');
   const dry = args.includes('--dry');
   const config = readReportModelConfig();
-  if (!dry && !config.apiKey) throw new Error('the OpenAI key is missing from the environment (run with --env-file); nothing run');
+  if (!dry && !CLAUDE && !config.apiKey) throw new Error('the OpenAI key is missing from the environment (run with --env-file); nothing run');
+  // The Tests-TMI key, read by name and never printed (scripts/readNamedKey.ts).
+  if (!dry && CLAUDE && !KEY_FILE) throw new Error('--claude needs --key-file=<path>; nothing run');
+  const claudeKey = !dry && CLAUDE ? readNamedKey(KEY_FILE!, 'tests-tmi') : null;
   fs.mkdirSync(out, { recursive: true });
   const db: MarketDatabase = openDatabase(dbPath, { readonly: true, skipSchema: true });
   const NOW = new Date();
@@ -229,9 +246,16 @@ async function main() {
       return null;
     }
     const usage: ReportModelUsage[] = [];
-    const checker = dry ? stubChecker(shown) : createReportModelsV6({ ...config }, (u) => usage.push(u)).checker;
+    const onUsage = (u: ReportModelUsage) => usage.push(u);
+    // No fallback in the gate: the models carry only the checker under test, so a Claude failure is a MISSED run.
+    const checker = dry
+      ? stubChecker(shown)
+      : CLAUDE
+        ? new AnthropicReportModel({ apiKey: claudeKey, model: CLAUDE_MODEL, schema: VERDICT_SCHEMA_V6, timeoutMs: CLAUDE_CHECKER_TIMEOUT_MS, onUsage })
+        : createReportModelsV6({ ...config, claudeChecker: null }, onUsage).checker;
     const run = await runReport(db, { kind, rangeId: '1-20', tradingDate: day, range: RANGE }, { writer: new Replay(JSON.stringify(draft)), checker }, () => NOW);
-    const cost = usage.reduce((s, u) => s + ((u.inputTokens ?? 26_000) * PRICE_TERRA.input + (u.outputTokens ?? 10_000) * PRICE_TERRA.output) / 1e6, 0);
+    // Unknown token counts are priced at the reservation's sizes, so a missing count never under-counts spend.
+    const cost = usage.reduce((s, u) => s + ((u.inputTokens ?? 40_000) * PRICE.input + (u.outputTokens ?? 12_000) * PRICE.output) / 1e6, 0);
     spend += cost;
     records.push({ label, status: run.status, strikes: run.diagnostics?.strikes ?? [], usage, cost });
     log.push(`${label}: ${run.status}; $${cost.toFixed(4)}`);
@@ -275,7 +299,7 @@ async function main() {
   );
 
   log.push(
-    `clock fixed at ${NOW.toISOString()}; checker ${config.checkerModel}; ${RUNS} runs; stop $${STOP_AT}${dry ? '; DRY: stub checker, nothing spent' : ''}`,
+    `clock fixed at ${NOW.toISOString()}; checker ${CLAUDE ? `${CLAUDE_MODEL} (Tests-TMI key, no fallback)` : config.checkerModel}; ${RUNS} runs; stop $${STOP_AT}${dry ? '; DRY: stub checker, nothing spent' : ''}`,
     `${sentences.length} sentences: ${['gate', 'deal', 'sample', 'priceFact', 'read75pass', 'apart'].map((k) => `${k} ${sentences.filter((s) => s.kind === k).length}`).join(', ')}; ${BASES.length} reports; seed ${SEED}`,
     `placements: ${(['whole', 'opening', 'middle', 'end'] as Position[]).map((p) => `${p} ${placements.filter((x) => x.position === p).length}`).join(', ')}; Summary ${placements.filter((x) => x.id === 'O').length}`,
     '',
@@ -401,6 +425,7 @@ async function main() {
   if (dry) log.push('', `own-draft re-reads (dry, all ${deals.length} deal lines): every one found and shown`);
   log.push(
     '',
+    `checks that did not publish (a failed check counts against the gate): ${(records as Array<{ status: string }>).filter((r) => r.status !== 'PUBLISHED').length} of ${records.length}`,
     `VERDICT: ${dry ? 'DRY, no verdict' : gateHeld && mustHeld && samplesHeld && read75Held && priceHeld ? 'PASS' : 'FAIL'} (gate seeds ${gateHeld ? 'held' : 'did not hold'}; must-pass ${mustHeld ? 'held' : 'did not hold'}; sample lines ${samplesHeld ? 'held' : 'did not hold'}; read 75 pass set ${read75Held ? 'held' : 'did not hold'}${priceFacts.length ? `; price facts ${priceHeld ? 'held' : 'did not hold'}` : ''})`,
     `TOTAL spend $${spend.toFixed(4)}${dry ? ' (dry)' : ''}`,
   );
