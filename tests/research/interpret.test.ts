@@ -1375,6 +1375,60 @@ describe('reported shares outstanding', () => {
     const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
     expect(built.reportedSharesOutstanding).toBeNull();
   });
+
+  // EZRA, 2026-10-13 (Integration 39th's ruling; Ops's keyed reads): 13 canonical rows and 16 newer non-canonical rows
+  // sat ahead of a 07-30 share count, so the count fell past the 28 cap and the dossier said "No filed share count".
+  function busyFiler(db: ReturnType<typeof temporaryDb>, canonical: number, newer: number) {
+    const filing = (i: number, isCanonical: boolean) => ({
+      ...factsSource(),
+      sourceType: 'SEC_FILING' as const,
+      title: `Filing ${i}`,
+      url: `https://www.sec.gov/f${i}`,
+      publishedAt: `2026-09-${String(1 + (i % 28)).padStart(2, '0')}T12:00:00Z`,
+      contentHash: `f${i}`,
+      documentFingerprint: `f${i}`,
+      metadata: {},
+      canonical: isCanonical,
+    });
+    insertResearchSources(db, [
+      ...Array.from({ length: canonical }, (_, i) => filing(i, true)),
+      ...Array.from({ length: newer }, (_, i) => filing(100 + i, false)),
+      factsSource({ publishedAt: '2026-07-30', metadata: { sharesOutstanding: 1_002_998, asOf: '2026-07-30', concept: 'dei:EntityCommonStockSharesOutstanding' } }),
+    ]);
+  }
+
+  it("the newest share count keeps a place when a busy filer's newer rows fill the cap (EZRA), and the cap stays 28", () => {
+    const db = temporaryDb();
+    acme(db);
+    busyFiler(db, 13, 16);
+    const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+    expect(built.sources).toHaveLength(28);
+    expect(built.reportedSharesOutstanding?.shares).toBe(1_002_998);
+    expect(built.sources.some((source) => source.id === built.reportedSharesOutstanding!.sourceId)).toBe(true);
+    // Every canonical row is still in: the count takes the LAST place, which was the oldest non-canonical row's.
+    expect(built.sources.filter((source) => source.canonical)).toHaveLength(13);
+  });
+
+  it('under the cap nothing moves', () => {
+    const db = temporaryDb();
+    acme(db);
+    busyFiler(db, 5, 5);
+    const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+    expect(built.sources).toHaveLength(11);
+    expect(built.reportedSharesOutstanding?.shares).toBe(1_002_998);
+  });
+
+  it('a row with no usable count is never the one kept (a zero count is still no count)', () => {
+    const db = temporaryDb();
+    acme(db);
+    insertResearchSources(db, [
+      factsSource({ contentHash: 'zero', documentFingerprint: 'zero', url: 'https://data.sec.gov/zero.json', publishedAt: '2026-10-01', metadata: { sharesOutstanding: 0, asOf: '2026-09-30' } }),
+    ]);
+    busyFiler(db, 13, 16);
+    const built = buildEvidenceBundle(db, { ticker: 'ACME', tradingDate: DATE });
+    expect(built.sources).toHaveLength(28);
+    expect(built.reportedSharesOutstanding?.shares).toBe(1_002_998);
+  });
 });
 
 /**
