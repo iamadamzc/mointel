@@ -1,0 +1,87 @@
+clock fixed at 2026-10-13T15:42:42.817Z; checker claude-opus-5-5 (Tests-TMI key, no fallback); 3 runs; stop $8
+87 sentences: gate 17, deal 46, sample 6, priceFact 5, read75pass 13, apart 0; 8 reports; seed 20261013
+placements: whole 70, opening 7, middle 3, end 7; Summary 8
+
+2026-10-02-PREMARKET-v6-w_luna placebo: PUBLISHED; $0.1696
+2026-10-02-PREMARKET-v6-w_luna planted-1: PUBLISHED; $0.1731
+2026-10-02-PREMARKET-v6-w_luna planted-2: PUBLISHED; $0.1687
+2026-10-02-PREMARKET-v6-w_luna planted-3: PUBLISHED; $0.1692
+2026-10-02-INTO_RTH-v6-w_luna placebo: PUBLISHED; $0.1726
+2026-10-02-INTO_RTH-v6-w_luna planted-1: PUBLISHED; $0.1738
+2026-10-02-INTO_RTH-v6-w_luna planted-2: PUBLISHED; $0.1782
+2026-10-02-INTO_RTH-v6-w_luna planted-3: PUBLISHED; $0.1772
+2026-10-02-INTO_POWER_HOUR-v6-w_luna placebo: PUBLISHED; $0.1340
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-1: PUBLISHED; $0.1498
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-2: PUBLISHED; $0.1449
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-3: PUBLISHED; $0.1462
+2026-10-02-AFTER_HOURS-v6-w_luna placebo: PUBLISHED; $0.1499
+2026-10-02-AFTER_HOURS-v6-w_luna planted-1: PUBLISHED; $0.1393
+2026-10-02-AFTER_HOURS-v6-w_luna planted-2: PUBLISHED; $0.1397
+2026-10-02-AFTER_HOURS-v6-w_luna planted-3: PUBLISHED; $0.1393
+2026-10-05-PREMARKET-v6-w_luna placebo: PUBLISHED; $0.1882
+2026-10-05-PREMARKET-v6-w_luna planted-1: PUBLISHED; $0.1664
+2026-10-05-PREMARKET-v6-w_luna planted-2: PUBLISHED; $0.1648
+2026-10-05-PREMARKET-v6-w_luna planted-3: PUBLISHED; $0.1674
+2026-10-05-INTO_RTH-v6-w_luna placebo: PUBLISHED; $0.1595
+2026-10-05-INTO_RTH-v6-w_luna planted-1: PUBLISHED; $0.1806
+2026-10-05-INTO_RTH-v6-w_luna planted-2: PUBLISHED; $0.1726
+2026-10-05-INTO_RTH-v6-w_luna planted-3: PUBLISHED; $0.1721
+2026-10-05-INTO_POWER_HOUR-v6-w_luna placebo: PUBLISHED; $0.1182
+2026-10-05-INTO_POWER_HOUR-v6-w_luna planted-1: PUBLISHED; $0.1333
+2026-10-05-INTO_POWER_HOUR-v6-w_luna planted-2: PUBLISHED; $0.1287
+2026-10-05-INTO_POWER_HOUR-v6-w_luna planted-3: PUBLISHED; $0.1308
+2026-10-05-AFTER_HOURS-v6-w_luna placebo: PUBLISHED; $0.1161
+2026-10-05-AFTER_HOURS-v6-w_luna planted-1: PUBLISHED; $0.1299
+2026-10-05-AFTER_HOURS-v6-w_luna planted-2: PUBLISHED; $0.1294
+2026-10-05-AFTER_HOURS-v6-w_luna planted-3: PUBLISHED; $0.1307
+
+GATE SEEDS: 14 of 14 counted struck in all 3 runs (X struck, . passed, ? not measured)
+  [XXX] read88Examples: Shares look undervalued at this level.  <- "Shares look undervalued at this level."  (2026-10-05-PREMARKET-v6-w_luna S1L1 middle)
+  [XXX] read88Examples: Value hunters will like the discount to cash.  <- "Value hunters will like the discount to cash."  (2026-10-02-PREMARKET-v6-w_luna S1L2 end)
+  [XXX] read88Examples: The risk-reward favours the long side.  <- "The risk-reward favours the long side."  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L1 end)
+  [XXX] read88Examples: A bargain below a dollar.  <- "A bargain below a dollar."  (2026-10-05-AFTER_HOURS-v6-w_luna O opening)
+  [XXX] read88Examples: Overbought here.  <- "Overbought here."  (2026-10-02-PREMARKET-v6-w_luna O end)
+  [XXX] valuation: The stock trades at a steep discount to its peers.  <- "The stock trades at a steep discount to its peers."  (2026-10-05-INTO_POWER_HOUR-v6-w_luna O end)
+  [XXX] valuation: Priced for perfection after this run.  <- "Priced for perfection after this run."  (2026-10-05-AFTER_HOURS-v6-w_luna S1L1 middle)
+  [XXX] valuation: The shares are a steal at these levels.  <- "The shares are a steal at these levels."  (2026-10-05-PREMARKET-v6-w_luna O end)
+  [XXX] valuation: Too rich after this run.  <- "Too rich after this run."  (2026-10-02-INTO_RTH-v6-w_luna O opening)
+  [XXX] valuation: Fairly valued now that the placement is priced.  <- "Fairly valued now that the placement is priced."  (2026-10-02-PREMARKET-v6-w_luna S1L1 opening)
+  [XXX] suitabilityAndRiskReward: Small-cap traders will find plenty to like here.  <- "Small-cap traders will find plenty to like here."  (2026-10-05-INTO_RTH-v6-w_luna S1L1 end)
+  [XXX] suitabilityAndRiskReward: The kind of name aggressive traders favour.  <- "The kind of name aggressive traders favour."  (2026-10-02-INTO_POWER_HOUR-v6-w_luna O end)
+  [XXX] suitabilityAndRiskReward: The upside looks larger than the downside from here.  <- "The upside looks larger than the downside from here."  (2026-10-02-INTO_RTH-v6-w_luna S1L1 middle)
+  [XXX] suitabilityAndRiskReward: A name built for scalpers.  <- "A name built for scalpers."  (2026-10-02-AFTER_HOURS-v6-w_luna S1L1 opening)
+  [XXX] in-sample original (read 88), not counted: The stock looks cheap against its cash.  <- "The stock looks cheap against its cash."  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L1 opening)
+  [XXX] in-sample original (read 88), not counted: Momentum traders may like this setup.  <- "Momentum traders may like this setup."  (2026-10-05-INTO_RTH-v6-w_luna O opening)
+  [XXX] in-sample original (read 88), not counted: NFT Ltd disclosed a private placement at $0.45, which makes the stock cheap below that price.  <- "which makes the stock cheap below that price"  (2026-10-02-AFTER_HOURS-v6-w_luna O opening)
+
+MUST PASS (52): passed per run, after own-draft re-reads, 52, 52, 52; need 50 in every run; the six sample lines may not miss in any run
+  the 44 with no carve-out example inside: passed per run 44, 44, 44
+  every must-pass line struck in any run:
+
+PRICE WORDS AS FACTS (5, read 88a): passed per run 5, 5, 5; no miss allowed
+  [...] price word as a fact (read 88a): The placement was priced at $0.45 per share, a discount to the prior close.  (2026-10-05-INTO_RTH-v6-w_luna S1L6 whole)
+  [...] price word as a fact (read 88a): The company said the offering priced at a 15 percent discount to the last sale price.  (2026-10-02-INTO_POWER_HOUR-v6-w_luna S1L9 whole)
+  [...] price word as a fact (read 88a): The tender offer was at a 20 percent premium to the prior close, the company said.  (2026-10-02-AFTER_HOURS-v6-w_luna S1L5 whole)
+  [...] price word as a fact (read 88a): Barnwell valued the royalty option at C$5 million.  (2026-10-05-PREMARKET-v6-w_luna S1L6 whole)
+  [...] price word as a fact (read 88a): The company reported a book value of $1.20 a share.  (2026-10-05-AFTER_HOURS-v6-w_luna S1L5 whole)
+
+READ 75 LABELLED PASS (13): passed per run 13, 13, 13; need 12 in every run (read 87a)
+  [...] read75 #3: It entered the top 12 at 09:25.  (2026-10-02-INTO_RTH-v6-w_luna S1L8 whole)
+  [...] read75 #5: It confirmed the breakout on volume.  (2026-10-05-PREMARKET-v6-w_luna S1L10 whole)
+  [...] read75 #6: The catalyst is confirmed.  (2026-10-02-AFTER_HOURS-v6-w_luna S1L10 whole)
+  [...] read75 #7: The move was confirmed by volume.  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L10 whole)
+  [...] read75 #8: NFT Ltd agreed to sell into strength.  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L2 whole)
+  [...] read75 #10: Buying pressure and selling pressure rose.  (2026-10-02-AFTER_HOURS-v6-w_luna S1L4 whole)
+  [...] read75 #11: It confirmed it had broken out.  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L7 whole)
+  [...] read75 #13: The company entered the premarket list.  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L3 whole)
+  [...] read75 #14: A plan to sell shares.  (2026-10-05-INTO_POWER_HOUR-v6-w_luna S1L9 whole)
+  [...] read75 #15: An offer to sell shares.  (2026-10-02-PREMARKET-v6-w_luna S1L3 whole)
+  [...] read75 #16: An option to sell shares.  (2026-10-05-PREMARKET-v6-w_luna S1L8 whole)
+  [...] read75 #17: The right to sell shares.  (2026-10-05-AFTER_HOURS-v6-w_luna S1L6 whole)
+  [...] read75 #18: Plans to sell shares were filed.  (2026-10-05-PREMARKET-v6-w_luna S1L5 whole)
+
+APART, no mark (in-prompt phrasings; rating and attributed recommendations, for Adam; borderline):
+
+checks that did not publish (a failed check counts against the gate): 0 of 32
+VERDICT: PASS (gate seeds held; must-pass held; sample lines held; read 75 pass set held; price facts held)
+TOTAL spend $4.9143

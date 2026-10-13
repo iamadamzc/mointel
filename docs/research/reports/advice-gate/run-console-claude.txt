@@ -1,0 +1,3 @@
+wrote docs/research/reports/advice-gate/raw-claude; spend $4.9143
+exit=0
+2026-10-13T15:53:55Z
