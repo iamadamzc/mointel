@@ -64,6 +64,7 @@ import {
   isMarketDataExpected,
 } from '../lib/market/session';
 import { RthCloseCapture } from '../lib/market/rthCloseCapture';
+import { RTH_CLOSE_RECHECK_AFTER_SECONDS, closeReplacements, formatRecheckLine } from '../lib/market/rthCloseRecheck';
 import {
   SymbolAdmission,
   invalidSymbolFrom,
@@ -269,6 +270,9 @@ export class MarketRuntime {
   /** When today's official RTH close may be asked for, and whether it was. */
   private readonly rthClose = new RthCloseCapture();
   private rthCloseCaptureInFlight = false;
+  /** The 16:30 ET second look at every stored close: the same retry machine, its own episode per session. */
+  private readonly rthCloseRecheck = new RthCloseCapture();
+  private rthCloseRecheckInFlight = false;
 
   constructor(options: RuntimeOptions) {
     this.config = options.config;
@@ -1554,7 +1558,75 @@ export class MarketRuntime {
       void this.preOpenSplitCheckIfDue();
       void this.drainPromotions();
       void this.captureTodayRthClose();
+      void this.recheckTodayRthClose();
     }, this.config.flushIntervalMs);
+  }
+
+  /**
+   * The second look at today's closes, 30 minutes after the bell (his "yes to the 4:30 close re-check",
+   * 2026-10-13T14:54:19.833Z; lib/market/rthCloseRecheck.ts). The first capture latches at close + 120 s, and a close
+   * Alpaca finalises later stayed stale for the evening (1 of 300 on 2026-10-12, docs/ops-readings/close-probe-
+   * 2026-10-12.txt). One snapshot pass over every symbol that has a stored close; any that the daily bar no longer
+   * agrees with is replaced through setTodayRthClose (same source label: it IS Alpaca's daily-bar close, read later),
+   * which refreshes derived values and marks the row dirty, so the next flush stores it. Each replacement is logged.
+   * Failures retry on the same back-off as the first capture; a symbol with no fresh bar is left alone.
+   */
+  private async recheckTodayRthClose(): Promise<void> {
+    if (!this.rest) return;
+    this.rthCloseRecheck.beginTradingDate(this.tradingDate);
+    if (this.rthCloseRecheckInFlight || !this.rthCloseRecheck.shouldAttempt()) return;
+
+    const now = new Date();
+    const closeMinutes = this.closeMinutesFor(this.tradingDate);
+    if (!hasRthClosed(now, this.tradingDate, closeMinutes)) return;
+    const secondsSinceClose =
+      (now.getTime() - afterHoursStartUtc(this.tradingDate, closeMinutes).getTime()) / 1000;
+    if (secondsSinceClose < RTH_CLOSE_RECHECK_AFTER_SECONDS) return;
+
+    this.rthCloseRecheckInFlight = true;
+    try {
+      const stored = this.engine.todayRthCloses();
+      if (stored.size === 0) {
+        this.rthCloseRecheck.recordSuccess(0);
+        this.logger.info(formatRecheckLine(0, []));
+        return;
+      }
+      const { accepted: symbols } = this.admission.validate([...stored.keys()], 'rth-close-recheck');
+      if (symbols.length === 0) {
+        this.rthCloseRecheck.recordNoValidSymbols('every stored-close symbol is blocked; nothing to re-check');
+        return;
+      }
+      this.rthCloseRecheck.noteAttempt();
+      const snapshots = await this.fetchSnapshotsIsolatingBadSymbols(symbols, 'rth-close-recheck');
+      const fresh = new Map<string, number | null>();
+      for (const [symbol, snapshot] of snapshots) {
+        const bar = snapshot.dailyBar;
+        fresh.set(symbol, bar && etDateString(new Date(bar.t)) === this.tradingDate ? bar.c : null);
+      }
+      const accepted = new Set(symbols);
+      const checked = new Map([...stored].filter(([symbol]) => accepted.has(symbol)));
+      const replaced = closeReplacements(checked, fresh);
+      for (const r of replaced) {
+        this.engine.setTodayRthClose(r.symbol, {
+          close: r.next,
+          date: this.tradingDate,
+          source: 'alpaca-daily-bar-rth-close',
+        });
+      }
+      this.rthCloseRecheck.recordSuccess(replaced.length);
+      this.logger.info(formatRecheckLine(checked.size, replaced));
+    } catch (error) {
+      const retryAfterMs = error instanceof AlpacaHttpError ? error.retryAfterMs : null;
+      this.rthCloseRecheck.recordFailure({ detail: this.redactError(error), retryAfterMs });
+      const { state, consecutiveFailures, nextAttemptAt } = this.rthCloseRecheck.status;
+      const line =
+        `[demand] RTH close re-check failed (${consecutiveFailures} in a row), ` +
+        `next attempt ${nextAttemptAt}: ${this.redactError(error)}`;
+      if (state === 'DEGRADED') this.logger.error(line);
+      else this.logger.warn(line);
+    } finally {
+      this.rthCloseRecheckInFlight = false;
+    }
   }
 
   /**

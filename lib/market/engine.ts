@@ -1005,6 +1005,17 @@ export class DemandEngine {
     return this.rthClosed;
   }
 
+  /** Every symbol's stored close for today, for the 16:30 ET re-check (lib/market/rthCloseRecheck.ts). */
+  todayRthCloses(): Map<string, number> {
+    const out = new Map<string, number>();
+    if (!this.rthClosed) return out;
+    for (const runtime of this.tickers.values()) {
+      const close = runtime.todayRthClose.close;
+      if (close !== null && Number.isFinite(close)) out.set(runtime.symbol, close);
+    }
+    return out;
+  }
+
   /** Symbols still missing today's regular-session close after it has ended. */
   symbolsMissingTodayRthClose(): string[] {
     if (!this.rthClosed) return [];
