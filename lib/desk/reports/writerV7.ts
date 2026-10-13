@@ -5,8 +5,8 @@
  * His direction (Marketing chat e89d9590, 2026-10-12): "the prompt should include the character of the voice we want,
  * which is a financial news tv desk reporter" (uuid 80ad319c, 23:15:03.070Z), then "dont give it structure so rigidly.
  * say what all must be included, but tell it to do it in a human style in the voice described. instruct it to not be
- * robotic, but to be coherent." (uuid 2a33f9e0, 23:24:38.673Z). The character paragraph is Marketing's
- * (`docs/marketing/voice-tv-desk-2026-10-12.md` at 0fad1663, Commercial read 79).
+ * robotic, but to be coherent." (uuid 2a33f9e0, 23:24:38.673Z). The character paragraph and the specimen are
+ * Marketing's, verbatim (`docs/marketing/voice-tv-desk-2026-10-12.md` at 6992c911, Commercial read 83a).
  *
  * What changed from v6:
  * - ONE SHORT SYSTEM PROMPT: the character, what the Summary and each line must include, and the truth rules once.
@@ -14,9 +14,8 @@
  * - FACTS, NOT WORDS: v6 handed the model a fixed phrase per news state for every name (`writerV6.ts` NEWS_WORDS,
  *   "fresh news found in our sources"), which it repeated name after name. The v7 sheets give each name's news STATE;
  *   only the three ruled state phrases are words the model must use, and they live once in the system prompt.
- * - NO FIGURE IN A NAME LINE: the card prints the prices and the move above it (Design, from `sessionReports.ts`
- *   pathView), so the name sheet gives the move as direction and high words computed from the card's own figures,
- *   not as a percent. The Summary keeps its given percents.
+ * - NO MOVE IN A NAME LINE: the card prints the prices and the move above it (Design, from `sessionReports.ts`
+ *   pathView), so the name sheet gives no move at all (version 3). The Summary keeps its given percents.
  * - NO CLOCK TIME: the voice dates every time and never writes one, so the sheets give dates, not times of day.
  * The checker is unchanged (v6's), and the reply shape is v6's (`parseDraftV6`).
  */
@@ -37,9 +36,11 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * significance; a named recap mover is a COVERED 50 percent mover; a no-card-path price is stated in the past tense.
  * 3: the 10-13 test (45c16b15) and his rule "dont strike words" (c6b4168d): the move and high words leave the name
  * sheet (the line is the news); the Summary may restate a named name's own news from its research; the deal
- * "exception" becomes plain guidance (no word is struck).
+ * "exception" becomes plain guidance (no word is struck). 4: aligned with the voice doc at 6992c911 (Integration,
+ * 2026-10-13): Marketing's character paragraph and specimen verbatim (no move in a name line, except the one sentence
+ * that nothing in our sources tied the move to the news); the rules the paragraph already states are not repeated.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 3;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 4;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -154,10 +155,40 @@ export const NEVER_JOIN = [
 /** Openings the checker strikes as leaning on another line (check.ts LEANS_ON_ANOTHER). */
 export const NEVER_OPEN = ['It', 'Its', "It's", 'Also', 'The same', 'This name', 'That name', 'They', 'Both', 'Either'];
 
+/** The joining words the voice paragraph does not list (they are in NEVER_JOIN, check.ts CAUSAL). */
+export const NEVER_JOIN_EXTRA = ['due to', 'because of', 'in response to', 'in the wake of'];
+
+/** The openings the voice paragraph does not list (they are in NEVER_OPEN, check.ts LEANS_ON_ANOTHER). */
+export const NEVER_OPEN_EXTRA = ["It's", 'That name'];
+
 const quoted = (words: readonly string[]) => words.map((w) => `"${w}"`).join(', ');
 
+/**
+ * Marketing's character paragraph, VERBATIM from the voice doc (`docs/marketing/voice-tv-desk-2026-10-12.md` at
+ * 6992c911, voice v9, Commercial read 83a PASS). The doc says only the paragraph and the specimen go in the prompt.
+ */
+export const VOICE_PARAGRAPH = [
+  `You are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.`,
+  `What each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: "${RULED_STATE_PHRASES.NOT_RESEARCHED}", "${RULED_STATE_PHRASES.NONE_FOUND}", "${RULED_STATE_PHRASES.UNKNOWN}"; never invent or pad news for it.`,
+  `What must stay true, whatever the style: attribute what you report ("the company said", "our sources show", "secondary coverage reported") and say "in our sources" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer ("you", "stay with us", "back to you"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define ("surging", "hot", "busy", "quiet"). Say a rank as a rank ("ranked first in this range"), never "led" or "biggest". Speak of the checkpoint in the past tense ("was up", "had fresh news"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as "2:30 PM". Make each name's line stand on its own: open it with the company or the news, never with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.`,
+].join('\n\n');
+
+/** The specimen, VERBATIM from the same doc (its bold markers dropped): one example of the voice, not a template. */
+export const VOICE_SPECIMEN = [
+  `Summary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
+  `ALEC. ALEC had fresh news in our sources. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.`,
+  `MI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.`,
+  `QTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.`,
+].join('\n\n');
+
 export const SYSTEM_V7 = [
-  'You are a financial news desk reporter on air at a small-cap trading desk, writing a short session report: a Summary of the session and one line per name. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape, and let each line and the Summary read as coherent, human speech, not a stack of separate sentences. Coherence lives within a line: a name\'s line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.',
+  'You write a short session report: a Summary of the session and one line per name.',
+  '',
+  VOICE_PARAGRAPH,
+  '',
+  'ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (a report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given):',
+  '',
+  VOICE_SPECIMEN,
   '',
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
   '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
@@ -165,18 +196,13 @@ export const SYSTEM_V7 = [
   '- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name\'s facts on another, and never mention a name the narrative facts do not name.',
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',
-  'EACH NAME\'S LINE must include the name and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is the news itself (a placement, an ATM program, a reverse split). The card prints the prices and the move above the line, so the line is the news: never restate the move, a price or a percent from it (only where the sheet says no card path is printed may its price and change be stated, in the past tense). For a name with no news to report, say its ruled state phrase exactly and nothing more:',
-  `"${RULED_STATE_PHRASES.NOT_RESEARCHED}", "${RULED_STATE_PHRASES.NONE_FOUND}", "${RULED_STATE_PHRASES.UNKNOWN}". Never invent or pad news.`,
-  '',
-  'WHAT MUST STAY TRUE, whatever the style:',
+  'USING THE FACTS:',
   '- Use only the facts given. Copy every number and date exactly; never compute one. A catalyst figure may be shortened to one decimal with a unit ("$46.8M"). Restate stored text in your own words; never quote it.',
-  '- Attribute what you report ("the company said", "our sources show", "secondary coverage reported"), and say "in our sources" only where a claim would otherwise read as about the market. A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported".',
-  `- State a move and its news in separate clauses. Never join them with ${quoted(NEVER_JOIN)}; these words are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"). A headline is never a cause.`,
+  '- Only where a name\'s sheet says no card path is printed may its price and change be stated, in the past tense.',
+  '- A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.',
   '- Restate what the source reports and its terms, never the desk\'s reading of what it may mean or what traders, investors or the market may think, do or care about.',
-  '- Never say what the stock will do or what anyone should do: no recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words. A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it.',
-  '- Never address the reader ("you", "stay with us", "back to you"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define ("surging", "hot", "busy", "quiet", "pop", "clearly").',
-  '- Say a rank as a rank ("ranked first in this range"), never "led", "top" or "biggest". Never a count of names in a name line, never "every name" or "all the movers", never "the real catalyst".',
-  `- Speak of the checkpoint in the past tense ("was up", "had fresh news"), and never "still", "remains" or "continues". Anchor every time to a date; never write a clock time. Open each line with its own ticker, never with ${quoted(NEVER_OPEN)}.`,
+  `- The joining words above are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
+  '- Never "still", "remains" or "continues"; never "top"; never a count of names in a name line, "every name", "all the movers" or "the real catalyst".',
   '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
   '',
   'REPLY',

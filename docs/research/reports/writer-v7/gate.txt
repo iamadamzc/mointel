@@ -15,3 +15,13 @@ C6 whyTradersMayCare handed back: exit 1; the expected test failed: True; restor
 == prompt chars: v7 system 5,089 (after read 81) vs v6 8,477; user v7 10,122-17,550 vs v6 12,076-21,533
 == clock-like strings in the v7 sheets: 64, ALL in stored cited-source titles that carry an ISO timestamp (e.g. 'EX-99.2: 8-K 2026-10-02T13:13:26.000Z'); v7 adds none of its own; v6 sheets 352. Not stripped in this version; the tabulator counts clock times in the writers' output.
 == v6 per-state phrases in the v7 sheets: 0 (v6 sheets: 29)
+
+== re-gate of prompt version 4 (prompt v3 aligned with the voice doc at 6992c911: Marketing's paragraph and specimen verbatim), 2026-10-13T01:51:09Z to 01:55:11Z (date -u), Ops's slot ("yours now")
+== verbatim: the doc's 3 paragraph blocks and 4 specimen blocks each found exactly in SYSTEM_V7 (by program against git show 6992c911); 0 em dash (count control: 2,319 in research.md); no non-ASCII
+== vitest tests/desk/reportWriterV7.test.ts tests/desk/reportWriterV6.test.ts: Test Files 2 passed (2), Tests 25 passed (25)
+== new-test mutants, each killed: allowed move sentence removed (1 test); a hand-off back in the specimen ALEC line (2); "due to" dropped from the extra joins (1); a second clock time in the prompt (1); the old "nothing downstream strikes" sentence (1); file restored identical
+== python -I scripts/writer-v7-controls.py: C1 to C6 each failed the expected test, restored True
+== tsc --noEmit exit 0; control: a planted type error in writerV7.ts reported (1 error), restored identical
+== eslint lib/desk/reports/writerV7.ts tests/desk/reportWriterV7.test.ts scripts/report-writer-v7-test.ts scripts/readNamedKey.ts: exit 0
+== dry run (dry-v4/summary.txt), --env-file as the paid run uses, 01:54:26Z to 01:55:11Z, exit 0: 48 of 48 PUBLISHED, 0 PROMPT_MISMATCH, spend 0. (A first dry run without --env-file at 01:53:19Z named the writer gpt-5.6-terra, the default when the environment does not set it; stub models, so no effect; discarded.)
+== prompt chars: v7 system 7,214 (version 2 was 5,089; the specimen and the verbatim paragraph add it) vs v6 8,477; user v7 9,567 to 16,540 vs v6 12,076 to 21,533 (all 48)

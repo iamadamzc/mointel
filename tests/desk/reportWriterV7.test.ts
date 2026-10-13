@@ -10,6 +10,8 @@ import {
   NEVER_OPEN,
   RULED_STATE_PHRASES,
   SYSTEM_V7,
+  VOICE_PARAGRAPH,
+  VOICE_SPECIMEN,
   writeReportV7,
   type WriterInputV7,
 } from '@/lib/desk/reports/writerV7';
@@ -153,8 +155,10 @@ describe('v7 name sheet: no figure while the card prints one, and no clock time'
     expect(text).not.toMatch(/\b\d{1,2}:\d{2}\b/);
   });
 
-  it('no clock time anywhere in the system prompt or the sheets', () => {
-    expect(SYSTEM_V7).not.toMatch(/\b\d{1,2}:\d{2}\b/);
+  it('no clock time anywhere in the system prompt or the sheets, except the paragraph\'s one forbidden example', () => {
+    const example = 'never write a clock time such as "2:30 PM"';
+    expect(SYSTEM_V7.split(example).length - 1).toBe(1);
+    expect(SYSTEM_V7.replace(example, '')).not.toMatch(/\b\d{1,2}:\d{2}\b/);
     for (const narrative of [intraday, recap]) expect(buildWriterPromptV7(input(narrative)).user).not.toMatch(/\b\d{1,2}:\d{2}\b/);
   });
 });
@@ -168,7 +172,11 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     const words = causal![1]!.split('|');
     expect(words.length).toBeGreaterThan(5);
     for (const word of words) expect(NEVER_JOIN).toContain(word);
-    for (const word of NEVER_JOIN) expect(SYSTEM_V7).toContain(`"${word}"`);
+    // The voice paragraph lists most of them unquoted; the rest are quoted in the prompt's own line.
+    const sentence = /Never join a move and a news item with ([^.]*)\./.exec(SYSTEM_V7);
+    expect(sentence).not.toBeNull();
+    const listed = sentence![1]!.split(/, | or /);
+    for (const word of NEVER_JOIN) expect(listed.includes(word) || SYSTEM_V7.includes(`"${word}"`)).toBe(true);
   });
 
   it('names every opening the checker strikes as leaning on another line (check.ts LEANS_ON_ANOTHER)', () => {
@@ -185,19 +193,31 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(SYSTEM_V7).toContain('financial news desk reporter');
     expect(SYSTEM_V7).toContain('never robotic');
     expect(SYSTEM_V7).toContain('coherent');
-    // Version 3: the line is the news; the move is the card's.
-    expect(SYSTEM_V7).toContain('so the line is the news: never restate the move, a price or a percent from it');
-    expect(SYSTEM_V7).not.toMatch(/off the high|at the high|little changed/);
+    // Version 3: the line is the news; the move is the card's. Version 4: in the voice doc's own words, one sentence allowed.
+    expect(SYSTEM_V7).toContain('Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high');
+    expect(SYSTEM_V7).toContain('you may say that nothing in our sources tied the move to the news, and nothing else about the move');
+    expect(SYSTEM_V7).not.toMatch(/off the high|at the high|little changed|up from the prior close and/);
     // Version 3 and his rule (c6b4168d): a named name's own news may enter the Summary; a deal is a fact, advice never.
     expect(SYSTEM_V7).toContain("you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section)");
-    expect(SYSTEM_V7).toContain('no recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words. A deal is a fact');
+    expect(SYSTEM_V7).toContain('A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.');
+    // Commercial read 83: the old "nothing downstream strikes a word" sentence is false while the fact checks stay.
+    expect(SYSTEM_V7).toContain('write with care, because figures, dates and tickers are checked against the data');
+    expect(SYSTEM_V7).not.toContain('nothing downstream strikes');
     expect(SYSTEM_V7).not.toContain('The one exception is');
     expect(SYSTEM_V7).not.toMatch(/\{[A-Za-z0-9]+\}/); // no {placeholder} template
     expect(SYSTEM_V7).not.toContain('at most FOUR sentences');
   });
 
+  it('carries the voice paragraph and the specimen, and the specimen name lines say nothing about the move (Commercial read 83)', () => {
+    expect(SYSTEM_V7).toContain(VOICE_PARAGRAPH);
+    expect(SYSTEM_V7).toContain(VOICE_SPECIMEN);
+    const names = VOICE_SPECIMEN.split('\n\n').filter((line) => !line.startsWith('Summary.'));
+    expect(names.map((line) => line.split('.')[0])).toEqual(['ALEC', 'MI', 'QTEX']);
+    for (const line of names) expect(line).not.toMatch(/percent|%|\bup from\b|\bdown from\b|\bhigh\b|prior close/);
+  });
+
   it("carries Commercial read 81's three required rules", () => {
-    expect(SYSTEM_V7).toContain('these words are forbidden only where they connect a move to news, and a date\'s "on" is fine');
+    expect(SYSTEM_V7).toContain('The joining words above are forbidden only where they connect a move to news, and a date\'s "on" is fine');
     expect(SYSTEM_V7).toContain("never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about");
     expect(SYSTEM_V7).toContain('each called a covered 50 percent mover (never the highest peaks among all movers)');
   });
