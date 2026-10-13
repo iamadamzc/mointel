@@ -27,7 +27,10 @@ User=mointel
 Group=mointel
 WorkingDirectory=/opt/mointel/current
 EnvironmentFile=/etc/mointel/mointel.env
-ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts
+# --no-check at boot (A8, 2026-10-13): a full quick_check takes ~1000 s on this store, longer than
+# TimeoutStartSec, and every service Requires= this unit, so a cold boot started nothing. deploy.sh runs its own
+# quick_check (services up) before every stop, which is where the check belongs.
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/migrate.ts --no-check
 
 # A migration that hangs is worse than one that fails: it holds the lock and
 # every other service waits behind it.
