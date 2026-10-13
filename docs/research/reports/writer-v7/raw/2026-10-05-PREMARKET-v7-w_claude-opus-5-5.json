@@ -1,0 +1,793 @@
+{
+  "record": {
+    "tag": "2026-10-05-PREMARKET-v7-w_claude-opus-5-5",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "prompt": "v7",
+    "writer": "claude-opus-5-5",
+    "checker": "gpt-5.6-terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1",
+      "S1L2",
+      "S1L3",
+      "S1L4",
+      "S1L5",
+      "S1L6",
+      "S1L10",
+      "S1L11"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that MI was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that XCH was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that OLOX was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that HSCS was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L5",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that CTVA was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that GLXG was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L10",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that QTEX was off its after-hours high is unsupported."
+      },
+      {
+        "id": "S1L11",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The stored rows do not provide an after-hours high, so the claim that POLA was off its after-hours high is unsupported."
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "In the regular session, 9 counted names ran at least 50 percent above the prior close, and 5 of those kept at least half of the peak gain at the close; 0 of the 9 gave the entire move back. MI, a covered 50 percent mover, peaked 1066 percent above the prior close and closed up 683 percent from the prior close, while our sources turned up only older or secondary news on the name, not a fresh catalyst. VRAX, also a covered 50 percent mover, reached 52 percent above the prior close and finished up 9 percent from the prior close; there too, our sources found only older or secondary news. In the evening session, OLOX was up 84 percent after the close.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "XCH": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "HSCS": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "CTVA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "GLXG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLN": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": false
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "POLA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NIQ": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 5089,
+    "userChars": 17550,
+    "costUsd": 0.152844,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 8000,
+        "outputTokens": 3581,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 29638,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 19086,
+        "outputTokens": 921,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 508,
+        "durationMs": 9178,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompt": {
+    "system": "You are a financial news desk reporter on air at a small-cap trading desk, writing a short session report: a Summary of the session and one line per name. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape, and let each line and the Summary read as coherent, human speech, not a stack of separate sentences. Coherence lives within a line: a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nEACH NAME'S LINE must include the name and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is the news itself (a placement, an ATM program, a reverse split). A few words on the move are fine, only as the card shows it, using only up, down, higher, lower or little changed; never a price or a percent while the card prints them (only where the sheet says no card path is printed may its price and change be stated). For a name with no news to report, say its ruled state phrase exactly and nothing more:\n\"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\". Never invent or pad news.\n\nWHAT MUST STAY TRUE, whatever the style:\n- Use only the facts given. Copy every number and date exactly; never compute one. A catalyst figure may be shortened to one decimal with a unit (\"$46.8M\"). Restate stored text in your own words; never quote it.\n- Attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\"), and say \"in our sources\" only where a claim would otherwise read as about the market. A deal or plan is what was agreed or announced, never \"will\"; never \"confirmed\", say \"the company reported\".\n- State a move and its news in separate clauses. Never join them with \"after\", \"following\", \"on\", \"as\", \"amid\", \"due to\", \"because of\", \"thanks to\", \"driven by\", \"in response to\", \"in the wake of\", \"sparked\", \"triggered\", \"fueled\"; these words are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"). A headline is never a cause.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- Never say what the stock will do or what anyone should do: no buy, sell, enter, exit, add, watch, take it, get in, short or fade. The one exception is a name's own deal in its own line, as a fact with the company or a named party doing it: \"agreed to sell\", \"an agreement to sell\", \"selling stockholders\", \"entered into an agreement\".\n- Never address the reader (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\", \"pop\", \"clearly\").\n- Say a rank as a rank (\"ranked first in this range\"), never \"led\", \"top\" or \"biggest\". Never a count of names in a name line, never \"every name\" or \"all the movers\", never \"the real catalyst\".\n- Speak of the checkpoint in the past tense (\"was up\", \"had fresh news\"), and never \"still\", \"remains\" or \"continues\". Anchor every time to a date; never write a clock time. Open each line with its own ticker, never with \"It\", \"Its\", \"It's\", \"Also\", \"The same\", \"This name\", \"That name\", \"They\", \"Both\", \"Either\".\n- \"off the high\" and \"at the high\" only as the card shows. No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.",
+    "user": "The late evening report: a recap of the regular session and the after-hours session that followed.\n\nNARRATIVE FACTS:\n  counted names that ran at least 50 percent above the prior close on the day (by the regular-session high): 9\n  of those, kept at least half of the peak gain at the close: 5\n  of those, gave the entire move back (closed at or below the prior close): 0\n  named mover (covered, the highest peak among the 50 percent movers): MI; peak 1066 percent above the prior close; closed up 683 percent from the prior close; news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  named mover (covered, the second-highest peak among the 50 percent movers): VRAX; peak 52 percent above the prior close; closed up 9 percent from the prior close; news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  after-hours name (the move from the regular-session close to the last after-hours print; about this move only): OLOX, up 84 percent after the close\n  names the desk covers that had fresh news in our sources: 2 of 12\n\nNAMES:\nMI: ranked #1 in this range\n  the card above your line prints the prices and the move; in words it shows: little changed from the regular-session close, after hours; off the after-hours high\n  since the previous checkpoint: up 57.3% since the previous checkpoint\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions. On October 5, the company said it knew of no undisclosed information or business development accounting for the unusual trading.\n  event date: September 30, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", September 30, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-30T20:20:42.000Z\", September 30, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-30T20:16:13.000Z\", September 30, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", October 5, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not establish whether the September 30 private placement closed or when its shares became tradable.; No favourable company-specific development explaining the October 5 price increase was identified; the company expressly said it knew of no undisclosed development.\n\nXCH: ranked #2 in this range\n  the card above your line prints the prices and the move; in words it shows: up from the regular-session close, after hours; off the after-hours high\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): XCHG announced that EnBW deployed its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany. The primary-source announcement is a verifiable commercial deployment, but the evidence does not state contract value, unit count, revenue contribution, or timing of revenue recognition.\n  event date: September 21, 2026\n  cited source: \"EnBW Deploys XCharge C7 480 kW Fast Chargers Across Its Nationwide Charging Network in Germany\", September 21, 2026\n  cited source: \"Kurze Ladezeiten, hohe Verfügbarkeit: EnBW setzt auf 480 kW-Schnellladestationen im bundesweiten Ladenetz\", September 21, 2026\n  cited source: \"EnBW Deploys XCharge C7 480 kW Fast Chargers Across Its Nationwide Charging Network in Germany\", September 21, 2026\n  what the desk does not have (repeat none of its numbers): The number of chargers deployed, contract value, margin, backlog effect, and expected revenue contribution were not provided in the evidence.; The bundle does not establish whether the October 5 move was directly caused by this September 21 announcement.\n\nOLOX: ranked #3 in this range\n  the card above your line prints the prices and the move; in words it shows: up from the regular-session close, after hours; off the after-hours high\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): The latest identified company-specific update was the September 17 operating report that CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. This is a verifiable positive operating disclosure, but the supplied evidence contains no company event dated to the current trading session that directly attributes the move to this update.\n  event date: September 17, 2026\n  cited source: \"Olenox Industries Reports 15.63 Bitcoin Mined in August as Company Advances Energy-Powered Digital Infrastructure Strategy\", September 17, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not identify a company-specific announcement on the current trading date.; The bundle does not establish whether the current price move is responding to the September 17 operating update, broader crypto-related sentiment, or trading flow.\n\nHSCS: ranked #4 in this range\n  the card above your line prints the prices and the move; in words it shows: down from the regular-session close, after hours; off the after-hours high\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): The newest primary filing is an October 2, 2026 amendment to the company’s loan agreement and related FRV note, changing the maturity and interest-repayment dates, but the supplied excerpt does not provide the amended dates, principal amount, or economic terms needed to determine its market significance. Separately, the company filed an S-3 shelf registration on September 25, and secondary coverage characterized it as a $200 million mixed-securities shelf.\n  event date: October 2, 2026\n  cited source: \"CURRENT REPORT\", October 2, 2026\n  cited source: \"EX-10.1: 8-K 2026-10-02T21:15:13.000Z\", October 2, 2026\n  cited source: \"REGISTRATION STATEMENT\", September 25, 2026\n  cited source: \"HeartSciences Files Prospectus Shelf Registration For $200M Mixed Securities\", September 25, 2026\n  what the desk does not have (repeat none of its numbers): The amended loan maturity, interest dates, principal balance, and any conversion or warrant economics are not provided in the supplied excerpts.; No primary-source evidence in the bundle confirms that securities have been sold under the September 25 S-3 shelf or an ATM after its filing.; The bundle does not directly connect the October 2 loan amendment or shelf filing to the current trading move.\n\nCTVA: ranked #5 in this range\n  the card above your line prints the prices and the move; in words it shows: up from the regular-session close, after hours; off the after-hours high\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced its new focus as a global crop-protection leader.\n  event date: October 1, 2026\n  cited source: \"8-K\", October 1, 2026\n  cited source: \"Corteva Begins New Chapter as Focused, Innovation-Led, Global Crop Protection Leader\", October 1, 2026\n  what the desk does not have (repeat none of its numbers): The supplied primary sources do not quantify the immediate financial impact of the separation on standalone Corteva.; The bundle does not provide a time-stamped market reaction specifically attributable to the October 1 separation.\n\nGLXG: ranked #6 in this range\n  the card above your line prints the prices and the move; in words it shows: up from the regular-session close, after hours; off the after-hours high\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): The latest identifiable company-specific event is the company's September 8, 2026 announcement of support for stablecoin payments. The company IR source supports that the announcement occurred, but the supplied excerpt provides no adoption, revenue, transaction-volume, customer, or financial-impact metric. More recent company-site items are general payroll, tax, and employment-guide content rather than identified material corporate events.\n  event date: September 7, 2026\n  cited source: \"Galaxy Group (Nasdaq: GLXG) Announces Support for Stablecoin Payments\", September 7, 2026\n  cited source: \"Hong Kong Corporate Tax Planning: Smart Ways to Manage Your Tax\", September 30, 2026\n  cited source: \"Taiwan Payroll Outsourcing: What Businesses Should Know Before Getting Started\", September 28, 2026\n  cited source: \"How EOR Services in Singapore Take the Stress Out of Global Hiring\", September 24, 2026\n  cited source: \"Vietnam Minimum Wage Explained: From Compliance to Hiring Costs\", September 21, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not quantify the stablecoin feature's usage, launch scope, revenue effect, customers, or counterparties.; No company-specific event on or near the observed market session is identified in the supplied sources.\n\nOLN: ranked #7 in this range\n  the card above your line prints the prices and the move; in words it shows: little changed from the regular-session close, after hours; near the after-hours high but not at it (say nothing about the after-hours high)\n  since the previous checkpoint: lost $16.28 support\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): The latest primary company-specific event in the bundle is Olin and Huntsman shareholder approval of the previously announced all-stock merger of equals, announced August 25, 2026. The filing describes approval as a milestone toward completion, not confirmation that the merger closed. More recent items are secondary analyst-rating and price-target changes, including Wells Fargo maintaining Equal-Weight while lowering its target to $16 on October 1.\n  event date: August 25, 2026\n  cited source: \"EX-99.1: 8-K 2026-08-25T20:45:27.000Z\", August 25, 2026\n  cited source: \"8-K\", June 16, 2026\n  cited source: \"Wells Fargo Maintains Equal-Weight on Olin, Lowers Price Target to $16\", October 1, 2026\n  cited source: \"Citigroup Maintains Neutral on Olin, Lowers Price Target to $17\", September 30, 2026\n  cited source: \"Deutsche Bank Maintains Hold on Olin, Lowers Price Target to $20\", August 25, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not establish that the merger has closed.; The bundle contains no fresh company-specific primary event on the latest observed market date.\n\nJENA: ranked #8 in this range\n  no card path is printed for this name, so you may state its price, in the past tense: $10.43\n  change (no card path, so you may state it, in the past tense): up 0.0% after hours, from the regular-session close of $10.43\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On April 1, 2026, NYSE Regulation notified the company that it was not in compliance with NYSE continued-listing requirements, including the requirement to maintain at least 300 public stockholders. The company stated it had an 18-month cure period while remaining listed. This is an adverse listing-compliance event, but the available catalyst coverage is SEC-only and incomplete.\n  event date: April 1, 2026\n  cited source: \"CURRENT REPORT\", April 3, 2026\n  cited source: \"EX-99.1: 8-K 2026-04-03T21:15:08.000Z\", April 3, 2026\n  what the desk does not have (repeat none of its numbers): No company IR, newsroom, newswire, or other non-SEC catalyst coverage was supplied, so a more recent announcement outside SEC filings may not have been captured.; The evidence does not establish a company-specific event tied to the current market activity.\n\nVRAX: ranked #9 in this range\n  the card above your line prints the prices and the move; in words it shows: little changed from the regular-session close, after hours; near the after-hours high but not at it (say nothing about the after-hours high)\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.\n  event date: July 9, 2026\n  cited source: \"Virax Biolabs Signs Multi-Country Commercial Supply Agreement with Fosun Diagnostics\", July 9, 2026\n  cited source: \"Virax Biolabs' CEO James Foster Provides Shareholder Update Following Fiscal 2026 Annual Report and Fosun Diagnostics Commercial Supply Agreement\", July 16, 2026\n  cited source: \"EFFECT filed 2026-09-03\", September 4, 2026\n  cited source: \"424B3\", September 9, 2026\n  cited source: \"6-K\", September 4, 2026\n  what the desk does not have (repeat none of its numbers): Whether any uncollected intraday development influenced the move despite coverage being marked complete.; Whether the Fosun agreement has generated material revenue since its announcement.\n\nQTEX: ranked #10 in this range\n  the card above your line prints the prices and the move; in words it shows: up from the regular-session close, after hours; off the after-hours high\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had already been executed.\n  event date: October 1, 2026\n  cited source: \"EX-99.1: 6-K 2026-10-01T17:20:11.000Z\", October 1, 2026\n  cited source: \"QTREX Quantum Stock Climbs Friday: What's Going On?\", October 2, 2026\n  cited source: \"QTEX Stock Jumps 15% Premarket after Friday’s 40% Surge. Here’s Why\", October 5, 2026\n  what the desk does not have (repeat none of its numbers): The testing company's identity, agreement terms, contract value, purchase commitments, and timing of execution were not disclosed.; The evidence does not establish revenue attributable to the prospective definitive agreement.\n\nPOLA: ranked #11 in this range\n  the card above your line prints the prices and the move; in words it shows: up from the regular-session close, after hours; off the after-hours high\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): On October 5, Polar Power said it rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities. The offer terms and value were not disclosed, and no transaction was announced.\n  event date: October 5, 2026\n  cited source: \"Polar Power Rejects Solidion All-Cash Offer for Company Assets\", October 5, 2026\n  cited source: \"Polar Power Rejects Solidion's All-Cash Offer For All Its Assets As Undervaluing Company, Open To Other Deals; Terms Not Disclosed\", October 5, 2026\n  what the desk does not have (repeat none of its numbers): The offer price, structure, binding status, conditions and Solidion identity details are not stated in the supplied excerpts.; No completed sale, merger agreement or alternative transaction is evidenced.\n\nNIQ: ranked #12 in this range\n  the card above your line prints the prices and the move; in words it shows: little changed from the regular-session close, after hours; near the after-hours high but not at it (say nothing about the after-hours high)\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): Secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The bundle does not include the underlying company release, commercial terms, revenue impact, or customer commitments, so this is a secondary-reported favourable product and partnership development rather than a primary-sourced material catalyst.\n  event date: September 30, 2026\n  cited source: \"NIQ Expands Google Partnership, Integrating Google's Open-Source MMM Framework Meridian, Into NIQ Cadence, NIQ's AI-Native Marketing Effectiveness Operating System\", September 30, 2026\n  what the desk does not have (repeat none of its numbers): No primary company announcement for the Google partnership expansion is included in the bundle.; No contract value, revenue contribution, customer adoption metric, or financial guidance change is disclosed in the cited coverage.; The bundle does not establish whether this item caused any particular price move."
+  },
+  "draft": {
+    "headline": "",
+    "overall": "In the regular session, 9 counted names ran at least 50 percent above the prior close, and 5 of those kept at least half of the peak gain at the close; 0 of the 9 gave the entire move back. MI, a covered 50 percent mover, peaked 1066 percent above the prior close and closed up 683 percent from the prior close, while our sources turned up only older or secondary news on the name, not a fresh catalyst. VRAX, also a covered 50 percent mover, reached 52 percent above the prior close and finished up 9 percent from the prior close; there too, our sources found only older or secondary news. In the evening session, OLOX was up 84 percent after the close. Of the names the desk covers, 2 of 12 had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "MI",
+            "text": "MI was little changed after hours and off the after-hours high. On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 apiece, roughly $36 million in total, subject to closing conditions. Then on October 5, the company said it was not aware of any undisclosed information or business development that would account for the unusual trading."
+          },
+          {
+            "ticker": "XCH",
+            "text": "XCH was up after hours, off the after-hours high. XCHG announced on September 21, 2026 that EnBW had rolled out its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany, though the announcement gave no contract value, unit count or revenue figures."
+          },
+          {
+            "ticker": "OLOX",
+            "text": "OLOX traded higher after hours, though off the after-hours high. The most recent company update in our sources came on September 17, 2026, when Olenox Industries reported that CS Digital mined about 15.63 Bitcoin in August at an average operational hashrate of roughly 1.03 EH/s."
+          },
+          {
+            "ticker": "HSCS",
+            "text": "HSCS was down after hours and off the after-hours high. On October 2, 2026, the company filed an amendment to its loan agreement and the related FRV note that changed the maturity and interest-repayment dates, but the excerpt did not spell out the new dates or terms. Separately, it filed an S-3 shelf registration on September 25, which secondary coverage described as a $200 million mixed-securities shelf."
+          },
+          {
+            "ticker": "CTVA",
+            "text": "CTVA moved up after hours, off the after-hours high. Corteva reported that on October 1, 2026 it completed the pro rata spin-off of its Seed Business into Vylor, now independently traded, and the company laid out a new focus as a global crop-protection business."
+          },
+          {
+            "ticker": "GLXG",
+            "text": "GLXG was up after hours but off the after-hours high. The latest company-specific item our sources identified was Galaxy Group's announcement, dated September 7, 2026, that it supports stablecoin payments, with no usage, customer or revenue figures attached."
+          },
+          {
+            "ticker": "OLN",
+            "text": "OLN was little changed after hours. On August 25, 2026, Olin and Huntsman reported that shareholders had approved their previously announced all-stock merger of equals, a step the filing framed as a milestone toward completion rather than a closing. Since then, secondary coverage reported that on October 1, Wells Fargo kept its Equal-Weight rating and cut its price target to $16."
+          },
+          {
+            "ticker": "JENA",
+            "text": "JENA was at $10.43, up 0.0% after hours from the regular-session close of $10.43. On April 1, 2026, NYSE Regulation notified the company that it had fallen out of compliance with continued-listing standards, among them the minimum of 300 public stockholders, and the company said it had an 18-month cure period during which it stays listed."
+          },
+          {
+            "ticker": "VRAX",
+            "text": "VRAX was little changed after hours. Our sources show the latest commercial news was a multi-country supply agreement with Fosun Diagnostics, signed on July 9, 2026, which was followed by a shareholder update from the chief executive on July 16."
+          },
+          {
+            "ticker": "QTEX",
+            "text": "QTEX was up after hours, off the after-hours high. On October 1, 2026, QTREX reported that a leading quantum-computing company had independently tested its interconnect at 20 mK and measured more than 100 dB of channel isolation across the 4 to 8 GHz qubit band, which the company put at 60 dB beyond the market leader. The company added that it was finalizing a binding definitive agreement with the unnamed tester."
+          },
+          {
+            "ticker": "POLA",
+            "text": "POLA moved higher after hours and was off the after-hours high. On October 5, 2026, Polar Power said it had turned down Solidion's all-cash offer for all of its assets as undervaluing the company, and it said it would evaluate other credible strategic opportunities; the offer terms were not disclosed and no transaction was announced."
+          },
+          {
+            "ticker": "NIQ",
+            "text": "NIQ was little changed after hours. Secondary coverage reported on September 30, 2026 that NIQ broadened its Google partnership by building Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence; the underlying company release was not among our sources."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"In the regular session, 9 counted names ran at least 50 percent above the prior close, and 5 of those kept at least half of the peak gain at the close; 0 of the 9 gave the entire move back. MI, a covered 50 percent mover, peaked 1066 percent above the prior close and closed up 683 percent from the prior close, while our sources turned up only older or secondary news on the name, not a fresh catalyst. VRAX, also a covered 50 percent mover, reached 52 percent above the prior close and finished up 9 percent from the prior close; there too, our sources found only older or secondary news. In the evening session, OLOX was up 84 percent after the close. Of the names the desk covers, 2 of 12 had fresh news in our sources.\",\"lines\":[{\"ticker\":\"MI\",\"text\":\"MI was little changed after hours and off the after-hours high. On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 apiece, roughly $36 million in total, subject to closing conditions. Then on October 5, the company said it was not aware of any undisclosed information or business development that would account for the unusual trading.\"},{\"ticker\":\"XCH\",\"text\":\"XCH was up after hours, off the after-hours high. XCHG announced on September 21, 2026 that EnBW had rolled out its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany, though the announcement gave no contract value, unit count or revenue figures.\"},{\"ticker\":\"OLOX\",\"text\":\"OLOX traded higher after hours, though off the after-hours high. The most recent company update in our sources came on September 17, 2026, when Olenox Industries reported that CS Digital mined about 15.63 Bitcoin in August at an average operational hashrate of roughly 1.03 EH/s.\"},{\"ticker\":\"HSCS\",\"text\":\"HSCS was down after hours and off the after-hours high. On October 2, 2026, the company filed an amendment to its loan agreement and the related FRV note that changed the maturity and interest-repayment dates, but the excerpt did not spell out the new dates or terms. Separately, it filed an S-3 shelf registration on September 25, which secondary coverage described as a $200 million mixed-securities shelf.\"},{\"ticker\":\"CTVA\",\"text\":\"CTVA moved up after hours, off the after-hours high. Corteva reported that on October 1, 2026 it completed the pro rata spin-off of its Seed Business into Vylor, now independently traded, and the company laid out a new focus as a global crop-protection business.\"},{\"ticker\":\"GLXG\",\"text\":\"GLXG was up after hours but off the after-hours high. The latest company-specific item our sources identified was Galaxy Group's announcement, dated September 7, 2026, that it supports stablecoin payments, with no usage, customer or revenue figures attached.\"},{\"ticker\":\"OLN\",\"text\":\"OLN was little changed after hours. On August 25, 2026, Olin and Huntsman reported that shareholders had approved their previously announced all-stock merger of equals, a step the filing framed as a milestone toward completion rather than a closing. Since then, secondary coverage reported that on October 1, Wells Fargo kept its Equal-Weight rating and cut its price target to $16.\"},{\"ticker\":\"JENA\",\"text\":\"JENA was at $10.43, up 0.0% after hours from the regular-session close of $10.43. On April 1, 2026, NYSE Regulation notified the company that it had fallen out of compliance with continued-listing standards, among them the minimum of 300 public stockholders, and the company said it had an 18-month cure period during which it stays listed.\"},{\"ticker\":\"VRAX\",\"text\":\"VRAX was little changed after hours. Our sources show the latest commercial news was a multi-country supply agreement with Fosun Diagnostics, signed on July 9, 2026, which was followed by a shareholder update from the chief executive on July 16.\"},{\"ticker\":\"QTEX\",\"text\":\"QTEX was up after hours, off the after-hours high. On October 1, 2026, QTREX reported that a leading quantum-computing company had independently tested its interconnect at 20 mK and measured more than 100 dB of channel isolation across the 4 to 8 GHz qubit band, which the company put at 60 dB beyond the market leader. The company added that it was finalizing a binding definitive agreement with the unnamed tester.\"},{\"ticker\":\"POLA\",\"text\":\"POLA moved higher after hours and was off the after-hours high. On October 5, 2026, Polar Power said it had turned down Solidion's all-cash offer for all of its assets as undervaluing the company, and it said it would evaluate other credible strategic opportunities; the offer terms were not disclosed and no transaction was announced.\"},{\"ticker\":\"NIQ\",\"text\":\"NIQ was little changed after hours. Secondary coverage reported on September 30, 2026 that NIQ broadened its Google partnership by building Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence; the underlying company release was not among our sources.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "PREMARKET",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-05",
+      "targetTradingDate": "2026-10-06",
+      "checkpoints": [
+        {
+          "id": 651,
+          "type": "NEXT_DAY_RECAP",
+          "completedAt": "2026-10-06T02:00:05.914Z"
+        }
+      ],
+      "publishedAt": "2026-10-13T01:10:34.106Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "HSCS",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "HeartSciences Inc.",
+                "country": "United States",
+                "business": "HeartSciences is an AI-powered medical technology company that has agreed to combine with Fortitude Mining, a Zcash-focused digital-asset mining platform."
+              },
+              "path": {
+                "from": 4.36,
+                "high": 6.5,
+                "now": 3.6839,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": "since Fri close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Oct 2, 5:15 PM ET",
+                  "headline": "The newest primary filing is an October 2, 2026 amendment to the company’s loan agreement and related FRV note, changing the maturity and interest-repayment dates, but the supplied excerpt does not provide the amended dates, principal amount, or economic terms needed to determine its market significance. Separately, the company filed an S-3 shelf registration on September 25, and secondary coverage characterized it as a $200 million mixed-securities shelf.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Fri close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "412K sh",
+                  "detail": "Reported shares outstanding were 4,800,172 as of September 11, 2026.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 4,800,172 as of September 11, 2026. This is not a reported public float."
+                }
+              },
+              "researchVersionId": 2919,
+              "inputKey": "137967184d01af51"
+            },
+            {
+              "ticker": "POLA",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Polar Power, Inc.",
+                "country": "United States",
+                "business": "Polar Power designs, manufactures and sells direct-current power generators, renewable-energy systems and other power solutions for telecommunications and other mission-critical applications."
+              },
+              "path": {
+                "from": 1.15,
+                "high": 1.38,
+                "now": 1.16,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 5, 4:05 PM ET",
+                  "headline": "On October 5, Polar Power said it rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities. The offer terms and value were not disclosed, and no transaction was announced.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "382K sh supply",
+                  "detail": "No reported shares-outstanding figure or dated float figure is provided in the bundle, so float cannot be reconciled.",
+                  "tone": "neg",
+                  "full": "No reported shares-outstanding figure or dated float figure is provided in the bundle, so float cannot be reconciled."
+                }
+              },
+              "researchVersionId": 2914,
+              "inputKey": "f22f43fad6b066e6"
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "MI",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "NFT Ltd",
+                "country": "Hong Kong",
+                "business": "NFT Ltd operates an online platform where artists, art dealers and art owners can list and trade artwork."
+              },
+              "path": {
+                "from": 7,
+                "high": 7.45,
+                "now": 7,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 4:20 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 30 · On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions. On October 5, the company said it knew of no undisclosed information or business development accounting for the unusual trading.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "80.9M sh supply",
+                  "detail": "The latest affirmative shares-outstanding figure is dated June 30 and predates both the August offering and the September private-placement agreement.",
+                  "tone": "neg",
+                  "full": "The latest affirmative shares-outstanding figure is dated June 30 and predates both the August offering and the September private-placement agreement."
+                }
+              },
+              "researchVersionId": 2906,
+              "inputKey": "9c87a1b9e5d6db81"
+            },
+            {
+              "ticker": "XCH",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "XCHG Ltd",
+                "country": null,
+                "business": "XCHG supplies high-performance electric vehicle charging and energy storage solutions."
+              },
+              "path": {
+                "from": 3.26,
+                "high": 5.25,
+                "now": 3.4,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "14d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 21, 8:00 AM ET",
+                  "headline": "XCHG announced that EnBW deployed its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany. The primary-source announcement is a verifiable commercial deployment, but the evidence does not state contract value, unit count, revenue contribution, or timing of revenue recognition.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "347.0M sh supply",
+                  "detail": "XCHG completed a registered direct financing for 7.0 million pre-ADS-ratio-change ADSs and approximately $4.375 million gross proceeds.",
+                  "tone": "neg",
+                  "full": "XCHG completed a registered direct financing for 7.0 million pre-ADS-ratio-change ADSs and approximately $4.375 million gross proceeds. The later resale behavior of that investor is not established."
+                }
+              },
+              "researchVersionId": 2917,
+              "inputKey": "66a673ecbc33b0ac"
+            },
+            {
+              "ticker": "OLOX",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "OLENOX INDUSTRIES INC.",
+                "country": "United States",
+                "business": "Olenox is an integrated energy and infrastructure company focused on oil and natural gas, energy services, power generation, modular infrastructure and digital-compute assets."
+              },
+              "path": {
+                "from": 0.88,
+                "high": 1.66,
+                "now": 1.62,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "18d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 17, 9:00 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 17 · The latest identified company-specific update was the September 17 operating report that CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. This is a verifiable positive operating disclosure, but the supplied evidence contains no company event dated to the current trading session that directly attributes the move to this update.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "More than $5.25 million in debt and Series C preferred stated value was converted into common shares since June 2026, but the corresponding share count is not disclosed in the supplied evidence.",
+                  "tone": "warn",
+                  "full": "More than $5.25 million in debt and Series C preferred stated value was converted into common shares since June 2026, but the corresponding share count is not disclosed in the supplied evidence."
+                }
+              },
+              "researchVersionId": 2912,
+              "inputKey": "72b1906d93bd8e1a"
+            },
+            {
+              "ticker": "CTVA",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Corteva, Inc.",
+                "country": "United States",
+                "business": "Corteva is a focused global crop-protection company following the spin-off of its Seed Business into Vylor."
+              },
+              "path": {
+                "from": 12.39,
+                "high": 12.7,
+                "now": 12.42,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 8:00 PM ET",
+                  "headline": "Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced its new focus as a global crop-protection leader.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Corteva completed a major separation transaction on October 1, 2026, distributing all then-outstanding Vylor common shares to Corteva shareholders as a pro rata dividend in-kind.",
+                  "tone": "warn",
+                  "full": "Corteva completed a major separation transaction on October 1, 2026, distributing all then-outstanding Vylor common shares to Corteva shareholders as a pro rata dividend in-kind."
+                }
+              },
+              "researchVersionId": 2908,
+              "inputKey": "e4084fe17c6c425d"
+            },
+            {
+              "ticker": "GLXG",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Galaxy Payroll Group Ltd",
+                "country": null,
+                "business": "Galaxy Payroll Group provides payroll outsourcing and employment services in Asia."
+              },
+              "path": {
+                "from": 0.985,
+                "high": 1.35,
+                "now": 1.0151,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "28d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 7, 10:51 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 7 · The latest identifiable company-specific event is the company's September 8, 2026 announcement of support for stablecoin payments. The company IR source supports that the announcement occurred, but the supplied excerpt provides no adoption, revenue, transaction-volume, customer, or financial-impact metric. More recent company-site items are general payroll, tax, and employment-guide content rather than identified material corporate events.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "3.80M sh supply",
+                  "detail": "A 3.8 million-share resale registration is effective.",
+                  "tone": "neg",
+                  "full": "A 3.8 million-share resale registration is effective. This permits selling shareholders to resell registered shares, though the bundle does not establish actual sales."
+                }
+              },
+              "researchVersionId": 2916,
+              "inputKey": "7e17c3ba176472b3"
+            },
+            {
+              "ticker": "OLN",
+              "liveFeed": null,
+              "text": "OLN was little changed after hours. On August 25, 2026, Olin and Huntsman reported that shareholders had approved their previously announced all-stock merger of equals, a step the filing framed as a milestone toward completion rather than a closing. Since then, secondary coverage reported that on October 1, Wells Fargo kept its Equal-Weight rating and cut its price target to $16.",
+              "company": {
+                "name": "OLIN Corp",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 16.27,
+                "high": 16.3159,
+                "now": 16.27,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "41d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 25, 4:45 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 25 · The latest primary company-specific event in the bundle is Olin and Huntsman shareholder approval of the previously announced all-stock merger of equals, announced August 25, 2026. The filing describes approval as a milestone toward completion, not confirmation that the merger closed. More recent items are secondary analyst-rating and price-target changes, including Wells Fargo maintaining Equal-Weight while lowering its target to $16 on October 1.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "5.00M sh",
+                  "detail": "The proposed all-stock Huntsman merger could result in Olin share issuance at a 0.5476 exchange ratio per Huntsman share if completed.",
+                  "tone": "warn",
+                  "full": "The proposed all-stock Huntsman merger could result in Olin share issuance at a 0.5476 exchange ratio per Huntsman share if completed. The total issuance is not provided."
+                }
+              },
+              "researchVersionId": 2907,
+              "inputKey": "df6785e6776b9d4b"
+            },
+            {
+              "ticker": "JENA",
+              "liveFeed": null,
+              "text": "JENA was at $10.43, up 0.0% after hours from the regular-session close of $10.43. On April 1, 2026, NYSE Regulation notified the company that it had fallen out of compliance with continued-listing standards, among them the minimum of 300 public stockholders, and the company said it had an 18-month cure period during which it stays listed.",
+              "company": {
+                "name": "JENA ACQUISITION Corp II",
+                "country": "United States",
+                "business": "Jena Acquisition Corp II is a blank check company formed to pursue a merger, amalgamation, share exchange, asset acquisition, share purchase, reorganization or similar business combination."
+              },
+              "path": null,
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "188d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Mar 31, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Mar 31 · On April 1, 2026, NYSE Regulation notified the company that it was not in compliance with NYSE continued-listing requirements, including the requirement to maintain at least 300 public stockholders. The company stated it had an 18-month cure period while remaining listed. This is an adverse listing-compliance event, but the available catalyst coverage is SEC-only and incomplete.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The company disclosed NYSE non-compliance relating to the minimum requirement of 300 public stockholders, which is a listing-status risk.",
+                  "tone": "warn",
+                  "full": "The company disclosed NYSE non-compliance relating to the minimum requirement of 300 public stockholders, which is a listing-status risk."
+                }
+              },
+              "researchVersionId": 2920,
+              "inputKey": "a960b7341e79ca41"
+            },
+            {
+              "ticker": "VRAX",
+              "liveFeed": null,
+              "text": "VRAX was little changed after hours. Our sources show the latest commercial news was a multi-country supply agreement with Fosun Diagnostics, signed on July 9, 2026, which was followed by a shareholder update from the chief executive on July 16.",
+              "company": {
+                "name": "Virax Biolabs Group Ltd",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 2.4,
+                "high": 2.42,
+                "now": 2.4,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "88d",
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No fresh catalyst · latest: No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.23M sh supply",
+                  "detail": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares.",
+                  "tone": "neg",
+                  "full": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares. It therefore should not be treated as a current fully diluted count."
+                }
+              },
+              "researchVersionId": 2427,
+              "inputKey": "f02b08a6029c9c9b"
+            },
+            {
+              "ticker": "QTEX",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "QTREX Quantum Ltd.",
+                "country": null,
+                "business": "QTREX develops advanced connectivity and electronics manufacturing solutions, including cryogenic quantum interconnects and additively manufactured electronics."
+              },
+              "path": {
+                "from": 1.54,
+                "high": 2.18,
+                "now": 1.97,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 1:20 PM ET",
+                  "headline": "On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had already been executed.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "11.1M sh",
+                  "detail": "QTREX completed a registered direct offering of 11,111,111 ordinary shares at $0.90 per share on August 20, 2026, approximately six weeks before the October price action.",
+                  "tone": "warn",
+                  "full": "QTREX completed a registered direct offering of 11,111,111 ordinary shares at $0.90 per share on August 20, 2026, approximately six weeks before the October price action. This is confirmed new share issuance, but the evidence does not establish whether the shares remain held or have been sold."
+                }
+              },
+              "researchVersionId": 2895,
+              "inputKey": "a8e8cc4490807316"
+            },
+            {
+              "ticker": "NIQ",
+              "liveFeed": null,
+              "text": "NIQ was little changed after hours. Secondary coverage reported on September 30, 2026 that NIQ broadened its Google partnership by building Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence; the underlying company release was not among our sources.",
+              "company": {
+                "name": "NIQ Global Intelligence plc",
+                "country": "United States",
+                "business": "NIQ provides market measurement, consumer behavior and insights, analytics and activation, and data and AI platform solutions."
+              },
+              "path": {
+                "from": 17.32,
+                "high": 17.4,
+                "now": 17.32,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 6:36 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 30 · Secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The bundle does not include the underlying company release, commercial terms, revenue impact, or customer commitments, so this is a secondary-reported favourable product and partnership development rather than a primary-sourced material catalyst.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "50.0M sh",
+                  "detail": "Reported shares outstanding were 294,955,864 as of August 5, 2026, but no source in the bundle states a public float.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 294,955,864 as of August 5, 2026, but no source in the bundle states a public float. Shares outstanding must not be treated as float."
+                }
+              },
+              "researchVersionId": 2909,
+              "inputKey": "5f0497a37c3806c5"
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "In the regular session, 9 counted names ran at least 50 percent above the prior close, and 5 of those kept at least half of the peak gain at the close; 0 of the 9 gave the entire move back. MI, a covered 50 percent mover, peaked 1066 percent above the prior close and closed up 683 percent from the prior close, while our sources turned up only older or secondary news on the name, not a fresh catalyst. VRAX, also a covered 50 percent mover, reached 52 percent above the prior close and finished up 9 percent from the prior close; there too, our sources found only older or secondary news. In the evening session, OLOX was up 84 percent after the close.",
+      "narrativeFootnotes": {
+        "noClose": 2,
+        "splitExcluded": 0
+      },
+      "narrativeKey": "1c148254d3903e64",
+      "revisionOf": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L1",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that MI was off its after-hours high is unsupported.",
+          "text": "MI was little changed after hours and off the after-hours high. On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 apiece, roughly $36 million in total, subject to closing conditions. Then on October 5, the company said it was not aware of any undisclosed information or business development that would account for the unusual trading."
+        },
+        {
+          "id": "S1L2",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that XCH was off its after-hours high is unsupported.",
+          "text": "XCH was up after hours, off the after-hours high. XCHG announced on September 21, 2026 that EnBW had rolled out its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany, though the announcement gave no contract value, unit count or revenue figures."
+        },
+        {
+          "id": "S1L3",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that OLOX was off its after-hours high is unsupported.",
+          "text": "OLOX traded higher after hours, though off the after-hours high. The most recent company update in our sources came on September 17, 2026, when Olenox Industries reported that CS Digital mined about 15.63 Bitcoin in August at an average operational hashrate of roughly 1.03 EH/s."
+        },
+        {
+          "id": "S1L4",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that HSCS was off its after-hours high is unsupported.",
+          "text": "HSCS was down after hours and off the after-hours high. On October 2, 2026, the company filed an amendment to its loan agreement and the related FRV note that changed the maturity and interest-repayment dates, but the excerpt did not spell out the new dates or terms. Separately, it filed an S-3 shelf registration on September 25, which secondary coverage described as a $200 million mixed-securities shelf."
+        },
+        {
+          "id": "S1L5",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that CTVA was off its after-hours high is unsupported.",
+          "text": "CTVA moved up after hours, off the after-hours high. Corteva reported that on October 1, 2026 it completed the pro rata spin-off of its Seed Business into Vylor, now independently traded, and the company laid out a new focus as a global crop-protection business."
+        },
+        {
+          "id": "S1L6",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that GLXG was off its after-hours high is unsupported.",
+          "text": "GLXG was up after hours but off the after-hours high. The latest company-specific item our sources identified was Galaxy Group's announcement, dated September 7, 2026, that it supports stablecoin payments, with no usage, customer or revenue figures attached."
+        },
+        {
+          "id": "S1L10",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that QTEX was off its after-hours high is unsupported.",
+          "text": "QTEX was up after hours, off the after-hours high. On October 1, 2026, QTREX reported that a leading quantum-computing company had independently tested its interconnect at 20 mK and measured more than 100 dB of channel isolation across the 4 to 8 GHz qubit band, which the company put at 60 dB beyond the market leader. The company added that it was finalizing a binding definitive agreement with the unnamed tester."
+        },
+        {
+          "id": "S1L11",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The stored rows do not provide an after-hours high, so the claim that POLA was off its after-hours high is unsupported.",
+          "text": "POLA moved higher after hours and was off the after-hours high. On October 5, 2026, Polar Power said it had turned down Solidion's all-cash offer for all of its assets as undervaluing the company, and it said it would evaluate other credible strategic opportunities; the offer terms were not disclosed and no transaction was announced."
+        }
+      ],
+      "writerMs": 29641,
+      "checkerMs": 9189
+    }
+  }
+}

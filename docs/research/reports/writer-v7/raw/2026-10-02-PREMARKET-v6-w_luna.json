@@ -1,0 +1,697 @@
+{
+  "record": {
+    "tag": "2026-10-02-PREMARKET-v6-w_luna",
+    "day": "2026-10-02",
+    "kind": "PREMARKET",
+    "prompt": "v6",
+    "writer": "luna",
+    "checker": "gpt-5.6-terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L12"
+    ],
+    "strikes": [
+      {
+        "id": "S1L12",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "enter/entry: \"enter\""
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, with fresh news found in our sources: Nasdaq compliance with the $1.00 minimum-bid requirement. After the close, MI added 14 percent. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "VCIG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SILO": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMTK": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BRAI": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "MTNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WHG": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8477,
+    "userChars": 19898,
+    "costUsd": 0.0514584,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 6878,
+        "outputTokens": 1984,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 921,
+        "durationMs": 29273,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18949,
+        "outputTokens": 817,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 606,
+        "durationMs": 8521,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompt": {
+    "system": "You write a short session briefing for a momentum trader, in the voice of an assistant who did the work and is briefing plainly: specific, unhurried, candid about what the desk does not know. It is printed copy for a stranger, so it is tight.\n\nTHE NARRATIVE (\"narrative\"): the opening read of the session, above the names.\n- PURPOSE: explain what happened in the session, for readers following small-cap momentum. It is documentation and analysis, never a recommendation.\n- FACTS, INTERPRETATION AND OPEN QUESTIONS stay separate. Facts: word only the given narrative facts. Interpretation: you may name the pattern the given counts support (for example how many 50 percent movers kept half their peak gain against how many gave it back), and it must rest on the given counts and say so; nothing may rest on nothing. Open questions: what the facts say is not known stays not known.\n- Every number is a given number, written exactly as given. Percents are whole numbers as given; never add decimals, never round, never compute. Counts may be spelled out (\"nine\") or written as digits.\n- Name ONLY the tickers the narrative facts name. They are the names the sheet names: on the recap, GAINERS chosen by their regular-session peak; intraday, the leader ranked first in this range (it may be down) and the next covered gainers by move: never call them the biggest movers in both directions, never \"every mover\" or \"all the runners\".\n- After-hours figures are ALWAYS labeled \"after the close\" or \"after hours\" and never mixed with the day's figures.\n- A catalyst is news FOUND in our sources, never a cause: never \"drove\", \"sparked\", \"fueled\", \"behind the move\", \"on the news\".\n- A move and its news sit side by side, never cause and effect: join them with \"with\" (\"{ticker}, up {percent} percent from the prior close, with {the news words given for that name}\"), never \"after\", \"on\", \"following\", \"amid\", \"due to\", \"in response to\", \"in the wake of\" or \"on the back of\" between a move and its news (the frames \"after the close\" and \"after hours\" are not this).\n- Every percent move carries its frame in the same sentence: \"from the prior close\" or \"above the prior close\"; an after-hours move \"after the close\" or \"after hours\". When a sentence states two moves, each carries its own frame.\n- No adjective the facts do not define (\"busy\", \"quiet\", \"hot\", \"strong\"). No forecast: support, resistance and supply are described, never \"will hold\", \"should break\" or \"expect\".\n- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence (\"Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close\"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly \"Among the counted names, none ran at least 50 percent above the prior close.\" and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by \"with\", never causal: \"The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}.\" (one named mover: \"The covered 50 percent mover with the highest peak was {T1}, with {state1}.\"), where each state is that name's OWN news as given: fresh news found: \"fresh news found in our sources: {the catalyst in one short clause}\"; no catalyst found: \"no catalyst found in our sources\"; only older or secondary news: \"only older or secondary news in our sources\"; the sources conflict: \"sources that conflict\"; the research could not tell: \"research that could not tell\"; not researched yet: \"no research at this checkpoint\". The sentence says nothing about any mover it does not name; never \"biggest\", \"largest\" or \"top\"; (3) the after-hours name, as its own sentence and about the after-hours move only, in the form \"After the close, {TICKER} added {P} percent.\" with no news, no cycle and no other clause; (4) the fresh count over the covered names, as the sheet gives the pair: \"{N} of the {M} names the desk covers had fresh news in our sources.\" (zero: \"None of the names the desk covers had fresh news we could find.\"; one: \"One of the {M} names the desk covers had fresh news in our sources.\"). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.\n- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.\n- When a count is zero, say so plainly (\"none of them gave the entire move back\") and drop the clause that depends on it. Number agreement throughout.\n\nTHE LINES, one per name (\"lines\")\n- The card prints each name’s ticker, company line, price path and TAGS above your text: its catalyst grade, whether the catalyst is read as not the move, its supply and its float verdict. NEVER restate any of them: no grade, no fit to the move, no structure, no float, no share count, no supply, no cycle.\n- Write one or two sentences: the catalyst our sources found, named, how it was quantified, and what the desk makes of it. Where research is not on file, say so plainly in one sentence.\n- Where the sheet says NO path is printed, state the name’s price yourself, exactly as the sheet gives it.\n- Describe ONLY this checkpoint. Never \"still\", \"remains\", \"holds\", \"keeps\" or \"continues\". The one comparison you may make is the sheet’s \"since the previous checkpoint\" line, in its own words.\n\nFACTS\n- Use ONLY the facts in the given sheets. Copy every number, date and time EXACTLY as the sheet writes it. A figure from the catalyst summary may be shortened to one decimal with a unit (\"$46.8M\" for \"$46.802 million\"), nothing else. Never compute a number.\n- Restate stored text in your own words; never quote it. \"What the desk makes of it\" may be restated, never added to, and its numbers are never repeated.\n- Catalyst: what it is and how it was quantified. Never its expected effect on the stock, never a forecast.\n- Times: only the event time or a cited source’s time, to the minute, as the sheet gives it, or the checkpoint time. A date given as date only has no time of day. Never hedge an exact time (\"~\", \"around\", \"about\").\n- Never state a count of names in a line (\"12 names\"); only the narrative may, and only the given counts.\n- An agreement or a plan is what was agreed or announced (\"agreed to acquire\"), never \"will\". Never \"confirmed\": say \"reported by the company\". An analyst rating of Buy or Sell is \"a positive (or negative) analyst rating\".\n\nNEVER\n- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name's own deal from its sources, stated as a fact in that name's line, in these shapes only, with the company or a named party doing it: \"agreed to sell\", \"an agreement to sell\", \"selling stockholders\", \"entered into an agreement\". Never \"sell\" or \"buy\" in any other place (never \"a plan to sell\" or \"an offer to sell\"), and never \"entered\" except into an agreement.\n- A float number, or a share count called float.\n- Shorting or fading as a trade. The reader is long-only.\n- \"no catalyst\" on its own; it is always \"no catalyst found in our sources\". Never \"the real catalyst\".\n- Predictions, promises or outcomes: \"will\", \"pop\", \"clearly\", \"confirmed\". Completeness: \"every name\", \"all the movers\".\n- Engine constants in capitals with underscores. Halts, unless the sheet has a halt line.\n- The em dash character, and a spaced hyphen used as a dash. Use a comma, a colon, a full stop or parentheses.\n\nREPLY\n- Each name is ONE line: {\"ticker\": \"<its ticker>\", \"text\": \"<your sentences>\"}. Each line stands alone. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}.\n- Return JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}. \"narrative\" is null only when the narrative facts give nothing to say.",
+    "user": "The evening report, at 22:00: a recap of the regular session that closed and the after-hours session that followed, and the names the desk carries into the next one.\nCheckpoint time: 22:00 ET.\n\nNARRATIVE FACTS (word these and nothing else):\n  among the counted names, ran at least 50 percent above the prior close, on the day (by the regular-session high): 6\n  of those, gave the entire move back (closed at or below the prior close): 0\n  of those, kept at least half of the peak gain at the close: 5\n  of those, the desk covers: 4\n  named mover 1 (of the covered 50 percent movers, the highest peak above the prior close): AMOD, ran to 308 percent above the prior close and closed up 198 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, reported as valued above $250 million. Secondary coverage reports that the financing issued 51.6 million common shares and matching warrants, so the favourable balance-sheet event is paired with substantial new and potential equity supply. The SEC filed a current report concerning the completed transaction.\n  named mover 2 (of the covered 50 percent movers, the second-highest peak above the prior close): CYCU, ran to 84 percent above the prior close and closed up 42 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00. The stock remains subject to a discretionary Nasdaq Panel monitor. Secondary coverage reported a 48% share-price surge following the compliance news.\n  after the close (from the 16:00 close to the last after-hours print; ALWAYS say \"after the close\" or \"after hours\", never mix it with the day's figures): MI, up 14 percent\n  fresh news in our sources: 5 of the 12 names the desk covers\n\nNAMES:\nVCIG: ranked #1 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 12.5% after hours, from the regular-session close of $1.37\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On September 23, disclosed September 30, VCIG entered an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares. The same 6-K disclosed Dune and FirstFire convertible-note transactions, and the related September 29 F-1 seeks registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. This is fresh, company-specific financing and potential share supply, rather than an operational catalyst.\n  event time: 10:32 ET, September 30, 2026 (exact)\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", 10:32 ET September 30, 2026\n  cited source: \"REGISTRATION STATEMENT\", 15:57 ET September 29, 2026\n  cited source: \"EX-10.1: 6-K 2026-09-30T14:32:11.000Z\", September 30, 2026\n  cited source: \"EX-10.10: 6-K 2026-09-30T14:32:11.000Z\", September 30, 2026\n  cited source: \"VCI Global Enters $125 Mln Equity Line Of Credit Agreement With Hudson Global\", October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The ELOC is large dollar capacity and the F-1 identifies up to 100,000,000 ELOC purchase shares that may be issued and sold to Hudson. The disclosed financing also includes convertible notes and warrants, creating substantial potential supply if transaction conditions, registration, conversion, or exercise requirements are satisfied.\n  what the desk does not have (repeat none of its numbers): The evidence does not establish that Hudson has received a put notice or purchased any ELOC shares.; The evidence does not establish that the September 29 F-1 has become effective.; The bundle does not establish whether the current price and volume move is primarily a reaction to the financing disclosure or to other order-flow factors.\n\nZNB: ranked #2 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 18.9% after hours, from the regular-session close of $1.54\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): No fresh company-specific positive event is identified in the supplied October 2 coverage. The latest material company event in the evidence is the August 17 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each containing one ordinary share and a warrant exercisable at $4.40. This creates share and warrant supply, but it is not shown to be the cause of the current move.\n  event time: August 17, 2026 (date only, give no time of day)\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", August 19, 2026\n  cited source: \"12 Consumer Discretionary Stocks Moving In Friday's Pre-Market Session\", 08:05 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The completed financing added 3,412,970 shares and an equal number of immediately exercisable warrants. The warrants are currently above the supplied $1.24 price, but the issued shares and the company's broader financing capacity remain relevant structural risks.\n  what the desk does not have (repeat none of its numbers): The October 2 secondary mover item has no excerpt identifying a company-specific reason for the move.; The supplied evidence does not establish whether any new company announcement occurred after the August financing.\n\nSILO: ranked #3 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 17.0% after hours, from the regular-session close of $1.46\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): On October 1, 2026, Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting. Consideration was warrants for up to 300,000 common shares at a $1.51 exercise price, exercisable for five years. The asset acquisition is company-specific, but the associated new warrant supply makes this a dilutive-structure event under the grading framework.\n  event time: October 1, 2026 (date only, give no time of day)\n  cited source: \"CURRENT REPORT\", 16:37 ET October 2, 2026\n  cited source: \"EX-10.1: 8-K 2026-10-02T20:37:14.000Z\", October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The transaction adds software and intellectual-property assets, while creating up to 300,000 additional warrant shares. The filing indicates issuance remains subject to the agreement's stockholder-approval limitations, so the presently eligible amount cannot be fully established from the excerpt.\n  what the desk does not have (repeat none of its numbers): The evidence does not establish whether the Norsight warrants have become exercisable in full, whether stockholder approval was obtained, or whether any shares have been issued upon exercise.; The bundle does not establish a time-aligned causal relationship between this October 1 transaction and the observed market activity.\n\nAMOD: ranked #4 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 13.8% after hours, from the regular-session close of $3.49\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, reported as valued above $250 million. Secondary coverage reports that the financing issued 51.6 million common shares and matching warrants, so the favourable balance-sheet event is paired with substantial new and potential equity supply. The SEC filed a current report concerning the completed transaction.\n  event time: October 1, 2026 (date only, give no time of day)\n  cited source: \"8-K\", 07:30 ET October 1, 2026\n  cited source: \"ALPHA MODUS CLOSES ITS SHARES-FOR-BITCOIN DEAL, NON-U.S. INVESTORS HAND OVER 3,170 BTC FOR 51.6 MILLION SHARES AND AS MANY WARRANTS AT $4.36 (THE COINS GO TO A SINGAPORE SUBSIDIARY FORMED FOR THE DEAL) THE FILING NAMES NO CUSTODIAN\", October 1, 2026\n  cited source: \"Alpha Modus Closes PIPE Deal, Receives 3,170 Bitcoin On Sept. 30; Subsidiary Owns 3,170 Bitcoin Valued At Over $250M As Of Sept. 30\", 11:39 ET October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The reported addition of 3,170 Bitcoin and more than $250 million of Bitcoin assets is a material change to the stated balance-sheet narrative, while the associated 51.6 million-share issuance and warrants create an important dilution and supply consideration.\n  what the desk does not have (repeat none of its numbers): The SEC filing excerpt supplied does not state the exact number of PIPE shares, warrant exercise terms, resale restrictions, or registration effectiveness.; The 51.6 million share and matching-warrant terms are drawn from secondary coverage, rather than a complete primary-source excerpt in the bundle.\n\nSMTK: ranked #5 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 17.0% after hours, from the regular-session close of $1.65\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On September 18, SmartKem filed an S-1 covering the prospective resale of up to 30,000,000 shares that may be issued to Keystone under its common-stock purchase agreement, and an S-3 registering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares. These are potential supply and resale-registration events, not evidence that the shares have been issued or sold.\n  event time: 16:54 ET, September 18, 2026 (exact)\n  cited source: \"FORM S-1\", 16:54 ET September 18, 2026\n  cited source: \"FORM S-3\", 16:55 ET September 18, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The filings describe substantial prospective resale capacity relative to an undisclosed current share count, which can create supply and dilution overhang if and when registrations become effective and shares are issued or resold.\n  what the desk does not have (repeat none of its numbers): The bundle contains no effectiveness notice for either the September 18 S-1 or S-3.; The bundle does not establish how many Keystone shares, if any, have actually been issued, sold, or resold.; The evidence does not tie the current-session price increase to these filings.\n\nCYCU: ranked #6 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 3.4% after hours, from the regular-session close of $3.82\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00. The stock remains subject to a discretionary Nasdaq Panel monitor. Secondary coverage reported a 48% share-price surge following the compliance news.\n  event time: 09:13 ET, October 2, 2026 (exact)\n  cited source: \"EX-99.2: 8-K 2026-10-02T13:13:26.000Z\", October 2, 2026\n  cited source: \"Why Is Cycurion Gaining Friday?\", 15:33 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The Nasdaq compliance confirmation removes the immediate minimum-bid-price listing deficiency, while continued Nasdaq trading and the reported sharp reaction made it a clearly identifiable session catalyst.\n  what the desk does not have (repeat none of its numbers): The evidence does not establish how much of the move was attributable specifically to the compliance announcement versus the preceding contract, acquisition and legal-resolution disclosures.\n\nBRAI: ranked #7 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 3.7% after hours, from the regular-session close of $4.63\n  research: not researched yet; no dossier at this checkpoint (say so plainly, in one sentence)\n\nMTNB: ranked #8 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 8.7% after hours, from the regular-session close of $2.64\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): The latest identified company-specific event is the September 28, 2026 effective 1-for-15 reverse stock split. This is a mechanical capital-structure action rather than a new operating, clinical, commercial, or financing catalyst.\n  event time: September 28, 2026 (date only, give no time of day)\n  cited source: \"8-K\", 08:00 ET September 28, 2026\n  cited source: \"8-K\", 17:15 ET September 16, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The split consolidated every 15 outstanding common shares into one share, changed the CUSIP, and was expected to begin trading on a split-adjusted basis on September 28. It does not change proportional ownership other than treatment of fractional shares.\n  what the desk does not have (repeat none of its numbers): The evidence does not identify a fresh fundamental company development sufficient to attribute the observed trading move to a positive operating catalyst.; The bundle does not establish whether the observed trading activity is primarily driven by post-split mechanics, order flow, or another factor.\n\nSMX: ranked #9 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.0% after hours, from the regular-session close of $3.82\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): SMX published three company releases on October 2 concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported a 38.47% after-hours rise tied to fresh company updates, but the supplied evidence does not identify a contract, customer commitment, approval, revenue contribution, or other quantified commercial result.\n  event time: 14:00 ET, October 2, 2026 (exact)\n  cited source: \"The Age of Parity Has a Passport; SMX Has the Stamp\", 07:00 ET October 2, 2026\n  cited source: \"The Age of Parity Makes Affordability Real\", 10:30 ET October 2, 2026\n  cited source: \"SMX: The Age of Parity is Permanent - and Certified Recycled Plastic Has Emerged as Its Economic Outcome\", 14:00 ET October 2, 2026\n  cited source: \"SMX Stock Climbs Over 38% After-Hours: What's Going On?\", 02:36 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The company communications were fresh and concerned SMX's material-verification platform. Secondary coverage associated fresh updates with a substantial after-hours reaction, although it does not establish causation or a quantified business development.\n  what the desk does not have (repeat none of its numbers): The supplied October 2 release records contain titles but no excerpts establishing a contract, customer, approval, revenue amount, or financial impact.; The secondary report associates the move with fresh updates but does not prove those updates were the sole cause.\n\nQTEX: ranked #10 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 2.7% after hours, from the regular-session close of $1.10\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): On October 1, QTREX reported that a leading quantum-computing company independently tested its cryogenic interconnect at 20 mK, finding more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it and the unnamed testing company were finalizing a binding definitive agreement to be disclosed within weeks. The independently reported technical result is company-specific, although the commercial agreement had not yet been executed or disclosed.\n  event time: 13:20 ET, October 1, 2026 (exact)\n  cited source: \"EX-99.1: 6-K 2026-10-01T17:20:11.000Z\", October 1, 2026\n  cited source: \"QTREX Quantum Stock Climbs Friday: What's Going On?\", 08:14 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The disclosed test result provides a quantified performance claim for QTREX's quantum-connectivity product and links it to a prospective commercial agreement. Secondary reporting specifically associated the announcement with QTEX trading higher on October 2.\n  what the desk does not have (repeat none of its numbers): The testing company's identity, the commercial terms, agreement value, and whether a definitive agreement will be executed were not disclosed in the cited announcement.; The evidence does not establish revenue, purchase commitments, or timing associated with the prospective agreement.\n\nWHG: ranked #11 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.0% after hours, from the regular-session close of $19.61\n  research: not researched yet; no dossier at this checkpoint (say so plainly, in one sentence)\n\nMI: ranked #12 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 14.1% after hours, from the regular-session close of $0.89\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The filing describes a private placement subject to closing conditions, not a confirmed completed issuance. This is substantial prospective share supply and is materially dilutive if closed. Sources 120500 and 120515.\n  event time: 16:20 ET, September 30, 2026 (exact)\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", 16:20 ET September 30, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-30T20:20:42.000Z\", September 30, 2026\n  cited source: \"Reported shares outstanding (dei:EntityCommonStockSharesOutstanding)\", May 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The proposed 80,000,000-share placement is large relative to the last explicitly reported 14,318,410 shares outstanding as of December 31, 2025, although that outstanding-share figure is stale and cannot establish the current dilution percentage. The $0.45 purchase price is also below the supplied $0.94 market price. Sources 120500, 120515 and 24318.\n  what the desk does not have (repeat none of its numbers): The bundle does not confirm that the September 30 private placement closed, that the shares were issued, or when any issued shares could be resold into the public market.; The bundle does not provide a current shares-outstanding figure after the August offering and subsequent September placement agreement."
+  },
+  "draft": {
+    "headline": "",
+    "overall": "Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, with fresh news found in our sources: Nasdaq compliance with the $1.00 minimum-bid requirement. After the close, MI added 14 percent. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "VCIG",
+            "text": "The supplied financing disclosures are not a fresh catalyst: VCIG entered an agreement giving it the right, subject to conditions, to direct purchases of up to $125 million of ordinary shares, while a registration filing covers up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. The evidence does not establish that any purchase occurred or that the registration became effective, while the financing and related instruments create substantial potential supply."
+          },
+          {
+            "ticker": "ZNB",
+            "text": "The supplied financing is not a fresh catalyst: ZNB closed a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. The financing added shares and immediately exercisable warrants, but the supplied evidence does not identify a company-specific reason for the current move or establish a later company announcement."
+          },
+          {
+            "ticker": "SILO",
+            "text": "Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting in exchange for warrants for up to 300,000 common shares at a $1.51 exercise price, exercisable for five years. The transaction adds those assets and potential warrant supply, while the evidence does not establish full exercisability, stockholder approval or any issuance."
+          },
+          {
+            "ticker": "AMOD",
+            "text": "Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants. The balance-sheet change is paired with substantial new and potential equity supply, and the primary filing excerpt does not provide the full share, warrant, resale or registration terms."
+          },
+          {
+            "ticker": "SMTK",
+            "text": "The supplied filings are not a fresh catalyst: SmartKem filed an S-1 covering prospective resale of up to 30,000,000 shares that may be issued to Keystone and an S-3 registering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares. The filings describe prospective resale capacity, but the evidence does not establish effectiveness or whether any shares have been issued or resold."
+          },
+          {
+            "ticker": "CYCU",
+            "text": "Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00; secondary coverage reported a 48% share-price surge following the compliance news. The compliance disclosure removes the immediate minimum-bid deficiency, while the evidence does not establish how much of the move came specifically from that announcement."
+          },
+          {
+            "ticker": "BRAI",
+            "text": "Research was not on file at the 22:00 ET checkpoint."
+          },
+          {
+            "ticker": "MTNB",
+            "text": "The latest identified event is not a fresh catalyst: MTNB completed an effective 1-for-15 reverse stock split on September 28, 2026. The split consolidated shares and changed the CUSIP, while the evidence does not identify a fresh fundamental development sufficient to attribute the observed move to a positive operating catalyst."
+          },
+          {
+            "ticker": "SMX",
+            "text": "SMX published three October 2 releases about its Digital Material Passport and certified recycled plastic positioning. The supplied records do not establish a contract, customer commitment, approval, revenue contribution or other quantified commercial result."
+          },
+          {
+            "ticker": "QTEX",
+            "text": "QTREX reported that an unnamed leading quantum-computing company independently tested its cryogenic interconnect at 20 mK, finding more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. The result is a quantified technical claim linked to a prospective commercial agreement, but the testing company's identity, terms, value and execution were not disclosed."
+          },
+          {
+            "ticker": "WHG",
+            "text": "Research was not on file at the 22:00 ET checkpoint."
+          },
+          {
+            "ticker": "MI",
+            "text": "The supplied financing disclosure is not a fresh catalyst: NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. The proposed placement is substantial relative to the last explicitly reported share count, but the evidence does not establish that it closed, that the shares were issued or when any issued shares could enter the public market."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, with fresh news found in our sources: Nasdaq compliance with the $1.00 minimum-bid requirement. After the close, MI added 14 percent. 5 of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"VCIG\",\"text\":\"The supplied financing disclosures are not a fresh catalyst: VCIG entered an agreement giving it the right, subject to conditions, to direct purchases of up to $125 million of ordinary shares, while a registration filing covers up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. The evidence does not establish that any purchase occurred or that the registration became effective, while the financing and related instruments create substantial potential supply.\"},{\"ticker\":\"ZNB\",\"text\":\"The supplied financing is not a fresh catalyst: ZNB closed a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. The financing added shares and immediately exercisable warrants, but the supplied evidence does not identify a company-specific reason for the current move or establish a later company announcement.\"},{\"ticker\":\"SILO\",\"text\":\"Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting in exchange for warrants for up to 300,000 common shares at a $1.51 exercise price, exercisable for five years. The transaction adds those assets and potential warrant supply, while the evidence does not establish full exercisability, stockholder approval or any issuance.\"},{\"ticker\":\"AMOD\",\"text\":\"Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants. The balance-sheet change is paired with substantial new and potential equity supply, and the primary filing excerpt does not provide the full share, warrant, resale or registration terms.\"},{\"ticker\":\"SMTK\",\"text\":\"The supplied filings are not a fresh catalyst: SmartKem filed an S-1 covering prospective resale of up to 30,000,000 shares that may be issued to Keystone and an S-3 registering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares. The filings describe prospective resale capacity, but the evidence does not establish effectiveness or whether any shares have been issued or resold.\"},{\"ticker\":\"CYCU\",\"text\":\"Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00; secondary coverage reported a 48% share-price surge following the compliance news. The compliance disclosure removes the immediate minimum-bid deficiency, while the evidence does not establish how much of the move came specifically from that announcement.\"},{\"ticker\":\"BRAI\",\"text\":\"Research was not on file at the 22:00 ET checkpoint.\"},{\"ticker\":\"MTNB\",\"text\":\"The latest identified event is not a fresh catalyst: MTNB completed an effective 1-for-15 reverse stock split on September 28, 2026. The split consolidated shares and changed the CUSIP, while the evidence does not identify a fresh fundamental development sufficient to attribute the observed move to a positive operating catalyst.\"},{\"ticker\":\"SMX\",\"text\":\"SMX published three October 2 releases about its Digital Material Passport and certified recycled plastic positioning. The supplied records do not establish a contract, customer commitment, approval, revenue contribution or other quantified commercial result.\"},{\"ticker\":\"QTEX\",\"text\":\"QTREX reported that an unnamed leading quantum-computing company independently tested its cryogenic interconnect at 20 mK, finding more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. The result is a quantified technical claim linked to a prospective commercial agreement, but the testing company's identity, terms, value and execution were not disclosed.\"},{\"ticker\":\"WHG\",\"text\":\"Research was not on file at the 22:00 ET checkpoint.\"},{\"ticker\":\"MI\",\"text\":\"The supplied financing disclosure is not a fresh catalyst: NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. The proposed placement is substantial relative to the last explicitly reported share count, but the evidence does not establish that it closed, that the shares were issued or when any issued shares could enter the public market.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "PREMARKET",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-02",
+      "targetTradingDate": "2026-10-05",
+      "checkpoints": [
+        {
+          "id": 631,
+          "type": "NEXT_DAY_RECAP",
+          "completedAt": "2026-10-03T02:00:05.521Z"
+        }
+      ],
+      "publishedAt": "2026-10-13T01:10:34.106Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "SILO",
+              "liveFeed": null,
+              "text": "Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting in exchange for warrants for up to 300,000 common shares at a $1.51 exercise price, exercisable for five years. The transaction adds those assets and potential warrant supply, while the evidence does not establish full exercisability, stockholder approval or any issuance.",
+              "company": {
+                "name": "Silo Pharma, Inc.",
+                "country": "United States",
+                "business": "Silo Pharma is a developmental-stage biopharmaceutical company developing therapies for stress-induced psychiatric disorders, chronic pain and central nervous system diseases."
+              },
+              "path": {
+                "from": 1.458,
+                "high": 1.9,
+                "now": 1.2101,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 8:00 PM ET",
+                  "headline": "On October 1, 2026, Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting. Consideration was warrants for up to 300,000 common shares at a $1.51 exercise price, exercisable for five years. The asset acquisition is company-specific, but the associated new warrant supply makes this a dilutive-structure event under the grading framework.",
+                  "explainsMove": null,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.94M sh supply",
+                  "detail": "The reported 1,588,250 shares outstanding is dated August 13, 2026 and predates the August 18 Parkview transaction and October 1 Norsight warrant issuance, so it is not a current fully reconciled capitalization figure.",
+                  "tone": "neg",
+                  "full": "The reported 1,588,250 shares outstanding is dated August 13, 2026 and predates the August 18 Parkview transaction and October 1 Norsight warrant issuance, so it is not a current fully reconciled capitalization figure."
+                }
+              },
+              "researchVersionId": 2828,
+              "inputKey": "f8f500831f088f3e"
+            },
+            {
+              "ticker": "AMOD",
+              "liveFeed": null,
+              "text": "Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants. The balance-sheet change is paired with substantial new and potential equity supply, and the primary filing excerpt does not provide the full share, warrant, resale or registration terms.",
+              "company": {
+                "name": "ALPHA MODUS HOLDINGS, INC.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 3.49,
+                "high": 3.93,
+                "now": 3.01,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 3:30 AM ET",
+                  "headline": "Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, reported as valued above $250 million. Secondary coverage reports that the financing issued 51.6 million common shares and matching warrants, so the favourable balance-sheet event is paired with substantial new and potential equity supply. The SEC filed a current report concerning the completed transaction.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "103.2M sh supply",
+                  "detail": "Secondary coverage reports 51.6 million common shares issued in the completed Bitcoin PIPE, but no current shares-outstanding figure or reconciled float is supplied.",
+                  "tone": "neg",
+                  "full": "Secondary coverage reports 51.6 million common shares issued in the completed Bitcoin PIPE, but no current shares-outstanding figure or reconciled float is supplied."
+                }
+              },
+              "researchVersionId": 2793,
+              "inputKey": "ab300f991253498c"
+            },
+            {
+              "ticker": "CYCU",
+              "liveFeed": null,
+              "text": "Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00; secondary coverage reported a 48% share-price surge following the compliance news. The compliance disclosure removes the immediate minimum-bid deficiency, while the evidence does not establish how much of the move came specifically from that announcement.",
+              "company": {
+                "name": "Cycurion, Inc.",
+                "country": "United States",
+                "business": "Cycurion provides IT cybersecurity, program management, business continuity and AI-driven solutions."
+              },
+              "path": {
+                "from": 3.82,
+                "high": 3.82,
+                "now": 3.69,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "13h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 9:13 AM ET",
+                  "headline": "On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00. The stock remains subject to a discretionary Nasdaq Panel monitor. Secondary coverage reported a 48% share-price surge following the compliance news.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Cycurion effected a 1-for-8 reverse stock split on August 28, 2026 in connection with restoring Nasdaq minimum-bid compliance.",
+                  "tone": "warn",
+                  "full": "Cycurion effected a 1-for-8 reverse stock split on August 28, 2026 in connection with restoring Nasdaq minimum-bid compliance."
+                }
+              },
+              "researchVersionId": 2831,
+              "inputKey": "82fbe289cac04beb"
+            },
+            {
+              "ticker": "SMX",
+              "liveFeed": null,
+              "text": "SMX published three October 2 releases about its Digital Material Passport and certified recycled plastic positioning. The supplied records do not establish a contract, customer commitment, approval, revenue contribution or other quantified commercial result.",
+              "company": {
+                "name": "SMX (Security Matters) Public Ltd Co",
+                "country": "Ireland",
+                "business": "SMX provides a Digital Material Passport platform designed to connect physical materials with persistent digital identity and verified lifecycle data."
+              },
+              "path": {
+                "from": 3.82,
+                "high": 3.8674,
+                "now": 3.8199,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "8h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 2:00 PM ET",
+                  "headline": "SMX published three company releases on October 2 concerning its Digital Material Passport and certified recycled plastic positioning. Secondary coverage reported a 38.47% after-hours rise tied to fresh company updates, but the supplied evidence does not identify a contract, customer commitment, approval, revenue contribution, or other quantified commercial result.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "SMX disclosed recurring losses, negative operating cash flow, accumulated losses of $251 million as of December 31, 2025, dependence on external funding, and substantial doubt about its ability to continue as a going concern.",
+                  "tone": "warn",
+                  "full": "SMX disclosed recurring losses, negative operating cash flow, accumulated losses of $251 million as of December 31, 2025, dependence on external funding, and substantial doubt about its ability to continue as a going concern."
+                }
+              },
+              "researchVersionId": 2832,
+              "inputKey": "70b96f5e3d88caef"
+            },
+            {
+              "ticker": "QTEX",
+              "liveFeed": null,
+              "text": "QTREX reported that an unnamed leading quantum-computing company independently tested its cryogenic interconnect at 20 mK, finding more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. The result is a quantified technical claim linked to a prospective commercial agreement, but the testing company's identity, terms, value and execution were not disclosed.",
+              "company": {
+                "name": "QTREX Quantum Ltd.",
+                "country": null,
+                "business": "QTREX develops additive-manufactured electronics and quantum connectivity solutions, including cryogenic interconnects for quantum-computing hardware."
+              },
+              "path": {
+                "from": 1.1,
+                "high": 1.3,
+                "now": 1.07,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 1:20 PM ET",
+                  "headline": "On October 1, QTREX reported that a leading quantum-computing company independently tested its cryogenic interconnect at 20 mK, finding more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it and the unnamed testing company were finalizing a binding definitive agreement to be disclosed within weeks. The independently reported technical result is company-specific, although the commercial agreement had not yet been executed or disclosed.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "11.1M sh supply",
+                  "detail": "A registered direct offering of 11,111,111 ordinary shares at $0.90 per share was conducted on August 20, 2026, creating substantial recent issued-share supply.",
+                  "tone": "neg",
+                  "full": "A registered direct offering of 11,111,111 ordinary shares at $0.90 per share was conducted on August 20, 2026, creating substantial recent issued-share supply."
+                }
+              },
+              "researchVersionId": 2833,
+              "inputKey": "e0c6489478c20f09"
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "VCIG",
+              "liveFeed": null,
+              "text": "The supplied financing disclosures are not a fresh catalyst: VCIG entered an agreement giving it the right, subject to conditions, to direct purchases of up to $125 million of ordinary shares, while a registration filing covers up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. The evidence does not establish that any purchase occurred or that the registration became effective, while the financing and related instruments create substantial potential supply.",
+              "company": {
+                "name": "VCI Global Ltd",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 1.37,
+                "high": 1.9,
+                "now": 1.1991,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "2d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 10:32 AM ET",
+                  "headline": "On September 23, disclosed September 30, VCIG entered an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares. The same 6-K disclosed Dune and FirstFire convertible-note transactions, and the related September 29 F-1 seeks registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. This is fresh, company-specific financing and potential share supply, rather than an operational catalyst.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "103.5M sh supply",
+                  "detail": "The August 24 reverse split was expressly implemented to comply with Nasdaq's minimum bid-price requirement, reducing shares outstanding from approximately 18,997,434 to approximately 1,266,496.",
+                  "tone": "neg",
+                  "full": "The August 24 reverse split was expressly implemented to comply with Nasdaq's minimum bid-price requirement, reducing shares outstanding from approximately 18,997,434 to approximately 1,266,496."
+                }
+              },
+              "researchVersionId": 2829,
+              "inputKey": "1e536b41b0fb4eed"
+            },
+            {
+              "ticker": "ZNB",
+              "liveFeed": null,
+              "text": "The supplied financing is not a fresh catalyst: ZNB closed a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. The financing added shares and immediately exercisable warrants, but the supplied evidence does not identify a company-specific reason for the current move or establish a later company announcement.",
+              "company": {
+                "name": "Zeta Network Group",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 1.54,
+                "high": 1.54,
+                "now": 1.2483,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "46d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 16, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 16 · No fresh company-specific positive event is identified in the supplied October 2 coverage. The latest material company event in the evidence is the August 17 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each containing one ordinary share and a warrant exercisable at $4.40. This creates share and warrant supply, but it is not shown to be the cause of the current move.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "6.83M sh supply",
+                  "detail": "The only reported shares-outstanding figure is 16,191,012 as of June 30, 2023.",
+                  "tone": "neg",
+                  "full": "The only reported shares-outstanding figure is 16,191,012 as of June 30, 2023. It predates subsequent financings and reverse-split activity, so it is not a current fully reconciled capitalization figure."
+                }
+              },
+              "researchVersionId": 2811,
+              "inputKey": "2875671393502e31"
+            },
+            {
+              "ticker": "SMTK",
+              "liveFeed": null,
+              "text": "The supplied filings are not a fresh catalyst: SmartKem filed an S-1 covering prospective resale of up to 30,000,000 shares that may be issued to Keystone and an S-3 registering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares. The filings describe prospective resale capacity, but the evidence does not establish effectiveness or whether any shares have been issued or resold.",
+              "company": {
+                "name": "SmartKem, Inc.",
+                "country": "United States",
+                "business": "SmartKem develops electronic materials and has proposed an all-stock combination with Ferrox, a critical-minerals developer whose principal asset is the Tivani project in South Africa."
+              },
+              "path": {
+                "from": 1.65,
+                "high": 1.98,
+                "now": 1.37,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "14d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 18, 4:54 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 18 · On September 18, SmartKem filed an S-1 covering the prospective resale of up to 30,000,000 shares that may be issued to Keystone under its common-stock purchase agreement, and an S-3 registering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares. These are potential supply and resale-registration events, not evidence that the shares have been issued or sold.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "45.1M sh supply",
+                  "detail": "Two September 18 registration statements create prospective resale capacity of up to 30,000,000 Keystone shares and up to 15,127,662 other resale shares.",
+                  "tone": "neg",
+                  "full": "Two September 18 registration statements create prospective resale capacity of up to 30,000,000 Keystone shares and up to 15,127,662 other resale shares. The filings do not establish that either registration is effective or that any shares were sold."
+                }
+              },
+              "researchVersionId": 2824,
+              "inputKey": "75f08c49f679984c"
+            },
+            {
+              "ticker": "MTNB",
+              "liveFeed": null,
+              "text": "The latest identified event is not a fresh catalyst: MTNB completed an effective 1-for-15 reverse stock split on September 28, 2026. The split consolidated shares and changed the CUSIP, while the evidence does not identify a fresh fundamental development sufficient to attribute the observed move to a positive operating catalyst.",
+              "company": {
+                "name": "Matinas BioPharma Holdings, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 2.64,
+                "high": 3.05,
+                "now": 2.87,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 28, 12:01 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 28 · The latest identified company-specific event is the September 28, 2026 effective 1-for-15 reverse stock split. This is a mechanical capital-structure action rather than a new operating, clinical, commercial, or financing catalyst.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "16.9M sh supply",
+                  "detail": "The only reported outstanding-share figure is 14,692,796 as of August 10, 2026, which predates the September 28, 2026 1-for-15 reverse split.",
+                  "tone": "neg",
+                  "full": "The only reported outstanding-share figure is 14,692,796 as of August 10, 2026, which predates the September 28, 2026 1-for-15 reverse split. It is not a current post-split outstanding-share count."
+                }
+              },
+              "researchVersionId": 2445,
+              "inputKey": "cfb57c28c7ffc57d"
+            },
+            {
+              "ticker": "MI",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "NFT Ltd",
+                "country": "Hong Kong",
+                "business": "NFT Ltd operates an online platform for artists, art dealers and art investors to list and trade valuable artwork."
+              },
+              "path": {
+                "from": 0.894,
+                "high": 1.02,
+                "now": 1.02,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "2d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 4:20 PM ET",
+                  "headline": "On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The filing describes a private placement subject to closing conditions, not a confirmed completed issuance. This is substantial prospective share supply and is materially dilutive if closed. Sources 120500 and 120515.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "80.9M sh",
+                  "detail": "NFT Ltd disclosed a September 30 agreement for a potential 80,000,000-share private placement at $0.45 per share.",
+                  "tone": "warn",
+                  "full": "NFT Ltd disclosed a September 30 agreement for a potential 80,000,000-share private placement at $0.45 per share. Closing and issuance remain unconfirmed, but the prospective supply is material. Sources 120500 and 120515."
+                }
+              },
+              "researchVersionId": 2649,
+              "inputKey": "f0abac39a1b351f2"
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "BRAI",
+              "liveFeed": null,
+              "text": "Research was not on file at the 22:00 ET checkpoint.",
+              "company": null,
+              "path": {
+                "from": 4.63,
+                "high": 4.99,
+                "now": 4.8,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              },
+              "researchVersionId": null,
+              "inputKey": "8ce7186276ee5749"
+            },
+            {
+              "ticker": "WHG",
+              "liveFeed": null,
+              "text": "Research was not on file at the 22:00 ET checkpoint.",
+              "company": null,
+              "path": {
+                "from": 19.61,
+                "high": 19.61,
+                "now": 19.61,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              },
+              "researchVersionId": null,
+              "inputKey": "c2429a913da59c1e"
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, with fresh news found in our sources: Nasdaq compliance with the $1.00 minimum-bid requirement. After the close, MI added 14 percent. 5 of the 12 names the desk covers had fresh news in our sources.",
+      "narrativeFootnotes": {
+        "noClose": 7,
+        "splitExcluded": 0
+      },
+      "narrativeKey": "6cc0ec1b094bd629",
+      "revisionOf": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L12",
+          "reason": "FORBIDDEN_WORDING",
+          "by": "rule",
+          "detail": "enter/entry: \"enter\"",
+          "text": "The supplied financing disclosure is not a fresh catalyst: NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. The proposed placement is substantial relative to the last explicitly reported share count, but the evidence does not establish that it closed, that the shares were issued or when any issued shares could enter the public market."
+        }
+      ],
+      "writerMs": 29276,
+      "checkerMs": 8537
+    }
+  }
+}

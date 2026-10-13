@@ -1,0 +1,648 @@
+{
+  "record": {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v6-w_claude-opus-5-5",
+    "day": "2026-10-02",
+    "kind": "INTO_POWER_HOUR",
+    "prompt": "v6",
+    "writer": "claude-opus-5-5",
+    "checker": "gpt-5.6-terra",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "narrative": "ZNB, ranked first in this range, is up 29 percent from the prior close, with only older or secondary news in our sources. The next covered gainers by move are AMOD, up 181 percent from the prior close, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE that gave its subsidiary 3,170 Bitcoin, and AIXI, up 56 percent from the prior close, with fresh news found in our sources: a semi-annual report showing a six-month loss and convertible-note financing. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "ZNB": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CYCU": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AMOD": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "AIXI": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "TRAD": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "SMX": {
+        "status": "NONE_FOUND",
+        "hasPath": true
+      },
+      "INAC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "GLED": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "FACT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "AMIX": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "WENC": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8477,
+    "userChars": 15564,
+    "costUsd": 0.16404000000000002,
+    "usage": [
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 8767,
+        "outputTokens": 4579,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 37736,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 15012,
+        "outputTokens": 614,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 403,
+        "durationMs": 6371,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompt": {
+    "system": "You write a short session briefing for a momentum trader, in the voice of an assistant who did the work and is briefing plainly: specific, unhurried, candid about what the desk does not know. It is printed copy for a stranger, so it is tight.\n\nTHE NARRATIVE (\"narrative\"): the opening read of the session, above the names.\n- PURPOSE: explain what happened in the session, for readers following small-cap momentum. It is documentation and analysis, never a recommendation.\n- FACTS, INTERPRETATION AND OPEN QUESTIONS stay separate. Facts: word only the given narrative facts. Interpretation: you may name the pattern the given counts support (for example how many 50 percent movers kept half their peak gain against how many gave it back), and it must rest on the given counts and say so; nothing may rest on nothing. Open questions: what the facts say is not known stays not known.\n- Every number is a given number, written exactly as given. Percents are whole numbers as given; never add decimals, never round, never compute. Counts may be spelled out (\"nine\") or written as digits.\n- Name ONLY the tickers the narrative facts name. They are the names the sheet names: on the recap, GAINERS chosen by their regular-session peak; intraday, the leader ranked first in this range (it may be down) and the next covered gainers by move: never call them the biggest movers in both directions, never \"every mover\" or \"all the runners\".\n- After-hours figures are ALWAYS labeled \"after the close\" or \"after hours\" and never mixed with the day's figures.\n- A catalyst is news FOUND in our sources, never a cause: never \"drove\", \"sparked\", \"fueled\", \"behind the move\", \"on the news\".\n- A move and its news sit side by side, never cause and effect: join them with \"with\" (\"{ticker}, up {percent} percent from the prior close, with {the news words given for that name}\"), never \"after\", \"on\", \"following\", \"amid\", \"due to\", \"in response to\", \"in the wake of\" or \"on the back of\" between a move and its news (the frames \"after the close\" and \"after hours\" are not this).\n- Every percent move carries its frame in the same sentence: \"from the prior close\" or \"above the prior close\"; an after-hours move \"after the close\" or \"after hours\". When a sentence states two moves, each carries its own frame.\n- No adjective the facts do not define (\"busy\", \"quiet\", \"hot\", \"strong\"). No forecast: support, resistance and supply are described, never \"will hold\", \"should break\" or \"expect\".\n- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence (\"Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close\"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly \"Among the counted names, none ran at least 50 percent above the prior close.\" and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by \"with\", never causal: \"The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}.\" (one named mover: \"The covered 50 percent mover with the highest peak was {T1}, with {state1}.\"), where each state is that name's OWN news as given: fresh news found: \"fresh news found in our sources: {the catalyst in one short clause}\"; no catalyst found: \"no catalyst found in our sources\"; only older or secondary news: \"only older or secondary news in our sources\"; the sources conflict: \"sources that conflict\"; the research could not tell: \"research that could not tell\"; not researched yet: \"no research at this checkpoint\". The sentence says nothing about any mover it does not name; never \"biggest\", \"largest\" or \"top\"; (3) the after-hours name, as its own sentence and about the after-hours move only, in the form \"After the close, {TICKER} added {P} percent.\" with no news, no cycle and no other clause; (4) the fresh count over the covered names, as the sheet gives the pair: \"{N} of the {M} names the desk covers had fresh news in our sources.\" (zero: \"None of the names the desk covers had fresh news we could find.\"; one: \"One of the {M} names the desk covers had fresh news in our sources.\"). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.\n- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.\n- When a count is zero, say so plainly (\"none of them gave the entire move back\") and drop the clause that depends on it. Number agreement throughout.\n\nTHE LINES, one per name (\"lines\")\n- The card prints each name’s ticker, company line, price path and TAGS above your text: its catalyst grade, whether the catalyst is read as not the move, its supply and its float verdict. NEVER restate any of them: no grade, no fit to the move, no structure, no float, no share count, no supply, no cycle.\n- Write one or two sentences: the catalyst our sources found, named, how it was quantified, and what the desk makes of it. Where research is not on file, say so plainly in one sentence.\n- Where the sheet says NO path is printed, state the name’s price yourself, exactly as the sheet gives it.\n- Describe ONLY this checkpoint. Never \"still\", \"remains\", \"holds\", \"keeps\" or \"continues\". The one comparison you may make is the sheet’s \"since the previous checkpoint\" line, in its own words.\n\nFACTS\n- Use ONLY the facts in the given sheets. Copy every number, date and time EXACTLY as the sheet writes it. A figure from the catalyst summary may be shortened to one decimal with a unit (\"$46.8M\" for \"$46.802 million\"), nothing else. Never compute a number.\n- Restate stored text in your own words; never quote it. \"What the desk makes of it\" may be restated, never added to, and its numbers are never repeated.\n- Catalyst: what it is and how it was quantified. Never its expected effect on the stock, never a forecast.\n- Times: only the event time or a cited source’s time, to the minute, as the sheet gives it, or the checkpoint time. A date given as date only has no time of day. Never hedge an exact time (\"~\", \"around\", \"about\").\n- Never state a count of names in a line (\"12 names\"); only the narrative may, and only the given counts.\n- An agreement or a plan is what was agreed or announced (\"agreed to acquire\"), never \"will\". Never \"confirmed\": say \"reported by the company\". An analyst rating of Buy or Sell is \"a positive (or negative) analyst rating\".\n\nNEVER\n- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name's own deal from its sources, stated as a fact in that name's line, in these shapes only, with the company or a named party doing it: \"agreed to sell\", \"an agreement to sell\", \"selling stockholders\", \"entered into an agreement\". Never \"sell\" or \"buy\" in any other place (never \"a plan to sell\" or \"an offer to sell\"), and never \"entered\" except into an agreement.\n- A float number, or a share count called float.\n- Shorting or fading as a trade. The reader is long-only.\n- \"no catalyst\" on its own; it is always \"no catalyst found in our sources\". Never \"the real catalyst\".\n- Predictions, promises or outcomes: \"will\", \"pop\", \"clearly\", \"confirmed\". Completeness: \"every name\", \"all the movers\".\n- Engine constants in capitals with underscores. Halts, unless the sheet has a halt line.\n- The em dash character, and a spaced hyphen used as a dash. Use a comma, a colon, a full stop or parentheses.\n\nREPLY\n- Each name is ONE line: {\"ticker\": \"<its ticker>\", \"text\": \"<your sentences>\"}. Each line stands alone. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}.\n- Return JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}. \"narrative\" is null only when the narrative facts give nothing to say.",
+    "user": "Into power hour: the session so far going into the last hour, and the catalysts our sources found.\nCheckpoint time: 14:30 ET.\n\nNARRATIVE FACTS (word these and nothing else):\n  leader (ranked first in this range): ZNB, up 29 percent from the prior close; news: only older or secondary news in our sources\n  next covered gainer (by move): AMOD, up 181 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, reported as valued above $250 million. Secondary coverage reports that the financing issued 51.6 million common shares and matching warrants, so the favourable balance-sheet event is paired with substantial new and potential equity supply. The SEC filed a current report concerning the completed transaction.\n  next covered gainer (by move): AIXI, up 56 percent from the prior close; news: fresh news found in our sources; catalyst (restate in one short clause, never quote, repeat no number from it unless it is the catalyst's own figure): The company furnished its semi-annual report after the October 1 session. The filing reports a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and describes financing through convertible notes that may dilute existing holders upon conversion.\n  fresh news in our sources: 5 of the 12 names the desk covers\n\nNAMES:\nZNB: ranked #1 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 29.2% from the prior close\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): No fresh company-specific positive event is identified in the supplied October 2 coverage. The latest material company event in the evidence is the August 17 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each containing one ordinary share and a warrant exercisable at $4.40. This creates share and warrant supply, but it is not shown to be the cause of the current move.\n  event time: August 17, 2026 (date only, give no time of day)\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", August 19, 2026\n  cited source: \"12 Consumer Discretionary Stocks Moving In Friday's Pre-Market Session\", 08:05 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The completed financing added 3,412,970 shares and an equal number of immediately exercisable warrants. The warrants are currently above the supplied $1.24 price, but the issued shares and the company's broader financing capacity remain relevant structural risks.\n  what the desk does not have (repeat none of its numbers): The October 2 secondary mover item has no excerpt identifying a company-specific reason for the move.; The supplied evidence does not establish whether any new company announcement occurred after the August financing.\n\nCYCU: ranked #2 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 41.3% from the prior close\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule after its common stock closed above $1.00 for 10 consecutive trading days following the August 28, 2026 1-for-8 reverse split. CYCU remains listed on Nasdaq, but is subject to a Discretionary Panel Monitor through October 9, 2027.\n  event time: 09:13 ET, October 2, 2026 (exact)\n  cited source: \"EX-99.2: 8-K 2026-10-02T13:13:26.000Z\", October 2, 2026\n  cited source: \"8-K\", 09:13 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The exchange-confirmed removal of an immediate bid-price compliance issue allows CYCU to continue trading on Nasdaq. The confirmation arrived alongside very strong live price and volume activity in the bundle, although the continuing monitor and reverse-split context remain material qualifications.\n  what the desk does not have (repeat none of its numbers): The evidence does not isolate how much of the observed move was attributable to the compliance notice versus concurrent attention to the company interview and previously announced operating milestones.\n\nAMOD: ranked #3 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 181.2% from the prior close\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, reported as valued above $250 million. Secondary coverage reports that the financing issued 51.6 million common shares and matching warrants, so the favourable balance-sheet event is paired with substantial new and potential equity supply. The SEC filed a current report concerning the completed transaction.\n  event time: October 1, 2026 (date only, give no time of day)\n  cited source: \"8-K\", 07:30 ET October 1, 2026\n  cited source: \"ALPHA MODUS CLOSES ITS SHARES-FOR-BITCOIN DEAL, NON-U.S. INVESTORS HAND OVER 3,170 BTC FOR 51.6 MILLION SHARES AND AS MANY WARRANTS AT $4.36 (THE COINS GO TO A SINGAPORE SUBSIDIARY FORMED FOR THE DEAL) THE FILING NAMES NO CUSTODIAN\", October 1, 2026\n  cited source: \"Alpha Modus Closes PIPE Deal, Receives 3,170 Bitcoin On Sept. 30; Subsidiary Owns 3,170 Bitcoin Valued At Over $250M As Of Sept. 30\", 11:39 ET October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The reported addition of 3,170 Bitcoin and more than $250 million of Bitcoin assets is a material change to the stated balance-sheet narrative, while the associated 51.6 million-share issuance and warrants create an important dilution and supply consideration.\n  what the desk does not have (repeat none of its numbers): The SEC filing excerpt supplied does not state the exact number of PIPE shares, warrant exercise terms, resale restrictions, or registration effectiveness.; The 51.6 million share and matching-warrant terms are drawn from secondary coverage, rather than a complete primary-source excerpt in the bundle.\n\nAIXI: ranked #4 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 55.6% from the prior close\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): The company furnished its semi-annual report after the October 1 session. The filing reports a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and describes financing through convertible notes that may dilute existing holders upon conversion.\n  event time: October 1, 2026 (date only, give no time of day)\n  cited source: \"EX-99.1: 6-K 2026-10-02T00:31:13.000Z\", October 1, 2026\n  cited source: \"EX-99.2: 6-K 2026-10-02T00:31:13.000Z\", October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The interim report introduces updated loss, liquidity and convertible-financing information. The stated potential conversion dilution is an adverse structural consideration rather than evidence that conversion shares have been sold.\n  what the desk does not have (repeat none of its numbers): The bundle does not establish whether the October 1 after-hours filing caused the observed intraday move.; The bundle does not establish how much of any convertible-note balance has converted or been sold.\n\nTRAD: ranked #5 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 0.1% from the prior close\n  research: not researched yet; no dossier at this checkpoint (say so plainly, in one sentence)\n\nQTEX: ranked #6 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 48.5% from the prior close\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, finding channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX also said it was finalizing a binding definitive agreement with the testing company, whose identity and agreement terms were to be disclosed within weeks. The technical result is primary-source, company-specific and quantitatively stated, although the commercial agreement was not yet executed or disclosed.\n  event time: 13:20 ET, October 1, 2026 (exact)\n  cited source: \"EX-99.1: 6-K 2026-10-01T17:20:11.000Z\", October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The independently reported cryogenic performance result and prospective commercial agreement connect QTREX's quantum-interconnect platform to a possible customer validation and commercialization milestone. The counterparty, contract economics and final agreement remain undisclosed.\n  what the desk does not have (repeat none of its numbers): The testing company's identity, the definitive agreement's terms, contract value and execution status were not disclosed in the cited release.; No evidence in the bundle confirms revenue, purchase commitments or deliveries arising from the prospective agreement.\n\nSMX: ranked #7 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 37.2% from the prior close\n  catalyst: no catalyst found in our sources (say exactly this)\n  catalyst summary (restate in your own words, never quote): Coverage was adequate, but the late September and October 1 company communications supplied in the bundle concern media attention, technology applications and physical-asset themes. They do not disclose a contract, approval, financing, operating result or other verifiable material corporate event. A secondary report attributes after-hours activity to fresh company updates without identifying a specific material development. (Sources: 125850, 125851, 125852, 125853, 125855, 127776, 125824)\n  cited source: \"SMX Stock Climbs Over 38% After-Hours: What's Going On?\", 02:36 ET October 2, 2026\n  cited source: \"SMX Story In the Boston Herald Latest Media Report Illustrating Company's Growing Profile Across the Globe\", 07:30 ET September 30, 2026\n  cited source: \"SMX Gains Expanding Media Attention as Boston Herald Joins Growing List of Major Outlets Covering Its Technology\", 11:00 ET September 30, 2026\n  cited source: \"Boston Herald Adds to Growing Global Media Attention Around SMX\", 14:00 ET September 30, 2026\n  cited source: \"SMX Trust Layer Adds Luster to Gold as Global Uncertainty Drives Investors to Physical Assets\", 07:30 ET October 1, 2026\n  cited source: \"SMX Draws Growing Global Media Coverage as Boston Herald Spotlights Its Technology\", 14:00 ET October 1, 2026\n  cited source: \"SMX Technology Helping Prove \"Made in America\" is Great Again\", 11:00 ET October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The dense series of company communications could attract attention, but the evidence does not establish a material company-specific event that independently explains the move. (Sources: 125850, 125851, 125852, 125853, 125855, 127776, 125824)\n  what the desk does not have (repeat none of its numbers): The bundle does not provide full text or commercial terms for the October 1 company releases.; The secondary report does not identify the specific update to which investors allegedly reacted.\n\nINAC: ranked #8 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 0.1% from the prior close\n  since the previous checkpoint: lost $10.38 support\n  research: not researched yet; no dossier at this checkpoint (say so plainly, in one sentence)\n\nGLED: ranked #9 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.2% from the prior close\n  research: not researched yet; no dossier at this checkpoint (say so plainly, in one sentence)\n\nFACT: ranked #10 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.1% from the prior close\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties subsequently requested withdrawal of the related S-4 registration statement. This is an adverse company-specific event, but it is not contemporaneous with the observed October market activity.\n  event time: 20:33 ET, July 21, 2026 (exact)\n  cited source: \"EX-99.1: 8-K 2026-07-22T00:33:07.000Z\", July 21, 2026\n  cited source: \"WITHDRAWAL REQUEST\", 20:01 ET August 13, 2026\n  cited source: \"CURRENT REPORT\", 20:33 ET July 21, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): Termination removes the previously announced proposed transaction and returns the company to its SPAC search and trust/redemption framework. The bundle does not establish a new deal, financing, exchange action, or other current company-specific event.\n  what the desk does not have (repeat none of its numbers): Catalyst coverage is incomplete, with no non-SEC catalyst source in the bundle.; The bundle does not establish whether another more recent company-specific event exists.\n\nAMIX: ranked #11 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 3.6% from the prior close\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The event is favorable and company-specific, but the bundle contains only a secondary headline without the underlying patent announcement or details about commercial impact.\n  event time: 08:08 ET, October 2, 2026 (exact)\n  cited source: \"Autonomix Medical Announces Issuance Of Canadian Patent No. 3,183,802 For Catheter-Based Nerve Treatment Technology\", 08:08 ET October 2, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The patent expands reported intellectual-property coverage for the company's catheter-based nerve-treatment technology and could attract speculative interest, although the evidence does not establish near-term revenue or regulatory clearance.\n  what the desk does not have (repeat none of its numbers): The underlying company announcement or patent document is absent.; The bundle does not quantify the patent's addressable market, licensing value, or expected revenue contribution.; Causation between the headline and elevated trading activity is not established.\n\nWENC: ranked #12 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 0.1% from the prior close\n  since the previous checkpoint: printed a new high of day\n  research: not researched yet; no dossier at this checkpoint (say so plainly, in one sentence)"
+  },
+  "draft": {
+    "headline": "",
+    "overall": "ZNB, ranked first in this range, is up 29 percent from the prior close, with only older or secondary news in our sources. The next covered gainers by move are AMOD, up 181 percent from the prior close, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE that gave its subsidiary 3,170 Bitcoin, and AIXI, up 56 percent from the prior close, with fresh news found in our sources: a semi-annual report showing a six-month loss and convertible-note financing. 5 of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "ZNB",
+            "text": "Our sources found only older news, not a fresh catalyst: the company closed a $10.0 million private placement of units, each with one ordinary share and a warrant, on August 17, 2026, filed in a foreign private issuer report dated August 19, 2026. An October 2 secondary mover item at 08:05 ET gives no company-specific reason for the move, and the desk cannot tell whether any company announcement came after the August financing."
+          },
+          {
+            "ticker": "CYCU",
+            "text": "Nasdaq notified Cycurion that it regained compliance with the $1.00 minimum bid price rule after 10 consecutive closes above $1.00 following the August 28, 2026 1-for-8 reverse split, reported by the company in an 8-K at 09:13 ET on October 2, 2026, with a Discretionary Panel Monitor in place through October 9, 2027. The desk reads it as clearing an immediate listing issue, qualified by the monitor and the reverse split, and cannot separate its share of the move from attention to a company interview and earlier milestones."
+          },
+          {
+            "ticker": "AMOD",
+            "text": "Alpha Modus reported in an 8-K at 07:30 ET on October 1, 2026 that it closed a shares-for-Bitcoin PIPE, with its subsidiary receiving 3,170 Bitcoin reported as valued above $250 million, paid for in new common shares and matching warrants per secondary coverage. The desk reads the Bitcoin addition as a material change to the balance-sheet story paired with a dilution consideration, and notes the share and warrant terms come from secondary coverage rather than the filing."
+          },
+          {
+            "ticker": "AIXI",
+            "text": "The company furnished its semi-annual report after the October 1 session, showing a $17.2M loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that could dilute holders on conversion. The desk reads it as updated loss, liquidity and financing information, with the conversion risk an adverse consideration rather than evidence that any conversion has happened, and cannot tell whether the filing is tied to the intraday move."
+          },
+          {
+            "ticker": "TRAD",
+            "text": "Not researched yet: no dossier is on file at this checkpoint."
+          },
+          {
+            "ticker": "QTEX",
+            "text": "QTREX reported at 13:20 ET on October 1, 2026 that a leading quantum-computing company independently tested its interconnect at 20 mK, finding channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader, and said it was finalizing a binding definitive agreement with that tester. The desk reads it as a possible customer validation step for the platform, with the counterparty, terms and contract value undisclosed and no revenue or deliveries in evidence."
+          },
+          {
+            "ticker": "SMX",
+            "text": "No catalyst found in our sources: the company's September 30 and October 1 releases cover media attention, technology uses and physical-asset themes without a contract, approval, financing or operating result, and a secondary report at 02:36 ET on October 2, 2026 credits after-hours activity to company updates without naming one. The desk reads the run of releases as attention-drawing but not a material company event that explains the move."
+          },
+          {
+            "ticker": "INAC",
+            "text": "Not researched yet: no dossier is on file at this checkpoint. Since the previous checkpoint, it lost $10.38 support."
+          },
+          {
+            "ticker": "GLED",
+            "text": "Not researched yet: no dossier is on file at this checkpoint."
+          },
+          {
+            "ticker": "FACT",
+            "text": "Our sources found only older news, not a fresh catalyst: at 20:33 ET on July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties later requested withdrawal of the related S-4 in a filing at 20:01 ET on August 13, 2026. The desk reads it as returning the company to its SPAC search and trust framework, with no newer deal, financing or exchange action in the evidence."
+          },
+          {
+            "ticker": "AMIX",
+            "text": "A secondary headline at 08:08 ET on October 2, 2026 reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology; the underlying announcement and patent document are not in our sources. The desk reads it as broader intellectual-property coverage that could draw speculative interest, without evidence of near-term revenue or regulatory clearance."
+          },
+          {
+            "ticker": "WENC",
+            "text": "Not researched yet: no dossier is on file at this checkpoint. Since the previous checkpoint, it printed a new high of day."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"ZNB, ranked first in this range, is up 29 percent from the prior close, with only older or secondary news in our sources. The next covered gainers by move are AMOD, up 181 percent from the prior close, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE that gave its subsidiary 3,170 Bitcoin, and AIXI, up 56 percent from the prior close, with fresh news found in our sources: a semi-annual report showing a six-month loss and convertible-note financing. 5 of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"ZNB\",\"text\":\"Our sources found only older news, not a fresh catalyst: the company closed a $10.0 million private placement of units, each with one ordinary share and a warrant, on August 17, 2026, filed in a foreign private issuer report dated August 19, 2026. An October 2 secondary mover item at 08:05 ET gives no company-specific reason for the move, and the desk cannot tell whether any company announcement came after the August financing.\"},{\"ticker\":\"CYCU\",\"text\":\"Nasdaq notified Cycurion that it regained compliance with the $1.00 minimum bid price rule after 10 consecutive closes above $1.00 following the August 28, 2026 1-for-8 reverse split, reported by the company in an 8-K at 09:13 ET on October 2, 2026, with a Discretionary Panel Monitor in place through October 9, 2027. The desk reads it as clearing an immediate listing issue, qualified by the monitor and the reverse split, and cannot separate its share of the move from attention to a company interview and earlier milestones.\"},{\"ticker\":\"AMOD\",\"text\":\"Alpha Modus reported in an 8-K at 07:30 ET on October 1, 2026 that it closed a shares-for-Bitcoin PIPE, with its subsidiary receiving 3,170 Bitcoin reported as valued above $250 million, paid for in new common shares and matching warrants per secondary coverage. The desk reads the Bitcoin addition as a material change to the balance-sheet story paired with a dilution consideration, and notes the share and warrant terms come from secondary coverage rather than the filing.\"},{\"ticker\":\"AIXI\",\"text\":\"The company furnished its semi-annual report after the October 1 session, showing a $17.2M loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that could dilute holders on conversion. The desk reads it as updated loss, liquidity and financing information, with the conversion risk an adverse consideration rather than evidence that any conversion has happened, and cannot tell whether the filing is tied to the intraday move.\"},{\"ticker\":\"TRAD\",\"text\":\"Not researched yet: no dossier is on file at this checkpoint.\"},{\"ticker\":\"QTEX\",\"text\":\"QTREX reported at 13:20 ET on October 1, 2026 that a leading quantum-computing company independently tested its interconnect at 20 mK, finding channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader, and said it was finalizing a binding definitive agreement with that tester. The desk reads it as a possible customer validation step for the platform, with the counterparty, terms and contract value undisclosed and no revenue or deliveries in evidence.\"},{\"ticker\":\"SMX\",\"text\":\"No catalyst found in our sources: the company's September 30 and October 1 releases cover media attention, technology uses and physical-asset themes without a contract, approval, financing or operating result, and a secondary report at 02:36 ET on October 2, 2026 credits after-hours activity to company updates without naming one. The desk reads the run of releases as attention-drawing but not a material company event that explains the move.\"},{\"ticker\":\"INAC\",\"text\":\"Not researched yet: no dossier is on file at this checkpoint. Since the previous checkpoint, it lost $10.38 support.\"},{\"ticker\":\"GLED\",\"text\":\"Not researched yet: no dossier is on file at this checkpoint.\"},{\"ticker\":\"FACT\",\"text\":\"Our sources found only older news, not a fresh catalyst: at 20:33 ET on July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties later requested withdrawal of the related S-4 in a filing at 20:01 ET on August 13, 2026. The desk reads it as returning the company to its SPAC search and trust framework, with no newer deal, financing or exchange action in the evidence.\"},{\"ticker\":\"AMIX\",\"text\":\"A secondary headline at 08:08 ET on October 2, 2026 reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology; the underlying announcement and patent document are not in our sources. The desk reads it as broader intellectual-property coverage that could draw speculative interest, without evidence of near-term revenue or regulatory clearance.\"},{\"ticker\":\"WENC\",\"text\":\"Not researched yet: no dossier is on file at this checkpoint. Since the previous checkpoint, it printed a new high of day.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_POWER_HOUR",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-02",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 626,
+          "type": "RTH_INTERVAL",
+          "completedAt": "2026-10-02T18:30:07.332Z"
+        }
+      ],
+      "publishedAt": "2026-10-13T01:10:34.106Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "CYCU",
+              "liveFeed": null,
+              "text": "Nasdaq notified Cycurion that it regained compliance with the $1.00 minimum bid price rule after 10 consecutive closes above $1.00 following the August 28, 2026 1-for-8 reverse split, reported by the company in an 8-K at 09:13 ET on October 2, 2026, with a Discretionary Panel Monitor in place through October 9, 2027. The desk reads it as clearing an immediate listing issue, qualified by the monitor and the reverse split, and cannot separate its share of the move from attention to a company interview and earlier milestones.",
+              "company": {
+                "name": "Cycurion, Inc.",
+                "country": "United States",
+                "business": "Cycurion provides IT cybersecurity, program management and business-continuity services, with AI-driven solutions."
+              },
+              "path": {
+                "from": 2.69,
+                "high": 4.95,
+                "now": 3.8,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "5h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 9:13 AM ET",
+                  "headline": "Nasdaq confirmed that Cycurion regained compliance with the $1.00 minimum-bid-price rule after its common stock closed above $1.00 for 10 consecutive trading days following the August 28, 2026 1-for-8 reverse split. CYCU remains listed on Nasdaq, but is subject to a Discretionary Panel Monitor through October 9, 2027.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Cycurion effected a 1-for-8 reverse stock split on August 28, 2026 as part of the context preceding bid-price compliance restoration.",
+                  "tone": "warn",
+                  "full": "Cycurion effected a 1-for-8 reverse stock split on August 28, 2026 as part of the context preceding bid-price compliance restoration."
+                }
+              }
+            },
+            {
+              "ticker": "AMOD",
+              "liveFeed": null,
+              "text": "Alpha Modus reported in an 8-K at 07:30 ET on October 1, 2026 that it closed a shares-for-Bitcoin PIPE, with its subsidiary receiving 3,170 Bitcoin reported as valued above $250 million, paid for in new common shares and matching warrants per secondary coverage. The desk reads the Bitcoin addition as a material change to the balance-sheet story paired with a dilution consideration, and notes the share and warrant terms come from secondary coverage rather than the filing.",
+              "company": {
+                "name": "ALPHA MODUS HOLDINGS, INC.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 1.17,
+                "high": 4.77,
+                "now": 3.29,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 3:30 AM ET",
+                  "headline": "Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, reported as valued above $250 million. Secondary coverage reports that the financing issued 51.6 million common shares and matching warrants, so the favourable balance-sheet event is paired with substantial new and potential equity supply. The SEC filed a current report concerning the completed transaction.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "103.2M sh supply",
+                  "detail": "Secondary coverage reports 51.6 million common shares issued in the completed Bitcoin PIPE, but no current shares-outstanding figure or reconciled float is supplied.",
+                  "tone": "neg",
+                  "full": "Secondary coverage reports 51.6 million common shares issued in the completed Bitcoin PIPE, but no current shares-outstanding figure or reconciled float is supplied."
+                }
+              }
+            },
+            {
+              "ticker": "AIXI",
+              "liveFeed": null,
+              "text": "The company furnished its semi-annual report after the October 1 session, showing a $17.2M loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that could dilute holders on conversion. The desk reads it as updated loss, liquidity and financing information, with the conversion risk an adverse consideration rather than evidence that any conversion has happened, and cannot tell whether the filing is tied to the intraday move.",
+              "company": {
+                "name": "Xiao-I Corp",
+                "country": "China",
+                "business": "Xiao-I is an artificial-intelligence technology company whose group primarily operates in China."
+              },
+              "path": {
+                "from": 1.215,
+                "high": 2.26,
+                "now": 1.89,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "C",
+                  "age": "since Thu close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Oct 1, 4:31 PM ET",
+                  "headline": "The company furnished its semi-annual report after the October 1 session. The filing reports a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and describes financing through convertible notes that may dilute existing holders upon conversion.",
+                  "explainsMove": false,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Thu close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "325K sh",
+                  "detail": "The latest interim financial statements show 237,388,531 ordinary shares in the June 30, 2026 equity balance, while the separately reported 55,235,284 shares-outstanding data point is dated December 31, 2025.",
+                  "tone": "warn",
+                  "full": "The latest interim financial statements show 237,388,531 ordinary shares in the June 30, 2026 equity balance, while the separately reported 55,235,284 shares-outstanding data point is dated December 31, 2025. The older figure should not be treated as current."
+                }
+              }
+            },
+            {
+              "ticker": "QTEX",
+              "liveFeed": null,
+              "text": "QTREX reported at 13:20 ET on October 1, 2026 that a leading quantum-computing company independently tested its interconnect at 20 mK, finding channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader, and said it was finalizing a binding definitive agreement with that tester. The desk reads it as a possible customer validation step for the platform, with the counterparty, terms and contract value undisclosed and no revenue or deliveries in evidence.",
+              "company": {
+                "name": "QTREX Quantum Ltd.",
+                "country": null,
+                "business": "QTREX develops advanced connectivity and additive electronics manufacturing solutions, including quantum interconnects for cryogenic quantum-computing hardware."
+              },
+              "path": {
+                "from": 0.7846,
+                "high": 1.3,
+                "now": 1.165,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "1d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 1:20 PM ET",
+                  "headline": "On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, finding channel isolation above 100 dB across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX also said it was finalizing a binding definitive agreement with the testing company, whose identity and agreement terms were to be disclosed within weeks. The technical result is primary-source, company-specific and quantitatively stated, although the commercial agreement was not yet executed or disclosed.",
+                  "explainsMove": true,
+                  "freshness": "RECENT",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is RECENT rather than fresh."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "11.1M sh",
+                  "detail": "The last reported 55,406,688 ordinary shares outstanding figure is as of June 30, 2026 and predates the completed 11,111,111-share August registered direct offering, so it is not a current reconciled share count.",
+                  "tone": "warn",
+                  "full": "The last reported 55,406,688 ordinary shares outstanding figure is as of June 30, 2026 and predates the completed 11,111,111-share August registered direct offering, so it is not a current reconciled share count."
+                }
+              }
+            },
+            {
+              "ticker": "AMIX",
+              "liveFeed": null,
+              "text": "A secondary headline at 08:08 ET on October 2, 2026 reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology; the underlying announcement and patent document are not in our sources. The desk reads it as broader intellectual-property coverage that could draw speculative interest, without evidence of near-term revenue or regulatory clearance.",
+              "company": {
+                "name": "Autonomix Medical, Inc.",
+                "country": "United States",
+                "business": "Autonomix Medical is a medical-device company developing precision nerve-targeted treatments."
+              },
+              "path": {
+                "from": 3.92,
+                "high": 4.57,
+                "now": 3.78,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 2, 8:08 AM ET",
+                  "headline": "A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The event is favorable and company-specific, but the bundle contains only a secondary headline without the underlying patent announcement or details about commercial impact.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.36M sh supply",
+                  "detail": "The latest explicit shares-outstanding figure, 971,043 as of August 6, predates the August agreement for immediate exercise of 857,462 warrants, so it may materially understate subsequent issued shares.",
+                  "tone": "neg",
+                  "full": "The latest explicit shares-outstanding figure, 971,043 as of August 6, predates the August agreement for immediate exercise of 857,462 warrants, so it may materially understate subsequent issued shares."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "ZNB",
+              "liveFeed": null,
+              "text": "Our sources found only older news, not a fresh catalyst: the company closed a $10.0 million private placement of units, each with one ordinary share and a warrant, on August 17, 2026, filed in a foreign private issuer report dated August 19, 2026. An October 2 secondary mover item at 08:05 ET gives no company-specific reason for the move, and the desk cannot tell whether any company announcement came after the August financing.",
+              "company": {
+                "name": "Zeta Network Group",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 1.06,
+                "high": 1.94,
+                "now": 1.37,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "46d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 16, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 16 · No fresh company-specific positive event is identified in the supplied October 2 coverage. The latest material company event in the evidence is the August 17 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each containing one ordinary share and a warrant exercisable at $4.40. This creates share and warrant supply, but it is not shown to be the cause of the current move.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "6.83M sh supply",
+                  "detail": "The only reported shares-outstanding figure is 16,191,012 as of June 30, 2023.",
+                  "tone": "neg",
+                  "full": "The only reported shares-outstanding figure is 16,191,012 as of June 30, 2023. It predates subsequent financings and reverse-split activity, so it is not a current fully reconciled capitalization figure."
+                }
+              }
+            },
+            {
+              "ticker": "FACT",
+              "liveFeed": null,
+              "text": "Our sources found only older news, not a fresh catalyst: at 20:33 ET on July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties later requested withdrawal of the related S-4 in a filing at 20:01 ET on August 13, 2026. The desk reads it as returning the company to its SPAC search and trust framework, with no newer deal, financing or exchange action in the evidence.",
+              "company": {
+                "name": "FACT II Acquisition Corp.",
+                "country": "United States",
+                "business": "FACT II is a Cayman Islands special purpose acquisition company formed to pursue a merger, share exchange, asset acquisition, share purchase, reorganization or similar business combination."
+              },
+              "path": {
+                "from": 10.7211,
+                "high": 10.74,
+                "now": 10.73,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "73d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Jul 21, 8:33 PM ET",
+                  "headline": "No fresh catalyst · latest: Jul 21 · On July 21, 2026, FACT II announced termination of its proposed business combination with Precision Aerospace & Defense Group, and the parties subsequently requested withdrawal of the related S-4 registration statement. This is an adverse company-specific event, but it is not contemporaneous with the observed October market activity.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "8.75M sh",
+                  "detail": "No reported current shares-outstanding figure is available in the bundle, so shares outstanding, float, and dilution reconciliation cannot be determined.",
+                  "tone": "warn",
+                  "full": "No reported current shares-outstanding figure is available in the bundle, so shares outstanding, float, and dilution reconciliation cannot be determined."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NO CATALYST FOUND IN OUR SOURCES",
+          "lines": [
+            {
+              "ticker": "SMX",
+              "liveFeed": null,
+              "text": "No catalyst found in our sources: the company's September 30 and October 1 releases cover media attention, technology uses and physical-asset themes without a contract, approval, financing or operating result, and a secondary report at 02:36 ET on October 2, 2026 credits after-hours activity to company updates without naming one. The desk reads the run of releases as attention-drawing but not a material company event that explains the move.",
+              "company": {
+                "name": "SMX (Security Matters) Public Ltd Co",
+                "country": "Ireland",
+                "business": "SMX offers a Digital Material Passport Platform designed to connect physical plastic with persistent digital identity and verified lifecycle data. (Source: 86038)"
+              },
+              "path": {
+                "from": 6.16,
+                "high": 10.6355,
+                "now": 3.87,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NO_FRESH_CATALYST",
+                  "grade": "C",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Coverage was adequate, but the late September and October 1 company communications supplied in the bundle concern media attention, technology applications and physical-asset themes. They do not disclose a contract, approval, financing, operating result or other verifiable material corporate event. A secondary report attributes after-hours activity to fresh company updates without identifying a specific material development. (Sources: 125850, 125851, 125852, 125853, 125855, 127776, 125824)",
+                  "explainsMove": false,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "563K sh",
+                  "detail": "An effective SEPA-related continuous issuance and resale structure exists, with up to $250 million of equity-line capacity.",
+                  "tone": "warn",
+                  "full": "An effective SEPA-related continuous issuance and resale structure exists, with up to $250 million of equity-line capacity. The dollar capacity cannot be converted into a share count from the supplied evidence. (Sources: 86024, 86027, 86029)"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "TRAD",
+              "liveFeed": null,
+              "text": "Not researched yet: no dossier is on file at this checkpoint.",
+              "company": null,
+              "path": {
+                "from": 10.06,
+                "high": 10.05,
+                "now": 10.05,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "INAC",
+              "liveFeed": null,
+              "text": "Not researched yet: no dossier is on file at this checkpoint. Since the previous checkpoint, it lost $10.38 support.",
+              "company": null,
+              "path": {
+                "from": 10.38,
+                "high": 10.39,
+                "now": 10.37,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "GLED",
+              "liveFeed": null,
+              "text": "Not researched yet: no dossier is on file at this checkpoint.",
+              "company": null,
+              "path": {
+                "from": 10.02,
+                "high": 10.04,
+                "now": 10.04,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "WENC",
+              "liveFeed": null,
+              "text": "Not researched yet: no dossier is on file at this checkpoint. Since the previous checkpoint, it printed a new high of day.",
+              "company": null,
+              "path": {
+                "from": 10.01,
+                "high": 10.01,
+                "now": 10,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "ZNB, ranked first in this range, is up 29 percent from the prior close, with only older or secondary news in our sources. The next covered gainers by move are AMOD, up 181 percent from the prior close, with fresh news found in our sources: a completed shares-for-Bitcoin PIPE that gave its subsidiary 3,170 Bitcoin, and AIXI, up 56 percent from the prior close, with fresh news found in our sources: a semi-annual report showing a six-month loss and convertible-note financing. 5 of the 12 names the desk covers had fresh news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [],
+      "writerMs": 37737,
+      "checkerMs": 6378
+    }
+  }
+}
