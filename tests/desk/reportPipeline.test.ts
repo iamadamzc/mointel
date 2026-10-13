@@ -264,7 +264,7 @@ describe('the report pipeline, v6 wiring', () => {
       );
       expect(run.status).toBe('PUBLISHED');
       expect(fallback.calls).toBe(1);
-      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 400 billing_error', reply: null } });
+      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 400 billing_error', reply: null }, wordList: true });
     });
 
     it('a Claude REPLY that is not a verdict for every line falls back too, and the reply is kept', async () => {
@@ -277,7 +277,7 @@ describe('the report pipeline, v6 wiring', () => {
       );
       expect(run.status).toBe('PUBLISHED');
       expect(fallback.calls).toBe(1);
-      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'reply: not a verdict for every line', reply: 'I cannot check this.' } });
+      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'reply: not a verdict for every line', reply: 'I cannot check this.' }, wordList: true });
     });
 
     it('the fallback is asked the IDENTICAL prompt Claude was, system and user, after a failed call or a failed reply (his "option b, but use the same prompt", uuid 41e3ed79)', async () => {
@@ -310,6 +310,32 @@ describe('the report pipeline, v6 wiring', () => {
       }
     });
 
+    it('option A: a report the OpenAI fallback checks keeps the word list; a Claude-checked report, or one with no Reports key, runs without it (result-terra.md)', async () => {
+      // "It filed an 8-K." leans on another line: a word-list rule (LEANS_ON_ANOTHER), struck only with the list on.
+      const leans = (run: Awaited<ReturnType<typeof runReport>>) =>
+        (run.diagnostics?.strikes ?? []).filter((s) => s.by === 'rule' && s.reason === 'NOT_SELF_CONTAINED');
+      const fellBack = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker: failing(new Error('claude: HTTP 529')), checkerFallback: counted(), checkerNames: names },
+        () => new Date(COMPLETED),
+      );
+      expect(fellBack.diagnostics?.checker?.wordList).toBe(true);
+      expect(leans(fellBack)).toHaveLength(1);
+
+      const claude = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker, checkerFallback: counted(), checkerNames: names },
+        () => new Date(COMPLETED),
+      );
+      expect(claude.diagnostics?.checker).toEqual({ ran: 'claude-opus-5-5' });
+      expect(leans(claude)).toHaveLength(0);
+
+      const noKey = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker }, () => new Date(COMPLETED));
+      expect(leans(noKey)).toHaveLength(0);
+    });
+
     it('BOTH failing is CHECKER_FAILED (closed), with both recorded; nothing publishes', async () => {
       const run = await runReport(
         fixture(),
@@ -319,7 +345,7 @@ describe('the report pipeline, v6 wiring', () => {
       );
       expect(run.status).toBe('MISSED');
       expect(run.status === 'MISSED' && run.cause.kind).toBe('CHECKER_FAILED');
-      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 529', reply: null } });
+      expect(run.diagnostics?.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 529', reply: null }, wordList: true });
     });
 
     it('with no fallback (no Reports key) a failed check is CHECKER_FAILED as before, and no checker record is invented', async () => {

@@ -374,7 +374,7 @@ describe('the published path, end to end through the loop', () => {
     const row = db.prepare('SELECT status, versions, diagnostics FROM session_reports').get() as { status: string; versions: string; diagnostics: string };
     expect(row.status).toBe('PUBLISHED');
     expect(JSON.parse(row.versions).checkerModel).toBe('gpt-terra');
-    expect(JSON.parse(row.diagnostics).run.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 400 billing_error', reply: null } });
+    expect(JSON.parse(row.diagnostics).run.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 400 billing_error', reply: null }, wordList: true });
   });
 
   it('across a restart a filled slot is never re-run: a fresh loop calls no model and changes nothing', async () => {

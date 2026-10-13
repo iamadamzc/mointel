@@ -1041,14 +1041,19 @@ export function parseVerdicts(raw: string, ids: readonly LineId[], options: { se
 
 /* ------------------------------------------------------------------ check */
 
+/**
+ * `options.wordList`: passed to `ruleStrikes`. The pipeline sets it true for a check on the OpenAI fallback, which
+ * failed the read 82 gate (`result-terra.md`); his option A as Integration put it to him (fail branch of 41e3ed79).
+ */
 export async function checkReport(
   input: CheckInput,
   model: CheckerModel,
   now: () => Date = () => new Date(),
+  options: { wordList?: boolean } = {},
 ): Promise<CheckResult> {
   const failed = (): CheckResult => ({ ok: false, cause: { kind: 'CHECKER_FAILED', at: now().toISOString() } });
   const lines = draftLines(input.draft);
-  const strikes = ruleStrikes(input);
+  const strikes = ruleStrikes(input, options);
 
   let raw: string;
   try {

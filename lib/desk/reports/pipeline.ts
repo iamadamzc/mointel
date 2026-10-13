@@ -335,9 +335,10 @@ export interface ReportDiagnostics {
    * Which checker checked this report, when the models name their checkers: `ran` is the model that produced the
    * verdicts (or, on a MISSED run, the last one tried). `fallbackFrom` is set when the first checker failed and its
    * fallback ran: the failed model, what failed, and its reply when it gave one (the reply kept on failure, his "move
-   * it", uuid e51e9b47; Integration's build terms).
+   * it", uuid e51e9b47; Integration's build terms). `wordList` is true when the fallback ran, because a fallback check
+   * keeps the word list (option A: the OpenAI fallback failed the read 82 gate, `result-terra.md`).
    */
-  checker?: { ran: string; fallbackFrom?: { model: string; failure: string; reply: string | null } };
+  checker?: { ran: string; fallbackFrom?: { model: string; failure: string; reply: string | null }; wordList?: true };
 }
 
 /** A checker that remembers its last reply or failure, so a failed check can be recorded before the fallback runs. */
@@ -472,8 +473,11 @@ export async function runReport(
             failure: first.failure ?? 'reply: not a verdict for every line',
             reply: first.reply,
           },
+          wordList: true,
         };
-        checked = await checkReport(checkInput, models.checkerFallback, now);
+        // Option A (Integration, on the fail branch of his 41e3ed79): the OpenAI fallback failed the read 82 gate
+        // (`result-terra.md`), so a report it checks keeps the word list. Claude-checked reports run without it.
+        checked = await checkReport(checkInput, models.checkerFallback, now, { wordList: true });
       }
       checkerMs = Date.now() - checkerStart;
       if (!checked.ok) {
