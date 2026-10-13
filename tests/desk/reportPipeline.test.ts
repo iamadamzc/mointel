@@ -310,14 +310,15 @@ describe('the report pipeline, v6 wiring', () => {
       }
     });
 
-    it('option A: a report the OpenAI fallback checks keeps the word list; a Claude-checked report, or one with no Reports key, runs without it (result-terra.md)', async () => {
+    it('one rule: a report an OpenAI checker decides keeps the word list, fallback or no Reports key; a Claude-checked report runs without it (result-terra.md)', async () => {
       // "It filed an 8-K." leans on another line: a word-list rule (LEANS_ON_ANOTHER), struck only with the list on.
       const leans = (run: Awaited<ReturnType<typeof runReport>>) =>
         (run.diagnostics?.strikes ?? []).filter((s) => s.by === 'rule' && s.reason === 'NOT_SELF_CONTAINED');
+      const withClaude = { primary: 'claude', fallback: 'openai' } as const;
       const fellBack = await runReport(
         fixture(),
         SLOT,
-        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker: failing(new Error('claude: HTTP 529')), checkerFallback: counted(), checkerNames: names },
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker: failing(new Error('claude: HTTP 529')), checkerFallback: counted(), checkerNames: names, checkerVendors: withClaude },
         () => new Date(COMPLETED),
       );
       expect(fellBack.diagnostics?.checker?.wordList).toBe(true);
@@ -326,14 +327,25 @@ describe('the report pipeline, v6 wiring', () => {
       const claude = await runReport(
         fixture(),
         SLOT,
-        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker, checkerFallback: counted(), checkerNames: names },
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker, checkerFallback: counted(), checkerNames: names, checkerVendors: withClaude },
         () => new Date(COMPLETED),
       );
       expect(claude.diagnostics?.checker).toEqual({ ran: 'claude-opus-5-5' });
       expect(leans(claude)).toHaveLength(0);
 
-      const noKey = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker }, () => new Date(COMPLETED));
-      expect(leans(noKey)).toHaveLength(0);
+      // No Reports key: OpenAI checks alone and decides every report (Integration's ruling on the no-key path).
+      const noKey = await runReport(
+        fixture(),
+        SLOT,
+        { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker, checkerNames: { primary: 'gpt-terra', fallback: null }, checkerVendors: { primary: 'openai', fallback: null } },
+        () => new Date(COMPLETED),
+      );
+      expect(noKey.diagnostics?.checker).toEqual({ ran: 'gpt-terra', wordList: true });
+      expect(leans(noKey)).toHaveLength(1);
+
+      // A harness that names no vendors: the first checker runs as the switch says (off).
+      const unnamed = await runReport(fixture(), SLOT, { writer: writerWith(NARRATIVE, 'It filed an 8-K.'), checker }, () => new Date(COMPLETED));
+      expect(leans(unnamed)).toHaveLength(0);
     });
 
     it('BOTH failing is CHECKER_FAILED (closed), with both recorded; nothing publishes', async () => {

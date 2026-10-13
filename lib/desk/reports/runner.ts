@@ -15,6 +15,7 @@
 import { REPORT_CHECKER_PROMPT_VERSION_V5, REPORT_CHECKER_PROMPT_VERSION_V6, VERDICT_SCHEMA, VERDICT_SCHEMA_V6 } from './check';
 import { AnthropicReportModel } from './anthropicReportModel';
 import { OpenAiReportModel, type ReportModelUsage } from './openaiReportModel';
+import type { CheckerVendors } from './pipeline';
 import { REPORT_WRITER_PROMPT_VERSION_V5 } from './writerV5';
 import { REPORT_WRITER_PROMPT_VERSION_V6 } from './writerV6';
 
@@ -121,6 +122,8 @@ export interface ReportModelsV6 {
   checkerFallback?: OpenAiReportModel;
   /** For the record (`ReportDiagnostics.checker`, the stored versions): the model names of the two checkers. */
   checkerNames: { primary: string; fallback: string | null };
+  /** Whose checker each is: a report an OpenAI checker decides keeps the word list (`runReport`; result-terra.md). */
+  checkerVendors: CheckerVendors;
 }
 
 /**
@@ -148,7 +151,14 @@ export function createReportModelsV6(
     format: { name: 'report_verdicts', schema: VERDICT_SCHEMA_V6, promptVersion: REPORT_CHECKER_PROMPT_VERSION_V6 },
     onUsage,
   });
-  if (!config.claudeChecker) return { writer, checker: openAiChecker, checkerNames: { primary: config.checkerModel, fallback: null } };
+  if (!config.claudeChecker) {
+    return {
+      writer,
+      checker: openAiChecker,
+      checkerNames: { primary: config.checkerModel, fallback: null },
+      checkerVendors: { primary: 'openai', fallback: null },
+    };
+  }
   return {
     writer,
     checker: new AnthropicReportModel({
@@ -161,5 +171,6 @@ export function createReportModelsV6(
     }),
     checkerFallback: openAiChecker,
     checkerNames: { primary: config.claudeChecker.model, fallback: config.checkerModel },
+    checkerVendors: { primary: 'claude', fallback: 'openai' },
   };
 }

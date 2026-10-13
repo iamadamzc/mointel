@@ -93,6 +93,7 @@ describe('createReportModelsV6: the Claude checker only with the Reports key, th
     expect(models.checker).toBeInstanceOf(AnthropicReportModel);
     expect(models.checkerFallback).toBeInstanceOf(OpenAiReportModel);
     expect(models.checkerNames).toEqual({ primary: 'claude-opus-5-5', fallback: 'terra' });
+    expect(models.checkerVendors).toEqual({ primary: 'claude', fallback: 'openai' });
     expect(models.writer).toBeInstanceOf(OpenAiReportModel);
   });
 
@@ -102,6 +103,8 @@ describe('createReportModelsV6: the Claude checker only with the Reports key, th
       expect(models.checker).toBeInstanceOf(OpenAiReportModel);
       expect(models.checkerFallback).toBeUndefined();
       expect(models.checkerNames).toEqual({ primary: 'terra', fallback: null });
+      // OpenAI decides every report here, so every report keeps the word list (Integration's one rule).
+      expect(models.checkerVendors).toEqual({ primary: 'openai', fallback: null });
     }
   });
 });

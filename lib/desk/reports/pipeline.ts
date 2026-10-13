@@ -364,6 +364,13 @@ export type ReportRun =
   | { status: 'MISSED'; cause: MissedCause; diagnostics: ReportDiagnostics | null };
 
 /**
+ * Whose checker each is. A report an OpenAI checker decides, first checker or fallback, keeps the word list
+ * (Integration's ruling after the terra gate failed, `result-terra.md`: OpenAI failed read 82's gate, Claude passed it).
+ * Absent (harnesses, older callers): the first checker runs without it and a fallback keeps it.
+ */
+export type CheckerVendors = { primary: 'claude' | 'openai'; fallback: 'openai' | null };
+
+/**
  * One slot: write, check, apply. No retry here: a retry is a spend decision
  * and belongs to the runner that owns the slot's timing. The one exception is
  * ruled: a failed check falls back to `checkerFallback` when the models carry
@@ -378,6 +385,7 @@ export async function runReport(
     checker: CheckerModel;
     checkerFallback?: CheckerModel;
     checkerNames?: { primary: string; fallback: string | null };
+    checkerVendors?: CheckerVendors;
   },
   now: () => Date = () => new Date(),
   /** Harnesses only: sees the unchecked draft. Never changes the run. */
@@ -446,7 +454,10 @@ export async function runReport(
     let checker: ReportDiagnostics['checker'];
     if (draftLines(draft).length > 0) {
       const checkerStart = Date.now();
-      checker = models.checkerNames ? { ran: models.checkerNames.primary } : undefined;
+      // One rule (Integration, after the terra gate failed): a report an OpenAI checker decides keeps the word list.
+      const primaryWordList = models.checkerVendors?.primary === 'openai';
+      const fallbackWordList = (models.checkerVendors?.fallback ?? 'openai') === 'openai';
+      checker = models.checkerNames ? { ran: models.checkerNames.primary, ...(primaryWordList ? { wordList: true as const } : {}) } : undefined;
       const checkInput = {
         kind: slot.kind,
         range: slot.range,
@@ -462,7 +473,8 @@ export async function runReport(
         revision: plan !== null,
       };
       const first = recordingChecker(models.checker);
-      let checked = await checkReport(checkInput, first, now);
+      // Only ever turns the list ON: otherwise `WORD_LIST_STRIKES` decides, so the one-change switch back still works.
+      let checked = await checkReport(checkInput, first, now, primaryWordList ? { wordList: true } : {});
       // The ruled fallback: ANY failed check (a failed call, a refusal, a reply that is not a verdict for every line)
       // is checked again on the fallback, and the failure and the first reply are kept.
       if (!checked.ok && checked.cause.kind === 'CHECKER_FAILED' && models.checkerFallback) {
@@ -473,11 +485,9 @@ export async function runReport(
             failure: first.failure ?? 'reply: not a verdict for every line',
             reply: first.reply,
           },
-          wordList: true,
+          ...(fallbackWordList ? { wordList: true as const } : {}),
         };
-        // Option A (Integration, on the fail branch of his 41e3ed79): the OpenAI fallback failed the read 82 gate
-        // (`result-terra.md`), so a report it checks keeps the word list. Claude-checked reports run without it.
-        checked = await checkReport(checkInput, models.checkerFallback, now, { wordList: true });
+        checked = await checkReport(checkInput, models.checkerFallback, now, fallbackWordList ? { wordList: true } : {});
       }
       checkerMs = Date.now() - checkerStart;
       if (!checked.ok) {
