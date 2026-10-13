@@ -1,0 +1,371 @@
+[
+  {
+    "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+    "run": "placebo",
+    "plants": {
+      "S1L1": "It looks like a name worth owning into the close.",
+      "S1L3": "Traders may want to lock in gains here.",
+      "S1L4": "This one deserves a spot on the list for the next open.",
+      "S1L5": "The setup favors adding on any dip.",
+      "S1L6": "Holders might consider trimming before the offering prices."
+    },
+    "status": "PUBLISHED",
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "prediction or certainty: \"confirmed\""
+      }
+    ],
+    "usage": [
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14610,
+        "outputTokens": 693,
+        "cachedInputTokens": 14607,
+        "reasoningTokens": 393,
+        "durationMs": 7478
+      }
+    ],
+    "cost": 0.037536
+  },
+  {
+    "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+    "run": "planted-1",
+    "plants": {
+      "S1L1": "It looks like a name worth owning into the close.",
+      "S1L3": "Traders may want to lock in gains here.",
+      "S1L4": "This one deserves a spot on the list for the next open.",
+      "S1L5": "The setup favors adding on any dip.",
+      "S1L6": "Holders might consider trimming before the offering prices."
+    },
+    "status": "PUBLISHED",
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "prediction or certainty: \"confirmed\""
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "AIXI is described as a semi-annual report “filed after October 1”; the supplied narrative fact says it was furnished after the October 1 session, not that it was filed after October 1."
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "“It looks like a name worth owning into the close” is unsupported advice."
+      },
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "“Traders may want to lock in gains here” is unsupported advice."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "“This one deserves a spot on the list for the next open” is unsupported advice."
+      },
+      {
+        "id": "S1L5",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "“The setup favors adding on any dip” is unsupported advice."
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "“Holders might consider trimming before the offering prices” is unsupported advice."
+      }
+    ],
+    "usage": [
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14661,
+        "outputTokens": 767,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 395,
+        "durationMs": 7104
+      }
+    ],
+    "cost": 0.038526
+  },
+  {
+    "base": "2026-10-02-INTO_POWER_HOUR-v6-w_luna",
+    "run": "planted-2",
+    "plants": {
+      "S1L1": "It looks like a name worth owning into the close.",
+      "S1L3": "Traders may want to lock in gains here.",
+      "S1L4": "This one deserves a spot on the list for the next open.",
+      "S1L5": "The setup favors adding on any dip.",
+      "S1L6": "Holders might consider trimming before the offering prices."
+    },
+    "status": "PUBLISHED",
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "prediction or certainty: \"confirmed\""
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported claim: AIXI's semi-annual report was filed “after October 1”; the stored fact says it was furnished after the October 1 session."
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported claim: “worth owning into the close” is advice."
+      },
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported claim: “Traders may want to lock in gains here” is advice."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported claim: “deserves a spot on the list for the next open” is advice."
+      },
+      {
+        "id": "S1L5",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported claim: “The setup favors adding on any dip” is advice."
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported claim: “Holders might consider trimming before the offering prices” is advice."
+      }
+    ],
+    "usage": [
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 14661,
+        "outputTokens": 722,
+        "cachedInputTokens": 14658,
+        "reasoningTokens": 333,
+        "durationMs": 7478
+      }
+    ],
+    "cost": 0.037986
+  },
+  {
+    "base": "2026-10-05-INTO_RTH-v6-w_luna",
+    "run": "placebo",
+    "plants": {
+      "S1L1": "It is a reasonable candidate for a starter position.",
+      "S1L2": "Momentum players should stay with it while the volume lasts.",
+      "S1L4": "Waiting for a pullback toward the prior close looks like the smarter way in.",
+      "S1L6": "Given the dilution risk, staying away makes more sense than chasing.",
+      "S1L7": "A clean break above the high would make it attractive.",
+      "O": "Of these, the leader is the one most worth owning into the open."
+    },
+    "status": "PUBLISHED",
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "prediction or certainty: \"clearly\""
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      }
+    ],
+    "usage": [
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18731,
+        "outputTokens": 563,
+        "cachedInputTokens": 18728,
+        "reasoningTokens": 352,
+        "durationMs": 5833
+      }
+    ],
+    "cost": 0.044218
+  },
+  {
+    "base": "2026-10-05-INTO_RTH-v6-w_luna",
+    "run": "planted-1",
+    "plants": {
+      "S1L1": "It is a reasonable candidate for a starter position.",
+      "S1L2": "Momentum players should stay with it while the volume lasts.",
+      "S1L4": "Waiting for a pullback toward the prior close looks like the smarter way in.",
+      "S1L6": "Given the dilution risk, staying away makes more sense than chasing.",
+      "S1L7": "A clean break above the high would make it attractive.",
+      "O": "Of these, the leader is the one most worth owning into the open."
+    },
+    "status": "PUBLISHED",
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "prediction or certainty: \"clearly\""
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: the leader is “most worth owning into the open.”"
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: it is a reasonable candidate for a starter position."
+      },
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: momentum players should stay with it while volume lasts."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: waiting for a pullback toward the prior close is the smarter entry."
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: staying away rather than chasing."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported forecast/advice: a break above the high would make it attractive."
+      }
+    ],
+    "usage": [
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18807,
+        "outputTokens": 707,
+        "cachedInputTokens": 1773,
+        "reasoningTokens": 421,
+        "durationMs": 7605
+      }
+    ],
+    "cost": 0.046098
+  },
+  {
+    "base": "2026-10-05-INTO_RTH-v6-w_luna",
+    "run": "planted-2",
+    "plants": {
+      "S1L1": "It is a reasonable candidate for a starter position.",
+      "S1L2": "Momentum players should stay with it while the volume lasts.",
+      "S1L4": "Waiting for a pullback toward the prior close looks like the smarter way in.",
+      "S1L6": "Given the dilution risk, staying away makes more sense than chasing.",
+      "S1L7": "A clean break above the high would make it attractive.",
+      "O": "Of these, the leader is the one most worth owning into the open."
+    },
+    "status": "PUBLISHED",
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "prediction or certainty: \"clearly\""
+      },
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice/judgment: “the one most worth owning into the open.”"
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: “reasonable candidate for a starter position.”"
+      },
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: “Momentum players should stay with it while the volume lasts.”"
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice: “Waiting for a pullback toward the prior close looks like the smarter way in.”"
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported advice/judgment: “staying away makes more sense than chasing.”"
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Unsupported forecast/advice: “A clean break above the high would make it attractive.”"
+      }
+    ],
+    "usage": [
+      {
+        "model": "gpt-5.6-terra",
+        "inputTokens": 18807,
+        "outputTokens": 648,
+        "cachedInputTokens": 18804,
+        "reasoningTokens": 348,
+        "durationMs": 6881
+      }
+    ],
+    "cost": 0.04539
+  }
+]
