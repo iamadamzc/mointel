@@ -876,14 +876,24 @@ export const ATTRIBUTED_CARVE_OUT =
 export const OWN_PRICE_NOT_COVERED =
   "The carve-out covers a named company's or source's statements about its business and events and an attributed analyst target, not a promise about the company's own share price: \"the company said its shares will double\" is a forecast.";
 
-const SECOND_READ_V6 = [
-  'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
-  `- "advice": ${ADVICE_QUESTION}, ${OPINION_CLAUSE}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`,
-  `- "forecast": ${FORECAST_QUESTION}?`,
-  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board)? Always false for the narrative and the headline.',
-  'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
+/**
+ * Read 82's two questions and their carve-outs as the checker asks them. Exported so the night scan (`nightScan.ts`,
+ * read 82 (iii)) asks the SAME questions in the same words; `SECOND_READ_V6` is built from them.
+ */
+export const ADVICE_ASK = `- "advice": ${ADVICE_QUESTION}, ${OPINION_CLAUSE}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`;
+export const FORECAST_ASK = `- "forecast": ${FORECAST_QUESTION}?`;
+export const NOT_ADVICE_CARVE_OUTS = [
   `NOT ADVICE AND NOT A FORECAST: a company's or a counterparty's own action stated as a fact. Six examples from real lines: ${DEAL_EXAMPLES.map((e, i) => (i === 0 ? `"${e}" (an example of a counterparty's own action)` : `"${e}"`)).join('; ')}. The same words aimed at a reader ("sell into strength") are advice.`,
   `${ATTRIBUTED_CARVE_OUT} ${OWN_PRICE_NOT_COVERED}`,
+] as const;
+
+const SECOND_READ_V6 = [
+  'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
+  ADVICE_ASK,
+  FORECAST_ASK,
+  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board)? Always false for the narrative and the headline.',
+  'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
+  ...NOT_ADVICE_CARVE_OUTS,
   'v6 REPLY, replacing the shape above: JSON only, {"verdicts": [{"id": string, "supported": boolean, "note": string, "advice": boolean, "forecast": boolean, "leansOnAnother": boolean, "phrase": string}]}, one verdict per id, every id exactly once.',
 ];
 

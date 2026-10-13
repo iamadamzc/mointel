@@ -3,8 +3,11 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
+  ADVICE_ASK,
   ADVICE_QUESTION,
   applyStrikes,
+  FORECAST_ASK,
+  NOT_ADVICE_CARVE_OUTS,
   ATTRIBUTED_CARVE_OUT,
   OPINION_CLAUSE,
   OWN_PRICE_NOT_COVERED,
@@ -332,6 +335,14 @@ describe('ruleStrikes, v6', () => {
     expect(recapPrompt.user).not.toContain('"movers50"');
     const v5 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', null));
     expect(v5.system).not.toContain('v6: THE NARRATIVE');
+  });
+
+  it('the v6 prompt asks read 82\'s two questions and carve-outs in exactly the words the night scan asks them (nightScan.ts)', () => {
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday));
+    expect(v6.system).toContain(`${ADVICE_ASK}\n${FORECAST_ASK}\n`);
+    expect(v6.system).toContain(NOT_ADVICE_CARVE_OUTS.join('\n'));
+    expect(ADVICE_ASK).toContain(ADVICE_QUESTION);
+    expect(ADVICE_ASK).toContain(OPINION_CLAUSE);
   });
 
   it("shows the narrative sheet the writer actually got when the caller passes one; v6's otherwise (the 10-13 writer test)", () => {
