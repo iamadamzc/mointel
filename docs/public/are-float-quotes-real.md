@@ -18,7 +18,10 @@ text"), each after a preview with the changes marked; then the Unknown line in
 under the lede, "A float counts the shares available to trade..." (Marketing 955b3749,
 Commercial 66), 2026-10-09T22:45:50.617Z ("1, yes", shown the exact line); then the
 TMI Float definition after it (Marketing 00130acf, Commercial 67), 2026-10-09T22:52:40.779Z
-("yes", shown the exact definition). Any word changed
+("yes", shown the exact definition); then float fix 1, nine passages that name the filed-count
+face (Marketing 0a519b0f, Commercial 93), 2026-10-13T10:27:39.594Z ("yes, approve the float wording",
+shown each verbatim), with the triangle sentence in his own words after his 10:28:14.413Z change,
+2026-10-13T10:46:44.599Z ("yes to both", shown the exact sentence at 10:39:13Z). Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -38,7 +41,7 @@ Float is the number of a company's shares available for public trading. It is us
 
 A float counts the shares available to trade. It leaves out warrants, convertible notes and share-sale programs, which can add shares. In small caps, that is decision information, not fine print.
 
-TMI Float is this desk's definition of float: shares outstanding less the shares insiders hold. The desk can only subtract the holdings insiders report directly, so it shows an upper bound, with the date of the filed share count. When it cannot be computed it says Unknown, Cannot verify or Not computed, and gives the reason.
+TMI Float is this desk's definition of float: shares outstanding less the shares insiders hold. The desk can only subtract the holdings insiders report directly, so it shows an upper bound, with the date of the filed share count. Where it cannot be computed or verified, the cell says Unknown, Not computed or Cannot verify, or shows the company's filed share count with an icon, and gives the reason.
 
 ## Where a float number comes from
 
@@ -50,15 +53,16 @@ So a float number on a quote page is an estimate someone computed, unless a fili
 
 The TMI Float is an estimate too. Here is what it is computed from and how we show it.
 
-We start with the latest filed share count we have for the company. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own. For each insider we take the smaller of two holdings: their holding as of the count's date, and their latest holding dated on or before the date of the board or report. So a sale an insider has filed since the count is added back, and a sale not yet filed cannot be seen. When the filings line up, and taking float as shares outstanding less insider holdings, the true float is at most what is left.
+We start with the latest filed share count we have for the company. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own. For each insider we take the smaller of two holdings: their holding as of the count's date, and their latest holding dated on or before the date of the board or report. So a sale an insider has filed since the count is added back, and a sale not yet filed cannot be seen. When the filings line up, the TMI Float is at most what is left.
 
 ## What you see in the cell
 
-The cell shows one of four things.
+The cell shows one of five things.
 
-- **≤ 12.3M** (the number varies). Taking float as shares outstanding less insider holdings, it is no more than that, when the filings line up. The date of the filed count is shown beside it.
+- **≤ 12.3M** (the number varies). The TMI Float is no more than that, when the filings line up. The date of the filed count is shown beside it.
+- **A filed share count with an icon**, for example 12.3M sh. The desk could not verify a TMI Float, but it has the company's filed share count, and nothing is subtracted from it. A circled i means the count passed the split and age checks but shares may have been issued since, so the true count may be higher; the reason is in the hover. A triangle means the count may be in pre-split share units, there may have been a split that needs verification, or the count is more than 90 days old. Click it for the date, the filing and the reason.
 - **Unknown.** The desk could not start from a single filed share count: the company has none on file, we could not match it to an SEC filer, SEC's company-facts data returned nothing for it, or its count is split across several filings.
-- **Cannot verify.** A filed count exists but we will not stand behind a number built on it: the count is too old, the desk has not read the company's filings since the date given in the detail, shares may have been issued since, a split may have changed the share units, we did not check for issuance, the count is from a Form 20-F or 40-F and we do not check for unregistered sales, or the figure did not pass our own sanity check. The reason is in the detail.
+- **Cannot verify.** We will not stand behind a number, and we show no count: there is no filed count to show, the float data could not be read, the figure did not pass our own sanity check, or the count is dated after the board or report. The reason is in the detail.
 - **Not computed.** We have not computed this name. That is different from Unknown.
 
 ## What we do not subtract, and why
@@ -67,8 +71,8 @@ We do not subtract the beneficial-ownership totals in 13D or 13G filings. Benefi
 
 ## What a number does not tell you
 
-When we find a flag or a filing showing that shares have been issued since the count, or may have been, the name reads Cannot verify. The filings we look for are two kinds made on or after the count's date: a final prospectus for an offering of securities (SEC forms 424B1, 424B2, 424B4 and 424B5), and a report of an unregistered sale of shares (Form 8-K item 3.02). We do not look at other forms, including 424B3 and 424B7. Those checks cannot see every issuance: sales under an open at-the-market program between supplements, private placements below the size that requires a report (Form 8-K item 3.02 requires none below 1 percent of the class, or 5 percent for a smaller reporting company, counted in total since the company's last such report or last periodic report, whichever is more recent), and conversions or exercises that file nothing, do not show up in them. Neither do sales of newly issued shares to an equity-line investor, who buys on the company's demand: the checks would see one only through a final prospectus or a report of an unregistered sale, and Form 8-K item 3.02 requires such a report only when the running total since the company's last such report or last periodic report reaches the item 3.02 size. A company whose filed count is from a Form 20-F or 40-F is not required to file 8-Ks, so for it the check for an unregistered-sale report is not run, and the name reads Cannot verify. A name with nothing found may still have issued shares. A sale not yet filed by the date the filings were read can still make the float larger than the bound. The figure is only as current as the filings under it.
+When we find a flag or a filing showing that shares have been issued since the count, or may have been, the cell shows the company's filed share count with an icon, or reads Cannot verify where no count can show. The filings we look for are two kinds made on or after the count's date: a final prospectus for an offering of securities (SEC forms 424B1, 424B2, 424B4 and 424B5), and a report of an unregistered sale of shares (Form 8-K item 3.02). We do not look at other forms, including 424B3 and 424B7. Those checks cannot see every issuance: sales under an open at-the-market program between supplements, private placements below the size that requires a report (Form 8-K item 3.02 requires none below 1 percent of the class, or 5 percent for a smaller reporting company, counted in total since the company's last such report or last periodic report, whichever is more recent), and conversions or exercises that file nothing, do not show up in them. Neither do sales of newly issued shares to an equity-line investor, who buys on the company's demand: the checks would see one only through a final prospectus or a report of an unregistered sale, and Form 8-K item 3.02 requires such a report only when the running total since the company's last such report or last periodic report reaches the item 3.02 size. A company whose filed count is from a Form 20-F or 40-F is not required to file 8-Ks, so for it the check for an unregistered-sale report is not run, and the cell shows the filed share count with an icon, or reads Cannot verify where no count can show. A name with nothing found may still have issued shares. A sale not yet filed by the date the filings were read can still make the float larger than the bound. The figure is only as current as the filings under it.
 
 ## What this is, and is not
 
-This is a bound, not a measurement of the true float. Where we show a number, it is computed from filings, and when the filings line up taking float as shares outstanding less insider holdings, it is the most the float can be.
+This is a bound, not a measurement of the true float. Where we show a ceiling, it is computed from filings, and when the filings line up it is the most the TMI Float can be. A filed share count shown with an icon is not offered as a ceiling or as a float: nothing is subtracted from it.

@@ -2,7 +2,7 @@
  * The public page "Are float quotes real?" renders its one file and nothing
  * else, in the legal pages' frame, without their adoption banner.
  *
- * The text is pinned by section titles and by the four cell faces, read from
+ * The text is pinned by section titles and by the five cell faces, read from
  * the rendered page: a heading or a face that changes in the file changes the
  * page, and the change is public copy that needs his yes first.
  */
@@ -24,7 +24,7 @@ const SECTIONS = [
   'What this is, and is not',
 ];
 
-const FACES = ['≤ 12.3M', 'Unknown.', 'Cannot verify.', 'Not computed.'];
+const FACES = ['≤ 12.3M', 'A filed share count with an icon', 'Unknown.', 'Cannot verify.', 'Not computed.'];
 
 describe('loadExplainer', () => {
   const document = loadExplainer('are-float-quotes-real');
@@ -43,8 +43,10 @@ describe('loadExplainer', () => {
     expect(document.sections.map((s) => s.id)).toEqual(['s1', 's2', 's3', 's4', 's5', 's6']);
   });
 
-  it('renders the four cell faces as list items that open in bold', () => {
+  it('renders the five cell faces as list items that open in bold, in order', () => {
     for (const face of FACES) expect(document.html).toContain(`<li><strong>${face}</strong>`);
+    const at = FACES.map((face) => document.html.indexOf(`<li><strong>${face}</strong>`));
+    expect(at).toEqual([...at].sort((a, b) => a - b));
   });
 
   it("never renders the file's editor notes", () => {
@@ -67,7 +69,19 @@ describe('ExplainerPage', () => {
     // His "1, yes" 2026-10-09T22:45:50.617Z: what a float leaves out, directly under the lede.
     expect(markup).toMatch(/It is worth knowing what those numbers are\.<\/p>\s*<p>A float counts the shares available to trade\. It leaves out warrants, convertible notes and share-sale programs, which can add shares\. In small caps, that is decision information, not fine print\.<\/p>/);
     // His "yes" 2026-10-09T22:52:40.779Z: TMI Float defined once, right after that paragraph.
-    expect(markup).toMatch(/not fine print\.<\/p>\s*<p>TMI Float is this desk&#39;s definition of float: shares outstanding less the shares insiders hold\. The desk can only subtract the holdings insiders report directly, so it shows an upper bound, with the date of the filed share count\. When it cannot be computed it says Unknown, Cannot verify or Not computed, and gives the reason\.<\/p>/);
+    // Float fix 1 (Marketing 0a519b0f, Commercial 93), his yes 2026-10-13T10:27:39.594Z and, for the triangle
+    // sentence, 10:46:44.599Z: the definition's last sentence names the filed-count face.
+    expect(markup).toMatch(/not fine print\.<\/p>\s*<p>TMI Float is this desk&#39;s definition of float: shares outstanding less the shares insiders hold\. The desk can only subtract the holdings insiders report directly, so it shows an upper bound, with the date of the filed share count\. Where it cannot be computed or verified, the cell says Unknown, Not computed or Cannot verify, or shows the company&#39;s filed share count with an icon, and gives the reason\.<\/p>/);
+    // Float fix 1: five faces, the filed count is never offered as a float, and the old hedge is gone.
+    expect(markup).toContain('The cell shows one of five things.');
+    expect(markup).toContain('A circled i means the count passed the split and age checks but shares may have been issued since, so the true count may be higher; the reason is in the hover.');
+    expect(markup).toContain('<strong>Cannot verify.</strong> We will not stand behind a number, and we show no count:');
+    expect(markup).toContain('A filed share count shown with an icon is not offered as a ceiling or as a float: nothing is subtracted from it.');
+    expect(markup).toContain('A triangle means the count may be in pre-split share units, there may have been a split that needs verification, or the count is more than 90 days old.');
+    expect(markup).not.toContain('has not checked for a share split');
+    expect(markup).not.toContain('one of four things');
+    expect(markup).not.toMatch(/taking float as/i);
+    expect(markup).not.toContain('the name reads Cannot verify');
     for (let n = 1; n <= SECTIONS.length; n += 1) expect(markup).toContain(`href="#s${n}"`);
     expect(markup).toContain('TMI TRADER');
     expect(markup).toContain('href="mailto:info@andromedagenius.com"');
