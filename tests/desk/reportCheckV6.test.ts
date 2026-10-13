@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest';
 import {
   ADVICE_QUESTION,
   applyStrikes,
+  ATTRIBUTED_CARVE_OUT,
+  OWN_PRICE_NOT_COVERED,
   buildCheckerPrompt,
   checkReport,
   DEAL_EXAMPLES,
@@ -423,6 +425,19 @@ describe("read 82's independent read in the checker call (v6 13)", () => {
       'does this text tell, suggest or imply that a reader should or could buy, sell, enter, exit, add to, hold, avoid, short, fade, chase, wait for or watch a security, or recommend any action on it',
     );
     expect(FORECAST_QUESTION).toBe('does it predict or promise what a price will do or any outcome');
+  });
+
+  it("carries Commercial read 85's REQUIRED changes: the attributed-statement carve-out and its own-price limit; another TICKER; the labelled counterparty example", () => {
+    const v6 = buildCheckerPrompt(input(GOOD_INTRADAY, 'x', intraday)).system;
+    expect(v6).toContain(ATTRIBUTED_CARVE_OUT);
+    expect(v6).toContain(OWN_PRICE_NOT_COVERED);
+    // Read 85 (2), its words (first letter capitalised as a sentence).
+    expect(ATTRIBUTED_CARVE_OUT).toBe(
+      "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.",
+    );
+    expect(v6).toContain('or names another ticker on the board)');
+    expect(v6).not.toContain('speaks of another name');
+    expect(v6).toContain(`"${DEAL_EXAMPLES[0]}" (an example of a counterparty's own action)`);
   });
 
   it('each carve-out example is an exact substring of one of the 46 real deal lines', () => {

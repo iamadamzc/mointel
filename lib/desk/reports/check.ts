@@ -806,9 +806,11 @@ const CHECKER_SYSTEM_V5 = [
  * the named movers' rank by peak and that the 50 percent count is among the counted names (writer v6 14). 12: the
  * narrative may restate a NAMED name's own catalyst as its stored research states it, whatever its status (Integration's
  * ruling 2026-10-13; the rule half is `summaryAllowance`), and the facts it is shown are the sheet the writer got.
- * 13: read 82's independent read in the same call (`SECOND_READ_V6`, `VERDICT_SCHEMA_V6`).
+ * 13: read 82's independent read in the same call (`SECOND_READ_V6`, `VERDICT_SCHEMA_V6`). 14: Commercial read 85
+ * (bac7a1ea): the attributed-statement carve-out (REQUIRED) and its own-share-price limit (3a); "names another ticker
+ * on the board" (REQUIRED); the "confirmed" example labelled as a counterparty's own action.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 13;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 14;
 
 /**
  * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
@@ -830,13 +832,21 @@ export const DEAL_EXAMPLES = [
   'Barnwell entered a definitive agreement to sell its Canadian oil and natural gas business',
 ] as const;
 
+/** Commercial read 85 (bac7a1ea), REQUIRED, verbatim: an attributed statement is a fact about what was said. */
+export const ATTRIBUTED_CARVE_OUT =
+  "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.";
+/** Read 85 3(a), its ruling put as a rule: the carve-out covers statements about the business and an attributed analyst target. */
+export const OWN_PRICE_NOT_COVERED =
+  "The carve-out covers a company's statements about its business and events and an attributed analyst target, not a promise about its own share price: \"the company said its shares will double\" is a forecast.";
+
 const SECOND_READ_V6 = [
   'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
   `- "advice": ${ADVICE_QUESTION}? Soft forms count ("worth a look", "one to watch", "a name to keep an eye on", "good entry", "stand aside").`,
   `- "forecast": ${FORECAST_QUESTION}?`,
-  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or speaks of another name)? Always false for the narrative and the headline.',
+  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board)? Always false for the narrative and the headline.',
   'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
-  `NOT ADVICE AND NOT A FORECAST: a company's or a counterparty's own action stated as a fact. Six examples from real lines: ${DEAL_EXAMPLES.map((e) => `"${e}"`).join('; ')}. The same words aimed at a reader ("sell into strength") are advice.`,
+  `NOT ADVICE AND NOT A FORECAST: a company's or a counterparty's own action stated as a fact. Six examples from real lines: ${DEAL_EXAMPLES.map((e, i) => (i === 0 ? `"${e}" (an example of a counterparty's own action)` : `"${e}"`)).join('; ')}. The same words aimed at a reader ("sell into strength") are advice.`,
+  `${ATTRIBUTED_CARVE_OUT} ${OWN_PRICE_NOT_COVERED}`,
   'v6 REPLY, replacing the shape above: JSON only, {"verdicts": [{"id": string, "supported": boolean, "note": string, "advice": boolean, "forecast": boolean, "leansOnAnother": boolean, "phrase": string}]}, one verdict per id, every id exactly once.',
 ];
 
