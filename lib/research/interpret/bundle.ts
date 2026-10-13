@@ -236,15 +236,39 @@ function toBundleSource(source: ResearchSource): BundleSource {
   };
 }
 
+/** A company-facts source that carries a usable share count, as `readReportedShares` reads one. */
+function carriesShareCount(source: ResearchSource): boolean {
+  const shares = source.metadata.sharesOutstanding;
+  const asOf = source.metadata.asOf;
+  return source.sourceType === 'SEC_COMPANY_FACTS' && typeof shares === 'number' && Number.isFinite(shares) && shares > 0 && typeof asOf === 'string' && asOf !== '';
+}
+
+/**
+ * The newest share count ALWAYS keeps a place in the bundle (Integration 39th's ruling, 2026-10-13, from his EZRA
+ * question). The company-facts row is never canonical (only clustered news is) and is dated by its filing, so a busy
+ * filer's newer filings push it past MAX_SOURCES: EZRA on 10-13 had 13 canonical rows and 16 newer non-canonical rows
+ * ahead of its 07-30 count (Ops's keyed reads, data/ezra-reads-2026-10-13.txt), and its dossier said "No filed share
+ * count" while one was stored. When the newest count is outside the cap it takes the LAST place, the cap stays 28.
+ */
+function keepShareCount(capped: ResearchSource[], all: readonly ResearchSource[]): ResearchSource[] {
+  let newest: ResearchSource | null = null;
+  for (const source of all) {
+    if (!carriesShareCount(source)) continue;
+    if (newest === null || (source.metadata.asOf as string) > (newest.metadata.asOf as string)) newest = source;
+  }
+  if (newest === null || capped.some((source) => source.id === newest.id)) return capped;
+  return capped.length < MAX_SOURCES ? [...capped, newest] : [...capped.slice(0, MAX_SOURCES - 1), newest];
+}
+
 /**
  * The newest reported share count among the sources the model may cite.
  *
  * Restricted to citable sources on purpose. A number the model cannot attribute
  * is a number it can only assert, and STRUCTURE_REQUIRES_SOURCE rejects an
  * uncited structural claim — so surfacing an uncitable count would invite the
- * rejection rather than prevent it. Only one issuer of seventy-seven currently
- * has enough sources to reach MAX_SOURCES at all, so this costs almost nothing
- * in practice and fails in the safe direction when it does.
+ * rejection rather than prevent it. The newest count is always citable now
+ * (`keepShareCount`): the old note here, that only one issuer of seventy-seven
+ * reached MAX_SOURCES, stopped holding (EZRA, 2026-10-13).
  *
  * Newest by period end, not by filing date: two filings can report the same
  * cover-page count, and the question is which period the count describes.
@@ -419,7 +443,7 @@ export function buildEvidenceBundle(
     if (a.canonical !== b.canonical) return a.canonical ? -1 : 1;
     return (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '');
   });
-  const sources = ordered.slice(0, MAX_SOURCES).map(toBundleSource);
+  const sources = keepShareCount(ordered.slice(0, MAX_SOURCES), all).map(toBundleSource);
 
   const secSources = all.filter((source) => source.authority === 'SEC');
   const catalystSources = all.filter((source) => CATALYST_TYPES.has(source.sourceType));
