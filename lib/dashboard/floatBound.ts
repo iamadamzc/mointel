@@ -154,7 +154,8 @@ export const FLOAT_DETAILS_WORDS = {
   headline: (x: string, d: string) =>
     // TMI Float (his yes 2026-10-09T22:52:40.779Z; Marketing 00130acf, Commercial read 67).
     `TMI Float, shares outstanding less insider holdings: no more than ${x} shares as of ${d}, when the filings line up.`,
-  definitionLabel: 'Float, taking it as shares outstanding less insider holdings',
+  // The defined-term form (Marketing cf2491a5, Commercial read 91 PASS; matches FLOAT_LEGEND): bound and refused panels.
+  definitionLabel: 'TMI Float: shares outstanding less insider holdings',
   definition:
     'The number above subtracts only the insider holdings the desk can see, so it is an upper bound on that figure, not on the shares that can trade on a given day, which can be more, because insiders can sell.',
   countLabel: 'Filed share count',
