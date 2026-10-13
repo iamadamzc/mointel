@@ -348,6 +348,21 @@ describe('the report pipeline, v6 wiring', () => {
       expect(leans(unnamed)).toHaveLength(0);
     });
 
+    it('a Claude-checked report still strikes an engine constant (a code leak) and does not strike an ordinary word-list line (Commercial read 97)', async () => {
+      const ruleWords = async (aaa: string) => {
+        const run = await runReport(
+          fixture(),
+          SLOT,
+          { writer: writerWith(NARRATIVE, aaa), checker, checkerFallback: counted(), checkerNames: names, checkerVendors: { primary: 'claude', fallback: 'openai' } },
+          () => new Date(COMPLETED),
+        );
+        expect(run.diagnostics?.checker).toEqual({ ran: 'claude-opus-5-5' });
+        return (run.diagnostics?.strikes ?? []).filter((s) => s.by === 'rule' && s.reason === 'FORBIDDEN_WORDING').map((s) => s.detail);
+      };
+      expect(await ruleWords('Its status was FRESH_FOUND in our sources.')).toContain('engine constant: "FRESH_FOUND"');
+      expect(await ruleWords('A quiet session for the name.')).toEqual([]);
+    });
+
     it('BOTH failing is CHECKER_FAILED (closed), with both recorded; nothing publishes', async () => {
       const run = await runReport(
         fixture(),

@@ -370,7 +370,6 @@ describe('the word list switch (his rule c6b4168d; Integration 2026-10-13; read 
     'The real catalyst was the filing.',
     'There was no catalyst for the move.',
     'A quiet session for the name.',
-    'Its status was FRESH_FOUND in our sources.',
     'The contract could drive further gains.',
     `The company said ${String.fromCharCode(0x2014)} in a filing.`,
     'The company said - in a filing.',
@@ -387,6 +386,12 @@ describe('the word list switch (his rule c6b4168d; Integration 2026-10-13; read 
       expect(strikesOn(text).map((s) => s.reason)).not.toContain('FORBIDDEN_WORDING');
       expect(strikesOn(text, true).map((s) => s.reason)).toContain('FORBIDDEN_WORDING');
     }
+  });
+
+  it('off: an ENGINE CONSTANT still strikes, in a name line and in the narrative (a code leak, not a word; Commercial read 97)', () => {
+    expect(strikesOn('Its status was FRESH_FOUND in our sources.').map((s) => s.detail)).toContain('engine constant: "FRESH_FOUND"');
+    const leak = ruleStrikes(input(`${GOOD_INTRADAY} Its catalyst reads GREEN_FRESH_FRONTSIDE.`, 'x', intraday)).filter((s) => s.id === 'O');
+    expect(leak.map((s) => s.detail)).toContain('engine constant: "GREEN_FRESH_FRONTSIDE"');
   });
 
   it('off: LEANS_ON_ANOTHER and CAUSAL_WORDING do not strike; ON restores both', () => {

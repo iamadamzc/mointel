@@ -175,7 +175,8 @@ export const WORD_LIST_LABELS: ReadonlySet<string> = new Set([
   '"real" catalyst',
   'bare "no catalyst"',
   '"quiet"',
-  'engine constant',
+  // Not 'engine constant': an internal identifier printed to a reader is a code leak, not a word, and no model read
+  // asks about it, so it strikes on every report (Commercial read 97 advisory; Integration's ruling, 2026-10-13).
   'fit stated as a forecast',
   // Replaced before the check (`dashes.ts`); struck again only with the word list.
   'em dash',
