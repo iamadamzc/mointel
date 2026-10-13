@@ -33,7 +33,7 @@ describe('Variant A panel on a bound face', () => {
     const v = floatCellView(produced(), { dateShown: '2026-10-06', namesAllowed: true });
     expect(v.details.rows.map((r) => r.label)).toEqual([
       null,
-      'Float, taking it as shares outstanding less insider holdings',
+      'TMI Float: shares outstanding less insider holdings',
       'Filed share count',
       "Less insiders' holdings",
       'Not subtracted',
