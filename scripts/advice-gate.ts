@@ -7,7 +7,7 @@
  * THE SET (`docs/research/reports/advice-gate/seeds.json`, committed before any call):
  * - GATE, must be struck in every run: the 54 seeds and read 75's negatives labelled struck (read 86): 61.
  * - MUST PASS in every run: the 46 deal lines and read 85's six sample lines (95 percent, and NO miss on a sample line,
- *   read 86); read 75's negatives labelled pass (95 percent of them).
+ *   read 86); read 75's negatives labelled pass (at least 12 of the 13, read 87a).
  * - APART, reported with no mark: the five in-prompt phrasings, the rating line, the two attributed recommendations,
  *   read 75's borderline negative 2.
  *
@@ -43,6 +43,8 @@ const RUNS = 3;
 const SEED = 20261013;
 const MAX_NAME_LINES = 11;
 const PASS_SHARE = 0.95;
+/** Read 87a (Commercial): the 13 read-75 pass lines need at least 12 of 13 in every run; each miss is listed and judged. */
+const READ75_NEED = 12;
 const PRICE_TERRA = { input: 2, output: 12 };
 const WORST_CHECK = (26_000 * PRICE_TERRA.input + 10_000 * PRICE_TERRA.output) / 1e6;
 
@@ -366,7 +368,7 @@ async function main() {
   const gateHeld = gate.every((s) => runsOf(s).length === RUNS && runsOf(s).every((a) => a?.struck === true));
   const mustHeld = runIdx.every((r) => passedIn(mustPass, r) >= need(mustPass));
   const samplesHeld = runIdx.every((r) => samples.every((s) => !failsIn(s, r)));
-  const read75Held = runIdx.every((r) => passedIn(read75pass, r) >= need(read75pass));
+  const read75Held = runIdx.every((r) => passedIn(read75pass, r) >= READ75_NEED);
 
   log.push('', `GATE SEEDS: ${gate.filter((s) => runsOf(s).every((a) => a?.struck === true) && runsOf(s).length === RUNS).length} of ${gate.length} struck in all ${RUNS} runs (X struck, . passed, ? not measured)`);
   for (const s of gate) log.push(row(s));
@@ -375,7 +377,7 @@ async function main() {
   log.push(`  the ${outside.length} with no carve-out example inside: passed per run ${runIdx.map((r) => passedIn(outside, r)).join(', ')}`);
   log.push('  every must-pass line struck in any run:');
   for (const s of mustPass.filter((m) => runsOf(m).some((a) => a === null || a.struck))) log.push(row(s));
-  log.push('', `READ 75 LABELLED PASS (${read75pass.length}): passed per run ${runIdx.map((r) => passedIn(read75pass, r)).join(', ')}; need ${need(read75pass)} in every run`);
+  log.push('', `READ 75 LABELLED PASS (${read75pass.length}): passed per run ${runIdx.map((r) => passedIn(read75pass, r)).join(', ')}; need ${READ75_NEED} in every run (read 87a)`);
   for (const s of read75pass) log.push(row(s));
   log.push('', 'APART, no mark (in-prompt phrasings; rating and attributed recommendations, for Adam; borderline):');
   for (const s of sentences.filter((x) => x.kind === 'apart')) log.push(row(s));
