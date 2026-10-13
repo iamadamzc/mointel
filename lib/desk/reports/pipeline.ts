@@ -331,6 +331,31 @@ export interface ReportDiagnostics {
    * per-report count Integration asked for and the measure Commercial read 82 asked for. Absent when none changed.
    */
   dashes?: DashReplacement[];
+  /**
+   * Which checker checked this report, when the models name their checkers: `ran` is the model that produced the
+   * verdicts (or, on a MISSED run, the last one tried). `fallbackFrom` is set when the first checker failed and its
+   * fallback ran: the failed model, what failed, and its reply when it gave one (the reply kept on failure, his "move
+   * it", uuid e51e9b47; Integration's build terms).
+   */
+  checker?: { ran: string; fallbackFrom?: { model: string; failure: string; reply: string | null } };
+}
+
+/** A checker that remembers its last reply or failure, so a failed check can be recorded before the fallback runs. */
+function recordingChecker(model: CheckerModel): CheckerModel & { reply: string | null; failure: string | null } {
+  const recorder = {
+    reply: null as string | null,
+    failure: null as string | null,
+    async complete(prompt: Parameters<CheckerModel['complete']>[0]): Promise<string> {
+      try {
+        recorder.reply = await model.complete(prompt);
+        return recorder.reply;
+      } catch (error) {
+        recorder.failure = `call: ${error instanceof Error ? error.message : String(error)}`;
+        throw error;
+      }
+    },
+  };
+  return recorder;
 }
 
 export type ReportRun =
@@ -339,12 +364,20 @@ export type ReportRun =
 
 /**
  * One slot: write, check, apply. No retry here: a retry is a spend decision
- * and belongs to the runner that owns the slot's timing.
+ * and belongs to the runner that owns the slot's timing. The one exception is
+ * ruled: a failed check falls back to `checkerFallback` when the models carry
+ * one (his "move it": "OpenAI taking over automatically whenever a Claude check
+ * fails or the credits run out"). Both failing is CHECKER_FAILED, as before.
  */
 export async function runReport(
   db: Database,
   slot: { kind: ReportKind; rangeId: string; tradingDate: string; range: { min: number; max: number } },
-  models: { writer: ReportModel; checker: CheckerModel },
+  models: {
+    writer: ReportModel;
+    checker: CheckerModel;
+    checkerFallback?: CheckerModel;
+    checkerNames?: { primary: string; fallback: string | null };
+  },
   now: () => Date = () => new Date(),
   /** Harnesses only: sees the unchecked draft. Never changes the run. */
   observe?: { draft?: (draft: ReportDraft) => void },
@@ -409,28 +442,43 @@ export async function runReport(
     let strikes: Strike[] = [];
     let checkedLines = 0;
     let checkerMs: number | null = null;
+    let checker: ReportDiagnostics['checker'];
     if (draftLines(draft).length > 0) {
       const checkerStart = Date.now();
-      const checked = await checkReport(
-        {
-          kind: slot.kind,
-          range: slot.range,
-          checkpoint: inputs.checkpoint,
-          // Every row, carried names included: a changed line may name one, and that is no uncovered ticker.
-          rows: inputs.facts,
-          draft,
-          research: inputs.research,
-          afterHoursTotals: inputs.afterHoursTotals,
-          // v6: present, so the narrative (id O) is traced against its computed facts.
-          narrative: inputs.narrative,
-          // The 10 pm edition's moment says "revised" only when it revises an 8:30 edition (Commercial read 31).
-          revision: plan !== null,
-        },
-        models.checker,
-        now,
-      );
+      checker = models.checkerNames ? { ran: models.checkerNames.primary } : undefined;
+      const checkInput = {
+        kind: slot.kind,
+        range: slot.range,
+        checkpoint: inputs.checkpoint,
+        // Every row, carried names included: a changed line may name one, and that is no uncovered ticker.
+        rows: inputs.facts,
+        draft,
+        research: inputs.research,
+        afterHoursTotals: inputs.afterHoursTotals,
+        // v6: present, so the narrative (id O) is traced against its computed facts.
+        narrative: inputs.narrative,
+        // The 10 pm edition's moment says "revised" only when it revises an 8:30 edition (Commercial read 31).
+        revision: plan !== null,
+      };
+      const first = recordingChecker(models.checker);
+      let checked = await checkReport(checkInput, first, now);
+      // The ruled fallback: ANY failed check (a failed call, a refusal, a reply that is not a verdict for every line)
+      // is checked again on the fallback, and the failure and the first reply are kept.
+      if (!checked.ok && checked.cause.kind === 'CHECKER_FAILED' && models.checkerFallback) {
+        checker = {
+          ran: models.checkerNames?.fallback ?? 'fallback',
+          fallbackFrom: {
+            model: models.checkerNames?.primary ?? 'primary',
+            failure: first.failure ?? 'reply: not a verdict for every line',
+            reply: first.reply,
+          },
+        };
+        checked = await checkReport(checkInput, models.checkerFallback, now);
+      }
       checkerMs = Date.now() - checkerStart;
-      if (!checked.ok) return { status: 'MISSED', cause: checked.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs } };
+      if (!checked.ok) {
+        return { status: 'MISSED', cause: checked.cause, diagnostics: { lines: 0, strikes: [], writerMs, checkerMs, ...(checker ? { checker } : {}) } };
+      }
       strikes = checked.strikes;
       checkedLines = checked.lines;
     }
@@ -442,6 +490,7 @@ export async function runReport(
       writerMs,
       checkerMs,
       ...(dashes.length > 0 ? { dashes } : {}),
+      ...(checker ? { checker } : {}),
     };
     // v6: a struck name keeps its computed card with no prose, so cards = the narrative's covered names.
     const applied = applyStrikes(draft, strikes, now, {

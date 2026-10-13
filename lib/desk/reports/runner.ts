@@ -13,6 +13,7 @@
  */
 
 import { REPORT_CHECKER_PROMPT_VERSION_V5, REPORT_CHECKER_PROMPT_VERSION_V6, VERDICT_SCHEMA, VERDICT_SCHEMA_V6 } from './check';
+import { AnthropicReportModel } from './anthropicReportModel';
 import { OpenAiReportModel, type ReportModelUsage } from './openaiReportModel';
 import { REPORT_WRITER_PROMPT_VERSION_V5 } from './writerV5';
 import { REPORT_WRITER_PROMPT_VERSION_V6 } from './writerV6';
@@ -109,27 +110,56 @@ export const DRAFT_SCHEMA_V6 = {
   },
 } as const;
 
-/** The writer and checker for one v6 report: the v6 reply schema, writer prompt v6, checker prompt v4. */
+/** How long a Claude check may take before the pipeline checks the report on OpenAI instead. */
+export const CLAUDE_CHECKER_TIMEOUT_MS = 300_000;
+
+export interface ReportModelsV6 {
+  writer: OpenAiReportModel;
+  /** The checker that runs first: Claude when the Reports key is set, else OpenAI as before. */
+  checker: OpenAiReportModel | AnthropicReportModel;
+  /** Present only with the Claude checker: the OpenAI checker that checks the report when the Claude check fails. */
+  checkerFallback?: OpenAiReportModel;
+  /** For the record (`ReportDiagnostics.checker`, the stored versions): the model names of the two checkers. */
+  checkerNames: { primary: string; fallback: string | null };
+}
+
+/**
+ * The writer and checker for one v6 report: the v6 reply schema, writer prompt v6, checker prompt v6. With
+ * `claudeChecker` (the Reports-TMI key, `readReportModelConfig`), the checker is Claude and the OpenAI checker is its
+ * fallback on ANY failure (his "move it", uuid e51e9b47; sizing 16a7f9e1). Without it, nothing changes.
+ */
 export function createReportModelsV6(
-  config: ReportModelConfigV5,
+  config: ReportModelConfigV5 & { claudeChecker?: { apiKey: string; model: string } | null },
   onUsage?: (usage: ReportModelUsage) => void,
-): { writer: OpenAiReportModel; checker: OpenAiReportModel } {
+): ReportModelsV6 {
+  const writer = new OpenAiReportModel({
+    apiKey: config.apiKey,
+    model: config.writerModel,
+    timeoutMs: 120_000,
+    fetchImpl: config.fetchImpl,
+    format: { name: 'report_draft_v6', schema: DRAFT_SCHEMA_V6, promptVersion: REPORT_WRITER_PROMPT_VERSION_V6 },
+    onUsage,
+  });
+  const openAiChecker = new OpenAiReportModel({
+    apiKey: config.apiKey,
+    model: config.checkerModel,
+    timeoutMs: 180_000,
+    fetchImpl: config.fetchImpl,
+    format: { name: 'report_verdicts', schema: VERDICT_SCHEMA_V6, promptVersion: REPORT_CHECKER_PROMPT_VERSION_V6 },
+    onUsage,
+  });
+  if (!config.claudeChecker) return { writer, checker: openAiChecker, checkerNames: { primary: config.checkerModel, fallback: null } };
   return {
-    writer: new OpenAiReportModel({
-      apiKey: config.apiKey,
-      model: config.writerModel,
-      timeoutMs: 120_000,
+    writer,
+    checker: new AnthropicReportModel({
+      apiKey: config.claudeChecker.apiKey,
+      model: config.claudeChecker.model,
+      schema: VERDICT_SCHEMA_V6,
+      timeoutMs: CLAUDE_CHECKER_TIMEOUT_MS,
       fetchImpl: config.fetchImpl,
-      format: { name: 'report_draft_v6', schema: DRAFT_SCHEMA_V6, promptVersion: REPORT_WRITER_PROMPT_VERSION_V6 },
       onUsage,
     }),
-    checker: new OpenAiReportModel({
-      apiKey: config.apiKey,
-      model: config.checkerModel,
-      timeoutMs: 180_000,
-      fetchImpl: config.fetchImpl,
-      format: { name: 'report_verdicts', schema: VERDICT_SCHEMA_V6, promptVersion: REPORT_CHECKER_PROMPT_VERSION_V6 },
-      onUsage,
-    }),
+    checkerFallback: openAiChecker,
+    checkerNames: { primary: config.claudeChecker.model, fallback: config.checkerModel },
   };
 }

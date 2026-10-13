@@ -50,7 +50,7 @@ describe('the v6 models', () => {
     expect(w!.text.format.name).toBe('report_draft_v6');
     expect(w!.text.format.schema.required).toEqual(['narrative', 'lines']);
     expect(JSON.stringify(w!.text.format.schema)).not.toMatch(/heading|overall/);
-    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '15' });
+    expect(w!.metadata).toEqual({ report_draft_v6_prompt_version: '16' });
     expect(c!.metadata).toEqual({ report_verdicts_prompt_version: '16' });
     // v6 13: the v6 checker asks for read 82's answers in its schema.
     expect(c!.text.format.schema.required).toEqual(['verdicts']);
