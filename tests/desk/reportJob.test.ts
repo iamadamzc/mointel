@@ -350,6 +350,30 @@ describe('the published path, end to end through the loop', () => {
     expect(JSON.parse(row.versions)).toEqual(VERSIONS);
   });
 
+  it('the stored versions name the checker that ACTUALLY checked: the fallback when the Claude check failed (his "move it")', async () => {
+    const db = temporaryDb();
+    const id = checkpoint(db, 'OPEN_SPIKE_ASSESSMENT', INTO_RTH_AT, 'COMPLETE');
+    insertAssessmentTickers(db, id, [ticker()]);
+    const calls = { writer: 0, checker: 0 };
+    const withFallback = (): ReportModels => ({
+      ...scriptedModels(calls)(),
+      checker: {
+        complete: async () => {
+          throw new Error('claude: HTTP 400 billing_error');
+        },
+      },
+      checkerFallback: scriptedModels(calls)().checker,
+      checkerNames: { primary: 'claude-opus-5-5', fallback: 'gpt-terra' },
+    });
+    const loop = startReportLoop({ db, ranges: DEFAULT_REPORT_RANGES, createModels: withFallback, versions: { ...VERSIONS, checkerModel: 'claude-opus-5-5' }, log: () => {}, now: () => NOW });
+    await loop.tick();
+    loop.stop();
+    const row = db.prepare('SELECT status, versions, diagnostics FROM session_reports').get() as { status: string; versions: string; diagnostics: string };
+    expect(row.status).toBe('PUBLISHED');
+    expect(JSON.parse(row.versions).checkerModel).toBe('gpt-terra');
+    expect(JSON.parse(row.diagnostics).run.checker).toEqual({ ran: 'gpt-terra', fallbackFrom: { model: 'claude-opus-5-5', failure: 'call: claude: HTTP 400 billing_error', reply: null } });
+  });
+
   it('across a restart a filled slot is never re-run: a fresh loop calls no model and changes nothing', async () => {
     const db = temporaryDb();
     const id = checkpoint(db, 'OPEN_SPIKE_ASSESSMENT', INTO_RTH_AT, 'COMPLETE');

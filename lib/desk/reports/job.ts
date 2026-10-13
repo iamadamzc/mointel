@@ -41,6 +41,10 @@ export const REPORT_LOOKBACK_MS = 12 * 60 * 60_000;
 export interface ReportModels {
   writer: ReportModel;
   checker: CheckerModel;
+  /** The checker that checks the report when `checker` fails (the Claude checker's OpenAI fallback); absent = none. */
+  checkerFallback?: CheckerModel;
+  /** The two checkers' model names, for `ReportDiagnostics.checker` and the stored versions. */
+  checkerNames?: { primary: string; fallback: string | null };
 }
 
 /** Recorded on every row, so a report can be traced to the prompts and models that wrote it. */
@@ -219,7 +223,8 @@ export async function runReportForAssessment(
     range,
     assessment,
     run,
-    versions,
+    // The checker that actually checked this report (Claude, or its OpenAI fallback), not only the one configured.
+    versions: run.diagnostics?.checker ? { ...versions, checkerModel: run.diagnostics.checker.ran } : versions,
     usage,
     createdAt: now().toISOString(),
   });
