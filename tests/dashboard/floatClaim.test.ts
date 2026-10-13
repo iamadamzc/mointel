@@ -203,7 +203,7 @@ describe('one float for the whole desk', () => {
     });
     const summary = buildStructureSummary(row)!;
 
-    expect(summary.float).toEqual({ face: 'Not computed', date: null, kind: 'notComputed' });
+    expect(summary.float).toEqual({ face: 'Not computed', date: null, kind: 'notComputed', icon: null, ariaLabel: 'TMI Float not computed for this name; details on click' });
     expect(summary).not.toHaveProperty('floatCheck');
   });
 });

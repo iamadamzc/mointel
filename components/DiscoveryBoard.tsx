@@ -57,7 +57,7 @@ import type { DiscoveryState } from '@/lib/market/types';
 import { formatCount, formatMultiple } from '@/lib/format';
 import { FloatCell } from '@/components/FloatCell';
 import { companyLine } from '@/lib/dashboard/companyLine';
-import { FLOAT_LEGEND } from '@/lib/dashboard/floatBound';
+import { FILED_COUNT_WORDS, FLOAT_LEGEND } from '@/lib/dashboard/floatBound';
 import { SETUP_GRADE_LEGEND } from '@/lib/dashboard/setupGrade';
 
 const VIEW_SIZES = [12, 25, 50] as const;
@@ -815,7 +815,7 @@ export function DiscoveryBoard({
                   align="right"
                   sorted={activeColumn === 'float'}
                   // The column is always the desk's TMI Float now; the vendor's "Free float" title went with the Sheet.
-                  title={FLOAT_LEGEND}
+                  title={`${FLOAT_LEGEND} ${FILED_COUNT_WORDS.legend}`}
                 >
                   TMI Float
                 </Th>
@@ -888,7 +888,8 @@ export function DiscoveryBoard({
         )}
       </p>
       {/* The standing legend, once per board, verbatim (Marketing v3, Commercial-passed). */}
-      {floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null}
+      {/* Float fix 1: one sentence after it says what a filed-count cell shows (same release as the face). */}
+      {floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{`${FLOAT_LEGEND} ${FILED_COUNT_WORDS.legend}`}</p> : null}
       {rows.some((row) => row.setupGradeWired) ? (
         <p className="mt-1.5 text-[11px] text-ink-3">{SETUP_GRADE_LEGEND}</p>
       ) : null}

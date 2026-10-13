@@ -357,7 +357,7 @@ describe('structural summary', () => {
 
     expect(summary.classification).toBe('CAUTION');
     // The float cell's own view (3b, Marketing 644a67e0 S5); unwired, the desk has computed none.
-    expect(summary.float).toEqual({ face: 'Not computed', date: null, kind: 'notComputed' });
+    expect(summary.float).toEqual({ face: 'Not computed', date: null, kind: 'notComputed', icon: null, ariaLabel: 'TMI Float not computed for this name; details on click' });
     expect(summary).not.toHaveProperty('floatCheck');
     expect(summary.floatConfidence).toBe('UNKNOWN');
 

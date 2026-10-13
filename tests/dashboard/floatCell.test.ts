@@ -40,7 +40,9 @@ describe('FloatCell, server-rendered', () => {
 
   it('prints the words for the other states, and "Not computed" for no state at all', () => {
     expect(render({ ...bound({ bound: null, countAsOf: null }), state: 'UNKNOWN', reason: 'NO_FILED_COUNT' })).toContain('>Unknown<');
-    expect(render({ ...bound({ bound: null }), state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' })).toContain('>Cannot verify<');
+    // No filed count: the word. With one, float fix 1 prints the count (floatFiledCount.test.ts).
+    expect(render({ ...bound({ bound: null, countShares: null }), state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' })).toContain('>Cannot verify<');
+    expect(render({ ...bound({ bound: null }), state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' })).not.toContain('>Cannot verify<');
     for (const none of [null, undefined]) expect(render(none)).toContain('>Not computed<');
   });
 
@@ -95,11 +97,11 @@ describe('the board shows the column always once wired, and the legend once', ()
   it('renders the TMI Float cell (Not computed when unwired, never the Sheet float), and the legend under the board', () => {
     expect(board).toContain('<FloatCell bound={row.floatBoundWired ? row.floatBound : null} dateShown={dateShown} />');
     expect(board).not.toContain('formatCount(row.displayedFloat)');
-    expect(board).toContain('floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{FLOAT_LEGEND}</p> : null');
+    expect(board).toContain('floatWired ? <p className="mt-1.5 text-[11px] text-ink-3">{`${FLOAT_LEGEND} ${FILED_COUNT_WORDS.legend}`}</p> : null');
   });
 
   it("the header's hover is the TMI Float legend, never the vendor float's title (gone with the Sheet)", () => {
-    expect(board).toContain('title={FLOAT_LEGEND}');
+    expect(board).toContain('title={`${FLOAT_LEGEND} ${FILED_COUNT_WORDS.legend}`}');
     expect(board).not.toContain('COLUMN_TITLE.float');
   });
 });

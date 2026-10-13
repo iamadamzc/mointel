@@ -7,6 +7,7 @@ import {
   FLOAT_PAGE_LINK_LABEL,
   FLOAT_PAGE_LINK_LEAD,
   floatCellView,
+  type FiledCountIcon,
   type FloatBound,
 } from '@/lib/dashboard/floatBound';
 import { useDeskMode } from '@/lib/hooks/useDeskMode';
@@ -41,9 +42,11 @@ export function FloatCell({
   const tone =
     view.kind === 'bound'
       ? 'text-ink'
-      : view.kind === 'cannotVerify'
-        ? 'text-warn'
-        : 'text-ink-3';
+      : view.kind === 'filedCount'
+        ? 'text-ink-2'
+        : view.kind === 'cannotVerify'
+          ? 'text-warn'
+          : 'text-ink-3';
 
   return (
     <Popover
@@ -55,6 +58,7 @@ export function FloatCell({
           {/* The marker: a dotted underline, no width (the widest face uses 79.8 of 86 px). */}
           <span className={`${tone} underline decoration-dotted decoration-ink-3 underline-offset-2`}>{view.face}</span>
           {view.date ? <span className="text-[10px] text-ink-3">{view.date}</span> : null}
+          {view.icon ? <FiledCountMark kind={view.icon.kind} title={view.icon.title} /> : null}
         </>
       }
     >
@@ -88,5 +92,34 @@ export function FloatCell({
         </a>
       </p>
     </Popover>
+  );
+}
+
+/**
+ * The filed-count face's ONE icon (float fix 1), 8 px, beside the number: `caveat` is a circled "i" in ink-3,
+ * `warning` a triangle "!" in the warn tone. They differ by SHAPE as well as colour (Commercial 89e (4)); the
+ * accessible name carries the same words, so the icon itself is hidden from assistive technology. The hover is
+ * the native title (the whole cell is the popover's trigger, so a click still opens the panel and its page link).
+ * The 8 px box was measured with the face: "12.4M sh" plus icon 63.9 px, "o/s" 70.4 px, of the column's 86.
+ */
+export function FiledCountMark({ kind, title }: { kind: FiledCountIcon; title: string }) {
+  return (
+    <span title={title} className={`inline-flex self-center ${kind === 'warning' ? 'text-warn' : 'text-ink-3'}`}>
+      <svg aria-hidden="true" width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1">
+        {kind === 'warning' ? (
+          <>
+            <path d="M4 0.7 L7.5 7.3 L0.5 7.3 Z" strokeLinejoin="round" />
+            <path d="M4 3 V5" strokeLinecap="round" />
+            <circle cx="4" cy="6.2" r="0.15" fill="currentColor" />
+          </>
+        ) : (
+          <>
+            <circle cx="4" cy="4" r="3.5" />
+            <path d="M4 3.6 V6" strokeLinecap="round" />
+            <circle cx="4" cy="2.3" r="0.15" fill="currentColor" />
+          </>
+        )}
+      </svg>
+    </span>
   );
 }
