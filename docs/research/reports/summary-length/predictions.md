@@ -24,6 +24,12 @@ If fewer than 6 recaps or 18 intraday reports publish, that group is **NOT DECID
 
 **Reported, not pass conditions** (Commercial's ruling): published Summaries missing a named mover altogether (if more than 1 of 9 recaps, said plainly, and the choice goes to him with the figure); the draft sentences the cut removed, verbatim; drafts over the cap; name lines struck.
 
+**Added by Commercial read 122 (PASS with two measures), before any call; both reported as findings, not pass conditions:**
+- **A. Name lines:** across all 36 reports, the drafted NAME lines (every flagged line but the Summary, id `O`) with "positive"/"negative" or a classification of the news ("rather than an ... catalyst", "operating", "transaction-development"), as counts, recaps and intraday apart; each hit with whether its research says the word (from `records.json`: `judgementLines[].research`, read by hand).
+- **B. Summary against line, recaps, by hand:** for each named mover in each published recap Summary, its news state there (fresh, older or secondary, no conclusion) agrees with the same name's line; every disagreement reported with both sentences. A disagreement goes to him as a finding, not an automatic fail (the checker reads each against the same research).
+
+Both are computed from the raw this harness already keeps (`judgementLines`, `draft`, `result`), so the code under test is unchanged.
+
 ## Predictions (this seat's, before any call)
 
 1. Recap count sentence published: **8 or 9 of 9.** Intraday: **24 to 27 of 27.**
@@ -35,5 +41,7 @@ If fewer than 6 recaps or 18 intraday reports publish, that group is **NOT DECID
 7. Recaps missing a named mover altogether: **0 or 1 of 9.**
 8. Failed checks: **0 to 2 of 36.**
 9. Spend **$5.00 to $6.20** (third run's recaps $0.1734 a report; L12 v7 intraday mean $0.1475), all 36 run.
+10. Name-line judgement hits (A): **2 to 8** across 36 reports, at most 1 not the research's own word (the third run: 9 of 10 flagged lines were; one was an absence claim).
+11. Summary against line disagreements (B): **0 or 1** across the recaps.
 
 My honest expectation: the recap rules pass; intraday rule 7 is the one at risk, because one sentence for the leader with its news and one for the next gainers leave little room before the count, and a writer that runs long loses the count first.
