@@ -282,6 +282,7 @@ function captureAssessment(
       ticker: row.symbol,
       floatState: capturedFloat.state,
       floatReason: capturedFloat.reason,
+      floatFilingsOnly: capturedFloat.filingsOnly,
       assessmentRank: assessmentRank ?? null,
       // Identical here, and kept separate anyway: an experimental ordering must
       // never be mistaken for the board the desk was actually showing.

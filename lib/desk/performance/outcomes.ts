@@ -57,6 +57,8 @@ export interface CallRow {
   priorityRule: string | null;
   floatState: string | null;
   floatReason: string | null;
+  /** L8's filings-only mark frozen with the float (Commercial read 118); null when the row did not record it. */
+  floatFilingsOnly: boolean | null;
 }
 
 export interface CallOutcome {

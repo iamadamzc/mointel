@@ -173,6 +173,24 @@ describe('schema v30', () => {
     expect(columns('desk_call_outcomes')).toEqual(expect.arrayContaining(['close_pct', 'close_state', 'priority_grade', 'float_state']));
     db.close();
   });
+
+  it('has the nullable float_filings_only column: in a fresh store, and added to a store upgraded without it', () => {
+    const file = temporaryPath();
+    const fresh = openDatabase(file);
+    const info = (db: MarketDatabase) =>
+      (db.prepare('PRAGMA table_info(desk_assessment_tickers)').all() as Array<{ name: string; type: string; notnull: number }>).find(
+        (c) => c.name === 'float_filings_only',
+      );
+    expect(info(fresh)).toMatchObject({ type: 'INTEGER', notnull: 0 });
+    fresh.exec('ALTER TABLE desk_assessment_tickers DROP COLUMN float_filings_only');
+    expect(info(fresh)).toBeUndefined();
+    fresh.pragma('user_version = 29');
+    fresh.close();
+
+    const db = openDatabase(file);
+    expect(info(db)).toMatchObject({ type: 'INTEGER', notnull: 0 });
+    db.close();
+  });
 });
 
 describe('the float frozen at capture (A8)', () => {
@@ -223,7 +241,7 @@ describe('the float frozen at capture (A8)', () => {
     // The row as the checkpoint sees it: an announced split ahead refuses the number.
     writeFloatBound(db, floatRow({ announcedSplits: ['2026-09-28'] }));
     const captured = floatAtCapture(db, 'ACME', D, analysed());
-    expect(captured).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+    expect(captured).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT', filingsOnly: false });
 
     const id = checkpoint(db, 'PREMARKET_0700', D, `${D}T11:00:30.000Z`);
     insertAssessmentTickers(db, id, [ticker({ floatState: captured.state, floatReason: captured.reason })]);
@@ -241,7 +259,7 @@ describe('the float frozen at capture (A8)', () => {
 
   it('is NOT_YET when no float row exists on or before the checkpoint date', () => {
     const db = openDatabase(temporaryPath());
-    expect(floatAtCapture(db, 'NONE', D, analysed())).toEqual({ state: 'NOT_YET', reason: null });
+    expect(floatAtCapture(db, 'NONE', D, analysed())).toEqual({ state: 'NOT_YET', reason: null, filingsOnly: false });
   });
 
   /*
@@ -253,22 +271,66 @@ describe('the float frozen at capture (A8)', () => {
     upsertDailyBars(db, [dailyBar('2026-07-31'), dailyBar(D)]);
     writeFloatBound(db, floatRow());
     expect(readFloatBoundsAt(db, ['ACME'], D).ACME).toMatchObject({ state: 'PRODUCED', filingsOnly: true });
-    expect(floatAtCapture(db, 'ACME', D, undefined)).toEqual({ state: 'PRODUCED', reason: null });
+    expect(floatAtCapture(db, 'ACME', D, undefined)).toEqual({ state: 'PRODUCED', reason: null, filingsOnly: true });
   });
 
   it('could not tell stays could not tell: no research tables, or an analysis with no ledger, is ISSUANCE_NOT_CHECKED', () => {
     const db = openDatabase(temporaryPath());
     upsertDailyBars(db, [dailyBar('2026-07-31'), dailyBar(D)]);
     writeFloatBound(db, floatRow());
-    expect(floatAtCapture(db, 'ACME', D, analysed(null))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
+    expect(floatAtCapture(db, 'ACME', D, analysed(null))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED', filingsOnly: false });
     db.exec('DROP TABLE research_jobs');
     expect(readFloatBoundsAt(db, ['ACME'], D).ACME).toMatchObject({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
-    expect(floatAtCapture(db, 'ACME', D, undefined)).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
+    expect(floatAtCapture(db, 'ACME', D, undefined)).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED', filingsOnly: false });
+  });
+
+  /*
+   * Commercial read 118: "PRODUCED" changed meaning on 2026-10-14 (L8), so the record freezes the filings-only mark
+   * beside the state. 1 and 0 are recorded answers; NULL is "not recorded", never "false".
+   */
+  it('freezes the filings-only mark: a no-analysis PRODUCED stores 1 and reads true, a researched PRODUCED stores 0 and reads false', () => {
+    const db = openDatabase(temporaryPath());
+    upsertDailyBars(db, [dailyBar('2026-07-31'), dailyBar(D)]);
+    writeFloatBound(db, floatRow());
+    const bare = floatAtCapture(db, 'ACME', D, undefined);
+    const researched = floatAtCapture(db, 'ACME', D, analysed());
+    expect(bare).toEqual({ state: 'PRODUCED', reason: null, filingsOnly: true });
+    expect(researched).toEqual({ state: 'PRODUCED', reason: null, filingsOnly: false });
+
+    const id = checkpoint(db, 'PREMARKET_0700', D, `${D}T11:00:30.000Z`);
+    insertAssessmentTickers(db, id, [
+      ticker({ floatState: bare.state, floatReason: bare.reason, floatFilingsOnly: bare.filingsOnly }),
+      ticker({ ticker: 'RSCH', floatState: researched.state, floatReason: researched.reason, floatFilingsOnly: researched.filingsOnly }),
+    ]);
+
+    const stored = db
+      .prepare('SELECT ticker, float_state, float_filings_only FROM desk_assessment_tickers WHERE assessment_id = ? ORDER BY ticker')
+      .all(id);
+    expect(stored).toEqual([
+      { ticker: 'ACME', float_state: 'PRODUCED', float_filings_only: 1 },
+      { ticker: 'RSCH', float_state: 'PRODUCED', float_filings_only: 0 },
+    ]);
+    const calls = readCallsFor(db, D);
+    expect(calls.find((c) => c.ticker === 'ACME')).toMatchObject({ floatState: 'PRODUCED', floatFilingsOnly: true });
+    expect(calls.find((c) => c.ticker === 'RSCH')).toMatchObject({ floatState: 'PRODUCED', floatFilingsOnly: false });
+  });
+
+  it('a row written without the mark stores NULL and reads null (not recorded), never false', () => {
+    const db = openDatabase(temporaryPath());
+    const id = checkpoint(db, 'PREMARKET_0700', D, `${D}T11:00:30.000Z`);
+    insertAssessmentTickers(db, id, [ticker({ floatState: 'PRODUCED', floatReason: null })]);
+
+    const stored = db.prepare('SELECT float_filings_only FROM desk_assessment_tickers WHERE assessment_id = ?').get(id);
+    expect(stored).toEqual({ float_filings_only: null });
+    const read = readCallsFor(db, D).find((c) => c.assessmentId === id)!;
+    expect(read.floatState).toBe('PRODUCED');
+    expect(read.floatFilingsOnly).toBeNull();
   });
 
   it('the capture worker passes the analysis itself (a SOURCE assertion: no test drives worker/desk-assessments.ts)', () => {
     const source = fs.readFileSync(path.resolve(__dirname, '../../worker/desk-assessments.ts'), 'utf8');
     expect(source).toMatch(/floatAtCapture\(db, row\.symbol, scheduled\.tradingDate, analysis \?\? undefined\)/);
+    expect(source).toMatch(/floatFilingsOnly: capturedFloat\.filingsOnly,/);
   });
 });
 
