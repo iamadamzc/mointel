@@ -50,12 +50,12 @@ function holdingFactor(actions: readonly AnnouncedAction[], asOf: string, d: str
 }
 
 /** One stored holding under a restated count: restated (split NONE), or refused (split UNPROVEN, not subtracted). */
-function restateHolding(actions: readonly AnnouncedAction[], h: StoredHolding, countAsOf: string, d: string): StoredHolding {
+function restateHolding(actions: readonly AnnouncedAction[], h: StoredHolding, d: string): StoredHolding {
   if (h.split !== 'NONE') return h;
   const refused: StoredHolding = { ...h, split: 'UNPROVEN' };
-  // Read 110 (2), R2 over the HOLDING span: any listed share-changing action between the holding and the count refuses.
-  // A split there is already refused today (`h.split`, rule R-A), so only a non-split action can reach this.
-  if (h.asOf < countAsOf && restateSpan(actions, { from: h.asOf, to: countAsOf, d }).kind !== 'NONE_LISTED') return refused;
+  // Read 110 (2), R2 over the HOLDING span, needs no line of its own: each class value is carried from its OWN date to D
+  // below, a span that contains (holding date, count date], so a non-split action there refuses the holding through
+  // `holdingFactor`. (A separate check here was vacuous: a mutant removing it killed nothing, by reading.)
   if (h.classes.length === 0) return refused;
   const filed = latestFiled(h);
   let smallest: number | null = null;
@@ -92,7 +92,7 @@ export function restateForCell(input: {
   return {
     kind: 'RESTATE',
     countShares,
-    holdings: input.holdings.map((h) => restateHolding(actions, h, count.asOf, d)),
+    holdings: input.holdings.map((h) => restateHolding(actions, h, d)),
     restated: { splits: decided.splits, factor: decided.factor, restatedShares: countShares, provenByBars: decided.provenByBars },
   };
 }
