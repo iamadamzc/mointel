@@ -23,10 +23,13 @@ face (Marketing 0a519b0f, Commercial 93), 2026-10-13T10:27:39.594Z ("yes, approv
 shown each verbatim), with the triangle sentence in his own words after his 10:28:14.413Z change,
 2026-10-13T10:46:44.599Z ("yes to both", shown the exact sentence at 10:39:13Z); then the paragraph
 on a later filing's dated count under "How we do it" (Marketing caf7523f, Commercial 103),
-2026-10-13T21:36:56.972Z ("yes to all three", shown it verbatim at 21:26:10Z); then ONE circled-i
-sentence for both cases, at the end of the first bullet, replacing the float fix 1 circled-i sentence
-in the filed-count bullet (Marketing 84d0b9fd, Commercial 110a), 2026-10-14T01:17:42.726Z ("approved",
-shown it verbatim with the live sentence it replaces at 01:17:22Z). Any word changed
+2026-10-13T21:36:56.972Z ("yes to all three", shown it verbatim at 21:26:10Z); then the paragraph
+on restating a count for an announced split, after "What a number does not tell you" (Marketing
+98425d90, Commercial passed), 2026-10-14T01:12:13.772Z ("1, aprove.", shown it verbatim with its
+placement at 01:10:25Z); then ONE circled-i sentence for both cases, at the end of the first bullet,
+replacing the float fix 1 circled-i sentence in the filed-count bullet (Marketing 84d0b9fd, Commercial
+110a), 2026-10-14T01:17:42.726Z ("approved", shown it verbatim with the live sentence it replaces at
+01:17:22Z). Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -79,6 +82,8 @@ We do not subtract the beneficial-ownership totals in 13D or 13G filings. Benefi
 ## What a number does not tell you
 
 When we find a flag or a filing showing that shares have been issued since the count, or may have been, the cell shows the company's filed share count with an icon, or reads Cannot verify where no count can show. The filings we look for are two kinds made on or after the count's date: a final prospectus for an offering of securities (SEC forms 424B1, 424B2, 424B4 and 424B5), and a report of an unregistered sale of shares (Form 8-K item 3.02). We do not look at other forms, including 424B3 and 424B7. Those checks cannot see every issuance: sales under an open at-the-market program between supplements, private placements below the size that requires a report (Form 8-K item 3.02 requires none below 1 percent of the class, or 5 percent for a smaller reporting company, counted in total since the company's last such report or last periodic report, whichever is more recent), and conversions or exercises that file nothing, do not show up in them. Neither do sales of newly issued shares to an equity-line investor, who buys on the company's demand: the checks would see one only through a final prospectus or a report of an unregistered sale, and Form 8-K item 3.02 requires such a report only when the running total since the company's last such report or last periodic report reaches the item 3.02 size. A company whose filed count is from a Form 20-F or 40-F is not required to file 8-Ks, so for it the check for an unregistered-sale report is not run, and the cell shows the filed share count with an icon, or reads Cannot verify where no count can show. A name with nothing found may still have issued shares. A sale not yet filed by the date the filings were read can still make the float larger than the bound. The figure is only as current as the filings under it.
+
+When a split on the list of announced splits we receive falls after a count's date, the desk can restate the count for the split's ratio, for splits in the last nine months, and the cell shows a warning triangle. We check that list against the price data: in a check run on October 13, 2026 on price data for the nine months to October 7, 2026, our market-data provider's list had 289 of the 304 reverse splits the price data showed, and every one it missed was a reverse split, which can only make a restated number higher, never lower. Only one forward split fell in that window, and it was on the list, which is too few to measure. A split the list does not contain cannot be seen.
 
 ## What this is, and is not
 

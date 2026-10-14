@@ -86,6 +86,9 @@ describe('ExplainerPage', () => {
     // His "yes to all three" 2026-10-13T21:36:56.972Z (Marketing caf7523f, Commercial 103): a later filing's dated
     // count, right after the paragraph that introduces the filed count and before the cell section.
     expect(markup).toMatch(/the TMI Float is at most what is left\.<\/p>\s*<p>A later filing can state a newer count with its own date: an 8-K, a prospectus, a registration statement, a proxy or an information statement\. The desk uses the newest dated count and says which filing states it\. It does not use a prospectus&#39;s projected count of shares outstanding after the offering, because that assumes every share sells\.<\/p>\s*<h2/);
+    // His "1, aprove." 2026-10-14T01:12:13.772Z (Marketing 98425d90): restating for an announced split, a new
+    // paragraph after "What a number does not tell you" and right before "What this is, and is not".
+    expect(markup).toMatch(/The figure is only as current as the filings under it\.<\/p>\s*<p>When a split on the list of announced splits we receive falls after a count&#39;s date, the desk can restate the count for the split&#39;s ratio, for splits in the last nine months, and the cell shows a warning triangle\. We check that list against the price data: in a check run on October 13, 2026 on price data for the nine months to October 7, 2026, our market-data provider&#39;s list had 289 of the 304 reverse splits the price data showed, and every one it missed was a reverse split, which can only make a restated number higher, never lower\. Only one forward split fell in that window, and it was on the list, which is too few to measure\. A split the list does not contain cannot be seen\.<\/p>\s*<h2[^>]*>(?:<[^>]+>)*What this is, and is not/);
     expect(markup).not.toContain('one of four things');
     expect(markup).not.toMatch(/taking float as/i);
     expect(markup).not.toContain('the name reads Cannot verify');
