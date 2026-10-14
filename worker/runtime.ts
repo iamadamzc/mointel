@@ -40,7 +40,6 @@ import {
   CLASSIFIER_VERSION,
   type ClassificationSummary,
 } from '../lib/market/securities';
-import { internalCredentialHeaders } from '../lib/auth/internalCredential';
 import { DemandEngine, type EngineEvent } from '../lib/market/engine';
 import { replaySession } from '../lib/market/replay';
 import { DEFAULT_ACTIVITY_CONFIG } from '../lib/market/activity';
@@ -248,7 +247,6 @@ export class MarketRuntime {
   private calendarByDate = new Map<string, AlpacaCalendarDay>();
   private health: MarketFeedHealth;
   private flushTimer: NodeJS.Timeout | null = null;
-  private sheetTimer: NodeJS.Timeout | null = null;
   private promotionQueue = new Set<string>();
   private promotionInFlight = false;
   /** Splits with ex-date = `todaySplitsFor`, from Alpaca's corporate actions. */
@@ -261,7 +259,6 @@ export class MarketRuntime {
   private splitAttemptAt = 0;
   private pendingBars: MarketMinuteBar[] = [];
   private backfill: BackfillSummary | null = null;
-  private sheetSymbols: string[] = [];
   private onHighResChange: ((symbols: string[]) => void) | null = null;
   private lastHighResKey = '';
   /** Symbols permitted in the ranked common-equity discovery universe. */
@@ -1999,105 +1996,6 @@ export class MarketRuntime {
     return this.admission.rejected;
   }
 
-  /* -------------------------------------------------------- sheet symbols */
-
-  /**
-   * TODAY-sheet tickers are read from the dashboard API rather than from Google
-   * directly, so the worker never holds Google credentials and the sheet is not
-   * polled any more often than the dashboard already polls it.
-   */
-  private sheetReadRefusedStatus: number | null = null;
-
-  async refreshSheetSymbols(): Promise<void> {
-    const url = process.env.MOINTEL_DASHBOARD_URL ?? 'http://localhost:3000';
-    try {
-      const response = await fetch(`${url}/api/dashboard`, {
-        headers: internalCredentialHeaders(),
-        signal: AbortSignal.timeout(5000),
-      });
-      if (!response.ok) {
-        // Said ONCE per status: this used to return in silence, and a refused
-        // read (no internal credential on the box) stopped the pins with
-        // nothing in any log. Found by Integration replaying step 4, 2026-10-03.
-        if (this.sheetReadRefusedStatus !== response.status) {
-          this.sheetReadRefusedStatus = response.status;
-          this.logger.warn(`[sheet] the dashboard read answered ${response.status}; TODAY-sheet pins are not refreshing`);
-        }
-        return;
-      }
-      this.sheetReadRefusedStatus = null;
-      const payload = (await response.json()) as { tickers?: Array<{ ticker?: string }> };
-      const candidates = (payload.tickers ?? [])
-        .map((entry) => entry.ticker?.trim().toUpperCase())
-        .filter((symbol): symbol is string => Boolean(symbol));
-
-      if (candidates.length === 0) return;
-
-      /*
-       * The last gate before a spreadsheet cell becomes a tracked symbol.
-       *
-       * Upstream parsing should already have rejected anything that is not a
-       * ticker, and on 19 August it did not: `TICKER` and `OBSERVED PM` were
-       * pinned, tracked, and then sent to Alpaca once a second for two days.
-       *
-       * Only a symbol the provider has already refused is dropped here. Absence
-       * from the tradable universe is noted and nothing more — that list does
-       * not describe data coverage, and treating it as authority would have
-       * deleted OMH, a 310-million-share day, from the trader's own watchlist.
-       */
-      const { accepted, blocked, unknown } = this.admission.validate(candidates, 'today-sheet');
-
-      /*
-       * Never blank the pins.
-       *
-       * If everything was refused the sheet is misread, not empty, and the
-       * previously pinned set is better information than nothing.
-       */
-      if (accepted.length === 0) {
-        if (blocked.length > 0) {
-          this.logger.warn(
-            `[research] TODAY sheet produced no usable tickers from ${candidates.length} ` +
-              'candidates; keeping the previous pins',
-          );
-        }
-        return;
-      }
-
-      const changed = accepted.join(',') !== this.sheetSymbols.join(',');
-      this.sheetSymbols = accepted;
-      this.engine.setPinnedSymbols(accepted);
-      if (changed) {
-        this.logger.info(`[research] TODAY sheet tickers pinned: ${accepted.join(', ')}`);
-        if (blocked.length > 0) {
-          this.logger.warn(
-            `[research] TODAY sheet: dropped ${blocked.length} refused value(s): ` +
-              blocked.map((value) => JSON.stringify(value)).join(', '),
-          );
-        }
-        if (unknown.length > 0) {
-          // Watched anyway. Worth saying, because a genuine typo looks the same
-          // as a real ticker the tradable list has not heard of.
-          this.logger.info(
-            `[research] TODAY sheet: ${unknown.length} pin(s) not in the tradable universe, ` +
-              `watching regardless: ${unknown.join(', ')}`,
-          );
-        }
-      }
-    } catch {
-      // The dashboard may not be running; the desk still works without pins.
-    }
-  }
-
-  startSheetSync(intervalMs = 60_000): void {
-    if (this.sheetTimer) return;
-    void this.refreshSheetSymbols();
-    this.sheetTimer = setInterval(() => void this.refreshSheetSymbols(), intervalMs);
-  }
-
-  get pinnedSheetSymbols(): string[] {
-    return this.sheetSymbols;
-  }
-
   /* -------------------------------------------------------------- lifecycle */
 
   /**
@@ -2163,9 +2061,7 @@ export class MarketRuntime {
 
   shutdown(): void {
     if (this.flushTimer) clearInterval(this.flushTimer);
-    if (this.sheetTimer) clearInterval(this.sheetTimer);
     this.flushTimer = null;
-    this.sheetTimer = null;
 
     this.health.connectionState = 'DISCONNECTED';
     this.health.heartbeatAt = new Date().toISOString();

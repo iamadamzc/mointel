@@ -24,3 +24,14 @@ describe('the market worker pins nothing from the Sheet', () => {
     expect(source).toContain('await runtime.ensureBaselines(universe);');
   });
 });
+
+describe('the Sheet sync code is gone from the market worker (A5)', () => {
+  it('has no Sheet read, timer or pin list left in the runtime or the simulator', () => {
+    for (const file of ['worker/runtime.ts', 'worker/simulator.ts']) {
+      const text = fs.readFileSync(path.join(process.cwd(), file), 'utf8');
+      for (const name of ['refreshSheetSymbols', 'startSheetSync', 'pinnedSheetSymbols', 'sheetTimer', '/api/dashboard']) {
+        expect(text, `${file} still has ${name}`).not.toContain(name);
+      }
+    }
+  });
+});
