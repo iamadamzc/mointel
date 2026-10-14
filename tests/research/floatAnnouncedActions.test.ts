@@ -11,7 +11,7 @@ import { fetchAnnouncedActions } from '@/lib/research/floatRun';
  */
 
 describe('fetchAnnouncedActions: the real announcedActions dep', () => {
-  it('asks for the seven share-changing types for the one symbol, keeps the group and rateless rows, dates a merger by its effective date', async () => {
+  it('asks for the seven share-changing types for the one symbol, keeps the group and rateless rows, counts a repeated row once', async () => {
     const asked: Array<{ symbols: string[]; start: string; end: string; types: readonly string[] }> = [];
     const row = (group: string, exDate: string | null, oldRate: number | null, newRate: number | null, raw: Record<string, unknown> = {}): CorporateActionRow => ({ group, symbol: 'ACME', exDate, oldRate, newRate, raw });
     const client = {
@@ -20,8 +20,6 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
         return [
           row('reverse_splits', '2026-09-15', 10, 1),
           row('stock_dividends', '2026-09-20', null, null),
-          // No ex_date: dated by effective_date, never dropped (a dropped merger would let a restatement run across it).
-          row('stock_mergers', null, null, null, { effective_date: '2026-09-22' }),
           // A spin-off row names its symbols under other fields, so its `symbol` reads ''; it is still kept.
           { ...row('spin_offs', '2026-09-25', null, null), symbol: '' },
           // The same split listed twice is one split (its factor must not be squared).
@@ -37,14 +35,16 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
     expect(actions).toEqual([
       { group: 'reverse_splits', exDate: '2026-09-15', oldRate: 10, newRate: 1 },
       { group: 'stock_dividends', exDate: '2026-09-20', oldRate: null, newRate: null },
-      { group: 'stock_mergers', exDate: '2026-09-22', oldRate: null, newRate: null },
       { group: 'spin_offs', exDate: '2026-09-25', oldRate: null, newRate: null },
     ]);
   });
 
-  it('a row with no ex, effective or process date cannot be placed: the fetch throws (stored as null, today\'s refusal)', async () => {
-    const undated: CorporateActionRow = { group: 'unit_splits', symbol: 'ACME', exDate: null, oldRate: null, newRate: null, raw: {} };
-    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [undated] }, 'ACME', '2026-06-01', '2026-10-02')).rejects.toThrow(/no ex, effective or process date/);
+  it('read 126: a row of ANY group without an ex_date fails the whole fetch (stored as null, today\'s refusal), even with an effective date; control: the same list without it', async () => {
+    const split: CorporateActionRow = { group: 'reverse_splits', symbol: 'ACME', exDate: '2026-09-15', oldRate: 10, newRate: 1, raw: {} };
+    // The live read (ca-fields/raw.json): a merger carries effective_date and process_date and no ex_date.
+    const merger: CorporateActionRow = { group: 'stock_mergers', symbol: '', exDate: null, oldRate: null, newRate: null, raw: { effective_date: '2026-09-22', process_date: '2026-09-22' } };
+    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [split, merger] }, 'ACME', '2026-06-01', '2026-10-02')).rejects.toThrow(/stock_mergers row has no ex_date/);
+    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [split] }, 'ACME', '2026-06-01', '2026-10-02')).resolves.toHaveLength(1);
   });
 
   it('through the REST client: the singular types go on the wire, the plural groups come back as published', async () => {
@@ -56,8 +56,8 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
         corporate_actions: {
           forward_splits: [{ symbol: 'acme', ex_date: '2026-09-15', old_rate: 1, new_rate: 2 }],
           unit_splits: [{ symbol: 'ACME', ex_date: '2026-09-18' }],
-          // No ex_date: dated by its process_date through the real client's raw row (an undated row would throw).
-          stock_dividends: [{ symbol: 'ACME', rate: 0.05, process_date: '2026-09-20' }],
+          // The live read: a stock dividend carries ex_date and a single `rate` (no old/new), read as rateless.
+          stock_dividends: [{ symbol: 'ACME', rate: 0.05, ex_date: '2026-09-20' }],
         },
         next_page_token: null,
       };
