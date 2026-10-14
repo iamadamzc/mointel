@@ -44,7 +44,12 @@ import type { SupplyBlock } from './types';
 export const NIGHTLY_MAX_RSS_MB = 900;
 export const NIGHTLY_MAX_SEC_REQUESTS = 20_000;
 
-export type NightlyStop = 'none' | 'memory' | 'sec_cap' | 'deadline' | 'limit';
+/**
+ * 'nothing_listed': the listing for D returned no name, so nothing was done. Not a finished night: a relaunch after
+ * 00:00 ET with no --date lists the NEXT day, which has no eligible names yet. Listed names that were all skipped
+ * (every row already stored) IS a finished night and stays 'none'.
+ */
+export type NightlyStop = 'none' | 'memory' | 'sec_cap' | 'deadline' | 'limit' | 'nothing_listed';
 
 export interface NightlySummary {
   date: string;
@@ -106,6 +111,8 @@ export async function runFloatNightly(deps: NightlyDeps, options: NightlyOptions
   const deadlineMs = options.deadlineMs ?? null;
   const names = sortedNames(deps.listNames(date));
   const summary: NightlySummary = { date, listed: names.length, skipped: 0, computed: 0, failed: 0, stopped: 'none', secRequests: 0, lastRss: null };
+  // No name listed for D is not "every name done" (NightlyStop). The script logs the line that says so.
+  if (names.length === 0) summary.stopped = 'nothing_listed';
 
   const stop = (reason: NightlyStop, detail: string) => {
     summary.stopped = reason;
@@ -154,7 +161,8 @@ export async function runFloatNightly(deps: NightlyDeps, options: NightlyOptions
 /**
  * Ops's exit contract (Research, relaying Ops): 75 (EX_TEMPFAIL) at the memory guard, so the wrapper relaunches a fresh
  * process that resumes; 76 at the SEC cap, which the wrapper must NOT relaunch; 0 when every name was done, or the run
- * stopped at the deadline or the limit. 1 (an unexpected error) is the script's, not this function's.
+ * stopped at the deadline or the limit. 1 (an unexpected error) is the script's; this function returns it for
+ * 'nothing_listed', so the wrapper neither relaunches nor reads an empty listing as a finished night.
  */
 export function exitCodeFor(summary: Pick<NightlySummary, 'stopped'>): number {
   switch (summary.stopped) {
@@ -162,6 +170,8 @@ export function exitCodeFor(summary: Pick<NightlySummary, 'stopped'>): number {
       return 75;
     case 'sec_cap':
       return 76;
+    case 'nothing_listed':
+      return 1;
     default:
       return 0;
   }
