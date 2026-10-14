@@ -1,0 +1,40 @@
+# The nightly float tool (L8, his "EVERYTHING TONIGHT." 2026-10-14): the SEC read of filed share counts for
+# names the desk has not researched, so their float cell has a filed count to show. Its own service, never inside
+# the research worker. The timer is installed DISABLED; nothing starts it until he names its first night.
+# It shares the SEC agent with production research: full speed until 04:00 ET, then 2 a second, hard stop 06:55
+# ET (before his window), never alongside a deploy.
+[Unit]
+Description=Momentum Intelligence: nightly float tool (SEC filed share counts)
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+# deploy/aws/float-nightly.sh runs the script in two phases (5/s to 04:00 ET, 2/s to 06:55 ET), relaunching a
+# fresh process each time the script stops at its 900 MB RSS guard (exit 75); a stopped night resumes the next
+# night (names with a row for the date are skipped). MemoryMax sits above the guard so the guard ends it, not the
+# kernel; the cgroup holds the wrapper and one script process at a time.
+ExecStart=/bin/bash deploy/aws/float-nightly.sh
+# Background work: lowest CPU and disk priority, and a hard memory ceiling so it can never push the live
+# workers out of memory (7.8 GB box, no swap).
+Nice=19
+IOSchedulingClass=idle
+IOWeight=10
+CPUWeight=10
+MemoryHigh=1100M
+MemoryMax=1300M
+# The wrapper stops at 06:55 ET (his ruling); this is only a backstop just past it from a 22:15 start
+# (8 h 50 min). For a oneshot service the limit is TimeoutStartSec; RuntimeMaxSec does not apply.
+TimeoutStartSec=31800
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-float-nightly
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel

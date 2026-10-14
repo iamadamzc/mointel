@@ -1,0 +1,12 @@
+# Installed DISABLED (L8): deploy.sh installs it and nothing enables it. He names the first night; until then
+# `systemctl enable --now mointel-float-nightly.timer` is never run.
+[Unit]
+Description=Momentum Intelligence: nightly float tool, 22:15 ET (installed disabled)
+
+[Timer]
+OnCalendar=*-*-* 22:15:00 America/New_York
+Persistent=false
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
