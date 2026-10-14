@@ -17,8 +17,7 @@ export type EscalationReason =
   | 'VALIDATION_FAILED_AFTER_REPAIR'
   | 'EVIDENCE_CONFLICT'
   | 'ELIGIBILITY_CONTRADICTION'
-  | 'SUPPLY_RECONCILIATION_INCONSISTENT'
-  | 'SHEET_AUTO_CONFLICT';
+  | 'SUPPLY_RECONCILIATION_INCONSISTENT';
 
 export interface EscalationDecision {
   escalate: boolean;
@@ -39,51 +38,11 @@ function mentionsConflict(values: Array<string | null | undefined>): boolean {
   return values.some((value) => (value ? CONFLICT_LANGUAGE.test(value) : false));
 }
 
-/**
- * A structural disagreement between the Sheet's prior analysis and this one.
- *
- * Only a genuine two-sided dispute belongs here. If one side simply lacks
- * evidence there is nothing to adjudicate — a second model cannot supply the
- * missing filing, and spending on it would be the same waste the instrument
- * count trigger used to cause.
- */
-export interface SheetConflict {
-  field: 'structure' | 'catalyst' | 'cycle';
-  sheet: string;
-  auto: string;
-  /** Why they differ, as classified by the merge layer. */
-  reason: string;
-}
-
-/** Float-quality verdicts whose disagreement with DIRTY_FLOAT is material. */
-const MATERIAL_AGAINST_DIRTY = new Set(['CAUTION', 'CLEAN', 'UNKNOWN']);
-
-/**
- * Whether a structural disagreement is worth one adjudication.
- *
- * DIRTY_FLOAT against CAUTION/CLEAN/UNKNOWN changes how a trader treats the
- * name, so it earns a second read — but only when both sides actually reasoned
- * from evidence. A reason of SHEET_INCOMPLETE or AUTO_INCOMPLETE means one side
- * had nothing to reason from.
- */
-export function isMaterialStructuralConflict(conflict: SheetConflict): boolean {
-  if (conflict.field !== 'structure') return false;
-  if (conflict.reason !== 'INTERPRETATION_DIFFERENCE') return false;
-
-  const pair = [conflict.sheet, conflict.auto];
-  return (
-    (pair[0] === 'DIRTY_FLOAT' && MATERIAL_AGAINST_DIRTY.has(pair[1])) ||
-    (pair[1] === 'DIRTY_FLOAT' && MATERIAL_AGAINST_DIRTY.has(pair[0]))
-  );
-}
-
 export interface EscalationInput {
   dossier: ResearchDossier | null;
   bundle: ResearchEvidenceBundle;
   violationsAfterRepair: readonly Violation[];
   repairAttempted: boolean;
-  /** Field-level disagreements with human research, when any exist. */
-  sheetConflicts?: readonly SheetConflict[];
 }
 
 export function shouldEscalate(input: EscalationInput): EscalationDecision {
@@ -164,18 +123,7 @@ export function shouldEscalate(input: EscalationInput): EscalationDecision {
     };
   }
 
-  // 5. A material structural disagreement with the prior analysis, where both
-  //    sides reasoned from evidence. This is the one case where a second
-  //    opinion is genuinely about judgement rather than about missing data.
-  const material = (input.sheetConflicts ?? []).filter(isMaterialStructuralConflict);
-  if (material.length > 0) {
-    const dispute = material[0];
-    return {
-      escalate: true,
-      reason: 'SHEET_AUTO_CONFLICT',
-      detail: `${dispute.field}: prior analysis says ${dispute.sheet}, automatic analysis says ${dispute.auto}`,
-    };
-  }
-
+  // The fifth criterion, a structural dispute with the Sheet's prior analysis,
+  // went with the Sheet (A5): there is no prior analysis left to dispute.
   return NO_ESCALATION;
 }

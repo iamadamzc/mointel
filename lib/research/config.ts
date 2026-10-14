@@ -58,14 +58,6 @@ export interface ModelConfig {
    * run without a second deploy.
    */
   promptVariant: 'A' | 'B';
-  /**
-   * Omits the Sheet's prior analysis from the evidence bundle.
-   *
-   * The prior is another model's conclusion and reaches the interpreter on
-   * every call, so the automatic catalyst grade is not independent of it.
-   * Setting this is the control arm that measures how much it actually moves.
-   */
-  omitSheetPrior: boolean;
   /** Low-cost tier for change detection and source location. */
   changeDetectModel: string;
   /**
@@ -219,7 +211,6 @@ export function readResearchConfig(env: NodeJS.ProcessEnv = process.env): Resear
       resolverSearchContext: searchContext(env.RESEARCH_RESOLVER_SEARCH_CONTEXT),
       discoverySearchContext: searchContext(env.RESEARCH_DISCOVERY_SEARCH_CONTEXT),
       promptVariant: env.RESEARCH_PROMPT_VARIANT?.trim().toUpperCase() === 'B' ? 'B' : 'A',
-      omitSheetPrior: env.RESEARCH_OMIT_SHEET_PRIOR?.trim() === '1',
     },
     catalyst: {
       sourcePollSeconds: positiveNumber(
