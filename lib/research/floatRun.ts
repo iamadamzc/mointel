@@ -5,21 +5,46 @@
  *
  * RSS is logged before and after each name, for Ops's ship question (the research worker has been OOM-killed twice).
  */
+import type { AlpacaRestClient } from '../market/alpaca/rest';
 import type { SplitDataClient } from '../market/splitRestate';
 import type { MarketDatabase } from '../market/store/db';
 import { writeFloatBound } from '../market/store/floatBoundRepo';
 import { readCurrentAnalysis } from '../market/store/researchRepo';
-import { computeFloatBound } from './floatJob';
+import { ANNOUNCED_ACTION_TYPES, computeFloatBound, type AnnouncedAction } from './floatJob';
 import { readSpanBars } from './history';
 import type { SecClient } from './sec/client';
 
 const mb = (bytes: number) => (bytes / 1_048_576).toFixed(1);
 
+/** What the float job needs from Alpaca: the split ex-dates (rule R-A) and every share-changing action (L6). */
+export type FloatSplitClient = Pick<SplitDataClient, 'getSplits'> & Pick<AlpacaRestClient, 'getCorporateActionsRaw'>;
+
+/**
+ * L6 step 1, the real `announcedActions` dep (shared by `runFloatJob` and the nightly run): one request for the seven
+ * share-changing types. A row with no ex-date is dropped (it cannot be placed in a span); a rateless row is kept with
+ * null rates; the group is kept as the API returned it (PLURAL). Rows are NOT filtered by `symbol`: the request names
+ * one symbol, and a merger or spin-off row may carry its symbols under other fields (its `symbol` reads '').
+ */
+export async function fetchAnnouncedActions(
+  client: Pick<AlpacaRestClient, 'getCorporateActionsRaw'>,
+  symbol: string,
+  start: string,
+  end: string,
+): Promise<AnnouncedAction[]> {
+  const rows = await client.getCorporateActionsRaw({ symbols: [symbol], start, end, types: ANNOUNCED_ACTION_TYPES });
+  const actions: AnnouncedAction[] = [];
+  for (const row of rows) {
+    if (!row.exDate) continue;
+    actions.push({ group: row.group, exDate: row.exDate, oldRate: row.oldRate, newRate: row.newRate });
+  }
+  return actions;
+}
+
 export async function runFloatJob(
   db: MarketDatabase,
   sec: Pick<SecClient, 'get' | 'getJson'>,
-  /** Alpaca's corporate actions, for rule R-A. The caller does not call this without one. */
-  splits: Pick<SplitDataClient, 'getSplits'>,
+  /** Alpaca's corporate actions, for rule R-A and L6. The caller does not call this without one. */
+  splits: FloatSplitClient,
   ticker: string,
   tradingDate: string,
   log: (line: string) => void,
@@ -40,6 +65,7 @@ export async function runFloatJob(
         spanBars: (symbol, from, to) => readSpanBars(db, symbol, from, to),
         announcedSplits: async (symbol, start, end) =>
           (await splits.getSplits({ symbols: [symbol], start, end })).filter((s) => s.symbol === symbol).map((s) => s.exDate),
+        announcedActions: (symbol, start, end) => fetchAnnouncedActions(splits, symbol, start, end),
         now: () => new Date().toISOString(),
       },
     );

@@ -364,6 +364,8 @@ CREATE TABLE IF NOT EXISTS research_float_bounds (
   announced_splits_json TEXT,
   issuance_filings_json TEXT NOT NULL,
   stated_count_json   TEXT,
+  -- L6: NULL = a row stored before L6; the JSON text 'null' = the fetch failed (floatBoundRepo.ts).
+  announced_actions_json TEXT,
   analysis_version_id INTEGER,
   issuance_rule       TEXT NOT NULL,
   max_age_days        INTEGER NOT NULL,
@@ -1037,6 +1039,9 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   { table: 'desk_assessment_tickers', column: 'float_reason', definition: 'TEXT' },
   // Float fix 2 piece 2: the read of later filings for a newer stated share count (`lib/research/statedCount.ts`).
   { table: 'research_float_bounds', column: 'stated_count_json', definition: 'TEXT' },
+  // L6 step 1: every share-changing action Alpaca lists over the row's span (`floatJob.ts` announcedActions). No
+  // SCHEMA_VERSION bump: on a current-version store this is added by hand.
+  { table: 'research_float_bounds', column: 'announced_actions_json', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {

@@ -98,6 +98,10 @@ function deps(overrides: Partial<FloatJobDeps> = {}): FloatJobDeps & { urls: str
       urls.push(`splits ${start} ${end}`);
       return [];
     },
+    announcedActions: async (_symbol, start, end) => {
+      urls.push(`actions ${start} ${end}`);
+      return [];
+    },
     now: () => '2026-09-28T23:00:00.000Z',
     ...overrides,
   };
@@ -254,6 +258,40 @@ describe('computeFloatBound: rule R-A, announced splits refuse where stale bars 
     const row = await run(new Error('503'));
     expect(row.announcedSplits).toBeNull();
     expect(row.cell).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
+  });
+});
+
+describe('computeFloatBound: L6 step 1, the announced share-changing actions are fetched and stored (R2)', () => {
+  const input = { symbol: 'ACME', cik: '555', asOfDate: AS_OF, dossier: dossier() };
+
+  it('fetches once, over the same span as the announced splits (earliest holding through asOfDate + 4 days)', async () => {
+    const d = deps();
+    const row = await computeFloatBound(input, d);
+    expect(d.urls.filter((u) => u.startsWith('actions '))).toEqual(['actions 2026-06-01 2026-10-02']);
+    expect(d.urls.filter((u) => u.startsWith('splits '))).toEqual(['splits 2026-06-01 2026-10-02']);
+    expect(row.announcedActions).toEqual([]);
+  });
+
+  it("stores the dep's list sorted by ex-date, a rateless row kept with null rates, and leaves announcedSplits to its own dep", async () => {
+    const dividend = { group: 'stock_dividends', exDate: '2026-09-01', oldRate: null, newRate: null };
+    const reverse = { group: 'reverse_splits', exDate: '2026-07-20', oldRate: 10, newRate: 1 };
+    const row = await computeFloatBound(input, deps({ announcedActions: async () => [dividend, reverse] }));
+    expect(row.announcedActions).toEqual([reverse, dividend]);
+    expect(row.announcedSplits).toEqual([]);
+  });
+
+  it('stores null when the dep throws, and the row is still written (never "none listed")', async () => {
+    const row = await computeFloatBound(input, deps({ announcedActions: async () => Promise.reject(new Error('503')) }));
+    expect(row.announcedActions).toBeNull();
+    // R-A's own fetch is independent of this one.
+    expect(row.announcedSplits).toEqual([]);
+  });
+
+  it('fetches nothing without a count, and stores [] as announcedSplits does', async () => {
+    const d = deps();
+    const row = await computeFloatBound({ ...input, cik: null }, d);
+    expect(row.announcedActions).toEqual([]);
+    expect(d.urls).toEqual([]);
   });
 });
 

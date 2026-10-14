@@ -169,6 +169,7 @@ describe('in the float job', () => {
         { date: to, close: 10, factor: 1 },
       ],
       announcedSplits: async () => options.splits ?? [],
+      announcedActions: async () => [],
       now: () => '2026-09-28T23:00:00.000Z',
     };
   };
