@@ -355,6 +355,21 @@ export function readableIntelligence(auto: AutoIntelligence | null | undefined):
   };
 }
 
+/**
+ * The snapshot as it leaves the server (S4, A9): every ticker's research cleaned
+ * by `readableIntelligence`, so the wire carries no citation tokens, no em
+ * dashes and no `tickerSourceIds`. The browser's own pass in `mergeDesk` then
+ * finds nothing left to remove, which is safe: cleaning is idempotent.
+ */
+export function readableSnapshot(snapshot: MarketSnapshot): MarketSnapshot {
+  const intelligence: MarketSnapshot['intelligence'] = {};
+  for (const [ticker, auto] of Object.entries(snapshot.intelligence ?? {})) {
+    const readable = readableIntelligence(auto);
+    if (readable) intelligence[ticker] = readable;
+  }
+  return { ...snapshot, intelligence };
+}
+
 export function buildDeskRow(
   ticker: string,
   research: MomentumTicker | null,

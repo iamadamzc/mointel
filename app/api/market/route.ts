@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { gateApiRequest } from '@/lib/auth/requestGate';
+import { readableSnapshot } from '@/lib/dashboard/merge';
 import { boardRangeRequest } from '@/lib/market/rangeRank';
 import { getMarketSnapshot } from '@/lib/market/readModel';
 
@@ -26,7 +27,8 @@ export async function GET(request: Request) {
         .slice(0, 200)
     : [];
 
-  const snapshot = getMarketSnapshot({ extraSymbols, range });
+  // Cleaned here, not only in the browser: the raw JSON is readable too (S4).
+  const snapshot = readableSnapshot(getMarketSnapshot({ extraSymbols, range }));
 
   return NextResponse.json(snapshot, {
     headers: { 'Cache-Control': 'no-store, max-age=0' },
