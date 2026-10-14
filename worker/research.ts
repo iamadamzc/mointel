@@ -62,7 +62,7 @@ import { countingSec, maybeStartBoardFloatPass } from '../lib/research/boardFloa
 import { maybeStartLevelsRefresh } from '../lib/research/levelsRefreshJob';
 import { resolveActiveBoard, type BoardDescriptor } from '../lib/market/board';
 import {
-  claimQueuedJobs,
+  tryClaimQueuedJobs,
   clearRetryState,
   completeJob,
   RECOVERY_TRIGGER,
@@ -555,12 +555,20 @@ async function main(): Promise<void> {
     }
 
     // ---------------------------------------------------------- work
-    const claimed = claimQueuedJobs(
+    const claimed = tryClaimQueuedJobs(
       db,
       tradingDate,
       config.concurrency,
       new Date().toISOString(),
     );
+
+    if (claimed === 'busy') {
+      // The claim rolled back whole; every job is still QUEUED. Try next poll.
+      log('[research] claim skipped: store busy (another writer holds the lock)');
+      if (MAX_CYCLES > 0 && cycles >= MAX_CYCLES) break;
+      await new Promise((resolve) => setTimeout(resolve, POLL_MS));
+      continue;
+    }
 
     if (claimed.length === 0) {
       health('IDLE', []);
