@@ -157,7 +157,8 @@ function namedOf(facts: NarrativeFacts): string[] {
  * and "zero"; each named mover; fillers up to the cap; the after-hours name; the count sentence: the movers survive (up
  * to 3), the after-hours line and the count sentence are cut. Intraday (cap 3): the named names in one sentence (or "No
  * name led"); two fillers; the count sentence: cut.
- * Expected on the dry: count sentence drafted 36 of 36, published 0; after-hours published 0 where the facts give one;
+ * Expected on the dry: count sentence drafted 36 of 36, published 0; after-hours published only in run 3 (3 of 9: run 3
+ * puts it inside the cap);
  * in runs 2 and 3, every named name published (a present case, unless a rule strikes the plain Summary, which the dry
  * then shows); drafts over the cap 36 of 36; run 1's draft measures (outside the list, rank, "zero") in each run-1 recap, 3 in all.
  */
@@ -180,9 +181,11 @@ function stubWriter(input: WriterInputV6, run: number): ReportModel {
         const outside = input.facts.map((f) => f.ticker).find((t) => !allowed.includes(t)) ?? 'NONE';
         const ah = input.narrative.afterHours?.ticker;
         // Padded to the cap whatever the number of named movers, so the after-hours line and the count always fall past it.
-        const kept = [opener(outside), ...named.map((t) => `${t} was a covered 50 percent mover.`)];
+        // Run 3 puts the after-hours line INSIDE the cap (a present case for that measure); runs 1 and 2 put it past.
+        const ahLine = ah ? [`${ah} was up after the close.`] : [];
+        const kept = [opener(outside), ...named.map((t) => `${t} was a covered 50 percent mover.`), ...(run === 3 ? ahLine : [])];
         while (kept.length < NARRATIVE_MAX_SENTENCES.recap) kept.push('This filler sentence pushes the rest past the cap.');
-        const sentences = [...kept, ...(ah ? [`${ah} was up after the close.`] : []), count];
+        const sentences = [...kept, ...(run === 3 ? [] : ahLine), count];
         return JSON.stringify({ narrative: sentences.join(' '), lines: [] });
       }
       if (prompt.user.endsWith(RECAP_LINES_ONLY)) return JSON.stringify({ narrative: null, lines: linesFor(prompt.user) });
@@ -371,7 +374,9 @@ async function main() {
       afterHoursDraft: afterHours !== null && names(draftSummary, afterHours),
       afterHoursPublished: afterHours !== null && names(narrative, afterHours),
       named,
-      namedMissingPublished: narrative === null ? [] : named.filter((t) => !names(narrative, t)),
+      // A PUBLISHED report whose Summary was struck (narrative null) is missing every named name; the dry's run 1 showed
+      // the earlier `narrative === null ? []` counting it as missing none.
+      namedMissingPublished: result?.status === 'PUBLISHED' ? named.filter((t) => !names(narrative, t)) : [],
       allowed,
       outsideList,
       rankInSummary: recap && draftSummary !== null && /\branked\b|\brank\b/i.test(draftSummary),

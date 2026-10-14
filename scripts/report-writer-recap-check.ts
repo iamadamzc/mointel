@@ -210,7 +210,8 @@ async function main() {
   const dry = args.includes('--dry');
   const keyFileAt = args.indexOf('--key-file');
   const keyFile = keyFileAt >= 0 ? args[keyFileAt + 1] : undefined;
-  if (REPORT_WRITER_PROMPT_VERSION_V7 !== EXPECTED_VERSION) {
+  // Number(): the constant is a literal type, and a later version must still compile here and refuse to run.
+  if (Number(REPORT_WRITER_PROMPT_VERSION_V7) !== EXPECTED_VERSION) {
     throw new Error(`the v7 prompt is version ${REPORT_WRITER_PROMPT_VERSION_V7}, not ${EXPECTED_VERSION}; nothing run`);
   }
   fs.mkdirSync(out, { recursive: true });
