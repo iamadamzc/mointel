@@ -12,7 +12,7 @@ Group=mointel
 WorkingDirectory=/opt/mointel/current
 Environment=NODE_ENV=production
 EnvironmentFile=/etc/mointel/mointel.env
-ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs --conditions=react-server scripts/report-night-scan.ts --db=${MARKET_DB_PATH} --until=2026-11-12 --out=/var/lib/mointel/night-scan
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs scripts/report-night-scan.ts --db=${MARKET_DB_PATH} --until=2026-11-12 --out=/var/lib/mointel/night-scan
 TimeoutStartSec=1800
 StandardOutput=journal
 StandardError=journal

@@ -21,9 +21,9 @@ Group=mointel
 WorkingDirectory=/opt/mointel/current
 Environment=NODE_ENV=production
 EnvironmentFile=/etc/mointel/mointel.env
-# --conditions=react-server: the research worker reaches into server-only
-# modules, which resolve differently without it.
-ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs --conditions=react-server worker/research.ts
+# No --conditions=react-server: it was there for the Sheet provider, the only
+# server-only module the worker reached; that code is gone (A5, traced 2026-10-14).
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/research.ts
 
 Restart=always
 RestartSec=10

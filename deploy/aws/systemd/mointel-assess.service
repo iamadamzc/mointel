@@ -25,7 +25,7 @@ Group=mointel
 WorkingDirectory=/opt/mointel/current
 Environment=NODE_ENV=production
 EnvironmentFile=/etc/mointel/mointel.env
-ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs --conditions=react-server worker/desk-assessments.ts
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs worker/desk-assessments.ts
 
 Restart=always
 RestartSec=10
