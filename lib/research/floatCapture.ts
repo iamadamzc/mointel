@@ -24,6 +24,12 @@ export interface CapturedFloat {
   state: string;
   /** Null exactly when PRODUCED or NOT_YET. */
   reason: string | null;
+  /**
+   * L8's mark, frozen with the state (Commercial read 118): true exactly when the captured cell is PRODUCED with
+   * `filingsOnly` (a name with no desk research, so the ledger's check did not run). False for every other capture,
+   * NOT_YET and READ_FAILED included. Without it a filings-only PRODUCED froze as plain PRODUCED.
+   */
+  filingsOnly: boolean;
 }
 
 function floatTablePresent(db: MarketDatabase): boolean {
@@ -40,14 +46,16 @@ export function floatAtCapture(
   analysis: ResearchAnalysisVersion | undefined,
 ): CapturedFloat {
   try {
-    if (!floatTablePresent(db)) return { state: 'NOT_YET', reason: null };
+    if (!floatTablePresent(db)) return { state: 'NOT_YET', reason: null, filingsOnly: false };
     const row = readLatestFloatBound(db, symbol, checkpointDate);
-    if (!row) return { state: 'NOT_YET', reason: null };
+    if (!row) return { state: 'NOT_YET', reason: null, filingsOnly: false };
     const bars = row.count.kind === 'COUNT' ? readSpanBars(db, symbol, row.count.asOf, checkpointDate) : [];
     const cell = floatCellAt(row, checkpointDate, ledgerAt(researchTablesPresent(db), analysis), bars);
-    if (!cell) return { state: 'NOT_YET', reason: null };
-    return cell.state === 'PRODUCED' ? { state: cell.state, reason: null } : { state: cell.state, reason: cell.reason };
+    if (!cell) return { state: 'NOT_YET', reason: null, filingsOnly: false };
+    return cell.state === 'PRODUCED'
+      ? { state: cell.state, reason: null, filingsOnly: cell.filingsOnly === true }
+      : { state: cell.state, reason: cell.reason, filingsOnly: false };
   } catch {
-    return { state: 'UNKNOWN', reason: 'READ_FAILED' };
+    return { state: 'UNKNOWN', reason: 'READ_FAILED', filingsOnly: false };
   }
 }

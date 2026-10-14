@@ -714,6 +714,11 @@ CREATE TABLE IF NOT EXISTS desk_assessment_tickers (
   -- NULL on rows captured before v30; the record reads that as FLOAT_NOT_FROZEN.
   float_state          TEXT,
   float_reason         TEXT,
+  -- L8's mark on a frozen PRODUCED (Commercial read 118): 1 when the cell was
+  -- the filings-only bound (no desk research for the name), 0 when it was not.
+  -- NULL means NOT RECORDED (rows captured before this column, or a writer that
+  -- did not pass it), never 0.
+  float_filings_only   INTEGER,
   PRIMARY KEY (assessment_id, ticker),
   FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
 );
@@ -1035,6 +1040,8 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   // v30: the Float cell frozen on each checkpoint row (performance record A8).
   { table: 'desk_assessment_tickers', column: 'float_state', definition: 'TEXT' },
   { table: 'desk_assessment_tickers', column: 'float_reason', definition: 'TEXT' },
+  // L8's filings-only mark frozen with the Float cell (Commercial read 118). No version bump: added on the box by hand.
+  { table: 'desk_assessment_tickers', column: 'float_filings_only', definition: 'INTEGER' },
   // Float fix 2 piece 2: the read of later filings for a newer stated share count (`lib/research/statedCount.ts`).
   { table: 'research_float_bounds', column: 'stated_count_json', definition: 'TEXT' },
 ];

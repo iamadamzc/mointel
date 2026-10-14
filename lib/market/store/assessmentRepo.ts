@@ -110,6 +110,11 @@ export interface AssessmentTickerRecord {
    */
   floatState?: string | null;
   floatReason?: string | null;
+  /**
+   * L8's mark on that cell (Commercial read 118): true when it was the filings-only PRODUCED, false otherwise.
+   * Optional: absent writes NULL, meaning NOT RECORDED, never false.
+   */
+  floatFilingsOnly?: boolean | null;
 }
 
 interface AssessmentRow {
@@ -364,7 +369,7 @@ export function insertAssessmentTickers(
       changed_fields, change_summary,
       ah_reference_close, ah_high, ah_low,
       priority_grade, priority_basis, priority_rule,
-      float_state, float_reason
+      float_state, float_reason, float_filings_only
     ) VALUES (
       @assessmentId, @ticker, @assessmentRank, @liveSessionRank, @price, @percentChange,
       @rvol, @rvolRank, @ahPercentChange, @ahVolume, @ahParticipation, @ahRank,
@@ -376,7 +381,7 @@ export function insertAssessmentTickers(
       @changedFields, @changeSummary,
       @ahReferenceClose, @ahHigh, @ahLow,
       @priorityGrade, @priorityBasis, @priorityRule,
-      @floatState, @floatReason
+      @floatState, @floatReason, @floatFilingsOnly
     )
     ON CONFLICT (assessment_id, ticker) DO NOTHING
   `);
@@ -440,6 +445,7 @@ export function insertAssessmentTickers(
         priorityRule: priority.rule,
         floatState: row.floatState ?? null,
         floatReason: row.floatReason ?? null,
+        floatFilingsOnly: (row.floatFilingsOnly ?? null) === null ? null : row.floatFilingsOnly ? 1 : 0,
       });
     }
   });
