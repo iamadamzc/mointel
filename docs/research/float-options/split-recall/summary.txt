@@ -1,0 +1,950 @@
+store ../mointel/data/market-prod-2026-10-07.db; bars with a split factor read: 1252697; steps of 1.25 or more (K): 944 over 421 symbols; window 2016-09-24 to 2026-10-07
+Alpaca split rows returned (reverse_split, forward_split): 800, of which rateless 0
+RECALL: 771 of 944 bar-detected splits have an Alpaca split row within one day
+ORIENTATION (R4) of the matches: price-side (old/new equals the bar step) 771; share-side 0; neither 0; rateless 0
+OTHER TYPES (R2) unit_split, stock_dividend, stock_merger, stock_and_cash_merger, spin_off: accepted; 65 rows; groups returned: spin_offs, stock_dividends, stock_mergers, unit_splits
+
+MISS ABTS step 2019-04-18 -> 2019-04-22: factor 74.9956619816068 -> 15
+MATCH ABTS step 2025-03-10 bar 15.0020; alpaca reverse_splits ex 2025-03-10 old 15 new 1: price-side
+MATCH ABVC step 2023-07-25 bar 10.0000; alpaca reverse_splits ex 2023-07-25 old 10 new 1: price-side
+MISS ACET step 2020-09-15 -> 2020-09-16: factor 112.00000000000001 -> 16
+MATCH ACET step 2025-12-30 bar 16.0008; alpaca reverse_splits ex 2025-12-30 old 16 new 1: price-side
+MATCH ACON step 2024-01-04 bar 16.0000; alpaca reverse_splits ex 2024-01-04 old 16 new 1: price-side
+MATCH ACON step 2025-01-30 bar 335.0034; alpaca reverse_splits ex 2025-01-30 old 335 new 1: price-side
+MATCH ACON step 2025-03-28 bar 26.9923; alpaca reverse_splits ex 2025-03-28 old 27 new 1: price-side
+MATCH ADXN step 2023-10-23 bar 20.0000; alpaca reverse_splits ex 2023-10-23 old 20 new 1: price-side
+MISS AEHL step 2020-09-02 -> 2020-09-03: factor 460800 -> 153600
+MATCH AEHL step 2023-03-24 bar 4.0000; alpaca reverse_splits ex 2023-03-24 old 4 new 1: price-side
+MATCH AEHL step 2023-09-18 bar 10.0000; alpaca reverse_splits ex 2023-09-18 old 10 new 1: price-side
+MATCH AEHL step 2025-04-04 bar 40.0000; alpaca reverse_splits ex 2025-04-04 old 40 new 1: price-side
+MATCH AEHL step 2026-03-05 bar 6.0006; alpaca reverse_splits ex 2026-03-05 old 6 new 1: price-side
+MATCH AEHL step 2026-08-10 bar 16.0007; alpaca reverse_splits ex 2026-08-10 old 16 new 1: price-side
+MATCH AEMD step 2019-10-15 bar 15.0000; alpaca reverse_splits ex 2019-10-15 old 15 new 1: price-side
+MATCH AEMD step 2023-10-05 bar 10.0000; alpaca reverse_splits ex 2023-10-05 old 10 new 1: price-side
+MATCH AEMD step 2025-06-09 bar 8.0000; alpaca reverse_splits ex 2025-06-09 old 8 new 1: price-side
+MATCH AEMD step 2025-10-16 bar 10.0018; alpaca reverse_splits ex 2025-10-16 old 10 new 1: price-side
+MATCH AEMD step 2025-10-20 bar 10.0000; alpaca reverse_splits ex 2025-10-20 old 10 new 1: price-side
+MATCH AEMD step 2026-08-04 bar 5.0000; alpaca reverse_splits ex 2026-08-04 old 5 new 1: price-side
+MATCH AGMH step 2025-06-03 bar 50.0000; alpaca reverse_splits ex 2025-06-03 old 50 new 1: price-side
+MISS AHG step 2020-08-21 -> 2020-08-24: factor 3 -> 1
+MATCH AIFA step 2026-06-12 bar 5.9995; alpaca reverse_splits ex 2026-06-12 old 6 new 1: price-side
+MISS AIFF step 2023-10-17 -> 2023-10-18: factor 30.000000000000004 -> 2.9999006655408764
+MATCH AIFF step 2024-08-13 bar 3.0000; alpaca reverse_splits ex 2024-08-13 old 3 new 1: price-side
+MATCH AIIO step 2026-04-06 bar 20.0000; alpaca reverse_splits ex 2026-04-06 old 20 new 1: price-side
+MATCH AIIO step 2026-06-03 bar 10.0000; alpaca reverse_splits ex 2026-06-03 old 10 new 1: price-side
+MATCH AIMD step 2023-12-14 bar 4.9980; alpaca reverse_splits ex 2023-12-14 old 5 new 1: price-side
+MATCH AIMD step 2025-06-30 bar 5.0000; alpaca reverse_splits ex 2025-06-30 old 5 new 1: price-side
+MATCH AIRE step 2026-04-30 bar 25.0000; alpaca reverse_splits ex 2026-04-30 old 25 new 1: price-side
+MISS AIXC step 2018-03-22 -> 2018-03-23: factor 125000.00000000001 -> 12500
+MISS AIXC step 2020-05-22 -> 2020-05-26: factor 12500 -> 500
+MISS AIXC step 2022-11-22 -> 2022-11-23: factor 499.99999999999994 -> 50
+MISS AIXC step 2024-11-04 -> 2024-11-05: factor 50 -> 1
+MATCH AIXI step 2024-08-23 bar 9.0000; alpaca reverse_splits ex 2024-08-23 old 9 new 1: price-side
+MATCH AIXI step 2026-05-11 bar 19.9991; alpaca reverse_splits ex 2026-05-11 old 20 new 1: price-side
+MATCH AIXI step 2026-09-08 bar 7.0011; alpaca reverse_splits ex 2026-09-08 old 7 new 1: price-side
+MATCH AKAN step 2023-03-09 bar 10.0000; alpaca reverse_splits ex 2023-03-09 old 10 new 1: price-side
+MATCH AKAN step 2024-05-23 bar 40.0004; alpaca reverse_splits ex 2024-05-23 old 40 new 1: price-side
+MATCH AKAN step 2024-11-14 bar 2.0001; alpaca reverse_splits ex 2024-11-14 old 2 new 1: price-side
+MATCH AKAN step 2025-08-26 bar 3.1251; alpaca reverse_splits ex 2025-08-26 old 3.125 new 1: price-side
+MATCH AKAN step 2026-01-12 bar 4.9972; alpaca reverse_splits ex 2026-01-12 old 5 new 1: price-side
+MATCH AKAN step 2026-04-13 bar 4.5000; alpaca reverse_splits ex 2026-04-13 old 4.5 new 1: price-side
+MISS ALAR step 2019-10-18 -> 2019-10-21: factor 200 -> 10.00020956013328
+MISS ALAR step 2022-11-07 -> 2022-11-08: factor 10 -> 1
+MATCH ALLR step 2023-03-27 bar 35.0000; alpaca reverse_splits ex 2023-03-27 old 35 new 1: price-side
+MATCH ALLR step 2023-06-29 bar 40.0000; alpaca reverse_splits ex 2023-06-29 old 40 new 1: price-side
+MATCH ALLR step 2024-04-09 bar 20.0000; alpaca reverse_splits ex 2024-04-09 old 20 new 1: price-side
+MATCH ALLR step 2024-09-11 bar 30.0000; alpaca reverse_splits ex 2024-09-11 old 30 new 1: price-side
+MISS ALP step 2024-08-14 -> 2024-08-15: factor 1000 -> 50
+MATCH ALP step 2026-09-09 bar 50.0000; alpaca reverse_splits ex 2026-09-09 old 50 new 1: price-side
+MISS ALT step 2017-05-04 -> 2017-05-05: factor 300 -> 30
+MATCH ALT step 2018-09-14 bar 30.0000; alpaca reverse_splits ex 2018-09-14 old 30 new 1: price-side
+MATCH AMBO step 2024-02-20 bar 10.0000; alpaca reverse_splits ex 2024-02-20 old 10 new 1: price-side
+MISS AMBR step 2022-11-11 -> 2022-11-14: factor 10 -> 1
+MATCH AMC step 2023-08-24 bar 10.0000; alpaca reverse_splits ex 2023-08-24 old 10 new 1: price-side
+MATCH AMIX step 2024-10-25 bar 20.0000; alpaca reverse_splits ex 2024-10-25 old 20 new 1: price-side
+MATCH AMIX step 2026-06-24 bar 21.0000; alpaca reverse_splits ex 2026-06-24 old 21 new 1: price-side
+MATCH AMOD step 2026-06-15 bar 40.0000; alpaca reverse_splits ex 2026-06-15 old 40 new 1: price-side
+MATCH AMST step 2023-02-22 bar 12.0006; alpaca reverse_splits ex 2023-02-22 old 12 new 1: price-side
+MATCH AMTD step 2022-11-22 bar 2.0000; alpaca reverse_splits ex 2022-11-22 old 2 new 1: price-side
+MATCH AMTD step 2023-11-17 bar 3.0006; alpaca reverse_splits ex 2023-11-17 old 3 new 1: price-side
+MATCH ANY step 2018-11-06 bar 8.0000; alpaca reverse_splits ex 2018-11-06 old 8 new 1: price-side
+MATCH ANY step 2023-06-29 bar 7.0017; alpaca reverse_splits ex 2023-06-29 old 7 new 1: price-side
+MATCH ANY step 2026-02-10 bar 10.0000; alpaca reverse_splits ex 2026-02-10 old 10 new 1: price-side
+MATCH APUS step 2026-07-24 bar 10.0000; alpaca reverse_splits ex 2026-07-24 old 10 new 1: price-side
+MATCH APVO step 2020-03-27 bar 14.0000; alpaca reverse_splits ex 2020-03-27 old 14 new 1: price-side
+MATCH APVO step 2024-03-06 bar 44.0000; alpaca reverse_splits ex 2024-03-06 old 44 new 1: price-side
+MATCH APVO step 2024-12-04 bar 37.0000; alpaca reverse_splits ex 2024-12-04 old 37 new 1: price-side
+MATCH APVO step 2025-05-27 bar 19.9992; alpaca reverse_splits ex 2025-05-27 old 20 new 1: price-side
+MATCH APVO step 2025-12-30 bar 17.9996; alpaca reverse_splits ex 2025-12-30 old 18 new 1: price-side
+MATCH AQB step 2023-10-16 bar 20.0000; alpaca reverse_splits ex 2023-10-16 old 20 new 1: price-side
+MATCH ARBB step 2025-06-02 bar 15.0010; alpaca reverse_splits ex 2025-06-02 old 15 new 1: price-side
+MATCH ARBK step 2025-12-12 bar 215.9859; alpaca reverse_splits ex 2025-12-12 old 216 new 1: price-side
+MISS ARMP step 2017-04-24 -> 2017-04-25: factor 140 -> 14
+MISS ARMP step 2019-05-09 -> 2019-05-10: factor 14.00125825731362 -> 1
+MATCH ARQQ step 2024-09-25 bar 24.9980; alpaca reverse_splits ex 2024-09-25 old 25 new 1: price-side
+MATCH ARTL step 2022-08-10 bar 14.9998; alpaca reverse_splits ex 2022-08-10 old 15 new 1: price-side
+MATCH ARTL step 2025-06-13 bar 5.9999; alpaca reverse_splits ex 2025-06-13 old 6 new 1: price-side
+MATCH ARTL step 2026-03-10 bar 3.0000; alpaca reverse_splits ex 2026-03-10 old 3 new 1: price-side
+MATCH ARTL step 2026-08-31 bar 8.9995; alpaca reverse_splits ex 2026-08-31 old 9 new 1: price-side
+MATCH ATER step 2024-03-22 bar 11.9993; alpaca reverse_splits ex 2024-03-22 old 12 new 1: price-side
+MATCH ATXG step 2023-06-30 bar 10.0000; alpaca reverse_splits ex 2023-06-30 old 10 new 1: price-side
+MATCH ATXG step 2026-03-30 bar 15.0000; alpaca reverse_splits ex 2026-03-30 old 15 new 1: price-side
+MISS AUC step 2021-08-27 -> 2021-08-30: factor 90.00726744186046 -> 18
+MISS AUC step 2025-08-07 -> 2025-08-08: factor 18.00113895216401 -> 1
+MATCH AUID step 2023-07-10 bar 7.9996; alpaca reverse_splits ex 2023-07-10 old 8 new 1: price-side
+MATCH AURE step 2026-02-19 bar 10.0000; alpaca reverse_splits ex 2026-02-19 old 10 new 1: price-side
+MATCH AUUD step 2024-02-27 bar 24.9999; alpaca reverse_splits ex 2024-02-27 old 25 new 1: price-side
+MATCH AUUD step 2025-03-31 bar 17.0007; alpaca reverse_splits ex 2025-03-31 old 17 new 1: price-side
+MATCH AUUD step 2026-04-01 bar 7.7003; alpaca reverse_splits ex 2026-04-01 old 7.7 new 1: price-side
+MISS AVX step 2023-10-10 -> 2023-10-11: factor 540000 -> 10800
+MISS AVX step 2024-12-04 -> 2024-12-05: factor 10800 -> 107.99999999999999
+MISS AVX step 2025-07-25 -> 2025-07-28: factor 107.99325463743678 -> 12
+MATCH AVX step 2026-06-15 bar 12.0010; alpaca reverse_splits ex 2026-06-15 old 12 new 1: price-side
+MATCH AYTU step 2018-08-13 bar 20.0000; alpaca reverse_splits ex 2018-08-13 old 20 new 1: price-side
+MATCH AYTU step 2020-12-09 bar 10.0000; alpaca reverse_splits ex 2020-12-09 old 10 new 1: price-side
+MATCH AYTU step 2023-01-06 bar 20.0000; alpaca reverse_splits ex 2023-01-06 old 20 new 1: price-side
+MATCH AZI step 2025-12-12 bar 50.0000; alpaca reverse_splits ex 2025-12-12 old 50 new 1: price-side
+MATCH AZI step 2026-03-23 bar 10.0000; alpaca reverse_splits ex 2026-03-23 old 10 new 1: price-side
+MATCH BCDA step 2024-05-30 bar 15.0014; alpaca reverse_splits ex 2024-05-30 old 15 new 1: price-side
+MISS BDRX step 2019-04-05 -> 2019-04-08: factor 100000000 -> 10000000
+MISS BDRX step 2020-03-02 -> 2020-03-03: factor 10000000 -> 2000000
+MISS BDRX step 2022-09-23 -> 2022-09-26: factor 1999999.9999999998 -> 400000
+MISS BDRX step 2023-03-24 -> 2023-03-27: factor 400000 -> 100000
+MATCH BDRX step 2023-07-05 bar 80.0000; alpaca reverse_splits ex 2023-07-05 old 80 new 1: price-side
+MATCH BDRX step 2024-10-04 bar 24.9996; alpaca reverse_splits ex 2024-10-04 old 25 new 1: price-side
+MATCH BDRX step 2025-07-31 bar 9.9988; alpaca reverse_splits ex 2025-07-31 old 10 new 1: price-side
+MATCH BDRX step 2026-04-06 bar 4.9994; alpaca reverse_splits ex 2026-04-06 old 5 new 1: price-side
+MATCH BENF step 2024-04-18 bar 79.9965; alpaca reverse_splits ex 2024-04-18 old 80 new 1: price-side
+MATCH BENF step 2025-12-15 bar 8.0007; alpaca reverse_splits ex 2025-12-15 old 8 new 1: price-side
+MISS BGMS step 2020-04-14 -> 2020-04-15: factor 72000 -> 3600
+MISS BGMS step 2023-12-15 -> 2023-12-18: factor 3600.0000000000005 -> 240
+MISS BGMS step 2025-05-09 -> 2025-05-12: factor 240.0157853196527 -> 15.000000000000002
+MISS BGMS step 2025-07-03 -> 2025-07-07: factor 15.000000000000002 -> 1
+MATCH BIAF step 2025-09-19 bar 30.0020; alpaca reverse_splits ex 2025-09-19 old 30 new 1: price-side
+MATCH BIAF step 2026-08-24 bar 15.0000; alpaca reverse_splits ex 2026-08-24 old 15 new 1: price-side
+MATCH BIYA step 2025-12-30 bar 25.0000; alpaca reverse_splits ex 2025-12-30 old 25 new 1: price-side
+MATCH BIYA step 2026-07-13 bar 10.0000; alpaca reverse_splits ex 2026-07-13 old 10 new 1: price-side
+MATCH BJDX step 2023-07-24 bar 20.0000; alpaca reverse_splits ex 2023-07-24 old 20 new 1: price-side
+MATCH BJDX step 2024-06-20 bar 8.0000; alpaca reverse_splits ex 2024-06-20 old 8 new 1: price-side
+MATCH BJDX step 2024-11-18 bar 50.0000; alpaca reverse_splits ex 2024-11-18 old 50 new 1: price-side
+MATCH BJDX step 2026-01-29 bar 4.0000; alpaca reverse_splits ex 2026-01-29 old 4 new 1: price-side
+MATCH BLIN step 2019-05-02 bar 50.0000; alpaca reverse_splits ex 2019-05-02 old 50 new 1: price-side
+MATCH BLRX step 2019-07-15 bar 15.0003; alpaca reverse_splits ex 2019-07-15 old 15 new 1: price-side
+MATCH BLRX step 2025-01-30 bar 40.0000; alpaca reverse_splits ex 2025-01-30 old 40 new 1: price-side
+MATCH BMGL step 2026-06-22 bar 11.9997; alpaca reverse_splits ex 2026-06-22 old 12 new 1: price-side
+MATCH BNAI step 2025-12-12 bar 10.0000; alpaca reverse_splits ex 2025-12-12 old 10 new 1: price-side
+MISS BNC step 2024-06-06 -> 2024-06-07: factor 12 -> 1
+MATCH BNGO step 2023-08-07 bar 10.0000; alpaca reverse_splits ex 2023-08-07 old 10 new 1: price-side
+MATCH BNGO step 2025-01-27 bar 60.0000; alpaca reverse_splits ex 2025-01-27 old 60 new 1: price-side
+MATCH BNKK step 2025-12-11 bar 35.0000; alpaca reverse_splits ex 2025-12-11 old 35 new 1: price-side
+MATCH BNR step 2024-05-15 bar 10.0000; alpaca reverse_splits ex 2024-05-15 old 10 new 1: price-side
+MATCH BOLT step 2025-06-09 bar 20.0000; alpaca reverse_splits ex 2025-06-09 old 20 new 1: price-side
+MATCH BON step 2024-04-11 bar 10.0000; alpaca reverse_splits ex 2024-04-11 old 10 new 1: price-side
+MATCH BON step 2025-05-19 bar 25.0000; alpaca reverse_splits ex 2025-05-19 old 25 new 1: price-side
+MATCH BOXL step 2023-06-15 bar 8.0000; alpaca reverse_splits ex 2023-06-15 old 8 new 1: price-side
+MATCH BOXL step 2025-02-18 bar 4.9999; alpaca reverse_splits ex 2025-02-18 old 5 new 1: price-side
+MATCH BOXL step 2025-12-23 bar 5.9998; alpaca reverse_splits ex 2025-12-23 old 6 new 1: price-side
+MATCH BOXL step 2026-06-22 bar 6.0003; alpaca reverse_splits ex 2026-06-22 old 6 new 1: price-side
+MATCH BQ step 2022-06-03 bar 5.9997; alpaca reverse_splits ex 2022-06-03 old 6 new 1: price-side
+MATCH BQ step 2023-08-21 bar 3.3333; alpaca reverse_splits ex 2023-08-21 old 10 new 3: price-side
+MATCH BQ step 2025-01-21 bar 10.0000; alpaca reverse_splits ex 2025-01-21 old 10 new 1: price-side
+MATCH BRAI step 2026-04-29 bar 0.3333; alpaca forward_splits ex 2026-04-29 old 1 new 3: price-side
+MISS BRNX step 2023-12-01 -> 2023-12-04: factor 10500 -> 1050
+MISS BRNX step 2025-06-18 -> 2025-06-20: factor 1050 -> 210
+MISS BRNX step 2026-01-23 -> 2026-01-26: factor 210 -> 30.000000000000004
+MISS BRNX step 2026-04-14 -> 2026-04-15: factor 29.99411880023525 -> 6.000000000000001
+MISS BRNX step 2026-08-12 -> 2026-08-13: factor 6.000856347677157 -> 1
+MISS BTCT step 2022-05-05 -> 2022-05-06: factor 600 -> 20
+MISS BTCT step 2023-08-23 -> 2023-08-24: factor 19.999999999999996 -> 1
+MATCH BTOG step 2023-05-30 bar 30.0000; alpaca reverse_splits ex 2023-05-30 old 30 new 1: price-side
+MATCH BTOG step 2026-01-20 bar 60.0000; alpaca reverse_splits ex 2026-01-20 old 60 new 1: price-side
+MATCH BTOG step 2026-08-21 bar 5.0007; alpaca reverse_splits ex 2026-08-21 old 5 new 1: price-side
+MISS BTTC step 2019-01-24 -> 2019-01-25: factor 3600.0000000000005 -> 600
+MISS BTTC step 2020-11-30 -> 2020-12-01: factor 600 -> 20.000000000000004
+MISS BTTC step 2024-01-08 -> 2024-01-09: factor 20 -> 1
+MATCH BYAH step 2026-02-20 bar 50.0000; alpaca reverse_splits ex 2026-02-20 old 50 new 1: price-side
+MATCH BYAH step 2026-08-06 bar 8.0006; alpaca reverse_splits ex 2026-08-06 old 8 new 1: price-side
+MATCH CANF step 2023-01-09 bar 10.0000; alpaca reverse_splits ex 2023-01-09 old 10 new 1: price-side
+MATCH CANF step 2026-01-05 bar 20.0000; alpaca reverse_splits ex 2026-01-05 old 20 new 1: price-side
+MATCH CAPR step 2019-06-05 bar 10.0000; alpaca reverse_splits ex 2019-06-05 old 10 new 1: price-side
+MATCH CCHH step 2026-07-13 bar 10.0000; alpaca reverse_splits ex 2026-07-13 old 10 new 1: price-side
+MATCH CCTG step 2026-01-23 bar 10.0000; alpaca reverse_splits ex 2026-01-23 old 10 new 1: price-side
+MATCH CDT step 2025-01-27 bar 100.0000; alpaca reverse_splits ex 2025-01-27 old 100 new 1: price-side
+MATCH CDT step 2025-05-20 bar 15.0000; alpaca reverse_splits ex 2025-05-20 old 15 new 1: price-side
+MATCH CDT step 2025-10-13 bar 8.0000; alpaca reverse_splits ex 2025-10-13 old 8 new 1: price-side
+MATCH CDT step 2026-03-27 bar 25.0000; alpaca reverse_splits ex 2026-03-27 old 25 new 1: price-side
+MATCH CDT step 2026-07-20 bar 9.9994; alpaca reverse_splits ex 2026-07-20 old 10 new 1: price-side
+MATCH CDT step 2026-09-29 bar 25.0000; alpaca reverse_splits ex 2026-09-29 old 25 new 1: price-side
+MATCH CDTG step 2026-06-01 bar 25.0000; alpaca reverse_splits ex 2026-06-01 old 25 new 1: price-side
+MATCH CELU step 2024-02-29 bar 10.0000; alpaca reverse_splits ex 2024-02-29 old 10 new 1: price-side
+MATCH CELZ step 2023-06-12 bar 10.0000; alpaca reverse_splits ex 2023-06-12 old 10 new 1: price-side
+MATCH CETX step 2019-06-13 bar 8.0000; alpaca reverse_splits ex 2019-06-13 old 8 new 1: price-side
+MATCH CETX step 2023-01-25 bar 35.0000; alpaca reverse_splits ex 2023-01-25 old 35 new 1: price-side
+MATCH CETX step 2024-10-03 bar 60.0000; alpaca reverse_splits ex 2024-10-03 old 60 new 1: price-side
+MATCH CETX step 2024-11-26 bar 35.0000; alpaca reverse_splits ex 2024-11-26 old 35 new 1: price-side
+MATCH CETX step 2025-09-29 bar 14.9987; alpaca reverse_splits ex 2025-09-29 old 15 new 1: price-side
+MATCH CETX step 2026-06-05 bar 10.0000; alpaca reverse_splits ex 2026-06-05 old 10 new 1: price-side
+MISS CHAI step 2023-08-08 -> 2023-08-09: factor 504000.00000000006 -> 5040
+MISS CHAI step 2023-12-01 -> 2023-12-04: factor 5040 -> 720
+MISS CHAI step 2024-08-01 -> 2024-08-02: factor 719.9924414210128 -> 40
+MISS CHAI step 2024-12-26 -> 2024-12-27: factor 40 -> 4
+MISS CHAI step 2025-10-06 -> 2025-10-07: factor 4 -> 1
+MISS CHGA step 2023-01-04 -> 2023-01-05: factor 3000.0000000000005 -> 300
+MISS CHGA step 2024-10-25 -> 2024-10-28: factor 300 -> 20
+MATCH CHGA step 2026-08-31 bar 20.0000; alpaca reverse_splits ex 2026-08-31 old 20 new 1: price-side
+MATCH CHNR step 2023-04-03 bar 4.9997; alpaca reverse_splits ex 2023-04-03 old 5 new 1: price-side
+MATCH CHNR step 2025-06-13 bar 8.0000; alpaca reverse_splits ex 2025-06-13 old 8 new 1: price-side
+MATCH CHPT step 2025-07-28 bar 19.9967; alpaca reverse_splits ex 2025-07-28 old 20 new 1: price-side
+MATCH CHR step 2023-11-27 bar 10.0000; alpaca reverse_splits ex 2023-11-27 old 10 new 1: price-side
+MATCH CHR step 2025-12-23 bar 50.0000; alpaca reverse_splits ex 2025-12-23 old 50 new 1: price-side
+MATCH CHR step 2026-04-07 bar 3.0000; alpaca reverse_splits ex 2026-04-07 old 3 new 1: price-side
+MATCH CHSN step 2025-08-18 bar 80.0000; alpaca reverse_splits ex 2025-08-18 old 80 new 1: price-side
+MATCH CHSN step 2026-05-07 bar 100.0000; alpaca reverse_splits ex 2026-05-07 old 100 new 1: price-side
+MATCH CIG.C step 2022-05-19 bar 0.7693; alpaca forward_splits ex 2022-05-19 old 1 new 1.3: price-side
+MATCH CIG.C step 2024-05-24 bar 0.7693; alpaca forward_splits ex 2024-05-24 old 1 new 1.3: price-side
+MATCH CIIT step 2026-03-20 bar 7.0004; alpaca reverse_splits ex 2026-03-20 old 7 new 1: price-side
+MATCH CIIT step 2026-07-20 bar 10.0000; alpaca reverse_splits ex 2026-07-20 old 10 new 1: price-side
+MATCH CISS step 2024-04-12 bar 100.0000; alpaca reverse_splits ex 2024-04-12 old 100 new 1: price-side
+MATCH CISS step 2025-01-02 bar 2.5000; alpaca reverse_splits ex 2025-01-02 old 2.5 new 1: price-side
+MATCH CISS step 2025-04-04 bar 6.0000; alpaca reverse_splits ex 2025-04-04 old 6 new 1: price-side
+MATCH CISS step 2026-01-26 bar 20.0000; alpaca reverse_splits ex 2026-01-26 old 20 new 1: price-side
+MATCH CISS step 2026-04-27 bar 7.0001; alpaca reverse_splits ex 2026-04-27 old 7 new 1: price-side
+MATCH CISS step 2026-08-19 bar 40.0000; alpaca reverse_splits ex 2026-08-19 old 40 new 1: price-side
+MATCH CLDI step 2024-07-15 bar 10.0001; alpaca reverse_splits ex 2024-07-15 old 10 new 1: price-side
+MATCH CLDI step 2025-08-05 bar 12.0005; alpaca reverse_splits ex 2025-08-05 old 12 new 1: price-side
+MATCH CLDI step 2026-07-31 bar 16.0021; alpaca reverse_splits ex 2026-07-31 old 16 new 1: price-side
+MATCH CLIK step 2025-10-10 bar 30.0000; alpaca reverse_splits ex 2025-10-10 old 30 new 1: price-side
+MATCH CLRO step 2025-06-10 bar 15.0012; alpaca reverse_splits ex 2025-06-10 old 15 new 1: price-side
+MATCH CMCM step 2022-09-02 bar 5.0000; alpaca reverse_splits ex 2022-09-02 old 5 new 1: price-side
+MATCH CMCT step 2025-01-06 bar 10.0000; alpaca reverse_splits ex 2025-01-06 old 10 new 1: price-side
+MATCH CMCT step 2025-04-15 bar 25.0000; alpaca reverse_splits ex 2025-04-15 old 25 new 1: price-side
+MATCH CMCT step 2026-03-26 bar 10.0000; alpaca reverse_splits ex 2026-03-26 old 10 new 1: price-side
+MATCH CMCT step 2026-04-20 bar 10.0000; alpaca reverse_splits ex 2026-04-20 old 10 new 1: price-side
+MATCH CMND step 2023-11-28 bar 30.0000; alpaca reverse_splits ex 2023-11-28 old 30 new 1: price-side
+MATCH CMND step 2025-12-15 bar 40.0000; alpaca reverse_splits ex 2025-12-15 old 40 new 1: price-side
+MATCH CMND step 2026-05-21 bar 10.0000; alpaca reverse_splits ex 2026-05-21 old 10 new 1: price-side
+MATCH CNET step 2023-01-20 bar 5.0000; alpaca reverse_splits ex 2023-01-20 old 5 new 1: price-side
+MATCH CNET step 2024-09-30 bar 4.0000; alpaca reverse_splits ex 2024-09-30 old 4 new 1: price-side
+MATCH CODX step 2026-01-02 bar 30.0000; alpaca reverse_splits ex 2026-01-02 old 30 new 1: price-side
+MATCH CPOP step 2023-10-27 bar 10.0000; alpaca reverse_splits ex 2023-10-27 old 10 new 1: price-side
+MATCH CPOP step 2026-07-13 bar 10.0000; alpaca reverse_splits ex 2026-07-13 old 10 new 1: price-side
+MATCH CPOP step 2026-09-14 bar 15.0000; alpaca reverse_splits ex 2026-09-14 old 15 new 1: price-side
+MATCH CRBP step 2023-02-14 bar 30.0000; alpaca reverse_splits ex 2023-02-14 old 30 new 1: price-side
+MATCH CRE step 2026-02-13 bar 11.9991; alpaca reverse_splits ex 2026-02-13 old 12 new 1: price-side
+MATCH CRIS step 2018-05-30 bar 5.0000; alpaca reverse_splits ex 2018-05-30 old 5 new 1: price-side
+MATCH CRIS step 2023-09-29 bar 20.0000; alpaca reverse_splits ex 2023-09-29 old 20 new 1: price-side
+MATCH CRIS step 2026-07-06 bar 20.0000; alpaca reverse_splits ex 2026-07-06 old 20 new 1: price-side
+MATCH CSAI step 2026-07-31 bar 30.0000; alpaca reverse_splits ex 2026-07-31 old 30 new 1: price-side
+MATCH CTNT step 2024-10-24 bar 16.0000; alpaca reverse_splits ex 2024-10-24 old 16 new 1: price-side
+MATCH CTNT step 2026-04-29 bar 200.0000; alpaca reverse_splits ex 2026-04-29 old 200 new 1: price-side
+MATCH CUPR step 2026-05-27 bar 8.0016; alpaca reverse_splits ex 2026-05-27 old 8 new 1: price-side
+MATCH CVKD step 2024-08-20 bar 15.0012; alpaca reverse_splits ex 2024-08-20 old 15 new 1: price-side
+MATCH CWD step 2025-05-02 bar 20.0000; alpaca reverse_splits ex 2025-05-02 old 20 new 1: price-side
+MATCH CYCN step 2023-05-16 bar 20.0015; alpaca reverse_splits ex 2023-05-16 old 20 new 1: price-side
+MATCH CYCU step 2025-10-27 bar 30.0000; alpaca reverse_splits ex 2025-10-27 old 30 new 1: price-side
+MATCH CYCU step 2026-08-28 bar 8.0000; alpaca reverse_splits ex 2026-08-28 old 8 new 1: price-side
+MATCH CYN step 2024-07-05 bar 100.0000; alpaca reverse_splits ex 2024-07-05 old 100 new 1: price-side
+MATCH CYN step 2025-02-18 bar 150.0000; alpaca reverse_splits ex 2025-02-18 old 150 new 1: price-side
+MISS CYPH step 2023-06-20 -> 2023-06-21: factor 10 -> 1
+MATCH DAIC step 2026-06-01 bar 25.0036; alpaca reverse_splits ex 2026-06-01 old 25 new 1: price-side
+MATCH DBGI step 2022-11-04 bar 100.0000; alpaca reverse_splits ex 2022-11-04 old 100 new 1: price-side
+MATCH DBGI step 2023-08-22 bar 25.0000; alpaca reverse_splits ex 2023-08-22 old 25 new 1: price-side
+MATCH DBGI step 2024-12-13 bar 50.0000; alpaca reverse_splits ex 2024-12-13 old 50 new 1: price-side
+MATCH DBGI step 2026-07-24 bar 40.0000; alpaca reverse_splits ex 2026-07-24 old 40 new 1: price-side
+MATCH DBRG step 2022-08-23 bar 4.0000; alpaca reverse_splits ex 2022-08-23 old 4 new 1: price-side
+MISS DCOY step 2022-10-14 -> 2022-10-17: factor 36000 -> 1440
+MISS DCOY step 2024-06-14 -> 2024-06-17: factor 1440.004731488053 -> 180
+MISS DCOY step 2025-08-15 -> 2025-08-18: factor 179.99133824166307 -> 12
+MATCH DCOY step 2026-03-09 bar 12.0006; alpaca reverse_splits ex 2026-03-09 old 12 new 1: price-side
+MATCH DKI step 2026-05-11 bar 16.0012; alpaca reverse_splits ex 2026-05-11 old 16 new 1: price-side
+MISS DPU step 2025-05-02 -> 2025-05-05: factor 625 -> 25
+MISS DPU step 2025-09-05 -> 2025-09-08: factor 24.999999999999996 -> 1
+MATCH DRCT step 2026-01-12 bar 55.0000; alpaca reverse_splits ex 2026-01-12 old 55 new 1: price-side
+MATCH DRCT step 2026-04-27 bar 3.9993; alpaca reverse_splits ex 2026-04-27 old 4 new 1: price-side
+MATCH DSS step 2020-05-08 bar 30.0000; alpaca reverse_splits ex 2020-05-08 old 30 new 1: price-side
+MATCH DSS step 2024-01-05 bar 20.0000; alpaca reverse_splits ex 2024-01-05 old 20 new 1: price-side
+MATCH DTSS step 2024-01-23 bar 15.0000; alpaca reverse_splits ex 2024-01-23 old 15 new 1: price-side
+MATCH DUO step 2022-06-07 bar 15.0000; alpaca reverse_splits ex 2022-06-07 old 15 new 1: price-side
+MATCH DUO step 2023-08-04 bar 15.0000; alpaca reverse_splits ex 2023-08-04 old 15 new 1: price-side
+MATCH DUO step 2025-06-09 bar 16.0000; alpaca reverse_splits ex 2025-06-09 old 16 new 1: price-side
+MATCH DWTX step 2024-10-09 bar 25.0000; alpaca reverse_splits ex 2024-10-09 old 25 new 1: price-side
+MATCH DXST step 2026-03-16 bar 25.0000; alpaca reverse_splits ex 2026-03-16 old 25 new 1: price-side
+MATCH EDBL step 2023-01-26 bar 30.0000; alpaca reverse_splits ex 2023-01-26 old 30 new 1: price-side
+MATCH EDBL step 2024-04-05 bar 20.0000; alpaca reverse_splits ex 2024-04-05 old 20 new 1: price-side
+MATCH EDBL step 2025-03-03 bar 25.0000; alpaca reverse_splits ex 2025-03-03 old 25 new 1: price-side
+MATCH EDBL step 2026-02-03 bar 10.0002; alpaca reverse_splits ex 2026-02-03 old 10 new 1: price-side
+MATCH EDBL step 2026-07-13 bar 45.0051; alpaca reverse_splits ex 2026-07-13 old 45 new 1: price-side
+MATCH EEIQ step 2026-02-17 bar 15.9978; alpaca reverse_splits ex 2026-02-17 old 16 new 1: price-side
+MATCH EFOI step 2020-06-12 bar 5.0000; alpaca reverse_splits ex 2020-06-12 old 5 new 1: price-side
+MATCH EFOI step 2023-06-20 bar 6.9993; alpaca reverse_splits ex 2023-06-20 old 7 new 1: price-side
+MATCH EHGO step 2026-04-20 bar 16.0028; alpaca reverse_splits ex 2026-04-20 old 16 new 1: price-side
+MATCH EJH step 2022-10-04 bar 20.0000; alpaca reverse_splits ex 2022-10-04 old 20 new 1: price-side
+MATCH EJH step 2023-04-13 bar 10.0000; alpaca reverse_splits ex 2023-04-13 old 10 new 1: price-side
+MATCH EJH step 2023-09-25 bar 10.0000; alpaca reverse_splits ex 2023-09-25 old 10 new 1: price-side
+MATCH EJH step 2024-02-14 bar 5.0000; alpaca reverse_splits ex 2024-02-14 old 5 new 1: price-side
+MATCH EJH step 2024-09-24 bar 10.0000; alpaca reverse_splits ex 2024-09-24 old 10 new 1: price-side
+MATCH EJH step 2025-05-30 bar 50.0000; alpaca reverse_splits ex 2025-05-30 old 50 new 1: price-side
+MATCH EJH step 2026-03-30 bar 25.0000; alpaca reverse_splits ex 2026-03-30 old 25 new 1: price-side
+MATCH ELPW step 2025-12-26 bar 16.0000; alpaca reverse_splits ex 2025-12-26 old 16 new 1: price-side
+MATCH ELPW step 2026-03-12 bar 80.0000; alpaca reverse_splits ex 2026-03-12 old 80 new 1: price-side
+MATCH ELPW step 2026-08-10 bar 44.9950; alpaca reverse_splits ex 2026-08-10 old 45 new 1: price-side
+MISS ELTX step 2023-06-01 -> 2023-06-02: factor 10 -> 1
+MISS ENOV step 2022-04-04 -> 2022-04-05: factor 3 -> 1
+MATCH ENSC step 2022-10-28 bar 20.0000; alpaca reverse_splits ex 2022-10-28 old 20 new 1: price-side
+MATCH ENSC step 2023-03-31 bar 11.9998; alpaca reverse_splits ex 2023-03-31 old 12 new 1: price-side
+MATCH ENSC step 2024-12-06 bar 15.0010; alpaca reverse_splits ex 2024-12-06 old 15 new 1: price-side
+MISS ERNA step 2021-03-25 -> 2021-03-26: factor 14999.999999999998 -> 7500
+MISS ERNA step 2022-10-14 -> 2022-10-17: factor 7500 -> 375
+MATCH ERNA step 2025-06-12 bar 15.0006; alpaca reverse_splits ex 2025-06-12 old 15 new 1: price-side
+MATCH ERNA step 2026-05-04 bar 25.0033; alpaca reverse_splits ex 2026-05-04 old 25 new 1: price-side
+MATCH EVGN step 2024-07-25 bar 10.0000; alpaca reverse_splits ex 2024-07-25 old 10 new 1: price-side
+MATCH EZGO step 2024-04-12 bar 40.0000; alpaca reverse_splits ex 2024-04-12 old 40 new 1: price-side
+MATCH EZGO step 2025-11-21 bar 25.0000; alpaca reverse_splits ex 2025-11-21 old 25 new 1: price-side
+MATCH EZGO step 2026-05-19 bar 150.0000; alpaca reverse_splits ex 2026-05-19 old 150 new 1: price-side
+MISS EZRA step 2023-02-22 -> 2023-02-23: factor 10199.999999999998 -> 680
+MISS EZRA step 2024-06-28 -> 2024-07-01: factor 680.0176834659593 -> 40
+MATCH EZRA step 2026-05-18 bar 40.0000; alpaca reverse_splits ex 2026-05-18 old 40 new 1: price-side
+MATCH FCHL step 2026-03-23 bar 15.0006; alpaca reverse_splits ex 2026-03-23 old 15 new 1: price-side
+MATCH FCHL step 2026-05-04 bar 30.0000; alpaca reverse_splits ex 2026-05-04 old 30 new 1: price-side
+MATCH FCUV step 2023-03-24 bar 0.6667; alpaca forward_splits ex 2023-03-24 old 2 new 3: price-side
+MATCH FCUV step 2025-01-31 bar 10.0000; alpaca reverse_splits ex 2025-01-31 old 10 new 1: price-side
+MATCH FCUV step 2026-02-09 bar 10.0000; alpaca reverse_splits ex 2026-02-09 old 10 new 1: price-side
+MATCH FCUV step 2026-06-23 bar 4.0000; alpaca reverse_splits ex 2026-06-23 old 4 new 1: price-side
+MATCH FEAM step 2025-02-18 bar 23.0000; alpaca reverse_splits ex 2025-02-18 old 23 new 1: price-side
+MATCH FEDU step 2022-06-21 bar 20.0000; alpaca reverse_splits ex 2022-06-21 old 20 new 1: price-side
+MISS FEED step 2023-02-08 -> 2023-02-09: factor 26399.999999999996 -> 1320.0000000000002
+MISS FEED step 2025-03-13 -> 2025-03-14: factor 1320.008336807003 -> 120.00090665941337
+MISS FEED step 2025-08-11 -> 2025-08-12: factor 120 -> 12
+MATCH FEED step 2026-09-01 bar 11.9994; alpaca reverse_splits ex 2026-09-01 old 12 new 1: price-side
+MISS FFAI step 2023-08-25 -> 2023-08-28: factor 1440000 -> 18000
+MISS FFAI step 2024-02-29 -> 2024-03-01: factor 18000 -> 6000
+MISS FFAI step 2024-08-16 -> 2024-08-19: factor 6000.000000000001 -> 150
+MATCH FFAI step 2026-07-24 bar 150.0697; alpaca reverse_splits ex 2026-07-24 old 150 new 1: price-side
+MATCH FGL step 2026-02-10 bar 100.0000; alpaca reverse_splits ex 2026-02-10 old 100 new 1: price-side
+MATCH FGL step 2026-09-01 bar 100.0000; alpaca reverse_splits ex 2026-09-01 old 100 new 1: price-side
+MISS FRGT step 2020-10-28 -> 2020-10-29: factor 2750000 -> 550000
+MISS FRGT step 2022-02-14 -> 2022-02-15: factor 550000 -> 250000
+MATCH FRGT step 2023-03-24 bar 10.0000; alpaca reverse_splits ex 2023-03-24 old 10 new 1: price-side
+MATCH FRGT step 2024-02-05 bar 10.0000; alpaca reverse_splits ex 2024-02-05 old 10 new 1: price-side
+MATCH FRGT step 2024-09-25 bar 25.0000; alpaca reverse_splits ex 2024-09-25 old 25 new 1: price-side
+MATCH FRGT step 2025-05-27 bar 4.0000; alpaca reverse_splits ex 2025-05-27 old 4 new 1: price-side
+MATCH FRGT step 2025-12-15 bar 4.9992; alpaca reverse_splits ex 2025-12-15 old 5 new 1: price-side
+MATCH FRGT step 2026-05-18 bar 5.0010; alpaca reverse_splits ex 2026-05-18 old 5 new 1: price-side
+MATCH FRSX step 2023-04-21 bar 6.0000; alpaca reverse_splits ex 2023-04-21 old 6 new 1: price-side
+MATCH FRSX step 2025-08-25 bar 7.0000; alpaca reverse_splits ex 2025-08-25 old 7 new 1: price-side
+MATCH FRSX step 2026-02-26 bar 3.0006; alpaca reverse_splits ex 2026-02-26 old 3 new 1: price-side
+MATCH FTCI step 2024-12-02 bar 10.0000; alpaca reverse_splits ex 2024-12-02 old 10 new 1: price-side
+MATCH FTFT step 2023-02-01 bar 5.0000; alpaca reverse_splits ex 2023-02-01 old 5 new 1: price-side
+MATCH FTFT step 2025-04-04 bar 9.9998; alpaca reverse_splits ex 2025-04-04 old 10 new 1: price-side
+MATCH FTFT step 2026-01-20 bar 4.0001; alpaca reverse_splits ex 2026-01-20 old 4 new 1: price-side
+MATCH FTFT step 2026-07-13 bar 3.9999; alpaca reverse_splits ex 2026-07-13 old 4 new 1: price-side
+MATCH FTFT step 2026-08-31 bar 4.0004; alpaca reverse_splits ex 2026-08-31 old 4 new 1: price-side
+MATCH GCTK step 2024-05-20 bar 5.0000; alpaca reverse_splits ex 2024-05-20 old 5 new 1: price-side
+MATCH GCTK step 2025-02-04 bar 20.0000; alpaca reverse_splits ex 2025-02-04 old 20 new 1: price-side
+MATCH GCTK step 2025-06-16 bar 59.9968; alpaca reverse_splits ex 2025-06-16 old 60 new 1: price-side
+MATCH GCTK step 2026-08-31 bar 15.0000; alpaca reverse_splits ex 2026-08-31 old 15 new 1: price-side
+MISS GDC step 2018-06-20 -> 2018-06-21: factor 3750 -> 7500
+MISS GDC step 2022-11-08 -> 2022-11-09: factor 7500 -> 250.00000000000003
+MATCH GDC step 2026-06-29 bar 250.0000; alpaca reverse_splits ex 2026-06-29 old 250 new 1: price-side
+MATCH GDHG step 2024-09-19 bar 50.0000; alpaca reverse_splits ex 2024-09-19 old 50 new 1: price-side
+MATCH GDHG step 2025-05-09 bar 25.0013; alpaca reverse_splits ex 2025-05-09 old 25 new 1: price-side
+MATCH GDHG step 2025-08-28 bar 15.0000; alpaca reverse_splits ex 2025-08-28 old 15 new 1: price-side
+MATCH GIPR step 2026-07-10 bar 10.0000; alpaca reverse_splits ex 2026-07-10 old 10 new 1: price-side
+MATCH GITS step 2025-01-27 bar 20.0000; alpaca reverse_splits ex 2025-01-27 old 20 new 1: price-side
+MATCH GLMD step 2023-05-15 bar 15.0001; alpaca reverse_splits ex 2023-05-15 old 15 new 1: price-side
+MATCH GLMD step 2024-08-30 bar 12.0019; alpaca reverse_splits ex 2024-08-30 old 12 new 1: price-side
+MATCH GLMD step 2026-08-19 bar 8.0007; alpaca reverse_splits ex 2026-08-19 old 8 new 1: price-side
+MATCH GLXG step 2025-09-08 bar 10.0000; alpaca reverse_splits ex 2025-09-08 old 10 new 1: price-side
+MISS GMEX step 2025-09-22 -> 2025-09-23: factor 8063.991683991685 -> 503.99999999999994
+MISS GMEX step 2026-01-07 -> 2026-01-08: factor 504.00444938820914 -> 63
+MATCH GMEX step 2026-05-01 bar 7.0014; alpaca reverse_splits ex 2026-05-01 old 7 new 1: price-side
+MATCH GMEX step 2026-07-02 bar 9.0000; alpaca reverse_splits ex 2026-07-02 old 9 new 1: price-side
+MATCH GMM step 2017-10-16 bar 0.5000; alpaca forward_splits ex 2017-10-16 old 1 new 2: price-side
+MATCH GMM step 2024-11-26 bar 15.0000; alpaca reverse_splits ex 2024-11-26 old 15 new 1: price-side
+MATCH GMM step 2026-06-11 bar 50.0000; alpaca reverse_splits ex 2026-06-11 old 50 new 1: price-side
+MATCH GNPX step 2024-02-02 bar 40.0000; alpaca reverse_splits ex 2024-02-02 old 40 new 1: price-side
+MATCH GNPX step 2025-10-21 bar 50.0000; alpaca reverse_splits ex 2025-10-21 old 50 new 1: price-side
+MATCH GNPX step 2026-07-16 bar 22.0004; alpaca reverse_splits ex 2026-07-16 old 22 new 1: price-side
+MATCH GOVX step 2024-01-31 bar 15.0004; alpaca reverse_splits ex 2024-01-31 old 15 new 1: price-side
+MATCH GOVX step 2026-01-12 bar 25.0000; alpaca reverse_splits ex 2026-01-12 old 25 new 1: price-side
+MISS GRI step 2023-04-21 -> 2023-04-24: factor 1299480 -> 43315.99999999999
+MATCH GRI step 2024-01-30 bar 7.0000; alpaca reverse_splits ex 2024-01-30 old 7 new 1: price-side
+MATCH GRI step 2024-06-18 bar 13.0000; alpaca reverse_splits ex 2024-06-18 old 13 new 1: price-side
+MATCH GRI step 2025-02-24 bar 17.0000; alpaca reverse_splits ex 2025-02-24 old 17 new 1: price-side
+MATCH GRI step 2026-01-26 bar 27.9980; alpaca reverse_splits ex 2026-01-26 old 28 new 1: price-side
+MATCH GRML step 2026-08-24 bar 50.0247; alpaca reverse_splits ex 2026-08-24 old 50 new 1: price-side
+MATCH GRNQ step 2022-07-28 bar 10.0000; alpaca reverse_splits ex 2022-07-28 old 10 new 1: price-side
+MATCH GRNQ step 2026-08-06 bar 10.0018; alpaca reverse_splits ex 2026-08-06 old 10 new 1: price-side
+MISS GRNT step 2021-03-25 -> 2021-03-26: factor 0.4 -> 1
+MATCH GTBP step 2024-02-05 bar 30.0000; alpaca reverse_splits ex 2024-02-05 old 30 new 1: price-side
+MATCH GTBP step 2026-09-08 bar 25.0000; alpaca reverse_splits ex 2026-09-08 old 25 new 1: price-side
+MATCH GVH step 2025-07-21 bar 200.0000; alpaca reverse_splits ex 2025-07-21 old 200 new 1: price-side
+MATCH GWAV step 2024-06-03 bar 150.0000; alpaca reverse_splits ex 2024-06-03 old 150 new 1: price-side
+MATCH GWAV step 2025-08-25 bar 110.0000; alpaca reverse_splits ex 2025-08-25 old 110 new 1: price-side
+MISS GYRE step 2023-10-30 -> 2023-10-31: factor 14.999022100528066 -> 1
+MATCH HAO step 2025-01-27 bar 25.0000; alpaca reverse_splits ex 2025-01-27 old 25 new 1: price-side
+MATCH HAO step 2026-05-21 bar 128.0142; alpaca reverse_splits ex 2026-05-21 old 128 new 1: price-side
+MATCH HAO step 2026-08-14 bar 20.0000; alpaca reverse_splits ex 2026-08-14 old 20 new 1: price-side
+MATCH HCAI step 2026-04-13 bar 30.0000; alpaca reverse_splits ex 2026-04-13 old 30 new 1: price-side
+MATCH HCTI step 2023-05-26 bar 10.0000; alpaca reverse_splits ex 2023-05-26 old 10 new 1: price-side
+MATCH HCTI step 2025-08-01 bar 249.0011; alpaca reverse_splits ex 2025-08-01 old 249 new 1: price-side
+MATCH HCTI step 2026-02-10 bar 60.0000; alpaca reverse_splits ex 2026-02-10 old 60 new 1: price-side
+MATCH HCWB step 2025-04-11 bar 39.9973; alpaca reverse_splits ex 2025-04-11 old 40 new 1: price-side
+MATCH HCWB step 2026-06-30 bar 6.0000; alpaca reverse_splits ex 2026-06-30 old 6 new 1: price-side
+MISS HIND step 2021-06-15 -> 2021-06-16: factor 870000 -> 290000
+MISS HIND step 2022-12-22 -> 2022-12-23: factor 290000 -> 5800
+MISS HIND step 2024-09-20 -> 2024-09-23: factor 5800 -> 100
+MISS HIND step 2025-05-08 -> 2025-05-09: factor 100 -> 4
+MATCH HIND step 2025-08-15 bar 4.0000; alpaca reverse_splits ex 2025-08-15 old 4 new 1: price-side
+MATCH HSCS step 2024-05-17 bar 100.0000; alpaca reverse_splits ex 2024-05-17 old 100 new 1: price-side
+MATCH HSDT step 2021-01-04 bar 35.0000; alpaca reverse_splits ex 2021-01-04 old 35 new 1: price-side
+MATCH HSDT step 2023-08-17 bar 50.0000; alpaca reverse_splits ex 2023-08-17 old 50 new 1: price-side
+MATCH HSDT step 2025-05-02 bar 15.0004; alpaca reverse_splits ex 2025-05-02 old 15 new 1: price-side
+MATCH HSDT step 2025-07-01 bar 50.0000; alpaca reverse_splits ex 2025-07-01 old 50 new 1: price-side
+MATCH HTCO step 2025-08-08 bar 25.0000; alpaca reverse_splits ex 2025-08-08 old 25 new 1: price-side
+MATCH HTCR step 2026-04-06 bar 20.0000; alpaca reverse_splits ex 2026-04-06 old 20 new 1: price-side
+MATCH HTOO step 2025-07-14 bar 35.0000; alpaca reverse_splits ex 2025-07-14 old 35 new 1: price-side
+MATCH HUBC step 2023-12-15 bar 10.0000; alpaca reverse_splits ex 2023-12-15 old 10 new 1: price-side
+MATCH HUBC step 2025-03-31 bar 10.0000; alpaca reverse_splits ex 2025-03-31 old 10 new 1: price-side
+MATCH HUBC step 2026-01-16 bar 15.0000; alpaca reverse_splits ex 2026-01-16 old 15 new 1: price-side
+MATCH HUBC step 2026-04-20 bar 50.0000; alpaca reverse_splits ex 2026-04-20 old 50 new 1: price-side
+MATCH HUBC step 2026-06-08 bar 20.0000; alpaca reverse_splits ex 2026-06-08 old 20 new 1: price-side
+MATCH HUBC step 2026-09-14 bar 25.0015; alpaca reverse_splits ex 2026-09-14 old 25 new 1: price-side
+MATCH HWH step 2025-02-24 bar 5.0000; alpaca reverse_splits ex 2025-02-24 old 5 new 1: price-side
+MATCH IART step 2017-01-04 bar 0.5000; alpaca forward_splits ex 2017-01-04 old 1 new 2: price-side
+MATCH ICCM step 2026-06-04 bar 30.0000; alpaca reverse_splits ex 2026-06-04 old 30 new 1: price-side
+MATCH ICU step 2024-06-10 bar 25.0000; alpaca reverse_splits ex 2024-06-10 old 25 new 1: price-side
+MATCH ICU step 2026-01-05 bar 10.0000; alpaca reverse_splits ex 2026-01-05 old 10 new 1: price-side
+MATCH IFBD step 2022-09-09 bar 5.0000; alpaca reverse_splits ex 2022-09-09 old 5 new 1: price-side
+MATCH IFBD step 2023-05-15 bar 5.0000; alpaca reverse_splits ex 2023-05-15 old 5 new 1: price-side
+MATCH IFBD step 2023-11-20 bar 20.0000; alpaca reverse_splits ex 2023-11-20 old 20 new 1: price-side
+MATCH IFBD step 2024-03-04 bar 8.0000; alpaca reverse_splits ex 2024-03-04 old 8 new 1: price-side
+MATCH ILAG step 2025-12-30 bar 10.0000; alpaca reverse_splits ex 2025-12-30 old 10 new 1: price-side
+MATCH ILLR step 2026-06-23 bar 10.0000; alpaca reverse_splits ex 2026-06-23 old 10 new 1: price-side
+MATCH IMCC step 2022-11-17 bar 10.0000; alpaca reverse_splits ex 2022-11-17 old 10 new 1: price-side
+MATCH IMCC step 2024-07-12 bar 6.0000; alpaca reverse_splits ex 2024-07-12 old 6 new 1: price-side
+MATCH IMCC step 2026-08-27 bar 30.0000; alpaca reverse_splits ex 2026-08-27 old 30 new 1: price-side
+MISS IMNN step 2017-05-26 -> 2017-05-30: factor 3150 -> 225.0009287120621
+MISS IMNN step 2022-02-28 -> 2022-03-01: factor 225 -> 15
+MATCH IMNN step 2025-07-25 bar 15.0010; alpaca reverse_splits ex 2025-07-25 old 15 new 1: price-side
+MATCH INAB step 2025-06-06 bar 30.0000; alpaca reverse_splits ex 2025-06-06 old 30 new 1: price-side
+MATCH INKT step 2025-01-28 bar 10.0000; alpaca reverse_splits ex 2025-01-28 old 10 new 1: price-side
+MATCH INLF step 2026-04-06 bar 16.0000; alpaca reverse_splits ex 2026-04-06 old 16 new 1: price-side
+MATCH INLF step 2026-07-06 bar 200.0000; alpaca reverse_splits ex 2026-07-06 old 200 new 1: price-side
+MATCH INSG step 2024-01-24 bar 10.0000; alpaca reverse_splits ex 2024-01-24 old 10 new 1: price-side
+MATCH INTJ step 2026-02-17 bar 20.0000; alpaca reverse_splits ex 2026-02-17 old 20 new 1: price-side
+MATCH IPDN step 2016-09-27 bar 8.0000; alpaca reverse_splits ex 2016-09-27 old 8 new 1: price-side
+MATCH IPDN step 2023-01-05 bar 2.0000; alpaca reverse_splits ex 2023-01-05 old 2 new 1: price-side
+MATCH IPDN step 2025-03-13 bar 10.0000; alpaca reverse_splits ex 2025-03-13 old 10 new 1: price-side
+MATCH IPDN step 2026-09-14 bar 30.0000; alpaca reverse_splits ex 2026-09-14 old 30 new 1: price-side
+MATCH IPST step 2025-11-05 bar 20.0000; alpaca reverse_splits ex 2025-11-05 old 20 new 1: price-side
+MATCH IPST step 2026-04-23 bar 20.0000; alpaca reverse_splits ex 2026-04-23 old 20 new 1: price-side
+MATCH IPW step 2025-10-27 bar 29.9999; alpaca reverse_splits ex 2025-10-27 old 30 new 1: price-side
+MATCH IPW step 2026-05-22 bar 8.0011; alpaca reverse_splits ex 2026-05-22 old 8 new 1: price-side
+MATCH IPW step 2026-08-07 bar 9.0013; alpaca reverse_splits ex 2026-08-07 old 9 new 1: price-side
+MISS IRD step 2017-05-04 -> 2017-05-05: factor 480 -> 48
+MISS IRD step 2019-04-11 -> 2019-04-12: factor 48.01043705153294 -> 4
+MISS IRD step 2020-11-05 -> 2020-11-06: factor 4 -> 1
+MATCH ISPC step 2024-09-16 bar 20.0000; alpaca reverse_splits ex 2024-09-16 old 20 new 1: price-side
+MATCH ISPC step 2026-04-28 bar 40.0000; alpaca reverse_splits ex 2026-04-28 old 40 new 1: price-side
+MATCH IXHL step 2026-02-26 bar 30.0000; alpaca reverse_splits ex 2026-02-26 old 30 new 1: price-side
+MATCH IZM step 2026-09-15 bar 5.0023; alpaca reverse_splits ex 2026-09-15 old 5 new 1: price-side
+MATCH JAGX step 2018-06-01 bar 5.0000; alpaca reverse_splits ex 2018-06-01 old 5 new 1: price-side
+MATCH JAGX step 2019-06-07 bar 70.0000; alpaca reverse_splits ex 2019-06-07 old 70 new 1: price-side
+MATCH JAGX step 2021-09-08 bar 3.0000; alpaca reverse_splits ex 2021-09-08 old 3 new 1: price-side
+MATCH JAGX step 2023-01-23 bar 75.0000; alpaca reverse_splits ex 2023-01-23 old 75 new 1: price-side
+MATCH JAGX step 2024-05-23 bar 60.0000; alpaca reverse_splits ex 2024-05-23 old 60 new 1: price-side
+MATCH JAGX step 2025-03-24 bar 25.0000; alpaca reverse_splits ex 2025-03-24 old 25 new 1: price-side
+MATCH JAGX step 2026-04-30 bar 35.0015; alpaca reverse_splits ex 2026-04-30 old 35 new 1: price-side
+MATCH JAGX step 2026-09-17 bar 15.0021; alpaca reverse_splits ex 2026-09-17 old 15 new 1: price-side
+MATCH JBDI step 2026-06-30 bar 2.0000; alpaca reverse_splits ex 2026-06-30 old 2 new 1: price-side
+MATCH JCSE step 2023-10-16 bar 2.9993; alpaca reverse_splits ex 2023-10-16 old 3 new 1: price-side
+MATCH JONE step 2018-09-10 bar 20.0000; alpaca reverse_splits ex 2018-09-10 old 20 new 1: price-side
+MATCH JTAI step 2024-11-12 bar 225.0000; alpaca reverse_splits ex 2024-11-12 old 225 new 1: price-side
+MATCH JTAI step 2026-04-08 bar 200.0000; alpaca reverse_splits ex 2026-04-08 old 200 new 1: price-side
+MATCH JZ step 2024-02-20 bar 3.0000; alpaca reverse_splits ex 2024-02-20 old 3 new 1: price-side
+MATCH JZ step 2025-06-16 bar 10.0000; alpaca reverse_splits ex 2025-06-16 old 10 new 1: price-side
+MATCH JZ step 2026-07-06 bar 30.0000; alpaca reverse_splits ex 2026-07-06 old 30 new 1: price-side
+MATCH JZXN step 2023-07-10 bar 18.0000; alpaca reverse_splits ex 2023-07-10 old 18 new 1: price-side
+MATCH JZXN step 2024-07-03 bar 13.0000; alpaca reverse_splits ex 2024-07-03 old 13 new 1: price-side
+MATCH JZXN step 2025-12-11 bar 40.0000; alpaca reverse_splits ex 2025-12-11 old 40 new 1: price-side
+MATCH KALA step 2022-10-21 bar 50.0000; alpaca reverse_splits ex 2022-10-21 old 50 new 1: price-side
+MATCH KALA step 2026-05-11 bar 50.0000; alpaca reverse_splits ex 2026-05-11 old 50 new 1: price-side
+MATCH KAPA step 2026-09-01 bar 7.0000; alpaca reverse_splits ex 2026-09-01 old 7 new 1: price-side
+MATCH KIDZ step 2026-03-09 bar 50.0000; alpaca reverse_splits ex 2026-03-09 old 50 new 1: price-side
+MATCH KIDZ step 2026-06-08 bar 10.0014; alpaca reverse_splits ex 2026-06-08 old 10 new 1: price-side
+MATCH KIDZ step 2026-08-13 bar 15.0000; alpaca reverse_splits ex 2026-08-13 old 15 new 1: price-side
+MATCH KITT step 2024-07-23 bar 35.9999; alpaca reverse_splits ex 2024-07-23 old 36 new 1: price-side
+MATCH KITT step 2025-09-05 bar 9.0000; alpaca reverse_splits ex 2025-09-05 old 9 new 1: price-side
+MATCH KITT step 2026-04-21 bar 8.0003; alpaca reverse_splits ex 2026-04-21 old 8 new 1: price-side
+MATCH KPLT step 2023-07-28 bar 25.0000; alpaca reverse_splits ex 2023-07-28 old 25 new 1: price-side
+MISS KPRX step 2019-08-29 -> 2019-08-30: factor 5400 -> 360
+MATCH KPRX step 2022-09-27 bar 40.0000; alpaca reverse_splits ex 2022-09-27 old 40 new 1: price-side
+MATCH KPRX step 2024-06-11 bar 9.0000; alpaca reverse_splits ex 2024-06-11 old 9 new 1: price-side
+MATCH KPTI step 2025-02-26 bar 15.0009; alpaca reverse_splits ex 2025-02-26 old 15 new 1: price-side
+MATCH KXIN step 2023-09-15 bar 15.0000; alpaca reverse_splits ex 2023-09-15 old 15 new 1: price-side
+MATCH KXIN step 2024-10-25 bar 60.0000; alpaca reverse_splits ex 2024-10-25 old 60 new 1: price-side
+MATCH KXIN step 2025-12-01 bar 30.0000; alpaca reverse_splits ex 2025-12-01 old 30 new 1: price-side
+MATCH KXIN step 2026-03-13 bar 15.0000; alpaca reverse_splits ex 2026-03-13 old 15 new 1: price-side
+MATCH LABT step 2026-06-22 bar 10.0000; alpaca reverse_splits ex 2026-06-22 old 10 new 1: price-side
+MATCH LBGJ step 2026-03-27 bar 100.0000; alpaca reverse_splits ex 2026-03-27 old 100 new 1: price-side
+MATCH LBGJ step 2026-08-03 bar 200.0000; alpaca reverse_splits ex 2026-08-03 old 200 new 1: price-side
+MATCH LCFY step 2022-12-08 bar 20.0000; alpaca reverse_splits ex 2022-12-08 old 20 new 1: price-side
+MATCH LESL step 2025-09-29 bar 20.0000; alpaca reverse_splits ex 2025-09-29 old 20 new 1: price-side
+MATCH LGCL step 2025-10-13 bar 40.0000; alpaca reverse_splits ex 2025-10-13 old 40 new 1: price-side
+MATCH LGCL step 2026-09-01 bar 125.0142; alpaca reverse_splits ex 2026-09-01 old 125 new 1: price-side
+MATCH LGHL step 2023-07-13 bar 50.0000; alpaca reverse_splits ex 2023-07-13 old 50 new 1: price-side
+MATCH LGHL step 2025-03-26 bar 50.0000; alpaca reverse_splits ex 2025-03-26 old 50 new 1: price-side
+MATCH LGHL step 2025-11-26 bar 13.0000; alpaca reverse_splits ex 2025-11-26 old 13 new 1: price-side
+MATCH LGHL step 2026-05-04 bar 5.9998; alpaca reverse_splits ex 2026-05-04 old 6 new 1: price-side
+MATCH LGHL step 2026-07-14 bar 9.0000; alpaca reverse_splits ex 2026-07-14 old 9 new 1: price-side
+MATCH LGHL step 2026-09-10 bar 20.0000; alpaca reverse_splits ex 2026-09-10 old 20 new 1: price-side
+MATCH LGVN step 2024-03-27 bar 10.0000; alpaca reverse_splits ex 2024-03-27 old 10 new 1: price-side
+MATCH LGVN step 2026-08-27 bar 10.0000; alpaca reverse_splits ex 2026-08-27 old 10 new 1: price-side
+MATCH LHSW step 2026-06-22 bar 16.0000; alpaca reverse_splits ex 2026-06-22 old 16 new 1: price-side
+MATCH LIQT step 2019-04-09 bar 4.0000; alpaca reverse_splits ex 2019-04-09 old 4 new 1: price-side
+MATCH LIQT step 2023-05-26 bar 8.0000; alpaca reverse_splits ex 2023-05-26 old 8 new 1: price-side
+MATCH LOCL step 2023-06-15 bar 13.0008; alpaca reverse_splits ex 2023-06-15 old 13 new 1: price-side
+MISS LONA step 2025-09-17 -> 2025-09-18: factor 10 -> 1
+MATCH LPCN step 2023-05-12 bar 17.0000; alpaca reverse_splits ex 2023-05-12 old 17 new 1: price-side
+MATCH LRHC step 2025-07-07 bar 80.0000; alpaca reverse_splits ex 2025-07-07 old 80 new 1: price-side
+MATCH LRHC step 2026-01-26 bar 10.0000; alpaca reverse_splits ex 2026-01-26 old 10 new 1: price-side
+MATCH LRHC step 2026-04-20 bar 10.0025; alpaca reverse_splits ex 2026-04-20 old 10 new 1: price-side
+MATCH LRHC step 2026-09-08 bar 6.0004; alpaca reverse_splits ex 2026-09-08 old 6 new 1: price-side
+MATCH LXEH step 2024-01-03 bar 2.0000; alpaca reverse_splits ex 2024-01-03 old 2 new 1: price-side
+MATCH LXEH step 2024-09-30 bar 10.0000; alpaca reverse_splits ex 2024-09-30 old 10 new 1: price-side
+MATCH LXEH step 2026-04-20 bar 10.0000; alpaca reverse_splits ex 2026-04-20 old 10 new 1: price-side
+MATCH LZMH step 2026-05-22 bar 20.0000; alpaca reverse_splits ex 2026-05-22 old 20 new 1: price-side
+MISS MAAS step 2025-04-11 -> 2025-04-14: factor 60 -> 1
+MATCH MASK step 2026-03-16 bar 25.0000; alpaca reverse_splits ex 2026-03-16 old 25 new 1: price-side
+MISS MEDS step 2026-05-22 -> 2026-05-26: factor 50 -> 1
+MATCH MEGL step 2025-02-18 bar 3.9992; alpaca reverse_splits ex 2025-02-18 old 4 new 1: price-side
+MATCH MGN step 2026-09-17 bar 30.0000; alpaca reverse_splits ex 2026-09-17 old 30 new 1: price-side
+MATCH MGRX step 2024-10-16 bar 15.0000; alpaca reverse_splits ex 2024-10-16 old 15 new 1: price-side
+MATCH MI step 2024-04-12 bar 50.0000; alpaca reverse_splits ex 2024-04-12 old 50 new 1: price-side
+MATCH MI step 2026-05-18 bar 79.9796; alpaca reverse_splits ex 2026-05-18 old 80 new 1: price-side
+MATCH MIMI step 2026-05-06 bar 10.0000; alpaca reverse_splits ex 2026-05-06 old 10 new 1: price-side
+MATCH MIND step 2023-10-16 bar 10.0000; alpaca reverse_splits ex 2023-10-16 old 10 new 1: price-side
+MATCH MKDW step 2026-01-26 bar 30.0000; alpaca reverse_splits ex 2026-01-26 old 30 new 1: price-side
+MATCH MKZR step 2025-08-05 bar 10.0000; alpaca reverse_splits ex 2025-08-05 old 10 new 1: price-side
+MATCH MLEC step 2025-05-14 bar 10.0000; alpaca reverse_splits ex 2025-05-14 old 10 new 1: price-side
+MATCH MLEC step 2026-01-05 bar 15.0000; alpaca reverse_splits ex 2026-01-05 old 15 new 1: price-side
+MATCH MNDR step 2025-03-10 bar 7.9996; alpaca reverse_splits ex 2025-03-10 old 8 new 1: price-side
+MATCH MNDR step 2025-09-25 bar 5.0007; alpaca reverse_splits ex 2025-09-25 old 5 new 1: price-side
+MATCH MNDR step 2026-06-29 bar 6.0000; alpaca reverse_splits ex 2026-06-29 old 6 new 1: price-side
+MATCH MOBX step 2026-04-07 bar 10.0000; alpaca reverse_splits ex 2026-04-07 old 10 new 1: price-side
+MATCH MODD step 2026-03-31 bar 30.0000; alpaca reverse_splits ex 2026-03-31 old 30 new 1: price-side
+MATCH MOGU step 2022-03-28 bar 12.0000; alpaca reverse_splits ex 2022-03-28 old 12 new 1: price-side
+MATCH MSGY step 2026-08-11 bar 7.9986; alpaca reverse_splits ex 2026-08-11 old 8 new 1: price-side
+MATCH MSS step 2026-04-24 bar 10.0000; alpaca reverse_splits ex 2026-04-24 old 10 new 1: price-side
+MATCH MSS step 2026-07-22 bar 5.0000; alpaca reverse_splits ex 2026-07-22 old 5 new 1: price-side
+MATCH MTEN step 2026-01-26 bar 200.0000; alpaca reverse_splits ex 2026-01-26 old 200 new 1: price-side
+MATCH MTNB step 2024-09-03 bar 49.9964; alpaca reverse_splits ex 2024-09-03 old 50 new 1: price-side
+MATCH MTNB step 2026-09-28 bar 15.0000; alpaca reverse_splits ex 2026-09-28 old 15 new 1: price-side
+MISS MTVA step 2019-12-30 -> 2019-12-31: factor 66000 -> 2640
+MISS MTVA step 2022-09-12 -> 2022-09-13: factor 2639.9964015833034 -> 88
+MISS MTVA step 2023-12-20 -> 2023-12-21: factor 88 -> 11.001430615164521
+MATCH MTVA step 2025-12-05 bar 11.0000; alpaca reverse_splits ex 2025-12-05 old 11 new 1: price-side
+MISS MYND step 2022-10-13 -> 2022-10-14: factor 10 -> 0.5
+MISS MYND step 2023-10-31 -> 2023-11-01: factor 0.5 -> 1
+MISS MYSE step 2023-09-19 -> 2023-09-20: factor 10 -> 1
+MATCH MYSZ step 2019-11-19 bar 15.0000; alpaca reverse_splits ex 2019-11-19 old 15 new 1: price-side
+MATCH MYSZ step 2019-11-20 bar 15.0000; alpaca reverse_splits ex 2019-11-19 old 15 new 1: price-side
+MATCH MYSZ step 2022-12-09 bar 25.0000; alpaca reverse_splits ex 2022-12-09 old 25 new 1: price-side
+MATCH MYSZ step 2024-04-23 bar 8.0000; alpaca reverse_splits ex 2024-04-23 old 8 new 1: price-side
+MATCH MYSZ step 2026-08-13 bar 8.0010; alpaca reverse_splits ex 2026-08-13 old 8 new 1: price-side
+MATCH NAMI step 2026-06-25 bar 25.0000; alpaca reverse_splits ex 2026-06-25 old 25 new 1: price-side
+MISS NCEL step 2024-09-26 -> 2024-09-27: factor 400 -> 10
+MISS NCEL step 2025-10-30 -> 2025-10-31: factor 10 -> 1
+MATCH NCI step 2025-06-16 bar 4.9985; alpaca reverse_splits ex 2025-06-16 old 5 new 1: price-side
+MATCH NCI step 2026-05-19 bar 8.0000; alpaca reverse_splits ex 2026-05-19 old 8 new 1: price-side
+MATCH NCMI step 2023-08-04 bar 10.0000; alpaca reverse_splits ex 2023-08-04 old 10 new 1: price-side
+MATCH NCNA step 2024-04-16 bar 25.0000; alpaca reverse_splits ex 2024-04-16 old 25 new 1: price-side
+MATCH NCNA step 2025-08-11 bar 200.0000; alpaca reverse_splits ex 2025-08-11 old 200 new 1: price-side
+MATCH NCPL step 2024-08-02 bar 70.0000; alpaca reverse_splits ex 2024-08-02 old 70 new 1: price-side
+MATCH NCRA step 2026-07-07 bar 30.0000; alpaca reverse_splits ex 2026-07-07 old 30 new 1: price-side
+MATCH NCT step 2026-04-02 bar 25.0047; alpaca reverse_splits ex 2026-04-02 old 25 new 1: price-side
+MATCH NEOG step 2018-01-02 bar 0.7500; alpaca forward_splits ex 2018-01-02 old 3 new 4: price-side
+MATCH NEOG step 2021-06-07 bar 0.5000; alpaca forward_splits ex 2021-06-07 old 1 new 2: price-side
+MISS NEXR step 2024-11-19 -> 2024-11-20: factor 34034 -> 2618
+MISS NEXR step 2025-06-13 -> 2025-06-16: factor 2618.0068728522338 -> 154
+MISS NEXR step 2026-02-13 -> 2026-02-17: factor 154.00516795865633 -> 11
+MATCH NEXR step 2026-07-31 bar 11.0000; alpaca reverse_splits ex 2026-07-31 old 11 new 1: price-side
+MISS NIKI step 2023-01-20 -> 2023-01-23: factor 99.99999999999999 -> 10
+MISS NIKI step 2026-07-17 -> 2026-07-20: factor 10 -> 1
+MATCH NIVF step 2025-02-11 bar 20.0000; alpaca reverse_splits ex 2025-02-11 old 20 new 1: price-side
+MATCH NIVF step 2025-05-05 bar 10.0000; alpaca reverse_splits ex 2025-05-05 old 10 new 1: price-side
+MATCH NIVF step 2025-08-04 bar 5.0000; alpaca reverse_splits ex 2025-08-04 old 5 new 1: price-side
+MATCH NIVF step 2025-12-01 bar 5.0000; alpaca reverse_splits ex 2025-12-01 old 5 new 1: price-side
+MATCH NIVF step 2026-01-26 bar 2.9998; alpaca reverse_splits ex 2026-01-26 old 3 new 1: price-side
+MATCH NIVF step 2026-03-16 bar 4.0000; alpaca reverse_splits ex 2026-03-16 old 4 new 1: price-side
+MATCH NIVF step 2026-07-06 bar 2.9999; alpaca reverse_splits ex 2026-07-06 old 3 new 1: price-side
+MATCH NIVF step 2026-09-01 bar 2.9998; alpaca reverse_splits ex 2026-09-01 old 3 new 1: price-side
+MATCH NMTC step 2026-04-16 bar 6.0005; alpaca reverse_splits ex 2026-04-16 old 6 new 1: price-side
+MATCH NTCL step 2026-07-06 bar 50.0000; alpaca reverse_splits ex 2026-07-06 old 50 new 1: price-side
+MATCH NTIC step 2019-07-01 bar 0.5002; alpaca forward_splits ex 2019-07-01 old 1 new 2: price-side
+MISS NUWE step 2017-10-12 -> 2017-10-13: factor 43218000000 -> 2160900000
+MISS NUWE step 2019-01-02 -> 2019-01-03: factor 2160900000 -> 154350000
+MISS NUWE step 2020-10-16 -> 2020-10-19: factor 154350000 -> 5145000
+MATCH NUWE step 2022-12-12 bar 100.0000; alpaca reverse_splits ex 2022-12-12 old 100 new 1: price-side
+MATCH NUWE step 2024-06-28 bar 35.0000; alpaca reverse_splits ex 2024-06-28 old 35 new 1: price-side
+MATCH NUWE step 2025-07-07 bar 41.9999; alpaca reverse_splits ex 2025-07-07 old 42 new 1: price-side
+MATCH NUWE step 2026-06-26 bar 35.0000; alpaca reverse_splits ex 2026-06-26 old 35 new 1: price-side
+MATCH NVX step 2026-08-27 bar 10.0000; alpaca reverse_splits ex 2026-08-27 old 10 new 1: price-side
+MISS NWTG step 2024-07-29 -> 2024-07-30: factor 300 -> 30
+MATCH NWTG step 2025-03-17 bar 30.0000; alpaca reverse_splits ex 2025-03-17 old 30 new 1: price-side
+MISS NXAT step 2026-07-31 -> 2026-08-03: factor 30.000000000000004 -> 1
+MATCH NXL step 2026-08-31 bar 30.0000; alpaca reverse_splits ex 2026-08-31 old 30 new 1: price-side
+MISS NXTS step 2023-10-05 -> 2023-10-06: factor 1715.0091074681236 -> 245
+MISS NXTS step 2025-09-19 -> 2025-09-22: factor 245.0067476383266 -> 7
+MATCH NXTS step 2026-04-08 bar 6.9998; alpaca reverse_splits ex 2026-04-08 old 7 new 1: price-side
+MISS NXTT step 2023-06-08 -> 2023-06-09: factor 3699999.9999999995 -> 20000
+MATCH NXTT step 2025-09-16 bar 200.0000; alpaca reverse_splits ex 2025-09-16 old 200 new 1: price-side
+MATCH NXTT step 2026-08-10 bar 100.0000; alpaca reverse_splits ex 2026-08-10 old 100 new 1: price-side
+MATCH OCG step 2023-10-18 bar 5.0000; alpaca reverse_splits ex 2023-10-18 old 5 new 1: price-side
+MATCH OCG step 2026-01-16 bar 220.0000; alpaca reverse_splits ex 2026-01-16 old 220 new 1: price-side
+MATCH OCG step 2026-04-27 bar 2.9993; alpaca reverse_splits ex 2026-04-27 old 3 new 1: price-side
+MATCH OIO step 2026-04-24 bar 3.0000; alpaca reverse_splits ex 2026-04-24 old 3 new 1: price-side
+MATCH OLB step 2024-05-06 bar 10.0000; alpaca reverse_splits ex 2024-05-06 old 10 new 1: price-side
+MISS OLOX step 2020-02-05 -> 2020-02-06: factor 256000.00000000003 -> 12800
+MISS OLOX step 2024-05-01 -> 2024-05-02: factor 12799.999999999998 -> 640
+MISS OLOX step 2025-09-05 -> 2025-09-08: factor 640.01554001554 -> 10
+MATCH OLOX step 2026-05-08 bar 10.0000; alpaca reverse_splits ex 2026-05-08 old 10 new 1: price-side
+MATCH OM step 2025-03-20 bar 15.0000; alpaca reverse_splits ex 2025-03-20 old 15 new 1: price-side
+MATCH ONCO step 2024-09-24 bar 40.0000; alpaca reverse_splits ex 2024-09-24 old 40 new 1: price-side
+MATCH ONCO step 2025-06-13 bar 84.9987; alpaca reverse_splits ex 2025-06-13 old 85 new 1: price-side
+MATCH ONCO step 2026-03-25 bar 4.9991; alpaca reverse_splits ex 2026-03-25 old 5 new 1: price-side
+MATCH ONCO step 2026-05-21 bar 10.0000; alpaca reverse_splits ex 2026-05-21 old 10 new 1: price-side
+MATCH ONFO step 2026-08-10 bar 50.0000; alpaca reverse_splits ex 2026-08-10 old 50 new 1: price-side
+MISS PARA step 2024-09-18 -> 2024-09-19: factor 9999.999999999998 -> 200
+MISS PARA step 2025-07-07 -> 2025-07-08: factor 200 -> 20
+MISS PARA step 2026-05-07 -> 2026-05-08: factor 20 -> 1
+MISS PAVS step 2022-10-10 -> 2022-10-11: factor 2400000 -> 120000
+MATCH PAVS step 2025-12-18 bar 100.0000; alpaca reverse_splits ex 2025-12-18 old 100 new 1: price-side
+MATCH PAVS step 2026-03-31 bar 12.0000; alpaca reverse_splits ex 2026-03-31 old 12 new 1: price-side
+MATCH PAVS step 2026-06-29 bar 100.0000; alpaca reverse_splits ex 2026-06-29 old 100 new 1: price-side
+MATCH PCLA step 2026-01-26 bar 30.0000; alpaca reverse_splits ex 2026-01-26 old 30 new 1: price-side
+MATCH PFSA step 2026-02-09 bar 75.0000; alpaca reverse_splits ex 2026-02-09 old 75 new 1: price-side
+MATCH PFSA step 2026-07-07 bar 25.0000; alpaca reverse_splits ex 2026-07-07 old 25 new 1: price-side
+MATCH PFSA step 2026-08-17 bar 3.9998; alpaca reverse_splits ex 2026-08-17 old 4 new 1: price-side
+MATCH PHGE step 2024-08-26 bar 10.0002; alpaca reverse_splits ex 2024-08-26 old 10 new 1: price-side
+MATCH PHGE step 2025-11-25 bar 18.9990; alpaca reverse_splits ex 2025-11-25 old 19 new 1: price-side
+MATCH PHGE step 2026-09-09 bar 10.0000; alpaca reverse_splits ex 2026-09-09 old 10 new 1: price-side
+MATCH PMAX step 2025-10-06 bar 7.9986; alpaca reverse_splits ex 2025-10-06 old 8 new 1: price-side
+MATCH PMAX step 2026-04-17 bar 10.0000; alpaca reverse_splits ex 2026-04-17 old 10 new 1: price-side
+MATCH PMI step 2026-08-03 bar 50.0000; alpaca reverse_splits ex 2026-08-03 old 50 new 1: price-side
+MATCH PN step 2026-04-13 bar 20.0000; alpaca reverse_splits ex 2026-04-13 old 20 new 1: price-side
+MATCH POLA step 2024-11-19 bar 7.0000; alpaca reverse_splits ex 2024-11-19 old 7 new 1: price-side
+MISS PPBT step 2020-08-20 -> 2020-08-21: factor 1999.9999999999998 -> 200.00000000000003
+MATCH PPBT step 2024-09-17 bar 19.9997; alpaca reverse_splits ex 2024-09-17 old 20 new 1: price-side
+MATCH PPBT step 2026-03-02 bar 10.0000; alpaca reverse_splits ex 2026-03-02 old 10 new 1: price-side
+MATCH PRFX step 2023-07-03 bar 10.0000; alpaca reverse_splits ex 2023-07-03 old 10 new 1: price-side
+MATCH PRFX step 2024-09-09 bar 6.0008; alpaca reverse_splits ex 2024-09-09 old 6 new 1: price-side
+MATCH PRFX step 2024-11-21 bar 4.0000; alpaca reverse_splits ex 2024-11-21 old 4 new 1: price-side
+MATCH PRFX step 2026-02-06 bar 5.0000; alpaca reverse_splits ex 2026-02-06 old 5 new 1: price-side
+MATCH PRHI step 2026-06-02 bar 6.9997; alpaca reverse_splits ex 2026-06-02 old 7 new 1: price-side
+MATCH PSNYW step 2025-12-09 bar 30.0000; alpaca reverse_splits ex 2025-12-09 old 30 new 1: price-side
+MATCH PTLE step 2026-02-27 bar 80.0000; alpaca reverse_splits ex 2026-02-27 old 80 new 1: price-side
+MATCH PULM step 2022-03-01 bar 20.0000; alpaca reverse_splits ex 2022-03-01 old 20 new 1: price-side
+MISS PWCM step 2018-10-15 -> 2018-10-16: factor 7499.995233546679 -> 749.9999999999999
+MISS PWCM step 2021-05-06 -> 2021-05-07: factor 750 -> 150
+MISS PWCM step 2024-03-11 -> 2024-03-12: factor 150.00884173297965 -> 25
+MISS PWCM step 2026-07-10 -> 2026-07-13: factor 24.99621498864497 -> 1
+MATCH PXS step 2022-05-13 bar 3.9993; alpaca reverse_splits ex 2022-05-13 old 4 new 1: price-side
+MISS QCLS step 2018-11-07 -> 2018-11-08: factor 1152000 -> 144000
+MISS QCLS step 2019-11-22 -> 2019-11-25: factor 144000 -> 6000
+MISS QCLS step 2021-04-16 -> 2021-04-19: factor 5999.999999999999 -> 3000
+MISS QCLS step 2024-02-14 -> 2024-02-15: factor 3000 -> 100
+MISS QCLS step 2025-08-29 -> 2025-09-02: factor 100 -> 1
+MATCH QH step 2022-08-12 bar 10.0000; alpaca reverse_splits ex 2022-08-12 old 10 new 1: price-side
+MATCH QH step 2025-08-25 bar 90.0000; alpaca reverse_splits ex 2025-08-25 old 90 new 1: price-side
+MISS QNRX step 2019-10-22 -> 2019-10-23: factor 105000 -> 21000
+MISS QNRX step 2021-09-23 -> 2021-09-24: factor 21000 -> 5250
+MATCH QNRX step 2022-08-01 bar 12.5000; alpaca reverse_splits ex 2022-08-01 old 12.5 new 1: price-side
+MATCH QNRX step 2023-07-18 bar 11.9998; alpaca reverse_splits ex 2023-07-18 old 12 new 1: price-side
+MATCH QNRX step 2025-04-09 bar 35.0000; alpaca reverse_splits ex 2025-04-09 old 35 new 1: price-side
+MATCH QNTM step 2024-08-15 bar 65.0056; alpaca reverse_splits ex 2024-08-15 old 65 new 1: price-side
+MISS QTTB step 2024-03-25 -> 2024-03-26: factor 17.995078634856103 -> 1
+MATCH RAY step 2025-11-07 bar 16.0000; alpaca reverse_splits ex 2025-11-07 old 16 new 1: price-side
+MATCH RAYA step 2025-09-30 bar 220.0000; alpaca reverse_splits ex 2025-09-30 old 220 new 1: price-side
+MATCH RAYA step 2026-04-20 bar 10.0000; alpaca reverse_splits ex 2026-04-20 old 10 new 1: price-side
+MISS RDGT step 2022-04-06 -> 2022-04-07: factor 36000 -> 3000
+MISS RDGT step 2024-02-29 -> 2024-03-01: factor 3000 -> 150
+MATCH RDGT step 2026-04-08 bar 150.0000; alpaca reverse_splits ex 2026-04-08 old 150 new 1: price-side
+MATCH RDHL step 2023-03-23 bar 40.0000; alpaca reverse_splits ex 2023-03-23 old 40 new 1: price-side
+MATCH RDHL step 2024-08-20 bar 25.0016; alpaca reverse_splits ex 2024-08-20 old 25 new 1: price-side
+MATCH RENT step 2024-04-03 bar 20.0000; alpaca reverse_splits ex 2024-04-03 old 20 new 1: price-side
+MISS RENX step 2024-10-07 -> 2024-10-08: factor 400 -> 20.000000000000004
+MATCH RENX step 2026-03-26 bar 20.0000; alpaca reverse_splits ex 2026-03-26 old 20 new 1: price-side
+MATCH RETO step 2023-05-15 bar 10.0000; alpaca reverse_splits ex 2023-05-15 old 10 new 1: price-side
+MATCH RETO step 2024-03-01 bar 10.0000; alpaca reverse_splits ex 2024-03-01 old 10 new 1: price-side
+MATCH RETO step 2025-03-07 bar 10.0000; alpaca reverse_splits ex 2025-03-07 old 10 new 1: price-side
+MATCH RETO step 2025-11-03 bar 5.0000; alpaca reverse_splits ex 2025-11-03 old 5 new 1: price-side
+MATCH RETO step 2026-05-18 bar 4.0000; alpaca reverse_splits ex 2026-05-18 old 4 new 1: price-side
+MATCH RKDA step 2018-01-24 bar 20.0000; alpaca reverse_splits ex 2018-01-24 old 20 new 1: price-side
+MATCH RKDA step 2023-03-01 bar 39.9840; alpaca reverse_splits ex 2023-03-01 old 40 new 1: price-side
+MATCH RPGL step 2026-02-24 bar 20.0000; alpaca reverse_splits ex 2026-02-24 old 20 new 1: price-side
+MATCH RPGL step 2026-05-28 bar 40.0000; alpaca reverse_splits ex 2026-05-28 old 40 new 1: price-side
+MATCH RPGL step 2026-09-25 bar 16.0039; alpaca reverse_splits ex 2026-09-25 old 16 new 1: price-side
+MISS RTB step 2023-09-06 -> 2023-09-07: factor 350.00719942404606 -> 35
+MISS RTB step 2025-12-31 -> 2026-01-02: factor 35.00308451573103 -> 1
+MATCH RUBI step 2025-12-02 bar 30.0000; alpaca reverse_splits ex 2025-12-02 old 30 new 1: price-side
+MATCH RUBI step 2026-02-12 bar 7.8000; alpaca reverse_splits ex 2026-02-12 old 7.8 new 1: price-side
+MATCH RUBI step 2026-04-09 bar 10.0000; alpaca reverse_splits ex 2026-04-09 old 10 new 1: price-side
+MATCH RUBI step 2026-06-26 bar 25.0000; alpaca reverse_splits ex 2026-06-26 old 25 new 1: price-side
+MATCH SBFM step 2024-04-17 bar 100.0000; alpaca reverse_splits ex 2024-04-17 old 100 new 1: price-side
+MATCH SBFM step 2024-08-08 bar 20.0027; alpaca reverse_splits ex 2024-08-08 old 20 new 1: price-side
+MATCH SBFM step 2026-06-01 bar 10.0000; alpaca reverse_splits ex 2026-06-01 old 10 new 1: price-side
+MISS SCNI step 2022-11-23 -> 2022-11-25: factor 1000.0000000000001 -> 100
+MATCH SCNI step 2024-05-21 bar 10.0000; alpaca reverse_splits ex 2024-05-21 old 10 new 1: price-side
+MATCH SCNI step 2026-08-21 bar 10.0000; alpaca reverse_splits ex 2026-08-21 old 10 new 1: price-side
+MATCH SCYX step 2020-07-17 bar 9.9992; alpaca reverse_splits ex 2020-07-17 old 10 new 1: price-side
+MATCH SCYX step 2026-06-01 bar 8.0000; alpaca reverse_splits ex 2026-06-01 old 8 new 1: price-side
+MISS SDEV step 2022-11-15 -> 2022-11-16: factor 6125.029239766082 -> 175
+MISS SDEV step 2024-05-30 -> 2024-05-31: factor 175.0479846449136 -> 5
+MISS SDEV step 2026-02-20 -> 2026-02-23: factor 5 -> 1
+MATCH SDOT step 2024-10-18 bar 10.0000; alpaca reverse_splits ex 2024-10-18 old 10 new 1: price-side
+MATCH SDOT step 2025-09-15 bar 10.0000; alpaca reverse_splits ex 2025-09-15 old 10 new 1: price-side
+MATCH SDOT step 2026-05-27 bar 20.0000; alpaca reverse_splits ex 2026-05-27 old 20 new 1: price-side
+MATCH SEED step 2018-07-10 bar 10.0000; alpaca reverse_splits ex 2018-07-10 old 10 new 1: price-side
+MISS SER step 2024-03-14 -> 2024-03-15: factor 35.1764705882353 -> 1
+MATCH SFWL step 2026-09-08 bar 15.0047; alpaca reverse_splits ex 2026-09-08 old 15 new 1: price-side
+MISS SGLY step 2020-07-06 -> 2020-07-07: factor 700 -> 140
+MATCH SGLY step 2024-02-12 bar 10.0006; alpaca reverse_splits ex 2024-02-12 old 10 new 1: price-side
+MATCH SGLY step 2026-07-27 bar 13.9985; alpaca reverse_splits ex 2026-07-27 old 14 new 1: price-side
+MISS SGRX step 2023-05-26 -> 2023-05-30: factor 9000 -> 300
+MISS SGRX step 2026-01-16 -> 2026-01-20: factor 300 -> 5.000000000000001
+MISS SGRX step 2026-08-20 -> 2026-08-21: factor 5.000678702321162 -> 1
+MATCH SHFS step 2025-03-24 bar 19.9989; alpaca reverse_splits ex 2025-03-24 old 20 new 1: price-side
+MATCH SHFS step 2026-09-30 bar 12.0017; alpaca reverse_splits ex 2026-09-30 old 12 new 1: price-side
+MATCH SHPH step 2024-08-13 bar 8.0000; alpaca reverse_splits ex 2024-08-13 old 8 new 1: price-side
+MATCH SHPH step 2025-06-16 bar 25.0000; alpaca reverse_splits ex 2025-06-16 old 25 new 1: price-side
+MATCH SHPH step 2026-06-11 bar 10.0000; alpaca reverse_splits ex 2026-06-11 old 10 new 1: price-side
+MATCH SILO step 2026-06-03 bar 15.0014; alpaca reverse_splits ex 2026-06-03 old 15 new 1: price-side
+MISS SINT step 2017-11-09 -> 2017-11-10: factor 7200000 -> 600000
+MATCH SINT step 2019-07-29 bar 30.0000; alpaca reverse_splits ex 2019-07-29 old 30 new 1: price-side
+MATCH SINT step 2022-12-20 bar 100.0000; alpaca reverse_splits ex 2022-12-20 old 100 new 1: price-side
+MATCH SINT step 2024-05-28 bar 200.0000; alpaca reverse_splits ex 2024-05-28 old 200 new 1: price-side
+MATCH SKIL step 2023-10-02 bar 20.0023; alpaca reverse_splits ex 2023-10-02 old 20 new 1: price-side
+MATCH SKYQ step 2026-03-16 bar 8.0000; alpaca reverse_splits ex 2026-03-16 old 8 new 1: price-side
+MISS SLE step 2023-09-08 -> 2023-09-11: factor 9600 -> 480
+MATCH SLE step 2025-06-23 bar 40.0015; alpaca reverse_splits ex 2025-06-23 old 40 new 1: price-side
+MATCH SLE step 2026-01-23 bar 11.9992; alpaca reverse_splits ex 2026-01-23 old 12 new 1: price-side
+MATCH SLXN step 2024-11-29 bar 9.0000; alpaca reverse_splits ex 2024-11-29 old 9 new 1: price-side
+MATCH SLXN step 2025-07-29 bar 15.0000; alpaca reverse_splits ex 2025-07-29 old 15 new 1: price-side
+MATCH SLXN step 2026-05-29 bar 10.0000; alpaca reverse_splits ex 2026-05-29 old 10 new 1: price-side
+MATCH SMSI step 2024-04-11 bar 8.0013; alpaca reverse_splits ex 2024-04-11 old 8 new 1: price-side
+MATCH SMSI step 2026-06-05 bar 5.0000; alpaca reverse_splits ex 2026-06-05 old 5 new 1: price-side
+MATCH SMTK step 2026-08-21 bar 50.0000; alpaca reverse_splits ex 2026-08-21 old 50 new 1: price-side
+MATCH SMX step 2023-08-21 bar 22.0000; alpaca reverse_splits ex 2023-08-21 old 22 new 1: price-side
+MATCH SMX step 2024-07-15 bar 75.0000; alpaca reverse_splits ex 2024-07-15 old 75 new 1: price-side
+MATCH SMX step 2025-01-15 bar 28.5000; alpaca reverse_splits ex 2025-01-15 old 28.5 new 1: price-side
+MATCH SMX step 2025-06-16 bar 4.1000; alpaca reverse_splits ex 2025-06-16 old 4.1 new 1: price-side
+MATCH SMX step 2025-08-07 bar 7.0000; alpaca reverse_splits ex 2025-08-07 old 7 new 1: price-side
+MATCH SMX step 2025-10-23 bar 10.8996; alpaca reverse_splits ex 2025-10-23 old 10.89958 new 1: price-side
+MATCH SMX step 2025-11-18 bar 8.0000; alpaca reverse_splits ex 2025-11-18 old 8 new 1: price-side
+MATCH SMX step 2026-02-17 bar 4.8828; alpaca reverse_splits ex 2026-02-17 old 4.8828125 new 1: price-side
+MATCH SMX step 2026-05-11 bar 20.0010; alpaca reverse_splits ex 2026-05-11 old 20 new 1: price-side
+MATCH SMX step 2026-06-01 bar 2.2857; alpaca reverse_splits ex 2026-06-01 old 2.285 new 1: price-side
+MATCH SMXT step 2026-08-13 bar 11.9995; alpaca reverse_splits ex 2026-08-13 old 12 new 1: price-side
+MATCH SNTG step 2022-08-11 bar 5.0000; alpaca reverse_splits ex 2022-08-11 old 5 new 1: price-side
+MATCH SOAR step 2025-02-24 bar 25.0000; alpaca reverse_splits ex 2025-02-24 old 25 new 1: price-side
+MATCH SONM step 2021-09-16 bar 10.0000; alpaca reverse_splits ex 2021-09-16 old 10 new 1: price-side
+MATCH SONM step 2024-07-18 bar 10.0003; alpaca reverse_splits ex 2024-07-18 old 10 new 1: price-side
+MATCH SONM step 2025-10-27 bar 18.0062; alpaca reverse_splits ex 2025-10-27 old 18 new 1: price-side
+MISS SOS step 2019-12-02 -> 2019-12-03: factor 7500 -> 750
+MATCH SOS step 2022-07-06 bar 50.0000; alpaca reverse_splits ex 2022-07-06 old 50 new 1: price-side
+MATCH SOS step 2024-11-19 bar 14.9979; alpaca reverse_splits ex 2024-11-19 old 15 new 1: price-side
+MATCH SPHL step 2025-12-02 bar 8.0005; alpaca reverse_splits ex 2025-12-02 old 8 new 1: price-side
+MATCH SPRU step 2023-10-09 bar 8.0000; alpaca reverse_splits ex 2023-10-09 old 8 new 1: price-side
+MATCH SQFT step 2025-05-19 bar 10.0000; alpaca reverse_splits ex 2025-05-19 old 10 new 1: price-side
+MATCH SRZN step 2023-12-14 bar 15.0000; alpaca reverse_splits ex 2023-12-14 old 15 new 1: price-side
+MATCH SST step 2025-06-12 bar 10.0000; alpaca reverse_splits ex 2025-06-12 old 10 new 1: price-side
+MATCH STEM step 2025-06-23 bar 20.0000; alpaca reverse_splits ex 2025-06-23 old 20 new 1: price-side
+MATCH STFS step 2026-03-13 bar 40.0000; alpaca reverse_splits ex 2026-03-13 old 40 new 1: price-side
+MATCH STI step 2025-05-12 bar 50.0000; alpaca reverse_splits ex 2025-05-12 old 50 new 1: price-side
+MATCH STKH step 2024-04-04 bar 10.0000; alpaca reverse_splits ex 2024-04-04 old 10 new 1: price-side
+MATCH STKH step 2025-04-28 bar 5.0000; alpaca reverse_splits ex 2025-04-28 old 5 new 1: price-side
+MATCH STKH step 2025-09-10 bar 7.9987; alpaca reverse_splits ex 2025-09-10 old 8 new 1: price-side
+MATCH STKH step 2026-07-27 bar 3.0005; alpaca reverse_splits ex 2026-07-27 old 3 new 1: price-side
+MATCH SUGP step 2025-08-25 bar 9.9977; alpaca reverse_splits ex 2025-08-25 old 10 new 1: price-side
+MATCH SUGP step 2026-08-06 bar 5.0000; alpaca reverse_splits ex 2026-08-06 old 5 new 1: price-side
+MISS SUNE step 2022-03-18 -> 2022-03-21: factor 600000 -> 150000
+MISS SUNE step 2024-06-11 -> 2024-06-12: factor 150000 -> 10000
+MISS SUNE step 2024-10-16 -> 2024-10-17: factor 10000 -> 200
+MATCH SUNE step 2025-04-21 bar 200.0000; alpaca reverse_splits ex 2025-04-21 old 200 new 1: price-side
+MATCH SVRE step 2024-10-28 bar 18.0001; alpaca reverse_splits ex 2024-10-28 old 18 new 1: price-side
+MATCH SVRE step 2025-02-21 bar 13.3332; alpaca reverse_splits ex 2025-02-21 old 13.333333333 new 1: price-side
+MATCH SVRE step 2025-06-11 bar 3.0001; alpaca reverse_splits ex 2025-06-11 old 3 new 1: price-side
+MATCH SVRE step 2025-12-10 bar 3.0000; alpaca reverse_splits ex 2025-12-10 old 3 new 1: price-side
+MATCH SVRE step 2026-02-25 bar 4.0000; alpaca reverse_splits ex 2026-02-25 old 4 new 1: price-side
+MISS SVRN step 2022-12-21 -> 2022-12-22: factor 100000 -> 10000
+MISS SVRN step 2023-06-07 -> 2023-06-08: factor 10000 -> 500
+MISS SVRN step 2025-08-22 -> 2025-08-25: factor 500.00000000000006 -> 20
+MATCH SVRN step 2026-03-30 bar 20.0000; alpaca reverse_splits ex 2026-03-30 old 20 new 1: price-side
+MATCH SXTC step 2021-02-22 bar 4.0000; alpaca reverse_splits ex 2021-02-22 old 4 new 1: price-side
+MATCH SXTC step 2022-05-19 bar 20.0000; alpaca reverse_splits ex 2022-05-19 old 20 new 1: price-side
+MATCH SXTC step 2023-10-05 bar 25.0000; alpaca reverse_splits ex 2023-10-05 old 25 new 1: price-side
+MATCH SXTC step 2025-02-25 bar 8.0000; alpaca reverse_splits ex 2025-02-25 old 8 new 1: price-side
+MATCH SXTC step 2026-02-03 bar 150.0000; alpaca reverse_splits ex 2026-02-03 old 150 new 1: price-side
+MATCH SXTC step 2026-08-10 bar 80.0000; alpaca reverse_splits ex 2026-08-10 old 80 new 1: price-side
+MATCH SXTP step 2024-08-12 bar 11.9989; alpaca reverse_splits ex 2024-08-12 old 12 new 1: price-side
+MATCH SXTP step 2025-02-24 bar 5.0000; alpaca reverse_splits ex 2025-02-24 old 5 new 1: price-side
+MATCH SXTP step 2026-01-20 bar 4.0000; alpaca reverse_splits ex 2026-01-20 old 4 new 1: price-side
+MISS TAOX step 2024-04-04 -> 2024-04-05: factor 25.000000000000004 -> 1
+MATCH TCRT step 2024-02-01 bar 15.0000; alpaca reverse_splits ex 2024-02-01 old 15 new 1: price-side
+MATCH TCRT step 2024-07-18 bar 10.0000; alpaca reverse_splits ex 2024-07-18 old 10 new 1: price-side
+MATCH TDIC step 2026-04-20 bar 4.9993; alpaca reverse_splits ex 2026-04-20 old 5 new 1: price-side
+MATCH TDIC step 2026-06-15 bar 25.0022; alpaca reverse_splits ex 2026-06-15 old 25 new 1: price-side
+MATCH TDTH step 2026-04-24 bar 30.0000; alpaca reverse_splits ex 2026-04-24 old 30 new 1: price-side
+MATCH TENX step 2018-02-26 bar 20.0000; alpaca reverse_splits ex 2018-02-26 old 20 new 1: price-side
+MATCH TENX step 2023-01-05 bar 20.0000; alpaca reverse_splits ex 2023-01-05 old 20 new 1: price-side
+MATCH TENX step 2024-01-03 bar 79.9923; alpaca reverse_splits ex 2024-01-03 old 80 new 1: price-side
+MATCH THH step 2026-08-10 bar 10.0000; alpaca reverse_splits ex 2026-08-10 old 10 new 1: price-side
+MATCH TLIH step 2026-05-01 bar 10.0000; alpaca reverse_splits ex 2026-05-01 old 10 new 1: price-side
+MATCH TNMG step 2025-12-23 bar 19.9983; alpaca reverse_splits ex 2025-12-23 old 20 new 1: price-side
+MATCH TNMG step 2026-09-08 bar 7.9995; alpaca reverse_splits ex 2026-09-08 old 8 new 1: price-side
+MATCH TNON step 2023-11-02 bar 10.0000; alpaca reverse_splits ex 2023-11-02 old 10 new 1: price-side
+MATCH TNON step 2024-09-06 bar 8.0001; alpaca reverse_splits ex 2024-09-06 old 8 new 1: price-side
+MATCH TNON step 2026-08-10 bar 35.0000; alpaca reverse_splits ex 2026-08-10 old 35 new 1: price-side
+MATCH TOMZ step 2026-07-20 bar 2.9996; alpaca reverse_splits ex 2026-07-20 old 3 new 1: price-side
+MATCH TOPS step 2017-05-11 bar 20.0000; alpaca reverse_splits ex 2017-05-11 old 20 new 1: price-side
+MATCH TOPS step 2017-06-23 bar 15.0000; alpaca reverse_splits ex 2017-06-23 old 15 new 1: price-side
+MATCH TOPS step 2017-08-03 bar 30.0000; alpaca reverse_splits ex 2017-08-03 old 30 new 1: price-side
+MATCH TOPS step 2017-10-06 bar 2.0000; alpaca reverse_splits ex 2017-10-06 old 2 new 1: price-side
+MATCH TOPS step 2018-03-26 bar 10.0000; alpaca reverse_splits ex 2018-03-26 old 10 new 1: price-side
+MATCH TOPS step 2019-08-22 bar 20.0000; alpaca reverse_splits ex 2019-08-22 old 20 new 1: price-side
+MATCH TOPS step 2020-08-10 bar 25.0000; alpaca reverse_splits ex 2020-08-10 old 25 new 1: price-side
+MATCH TOPS step 2022-09-23 bar 20.0000; alpaca reverse_splits ex 2022-09-23 old 20 new 1: price-side
+MATCH TOPS step 2023-09-29 bar 11.9993; alpaca reverse_splits ex 2023-09-29 old 12 new 1: price-side
+MATCH TPET step 2024-11-15 bar 20.0044; alpaca reverse_splits ex 2024-11-15 old 20 new 1: price-side
+MATCH TPET step 2026-08-31 bar 9.0005; alpaca reverse_splits ex 2026-08-31 old 9 new 1: price-side
+MISS TPST step 2018-12-07 -> 2018-12-10: factor 2925.007215007215 -> 195
+MISS TPST step 2021-06-25 -> 2021-06-28: factor 194.99999999999997 -> 13.000000000000002
+MATCH TPST step 2025-04-09 bar 13.0004; alpaca reverse_splits ex 2025-04-09 old 13 new 1: price-side
+MATCH TRNR step 2024-06-14 bar 40.0000; alpaca reverse_splits ex 2024-06-14 old 40 new 1: price-side
+MATCH TRNR step 2024-11-11 bar 100.0000; alpaca reverse_splits ex 2024-11-11 old 100 new 1: price-side
+MATCH TRNR step 2025-06-27 bar 10.0000; alpaca reverse_splits ex 2025-06-27 old 10 new 1: price-side
+MATCH TRNR step 2026-02-24 bar 10.0020; alpaca reverse_splits ex 2026-02-24 old 10 new 1: price-side
+MATCH TRNR step 2026-06-30 bar 7.0000; alpaca reverse_splits ex 2026-06-30 old 7 new 1: price-side
+MATCH TRT step 2026-01-05 bar 0.5000; alpaca forward_splits ex 2026-01-05 old 1 new 2: price-side
+MATCH TRVG step 2023-11-17 bar 4.9992; alpaca reverse_splits ex 2023-11-17 old 5 new 1: price-side
+MISS TULP step 2020-12-31 -> 2021-01-04: factor 6.999642814620787 -> 1
+MISS TWAV step 2019-04-17 -> 2019-04-18: factor 6000 -> 600
+MISS TWAV step 2023-01-03 -> 2023-01-04: factor 600 -> 40
+MISS TWAV step 2024-08-23 -> 2024-08-26: factor 40 -> 1
+MATCH UK step 2022-04-22 bar 20.0000; alpaca reverse_splits ex 2022-04-22 old 20 new 1: price-side
+MATCH UK step 2023-11-30 bar 12.0000; alpaca reverse_splits ex 2023-11-30 old 12 new 1: price-side
+MATCH UK step 2026-04-30 bar 10.0000; alpaca reverse_splits ex 2026-04-30 old 10 new 1: price-side
+MATCH UONEK step 2026-01-23 bar 10.0000; alpaca reverse_splits ex 2026-01-23 old 10 new 1: price-side
+MATCH UTSI step 2022-06-29 bar 4.0002; alpaca reverse_splits ex 2022-06-29 old 4 new 1: price-side
+MATCH UXIN step 2022-10-28 bar 10.0000; alpaca reverse_splits ex 2022-10-28 old 10 new 1: price-side
+MATCH UXIN step 2024-01-16 bar 10.0000; alpaca reverse_splits ex 2024-01-16 old 10 new 1: price-side
+MISS VAI step 2022-04-05 -> 2022-04-06: factor 100 -> 10
+MISS VAI step 2025-07-28 -> 2025-07-29: factor 10 -> 1
+MISS VBIO step 2023-08-22 -> 2023-08-23: factor 42500 -> 425
+MISS VBIO step 2025-03-06 -> 2025-03-07: factor 425.01954652071925 -> 25
+MATCH VBIO step 2026-08-31 bar 25.0041; alpaca reverse_splits ex 2026-08-31 old 25 new 1: price-side
+MATCH VCIG step 2024-11-05 bar 49.0000; alpaca reverse_splits ex 2024-11-05 old 49 new 1: price-side
+MATCH VCIG step 2025-04-03 bar 20.0000; alpaca reverse_splits ex 2025-04-03 old 20 new 1: price-side
+MATCH VCIG step 2025-09-16 bar 30.0000; alpaca reverse_splits ex 2025-09-16 old 30 new 1: price-side
+MATCH VCIG step 2026-02-27 bar 60.0000; alpaca reverse_splits ex 2026-02-27 old 60 new 1: price-side
+MATCH VCIG step 2026-08-24 bar 15.0023; alpaca reverse_splits ex 2026-08-24 old 15 new 1: price-side
+MATCH VEEA step 2026-08-31 bar 20.0000; alpaca reverse_splits ex 2026-08-31 old 20 new 1: price-side
+MATCH VEEE step 2025-04-08 bar 10.0003; alpaca reverse_splits ex 2025-04-08 old 10 new 1: price-side
+MATCH VEEE step 2026-05-04 bar 37.0012; alpaca reverse_splits ex 2026-05-04 old 37 new 1: price-side
+MATCH VERU step 2025-08-11 bar 10.0000; alpaca reverse_splits ex 2025-08-11 old 10 new 1: price-side
+MATCH VIVK step 2026-07-17 bar 20.0000; alpaca reverse_splits ex 2026-07-17 old 20 new 1: price-side
+MATCH VIVK step 2026-10-05 bar 15.0000; alpaca reverse_splits ex 2026-10-05 old 15 new 1: price-side
+MATCH VNCE step 2017-10-24 bar 10.0000; alpaca reverse_splits ex 2017-10-24 old 10 new 1: price-side
+MATCH VRAX step 2023-12-18 bar 10.0000; alpaca reverse_splits ex 2023-12-18 old 10 new 1: price-side
+MATCH VRAX step 2026-06-26 bar 25.0000; alpaca reverse_splits ex 2026-06-26 old 25 new 1: price-side
+MATCH VRM step 2024-02-14 bar 79.9896; alpaca reverse_splits ex 2024-02-14 old 80 new 1: price-side
+MATCH VS step 2022-11-09 bar 15.0000; alpaca reverse_splits ex 2022-11-09 old 15 new 1: price-side
+MATCH VS step 2023-12-29 bar 16.0011; alpaca reverse_splits ex 2023-12-29 old 16 new 1: price-side
+MISS VSA step 2021-12-22 -> 2021-12-23: factor 2500 -> 500
+MATCH VSA step 2025-12-22 bar 50.0000; alpaca reverse_splits ex 2025-12-22 old 50 new 1: price-side
+MATCH VSA step 2026-05-26 bar 10.0000; alpaca reverse_splits ex 2026-05-26 old 10 new 1: price-side
+MATCH VSME step 2024-06-18 bar 7.0000; alpaca reverse_splits ex 2024-06-18 old 7 new 1: price-side
+MATCH VSME step 2026-01-12 bar 20.0000; alpaca reverse_splits ex 2026-01-12 old 20 new 1: price-side
+MATCH VWAV step 2026-09-22 bar 20.0000; alpaca reverse_splits ex 2026-09-22 old 20 new 1: price-side
+MATCH WCT step 2026-03-06 bar 50.0119; alpaca reverse_splits ex 2026-03-06 old 50 new 1: price-side
+MATCH WCT step 2026-09-08 bar 5.0000; alpaca reverse_splits ex 2026-09-08 old 5 new 1: price-side
+MATCH WETO step 2026-08-03 bar 100.0000; alpaca reverse_splits ex 2026-08-03 old 100 new 1: price-side
+MATCH WHLR step 2017-04-03 bar 8.0000; alpaca reverse_splits ex 2017-04-03 old 8 new 1: price-side
+MATCH WHLR step 2023-08-18 bar 10.0000; alpaca reverse_splits ex 2023-08-18 old 10 new 1: price-side
+MATCH WHLR step 2024-05-17 bar 24.0000; alpaca reverse_splits ex 2024-05-17 old 24 new 1: price-side
+MATCH WHLR step 2024-06-28 bar 5.0000; alpaca reverse_splits ex 2024-06-28 old 5 new 1: price-side
+MATCH WHLR step 2024-09-20 bar 3.0000; alpaca reverse_splits ex 2024-09-20 old 3 new 1: price-side
+MATCH WHLR step 2024-11-19 bar 2.0000; alpaca reverse_splits ex 2024-11-19 old 2 new 1: price-side
+MATCH WHLR step 2025-01-28 bar 4.0000; alpaca reverse_splits ex 2025-01-28 old 4 new 1: price-side
+MATCH WHLR step 2025-03-27 bar 5.0000; alpaca reverse_splits ex 2025-03-27 old 5 new 1: price-side
+MATCH WHLR step 2025-05-27 bar 7.0000; alpaca reverse_splits ex 2025-05-27 old 7 new 1: price-side
+MATCH WHLR step 2025-09-23 bar 5.0000; alpaca reverse_splits ex 2025-09-23 old 5 new 1: price-side
+MATCH WHLR step 2025-11-28 bar 2.0000; alpaca reverse_splits ex 2025-11-28 old 2 new 1: price-side
+MATCH WHLR step 2025-12-01 bar 2.0000; alpaca reverse_splits ex 2025-12-01 old 2 new 1: price-side
+MATCH WHLR step 2026-01-20 bar 3.0000; alpaca reverse_splits ex 2026-01-20 old 3 new 1: price-side
+MATCH WHLR step 2026-04-20 bar 3.0000; alpaca reverse_splits ex 2026-04-20 old 3 new 1: price-side
+MATCH WHLR step 2026-06-18 bar 4.0000; alpaca reverse_splits ex 2026-06-18 old 4 new 1: price-side
+MATCH WHLR step 2026-07-28 bar 5.0002; alpaca reverse_splits ex 2026-07-28 old 5 new 1: price-side
+MATCH WHLR step 2026-08-27 bar 3.9989; alpaca reverse_splits ex 2026-08-27 old 4 new 1: price-side
+MATCH WNW step 2023-12-20 bar 35.0000; alpaca reverse_splits ex 2023-12-20 old 35 new 1: price-side
+MATCH WNW step 2025-04-01 bar 20.0000; alpaca reverse_splits ex 2025-04-01 old 20 new 1: price-side
+MATCH WNW step 2026-04-06 bar 100.0000; alpaca reverse_splits ex 2026-04-06 old 100 new 1: price-side
+MATCH WYHG step 2026-06-02 bar 3.9995; alpaca reverse_splits ex 2026-06-02 old 4 new 1: price-side
+MATCH WYY step 2020-11-09 bar 10.0000; alpaca reverse_splits ex 2020-11-09 old 10 new 1: price-side
+MATCH XAIR step 2025-07-14 bar 20.0000; alpaca reverse_splits ex 2025-07-14 old 20 new 1: price-side
+MATCH XAIR step 2026-07-13 bar 20.0000; alpaca reverse_splits ex 2026-07-13 old 20 new 1: price-side
+MATCH XBIO step 2019-06-25 bar 12.0000; alpaca reverse_splits ex 2019-06-25 old 12 new 1: price-side
+MATCH XBIO step 2023-05-15 bar 10.0000; alpaca reverse_splits ex 2023-05-15 old 10 new 1: price-side
+MATCH XCH step 2026-08-21 bar 20.0000; alpaca reverse_splits ex 2026-08-21 old 20 new 1: price-side
+MATCH XCUR step 2022-06-30 bar 30.0000; alpaca reverse_splits ex 2022-06-30 old 30 new 1: price-side
+MATCH XCUR step 2024-08-28 bar 5.0016; alpaca reverse_splits ex 2024-08-28 old 5 new 1: price-side
+MATCH XELB step 2025-03-25 bar 9.9991; alpaca reverse_splits ex 2025-03-25 old 10 new 1: price-side
+MATCH XELB step 2025-12-24 bar 3.0000; alpaca reverse_splits ex 2025-12-24 old 3 new 1: price-side
+MISS XHG step 2022-03-04 -> 2022-03-07: factor 80000 -> 16000
+MISS XHG step 2023-12-06 -> 2023-12-07: factor 16000 -> 400
+MATCH XHG step 2024-11-08 bar 20.0000; alpaca reverse_splits ex 2024-11-08 old 20 new 1: price-side
+MATCH XHG step 2025-05-09 bar 20.0000; alpaca reverse_splits ex 2025-05-09 old 20 new 1: price-side
+MATCH XHLD step 2025-12-02 bar 14.9965; alpaca reverse_splits ex 2025-12-02 old 15 new 1: price-side
+MATCH XPON step 2024-10-09 bar 100.0000; alpaca reverse_splits ex 2024-10-09 old 100 new 1: price-side
+MATCH XPON step 2026-07-21 bar 12.0000; alpaca reverse_splits ex 2026-07-21 old 12 new 1: price-side
+MATCH XRTX step 2023-11-14 bar 8.9994; alpaca reverse_splits ex 2023-11-14 old 9 new 1: price-side
+MATCH XRTX step 2026-04-06 bar 5.0012; alpaca reverse_splits ex 2026-04-06 old 5 new 1: price-side
+MATCH XTLB step 2017-02-10 bar 5.0002; alpaca reverse_splits ex 2017-02-10 old 5 new 1: price-side
+MATCH XTLB step 2025-12-24 bar 4.0008; alpaca reverse_splits ex 2025-12-24 old 4 new 1: price-side
+MATCH XTLB step 2026-03-25 bar 4.0000; alpaca reverse_splits ex 2026-03-25 old 4 new 1: price-side
+MATCH XXII step 2023-07-05 bar 15.0000; alpaca reverse_splits ex 2023-07-05 old 15 new 1: price-side
+MATCH XXII step 2024-04-02 bar 16.0000; alpaca reverse_splits ex 2024-04-02 old 16 new 1: price-side
+MATCH XXII step 2024-12-17 bar 135.0000; alpaca reverse_splits ex 2024-12-17 old 135 new 1: price-side
+MATCH XXII step 2025-06-20 bar 23.0000; alpaca reverse_splits ex 2025-06-20 old 23 new 1: price-side
+MATCH XXII step 2026-01-26 bar 15.0000; alpaca reverse_splits ex 2026-01-26 old 15 new 1: price-side
+MATCH XXII step 2026-06-12 bar 20.0000; alpaca reverse_splits ex 2026-06-12 old 20 new 1: price-side
+MATCH YAAS step 2025-09-30 bar 80.0000; alpaca reverse_splits ex 2025-09-30 old 80 new 1: price-side
+MATCH YAAS step 2026-07-30 bar 5.0008; alpaca reverse_splits ex 2026-07-30 old 5 new 1: price-side
+MISS YDKG step 2019-04-10 -> 2019-04-11: factor 2000 -> 400
+MISS YDKG step 2022-12-09 -> 2022-12-12: factor 400 -> 100
+MATCH YDKG step 2025-11-14 bar 100.0000; alpaca reverse_splits ex 2025-11-14 old 100 new 1: price-side
+MISS YFOR step 2026-03-20 -> 2026-03-23: factor 1500.0000000000002 -> 30.000000000000004
+MISS YFOR step 2026-06-22 -> 2026-06-23: factor 30 -> 1
+MISS YHC step 2023-11-29 -> 2023-11-30: factor 140000 -> 2333.3357142857144
+MISS YHC step 2024-03-01 -> 2024-03-04: factor 2333.334507042254 -> 3500.0000000000005
+MATCH YHC step 2025-04-21 bar 35.0000; alpaca reverse_splits ex 2025-04-21 old 35 new 1: price-side
+MATCH YHC step 2026-07-13 bar 100.0000; alpaca reverse_splits ex 2026-07-13 old 100 new 1: price-side
+MATCH YHGJ step 2025-10-01 bar 10.0000; alpaca reverse_splits ex 2025-10-01 old 10 new 1: price-side
+MATCH YI step 2025-01-24 bar 10.0000; alpaca reverse_splits ex 2025-01-24 old 10 new 1: price-side
+MATCH YMAT step 2026-07-10 bar 5.0000; alpaca reverse_splits ex 2026-07-10 old 5 new 1: price-side
+MATCH YMT step 2026-05-18 bar 14.9986; alpaca reverse_splits ex 2026-05-18 old 15 new 1: price-side
+MATCH YMT step 2026-08-27 bar 16.0000; alpaca reverse_splits ex 2026-08-27 old 16 new 1: price-side
+MATCH YQ step 2021-11-17 bar 3.9995; alpaca reverse_splits ex 2021-11-17 old 4 new 1: price-side
+MATCH YQ step 2023-12-18 bar 5.0014; alpaca reverse_splits ex 2023-12-18 old 5 new 1: price-side
+MATCH YXT step 2026-07-14 bar 10.0000; alpaca reverse_splits ex 2026-07-14 old 10 new 1: price-side
+MATCH ZEPP step 2024-09-16 bar 4.0000; alpaca reverse_splits ex 2024-09-16 old 4 new 1: price-side
+MATCH ZJYL step 2024-02-08 bar 0.0500; alpaca forward_splits ex 2024-02-08 old 1 new 20: price-side
+MATCH ZJYL step 2026-03-16 bar 20.0000; alpaca reverse_splits ex 2026-03-16 old 20 new 1: price-side
+MATCH ZKIN step 2025-01-31 bar 7.0000; alpaca reverse_splits ex 2025-01-31 old 7 new 1: price-side
+MISS ZNB step 2022-09-23 -> 2022-09-26: factor 80000000 -> 2000000
+MISS ZNB step 2024-11-14 -> 2024-11-15: factor 2000000 -> 20000
+MATCH ZNB step 2025-08-22 bar 25.0000; alpaca reverse_splits ex 2025-08-22 old 25 new 1: price-side
+MATCH ZNB step 2026-03-12 bar 100.0000; alpaca reverse_splits ex 2026-03-12 old 100 new 1: price-side
+MATCH ZNB step 2026-07-27 bar 8.0000; alpaca reverse_splits ex 2026-07-27 old 8 new 1: price-side

@@ -141,6 +141,7 @@ function jobDeps(): FloatJobDeps {
       { date: to, close: 10, factor: 1 },
     ],
     announcedSplits: async () => [],
+    announcedActions: async () => [],
     now: () => `${AS_OF}T23:00:00.000Z`,
   };
 }

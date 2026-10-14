@@ -1,0 +1,435 @@
+{
+  "window": {
+    "start": "2026-04-01",
+    "end": "2026-10-13"
+  },
+  "requests": 7,
+  "throttled": false,
+  "asked": [
+    {
+      "type": "forward_split",
+      "pages": 1,
+      "status": 200
+    },
+    {
+      "type": "reverse_split",
+      "pages": 1,
+      "status": 200
+    },
+    {
+      "type": "unit_split",
+      "pages": 1,
+      "status": 200
+    },
+    {
+      "type": "stock_dividend",
+      "pages": 1,
+      "status": 200
+    },
+    {
+      "type": "stock_merger",
+      "pages": 1,
+      "status": 200
+    },
+    {
+      "type": "stock_and_cash_merger",
+      "pages": 1,
+      "status": 200
+    },
+    {
+      "type": "spin_off",
+      "pages": 1,
+      "status": 200
+    }
+  ],
+  "groups": {
+    "forward_splits": {
+      "rows": 111,
+      "fields": [
+        "cusip",
+        "due_bill_redemption_date",
+        "ex_date",
+        "id",
+        "new_rate",
+        "old_rate",
+        "payable_date",
+        "process_date",
+        "record_date",
+        "symbol"
+      ],
+      "samples": [
+        {
+          "cusip": "032095101",
+          "due_bill_redemption_date": "2026-09-03",
+          "ex_date": "2026-09-03",
+          "id": "37718fa2-c8a7-437d-958a-d762bca815d5",
+          "new_rate": 2,
+          "old_rate": 1,
+          "payable_date": "2026-09-03",
+          "process_date": "2026-09-03",
+          "record_date": "2026-08-17",
+          "symbol": "APH"
+        },
+        {
+          "cusip": "74016W759",
+          "due_bill_redemption_date": "2026-07-14",
+          "ex_date": "2026-07-14",
+          "id": "38b0bbe9-e5bd-4ad3-8dc6-fd4da6c8b1b9",
+          "new_rate": 10,
+          "old_rate": 1,
+          "payable_date": "2026-07-13",
+          "process_date": "2026-07-14",
+          "record_date": "2026-07-10",
+          "symbol": "ARMH"
+        },
+        {
+          "cusip": "74016W734",
+          "due_bill_redemption_date": "2026-07-14",
+          "ex_date": "2026-07-14",
+          "id": "15a43512-2c9a-41dd-854d-62ab13bb56f6",
+          "new_rate": 10,
+          "old_rate": 1,
+          "payable_date": "2026-07-13",
+          "process_date": "2026-07-14",
+          "record_date": "2026-07-10",
+          "symbol": "ASMH"
+        }
+      ]
+    },
+    "reverse_splits": {
+      "rows": 654,
+      "fields": [
+        "ex_date",
+        "id",
+        "new_cusip",
+        "new_rate",
+        "new_symbol",
+        "old_cusip",
+        "old_rate",
+        "payable_date",
+        "process_date",
+        "record_date",
+        "symbol"
+      ],
+      "samples": [
+        {
+          "ex_date": "2026-08-26",
+          "id": "f7804279-8da8-4533-a775-1383705ce207",
+          "new_cusip": "09175M861",
+          "new_rate": 1,
+          "new_symbol": "09175M861",
+          "old_cusip": "09175M606",
+          "old_rate": 5,
+          "payable_date": "2026-08-26",
+          "process_date": "2026-08-26",
+          "record_date": "2026-08-26",
+          "symbol": "09175M606"
+        },
+        {
+          "ex_date": "2026-09-25",
+          "id": "949bdf9d-9b39-4dde-9997-7bd0484b5544",
+          "new_cusip": "92837C208",
+          "new_rate": 1,
+          "new_symbol": "ABEPD",
+          "old_cusip": "92837C109",
+          "old_rate": 15,
+          "payable_date": "2026-09-28",
+          "process_date": "2026-09-28",
+          "record_date": "2026-09-25",
+          "symbol": "ABEPF"
+        },
+        {
+          "ex_date": "2026-07-06",
+          "id": "0108a96a-9666-44eb-9f7c-a56e46d72ce9",
+          "new_cusip": "02462A203",
+          "new_rate": 1,
+          "old_cusip": "02462A104",
+          "old_rate": 15,
+          "payable_date": "2026-07-06",
+          "process_date": "2026-07-06",
+          "record_date": "2026-07-06",
+          "symbol": "ABTC"
+        }
+      ]
+    },
+    "unit_splits": {
+      "rows": 24,
+      "fields": [
+        "alternate_cusip",
+        "alternate_rate",
+        "alternate_symbol",
+        "effective_date",
+        "id",
+        "new_cusip",
+        "new_rate",
+        "new_symbol",
+        "old_cusip",
+        "old_rate",
+        "old_symbol",
+        "payable_date",
+        "process_date"
+      ],
+      "samples": [
+        {
+          "alternate_cusip": "G0679A118",
+          "alternate_rate": 0.1667,
+          "alternate_symbol": "ACAAW",
+          "effective_date": "2026-04-10",
+          "id": "2a2f13a0-84a3-45d5-9392-04422569eb4f",
+          "new_cusip": "G0679A100",
+          "new_rate": 1,
+          "new_symbol": "ACAA",
+          "old_cusip": "G0679A126",
+          "old_rate": 1,
+          "old_symbol": "ACAAU",
+          "process_date": "2026-04-10"
+        },
+        {
+          "alternate_cusip": "G0137D118",
+          "alternate_rate": 1.5,
+          "alternate_symbol": "AIMWF",
+          "effective_date": "2026-07-31",
+          "id": "27122ded-4017-450c-9ee7-b9d9f975b132",
+          "new_cusip": "G0137D100",
+          "new_rate": 1,
+          "new_symbol": "AIMUF",
+          "old_cusip": "G0135E100",
+          "old_rate": 1,
+          "old_symbol": "AIMUF",
+          "payable_date": "2026-07-31",
+          "process_date": "2026-07-31"
+        },
+        {
+          "alternate_cusip": "29333R107",
+          "alternate_rate": 0.125,
+          "alternate_symbol": "ENHA",
+          "effective_date": "2026-05-07",
+          "id": "d267e5d0-c88e-42e3-ac05-ab65fdeabc07",
+          "new_cusip": "29333R107",
+          "new_rate": 1,
+          "new_symbol": "ENHA",
+          "old_cusip": "G04819127",
+          "old_rate": 1,
+          "old_symbol": "APADU",
+          "payable_date": "2026-05-08",
+          "process_date": "2026-05-08"
+        }
+      ]
+    },
+    "stock_dividends": {
+      "rows": 25,
+      "fields": [
+        "cusip",
+        "ex_date",
+        "id",
+        "payable_date",
+        "process_date",
+        "rate",
+        "record_date",
+        "symbol"
+      ],
+      "samples": [
+        {
+          "cusip": "09175M861",
+          "ex_date": "2026-09-15",
+          "id": "002c15e2-f6be-4409-a9ff-1d2f0d33a844",
+          "payable_date": "2026-10-06",
+          "process_date": "2026-10-06",
+          "rate": 1.0389404309,
+          "record_date": "2026-09-15",
+          "symbol": "09175M861"
+        },
+        {
+          "cusip": "00089H106",
+          "ex_date": "2026-07-06",
+          "id": "cebaa520-ad8b-4743-8ad0-535ef504150e",
+          "payable_date": "2026-07-29",
+          "process_date": "2026-07-29",
+          "rate": 1.014492753623,
+          "record_date": "2026-07-06",
+          "symbol": "ACSAY"
+        },
+        {
+          "cusip": "009126202",
+          "ex_date": "2026-06-09",
+          "id": "3fea9c52-4b38-4d7c-a8e8-115f8f2eb700",
+          "payable_date": "2026-06-17",
+          "process_date": "2026-06-09",
+          "rate": 1.1,
+          "record_date": "2026-06-09",
+          "symbol": "AIQUY"
+        }
+      ]
+    },
+    "stock_mergers": {
+      "rows": 106,
+      "fields": [
+        "acquiree_cusip",
+        "acquiree_rate",
+        "acquiree_symbol",
+        "acquirer_cusip",
+        "acquirer_rate",
+        "acquirer_symbol",
+        "effective_date",
+        "id",
+        "payable_date",
+        "process_date"
+      ],
+      "samples": [
+        {
+          "acquiree_cusip": "470CNT015",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "470CNT015",
+          "acquirer_cusip": "47010C862",
+          "acquirer_rate": 3.209,
+          "acquirer_symbol": "JAGX",
+          "effective_date": "2026-09-08",
+          "id": "06ea02f3-5493-46f0-ab6e-a00c8f314bd2",
+          "payable_date": "2026-09-08",
+          "process_date": "2026-09-08"
+        },
+        {
+          "acquiree_cusip": "01408J104",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "ADBRF",
+          "acquirer_cusip": "01408J302",
+          "acquirer_rate": 1,
+          "acquirer_symbol": "ADBRF",
+          "effective_date": "2026-08-28",
+          "id": "6d9057d7-4cf0-4e4d-84bd-94a5f6249df7",
+          "payable_date": "2026-08-31",
+          "process_date": "2026-08-31"
+        },
+        {
+          "acquiree_cusip": "030506109",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "AMWD",
+          "acquirer_cusip": "57638P104",
+          "acquirer_rate": 5.15,
+          "acquirer_symbol": "MBC",
+          "effective_date": "2026-05-28",
+          "id": "0dd4494b-f9d5-42b2-a825-5b7416c63806",
+          "payable_date": "2026-05-29",
+          "process_date": "2026-05-29"
+        }
+      ]
+    },
+    "stock_and_cash_mergers": {
+      "rows": 43,
+      "fields": [
+        "acquiree_cusip",
+        "acquiree_rate",
+        "acquiree_symbol",
+        "acquirer_cusip",
+        "acquirer_rate",
+        "acquirer_symbol",
+        "cash_rate",
+        "effective_date",
+        "id",
+        "payable_date",
+        "process_date"
+      ],
+      "samples": [
+        {
+          "acquiree_cusip": "03940C100",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "ACLX",
+          "acquirer_cusip": "039CVR014",
+          "acquirer_rate": 1,
+          "acquirer_symbol": "039CVR014",
+          "cash_rate": 115,
+          "effective_date": "2026-04-29",
+          "id": "66870c5a-b730-4bf6-89e5-2ba12a2be466",
+          "payable_date": "2026-04-29",
+          "process_date": "2026-04-29"
+        },
+        {
+          "acquiree_cusip": "03753U106",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "APLS",
+          "acquirer_cusip": "037CVR016",
+          "acquirer_rate": 1,
+          "acquirer_symbol": "037CVR016",
+          "cash_rate": 41,
+          "effective_date": "2026-05-14",
+          "id": "8cf5a38a-8b1c-49c5-873a-81e5ad681506",
+          "payable_date": "2026-05-18",
+          "process_date": "2026-05-18"
+        },
+        {
+          "acquiree_cusip": "04650F101",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "ATAI",
+          "acquirer_cusip": "046CVR015",
+          "acquirer_rate": 1,
+          "acquirer_symbol": "046CVR015",
+          "cash_rate": 6.75,
+          "effective_date": "2026-09-11",
+          "id": "fa73619f-6ad3-4c6c-922f-4ca90970a957",
+          "payable_date": "2026-09-14",
+          "process_date": "2026-09-14"
+        }
+      ]
+    },
+    "spin_offs": {
+      "rows": 33,
+      "fields": [
+        "due_bill_redemption_date",
+        "ex_date",
+        "id",
+        "new_cusip",
+        "new_rate",
+        "new_symbol",
+        "payable_date",
+        "process_date",
+        "record_date",
+        "source_cusip",
+        "source_rate",
+        "source_symbol"
+      ],
+      "samples": [
+        {
+          "due_bill_redemption_date": "2026-08-24",
+          "ex_date": "2026-08-24",
+          "id": "bac48c24-00c3-4924-984b-6309f34979bc",
+          "new_cusip": "G1R79P102",
+          "new_rate": 0.169464,
+          "new_symbol": "G1R79P102",
+          "payable_date": "2026-08-24",
+          "process_date": "2026-08-24",
+          "record_date": "2026-07-24",
+          "source_cusip": "00091F304",
+          "source_rate": 1,
+          "source_symbol": "ABVC"
+        },
+        {
+          "ex_date": "2026-04-20",
+          "id": "fefc53e6-1dc4-4df2-a823-fac0a217c8a1",
+          "new_cusip": "337185102",
+          "new_rate": 1,
+          "new_symbol": "TRAX",
+          "payable_date": "2026-04-20",
+          "process_date": "2026-04-20",
+          "record_date": "2026-04-06",
+          "source_cusip": "032724106",
+          "source_rate": 1,
+          "source_symbol": "ANAB"
+        },
+        {
+          "due_bill_redemption_date": "2026-04-01",
+          "ex_date": "2026-04-01",
+          "id": "74278c27-fe65-4a5f-a52b-811b0558d8e1",
+          "new_cusip": "G9600F104",
+          "new_rate": 0.33333333333,
+          "new_symbol": "VGNT",
+          "payable_date": "2026-04-01",
+          "process_date": "2026-04-01",
+          "record_date": "2026-03-17",
+          "source_cusip": "G3265R107",
+          "source_rate": 1,
+          "source_symbol": "APTV"
+        }
+      ]
+    }
+  }
+}

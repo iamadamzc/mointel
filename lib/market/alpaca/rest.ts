@@ -15,6 +15,16 @@ import { redact, type AlpacaCredentials } from '../credentials';
 import type { SplitAction } from '../splitRestate';
 import type { MarketFeed } from '../types';
 
+/** One row of `/v1/corporate-actions` as published, under its group (e.g. `reverse_splits`); null rates were absent. */
+export interface CorporateActionRow {
+  group: string;
+  symbol: string;
+  exDate: string | null;
+  oldRate: number | null;
+  newRate: number | null;
+  raw: Record<string, unknown>;
+}
+
 /** One split row from `/v1/corporate-actions`, as published. */
 interface AlpacaSplitRow {
   symbol?: string;
@@ -301,6 +311,42 @@ export class AlpacaRestClient {
       } while (pageToken);
     }
 
+    return results;
+  }
+
+  /**
+   * Float fix 2 piece 1 (Commercial read 98): every corporate action of `types` (the API's own names) for `symbols`
+   * with an ex-date in [start, end], AS PUBLISHED: rates are null where Alpaca gave none, so the float job can refuse on
+   * an action it cannot restate instead of never seeing it (`getSplits` drops such rows, which is right for the bar
+   * restatement and wrong for the float job). Each row keeps the group it came under and its raw fields.
+   */
+  async getCorporateActionsRaw(params: { symbols: string[]; start: string; end: string; types: readonly string[] }): Promise<CorporateActionRow[]> {
+    const results: CorporateActionRow[] = [];
+    for (const batch of chunk(params.symbols, this.batchSize)) {
+      if (batch.length === 0) continue;
+      let pageToken: string | undefined;
+      do {
+        const query = new URLSearchParams({ types: params.types.join(','), start: params.start, end: params.end, limit: '1000', symbols: batch.join(',') });
+        if (pageToken) query.set('page_token', pageToken);
+        const payload = await this.request<{ corporate_actions?: Record<string, Array<Record<string, unknown>> | null> | null; next_page_token?: string | null }>(
+          `${ALPACA_ENDPOINTS.dataRest}/v1/corporate-actions?${query.toString()}`,
+        );
+        for (const [group, rows] of Object.entries(payload.corporate_actions ?? {})) {
+          for (const row of rows ?? []) {
+            const rate = (value: unknown) => (typeof value === 'number' || typeof value === 'string') && Number(value) > 0 ? Number(value) : null;
+            results.push({
+              group,
+              symbol: typeof row.symbol === 'string' ? row.symbol.toUpperCase() : '',
+              exDate: typeof row.ex_date === 'string' ? row.ex_date : null,
+              oldRate: rate(row.old_rate),
+              newRate: rate(row.new_rate),
+              raw: row,
+            });
+          }
+        }
+        pageToken = payload.next_page_token ?? undefined;
+      } while (pageToken);
+    }
     return results;
   }
 

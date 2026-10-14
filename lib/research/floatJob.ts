@@ -33,7 +33,9 @@ import { selectFiledCount, type CompanyFactsShares, type FiledCount } from './fi
 import { SecRequestError } from './sec/client';
 import { htmlToText } from './sec/documents';
 import { newestStatedCount, statedCountFilings, type StatedCountCheck } from './statedCount';
+import { restateForCell } from './floatRestate';
 import { splitProofFromBars, splitProofR0, withAnnouncedSplits, type SpanBar } from './splitProof';
+import type { AnnouncedAction } from './splitRestate';
 import type { SupplyBlock } from './types';
 
 /** His ruling, 2026-10-05T21:22:37.844Z: the filed count may be at most 90 days old. NOT `FILED_SHARES_CURRENT_DAYS`. */
@@ -46,6 +48,17 @@ export const FLOAT_WINDOW_DAYS = 730;
 export const FLOAT_REUSE_DAYS = 4;
 
 const SECTION16 = new Set(['3', '3/A', '4', '4/A', '5', '5/A']);
+
+/**
+ * L6 step 1 (split-restate-build-plan-2026-10-14.md, R2): one share-changing corporate action Alpaca lists for the
+ * symbol, as published. `group` is the API's PLURAL response group (`reverse_splits`, `stock_dividends`, ...), kept as
+ * returned; a rate is null where Alpaca gave none (the row is kept: an action that cannot be restated must still refuse).
+ * Declared once, in `splitRestate.ts` (L6 step 2), and re-exported here for the job's callers.
+ */
+export type { AnnouncedAction } from './splitRestate';
+
+/** The request `types` for `announcedActions` (the API's SINGULAR names; rows come back under the plural groups). */
+export const ANNOUNCED_ACTION_TYPES = ['forward_split', 'reverse_split', 'unit_split', 'stock_dividend', 'stock_merger', 'stock_and_cash_merger', 'spin_off'] as const;
 
 export interface StoredHolding extends S1Holding {
   /** R0, from the h0 as-of date to the count's. Only NONE is subtracted; `shares` is S1's min(h0, hD) summed. */
@@ -71,6 +84,13 @@ export interface FloatBoundRow {
    * there was no count (nothing fetched).
    */
   announcedSplits: string[] | null;
+  /**
+   * L6 (R2): every share-changing action Alpaca lists (`ANNOUNCED_ACTION_TYPES`) over the same span as
+   * `announcedSplits`, sorted by ex-date. Three states, all distinct: undefined = an OLD row stored before L6 (restates
+   * nothing); null = the fetch failed; [] = fetched, none listed (also when there was no count: nothing fetched).
+   * `announcedSplits` is still filled, so rule R-A is unchanged.
+   */
+  announcedActions?: AnnouncedAction[] | null;
   /**
    * Rule I-D: every 424B1/2/4/5 and 8-K item 3.02 in the submissions listing filed on or after the count's date, so a
    * reader at a later D re-applies [count, D]. Empty when there was no count (nothing fetched).
@@ -112,6 +132,8 @@ export interface FloatJobDeps {
   spanBars: (symbol: string, from: string, to: string) => SpanBar[];
   /** Alpaca's announced split ex-dates for the symbol in [start, end]; throws on failure. */
   announcedSplits: (symbol: string, start: string, end: string) => Promise<string[]>;
+  /** L6: Alpaca's share-changing actions (`ANNOUNCED_ACTION_TYPES`) for the symbol in [start, end]; throws on failure. */
+  announcedActions: (symbol: string, start: string, end: string) => Promise<AnnouncedAction[]>;
   now: () => string;
 }
 
@@ -202,6 +224,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   const holdings: StoredHolding[] = [];
   let splitSinceCount: SplitProof = 'UNPROVEN';
   let announcedSplits: string[] | null = [];
+  let announcedActions: AnnouncedAction[] | null = [];
   let issuanceList: IssuanceFiling[] = [];
   let statedCount: FloatBoundRow['statedCount'] = null;
 
@@ -252,6 +275,13 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
       } catch {
         announcedSplits = null;
       }
+      // L6 (R2): every share-changing action over the same span; a failure is stored as null, never fails the row.
+      try {
+        const listed = await deps.announcedActions(symbol, start, addDays(asOfDate, FLOAT_REUSE_DAYS));
+        announcedActions = [...listed].sort((a, b) => a.exDate.localeCompare(b.exDate) || a.group.localeCompare(b.group));
+      } catch {
+        announcedActions = null;
+      }
       for (const holding of found) {
         const r0 = splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf);
         holdings.push({ ...holding, split: withAnnouncedSplits(r0, announcedSplits, holding.asOf, count.asOf) });
@@ -262,8 +292,10 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   }
 
   const issuanceFiled = count.kind === 'COUNT' && issuanceFiledIn(issuanceList, count.asOf, asOfDate);
-  const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: ledgerOfDossier(input.dossier), asOfDate, issuanceFiled });
-  return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
+  // L6: the same restate input the reader passes at its D (floatRead.ts floatCellAt), so job and reader decide alike.
+  const restate = count.kind === 'COUNT' ? { actions: announcedActions, countSpanBars: deps.spanBars(symbol, count.asOf, asOfDate) } : undefined;
+  const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: ledgerOfDossier(input.dossier), asOfDate, issuanceFiled, restate });
+  return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, announcedActions, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
 }
 
 /**
@@ -280,19 +312,40 @@ export function floatCellFor(input: {
   asOfDate: string;
   /** Rule I-D at `asOfDate`; required here, so no production path can leave it out. */
   issuanceFiled: boolean;
+  /**
+   * L6: the row's listed actions (undefined on a row stored before L6, null = the fetch failed) and the stored bars over
+   * the count span (count date through `asOfDate`). Absent = today's path. The job and the reader pass the same inputs.
+   */
+  restate?: { actions: readonly AnnouncedAction[] | null | undefined; countSpanBars: readonly SpanBar[] };
 }): FloatCell {
-  return floatCell({
+  const count = input.count.kind === 'COUNT' ? input.count : null;
+  const restated =
+    count && input.restate
+      ? restateForCell({
+          actions: input.restate.actions,
+          count: { shares: count.shares, asOf: count.asOf, filed: count.filed },
+          holdings: input.holdings,
+          splitSinceCount: input.splitSinceCount,
+          countSpanBars: input.restate.countSpanBars,
+          d: input.asOfDate,
+        })
+      : ({ kind: 'AS_TODAY' } as const);
+  // RESTATE replaces only today's split-since-count refusal: the count and holdings in restated units, the span NONE.
+  // REFUSE and AS_TODAY are today's inputs unchanged, so today's refusal (or today's cell) stands.
+  const holdings = restated.kind === 'RESTATE' ? restated.holdings : input.holdings;
+  const cell = floatCell({
     cik: input.cik,
-    count: input.count.kind === 'COUNT' ? { shares: input.count.shares, asOf: input.count.asOf, form: input.count.form } : null,
+    count: count ? { shares: restated.kind === 'RESTATE' ? restated.countShares : count.shares, asOf: count.asOf, form: count.form } : null,
     spreadAcrossFilings: input.count.kind === 'COUNT_SPLIT_ACROSS_FILINGS',
     companyFactsNotAvailable: input.count.kind === 'COMPANY_FACTS_NOT_AVAILABLE',
     checkpointDate: input.asOfDate,
     maxAgeDays: FLOAT_MAX_AGE_DAYS,
-    holdings: input.holdings,
-    holdingSplit: new Map(input.holdings.map((h) => [h.ownerCik, h.split])),
-    splitSinceCount: input.splitSinceCount,
+    holdings,
+    holdingSplit: new Map(holdings.map((h) => [h.ownerCik, h.split])),
+    splitSinceCount: restated.kind === 'RESTATE' ? 'NONE' : input.splitSinceCount,
     ledger: input.ledger,
     issuanceFiled: input.issuanceFiled,
     issuanceRule: FLOAT_ISSUANCE_RULE,
   });
+  return restated.kind === 'RESTATE' && cell.state === 'PRODUCED' ? { ...cell, restated: restated.restated } : cell;
 }

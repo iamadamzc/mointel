@@ -38,6 +38,7 @@ interface StoredCall {
   priority_rule: string | null;
   float_state: string | null;
   float_reason: string | null;
+  float_filings_only: number | null;
 }
 
 const toCall = (s: StoredCall): CallRow => ({
@@ -60,12 +61,14 @@ const toCall = (s: StoredCall): CallRow => ({
   priorityRule: s.priority_rule,
   floatState: s.float_state,
   floatReason: s.float_reason,
+  floatFilingsOnly: s.float_filings_only === null ? null : s.float_filings_only === 1,
 });
 
 const CALL_SELECT = `
   SELECT t.assessment_id, t.ticker, a.assessment_type, a.trading_date, a.target_trading_date, a.completed_at,
          t.assessment_rank, t.price, t.reference_basis, t.reference_close, t.catalyst, t.structure, t.cycle,
-         t.analysis_version_id, t.priority_grade, t.priority_basis, t.priority_rule, t.float_state, t.float_reason
+         t.analysis_version_id, t.priority_grade, t.priority_basis, t.priority_rule, t.float_state, t.float_reason,
+         t.float_filings_only
     FROM desk_assessment_tickers t JOIN desk_assessments a ON a.id = t.assessment_id
    WHERE a.status = 'COMPLETE' AND a.completed_at IS NOT NULL
      AND a.assessment_type IN (${CALL_TYPES.map((t) => `'${t}'`).join(', ')})`;

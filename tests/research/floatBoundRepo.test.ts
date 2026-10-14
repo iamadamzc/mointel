@@ -66,6 +66,38 @@ describe('research_float_bounds', () => {
     expect(readFloatBound(store, 'ACME', '2026-09-28')).toEqual(refused);
   });
 
+  it('keeps announcedActions three ways apart: an old row (SQL NULL), a failed fetch (the text null), a list with a rateless row', () => {
+    const store = db();
+    const raw = (date: string) =>
+      (store.prepare('SELECT announced_actions_json AS j FROM research_float_bounds WHERE symbol = ? AND as_of_date = ?').get('ACME', date) as { j: string | null }).j;
+
+    // An old row, stored before L6: no field; read back without it, so it restates nothing.
+    const old = row('2026-09-25');
+    writeFloatBound(store, old);
+    expect(raw('2026-09-25')).toBeNull();
+    const oldBack = readFloatBound(store, 'ACME', '2026-09-25')!;
+    expect(oldBack).toEqual(old);
+    expect('announcedActions' in oldBack).toBe(false);
+
+    // The fetch failed: stored as the JSON text 'null', read back as null (not undefined).
+    writeFloatBound(store, row('2026-09-28', { announcedActions: null }));
+    expect(raw('2026-09-28')).toBe('null');
+    expect(readFloatBound(store, 'ACME', '2026-09-28')!.announcedActions).toBeNull();
+
+    // Fetched: the list round-trips whole, the rateless stock dividend included; [] stays [].
+    const listed = row('2026-09-30', {
+      announcedActions: [
+        { group: 'reverse_splits', exDate: '2026-09-15', oldRate: 10, newRate: 1 },
+        { group: 'stock_dividends', exDate: '2026-09-20', oldRate: null, newRate: null },
+      ],
+    });
+    writeFloatBound(store, listed);
+    expect(readFloatBound(store, 'ACME', '2026-09-30')).toEqual(listed);
+    writeFloatBound(store, row('2026-10-01', { announcedActions: [] }));
+    expect(raw('2026-10-01')).toBe('[]');
+    expect(readFloatBound(store, 'ACME', '2026-10-01')!.announcedActions).toEqual([]);
+  });
+
   it('replaces a same-day row, and reads the newest row on or before a date, never after it', () => {
     const store = db();
     writeFloatBound(store, row('2026-09-25'));

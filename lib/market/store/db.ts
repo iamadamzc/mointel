@@ -364,6 +364,8 @@ CREATE TABLE IF NOT EXISTS research_float_bounds (
   announced_splits_json TEXT,
   issuance_filings_json TEXT NOT NULL,
   stated_count_json   TEXT,
+  -- L6: NULL = a row stored before L6; the JSON text 'null' = the fetch failed (floatBoundRepo.ts).
+  announced_actions_json TEXT,
   analysis_version_id INTEGER,
   issuance_rule       TEXT NOT NULL,
   max_age_days        INTEGER NOT NULL,
@@ -714,6 +716,11 @@ CREATE TABLE IF NOT EXISTS desk_assessment_tickers (
   -- NULL on rows captured before v30; the record reads that as FLOAT_NOT_FROZEN.
   float_state          TEXT,
   float_reason         TEXT,
+  -- L8's mark on a frozen PRODUCED (Commercial read 118): 1 when the cell was
+  -- the filings-only bound (no desk research for the name), 0 when it was not.
+  -- NULL means NOT RECORDED (rows captured before this column, or a writer that
+  -- did not pass it), never 0.
+  float_filings_only   INTEGER,
   PRIMARY KEY (assessment_id, ticker),
   FOREIGN KEY (assessment_id) REFERENCES desk_assessments (id)
 );
@@ -1035,8 +1042,13 @@ const ADDED_COLUMNS: Array<{ table: string; column: string; definition: string }
   // v30: the Float cell frozen on each checkpoint row (performance record A8).
   { table: 'desk_assessment_tickers', column: 'float_state', definition: 'TEXT' },
   { table: 'desk_assessment_tickers', column: 'float_reason', definition: 'TEXT' },
+  // L8's filings-only mark frozen with the Float cell (Commercial read 118). No version bump: added on the box by hand.
+  { table: 'desk_assessment_tickers', column: 'float_filings_only', definition: 'INTEGER' },
   // Float fix 2 piece 2: the read of later filings for a newer stated share count (`lib/research/statedCount.ts`).
   { table: 'research_float_bounds', column: 'stated_count_json', definition: 'TEXT' },
+  // L6 step 1: every share-changing action Alpaca lists over the row's span (`floatJob.ts` announcedActions). No
+  // SCHEMA_VERSION bump: on a current-version store this is added by hand.
+  { table: 'research_float_bounds', column: 'announced_actions_json', definition: 'TEXT' },
 ];
 
 function migrate(db: MarketDatabase): void {
