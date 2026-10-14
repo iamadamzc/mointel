@@ -1,4 +1,6 @@
-# Recap re-check, third run (the rebuild, v7 version 9): RESULT, PASS (2026-10-14)
+# Recap re-check, third run (the rebuild, v7 version 9): RESULT, ~~PASS~~ FAILS read 116 on the published Summary (2026-10-14)
+
+> **CORRECTION (same night, found by Integration 41st, confirmed here on raw-3):** rule 5 below was written and measured on the DRAFT Summary; Commercial's read 116 says "present in each Summary", the reader's. The PUBLISHED Summary (`records.json` field `narrative`) carries the count sentence in **0 of 9** (draft 9 of 9). Cause: `capNarrative` (`lib/desk/reports/sentences.ts:66-69`, `NARRATIVE_MAX_SENTENCES.recap = 4`) keeps the first 4 sentences after the check (`pipeline.ts:517`); v7's Summary rule says "in whatever order reads best, in a few sentences" and the drafts run 7 sentences on 10-02 and 10-06 and 5 on 10-05 (my reading; the published 4 end where the cap's split puts sentence 4) with the count sentence last, so it is always cut, as are the after-hours sentence on 10-02 and 10-06 and a covered mover's news sentence on 10-02 (CYCU) and 10-06 (VCIG). Not new with the rebuild: the first two v7 runs published it in 0 of 2 and 0 of 7. v6's published recaps carry it in 3 of 3 (writer-retest raw `f71c48c2`), from its "at most FOUR sentences, in this order" rule (`writerV6.ts:186`). So on what a reader gets, v9 publishes less than v6. The PASS below holds only for the rule as I wrote it, which mis-stated read 116's condition. My own N check printed the published field without the sentence and I read it as the facts.
 
 *Research-tmi (fresh seat, local_dd23765d). Literal `83532d01` (code `17a172bc`), Integration 41st's GO; predictions and the pass rule `predictions-3.md`, committed before any call; raw `raw-3` committed at `7c2d8514` before it was read past the console's spend lines. Ops's slot. Spend $1.5605 of the $2.50 stop (his option (c), "around $1.60"). 9 of 9 reports run, 9 published, 0 failed checks, 0 writer errors, 2 writer calls in each.*
 
@@ -12,7 +14,7 @@
 | 4. Read 107 (a): every flagged line read by hand, none states a judgement the facts do not give | **holds**, one borderline line named below |
 | 5. Read 107 (b): the count sentence in every draft Summary, its N from the facts | **9 of 9: holds**; N = 5, 2, 5, matching the facts line "names the desk covers that had fresh news in our sources: 5 of 12 / 2 of 12 / 5 of 12" in each day's raw |
 
-**PASS.** By the rule this moves nothing: the recaps move to v7 only on his go.
+~~**PASS.** By the rule this moves nothing: the recaps move to v7 only on his go.~~ Struck: see the correction at the top. Rule 5 on the published Summary: 0 of 9.
 
 ## Rule 4, the hand read (10 flagged lines)
 
