@@ -1,0 +1,2843 @@
+[
+  {
+    "tag": "2026-10-02-PREMARKET-v7-run1",
+    "kind": "PREMARKET",
+    "day": "2026-10-02",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD, a covered 50 percent mover, peaked 308 percent above the prior close and closed up 198 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants issued and the SEC filed a current report on the completed transaction. CYCU, a covered 50 percent mover, peaked 84 percent above the prior close and closed up 42 percent from the prior close; on October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD, a covered 50 percent mover, peaked 308 percent above the prior close and closed up 198 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants issued and the SEC filed a current report on the completed transaction. CYCU, a covered 50 percent mover, peaked 84 percent above the prior close and closed up 42 percent from the prior close; on October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 4,
+    "cap": 4,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": "MI",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "AMOD",
+      "CYCU"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "AMOD",
+      "CYCU",
+      "MI"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.173826,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2550,
+        "outputTokens": 785,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 515,
+        "durationMs": 7786,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5088,
+        "outputTokens": 1227,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 493,
+        "durationMs": 10330,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30631,
+        "outputTokens": 2368,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20405,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-PREMARKET-v7-run2",
+    "kind": "PREMARKET",
+    "day": "2026-10-02",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD was a covered 50 percent mover, peaking at 308 percent above the prior close and closing up 198 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU was a covered 50 percent mover, peaking at 84 percent above the prior close and closing up 42 percent from the prior close; on October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD was a covered 50 percent mover, peaking at 308 percent above the prior close and closing up 198 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU was a covered 50 percent mover, peaking at 84 percent above the prior close and closing up 42 percent from the prior close; on October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close.",
+    "draftSentences": 5,
+    "cap": 4,
+    "cutSentences": [
+      "Of the 12 names the desk covers, 5 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": "MI",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "AMOD",
+      "CYCU"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "AMOD",
+      "CYCU",
+      "MI"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.16740159999999998,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2550,
+        "outputTokens": 600,
+        "cachedInputTokens": 2547,
+        "reasoningTokens": 324,
+        "durationMs": 5551,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5088,
+        "outputTokens": 975,
+        "cachedInputTokens": 5085,
+        "reasoningTokens": 255,
+        "durationMs": 7505,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30626,
+        "outputTokens": 2074,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17491,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-PREMARKET-v7-run3",
+    "kind": "PREMARKET",
+    "day": "2026-10-02",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L1"
+    ],
+    "strikes": [
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The dates are swapped. The agreement was entered on September 23 and disclosed on September 30, not disclosed on September 23 as a September 30 agreement."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "6 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD reached a peak of 308 percent above the prior close and closed up 198 percent from the prior close; Alpha Modus reported completing a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the transaction. CYCU reached a peak of 84 percent above the prior close and closed up 42 percent from the prior close; on October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "6 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD reached a peak of 308 percent above the prior close and closed up 198 percent from the prior close; Alpha Modus reported completing a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the transaction. CYCU reached a peak of 84 percent above the prior close and closed up 42 percent from the prior close; on October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 4,
+    "cap": 4,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": "MI",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "AMOD",
+      "CYCU"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "AMOD",
+      "CYCU",
+      "MI"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.16642439999999997,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2550,
+        "outputTokens": 632,
+        "cachedInputTokens": 2547,
+        "reasoningTokens": 377,
+        "durationMs": 5947,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5088,
+        "outputTokens": 1312,
+        "cachedInputTokens": 5085,
+        "reasoningTokens": 582,
+        "durationMs": 11229,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30596,
+        "outputTokens": 2009,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16483,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v7-run1",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, and Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, involving 3,170 Bitcoin previously valued above $200 million and a purchase agreement for 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close, with its October 2026 semi-annual filing reporting a roughly 99.12% year-over-year revenue decline for the first half of 2026, financing that included convertible notes, and a substantial shareholder loss; SDEV was up 38 percent from the prior close with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, and Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, involving 3,170 Bitcoin previously valued above $200 million and a purchase agreement for 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close, with its October 2026 semi-annual filing reporting a roughly 99.12% year-over-year revenue decline for the first half of 2026, financing that included convertible notes, and a substantial shareholder loss; SDEV was up 38 percent from the prior close with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "AMOD",
+      "AIXI",
+      "SDEV"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.17607319999999999,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5668,
+        "outputTokens": 1223,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 479,
+        "durationMs": 10287,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31918,
+        "outputTokens": 2290,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18317,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v7-run2",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L5",
+      "S1L6"
+    ],
+    "strikes": [
+      {
+        "id": "S1L5",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "SMX has stored research (catalyst NONE_FOUND); 'not researched' is unsupported."
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "SGRX has stored research (catalyst NONE_FOUND); 'not researched' is unsupported."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, and Alpha Modus reported on October 1 completion of its bitcoin-backed PIPE transaction on September 30, previously described as adding 3,170 Bitcoin valued above $200 million alongside a purchase agreement for 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close, with its October 1 semi-annual filing reporting that first-half 2026 revenue fell about 99.12 percent year over year after it discontinued low-margin cloud-platform resale activities, while SDEV was up 38 percent from the prior close with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "narrative": "AMOD ranked first in this range, up 200 percent from the prior close, and Alpha Modus reported on October 1 completion of its bitcoin-backed PIPE transaction on September 30, previously described as adding 3,170 Bitcoin valued above $200 million alongside a purchase agreement for 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close, with its October 1 semi-annual filing reporting that first-half 2026 revenue fell about 99.12 percent year over year after it discontinued low-margin cloud-platform resale activities, while SDEV was up 38 percent from the prior close with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "AMOD",
+      "AIXI",
+      "SDEV"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.17608959999999999,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5668,
+        "outputTokens": 1120,
+        "cachedInputTokens": 5665,
+        "reasoningTokens": 404,
+        "durationMs": 10078,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31898,
+        "outputTokens": 2301,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20871,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_RTH-v7-run3",
+    "kind": "INTO_RTH",
+    "day": "2026-10-02",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L5",
+      "S1L6",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Saying AIXI was up 39 percent 'after' its semi-annual filing implies the filing caused the move. The research says the catalyst does not plausibly explain the move, and the narrative may not state causes. The other counts and figures match the facts."
+      },
+      {
+        "id": "S1L5",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "SMX has stored research at this checkpoint (catalyst status NONE_FOUND), so 'not researched' is false."
+      },
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "SGRX has stored research at this checkpoint (catalyst status NONE_FOUND), so 'not researched' is false."
+      },
+      {
+        "id": "S1L9",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says GOW began Nasdaq trading on September 28, not September 25."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "AMOD ranked first in this range, up 200 percent from the prior close, and Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30, previously described as adding 3,170 Bitcoin valued above $200 million, with the related purchase agreement contemplating 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close after its October 2026 semi-annual filing reported first-half revenue down about 99.12 percent year over year, while SDEV was up 38 percent from the prior close with no catalyst found in our sources. Of the 12 names the desk covers, 7 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "AMOD",
+      "AIXI",
+      "SDEV"
+    ],
+    "namedMissingPublished": [
+      "AMOD",
+      "AIXI",
+      "SDEV"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1760648,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5668,
+        "outputTokens": 1016,
+        "cachedInputTokens": 5665,
+        "reasoningTokens": 310,
+        "durationMs": 8755,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31868,
+        "outputTokens": 2312,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21249,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7-run1",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-02",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Ties each move to its news with 'after' (AMOD up 181 percent after the PIPE report; AIXI up 56 percent after the semi-annual report). This implies a cause for the moves, which the narrative may not state. For AIXI the research says the filing is not shown to explain the move. The remaining counts and figures match the facts."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "ZNB ranked first in this range, up 29 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. AMOD was up 181 percent from the prior close after Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants. AIXI was up 56 percent from the prior close after the company furnished a semi-annual report showing a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that may dilute existing holders upon conversion; 5 of 12 names the desk covers had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "namedMissingPublished": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.13935720000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4832,
+        "outputTokens": 1229,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 434,
+        "durationMs": 10095,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23959,
+        "outputTokens": 2054,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18094,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7-run2",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-02",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "'up 181 percent from the prior close after Alpha Modus reported...' ties the move to the news, which implies a cause the narrative may not state. The other facts and counts match."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "ZNB ranked first in this range, up 29 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. AMOD was up 181 percent from the prior close after Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants; AIXI was up 56 percent from the prior close, and its semi-annual report disclosed a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, alongside convertible-note financing that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "namedMissingPublished": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.147628,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4832,
+        "outputTokens": 1278,
+        "cachedInputTokens": 4829,
+        "reasoningTokens": 498,
+        "durationMs": 10479,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23942,
+        "outputTokens": 2468,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23235,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-INTO_POWER_HOUR-v7-run3",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-02",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research does not attribute the continued listing and the Discretionary Panel Monitor to a Nasdaq statement; 'Nasdaq said' cannot be traced to a stored field."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "ZNB ranked first in this range, up 29 percent from the prior close, and our sources found only older or secondary news, not a fresh catalyst. AMOD was up 181 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. AIXI was up 56 percent from the prior close; its October 1 semi-annual filing reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described convertible-note financing that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "ZNB ranked first in this range, up 29 percent from the prior close, and our sources found only older or secondary news, not a fresh catalyst. AMOD was up 181 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. AIXI was up 56 percent from the prior close; its October 1 semi-annual filing reported a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and described convertible-note financing that may dilute existing holders upon conversion.",
+    "draftSentences": 4,
+    "cap": 3,
+    "cutSentences": [
+      "Of the 12 names the desk covers, 5 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.14714239999999998,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4832,
+        "outputTokens": 1210,
+        "cachedInputTokens": 4829,
+        "reasoningTokens": 435,
+        "durationMs": 9685,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23931,
+        "outputTokens": 2450,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21657,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-AFTER_HOURS-v7-run1",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-02",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "ZNB ranked first in this range, up 41 percent from the prior close, and our sources found only older or secondary news: a $10.0 million private placement that closed on August 17, 2026. AMOD was up 199 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants. AIXI was up 48 percent from the prior close and furnished a semi-annual report after the October 1 session reporting a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, alongside convertible-note financing that may dilute existing holders; 5 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "ZNB ranked first in this range, up 41 percent from the prior close, and our sources found only older or secondary news: a $10.0 million private placement that closed on August 17, 2026. AMOD was up 199 percent from the prior close; Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while secondary coverage reported 51.6 million common shares and matching warrants. AIXI was up 48 percent from the prior close and furnished a semi-annual report after the October 1 session reporting a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, alongside convertible-note financing that may dilute existing holders; 5 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1460802,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4817,
+        "outputTokens": 1104,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 354,
+        "durationMs": 9480,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23828,
+        "outputTokens": 2424,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19282,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-AFTER_HOURS-v7-run2",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-02",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L1"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The word 'after' frames the reports as causes of AMOD's and AIXI's moves. For AIXI the research holds that the filing does not plausibly explain the move. The counts (5 of 12 with fresh news) and percentages are otherwise supported."
+      },
+      {
+        "id": "S1L1",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research calls the August 17 closing the latest material event 'in the evidence' only, and its unknowns say the evidence does not establish whether a newer announcement occurred. Stating flatly that it was ZNB's latest event goes beyond the research. The placement figures and the 'no fresh event' clause are supported."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "ZNB ranked first in this range, up 41 percent from the prior close, and our sources found only older or secondary news. AMOD was up 199 percent from the prior close after Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million, while AIXI was up 48 percent from the prior close after the company furnished a semi-annual report showing a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, and financing through convertible notes that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "namedMissingPublished": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L1",
+        "ticker": "ZNB",
+        "text": "ZNB's latest material company event was the August 17, 2026 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. No fresh company-specific positive event was identified in the October 2 coverage.",
+        "matched": [
+          "positive"
+        ],
+        "research": "No fresh company-specific positive event is identified in the supplied October 2 coverage. The latest material company event in the evidence is the August 17 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each containing one ordinary share and a warrant exercisable at $4.40. This creates share and warrant supply, but it is not shown to be the cause of the current move."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.14179819999999999,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4817,
+        "outputTokens": 1339,
+        "cachedInputTokens": 4814,
+        "reasoningTokens": 643,
+        "durationMs": 11450,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23752,
+        "outputTokens": 2211,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20323,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-AFTER_HOURS-v7-run3",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-02",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Facts, counts and catalyst wording match (ZNB 41%, AMOD 199%, AIXI 48%, 5 of 12 fresh). But 'AIXI was up 48 percent ... after the company furnished a semi-annual report' frames the filing as the reason for the move. The research marks plausiblyExplainsMove false and says causation is not established."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "ZNB ranked first in this range, up 41 percent from the prior close, and our sources found only older or secondary news. AMOD was up 199 percent from the prior close with fresh news that Alpha Modus completed a shares-for-Bitcoin PIPE in which a subsidiary received 3,170 Bitcoin valued above $250 million, while AIXI was up 48 percent from the prior close after the company furnished a semi-annual report showing a $17.21 million loss attributable to shareholders for the six months ended June 30, 2026, with financing through convertible notes that may dilute existing holders upon conversion. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "namedMissingPublished": [
+      "ZNB",
+      "AMOD",
+      "AIXI"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.14676140000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4817,
+        "outputTokens": 995,
+        "cachedInputTokens": 4814,
+        "reasoningTokens": 291,
+        "durationMs": 8936,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23761,
+        "outputTokens": 2478,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23222,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-run1",
+    "kind": "PREMARKET",
+    "day": "2026-10-05",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Attributes the report to CS Digital; the cited source shows Olenox Industries reported the 15.63 Bitcoin mined."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says the shareholder approval was announced on August 25, not that shareholders approved the merger on that date."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "9 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain, and none gave the entire move back. MI, a covered 50 percent mover, peaked at 1066 percent above the prior close and closed up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX, a covered 50 percent mover, peaked at 52 percent above the prior close and closed up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "9 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain, and none gave the entire move back. MI, a covered 50 percent mover, peaked at 1066 percent above the prior close and closed up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX, a covered 50 percent mover, peaked at 52 percent above the prior close and closed up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close.",
+    "draftSentences": 5,
+    "cap": 4,
+    "cutSentences": [
+      "Of the 12 names the desk covers, 2 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": "OLOX",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "MI",
+      "VRAX"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "MI",
+      "VRAX",
+      "OLOX"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1867924,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2388,
+        "outputTokens": 440,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 268,
+        "durationMs": 4445,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5628,
+        "outputTokens": 1081,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 237,
+        "durationMs": 8574,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30446,
+        "outputTokens": 3079,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 27636,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-run2",
+    "kind": "PREMARKET",
+    "day": "2026-10-05",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "9 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain, and none gave the entire move back. MI was a covered 50 percent mover, peaking at 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, peaking at 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "9 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain, and none gave the entire move back. MI was a covered 50 percent mover, peaking at 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, peaking at 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close.",
+    "draftSentences": 5,
+    "cap": 4,
+    "cutSentences": [
+      "Of the 12 names the desk covers, 2 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": "OLOX",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "MI",
+      "VRAX"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "MI",
+      "VRAX",
+      "OLOX"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1661504,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2388,
+        "outputTokens": 501,
+        "cachedInputTokens": 2385,
+        "reasoningTokens": 327,
+        "durationMs": 4586,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5628,
+        "outputTokens": 1115,
+        "cachedInputTokens": 5625,
+        "reasoningTokens": 290,
+        "durationMs": 9381,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30422,
+        "outputTokens": 2046,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18115,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-run3",
+    "kind": "PREMARKET",
+    "day": "2026-10-05",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Says CS Digital reported the mining figures. The cited source shows Olenox Industries made the report."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "9 names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. MI was a covered 50 percent mover, peaking at 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, peaking at 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "9 names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. MI was a covered 50 percent mover, peaking at 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, peaking at 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close.",
+    "draftSentences": 5,
+    "cap": 4,
+    "cutSentences": [
+      "Of the 12 names the desk covers, 2 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": "OLOX",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "MI",
+      "VRAX"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "MI",
+      "VRAX",
+      "OLOX"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1847116,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2388,
+        "outputTokens": 401,
+        "cachedInputTokens": 2385,
+        "reasoningTokens": 225,
+        "durationMs": 4227,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5628,
+        "outputTokens": 1266,
+        "cachedInputTokens": 5625,
+        "reasoningTokens": 364,
+        "durationMs": 10090,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30522,
+        "outputTokens": 2951,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 26863,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_RTH-v7-run1",
+    "kind": "INTO_RTH",
+    "day": "2026-10-05",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L5",
+      "S1L9",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Research says the testing company's name and the full agreement are to be disclosed; 'the agreement's name and full terms' misstates this."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 213 percent from the prior close; on September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close, and its sources reported that WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, while APUS was up 64 percent from the prior close and MindWave announced an agreement with BlockAssure to build and operate AssureChain, with secondary coverage describing a two-year contract and 20% of planned token supply for MindWave, with fees not disclosed. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 213 percent from the prior close; on September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close, and its sources reported that WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, while APUS was up 64 percent from the prior close and MindWave announced an agreement with BlockAssure to build and operate AssureChain, with secondary coverage describing a two-year contract and 20% of planned token supply for MindWave, with fees not disclosed. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "SAIQ",
+      "APUS"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L3",
+        "ticker": "VRAX",
+        "text": "VRAX. On July 9, 2026, Virax Biolabs announced a commercial supply agreement with Fosun Diagnostics covering multiple countries, followed by a July 16 shareholder update. Our sources found no fresh operating catalyst, and later September filings concerned warrant-resale registration and ATM capacity.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      },
+      {
+        "id": "S1L6",
+        "ticker": "SAIQ",
+        "text": "SAIQ. On October 1, 2026, WISeSat.Space completed its business combination with Columbus Acquisition Corp., and its ordinary shares began trading on Nasdaq as SAIQ on October 2. Our sources did not provide a transaction value or other material operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. This is a verifiable company-specific listing and business-combination event, but the primary-source excerpts do not state a transaction value or other material operating result that would support a STRONG grade."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.168539,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5889,
+        "outputTokens": 1621,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 516,
+        "durationMs": 14376,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30549,
+        "outputTokens": 2161,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19621,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_RTH-v7-run2",
+    "kind": "INTO_RTH",
+    "day": "2026-10-05",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L5",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 213 percent from the prior close; our sources found only older or secondary news, including NFT Ltd.'s September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close; our sources found only older or secondary news, including WISeSat.Space's October 1, 2026 completion of its business combination with Columbus Acquisition Corp. and the start of Nasdaq trading under SAIQ on October 2. APUS was up 64 percent from the prior close and had fresh news: MindWave announced an agreement with BlockAssure to build and operate AssureChain, a two-year contract under secondary coverage that provides MindWave 20% of planned token supply, with fees not disclosed; 2 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 213 percent from the prior close; our sources found only older or secondary news, including NFT Ltd.'s September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close; our sources found only older or secondary news, including WISeSat.Space's October 1, 2026 completion of its business combination with Columbus Acquisition Corp. and the start of Nasdaq trading under SAIQ on October 2. APUS was up 64 percent from the prior close and had fresh news: MindWave announced an agreement with BlockAssure to build and operate AssureChain, a two-year contract under secondary coverage that provides MindWave 20% of planned token supply, with fees not disclosed; 2 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "SAIQ",
+      "APUS"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L3",
+        "ticker": "VRAX",
+        "text": "VRAX. Our sources found no fresh operating catalyst. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; September filings concerned an effective warrant-resale registration and ATM capacity.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      },
+      {
+        "id": "S1L6",
+        "ticker": "SAIQ",
+        "text": "SAIQ. On October 1, 2026, WISeSat.Space completed its business combination with Columbus Acquisition Corp.; its ordinary shares began Nasdaq trading under SAIQ on October 2. The primary-source excerpts did not state a transaction value or other material operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. This is a verifiable company-specific listing and business-combination event, but the primary-source excerpts do not state a transaction value or other material operating result that would support a STRONG grade."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1847674,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5889,
+        "outputTokens": 2008,
+        "cachedInputTokens": 5886,
+        "reasoningTokens": 923,
+        "durationMs": 17975,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30515,
+        "outputTokens": 2956,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 27217,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_RTH-v7-run3",
+    "kind": "INTO_RTH",
+    "day": "2026-10-05",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L5",
+      "S1L9",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "S1L5",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1002998"
+      },
+      {
+        "id": "S1L9",
+        "reason": "FORBIDDEN_WORDING",
+        "by": "rule",
+        "detail": "a halt with no halt observed"
+      },
+      {
+        "id": "S1L9",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "October 2, 2026"
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says the testing company's name and the full agreement are to be disclosed within weeks. 'The agreement's name and full terms' is not supported."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 213 percent from the prior close; our sources found only older or secondary news, including NFT Ltd's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close with only older or secondary news, while APUS was up 64 percent from the prior close with a fresh catalyst: MindWave announced an agreement with BlockAssure to build and operate AssureChain, and secondary coverage described a two-year contract under which MindWave would receive 20% of planned token supply, with fees not disclosed. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 213 percent from the prior close; our sources found only older or secondary news, including NFT Ltd's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close with only older or secondary news, while APUS was up 64 percent from the prior close with a fresh catalyst: MindWave announced an agreement with BlockAssure to build and operate AssureChain, and secondary coverage described a two-year contract under which MindWave would receive 20% of planned token supply, with fees not disclosed. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "SAIQ",
+      "APUS"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L3",
+        "ticker": "VRAX",
+        "text": "The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; more recent September filings concerned warrant-resale registration and ATM capacity rather than new business progress. No fresh operating catalyst appeared in the covered sources.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      },
+      {
+        "id": "S1L6",
+        "ticker": "SAIQ",
+        "text": "WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. The primary-source excerpts did not state a transaction value or other material operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. This is a verifiable company-specific listing and business-combination event, but the primary-source excerpts do not state a transaction value or other material operating result that would support a STRONG grade."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1716674,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5889,
+        "outputTokens": 1258,
+        "cachedInputTokens": 5886,
+        "reasoningTokens": 256,
+        "durationMs": 10422,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30390,
+        "outputTokens": 2371,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20642,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_POWER_HOUR-v7-run1",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-05",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "ALEC"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L2",
+        "ticker": "VRAX",
+        "text": "VRAX. On July 9, 2026, Virax Biolabs signed a multi-country commercial supply agreement with Fosun Diagnostics, and the company issued a shareholder update on July 16. Our sources found no fresh operating catalyst.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1100614,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4361,
+        "outputTokens": 1211,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 516,
+        "durationMs": 11422,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19594,
+        "outputTokens": 1468,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 13678,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_POWER_HOUR-v7-run2",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-05",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L10",
+      "O"
+    ],
+    "strikes": [
+      {
+        "id": "S1L10",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "September 3, 2026"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Calls the Genentech license 'an October 5, 2026 license agreement', but the agreement is dated September 30, 2026 and was only disclosed October 5. 'Up 44 percent ... on older or secondary news' states a cause for QTEX's move."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "MI ranked first in this range, up 806 percent from the prior close, and was down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. QTEX was up 44 percent from the prior close on older or secondary news about an October 1, 2026 interconnect test, while ALEC was up 20 percent from the prior close with fresh news that Alector disclosed an October 5, 2026 license agreement with Genentech covering certain GCase candidates and extending its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "ALEC"
+    ],
+    "namedMissingPublished": [
+      "MI",
+      "QTEX",
+      "ALEC"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L2",
+        "ticker": "VRAX",
+        "text": "On July 9, 2026, Virax Biolabs announced a multi-country commercial supply agreement with Fosun Diagnostics, followed by a July 16 shareholder update. Our sources found no fresh operating catalyst.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1142918,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4361,
+        "outputTokens": 1923,
+        "cachedInputTokens": 4358,
+        "reasoningTokens": 1287,
+        "durationMs": 18304,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19488,
+        "outputTokens": 1658,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 13658,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-INTO_POWER_HOUR-v7-run3",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-05",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 private-placement agreement for 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. QTEX was up 44 percent from the prior close with older or secondary news from October 1, 2026 that an unnamed quantum-computing company tested QTREX's interconnect and that QTREX was finalizing a binding agreement, while ALEC was up 20 percent from the prior close with fresh news that Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates; Genentech leads development, regulatory, manufacturing and commercialization, Alector retains its platform and wholly owned pipeline rights, and Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 private-placement agreement for 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. QTEX was up 44 percent from the prior close with older or secondary news from October 1, 2026 that an unnamed quantum-computing company tested QTREX's interconnect and that QTREX was finalizing a binding agreement, while ALEC was up 20 percent from the prior close with fresh news that Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates; Genentech leads development, regulatory, manufacturing and commercialization, Alector retains its platform and wholly owned pipeline rights, and Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "ALEC"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.11401939999999999,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4361,
+        "outputTokens": 1666,
+        "cachedInputTokens": 4358,
+        "reasoningTokens": 972,
+        "durationMs": 14582,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19587,
+        "outputTokens": 1640,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 15281,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-AFTER_HOURS-v7-run1",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-05",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 667 percent from the prior close and up 11.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Ltd.'s September 30, 2026 private-placement agreement to sell Class A ordinary shares. QTEX was up 43 percent from the prior close, with our sources finding only older or secondary news about QTREX's October 1 interconnect test and prospective binding agreement. APT was up 15 percent from the prior close, and our research reached no conclusion. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 667 percent from the prior close and up 11.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Ltd.'s September 30, 2026 private-placement agreement to sell Class A ordinary shares. QTEX was up 43 percent from the prior close, with our sources finding only older or secondary news about QTREX's October 1 interconnect test and prospective binding agreement. APT was up 15 percent from the prior close, and our research reached no conclusion.",
+    "draftSentences": 4,
+    "cap": 3,
+    "cutSentences": [
+      "Of the 12 names the desk covers, 1 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "APT"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.11431540000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4289,
+        "outputTokens": 1258,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 635,
+        "durationMs": 11606,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19562,
+        "outputTokens": 1685,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 14481,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-AFTER_HOURS-v7-run2",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-05",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "'the disclosed terms did not include an upfront payment, milestones, royalties or total transaction value' is unsupported. The research only says the provided excerpts and bundle do not state these terms, not that the disclosure lacked them."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 667 percent from the prior close and up 11.4% since the previous checkpoint; our sources found only older or secondary news, including a September 30, 2026 private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, and an October 5 statement that the company knew of no undisclosed information or business development accounting for the unusual trading. QTEX was up 43 percent from the prior close, with our sources finding only older or secondary news: on October 1, QTREX reported testing of its interconnect at 20 mK with more than 100 dB channel isolation and said it was finalizing a binding definitive agreement with the unnamed testing company. APT was up 15 percent from the prior close and no conclusion; 1 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 667 percent from the prior close and up 11.4% since the previous checkpoint; our sources found only older or secondary news, including a September 30, 2026 private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, and an October 5 statement that the company knew of no undisclosed information or business development accounting for the unusual trading. QTEX was up 43 percent from the prior close, with our sources finding only older or secondary news: on October 1, QTREX reported testing of its interconnect at 20 mK with more than 100 dB channel isolation and said it was finalizing a binding definitive agreement with the unnamed testing company. APT was up 15 percent from the prior close and no conclusion; 1 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "APT"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1283166,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4289,
+        "outputTokens": 1659,
+        "cachedInputTokens": 4286,
+        "reasoningTokens": 912,
+        "durationMs": 15529,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19732,
+        "outputTokens": 2327,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21751,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-AFTER_HOURS-v7-run3",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-05",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 667 percent from the prior close and up 11.4% since the previous checkpoint; our sources found only older or secondary news, including a September 30, 2026 private-placement agreement by NFT Ltd to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. QTEX was up 43 percent from the prior close, with older or secondary news that QTREX had reported October 1 testing of its interconnect at 20 mK with more than 100 dB channel isolation across the 4 to 8 GHz qubit band and was finalizing a binding definitive agreement; APT was up 15 percent from the prior close, and our research reached no conclusion. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 667 percent from the prior close and up 11.4% since the previous checkpoint; our sources found only older or secondary news, including a September 30, 2026 private-placement agreement by NFT Ltd to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. QTEX was up 43 percent from the prior close, with older or secondary news that QTREX had reported October 1 testing of its interconnect at 20 mK with more than 100 dB channel isolation across the 4 to 8 GHz qubit band and was finalizing a binding definitive agreement; APT was up 15 percent from the prior close, and our research reached no conclusion. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "APT"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L2",
+        "ticker": "VRAX",
+        "text": "VRAX. Our sources found no fresh operating catalyst. On July 9, 2026, Virax Biolabs announced a commercial supply agreement with Fosun Diagnostics, followed by a July 16 shareholder update; later September filings concerned warrant-resale registration and ATM capacity rather than new business progress.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1082314,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4289,
+        "outputTokens": 1638,
+        "cachedInputTokens": 4286,
+        "reasoningTokens": 950,
+        "durationMs": 14093,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19662,
+        "outputTokens": 1338,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 11720,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-run1",
+    "kind": "PREMARKET",
+    "day": "2026-10-06",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research gives no August 11 date for the reverse split. It also says only that no newer positive company-specific event appeared, not that no newer event of any kind appeared."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "11 counted names ran at least 50 percent above the prior close by the regular-session high; 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG peaked 190 percent above the prior close and closed up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations, a proposal and strategic initiative rather than a completed transaction or operating result. VCIG peaked 59 percent above the prior close and closed up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "11 counted names ran at least 50 percent above the prior close by the regular-session high; 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG peaked 190 percent above the prior close and closed up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations, a proposal and strategic initiative rather than a completed transaction or operating result. VCIG peaked 59 percent above the prior close and closed up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 4,
+    "cap": 4,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": "MTEN",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "XHG",
+      "VCIG"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "XHG",
+      "VCIG",
+      "MTEN"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "O",
+        "ticker": null,
+        "text": "11 counted names ran at least 50 percent above the prior close by the regular-session high; 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG peaked 190 percent above the prior close and closed up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations, a proposal and strategic initiative rather than a completed transaction or operating result. VCIG peaked 59 percent above the prior close and closed up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+        "matched": [
+          "operating"
+        ],
+        "research": null
+      },
+      {
+        "id": "S1L3",
+        "ticker": "XHG",
+        "text": "On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing its mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result."
+      },
+      {
+        "id": "S1L10",
+        "ticker": "KAPA",
+        "text": "Kairos reported on October 6, 2026, positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.17671579999999998,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2477,
+        "outputTokens": 379,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 172,
+        "durationMs": 4243,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4788,
+        "outputTokens": 1020,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 281,
+        "durationMs": 8635,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31231,
+        "outputTokens": 2433,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21341,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-run2",
+    "kind": "PREMARKET",
+    "day": "2026-10-06",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3",
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Attributing 'not a completed transaction or operating result' to the company is unsupported; that characterization is the evidence assessment, not a company statement."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Nothing in the research says the August 11, 2026 filing disclosed the one-for-12 reverse split."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "11 counted names ran at least 50 percent above the prior close, 5 of them kept at least half of the peak gain at the close, and none gave the entire move back. XHG, a covered 50 percent mover, peaked 190 percent above the prior close and closed up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations, a proposal and strategic initiative rather than a completed transaction or operating result. VCIG, another covered 50 percent mover, peaked 59 percent above the prior close and closed up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "11 counted names ran at least 50 percent above the prior close, 5 of them kept at least half of the peak gain at the close, and none gave the entire move back. XHG, a covered 50 percent mover, peaked 190 percent above the prior close and closed up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations, a proposal and strategic initiative rather than a completed transaction or operating result. VCIG, another covered 50 percent mover, peaked 59 percent above the prior close and closed up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 4,
+    "cap": 4,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": "MTEN",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "XHG",
+      "VCIG"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "XHG",
+      "VCIG",
+      "MTEN"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "O",
+        "ticker": null,
+        "text": "11 counted names ran at least 50 percent above the prior close, 5 of them kept at least half of the peak gain at the close, and none gave the entire move back. XHG, a covered 50 percent mover, peaked 190 percent above the prior close and closed up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations, a proposal and strategic initiative rather than a completed transaction or operating result. VCIG, another covered 50 percent mover, peaked 59 percent above the prior close and closed up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+        "matched": [
+          "operating"
+        ],
+        "research": null
+      },
+      {
+        "id": "S1L3",
+        "ticker": "XHG",
+        "text": "XChange TEC announced on October 6, 2026, a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The company described the plan as a strategic initiative, not a completed transaction or operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result."
+      },
+      {
+        "id": "S1L10",
+        "ticker": "KAPA",
+        "text": "Kairos reported on October 6, 2026, positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1749714,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2477,
+        "outputTokens": 379,
+        "cachedInputTokens": 2474,
+        "reasoningTokens": 157,
+        "durationMs": 3772,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4788,
+        "outputTokens": 1033,
+        "cachedInputTokens": 4785,
+        "reasoningTokens": 314,
+        "durationMs": 8582,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31231,
+        "outputTokens": 2345,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21347,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-run3",
+    "kind": "PREMARKET",
+    "day": "2026-10-06",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "11 names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "11 names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close, and 5 of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 4,
+    "cap": 4,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": "MTEN",
+    "afterHoursDraft": true,
+    "afterHoursPublished": true,
+    "named": [
+      "XHG",
+      "VCIG"
+    ],
+    "namedMissingPublished": [],
+    "allowed": [
+      "XHG",
+      "VCIG",
+      "MTEN"
+    ],
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L10",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.16921540000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2477,
+        "outputTokens": 598,
+        "cachedInputTokens": 2474,
+        "reasoningTokens": 395,
+        "durationMs": 6271,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4788,
+        "outputTokens": 1084,
+        "cachedInputTokens": 4785,
+        "reasoningTokens": 344,
+        "durationMs": 9557,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31236,
+        "outputTokens": 2040,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17495,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_RTH-v7-run1",
+    "kind": "INTO_RTH",
+    "day": "2026-10-06",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1799055"
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 60 percent from the prior close, with secondary coverage dated October 6 reporting that XChange TEC intends to reduce mainland China operations, explore expanding its U.S. AI business and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close with only older or secondary news, and IPDN was up 107 percent from the prior close with October 5 agreements for two NVIDIA B300 systems involving about $1.177 million of initial commitments. Six of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 60 percent from the prior close, with secondary coverage dated October 6 reporting that XChange TEC intends to reduce mainland China operations, explore expanding its U.S. AI business and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close with only older or secondary news, and IPDN was up 107 percent from the prior close with October 5 agreements for two NVIDIA B300 systems involving about $1.177 million of initial commitments. Six of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "AIXI",
+      "IPDN"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L8",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1458206,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4849,
+        "outputTokens": 1289,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 483,
+        "durationMs": 10869,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 26911,
+        "outputTokens": 1783,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 14756,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_RTH-v7-run2",
+    "kind": "INTO_RTH",
+    "day": "2026-10-06",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1799055"
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 60 percent from the prior close, with secondary coverage dated October 6 reporting plans to reduce mainland China operations, explore U.S. AI-business expansion and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close and down 14.4% since the previous checkpoint, with only older or secondary news in our sources; IPDN was up 107 percent from the prior close, and on October 5 PDN Intelligence entered agreements involving two NVIDIA B300 systems and about $1.177 million of initial commitments. Of the 12 names the desk covers, 6 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 60 percent from the prior close, with secondary coverage dated October 6 reporting plans to reduce mainland China operations, explore U.S. AI-business expansion and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close and down 14.4% since the previous checkpoint, with only older or secondary news in our sources; IPDN was up 107 percent from the prior close, and on October 5 PDN Intelligence entered agreements involving two NVIDIA B300 systems and about $1.177 million of initial commitments. Of the 12 names the desk covers, 6 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "AIXI",
+      "IPDN"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L8",
+        "ticker": "KAPA",
+        "text": "On October 6, 2026, Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.143595,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4849,
+        "outputTokens": 1361,
+        "cachedInputTokens": 4846,
+        "reasoningTokens": 516,
+        "durationMs": 11112,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 26943,
+        "outputTokens": 1661,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 13909,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_RTH-v7-run3",
+    "kind": "INTO_RTH",
+    "day": "2026-10-06",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L2"
+    ],
+    "strikes": [
+      {
+        "id": "S1L2",
+        "reason": "SHARES_UNDATED",
+        "by": "rule",
+        "detail": "1799055"
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 60 percent from the prior close; secondary coverage dated October 6 reported that XChange TEC intended to reduce mainland China operations, explore U.S. AI-business expansion and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close and down 14.4% since the previous checkpoint, with only older or secondary news, while IPDN was up 107 percent from the prior close; on October 5, PDN Intelligence entered agreements involving two NVIDIA B300 systems and about $1.177 million of initial commitments. Six of the 12 names the desk covers had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 60 percent from the prior close; secondary coverage dated October 6 reported that XChange TEC intended to reduce mainland China operations, explore U.S. AI-business expansion and invest between $5 million and $10 million in the U.S. market. AIXI was up 108 percent from the prior close and down 14.4% since the previous checkpoint, with only older or secondary news, while IPDN was up 107 percent from the prior close; on October 5, PDN Intelligence entered agreements involving two NVIDIA B300 systems and about $1.177 million of initial commitments. Six of the 12 names the desk covers had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "AIXI",
+      "IPDN"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L8",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison. The provided excerpt did not state the interim-analysis sample size or provide the full underlying dataset.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim Phase 2 efficacy data for ENV-105 plus apalutamide in metastatic castration-resistant prostate cancer, including 17.7-month median progression-free survival versus 2 months in the reported comparison."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1444698,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4849,
+        "outputTokens": 1700,
+        "cachedInputTokens": 4846,
+        "reasoningTokens": 807,
+        "durationMs": 15971,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27030,
+        "outputTokens": 1667,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 14626,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7-run1",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-06",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L10",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "S1L10",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "October 5, 2026"
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research does not date the reverse split to August 11, 2026. The company is SolarMax Technology, not 'SMX'."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 5 percent from the prior close, with the company announcing a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close with no catalyst found in our sources, while IPDN was up 40 percent from the prior close; on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, with the company announcing a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close with no catalyst found in our sources, while IPDN was up 40 percent from the prior close; on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "OLOX",
+      "IPDN"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L5",
+        "ticker": "KAPA",
+        "text": "On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1549762,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5107,
+        "outputTokens": 1709,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 767,
+        "durationMs": 13984,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27831,
+        "outputTokens": 2029,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16204,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7-run2",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-06",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 5 percent from the prior close, with a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources, while IPDN was up 40 percent from the prior close; on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, with a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources, while IPDN was up 40 percent from the prior close; on October 5, PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "OLOX",
+      "IPDN"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L5",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.15215140000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5107,
+        "outputTokens": 1945,
+        "cachedInputTokens": 5104,
+        "reasoningTokens": 1034,
+        "durationMs": 15390,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27789,
+        "outputTokens": 1882,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19587,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-INTO_POWER_HOUR-v7-run3",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-06",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The August 11 date for the reverse split is not in the research, which gives no date for the split. The research also dates only the disclosure of the noncompliance notice, not its receipt."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 5 percent from the prior close, and on October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended U.S. investment of $5 million to $10 million. OLOX was up 66 percent from the prior close, with no catalyst found in our sources, while IPDN was up 40 percent from the prior close and on October 6, 2026, PDN Intelligence reported an October 5 equipment lease for one NVIDIA B300 eight-GPU system and financing for a second, representing approximately $1.2 million in initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 5 percent from the prior close, and on October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended U.S. investment of $5 million to $10 million. OLOX was up 66 percent from the prior close, with no catalyst found in our sources, while IPDN was up 40 percent from the prior close and on October 6, 2026, PDN Intelligence reported an October 5 equipment lease for one NVIDIA B300 eight-GPU system and financing for a second, representing approximately $1.2 million in initial capital commitments. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "OLOX",
+      "IPDN"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L5",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1611714,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5107,
+        "outputTokens": 2745,
+        "cachedInputTokens": 5104,
+        "reasoningTokens": 1813,
+        "durationMs": 22822,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27804,
+        "outputTokens": 2282,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 27040,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-AFTER_HOURS-v7-run1",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-06",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Saying IPDN was up 50 percent 'after' PDN Intelligence entered the arrangement presents the catalyst as the cause of the move. The narrative may not state a cause. The other counts and facts match."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The August 11, 2026 date for the one-for-12 reverse split is not in the research; the summary gives no date for the split."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "XHG ranked first in this range, up 25 percent from the prior close and up 11.7% since the previous checkpoint; the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. IPDN was up 50 percent from the prior close after PDN Intelligence entered an arrangement for one NVIDIA B300 eight-GPU system and agreed to finance a second, representing approximately $1.177 million of initial capital commitments; OLOX was up 45 percent from the prior close and had lost $1.31 support since the previous checkpoint, with no catalyst found in our sources. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "IPDN",
+      "OLOX"
+    ],
+    "namedMissingPublished": [
+      "XHG",
+      "IPDN",
+      "OLOX"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L5",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1634044,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5156,
+        "outputTokens": 2301,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 1387,
+        "durationMs": 19041,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27858,
+        "outputTokens": 2409,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 20689,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-AFTER_HOURS-v7-run2",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-06",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L10"
+    ],
+    "strikes": [
+      {
+        "id": "S1L10",
+        "reason": "DATE_NOT_TRACED",
+        "by": "rule",
+        "detail": "October 5, 2026"
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "XHG ranked first in this range, up 25 percent from the prior close. On October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of its mainland China operations and an intended U.S. investment of $5 million to $10 million. IPDN was up 50 percent from the prior close; on October 5, PDN Intelligence entered an equipment lease for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments. OLOX was up 45 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": "XHG ranked first in this range, up 25 percent from the prior close. On October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of its mainland China operations and an intended U.S. investment of $5 million to $10 million. IPDN was up 50 percent from the prior close; on October 5, PDN Intelligence entered an equipment lease for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments.",
+    "draftSentences": 5,
+    "cap": 3,
+    "cutSentences": [
+      "OLOX was up 45 percent from the prior close, with no catalyst found in our sources.",
+      "Of the 12 names the desk covers, 8 had fresh news in our sources."
+    ],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "IPDN",
+      "OLOX"
+    ],
+    "namedMissingPublished": [
+      "OLOX"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L5",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months. The provided primary-source excerpt did not state the trial sample size, follow-up duration or full statistical results.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.15866840000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5156,
+        "outputTokens": 1471,
+        "cachedInputTokens": 5153,
+        "reasoningTokens": 353,
+        "durationMs": 11434,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 28178,
+        "outputTokens": 2158,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18644,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-AFTER_HOURS-v7-run3",
+    "kind": "AFTER_HOURS",
+    "day": "2026-10-06",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L4"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "'IPDN was up 50 percent ... after PDN Intelligence entered...' ties the move to the catalyst. That reads as a cause, which the narrative may not state. Counts, moves and catalyst clauses otherwise match the facts."
+      },
+      {
+        "id": "S1L4",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Dating the one-for-12 reverse split to August 11, 2026 is unsupported. The research gives no date for the split."
+      }
+    ],
+    "narrativeStruck": true,
+    "draftSummary": "XHG ranked first in this range, up 25 percent from the prior close, with the company announcing a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. IPDN was up 50 percent from the prior close after PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system; OLOX was up 45 percent from the prior close, with no catalyst found in our sources. Of the 12 names the desk covers, 8 had fresh news in our sources.",
+    "narrative": null,
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": false,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "XHG",
+      "IPDN",
+      "OLOX"
+    ],
+    "namedMissingPublished": [
+      "XHG",
+      "IPDN",
+      "OLOX"
+    ],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L5",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.15731320000000001,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5156,
+        "outputTokens": 2405,
+        "cachedInputTokens": 5153,
+        "reasoningTokens": 1514,
+        "durationMs": 19569,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 27824,
+        "outputTokens": 2105,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19379,
+        "role": "checker"
+      }
+    ]
+  }
+]

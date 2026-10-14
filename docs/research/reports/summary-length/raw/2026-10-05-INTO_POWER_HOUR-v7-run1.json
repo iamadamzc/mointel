@@ -1,0 +1,638 @@
+{
+  "record": {
+    "tag": "2026-10-05-INTO_POWER_HOUR-v7-run1",
+    "kind": "INTO_POWER_HOUR",
+    "day": "2026-10-05",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "narrative": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "draftSentences": 3,
+    "cap": 3,
+    "cutSentences": [],
+    "countDraft": true,
+    "countPublished": true,
+    "afterHours": null,
+    "afterHoursDraft": false,
+    "afterHoursPublished": false,
+    "named": [
+      "MI",
+      "QTEX",
+      "ALEC"
+    ],
+    "namedMissingPublished": [],
+    "allowed": null,
+    "outsideList": [],
+    "rankInSummary": false,
+    "zeroWord": false,
+    "judgementLines": [
+      {
+        "id": "S1L2",
+        "ticker": "VRAX",
+        "text": "VRAX. On July 9, 2026, Virax Biolabs signed a multi-country commercial supply agreement with Fosun Diagnostics, and the company issued a shareholder update on July 16. Our sources found no fresh operating catalyst.",
+        "matched": [
+          "operating"
+        ],
+        "research": "No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress."
+      }
+    ],
+    "writerCalls": 1,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1100614,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4361,
+        "outputTokens": 1211,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 516,
+        "durationMs": 11422,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 19594,
+        "outputTokens": 1468,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 13678,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompts": [
+    {
+      "system": "You write a short session report: a Summary of the session and one line per name.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.\n- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name's facts on another, and never mention a name the narrative facts do not name.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nUSING THE FACTS:\n- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most (\"$46.8 million\"). Restate stored text in your own words; never quote it.\n- The voice below keeps the move out of a name line because the card prints it above the line. Where a name's sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.\n- A deal or plan is what was agreed or announced, never \"will\". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.\n- A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- Never call news \"positive\", \"negative\" or any other judgement its source does not state.\n- Never say what kind of catalyst a name's news is (for example \"an operating catalyst\") unless its research says so.\n- The joining words in the voice below are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"); never join a move and news with \"due to\", \"because of\", \"in response to\", \"in the wake of\" either. Never open a line with \"It's\", \"That name\" either.\n- Never \"still\", \"remains\" or \"continues\"; never \"top\"; never a count of names in a name line, \"every name\", \"all the movers\" or \"the real catalyst\".\n- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.\n\nYou are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nWhat each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: \"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\"; never invent or pad news for it.\n\nWhat must stay true, whatever the style: attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\") and say \"in our sources\" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\"). Say a rank as a rank (\"ranked first in this range\"), never \"led\" or \"biggest\". Speak of the checkpoint in the past tense (\"was up\", \"had fresh news\"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as \"2:30 PM\". Make each name's line stand on its own: open it with the company or the news, never with \"It\", \"Its\", \"Also\", \"The same\", \"This name\", \"They\", \"Both\" or \"Either\", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.\n\nONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):\n\nSummary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.\n\nALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.\n\nMI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.\n\nQTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.",
+      "user": "Into power hour: the session so far, going into the last hour.\n\nNARRATIVE FACTS:\n  ranked first in this range (it may be down): MI, up 806 percent from the prior close; news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  since the previous checkpoint, MI: down 12.4% since the previous checkpoint\n  next covered gainer by move: QTEX, up 44 percent from the prior close; news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  next covered gainer by move: ALEC, up 20 percent from the prior close; news state: fresh: our sources found a fresh catalyst; the fresh catalyst (restate briefly, never quote): Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech will lead development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline. Alector said the partnership extends its cash runway into 2029. The agreement was publicly disclosed October 5.\n  names the desk covers that had fresh news in our sources: 1 of 12\nAn intraday Summary is three sentences or fewer: the name ranked first in this range, with its own news; the next gainers the facts name, if any; and how many of the names the desk covers had fresh news in our sources.\n\nNAMES:\nMI: ranked #1 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: down 12.4% since the previous checkpoint\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On September 30, NFT Limited entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The filing confirms the agreement but the supplied evidence does not confirm closing. This is a major dilutive financing event, not a positive operating catalyst, and no distinct company event dated October 5 was established by the evidence.\n  event date: September 30, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", September 30, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-30T20:20:42.000Z\", September 30, 2026\n  cited source: \"NFT Files $36M Offering Of 80M Shares At $0.45/Share\", September 30, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not confirm that the September 30 private placement closed.; The timing and legal eligibility for purchasers to resell the private-placement shares are not established.; No primary-source October 5 operating announcement was supplied.\n\nVRAX: ranked #2 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.\n  event date: July 9, 2026\n  cited source: \"Virax Biolabs Signs Multi-Country Commercial Supply Agreement with Fosun Diagnostics\", July 9, 2026\n  cited source: \"Virax Biolabs' CEO James Foster Provides Shareholder Update Following Fiscal 2026 Annual Report and Fosun Diagnostics Commercial Supply Agreement\", July 16, 2026\n  cited source: \"EFFECT filed 2026-09-03\", September 4, 2026\n  cited source: \"424B3\", September 9, 2026\n  cited source: \"6-K\", September 4, 2026\n  what the desk does not have (repeat none of its numbers): Whether any uncollected intraday development influenced the move despite coverage being marked complete.; Whether the Fosun agreement has generated material revenue since its announcement.\n\nALEC: ranked #3 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech will lead development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline. Alector said the partnership extends its cash runway into 2029. The agreement was publicly disclosed October 5.\n  event date: October 5, 2026\n  cited source: \"8-K\", October 5, 2026\n  cited source: \"EX-99.01: 8-K 2026-10-05T11:00:14.000Z\", October 5, 2026\n  what the desk does not have (repeat none of its numbers): The provided excerpts do not state the collaboration's upfront payment, milestones, royalties, or total transaction value.; The bundle does not establish whether any specific intraday trading activity was directly caused by the announcement.\n\nGSRF: ranked #4 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nVNME: ranked #5 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): No fresh catalyst conclusion is supportable from the collected material: the available record is SEC-only and contains no catalyst-source or company-newsroom coverage.\n  cited source: \"Vendome Acquisition Corp I filing history\", August 14, 2026\n  what the desk does not have (repeat none of its numbers): No catalyst source was located.; No company IR, newsroom, or newswire source was collected; an announcement outside an SEC filing would not have been captured.; There is no basis to classify activity as flow-dominant because objective live-demand evidence sufficient for that classification was not supplied.\n\nAPT: ranked #6 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): SEC filings were collected, but the bundle contains no described company-specific event that can be classified as the cause of the move. Catalyst coverage is incomplete because no company IR, newsroom, newswire, or non-SEC catalyst source was located.\n  cited source: \"ALPHA PRO TECH LTD filing history\", October 1, 2026\n  cited source: \"FORM 8-K\", September 16, 2026\n  what the desk does not have (repeat none of its numbers): An announcement published outside an SEC filing may not have been captured.; The provided SEC filing excerpts do not describe the substance of the reported corporate events.; No company IR, newsroom, newswire, or non-SEC catalyst coverage was collected.\n\nDBCA: ranked #7 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nOTGA: ranked #8 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nJENA: ranked #9 in this range\n  the card above your line prints the prices and the move: do not restate them\n  since the previous checkpoint: printed a new high of day\n  news state: not researched: use the ruled phrase for not researched\n\nJONE: ranked #10 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On September 1, 2026, the company announced that its IPO units would begin trading separately into Class A ordinary shares (JONE) and rights (JONER) commencing September 3. This is a fresh trading-structure event for a newly public blank-check company, rather than an operating or transaction-development catalyst.\n  event date: September 1, 2026\n  cited source: \"EX-99.1–8-K 2026-09-01\", September 1, 2026\n  cited source: \"CURRENT REPORT\", September 1, 2026\n  what the desk does not have (repeat none of its numbers): Catalyst coverage is incomplete and SEC-only; no company IR, newsroom, or non-SEC newswire coverage was located.; An announcement or driver published outside SEC filings may not have been captured.; The supplied evidence does not establish whether the separate-trading announcement was the sole cause of the observed market action.\n\nQTEX: ranked #11 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had already been executed.\n  event date: October 1, 2026\n  cited source: \"EX-99.1: 6-K 2026-10-01T17:20:11.000Z\", October 1, 2026\n  cited source: \"QTREX Quantum Stock Climbs Friday: What's Going On?\", October 2, 2026\n  cited source: \"QTEX Stock Jumps 15% Premarket after Friday’s 40% Surge. Here’s Why\", October 5, 2026\n  what the desk does not have (repeat none of its numbers): The testing company's identity, agreement terms, contract value, purchase commitments, and timing of execution were not disclosed.; The evidence does not establish revenue attributable to the prospective definitive agreement.\n\nTDWD: ranked #12 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched"
+    }
+  ],
+  "draft": {
+    "headline": "",
+    "overall": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "MI",
+            "text": "MI. On September 30, 2026, NFT Limited entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The filing confirmed the agreement, but our evidence did not confirm that the private placement closed, and no distinct company event dated October 5 was established."
+          },
+          {
+            "ticker": "VRAX",
+            "text": "VRAX. On July 9, 2026, Virax Biolabs signed a multi-country commercial supply agreement with Fosun Diagnostics, and the company issued a shareholder update on July 16. Our sources found no fresh operating catalyst."
+          },
+          {
+            "ticker": "ALEC",
+            "text": "ALEC. On October 5, 2026, Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech leads development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline; Alector said the partnership extends its cash runway into 2029."
+          },
+          {
+            "ticker": "GSRF",
+            "text": "GSRF. Not researched at this checkpoint"
+          },
+          {
+            "ticker": "VNME",
+            "text": "VNME. our research reached no conclusion"
+          },
+          {
+            "ticker": "APT",
+            "text": "APT. our research reached no conclusion"
+          },
+          {
+            "ticker": "DBCA",
+            "text": "DBCA. Not researched at this checkpoint"
+          },
+          {
+            "ticker": "OTGA",
+            "text": "OTGA. Not researched at this checkpoint"
+          },
+          {
+            "ticker": "JENA",
+            "text": "JENA. Not researched at this checkpoint"
+          },
+          {
+            "ticker": "JONE",
+            "text": "JONE. On September 1, 2026, the company announced that its IPO units would begin trading separately as Class A ordinary shares and rights commencing September 3."
+          },
+          {
+            "ticker": "QTEX",
+            "text": "QTEX. On October 1, 2026, the company reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band. The company said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had been executed."
+          },
+          {
+            "ticker": "TDWD",
+            "text": "TDWD. Not researched at this checkpoint"
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterTexts": [
+    "{\"narrative\":\"MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.\",\"lines\":[{\"ticker\":\"MI\",\"text\":\"MI. On September 30, 2026, NFT Limited entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The filing confirmed the agreement, but our evidence did not confirm that the private placement closed, and no distinct company event dated October 5 was established.\"},{\"ticker\":\"VRAX\",\"text\":\"VRAX. On July 9, 2026, Virax Biolabs signed a multi-country commercial supply agreement with Fosun Diagnostics, and the company issued a shareholder update on July 16. Our sources found no fresh operating catalyst.\"},{\"ticker\":\"ALEC\",\"text\":\"ALEC. On October 5, 2026, Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech leads development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline; Alector said the partnership extends its cash runway into 2029.\"},{\"ticker\":\"GSRF\",\"text\":\"GSRF. Not researched at this checkpoint\"},{\"ticker\":\"VNME\",\"text\":\"VNME. our research reached no conclusion\"},{\"ticker\":\"APT\",\"text\":\"APT. our research reached no conclusion\"},{\"ticker\":\"DBCA\",\"text\":\"DBCA. Not researched at this checkpoint\"},{\"ticker\":\"OTGA\",\"text\":\"OTGA. Not researched at this checkpoint\"},{\"ticker\":\"JENA\",\"text\":\"JENA. Not researched at this checkpoint\"},{\"ticker\":\"JONE\",\"text\":\"JONE. On September 1, 2026, the company announced that its IPO units would begin trading separately as Class A ordinary shares and rights commencing September 3.\"},{\"ticker\":\"QTEX\",\"text\":\"QTEX. On October 1, 2026, the company reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band. The company said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had been executed.\"},{\"ticker\":\"TDWD\",\"text\":\"TDWD. Not researched at this checkpoint\"}]}"
+  ],
+  "writerErrors": [
+    null
+  ],
+  "mergedWriterReply": null,
+  "checkerReplies": [
+    {
+      "raw": "{\"verdicts\":[{\"id\":\"O\",\"supported\":true,\"note\":\"All counts, moves, news status and catalyst restatements match the narrative facts and each name's own stored research.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Matches MI catalyst summary and unknowns.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Fosun agreement (July 9), July 16 shareholder update and SECONDARY_STALE wording are supported.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":true,\"note\":\"Matches ALEC catalyst summary and event date.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"No research on file for GSRF.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN supports 'reached no conclusion'.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN supports 'reached no conclusion'.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":true,\"note\":\"No research on file for DBCA.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":true,\"note\":\"No research on file for OTGA.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":true,\"note\":\"No research on file for JENA.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"Matches JONE catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"Matches QTEX catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"No research on file for TDWD.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}",
+      "error": null
+    }
+  ],
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "INTO_POWER_HOUR",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-05",
+      "targetTradingDate": null,
+      "checkpoints": [
+        {
+          "id": 646,
+          "type": "RTH_INTERVAL",
+          "completedAt": "2026-10-05T18:30:20.002Z"
+        }
+      ],
+      "publishedAt": "2026-10-14T03:51:55.569Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "ALEC",
+              "liveFeed": null,
+              "text": "ALEC. On October 5, 2026, Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech leads development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline; Alector said the partnership extends its cash runway into 2029.",
+              "company": {
+                "name": "Alector, Inc.",
+                "country": "United States",
+                "business": "Alector is a biotechnology company developing therapies intended to counteract neurodegeneration, including programs using its blood-brain barrier delivery platform."
+              },
+              "path": {
+                "from": 1.81,
+                "high": 3.51,
+                "now": 2.175,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "8h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 5, 7:00 AM ET",
+                  "headline": "Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates. Genentech will lead development, regulatory, manufacturing and commercialization across indications, while Alector retains its Alector Brain Carrier platform and rights for its wholly owned pipeline. Alector said the partnership extends its cash runway into 2029. The agreement was publicly disclosed October 5.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Alector has a May 2026 ATM program permitting up to $125.0 million of common-stock sales.",
+                  "tone": "warn",
+                  "full": "Alector has a May 2026 ATM program permitting up to $125.0 million of common-stock sales. This represents potential new supply, not confirmed issuance."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "MI",
+              "liveFeed": null,
+              "text": "MI. On September 30, 2026, NFT Limited entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The filing confirmed the agreement, but our evidence did not confirm that the private placement closed, and no distinct company event dated October 5 was established.",
+              "company": {
+                "name": "NFT Ltd",
+                "country": "Hong Kong",
+                "business": "NFT Limited operates an online platform where artists, art dealers and artwork owners can list and trade artwork with investors."
+              },
+              "path": {
+                "from": 0.894,
+                "high": 10.42,
+                "now": 8.0996,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 4:20 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 30 · On September 30, NFT Limited entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The filing confirms the agreement but the supplied evidence does not confirm closing. This is a major dilutive financing event, not a positive operating catalyst, and no distinct company event dated October 5 was established by the evidence.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "80.9M sh supply",
+                  "detail": "The 231,129 share count is dated June 30 and predates the August registered offering and September private-placement agreement.",
+                  "tone": "neg",
+                  "full": "The 231,129 share count is dated June 30 and predates the August registered offering and September private-placement agreement."
+                }
+              }
+            },
+            {
+              "ticker": "VRAX",
+              "liveFeed": null,
+              "text": "VRAX. On July 9, 2026, Virax Biolabs signed a multi-country commercial supply agreement with Fosun Diagnostics, and the company issued a shareholder update on July 16. Our sources found no fresh operating catalyst.",
+              "company": {
+                "name": "Virax Biolabs Group Ltd",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 2.2,
+                "high": 3.36,
+                "now": 2.51,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "88d",
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No fresh catalyst · latest: No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.23M sh supply",
+                  "detail": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares.",
+                  "tone": "neg",
+                  "full": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares. It therefore should not be treated as a current fully diluted count."
+                }
+              }
+            },
+            {
+              "ticker": "JONE",
+              "liveFeed": null,
+              "text": "JONE. On September 1, 2026, the company announced that its IPO units would begin trading separately as Class A ordinary shares and rights commencing September 3.",
+              "company": {
+                "name": "Jones Ventures INTL Acquisition1 Corp",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 9.82,
+                "high": 9.82,
+                "now": 9.81,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "34d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 31, 8:00 PM ET",
+                  "headline": "On September 1, 2026, the company announced that its IPO units would begin trading separately into Class A ordinary shares (JONE) and rights (JONER) commencing September 3. This is a fresh trading-structure event for a newly public blank-check company, rather than an operating or transaction-development catalyst.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "28.1M sh",
+                  "detail": "No reported shares-outstanding figure or float figure is available in the bundle; issued-share amounts cannot be treated as float.",
+                  "tone": "warn",
+                  "full": "No reported shares-outstanding figure or float figure is available in the bundle; issued-share amounts cannot be treated as float."
+                }
+              }
+            },
+            {
+              "ticker": "QTEX",
+              "liveFeed": null,
+              "text": "QTEX. On October 1, 2026, the company reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band. The company said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had been executed.",
+              "company": {
+                "name": "QTREX Quantum Ltd.",
+                "country": null,
+                "business": "QTREX develops advanced connectivity and electronics manufacturing solutions, including cryogenic quantum interconnects and additively manufactured electronics."
+              },
+              "path": {
+                "from": 1.1,
+                "high": 1.68,
+                "now": 1.5813,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 1:20 PM ET",
+                  "headline": "On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had already been executed.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "11.1M sh",
+                  "detail": "QTREX completed a registered direct offering of 11,111,111 ordinary shares at $0.90 per share on August 20, 2026, approximately six weeks before the October price action.",
+                  "tone": "warn",
+                  "full": "QTREX completed a registered direct offering of 11,111,111 ordinary shares at $0.90 per share on August 20, 2026, approximately six weeks before the October price action. This is confirmed new share issuance, but the evidence does not establish whether the shares remain held or have been sold."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "RESEARCH COULD NOT TELL",
+          "lines": [
+            {
+              "ticker": "VNME",
+              "liveFeed": null,
+              "text": "VNME. our research reached no conclusion",
+              "company": {
+                "name": "Vendome Acquisition Corp I",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 10.33,
+                "high": 10.31,
+                "now": 10.27,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No fresh catalyst conclusion is supportable from the collected material: the available record is SEC-only and contains no catalyst-source or company-newsroom coverage.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "25.0M sh",
+                  "detail": "No reported current shares-outstanding count or disclosed float was supplied; weighted-average accounting share counts are not substitutes for either metric.",
+                  "tone": "warn",
+                  "full": "No reported current shares-outstanding count or disclosed float was supplied; weighted-average accounting share counts are not substitutes for either metric."
+                }
+              }
+            },
+            {
+              "ticker": "APT",
+              "liveFeed": null,
+              "text": "APT. our research reached no conclusion",
+              "company": {
+                "name": "ALPHA PRO TECH LTD",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 5.09,
+                "high": 6.04,
+                "now": 5.915,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "SEC filings were collected, but the bundle contains no described company-specific event that can be classified as the cause of the move. Catalyst coverage is incomplete because no company IR, newsroom, newswire, or non-SEC catalyst source was located.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Float was not reported in the evidence bundle.",
+                  "tone": "warn",
+                  "full": "Float was not reported in the evidence bundle."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "GSRF",
+              "liveFeed": null,
+              "text": "GSRF. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.26,
+                "high": 10.265,
+                "now": 10.265,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "DBCA",
+              "liveFeed": null,
+              "text": "DBCA. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.015,
+                "high": 10.04,
+                "now": 10.04,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "OTGA",
+              "liveFeed": null,
+              "text": "OTGA. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.26,
+                "high": 10.27,
+                "now": 10.27,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "JENA",
+              "liveFeed": null,
+              "text": "JENA. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.4,
+                "high": 10.4197,
+                "now": 10.4197,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            },
+            {
+              "ticker": "TDWD",
+              "liveFeed": null,
+              "text": "TDWD. Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 10.14,
+                "high": 10.14,
+                "now": 10.13,
+                "fromBasis": "PRIOR_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "MI ranked first in this range, up 806 percent from the prior close and down 12.4% since the previous checkpoint; our sources found only older or secondary news, including NFT Limited's September 30, 2026 agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, with closing not confirmed. QTEX was up 44 percent from the prior close with only older or secondary news, while ALEC was up 20 percent from the prior close and had fresh news: Alector disclosed on October 5, 2026, a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline rights; Alector said the partnership extends its cash runway into 2029. Of the 12 names the desk covers, 1 had fresh news in our sources.",
+      "narrativeFootnotes": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [],
+      "writerMs": 11423,
+      "checkerMs": 13682
+    }
+  }
+}
