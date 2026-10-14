@@ -74,7 +74,11 @@ describe('ExplainerPage', () => {
     expect(markup).toMatch(/not fine print\.<\/p>\s*<p>TMI Float is this desk&#39;s definition of float: shares outstanding less the shares insiders hold\. The desk can only subtract the holdings insiders report directly, so it shows an upper bound, with the date of the filed share count\. Where it cannot be computed or verified, the cell says Unknown, Not computed or Cannot verify, or shows the company&#39;s filed share count with an icon, and gives the reason\.<\/p>/);
     // Float fix 1: five faces, the filed count is never offered as a float, and the old hedge is gone.
     expect(markup).toContain('The cell shows one of five things.');
-    expect(markup).toContain('A circled i means the count passed the split and age checks but shares may have been issued since, so the true count may be higher; the reason is in the hover.');
+    // His "approved" 2026-10-14T01:17:42.726Z (Marketing 84d0b9fd, Commercial 110a): ONE circled-i sentence for
+    // both cases, at the end of the first bullet; the float fix 1 sentence in the filed-count bullet is gone.
+    expect(markup).toContain('The date of the filed count is shown beside it. A circled i means the figure may be lower than the true one; the hover says why: shares may have been issued since the count, or there may be warrants, convertible notes or share-sale programs in place that the figure does not count.</li>');
+    expect(markup.split('A circled i means').length - 1).toBe(1);
+    expect(markup).not.toContain('A circled i means the count passed the split and age checks');
     expect(markup).toContain('<strong>Cannot verify.</strong> We will not stand behind a number, and we show no count:');
     expect(markup).toContain('A filed share count shown with an icon is not offered as a ceiling or as a float: nothing is subtracted from it.');
     expect(markup).toContain('A triangle means the count may be in pre-split share units, there may have been a split that needs verification, or the count is more than 90 days old.');
