@@ -172,6 +172,24 @@ describe('runFloatNightly: names', () => {
   });
 });
 
+describe('runFloatNightly: an empty listing is not a finished night', () => {
+  it('stops nothing_listed and exits 1 when D lists no name', async () => {
+    const f = fake({ names: [] });
+    const summary = await runFloatNightly(f.deps, { date: D });
+    expect(f.ran).toEqual([]);
+    expect(summary).toMatchObject({ listed: 0, skipped: 0, computed: 0, failed: 0, stopped: 'nothing_listed' });
+    expect(exitCodeFor(summary)).toBe(1);
+  });
+
+  it('control: two listed and both already stored is finished, none and exit 0', async () => {
+    const f = fake({ names: ['A', 'B'], stored: [['A', D], ['B', D]] });
+    const summary = await runFloatNightly(f.deps, { date: D });
+    expect(f.ran).toEqual([]);
+    expect(summary).toMatchObject({ listed: 2, skipped: 2, computed: 0, failed: 0, stopped: 'none' });
+    expect(exitCodeFor(summary)).toBe(0);
+  });
+});
+
 describe('planFloatNightly: the dry run', () => {
   it('lists the pending names sorted and the skip count, and computes nothing', () => {
     const f = fake({ names: ['C', 'A', 'B'], stored: [['B', D]] });
@@ -194,6 +212,10 @@ describe('exitCodeFor: Ops exit contract', () => {
     expect(exitCodeFor({ stopped: 'none' })).toBe(0);
     expect(exitCodeFor({ stopped: 'deadline' })).toBe(0);
     expect(exitCodeFor({ stopped: 'limit' })).toBe(0);
+  });
+
+  it('exits 1 when nothing was listed', () => {
+    expect(exitCodeFor({ stopped: 'nothing_listed' })).toBe(1);
   });
 });
 

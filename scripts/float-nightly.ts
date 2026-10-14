@@ -19,7 +19,9 @@
  *   0   finished every name, or stopped at --deadline, or stopped at --limit
  *   75  stopped at the memory guard (EX_TEMPFAIL): relaunch a fresh process; it resumes by skipping names with a row for D
  *   76  stopped at the SEC request cap: do NOT relaunch
- *   1   unexpected error (bad flag, no SEC user agent, no Alpaca credentials, a store error)
+ *   1   unexpected error (bad flag, no SEC user agent, no Alpaca credentials, a store error), or a real run that listed
+ *       0 names for D (stopped nothing_listed): not done, so the wrapper must neither relaunch nor report the night done.
+ *       Without --date, D is today in ET, so a relaunch after 00:00 ET lists the next day and lands here.
  *
  * ENVIRONMENT (read from the process, then .env.local and .env, worker/env.ts):
  *   MARKET_DB_PATH                 the store; default data/market.db under the cwd (market/config.ts:118-120)
@@ -108,6 +110,12 @@ async function main(): Promise<number> {
       deadlineMs,
     });
     const code = exitCodeFor(summary);
+    if (summary.stopped === 'nothing_listed') {
+      log(
+        `[float-nightly] ${date} listed 0 names: not done; ` +
+          (args.date === null ? 'the date defaulted to the ET calendar date (no --date given)' : 'the date was given as --date'),
+      );
+    }
     log(
       `[float-nightly] ${date} summary: listed ${summary.listed}, skipped ${summary.skipped}, computed ${summary.computed}, ` +
         `failed ${summary.failed}, stopped ${summary.stopped}, SEC requests ${summary.secRequests}, ` +
