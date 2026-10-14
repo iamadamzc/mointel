@@ -13,7 +13,7 @@
 
 import type { SupplyPair } from '@/lib/research/supply';
 
-import { floatCellView, type FloatBound } from './floatBound';
+import { floatCellView, normalizeFloatBound, type FloatBound } from './floatBound';
 import { floatBoundReading, type FloatBoundReading } from './supply';
 
 export interface DrawerFloatLine {
@@ -37,6 +37,11 @@ export function drawerFloatLine(
   // A MARKED bound (L8 B's circled i) never prints the drawer's own ceiling without its caveat (Commercial's
   // condition (3)): the drawer prints the cell's own hover sentence instead.
   if (view.kind === 'bound' && view.icon) return { sentence: view.icon.title, detail: null, tone: 'dim', refusedByCell: true };
+  // L7 (Commercial read 128): a bound whose count a LATER filing states is computed from that count, while the
+  // drawer's own ceiling reads the dossier's older count; the drawer prints the cell's own popover sentence instead.
+  if (view.kind === 'bound' && normalizeFloatBound(cell ?? null)?.countSource?.stated) {
+    return { sentence: view.paragraphs[0] ?? view.face, detail: null, tone: 'dim', refusedByCell: true };
+  }
   if (view.kind === 'bound') return own;
   return { sentence: view.paragraphs[0] ?? view.face, detail: null, tone: 'dim', refusedByCell: true };
 }

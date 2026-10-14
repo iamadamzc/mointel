@@ -68,6 +68,19 @@ describe('the drawer float line', () => {
     expect(drawerFloatLine(worxPair, produced, true)?.sentence).toBe('Float is at most 89,789 shares outstanding');
   });
 
+  it('L7 (Commercial read 128): a count a later filing states never sits beside the older ceiling; the cell sentence instead', () => {
+    const produced = { ...refused('CANNOT_VERIFY', 'X'), state: 'PRODUCED', reason: null, bound: 120_000, countShares: 125_000, countForm: '10-Q', countFiled: '2026-09-10' };
+    const source = { read: 1, unread: 0, capped: 0, conflictAsOf: null };
+    const stated = { ...produced, countSource: { ...source, stated: true } } as unknown as FloatBound;
+    const line = drawerFloatLine(worxPair, stated, true);
+    expect(line?.refusedByCell).toBe(true);
+    expect(line?.sentence).toContain('no more than');
+    expect(line?.sentence).not.toContain('89,789');
+    // Control: a cover count (stated false) keeps the drawer's own line.
+    const cover = { ...produced, countSource: { ...source, stated: false } } as unknown as FloatBound;
+    expect(drawerFloatLine(worxPair, cover, true)?.sentence).toBe('Float is at most 89,789 shares outstanding');
+  });
+
   it('wired with no row ("Not computed"): no ceiling, the cell sentence (Integration 36th (a))', () => {
     for (const cell of [null, undefined]) {
       expect(drawerFloatLine(worxPair, cell, true)).toMatchObject({ sentence: 'The desk has not computed a TMI Float for this name.', refusedByCell: true, tone: 'dim', detail: null });
