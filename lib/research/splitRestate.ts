@@ -13,8 +13,12 @@
 import type { SplitProof } from './insiderBound';
 import type { SpanBar } from './splitProof';
 
-/** One listed share-changing action, as stored on a float row (Alpaca corporate actions). */
-export interface AnnouncedAction { group: string; exDate: string; oldRate: number | null; newRate: number | null }
+/**
+ * One listed share-changing action, as stored on a float row (Alpaca corporate actions). A split's `exDate` is its ex
+ * date. A non-split action is a window (Commercial read 127): `exDate` its EARLIEST date and `lastDate` its LATEST among
+ * ex, effective, process and payable dates; `lastDate` absent (a row stored before read 127) means a one-day window.
+ */
+export interface AnnouncedAction { group: string; exDate: string; lastDate?: string; oldRate: number | null; newRate: number | null }
 export interface RestatedSplit { exDate: string; oldRate: number; newRate: number }
 export type RestateRefusal = 'NON_SPLIT_ACTION' | 'RATELESS_SPLIT' | 'EX_DATE_ON_FROM' | 'OLDER_THAN_CUTOFF' | 'FILED_AFTER_EX_DATE';
 export type SpanRestatement =
@@ -110,11 +114,17 @@ export function restateSpan(
       onFrom = true;
       continue;
     }
-    if (!(action.exDate > from && action.exDate <= to)) continue;
+    // Commercial read 127: a non-split action occupies a WINDOW, [exDate, lastDate] (its earliest to latest of ex,
+    // effective, process and payable dates): a stock dividend adjusts the price at ex and issues the shares at payable; a
+    // merger is effective, then processed. It refuses when that window touches `from` or meets (from, to], so a count
+    // dated inside the window is refused. These groups only ever refuse, so the wider window costs only refusals.
     if (!SPLIT_GROUPS.has(action.group)) {
-      nonSplit = true;
+      const last = action.lastDate ?? action.exDate;
+      if (action.exDate <= to && last >= from) nonSplit = true;
       continue;
     }
+    // Splits keep the single ex-date rule (the bars step at ex in 771 of 771 recall matches).
+    if (!(action.exDate > from && action.exDate <= to)) continue;
     const { oldRate, newRate } = action;
     if (oldRate === null || newRate === null || !(oldRate > 0) || !(newRate > 0) || !Number.isFinite(oldRate) || !Number.isFinite(newRate)) {
       rateless = true;

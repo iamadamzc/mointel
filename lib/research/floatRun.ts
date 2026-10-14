@@ -13,6 +13,7 @@ import { readCurrentAnalysis } from '../market/store/researchRepo';
 import { ANNOUNCED_ACTION_TYPES, computeFloatBound, type AnnouncedAction } from './floatJob';
 import { readSpanBars } from './history';
 import type { SecClient } from './sec/client';
+import { SPLIT_GROUPS } from './splitRestate';
 
 const mb = (bytes: number) => (bytes / 1_048_576).toFixed(1);
 
@@ -24,11 +25,11 @@ export type FloatSplitClient = Pick<SplitDataClient, 'getSplits'> & Pick<AlpacaR
  * share-changing types. A rateless row is kept with null rates; the group is kept as the API returned it (PLURAL). Rows
  * are NOT filtered by `symbol`: the request names one symbol, and a merger or spin-off row may carry its symbols under
  * other fields (its `symbol` reads '').
- * THE DATE (Commercial read 126, REQUIRED): only `ex_date` places an action. A row of ANY group without one makes the
- * whole fetch THROW, which the job stores as null (could not tell): today's refusal, never a restatement. The live read
- * (ca-fields/raw.json, c0cb5f6f) shows mergers and unit splits carry effective_date and process_date and no ex_date, so a
- * name with one in its window keeps "Cannot verify"; dating them by those fields waits on evidence that they are the
- * share-changing date (read 126's condition for rule (a)).
+ * THE DATES (Commercial read 127, which withdrew read 126 on the live read ca-fields/raw.json, c0cb5f6f): a SPLIT is
+ * placed by its `ex_date` (the bars step at ex: 771 of 771 recall matches) and a split row without one makes the whole
+ * fetch THROW (null: today's refusal). A NON-SPLIT action is a WINDOW: `exDate` the earliest and `lastDate` the latest of
+ * its ex, effective, process and payable dates (a merger is effective, then processed; a stock dividend adjusts at ex
+ * and pays later), and one with none of them throws the same way. Those groups only ever refuse (splitRestate.ts).
  */
 export async function fetchAnnouncedActions(
   client: Pick<AlpacaRestClient, 'getCorporateActionsRaw'>,
@@ -38,13 +39,25 @@ export async function fetchAnnouncedActions(
 ): Promise<AnnouncedAction[]> {
   const rows = await client.getCorporateActionsRaw({ symbols: [symbol], start, end, types: ANNOUNCED_ACTION_TYPES });
   const actions: AnnouncedAction[] = [];
+  const dateOf = (value: unknown) => (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null);
   for (const row of rows) {
-    const date = row.exDate;
-    if (!date) throw new Error(`announced actions for ${symbol}: a ${row.group} row has no ex_date`);
+    let date: string;
+    let lastDate: string | undefined;
+    if (SPLIT_GROUPS.has(row.group)) {
+      if (!row.exDate) throw new Error(`announced actions for ${symbol}: a ${row.group} row has no ex_date`);
+      date = row.exDate;
+    } else {
+      const dates = [row.exDate, dateOf(row.raw.effective_date), dateOf(row.raw.process_date), dateOf(row.raw.payable_date)]
+        .filter((d): d is string => d !== null)
+        .sort();
+      if (dates.length === 0) throw new Error(`announced actions for ${symbol}: a ${row.group} row has no ex, effective, process or payable date`);
+      date = dates[0]!;
+      lastDate = dates[dates.length - 1]!;
+    }
     // The same row returned twice is one action: a repeated split would square the factor (two real splits on
     // different dates, AEMD's, differ by date and are both kept).
-    if (actions.some((a) => a.group === row.group && a.exDate === date && a.oldRate === row.oldRate && a.newRate === row.newRate)) continue;
-    actions.push({ group: row.group, exDate: date, oldRate: row.oldRate, newRate: row.newRate });
+    if (actions.some((a) => a.group === row.group && a.exDate === date && a.lastDate === lastDate && a.oldRate === row.oldRate && a.newRate === row.newRate)) continue;
+    actions.push({ group: row.group, exDate: date, ...(lastDate === undefined ? {} : { lastDate }), oldRate: row.oldRate, newRate: row.newRate });
   }
   return actions;
 }

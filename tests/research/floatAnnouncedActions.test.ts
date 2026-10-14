@@ -34,16 +34,28 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
     expect([...asked[0]!.types].sort()).toEqual(['forward_split', 'reverse_split', 'spin_off', 'stock_and_cash_merger', 'stock_dividend', 'stock_merger', 'unit_split']);
     expect(actions).toEqual([
       { group: 'reverse_splits', exDate: '2026-09-15', oldRate: 10, newRate: 1 },
-      { group: 'stock_dividends', exDate: '2026-09-20', oldRate: null, newRate: null },
-      { group: 'spin_offs', exDate: '2026-09-25', oldRate: null, newRate: null },
+      { group: 'stock_dividends', exDate: '2026-09-20', lastDate: '2026-09-20', oldRate: null, newRate: null },
+      { group: 'spin_offs', exDate: '2026-09-25', lastDate: '2026-09-25', oldRate: null, newRate: null },
     ]);
   });
 
-  it('read 126: a row of ANY group without an ex_date fails the whole fetch (stored as null, today\'s refusal), even with an effective date; control: the same list without it', async () => {
+  it('read 127: a non-split action is stored as its window, earliest to latest of ex, effective, process and payable dates', async () => {
+    // The live read (ca-fields/raw.json): a merger carries effective_date and process_date and no ex_date; a stock dividend
+    // adjusts at ex and pays later.
+    const merger: CorporateActionRow = { group: 'stock_mergers', symbol: '', exDate: null, oldRate: null, newRate: null, raw: { effective_date: '2026-09-08', process_date: '2026-09-11', payable_date: '2026-09-11' } };
+    const dividend: CorporateActionRow = { group: 'stock_dividends', symbol: 'ACME', exDate: '2026-09-01', oldRate: null, newRate: null, raw: { ex_date: '2026-09-01', payable_date: '2026-09-23', process_date: '2026-09-23' } };
+    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [merger, dividend] }, 'ACME', '2026-06-01', '2026-10-02')).resolves.toEqual([
+      { group: 'stock_mergers', exDate: '2026-09-08', lastDate: '2026-09-11', oldRate: null, newRate: null },
+      { group: 'stock_dividends', exDate: '2026-09-01', lastDate: '2026-09-23', oldRate: null, newRate: null },
+    ]);
+  });
+
+  it('a split with no ex_date, or a non-split action with no date at all, fails the whole fetch (stored as null, today\'s refusal); control: the split with its ex_date', async () => {
     const split: CorporateActionRow = { group: 'reverse_splits', symbol: 'ACME', exDate: '2026-09-15', oldRate: 10, newRate: 1, raw: {} };
-    // The live read (ca-fields/raw.json): a merger carries effective_date and process_date and no ex_date.
-    const merger: CorporateActionRow = { group: 'stock_mergers', symbol: '', exDate: null, oldRate: null, newRate: null, raw: { effective_date: '2026-09-22', process_date: '2026-09-22' } };
-    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [split, merger] }, 'ACME', '2026-06-01', '2026-10-02')).rejects.toThrow(/stock_mergers row has no ex_date/);
+    const noEx: CorporateActionRow = { ...split, exDate: null, raw: { process_date: '2026-09-15' } };
+    const undated: CorporateActionRow = { group: 'unit_splits', symbol: 'ACME', exDate: null, oldRate: null, newRate: null, raw: {} };
+    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [noEx] }, 'ACME', '2026-06-01', '2026-10-02')).rejects.toThrow(/reverse_splits row has no ex_date/);
+    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [split, undated] }, 'ACME', '2026-06-01', '2026-10-02')).rejects.toThrow(/unit_splits row has no ex, effective, process or payable date/);
     await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [split] }, 'ACME', '2026-06-01', '2026-10-02')).resolves.toHaveLength(1);
   });
 
@@ -74,8 +86,8 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
     expect(url.searchParams.get('end')).toBe('2026-10-02');
     expect(actions).toEqual([
       { group: 'forward_splits', exDate: '2026-09-15', oldRate: 1, newRate: 2 },
-      { group: 'unit_splits', exDate: '2026-09-18', oldRate: null, newRate: null },
-      { group: 'stock_dividends', exDate: '2026-09-20', oldRate: null, newRate: null },
+      { group: 'unit_splits', exDate: '2026-09-18', lastDate: '2026-09-18', oldRate: null, newRate: null },
+      { group: 'stock_dividends', exDate: '2026-09-20', lastDate: '2026-09-20', oldRate: null, newRate: null },
     ]);
   });
 });

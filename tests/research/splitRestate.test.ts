@@ -244,3 +244,29 @@ describe('restateCount (step 3)', () => {
     expect(restateCount(reverse, 'FOUND', bars([0, 10, 1]))).toEqual({ kind: 'REFUSE', why: 'BARS_DISAGREE' });
   });
 });
+
+/*
+ * Commercial read 127: a non-split action is a WINDOW (its earliest to latest date), and a figure dated INSIDE it is
+ * refused: the shares arrive after the figure, so the count and the bound would be too low, which is false.
+ */
+describe('read 127: a non-split action refuses across its whole window', () => {
+  const merger: AnnouncedAction = { group: 'stock_mergers', exDate: '2026-09-08', lastDate: '2026-09-11', oldRate: null, newRate: null };
+  const dividend: AnnouncedAction = { group: 'stock_dividends', exDate: '2026-09-01', lastDate: '2026-09-23', oldRate: null, newRate: null };
+  const to = '2026-10-10';
+
+  it('a count dated between a stock merger\'s effective and process dates is refused; one day after the process date it is not (control)', () => {
+    expect(restateSpan([merger], { from: '2026-09-10', to, d: D })).toEqual({ kind: 'REFUSE', why: 'NON_SPLIT_ACTION' });
+    expect(restateSpan([merger], { from: '2026-09-12', to, d: D })).toEqual({ kind: 'NONE_LISTED' });
+  });
+
+  it('a count dated between a stock dividend\'s ex date and its payable date is refused; after the payable date it is not (control)', () => {
+    expect(restateSpan([dividend], { from: '2026-09-10', to, d: D })).toEqual({ kind: 'REFUSE', why: 'NON_SPLIT_ACTION' });
+    expect(restateSpan([dividend], { from: '2026-09-24', to, d: D })).toEqual({ kind: 'NONE_LISTED' });
+  });
+
+  it('a window ending ON from refuses (it touches from); a row stored before read 127 (no lastDate) is a one-day window', () => {
+    expect(restateSpan([merger], { from: '2026-09-11', to, d: D })).toEqual({ kind: 'REFUSE', why: 'NON_SPLIT_ACTION' });
+    const oneDay: AnnouncedAction = { group: 'stock_mergers', exDate: '2026-09-08', oldRate: null, newRate: null };
+    expect(restateSpan([oneDay], { from: '2026-09-10', to, d: D })).toEqual({ kind: 'NONE_LISTED' });
+  });
+});
