@@ -68,6 +68,19 @@ if [ "$hhmm" -ge 0655 ] && [ "$hhmm" -lt 2000 ]; then
   log "refusing to start at ${hhmm} ET (allowed 20:00-06:55 ET)"; exit 0
 fi
 
+# The trading date D is fixed ONCE, here, and passed to every launch. The script's own default is the calendar date
+# in ET, so a relaunch after midnight (the RSS-guard exit 75, or a restart) would read the new day, list 0 names
+# and end the night as "every name done" (2026-10-14 00:24 ET, ops.md). A night that started 20:00-23:59 ET is that
+# day's; one started 00:00-06:55 ET belongs to the evening before. An explicit --date wins.
+date_given=no
+for a in "$@"; do case "$a" in --date|--date=*) date_given=yes ;; esac; done
+if [ "$date_given" = no ]; then
+  if [ "$hhmm" -ge 2000 ]; then night_date=$(TZ=America/New_York date +%F)
+  else night_date=$(TZ=America/New_York date -d "yesterday 12:00" +%F); fi
+  set -- "$@" "--date=${night_date}"
+  log "trading date fixed at ${night_date} for every launch tonight"
+fi
+
 p1=$(next_et "$PHASE1_END_ET")
 p2=""
 [ -n "$PHASE2_END_ET" ] && p2=$(next_et "$PHASE2_END_ET")
