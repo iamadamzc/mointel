@@ -43,8 +43,12 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * amounts said as on air ("$46.8 million", not "$46.8M"); the no-card-path case worded as the card rule's condition;
  * the specimen's ALEC line opens on the news (Integration's cut); Commercial read 84's REQUIRED deal-status line.
  * 6: the rating sentence (`RATING_SENTENCE`; his yes fbafcf83, Marketing cf2491a5, Commercial read 91 e7a377a7).
+ * 7: the recap Summary fix (L13, his yes 8e3e419f; the re-test 9748a74d struck both recap Summaries for names from the
+ * name list): a recap lists the tickers its Summary may name (`recapSummaryRule`); Commercial read 100's notes 1 to 3
+ * (no judgement word the source does not state, no catalyst kind the research does not state, the "confirmed" clause cut);
+ * the specimen header says it is intraday and a recap's Summary differs (Marketing's advisory on the L13 read).
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 6;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 7;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -209,9 +213,11 @@ export const SYSTEM_V7 = [
   'USING THE FACTS:',
   '- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most ("$46.8 million"). Restate stored text in your own words; never quote it.',
   '- The voice below keeps the move out of a name line because the card prints it above the line. Where a name\'s sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.',
-  '- A deal or plan is what was agreed or announced, never "will"; never "confirmed", say "the company reported". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.',
+  '- A deal or plan is what was agreed or announced, never "will". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.',
   `- ${RATING_SENTENCE}`,
   '- Restate what the source reports and its terms, never the desk\'s reading of what it may mean or what traders, investors or the market may think, do or care about.',
+  '- Never call news "positive", "negative" or any other judgement its source does not state.',
+  '- Never say what kind of catalyst a name\'s news is (for example "an operating catalyst") unless its research says so.',
   `- The joining words in the voice below are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
   '- Never "still", "remains" or "continues"; never "top"; never a count of names in a name line, "every name", "all the movers" or "the real catalyst".',
   '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
@@ -221,7 +227,7 @@ export const SYSTEM_V7 = [
   '',
   VOICE_PARAGRAPH,
   '',
-  'ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (a report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given):',
+  "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
   '',
   VOICE_SPECIMEN,
 ].join('\n');
@@ -237,6 +243,21 @@ const KIND_FRAME_V7: Record<ReportKind, string> = {
 /** Commercial read 29 (4642de51), REQUIRED, carried from v6: the revised edition's Summary states no revision claim. */
 const REVISION_RULE_V7 = 'This edition revises the earlier one: say nothing about what changed or was revised since it.';
 
+/**
+ * L13: the evening recap's Summary told an intraday story from the name list (the re-test 9748a74d: "Intraday, VCIG
+ * ranked first, followed by ZNB, SILO..." with their figures) though the system prompt forbids it. So a recap names, next
+ * to its facts, the only tickers the Summary may use: the named movers and the after-hours name. Null for intraday.
+ */
+export function recapSummaryRule(facts: NarrativeFacts): string | null {
+  if (!isRecap(facts.kind)) return null;
+  const tickers = [...(facts.recapLeaders ?? []).map((m) => m.ticker), ...(facts.afterHours ? [facts.afterHours.ticker] : [])];
+  const unique = [...new Set(tickers)];
+  const keepOut = 'keep those names and their figures out of the Summary.';
+  return unique.length === 0
+    ? `The Summary names no ticker. Every name has its own line below; ${keepOut}`
+    : `The Summary may name only these tickers: ${unique.join(', ')}. Every other name has its own line below; ${keepOut}`;
+}
+
 export function buildWriterPromptV7(input: WriterInputV7): WriterPrompt {
   const none = input.revision ? 'No name changed since the earlier edition: return "lines": [].' : 'No names ranked in this range at this checkpoint.';
   const sheets =
@@ -245,11 +266,13 @@ export function buildWriterPromptV7(input: WriterInputV7): WriterPrompt {
       : input.facts
           .map((fact) => factSheetV7(fact, input.research.get(fact.ticker) ?? null, input.paths.get(fact.ticker) ?? null).join('\n  '))
           .join('\n\n');
+  const recapSummary = recapSummaryRule(input.narrative);
   const user = [
     input.kind === 'PREMARKET' && input.revision ? `${KIND_FRAME_V7.PREMARKET} This edition revises the earlier one.` : KIND_FRAME_V7[input.kind],
     '',
     'NARRATIVE FACTS:',
     `  ${narrativeSheetV7(input.narrative).join('\n  ')}`,
+    ...(recapSummary ? [recapSummary] : []),
     ...(input.revision ? [REVISION_RULE_V7] : []),
     '',
     input.revision ? 'NAMES (only the names whose facts changed since the earlier edition):' : 'NAMES:',

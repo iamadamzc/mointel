@@ -9,6 +9,8 @@ import {
   NEVER_JOIN,
   NEVER_OPEN,
   RATING_SENTENCE,
+  recapSummaryRule,
+  REPORT_WRITER_PROMPT_VERSION_V7,
   RULED_STATE_PHRASES,
   SYSTEM_V7,
   VOICE_PARAGRAPH,
@@ -242,6 +244,44 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
   it('is shorter than v6, and has no em dash', () => {
     expect(SYSTEM_V7.length).toBeLessThan(SYSTEM_V6.length);
     expect(SYSTEM_V7).not.toMatch(/\u2014/);
+  });
+});
+
+describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1 to 3', () => {
+  const allowed = 'The Summary may name only these tickers: NXL, AMOD. Every other name has its own line below; keep those names and their figures out of the Summary.';
+  const noTicker = 'The Summary names no ticker. Every name has its own line below; keep those names and their figures out of the Summary.';
+
+  it('a recap lists the named movers and the after-hours name, between its facts and the names', () => {
+    for (const kind of ['EVENING', 'PREMARKET'] as const) {
+      const { user } = buildWriterPromptV7(input({ ...recap, kind }));
+      expect(user.split(allowed).length - 1).toBe(1);
+      expect(user.indexOf(allowed)).toBeGreaterThan(user.indexOf('AMOD, up 62 percent after the close'));
+      expect(user.indexOf(allowed)).toBeLessThan(user.indexOf('NAMES:'));
+    }
+  });
+
+  it('a recap with no named mover and no after-hours name may name no ticker; a ticker in both lists once', () => {
+    expect(recapSummaryRule({ ...recap, recapLeaders: [], afterHours: null })).toBe(noTicker);
+    expect(recapSummaryRule({ ...recap, recapLeaders: null, afterHours: null })).toBe(noTicker);
+    const both = { ...recap, afterHours: { ...recap.afterHours!, ticker: 'NXL' } };
+    expect(recapSummaryRule(both)).toBe('The Summary may name only these tickers: NXL. Every other name has its own line below; keep those names and their figures out of the Summary.');
+  });
+
+  it('an intraday report gets no ticker list', () => {
+    expect(recapSummaryRule(intraday)).toBeNull();
+    expect(buildWriterPromptV7(input(intraday)).user).not.toContain('The Summary may name only');
+    expect(buildWriterPromptV7(input(intraday)).user).not.toContain('The Summary names no ticker');
+  });
+
+  it("carries read 100's notes and Marketing's specimen header, and drops the 'confirmed' clause", () => {
+    expect(SYSTEM_V7).toContain('- Never call news "positive", "negative" or any other judgement its source does not state.');
+    expect(SYSTEM_V7).toContain('- Never say what kind of catalyst a name\'s news is (for example "an operating catalyst") unless its research says so.');
+    expect(SYSTEM_V7).toContain('- A deal or plan is what was agreed or announced, never "will". A deal is a fact:');
+    expect(SYSTEM_V7).not.toContain('"confirmed"');
+    expect(SYSTEM_V7).toContain(
+      "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
+    );
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(7);
   });
 });
 

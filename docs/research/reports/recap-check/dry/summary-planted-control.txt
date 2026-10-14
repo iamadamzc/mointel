@@ -1,0 +1,21 @@
+store ../mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; clock fixed at 2026-10-14T01:05:12.484Z
+days 2026-10-02, 2026-10-05, 2026-10-06; kind PREMARKET; range $1-$20; 3 runs per input
+prompt v7 version 7, writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw checker reply kept
+stop $2.5: a report launches only if spend + its worst case ($0.8116) fits; DRY: stub models, nothing spent
+
+2026-10-02-PREMARKET-v7-run1: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [AMOD, CYCU, MI]; outside the list in the draft Summary [VCIG]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-02-PREMARKET-v7-run2: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [AMOD, CYCU, MI]; outside the list in the draft Summary [VCIG]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-02-PREMARKET-v7-run3: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [AMOD, CYCU, MI]; outside the list in the draft Summary [VCIG]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-05-PREMARKET-v7-run1: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [MI, VRAX, OLOX]; outside the list in the draft Summary [XCH]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-05-PREMARKET-v7-run2: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [MI, VRAX, OLOX]; outside the list in the draft Summary [XCH]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-05-PREMARKET-v7-run3: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [MI, VRAX, OLOX]; outside the list in the draft Summary [XCH]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-06-PREMARKET-v7-run1: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary [LCFY]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-06-PREMARKET-v7-run2: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary [LCFY]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+2026-10-06-PREMARKET-v7-run3: PUBLISHED; 1 of 13 lines struck (Summary struck); allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary [LCFY]; judgement or kind lines 2; count sentence yes; checker replies 1 (errors 0); $0.0000; tokens 
+
+reports run 9 of 9; published 9; Summary struck 9
+draft Summaries naming a name outside the list: 9 of 9
+drafted lines with a judgement word or a catalyst kind (read 107 a; each read by hand): 18
+draft Summaries with the covered-names count sentence (read 107 b): 9 of 9
+checker calls that threw: 0; reports MISSED or ERROR: 0
+TOTAL spend $0.0000 (dry: stub models, nothing spent)
