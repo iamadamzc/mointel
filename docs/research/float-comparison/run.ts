@@ -480,10 +480,12 @@ async function sheetFloats(tickers: string[]) {
     const state = await provider.load();
     const rows: Record<string, unknown> = {};
     for (const ticker of tickers) {
-      const research = state.research[ticker.toUpperCase()];
+      // The RESEARCH tab record type left with the Sheet parser (A5 rest); this branch is unreachable since the
+      // provider is never google-sheets, and the field keeps its key.
+      const research = null;
       const today = state.tickers.find((t) => t.ticker.toUpperCase() === ticker.toUpperCase());
       rows[ticker] = {
-        research: research ? { float: research.float.display, value: research.float.value, sourceDate: research.floatSourceDate, reportDate: research.reportDate } : null,
+        research,
         today: today ? { float: today.float.display, value: today.float.value } : null,
       };
     }

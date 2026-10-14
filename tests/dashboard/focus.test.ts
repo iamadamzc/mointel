@@ -3,8 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { buildDeskRead } from '@/lib/dashboard/deskRead';
 import { buildDeskRow, mergeDesk } from '@/lib/dashboard/merge';
 import { retentionNote, selectFocusRows } from '@/lib/dashboard/view';
-import { MockProvider } from '../fixtures/mockSheet';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -73,22 +71,10 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
   };
 }
 
-function sheetRow(ticker: string) {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'B — SECONDARY';
-  row[1] = ticker;
-  row[3] = '🟡 FRONTSIDE — WARNING';
-  row[4] = '$5.00';
-  row[9] = 'A — STRONG/FRESH';
-  row[10] = 'Earnings released after Friday close.';
-  row[19] = '$5.80';
-  row[20] = '16.0%';
-  return normalizeSheetRows([row], []).tickers[0]!;
-}
 
 describe('focus cards', () => {
   it('reads live telemetry, not the sheet snapshot', () => {
-    const row = buildDeskRow('AAAA', sheetRow('AAAA'), null, demand('AAAA'));
+    const row = buildDeskRow('AAAA', demand('AAAA'));
     const rows = new Map([['AAAA', row]]);
 
     const card = selectFocusRows(['AAAA'], rows)[0];
@@ -98,7 +84,7 @@ describe('focus cards', () => {
   });
 
   it('reads merged intelligence, the same object the drawer builds', () => {
-    const row = buildDeskRow('AAAA', sheetRow('AAAA'), null, demand('AAAA'));
+    const row = buildDeskRow('AAAA', demand('AAAA'));
     const card = selectFocusRows(['AAAA'], new Map([['AAAA', row]]))[0];
 
     const read = buildDeskRead(card);
@@ -109,8 +95,6 @@ describe('focus cards', () => {
   });
 
   it('keeps a focused name that is no longer ranked', async () => {
-    const payload = await new MockProvider().load();
-    const dashboard = { ...payload, meta: { ...payload.meta, stale: false, cacheAgeMs: 0 } };
     // The pinned name is not in the ranked discovery list at all.
     const snapshot = {
       health: { offline: true },
@@ -121,7 +105,7 @@ describe('focus cards', () => {
       events: [],
     } as unknown as MarketSnapshot;
 
-    const merged = mergeDesk(dashboard, snapshot);
+    const merged = mergeDesk(snapshot);
     expect(merged.discovery).toHaveLength(0);
 
     const focus = selectFocusRows(['VNTX'], merged.rows);
@@ -162,7 +146,7 @@ describe('focus cards', () => {
     const rows = new Map(
       ['AAAA', 'BBBB'].map((ticker) => [
         ticker,
-        buildDeskRow(ticker, null, null, demand(ticker)),
+        buildDeskRow(ticker, demand(ticker)),
       ]),
     );
 

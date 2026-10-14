@@ -144,11 +144,6 @@ export function PriceMoveCell({
         <span className={`num text-[13px] font-semibold ${changeTone}`} title={title}>
           {formatSignedPercent(value)}
         </span>
-        {telemetry.source === 'SHEET' && telemetry.sourceLabel !== '—' ? (
-          <span className="text-[9px] tracking-wide text-ink-3 uppercase">
-            {telemetry.sourceLabel}
-          </span>
-        ) : null}
       </span>
 
       {inBlueSky && !suppressBlueSky ? (

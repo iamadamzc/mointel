@@ -11,51 +11,39 @@ import { describe, expect, it } from 'vitest';
 
 import { scopeResearch } from '@/lib/data';
 import { computeEtag, dashboardResponseParts, etagMatches } from '@/lib/data/etag';
-import { normalizeSheetRows } from '@/lib/data/rows';
-import type { DashboardState, StructuralResearch } from '@/lib/data/types';
+import type { DashboardState } from '@/lib/data/types';
 
-function sheetRow(ticker: string): string[] {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'B — SECONDARY';
-  row[1] = ticker;
-  row[3] = '🟡 FRONTSIDE — WARNING';
-  return row;
+/*
+ * The Sheet row parsers that built these fixtures were deleted (A5), and in
+ * production `tickers` is always [] and `research` always {}. `scopeResearch`
+ * and the etag still run on every poll, so they keep their tests, on plain
+ * stand-in objects cast to the payload's types.
+ */
+function tickerRow(ticker: string): DashboardState['tickers'][number] {
+  return { ticker } as unknown as DashboardState['tickers'][number];
 }
 
 /**
- * A RESEARCH row with enough prose in it to weigh what a real one weighs.
+ * A record with enough prose in it to weigh what a real one weighed.
  * The point of scoping is bytes, so the fixture has to carry some.
  */
-function researchRow(ticker: string): string[] {
-  const row: string[] = new Array(34).fill('');
-  row[0] = '2026-08-20';
-  row[1] = ticker;
-  row[2] = 'United States';
-  row[3] = `${ticker} Holdings Corporation`;
-  row[8] = '4,120,000';
-  row[12] =
-    'Company announced a distribution agreement covering three states, effective immediately, with no revenue guidance attached to the release.';
-  row[14] = 'B — LEGITIMATE/SECONDARY';
-  row[19] =
-    'The advance began on the release and has held the opening range, but the daily history shows two prior expansions of similar size that gave most of it back.';
-  row[23] = '$6.00/$6.50 resistance';
-  row[24] = '$5.10/$4.80 support';
-  return row;
-}
-
-function record(ticker: string): StructuralResearch {
-  return normalizeSheetRows([], [researchRow(ticker)]).research[ticker]!;
+function record(ticker: string): never {
+  return {
+    ticker,
+    company: `${ticker} Holdings Corporation`,
+    catalystDetails:
+      'Company announced a distribution agreement covering three states, effective immediately, with no revenue guidance attached to the release.',
+    cycleReasoning:
+      'The advance began on the release and has held the opening range, but the daily history shows two prior expansions of similar size that gave most of it back.',
+  } as never;
 }
 
 function state(visible: string[], stored: string[]): DashboardState {
-  const research: Record<string, StructuralResearch> = {};
-  for (const ticker of stored) {
-    const built = record(ticker);
-    if (built) research[ticker] = built;
-  }
+  const research: DashboardState['research'] = {};
+  for (const ticker of stored) research[ticker] = record(ticker);
 
   return {
-    tickers: normalizeSheetRows(visible.map(sheetRow), []).tickers,
+    tickers: visible.map(tickerRow),
     research,
     summary: {
       namesTracked: visible.length,
@@ -66,7 +54,7 @@ function state(visible: string[], stored: string[]): DashboardState {
       strongCatalysts: 0,
     },
     meta: {
-      provider: 'google-sheets',
+      provider: 'none',
       fetchedAt: '2026-08-21T04:00:00.000Z',
       sourceUpdatedAt: null,
       error: null,

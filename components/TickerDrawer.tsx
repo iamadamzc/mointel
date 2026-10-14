@@ -240,7 +240,6 @@ function DrawerHeader({
   headingRef: React.Ref<HTMLHeadingElement>;
 }) {
   const feedBanner = useFeedBanner();
-  const ticker = row.research;
   // The same projection the board used to pick this row's price.
   const t = row.telemetry;
   const conclusions = resolveConclusions(row);
@@ -313,7 +312,7 @@ function DrawerHeader({
                 tone={
                   t.source === 'ALPACA'
                     ? 'accent'
-                    : sessionTone(ticker?.price.session ?? 'NONE')
+                    : sessionTone('NONE')
                 }
                 title={
                   t.source === 'ALPACA'

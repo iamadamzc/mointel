@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { buildDeskRead, buildStructureSummary } from '@/lib/dashboard/deskRead';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { buildLevelMap } from '@/lib/data/priceLevels';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import type { ResearchDossier } from '@/lib/research/types';
@@ -68,28 +67,6 @@ function demand(overrides: Partial<DemandState> = {}): DemandState {
     updatedAt: '2026-08-17T15:40:02.000Z',
     ...overrides,
   };
-}
-
-interface SheetOptions {
-  cycle?: string;
-  catalystGrade?: string;
-  catalyst?: string;
-  structureFlags?: string;
-  keyLevels?: string;
-}
-
-function sheet(options: SheetOptions = {}) {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'A — PRIMARY';
-  row[1] = 'FIEE';
-  row[2] = 'United States';
-  row[3] = options.cycle ?? '🟢 FRESH / FRONTSIDE';
-  row[4] = '$5.00';
-  row[9] = options.catalystGrade ?? 'A — STRONG/FRESH';
-  row[10] = options.catalyst ?? '';
-  row[15] = options.structureFlags ?? '';
-  row[16] = options.keyLevels ?? '$6.22/$6.50 resistance; $5.00 support';
-  return normalizeSheetRows([row], []).tickers[0]!;
 }
 
 function dossier(overrides: Partial<ResearchDossier> = {}): ResearchDossier {
@@ -209,7 +186,7 @@ function intelligence(overrides: Partial<ResearchDossier> = {}): AutoIntelligenc
 
 describe('Desk Read construction', () => {
   it('leads with live state and the three conclusions', () => {
-    const row = buildDeskRow('FIEE', sheet(), null, demand(), intelligence());
+    const row = buildDeskRow('FIEE', demand(), intelligence());
     const read = buildDeskRead(row);
 
     expect(read.ticker).toBe('FIEE');
@@ -232,7 +209,7 @@ describe('Desk Read construction', () => {
   });
 
   it('shows the automatic conclusion when the sheet has none', () => {
-    const row = buildDeskRow('FIEE', null, null, demand(), intelligence());
+    const row = buildDeskRow('FIEE', demand(), intelligence());
     const read = buildDeskRead(row);
 
     expect(read.catalyst.provenance).toBe('AUTO');
@@ -240,7 +217,7 @@ describe('Desk Read construction', () => {
   });
 
   it('says NOT ANALYZED rather than guessing when neither side has a view', () => {
-    const read = buildDeskRead(buildDeskRow('NEWNAME', null, null, demand()));
+    const read = buildDeskRead(buildDeskRow('NEWNAME', demand()));
 
     expect(read.cycle.provenance).toBe('NONE');
     expect(read.cycle.label).toBe('NOT ANALYZED');
@@ -252,11 +229,8 @@ describe('Desk Read construction', () => {
     // Sheet says the structure is clean; the desk says DIRTY FLOAT. The desk's stands, alone.
     const row = buildDeskRow(
       'FIEE',
-      sheet({ structureFlags: 'CLEAN: no shelf or ATM located', catalystGrade: 'C' }),
-      null,
       demand(),
-      intelligence({ structure: { ...dossier().structure, structureClassification: 'DIRTY_FLOAT' } }),
-    );
+      intelligence({ structure: { ...dossier().structure, structureClassification: 'DIRTY_FLOAT' } }),);
     const read = buildDeskRead(row);
     expect(read.structure.label).toBe('DIRTY FLOAT');
     expect(read.structure.provenance).toBe('AUTO');
@@ -265,7 +239,7 @@ describe('Desk Read construction', () => {
   });
 
   it('a Sheet row alone is no conclusion', () => {
-    const read = buildDeskRead(buildDeskRow('FIEE', sheet(), null, demand()));
+    const read = buildDeskRead(buildDeskRow('FIEE', demand()));
     expect(read.catalyst.label).toBe('NOT ANALYZED');
     expect(read.structure.label).toBe('NOT ANALYZED');
   });
@@ -275,7 +249,7 @@ describe('Desk Read construction', () => {
 
 describe('Desk Read level selection', () => {
   it('uses importance and proximity, not proximity alone', () => {
-    const row = buildDeskRow('FIEE', sheet(), null, demand({ price: 5.95, sessionHigh: 6.02 }));
+    const row = buildDeskRow('FIEE', demand({ price: 5.95, sessionHigh: 6.02 }));
     const read = buildDeskRead(row);
 
     // A derived whole dollar at 6.00 is nearer than the 6.02 session high and
@@ -285,7 +259,7 @@ describe('Desk Read level selection', () => {
 
   it('carries the relationship overlay without changing the level type', () => {
     // The Sheet's levels no longer reach the ladder (3c), so the overlay is built on a level map directly.
-    const row = buildDeskRow('FIEE', null, null, demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 }));
+    const row = buildDeskRow('FIEE', demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 }));
     const levelMap = buildLevelMap({ currentPrice: 5.7, dailySupport: '6.00', includeRoundLevels: false });
     const read = buildDeskRead({ ...row, levelMap });
 
@@ -295,13 +269,13 @@ describe('Desk Read level selection', () => {
 
   it('the Sheet levels never reach the Desk Read (3c)', () => {
     const read = buildDeskRead(
-      buildDeskRow('FIEE', sheet({ keyLevels: '$6.00 support' }), null, demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 })),
+      buildDeskRow('FIEE', demand({ price: 5.7, sessionHigh: 5.9, sessionLow: 5.5 })),
     );
     expect([...read.nextUp, ...read.nextDown].some((level) => level.type === 'support')).toBe(false);
   });
 
   it('reports an empty side rather than fabricating a level', () => {
-    const row = buildDeskRow('FIEE', null, null, null);
+    const row = buildDeskRow('FIEE', null);
     const read = buildDeskRead(row);
 
     expect(read.nextUp).toHaveLength(0);
@@ -314,7 +288,7 @@ describe('Desk Read level selection', () => {
 describe('Desk Read narratives are the desk own (Sheet switch-off 3a)', () => {
   it('Why Now is the dossier catalyst summary, never the Sheet line', () => {
     const read = buildDeskRead(
-      buildDeskRow('FIEE', sheet({ catalyst: 'Sheet catalyst line' }), null, demand(), intelligence()),
+      buildDeskRow('FIEE', demand(), intelligence()),
     );
     expect(read.whyNow.text).toBe('Fiscal-year results released Friday after the close.');
     expect(read.whyNow.provenance).toBe('AUTO');
@@ -324,7 +298,7 @@ describe('Desk Read narratives are the desk own (Sheet switch-off 3a)', () => {
 
   it('invents nothing when the desk states no catalyst', () => {
     const read = buildDeskRead(
-      buildDeskRow('FIEE', sheet({ catalyst: 'Sheet catalyst line' }), null, demand(), intelligence({
+      buildDeskRow('FIEE', demand(), intelligence({
         catalyst: { ...dossier().catalyst, summary: '' },
       })),
     );
@@ -334,7 +308,7 @@ describe('Desk Read narratives are the desk own (Sheet switch-off 3a)', () => {
 
   it('the structural warning is the dossier first warning, never the Sheet flags', () => {
     const read = buildDeskRead(
-      buildDeskRow('FIEE', sheet({ structureFlags: 'DIRTY FLOAT: Sheet flag' }), null, demand(), intelligence()),
+      buildDeskRow('FIEE', demand(), intelligence()),
     );
     expect(read.structuralWarning.text).toContain('capacity, not confirmed selling');
     expect(read.structuralWarning.text).not.toContain('Sheet flag');
@@ -342,7 +316,7 @@ describe('Desk Read narratives are the desk own (Sheet switch-off 3a)', () => {
 
   it('incomplete coverage is disclosed in the passed words (Marketing 36d1d600, Commercial read 60a)', () => {
     const intel = { ...intelligence(), coverageIncomplete: true };
-    const read = buildDeskRead(buildDeskRow('FIEE', null, null, demand(), intel));
+    const read = buildDeskRead(buildDeskRow('FIEE', demand(), intel));
     expect(read.whyNow.qualifier).toBe('SOURCE COVERAGE INCOMPLETE');
     expect(read.structuralWarning.qualifier).toBe('SOURCE COVERAGE INCOMPLETE');
   });
@@ -352,7 +326,7 @@ describe('Desk Read narratives are the desk own (Sheet switch-off 3a)', () => {
 
 describe('structural summary', () => {
   it('lists the supply ledger without restating capacity as selling', () => {
-    const row = buildDeskRow('FIEE', sheet(), null, demand(), intelligence());
+    const row = buildDeskRow('FIEE', demand(), intelligence());
     const summary = buildStructureSummary(row)!;
 
     expect(summary.classification).toBe('CAUTION');
@@ -372,7 +346,7 @@ describe('structural summary', () => {
   });
 
   it('is absent when no automatic structural work exists', () => {
-    expect(buildStructureSummary(buildDeskRow('FIEE', sheet(), null, demand()))).toBeNull();
+    expect(buildStructureSummary(buildDeskRow('FIEE', demand()))).toBeNull();
   });
 });
 
@@ -386,17 +360,17 @@ describe('structural summary', () => {
 describe('cycle is outside the Sheet/Auto axis', () => {
   it('never reports a Sheet, Auto or Conflict provenance for cycle', () => {
     for (const row of [
-      buildDeskRow('FIEE', sheet(), null, demand(), intelligence()),
-      buildDeskRow('FIEE', null, null, demand(), intelligence()),
-      buildDeskRow('FIEE', sheet(), null, demand()),
-      buildDeskRow('FIEE', sheet({ cycle: '🔴 BACKSIDE' }), null, demand(), intelligence()),
+      buildDeskRow('FIEE', demand(), intelligence()),
+      buildDeskRow('FIEE', demand(), intelligence()),
+      buildDeskRow('FIEE', demand()),
+      buildDeskRow('FIEE', demand(), intelligence()),
     ]) {
       expect(['COMPUTED', 'NONE']).toContain(buildDeskRead(row).cycle.provenance);
     }
   });
 
   it('does not fall back to the model cycle it replaces', () => {
-    const read = buildDeskRead(buildDeskRow('FIEE', null, null, demand(), intelligence()));
+    const read = buildDeskRead(buildDeskRow('FIEE', demand(), intelligence()));
     expect(read.cycle.label).not.toContain('FRESH');
     expect(read.cycle.label).not.toContain('FRONTSIDE');
   });

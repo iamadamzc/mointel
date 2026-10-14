@@ -19,8 +19,8 @@ const DASH = String.fromCharCode(0x2014);
 
 describe('null vs absent on the row', () => {
   it('an explicit null in the payload sets setupGradeNoneRecorded; an absent key does not', () => {
-    const nulled = buildDeskRow('NULL', null, null, null, null, null, { setupGrade: null, setupGradeWired: true });
-    const absent = buildDeskRow('ABSN', null, null, null, null, null, { setupGrade: undefined, setupGradeWired: true });
+    const nulled = buildDeskRow('NULL', null, null, { setupGrade: null, setupGradeWired: true });
+    const absent = buildDeskRow('ABSN', null, null, { setupGrade: undefined, setupGradeWired: true });
     expect(nulled.setupGrade).toBeNull();
     expect(absent.setupGrade).toBeNull();
     expect(nulled.setupGradeNoneRecorded).toBe(true);

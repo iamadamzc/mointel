@@ -4,9 +4,6 @@ import { buildDeskRead } from '@/lib/dashboard/deskRead';
 import { buildDeskRow, mergeDesk, resolveDisplayPrice } from '@/lib/dashboard/merge';
 import { buildTelemetry } from '@/lib/dashboard/telemetry';
 import { selectFocusRows } from '@/lib/dashboard/view';
-import { normalizeSheetRows } from '@/lib/data/rows';
-import { MockProvider } from '../fixtures/mockSheet';
-import type { DashboardState } from '@/lib/data/types';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import { emptyAfterHours } from '@/lib/market/afterHours';
@@ -72,32 +69,13 @@ function demand(ticker: string, overrides: Partial<DemandState> = {}): DemandSta
   };
 }
 
-/** A TODAY row carrying premarket values, as the live sheet does. */
-function sheetRow(ticker: string) {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'A — PRIMARY';
-  row[1] = ticker;
-  row[2] = 'United States';
-  row[3] = '🟢 FRESH / FRONTSIDE';
-  row[4] = '$5.00';
-  row[8] = '12,000,000';
-  row[9] = 'A — STRONG/FRESH';
-  row[10] = 'Friday earnings beat with raised guidance.';
-  row[15] = 'CAUTION — active ATM';
-  row[16] = '$6.22/$6.50 resistance; $5.00 support';
-  row[19] = '$5.80';
-  row[20] = '16.0%';
-  row[21] = '1,100,000';
-  return normalizeSheetRows([row], []).tickers[0]!;
-}
 
 describe('live telemetry precedence', () => {
-  const sheet = sheetRow('FIEE');
 
   it('shows the live print, not the premarket sheet snapshot', () => {
     // The exact discrepancy from the live desk: the sheet said $5.80 / +16.0%
     // PM while Alpaca was printing $5.70 / +14.1%.
-    const t = buildTelemetry({ ticker: 'FIEE', demand: demand('FIEE'), sheet });
+    const t = buildTelemetry({ ticker: 'FIEE', demand: demand('FIEE') });
 
     expect(t.source).toBe('ALPACA');
     expect(t.sourceLabel).toBe('SIP');
@@ -107,7 +85,7 @@ describe('live telemetry precedence', () => {
   });
 
   it('carries every live-only market field', () => {
-    const t = buildTelemetry({ ticker: 'FIEE', demand: demand('FIEE'), sheet });
+    const t = buildTelemetry({ ticker: 'FIEE', demand: demand('FIEE') });
 
     expect(t.sessionHigh).toBe(6.69);
     expect(t.sessionLow).toBe(5.32);
@@ -128,7 +106,6 @@ describe('live telemetry precedence', () => {
       demand: demand('FIEE', {
         freshness: { lastEventAt: '2026-08-17T15:10:00.000Z', ageSeconds: 1800, stale: true },
       }),
-      sheet,
     });
 
     expect(t.source).toBe('ALPACA');
@@ -137,28 +114,8 @@ describe('live telemetry precedence', () => {
     expect(t.ageSeconds).toBe(1800);
   });
 
-  it('falls back to the sheet only when there is no live price at all', () => {
-    const t = buildTelemetry({ ticker: 'FIEE', demand: null, sheet });
-
-    expect(t.source).toBe('SHEET');
-    expect(t.price).toBe(5.8);
-    expect(t.percentChange).toBe(16);
-    expect(t.sourceLabel).toBe('PM');
-    expect(t.stale).toBe(false);
-  });
-
-  it('never invents live-only fields from a research row', () => {
-    const t = buildTelemetry({ ticker: 'FIEE', demand: null, sheet });
-
-    expect(t.rvol).toBeNull();
-    expect(t.spreadPct).toBeNull();
-    expect(t.sessionHigh).toBeNull();
-    expect(t.bid).toBeNull();
-    expect(t.haltState).toBe('UNKNOWN');
-  });
-
-  it('reports nothing rather than zero when neither source exists', () => {
-    const t = buildTelemetry({ ticker: 'NEWNAME', demand: null, sheet: null });
+  it('reports nothing rather than zero with no live price (no Sheet fallback since A5)', () => {
+    const t = buildTelemetry({ ticker: 'NEWNAME', demand: null });
 
     expect(t.source).toBe('NONE');
     expect(t.price).toBeNull();
@@ -167,7 +124,7 @@ describe('live telemetry precedence', () => {
   });
 
   it('is what the desk row and the display-price helper both read', () => {
-    const row = buildDeskRow('FIEE', sheet, null, demand('FIEE'));
+    const row = buildDeskRow('FIEE', demand('FIEE'));
 
     expect(row.telemetry.price).toBe(5.7);
     expect(resolveDisplayPrice(row)).toMatchObject({ price: 5.7, source: 'ALPACA' });
@@ -178,10 +135,6 @@ describe('live telemetry precedence', () => {
 
 /* ------------------------------------------------- one projection per ticker */
 
-async function mockDashboard(): Promise<DashboardState> {
-  const payload = await new MockProvider().load();
-  return { ...payload, meta: { ...payload.meta, stale: false, cacheAgeMs: 0 } };
-}
 
 function snapshot(demands: DemandState[]): MarketSnapshot {
   return {
@@ -269,8 +222,7 @@ function snapshot(demands: DemandState[]): MarketSnapshot {
 
 describe('every surface reads one projection', () => {
   it('gives Focus and Discovery the identical market telemetry', async () => {
-    const dashboard = await mockDashboard();
-    const merged = mergeDesk(dashboard, snapshot([demand('VNTX', { price: 9.99 })]));
+    const merged = mergeDesk(snapshot([demand('VNTX', { price: 9.99 })]));
 
     const discoveryRow = merged.discovery.find((row) => row.ticker === 'VNTX')!;
     const focusRow = selectFocusRows(['VNTX'], merged.rows)[0];
@@ -280,35 +232,20 @@ describe('every surface reads one projection', () => {
     expect(focusRow).toBe(discoveryRow);
     expect(focusRow.telemetry.price).toBe(9.99);
     expect(discoveryRow.telemetry.price).toBe(9.99);
-    expect(focusRow.telemetry.price).not.toBe(dashboard.tickers[0].price.value);
   });
 
   it('hands the Desk Read in the drawer the same object again', async () => {
-    const dashboard = await mockDashboard();
-    const merged = mergeDesk(dashboard, snapshot([demand('VNTX', { price: 9.99 })]));
+    const merged = mergeDesk(snapshot([demand('VNTX', { price: 9.99 })]));
     const row = merged.rows.get('VNTX')!;
 
     expect(buildDeskRead(row).telemetry).toBe(row.telemetry);
   });
 
   it('never puts one ticker on the strip twice', async () => {
-    const dashboard = await mockDashboard();
-    const merged = mergeDesk(dashboard, null);
+    const merged = mergeDesk(snapshot([demand('VNTX', { price: 9.99 })]));
     // A duplicated pin is still one card.
     const focus = selectFocusRows(['VNTX', 'VNTX'], merged.rows);
 
     expect(focus).toHaveLength(1);
-  });
-
-  it('still fills Focus from the sheet when the market worker is down', async () => {
-    const dashboard = await mockDashboard();
-    const merged = mergeDesk(dashboard, null);
-    const focus = selectFocusRows(['VNTX'], merged.rows);
-
-    expect(focus.length).toBeGreaterThan(0);
-    for (const row of focus) {
-      expect(row.telemetry.source).toBe('SHEET');
-      expect(row.telemetry.price).toBeGreaterThan(0);
-    }
   });
 });

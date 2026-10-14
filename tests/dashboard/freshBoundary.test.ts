@@ -1,11 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizeSheetRows } from '@/lib/data/rows';
 import { buildDeskRow, mergeDesk } from '@/lib/dashboard/merge';
 import { priorCloseLabel, resolveWhy } from '@/lib/dashboard/why';
 import type { AutoIntelligence } from '@/lib/research/view';
 import type { MarketSnapshot } from '@/lib/market/types';
-import type { DashboardState } from '@/lib/data/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 
@@ -65,7 +63,7 @@ function rowWithEvent(eventTimestamp: string | null, catalystFreshFrom: string |
     },
   } as unknown as AutoIntelligence;
 
-  return buildDeskRow('HOWL', null, null, null, intel, null, { catalystFreshFrom });
+  return buildDeskRow('HOWL', null, intel, { catalystFreshFrom });
 }
 
 describe('the boundary reaches the reader, which is the half a band measurement cannot prove', () => {
@@ -191,37 +189,11 @@ describe('the merge carries the boundary to every row', () => {
   }
 
   /** One sheet row, so the merge's FIRST loop has something to build. */
-  function dashboardWith(ticker: string): DashboardState {
-    const rows = normalizeSheetRows(
-      [['A - PRIMARY', ticker, 'United States', 'FRESH / FRONTSIDE', '$5.00']],
-      [],
-    );
-    return {
-      tickers: rows.tickers,
-      research: rows.research,
-      meta: { fetchedAt: '2026-09-25T13:00:00.000Z' },
-    } as unknown as DashboardState;
-  }
+  it('puts it on every row (one loop since the Sheet rows left, A5 rest)', () => {
+    const merged = mergeDesk(snapshot(BOUNDARY));
 
-  it('puts it on discovery rows and on watchlist rows alike', () => {
-    /*
-     * BOTH LOOPS. `mergeDesk` builds rows twice — once over the sheet and once
-     * over the demand map for names the sheet does not carry — and a context
-     * key added to one of them leaves half the board on the day bands while
-     * the other half is refined. That is the colour-disagrees-with-the-words
-     * defect arriving by a new route.
-     *
-     * THE POPULATION IS THE ASSERTION, and the first pass got it wrong: it ran
-     * with an empty sheet, so only the demand loop executed. The test was
-     * named "both loops" and could not have failed on one of them. `SUGP` is
-     * on the sheet and not in the demand map; `HOWL` is in the demand map and
-     * not on the sheet, so each loop owns exactly one row.
-     */
-    const merged = mergeDesk(dashboardWith('SUGP'), snapshot(BOUNDARY));
-
-    expect(merged.watchlist.map((row) => row.ticker)).toEqual(['SUGP']);
     expect(merged.discovery.map((row) => row.ticker)).toEqual(['HOWL']);
-    expect(merged.rows.size).toBe(2);
+    expect(merged.rows.size).toBe(1);
 
     for (const row of merged.rows.values()) {
       expect(row.catalystFreshFrom).toBe(BOUNDARY);
@@ -234,10 +206,9 @@ describe('the merge carries the boundary to every row', () => {
      * what an offline market, a degraded snapshot and every existing fixture
      * produce. A null here is a rule, not a failure.
      */
-    const merged = mergeDesk(dashboardWith('SUGP'), snapshot(null));
+    const merged = mergeDesk(snapshot(null));
 
     expect(merged.discovery[0]!.catalystFreshFrom).toBeNull();
-    expect(merged.watchlist[0]!.catalystFreshFrom).toBeNull();
   });
 
   it('reads the field off the SNAPSHOT, not off the discovery projection', () => {
@@ -250,10 +221,9 @@ describe('the merge carries the boundary to every row', () => {
     const wrong = snapshot(null) as unknown as { discovery: Record<string, unknown> };
     wrong.discovery.catalystFreshFrom = BOUNDARY;
 
-    const merged = mergeDesk(dashboardWith('SUGP'), wrong as unknown as MarketSnapshot);
+    const merged = mergeDesk(wrong as unknown as MarketSnapshot);
 
     expect(merged.discovery[0]!.catalystFreshFrom).toBeNull();
-    expect(merged.watchlist[0]!.catalystFreshFrom).toBeNull();
   });
 });
 

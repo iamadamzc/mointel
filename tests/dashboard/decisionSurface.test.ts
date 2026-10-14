@@ -16,7 +16,6 @@ import {
   resolveRisk,
 } from '@/lib/dashboard/risk';
 import { etTimestamp, relativeAge, resolveWhy } from '@/lib/dashboard/why';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import { emptyAfterHours } from '@/lib/market/afterHours';
 import type { DemandState } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
@@ -85,27 +84,6 @@ function demand(overrides: Partial<DemandState> = {}): DemandState {
   };
 }
 
-function sheet(
-  options: {
-    cycle?: string;
-    grade?: string;
-    structure?: string;
-    warning?: string;
-    /** Column 8, the TODAY float cell. Absent by default, as it is on most rows. */
-    float?: string;
-  } = {},
-) {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'B — SECONDARY';
-  row[1] = 'SUGP';
-  row[2] = 'Hong Kong';
-  row[3] = options.cycle ?? '🟡 FRONTSIDE — WARNING';
-  row[8] = options.float ?? '';
-  row[9] = options.grade ?? 'B — LEGITIMATE/SECONDARY';
-  row[15] = options.structure ?? '';
-  row[17] = options.warning ?? '';
-  return normalizeSheetRows([row], []).tickers[0]!;
-}
 
 function supply(shares: number | null, dollars: number | null = null): SupplyBlock {
   return {
@@ -251,18 +229,15 @@ describe('knownSupplyShares', () => {
 
 describe('resolveRisk', () => {
   it('tells "not researched" apart from "researched and clean"', () => {
-    const unresearched = resolveRisk(buildDeskRow('SUGP', null, null, demand(), null));
+    const unresearched = resolveRisk(buildDeskRow('SUGP', demand(), null));
     expect(unresearched.code).toBe('NOT_RESEARCHED');
     expect(unresearched.tone).toBe('dim');
 
     const clean = resolveRisk(
       buildDeskRow(
         'SUGP',
-        sheet({ structure: 'CLEAN' }),
-        null,
         demand(),
-        intelligence({ structure: { structureClassification: 'CLEAN', displayedFloat: 4_000_000 } }),
-      ),
+        intelligence({ structure: { structureClassification: 'CLEAN', displayedFloat: 4_000_000 } }),),
     );
     expect(clean.code).toBe('STRUCTURE_CLEAN');
     expect(clean.tone).toBe('pos');
@@ -272,16 +247,13 @@ describe('resolveRisk', () => {
     const risk = resolveRisk(
       buildDeskRow(
         'SUGP',
-        sheet({ structure: 'DIRTY FLOAT' }),
-        null,
         demand(),
         intelligence({
           structure: {
             structureClassification: 'DIRTY_FLOAT',
             supplyLedger: [supply(38_317_241), supply(6_000_000)],
           },
-        }),
-      ),
+        }),),
     );
     expect(risk.code).toBe('DIRTY_FLOAT');
     expect(risk.label).toBe('DIRTY FLOAT');
@@ -293,13 +265,10 @@ describe('resolveRisk', () => {
     const risk = resolveRisk(
       buildDeskRow(
         'SUGP',
-        sheet(),
-        null,
         demand(),
         intelligence({
           structure: { displayedFloat: 12_000_000, supplyLedger: [supply(38_317_241)] },
-        }),
-      ),
+        }),),
     );
     expect(risk.code).toBe('SUPPLY_OVERHEAD');
     expect(risk.value).toBe('38.3M sh');
@@ -319,11 +288,8 @@ describe('resolveRisk', () => {
     const risk = resolveRisk(
       buildDeskRow(
         'SUGP',
-        sheet({ structure: 'CLEAN' }),
-        null,
         demand(),
-        intelligence({ structure: { structureClassification: 'CAUTION', displayedFloat: null } }),
-      ),
+        intelligence({ structure: { structureClassification: 'CAUTION', displayedFloat: null } }),),
     );
     expect(risk.code).toBe('STRUCTURE_CAUTION');
   });
@@ -338,11 +304,8 @@ describe('resolveRisk', () => {
     const risk = resolveRisk(
       buildDeskRow(
         'SUGP',
-        sheet({ structure: 'CLEAN' }),
-        null,
         demand(),
-        intelligence({ structure: { structureClassification: 'CLEAN', displayedFloat: null } }),
-      ),
+        intelligence({ structure: { structureClassification: 'CLEAN', displayedFloat: null } }),),
     );
     expect(risk.code).toBe('STRUCTURE_CLEAN');
     expect(risk.tone).toBe('pos');
@@ -354,7 +317,7 @@ describe('resolveRisk', () => {
    */
   it('says the structure is unknown rather than staying quiet about it', () => {
     const risk = resolveRisk(
-      buildDeskRow('SUGP', null, null, demand(), intelligence({ structure: { structureClassification: 'UNKNOWN' } })),
+      buildDeskRow('SUGP', demand(), intelligence({ structure: { structureClassification: 'UNKNOWN' } })),
     );
     expect(risk.code).toBe('STRUCTURE_UNKNOWN');
     expect(risk.tone).toBe('dim');
@@ -362,7 +325,7 @@ describe('resolveRisk', () => {
 
   it('a Sheet UNKNOWN STRUCTURE sets nothing: the desk reading stands', () => {
     const risk = resolveRisk(
-      buildDeskRow('SUGP', sheet({ structure: 'UNKNOWN STRUCTURE', float: '5,200,000' }), null, demand(), intelligence()),
+      buildDeskRow('SUGP', demand(), intelligence()),
     );
     expect(risk.code).toBe('STRUCTURE_CAUTION');
     expect(risk.value).toBeNull();
@@ -374,32 +337,12 @@ describe('resolveRisk', () => {
     const risk = resolveRisk(
       buildDeskRow(
         'SUGP',
-        null,
-        null,
         demand(),
-        intelligence({ structure: { structureClassification: 'DIRTY_FLOAT', structuralWarnings: [long] } }),
-      ),
+        intelligence({ structure: { structureClassification: 'DIRTY_FLOAT', structuralWarnings: [long] } }),),
     );
     expect(risk.detail).toBe('DIRTY FLOAT is high-risk here.');
     expect(risk.full).toBe(long);
     expect(risk.detail!.endsWith('…')).toBe(false);
-  });
-});
-
-describe('classification labels', () => {
-  it('drops the status emoji and keeps the word that carries the meaning', () => {
-    const row = buildDeskRow('SUGP', sheet({ cycle: '🟡 FRONTSIDE — WARNING' }), null, demand());
-
-    expect(row.research!.cycle.display).toBe('FRONTSIDE — WARNING');
-    // The source text is never rewritten; provenance keeps the original cell.
-    expect(row.research!.cycle.raw).toContain('🟡');
-    // And the classification itself is unaffected.
-    expect(row.research!.cycle.state).toBe('FRONTSIDE_WARNING');
-  });
-
-  it('leaves a label that never had an emoji alone', () => {
-    const row = buildDeskRow('SUGP', sheet({ cycle: 'BACKSIDE' }), null, demand());
-    expect(row.research!.cycle.display).toBe('BACKSIDE');
   });
 });
 
@@ -429,7 +372,7 @@ describe('etTimestamp', () => {
 
 describe('resolveWhy', () => {
   it('carries the grade and the age together', () => {
-    const why = resolveWhy(buildDeskRow('SUGP', sheet(), null, demand(), intelligence()), NOW);
+    const why = resolveWhy(buildDeskRow('SUGP', demand(), intelligence()), NOW);
     expect(why.grade).toBe('B');
     expect(why.age).toBe('2h');
     expect(why.explainsMove).toBe(true);
@@ -437,7 +380,7 @@ describe('resolveWhy', () => {
   });
 
   it('distinguishes not-researched from no-catalyst-found', () => {
-    const notResearched = resolveWhy(buildDeskRow('SUGP', null, null, demand(), null), NOW);
+    const notResearched = resolveWhy(buildDeskRow('SUGP', demand(), null), NOW);
     expect(notResearched.code).toBe('NOT_RESEARCHED');
     // Commercial's words, ruled by Integration 35th: no "yet", which implied research was coming.
     expect(notResearched.headline).toBe('Not researched');
@@ -446,8 +389,6 @@ describe('resolveWhy', () => {
     const noCatalyst = resolveWhy(
       buildDeskRow(
         'SUGP',
-        sheet(),
-        null,
         demand(),
         intelligence({
           catalyst: {
@@ -456,15 +397,14 @@ describe('resolveWhy', () => {
             plausiblyExplainsMove: false,
             summary: 'No identified company item after August 4.',
           },
-        }),
-      ),
+        }),),
       NOW,
     );
     expect(noCatalyst.code).toBe('NO_FRESH_CATALYST');
   });
 
   it('never emits a raw UTC timestamp for the event time', () => {
-    const why = resolveWhy(buildDeskRow('SUGP', sheet(), null, demand(), intelligence()), NOW);
+    const why = resolveWhy(buildDeskRow('SUGP', demand(), intelligence()), NOW);
     expect(why.eventAt).toContain('ET');
     expect(why.eventAt).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
   });

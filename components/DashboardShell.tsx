@@ -284,7 +284,7 @@ export function DashboardShell({ initialState }: { initialState: DashboardState 
   }, []);
   const { now, mounted } = useClock();
 
-  const merged = useMemo(() => mergeDesk(data, market.snapshot), [data, market.snapshot]);
+  const merged = useMemo(() => mergeDesk(market.snapshot), [market.snapshot]);
 
   /*
    * The cycle a row is actually in, resolved from the computed history.
