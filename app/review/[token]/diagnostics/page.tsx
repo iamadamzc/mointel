@@ -103,7 +103,6 @@ export default async function ReviewDiagnosticsPage({
         <Section title="Market worker" data={d.market} />
         <Section title="Research worker" data={d.research} />
         <Section title="Assessment scheduler" data={d.assessments} />
-        <Section title="Google Sheet" data={d.sheet} />
         <Section title="Database" data={d.database} />
         <Section title="Server resources" data={d.resources} />
         <Section title="Intelligence coverage" data={d.intelligence} />

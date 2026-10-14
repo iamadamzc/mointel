@@ -25,7 +25,6 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { loadMarketConfig } from '../market/config';
-import { getDashboardState } from '../data';
 import { getMarketSnapshot, listAssessments } from '../market/readModel';
 import { mergeDesk } from '../dashboard/merge';
 import { resolveActiveBoard } from '../market/board';
@@ -308,8 +307,9 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
 
   const store = openStore();
   const snapshot = getMarketSnapshot();
-  const dashboard = await getDashboardState();
-  const merged = mergeDesk(dashboard, snapshot);
+  // Without the Sheet (A5, his "everything tonight." 2026-10-14T02:09:54.695Z): rows are the desk's own, the
+  // same merge the MCP tools use. The `sheet` block below keeps its keys, all null, until his step 6.
+  const merged = mergeDesk(null, snapshot);
   const assessmentList = listAssessments(60);
 
   const health = snapshot.health;
@@ -533,17 +533,17 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
   };
 
   const sheet = {
-    provider: dashboard.meta.provider,
-    fetchedAt: dashboard.meta.fetchedAt,
-    fetchedAtEt: etClock(dashboard.meta.fetchedAt),
-    cacheAgeSeconds: Math.round(dashboard.meta.cacheAgeMs / 1000),
-    stale: dashboard.meta.stale,
-    sourceUpdatedAt: dashboard.meta.sourceUpdatedAt,
-    sourceTitle: dashboard.meta.sourceTitle,
-    rows: dashboard.tickers.length,
-    researchRecords: Object.keys(dashboard.research).length,
-    warnings: dashboard.meta.warnings.slice(0, 10),
-    error: sanitize(dashboard.meta.error),
+    provider: null,
+    fetchedAt: null,
+    fetchedAtEt: null,
+    cacheAgeSeconds: null,
+    stale: null,
+    sourceUpdatedAt: null,
+    sourceTitle: null,
+    rows: null,
+    researchRecords: null,
+    warnings: [],
+    error: null,
   };
 
   /* ------------------------------------------------------- intelligence */
@@ -828,15 +828,6 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
     });
   }
 
-  if (dashboard.meta.error) {
-    recentErrors.push({
-      at: dashboard.meta.fetchedAt,
-      atEt: etClock(dashboard.meta.fetchedAt),
-      component: 'SHEET',
-      category: dashboard.meta.stale ? 'STALE' : 'FETCH',
-      message: sanitize(dashboard.meta.error) ?? '',
-    });
-  }
 
   for (const entry of assessmentList.filter((item) => item.status !== 'COMPLETE').slice(0, 10)) {
     recentErrors.push({
