@@ -9,6 +9,7 @@ import {
   NEVER_JOIN,
   NEVER_OPEN,
   RATING_SENTENCE,
+  RECAP_SHAPE_RULE,
   recapSummaryRule,
   REPORT_WRITER_PROMPT_VERSION_V7,
   RULED_STATE_PHRASES,
@@ -281,7 +282,16 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(7);
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(8);
+  });
+
+  it('L13 (b): a recap carries the no-rank, count-as-a-digit rule right after its ticker list; an intraday report does not', () => {
+    expect(RECAP_SHAPE_RULE).toBe(
+      "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'.",
+    );
+    const { user } = buildWriterPromptV7(input(recap));
+    expect(user).toContain(`${allowed}\n${RECAP_SHAPE_RULE}`);
+    expect(buildWriterPromptV7(input(intraday)).user).not.toContain(RECAP_SHAPE_RULE);
   });
 });
 

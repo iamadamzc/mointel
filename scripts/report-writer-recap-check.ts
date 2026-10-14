@@ -1,5 +1,8 @@
 /**
- * THE RECAP RE-CHECK (L13): v7 version 7 (the recap Summary fix) on the 3 stored evening recap (PREMARKET) inputs,
+ * THE RECAP RE-CHECK (L13), SECOND RUN (his "a and b", queued input 20c5c7db, 2026-10-14T01:28:56.955Z, verified): v7
+ * version 8 (RECAP_SHAPE_RULE added after the first run, 7f9210be, failed on the rank sentence). The first run was v7
+ * version 7; its raw is docs/research/reports/recap-check/raw at 0374313a. Same harness otherwise:
+ * v7 on the 3 stored evening recap (PREMARKET) inputs,
  * 3 runs each, 9 reports, written by luna (production's writer), CHECKED BY THE CHECKER THAT SHIPS (Claude Opus 5.5
  * high, word list off; checker release e56f27c0, merged on this branch). Built from the L12 harness
  * (report-writer-retest.ts, 2c005491); the prompt swap and the stop are its, unchanged.
@@ -49,7 +52,7 @@ const DAYS = ['2026-10-02', '2026-10-05', '2026-10-06'];
 const KIND: ReportKind = 'PREMARKET';
 const RUNS = 3;
 const OPUS = 'claude-opus-5-5';
-const EXPECTED_VERSION = 7;
+const EXPECTED_VERSION = 8;
 
 /** Per Mtok, as the L12 harness. */
 const PRICE: Record<string, { input: number; output: number }> = {
@@ -118,7 +121,8 @@ class KeptChecker implements CheckerModel {
 /**
  * --dry only: a PLANTED CONTROL, so the dry run proves each measure can see a present case: the Summary names one shown
  * ticker outside its list, says "positive" and carries the count sentence; the first name line classifies its news.
- * Expected on the dry: outside the list 9 of 9, at least 2 judgement lines a report, the count sentence 9 of 9.
+ * Expected on the dry: outside the list 9 of 9, at least 2 judgement lines a report, the count sentence 9 of 9, and
+ * (second run) a rank word and the word "zero" in 9 of 9 Summaries.
  */
 function stubWriter(): ReportModel {
   return {
@@ -127,7 +131,7 @@ function stubWriter(): ReportModel {
       const allowed = allowedOf(/The Summary may name only these tickers: [^.]*\./.exec(prompt.user)?.[0] ?? '') ?? [];
       const outside = shown.find((t) => !allowed.includes(t)) ?? 'NONE';
       return JSON.stringify({
-        narrative: `Planted control: ${outside} had a positive event. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
+        narrative: `Planted control: ${outside} had a positive event and ranked first in this range. Zero gave the entire move back. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
         lines: shown.map((ticker, i) => ({ ticker, text: i === 0 ? 'Planted control: an operating catalyst.' : 'Dry run line.' })),
       });
     },
@@ -180,6 +184,10 @@ interface RunRecord {
   judgementLines: Array<{ id: string; ticker: string | null; text: string; matched: string[]; research: string | null }>;
   /** Commercial read 107 (b): the draft Summary still carries the count of covered names with fresh news. */
   countSentence: boolean;
+  /** Second run: the draft Summary still states a rank (the first run's main failure, 5 of 9). */
+  rankInSummary: boolean;
+  /** Second run: the draft Summary says a count as the word "zero" (struck: countBefore has no "zero"). */
+  zeroWord: boolean;
   checkerReplies: number;
   checkerErrors: number;
   costUsd: number;
@@ -290,6 +298,8 @@ async function main() {
           })
         : [],
       countSentence: draftSummary !== null && /names the desk covers/.test(draftSummary) && /fresh news/.test(draftSummary),
+      rankInSummary: draftSummary !== null && /\branked\b|\brank\b/i.test(draftSummary),
+      zeroWord: draftSummary !== null && /\bzero\b/i.test(draftSummary),
       checkerReplies: checker.replies.length,
       checkerErrors: checker.replies.filter((r) => r.error !== null).length,
       costUsd: usage.reduce((sum, u) => sum + cost(u, u.role), 0),
@@ -306,6 +316,7 @@ async function main() {
     `${r.tag}: ${r.error ? `ERROR ${r.error}` : r.status}; ${r.struck.length} of ${r.lines} lines struck${r.narrativeStruck ? ' (Summary struck)' : ''}; ` +
     `allowed [${(r.allowed ?? []).join(', ')}]; outside the list in the draft Summary [${r.outsideList.join(', ')}]; ` +
     `judgement or kind lines ${r.judgementLines.length}; count sentence ${r.countSentence ? 'yes' : 'NO'}; ` +
+    `rank in Summary ${r.rankInSummary ? 'YES' : 'no'}; "zero" ${r.zeroWord ? 'YES' : 'no'}; ` +
     `checker replies ${r.checkerReplies} (errors ${r.checkerErrors}); $${r.costUsd.toFixed(4)}; ` +
     `tokens ${r.usage.map((u) => `${u.role}:${u.model}:${u.inputTokens}/${u.outputTokens}`).join(' ')}`;
 
@@ -342,6 +353,7 @@ async function main() {
     `draft Summaries naming a name outside the list: ${records.filter((r) => r.outsideList.length > 0).length} of ${records.filter((r) => r.draftSummary !== null).length}`,
     `drafted lines with a judgement word or a catalyst kind (read 107 a; each read by hand): ${records.reduce((n, r) => n + r.judgementLines.length, 0)}`,
     `draft Summaries with the covered-names count sentence (read 107 b): ${records.filter((r) => r.countSentence).length} of ${records.filter((r) => r.draftSummary !== null).length}`,
+    `draft Summaries stating a rank: ${records.filter((r) => r.rankInSummary).length} of ${records.filter((r) => r.draftSummary !== null).length}; saying "zero": ${records.filter((r) => r.zeroWord).length}`,
     `checker calls that threw: ${records.reduce((n, r) => n + r.checkerErrors, 0)}; reports MISSED or ERROR: ${records.length - published.length}`,
     `TOTAL spend $${spend.toFixed(4)}${dry ? ' (dry: stub models, nothing spent)' : ''}`,
   );

@@ -47,8 +47,17 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * name list): a recap lists the tickers its Summary may name (`recapSummaryRule`); Commercial read 100's notes 1 to 3
  * (no judgement word the source does not state, no catalyst kind the research does not state, the "confirmed" clause cut);
  * the specimen header says it is intraday and a recap's Summary differs (Marketing's advisory on the L13 read).
+ * 8: L13 (b), his "a and b" (queued input 20c5c7db): the re-check 7f9210be found the recap Summary adding the in-range
+ * rank (5 of 9 drafts) and "Zero gave the entire move back"; a recap now also carries `RECAP_SHAPE_RULE`.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 7;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 8;
+
+/**
+ * L13 (b), recap only, after the ticker list. Marketing's wording (a zero is "none": `countBefore` in check.ts reads
+ * "none" as 0 and has no "zero", so "Zero gave the entire move back" read as no count and was struck).
+ */
+export const RECAP_SHAPE_RULE =
+  "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'.";
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -272,7 +281,7 @@ export function buildWriterPromptV7(input: WriterInputV7): WriterPrompt {
     '',
     'NARRATIVE FACTS:',
     `  ${narrativeSheetV7(input.narrative).join('\n  ')}`,
-    ...(recapSummary ? [recapSummary] : []),
+    ...(recapSummary ? [recapSummary, RECAP_SHAPE_RULE] : []),
     ...(input.revision ? [REVISION_RULE_V7] : []),
     '',
     input.revision ? 'NAMES (only the names whose facts changed since the earlier edition):' : 'NAMES:',
