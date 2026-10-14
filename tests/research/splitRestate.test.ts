@@ -132,6 +132,27 @@ describe('restateSpan (step 2)', () => {
   });
 });
 
+/**
+ * Plan step 4a, Commercial read 110: the same function over a HOLDING's spans. hD's span is (holding date, D] with the
+ * Form 4's filing date as `filed`; the holding-to-count span is (holding date, count date].
+ */
+describe('restateSpan on a holding span (read 110)', () => {
+  const HOLDING = '2026-07-31';
+  const COUNT = '2026-09-30';
+
+  it('R3 for holdings: dated before the ex-date but FILED on or after it refuses; control: filed before the ex-date restates', () => {
+    expect(restateSpan([REVERSE_1_FOR_10], { from: HOLDING, to: D, filed: '2026-08-03', d: D })).toEqual({ kind: 'REFUSE', why: 'FILED_AFTER_EX_DATE' });
+    expect(restateSpan([REVERSE_1_FOR_10], { from: HOLDING, to: D, filed: '2026-08-20', d: D })).toEqual({ kind: 'REFUSE', why: 'FILED_AFTER_EX_DATE' });
+    expect(restateSpan([REVERSE_1_FOR_10], { from: HOLDING, to: D, filed: HOLDING, d: D }).kind).toBe('RESTATE');
+  });
+
+  it('R2 for the holding-to-count span: a stock dividend between them refuses; control: one after the count date does not', () => {
+    const dividend = (exDate: string) => act(exDate, null, null, 'stock_dividends');
+    expect(restateSpan([dividend('2026-08-15')], { from: HOLDING, to: COUNT, d: D })).toEqual({ kind: 'REFUSE', why: 'NON_SPLIT_ACTION' });
+    expect(restateSpan([dividend('2026-10-05')], { from: HOLDING, to: COUNT, d: D })).toEqual({ kind: 'NONE_LISTED' });
+  });
+});
+
 const BAR_DATES = ['2026-06-30', '2026-07-31', '2026-08-03', '2026-09-01', '2026-09-30', D];
 
 /** Bars oldest first from the count's date through D, one per factor given. */
