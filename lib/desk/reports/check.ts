@@ -1032,7 +1032,13 @@ export function parseVerdicts(raw: string, ids: readonly LineId[], options: { se
   for (const verdict of verdicts) {
     const v = verdict as { id?: unknown; supported?: unknown; note?: unknown; advice?: unknown; forecast?: unknown; leansOnAnother?: unknown; phrase?: unknown };
     if (typeof v.id !== 'string' || typeof v.supported !== 'boolean') return { ok: false, error: 'bad verdict' };
-    if (!expected.has(v.id)) return { ok: false, error: `unknown id ${v.id}` };
+    if (!expected.has(v.id)) {
+      // A draft with no headline has no 'H' line, yet the Claude checker sometimes answers for one anyway ("No headline
+      // was provided to check."): both checker failures in the L13 re-check (raw 0374313a), each an otherwise complete
+      // reply. Only that verdict is ignored; every expected id is still required and any other unknown id still refuses.
+      if (v.id === 'H') continue;
+      return { ok: false, error: `unknown id ${v.id}` };
+    }
     if (seen.has(v.id)) return { ok: false, error: `duplicate id ${v.id}` };
     seen.add(v.id);
     if (!v.supported) unsupported.push({ id: v.id as LineId, note: typeof v.note === 'string' ? v.note : '' });
