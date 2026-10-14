@@ -21,7 +21,6 @@ import { describe, expect, it } from 'vitest';
 import { NO_CATALYST_MARK, WhyCell, WhyMarks } from '@/components/DecisionCells';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { etDay, resolveWhy } from '@/lib/dashboard/why';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import type { AutoIntelligence } from '@/lib/research/view';
 
 /** A bare ET date `days` ago (the shape 77% of stored timestamps have). */
@@ -70,15 +69,9 @@ function intel(options: {
 }
 
 /** A row with the Sheet's catalyst grade (and line) behind it, or none. */
-function row(auto: AutoIntelligence, sheet?: { grade: string; line?: string }) {
-  if (!sheet) return buildDeskRow('SLND', null, null, null, auto);
-  const cells: string[] = new Array(27).fill('');
-  cells[0] = 'A - PRIMARY';
-  cells[1] = 'SLND';
-  cells[9] = sheet.grade;
-  cells[10] = sheet.line ?? '';
-  const ticker = normalizeSheetRows([cells], []).tickers[0]!;
-  return buildDeskRow('SLND', ticker, null, null, auto);
+function row(auto: AutoIntelligence) {
+  // The Sheet row is gone (A5 rest): the second argument no longer reaches the row.
+  return buildDeskRow('SLND', null, auto);
 }
 
 describe('an OLD catalyst row', () => {
@@ -106,7 +99,7 @@ describe('an OLD catalyst row', () => {
   });
 
   it('uses the DESK item for both date and summary, never the Sheet line under the desk date', () => {
-    const why = resolveWhy(row(intel({ days: 4 }), { grade: 'C', line: 'Sheet says something else' }));
+    const why = resolveWhy(row(intel({ days: 4 })));
     expect(why.headline).toContain('NYSE American notice of non-compliance.');
     expect(why.headline).not.toContain('Sheet says something else');
   });
@@ -144,7 +137,7 @@ describe('an OLD catalyst row', () => {
  */
 describe('the Why cell is the desk own, whatever the Sheet says', () => {
   it('shows the desk letter and headline, not the Sheet ones, and no mark', () => {
-    const why = resolveWhy(row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0, explainsMove: true }), { grade: 'C', line: 'Sheet line' }));
+    const why = resolveWhy(row(intel({ grade: 'LEGITIMATE_POSITIVE', days: 0, explainsMove: true })));
     expect(why.grade).toBe('A');
     expect(why.headline).not.toContain('Sheet line');
     expect(why).not.toHaveProperty('disagreement');

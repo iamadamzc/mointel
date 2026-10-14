@@ -62,7 +62,7 @@ describe('FloatCell, server-rendered', () => {
 
 describe('sorting by float', () => {
   const row = (ticker: string, b: FloatBound | null, wired: boolean, displayed: number | null = null) => ({
-    ...buildDeskRow(ticker, null, null, null),
+    ...buildDeskRow(ticker, null),
     floatBound: b,
     floatBoundWired: wired,
     displayedFloat: displayed,

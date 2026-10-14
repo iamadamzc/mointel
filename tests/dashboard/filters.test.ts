@@ -7,7 +7,6 @@ import { boardCounts } from '@/lib/dashboard/boardCounts';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { relativeAge, resolveWhy } from '@/lib/dashboard/why';
 import { DEFAULT_FILTERS, rowMatchesFilters, type FilterState } from '@/lib/dashboard/view';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import type { AutoIntelligence } from '@/lib/research/view';
 import type { CatalystFreshness } from '@/lib/research/types';
 
@@ -121,16 +120,12 @@ function intelligence(freshness: CatalystFreshness, grade: string): AutoIntellig
 
 /** A DISCOVERY row: dossier only, no sheet row — the population never filtered. */
 function discoveryRow(freshness: CatalystFreshness, grade = 'STRONG') {
-  return buildDeskRow('HOWL', null, null, null, intelligence(freshness, grade));
+  return buildDeskRow('HOWL', null, intelligence(freshness, grade));
 }
 
-/** A watchlist row: the same name with a sheet row behind it. */
+/** Formerly a watchlist row with a Sheet row behind it; since the A5 rest every row is built the same way. */
 function sheetRow(freshness: CatalystFreshness, grade = 'STRONG') {
-  const cells: string[] = new Array(27).fill('');
-  cells[0] = 'A - PRIMARY';
-  cells[1] = 'HOWL';
-  const ticker = normalizeSheetRows([cells], []).tickers[0]!;
-  return buildDeskRow('HOWL', ticker, null, null, intelligence(freshness, grade));
+  return buildDeskRow('HOWL', null, intelligence(freshness, grade));
 }
 
 const filters = (over: Partial<FilterState> = {}): FilterState => ({ ...DEFAULT_FILTERS, ...over });
@@ -383,7 +378,7 @@ describe('the 28-day catalyst that rendered green', () => {
         },
       },
     } as unknown as AutoIntelligence;
-    return buildDeskRow('HOWL', null, null, null, intel);
+    return buildDeskRow('HOWL', null, intel);
   }
 
   it('no longer renders green, and no longer passes the chip', () => {
@@ -589,7 +584,7 @@ describe('the bands themselves, on the ET calendar', () => {
         },
       },
     } as unknown as AutoIntelligence;
-    return buildDeskRow('HOWL', null, null, null, intel);
+    return buildDeskRow('HOWL', null, intel);
   }
 
   it('is FRESH today and RECENT yesterday', () => {
@@ -679,7 +674,7 @@ describe('the age and the band cannot disagree about which day it was', () => {
         },
       },
     } as unknown as AutoIntelligence;
-    return buildDeskRow('HOWL', null, null, null, intel);
+    return buildDeskRow('HOWL', null, intel);
   }
 });
 

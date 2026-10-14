@@ -285,25 +285,25 @@ describe('mergeDesk resolves the capture once, from the snapshot', () => {
   const fetchedAt = new Date(END).toISOString();
 
   it('gives the row a LIVE reading when asOf is fresh against fetchedAt', () => {
-    const merged = mergeDesk(null, snapshot({ asOf: new Date(END - 4_000).toISOString(), fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
+    const merged = mergeDesk(snapshot({ asOf: new Date(END - 4_000).toISOString(), fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
     expect(merged.nowCapture).toBe('LIVE');
     expect(merged.discovery[0].now).toMatchObject({ kind: 'LIVE', count: 17 });
   });
 
   it('blanks the row when asOf is stale against fetchedAt', () => {
-    const merged = mergeDesk(null, snapshot({ asOf: new Date(END - 60_000).toISOString(), fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
+    const merged = mergeDesk(snapshot({ asOf: new Date(END - 60_000).toISOString(), fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
     expect(merged.nowCapture).toBe('NOT_LIVE');
     expect(merged.discovery[0].now).toEqual({ kind: 'NOT_LIVE' });
   });
 
   it('keeps the minute cell when the worker wrote no asOf (before the restart)', () => {
-    const merged = mergeDesk(null, snapshot({ fetchedAt }));
+    const merged = mergeDesk(snapshot({ fetchedAt }));
     expect(merged.nowCapture).toBe('UNWIRED');
     expect(merged.discovery[0].now).toEqual({ kind: 'MINUTE', count: 480 });
   });
 
   it('is UNWIRED with no market snapshot at all', () => {
-    expect(mergeDesk(null, null).nowCapture).toBe('UNWIRED');
+    expect(mergeDesk(null).nowCapture).toBe('UNWIRED');
   });
 });
 
@@ -422,7 +422,7 @@ describe('the board, rendered', () => {
   const fetchedAt = new Date(END).toISOString();
 
   it('LIVE: the head says last 10s, the cell prints the newest 10 s count and six slots', () => {
-    const merged = mergeDesk(null, snapshot({ asOf: fetchedAt, fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
+    const merged = mergeDesk(snapshot({ asOf: fetchedAt, fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
     const html = renderBoard(merged, merged.nowCapture);
     expect(html).toContain('last 10s');
     expect(html).toContain('17 trades in the most recent completed 10 seconds.');
@@ -434,7 +434,7 @@ describe('the board, rendered', () => {
   });
 
   it('FALLBACK: the cell prints the minute figure with its unit, and keeps its minute bars', () => {
-    const merged = mergeDesk(null, snapshot({ asOf: fetchedAt, fetchedAt, nowBuckets: null }));
+    const merged = mergeDesk(snapshot({ asOf: fetchedAt, fetchedAt, nowBuckets: null }));
     const html = renderBoard(merged, merged.nowCapture);
     expect(html).toContain('last 10s');
     expect(html).toMatch(/480<span class="text-\[9px\]">\/min<\/span>/);
@@ -442,7 +442,7 @@ describe('the board, rendered', () => {
   });
 
   it('NOT_LIVE: the head says not live and the cell prints no number and no bars', () => {
-    const merged = mergeDesk(null, snapshot({ asOf: new Date(END - 60_000).toISOString(), fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
+    const merged = mergeDesk(snapshot({ asOf: new Date(END - 60_000).toISOString(), fetchedAt, nowBuckets: slots([1, 2, 3, 4, 5, 17]) }));
     const html = renderBoard(merged, merged.nowCapture);
     expect(html).toContain('not live');
     expect(html).not.toContain('>17<');
@@ -451,7 +451,7 @@ describe('the board, rendered', () => {
   });
 
   it('UNWIRED: the board is exactly the minute column it was', () => {
-    const merged = mergeDesk(null, snapshot({ fetchedAt }));
+    const merged = mergeDesk(snapshot({ fetchedAt }));
     const html = renderBoard(merged, merged.nowCapture);
     expect(html).toContain(sparklineLagLabel());
     expect(html).not.toContain('last 10s');

@@ -309,7 +309,7 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
   const snapshot = getMarketSnapshot();
   // Without the Sheet (A5, his "everything tonight." 2026-10-14T02:09:54.695Z): rows are the desk's own, the
   // same merge the MCP tools use. The `sheet` block below keeps its keys, all null, until his step 6.
-  const merged = mergeDesk(null, snapshot);
+  const merged = mergeDesk(snapshot);
   const assessmentList = listAssessments(60);
 
   const health = snapshot.health;

@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { buildStructureSummary } from '@/lib/dashboard/deskRead';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { floatClaimReading } from '@/lib/dashboard/supply';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import type { AutoIntelligence } from '@/lib/research/view';
 import type { ResearchDossier } from '@/lib/research/types';
 import type { FloatClaimAssessment } from '@/lib/research/float';
@@ -182,14 +181,6 @@ function intelligence(float: number | null): AutoIntelligence {
   } as unknown as AutoIntelligence;
 }
 
-/** A TODAY row carrying a float in the Sheet's own cell format. */
-function sheetRow(float: string) {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'A - PRIMARY';
-  row[1] = 'ZOOZ';
-  row[8] = float; // TODAY's Float column
-  return normalizeSheetRows([row], []).tickers[0]!;
-}
 
 /*
  * DESK ONLY (Sheet switch-off 3b; Marketing 644a67e0 S5, Commercial read 60; Research's read). The drawer's
@@ -198,7 +189,7 @@ function sheetRow(float: string) {
  */
 describe('one float for the whole desk', () => {
   it('the drawer structure float is the TMI Float cell view, never the Sheet float or the dossier extraction', () => {
-    const row = buildDeskRow('ZOOZ', sheetRow('5.53M'), null, null, intelligence(9_900_000), null, {
+    const row = buildDeskRow('ZOOZ', null, intelligence(9_900_000), {
       tradingDate: '2026-09-21',
     });
     const summary = buildStructureSummary(row)!;

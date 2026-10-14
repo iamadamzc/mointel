@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { buildDeskRead, resolveConclusions } from '@/lib/dashboard/deskRead';
 import { resolveIntelligenceState } from '@/lib/dashboard/intelligence';
 import { buildDeskRow } from '@/lib/dashboard/merge';
-import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
 import type { ResearchDossier } from '@/lib/research/types';
@@ -69,15 +68,6 @@ function demand(ticker: string): DemandState {
   };
 }
 
-function sheet(ticker: string, cycle = '🟢 FRESH / FRONTSIDE') {
-  const row: string[] = new Array(27).fill('');
-  row[0] = 'A — PRIMARY';
-  row[1] = ticker;
-  row[3] = cycle;
-  row[9] = 'A — STRONG/FRESH';
-  row[10] = 'Human-reviewed catalyst text.';
-  return normalizeSheetRows([row], []).tickers[0]!;
-}
 
 /**
  * A dossier shaped like the live partial case: catalyst and structure reached,
@@ -182,7 +172,7 @@ describe('normalized intelligence status', () => {
      * Desk Read that already carried an automatic catalyst grade and an
      * automatic structure classification.
      */
-    const row = buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART' }));
+    const row = buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART' }));
 
     expect(row.intelligenceState.status).toBe('PARTLY_ANALYZED');
     expect(row.intelligenceState.label).toBe('PARTLY ANALYZED');
@@ -192,7 +182,7 @@ describe('normalized intelligence status', () => {
   });
 
   it('still exposes the available intelligence in the Desk Read', () => {
-    const row = buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART' }));
+    const row = buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART' }));
     const read = buildDeskRead(row);
 
     expect(read.catalyst.label).toContain('MODERATE');
@@ -209,11 +199,8 @@ describe('normalized intelligence status', () => {
     });
     const row = buildDeskRow(
       'PART',
-      null,
-      null,
       demand('PART'),
-      intelligence({ ticker: 'PART', dossier: complete }),
-    );
+      intelligence({ ticker: 'PART', dossier: complete }),);
 
     expect(row.intelligenceState.status).toBe('ANALYZED');
     expect(row.intelligenceState.label).toBe('ANALYZED');
@@ -226,11 +213,8 @@ describe('normalized intelligence status', () => {
     });
     const row = buildDeskRow(
       'PART',
-      null,
-      null,
       demand('PART'),
-      intelligence({ ticker: 'PART', dossier: complete, coverageIncomplete: true }),
-    );
+      intelligence({ ticker: 'PART', dossier: complete, coverageIncomplete: true }),);
 
     expect(row.intelligenceState.status).toBe('PARTLY_ANALYZED');
   });
@@ -238,11 +222,8 @@ describe('normalized intelligence status', () => {
   it('reports ANALYSIS PENDING while a job runs with nothing accepted', () => {
     const row = buildDeskRow(
       'PART',
-      null,
-      null,
       demand('PART'),
-      intelligence({ ticker: 'PART', dossier: null, status: 'COLLECTING_SOURCES' }),
-    );
+      intelligence({ ticker: 'PART', dossier: null, status: 'COLLECTING_SOURCES' }),);
 
     expect(row.intelligenceState.status).toBe('ANALYSIS_PENDING');
     expect(row.intelligenceState.hasAuto).toBe(false);
@@ -251,17 +232,14 @@ describe('normalized intelligence status', () => {
   it('reports FAILED when analysis failed with nothing usable', () => {
     const row = buildDeskRow(
       'PART',
-      null,
-      null,
       demand('PART'),
-      intelligence({ ticker: 'PART', dossier: null, status: 'ANALYSIS_FAILED' }),
-    );
+      intelligence({ ticker: 'PART', dossier: null, status: 'ANALYSIS_FAILED' }),);
 
     expect(row.intelligenceState.status).toBe('FAILED');
   });
 
   it('reports NOT ANALYZED only when nothing has been attempted', () => {
-    const row = buildDeskRow('PART', null, null, demand('PART'));
+    const row = buildDeskRow('PART', demand('PART'));
     expect(row.intelligenceState.status).toBe('NOT_ANALYZED');
   });
 
@@ -271,13 +249,11 @@ describe('normalized intelligence status', () => {
    * a Sheet row beside the desk's dossier changes nothing, and a Sheet row alone is not analysis.
    */
   it('a Sheet row changes nothing: the state is the desk own', () => {
-    const sheetOnly = buildDeskRow('PART', sheet('PART'), null, demand('PART'));
+    const sheetOnly = buildDeskRow('PART', demand('PART'));
     expect(sheetOnly.intelligenceState.status).toBe('NOT_ANALYZED');
 
     const both = buildDeskRow(
       'PART',
-      sheet('PART', '🔴 BACKSIDE'),
-      null,
       demand('PART'),
       intelligence({
         ticker: 'PART',
@@ -285,8 +261,7 @@ describe('normalized intelligence status', () => {
           catalyst: { ...dossier().catalyst, catalystGrade: 'STRONG' },
           cycle: { ...dossier().cycle, cycleClassification: 'GREEN_FRESH_FRONTSIDE' },
         }),
-      }),
-    );
+      }),);
     expect(both.intelligenceState.status).toBe('ANALYZED');
     expect(both.intelligenceState.detail).not.toMatch(/outside|sheet/i);
     expect(both.intelligenceState).not.toHaveProperty('hasSheet');
@@ -295,9 +270,9 @@ describe('normalized intelligence status', () => {
   it('no state value or label carries the old words', () => {
     const complete = dossier({ cycle: { ...dossier().cycle, cycleClassification: 'RED_BACKSIDE' } });
     const rows = [
-      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART' })),
-      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART', coverageIncomplete: true })),
-      buildDeskRow('PART', sheet('PART'), null, demand('PART'), intelligence({ ticker: 'PART', dossier: complete })),
+      buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART' })),
+      buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART', coverageIncomplete: true })),
+      buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART', dossier: complete })),
     ];
     // Both analysed states are covered: the mutant that put "AUTO" back on ANALYZED alone slipped past this.
     expect(rows.map((row) => row.intelligenceState.status)).toEqual(['PARTLY_ANALYZED', 'PARTLY_ANALYZED', 'ANALYZED']);
@@ -313,7 +288,7 @@ describe('normalized intelligence status', () => {
       structure: { ...dossier().structure, structureClassification: 'UNKNOWN' },
     });
     const read = buildDeskRead(
-      buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART', dossier: blank })),
+      buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART', dossier: blank })),
     );
 
     expect(read.cycle.label).toBe('CYCLE NOT ESTABLISHED');
@@ -327,7 +302,7 @@ describe('normalized intelligence status', () => {
   });
 
   it('keeps NOT ANALYZED for a ticker with no usable analysis at all', () => {
-    const read = buildDeskRead(buildDeskRow('PART', null, null, demand('PART')));
+    const read = buildDeskRead(buildDeskRow('PART', demand('PART')));
 
     expect(read.intelligence.status).toBe('NOT_ANALYZED');
     expect(read.cycle.label).toBe('NOT ANALYZED');
@@ -345,11 +320,8 @@ describe('normalized intelligence status', () => {
     const read = buildDeskRead(
       buildDeskRow(
         'PART',
-        null,
-        null,
         demand('PART'),
-        intelligence({ ticker: 'PART', dossier: null, status: 'ANALYZING' }),
-      ),
+        intelligence({ ticker: 'PART', dossier: null, status: 'ANALYZING' }),),
     );
 
     expect(read.intelligence.status).toBe('ANALYSIS_PENDING');
@@ -360,12 +332,12 @@ describe('normalized intelligence status', () => {
   });
 
   it('still says NOT ANALYZED when nothing is happening at all', () => {
-    const read = buildDeskRead(buildDeskRow('PART', null, null, demand('PART')));
+    const read = buildDeskRead(buildDeskRow('PART', demand('PART')));
     expect(read.cycle.label).toBe('NOT ANALYZED');
   });
 
   it('does not change the underlying classification', () => {
-    const row = buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART' }));
+    const row = buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART' }));
 
     // The dossier still records UNKNOWN; only the display label differs.
     expect(row.intelligence?.analysis?.dossier.cycle.cycleClassification).toBe('UNKNOWN');
@@ -373,7 +345,7 @@ describe('normalized intelligence status', () => {
   });
 
   it('gives the board and the drawer the same field labels', () => {
-    const row = buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART' }));
+    const row = buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART' }));
 
     const board = resolveConclusions(row);
     const drawer = buildDeskRead(row);
@@ -384,7 +356,7 @@ describe('normalized intelligence status', () => {
   });
 
   it('is one object, shared by every surface that displays a status', () => {
-    const row = buildDeskRow('PART', null, null, demand('PART'), intelligence({ ticker: 'PART' }));
+    const row = buildDeskRow('PART', demand('PART'), intelligence({ ticker: 'PART' }));
 
     // The drawer header, the board cell and the Desk Read all read this same
     // object rather than each inferring a status of their own.

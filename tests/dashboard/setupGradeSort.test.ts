@@ -18,7 +18,7 @@ const grade = (g: StoredGrade): SetupGrade => ({
 });
 
 function row(ticker: string, g: StoredGrade | null, wired = true) {
-  return { ...buildDeskRow(ticker, null, null, null), setupGrade: g ? grade(g) : null, setupGradeWired: wired };
+  return { ...buildDeskRow(ticker, null), setupGrade: g ? grade(g) : null, setupGradeWired: wired };
 }
 
 const ROWS = [

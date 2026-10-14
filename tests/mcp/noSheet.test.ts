@@ -103,7 +103,7 @@ describe('the MCP tools without the Sheet', () => {
     for (const file of ['lib/mcp/tools.ts', 'lib/review/diagnostics.ts']) {
       const source = fs.readFileSync(path.join(process.cwd(), file), 'utf8');
       expect(source, file).not.toContain('getDashboardState');
-      expect(source, file).toContain('mergeDesk(null, snapshot)');
+      expect(source, file).toContain('mergeDesk(snapshot)');
     }
   });
 
