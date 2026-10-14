@@ -143,6 +143,24 @@ describe('the night scan (read 82 (iii))', () => {
     expect(bad.reports.map((r) => r.status)).toEqual(['FAILED', 'FAILED']);
   });
 
+  it('a refused reply is kept verbatim on its FAILED report; a READ report and a call that threw carry none', async () => {
+    // Row 41's case: a well-formed reply that leaves one line out ("a line has no answer").
+    const omits: CheckerModel = {
+      complete: async () => JSON.stringify({ answers: [{ id: 'O', advice: false, forecast: false, phrase: '' }] }),
+    };
+    const scan = await runNightScan([row(report())], omits, { ...OPTIONS, spent: () => 0 });
+    expect(scan.reports[0]).toMatchObject({ status: 'FAILED', failure: 'reply: a line has no answer' });
+    expect(scan.reports[0]!.rawReply).toBe(JSON.stringify({ answers: [{ id: 'O', advice: false, forecast: false, phrase: '' }] }));
+    // It reaches the stored scan: the JSON the script writes is this object.
+    expect(JSON.parse(JSON.stringify(scan)).reports[0].rawReply).toContain('"answers"');
+
+    const read = await runNightScan([row(report())], model(), { ...OPTIONS, spent: () => 0 });
+    expect(read.reports[0]!.status).toBe('READ');
+    expect('rawReply' in read.reports[0]!).toBe(false);
+    const threw = await runNightScan([row(report())], { complete: async () => { throw new Error('openai: HTTP 500'); } }, { ...OPTIONS, spent: () => 0 });
+    expect('rawReply' in threw.reports[0]!).toBe(false);
+  });
+
   it('names the reports an OpenAI checker decided (word list on), the fallback among them', async () => {
     const fellBack = row(report(), { run: { checker: { ran: 'terra', fallbackFrom: { model: 'claude-opus-5-5' }, wordList: true } } });
     const noKey = row(report(), { run: { checker: { ran: 'terra', wordList: true } } });
