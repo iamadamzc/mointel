@@ -49,6 +49,22 @@ export const FLOAT_REUSE_DAYS = 4;
 
 const SECTION16 = new Set(['3', '3/A', '4', '4/A', '5', '5/A']);
 
+/**
+ * L6 step 1 (split-restate-build-plan-2026-10-14.md, R2): one share-changing corporate action Alpaca lists for the
+ * symbol, as published. `group` is the API's PLURAL response group (`reverse_splits`, `stock_dividends`, ...), kept as
+ * returned; a rate is null where Alpaca gave none (the row is kept: an action that cannot be restated must still refuse).
+ * Declared here for now; `splitRestate.ts` (L6 step 2) will import or re-export it.
+ */
+export interface AnnouncedAction {
+  group: string;
+  exDate: string;
+  oldRate: number | null;
+  newRate: number | null;
+}
+
+/** The request `types` for `announcedActions` (the API's SINGULAR names; rows come back under the plural groups). */
+export const ANNOUNCED_ACTION_TYPES = ['forward_split', 'reverse_split', 'unit_split', 'stock_dividend', 'stock_merger', 'stock_and_cash_merger', 'spin_off'] as const;
+
 export interface StoredHolding extends S1Holding {
   /** R0, from the h0 as-of date to the count's. Only NONE is subtracted; `shares` is S1's min(h0, hD) summed. */
   split: SplitProof;
@@ -73,6 +89,13 @@ export interface FloatBoundRow {
    * there was no count (nothing fetched).
    */
   announcedSplits: string[] | null;
+  /**
+   * L6 (R2): every share-changing action Alpaca lists (`ANNOUNCED_ACTION_TYPES`) over the same span as
+   * `announcedSplits`, sorted by ex-date. Three states, all distinct: undefined = an OLD row stored before L6 (restates
+   * nothing); null = the fetch failed; [] = fetched, none listed (also when there was no count: nothing fetched).
+   * `announcedSplits` is still filled, so rule R-A is unchanged.
+   */
+  announcedActions?: AnnouncedAction[] | null;
   /**
    * Rule I-D: every 424B1/2/4/5 and 8-K item 3.02 in the submissions listing filed on or after the count's date, so a
    * reader at a later D re-applies [count, D]. Empty when there was no count (nothing fetched).
@@ -114,6 +137,8 @@ export interface FloatJobDeps {
   spanBars: (symbol: string, from: string, to: string) => SpanBar[];
   /** Alpaca's announced split ex-dates for the symbol in [start, end]; throws on failure. */
   announcedSplits: (symbol: string, start: string, end: string) => Promise<string[]>;
+  /** L6: Alpaca's share-changing actions (`ANNOUNCED_ACTION_TYPES`) for the symbol in [start, end]; throws on failure. */
+  announcedActions: (symbol: string, start: string, end: string) => Promise<AnnouncedAction[]>;
   now: () => string;
 }
 
@@ -204,6 +229,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   const holdings: StoredHolding[] = [];
   let splitSinceCount: SplitProof = 'UNPROVEN';
   let announcedSplits: string[] | null = [];
+  let announcedActions: AnnouncedAction[] | null = [];
   let issuanceList: IssuanceFiling[] = [];
   let statedCount: FloatBoundRow['statedCount'] = null;
 
@@ -254,6 +280,13 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
       } catch {
         announcedSplits = null;
       }
+      // L6 (R2): every share-changing action over the same span; a failure is stored as null, never fails the row.
+      try {
+        const listed = await deps.announcedActions(symbol, start, addDays(asOfDate, FLOAT_REUSE_DAYS));
+        announcedActions = [...listed].sort((a, b) => a.exDate.localeCompare(b.exDate) || a.group.localeCompare(b.group));
+      } catch {
+        announcedActions = null;
+      }
       for (const holding of found) {
         const r0 = splitProofR0(deps.spanBars(symbol, holding.asOf, count.asOf), holding.asOf, count.asOf);
         holdings.push({ ...holding, split: withAnnouncedSplits(r0, announcedSplits, holding.asOf, count.asOf) });
@@ -265,7 +298,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
 
   const issuanceFiled = count.kind === 'COUNT' && issuanceFiledIn(issuanceList, count.asOf, asOfDate);
   const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: ledgerOfDossier(input.dossier), asOfDate, issuanceFiled });
-  return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
+  return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, announcedActions, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
 }
 
 /**

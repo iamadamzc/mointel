@@ -1,10 +1,14 @@
 /**
  * `research_float_bounds`: one row per symbol and the ET date the float job computed it for
  * (lib/research/floatJob.ts). A second run on the same date replaces the first.
+ *
+ * `announced_actions_json` (L6) keeps THREE states apart, because "not fetched" and "the fetch failed" must not read the
+ * same: SQL NULL = a row stored before L6 (`announcedActions` undefined, read back without the field: it restates
+ * nothing); the JSON text 'null' = the fetch failed (read back as null); a JSON array = fetched ([] = none listed).
  */
 import type { MarketDatabase } from './db';
 import { withBusyRetry } from './busy';
-import type { FloatBoundRow, IssuanceFiling, StoredHolding } from '../../research/floatJob';
+import type { AnnouncedAction, FloatBoundRow, IssuanceFiling, StoredHolding } from '../../research/floatJob';
 import type { FiledCount } from '../../research/filedCount';
 import type { FloatCell, FloatCellReason, IssuanceRule, SplitProof } from '../../research/insiderBound';
 
@@ -24,6 +28,8 @@ interface Stored {
   issuance_filings_json: string;
   /** Fix 2 piece 2 (`statedCount.ts`); null on rows written before it, and when there was no cover count. */
   stated_count_json: string | null;
+  /** L6: SQL NULL = an old row (undefined); 'null' = the fetch failed; else the JSON list (header). */
+  announced_actions_json: string | null;
   analysis_version_id: number | null;
   issuance_rule: IssuanceRule;
   max_age_days: number;
@@ -39,14 +45,14 @@ export function writeFloatBound(db: MarketDatabase, row: FloatBoundRow): void {
   const statement = db.prepare(
     `INSERT INTO research_float_bounds (
        symbol, as_of_date, cik, count_kind, count_shares, count_as_of, count_filed, count_accession, count_form,
-       holdings_json, split_since_count, announced_splits_json, issuance_filings_json, stated_count_json, analysis_version_id, issuance_rule, max_age_days, state, reason, bound, computed_at)
+       holdings_json, split_since_count, announced_splits_json, issuance_filings_json, stated_count_json, announced_actions_json, analysis_version_id, issuance_rule, max_age_days, state, reason, bound, computed_at)
      VALUES (@symbol, @as_of_date, @cik, @count_kind, @count_shares, @count_as_of, @count_filed, @count_accession, @count_form,
-       @holdings_json, @split_since_count, @announced_splits_json, @issuance_filings_json, @stated_count_json, @analysis_version_id, @issuance_rule, @max_age_days, @state, @reason, @bound, @computed_at)
+       @holdings_json, @split_since_count, @announced_splits_json, @issuance_filings_json, @stated_count_json, @announced_actions_json, @analysis_version_id, @issuance_rule, @max_age_days, @state, @reason, @bound, @computed_at)
      ON CONFLICT (symbol, as_of_date) DO UPDATE SET
        cik = excluded.cik, count_kind = excluded.count_kind, count_shares = excluded.count_shares,
        count_as_of = excluded.count_as_of, count_filed = excluded.count_filed, count_accession = excluded.count_accession,
        count_form = excluded.count_form, holdings_json = excluded.holdings_json, split_since_count = excluded.split_since_count, announced_splits_json = excluded.announced_splits_json, issuance_filings_json = excluded.issuance_filings_json,
-       stated_count_json = excluded.stated_count_json,
+       stated_count_json = excluded.stated_count_json, announced_actions_json = excluded.announced_actions_json,
        analysis_version_id = excluded.analysis_version_id, issuance_rule = excluded.issuance_rule,
        max_age_days = excluded.max_age_days, state = excluded.state, reason = excluded.reason, bound = excluded.bound,
        computed_at = excluded.computed_at`,
@@ -66,6 +72,8 @@ export function writeFloatBound(db: MarketDatabase, row: FloatBoundRow): void {
     announced_splits_json: row.announcedSplits === null ? null : JSON.stringify(row.announcedSplits),
     issuance_filings_json: JSON.stringify(row.issuanceFilings),
     stated_count_json: row.statedCount === null ? null : JSON.stringify(row.statedCount),
+    // undefined (an old row) is SQL NULL; null (the fetch failed) is the text 'null' (header).
+    announced_actions_json: row.announcedActions === undefined ? null : JSON.stringify(row.announcedActions),
     analysis_version_id: row.analysisVersionId,
     issuance_rule: row.issuanceRule,
     max_age_days: row.maxAgeDays,
@@ -107,6 +115,9 @@ function fromStored(s: Stored): FloatBoundRow {
     holdings,
     splitSinceCount: s.split_since_count,
     announcedSplits: s.announced_splits_json === null ? null : (JSON.parse(s.announced_splits_json) as string[]),
+    // SQL NULL (an old row) leaves the field out; 'null' parses to null (the fetch failed). `?? null`: a store whose
+    // column has not been added yet returns no key at all, which is also an old row.
+    ...((s.announced_actions_json ?? null) === null ? {} : { announcedActions: JSON.parse(s.announced_actions_json!) as AnnouncedAction[] | null }),
     issuanceFilings: JSON.parse(s.issuance_filings_json) as IssuanceFiling[],
     analysisVersionId: s.analysis_version_id,
     issuanceRule: s.issuance_rule,
