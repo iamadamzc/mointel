@@ -1,0 +1,127 @@
+[
+  {
+    "symbol": "JAGX",
+    "type": "stock_merger",
+    "role": "acquirer_symbol (and acquiree 470CNT015), effective 2026-09-08",
+    "status": 200,
+    "rows": 1,
+    "returned": [
+      {
+        "group": "stock_mergers",
+        "row": {
+          "acquiree_cusip": "470CNT015",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "470CNT015",
+          "acquirer_cusip": "47010C862",
+          "acquirer_rate": 3.209,
+          "acquirer_symbol": "JAGX",
+          "effective_date": "2026-09-08",
+          "id": "06ea02f3-5493-46f0-ab6e-a00c8f314bd2",
+          "payable_date": "2026-09-08",
+          "process_date": "2026-09-08"
+        }
+      }
+    ]
+  },
+  {
+    "symbol": "ADBRF",
+    "type": "stock_merger",
+    "role": "acquirer_symbol and acquiree_symbol, effective 2026-08-28",
+    "status": 200,
+    "rows": 1,
+    "returned": [
+      {
+        "group": "stock_mergers",
+        "row": {
+          "acquiree_cusip": "01408J104",
+          "acquiree_rate": 1,
+          "acquiree_symbol": "ADBRF",
+          "acquirer_cusip": "01408J302",
+          "acquirer_rate": 1,
+          "acquirer_symbol": "ADBRF",
+          "effective_date": "2026-08-28",
+          "id": "6d9057d7-4cf0-4e4d-84bd-94a5f6249df7",
+          "payable_date": "2026-08-31",
+          "process_date": "2026-08-31"
+        }
+      }
+    ]
+  },
+  {
+    "symbol": "ANAB",
+    "type": "spin_off",
+    "role": "source_symbol, ex 2026-04-20",
+    "status": 200,
+    "rows": 1,
+    "returned": [
+      {
+        "group": "spin_offs",
+        "row": {
+          "ex_date": "2026-04-20",
+          "id": "fefc53e6-1dc4-4df2-a823-fac0a217c8a1",
+          "new_cusip": "337185102",
+          "new_rate": 1,
+          "new_symbol": "TRAX",
+          "payable_date": "2026-04-20",
+          "process_date": "2026-04-20",
+          "record_date": "2026-04-06",
+          "source_cusip": "032724106",
+          "source_rate": 1,
+          "source_symbol": "ANAB"
+        }
+      }
+    ]
+  },
+  {
+    "symbol": "ACAA",
+    "type": "unit_split",
+    "role": "new_symbol, effective 2026-04-10",
+    "status": 200,
+    "rows": 1,
+    "returned": [
+      {
+        "group": "unit_splits",
+        "row": {
+          "alternate_cusip": "G0679A118",
+          "alternate_rate": 0.1667,
+          "alternate_symbol": "ACAAW",
+          "effective_date": "2026-04-10",
+          "id": "2a2f13a0-84a3-45d5-9392-04422569eb4f",
+          "new_cusip": "G0679A100",
+          "new_rate": 1,
+          "new_symbol": "ACAA",
+          "old_cusip": "G0679A126",
+          "old_rate": 1,
+          "old_symbol": "ACAAU",
+          "process_date": "2026-04-10"
+        }
+      }
+    ]
+  },
+  {
+    "symbol": "ACAAU",
+    "type": "unit_split",
+    "role": "old_symbol, effective 2026-04-10",
+    "status": 200,
+    "rows": 1,
+    "returned": [
+      {
+        "group": "unit_splits",
+        "row": {
+          "alternate_cusip": "G0679A118",
+          "alternate_rate": 0.1667,
+          "alternate_symbol": "ACAAW",
+          "effective_date": "2026-04-10",
+          "id": "2a2f13a0-84a3-45d5-9392-04422569eb4f",
+          "new_cusip": "G0679A100",
+          "new_rate": 1,
+          "new_symbol": "ACAA",
+          "old_cusip": "G0679A126",
+          "old_rate": 1,
+          "old_symbol": "ACAAU",
+          "process_date": "2026-04-10"
+        }
+      }
+    ]
+  }
+]
