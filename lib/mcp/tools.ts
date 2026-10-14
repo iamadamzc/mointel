@@ -23,7 +23,6 @@
 
 import 'server-only';
 
-import { getDashboardState } from '../data';
 import { publishedDisplay, type TimePrecision } from '../research/time';
 import type { AutoIntelligence } from '../research/view';
 import { mergeDesk } from '../dashboard/merge';
@@ -90,12 +89,28 @@ function tickerOf(args: Record<string, unknown>): string | null {
   return /^[A-Z0-9.\-]{1,12}$/.test(raw) ? raw : null;
 }
 
-/** Everything the dashboard needs to answer a question about the board. */
+/**
+ * Everything the dashboard needs to answer a question about the board.
+ *
+ * WITHOUT THE SHEET (A5, his "everything tonight." 2026-10-14T02:09:54.695Z; Integration 40th): the merge is
+ * handed no dashboard payload, so every row is built from the desk's own data and every Sheet-fed field
+ * (`sheet`, `supplyLedger`, `displayedFloat*`) comes out null. The tools keep their shape until his step 6
+ * turns the ChatGPT recap off; removing those fields waits for that.
+ */
 async function deskContext() {
   const snapshot = getMarketSnapshot();
-  const dashboard = await getDashboardState();
-  return { snapshot, dashboard, merged: mergeDesk(dashboard, snapshot) };
+  return { snapshot, merged: mergeDesk(null, snapshot) };
 }
+
+/** The Sheet's block in get_desk_status, kept for its shape: there is no Sheet to report on. */
+const NO_SHEET = {
+  provider: null,
+  fetchedAt: null,
+  stale: null,
+  cacheAgeSeconds: null,
+  rows: null,
+  error: null,
+} as const;
 
 export const TOOLS: McpTool[] = [
   {
@@ -103,7 +118,7 @@ export const TOOLS: McpTool[] = [
     title: 'Desk status',
     description:
       'Current ET time, trading session, trading date, which board Discovery is ranking by, ' +
-      'and the health of the market feed, research engine, assessment scheduler and Google Sheet. ' +
+      'and the health of the market feed, research engine and assessment scheduler. ' +
       'Start here: it says what the desk is doing right now and whether anything is wrong.',
     inputSchema: NO_ARGS,
     outputSchema: OBJECT({
@@ -117,7 +132,7 @@ export const TOOLS: McpTool[] = [
       sheet: { type: 'object' },
     }),
     async handler() {
-      const { snapshot, dashboard } = await deskContext();
+      const { snapshot } = await deskContext();
       const now = new Date();
 
       return {
@@ -162,14 +177,7 @@ export const TOOLS: McpTool[] = [
           last: snapshot.assessments.last,
           next: snapshot.assessments.next,
         },
-        sheet: {
-          provider: dashboard.meta.provider,
-          fetchedAt: dashboard.meta.fetchedAt,
-          stale: dashboard.meta.stale,
-          cacheAgeSeconds: Math.round(dashboard.meta.cacheAgeMs / 1000),
-          rows: dashboard.tickers.length,
-          error: dashboard.meta.error,
-        },
+        sheet: NO_SHEET,
       };
     },
   },
@@ -234,7 +242,7 @@ export const TOOLS: McpTool[] = [
     title: 'Ticker drawer',
     description:
       'Everything the ticker drawer shows for one name: Desk Read, live telemetry, the level ladder, ' +
-      'catalyst, structure, supply ledger, cycle, Sheet/AUTO provenance, research state and evidence ' +
+      'catalyst, structure, supply ledger, cycle, provenance, research state and evidence ' +
       'sources. This is the deep view. Use it after get_discovery identifies a name worth reading. ' +
       "setupGrade is the desk's own reading of the setup at its last checkpoint, with the five " +
       'criteria behind it; it is not a prediction and not a recommendation.',
@@ -247,7 +255,7 @@ export const TOOLS: McpTool[] = [
       const ticker = tickerOf(args);
       if (!ticker) throw new Error('A valid ticker is required, e.g. "XOS".');
 
-      const { dashboard, merged } = await deskContext();
+      const { merged } = await deskContext();
       const row = merged.rows.get(ticker);
 
       if (!row) {
@@ -256,7 +264,7 @@ export const TOOLS: McpTool[] = [
           found: false,
           detail:
             'The desk is not tracking this ticker in the current session. It may be outside the ' +
-            '$1–$20 discovery range, not on the sheet, or simply not moving.',
+            '$1–$20 discovery range, or simply not moving.',
         };
       }
 
@@ -282,7 +290,9 @@ export const TOOLS: McpTool[] = [
         supplyLedger: row.researchRecord,
         intelligence: withHonestTimestamps(row.intelligence),
         riskInTheEvidence: evidenceRiskForTools(row.intelligence, new Date().toISOString()),
-        researchStatus: dashboard.research[ticker] ? 'RESEARCH_RECORD_PRESENT' : 'NO_RESEARCH_RECORD',
+        // The Sheet's RESEARCH tab is gone, so there is never a record; the field and its values stay for
+        // ChatGPT (Integration 40th: keep it, add nothing).
+        researchStatus: 'NO_RESEARCH_RECORD',
       };
     },
   },
