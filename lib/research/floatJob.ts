@@ -53,14 +53,9 @@ const SECTION16 = new Set(['3', '3/A', '4', '4/A', '5', '5/A']);
  * L6 step 1 (split-restate-build-plan-2026-10-14.md, R2): one share-changing corporate action Alpaca lists for the
  * symbol, as published. `group` is the API's PLURAL response group (`reverse_splits`, `stock_dividends`, ...), kept as
  * returned; a rate is null where Alpaca gave none (the row is kept: an action that cannot be restated must still refuse).
- * Declared here for now; `splitRestate.ts` (L6 step 2) will import or re-export it.
+ * Declared once, in `splitRestate.ts` (L6 step 2), and re-exported here for the job's callers.
  */
-export interface AnnouncedAction {
-  group: string;
-  exDate: string;
-  oldRate: number | null;
-  newRate: number | null;
-}
+export type { AnnouncedAction } from './splitRestate';
 
 /** The request `types` for `announcedActions` (the API's SINGULAR names; rows come back under the plural groups). */
 export const ANNOUNCED_ACTION_TYPES = ['forward_split', 'reverse_split', 'unit_split', 'stock_dividend', 'stock_merger', 'stock_and_cash_merger', 'spin_off'] as const;
@@ -297,7 +292,9 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   }
 
   const issuanceFiled = count.kind === 'COUNT' && issuanceFiledIn(issuanceList, count.asOf, asOfDate);
-  const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: ledgerOfDossier(input.dossier), asOfDate, issuanceFiled });
+  // L6: the same restate input the reader passes at its D (floatRead.ts floatCellAt), so job and reader decide alike.
+  const restate = count.kind === 'COUNT' ? { actions: announcedActions, countSpanBars: deps.spanBars(symbol, count.asOf, asOfDate) } : undefined;
+  const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: ledgerOfDossier(input.dossier), asOfDate, issuanceFiled, restate });
   return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, announcedActions, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
 }
 
