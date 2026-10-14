@@ -25,7 +25,11 @@ import { BOUND_PREFIX, compactBound } from '@/lib/research/compactBound';
 import type { FloatCountChecks, FloatCountSource, FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
 import type { FloatCellReason } from '@/lib/research/insiderBound';
 
-/** Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed". */
+/**
+ * Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed".
+ * L8 piece B: `filingsOnly` (PRODUCED only, Research 961c66c2) marks a bound for a name with no desk research: no
+ * supply ledger, so warrants and share programs already in place are not counted.
+ */
 export type FloatBound = ResearchFloatBound;
 export type FloatBoundReason = FloatCellReason;
 
@@ -74,6 +78,8 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
     ...(checksOf(r.countChecks) ? { countChecks: checksOf(r.countChecks)! } : {}),
     // L7: absent or malformed means no read of later filings, so today's cover words (the claim that says least).
     ...(sourceOf(r.countSource) ? { countSource: sourceOf(r.countSource)! } : {}),
+    // L8 B: only `true` on a PRODUCED row marks it; anything else is an ordinary bound or not a bound.
+    ...(r.state === 'PRODUCED' && r.filingsOnly === true ? { filingsOnly: true as const } : {}),
   };
 }
 
@@ -209,7 +215,7 @@ export const FLOAT_PAGE_LINK_LABEL = 'Are float quotes real?';
 
 /** The once-only legend under the board, and the column header's hover once the float is wired. v25, verbatim. */
 export const FLOAT_LEGEND =
-  "TMI Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.";
+  "TMI Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's; where no date shows, it is in the hover.";
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -324,12 +330,16 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
     const compact = compactBound(bound.bound);
     const amount = compact.startsWith(BOUND_PREFIX) ? compact.slice(BOUND_PREFIX.length) : compact;
     const d = dLabel(surface);
+    // L8 B: an unscreened bound carries the circled i; its date leaves the face (Integration's width ruling).
+    const marked = bound.filingsOnly === true;
     return {
       kind: 'bound',
       face: compact,
-      date: shortDate(bound.countAsOf),
-      icon: null,
-      ariaLabel: `no more than ${amount} shares as of ${d}, computed from the share count dated ${countDate} and insider holdings filed through ${fetched}, when the filings line up`,
+      date: marked && !MARKED_BOUND_DATE_ON_FACE ? null : shortDate(bound.countAsOf),
+      icon: marked ? { kind: 'caveat', title: FILINGS_ONLY_WORDS.hover(amount, countDate) } : null,
+      ariaLabel:
+        `no more than ${amount} shares as of ${d}, computed from the share count dated ${countDate} and insider holdings filed through ${fetched}, when the filings line up` +
+        (marked ? FILINGS_ONLY_WORDS.aria : ''),
       // The v25 popover, verbatim, split before "Lined up means".
       paragraphs: [
         `Taking float as shares outstanding less insider holdings, it is no more than ${amount} shares as of ${d}, when the filings line up. Computed from the company's filed share count, less insider holdings as filed through ${fetched}, counting any sale dated on or before ${d} that was filed by ${fetched}. Filings read on ${fetched}.`,
@@ -381,6 +391,8 @@ function boundDetails(bound: FloatBound, amount: string, countDate: string, surf
   const total = subtracted.reduce((sum, i) => sum + i.shares, 0);
   const rows: FloatDetailRow[] = [
     { label: null, text: W.headline(amount, d) },
+    // L8 B: the one extra line under the headline (Marketing 84d0b9fd, his "approved").
+    ...(bound.filingsOnly ? [{ label: null, text: FILINGS_ONLY_WORDS.panel }] : []),
     { label: W.definitionLabel, text: W.definition },
   ];
   if (bound.countShares !== null && bound.countForm && countFiled) {
@@ -468,6 +480,27 @@ export const FILED_COUNT_WORDS = {
  * words, docs/marketing/float-stated-count-words-2026-10-13.md at caf7523f (Commercial reads 99, 101, 101a). "As stated
  * in" only when `countSource.stated`; a cover count keeps today's words. The article comes from the form.
  */
+/*
+ * L8 PIECE B: A BOUND FOR A NAME WITH NO DESK RESEARCH. His "approved" (Integration chat, uuid 16379c7e,
+ * 2026-10-14T01:17:42.726Z) to Marketing 84d0b9fd's FINAL text (66b81507; Commercial read 110a), verbatim.
+ * The hover names the COUNT's date, which leaves the face: his "count date tonight" (Marketing chat, 2026-10-14;
+ * Integration verifies the timestamp), Marketing 4eb509d9, Commercial read 115. FLOAT_LEGEND's last sentence
+ * changed in the same commit ("; where no date shows, it is in the hover").
+ */
+export const FILINGS_ONLY_WORDS = {
+  hover: (x: string, countDate: string) =>
+    `No more than ${x} shares, from the filed share count as of ${countDate}, not counting warrants, convertible notes or share-sale programs already in place. There may be some, and they need verifying; the true figure may be higher.`,
+  panel:
+    'There may be warrants, convertible notes or share-sale programs in place that this number does not count; they need verifying, and the true figure may be higher. Shares from those can be added with no new filing.',
+  aria: '; not counting warrants, convertible notes or share-sale programs already in place; may need verifying; the true figure may be higher',
+} as const;
+
+/**
+ * Integration's width ruling (L6 point 5, applied to L8): a marked bound (circled i or triangle) moves the count's
+ * date off the face, because "≤ 12.4M 12/31" plus an icon measures past the 86 px column. One switch for both.
+ */
+export const MARKED_BOUND_DATE_ON_FACE = false;
+
 export const STATED_COUNT_WORDS = {
   /** Case 1 and 2: the bound panel's count row. */
   count: (shares: string, form: string, filed: string, asOf: string) =>
@@ -583,8 +616,12 @@ function filedCountFace(bound: FloatBound, reason: string): FloatCellView | null
   };
 }
 
-/** The sort value: the bound, only where it is PRODUCED. A refused or absent float has no number to order by. */
+/**
+ * The sort value: the bound, only where it is PRODUCED. A refused or absent float has no number to order by.
+ * L8 B (Commercial's condition (4)): a filings-only bound is shown, not ranked, as these names were unranked before.
+ */
 export function floatSortValue(raw: FloatBound | null | undefined): number | null {
   const bound = normalizeFloatBound(raw);
+  if (bound?.filingsOnly) return null;
   return bound?.state === 'PRODUCED' && bound.bound !== null && bound.bound > 0 ? bound.bound : null;
 }
