@@ -1,0 +1,5 @@
+2026-10-02 PREMARKET: spend $0.5107
+2026-10-05 PREMARKET: spend $1.0646
+2026-10-06 PREMARKET: spend $1.5959
+wrote docs/research/reports/recap-check/raw-2; spend $1.5959
+exit 0

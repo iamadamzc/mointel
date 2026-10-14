@@ -1,0 +1,22 @@
+store ../mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; clock fixed at 2026-10-14T02:04:21.736Z
+days 2026-10-02, 2026-10-05, 2026-10-06; kind PREMARKET; range $1-$20; 3 runs per input
+prompt v7 version 8, writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw checker reply kept
+stop $2.5: a report launches only if spend + its worst case ($0.8116) fits
+
+2026-10-02-PREMARKET-v7-run1: PUBLISHED; 0 of 13 lines struck; allowed [AMOD, CYCU, MI]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1683; tokens writer:gpt-5.6-luna:5569/1845 checker:claude-opus-5-5:30682/2111
+2026-10-02-PREMARKET-v7-run2: PUBLISHED; 0 of 13 lines struck; allowed [AMOD, CYCU, MI]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1672; tokens writer:gpt-5.6-luna:5569/1608 checker:claude-opus-5-5:30777/2054
+2026-10-02-PREMARKET-v7-run3: PUBLISHED; 0 of 13 lines struck; allowed [AMOD, CYCU, MI]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1752; tokens writer:gpt-5.6-luna:5569/2080 checker:claude-opus-5-5:30707/2439
+2026-10-05-PREMARKET-v7-run1: PUBLISHED; 1 of 13 lines struck; allowed [MI, VRAX, OLOX]; outside the list in the draft Summary []; judgement or kind lines 1; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1855; tokens writer:gpt-5.6-luna:5947/2412 checker:claude-opus-5-5:30848/2902
+2026-10-05-PREMARKET-v7-run2: PUBLISHED; 3 of 13 lines struck (Summary struck); allowed [MI, VRAX, OLOX]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary YES; "zero" no; checker replies 1 (errors 0); $0.1891; tokens writer:gpt-5.6-luna:5947/2206 checker:claude-opus-5-5:30699/3123
+2026-10-05-PREMARKET-v7-run3: PUBLISHED; 0 of 13 lines struck; allowed [MI, VRAX, OLOX]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1792; tokens writer:gpt-5.6-luna:5947/2445 checker:claude-opus-5-5:30559/2644
+2026-10-06-PREMARKET-v7-run1: PUBLISHED; 2 of 13 lines struck (Summary struck); allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary []; judgement or kind lines 2; count sentence NO; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1836; tokens writer:gpt-5.6-luna:5196/3145 checker:claude-opus-5-5:31183/2703
+2026-10-06-PREMARKET-v7-run2: PUBLISHED; 1 of 13 lines struck; allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary []; judgement or kind lines 2; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1731; tokens writer:gpt-5.6-luna:5196/2095 checker:claude-opus-5-5:31178/2240
+2026-10-06-PREMARKET-v7-run3: PUBLISHED; 1 of 13 lines struck; allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary []; judgement or kind lines 2; count sentence yes; rank in Summary no; "zero" no; checker replies 1 (errors 0); $0.1746; tokens writer:gpt-5.6-luna:5196/1871 checker:claude-opus-5-5:31167/2333
+
+reports run 9 of 9; published 9; Summary struck 2
+draft Summaries naming a name outside the list: 0 of 9
+drafted lines with a judgement word or a catalyst kind (read 107 a; each read by hand): 7
+draft Summaries with the covered-names count sentence (read 107 b): 8 of 9
+draft Summaries stating a rank: 1 of 9; saying "zero": 0
+checker calls that threw: 0; reports MISSED or ERROR: 0
+TOTAL spend $1.5959
