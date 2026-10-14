@@ -527,7 +527,8 @@ export async function runReport(
     });
     if (!applied.ok) return { status: 'MISSED', cause: applied.cause, diagnostics };
     sections = applied.sections;
-    // The length backstop (`sentences.ts`): the checked narrative's first N sentences, never a strike of the whole.
+    // The length backstop (`sentences.ts`): the checked narrative's first N sentences, plus its count sentence when the
+    // cut dropped it (Commercial read 124), never a strike of the whole.
     narrative = plan && !plan.narrativeChanged ? (plan.edition.narrative ?? null) : capNarrative(slot.kind, applied.overall);
     watchCount = applied.watchCount;
   }
