@@ -1,0 +1,24 @@
+# The 30-day night scan (L5, his word 2026-10-13): every report published since the last scan is read again by
+# OpenAI for advice and forecast lines; the morning note goes to Integration. deploy.sh installs it; Ops enables the timer by hand once.
+# Ends by itself after --until (it writes nothing and says so); remove the timer then.
+[Unit]
+Description=Momentum Intelligence: night scan of published reports
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=mointel
+Group=mointel
+WorkingDirectory=/opt/mointel/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/mointel/mointel.env
+ExecStart=/usr/bin/node node_modules/tsx/dist/cli.mjs --conditions=react-server scripts/report-night-scan.ts --db=${MARKET_DB_PATH} --until=2026-11-12 --out=/var/lib/mointel/night-scan
+TimeoutStartSec=1800
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mointel-night-scan
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/mointel
