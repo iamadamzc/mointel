@@ -37,4 +37,4 @@ NoNewPrivileges=yes
 PrivateTmp=yes
 ProtectSystem=strict
 ProtectHome=yes
-ReadWritePaths=/var/lib/mointel
+ReadWritePaths=/var/lib/mointel /opt/mointel/current
