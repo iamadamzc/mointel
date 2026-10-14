@@ -11,18 +11,21 @@ import { fetchAnnouncedActions } from '@/lib/research/floatRun';
  */
 
 describe('fetchAnnouncedActions: the real announcedActions dep', () => {
-  it('asks for the seven share-changing types for the one symbol, keeps the group and rateless rows, drops a row with no ex-date', async () => {
+  it('asks for the seven share-changing types for the one symbol, keeps the group and rateless rows, dates a merger by its effective date', async () => {
     const asked: Array<{ symbols: string[]; start: string; end: string; types: readonly string[] }> = [];
-    const row = (group: string, exDate: string | null, oldRate: number | null, newRate: number | null): CorporateActionRow => ({ group, symbol: 'ACME', exDate, oldRate, newRate, raw: {} });
+    const row = (group: string, exDate: string | null, oldRate: number | null, newRate: number | null, raw: Record<string, unknown> = {}): CorporateActionRow => ({ group, symbol: 'ACME', exDate, oldRate, newRate, raw });
     const client = {
       getCorporateActionsRaw: async (params: { symbols: string[]; start: string; end: string; types: readonly string[] }) => {
         asked.push(params);
         return [
           row('reverse_splits', '2026-09-15', 10, 1),
           row('stock_dividends', '2026-09-20', null, null),
-          row('stock_mergers', null, null, null),
+          // No ex_date: dated by effective_date, never dropped (a dropped merger would let a restatement run across it).
+          row('stock_mergers', null, null, null, { effective_date: '2026-09-22' }),
           // A spin-off row names its symbols under other fields, so its `symbol` reads ''; it is still kept.
           { ...row('spin_offs', '2026-09-25', null, null), symbol: '' },
+          // The same split listed twice is one split (its factor must not be squared).
+          row('reverse_splits', '2026-09-15', 10, 1),
         ];
       },
     };
@@ -34,8 +37,14 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
     expect(actions).toEqual([
       { group: 'reverse_splits', exDate: '2026-09-15', oldRate: 10, newRate: 1 },
       { group: 'stock_dividends', exDate: '2026-09-20', oldRate: null, newRate: null },
+      { group: 'stock_mergers', exDate: '2026-09-22', oldRate: null, newRate: null },
       { group: 'spin_offs', exDate: '2026-09-25', oldRate: null, newRate: null },
     ]);
+  });
+
+  it('a row with no ex, effective or process date cannot be placed: the fetch throws (stored as null, today\'s refusal)', async () => {
+    const undated: CorporateActionRow = { group: 'unit_splits', symbol: 'ACME', exDate: null, oldRate: null, newRate: null, raw: {} };
+    await expect(fetchAnnouncedActions({ getCorporateActionsRaw: async () => [undated] }, 'ACME', '2026-06-01', '2026-10-02')).rejects.toThrow(/no ex, effective or process date/);
   });
 
   it('through the REST client: the singular types go on the wire, the plural groups come back as published', async () => {

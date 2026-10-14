@@ -21,9 +21,13 @@ export type FloatSplitClient = Pick<SplitDataClient, 'getSplits'> & Pick<AlpacaR
 
 /**
  * L6 step 1, the real `announcedActions` dep (shared by `runFloatJob` and the nightly run): one request for the seven
- * share-changing types. A row with no ex-date is dropped (it cannot be placed in a span); a rateless row is kept with
- * null rates; the group is kept as the API returned it (PLURAL). Rows are NOT filtered by `symbol`: the request names
- * one symbol, and a merger or spin-off row may carry its symbols under other fields (its `symbol` reads '').
+ * share-changing types. A rateless row is kept with null rates; the group is kept as the API returned it (PLURAL). Rows
+ * are NOT filtered by `symbol`: the request names one symbol, and a merger or spin-off row may carry its symbols under
+ * other fields (its `symbol` reads '').
+ * THE DATE, conservatively (the fetch subagent's finding, not verified against a live response): a merger or unit split
+ * may carry `effective_date` and no `ex_date`, and a dropped row would let a restatement run across it (R2 blind). So
+ * the date is `ex_date`, else `effective_date`, else `process_date`; a row with NONE of them cannot be placed, and the
+ * whole fetch THROWS, which the job stores as null (could not tell): today's refusal, never a restatement.
  */
 export async function fetchAnnouncedActions(
   client: Pick<AlpacaRestClient, 'getCorporateActionsRaw'>,
@@ -33,9 +37,14 @@ export async function fetchAnnouncedActions(
 ): Promise<AnnouncedAction[]> {
   const rows = await client.getCorporateActionsRaw({ symbols: [symbol], start, end, types: ANNOUNCED_ACTION_TYPES });
   const actions: AnnouncedAction[] = [];
+  const dateField = (value: unknown) => (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null);
   for (const row of rows) {
-    if (!row.exDate) continue;
-    actions.push({ group: row.group, exDate: row.exDate, oldRate: row.oldRate, newRate: row.newRate });
+    const date = row.exDate ?? dateField(row.raw.effective_date) ?? dateField(row.raw.process_date);
+    if (!date) throw new Error(`announced actions for ${symbol}: a ${row.group} row has no ex, effective or process date`);
+    // The same row returned twice is one action: a repeated split would square the factor (two real splits on
+    // different dates, AEMD's, differ by date and are both kept).
+    if (actions.some((a) => a.group === row.group && a.exDate === date && a.oldRate === row.oldRate && a.newRate === row.newRate)) continue;
+    actions.push({ group: row.group, exDate: date, oldRate: row.oldRate, newRate: row.newRate });
   }
   return actions;
 }
