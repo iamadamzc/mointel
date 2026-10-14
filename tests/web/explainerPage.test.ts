@@ -79,6 +79,9 @@ describe('ExplainerPage', () => {
     expect(markup).toContain('A filed share count shown with an icon is not offered as a ceiling or as a float: nothing is subtracted from it.');
     expect(markup).toContain('A triangle means the count may be in pre-split share units, there may have been a split that needs verification, or the count is more than 90 days old.');
     expect(markup).not.toContain('has not checked for a share split');
+    // His "yes to all three" 2026-10-13T21:36:56.972Z (Marketing caf7523f, Commercial 103): a later filing's dated
+    // count, right after the paragraph that introduces the filed count and before the cell section.
+    expect(markup).toMatch(/the TMI Float is at most what is left\.<\/p>\s*<p>A later filing can state a newer count with its own date: an 8-K, a prospectus, a registration statement, a proxy or an information statement\. The desk uses the newest dated count and says which filing states it\. It does not use a prospectus&#39;s projected count of shares outstanding after the offering, because that assumes every share sells\.<\/p>\s*<h2/);
     expect(markup).not.toContain('one of four things');
     expect(markup).not.toMatch(/taking float as/i);
     expect(markup).not.toContain('the name reads Cannot verify');

@@ -21,7 +21,9 @@ TMI Float definition after it (Marketing 00130acf, Commercial 67), 2026-10-09T22
 ("yes", shown the exact definition); then float fix 1, nine passages that name the filed-count
 face (Marketing 0a519b0f, Commercial 93), 2026-10-13T10:27:39.594Z ("yes, approve the float wording",
 shown each verbatim), with the triangle sentence in his own words after his 10:28:14.413Z change,
-2026-10-13T10:46:44.599Z ("yes to both", shown the exact sentence at 10:39:13Z). Any word changed
+2026-10-13T10:46:44.599Z ("yes to both", shown the exact sentence at 10:39:13Z); then the paragraph
+on a later filing's dated count under "How we do it" (Marketing caf7523f, Commercial 103),
+2026-10-13T21:36:56.972Z ("yes to all three", shown it verbatim at 21:26:10Z). Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -54,6 +56,8 @@ So a float number on a quote page is an estimate someone computed, unless a fili
 The TMI Float is an estimate too. Here is what it is computed from and how we show it.
 
 We start with the latest filed share count we have for the company. From it we subtract the shares the company's insiders report holding directly, the officers, directors, 10 percent owners and anyone else who files Forms 3, 4 and 5 on their own. For each insider we take the smaller of two holdings: their holding as of the count's date, and their latest holding dated on or before the date of the board or report. So a sale an insider has filed since the count is added back, and a sale not yet filed cannot be seen. When the filings line up, the TMI Float is at most what is left.
+
+A later filing can state a newer count with its own date: an 8-K, a prospectus, a registration statement, a proxy or an information statement. The desk uses the newest dated count and says which filing states it. It does not use a prospectus's projected count of shares outstanding after the offering, because that assumes every share sells.
 
 ## What you see in the cell
 

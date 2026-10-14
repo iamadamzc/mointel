@@ -40,6 +40,8 @@ function row(asOfDate: string, overrides: Partial<FloatBoundRow> = {}): FloatBou
     splitSinceCount: 'NONE',
     announcedSplits: ['2026-01-05'],
     issuanceFilings: [{ form: '424B5', filingDate: '2026-09-30', accession: 'p', items: '' }],
+    // Fix 2 piece 2: the stated-count read round-trips whole (here it found nothing newer than the cover).
+    statedCount: { found: null, read: 2, unread: 1, capped: 0, conflict: null, cover: { shares: 10_000_000, asOf: '2026-08-01', filed: '2026-08-10', accession: 'acc', form: '10-Q' } },
     analysisVersionId: 42,
     issuanceRule: 'KNOWN_OR_POSSIBLY_ACTIVE',
     maxAgeDays: 90,

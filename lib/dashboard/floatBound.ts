@@ -22,7 +22,7 @@
  */
 
 import { BOUND_PREFIX, compactBound } from '@/lib/research/compactBound';
-import type { FloatCountChecks, FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
+import type { FloatCountChecks, FloatCountSource, FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
 import type { FloatCellReason } from '@/lib/research/insiderBound';
 
 /** Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed". */
@@ -72,7 +72,20 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
     insiders: Array.isArray(r.insiders) ? r.insiders.flatMap(insiderOf) : [],
     // Absent stays absent: "no record of a check" is a different sentence from a recorded NOT_RUN (Commercial 89e).
     ...(checksOf(r.countChecks) ? { countChecks: checksOf(r.countChecks)! } : {}),
+    // L7: absent or malformed means no read of later filings, so today's cover words (the claim that says least).
+    ...(sourceOf(r.countSource) ? { countSource: sourceOf(r.countSource)! } : {}),
   };
+}
+
+const count0 = (v: unknown): v is number => typeof v === 'number' && Number.isInteger(v) && v >= 0;
+
+/** Research's `countSource` (L7), or undefined when absent or any field is malformed. */
+function sourceOf(raw: unknown): FloatCountSource | undefined {
+  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const s = raw as Record<string, unknown>;
+  if (typeof s.stated !== 'boolean' || !count0(s.read) || !count0(s.unread) || !count0(s.capped)) return undefined;
+  if (s.conflictAsOf !== null && !isDate(s.conflictAsOf)) return undefined;
+  return { stated: s.stated, read: s.read, unread: s.unread, capped: s.capped, conflictAsOf: s.conflictAsOf };
 }
 
 const SPLITS: ReadonlySet<string> = new Set(['NONE', 'FOUND', 'UNPROVEN', 'NOT_RUN']);
@@ -371,8 +384,16 @@ function boundDetails(bound: FloatBound, amount: string, countDate: string, surf
     { label: W.definitionLabel, text: W.definition },
   ];
   if (bound.countShares !== null && bound.countForm && countFiled) {
-    rows.push({ label: W.countLabel, text: W.count(exactShares(bound.countShares), countDate, bound.countForm, countFiled) });
+    const shares = exactShares(bound.countShares);
+    rows.push({
+      label: W.countLabel,
+      text: bound.countSource?.stated
+        ? STATED_COUNT_WORDS.count(shares, bound.countForm, countFiled, countDate)
+        : W.count(shares, countDate, bound.countForm, countFiled),
+    });
   }
+  const laterLine = laterFilingsLine(bound.countSource);
+  if (laterLine) rows.push({ label: null, text: laterLine });
   if (fetched) rows.push({ label: W.insidersLabel, text: W.insiders(subtracted.length, exactShares(total), fetched, d) });
   rows.push({ label: W.notSubtractedLabel, text: W.notSubtracted });
   rows.push({ label: W.linedUpLabel, text: W.linedUp(countDate, d) });
@@ -442,6 +463,54 @@ export const FILED_COUNT_WORDS = {
   legend: "Where a TMI Float cannot be verified, the cell may show the company's filed share count with an icon. Nothing is subtracted from it, so it is not a TMI Float.",
 } as const;
 
+/*
+ * L7: A COUNT A LATER FILING STATES. His "yes to all three" (Integration chat, 2026-10-13T21:36:56.972Z) to Marketing's
+ * words, docs/marketing/float-stated-count-words-2026-10-13.md at caf7523f (Commercial reads 99, 101, 101a). "As stated
+ * in" only when `countSource.stated`; a cover count keeps today's words. The article comes from the form.
+ */
+export const STATED_COUNT_WORDS = {
+  /** Case 1 and 2: the bound panel's count row. */
+  count: (shares: string, form: string, filed: string, asOf: string) =>
+    `${shares} shares, as stated in ${articleFor(form)} ${form} filed ${filed}, as of ${asOf}.`,
+  /** Case 1 and 2: the filed-count face's panel headline. */
+  headline: (shares: string, form: string, filed: string, asOf: string) =>
+    `The desk could not verify a TMI Float for this name. The company's filed share count is ${shares} shares, as stated in ${articleFor(form)} ${form} filed ${filed}, as of ${asOf}.`,
+  /** Case 1 and 2: the filed-count face's first hover sentence. */
+  what: (form: string, filed: string, asOf: string) =>
+    `The company's share count as stated in ${articleFor(form)} ${form} filed ${filed}, as of ${asOf}, with no insider holdings subtracted. It is not a TMI Float.`,
+  /** Case 3: every later filing was read and none gave a newer dated count. */
+  noneNewer: (n: number) => `The desk also read ${n} later ${n === 1 ? 'filing' : 'filings'} and found no newer dated share count.`,
+  /** Case 4: the newest date carried different counts; none used. */
+  conflict: (asOf: string) => `Later filings give different counts as of ${asOf}, so the desk used none of them.`,
+  /** Case 5: not every later filing was read. */
+  notAllRead: 'The desk could not read every later filing, so a newer count may exist.',
+} as const;
+
+/**
+ * "a" or "an" by how the form is SAID (Commercial read 101): a single letter whose name opens with a vowel sound
+ * ("an S-1", "an F-3"), an 8 or an 11/18 ("an 8-K"); otherwise "a" ("a 424B3", "a DEF 14A", "a PRE 14C", "a 10-Q").
+ */
+export function articleFor(form: string): 'a' | 'an' {
+  const f = form.trim().toUpperCase();
+  if (/^[AEFHILMNORSX](?=-|\d|$)/.test(f)) return 'an';
+  if (/^8/.test(f) || /^1[18](?!\d)/.test(f)) return 'an';
+  return 'a';
+}
+
+/**
+ * The panel's one extra line about later filings (cases 3 to 5), or null. Case 5 (not every filing read) is said
+ * whether or not a count was found, so it leads; then a conflict; then case 3, only when everything was read and
+ * nothing newer or conflicting was found.
+ */
+export function laterFilingsLine(source: FloatCountSource | undefined): string | null {
+  if (!source) return null;
+  const W = STATED_COUNT_WORDS;
+  if (source.unread > 0 || source.capped > 0) return W.notAllRead;
+  if (source.conflictAsOf) return W.conflict(longDate(source.conflictAsOf) ?? source.conflictAsOf);
+  if (!source.stated && source.read > 0) return W.noneNewer(source.read);
+  return null;
+}
+
 /** The 90 days of his ruling, for the warning's words only (Research decides TOO_OLD; FLOAT_MAX_AGE_DAYS). */
 const COUNT_MAX_AGE_DAYS = 90;
 
@@ -484,9 +553,15 @@ function filedCountFace(bound: FloatBound, reason: string): FloatCellView | null
   }
   const icon: FiledCountIcon = checks && FILED_COUNT_RULE.caveat(checks) ? 'caveat' : 'warning';
   const higher = ISSUANCE_REASONS.has(bound.reason) ? [W.mayBeHigher] : [];
-  const lines = [W.what(asOf), reason, ...higher, ...(icon === 'warning' ? warnings : [])];
   const count = compactCount(bound.countShares);
   const exact = Math.round(bound.countShares).toLocaleString('en-US');
+  // L7: a count a later filing states names that filing; it needs the form and filing date to say so.
+  const filedOn = longDate(bound.countFiled);
+  const stated = bound.countSource?.stated && bound.countForm && filedOn ? { form: bound.countForm, filed: filedOn } : null;
+  const what = stated ? STATED_COUNT_WORDS.what(stated.form, stated.filed, asOf) : W.what(asOf);
+  const headline = stated ? STATED_COUNT_WORDS.headline(exact, stated.form, stated.filed, asOf) : W.headline(exact, asOf, bound.countForm, filedOn);
+  const laterLine = laterFilingsLine(bound.countSource);
+  const lines = [what, reason, ...higher, ...(icon === 'warning' ? warnings : [])];
   return {
     kind: 'filedCount',
     face: `${count} ${W.unit}`,
@@ -498,7 +573,8 @@ function filedCountFace(bound: FloatBound, reason: string): FloatCellView | null
     paragraphs: [reason],
     details: {
       rows: [
-        { label: null, text: W.headline(exact, asOf, bound.countForm, longDate(bound.countFiled)) },
+        { label: null, text: headline },
+        ...(laterLine ? [{ label: null, text: laterLine }] : []),
         { label: null, text: [reason, ...higher, ...(icon === 'warning' ? warnings : [])].join(' ') },
         { label: W.definitionLabel, text: W.definition },
       ],
