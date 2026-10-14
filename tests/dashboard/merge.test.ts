@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { dedupeSheetRows, buildDeskRow, mergeDesk, resolveDisplayPrice } from '@/lib/dashboard/merge';
 import { normalizeSheetRows } from '@/lib/data/rows';
-import { MockProvider } from '@/lib/data/providers/mock';
+import { MockProvider } from '../fixtures/mockSheet';
 import type { DashboardState } from '@/lib/data/types';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';

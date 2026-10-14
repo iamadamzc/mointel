@@ -77,7 +77,6 @@ const MODEL_CONFIG = {
       resolverSearchContext: null,
       discoverySearchContext: null,
   promptVariant: 'A' as const,
-  omitSheetPrior: false,
 };
 
 function dossier(overrides: Partial<ResearchDossier> = {}): ResearchDossier {
@@ -1047,11 +1046,12 @@ describe('interpretation pipeline', () => {
     expect(removed.sourceIds).not.toContain(ids[2]);
   });
 
-  it('escalates exactly once on a material Sheet/AUTO structure conflict', async () => {
+  it('cannot escalate on a Sheet dispute: the criterion went with the Sheet (A5)', async () => {
     /*
-     * Regression. The SHEET_AUTO_CONFLICT criterion existed but was unreachable:
-     * no caller supplied the sheet comparison, so a human DIRTY_FLOAT against an
-     * automatic CAUTION produced zero escalations.
+     * The fifth escalation criterion compared the automatic analysis with the
+     * Sheet's and adjudicated a material structure dispute. With the Sheet gone
+     * there is no prior analysis to dispute: a dossier the Sheet would have
+     * contradicted escalates for nothing, and no adjudication is ever asked for.
      */
     const db = temporaryDb();
     const ids = seed(db);
@@ -1062,62 +1062,24 @@ describe('interpretation pipeline', () => {
     cautious.cycle.evidenceSourceIds = [ids[0]];
     cautious.structure.structureClassification = 'CAUTION';
 
-    const terra = new ScriptedInterpreter([cautious]);
     const sol = new ScriptedInterpreter([cautious]);
-
-    const report = await interpretPipeline(db, terra, sol, {
+    const report = await interpretPipeline(db, new ScriptedInterpreter([cautious]), sol, {
       ticker: 'ACME',
       tradingDate: DATE,
-      sheetSnapshot: {
-        // The human review reached the opposite float-quality verdict.
-        structure: { raw: '', floatRaw: '', state: 'DIRTY_FLOAT', badges: [] },
-        cycle: { raw: '', display: '', state: 'UNCLASSIFIED' },
-        catalyst: {
-          gradeRaw: '', gradeBucket: 'UNCLASSIFIED', latest: '', original: '',
-          latestTime: '', originalTime: '', hasPremarketUpdate: false,
-        },
-        // After the newest collected source, so nothing new has appeared and
-        // the disagreement is purely one of judgement.
-        observedAt: '2026-08-17T18:00:00Z',
-      },
-    });
-
-    expect(report.escalated).toBe(true);
-    expect(report.escalationReason).toBe('SHEET_AUTO_CONFLICT');
-    // Exactly one adjudication, and it is an adjudication rather than a
-    // fresh interpretation, so the disputed field travels with the request.
-    expect(sol.adjudicateCalls).toBe(1);
-    expect(sol.interpretCalls).toBe(0);
-    expect(report.metrics.escalationCalls).toBe(1);
-  });
-
-  it('does not escalate when the sheet simply recorded no determination', async () => {
-    const db = temporaryDb();
-    const ids = seed(db);
-    const good = dossier();
-    good.catalyst.evidenceSourceIds = [ids[0]];
-    good.structure.evidenceSourceIds = [ids[0]];
-    good.cycle.evidenceSourceIds = [ids[0]];
-    good.structure.structureClassification = 'DIRTY_FLOAT';
-
-    const sol = new ScriptedInterpreter([good]);
-    const report = await interpretPipeline(db, new ScriptedInterpreter([good]), sol, {
-      ticker: 'ACME',
-      tradingDate: DATE,
-      sheetSnapshot: {
-        // Sheet says unknown; there is no two-sided dispute to adjudicate.
-        structure: { raw: '', floatRaw: '', state: 'UNKNOWN_STRUCTURE', badges: [] },
-        cycle: { raw: '', display: '', state: 'UNCLASSIFIED' },
-        catalyst: {
-          gradeRaw: '', gradeBucket: 'UNCLASSIFIED', latest: '', original: '',
-          latestTime: '', originalTime: '', hasPremarketUpdate: false,
-        },
-        observedAt: '2026-08-17T09:00:00Z',
-      },
     });
 
     expect(report.escalated).toBe(false);
+    expect(report.escalationReason).toBeNull();
     expect(sol.adjudicateCalls).toBe(0);
+    expect(sol.interpretCalls).toBe(0);
+
+    // And no path is left that could produce the reason.
+    for (const file of ['lib/research/interpret/escalation.ts', 'lib/research/interpret/pipeline.ts']) {
+      const source = fs.readFileSync(path.join(process.cwd(), file), 'utf8');
+      expect(source, file).not.toContain("'SHEET_AUTO_CONFLICT'");
+      expect(source, file).not.toContain('compareSheetAndAuto');
+      expect(source, file).not.toContain('.adjudicate(');
+    }
   });
 
   it('leaves prior analysis untouched when no interpreter is configured', async () => {
@@ -1707,13 +1669,11 @@ describe('prompt variants', () => {
   it('defaults to A, so deploying the variant changes nothing', () => {
     expect(systemPromptFor('A')).toBe(SYSTEM_PROMPT_A);
     expect(readResearchConfig({ SEC_USER_AGENT: 'x' } as unknown as NodeJS.ProcessEnv).model.promptVariant).toBe('A');
-    expect(readResearchConfig({ SEC_USER_AGENT: 'x' } as unknown as NodeJS.ProcessEnv).model.omitSheetPrior).toBe(false);
   });
 
   it('selects the arms from the environment', () => {
-    const env = { SEC_USER_AGENT: 'x', RESEARCH_PROMPT_VARIANT: 'b', RESEARCH_OMIT_SHEET_PRIOR: '1' } as unknown as NodeJS.ProcessEnv;
+    const env = { SEC_USER_AGENT: 'x', RESEARCH_PROMPT_VARIANT: 'b' } as unknown as NodeJS.ProcessEnv;
     expect(readResearchConfig(env).model.promptVariant).toBe('B');
-    expect(readResearchConfig(env).model.omitSheetPrior).toBe(true);
   });
 });
 

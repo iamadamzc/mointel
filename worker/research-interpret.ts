@@ -20,7 +20,6 @@ loadWorkerEnv();
 import { modelAvailability, readResearchConfig } from '../lib/research/config';
 import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
 import { NoopInterpreter } from '../lib/research/interpret/interpreter';
-import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { ensureDailyHistory } from '../lib/research/historyFetch';
 import { interpretTicker, type InterpretationReport } from '../lib/research/interpret/pipeline';
 import { openDatabase } from '../lib/market/store/db';
@@ -135,12 +134,8 @@ async function main(): Promise<void> {
     ? new OpenAiInterpreter({ config: config.model, tier: 'ESCALATION', timeoutMs: 300_000 })
     : null;
 
-  // Human research travels with each request so a material structural
-  // disagreement can reach the escalation decision.
-  const sheetLoad = await loadSheetPriors();
-  const sheetPriors = sheetLoad.priors;
   console.log(
-    `[interpret] ${tradingDate}, ${symbols.length} ticker(s), prompt=${config.model.promptVariant}, prior=${config.model.omitSheetPrior ? 'OMITTED' : 'included'}, model=${interpreter.model}, sheet priors=${sheetPriors.size}${sheetLoad.error ? ` (sheet unavailable: ${sheetLoad.error})` : ''}\n`,
+    `[interpret] ${tradingDate}, ${symbols.length} ticker(s), prompt=${config.model.promptVariant}, model=${interpreter.model}\n`,
   );
 
   const totals = { terra: 0, sol: 0, repair: 0, input: 0, output: 0, ms: 0, accepted: 0 };
@@ -152,7 +147,6 @@ async function main(): Promise<void> {
       const history = await ensureDailyHistory(db, symbol, config.cycleHistory.tradingDays);
       console.log(`  [history] ${history.detail}`);
 
-      const prior = sheetPriors.get(symbol) ?? null;
       const report = await interpretTicker(db, interpreter, escalation, {
         // No job exists for a hand-run interpretation, so the owner is genuinely absent --
         // but the PURPOSE is not, and writing null there would put this
@@ -162,10 +156,9 @@ async function main(): Promise<void> {
         trigger: 'MANUAL',
         ticker: symbol,
         tradingDate,
-        // Snapshot still supplied; only the model's exposure to the prior varies.
-        priorHumanAnalysis: config.model.omitSheetPrior ? null : (prior?.analysis ?? null),
+        // Sheet removal (A5): no human prior.
+        priorHumanAnalysis: null,
         promptVariant: config.model.promptVariant,
-        sheetSnapshot: prior?.snapshot ?? null,
         force,
         onLog: (message) => console.log(`  ${message}`),
       });

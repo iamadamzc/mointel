@@ -2,10 +2,10 @@
  * Data access entry point.
  *
  * Responsibilities:
- *   - choose a provider (Google Sheets when credentials exist, mock only when
- *     USE_MOCK_DATA asks, otherwise none: an empty payload)
+ *   - serve the one provider left, none: an explicit empty payload (the Sheet
+ *     and the demo rows were removed, A5)
  *   - hold a short server-side cache so browser polling never maps 1:1 to
- *     Google API reads
+ *     provider reads
  *   - de-duplicate concurrent refreshes
  *   - serve the last good payload with a stale flag when upstream fails
  *
@@ -14,8 +14,6 @@
 
 import 'server-only';
 
-import { GoogleSheetsProvider, readCredentialsFromEnv } from './providers/googleSheets';
-import { MockProvider } from './providers/mock';
 import { NoSourceProvider } from './providers/none';
 import type { DashboardDataProvider, DashboardState } from './types';
 
@@ -48,42 +46,14 @@ const runtime: DashboardRuntime = (globalRuntime.__momentumDesk ??= {
   lastError: null,
 });
 
-function forcedMockMode(): boolean {
-  const flag = process.env.USE_MOCK_DATA?.trim().toLowerCase();
-  return flag === '1' || flag === 'true' || flag === 'yes';
-}
-
 /**
- * Demo rows ONLY when `USE_MOCK_DATA` asks for them. Missing credentials mean
- * no outside source, served as an empty payload (`NoSourceProvider`), never as
- * mock rows: those read as research on the board and became tickers the
- * market worker tracked (Sheet removal plan, step 1).
+ * The Google Sheet is gone (removal plan step 7, A5, 2026-10-14; his "everything gets done tonight"). The only
+ * provider is `NoSourceProvider`: an explicit, empty, no-source payload. There is no demo path: the old demo-mode
+ * flag and the Sheet credentials are not read, so nothing can ever serve demo rows as research (plan step 1). The board
+ * runs on the desk's own data (A3).
  */
 export function resolveProvider(): DashboardDataProvider {
   if (runtime.provider) return runtime.provider;
-
-  if (forcedMockMode()) {
-    runtime.provider = new MockProvider();
-    return runtime.provider;
-  }
-
-  const credentials = readCredentialsFromEnv();
-  if (credentials) {
-    runtime.provider = new GoogleSheetsProvider(credentials);
-    return runtime.provider;
-  }
-
-  /*
-   * Once per process (the provider is memoized). The board shows nothing for
-   * `none` on purpose, so until the planned removal (step 5) this line is the
-   * only place an ACCIDENTAL loss of the keys, a settings rewrite, say, is
-   * told apart from the deliberate one: it lands in the service journal.
-   * Web's review, 2026-10-03.
-   */
-  console.warn(
-    '[data] no outside research source: the Google Sheet credentials are not set, so the researched ' +
-      'list is served empty (no demo rows). Expected only after the Sheet is removed on purpose.',
-  );
   runtime.provider = new NoSourceProvider();
   return runtime.provider;
 }

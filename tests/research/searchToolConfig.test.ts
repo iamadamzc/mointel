@@ -28,7 +28,6 @@ const MODEL: ModelConfig = {
   resolverSearchContext: null,
   discoverySearchContext: null,
   promptVariant: 'A' as const,
-  omitSheetPrior: false,
 };
 
 interface Captured {

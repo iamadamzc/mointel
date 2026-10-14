@@ -64,23 +64,9 @@ async function main(): Promise<void> {
 
   await runtime.resolveSession();
   runtime.setUniverseMode('SIMULATED');
-  await runtime.refreshSheetSymbols();
-
-  const sheetSymbols = runtime.pinnedSheetSymbols;
   const random = mulberry32(20260816);
 
-  // Sheet tickers get simulated instruments too so the merge path is exercised.
-  const symbols: SimSymbol[] = [
-    ...SIM_SYMBOLS,
-    ...sheetSymbols.map((symbol, index) => ({
-      symbol,
-      price: 2 + ((index * 3.7) % 15),
-      previousClose: 1.8 + ((index * 3.1) % 12),
-      averageVolume: 400_000 + index * 250_000,
-      volumePerMinute: 20_000 + index * 9_000,
-      drift: 0.01 + (index % 4) * 0.005,
-    })),
-  ];
+  const symbols: SimSymbol[] = [...SIM_SYMBOLS];
 
   const calculatedAt = new Date().toISOString();
   const baselines: RvolBaseline[] = symbols.map((entry) => ({
@@ -112,7 +98,6 @@ async function main(): Promise<void> {
     lulds: 0,
   });
   runtime.startFlushLoop();
-  runtime.startSheetSync();
 
   logger.info(`[simulator] ${symbols.length} instruments, one simulated minute per second`);
   logger.warn('[simulator] SIMULATED DATA — not a market feed');

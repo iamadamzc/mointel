@@ -5,7 +5,7 @@ import { buildDeskRow, mergeDesk, resolveDisplayPrice } from '@/lib/dashboard/me
 import { buildTelemetry } from '@/lib/dashboard/telemetry';
 import { selectFocusRows } from '@/lib/dashboard/view';
 import { normalizeSheetRows } from '@/lib/data/rows';
-import { MockProvider } from '@/lib/data/providers/mock';
+import { MockProvider } from '../fixtures/mockSheet';
 import type { DashboardState } from '@/lib/data/types';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';

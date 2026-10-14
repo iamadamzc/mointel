@@ -16,17 +16,15 @@ let directory: string;
 let dbPath: string;
 
 // Set before anything imports the modules that read them: loadMarketConfig
-// resolves the store path at call time, but the mock provider is chosen once.
+// resolves the store path at call time. (The mock provider is gone: A5, 2026-10-14.)
 beforeAll(() => {
   directory = fs.mkdtempSync(path.join(os.tmpdir(), 'mointel-mcp-'));
   dbPath = path.join(directory, 'market.db');
   process.env.MARKET_DB_PATH = dbPath;
-  process.env.USE_MOCK_DATA = '1';
 });
 
 afterAll(() => {
   delete process.env.MARKET_DB_PATH;
-  delete process.env.USE_MOCK_DATA;
   try {
     fs.rmSync(directory, { recursive: true, force: true });
   } catch {

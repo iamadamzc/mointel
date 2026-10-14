@@ -41,7 +41,6 @@ import {
 } from '../lib/research/catalyst/openaiDiscovery';
 import { OpenAiInterpreter } from '../lib/research/interpret/openaiInterpreter';
 import { NoopInterpreter } from '../lib/research/interpret/interpreter';
-import { loadSheetPriors } from '../lib/research/merge/sheetPrior';
 import { interpretTicker } from '../lib/research/interpret/pipeline';
 import { runFloatJob } from '../lib/research/floatRun';
 import { computeEvidenceFingerprint } from '../lib/research/fingerprint';
@@ -466,11 +465,6 @@ async function main(): Promise<void> {
       continue;
     }
 
-    // Human research is read once per cycle and passed through so a material
-    // disagreement can reach the escalation decision. Read-only throughout.
-    const sheetLoad = await loadSheetPriors();
-    const sheetPriors = sheetLoad.priors;
-
     /* ---------------------------------------------------------- queue
      *
      * THE BOARD IS DERIVED HERE AND MUST NEVER ARRIVE FROM A REQUEST.
@@ -766,7 +760,6 @@ async function main(): Promise<void> {
 
           // ----- interpretation
           markJobStage(db, job.id, 'ANALYZING', new Date().toISOString());
-          const prior = sheetPriors.get(job.ticker) ?? null;
           const report = await interpretTicker(db, interpreter, escalation, {
             /*
              * THE OWNER OF THE SPEND, AND THE REASON FOR IT.
@@ -789,12 +782,9 @@ async function main(): Promise<void> {
             trigger: job.trigger,
             ticker: job.ticker,
             tradingDate,
-            // Arm control: the snapshot is deliberately still supplied, so the
-            // comparison and its escalation path are unchanged and only the
-            // model's exposure to the prior varies.
-            priorHumanAnalysis: config.model.omitSheetPrior ? null : (prior?.analysis ?? null),
+            // Sheet removal (A5): no human prior, and no Sheet comparison or its escalation.
+            priorHumanAnalysis: null,
             promptVariant: config.model.promptVariant,
-            sheetSnapshot: prior?.snapshot ?? null,
             onLog: log,
           });
 

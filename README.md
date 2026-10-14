@@ -329,7 +329,6 @@ The state store records which mode owns it. Switching modes clears session state
 | `MARKET_MINUTE_BAR_RETENTION_DAYS` | `3` | Minute-bar retention |
 | `ALPACA_REST_BATCH_SIZE` / `_CONCURRENCY` | `200` / `4` | Multi-symbol request sizing |
 | `ALPACA_DEBUG` | `0` | Verbose worker logging |
-| `USE_MOCK_DATA` | unset | Force the mock research provider |
 | `DEMAND_TRADING_DATE_OVERRIDE` | unset | **Diagnostics only.** Forces a trading date so a completed session can be reconstructed outside market hours |
 
 ---
