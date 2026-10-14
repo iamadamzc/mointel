@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest';
 import { SetupGradeBadge } from '@/components/SetupGradeBadge';
 import { buildDeskRow } from '@/lib/dashboard/merge';
 import { NO_RESEARCH_TOOLTIP, NONE_RECORDED_TOOLTIP, SETUP_GRADE_LEGEND, setupGradeView } from '@/lib/dashboard/setupGrade';
-import { setupGradeForTools } from '@/lib/mcp/sheetProjection';
+import { setupGradeForTools } from '@/lib/mcp/setupGradeForTools';
 
 const NOW = '2026-10-09T15:00:00.000Z';
 const DASH = String.fromCharCode(0x2014);

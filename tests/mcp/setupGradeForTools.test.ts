@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import { setupGradeView, type SetupGrade } from '@/lib/dashboard/setupGrade';
-import { setupGradeForTools } from '@/lib/mcp/sheetProjection';
+import { setupGradeForTools } from '@/lib/mcp/setupGradeForTools';
 
 /*
  * The MCP tools emit the desk's Setup grade (his ruling 2026-10-05T22:04:14.942Z;
