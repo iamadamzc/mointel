@@ -138,6 +138,12 @@ export interface ScannedReport {
   publishedAt: string;
   status: 'READ' | 'FAILED' | 'NOT_RUN';
   failure: string | null;
+  /**
+   * The model's reply, verbatim, ONLY when it answered and the reply was refused (`parseNightScan`). Without it a
+   * random omission and one tied to the report's content look identical (row 41, 2026-10-13: "a line has no answer").
+   * Absent on a READ report, a NOT_RUN one, and a call that threw (there is no reply).
+   */
+  rawReply?: string;
   lines: number;
   hits: ScanHit[];
   /** The checker that decided this report was OpenAI, so the word list ran (`diagnostics.run.checker.wordList`). */
@@ -218,6 +224,7 @@ export async function runNightScan(
     if (!parsed.ok) {
       scanned.status = 'FAILED';
       scanned.failure = parsed.error;
+      scanned.rawReply = raw;
       continue;
     }
     scanned.hits = parsed.hits;
