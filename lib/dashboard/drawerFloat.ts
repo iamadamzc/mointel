@@ -13,7 +13,7 @@
 
 import type { SupplyPair } from '@/lib/research/supply';
 
-import { floatCellView, type FloatBound } from './floatBound';
+import { floatCellView, normalizeFloatBound, type FloatBound } from './floatBound';
 import { floatBoundReading, type FloatBoundReading } from './supply';
 
 export interface DrawerFloatLine {
@@ -37,6 +37,11 @@ export function drawerFloatLine(
   // A MARKED bound (L8 B's circled i) never prints the drawer's own ceiling without its caveat (Commercial's
   // condition (3)): the drawer prints the cell's own hover sentence instead.
   if (view.kind === 'bound' && view.icon) return { sentence: view.icon.title, detail: null, tone: 'dim', refusedByCell: true };
+  // L6: a restated bound the bars prove carries no icon, but the drawer's own ceiling reads the dossier's count,
+  // which is in pre-split units; the drawer prints the cell's own popover sentence instead, in the restated units.
+  if (view.kind === 'bound' && normalizeFloatBound(cell ?? null)?.restated) {
+    return { sentence: view.paragraphs[0] ?? view.face, detail: null, tone: 'dim', refusedByCell: true };
+  }
   if (view.kind === 'bound') return own;
   return { sentence: view.paragraphs[0] ?? view.face, detail: null, tone: 'dim', refusedByCell: true };
 }

@@ -68,6 +68,20 @@ describe('the drawer float line', () => {
     expect(drawerFloatLine(worxPair, produced, true)?.sentence).toBe('Float is at most 89,789 shares outstanding');
   });
 
+  it('L6: a restated bound the bars prove (no icon) never prints the pre-split ceiling; the cell sentence instead', () => {
+    const produced = { ...refused('CANNOT_VERIFY', 'X'), state: 'PRODUCED', reason: null, bound: 8_000, countShares: 89_789, countForm: '10-Q', countFiled: '2026-08-14' };
+    const restated = {
+      ...produced,
+      restated: { splits: [{ exDate: '2026-09-03', oldRate: 10, newRate: 1 }], factor: 0.1, restatedShares: 8_979, provenByBars: true },
+    } as unknown as FloatBound;
+    const line = drawerFloatLine(worxPair, restated, true);
+    expect(line?.refusedByCell).toBe(true);
+    expect(line?.sentence).toContain('no more than');
+    expect(line?.sentence).not.toContain('89,789');
+    // Control: the same bound unrestated keeps the drawer's own line.
+    expect(drawerFloatLine(worxPair, produced as unknown as FloatBound, true)?.refusedByCell).toBe(false);
+  });
+
   it('wired with no row ("Not computed"): no ceiling, the cell sentence (Integration 36th (a))', () => {
     for (const cell of [null, undefined]) {
       expect(drawerFloatLine(worxPair, cell, true)).toMatchObject({ sentence: 'The desk has not computed a TMI Float for this name.', refusedByCell: true, tone: 'dim', detail: null });
