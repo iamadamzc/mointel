@@ -231,6 +231,33 @@ describe('an already-current store skips the upgrade transaction', () => {
     reopened.close();
   });
 
+  /**
+   * The same gap one level down: a COLUMN put in ADDED_COLUMNS without a bump
+   * never reached a current store, because the guard checked tables and
+   * indexes only. L7's stated_count_json did exactly that on 2026-10-14 and
+   * every float write on the box failed. The store must get the column on the
+   * next open, with no backup (nothing is being upgraded across versions).
+   */
+  it('adds a missing ADDED_COLUMNS column on a store that reports the current version, with no backup', () => {
+    const dbPath = path.join(dir, 'missingcolumn.db');
+    const columns = (db: ReturnType<typeof openDatabase>) =>
+      (db.prepare('PRAGMA table_info(research_float_bounds)').all() as Array<{ name: string }>).map((c) => c.name);
+
+    const created = openDatabase(dbPath);
+    expect(columns(created)).toContain('stated_count_json');
+    // Version stays current; only the column goes. A table-and-index check passes here.
+    created.exec('ALTER TABLE research_float_bounds DROP COLUMN stated_count_json');
+    expect(columns(created)).not.toContain('stated_count_json');
+    expect(Number(created.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    created.close();
+
+    const reopened = openDatabase(dbPath);
+    expect(columns(reopened)).toContain('stated_count_json');
+    expect(Number(reopened.pragma('user_version', { simple: true }))).toBe(SCHEMA_VERSION);
+    reopened.close();
+    expect(fs.existsSync(schemaBackupDirectory(dbPath))).toBe(false);
+  });
+
   it('still upgrades a store behind the current version', () => {
     const dbPath = path.join(dir, 'old.db');
 

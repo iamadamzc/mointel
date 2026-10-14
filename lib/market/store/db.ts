@@ -1448,8 +1448,28 @@ export function openDatabase(dbPath: string, options: OpenOptions = {}): MarketD
        * while being written. Empty means "cannot vouch for it", so fall
        * through and do the work.
        */
+      /*
+       * COLUMNS TOO. Tables and indexes were checked, columns were not, so a
+       * column put in ADDED_COLUMNS without a bump never reached a current
+       * store: L7's research_float_bounds.stated_count_json (2026-10-14), which
+       * failed every float write on the box. The same answer as for indexes:
+       * covered in code, not by the next person remembering to bump. A table
+       * that does not exist is the table check's business (migrate skips it).
+       * Reads only; one PRAGMA per table named in ADDED_COLUMNS.
+       */
+      const columnsByTable = new Map<string, Set<string>>();
+      const columnsComplete = ADDED_COLUMNS.every(({ table, column }) => {
+        let columns = columnsByTable.get(table);
+        if (!columns) {
+          columns = new Set(
+            (db.prepare(`PRAGMA table_info(${table})`).all() as Array<{ name: string }>).map((c) => c.name),
+          );
+          columnsByTable.set(table, columns);
+        }
+        return columns.size === 0 || columns.has(column);
+      });
       const complete =
-        expected.length > 0 && expected.every((name) => present.has(name));
+        expected.length > 0 && expected.every((name) => present.has(name)) && columnsComplete;
 
       if (fromVersion === SCHEMA_VERSION && complete) return;
 
