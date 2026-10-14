@@ -24,26 +24,16 @@
 import { BOUND_PREFIX, compactBound } from '@/lib/research/compactBound';
 import type { FloatCountChecks, FloatCountSource, FloatInsider, FloatBound as ResearchFloatBound } from '@/lib/research/floatRead';
 import type { FloatCellReason } from '@/lib/research/insiderBound';
-
-/**
- * L6: a PRODUCED bound whose count was restated across listed splits (Research's final fields, 2026-10-14; the type
- * lives here until Research's floatRead.ts declares it, with the same shape, so the two compose).
- */
-export interface FloatRestatementView {
-  /** Oldest first, as announced; a 1-for-10 reverse split is { newRate: 1, oldRate: 10 }. */
-  splits: Array<{ exDate: string; newRate: number; oldRate: number }>;
-  factor: number;
-  restatedShares: number;
-  /** True only when the bars prove the span and agree within 1 percent: no triangle. */
-  provenByBars: boolean;
-}
+import type { Restatement } from '@/lib/research/floatRestate';
 
 /**
  * Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed".
  * L8 piece B: `filingsOnly` (PRODUCED only, Research 961c66c2) marks a bound for a name with no desk research: no
  * supply ledger, so warrants and share programs already in place are not counted.
+ * L6: `restated` (PRODUCED only, Research's `Restatement`, lib/research/floatRestate.ts) marks a count restated
+ * across listed splits; `bound` and every insider's shares are already in the restated units.
  */
-export type FloatBound = ResearchFloatBound & { restated?: FloatRestatementView };
+export type FloatBound = ResearchFloatBound;
 export type FloatBoundReason = FloatCellReason;
 
 const STATES: ReadonlySet<string> = new Set(['PRODUCED', 'UNKNOWN', 'CANNOT_VERIFY']);
@@ -101,11 +91,11 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
 const rate = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && v > 0;
 
 /** Research's `restated` (L6), or undefined when absent or any field is malformed. */
-function restatedOf(raw: unknown): FloatRestatementView | undefined {
+function restatedOf(raw: unknown): Restatement | undefined {
   if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
   const r = raw as Record<string, unknown>;
   if (!Array.isArray(r.splits) || r.splits.length === 0) return undefined;
-  const splits: FloatRestatementView['splits'] = [];
+  const splits: Restatement['splits'] = [];
   for (const s of r.splits) {
     if (s === null || typeof s !== 'object') return undefined;
     const o = s as Record<string, unknown>;

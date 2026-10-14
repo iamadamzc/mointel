@@ -9,15 +9,15 @@ import {
   floatSortValue,
   normalizeFloatBound,
   type FloatBound,
-  type FloatRestatementView,
 } from '@/lib/dashboard/floatBound';
+import type { Restatement } from '@/lib/research/floatRestate';
 
 /*
  * L6 (a): a bound restated across listed splits (Research's final fields, 2026-10-14; Commercial reads 98, 104,
  * 108; Marketing a65caa91 and 14a0b60a; Integration 40th's rulings (1) to (5)).
  */
 
-const produced = (restated: FloatRestatementView | undefined): FloatBound => ({
+const produced = (restated: Restatement | undefined): FloatBound => ({
   state: 'PRODUCED',
   reason: null,
   bound: 12_301_000,
@@ -33,7 +33,7 @@ const produced = (restated: FloatRestatementView | undefined): FloatBound => ({
   ...(restated ? { restated } : {}),
 });
 
-const one = (provenByBars = false): FloatRestatementView => ({
+const one = (provenByBars = false): Restatement => ({
   splits: [{ exDate: '2026-09-03', newRate: 1, oldRate: 10 }],
   factor: 0.1,
   restatedShares: 14_000_000,
