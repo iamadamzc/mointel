@@ -1,0 +1,40 @@
+[
+  {
+    "source": "docs/research/reports/recap-check/raw/2026-10-05-PREMARKET-v7-run1.json at 0374313a (checkerReplies[0].raw)",
+    "ids": [
+      "O",
+      "S1L1",
+      "S1L2",
+      "S1L3",
+      "S1L4",
+      "S1L5",
+      "S1L6",
+      "S1L7",
+      "S1L8",
+      "S1L9",
+      "S1L10",
+      "S1L11",
+      "S1L12"
+    ],
+    "raw": "{\"verdicts\":[{\"id\":\"H\",\"supported\":true,\"note\":\"No headline was given to check.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"O\",\"supported\":false,\"note\":\"'In the intraday range, MI ranked first, up 57.3% since the previous checkpoint' is not among the narrative facts. MI's rank and its row note cannot appear in the narrative.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Matches MI's SECONDARY_STALE status and its catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Matches the EnBW deployment summary and the 2026-09-21 ET event date. XCharge is the brand named in the cited source titles.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":false,\"note\":\"Says CS Digital reported the mining figures. The cited source shows Olenox Industries made the report; CS Digital is only the operation that mined the Bitcoin.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"Matches the October 2 loan amendment and the September 25 S-3 shelf as the research states them.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":true,\"note\":\"Matches the October 1 Vylor spin-off summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"September 7 matches the ET reading of the event time; status and missing metrics match.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":true,\"note\":\"Matches the August 25 shareholder approval and the Wells Fargo October 1 target cut.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":false,\"note\":\"Gives the NYSE notice as April 1, 2026. The ET reading of the event time is 20:00 ET on 2026-03-31.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":true,\"note\":\"Matches VRAX's SECONDARY_STALE status and its catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"Matches QTEX's SECONDARY_STALE status and its October 1 test results.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"Matches the October 5 rejection of Solidion's offer. The plan to evaluate other opportunities is attributed to Polar Power.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"Matches the secondary-coverage summary and the cited source title.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}"
+  },
+  {
+    "source": "docs/research/reports/recap-check/raw/2026-10-06-PREMARKET-v7-run2.json at 0374313a (checkerReplies[0].raw)",
+    "ids": [
+      "O",
+      "S1L1",
+      "S1L2",
+      "S1L3",
+      "S1L4",
+      "S1L5",
+      "S1L6",
+      "S1L7",
+      "S1L8",
+      "S1L9",
+      "S1L10",
+      "S1L11",
+      "S1L12"
+    ],
+    "raw": "{\"verdicts\":[{\"id\":\"O\",\"supported\":true,\"note\":\"Counts, named movers, catalysts and the after-hours MTEN figure all match the narrative facts.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"H\",\"supported\":true,\"note\":\"No headline was provided to check.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L1\",\"supported\":true,\"note\":\"Matches the catalyst summary; the expected ARR and EBIT are attributed to the company.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L2\",\"supported\":true,\"note\":\"Matches the catalyst summary and the 15:50 ET event on 2026-10-06.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L3\",\"supported\":true,\"note\":\"Matches the catalyst summary and the 08:30 ET event on 2026-10-06.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L4\",\"supported\":true,\"note\":\"Matches the catalyst summary.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L5\",\"supported\":true,\"note\":\"Matches the catalyst summary and figures.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L6\",\"supported\":true,\"note\":\"Matches the catalyst summary and the 2026-09-16 event date.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L7\",\"supported\":false,\"note\":\"The research does not date the reverse split to August 11, 2026. It records August 21 as the disclosure date, not as the date Nasdaq issued the notice.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L8\",\"supported\":true,\"note\":\"Matches the summary; the recent SEC filing is the cited 8-K at 17:10 ET on 2026-10-06.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L9\",\"supported\":true,\"note\":\"Catalyst status UNKNOWN supports that the analysis reached no conclusion.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L10\",\"supported\":true,\"note\":\"Matches the catalyst summary and the 07:30 ET event on 2026-10-06.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L11\",\"supported\":true,\"note\":\"NEPH has no research on file.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"},{\"id\":\"S1L12\",\"supported\":true,\"note\":\"Matches the catalyst summary; the expected trial start is attributed to Trevi.\",\"advice\":false,\"forecast\":false,\"leansOnAnother\":false,\"phrase\":\"\"}]}"
+  }
+]

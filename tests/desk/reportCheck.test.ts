@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -9,6 +11,7 @@ import {
   ruleStrikes,
   type CheckInput,
   type CheckerModel,
+  type LineId,
   type Strike,
 } from '@/lib/desk/reports/check';
 import type { ReportFact } from '@/lib/desk/reports/facts';
@@ -245,6 +248,34 @@ describe('the model reading', () => {
     ['unknown id S9L9', JSON.stringify({ verdicts: [verdict('H'), verdict('S1L1'), verdict('S1L2'), verdict('S9L9')] })],
   ])('fails closed: %s', (error, raw) => {
     expect(parseVerdicts(raw, ids)).toEqual({ ok: false, error });
+  });
+
+  /*
+   * A draft with no headline has no 'H' line. The Claude checker answered for one anyway in both checker failures of
+   * the L13 re-check (raw 0374313a); each reply was otherwise complete, and the whole report fell to CHECKER_FAILED.
+   */
+  const realReplies = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'tests/desk/fixtures/checker-h-verdict-2026-10-14.json'), 'utf8'),
+  ) as Array<{ source: string; ids: LineId[]; raw: string }>;
+
+  it.each(realReplies.map((r) => [r.source, r]))('a real reply with a stray H verdict parses: %s', (_source, reply) => {
+    expect(reply.ids).not.toContain('H');
+    expect(JSON.parse(reply.raw).verdicts.some((v: { id: string }) => v.id === 'H')).toBe(true);
+    const parsed = parseVerdicts(reply.raw, reply.ids, { secondRead: true });
+    expect(parsed.ok).toBe(true);
+  });
+
+  const noHeadline: LineId[] = ['O', 'S1L1'];
+  it('with no headline, an H verdict is ignored and every expected id is still required', () => {
+    const complete = JSON.stringify({ verdicts: [verdict('H', false), verdict('O'), verdict('S1L1', false)] });
+    expect(parseVerdicts(complete, noHeadline)).toEqual({ ok: true, unsupported: [{ id: 'S1L1', note: 'why' }] });
+    const missing = JSON.stringify({ verdicts: [verdict('H'), verdict('O')] });
+    expect(parseVerdicts(missing, noHeadline)).toEqual({ ok: false, error: 'a line has no verdict' });
+  });
+
+  it('with no headline, any other unknown id still fails closed', () => {
+    const raw = JSON.stringify({ verdicts: [verdict('H'), verdict('O'), verdict('S1L1'), verdict('S9L9')] });
+    expect(parseVerdicts(raw, noHeadline)).toEqual({ ok: false, error: 'unknown id S9L9' });
   });
 });
 
