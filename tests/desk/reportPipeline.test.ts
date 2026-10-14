@@ -12,7 +12,9 @@ import {
   type AssessmentTickerRecord,
 } from '@/lib/market/store/assessmentRepo';
 import { saveAnalysisVersion } from '@/lib/market/store/researchRepo';
-import { readReportInputs, runReport } from '@/lib/desk/reports/pipeline';
+import { readReportInputs, runReport, writerPromptFor } from '@/lib/desk/reports/pipeline';
+import { REPORT_WRITER_PROMPT_VERSION_V6, SYSTEM_V6 } from '@/lib/desk/reports/writerV6';
+import { recapSummaryRule, REPORT_WRITER_PROMPT_VERSION_V7, SYSTEM_V7 } from '@/lib/desk/reports/writerV7';
 import type { ResearchDossier } from '@/lib/research/types';
 
 /*
@@ -169,12 +171,15 @@ describe('the report pipeline, v6 wiring', () => {
     expect(lines.find((l) => l.ticker === 'AAA')?.tags?.why.explainsMove).toBe(true);
   });
 
-  it('runs writer v6 and checker v6 on the narrative facts, and publishes the narrative in place of overall', async () => {
+  it('runs writer v7 (L13) and checker v6 on the narrative facts, and publishes the narrative in place of overall', async () => {
     const db = fixture();
     const run = await runReport(db, SLOT, { writer: writerWith(NARRATIVE), checker }, () => new Date(COMPLETED));
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
-    expect(prompts.find((p) => p.role === 'writer')?.user).toContain('NARRATIVE FACTS (word these and nothing else):');
+    const sent = prompts.find((p) => p.role === 'writer');
+    expect(sent?.system).toBe(SYSTEM_V7);
+    expect(sent?.user).toContain('NARRATIVE FACTS:');
+    expect(sent?.user).not.toContain('NARRATIVE FACTS (word these and nothing else):');
     expect(prompts.find((p) => p.role === 'checker')?.system).toContain('v6: THE NARRATIVE (id O)');
     expect(run.diagnostics.strikes).toEqual([]);
     expect(run.report.narrative).toBe(NARRATIVE);
@@ -423,6 +428,22 @@ describe('the report pipeline, v6 wiring', () => {
     expect(run.status).toBe('PUBLISHED');
     if (run.status !== 'PUBLISHED') return;
     expect(run.report.narrativeFootnotes).toEqual({ noClose: 1, splitExcluded: 1 });
+    // His "a and b": the evening recap keeps writer v6 (v7's recap Summary failed its re-check, 7f9210be).
+    const sent = prompts.find((p) => p.role === 'writer');
+    expect(sent?.system).toBe(SYSTEM_V6);
+    expect(sent?.user).not.toContain(recapSummaryRule(read.inputs.narrative)!);
+  });
+
+  it("writes each kind with his writer: v7 for the intraday reports, v6 for the evening recaps ('a and b')", () => {
+    expect((['INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'] as const).map((kind) => writerPromptFor(kind))).toEqual([
+      { family: 'v7', version: REPORT_WRITER_PROMPT_VERSION_V7 },
+      { family: 'v7', version: REPORT_WRITER_PROMPT_VERSION_V7 },
+      { family: 'v7', version: REPORT_WRITER_PROMPT_VERSION_V7 },
+    ]);
+    expect((['PREMARKET', 'EVENING'] as const).map((kind) => writerPromptFor(kind))).toEqual([
+      { family: 'v6', version: REPORT_WRITER_PROMPT_VERSION_V6 },
+      { family: 'v6', version: REPORT_WRITER_PROMPT_VERSION_V6 },
+    ]);
   });
 
   it('a FRESH_FOUND catalyst the board calls OLD at the checkpoint is filed under OLDER OR SECONDARY NEWS and not counted fresh (Design, COLA)', async () => {

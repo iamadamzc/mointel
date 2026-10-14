@@ -27,9 +27,13 @@ import {
   runReportForAssessment,
   startReportLoop,
   storeSessionReport,
+  storedVersions,
   type ReportModels,
 } from '@/lib/desk/reports/job';
+import type { ReportRun } from '@/lib/desk/reports/pipeline';
 import { DEFAULT_REPORT_RANGES } from '@/lib/desk/reports/ranges';
+import { REPORT_WRITER_PROMPT_VERSION_V6 } from '@/lib/desk/reports/writerV6';
+import { REPORT_WRITER_PROMPT_VERSION_V7 } from '@/lib/desk/reports/writerV7';
 
 const temporaryFiles: string[] = [];
 
@@ -350,7 +354,14 @@ describe('the published path, end to end through the loop', () => {
     expect(report.checkpoints.map((c) => c.id)).toEqual([id]);
     expect(report.sections[0]!.lines.map((l) => l.ticker)).toEqual(['IVF']);
     expect(row.published_at).toBe(report.publishedAt);
-    expect(JSON.parse(row.versions)).toEqual(VERSIONS);
+    // An intraday report is written by v7 (his "a and b"), and its row says so, whatever the configured default.
+    expect(JSON.parse(row.versions)).toEqual({ ...VERSIONS, writerPrompt: REPORT_WRITER_PROMPT_VERSION_V7, writerPromptFamily: 'v7' });
+  });
+
+  it('a recap row records writer v6 and no family, as every row before v7', () => {
+    const run = { status: 'MISSED', cause: { kind: 'WRITER_FAILED', at: NOW.toISOString() } } as unknown as ReportRun;
+    const stored = JSON.parse(JSON.stringify(storedVersions({ ...VERSIONS, writerPromptFamily: 'v7' }, 'PREMARKET', run)));
+    expect(stored).toEqual({ ...VERSIONS, writerPrompt: REPORT_WRITER_PROMPT_VERSION_V6 });
   });
 
   it('the stored versions name the checker that ACTUALLY checked: the fallback when the Claude check failed (his "move it")', async () => {
