@@ -8,8 +8,8 @@ import type { DashboardDataProvider } from '../types';
  * were research, and the market worker, which reads its tickers from the
  * dashboard payload, tracked those fake names. Step 1 of the Sheet removal
  * plan: an absent source is an explicit EMPTY payload with no error, because
- * absence is the intended state, not a failure. Demo rows now come only from
- * `USE_MOCK_DATA`.
+ * absence is the intended state, not a failure. Since the Sheet code removal (A5,
+ * 2026-10-14) this is the only provider: there are no demo rows anywhere.
  */
 export class NoSourceProvider implements DashboardDataProvider {
   readonly kind = 'none' as const;

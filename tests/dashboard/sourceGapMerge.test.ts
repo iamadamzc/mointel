@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { mergeDesk } from '@/lib/dashboard/merge';
-import { MockProvider } from '@/lib/data/providers/mock';
+import { MockProvider } from '../fixtures/mockSheet';
 import type { AutoIntelligence } from '@/lib/research/view';
 import type { DashboardState } from '@/lib/data/types';
 import type { MarketSnapshot } from '@/lib/market/types';

@@ -1,5 +1,6 @@
 /**
- * Mock provider.
+ * Mock provider: TEST FIXTURES ONLY since the Sheet code removal (A5, 2026-10-14). No production path
+ * reaches it; demo rows can never be served.
  *
  * Rows are written in the SAME column order as the real spreadsheet and pushed
  * through the same normalizers, so mock mode exercises the real parsing path
@@ -9,8 +10,8 @@
  * priority, dirty float, backside former runner, unknown float/structure.
  */
 
-import { normalizeSheetRows } from '../rows';
-import type { DashboardDataProvider, DataSourceMeta } from '../types';
+import { normalizeSheetRows } from '@/lib/data/rows';
+import type { DashboardDataProvider, DataSourceMeta } from '@/lib/data/types';
 
 /** TODAY!A:AA — see TODAY_COLUMNS in lib/data/rows.ts for the column order. */
 const MOCK_TODAY_ROWS: string[][] = [

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { buildDeskRead } from '@/lib/dashboard/deskRead';
 import { buildDeskRow, mergeDesk } from '@/lib/dashboard/merge';
 import { retentionNote, selectFocusRows } from '@/lib/dashboard/view';
-import { MockProvider } from '@/lib/data/providers/mock';
+import { MockProvider } from '../fixtures/mockSheet';
 import { normalizeSheetRows } from '@/lib/data/rows';
 import type { DemandState, MarketSnapshot } from '@/lib/market/types';
 import { emptySessionVwapSet } from '@/lib/market/vwap';
