@@ -1,0 +1,135 @@
+SHEET STEP 1 EFFECT READ (RESEARCH_OMIT_SHEET_PRIOR=1)
+export: step1-export-2026-10-13.db   rows read 237, unparseable 0, last generated_at 2026-10-14T02:01:43.063Z
+
+Windows (UTC):
+  BEFORE       [2026-10-08T00:00:00.000Z, 2026-10-11T18:55:03.000Z)
+  AFTER_CLEAN  [2026-10-11T18:55:04.000Z, 2026-10-13T00:45:33.000Z)  MAIN READ; ends before the 2026-10-13 releases
+  AFTER_ALL    [2026-10-11T18:55:04.000Z, 2026-10-14T02:01:43.063Z]  CONFOUNDED by catalyst tags 00:45:33Z, deal-word fix 00:55:04Z, fresh-count fix 01:05:21Z on 2026-10-13
+  held out: 0 version(s) inside the restart second 2026-10-11T18:55:03.000Z; 0 before 2026-10-08T00:00:00.000Z; 0 tagged REPLAY
+  triggers (nearest preceding model_usage INTERPRETATION row, proxy): INTERVAL_RECHECK 121, ENTERED_TOP_N 99, NEWS_ITEM 17
+
+This is a before/after with a control arm, not proof of cause. Grades change for many
+reasons: new evidence, the market, other releases, model variance. A shift in CONTROL
+measures one of those, not the flag.
+
+FLAG CHECK: FLAG HELD (0 of 6 AFTER versions with a snapshot carried a prior; the detector saw 10 in BEFORE)
+  BEFORE: 10 of 104 versions had a prior delivered (must be above 0); unreadable 0; omitted-with-snapshot before the flag 0
+  AFTER_ALL: 0 of 133 versions had a prior delivered (should be 0); 6 had a snapshot; unreadable 0
+  AFTER_ALL versions escalated with a structure conflict against the Sheet (the escalation model may have seen the Sheet's conclusion, pipeline.ts:338-347; an upper count): 3
+  metadata key coverage: {"BEFORE":{"rows":104,"provenanceKey":104,"omittedKey":104},"AFTER_ALL":{"rows":133,"provenanceKey":133,"omittedKey":133}}
+
+== AFTER_CLEAN: after window 2026-10-11T18:55:04.000Z to 2026-10-13T00:45:33.000Z ==
+  arms: TREATED 5 tickers (2 with AFTER versions), CONTROL 8, undetermined 0; CONTROL tickers with a snapshot withheld in AFTER 1
+  TREATED AFTER versions where the flag actually withheld a prior: 0
+  BEFORE
+    TREATED: 12 versions, 5 tickers
+      grade      WEAK_NEGATIVE_DILUTIVE 7, LEGITIMATE_POSITIVE 3, UNKNOWN 1, MODERATE_MIXED_SECONDARY 1
+      status     FRESH_FOUND 6, SECONDARY_STALE 5, UNKNOWN 1
+      structure  CAUTION 5, UNKNOWN 4, DIRTY_FLOAT 3
+      cycle      UNKNOWN 7, GREEN_FRESH_FRONTSIDE 2, RED_BACKSIDE 2, YELLOW_FRONTSIDE_WARNING 1
+      sheet      CONFLICT 7, SHEET_AUTO_AGREE 3, (no snapshot) 2
+      prior      YES 10, NO 2   variant A 12
+      conflict share of 10 with a snapshot: catalyst 20.0%, structure 40.0%, cycle 30.0%; Sheet-adjudicated escalations 3
+      input tokens per interpret call (9 single-call versions): mean 11,479, median 10,661
+      input tokens per version, all calls: mean 14,415, median 13,067
+      model_usage INTERPRETATION calls 12: input mean 11,326, median 10,764
+    CONTROL: 13 versions, 8 tickers
+      grade      MODERATE_MIXED_SECONDARY 5, UNKNOWN 4, LEGITIMATE_POSITIVE 2, WEAK_NEGATIVE_DILUTIVE 2
+      status     SECONDARY_STALE 5, UNKNOWN 4, FRESH_FOUND 4
+      structure  CAUTION 7, DIRTY_FLOAT 4, UNKNOWN 2
+      cycle      UNKNOWN 8, RED_BACKSIDE 4, GREEN_FRESH_FRONTSIDE 1
+      sheet      (no snapshot) 13
+      prior      NO 13   variant A 13
+      conflict share of 0 with a snapshot: catalyst n/a, structure n/a, cycle n/a; Sheet-adjudicated escalations 0
+      input tokens per interpret call (10 single-call versions): mean 13,100, median 12,922
+      input tokens per version, all calls: mean 16,241, median 13,275
+      model_usage INTERPRETATION calls 13: input mean 13,159, median 12,953
+  AFTER
+    TREATED: 2 versions, 2 tickers
+      grade      WEAK_NEGATIVE_DILUTIVE 1, MODERATE_MIXED_SECONDARY 1
+      status     SECONDARY_STALE 1, FRESH_FOUND 1
+      structure  DIRTY_FLOAT 2
+      cycle      RED_BACKSIDE 1, UNKNOWN 1
+      sheet      (no snapshot) 2
+      prior      NO 2   variant A 2
+      conflict share of 0 with a snapshot: catalyst n/a, structure n/a, cycle n/a; Sheet-adjudicated escalations 0
+      input tokens per interpret call (2 single-call versions): mean 12,139, median 12,139
+      input tokens per version, all calls: mean 12,139, median 12,139
+      model_usage INTERPRETATION calls 2: input mean 12,139, median 12,139
+    CONTROL: 10 versions, 8 tickers
+      grade      LEGITIMATE_POSITIVE 3, WEAK_NEGATIVE_DILUTIVE 3, MODERATE_MIXED_SECONDARY 2, UNKNOWN 2
+      status     FRESH_FOUND 5, SECONDARY_STALE 3, UNKNOWN 2
+      structure  CAUTION 6, DIRTY_FLOAT 3, UNKNOWN 1
+      cycle      UNKNOWN 6, RED_BACKSIDE 3, YELLOW_FRONTSIDE_WARNING 1
+      sheet      (no snapshot) 9, CONFLICT 1
+      prior      NO 10   variant A 10
+      conflict share of 1 with a snapshot: catalyst 0.0%, structure 100.0%, cycle 0.0%; Sheet-adjudicated escalations 1
+      input tokens per interpret call (6 single-call versions): mean 13,187, median 13,274
+      input tokens per version, all calls: mean 18,889, median 13,901
+      model_usage INTERPRETATION calls 10: input mean 13,309, median 13,274
+  changed, latest BEFORE vs first AFTER version, tickers in both:
+    TREATED (2 pairs): grade 50.0%, status 100.0%, structure 50.0%, cycle 0.0%
+    CONTROL (8 pairs): grade 37.5%, status 37.5%, structure 12.5%, cycle 25.0%
+    gap TREATED minus CONTROL: grade 12.5%, status 62.5%, structure 37.5%, cycle -25.0%
+  baseline churn inside BEFORE, consecutive versions of one ticker:
+    TREATED (7 pairs): grade 0.0%, status 14.3%, structure 28.6%, cycle 57.1%
+    CONTROL (5 pairs): grade 40.0%, status 40.0%, structure 20.0%, cycle 80.0%
+
+== AFTER_ALL (CONFOUNDED): after window 2026-10-11T18:55:04.000Z to 2026-10-14T02:01:43.063Z ==
+  arms: TREATED 5 tickers (2 with AFTER versions), CONTROL 9, undetermined 0; CONTROL tickers with a snapshot withheld in AFTER 1
+  TREATED AFTER versions where the flag actually withheld a prior: 0
+  BEFORE
+    TREATED: 12 versions, 5 tickers
+      grade      WEAK_NEGATIVE_DILUTIVE 7, LEGITIMATE_POSITIVE 3, UNKNOWN 1, MODERATE_MIXED_SECONDARY 1
+      status     FRESH_FOUND 6, SECONDARY_STALE 5, UNKNOWN 1
+      structure  CAUTION 5, UNKNOWN 4, DIRTY_FLOAT 3
+      cycle      UNKNOWN 7, GREEN_FRESH_FRONTSIDE 2, RED_BACKSIDE 2, YELLOW_FRONTSIDE_WARNING 1
+      sheet      CONFLICT 7, SHEET_AUTO_AGREE 3, (no snapshot) 2
+      prior      YES 10, NO 2   variant A 12
+      conflict share of 10 with a snapshot: catalyst 20.0%, structure 40.0%, cycle 30.0%; Sheet-adjudicated escalations 3
+      input tokens per interpret call (9 single-call versions): mean 11,479, median 10,661
+      input tokens per version, all calls: mean 14,415, median 13,067
+      model_usage INTERPRETATION calls 12: input mean 11,326, median 10,764
+    CONTROL: 14 versions, 9 tickers
+      grade      MODERATE_MIXED_SECONDARY 6, UNKNOWN 4, LEGITIMATE_POSITIVE 2, WEAK_NEGATIVE_DILUTIVE 2
+      status     FRESH_FOUND 5, SECONDARY_STALE 5, UNKNOWN 4
+      structure  CAUTION 7, DIRTY_FLOAT 4, UNKNOWN 3
+      cycle      UNKNOWN 9, RED_BACKSIDE 4, GREEN_FRESH_FRONTSIDE 1
+      sheet      (no snapshot) 14
+      prior      NO 14   variant A 14
+      conflict share of 0 with a snapshot: catalyst n/a, structure n/a, cycle n/a; Sheet-adjudicated escalations 0
+      input tokens per interpret call (11 single-call versions): mean 12,882, median 12,890
+      input tokens per version, all calls: mean 15,846, median 13,114
+      model_usage INTERPRETATION calls 14: input mean 12,984, median 12,922
+  AFTER
+    TREATED: 2 versions, 2 tickers
+      grade      WEAK_NEGATIVE_DILUTIVE 1, MODERATE_MIXED_SECONDARY 1
+      status     SECONDARY_STALE 1, FRESH_FOUND 1
+      structure  DIRTY_FLOAT 2
+      cycle      RED_BACKSIDE 1, UNKNOWN 1
+      sheet      (no snapshot) 2
+      prior      NO 2   variant A 2
+      conflict share of 0 with a snapshot: catalyst n/a, structure n/a, cycle n/a; Sheet-adjudicated escalations 0
+      input tokens per interpret call (2 single-call versions): mean 12,139, median 12,139
+      input tokens per version, all calls: mean 12,139, median 12,139
+      model_usage INTERPRETATION calls 2: input mean 12,139, median 12,139
+    CONTROL: 13 versions, 9 tickers
+      grade      WEAK_NEGATIVE_DILUTIVE 5, MODERATE_MIXED_SECONDARY 3, LEGITIMATE_POSITIVE 3, UNKNOWN 2
+      status     SECONDARY_STALE 6, FRESH_FOUND 5, UNKNOWN 2
+      structure  CAUTION 6, DIRTY_FLOAT 5, UNKNOWN 2
+      cycle      UNKNOWN 9, RED_BACKSIDE 3, YELLOW_FRONTSIDE_WARNING 1
+      sheet      (no snapshot) 12, CONFLICT 1
+      prior      NO 13   variant A 13
+      conflict share of 1 with a snapshot: catalyst 0.0%, structure 100.0%, cycle 0.0%; Sheet-adjudicated escalations 1
+      input tokens per interpret call (8 single-call versions): mean 13,289, median 13,274
+      input tokens per version, all calls: mean 18,876, median 13,958
+      model_usage INTERPRETATION calls 13: input mean 13,456, median 13,431
+  changed, latest BEFORE vs first AFTER version, tickers in both:
+    TREATED (2 pairs): grade 50.0%, status 100.0%, structure 50.0%, cycle 0.0%
+    CONTROL (9 pairs): grade 33.3%, status 44.4%, structure 11.1%, cycle 22.2%
+    gap TREATED minus CONTROL: grade 16.7%, status 55.6%, structure 38.9%, cycle -22.2%
+  baseline churn inside BEFORE, consecutive versions of one ticker:
+    TREATED (7 pairs): grade 0.0%, status 14.3%, structure 28.6%, cycle 57.1%
+    CONTROL (5 pairs): grade 40.0%, status 40.0%, structure 20.0%, cycle 80.0%
+
+EFFECT READ: compare TREATED and CONTROL shifts above against the predictions file. Not a verdict on cause.

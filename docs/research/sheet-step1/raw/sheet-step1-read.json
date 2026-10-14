@@ -1,0 +1,697 @@
+{
+  "edges": {
+    "start": "2026-10-08T00:00:00.000Z",
+    "flagOn": "2026-10-11T18:55:03.000Z",
+    "flagOnSecondEnd": "2026-10-11T18:55:04.000Z",
+    "confound": "2026-10-13T00:45:33.000Z"
+  },
+  "schema": {
+    "versions": {
+      "table": "research_analysis_versions",
+      "id": "id",
+      "ticker": "ticker",
+      "generatedAt": "generated_at",
+      "model": "model",
+      "dossier": "dossier",
+      "metadata": "metadata"
+    },
+    "dossierPaths": {
+      "grade": [
+        "catalyst",
+        "catalystGrade"
+      ],
+      "status": [
+        "catalyst",
+        "catalystStatus"
+      ],
+      "structure": [
+        "structure",
+        "structureClassification"
+      ],
+      "cycle": [
+        "cycle",
+        "cycleClassification"
+      ]
+    },
+    "metadataKeys": {
+      "sheetPriorOmitted": "sheetPriorOmitted",
+      "sheetProvenance": "sheetProvenance",
+      "sheetConflicts": "sheetConflicts",
+      "escalated": "escalated",
+      "escalationReason": "escalationReason",
+      "promptVariant": "promptVariant",
+      "metrics": "metrics"
+    },
+    "metricsKeys": {
+      "inputTokens": "inputTokens",
+      "cachedInputTokens": "cachedInputTokens",
+      "terraCalls": "terraCalls",
+      "repairCalls": "repairCalls",
+      "escalationCalls": "escalationCalls"
+    },
+    "modelUsage": {
+      "table": "model_usage",
+      "ticker": "ticker",
+      "at": "at",
+      "stage": "stage",
+      "trigger": "trigger",
+      "inputTokens": "input_tokens",
+      "cachedInputTokens": "cached_input_tokens",
+      "interpretStage": "INTERPRETATION",
+      "replayTrigger": "REPLAY",
+      "tagLookbackMs": 900000
+    },
+    "sheetTable": null
+  },
+  "source": "step1-export-2026-10-13.db",
+  "rowsRead": 237,
+  "parseErrors": 0,
+  "lastGeneratedAt": "2026-10-14T02:01:43.063Z",
+  "heldOut": {
+    "pre": 0,
+    "flagSecond": 0,
+    "replay": 0
+  },
+  "triggerTagging": "  triggers (nearest preceding model_usage INTERPRETATION row, proxy): INTERVAL_RECHECK 121, ENTERED_TOP_N 99, NEWS_ITEM 17",
+  "checks": {
+    "beforeVersions": 104,
+    "beforePriorDelivered": 10,
+    "beforePriorUnknown": 0,
+    "beforeOmittedWithSnapshot": [],
+    "afterVersions": 133,
+    "afterWithSnapshot": 6,
+    "afterPriorDelivered": [],
+    "afterPriorUnknown": 0,
+    "afterSheetAdjudicated": [
+      {
+        "id": 3206,
+        "ticker": "YMAT",
+        "generatedAt": "2026-10-12T08:01:31.875Z"
+      },
+      {
+        "id": 3270,
+        "ticker": "SUGP",
+        "generatedAt": "2026-10-13T08:02:31.131Z"
+      },
+      {
+        "id": 3309,
+        "ticker": "DCX",
+        "generatedAt": "2026-10-13T14:31:56.915Z"
+      }
+    ],
+    "metadataKeyCoverage": {
+      "BEFORE": {
+        "rows": 104,
+        "provenanceKey": 104,
+        "omittedKey": 104
+      },
+      "AFTER_ALL": {
+        "rows": 133,
+        "provenanceKey": 133,
+        "omittedKey": 133
+      }
+    },
+    "verdict": "FLAG HELD",
+    "verdictReason": "0 of 6 AFTER versions with a snapshot carried a prior; the detector saw 10 in BEFORE"
+  },
+  "reads": [
+    {
+      "label": "AFTER_CLEAN",
+      "confounded": false,
+      "window": {
+        "from": "2026-10-11T18:55:04.000Z",
+        "to": "2026-10-13T00:45:33.000Z",
+        "fromExclusive": false,
+        "toExclusive": true
+      },
+      "arms": {
+        "treated": 5,
+        "control": 8,
+        "undetermined": 0,
+        "treatedInAfter": 2,
+        "controlWithSnapshotInAfter": 1
+      },
+      "stats": {
+        "TREATED": {
+          "BEFORE": {
+            "versions": 12,
+            "tickers": 5,
+            "grade": {
+              "WEAK_NEGATIVE_DILUTIVE": 7,
+              "LEGITIMATE_POSITIVE": 3,
+              "UNKNOWN": 1,
+              "MODERATE_MIXED_SECONDARY": 1
+            },
+            "status": {
+              "FRESH_FOUND": 6,
+              "SECONDARY_STALE": 5,
+              "UNKNOWN": 1
+            },
+            "structure": {
+              "CAUTION": 5,
+              "UNKNOWN": 4,
+              "DIRTY_FLOAT": 3
+            },
+            "cycle": {
+              "UNKNOWN": 7,
+              "GREEN_FRESH_FRONTSIDE": 2,
+              "RED_BACKSIDE": 2,
+              "YELLOW_FRONTSIDE_WARNING": 1
+            },
+            "sheetProvenance": {
+              "CONFLICT": 7,
+              "SHEET_AUTO_AGREE": 3,
+              "(no snapshot)": 2
+            },
+            "promptVariant": {
+              "A": 12
+            },
+            "priorDelivered": {
+              "YES": 10,
+              "NO": 2
+            },
+            "withSnapshot": 10,
+            "conflictShareByField": {
+              "catalyst": 0.2,
+              "structure": 0.4,
+              "cycle": 0.3
+            },
+            "sheetAdjudicated": 3,
+            "singleCallVersions": 9,
+            "inputTokensPerCallMean": 11478.666666666666,
+            "inputTokensPerCallMedian": 10661,
+            "inputTokensPerVersionMean": 14414.833333333334,
+            "inputTokensPerVersionMedian": 13067,
+            "usageInterpretCalls": 12,
+            "usageInputPerCallMean": 11325.5,
+            "usageInputPerCallMedian": 10763.5
+          },
+          "AFTER": {
+            "versions": 2,
+            "tickers": 2,
+            "grade": {
+              "WEAK_NEGATIVE_DILUTIVE": 1,
+              "MODERATE_MIXED_SECONDARY": 1
+            },
+            "status": {
+              "SECONDARY_STALE": 1,
+              "FRESH_FOUND": 1
+            },
+            "structure": {
+              "DIRTY_FLOAT": 2
+            },
+            "cycle": {
+              "RED_BACKSIDE": 1,
+              "UNKNOWN": 1
+            },
+            "sheetProvenance": {
+              "(no snapshot)": 2
+            },
+            "promptVariant": {
+              "A": 2
+            },
+            "priorDelivered": {
+              "NO": 2
+            },
+            "withSnapshot": 0,
+            "conflictShareByField": {
+              "catalyst": null,
+              "structure": null,
+              "cycle": null
+            },
+            "sheetAdjudicated": 0,
+            "singleCallVersions": 2,
+            "inputTokensPerCallMean": 12139,
+            "inputTokensPerCallMedian": 12139,
+            "inputTokensPerVersionMean": 12139,
+            "inputTokensPerVersionMedian": 12139,
+            "usageInterpretCalls": 2,
+            "usageInputPerCallMean": 12139,
+            "usageInputPerCallMedian": 12139
+          }
+        },
+        "CONTROL": {
+          "BEFORE": {
+            "versions": 13,
+            "tickers": 8,
+            "grade": {
+              "MODERATE_MIXED_SECONDARY": 5,
+              "UNKNOWN": 4,
+              "LEGITIMATE_POSITIVE": 2,
+              "WEAK_NEGATIVE_DILUTIVE": 2
+            },
+            "status": {
+              "SECONDARY_STALE": 5,
+              "UNKNOWN": 4,
+              "FRESH_FOUND": 4
+            },
+            "structure": {
+              "CAUTION": 7,
+              "DIRTY_FLOAT": 4,
+              "UNKNOWN": 2
+            },
+            "cycle": {
+              "UNKNOWN": 8,
+              "RED_BACKSIDE": 4,
+              "GREEN_FRESH_FRONTSIDE": 1
+            },
+            "sheetProvenance": {
+              "(no snapshot)": 13
+            },
+            "promptVariant": {
+              "A": 13
+            },
+            "priorDelivered": {
+              "NO": 13
+            },
+            "withSnapshot": 0,
+            "conflictShareByField": {
+              "catalyst": null,
+              "structure": null,
+              "cycle": null
+            },
+            "sheetAdjudicated": 0,
+            "singleCallVersions": 10,
+            "inputTokensPerCallMean": 13099.6,
+            "inputTokensPerCallMedian": 12921.5,
+            "inputTokensPerVersionMean": 16240.923076923076,
+            "inputTokensPerVersionMedian": 13275,
+            "usageInterpretCalls": 13,
+            "usageInputPerCallMean": 13158.76923076923,
+            "usageInputPerCallMedian": 12953
+          },
+          "AFTER": {
+            "versions": 10,
+            "tickers": 8,
+            "grade": {
+              "LEGITIMATE_POSITIVE": 3,
+              "WEAK_NEGATIVE_DILUTIVE": 3,
+              "MODERATE_MIXED_SECONDARY": 2,
+              "UNKNOWN": 2
+            },
+            "status": {
+              "FRESH_FOUND": 5,
+              "SECONDARY_STALE": 3,
+              "UNKNOWN": 2
+            },
+            "structure": {
+              "CAUTION": 6,
+              "DIRTY_FLOAT": 3,
+              "UNKNOWN": 1
+            },
+            "cycle": {
+              "UNKNOWN": 6,
+              "RED_BACKSIDE": 3,
+              "YELLOW_FRONTSIDE_WARNING": 1
+            },
+            "sheetProvenance": {
+              "(no snapshot)": 9,
+              "CONFLICT": 1
+            },
+            "promptVariant": {
+              "A": 10
+            },
+            "priorDelivered": {
+              "NO": 10
+            },
+            "withSnapshot": 1,
+            "conflictShareByField": {
+              "catalyst": 0,
+              "structure": 1,
+              "cycle": 0
+            },
+            "sheetAdjudicated": 1,
+            "singleCallVersions": 6,
+            "inputTokensPerCallMean": 13187.166666666666,
+            "inputTokensPerCallMedian": 13273.5,
+            "inputTokensPerVersionMean": 18888.8,
+            "inputTokensPerVersionMedian": 13901,
+            "usageInterpretCalls": 10,
+            "usageInputPerCallMean": 13309,
+            "usageInputPerCallMedian": 13273.5
+          }
+        }
+      },
+      "treatedAfterWithheld": 0,
+      "change": {
+        "TREATED": {
+          "pairs": 2,
+          "changedShare": {
+            "grade": 0.5,
+            "status": 1,
+            "structure": 0.5,
+            "cycle": 0
+          },
+          "changedCount": {
+            "grade": 1,
+            "status": 2,
+            "structure": 1,
+            "cycle": 0
+          }
+        },
+        "CONTROL": {
+          "pairs": 8,
+          "changedShare": {
+            "grade": 0.375,
+            "status": 0.375,
+            "structure": 0.125,
+            "cycle": 0.25
+          },
+          "changedCount": {
+            "grade": 3,
+            "status": 3,
+            "structure": 1,
+            "cycle": 2
+          }
+        }
+      },
+      "churnBefore": {
+        "TREATED": {
+          "pairs": 7,
+          "changedShare": {
+            "grade": 0,
+            "status": 0.14285714285714285,
+            "structure": 0.2857142857142857,
+            "cycle": 0.5714285714285714
+          },
+          "changedCount": {
+            "grade": 0,
+            "status": 1,
+            "structure": 2,
+            "cycle": 4
+          }
+        },
+        "CONTROL": {
+          "pairs": 5,
+          "changedShare": {
+            "grade": 0.4,
+            "status": 0.4,
+            "structure": 0.2,
+            "cycle": 0.8
+          },
+          "changedCount": {
+            "grade": 2,
+            "status": 2,
+            "structure": 1,
+            "cycle": 4
+          }
+        }
+      },
+      "changeGap": {
+        "grade": 0.125,
+        "status": 0.625,
+        "structure": 0.375,
+        "cycle": -0.25
+      }
+    },
+    {
+      "label": "AFTER_ALL",
+      "confounded": true,
+      "window": {
+        "from": "2026-10-11T18:55:04.000Z",
+        "to": "2026-10-14T02:01:43.063Z",
+        "fromExclusive": false,
+        "toExclusive": false
+      },
+      "arms": {
+        "treated": 5,
+        "control": 9,
+        "undetermined": 0,
+        "treatedInAfter": 2,
+        "controlWithSnapshotInAfter": 1
+      },
+      "stats": {
+        "TREATED": {
+          "BEFORE": {
+            "versions": 12,
+            "tickers": 5,
+            "grade": {
+              "WEAK_NEGATIVE_DILUTIVE": 7,
+              "LEGITIMATE_POSITIVE": 3,
+              "UNKNOWN": 1,
+              "MODERATE_MIXED_SECONDARY": 1
+            },
+            "status": {
+              "FRESH_FOUND": 6,
+              "SECONDARY_STALE": 5,
+              "UNKNOWN": 1
+            },
+            "structure": {
+              "CAUTION": 5,
+              "UNKNOWN": 4,
+              "DIRTY_FLOAT": 3
+            },
+            "cycle": {
+              "UNKNOWN": 7,
+              "GREEN_FRESH_FRONTSIDE": 2,
+              "RED_BACKSIDE": 2,
+              "YELLOW_FRONTSIDE_WARNING": 1
+            },
+            "sheetProvenance": {
+              "CONFLICT": 7,
+              "SHEET_AUTO_AGREE": 3,
+              "(no snapshot)": 2
+            },
+            "promptVariant": {
+              "A": 12
+            },
+            "priorDelivered": {
+              "YES": 10,
+              "NO": 2
+            },
+            "withSnapshot": 10,
+            "conflictShareByField": {
+              "catalyst": 0.2,
+              "structure": 0.4,
+              "cycle": 0.3
+            },
+            "sheetAdjudicated": 3,
+            "singleCallVersions": 9,
+            "inputTokensPerCallMean": 11478.666666666666,
+            "inputTokensPerCallMedian": 10661,
+            "inputTokensPerVersionMean": 14414.833333333334,
+            "inputTokensPerVersionMedian": 13067,
+            "usageInterpretCalls": 12,
+            "usageInputPerCallMean": 11325.5,
+            "usageInputPerCallMedian": 10763.5
+          },
+          "AFTER": {
+            "versions": 2,
+            "tickers": 2,
+            "grade": {
+              "WEAK_NEGATIVE_DILUTIVE": 1,
+              "MODERATE_MIXED_SECONDARY": 1
+            },
+            "status": {
+              "SECONDARY_STALE": 1,
+              "FRESH_FOUND": 1
+            },
+            "structure": {
+              "DIRTY_FLOAT": 2
+            },
+            "cycle": {
+              "RED_BACKSIDE": 1,
+              "UNKNOWN": 1
+            },
+            "sheetProvenance": {
+              "(no snapshot)": 2
+            },
+            "promptVariant": {
+              "A": 2
+            },
+            "priorDelivered": {
+              "NO": 2
+            },
+            "withSnapshot": 0,
+            "conflictShareByField": {
+              "catalyst": null,
+              "structure": null,
+              "cycle": null
+            },
+            "sheetAdjudicated": 0,
+            "singleCallVersions": 2,
+            "inputTokensPerCallMean": 12139,
+            "inputTokensPerCallMedian": 12139,
+            "inputTokensPerVersionMean": 12139,
+            "inputTokensPerVersionMedian": 12139,
+            "usageInterpretCalls": 2,
+            "usageInputPerCallMean": 12139,
+            "usageInputPerCallMedian": 12139
+          }
+        },
+        "CONTROL": {
+          "BEFORE": {
+            "versions": 14,
+            "tickers": 9,
+            "grade": {
+              "MODERATE_MIXED_SECONDARY": 6,
+              "UNKNOWN": 4,
+              "LEGITIMATE_POSITIVE": 2,
+              "WEAK_NEGATIVE_DILUTIVE": 2
+            },
+            "status": {
+              "FRESH_FOUND": 5,
+              "SECONDARY_STALE": 5,
+              "UNKNOWN": 4
+            },
+            "structure": {
+              "CAUTION": 7,
+              "DIRTY_FLOAT": 4,
+              "UNKNOWN": 3
+            },
+            "cycle": {
+              "UNKNOWN": 9,
+              "RED_BACKSIDE": 4,
+              "GREEN_FRESH_FRONTSIDE": 1
+            },
+            "sheetProvenance": {
+              "(no snapshot)": 14
+            },
+            "promptVariant": {
+              "A": 14
+            },
+            "priorDelivered": {
+              "NO": 14
+            },
+            "withSnapshot": 0,
+            "conflictShareByField": {
+              "catalyst": null,
+              "structure": null,
+              "cycle": null
+            },
+            "sheetAdjudicated": 0,
+            "singleCallVersions": 11,
+            "inputTokensPerCallMean": 12882.363636363636,
+            "inputTokensPerCallMedian": 12890,
+            "inputTokensPerVersionMean": 15845.857142857143,
+            "inputTokensPerVersionMedian": 13114,
+            "usageInterpretCalls": 14,
+            "usageInputPerCallMean": 12983.857142857143,
+            "usageInputPerCallMedian": 12921.5
+          },
+          "AFTER": {
+            "versions": 13,
+            "tickers": 9,
+            "grade": {
+              "WEAK_NEGATIVE_DILUTIVE": 5,
+              "MODERATE_MIXED_SECONDARY": 3,
+              "LEGITIMATE_POSITIVE": 3,
+              "UNKNOWN": 2
+            },
+            "status": {
+              "SECONDARY_STALE": 6,
+              "FRESH_FOUND": 5,
+              "UNKNOWN": 2
+            },
+            "structure": {
+              "CAUTION": 6,
+              "DIRTY_FLOAT": 5,
+              "UNKNOWN": 2
+            },
+            "cycle": {
+              "UNKNOWN": 9,
+              "RED_BACKSIDE": 3,
+              "YELLOW_FRONTSIDE_WARNING": 1
+            },
+            "sheetProvenance": {
+              "(no snapshot)": 12,
+              "CONFLICT": 1
+            },
+            "promptVariant": {
+              "A": 13
+            },
+            "priorDelivered": {
+              "NO": 13
+            },
+            "withSnapshot": 1,
+            "conflictShareByField": {
+              "catalyst": 0,
+              "structure": 1,
+              "cycle": 0
+            },
+            "sheetAdjudicated": 1,
+            "singleCallVersions": 8,
+            "inputTokensPerCallMean": 13288.875,
+            "inputTokensPerCallMedian": 13273.5,
+            "inputTokensPerVersionMean": 18875.53846153846,
+            "inputTokensPerVersionMedian": 13958,
+            "usageInterpretCalls": 13,
+            "usageInputPerCallMean": 13456.23076923077,
+            "usageInputPerCallMedian": 13431
+          }
+        }
+      },
+      "treatedAfterWithheld": 0,
+      "change": {
+        "TREATED": {
+          "pairs": 2,
+          "changedShare": {
+            "grade": 0.5,
+            "status": 1,
+            "structure": 0.5,
+            "cycle": 0
+          },
+          "changedCount": {
+            "grade": 1,
+            "status": 2,
+            "structure": 1,
+            "cycle": 0
+          }
+        },
+        "CONTROL": {
+          "pairs": 9,
+          "changedShare": {
+            "grade": 0.3333333333333333,
+            "status": 0.4444444444444444,
+            "structure": 0.1111111111111111,
+            "cycle": 0.2222222222222222
+          },
+          "changedCount": {
+            "grade": 3,
+            "status": 4,
+            "structure": 1,
+            "cycle": 2
+          }
+        }
+      },
+      "churnBefore": {
+        "TREATED": {
+          "pairs": 7,
+          "changedShare": {
+            "grade": 0,
+            "status": 0.14285714285714285,
+            "structure": 0.2857142857142857,
+            "cycle": 0.5714285714285714
+          },
+          "changedCount": {
+            "grade": 0,
+            "status": 1,
+            "structure": 2,
+            "cycle": 4
+          }
+        },
+        "CONTROL": {
+          "pairs": 5,
+          "changedShare": {
+            "grade": 0.4,
+            "status": 0.4,
+            "structure": 0.2,
+            "cycle": 0.8
+          },
+          "changedCount": {
+            "grade": 2,
+            "status": 2,
+            "structure": 1,
+            "cycle": 4
+          }
+        }
+      },
+      "changeGap": {
+        "grade": 0.16666666666666669,
+        "status": 0.5555555555555556,
+        "structure": 0.3888888888888889,
+        "cycle": -0.2222222222222222
+      }
+    }
+  ]
+}
