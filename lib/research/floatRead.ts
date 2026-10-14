@@ -12,12 +12,12 @@
  */
 import type { MarketDatabase } from '../market/store/db';
 import { readLatestFloatBound } from '../market/store/floatBoundRepo';
-import { readCurrentAnalyses } from '../market/store/researchRepo';
+import { readCurrentAnalyses, researchTablesPresent } from '../market/store/researchRepo';
 import { FLOAT_MAX_AGE_DAYS, FLOAT_REUSE_DAYS, floatCellFor, issuanceFiledIn, type FloatBoundRow } from './floatJob';
 import { readSpanBars } from './history';
-import type { FloatCell, FloatCellReason, SplitProof } from './insiderBound';
+import { NO_ANALYSIS, type FloatCell, type FloatCellReason, type FloatLedger, type SplitProof } from './insiderBound';
 import { splitProofFromBars, withAnnouncedSplits, type SpanBar } from './splitProof';
-import type { SupplyBlock } from './types';
+import type { ResearchAnalysisVersion } from './types';
 
 const wholeDays = (from: string, to: string) => Math.floor((Date.parse(to) - Date.parse(from)) / 86_400_000);
 
@@ -29,8 +29,12 @@ function splitSinceCountAt(row: FloatBoundRow & { count: { kind: 'COUNT'; asOf: 
   return withAnnouncedSplits(splitProofFromBars(countSpanBars, d), row.announcedSplits, row.count.asOf, d);
 }
 
-/** The cell at D. `row` is the newest stored row on or before D (null: the job has not run, NOT_YET). */
-export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: readonly SupplyBlock[] | null, countSpanBars: readonly SpanBar[]): FloatCell | null {
+/**
+ * The cell at D. `row` is the newest stored row on or before D (null: the job has not run, NOT_YET). `ledger` is the
+ * dossier's ledger current at D, `NO_ANALYSIS` when a successful read found none (L8: `filingsOnly`), or null when the
+ * caller could not tell (ISSUANCE_NOT_CHECKED); passed through unchanged, so the job and the reader decide alike.
+ */
+export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: FloatLedger, countSpanBars: readonly SpanBar[]): FloatCell | null {
   if (!row) return null;
   if (notReused(row, d)) return { state: 'CANNOT_VERIFY', reason: 'FILINGS_NOT_REREAD' };
   const splitSinceCount = row.count.kind === 'COUNT' ? splitSinceCountAt({ ...row, count: row.count }, d, countSpanBars) : row.splitSinceCount;
@@ -109,6 +113,16 @@ export interface FloatBound {
    * of later filings (`StatedCountCheck`). Absent when the row has no read (an older row, or no cover count): today's words.
    */
   countSource?: FloatCountSource;
+  /**
+   * L8, for Design (his "(b)", choice 2 of docs/research/float-options/float-tool-sizing-2026-10-09.md; Marketing's words
+   * approved at 84d0b9fd, docs/marketing/float-l8-words-2026-10-14.md): PRODUCED only, and only ever `true`. The desk has
+   * no research on the name as of D, so the bound is the filed count less insiders with every check on the filings run
+   * (filed issuance, foreign annual form, split since the count, age, range) but no check of warrants, convertible notes
+   * or share-sale programs already in place. The face is the bound plus the circled i; the hover, the panel line and the
+   * accessible name say "the true figure may be higher". Absent on a PRODUCED cell computed with a ledger, and on every
+   * refused cell. A name researched later loses it at the next read, because the reader takes the dossier current at D.
+   */
+  filingsOnly?: true;
 }
 
 export interface FloatCountSource {
@@ -158,13 +172,27 @@ function filedOn(row: FloatBoundRow, used: FloatCell & { state: 'PRODUCED' }): s
   return [...new Set(row.holdings.filter((h) => subtracted.has(h.ownerCik)).flatMap((h) => h.filingDates))].sort();
 }
 
+/** L8's mark, copied from the cell (never re-derived here): `{ filingsOnly: true }` or nothing. */
+const filingsOnlyOf = (cell: FloatCell & { state: 'PRODUCED' }): { filingsOnly?: true } => (cell.filingsOnly ? { filingsOnly: true } : {});
+
 export function toFloatBound(row: FloatBoundRow, cell: FloatCell, countChecks: FloatCountChecks): FloatBound {
   const count = row.count.kind === 'COUNT' ? row.count : null;
   const source = countSourceOf(row);
   const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null, countChecks, ...(source ? { countSource: source } : {}) };
   return cell.state === 'PRODUCED'
-    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell) }
+    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell), ...filingsOnlyOf(cell) }
     : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [], ...filed, insiders: [] };
+}
+
+/**
+ * The ledger at D from the current-dossier read (Commercial's condition 1 for L8). `NO_ANALYSIS` only when the read could
+ * see the research tables (`researchTablesPresent`, the same guard `readCurrentAnalyses` applies) and found no current
+ * analysis for the name. A store without them answers "none" without reading anything, so it is null (could not tell),
+ * as is a dossier with no ledger; a read that throws never reaches here (`readFloatBoundsAt` throws, the board faults).
+ */
+export function ledgerAt(researchRead: boolean, found: ResearchAnalysisVersion | undefined): FloatLedger {
+  if (!found) return researchRead ? NO_ANALYSIS : null;
+  return found.dossier.structure.supplyLedger ?? null;
 }
 
 function tablePresent(db: MarketDatabase): boolean {
@@ -183,6 +211,7 @@ export function readFloatBoundsAt(db: MarketDatabase, symbols: readonly string[]
     for (const symbol of symbols) out[symbol] = null;
     return out;
   }
+  const researchRead = researchTablesPresent(db);
   const dossiers = readCurrentAnalyses(db, [...symbols]);
   for (const symbol of symbols) {
     const row = readLatestFloatBound(db, symbol, d);
@@ -190,7 +219,7 @@ export function readFloatBoundsAt(db: MarketDatabase, symbols: readonly string[]
       out[symbol] = null;
       continue;
     }
-    const ledger = dossiers.get(symbol)?.dossier.structure.supplyLedger ?? null;
+    const ledger = ledgerAt(researchRead, dossiers.get(symbol));
     const bars = row.count.kind === 'COUNT' ? readSpanBars(db, symbol, row.count.asOf, d) : [];
     out[symbol] = toFloatBound(row, floatCellAt(row, d, ledger, bars)!, countChecksAt(row, d, bars));
   }

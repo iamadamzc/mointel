@@ -273,9 +273,10 @@ function captureAssessment(
 
     /*
      * The board's Float cell at THIS checkpoint, frozen with the row (performance record A8): a later float write
-     * cannot change what the checkpoint showed. Never throws.
+     * cannot change what the checkpoint showed. Never throws. The analysis itself goes in, not its ledger: with none,
+     * the cell is the board's filings-only bound (L8), which only floatAtCapture can tell from "could not tell".
      */
-    const capturedFloat = floatAtCapture(db, row.symbol, scheduled.tradingDate, dossier?.structure.supplyLedger ?? null);
+    const capturedFloat = floatAtCapture(db, row.symbol, scheduled.tradingDate, analysis ?? undefined);
 
     const record: AssessmentTickerRecord = {
       ticker: row.symbol,

@@ -34,6 +34,9 @@ export function drawerFloatLine(
   const own: DrawerFloatLine = { sentence: reading.sentence, detail: reading.detail ?? null, tone: reading.tone === 'pos' ? 'pos' : 'dim', refusedByCell: false };
   if (!floatWired) return own;
   const view = floatCellView(cell ?? null);
+  // A MARKED bound (L8 B's circled i) never prints the drawer's own ceiling without its caveat (Commercial's
+  // condition (3)): the drawer prints the cell's own hover sentence instead.
+  if (view.kind === 'bound' && view.icon) return { sentence: view.icon.title, detail: null, tone: 'dim', refusedByCell: true };
   if (view.kind === 'bound') return own;
   return { sentence: view.paragraphs[0] ?? view.face, detail: null, tone: 'dim', refusedByCell: true };
 }

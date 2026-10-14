@@ -15,7 +15,9 @@ import { computeCallOutcome, type CallRow } from '@/lib/desk/performance/outcome
 import { maybeRunCallOutcomes, readCallsFor, runCallOutcomes, storedOutcomeDates } from '@/lib/desk/performance/job';
 import { floatAtCapture } from '@/lib/research/floatCapture';
 import { floatCellFor, type FloatBoundRow, type StoredHolding } from '@/lib/research/floatJob';
+import { readFloatBoundsAt } from '@/lib/research/floatRead';
 import { upsertDailyBars, type NewDailyBar } from '@/lib/research/history';
+import type { ResearchAnalysisVersion, SupplyBlock } from '@/lib/research/types';
 
 /**
  * The performance record (design note docs/research/performance-record/design-note-2026-10-06.md as amended at
@@ -195,6 +197,9 @@ describe('the float frozen at capture (A8)', () => {
     computedAt: `${READ}T23:00:00.000Z`,
     ...over,
   });
+  /** A current analysis carrying `ledger` (only the field the float reads). */
+  const analysed = (ledger: SupplyBlock[] | null = []): ResearchAnalysisVersion =>
+    ({ dossier: { structure: { supplyLedger: ledger } } }) as unknown as ResearchAnalysisVersion;
   const dailyBar = (date: string): NewDailyBar =>
     ({
       symbol: 'ACME',
@@ -217,7 +222,7 @@ describe('the float frozen at capture (A8)', () => {
     upsertDailyBars(db, [dailyBar('2026-07-31'), dailyBar(D)]);
     // The row as the checkpoint sees it: an announced split ahead refuses the number.
     writeFloatBound(db, floatRow({ announcedSplits: ['2026-09-28'] }));
-    const captured = floatAtCapture(db, 'ACME', D, []);
+    const captured = floatAtCapture(db, 'ACME', D, analysed());
     expect(captured).toEqual({ state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' });
 
     const id = checkpoint(db, 'PREMARKET_0700', D, `${D}T11:00:30.000Z`);
@@ -225,7 +230,7 @@ describe('the float frozen at capture (A8)', () => {
 
     // A later job run rewrites the same (symbol, as_of_date) row; a fresh read now gives a different cell...
     writeFloatBound(db, floatRow({ announcedSplits: [], computedAt: `${D}T15:00:00.000Z` }));
-    expect(floatAtCapture(db, 'ACME', D, []).state).toBe('PRODUCED');
+    expect(floatAtCapture(db, 'ACME', D, analysed()).state).toBe('PRODUCED');
 
     // ...and the checkpoint row still holds what the checkpoint saw.
     const stored = db
@@ -236,7 +241,34 @@ describe('the float frozen at capture (A8)', () => {
 
   it('is NOT_YET when no float row exists on or before the checkpoint date', () => {
     const db = openDatabase(temporaryPath());
-    expect(floatAtCapture(db, 'NONE', D, [])).toEqual({ state: 'NOT_YET', reason: null });
+    expect(floatAtCapture(db, 'NONE', D, analysed())).toEqual({ state: 'NOT_YET', reason: null });
+  });
+
+  /*
+   * L8: the record freezes what the BOARD shows. A name with no analysis, on a store whose research tables were read,
+   * is the board's filings-only bound; it was frozen as ISSUANCE_NOT_CHECKED while the worker passed a null ledger.
+   */
+  it('a name with no analysis freezes as the board shows it: PRODUCED (filings only), not ISSUANCE_NOT_CHECKED', () => {
+    const db = openDatabase(temporaryPath());
+    upsertDailyBars(db, [dailyBar('2026-07-31'), dailyBar(D)]);
+    writeFloatBound(db, floatRow());
+    expect(readFloatBoundsAt(db, ['ACME'], D).ACME).toMatchObject({ state: 'PRODUCED', filingsOnly: true });
+    expect(floatAtCapture(db, 'ACME', D, undefined)).toEqual({ state: 'PRODUCED', reason: null });
+  });
+
+  it('could not tell stays could not tell: no research tables, or an analysis with no ledger, is ISSUANCE_NOT_CHECKED', () => {
+    const db = openDatabase(temporaryPath());
+    upsertDailyBars(db, [dailyBar('2026-07-31'), dailyBar(D)]);
+    writeFloatBound(db, floatRow());
+    expect(floatAtCapture(db, 'ACME', D, analysed(null))).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
+    db.exec('DROP TABLE research_jobs');
+    expect(readFloatBoundsAt(db, ['ACME'], D).ACME).toMatchObject({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
+    expect(floatAtCapture(db, 'ACME', D, undefined)).toEqual({ state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' });
+  });
+
+  it('the capture worker passes the analysis itself (a SOURCE assertion: no test drives worker/desk-assessments.ts)', () => {
+    const source = fs.readFileSync(path.resolve(__dirname, '../../worker/desk-assessments.ts'), 'utf8');
+    expect(source).toMatch(/floatAtCapture\(db, row\.symbol, scheduled\.tradingDate, analysis \?\? undefined\)/);
   });
 });
 

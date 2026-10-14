@@ -18,10 +18,12 @@
  * float pass every day). Every other error still aborts the call.
  */
 import {
+  NO_ANALYSIS,
   floatCell,
   holdingsAtBoth,
   parseSection16,
   type FloatCell,
+  type FloatLedger,
   type IssuanceRule,
   type OwnerFiling,
   type S1Holding,
@@ -74,7 +76,10 @@ export interface FloatBoundRow {
    * reader at a later D re-applies [count, D]. Empty when there was no count (nothing fetched).
    */
   issuanceFilings: IssuanceFiling[];
-  /** The dossier whose ledger was read; null = none existed (ISSUANCE_NOT_CHECKED). */
+  /**
+   * The dossier whose ledger was read; null = none was read (input `NO_ANALYSIS` or null; the stored cell says which
+   * way it went: PRODUCED with `filingsOnly`, or ISSUANCE_NOT_CHECKED).
+   */
   analysisVersionId: number | null;
   issuanceRule: IssuanceRule;
   maxAgeDays: number;
@@ -114,8 +119,19 @@ export interface FloatJobInput {
   symbol: string;
   cik: string | null;
   asOfDate: string;
-  /** null = no dossier as of `asOfDate`. */
-  dossier: { analysisVersionId: number; ledger: readonly SupplyBlock[] } | null;
+  /**
+   * The dossier current at `asOfDate`. `NO_ANALYSIS` (L8): the caller's read SUCCEEDED and found no analysis for the
+   * name, so a clean cell is PRODUCED with `filingsOnly`. null: the caller could not tell (CANNOT_VERIFY /
+   * ISSUANCE_NOT_CHECKED, as before L8); a caller whose read failed passes null or does not call. A dossier whose
+   * ledger is not an array of blocks is also "could not tell" (`floatCell`).
+   */
+  dossier: { analysisVersionId: number; ledger: readonly SupplyBlock[] } | typeof NO_ANALYSIS | null;
+}
+
+/** The ledger `floatCell` reads for a job input: the sentinel passes through, a missing dossier or ledger is null. */
+export function ledgerOfDossier(dossier: FloatJobInput['dossier']): FloatLedger {
+  if (dossier === NO_ANALYSIS) return NO_ANALYSIS;
+  return dossier?.ledger ?? null;
 }
 
 const pad10 = (cik: string) => cik.padStart(10, '0');
@@ -177,7 +193,7 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
     symbol,
     asOfDate,
     cik,
-    analysisVersionId: input.dossier?.analysisVersionId ?? null,
+    analysisVersionId: input.dossier === NO_ANALYSIS ? null : (input.dossier?.analysisVersionId ?? null),
     issuanceRule: FLOAT_ISSUANCE_RULE,
     maxAgeDays: FLOAT_MAX_AGE_DAYS,
   };
@@ -246,17 +262,21 @@ export async function computeFloatBound(input: FloatJobInput, deps: FloatJobDeps
   }
 
   const issuanceFiled = count.kind === 'COUNT' && issuanceFiledIn(issuanceList, count.asOf, asOfDate);
-  const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: input.dossier?.ledger ?? null, asOfDate, issuanceFiled });
+  const cell = floatCellFor({ cik, count, holdings, splitSinceCount, ledger: ledgerOfDossier(input.dossier), asOfDate, issuanceFiled });
   return { ...base, count, statedCount, holdings, splitSinceCount, announcedSplits, issuanceFilings: issuanceList, cell, computedAt: deps.now() };
 }
 
-/** The cell from stored inputs: the one place `floatCell` is called with the job's constants. */
+/**
+ * The cell from stored inputs: the one place `floatCell` is called with the job's constants. `ledger` is passed through
+ * unchanged (`NO_ANALYSIS`, null, or the blocks), never replaced by an empty ledger: `floatCell` alone decides
+ * `filingsOnly` (L8).
+ */
 export function floatCellFor(input: {
   cik: string | null;
   count: FiledCount;
   holdings: readonly StoredHolding[];
   splitSinceCount: SplitProof;
-  ledger: readonly SupplyBlock[] | null;
+  ledger: FloatLedger;
   asOfDate: string;
   /** Rule I-D at `asOfDate`; required here, so no production path can leave it out. */
   issuanceFiled: boolean;

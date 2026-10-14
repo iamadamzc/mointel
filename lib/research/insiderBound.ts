@@ -230,6 +230,11 @@ export type FloatCellReason =
   | 'COUNT_SPLIT_ACROSS_FILINGS'
   | 'COUNT_TOO_OLD'
   | 'ISSUANCE_FLAGGED'
+  /**
+   * The ledger could not be read (`ledger` null) or was unusable. Since L8 a SUCCESSFUL read that found no analysis is
+   * `NO_ANALYSIS` and reads PRODUCED with `filingsOnly` instead; rows stored before L8 also carry this reason for a name
+   * with no dossier, which is why it stays in the type.
+   */
   | 'ISSUANCE_NOT_CHECKED'
   /** Rule I-D (filed-issuance-registration-2026-10-06.md): a 424B1/2/4/5 or an 8-K item 3.02 filed on or after the count's date. */
   | 'ISSUANCE_FILED'
@@ -246,7 +251,20 @@ export type FloatCellReason =
   | 'FILINGS_NOT_REREAD';
 
 export type FloatCell =
-  | { state: 'PRODUCED'; bound: number; subtracted: number; holdings: OwnerHolding[]; refused: RefusedHolding[] }
+  | {
+      state: 'PRODUCED';
+      bound: number;
+      subtracted: number;
+      holdings: OwnerHolding[];
+      refused: RefusedHolding[];
+      /**
+       * L8 (his "(b)", choice 2 of docs/research/float-options/float-tool-sizing-2026-10-09.md): the ledger was
+       * `NO_ANALYSIS` (a successful read found no analysis for the name as of the checkpoint), so the ledger's check
+       * (instruments already in place at the count) did not run; every check on the filings did. Present only as `true`;
+       * a cell computed with a ledger carries no such field.
+       */
+      filingsOnly?: true;
+    }
   | { state: 'UNKNOWN' | 'CANNOT_VERIFY'; reason: FloatCellReason };
 
 export interface RefusedHolding {
@@ -280,6 +298,20 @@ export function issuanceFlagged(ledger: readonly SupplyBlock[], rule: IssuanceRu
   });
 }
 
+/**
+ * The ledger value for "the read SUCCEEDED and found no analysis for the name" (L8). Distinct from null, which means
+ * "could not tell" (a read that failed or found nothing usable) and keeps ISSUANCE_NOT_CHECKED (Commercial's condition 1).
+ */
+export const NO_ANALYSIS = 'NO_ANALYSIS';
+
+/** A dossier's supply ledger, `NO_ANALYSIS`, or null (could not tell). */
+export type FloatLedger = readonly SupplyBlock[] | typeof NO_ANALYSIS | null;
+
+/** A ledger the issuance check can read: an array of objects. Anything else (null included) is "could not tell". */
+function usableLedger(ledger: readonly SupplyBlock[] | null): ledger is readonly SupplyBlock[] {
+  return Array.isArray(ledger) && ledger.every((block) => block !== null && typeof block === 'object');
+}
+
 /** Annual reports of a foreign private issuer, which reports on Form 6-K, never an 8-K item 3.02. */
 const FOREIGN_ANNUAL_FORMS = new Set(['20-F', '20-F/A', '40-F', '40-F/A']);
 
@@ -300,8 +332,12 @@ export interface FloatCellInput {
   holdingSplit: ReadonlyMap<string, SplitProof>;
   /** Is there a split between the count's as-of date and the checkpoint? */
   splitSinceCount: SplitProof;
-  /** null = no dossier as of the checkpoint (issuance was not checked). */
-  ledger: readonly SupplyBlock[] | null;
+  /**
+   * The dossier's ledger as of the checkpoint. `NO_ANALYSIS`: a successful read found none, so the ledger's check is
+   * skipped and a PRODUCED cell is `filingsOnly` (L8). null, or a value that is not an array of blocks: could not tell,
+   * ISSUANCE_NOT_CHECKED.
+   */
+  ledger: FloatLedger;
   issuanceRule: IssuanceRule;
   /**
    * Rule I-D: a filing on or after the count's date reports an offering or a sale of equity. The job and the reader
@@ -313,6 +349,11 @@ export interface FloatCellInput {
 /**
  * The cell's state, in the prereg's precedence: UNKNOWN, issuance, split since the count, age,
  * range. A holding across a split is refused (not subtracted); it never decides the state.
+ *
+ * With the ledger `NO_ANALYSIS` (a successful read found no analysis), only the ledger's two checks are skipped; every
+ * other check runs in the same order, and a cell that passes them is PRODUCED with `filingsOnly: true` (L8). A null or
+ * unusable ledger still refuses as ISSUANCE_NOT_CHECKED, where it always did. The ONE place that rule lives: the job
+ * (`floatCellFor`) and the reader (`floatCellAt`) both reach it through here.
  */
 export function floatCell(input: FloatCellInput): FloatCell {
   if (!input.cik) return { state: 'UNKNOWN', reason: 'NO_CIK' };
@@ -321,12 +362,16 @@ export function floatCell(input: FloatCellInput): FloatCell {
   if (!input.count) return { state: 'UNKNOWN', reason: 'NO_FILED_COUNT' };
   // I-D before the ledger: a filing is the most specific and checkable cause (registration section 2).
   if (input.issuanceFiled) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FILED' };
-  // After a filed issuance (the more specific cause), before "no dossier" (a structural gap, not a pending review).
+  // After a filed issuance (the more specific cause), before the ledger (a structural gap, not a pending review).
   if (input.count.form !== undefined && FOREIGN_ANNUAL_FORMS.has(input.count.form)) {
     return { state: 'CANNOT_VERIFY', reason: 'UNREGISTERED_SALE_NOT_CHECKABLE' };
   }
-  if (input.ledger === null) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' };
-  if (issuanceFlagged(input.ledger, input.issuanceRule)) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' };
+  // L8: a read that found no analysis skips the ledger's two checks; the cell is marked `filingsOnly` below.
+  const ledger = input.ledger;
+  if (ledger !== NO_ANALYSIS) {
+    if (!usableLedger(ledger)) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_NOT_CHECKED' };
+    if (issuanceFlagged(ledger, input.issuanceRule)) return { state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED' };
+  }
   if (input.splitSinceCount !== 'NONE') return { state: 'CANNOT_VERIFY', reason: 'SPLIT_SINCE_COUNT' };
   const age = wholeDays(input.count.asOf, input.checkpointDate);
   // A count dated after the checkpoint is a look-ahead: a reconciliation fault, not an old count.
@@ -343,5 +388,6 @@ export function floatCell(input: FloatCellInput): FloatCell {
   const subtracted = used.reduce((sum, h) => sum + h.shares, 0);
   const bound = input.count.shares - subtracted;
   if (!(bound > 0) || bound > input.count.shares) return { state: 'CANNOT_VERIFY', reason: 'BOUND_OUT_OF_RANGE' };
-  return { state: 'PRODUCED', bound, subtracted, holdings: used, refused };
+  const produced = { state: 'PRODUCED' as const, bound, subtracted, holdings: used, refused };
+  return ledger === NO_ANALYSIS ? { ...produced, filingsOnly: true as const } : produced;
 }

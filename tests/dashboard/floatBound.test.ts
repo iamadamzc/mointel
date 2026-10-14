@@ -198,9 +198,9 @@ describe('no claim beyond the sources, no dashes, no result language', () => {
     }
   });
 
-  it('the legend is the approved v25 sentence set, verbatim', () => {
+  it('the legend is the approved v25 sentence set, verbatim, with his 2026-10-14 last sentence (Marketing 4eb509d9)', () => {
     expect(FLOAT_LEGEND).toBe(
-      "TMI Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's.",
+      "TMI Float: shares outstanding less insider holdings, computed from SEC filings. An upper bound as of the date of the board or report, when the filings line up. The date beside the number is the filed share count's; where no date shows, it is in the hover.",
     );
   });
 });
