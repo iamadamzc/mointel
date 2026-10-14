@@ -26,11 +26,24 @@ import type { FloatCountChecks, FloatCountSource, FloatInsider, FloatBound as Re
 import type { FloatCellReason } from '@/lib/research/insiderBound';
 
 /**
+ * L6: a PRODUCED bound whose count was restated across listed splits (Research's final fields, 2026-10-14; the type
+ * lives here until Research's floatRead.ts declares it, with the same shape, so the two compose).
+ */
+export interface FloatRestatementView {
+  /** Oldest first, as announced; a 1-for-10 reverse split is { newRate: 1, oldRate: 10 }. */
+  splits: Array<{ exDate: string; newRate: number; oldRate: number }>;
+  factor: number;
+  restatedShares: number;
+  /** True only when the bars prove the span and agree within 1 percent: no triangle. */
+  provenByBars: boolean;
+}
+
+/**
  * Research's payload per ticker. Null, or absent, is NOT_YET: "Not computed".
  * L8 piece B: `filingsOnly` (PRODUCED only, Research 961c66c2) marks a bound for a name with no desk research: no
  * supply ledger, so warrants and share programs already in place are not counted.
  */
-export type FloatBound = ResearchFloatBound;
+export type FloatBound = ResearchFloatBound & { restated?: FloatRestatementView };
 export type FloatBoundReason = FloatCellReason;
 
 const STATES: ReadonlySet<string> = new Set(['PRODUCED', 'UNKNOWN', 'CANNOT_VERIFY']);
@@ -80,7 +93,27 @@ export function normalizeFloatBound(raw: unknown): FloatBound | null {
     ...(sourceOf(r.countSource) ? { countSource: sourceOf(r.countSource)! } : {}),
     // L8 B: only `true` on a PRODUCED row marks it; anything else is an ordinary bound or not a bound.
     ...(r.state === 'PRODUCED' && r.filingsOnly === true ? { filingsOnly: true as const } : {}),
+    // L6: only a PRODUCED bound can be restated; a malformed value is dropped (today's face, the claim that says least).
+    ...(r.state === 'PRODUCED' && restatedOf(r.restated) ? { restated: restatedOf(r.restated)! } : {}),
   };
+}
+
+const rate = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && v > 0;
+
+/** Research's `restated` (L6), or undefined when absent or any field is malformed. */
+function restatedOf(raw: unknown): FloatRestatementView | undefined {
+  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const r = raw as Record<string, unknown>;
+  if (!Array.isArray(r.splits) || r.splits.length === 0) return undefined;
+  const splits: FloatRestatementView['splits'] = [];
+  for (const s of r.splits) {
+    if (s === null || typeof s !== 'object') return undefined;
+    const o = s as Record<string, unknown>;
+    if (!isDate(o.exDate) || !rate(o.newRate) || !rate(o.oldRate)) return undefined;
+    splits.push({ exDate: o.exDate, newRate: o.newRate, oldRate: o.oldRate });
+  }
+  if (!rate(r.factor) || !rate(r.restatedShares) || typeof r.provenByBars !== 'boolean') return undefined;
+  return { splits, factor: r.factor, restatedShares: r.restatedShares, provenByBars: r.provenByBars };
 }
 
 const count0 = (v: unknown): v is number => typeof v === 'number' && Number.isInteger(v) && v >= 0;
@@ -338,16 +371,24 @@ function floatCellFace(raw: FloatBound | null | undefined, surface: FloatSurface
     const compact = compactBound(bound.bound);
     const amount = compact.startsWith(BOUND_PREFIX) ? compact.slice(BOUND_PREFIX.length) : compact;
     const d = dLabel(surface);
-    // L8 B: an unscreened bound carries the circled i; its date leaves the face (Integration's width ruling).
-    const marked = bound.filingsOnly === true;
+    // L8 B: an unscreened bound carries the circled i. L6: a restated bound names its split(s); the triangle stays
+    // unless the bars prove the ratio (read 104). Both (Commercial 114 (2), Integration's ruling): ONE icon, the
+    // triangle wins; its hover is the L6 sentence then the L8 sentence. A marked bound's date leaves the face.
+    const filingsOnly = bound.filingsOnly === true;
+    const restated = bound.restated && !bound.restated.provenByBars ? bound.restated : null;
+    const l6Hover = restated ? RESTATED_WORDS.hover(countDate, restated.splits) : null;
+    const l8Hover = filingsOnly ? FILINGS_ONLY_WORDS.hover(amount, countDate) : null;
+    const hover = [l6Hover, l8Hover].filter((s): s is string => s !== null).join(' ');
     return {
       kind: 'bound',
       face: compact,
-      date: marked && !MARKED_BOUND_DATE_ON_FACE ? null : shortDate(bound.countAsOf),
-      icon: marked ? { kind: 'caveat', title: FILINGS_ONLY_WORDS.hover(amount, countDate) } : null,
+      date: hover && !MARKED_BOUND_DATE_ON_FACE ? null : shortDate(bound.countAsOf),
+      // With the date off the face, each hover sentence carries the count's date (L6 v9, L8 Commercial 115).
+      icon: hover ? { kind: restated ? 'warning' : 'caveat', title: hover } : null,
       ariaLabel:
         `no more than ${amount} shares as of ${d}, computed from the share count dated ${countDate} and insider holdings filed through ${fetched}, when the filings line up` +
-        (marked ? FILINGS_ONLY_WORDS.aria : ''),
+        (bound.restated ? RESTATED_WORDS.aria(bound.restated.splits) : '') +
+        (filingsOnly ? FILINGS_ONLY_WORDS.aria : ''),
       // The v25 popover, verbatim, split before "Lined up means".
       paragraphs: [
         `Taking float as shares outstanding less insider holdings, it is no more than ${amount} shares as of ${d}, when the filings line up. Computed from the company's filed share count, less insider holdings as filed through ${fetched}, counting any sale dated on or before ${d} that was filed by ${fetched}. Filings read on ${fetched}.`,
@@ -412,11 +453,22 @@ function boundDetails(bound: FloatBound, amount: string, countDate: string, surf
         : W.count(shares, countDate, bound.countForm, countFiled),
     });
   }
+  // L6 v8: the restated count, so the panel adds up (the headline is this less the insiders below).
+  if (bound.restated) {
+    rows.push({ label: RESTATED_WORDS.countLabel, text: RESTATED_WORDS.count(exactShares(bound.restated.restatedShares), countDate, bound.restated.splits) });
+    // Integration 40th: the panel carries no less caveat than the hover (the approved sentence, its own line).
+    rows.push({ label: null, text: RESTATED_WORDS.mayMiss });
+  }
   const laterLine = laterFilingsLine(bound.countSource);
   if (laterLine) rows.push({ label: null, text: laterLine });
-  if (fetched) rows.push({ label: W.insidersLabel, text: W.insiders(subtracted.length, exactShares(total), fetched, d) });
+  if (fetched) {
+    const insidersText = bound.restated
+      ? RESTATED_WORDS.insiders(subtracted.length, exactShares(total), fetched, d)
+      : W.insiders(subtracted.length, exactShares(total), fetched, d);
+    rows.push({ label: W.insidersLabel, text: insidersText });
+  }
   rows.push({ label: W.notSubtractedLabel, text: W.notSubtracted });
-  rows.push({ label: W.linedUpLabel, text: W.linedUp(countDate, d) });
+  rows.push({ label: W.linedUpLabel, text: bound.restated ? RESTATED_WORDS.linedUp(countDate, d) : W.linedUp(countDate, d) });
   if (fetched) rows.push({ label: null, text: W.readOn(fetched) });
   const named = SHOW_INSIDER_NAMES && surface.namesAllowed === true;
   return {
@@ -509,6 +561,51 @@ export const FILINGS_ONLY_WORDS = {
  * date off the face, because "≤ 12.4M 12/31" plus an icon measures past the 86 px column. One switch for both.
  */
 export const MARKED_BOUND_DATE_ON_FACE = false;
+
+/*
+ * L6: A BOUND RESTATED FOR LISTED SPLITS (option (a), Commercial reads 98, 104, 108; Integration 40th's rulings
+ * 2026-10-14). The hover is Marketing a65caa91 verbatim for one and two splits; three or more list the same pattern
+ * (Integration (1), to him as one line). The article follows how the ratio is said (articleFor, "an 8-for-1").
+ * Three-or-more form and the restated "Lined up means" row: Marketing 14a0b60a (B), (A). NOT YET PASSED: Commercial
+ * reads the built strings, then he sees them before ship.
+ */
+export const RESTATED_WORDS = {
+  /** {splits}: "a 1-for-10 split on Sep 3, 2026", joined with "and" for two, commas then "and" for three or more. */
+  splits: (splits: ReadonlyArray<{ exDate: string; newRate: number; oldRate: number }>) => {
+    const parts = splits.map((s) => {
+      const ratio = `${s.newRate}-for-${s.oldRate}`;
+      return `${articleFor(ratio)} ${ratio} split on ${longDate(s.exDate) ?? s.exDate}`;
+    });
+    return parts.length <= 2 ? parts.join(' and ') : `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
+  },
+  /** v9 (Marketing 8d88c749, Commercial 113a): the opening names the count's date, which leaves the face. */
+  hover: (countDate: string, splits: ReadonlyArray<{ exDate: string; newRate: number; oldRate: number }>) =>
+    `Filed share count as of ${countDate}, restated for ${RESTATED_WORDS.splits(splits)}, as announced. ${RESTATED_WORDS.mayMiss}`,
+  /** The approved caveat, also the panel's own line after "Restated share count". */
+  mayMiss: 'The split list can miss a split.',
+  /** v8 (Marketing 95201471, Commercial 113): appended to the bound's accessible name. */
+  aria: (splits: ReadonlyArray<{ exDate: string; newRate: number; oldRate: number }>) =>
+    `; restated for ${RESTATED_WORDS.splits(splits)}, as announced; the split list can miss a split`,
+  /** v8: the panel row after "Filed share count", so the panel's arithmetic reconciles (Integration's changed (3)). */
+  countLabel: 'Restated share count',
+  count: (shares: string, countDate: string, splits: ReadonlyArray<{ exDate: string; newRate: number; oldRate: number }>) =>
+    `${shares} shares as of ${countDate}, restated for ${RESTATED_WORDS.splits(splits)}, as announced.`,
+  /**
+   * v10 (Marketing 8b712567, Commercial 113b): inserted after "{total} shares" in the insiders row. Research's L6 plan
+   * (items 4, 4a): every used holding is in the post-split units, so the total is in the same units as the restated count.
+   */
+  insiders: (n: number, total: string, fetched: string, d: string) =>
+    FLOAT_DETAILS_WORDS.insiders(n, total, fetched, d).replace(`${total} shares, as filed through`, `${total} shares, in the same share units, as filed through`),
+  /**
+   * The "Lined up means" row on a RESTATED bound (Marketing 14a0b60a (A)): the passed row with its last two clauses
+   * replaced; everything before is unchanged. Built from the passed row so the two can never drift apart.
+   */
+  linedUp: (countDate: string, d: string) =>
+    FLOAT_DETAILS_WORDS.linedUp(countDate, d).replace(
+      ', and no share split since the count. A sale not yet filed cannot be seen.',
+      ', and any share split since the count restated by its announced ratio. A sale not yet filed, and a split the split list does not contain, cannot be seen.',
+    ),
+} as const;
 
 export const STATED_COUNT_WORDS = {
   /** Case 1 and 2: the bound panel's count row. */
