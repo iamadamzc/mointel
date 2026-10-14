@@ -54,6 +54,11 @@ settled the six live-read items. The worked local render method is in the live s
   `risk.ts` as a comment ("the desk has no trigger of its own") and it was false.
 - **Ask Ops for "yours" before ANY run on this PC**, one run at a time, nothing heavy 07:00-10:00 ET on weekdays. tsc needs
   `npx next typegen` first (`LayoutProps`).
+- **A new worktree: guard loudly and print its branch before any edit.** `test ! -e DIR && git worktree add` skipped
+  silently on Ops's existing A:\mointel-a5 and the fourteenth seat edited Ops's branch. Use
+  `if [ -e DIR ]; then echo EXISTS; else git worktree add ...; fi` and `git -C DIR log -1 --format='%h %D'`.
+- **A promise with a time needs a scheduled wake-up in the same turn** (CronCreate, session-only, local time is ET). The
+  fourteenth seat promised a Monday read and had no turn on Monday.
 - **Worktrees** (`A:\mointel-sheetoff`, `A:\mointel-rank1`, `A:\mointel-levels`, `A:\mointel-designdoc`) use a `node_modules`
   JUNCTION to `A:\mointel-design\node_modules`; re-check `package.json` and the lockfile against `f015a071` before trusting
   it. Commit with `git commit --only <paths>`. Never push local main: push docs from `A:\mointel-designdoc` detached on
