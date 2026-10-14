@@ -186,7 +186,7 @@ export const TOOLS: McpTool[] = [
     name: 'get_discovery',
     title: 'Discovery board',
     description:
-      'The current session-aware Discovery board, ranked by whichever board is active — Daily RVOL ' +
+      'The current session-aware Discovery board, ranked by whichever board is active: Daily RVOL ' +
       'during the session, AH Participation after the close. Returns the same merged rows the UI ' +
       'renders: telemetry, ranks, level ladder, cycle, catalyst, structure and intelligence status. ' +
       "setupGrade is the desk's own reading of the setup at its last checkpoint, as the board's " +
@@ -301,7 +301,7 @@ export const TOOLS: McpTool[] = [
     name: 'get_recent_events',
     title: 'Recent desk events',
     description:
-      'The desk event feed — discovery qualifications, rank entries, halts and assessment markers — ' +
+      'The desk event feed (discovery qualifications, rank entries, halts and assessment markers), ' +
       'ranked by materiality the same way the UI ranks them.',
     inputSchema: OBJECT({
       limit: { type: 'integer', description: 'Default 30, maximum 200.', minimum: 1, maximum: 200 },
