@@ -45,7 +45,18 @@ import { computedSections } from './sections';
 import { reportTags, type ReportTags } from './tags';
 import { readAfterHoursTotals, type AfterHoursTotals } from './totals';
 import type { ReportDraft, ReportModel } from './writer';
-import { writeReportV6 } from './writerV6';
+import { REPORT_WRITER_PROMPT_VERSION_V6, writeReportV6 } from './writerV6';
+import { REPORT_WRITER_PROMPT_VERSION_V7, writeReportV7 } from './writerV7';
+
+/**
+ * Which writer prompt writes each kind. His "a and b" (Integration chat 9c4f0257, queued input 20c5c7db, origin human,
+ * 2026-10-14T01:28:56.955Z): v7 (the TV-desk voice) for the intraday reports tonight; the evening recaps keep v6,
+ * because v7's recap Summary failed its re-check (L13 result 7f9210be). The recaps move to v7 only on his later go.
+ * `family` and `version` are what the stored row records (`job.ts`), so a row says which prompt wrote it.
+ */
+export function writerPromptFor(kind: ReportKind): { family: 'v6' | 'v7'; version: number } {
+  return isEveningRecap(kind) ? { family: 'v6', version: REPORT_WRITER_PROMPT_VERSION_V6 } : { family: 'v7', version: REPORT_WRITER_PROMPT_VERSION_V7 };
+}
 
 type Database = Parameters<typeof readAssessments>[0];
 
@@ -425,7 +436,10 @@ export async function runReport(
     diagnostics = { lines: 0, strikes: [], writerMs: null, checkerMs: null };
   } else {
     const writerStart = Date.now();
-    const written = await writeReportV6(
+    // The writer by kind (`writerPromptFor`): v7 for the intraday reports, v6 for the evening recaps. Same input and
+    // reply shape.
+    const write = writerPromptFor(slot.kind).family === 'v7' ? writeReportV7 : writeReportV6;
+    const written = await write(
       {
         kind: slot.kind,
         range: slot.range,

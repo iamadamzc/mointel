@@ -1,0 +1,31 @@
+store ../mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; clock fixed at 2026-10-13T20:26:12.364Z
+days 2026-10-02, 2026-10-05, 2026-10-06; kinds PREMARKET, INTO_RTH, INTO_POWER_HOUR, AFTER_HOURS; range $1-$20; one run per arm per input
+arms: prompt v6 and v7 (version 6), writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback) on every arm
+stop $5: a report launches only if spend + its worst case ($0.8116) fits
+
+2026-10-02-PREMARKET-v6-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1797; prompt chars 8691+19898; tokens writer:gpt-5.6-luna:6926/2409 checker:claude-opus-5-5:30818/2607
+2026-10-02-PREMARKET-v7-w_luna: PUBLISHED; 1 of 13 lines struck (Summary struck); $0.1695; prompt chars 7737+14715; tokens writer:gpt-5.6-luna:5413/2575 checker:claude-opus-5-5:31205/2025
+2026-10-05-PREMARKET-v6-w_luna: PUBLISHED; 4 of 13 lines struck; $0.2012; prompt chars 8691+21533; tokens writer:gpt-5.6-luna:7265/2791 checker:claude-opus-5-5:30778/3663
+2026-10-05-PREMARKET-v7-w_luna: MISSED {"kind":"CHECKER_FAILED","at":"2026-10-13T20:26:12.364Z"}; 0 of 13 lines struck; $0.1761; prompt chars 7737+16540; tokens writer:gpt-5.6-luna:5790/2216 checker:claude-opus-5-5:30629/2488
+2026-10-06-PREMARKET-v6-w_luna: PUBLISHED; 1 of 13 lines struck; $0.1880; prompt chars 8691+17571; tokens writer:gpt-5.6-luna:6407/2198 checker:claude-opus-5-5:31647/2873
+2026-10-06-PREMARKET-v7-w_luna: PUBLISHED; 2 of 13 lines struck (Summary struck); $0.1747; prompt chars 7737+13231; tokens writer:gpt-5.6-luna:5039/2225 checker:claude-opus-5-5:31391/2271
+2026-10-02-INTO_RTH-v6-w_luna: PUBLISHED; 2 of 13 lines struck; $0.1889; prompt chars 8691+20099; tokens writer:gpt-5.6-luna:6849/2226 checker:claude-opus-5-5:32224/2796
+2026-10-02-INTO_RTH-v7-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1735; prompt chars 7737+15577; tokens writer:gpt-5.6-luna:5554/1317 checker:claude-opus-5-5:31888/2163
+2026-10-05-INTO_RTH-v6-w_luna: PUBLISHED; 2 of 13 lines struck; $0.1785; prompt chars 8691+21066; tokens writer:gpt-5.6-luna:7187/2494 checker:claude-opus-5-5:30626/2578
+2026-10-05-INTO_RTH-v7-w_luna: PUBLISHED; 2 of 13 lines struck; $0.1914; prompt chars 7737+16204; tokens writer:gpt-5.6-luna:5775/1912 checker:claude-opus-5-5:30454/3306
+2026-10-06-INTO_RTH-v6-w_luna: PUBLISHED; 1 of 13 lines struck; $0.1536; prompt chars 8691+15262; tokens writer:gpt-5.6-luna:5831/2454 checker:claude-opus-5-5:27142/2044
+2026-10-06-INTO_RTH-v7-w_luna: PUBLISHED; 1 of 13 lines struck; $0.1536; prompt chars 7737+11946; tokens writer:gpt-5.6-luna:4735/1658 checker:claude-opus-5-5:26999/2132
+2026-10-02-INTO_POWER_HOUR-v6-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1425; prompt chars 8691+15564; tokens writer:gpt-5.6-luna:5848/1830 checker:claude-opus-5-5:24081/2140
+2026-10-02-INTO_POWER_HOUR-v7-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1465; prompt chars 7737+11858; tokens writer:gpt-5.6-luna:4718/1329 checker:claude-opus-5-5:23915/2416
+2026-10-05-INTO_POWER_HOUR-v6-w_luna: PUBLISHED; 1 of 13 lines struck; $0.1301; prompt chars 8691+12641; tokens writer:gpt-5.6-luna:5149/1987 checker:claude-opus-5-5:19507/2435
+2026-10-05-INTO_POWER_HOUR-v7-w_luna: PUBLISHED; 1 of 13 lines struck; $0.1136; prompt chars 7737+10043; tokens writer:gpt-5.6-luna:4247/1371 checker:claude-opus-5-5:19444/1665
+2026-10-06-INTO_POWER_HOUR-v6-w_luna: PUBLISHED; 3 of 13 lines struck; $0.1653; prompt chars 8691+16380; tokens writer:gpt-5.6-luna:6178/2757 checker:claude-opus-5-5:27982/2442
+2026-10-06-INTO_POWER_HOUR-v7-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1526; prompt chars 7737+12756; tokens writer:gpt-5.6-luna:4993/1577 checker:claude-opus-5-5:27647/1955
+2026-10-02-AFTER_HOURS-v6-w_luna: MISSED {"kind":"CHECKER_FAILED","at":"2026-10-13T20:26:12.364Z"}; 0 of 13 lines struck; $0.1406; prompt chars 8691+15427; tokens writer:gpt-5.6-luna:5799/2363 checker:claude-opus-5-5:23963/2038
+2026-10-02-AFTER_HOURS-v7-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1347; prompt chars 7737+11880; tokens writer:gpt-5.6-luna:4703/1182 checker:claude-opus-5-5:23759/1865
+2026-10-05-AFTER_HOURS-v6-w_luna: MISSED {"kind":"CHECKER_FAILED","at":"2026-10-13T20:26:12.364Z"}; 0 of 13 lines struck; $0.8032; prompt chars 8691+12076; tokens writer:gpt-5.6-luna:5051/1813 checker:claude-opus-5-5:19739/null
+2026-10-05-AFTER_HOURS-v7-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1140; prompt chars 7737+9567; tokens writer:gpt-5.6-luna:4175/1737 checker:claude-opus-5-5:19750/1606
+2026-10-06-AFTER_HOURS-v6-w_luna: PUBLISHED; 0 of 13 lines struck; $0.1636; prompt chars 8691+16566; tokens writer:gpt-5.6-luna:6227/2930 checker:claude-opus-5-5:27887/2366
+2026-10-06-AFTER_HOURS-v7: NOT RUN, spend $4.3352 + worst case $0.8116 exceeds the $5 stop
+
+TOTAL spend $4.3352

@@ -1,0 +1,308 @@
+PAIR 1 (PREMARKET report, 2026-10-02)
+
+A:
+Summary: (no Summary: the checker struck it)
+
+FRESH NEWS FOUND
+SILO: On October 1, 2026, Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting for warrants covering up to 300,000 common shares at a $1.51 exercise price, exercisable for five years. The transaction was reported in an October 2, 2026 current report.
+AMOD: On October 1, 2026, Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million. Secondary coverage reported that the financing issued 51.6 million common shares and matching warrants, and the SEC filed a current report concerning the completed transaction.
+CYCU: On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00. The stock remained subject to a discretionary Nasdaq Panel monitor.
+SMX: On October 2, 2026, SMX published three company releases concerning its Digital Material Passport and certified recycled plastic positioning. The supplied evidence did not identify a contract, customer commitment, approval, revenue contribution or other quantified commercial result.
+QTEX: On October 1, 2026, the company reported that a leading quantum-computing company independently tested its cryogenic interconnect at 20 mK and found more than 100 dB of channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. The company said it and the unnamed tester were finalizing a binding definitive agreement to be disclosed within weeks; the agreement had not yet been executed or disclosed.
+
+OLDER OR SECONDARY NEWS
+VCIG: On September 30, 2026, VCIG disclosed an equity purchase agreement entered on September 23 giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares. The same filing disclosed Dune and FirstFire convertible-note transactions, while a September 29 registration statement sought registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares. Our sources found only older or secondary news, and the evidence does not establish that Hudson received a put notice or purchased any ELOC shares.
+ZNB: On August 17, 2026, ZNB closed a $10.0 million private placement of 3,412,970 units at $2.93 per unit, with each unit containing one ordinary share and a warrant exercisable at $4.40. Our sources found no fresh company-specific positive event in the supplied October 2 coverage.
+SMTK: On September 18, 2026, SmartKem filed an S-1 covering the prospective resale of up to 30,000,000 shares that may be issued to Keystone under a common-stock purchase agreement, along with an S-3 registering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares. Our sources found only older or secondary news.
+MTNB: On September 28, 2026, the latest identified company-specific event for MTNB was an effective 1-for-15 reverse stock split. Our sources found only older or secondary news.
+MI: On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The private placement was subject to closing conditions and was not reported as completed. Our sources found only older or secondary news.
+
+NOT RESEARCHED AT THIS CHECKPOINT
+BRAI: Not researched at this checkpoint
+WHG: Not researched at this checkpoint
+
+B:
+Summary: Among the counted names, 6 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were AMOD, with fresh news found in our sources: Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin, and CYCU, with fresh news found in our sources: Cycurion disclosed that Nasdaq confirmed it had regained compliance with the minimum-bid requirement. After the close, MI added 14 percent. 5 of the 12 names the desk covers had fresh news in our sources.
+
+FRESH NEWS FOUND
+SILO: A fresh catalyst was found in our sources. On October 1, 2026, Silo agreed to acquire software, technology and related intellectual property from Norsight Consulting for warrants covering up to 300,000 common shares at a $1.51 exercise price, exercisable for five years; the transaction adds those assets while creating potential warrant supply subject to stockholder-approval limitations.
+AMOD: A fresh catalyst was found in our sources. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants, adding supply considerations to the balance-sheet change, while the supplied SEC excerpt does not provide the complete primary-source terms.
+CYCU: A fresh catalyst was found in our sources. On October 2, 2026, Cycurion disclosed Nasdaq confirmation that it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00; secondary coverage reported a 48% share-price surge, while the evidence does not establish how much of the move came from the compliance announcement.
+SMX: A fresh catalyst was found in our sources. SMX published three October 2 releases concerning its Digital Material Passport and certified recycled plastic positioning; the supplied evidence identifies no contract, customer commitment, approval, revenue contribution or other quantified commercial result.
+QTEX: A fresh catalyst was found in our sources. QTREX reported that an unnamed leading quantum-computing company independently tested its cryogenic interconnect at 20 mK, finding more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader; the parties were finalizing a binding definitive agreement, but its terms and execution were not disclosed.
+
+OLDER OR SECONDARY NEWS
+VCIG: Only older or secondary news was found in our sources, not a fresh catalyst. VCIG disclosed an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares, while related filings covered up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares; the financing creates substantial potential share supply, but the evidence does not establish that Hudson purchased shares or that the registration became effective.
+ZNB: Only older or secondary news was found in our sources, not a fresh catalyst. The latest identified company event was the August 17 closing of a $10.0 million private placement of 3,412,970 units at $2.93 per unit, each with one ordinary share and a warrant exercisable at $4.40; the financing added share and warrant supply, but the evidence does not show it caused the current move.
+SMTK: Only older or secondary news was found in our sources, not a fresh catalyst. On September 18, SmartKem filed an S-1 covering prospective resale of up to 30,000,000 shares and an S-3 covering resale of up to 15,127,662 shares, including 2,516,786 additional conversion shares; the filings describe potential resale and dilution supply, not evidence that the shares were issued or sold.
+MTNB: Only older or secondary news was found in our sources, not a fresh catalyst. The latest identified company-specific event was the September 28, 2026 effective 1-for-15 reverse stock split, which changed the CUSIP and consolidated shares without changing proportional ownership other than fractional-share treatment.
+MI: Only older or secondary news was found in our sources, not a fresh catalyst. On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million; the proposed placement represents substantial prospective share supply, but the evidence does not confirm closing, issuance or resale timing.
+
+NOT RESEARCHED AT THIS CHECKPOINT
+BRAI: Research was not completed at this checkpoint, and no dossier is on file.
+WHG: Research was not completed at this checkpoint, and no dossier is on file.
+
+Better: A / B / same
+
+---
+
+PAIR 3 (PREMARKET report, 2026-10-06)
+
+A:
+Summary: (no Summary: the checker struck it)
+
+FRESH NEWS FOUND
+LCFY: Locafy announced on October 6, 2026, a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company said the business was expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions.
+VCIG: On October 6, 2026, VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services.
+XHG: On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion with planned investment of $5 million to $10 million while gradually reducing mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result.
+MTEN: On October 6, 2026, the company reported completion of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen.
+KAPA: On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.
+
+OLDER OR SECONDARY NEWS
+BIYA: On September 29, 2026, BIYA filed or released its H1 FY2026 results, reporting a net loss of $2.37 million versus $4.71 million in the comparative period and basic and diluted loss per share of $(0.54) versus $(96.15). Secondary coverage reported sales of $756,805; the company remained loss-making and disclosed financing dependence and dilution risk.
+SXTC: On September 16, 2026, the SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity without confirming sales.
+SMXT: 
+BURU: On October 1, 2026, secondary coverage reported that Nuburu had unveiled Site Dome and submitted its first proposal to an aerospace-defense customer. On October 6, 2026, an SEC filing disclosed a side letter changing warrant valuation provisions and registration-related obligations for certain holders.
+TRVI: On August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026.
+
+RESEARCH COULD NOT TELL
+CRBU: our research reached no conclusion
+
+NOT RESEARCHED AT THIS CHECKPOINT
+NEPH: Not researched at this checkpoint
+
+B:
+Summary: Among the counted names, 11 ran at least 50 percent above the prior close, none of them gave the entire move back, and 5 of them kept at least half of the peak gain at the close. The two covered 50 percent movers with the highest peaks were XHG, which ran to 190 percent above the prior close and closed up 25 percent from the prior close, with fresh news found in our sources: a proposed U.S. AI expansion and planned reduction of mainland China operations, and VCIG, which ran to 59 percent above the prior close and closed up 55 percent from the prior close, with fresh news found in our sources: the launch of its VGAIN Compute AI Token Platform. After the close, MTEN added 83 percent. 5 of the 12 names the desk covers had fresh news in our sources.
+
+FRESH NEWS FOUND
+LCFY: Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance, with expected additions of about $2.0 million in ARR and about $900,000 in 2026 EBIT. The desk's reading is that the announced acquisition has stated consideration and disclosed expected contributions, while closing and the performance-based payment remain unresolved.
+VCIG: Only fresh news was found: VCI Global launched the VGAIN Compute AI Token Platform as an expansion into AI infrastructure and LLM services. The desk's reading is that the announcement presents a new AI and LLM-related platform launch, but the bundle does not provide operating, customer, revenue, or transaction-value metrics.
+XHG: XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The desk's reading is that this is a proposed strategic initiative and operational reduction, not a completed transaction or operating result.
+MTEN: The company reported completion on October 6, 2026 of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen. The desk's reading is that this is a material company-specific transaction disclosed in a current report, while the acquired businesses' financial contribution and operating terms are not established.
+KAPA: Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial, including 17.7-month median progression-free survival versus 2 months. The desk's reading is that this was a company-specific Phase 2 interim efficacy update, although the provided excerpt lacks the trial sample size, follow-up duration, and full statistical results.
+
+OLDER OR SECONDARY NEWS
+BIYA: Only older or secondary news was found, not a fresh catalyst. The September 29 H1 FY2026 results reported net loss of $2.37 million versus $4.71 million, basic and diluted loss per share of $(0.54) versus $(96.15), and sales of $756,805. The desk's reading is that the per-share loss improved, but the company remained loss-making and disclosed financing dependence and dilution risk.
+SXTC: Only older or secondary news was found, not a fresh catalyst. The SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, supporting legal resale eligibility rather than confirming sales. The desk's reading is that the filing establishes resale eligibility, but the evidence does not establish facility usage or sales.
+SMXT: Only older or secondary news was found, not a fresh catalyst. The latest company-specific event was an August 2026 Nasdaq noncompliance notice concerning a delayed Form 10-Q, alongside a reverse split intended to support minimum-bid-price compliance. The desk's reading is that the collected company event is a listing-compliance matter rather than a fresh operating catalyst, while the current session had unusually elevated relative volume.
+BURU: Only older or secondary news was found, not a fresh catalyst. Secondary coverage reported that Nuburu unveiled Site Dome and submitted its first proposal to an aerospace-defense customer, while a recent SEC filing disclosed changes to warrant valuation provisions and registration-related obligations for certain holders. The desk's reading is that the proposal is a company-specific commercial-development item, not a disclosed order or contract.
+TRVI: Only older or secondary news was found, not a fresh catalyst. On August 6, 2026, Trevi reported initiation of its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026. The desk's reading is that the update concerns ongoing advancement of Haduvio across those studies, with no later company-specific event in the bundle explaining the session activity.
+
+RESEARCH COULD NOT TELL
+CRBU: 
+
+NOT RESEARCHED AT THIS CHECKPOINT
+NEPH: Research was not completed yet; there was no dossier at this checkpoint.
+
+Better: A / B / same
+
+---
+
+PAIR 4 (INTO_RTH report, 2026-10-02)
+
+A:
+Summary: AMOD, up 200 percent from the prior close, with fresh news found in our sources: Alpha Modus reported completion of its bitcoin-backed PIPE transaction. AIXI, up 39 percent from the prior close, with fresh news found in our sources: its filing reported lower revenue, financing reliance and a substantial shareholder loss; SDEV, up 38 percent from the prior close, with no catalyst found in our sources. Seven of the 12 names the desk covers had fresh news in our sources.
+
+FRESH NEWS FOUND
+AMOD: Alpha Modus reported completion of its bitcoin-backed PIPE transaction on September 30. The transaction was described as adding 3,170 Bitcoin, then valued above $200 million, alongside an agreement for 51,621,560 newly issued Class A PIPE shares. The completed deal materially changes the balance-sheet asset profile, while the associated issuance is a material supply consideration.
+AIXI: 
+AMIX: A secondary news source reported on October 2 that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology. The patent expands reported intellectual-property coverage, but the evidence does not establish near-term revenue or regulatory clearance.
+CYCU: Secondary coverage dated October 2 reported that Cycurion regained Nasdaq compliance, while a September company release referred to an ongoing Nasdaq listing process. The available report is secondary only, so the precise terms and confirmation remain unverified in this bundle.
+TNMG: On October 2, 2026, TNL Mediagene announced a definitive agreement to sell its Japanese business to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million, following a special-committee process and fairness opinion. The transaction is a concrete strategic divestiture, while the bundle does not provide closing conditions, an expected closing date, use of proceeds or the sold business's financial contribution.
+SORA: AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products. The proposed effort connects SORA to real-world-asset tokenization, while its non-binding status leaves execution and economics unconfirmed.
+SSM: A Schedule 13D filed on October 1 disclosed that Alpine Fox Capital held a roughly 21.5% stake in Sono Group. A newly disclosed large shareholder position can focus attention on the issuer and may be viewed as a supportive ownership development, although the evidence does not establish when the position was accumulated or Alpine Fox's intentions.
+
+OLDER OR SECONDARY NEWS
+GOW: 
+
+NO CATALYST FOUND IN OUR SOURCES
+SMX: No catalyst found in our sources. The supplied communications are promotional, and the bundle identifies no material corporate event that independently explains the move.
+SGRX: No catalyst found in our sources. The available material describes a new website and logo tied to an AI-infrastructure transition, plus a September 9 disposition of 3 million DOGE for approximately $267,665 in gross proceeds for working capital, not a fresh event sufficient to explain the move.
+SDEV: No catalyst found in our sources. The company reported unusual trading activity on September 29 but identified no material development or other reason for the market action, leaving the move without an identified company-specific catalyst.
+
+NOT RESEARCHED AT THIS CHECKPOINT
+LOCL: Research is not on file at this checkpoint, and there is no dossier.
+
+B:
+Summary: AMOD ranked first in this range, up 200 percent from the prior close. On September 30, Alpha Modus completed its bitcoin-backed PIPE transaction, previously described as adding 3,170 Bitcoin valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares. AIXI was up 39 percent from the prior close; its October 2026 semi-annual filing reported that first-half 2026 revenue fell about 99.12 percent year over year after it discontinued low-margin cloud-platform resale activities, and that financing including convertible notes may dilute shareholders upon conversion.
+
+FRESH NEWS FOUND
+AMOD: On October 1, 2026, Alpha Modus reported that it completed its bitcoin-backed PIPE transaction on September 30. The transaction had previously been described as adding 3,170 Bitcoin, then valued above $200 million, while the related purchase agreement contemplated 51,621,560 newly issued Class A PIPE shares.
+AIXI: On October 1, 2026, AIXI's semi-annual filing reported that first-half 2026 revenue fell about 99.12 percent year over year after the company discontinued low-margin cloud-platform resale activities. The filing also said financing, including convertible notes, may dilute shareholders upon conversion, and reported a substantial shareholder loss for the period.
+AMIX: On October 2, 2026, secondary coverage reported that Autonomix received Canadian Patent No. 3,183,802 for catheter-based nerve-treatment technology.
+CYCU: On October 2, 2026, secondary coverage reported that Cycurion regained Nasdaq compliance. A September 28 company release had referred to an ongoing Nasdaq listing process.
+TNMG: On October 2, 2026, TNL Mediagene announced a definitive agreement dated September 30 to sell its Japanese business, including its wholly owned Japan holding company and the Mediagene and Infobahn subsidiaries, to a CEO-led acquisition vehicle for aggregate consideration of $5.5 million.
+SORA: On October 1, 2026, AsiaStrategy announced a non-binding memorandum of understanding with Plume to explore forming an Asia-focused joint venture for structuring, issuing and distributing tokenized financial products.
+SSM: On October 1, 2026, a Schedule 13D was filed, and secondary coverage reported that Alpine Fox Capital disclosed a roughly 21.5% stake in Sono Group.
+
+OLDER OR SECONDARY NEWS
+GOW: On September 25, 2026, GOWell reported that it had closed its business combination and completed a previously announced $50 million PIPE of preferred shares and warrants; it began Nasdaq trading as GOW on September 28. An earlier private placement contributed approximately $20 million, for stated PIPE gross proceeds of $70 million before fees and expenses.
+
+NO CATALYST FOUND IN OUR SOURCES
+SMX: no catalyst found in our sources
+SGRX: no catalyst found in our sources
+SDEV: no catalyst found in our sources
+
+NOT RESEARCHED AT THIS CHECKPOINT
+LOCL: Not researched at this checkpoint
+
+Better: A / B / same
+
+---
+
+PAIR 5 (INTO_RTH report, 2026-10-05)
+
+A:
+Summary: MI, up 213 percent from the prior close, with only older or secondary news in our sources. SAIQ, up 286 percent from the prior close, with only older or secondary news in our sources. APUS, up 64 percent from the prior close, with fresh news found in our sources: MindWave announced an agreement with BlockAssure to build and operate AssureChain.
+
+FRESH NEWS FOUND
+ALEC: A fresh catalyst was found in our sources. Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization across indications while Alector retains its platform and wholly owned pipeline rights. The desk reads the collaboration as company-specific validation and a cash-runway event, while payment and transaction terms were not provided.
+APUS: A fresh catalyst was found in our sources. MindWave announced an agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network; secondary coverage describes a two-year contract and a 20% allocation of planned token supply, with fees undisclosed. The desk reads it as a new customer agreement, while the cash-fee economics and token valuation remain unquantified.
+
+OLDER OR SECONDARY NEWS
+MI: Only older or secondary news was found in our sources, not a fresh catalyst. On September 30, 2026, NFT Ltd disclosed an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The desk reads the proposed placement as prospective share supply with dilution implications if it closes, while the closing and current shares outstanding are unconfirmed.
+VRAX: Only older or secondary news was found in our sources, not a fresh catalyst. The Fosun Diagnostics agreement described commercial expansion across six Southeast Asian markets, while later filings concerned registered warrant shares and an ATM rather than new business progress. The desk does not find the agreement timely enough to clearly explain the present move.
+QTEX: Only older or secondary news was found in our sources, not a fresh catalyst. QTREX reported independent testing of its cryogenic interconnect at 20 mK, with over 100 dB channel isolation across the 4 to 8 GHz qubit band and 60 dB beyond the stated market leader. The desk reads this as technical validation and a prospective commercial agreement, while the counterparty and commercial economics remain undisclosed.
+EZRA: 
+SAIQ: Only older or secondary news was found in our sources, not a fresh catalyst. WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. The desk reads this as the creation of a newly Nasdaq-traded public security around its first sessions after listing.
+RETO: 
+VEEA: Only older or secondary news was found in our sources, not a fresh catalyst. Veea announced an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores. The desk reads the planned deployment as a potentially material commercial use, while contract value, purchase commitments and expected revenue were not disclosed.
+VCIG: Only older or secondary news was found in our sources, not a fresh catalyst. VCIG entered an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares, while an F-1 identifies up to 100,000,000 ELOC purchase shares alongside warrant and conversion-related shares. The desk reads the financing as conditional potential share supply, with no evidence that Hudson purchased ELOC shares or that the F-1 became effective.
+
+RESEARCH COULD NOT TELL
+ONEN: The analysis reached no conclusion about a catalyst. SEC filings document completion of the business combination, the renaming of HVII as ONE Nuclear Energy Inc., Nasdaq listing of ONEN, and approximately $146.5 million of redemption payments on September 23, 2026. The desk reads the transaction as a listed-issuer change accompanied by substantial redemptions, while coverage outside SEC filings was not assessed.
+
+NOT RESEARCHED AT THIS CHECKPOINT
+ICU: Research is not on file at this checkpoint; no dossier was available.
+
+B:
+Summary: MI ranked first in this range, up 213 percent from the prior close; our sources found only older or secondary news. On September 30, 2026, NFT Ltd disclosed a private placement agreement for 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million, subject to closing conditions. SAIQ was up 286 percent from the prior close, with only older or secondary news in our sources.
+
+FRESH NEWS FOUND
+ALEC: Alector disclosed on October 5, 2026, a September 30 license agreement with Genentech covering certain GCase candidates. The company said Genentech would lead development, regulatory, manufacturing and commercialization, while Alector retained its Alector Brain Carrier platform and rights to its wholly owned pipeline; Alector also said the partnership extends its cash runway into 2029.
+APUS: MindWave announced on October 5, 2026, an agreement with BlockAssure to build and operate AssureChain, an insurance and reinsurance network. Secondary coverage described the agreement as a two-year contract under which MindWave would receive 20% of planned token supply; fees were not disclosed.
+
+OLDER OR SECONDARY NEWS
+MI: NFT Ltd disclosed on September 30, 2026, an agreement to sell 80,000,000 Class A ordinary shares to non-U.S. purchasers at $0.45 per share for approximately $36 million. The private placement was subject to closing conditions, and our sources did not confirm that it closed or that the shares were issued.
+VRAX: Virax Biolabs announced on July 9, 2026, a commercial supply agreement with Fosun Diagnostics covering multiple countries, followed by a July 16 shareholder update. Our sources found no fresh operating catalyst, and later September filings concerned warrant-resale registration and ATM capacity.
+QTEX: QTREX reported on October 1, 2026, that a leading quantum computing company independently tested its cryogenic interconnect at 20 mK and found over 100 dB channel isolation across the 4 to 8 GHz qubit band. QTREX said it was finalizing a binding definitive agreement with the unnamed company, which had not been reported as executed.
+EZRA: 
+SAIQ: WISeSat.Space completed its business combination with Columbus Acquisition Corp. on October 1, 2026, and its ordinary shares began Nasdaq trading as SAIQ on October 2. The supplied primary-source excerpts did not state a transaction value or other material operating result.
+RETO: 
+VEEA: Veea announced on October 1, 2026, an agreement with TROLLEE Holdings for phased deployment of VeeaONE across 1,000 unattended stores. The company said TROLLEE planned to run its smart retail applications on VeeaONE, combining local AI, secure connectivity and remote management.
+VCIG: VCIG disclosed on September 30, 2026, an equity purchase agreement giving it the right, subject to conditions, to direct Hudson Global Ventures to purchase up to $125 million of ordinary shares. The same filing disclosed Dune and FirstFire convertible-note transactions, while a September 29 registration statement sought registration of up to 100,000,000 ELOC purchase shares plus warrant and conversion-related shares.
+
+RESEARCH COULD NOT TELL
+ONEN: our research reached no conclusion
+
+NOT RESEARCHED AT THIS CHECKPOINT
+ICU: Not researched at this checkpoint
+
+Better: A / B / same
+
+---
+
+PAIR 6 (INTO_POWER_HOUR report, 2026-10-05)
+
+A:
+Summary: MI ranked first in this range, up 806 percent from the prior close, with only older or secondary news in our sources. QTEX was up 44 percent from the prior close with only older or secondary news in our sources. ALEC was up 20 percent from the prior close and had fresh news in our sources: Alector disclosed a September 30, 2026 license agreement with Genentech covering certain GCase candidates, with Genentech handling development, regulatory, manufacturing and commercialization and Alector retaining its Alector Brain Carrier platform and wholly owned pipeline; Alector said the partnership extends its cash runway into 2029.
+
+FRESH NEWS FOUND
+ALEC: On October 5, 2026, Alector reported its September 30 license agreement with Genentech covering certain GCase candidates. Genentech took responsibility for development, regulatory, manufacturing and commercialization across indications, while Alector retained its Alector Brain Carrier platform and rights to its wholly owned pipeline; Alector said the partnership extends its cash runway into 2029.
+
+OLDER OR SECONDARY NEWS
+MI: On September 30, 2026, NFT Limited entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. The filing confirms the agreement, but our sources do not confirm that the private placement closed.
+VRAX: On July 9, 2026, Virax Biolabs reported a multi-country commercial supply agreement with Fosun Diagnostics. The company provided a shareholder update on July 16, 2026, and our sources found no fresh operating catalyst.
+JONE: 
+QTEX: On October 1, 2026, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK and achieved more than 100 dB of channel isolation across the 4 to 8 GHz qubit band. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, not that an agreement had been executed.
+
+RESEARCH COULD NOT TELL
+VNME: our research reached no conclusion
+APT: our research reached no conclusion
+
+NOT RESEARCHED AT THIS CHECKPOINT
+GSRF: Not researched at this checkpoint
+DBCA: Not researched at this checkpoint
+OTGA: Not researched at this checkpoint
+JENA: Not researched at this checkpoint
+TDWD: Not researched at this checkpoint
+
+B:
+Summary: MI, up 806 percent from the prior close, with only older or secondary news in our sources. QTEX, up 44 percent from the prior close, with only older or secondary news in our sources. ALEC, up 20 percent from the prior close, with fresh news found in our sources: a September 30 license agreement with Genentech covering certain GCase candidates.
+
+FRESH NEWS FOUND
+ALEC: At 07:00 ET October 5, 2026, Alector disclosed a September 30 license agreement with Genentech covering certain GCase candidates, with Genentech leading development, regulatory, manufacturing and commercialization. Alector said the collaboration extends its cash runway into 2029, while payment, milestone, royalty and transaction-value terms were not provided.
+
+OLDER OR SECONDARY NEWS
+MI: On September 30, NFT Limited entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million. This was a dilutive financing event rather than a positive operating catalyst, and the evidence does not establish that it closed.
+VRAX: The July 9, 2026 Fosun Diagnostics supply agreement covered commercial expansion across six Southeast Asian markets, followed by a July 16 shareholder update; these are older news rather than a fresh catalyst. September filings concerned warrant-resale registration and ATM capacity, and do not clearly explain the move.
+JONE: On September 1, 2026, the company announced that its IPO units would begin trading separately as Class A ordinary shares and rights commencing September 3. This was a trading-structure event for a blank-check company rather than operating or transaction-development news, and it is not a fresh catalyst.
+QTEX: 
+
+RESEARCH COULD NOT TELL
+VNME: The analysis reached no conclusion about a catalyst: the collected record is SEC-only and contains no catalyst-source or company-newsroom coverage.
+APT: The analysis reached no conclusion about a catalyst: the collected SEC filings did not describe a company-specific event that could be classified as the cause of the move, and no non-SEC catalyst coverage was collected.
+
+NOT RESEARCHED AT THIS CHECKPOINT
+GSRF: Research was not on file at this checkpoint.
+DBCA: Research was not on file at this checkpoint.
+OTGA: Research was not on file at this checkpoint.
+JENA: Research was not on file at this checkpoint.
+TDWD: Research was not on file at this checkpoint.
+
+Better: A / B / same
+
+---
+
+PAIR 7 (INTO_POWER_HOUR report, 2026-10-06)
+
+A:
+Summary: XHG, up 5 percent from the prior close, with a proposed U.S. AI expansion and planned China-operations reduction. OLOX, up 66 percent from the prior close, with no catalyst found in our sources. IPDN, up 40 percent from the prior close, with an equipment lease and financing commitments for two NVIDIA B300 systems.
+
+FRESH NEWS FOUND
+XHG: At 08:30 ET on October 6, 2026, the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations, and an intended $5 million to $10 million U.S. investment. The announcement describes a proposed shift toward U.S. AI operations and a planned investment range, not a completed investment, contract, or regulatory approval.
+LCFY: At 09:29 ET on October 6, 2026, Locafy announced an agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance, with expected additions of about $2.0 million in ARR and about $900,000 in 2026 EBIT. The acquisition is subject to closing conditions, and the evidence does not establish a closing date or whether the contingent consideration becomes payable.
+BRN: 
+KAPA: At 07:30 ET on October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its Phase 2 ENV-105 and apalutamide trial, with secondary coverage reporting 17.7-month median progression-free survival versus 2 months. The primary-source excerpt does not state the trial sample size, follow-up duration, or full statistical results.
+AIIO: At 06:00 ET on October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and stated an expectation of approximately US$600 million in full-year 2026 revenue. The update includes a reported monthly revenue figure and a full-year revenue expectation, without an audited financial statement validating the September figure.
+VIVK: At 09:01 ET on October 6, 2026, secondary reports said Vivakor entered an indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed and the transaction described as non-binding. The reports describe a potential acquisition rather than a definitive agreement, and no primary company release or SEC filing is included in the bundle.
+IPDN: 
+SXTP: At 07:45 ET on October 6, 2026, the company reported its intention to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind it, report primary and secondary endpoint results in January 2027, and request a pre-sNDA meeting with the FDA that month. The update sets a January 2027 endpoint and FDA meeting-request timeline, without endpoint results or an established FDA decision, sNDA acceptance, or approval outcome.
+
+OLDER OR SECONDARY NEWS
+SMXT: 
+AIFA: Only older or secondary news was found in our sources, not a fresh catalyst. On October 4, AIFA reported that two Teach OS modules were live, four remained under development, and a formal launch was expected in the near term; the bundle does not quantify the product's commercial impact.
+
+NO CATALYST FOUND IN OUR SOURCES
+OLOX: No catalyst found in our sources.
+
+NOT RESEARCHED AT THIS CHECKPOINT
+AVBP: Research is not on file at this checkpoint.
+
+B:
+Summary: XHG ranked first in this range, up 5 percent from the prior close, with fresh news that the company announced a proposed U.S. AI-business expansion, a planned reduction of mainland China operations and an intended $5 million to $10 million U.S. investment. OLOX was up 66 percent from the prior close, with no catalyst found in our sources. IPDN was up 40 percent from the prior close, with fresh news that PDN Intelligence entered an equipment lease arrangement for one NVIDIA B300 eight-GPU system and agreed to lend funds for a second system, representing approximately $1.177 million of initial capital commitments.
+
+FRESH NEWS FOUND
+XHG: XHG announced on October 6, 2026, a proposed expansion of its U.S. AI business, a planned reduction of its mainland China operations and an intended $5 million to $10 million U.S. investment.
+LCFY: On October 6, 2026, Locafy reported a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance, subject to closing conditions.
+BRN: On October 6, 2026, Barnwell reported that it had entered an October 5 agreement to sell its Canadian oil and natural gas business for a C$9 million base purchase price, consisting of C$4 million cash and a 5% gross overriding royalty, subject to adjustments and closing conditions.
+KAPA: On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months.
+AIIO: On October 6, 2026, Robo.ai reported September revenue exceeding US$100 million and said it expected approximately US$600 million of full-year 2026 revenue.
+VIVK: Secondary reports on October 6, 2026, said Vivakor entered a non-binding indication of interest to acquire 100% of Direct Midstream, with financial terms undisclosed.
+IPDN: On October 6, 2026, PDN Intelligence reported that it had entered an October 5 equipment lease arrangement for one NVIDIA B300 eight-GPU system costing $588,581.99 and agreed to lend $588,849.23 to finance a second system, representing approximately $1.177 million of initial capital commitments.
+SXTP: On October 6, 2026, SXTP reported that it intended to conclude enrollment at 30 subjects in its severe-babesiosis tafenoquine study, unblind the study, report primary and secondary endpoint results in January 2027 and request a pre-sNDA meeting with the FDA that month.
+
+OLDER OR SECONDARY NEWS
+SMXT: On August 21, 2026, SMXT reported a Nasdaq noncompliance notice tied to its delayed June 30 Form 10-Q; the August 2026 update followed a one-for-12 reverse split intended to support minimum-bid-price compliance.
+AIFA: On October 4, 2026, AIFA announced product progress at its first annual Las Vegas conference, reporting that two Teach OS modules were live, four more were under development and a formal launch was expected in the near term.
+
+NO CATALYST FOUND IN OUR SOURCES
+OLOX: OLOX: no catalyst found in our sources
+
+NOT RESEARCHED AT THIS CHECKPOINT
+AVBP: AVBP: Not researched at this checkpoint
+
+Better: A / B / same
+
+---
+

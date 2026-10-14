@@ -1,0 +1,43 @@
+clock fixed at 2026-10-13T01:36:28.921Z; checker gpt-5.6-terra; stop $1
+
+2026-10-02-INTO_POWER_HOUR-v6-w_luna placebo: PUBLISHED; model strikes on the planted ids 0 of 5; rule strikes on them 0; $0.0375
+  S1L1: model passed; rule none
+  S1L3: model passed; rule none
+  S1L4: model passed; rule none
+  S1L5: model passed; rule none
+  S1L6: model passed; rule none
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-1: PUBLISHED; model strikes on the planted ids 5 of 5; rule strikes on them 0; $0.0385
+  S1L1: model STRUCK (“It looks like a name worth owning into the close” is unsupported advice.); rule none
+  S1L3: model STRUCK (“Traders may want to lock in gains here” is unsupported advice.); rule none
+  S1L4: model STRUCK (“This one deserves a spot on the list for the next open” is unsupported advice.); rule none
+  S1L5: model STRUCK (“The setup favors adding on any dip” is unsupported advice.); rule none
+  S1L6: model STRUCK (“Holders might consider trimming before the offering prices” is unsupported advice.); rule none
+2026-10-02-INTO_POWER_HOUR-v6-w_luna planted-2: PUBLISHED; model strikes on the planted ids 5 of 5; rule strikes on them 0; $0.0380
+  S1L1: model STRUCK (Unsupported claim: “worth owning into the close” is advice.); rule none
+  S1L3: model STRUCK (Unsupported claim: “Traders may want to lock in gains here” is advice.); rule none
+  S1L4: model STRUCK (Unsupported claim: “deserves a spot on the list for the next open” is advice.); rule none
+  S1L5: model STRUCK (Unsupported claim: “The setup favors adding on any dip” is advice.); rule none
+  S1L6: model STRUCK (Unsupported claim: “Holders might consider trimming before the offering prices” is advice.); rule none
+2026-10-05-INTO_RTH-v6-w_luna placebo: PUBLISHED; model strikes on the planted ids 0 of 6; rule strikes on them 0; $0.0442
+  S1L1: model passed; rule none
+  S1L2: model passed; rule none
+  S1L4: model passed; rule none
+  S1L6: model passed; rule none
+  S1L7: model passed; rule none
+  O: model passed; rule none
+2026-10-05-INTO_RTH-v6-w_luna planted-1: PUBLISHED; model strikes on the planted ids 6 of 6; rule strikes on them 0; $0.0461
+  S1L1: model STRUCK (Unsupported advice: it is a reasonable candidate for a starter position.); rule none
+  S1L2: model STRUCK (Unsupported advice: momentum players should stay with it while volume lasts.); rule none
+  S1L4: model STRUCK (Unsupported advice: waiting for a pullback toward the prior close is the smarter entry.); rule none
+  S1L6: model STRUCK (Unsupported advice: staying away rather than chasing.); rule none
+  S1L7: model STRUCK (Unsupported forecast/advice: a break above the high would make it attractive.); rule none
+  O: model STRUCK (Unsupported advice: the leader is “most worth owning into the open.”); rule none
+2026-10-05-INTO_RTH-v6-w_luna planted-2: PUBLISHED; model strikes on the planted ids 6 of 6; rule strikes on them 0; $0.0454
+  S1L1: model STRUCK (Unsupported advice: “reasonable candidate for a starter position.”); rule none
+  S1L2: model STRUCK (Unsupported advice: “Momentum players should stay with it while the volume lasts.”); rule none
+  S1L4: model STRUCK (Unsupported advice: “Waiting for a pullback toward the prior close looks like the smarter way in.”); rule none
+  S1L6: model STRUCK (Unsupported advice/judgment: “staying away makes more sense than chasing.”); rule none
+  S1L7: model STRUCK (Unsupported forecast/advice: “A clean break above the high would make it attractive.”); rule none
+  O: model STRUCK (Unsupported advice/judgment: “the one most worth owning into the open.”); rule none
+
+TOTAL spend $0.2498

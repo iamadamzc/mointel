@@ -1,0 +1,737 @@
+{
+  "record": {
+    "tag": "2026-10-05-PREMARKET-v6-w_luna",
+    "day": "2026-10-05",
+    "kind": "PREMARKET",
+    "prompt": "v6",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L6",
+      "S1L7",
+      "S1L8",
+      "S1L9"
+    ],
+    "strikes": [
+      {
+        "id": "S1L6",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Date 'September 8, 2026' contradicts the ET reading of the event and source time (22:51 ET on 2026-09-07)."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "whyTradersMayCare says the approval 'may affect' perceptions; the line states it as definitely 'affecting perceptions'. The research also says the approval was announced on August 25, not that it took place that day."
+      },
+      {
+        "id": "S1L8",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Date 'April 1, 2026' contradicts the ET reading of the event time (20:00 ET on 2026-03-31). The price and the rest of the line are supported."
+      },
+      {
+        "id": "S1L9",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "'provided commercial expansion across six Southeast Asian markets' states actual expansion as fact; the research says only that it provided a commercial-expansion narrative."
+      }
+    ],
+    "narrativeStruck": false,
+    "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "names": {
+      "MI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "XCH": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLOX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "HSCS": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "CTVA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "GLXG": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "OLN": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "JENA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": false
+      },
+      "VRAX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "QTEX": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "POLA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NIQ": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 8691,
+    "userChars": 21533,
+    "costUsd": 0.2011742,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 7265,
+        "outputTokens": 2791,
+        "cachedInputTokens": 2151,
+        "reasoningTokens": 1625,
+        "durationMs": 23165,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30778,
+        "outputTokens": 3663,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 33622,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompt": {
+    "system": "You write a short session briefing for a momentum trader, in the voice of an assistant who did the work and is briefing plainly: specific, unhurried, candid about what the desk does not know. It is printed copy for a stranger, so it is tight.\n\nTHE NARRATIVE (\"narrative\"): the opening read of the session, above the names.\n- PURPOSE: explain what happened in the session, for readers following small-cap momentum. It is documentation and analysis, never a recommendation.\n- FACTS, INTERPRETATION AND OPEN QUESTIONS stay separate. Facts: word only the given narrative facts. Interpretation: you may name the pattern the given counts support (for example how many 50 percent movers kept half their peak gain against how many gave it back), and it must rest on the given counts and say so; nothing may rest on nothing. Open questions: what the facts say is not known stays not known.\n- Every number is a given number, written exactly as given. Percents are whole numbers as given; never add decimals, never round, never compute. Counts may be spelled out (\"nine\") or written as digits.\n- Name ONLY the tickers the narrative facts name. They are the names the sheet names: on the recap, GAINERS chosen by their regular-session peak; intraday, the leader ranked first in this range (it may be down) and the next covered gainers by move: never call them the biggest movers in both directions, never \"every mover\" or \"all the runners\".\n- After-hours figures are ALWAYS labeled \"after the close\" or \"after hours\" and never mixed with the day's figures.\n- A catalyst is news FOUND in our sources, never a cause: never \"drove\", \"sparked\", \"fueled\", \"behind the move\", \"on the news\".\n- A move and its news sit side by side, never cause and effect: join them with \"with\" (\"{ticker}, up {percent} percent from the prior close, with {the news words given for that name}\"), never \"after\", \"on\", \"following\", \"amid\", \"due to\", \"in response to\", \"in the wake of\" or \"on the back of\" between a move and its news (the frames \"after the close\" and \"after hours\" are not this).\n- Every percent move carries its frame in the same sentence: \"from the prior close\" or \"above the prior close\"; an after-hours move \"after the close\" or \"after hours\". When a sentence states two moves, each carries its own frame.\n- No adjective the facts do not define (\"busy\", \"quiet\", \"hot\", \"strong\"). No forecast: support, resistance and supply are described, never \"will hold\", \"should break\" or \"expect\".\n- LENGTH AND ORDER. Intraday report: at most three short sentences, the leader first. Recap report (evening and premarket): at most FOUR sentences, in this order, each sentence one group of facts: (1) the 50 percent movers with retention, in one sentence (\"Among the counted names, {n} ran at least 50 percent above the prior close, and {k} of them kept at least half of the peak gain at the close\"; the give-back count may join the same sentence; never the price range, which the header carries); with zero 50 percent movers, write exactly \"Among the counted names, none ran at least 50 percent above the prior close.\" and leave out sentence 2; (2) the named movers, in one sentence, each joined to its news by \"with\", never causal: \"The two covered 50 percent movers with the highest peaks were {T1}, with {state1}, and {T2}, with {state2}.\" (one named mover: \"The covered 50 percent mover with the highest peak was {T1}, with {state1}.\"), where each state is that name's OWN news as given: fresh news found: \"fresh news found in our sources: {the catalyst in one short clause}\"; no catalyst found: \"no catalyst found in our sources\"; only older or secondary news: \"only older or secondary news in our sources\"; the sources conflict: \"sources that conflict\"; the research could not tell: \"research that could not tell\"; not researched yet: \"no research at this checkpoint\". The sentence says nothing about any mover it does not name; never \"biggest\", \"largest\" or \"top\"; (3) the after-hours name, as its own sentence and about the after-hours move only, in the form \"After the close, {TICKER} added {P} percent.\" with no news, no cycle and no other clause; (4) the fresh count over the covered names, as the sheet gives the pair: \"{N} of the {M} names the desk covers had fresh news in our sources.\" (zero: \"None of the names the desk covers had fresh news we could find.\"; one: \"One of the {M} names the desk covers had fresh news in our sources.\"). Leave out a sentence whose facts are not given. Never pad, never add a fifth sentence, never list the covered names.\n- Intraday: each named name gets its move, its news state in the words the sheet uses, and nothing else about that name (no cycle label, no change note; the cards carry them), except one catalyst clause of twelve words at most, and only when the news state is fresh news found. For every other news state, give the state and nothing more: never restate older or secondary news, and never describe a catalyst the sheet does not give as fresh.\n- When a count is zero, say so plainly (\"none of them gave the entire move back\") and drop the clause that depends on it. Number agreement throughout.\n\nTHE LINES, one per name (\"lines\")\n- The card prints each name’s ticker, company line, price path and TAGS above your text: its catalyst grade, whether the catalyst is read as not the move, its supply and its float verdict. NEVER restate any of them: no grade, no fit to the move, no structure, no float, no share count, no supply, no cycle.\n- Write one or two sentences: the catalyst our sources found, named, how it was quantified, and what the desk makes of it. Where research is not on file, say so plainly in one sentence.\n- Where the sheet says NO path is printed, state the name’s price yourself, exactly as the sheet gives it.\n- Describe ONLY this checkpoint. Never \"still\", \"remains\", \"holds\", \"keeps\" or \"continues\". The one comparison you may make is the sheet’s \"since the previous checkpoint\" line, in its own words.\n\nFACTS\n- Use ONLY the facts in the given sheets. Copy every number, date and time EXACTLY as the sheet writes it. A figure from the catalyst summary may be shortened to one decimal with a unit (\"$46.8M\" for \"$46.802 million\"), nothing else. Never compute a number.\n- Restate stored text in your own words; never quote it. \"What the desk makes of it\" may be restated, never added to, and its numbers are never repeated.\n- Catalyst: what it is and how it was quantified. Never its expected effect on the stock, never a forecast.\n- Times: only the event time or a cited source’s time, to the minute, as the sheet gives it, or the checkpoint time. A date given as date only has no time of day. Never hedge an exact time (\"~\", \"around\", \"about\").\n- Never state a count of names in a line (\"12 names\"); only the narrative may, and only the given counts.\n- An agreement or a plan is what was agreed or announced (\"agreed to acquire\"), never \"will\". Never \"confirmed\": say \"reported by the company\". An analyst rating of Buy or Sell with no firm named is \"a positive (or negative) analyst rating\".\n\nNEVER\n- Advice or action words: buy, sell, selling, enter, exit, size, add, take it, take profits, get in, keep an eye on, watch, one to watch. One exception: a name's own deal from its sources, stated as a fact in that name's line, in these shapes only, with the company or a named party doing it: \"agreed to sell\", \"an agreement to sell\", \"selling stockholders\", \"entered into an agreement\". A named analyst firm's rating change is also a fact you may state in that name's line, as the firm's view, with the firm named and the rating capitalised: \"Wells Fargo raised its rating to Buy\". Never \"sell\" or \"buy\" in any other place (never \"a plan to sell\" or \"an offer to sell\"), and never \"entered\" except into an agreement.\n- A float number, or a share count called float.\n- Shorting or fading as a trade. The reader is long-only.\n- \"no catalyst\" on its own; it is always \"no catalyst found in our sources\". Never \"the real catalyst\".\n- Predictions, promises or outcomes: \"will\", \"pop\", \"clearly\", \"confirmed\". Completeness: \"every name\", \"all the movers\".\n- Engine constants in capitals with underscores. Halts, unless the sheet has a halt line.\n- The em dash character, and a spaced hyphen used as a dash. Use a comma, a colon, a full stop or parentheses.\n\nREPLY\n- Each name is ONE line: {\"ticker\": \"<its ticker>\", \"text\": \"<your sentences>\"}. Each line stands alone. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}.\n- Return JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}. \"narrative\" is null only when the narrative facts give nothing to say.",
+    "user": "The evening report, at 22:00: a recap of the regular session that closed and the after-hours session that followed, and the names the desk carries into the next one.\nCheckpoint time: 22:00 ET.\n\nNARRATIVE FACTS (word these and nothing else):\n  among the counted names, ran at least 50 percent above the prior close, on the day (by the regular-session high): 9\n  of those, gave the entire move back (closed at or below the prior close): 0\n  of those, kept at least half of the peak gain at the close: 5\n  of those, the desk covers: 2\n  named mover 1 (of the covered 50 percent movers, the highest peak above the prior close): MI, ran to 1066 percent above the prior close and closed up 683 percent from the prior close; news: only older or secondary news in our sources\n  named mover 2 (of the covered 50 percent movers, the second-highest peak above the prior close): VRAX, ran to 52 percent above the prior close and closed up 9 percent from the prior close; news: only older or secondary news in our sources\n  after the close (from the 16:00 close to the last after-hours print; ALWAYS say \"after the close\" or \"after hours\", never mix it with the day's figures): OLOX, up 84 percent\n  fresh news in our sources: 2 of the 12 names the desk covers\n\nNAMES:\nMI: ranked #1 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.0% after hours, from the regular-session close of $7.00\n  since the previous checkpoint: up 57.3% since the previous checkpoint\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions. On October 5, the company said it knew of no undisclosed information or business development accounting for the unusual trading.\n  event time: 16:20 ET, September 30, 2026 (exact)\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", 16:20 ET September 30, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-30T20:20:42.000Z\", September 30, 2026\n  cited source: \"EX-99.1: 6-K 2026-09-30T20:16:13.000Z\", September 30, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", 14:25 ET October 5, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The contracted 80 million shares are about 346 times the 231,129 shares reported outstanding at June 30, creating potentially extreme dilution if the placement closes. The evidence does not establish that closing occurred.\n  what the desk does not have (repeat none of its numbers): The bundle does not establish whether the September 30 private placement closed or when its shares became tradable.; No favourable company-specific development explaining the October 5 price increase was identified; the company expressly said it knew of no undisclosed development.\n\nXCH: ranked #2 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 4.3% after hours, from the regular-session close of $3.26\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): XCHG announced that EnBW deployed its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany. The primary-source announcement is a verifiable commercial deployment, but the evidence does not state contract value, unit count, revenue contribution, or timing of revenue recognition.\n  event time: September 21, 2026 (date only, give no time of day)\n  cited source: \"EnBW Deploys XCharge C7 480 kW Fast Chargers Across Its Nationwide Charging Network in Germany\", September 21, 2026\n  cited source: \"Kurze Ladezeiten, hohe Verfügbarkeit: EnBW setzt auf 480 kW-Schnellladestationen im bundesweiten Ladenetz\", September 21, 2026\n  cited source: \"EnBW Deploys XCharge C7 480 kW Fast Chargers Across Its Nationwide Charging Network in Germany\", September 21, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The deployment provides a current commercial-validation narrative for XCHG's high-power charging hardware, while the undisclosed economics leave its direct financial impact unquantified.\n  what the desk does not have (repeat none of its numbers): The number of chargers deployed, contract value, margin, backlog effect, and expected revenue contribution were not provided in the evidence.; The bundle does not establish whether the October 5 move was directly caused by this September 21 announcement.\n\nOLOX: ranked #3 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 84.1% after hours, from the regular-session close of $0.88\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): The latest identified company-specific update was the September 17 operating report that CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. This is a verifiable positive operating disclosure, but the supplied evidence contains no company event dated to the current trading session that directly attributes the move to this update.\n  event time: 09:00 ET, September 17, 2026 (exact)\n  cited source: \"Olenox Industries Reports 15.63 Bitcoin Mined in August as Company Advances Energy-Powered Digital Infrastructure Strategy\", 09:00 ET September 17, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The update provides a reported monthly production metric and operating-hashrate disclosure for the acquired digital-infrastructure operation.\n  what the desk does not have (repeat none of its numbers): The evidence does not identify a company-specific announcement on the current trading date.; The bundle does not establish whether the current price move is responding to the September 17 operating update, broader crypto-related sentiment, or trading flow.\n\nHSCS: ranked #4 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: down 15.5% after hours, from the regular-session close of $4.36\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): The newest primary filing is an October 2, 2026 amendment to the company’s loan agreement and related FRV note, changing the maturity and interest-repayment dates, but the supplied excerpt does not provide the amended dates, principal amount, or economic terms needed to determine its market significance. Separately, the company filed an S-3 shelf registration on September 25, and secondary coverage characterized it as a $200 million mixed-securities shelf.\n  event time: 17:15 ET, October 2, 2026 (exact)\n  cited source: \"CURRENT REPORT\", 17:15 ET October 2, 2026\n  cited source: \"EX-10.1: 8-K 2026-10-02T21:15:13.000Z\", October 2, 2026\n  cited source: \"REGISTRATION STATEMENT\", 17:00 ET September 25, 2026\n  cited source: \"HeartSciences Files Prospectus Shelf Registration For $200M Mixed Securities\", 17:05 ET September 25, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The loan amendment may affect near-term liquidity or obligations, while the S-3 and referenced ATM language create potential future financing capacity. The evidence does not establish a completed new offering or sales under the shelf.\n  what the desk does not have (repeat none of its numbers): The amended loan maturity, interest dates, principal balance, and any conversion or warrant economics are not provided in the supplied excerpts.; No primary-source evidence in the bundle confirms that securities have been sold under the September 25 S-3 shelf or an ATM after its filing.; The bundle does not directly connect the October 2 loan amendment or shelf filing to the current trading move.\n\nCTVA: ranked #5 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.2% after hours, from the regular-session close of $12.39\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced its new focus as a global crop-protection leader.\n  event time: October 1, 2026 (date only, give no time of day)\n  cited source: \"8-K\", 21:25 ET October 1, 2026\n  cited source: \"Corteva Begins New Chapter as Focused, Innovation-Led, Global Crop Protection Leader\", October 1, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The completed separation materially changes the public company's operating scope and capital-markets structure, leaving Corteva focused on crop protection while distributing Vylor shares to eligible Corteva holders.\n  what the desk does not have (repeat none of its numbers): The supplied primary sources do not quantify the immediate financial impact of the separation on standalone Corteva.; The bundle does not provide a time-stamped market reaction specifically attributable to the October 1 separation.\n\nGLXG: ranked #6 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 3.1% after hours, from the regular-session close of $0.99\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): The latest identifiable company-specific event is the company's September 8, 2026 announcement of support for stablecoin payments. The company IR source supports that the announcement occurred, but the supplied excerpt provides no adoption, revenue, transaction-volume, customer, or financial-impact metric. More recent company-site items are general payroll, tax, and employment-guide content rather than identified material corporate events.\n  event time: 22:51 ET, September 7, 2026 (exact)\n  cited source: \"Galaxy Group (Nasdaq: GLXG) Announces Support for Stablecoin Payments\", 22:51 ET September 7, 2026\n  cited source: \"Hong Kong Corporate Tax Planning: Smart Ways to Manage Your Tax\", 07:29 ET September 30, 2026\n  cited source: \"Taiwan Payroll Outsourcing: What Businesses Should Know Before Getting Started\", 07:24 ET September 28, 2026\n  cited source: \"How EOR Services in Singapore Take the Stress Out of Global Hiring\", 07:08 ET September 24, 2026\n  cited source: \"Vietnam Minimum Wage Explained: From Compliance to Hiring Costs\", 07:13 ET September 21, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): Stablecoin-payment support can create a digital-asset-related narrative for a payroll-services issuer, although the bundle does not establish a quantified business impact.\n  what the desk does not have (repeat none of its numbers): The bundle does not quantify the stablecoin feature's usage, launch scope, revenue effect, customers, or counterparties.; No company-specific event on or near the observed market session is identified in the supplied sources.\n\nOLN: ranked #7 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.0% after hours, from the regular-session close of $16.27\n  since the previous checkpoint: lost $16.28 support\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): The latest primary company-specific event in the bundle is Olin and Huntsman shareholder approval of the previously announced all-stock merger of equals, announced August 25, 2026. The filing describes approval as a milestone toward completion, not confirmation that the merger closed. More recent items are secondary analyst-rating and price-target changes, including Wells Fargo maintaining Equal-Weight while lowering its target to $16 on October 1.\n  event time: 16:45 ET, August 25, 2026 (exact)\n  cited source: \"EX-99.1: 8-K 2026-08-25T20:45:27.000Z\", August 25, 2026\n  cited source: \"8-K\", 17:14 ET June 16, 2026\n  cited source: \"Wells Fargo Maintains Equal-Weight on Olin, Lowers Price Target to $16\", 08:35 ET October 1, 2026\n  cited source: \"Citigroup Maintains Neutral on Olin, Lowers Price Target to $17\", 14:32 ET September 30, 2026\n  cited source: \"Deutsche Bank Maintains Hold on Olin, Lowers Price Target to $20\", 12:47 ET August 25, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): Merger approval advances the proposed combination and the June merger agreement specifies that each outstanding Huntsman share would convert into 0.5476 Olin shares, subject to the transaction's terms and conditions. The event may affect perceptions of the combined company's structure and execution path.\n  what the desk does not have (repeat none of its numbers): The bundle does not establish that the merger has closed.; The bundle contains no fresh company-specific primary event on the latest observed market date.\n\nJENA: ranked #8 in this range\n  no path is printed for this name: state its price yourself, $10.43\n  change: up 0.0% after hours, from the regular-session close of $10.43\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On April 1, 2026, NYSE Regulation notified the company that it was not in compliance with NYSE continued-listing requirements, including the requirement to maintain at least 300 public stockholders. The company stated it had an 18-month cure period while remaining listed. This is an adverse listing-compliance event, but the available catalyst coverage is SEC-only and incomplete.\n  event time: April 1, 2026 (date only, give no time of day)\n  cited source: \"CURRENT REPORT\", 17:15 ET April 3, 2026\n  cited source: \"EX-99.1: 8-K 2026-04-03T21:15:08.000Z\", April 3, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): A continued-listing deficiency can create delisting-risk and liquidity concerns if the company does not regain compliance within its cure period.\n  what the desk does not have (repeat none of its numbers): No company IR, newsroom, newswire, or other non-SEC catalyst coverage was supplied, so a more recent announcement outside SEC filings may not have been captured.; The evidence does not establish a company-specific event tied to the current market activity.\n\nVRAX: ranked #9 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.0% after hours, from the regular-session close of $2.40\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.\n  event time: July 9, 2026 (date only, give no time of day)\n  cited source: \"Virax Biolabs Signs Multi-Country Commercial Supply Agreement with Fosun Diagnostics\", 07:30 ET July 9, 2026\n  cited source: \"Virax Biolabs' CEO James Foster Provides Shareholder Update Following Fiscal 2026 Annual Report and Fosun Diagnostics Commercial Supply Agreement\", 07:30 ET July 16, 2026\n  cited source: \"EFFECT filed 2026-09-03\", 00:15 ET September 4, 2026\n  cited source: \"424B3\", 17:51 ET September 9, 2026\n  cited source: \"6-K\", 16:20 ET September 4, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The Fosun agreement provided a legitimate commercial-expansion narrative across six Southeast Asian markets, but it is not timely enough to clearly explain the present move. September filings instead highlight potential future supply from registered warrant shares and an ATM.\n  what the desk does not have (repeat none of its numbers): Whether any uncollected intraday development influenced the move despite coverage being marked complete.; Whether the Fosun agreement has generated material revenue since its announcement.\n\nQTEX: ranked #10 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 27.9% after hours, from the regular-session close of $1.54\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had already been executed.\n  event time: 13:20 ET, October 1, 2026 (exact)\n  cited source: \"EX-99.1: 6-K 2026-10-01T17:20:11.000Z\", October 1, 2026\n  cited source: \"QTREX Quantum Stock Climbs Friday: What's Going On?\", 08:14 ET October 2, 2026\n  cited source: \"QTEX Stock Jumps 15% Premarket after Friday’s 40% Surge. Here’s Why\", October 5, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The independently reported technical result provides a measurable performance claim and could support commercial validation of QTREX's quantum-connectivity platform. The potential definitive agreement remains unexecuted and its counterparty, commercial terms, and economics were not disclosed.\n  what the desk does not have (repeat none of its numbers): The testing company's identity, agreement terms, contract value, purchase commitments, and timing of execution were not disclosed.; The evidence does not establish revenue attributable to the prospective definitive agreement.\n\nPOLA: ranked #11 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.9% after hours, from the regular-session close of $1.15\n  catalyst: a fresh catalyst was found in our sources\n  catalyst summary (restate in your own words, never quote): On October 5, Polar Power said it rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities. The offer terms and value were not disclosed, and no transaction was announced.\n  event time: 16:05 ET, October 5, 2026 (exact)\n  cited source: \"Polar Power Rejects Solidion All-Cash Offer for Company Assets\", 16:05 ET October 5, 2026\n  cited source: \"Polar Power Rejects Solidion's All-Cash Offer For All Its Assets As Undervaluing Company, Open To Other Deals; Terms Not Disclosed\", 16:09 ET October 5, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The announcement introduces a company-specific strategic-process and potential transaction narrative, but the absence of disclosed terms prevents valuation of the offer or assessment of deal certainty.\n  what the desk does not have (repeat none of its numbers): The offer price, structure, binding status, conditions and Solidion identity details are not stated in the supplied excerpts.; No completed sale, merger agreement or alternative transaction is evidenced.\n\nNIQ: ranked #12 in this range\n  path PRINTED ABOVE your line (do not restate its prices)\n  change: up 0.0% after hours, from the regular-session close of $17.32\n  catalyst: only older or secondary news was found in our sources (say it is not a fresh catalyst)\n  catalyst summary (restate in your own words, never quote): Secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The bundle does not include the underlying company release, commercial terms, revenue impact, or customer commitments, so this is a secondary-reported favourable product and partnership development rather than a primary-sourced material catalyst.\n  event time: 06:36 ET, September 30, 2026 (exact)\n  cited source: \"NIQ Expands Google Partnership, Integrating Google's Open-Source MMM Framework Meridian, Into NIQ Cadence, NIQ's AI-Native Marketing Effectiveness Operating System\", 06:36 ET September 30, 2026\n  what the desk makes of it (restate its meaning, never add to it, and repeat none of its numbers): The report links NIQ's Cadence platform to Google's Meridian framework, which could focus attention on NIQ's AI and marketing-effectiveness offerings. The reported item contains no quantified financial impact.\n  what the desk does not have (repeat none of its numbers): No primary company announcement for the Google partnership expansion is included in the bundle.; No contract value, revenue contribution, customer adoption metric, or financial guidance change is disclosed in the cited coverage.; The bundle does not establish whether this item caused any particular price move."
+  },
+  "draft": {
+    "headline": "",
+    "overall": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "MI",
+            "text": "The catalyst is not fresh: on September 30, 2026, NFT Ltd entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions, and the company said on October 5 that it knew of no undisclosed information or business development accounting for unusual trading. The desk reads the placement as potentially extreme dilution if it closes, but the evidence does not establish closing or when the shares became tradable."
+          },
+          {
+            "ticker": "XCH",
+            "text": "The catalyst is not fresh: XCHG said EnBW deployed its C7 480 kW fast chargers across its nationwide charging network in Germany on September 21, 2026. The desk reads this as commercial validation of the hardware, while undisclosed economics leave its direct financial impact unquantified."
+          },
+          {
+            "ticker": "OLOX",
+            "text": "The catalyst is not fresh: the latest identified company-specific update said CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. The desk reads this as a reported monthly production and operating-hashrate disclosure for the acquired digital-infrastructure operation."
+          },
+          {
+            "ticker": "HSCS",
+            "text": "A fresh catalyst was found in our sources: the October 2, 2026 loan amendment changed maturity and interest-repayment dates, while secondary coverage characterized the September 25 S-3 as a $200 million mixed-securities shelf; the supplied excerpts do not provide the amended dates or economic terms. The desk reads the amendment as potentially affecting near-term liquidity or obligations and the shelf as creating potential future financing capacity, without evidence of a completed offering or sales under it."
+          },
+          {
+            "ticker": "CTVA",
+            "text": "The catalyst is not fresh: Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced a new focus as a global crop-protection leader. The desk reads the separation as materially changing Corteva's operating scope and capital-markets structure, while the immediate financial impact on standalone Corteva is not quantified."
+          },
+          {
+            "ticker": "GLXG",
+            "text": "The catalyst is not fresh: the company announced support for stablecoin payments on September 8, 2026. The desk reads this as a digital-asset-related narrative for a payroll-services issuer, while the bundle does not establish a quantified business impact."
+          },
+          {
+            "ticker": "OLN",
+            "text": "The catalyst is not fresh: Olin and Huntsman shareholders approved the previously announced all-stock merger of equals on August 25, 2026. The desk reads the approval as advancing the proposed combination and affecting perceptions of the combined company's structure and execution path, while the bundle does not establish that the merger closed."
+          },
+          {
+            "ticker": "JENA",
+            "text": "At $10.43, the catalyst is not fresh: on April 1, 2026, NYSE Regulation notified the company that it did not meet continued-listing requirements, including maintaining at least 300 public stockholders, and the company stated it had an 18-month cure period while remaining listed. The desk reads the deficiency as creating delisting-risk and liquidity concerns if the company does not regain compliance within that cure period."
+          },
+          {
+            "ticker": "VRAX",
+            "text": "The catalyst is not fresh: the July 9, 2026 Fosun Diagnostics supply agreement provided commercial expansion across six Southeast Asian markets, followed by a July 16 shareholder update. The desk reads the agreement as a commercial-expansion narrative that is not timely enough to clearly explain the present move; September filings instead highlight potential future supply from registered warrant shares and an ATM."
+          },
+          {
+            "ticker": "QTEX",
+            "text": "The catalyst is not fresh: on October 1, QTREX reported independent testing of its interconnect at 20 mK, with more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader, and said it was finalizing a binding definitive agreement with the testing company. The desk reads the result as a measurable performance claim that could support commercial validation, while the prospective agreement remains unexecuted and its counterparty, terms, and economics were not disclosed."
+          },
+          {
+            "ticker": "POLA",
+            "text": "A fresh catalyst was found in our sources: on October 5, Polar Power rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities; the offer terms and value were not disclosed. The desk reads this as a company-specific strategic-process and potential transaction narrative, while the undisclosed terms prevent valuation of the offer or assessment of deal certainty."
+          },
+          {
+            "ticker": "NIQ",
+            "text": "The catalyst is not fresh: secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The desk reads the report as linking Cadence with Google's Meridian framework, while it contains no quantified financial impact."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"MI\",\"text\":\"The catalyst is not fresh: on September 30, 2026, NFT Ltd entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions, and the company said on October 5 that it knew of no undisclosed information or business development accounting for unusual trading. The desk reads the placement as potentially extreme dilution if it closes, but the evidence does not establish closing or when the shares became tradable.\"},{\"ticker\":\"XCH\",\"text\":\"The catalyst is not fresh: XCHG said EnBW deployed its C7 480 kW fast chargers across its nationwide charging network in Germany on September 21, 2026. The desk reads this as commercial validation of the hardware, while undisclosed economics leave its direct financial impact unquantified.\"},{\"ticker\":\"OLOX\",\"text\":\"The catalyst is not fresh: the latest identified company-specific update said CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. The desk reads this as a reported monthly production and operating-hashrate disclosure for the acquired digital-infrastructure operation.\"},{\"ticker\":\"HSCS\",\"text\":\"A fresh catalyst was found in our sources: the October 2, 2026 loan amendment changed maturity and interest-repayment dates, while secondary coverage characterized the September 25 S-3 as a $200 million mixed-securities shelf; the supplied excerpts do not provide the amended dates or economic terms. The desk reads the amendment as potentially affecting near-term liquidity or obligations and the shelf as creating potential future financing capacity, without evidence of a completed offering or sales under it.\"},{\"ticker\":\"CTVA\",\"text\":\"The catalyst is not fresh: Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced a new focus as a global crop-protection leader. The desk reads the separation as materially changing Corteva's operating scope and capital-markets structure, while the immediate financial impact on standalone Corteva is not quantified.\"},{\"ticker\":\"GLXG\",\"text\":\"The catalyst is not fresh: the company announced support for stablecoin payments on September 8, 2026. The desk reads this as a digital-asset-related narrative for a payroll-services issuer, while the bundle does not establish a quantified business impact.\"},{\"ticker\":\"OLN\",\"text\":\"The catalyst is not fresh: Olin and Huntsman shareholders approved the previously announced all-stock merger of equals on August 25, 2026. The desk reads the approval as advancing the proposed combination and affecting perceptions of the combined company's structure and execution path, while the bundle does not establish that the merger closed.\"},{\"ticker\":\"JENA\",\"text\":\"At $10.43, the catalyst is not fresh: on April 1, 2026, NYSE Regulation notified the company that it did not meet continued-listing requirements, including maintaining at least 300 public stockholders, and the company stated it had an 18-month cure period while remaining listed. The desk reads the deficiency as creating delisting-risk and liquidity concerns if the company does not regain compliance within that cure period.\"},{\"ticker\":\"VRAX\",\"text\":\"The catalyst is not fresh: the July 9, 2026 Fosun Diagnostics supply agreement provided commercial expansion across six Southeast Asian markets, followed by a July 16 shareholder update. The desk reads the agreement as a commercial-expansion narrative that is not timely enough to clearly explain the present move; September filings instead highlight potential future supply from registered warrant shares and an ATM.\"},{\"ticker\":\"QTEX\",\"text\":\"The catalyst is not fresh: on October 1, QTREX reported independent testing of its interconnect at 20 mK, with more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader, and said it was finalizing a binding definitive agreement with the testing company. The desk reads the result as a measurable performance claim that could support commercial validation, while the prospective agreement remains unexecuted and its counterparty, terms, and economics were not disclosed.\"},{\"ticker\":\"POLA\",\"text\":\"A fresh catalyst was found in our sources: on October 5, Polar Power rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities; the offer terms and value were not disclosed. The desk reads this as a company-specific strategic-process and potential transaction narrative, while the undisclosed terms prevent valuation of the offer or assessment of deal certainty.\"},{\"ticker\":\"NIQ\",\"text\":\"The catalyst is not fresh: secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The desk reads the report as linking Cadence with Google's Meridian framework, while it contains no quantified financial impact.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "PREMARKET",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-05",
+      "targetTradingDate": "2026-10-06",
+      "checkpoints": [
+        {
+          "id": 651,
+          "type": "NEXT_DAY_RECAP",
+          "completedAt": "2026-10-06T02:00:05.914Z"
+        }
+      ],
+      "publishedAt": "2026-10-13T20:26:12.364Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "HSCS",
+              "liveFeed": null,
+              "text": "A fresh catalyst was found in our sources: the October 2, 2026 loan amendment changed maturity and interest-repayment dates, while secondary coverage characterized the September 25 S-3 as a $200 million mixed-securities shelf; the supplied excerpts do not provide the amended dates or economic terms. The desk reads the amendment as potentially affecting near-term liquidity or obligations and the shelf as creating potential future financing capacity, without evidence of a completed offering or sales under it.",
+              "company": {
+                "name": "HeartSciences Inc.",
+                "country": "United States",
+                "business": "HeartSciences is an AI-powered medical technology company that has agreed to combine with Fortitude Mining, a Zcash-focused digital-asset mining platform."
+              },
+              "path": {
+                "from": 4.36,
+                "high": 6.5,
+                "now": 3.6839,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": "since Fri close",
+                  "ageIsPriorClose": true,
+                  "eventAt": "Oct 2, 5:15 PM ET",
+                  "headline": "The newest primary filing is an October 2, 2026 amendment to the company’s loan agreement and related FRV note, changing the maturity and interest-repayment dates, but the supplied excerpt does not provide the amended dates, principal amount, or economic terms needed to determine its market significance. Separately, the company filed an S-3 shelf registration on September 25, and secondary coverage characterized it as a $200 million mixed-securities shelf.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: green because the catalyst is FRESH. It is FRESH because it broke after the prior session's close (since Fri close), so the market has not traded on it yet -- not because it is recent by the calendar. The exact time is below."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "412K sh",
+                  "detail": "Reported shares outstanding were 4,800,172 as of September 11, 2026.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 4,800,172 as of September 11, 2026. This is not a reported public float."
+                }
+              },
+              "researchVersionId": 2919,
+              "inputKey": "137967184d01af51"
+            },
+            {
+              "ticker": "POLA",
+              "liveFeed": null,
+              "text": "A fresh catalyst was found in our sources: on October 5, Polar Power rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities; the offer terms and value were not disclosed. The desk reads this as a company-specific strategic-process and potential transaction narrative, while the undisclosed terms prevent valuation of the offer or assessment of deal certainty.",
+              "company": {
+                "name": "Polar Power, Inc.",
+                "country": "United States",
+                "business": "Polar Power designs, manufactures and sells direct-current power generators, renewable-energy systems and other power solutions for telecommunications and other mission-critical applications."
+              },
+              "path": {
+                "from": 1.15,
+                "high": 1.38,
+                "now": 1.16,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 5, 4:05 PM ET",
+                  "headline": "On October 5, Polar Power said it rejected Solidion's all-cash offer for all company assets as undervaluing the company and said it would evaluate other credible strategic opportunities. The offer terms and value were not disclosed, and no transaction was announced.",
+                  "explainsMove": null,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "382K sh supply",
+                  "detail": "No reported shares-outstanding figure or dated float figure is provided in the bundle, so float cannot be reconciled.",
+                  "tone": "neg",
+                  "full": "No reported shares-outstanding figure or dated float figure is provided in the bundle, so float cannot be reconciled."
+                }
+              },
+              "researchVersionId": 2914,
+              "inputKey": "f22f43fad6b066e6"
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "MI",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: on September 30, 2026, NFT Ltd entered into an agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions, and the company said on October 5 that it knew of no undisclosed information or business development accounting for unusual trading. The desk reads the placement as potentially extreme dilution if it closes, but the evidence does not establish closing or when the shares became tradable.",
+              "company": {
+                "name": "NFT Ltd",
+                "country": "Hong Kong",
+                "business": "NFT Ltd operates an online platform where artists, art dealers and art owners can list and trade artwork."
+              },
+              "path": {
+                "from": 7,
+                "high": 7.45,
+                "now": 7,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 4:20 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 30 · On September 30, 2026, NFT Ltd entered into a private-placement agreement to sell 80,000,000 Class A ordinary shares at $0.45 each for approximately $36 million, subject to closing conditions. On October 5, the company said it knew of no undisclosed information or business development accounting for the unusual trading.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "80.9M sh supply",
+                  "detail": "The latest affirmative shares-outstanding figure is dated June 30 and predates both the August offering and the September private-placement agreement.",
+                  "tone": "neg",
+                  "full": "The latest affirmative shares-outstanding figure is dated June 30 and predates both the August offering and the September private-placement agreement."
+                }
+              },
+              "researchVersionId": 2906,
+              "inputKey": "9c87a1b9e5d6db81"
+            },
+            {
+              "ticker": "XCH",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: XCHG said EnBW deployed its C7 480 kW fast chargers across its nationwide charging network in Germany on September 21, 2026. The desk reads this as commercial validation of the hardware, while undisclosed economics leave its direct financial impact unquantified.",
+              "company": {
+                "name": "XCHG Ltd",
+                "country": null,
+                "business": "XCHG supplies high-performance electric vehicle charging and energy storage solutions."
+              },
+              "path": {
+                "from": 3.26,
+                "high": 5.25,
+                "now": 3.4,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "14d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 21, 8:00 AM ET",
+                  "headline": "XCHG announced that EnBW deployed its C7 480 kW fast chargers across EnBW's nationwide charging network in Germany. The primary-source announcement is a verifiable commercial deployment, but the evidence does not state contract value, unit count, revenue contribution, or timing of revenue recognition.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "347.0M sh supply",
+                  "detail": "XCHG completed a registered direct financing for 7.0 million pre-ADS-ratio-change ADSs and approximately $4.375 million gross proceeds.",
+                  "tone": "neg",
+                  "full": "XCHG completed a registered direct financing for 7.0 million pre-ADS-ratio-change ADSs and approximately $4.375 million gross proceeds. The later resale behavior of that investor is not established."
+                }
+              },
+              "researchVersionId": 2917,
+              "inputKey": "66a673ecbc33b0ac"
+            },
+            {
+              "ticker": "OLOX",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: the latest identified company-specific update said CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. The desk reads this as a reported monthly production and operating-hashrate disclosure for the acquired digital-infrastructure operation.",
+              "company": {
+                "name": "OLENOX INDUSTRIES INC.",
+                "country": "United States",
+                "business": "Olenox is an integrated energy and infrastructure company focused on oil and natural gas, energy services, power generation, modular infrastructure and digital-compute assets."
+              },
+              "path": {
+                "from": 0.88,
+                "high": 1.66,
+                "now": 1.62,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "18d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 17, 9:00 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 17 · The latest identified company-specific update was the September 17 operating report that CS Digital mined approximately 15.63 Bitcoin in August, with average operational hashrate of about 1.03 EH/s. This is a verifiable positive operating disclosure, but the supplied evidence contains no company event dated to the current trading session that directly attributes the move to this update.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "More than $5.25 million in debt and Series C preferred stated value was converted into common shares since June 2026, but the corresponding share count is not disclosed in the supplied evidence.",
+                  "tone": "warn",
+                  "full": "More than $5.25 million in debt and Series C preferred stated value was converted into common shares since June 2026, but the corresponding share count is not disclosed in the supplied evidence."
+                }
+              },
+              "researchVersionId": 2912,
+              "inputKey": "72b1906d93bd8e1a"
+            },
+            {
+              "ticker": "CTVA",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced a new focus as a global crop-protection leader. The desk reads the separation as materially changing Corteva's operating scope and capital-markets structure, while the immediate financial impact on standalone Corteva is not quantified.",
+              "company": {
+                "name": "Corteva, Inc.",
+                "country": "United States",
+                "business": "Corteva is a focused global crop-protection company following the spin-off of its Seed Business into Vylor."
+              },
+              "path": {
+                "from": 12.39,
+                "high": 12.7,
+                "now": 12.42,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 8:00 PM ET",
+                  "headline": "Corteva completed the pro rata spin-off of its Seed Business into independently traded Vylor on October 1, 2026, and announced its new focus as a global crop-protection leader.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "Corteva completed a major separation transaction on October 1, 2026, distributing all then-outstanding Vylor common shares to Corteva shareholders as a pro rata dividend in-kind.",
+                  "tone": "warn",
+                  "full": "Corteva completed a major separation transaction on October 1, 2026, distributing all then-outstanding Vylor common shares to Corteva shareholders as a pro rata dividend in-kind."
+                }
+              },
+              "researchVersionId": 2908,
+              "inputKey": "e4084fe17c6c425d"
+            },
+            {
+              "ticker": "GLXG",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Galaxy Payroll Group Ltd",
+                "country": null,
+                "business": "Galaxy Payroll Group provides payroll outsourcing and employment services in Asia."
+              },
+              "path": {
+                "from": 0.985,
+                "high": 1.35,
+                "now": 1.0151,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "28d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 7, 10:51 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 7 · The latest identifiable company-specific event is the company's September 8, 2026 announcement of support for stablecoin payments. The company IR source supports that the announcement occurred, but the supplied excerpt provides no adoption, revenue, transaction-volume, customer, or financial-impact metric. More recent company-site items are general payroll, tax, and employment-guide content rather than identified material corporate events.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "3.80M sh supply",
+                  "detail": "A 3.8 million-share resale registration is effective.",
+                  "tone": "neg",
+                  "full": "A 3.8 million-share resale registration is effective. This permits selling shareholders to resell registered shares, though the bundle does not establish actual sales."
+                }
+              },
+              "researchVersionId": 2916,
+              "inputKey": "7e17c3ba176472b3"
+            },
+            {
+              "ticker": "OLN",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "OLIN Corp",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 16.27,
+                "high": 16.3159,
+                "now": 16.27,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "41d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 25, 4:45 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 25 · The latest primary company-specific event in the bundle is Olin and Huntsman shareholder approval of the previously announced all-stock merger of equals, announced August 25, 2026. The filing describes approval as a milestone toward completion, not confirmation that the merger closed. More recent items are secondary analyst-rating and price-target changes, including Wells Fargo maintaining Equal-Weight while lowering its target to $16 on October 1.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "5.00M sh",
+                  "detail": "The proposed all-stock Huntsman merger could result in Olin share issuance at a 0.5476 exchange ratio per Huntsman share if completed.",
+                  "tone": "warn",
+                  "full": "The proposed all-stock Huntsman merger could result in Olin share issuance at a 0.5476 exchange ratio per Huntsman share if completed. The total issuance is not provided."
+                }
+              },
+              "researchVersionId": 2907,
+              "inputKey": "df6785e6776b9d4b"
+            },
+            {
+              "ticker": "JENA",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "JENA ACQUISITION Corp II",
+                "country": "United States",
+                "business": "Jena Acquisition Corp II is a blank check company formed to pursue a merger, amalgamation, share exchange, asset acquisition, share purchase, reorganization or similar business combination."
+              },
+              "path": null,
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "188d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Mar 31, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Mar 31 · On April 1, 2026, NYSE Regulation notified the company that it was not in compliance with NYSE continued-listing requirements, including the requirement to maintain at least 300 public stockholders. The company stated it had an 18-month cure period while remaining listed. This is an adverse listing-compliance event, but the available catalyst coverage is SEC-only and incomplete.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The company disclosed NYSE non-compliance relating to the minimum requirement of 300 public stockholders, which is a listing-status risk.",
+                  "tone": "warn",
+                  "full": "The company disclosed NYSE non-compliance relating to the minimum requirement of 300 public stockholders, which is a listing-status risk."
+                }
+              },
+              "researchVersionId": 2920,
+              "inputKey": "a960b7341e79ca41"
+            },
+            {
+              "ticker": "VRAX",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "Virax Biolabs Group Ltd",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 2.4,
+                "high": 2.42,
+                "now": 2.4,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "88d",
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No fresh catalyst · latest: No fresh operating catalyst appears in the covered sources. The latest identified commercial news was the July 9, 2026 Fosun Diagnostics supply agreement, followed by a July 16 shareholder update; both are stale relative to the market-state date. More recent September filings concern an effective warrant-resale registration and ATM capacity rather than new business progress.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "2.23M sh supply",
+                  "detail": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares.",
+                  "tone": "neg",
+                  "full": "The only stated shares-outstanding figure is 579,218 as of March 31, 2026 and predates the reported July closing of an exercise involving 548,000 shares. It therefore should not be treated as a current fully diluted count."
+                }
+              },
+              "researchVersionId": 2427,
+              "inputKey": "f02b08a6029c9c9b"
+            },
+            {
+              "ticker": "QTEX",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: on October 1, QTREX reported independent testing of its interconnect at 20 mK, with more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader, and said it was finalizing a binding definitive agreement with the testing company. The desk reads the result as a measurable performance claim that could support commercial validation, while the prospective agreement remains unexecuted and its counterparty, terms, and economics were not disclosed.",
+              "company": {
+                "name": "QTREX Quantum Ltd.",
+                "country": null,
+                "business": "QTREX develops advanced connectivity and electronics manufacturing solutions, including cryogenic quantum interconnects and additively manufactured electronics."
+              },
+              "path": {
+                "from": 1.54,
+                "high": 2.18,
+                "now": 1.97,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "4d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 1:20 PM ET",
+                  "headline": "On October 1, QTREX reported that a leading quantum-computing company independently tested its interconnect at 20 mK, achieving more than 100 dB channel isolation across the 4 to 8 GHz qubit band, stated as 60 dB beyond the market leader. QTREX said it was finalizing a binding definitive agreement with the unnamed testing company, rather than reporting that an agreement had already been executed.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "11.1M sh",
+                  "detail": "QTREX completed a registered direct offering of 11,111,111 ordinary shares at $0.90 per share on August 20, 2026, approximately six weeks before the October price action.",
+                  "tone": "warn",
+                  "full": "QTREX completed a registered direct offering of 11,111,111 ordinary shares at $0.90 per share on August 20, 2026, approximately six weeks before the October price action. This is confirmed new share issuance, but the evidence does not establish whether the shares remain held or have been sold."
+                }
+              },
+              "researchVersionId": 2895,
+              "inputKey": "a8e8cc4490807316"
+            },
+            {
+              "ticker": "NIQ",
+              "liveFeed": null,
+              "text": "The catalyst is not fresh: secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The desk reads the report as linking Cadence with Google's Meridian framework, while it contains no quantified financial impact.",
+              "company": {
+                "name": "NIQ Global Intelligence plc",
+                "country": "United States",
+                "business": "NIQ provides market measurement, consumer behavior and insights, analytics and activation, and data and AI platform solutions."
+              },
+              "path": {
+                "from": 17.32,
+                "high": 17.4,
+                "now": 17.32,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 30, 6:36 AM ET",
+                  "headline": "No fresh catalyst · latest: Sep 30 · Secondary coverage reported on September 30, 2026 that NIQ expanded its Google partnership by integrating Google's open-source Meridian marketing-mix-modeling framework into NIQ Cadence. The bundle does not include the underlying company release, commercial terms, revenue impact, or customer commitments, so this is a secondary-reported favourable product and partnership development rather than a primary-sourced material catalyst.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "50.0M sh",
+                  "detail": "Reported shares outstanding were 294,955,864 as of August 5, 2026, but no source in the bundle states a public float.",
+                  "tone": "warn",
+                  "full": "Reported shares outstanding were 294,955,864 as of August 5, 2026, but no source in the bundle states a public float. Shares outstanding must not be treated as float."
+                }
+              },
+              "researchVersionId": 2909,
+              "inputKey": "5f0497a37c3806c5"
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": "Among the counted names, 9 ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none of them gave the entire move back. The two covered 50 percent movers with the highest peaks were MI, with only older or secondary news in our sources, and VRAX, with only older or secondary news in our sources. After the close, OLOX added 84 percent. 2 of the 12 names the desk covers had fresh news in our sources.",
+      "narrativeFootnotes": {
+        "noClose": 2,
+        "splitExcluded": 0
+      },
+      "narrativeKey": "1c148254d3903e64",
+      "revisionOf": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "S1L6",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "Date 'September 8, 2026' contradicts the ET reading of the event and source time (22:51 ET on 2026-09-07).",
+          "text": "The catalyst is not fresh: the company announced support for stablecoin payments on September 8, 2026. The desk reads this as a digital-asset-related narrative for a payroll-services issuer, while the bundle does not establish a quantified business impact."
+        },
+        {
+          "id": "S1L7",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "whyTradersMayCare says the approval 'may affect' perceptions; the line states it as definitely 'affecting perceptions'. The research also says the approval was announced on August 25, not that it took place that day.",
+          "text": "The catalyst is not fresh: Olin and Huntsman shareholders approved the previously announced all-stock merger of equals on August 25, 2026. The desk reads the approval as advancing the proposed combination and affecting perceptions of the combined company's structure and execution path, while the bundle does not establish that the merger closed."
+        },
+        {
+          "id": "S1L8",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "Date 'April 1, 2026' contradicts the ET reading of the event time (20:00 ET on 2026-03-31). The price and the rest of the line are supported.",
+          "text": "At $10.43, the catalyst is not fresh: on April 1, 2026, NYSE Regulation notified the company that it did not meet continued-listing requirements, including maintaining at least 300 public stockholders, and the company stated it had an 18-month cure period while remaining listed. The desk reads the deficiency as creating delisting-risk and liquidity concerns if the company does not regain compliance within that cure period."
+        },
+        {
+          "id": "S1L9",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "'provided commercial expansion across six Southeast Asian markets' states actual expansion as fact; the research says only that it provided a commercial-expansion narrative.",
+          "text": "The catalyst is not fresh: the July 9, 2026 Fosun Diagnostics supply agreement provided commercial expansion across six Southeast Asian markets, followed by a July 16 shareholder update. The desk reads the agreement as a commercial-expansion narrative that is not timely enough to clearly explain the present move; September filings instead highlight potential future supply from registered warrant shares and an ATM."
+        }
+      ],
+      "writerMs": 23167,
+      "checkerMs": 33631
+    }
+  }
+}

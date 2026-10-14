@@ -1,0 +1,785 @@
+{
+  "record": {
+    "tag": "2026-10-06-PREMARKET-v7-w_luna",
+    "day": "2026-10-06",
+    "kind": "PREMARKET",
+    "prompt": "v7",
+    "writer": "gpt-5.6-luna",
+    "checker": "claude-opus-5-5",
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "O",
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "3.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "2.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "1.0 million is not a narrative fact"
+      },
+      {
+        "id": "O",
+        "reason": "NOT_SELF_CONTAINED",
+        "by": "rule",
+        "detail": "names LCFY in the narrative"
+      },
+      {
+        "id": "O",
+        "reason": "NUMBER_WITHOUT_ROW",
+        "by": "rule",
+        "detail": "\"gave the entire move back\" with no count, but the count is 0"
+      },
+      {
+        "id": "O",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "LCFY is not a ticker named in the narrative facts, so restating its catalyst is unsupported. 'Intraday' misframes its rank, which is the 22:00 checkpoint in-range rank, not an intraday one. The other figures match the narrative facts."
+      },
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research gives no date for the reverse split; 'on August 11, 2026' is unsupported."
+      }
+    ],
+    "narrativeStruck": true,
+    "narrative": null,
+    "names": {
+      "LCFY": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "VCIG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "XHG": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "MTEN": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "BIYA": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SXTC": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "SMXT": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "BURU": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      },
+      "CRBU": {
+        "status": "UNKNOWN",
+        "hasPath": true
+      },
+      "KAPA": {
+        "status": "FRESH_FOUND",
+        "hasPath": true
+      },
+      "NEPH": {
+        "status": "NOT_RESEARCHED",
+        "hasPath": true
+      },
+      "TRVI": {
+        "status": "SECONDARY_STALE",
+        "hasPath": true
+      }
+    },
+    "systemChars": 7737,
+    "userChars": 13231,
+    "costUsd": 0.1746618,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5039,
+        "outputTokens": 2225,
+        "cachedInputTokens": 1882,
+        "reasoningTokens": 1187,
+        "durationMs": 23101,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31391,
+        "outputTokens": 2271,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 26234,
+        "role": "checker"
+      }
+    ]
+  },
+  "sentPrompt": {
+    "system": "You write a short session report: a Summary of the session and one line per name.\n\nTHE SUMMARY (\"narrative\") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:\n- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.\n- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.\n- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name's facts on another, and never mention a name the narrative facts do not name.\n- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause (\"from the prior close\", \"above the prior close\", \"after the close\"). A count goes with \"ran at least 50 percent\" and \"gave the entire move back\" whenever you use those phrases.\n\nUSING THE FACTS:\n- Use only the facts given. Copy every number and date exactly; never compute one. Say a catalyst amount as you would on air, shortened to one decimal at most (\"$46.8 million\"). Restate stored text in your own words; never quote it.\n- The voice below keeps the move out of a name line because the card prints it above the line. Where a name's sheet says no card path is printed, no card sits above that line, so its price and change may be stated, in the past tense.\n- A deal or plan is what was agreed or announced, never \"will\"; never \"confirmed\", say \"the company reported\". A deal is a fact: say what the company or a named party agreed, sold, bought or entered into, as the source states it. Keep the status the source gives (proposed, non-binding, agreed, rejected, completed); say a deal closed or was signed only if the source says so. Never a recommendation to buy, sell, enter, exit, add, watch, short or fade, in any words.\n- A named analyst firm's rating change is a fact that our sources report, and you may state it as that firm's view, with the firm named and the rating capitalised ('Wells Fargo raised its rating to Buy'); never as advice, and never from an unnamed source.\n- Restate what the source reports and its terms, never the desk's reading of what it may mean or what traders, investors or the market may think, do or care about.\n- The joining words in the voice below are forbidden only where they connect a move to news, and a date's \"on\" is fine (\"On October 5, the company disclosed\"); never join a move and news with \"due to\", \"because of\", \"in response to\", \"in the wake of\" either. Never open a line with \"It's\", \"That name\" either.\n- Never \"still\", \"remains\" or \"continues\"; never \"top\"; never a count of names in a name line, \"every name\", \"all the movers\" or \"the real catalyst\".\n- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.\n\nREPLY\n- JSON only: {\"narrative\": string | null, \"lines\": [{\"ticker\": string | null, \"text\": string}]}, one line per name. With no names, one line: {\"ticker\": null, \"text\": \"Nothing in our sources for this section.\"}. \"narrative\" is null only when the narrative facts give nothing to say.\n\nYou are a financial news desk reporter on air at a small-cap trading desk. Report what moved and what the news was, the way a person says it to camera: natural, varied, connected, and never robotic. Do not fill in a template name after name; let each story find its own shape and let each name's line and the Summary read as coherent, human speech, not a stack of separate sentences; coherence lives within a line, and a name's line never refers to another name. Do not repeat a stock phrase from name to name, except the ruled state phrases below.\n\nWhat each name's line must include: the name, and the news the desk found, with its date, as the sources state it. A supply fact belongs only when it is itself the news (a placement, an ATM program, a reverse split). Say nothing about the move in a name line: no price, no percent, no up or down, no word about the high (the card prints all of it above the line). The one exception: you may say that nothing in our sources tied the move to the news, and nothing else about the move. The Summary may use the percents it is given. For a name with no news to report, say the ruled state phrase exactly and nothing more: \"Not researched at this checkpoint\", \"no catalyst found in our sources\", \"our research reached no conclusion\"; never invent or pad news for it.\n\nWhat must stay true, whatever the style: attribute what you report (\"the company said\", \"our sources show\", \"secondary coverage reported\") and say \"in our sources\" only where a claim would otherwise read as about the market. Never say what a headline caused, what the stock will do, or what anyone should do. Never address the reader or a viewer (\"you\", \"stay with us\", \"back to you\"), and never say what traders, investors or the market are doing, thinking or feeling. Use no word the facts do not define (\"surging\", \"hot\", \"busy\", \"quiet\"). Say a rank as a rank (\"ranked first in this range\"), never \"led\" or \"biggest\". Speak of the checkpoint in the past tense (\"was up\", \"had fresh news\"), so a report read later does not state a market condition as now; anchor every time to a date, and never write a clock time such as \"2:30 PM\". Make each name's line stand on its own: open it with the company or the news, never with \"It\", \"Its\", \"Also\", \"The same\", \"This name\", \"They\", \"Both\" or \"Either\", and name no other ticker. Never join a move and a news item with after, following, on, as, amid, thanks to, driven by, sparked, triggered or fueled. These are rules for you to follow yourself; write with care, because figures, dates and tickers are checked against the data.\n\nONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (a report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given):\n\nSummary. MI ranked first in this range, up 806 percent from the prior close, and the only news in our sources was older or secondary. QTEX was up 44 percent from the prior close with the same kind of news. ALEC, up 20 percent from the prior close, had fresh news in our sources: a license agreement with Genentech for certain GCase candidates. Of the 12 names the desk covers, 2 had fresh news in our sources.\n\nALEC. On October 5, Alector disclosed a September 30 license agreement with Genentech for certain GCase candidates: Genentech leads development and commercialization, Alector keeps its Brain Carrier platform and wholly owned pipeline, and the company said the deal extends its cash runway into 2029. No upfront, milestone or deal-value terms were given.\n\nMI. The news in our sources was older. On September 30, NFT Limited agreed to a private placement of 80,000,000 Class A shares at $0.45, about $36 million, and nothing in our evidence showed it closed. Our evidence had no company event dated October 5.\n\nQTEX. The latest news we found was from October 1: QTREX said an unnamed quantum-computing company had tested its interconnect at 20 mK and measured more than 100 dB channel isolation, and that it was finalizing a binding agreement with that company. None was reported as signed.",
+    "user": "The late evening report: a recap of the regular session and the after-hours session that followed.\n\nNARRATIVE FACTS:\n  counted names that ran at least 50 percent above the prior close on the day (by the regular-session high): 11\n  of those, kept at least half of the peak gain at the close: 5\n  of those, gave the entire move back (closed at or below the prior close): 0\n  named mover (covered, the highest peak among the 50 percent movers): XHG; peak 190 percent above the prior close; closed up 25 percent from the prior close; news state: fresh: our sources found a fresh catalyst; the fresh catalyst (restate briefly, never quote): On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result.\n  named mover (covered, the second-highest peak among the 50 percent movers): VCIG; peak 59 percent above the prior close; closed up 55 percent from the prior close; news state: fresh: our sources found a fresh catalyst; the fresh catalyst (restate briefly, never quote): VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services.\n  after-hours name (the move from the regular-session close to the last after-hours print; about this move only): MTEN, up 83 percent after the close\n  names the desk covers that had fresh news in our sources: 5 of 12\n\nNAMES:\nLCFY: ranked #1 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): On October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company stated the acquired business is expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions.\n  event date: October 6, 2026\n  cited source: \"6-K\", October 6, 2026\n  cited source: \"EX-99.1: 6-K 2026-10-06T13:29:20.000Z\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): The acquisition remains subject to customary closing conditions.; The evidence does not establish a closing date or whether the performance-based consideration will become payable.\n\nVCIG: ranked #2 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services.\n  event date: October 6, 2026\n  cited source: \"VCI Global Launches VGAIN Compute AI Token Platform, Expanding into AI Infrastructure and LLM Services\", undated\n  cited source: \"VCI Global Rolls Out VGAIN Compute AI Token Platform\", October 6, 2026\n  cited source: \"VCI Global launches AI token platform with access to multiple LLMs\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): The primary newswire item has no recorded publication timestamp in the bundle.; The bundle does not provide operating, customer, revenue, or transaction-value metrics for the VGAIN platform.\n\nXHG: ranked #3 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result.\n  event date: October 6, 2026\n  cited source: \"XChange TEC.INC Announces Proposed U.S. AI Business Expansion and Reduction of Mainland China Operations\", undated\n  cited source: \"XChange TEC.INC Announces Proposed U.S. AI Business Expansion and Reduction of Mainland China Operations\", October 6, 2026\n  cited source: \"XChange TEC.INC Intends To Gradually Reduce Its Operations In Mainland China And Plans To Invest Between $5M And $10M In US Market\", October 6, 2026\n  cited source: \"XChange TEC.INC Announces Strategic Initiative To Explore Expansion Of Its AI Business In US\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): The bundle does not include a company SEC filing confirming the proposed expansion, funding source, implementation timetable, or financial effect.; The newswire item's publication timestamp is not recorded in the bundle.\n\nMTEN: ranked #4 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): The company reported completion on October 6, 2026 of its acquisition of 100% of the Target Company for $15.0 million, through which it indirectly acquired Shanghai Shangyun Yingfei and Shanghai Minwen.\n  event date: October 6, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): Catalyst coverage is incomplete because no company IR, newsroom, newswire, or non-SEC news source was located.; The bundle does not establish the acquired businesses' financial contribution or operating terms beyond the acquisition consideration and ownership transfer.\n\nBIYA: ranked #5 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): BIYA filed/released H1 FY2026 results on September 29. Reported net loss was $2.37 million versus $4.71 million in the comparative period, and basic/diluted loss per share was $(0.54) versus $(96.15); the accompanying coverage reported sales of $756,805. The improvement is favourable, but the company remained loss-making and disclosed financing dependence/dilution risk.\n  event date: September 29, 2026\n  cited source: \"EX-99.1–6-K 2026-09-29T16:28:32.000Z\", September 29, 2026\n  cited source: \"EX-99.2–6-K 2026-09-29T16:28:32.000Z\", September 29, 2026\n  cited source: \"Baiya International Group H1 EPS $(0.54) Up From $(96.15) YoY, Sales $756.805K\", September 29, 2026\n  what the desk does not have (repeat none of its numbers): The supplied evidence does not establish how much of the observed intraday volume or price movement was directly attributable to the results release rather than trading flow.\n\nSXTC: ranked #6 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): The SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity rather than confirming sales.\n  event date: September 16, 2026\n  cited source: \"EFFECT filed 2026-09-16\", September 17, 2026\n  cited source: \"REGISTRATION STATEMENT\", July 7, 2026\n  cited source: \"REPORT OF FOREIGN PRIVATE ISSUER\", August 28, 2026\n  what the desk does not have (repeat none of its numbers): The evidence does not state how much of the equity purchase facility remained unused as of the bundle date.; The evidence does not confirm sales under the effective registration.\n\nSMXT: ranked #7 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): The latest company-specific event in the collected sources is the August 2026 Nasdaq noncompliance notice for the delayed June 30 Form 10-Q, after the company effected a one-for-12 reverse split intended to support minimum-bid-price compliance. No newer company-specific positive event appears in the adequate source coverage. The current session instead shows strong live demand, with the stock up 35.0% from the reference close and daily RVOL of 117.8.\n  event date: August 21, 2026\n  cited source: \"FORM 8-K\", August 21, 2026\n  cited source: \"FORM 8-K\", August 11, 2026\n  cited source: \"Trade Halts - Current\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): The bundle contains no company-specific announcement after the August 21, 2026 noncompliance disclosure that explains the current-session move.; The bundle does not provide an identified buyer, news trigger, or order-flow attribution for the current demand.\n\nBURU: ranked #8 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): Secondary coverage reported that Nuburu unveiled Site Dome and submitted its first proposal to an aerospace-defense customer; the bundle does not include a primary company release or filing confirming the proposal. A recent SEC filing also disclosed a side letter changing warrant valuation provisions and registration-related obligations for certain holders.\n  event date: October 1, 2026\n  cited source: \"NUBURU Unveils Site Dome, Submits First Proposal To Aerospace Defense Customer\", October 1, 2026\n  cited source: \"8-K\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): The bundle contains no primary-source confirmation of the Site Dome proposal.; No disclosed contract value, purchase commitment, or customer identity accompanies the proposal.\n\nCRBU: ranked #9 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: no conclusion: use the ruled phrase for no conclusion\n  the news (restate in your own words, never quote): No conclusion on a fresh catalyst is supported. The latest SEC-filed company update located was the August 13, 2026 second-quarter financial-results and business update, which included clinical-program updates and stated that initial CB-011 dose-expansion data were expected in H2 2026; the bundle does not establish that this event caused the current move.\n  cited source: \"EX-99.1–8-K 2026-08-13\", August 13, 2026\n  what the desk does not have (repeat none of its numbers): Catalyst coverage is incomplete: no company IR, newsroom, newswire, or non-SEC catalyst source was located, so an announcement outside SEC filings may not have been captured.; The bundle does not provide evidence linking any identified corporate event to the current session's price change or volume.; The bundle does not provide adequate evidence to classify the move as flow-dominant.\n\nKAPA: ranked #10 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: fresh: our sources found a fresh catalyst\n  the news (restate in your own words, never quote): Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months.\n  event date: October 6, 2026\n  cited source: \"8-K\", October 6, 2026\n  cited source: \"EX-99.1: 8-K 2026-10-06T11:30:06.000Z\", October 6, 2026\n  cited source: \"Kairos Pharma Reports 17.7-Month Median Progression-Free Survival vs. 2 Months In Interim Phase 2 ENV-105 Prostate Cancer Data\", October 6, 2026\n  what the desk does not have (repeat none of its numbers): The provided primary-source excerpt does not state the trial sample size, follow-up duration, or full statistical results.\n\nNEPH: ranked #11 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: not researched: use the ruled phrase for not researched\n\nTRVI: ranked #12 in this range\n  the card above your line prints the prices and the move: do not restate them\n  news state: older or secondary: our sources found only older or secondary news, not a fresh catalyst\n  the news (restate in your own words, never quote): On August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026.\n  event date: August 6, 2026\n  cited source: \"EX-99.1–8-K 2026-08-06\", August 6, 2026\n  what the desk does not have (repeat none of its numbers): The bundle contains no company-specific event later than the August 6 business update that explains the observed session activity."
+  },
+  "draft": {
+    "headline": "",
+    "overall": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources.",
+    "sections": [
+      {
+        "heading": "",
+        "lines": [
+          {
+            "ticker": "LCFY",
+            "text": "Locafy announced on October 6, 2026, a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company said the business was expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions."
+          },
+          {
+            "ticker": "VCIG",
+            "text": "On October 6, 2026, VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services."
+          },
+          {
+            "ticker": "XHG",
+            "text": "On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion with planned investment of $5 million to $10 million while gradually reducing mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result."
+          },
+          {
+            "ticker": "MTEN",
+            "text": "On October 6, 2026, the company reported completion of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen."
+          },
+          {
+            "ticker": "BIYA",
+            "text": "On September 29, 2026, BIYA filed or released its H1 FY2026 results, reporting a net loss of $2.37 million versus $4.71 million in the comparative period and basic and diluted loss per share of $(0.54) versus $(96.15). Secondary coverage reported sales of $756,805; the company remained loss-making and disclosed financing dependence and dilution risk."
+          },
+          {
+            "ticker": "SXTC",
+            "text": "On September 16, 2026, the SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity without confirming sales."
+          },
+          {
+            "ticker": "SMXT",
+            "text": "On August 21, 2026, the latest company-specific event in our sources was a Nasdaq noncompliance notice tied to the delayed June 30 Form 10-Q. The company had effected a one-for-12 reverse split on August 11, 2026, intended to support minimum-bid-price compliance."
+          },
+          {
+            "ticker": "BURU",
+            "text": "On October 1, 2026, secondary coverage reported that Nuburu had unveiled Site Dome and submitted its first proposal to an aerospace-defense customer. On October 6, 2026, an SEC filing disclosed a side letter changing warrant valuation provisions and registration-related obligations for certain holders."
+          },
+          {
+            "ticker": "CRBU",
+            "text": "our research reached no conclusion"
+          },
+          {
+            "ticker": "KAPA",
+            "text": "On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+          },
+          {
+            "ticker": "NEPH",
+            "text": "Not researched at this checkpoint"
+          },
+          {
+            "ticker": "TRVI",
+            "text": "On August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026."
+          }
+        ]
+      }
+    ]
+  },
+  "rawWriterText": "{\"narrative\":\"Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources.\",\"lines\":[{\"ticker\":\"LCFY\",\"text\":\"Locafy announced on October 6, 2026, a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company said the business was expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions.\"},{\"ticker\":\"VCIG\",\"text\":\"On October 6, 2026, VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services.\"},{\"ticker\":\"XHG\",\"text\":\"On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion with planned investment of $5 million to $10 million while gradually reducing mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result.\"},{\"ticker\":\"MTEN\",\"text\":\"On October 6, 2026, the company reported completion of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen.\"},{\"ticker\":\"BIYA\",\"text\":\"On September 29, 2026, BIYA filed or released its H1 FY2026 results, reporting a net loss of $2.37 million versus $4.71 million in the comparative period and basic and diluted loss per share of $(0.54) versus $(96.15). Secondary coverage reported sales of $756,805; the company remained loss-making and disclosed financing dependence and dilution risk.\"},{\"ticker\":\"SXTC\",\"text\":\"On September 16, 2026, the SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity without confirming sales.\"},{\"ticker\":\"SMXT\",\"text\":\"On August 21, 2026, the latest company-specific event in our sources was a Nasdaq noncompliance notice tied to the delayed June 30 Form 10-Q. The company had effected a one-for-12 reverse split on August 11, 2026, intended to support minimum-bid-price compliance.\"},{\"ticker\":\"BURU\",\"text\":\"On October 1, 2026, secondary coverage reported that Nuburu had unveiled Site Dome and submitted its first proposal to an aerospace-defense customer. On October 6, 2026, an SEC filing disclosed a side letter changing warrant valuation provisions and registration-related obligations for certain holders.\"},{\"ticker\":\"CRBU\",\"text\":\"our research reached no conclusion\"},{\"ticker\":\"KAPA\",\"text\":\"On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.\"},{\"ticker\":\"NEPH\",\"text\":\"Not researched at this checkpoint\"},{\"ticker\":\"TRVI\",\"text\":\"On August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026.\"}]}",
+  "result": {
+    "status": "PUBLISHED",
+    "report": {
+      "kind": "PREMARKET",
+      "rangeId": "1-20",
+      "range": {
+        "min": 1,
+        "max": 20
+      },
+      "tradingDate": "2026-10-06",
+      "targetTradingDate": "2026-10-07",
+      "checkpoints": [
+        {
+          "id": 671,
+          "type": "NEXT_DAY_RECAP",
+          "completedAt": "2026-10-07T02:00:05.937Z"
+        }
+      ],
+      "publishedAt": "2026-10-13T20:26:12.364Z",
+      "late": true,
+      "headline": null,
+      "sections": [
+        {
+          "heading": "FRESH NEWS FOUND",
+          "lines": [
+            {
+              "ticker": "LCFY",
+              "liveFeed": null,
+              "text": "Locafy announced on October 6, 2026, a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company said the business was expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions.",
+              "company": {
+                "name": "Locafy Ltd",
+                "country": "Australia",
+                "business": "Locafy is a SaaS company providing location-based search engine optimization and answer engine optimization solutions."
+              },
+              "path": {
+                "from": 2.05,
+                "high": 2.62,
+                "now": 2.2399,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "13h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 9:29 AM ET",
+                  "headline": "On October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. The company stated the acquired business is expected to add about $2.0 million of ARR and about $900,000 of 2026 EBIT, subject to closing conditions.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The $100 million shelf capacity and $588,883 ATM capacity are dollar capacities, not share counts.",
+                  "tone": "warn",
+                  "full": "The $100 million shelf capacity and $588,883 ATM capacity are dollar capacities, not share counts."
+                }
+              },
+              "researchVersionId": 2988,
+              "inputKey": "8adb537bff47bc76"
+            },
+            {
+              "ticker": "VCIG",
+              "liveFeed": null,
+              "text": "On October 6, 2026, VCI Global announced the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services.",
+              "company": {
+                "name": "VCI Global Ltd",
+                "country": null,
+                "business": "VCI Global develops AI infrastructure and LLM services, including its VGAIN Compute AI token platform."
+              },
+              "path": {
+                "from": 1.41,
+                "high": 2.1,
+                "now": 1.02,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "6h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 3:50 PM ET",
+                  "headline": "VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "101.7M sh",
+                  "detail": "An equity purchase agreement provides up to $125 million of capacity, subject to conditions and company-directed put notices.",
+                  "tone": "warn",
+                  "full": "An equity purchase agreement provides up to $125 million of capacity, subject to conditions and company-directed put notices."
+                }
+              },
+              "researchVersionId": 3027,
+              "inputKey": "17e9e4ec36201df7"
+            },
+            {
+              "ticker": "XHG",
+              "liveFeed": null,
+              "text": "On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion with planned investment of $5 million to $10 million while gradually reducing mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result.",
+              "company": {
+                "name": "XChange TEC.INC",
+                "country": "China",
+                "business": "The company has disclosed continuing operations that include an insurance agency and insurance technology business in the PRC."
+              },
+              "path": {
+                "from": 2.38,
+                "high": 3.755,
+                "now": 1.87,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "14h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 8:30 AM ET",
+                  "headline": "On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "5.81M sh",
+                  "detail": "No float is disclosed in the bundle.",
+                  "tone": "warn",
+                  "full": "No float is disclosed in the bundle."
+                }
+              },
+              "researchVersionId": 3026,
+              "inputKey": "86e1ee9f50101e2a"
+            },
+            {
+              "ticker": "MTEN",
+              "liveFeed": null,
+              "text": "On October 6, 2026, the company reported completion of its acquisition of 100% of the Target Company for $15.0 million, indirectly acquiring Shanghai Shangyun Yingfei and Shanghai Minwen.",
+              "company": {
+                "name": "Mingteng International Corp Inc.",
+                "country": null,
+                "business": null
+              },
+              "path": {
+                "from": 0.9587,
+                "high": 1.755,
+                "now": 1.7508,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "5h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 4:30 PM ET",
+                  "headline": "The company reported completion on October 6, 2026 of its acquisition of 100% of the Target Company for $15.0 million, through which it indirectly acquired Shanghai Shangyun Yingfei and Shanghai Minwen.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "6.37M sh",
+                  "detail": "The last directly reported outstanding-share count is 5,028,406 as of June 11, 2026, preceding the June 18 offering and later effective resale registration.",
+                  "tone": "warn",
+                  "full": "The last directly reported outstanding-share count is 5,028,406 as of June 11, 2026, preceding the June 18 offering and later effective resale registration."
+                }
+              },
+              "researchVersionId": 3024,
+              "inputKey": "32ae33398ecb0065"
+            },
+            {
+              "ticker": "KAPA",
+              "liveFeed": null,
+              "text": "On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+              "company": {
+                "name": "Kairos Pharma, LTD.",
+                "country": "United States",
+                "business": "Kairos Pharma is a clinical-stage biopharmaceutical company developing treatments intended to address cancer drug resistance."
+              },
+              "path": {
+                "from": 1.15,
+                "high": 1.17,
+                "now": 1.13,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "A",
+                  "age": "14h",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 6, 7:30 AM ET",
+                  "headline": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+                  "explainsMove": true,
+                  "freshness": "FRESH",
+                  "tone": "pos",
+                  "title": "Catalyst grade A: strong, or legitimately positive. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: green because the catalyst is FRESH."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "510K sh",
+                  "detail": "The reported 23,697,683 shares outstanding are dated August 12, 2026 and precede the announced 1-for-7 reverse split expected September 1, 2026, so the bundle does not provide a post-split reported outstanding-share count.",
+                  "tone": "warn",
+                  "full": "The reported 23,697,683 shares outstanding are dated August 12, 2026 and precede the announced 1-for-7 reverse split expected September 1, 2026, so the bundle does not provide a post-split reported outstanding-share count."
+                }
+              },
+              "researchVersionId": 3005,
+              "inputKey": "ff9fd4ee0b89fb5d"
+            }
+          ]
+        },
+        {
+          "heading": "OLDER OR SECONDARY NEWS",
+          "lines": [
+            {
+              "ticker": "BIYA",
+              "liveFeed": null,
+              "text": "On September 29, 2026, BIYA filed or released its H1 FY2026 results, reporting a net loss of $2.37 million versus $4.71 million in the comparative period and basic and diluted loss per share of $(0.54) versus $(96.15). Secondary coverage reported sales of $756,805; the company remained loss-making and disclosed financing dependence and dilution risk.",
+              "company": {
+                "name": "Baiya International Group Inc.",
+                "country": "Cayman Islands",
+                "business": null
+              },
+              "path": {
+                "from": 1.365,
+                "high": 2.49,
+                "now": 2.3398,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "B",
+                  "age": "7d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 29, 12:28 PM ET",
+                  "headline": "BIYA filed/released H1 FY2026 results on September 29. Reported net loss was $2.37 million versus $4.71 million in the comparative period, and basic/diluted loss per share was $(0.54) versus $(96.15); the accompanying coverage reported sales of $756,805. The improvement is favourable, but the company remained loss-making and disclosed financing dependence/dilution risk.",
+                  "explainsMove": true,
+                  "freshness": "STALE",
+                  "tone": "warn",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. That is how STRONG it is, not how fresh. The colour is its FRESHNESS: amber because the catalyst is STALE."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "50.0M sh supply",
+                  "detail": "No verified public float is supplied; the reported outstanding-share figure is not float and predates the July 2026 1-for-10 reverse split.",
+                  "tone": "neg",
+                  "full": "No verified public float is supplied; the reported outstanding-share figure is not float and predates the July 2026 1-for-10 reverse split."
+                }
+              },
+              "researchVersionId": 2616,
+              "inputKey": "b18d468762d4fcf8"
+            },
+            {
+              "ticker": "SXTC",
+              "liveFeed": null,
+              "text": "On September 16, 2026, the SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity without confirming sales.",
+              "company": {
+                "name": "China SXT Pharmaceuticals, Inc.",
+                "country": null,
+                "business": "The company researches, develops, manufactures, markets and sells traditional Chinese medicine pieces."
+              },
+              "path": {
+                "from": 1.25,
+                "high": 2.58,
+                "now": 2.09,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "20d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Sep 15, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Sep 15 · The SEC declared effective an F-3 connected to shares potentially issuable under the company's equity purchase facility, adding registered resale capacity rather than confirming sales.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "74.5M sh supply",
+                  "detail": "The reported 958,077 shares outstanding is dated March 31, 2026 and predates the May and July offerings, the equity purchase facility and the August 2026 1-for-80 share consolidation.",
+                  "tone": "neg",
+                  "full": "The reported 958,077 shares outstanding is dated March 31, 2026 and predates the May and July offerings, the equity purchase facility and the August 2026 1-for-80 share consolidation."
+                }
+              },
+              "researchVersionId": 3023,
+              "inputKey": "839a8b64a3f05b72"
+            },
+            {
+              "ticker": "SMXT",
+              "liveFeed": null,
+              "text": "",
+              "company": {
+                "name": "SolarMax Technology, Inc.",
+                "country": "United States",
+                "business": "SolarMax is an integrated solar energy company that sells and installs solar and backup battery systems and owns renewable-energy projects."
+              },
+              "path": {
+                "from": 3.42,
+                "high": 3.58,
+                "now": 3.48,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "C",
+                  "age": "46d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 21, 5:15 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 21 · The latest company-specific event in the collected sources is the August 2026 Nasdaq noncompliance notice for the delayed June 30 Form 10-Q, after the company effected a one-for-12 reverse split intended to support minimum-bid-price compliance. No newer company-specific positive event appears in the adequate source coverage. The current session instead shows strong live demand, with the stock up 35.0% from the reference close and daily RVOL of 117.8.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade C: weak, negative or dilutive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "STRUCTURE_CAUTION",
+                  "label": "STRUCTURE CAUTION",
+                  "value": null,
+                  "detail": "The reported 56,906,572 shares outstanding date to May 11, 2026 and predate the August 13, 2026 one-for-12 reverse split.",
+                  "tone": "warn",
+                  "full": "The reported 56,906,572 shares outstanding date to May 11, 2026 and predate the August 13, 2026 one-for-12 reverse split."
+                }
+              },
+              "researchVersionId": 3014,
+              "inputKey": "d4e82d2c00709953"
+            },
+            {
+              "ticker": "BURU",
+              "liveFeed": null,
+              "text": "On October 1, 2026, secondary coverage reported that Nuburu had unveiled Site Dome and submitted its first proposal to an aerospace-defense customer. On October 6, 2026, an SEC filing disclosed a side letter changing warrant valuation provisions and registration-related obligations for certain holders.",
+              "company": {
+                "name": "Nuburu, Inc.",
+                "country": "United States",
+                "business": "Nuburu describes itself as a dual-use defense and security integrated platform company."
+              },
+              "path": {
+                "from": 1.2,
+                "high": 1.95,
+                "now": 1.7692,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "B",
+                  "age": "5d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Oct 1, 8:35 AM ET",
+                  "headline": "No fresh catalyst · latest: Oct 1 · Secondary coverage reported that Nuburu unveiled Site Dome and submitted its first proposal to an aerospace-defense customer; the bundle does not include a primary company release or filing confirming the proposal. A recent SEC filing also disclosed a side letter changing warrant valuation provisions and registration-related obligations for certain holders.",
+                  "explainsMove": null,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade B: moderate, mixed or secondary. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "DIRTY_FLOAT",
+                  "label": "DIRTY FLOAT",
+                  "value": "450.0M sh supply",
+                  "detail": "The reported 370,493,812 shares outstanding date precedes the September 1, 2026 one-for-40 reverse split.",
+                  "tone": "neg",
+                  "full": "The reported 370,493,812 shares outstanding date precedes the September 1, 2026 one-for-40 reverse split."
+                }
+              },
+              "researchVersionId": 3025,
+              "inputKey": "331a4c70651a9059"
+            },
+            {
+              "ticker": "TRVI",
+              "liveFeed": null,
+              "text": "On August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026.",
+              "company": {
+                "name": "Trevi Therapeutics, Inc.",
+                "country": "United States",
+                "business": "Trevi Therapeutics is a clinical-stage biopharmaceutical company developing investigational oral nalbuphine ER, Haduvio, for chronic cough indications."
+              },
+              "path": {
+                "from": 13.18,
+                "high": 13.19,
+                "now": 13.18,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "OLD_CATALYST",
+                  "grade": "A",
+                  "age": "61d",
+                  "ageIsPriorClose": false,
+                  "eventAt": "Aug 5, 8:00 PM ET",
+                  "headline": "No fresh catalyst · latest: Aug 5 · On August 6, 2026, Trevi reported that it had initiated its first Phase 3 IPF-related chronic-cough trial and a Phase 2b RCC trial during the second quarter, with a second Phase 3 IPF trial expected to begin in the second half of 2026.",
+                  "explainsMove": false,
+                  "freshness": "STALE",
+                  "tone": "dim",
+                  "title": "Catalyst grade A: strong, or legitimately positive. Dimmed: the latest catalyst is older than yesterday and the desk does not think it explains today's move, so the grade rates an old item, not this move."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "11.6M sh",
+                  "detail": "The reported 142,475,841 shares outstanding were dated July 31, 2026, not the bundle date.",
+                  "tone": "warn",
+                  "full": "The reported 142,475,841 shares outstanding were dated July 31, 2026, not the bundle date."
+                }
+              },
+              "researchVersionId": 3016,
+              "inputKey": "26f49a56029f60bf"
+            }
+          ]
+        },
+        {
+          "heading": "RESEARCH COULD NOT TELL",
+          "lines": [
+            {
+              "ticker": "CRBU",
+              "liveFeed": null,
+              "text": "our research reached no conclusion",
+              "company": {
+                "name": "Caribou Biosciences, Inc.",
+                "country": "United States",
+                "business": null
+              },
+              "path": {
+                "from": 1.135,
+                "high": 1.14,
+                "now": 0.737,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "GRADED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "No conclusion on a fresh catalyst is supported. The latest SEC-filed company update located was the August 13, 2026 second-quarter financial-results and business update, which included clinical-program updates and stated that initial CB-011 dose-expansion data were expected in H2 2026; the bundle does not establish that this event caused the current move.",
+                  "explainsMove": null,
+                  "freshness": "UNKNOWN",
+                  "tone": "dim",
+                  "title": "No catalyst grade established. The colour is its FRESHNESS: grey because the desk could not establish how fresh it is."
+                },
+                "risk": {
+                  "code": "SUPPLY_OVERHEAD",
+                  "label": "SUPPLY OVERHEAD",
+                  "value": "4.76M sh",
+                  "detail": "An effective $300.0 million universal shelf and a $100.0 million sales-agreement/ATM prospectus create potential financing capacity; neither dollar amount can be converted to shares from the supplied evidence, and effectiveness is not evidence of sales.",
+                  "tone": "warn",
+                  "full": "An effective $300.0 million universal shelf and a $100.0 million sales-agreement/ATM prospectus create potential financing capacity; neither dollar amount can be converted to shares from the supplied evidence, and effectiveness is not evidence of sales."
+                }
+              },
+              "researchVersionId": 159,
+              "inputKey": "24477849a40d47cb"
+            }
+          ]
+        },
+        {
+          "heading": "NOT RESEARCHED AT THIS CHECKPOINT",
+          "lines": [
+            {
+              "ticker": "NEPH",
+              "liveFeed": null,
+              "text": "Not researched at this checkpoint",
+              "company": null,
+              "path": {
+                "from": 3.02,
+                "high": 3.15,
+                "now": 3.05,
+                "fromBasis": "TODAY_CLOSE"
+              },
+              "tags": {
+                "why": {
+                  "code": "NOT_RESEARCHED",
+                  "grade": "—",
+                  "age": null,
+                  "ageIsPriorClose": false,
+                  "eventAt": null,
+                  "headline": "Not researched",
+                  "explainsMove": null,
+                  "freshness": null,
+                  "tone": "dim",
+                  "title": "Not researched, so there is no catalyst grade and no freshness to colour."
+                },
+                "risk": {
+                  "code": "NOT_RESEARCHED",
+                  "label": "NOT RESEARCHED",
+                  "value": null,
+                  "detail": "The desk has not assessed this name.",
+                  "tone": "dim",
+                  "full": null
+                }
+              },
+              "researchVersionId": null,
+              "inputKey": "b711ab19b317cf14"
+            }
+          ]
+        }
+      ],
+      "watchCount": 12,
+      "narrative": null,
+      "narrativeFootnotes": {
+        "noClose": 8,
+        "splitExcluded": 0
+      },
+      "narrativeKey": "82f1d88bee2d76f8",
+      "revisionOf": null
+    },
+    "diagnostics": {
+      "lines": 13,
+      "strikes": [
+        {
+          "id": "O",
+          "reason": "NUMBER_WITHOUT_ROW",
+          "by": "rule",
+          "detail": "3.0 million is not a narrative fact",
+          "text": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources."
+        },
+        {
+          "id": "O",
+          "reason": "NUMBER_WITHOUT_ROW",
+          "by": "rule",
+          "detail": "2.0 million is not a narrative fact",
+          "text": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources."
+        },
+        {
+          "id": "O",
+          "reason": "NUMBER_WITHOUT_ROW",
+          "by": "rule",
+          "detail": "1.0 million is not a narrative fact",
+          "text": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources."
+        },
+        {
+          "id": "O",
+          "reason": "NOT_SELF_CONTAINED",
+          "by": "rule",
+          "detail": "names LCFY in the narrative",
+          "text": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources."
+        },
+        {
+          "id": "O",
+          "reason": "NUMBER_WITHOUT_ROW",
+          "by": "rule",
+          "detail": "\"gave the entire move back\" with no count, but the count is 0",
+          "text": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources."
+        },
+        {
+          "id": "O",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "LCFY is not a ticker named in the narrative facts, so restating its catalyst is unsupported. 'Intraday' misframes its rank, which is the 22:00 checkpoint in-range rank, not an intraday one. The other figures match the narrative facts.",
+          "text": "Eleven counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close. Zero gave the entire move back. XHG was a covered 50 percent mover, reaching 190 percent above the prior close and closing up 25 percent from the prior close; on October 6, XChange TEC announced a proposed U.S. AI expansion with planned investment of $5 million to $10 million and a gradual reduction of mainland China operations. VCIG was a covered 50 percent mover, reaching 59 percent above the prior close and closing up 55 percent from the prior close; on October 6, VCI Global announced the launch of its VGAIN Compute AI Token Platform for AI infrastructure and LLM services. MTEN was up 83 percent after the close. Five of the 12 names the desk covers had fresh news in our sources. Intraday, LCFY ranked first in this range and had fresh news: on October 6, 2026, Locafy announced a definitive agreement to acquire Map Labs' assets and customer base for potential cash consideration of up to $3.0 million, including $2.0 million upfront and up to $1.0 million contingent on performance. VCIG was up 55 percent from the prior close and XHG was up 25 percent from the prior close, with the platform launch and proposed U.S. AI expansion, respectively, as their fresh news. Five of the 12 names the desk covers had fresh news in our sources."
+        },
+        {
+          "id": "S1L7",
+          "reason": "UNSUPPORTED",
+          "by": "model",
+          "detail": "The research gives no date for the reverse split; 'on August 11, 2026' is unsupported.",
+          "text": "On August 21, 2026, the latest company-specific event in our sources was a Nasdaq noncompliance notice tied to the delayed June 30 Form 10-Q. The company had effected a one-for-12 reverse split on August 11, 2026, intended to support minimum-bid-price compliance."
+        }
+      ],
+      "writerMs": 23103,
+      "checkerMs": 26250
+    }
+  }
+}

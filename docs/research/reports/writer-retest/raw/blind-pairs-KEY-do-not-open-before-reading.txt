@@ -1,0 +1,10 @@
+PAIR 1: A = v7, B = v6
+PAIR 2: SKIPPED, a report is missing (v6 present, v7 absent)
+PAIR 3: A = v7, B = v6
+PAIR 4: A = v6, B = v7
+PAIR 5: A = v6, B = v7
+PAIR 6: A = v7, B = v6
+PAIR 7: A = v6, B = v7
+PAIR 8: SKIPPED, a report is missing (v6 absent, v7 present)
+PAIR 9: SKIPPED, a report is missing (v6 absent, v7 present)
+PAIR 10: SKIPPED, a report is missing (v6 present, v7 absent)

@@ -25,7 +25,7 @@ import type { MarketDatabase } from '../../market/store/db';
 import type { CheckerModel } from './check';
 import type { ReportKind, ReportRange } from './contract';
 import type { ReportModelUsage } from './openaiReportModel';
-import { findCheckpoint, runReport, writeNotBefore, type CheckerVendors, type ReportRun } from './pipeline';
+import { findCheckpoint, runReport, writeNotBefore, writerPromptFor, type CheckerVendors, type ReportRun } from './pipeline';
 import type { ReportModel } from './writer';
 
 export const REPORT_KINDS: readonly ReportKind[] = ['PREMARKET', 'INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS', 'EVENING'];
@@ -52,6 +52,11 @@ export interface ReportModels {
 /** Recorded on every row, so a report can be traced to the prompts and models that wrote it. */
 export interface ReportVersions {
   writerPrompt: number;
+  /**
+   * Which writer prompt `writerPrompt` counts: v7 restarted its count (v7 version 7 follows v6 version 16), so a bare
+   * number is ambiguous. Absent on rows written before v7 was wired (v6 or older).
+   */
+  writerPromptFamily?: 'v7';
   checkerPrompt: number;
   writerModel: string;
   checkerModel: string;
@@ -187,6 +192,14 @@ export interface ReportRunOutcome {
  * Fails loudly, never quietly: an id that does not exist, one no report reads,
  * one still RUNNING, or a report built from a different checkpoint all throw.
  */
+/** What a stored row records: the writer prompt its kind used, and the checker that actually ran. */
+export function storedVersions(versions: ReportVersions, kind: ReportKind, run: ReportRun): ReportVersions {
+  const writer = writerPromptFor(kind);
+  // A v6 row carries no family (as every row before v7); JSON.stringify drops the undefined field.
+  const base: ReportVersions = { ...versions, writerPrompt: writer.version, writerPromptFamily: writer.family === 'v7' ? 'v7' : undefined };
+  return run.diagnostics?.checker ? { ...base, checkerModel: run.diagnostics.checker.ran } : base;
+}
+
 export async function runReportForAssessment(
   db: MarketDatabase,
   assessmentId: number,
@@ -225,8 +238,9 @@ export async function runReportForAssessment(
     range,
     assessment,
     run,
-    // The checker that actually checked this report (Claude, or its OpenAI fallback), not only the one configured.
-    versions: run.diagnostics?.checker ? { ...versions, checkerModel: run.diagnostics.checker.ran } : versions,
+    // The checker that actually checked this report (Claude, or its OpenAI fallback), not only the one configured; and
+    // the writer prompt this kind is written with (`writerPromptFor`), not the configured default.
+    versions: storedVersions(versions, kind, run),
     usage,
     createdAt: now().toISOString(),
   });
