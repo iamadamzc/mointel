@@ -165,6 +165,67 @@ describe('the MCP tools without the Sheet', () => {
       provider: null, fetchedAt: null, fetchedAtEt: null, cacheAgeSeconds: null, stale: null,
       sourceUpdatedAt: null, sourceTitle: null, rows: null, researchRecords: null, warnings: [], error: null,
     });
-    expect(d.recentErrors.filter((entry) => entry.component === 'SHEET')).toEqual([]);
+    expect(d.recentErrors.filter((entry) => (entry.component as string) === 'SHEET')).toEqual([]);
+  });
+});
+
+/*
+ * THE KEYS A CHATGPT CALLER RECEIVES, exactly, read after a JSON round trip (an undefined field never reaches it).
+ * Written against a202a845 and run there before the A5 cleanup, then after it: a change to these lists is a
+ * change to the shape a live caller reads, which waits on his step 6.
+ */
+describe('every tool answers with the same keys', () => {
+  const wire = (value: unknown) => JSON.parse(JSON.stringify(value)) as Record<string, unknown>;
+  const keys = (value: unknown) => Object.keys(wire(value));
+
+  it('get_desk_status', async () => {
+    const out = wire(await tool('get_desk_status'));
+    expect(Object.keys(out)).toEqual([
+      'nowEt', 'nowUtc', 'tradingDate', 'sessionPhase', 'board', 'rankingLabel', 'rthClose', 'earlyClose',
+      'market', 'research', 'assessments', 'sheet',
+    ]);
+    expect(keys(out.sheet)).toEqual(['provider', 'fetchedAt', 'stale', 'cacheAgeSeconds', 'rows', 'error']);
+  });
+
+  it('get_discovery and its row', async () => {
+    const out = wire(await tool('get_discovery', { limit: 5 }));
+    expect(Object.keys(out)).toEqual([
+      'tradingDate', 'sessionPhase', 'board', 'rankingLabel', 'rankedCount', 'trackedCount', 'calculatedAt', 'rows',
+    ]);
+    const row = (out.rows as Array<Record<string, unknown>>).find((r) => r.ticker === T);
+    expect(Object.keys(row!)).toEqual([
+      'ticker', 'telemetry', 'cycleLevels', 'levelMap', 'displayedFloat', 'displayedFloatTurnover',
+      // No setupGrade key: undefined while grades are unwired (an empty store), so JSON drops it.
+      'intelligenceState', 'provenance', 'deskRead', 'sheet',
+    ]);
+  });
+
+  it('get_ticker, tracked and untracked', async () => {
+    expect(keys(await tool('get_ticker', { ticker: T }))).toEqual([
+      'ticker', 'found', 'deskRead', 'structure', 'telemetry', 'levelMap', 'cycleLevels', 'displayedFloat',
+      'displayedFloatSource', 'displayedFloatTurnover', 'intelligenceState', 'provenance', 'comparison',
+      'sheet', 'supplyLedger', 'intelligence', 'riskInTheEvidence', 'researchStatus',
+    ]);
+    expect(keys(await tool('get_ticker', { ticker: 'NOTRK' }))).toEqual(['ticker', 'found', 'detail']);
+  });
+
+  it('get_recent_events and get_assessment_status', async () => {
+    expect(keys(await tool('get_recent_events'))).toEqual(['total', 'relevantOnly', 'events']);
+    expect(keys(await tool('get_assessment_status'))).toEqual([
+      'state', 'label', 'detail', 'running', 'tradingDate', 'headline', 'subline', 'last', 'next',
+      'completedToday', 'generatedLateToday', 'failedRecorded', 'totalRecorded',
+    ]);
+  });
+
+  it('get_diagnostics, with its sheet block', async () => {
+    const out = wire(await tool('get_diagnostics'));
+    expect(Object.keys(out)).toEqual([
+      'generatedAt', 'deployment', 'market', 'research', 'assessments', 'sheet',
+      'database', 'resources', 'intelligence', 'consistency', 'recentErrors',
+    ]);
+    expect(keys(out.sheet)).toEqual([
+      'provider', 'fetchedAt', 'fetchedAtEt', 'cacheAgeSeconds', 'stale', 'sourceUpdatedAt', 'sourceTitle', 'rows',
+      'researchRecords', 'warnings', 'error',
+    ]);
   });
 });

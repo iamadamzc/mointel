@@ -35,7 +35,7 @@ import {
   listAssessments,
 } from '../market/readModel';
 import { buildDiagnostics } from '../review/diagnostics';
-import { setupGradeForTools } from './sheetProjection';
+import { setupGradeForTools } from './setupGradeForTools';
 
 /* --------------------------------------------------------------- registry */
 

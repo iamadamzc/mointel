@@ -123,7 +123,7 @@ export interface DiagnosticFinding {
 export interface RecentError {
   at: string | null;
   atEt: string | null;
-  component: 'MARKET' | 'RESEARCH' | 'ASSESSMENT' | 'SHEET';
+  component: 'MARKET' | 'RESEARCH' | 'ASSESSMENT';
   category: string;
   message: string;
 }
@@ -628,27 +628,9 @@ export async function buildDiagnostics(): Promise<ReviewDiagnostics> {
   }
 
   /*
-   * Telemetry agreement.
-   *
-   * The board, the Focus strip and the drawer all read `row.telemetry` from one
-   * merged row, so by construction they cannot disagree — the merge is what
-   * makes that true, and this check is here to notice if that ever stops being
-   * the case. What CAN differ is the source a row's price came from, which is
-   * worth surfacing when a ranked name is being priced off something weaker
-   * than a SIP trade.
+   * Telemetry freshness. (A sheet-price check stood here until A5: with no Sheet in the merge, no row can be
+   * priced off it.)
    */
-  const sheetPriced = topN.filter((row) => row.telemetry.source === 'SHEET');
-  if (sheetPriced.length > 0) {
-    consistency.push({
-      severity: 'WARN',
-      check: 'telemetry.source',
-      detail:
-        `${sheetPriced.length} of the top ${topN.length} are showing a sheet price rather than ` +
-        `live market data: ${sheetPriced.slice(0, 6).map((row) => row.ticker).join(', ')}. ` +
-        'A ranked row priced off the sheet is a row the feed is not covering.',
-    });
-  }
-
   const staleTelemetry = topN.filter((row) => row.telemetry.stale);
   if (staleTelemetry.length > 0) {
     consistency.push({
