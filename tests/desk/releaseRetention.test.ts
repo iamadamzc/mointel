@@ -340,9 +340,11 @@ describe('deployment preflight', () => {
   it('admits a start at the front of a gap, where the stop clears both neighbours', () => {
     // 10:36: the 10:30 checkpoint is behind it by more than the stop minimum
     // plus the window, and 11:00 is beyond the stop maximum plus the window.
-    const at1036 = preflightAt(636, 2);
-    expect(at1036.status).toBe(0);
-    expect(at1036.out).toContain('clear of every checkpoint');
+    // STOP_MAX is 20 since A8 (2026-10-13; measured quick_check up to 1009.9 s), so a 30-minute gap admits only
+    // starts whose stop span [start+2, start+20] stays 5 min clear of both ends: 10:33-10:35. 10:34 is the middle.
+    const at1034 = preflightAt(634, 2);
+    expect(at1034.status).toBe(0);
+    expect(at1034.out).toContain('clear of every checkpoint');
   });
 
   /**
@@ -369,10 +371,10 @@ describe('deployment preflight', () => {
 
   it('draws the trading-window edge at the latest possible finish, not the start', () => {
     // Checkpoints switched off so this isolates the trading window.
-    // 06:47 + 12m = 06:59: the deploy is over before 07:00.
-    expect(preflightAt(407, 1, { PROTECTED_MINUTES: '0' }).status).toBe(0);
-    // 06:48 + 12m = 07:00: it could still be running at 07:00.
-    expect(preflightAt(408, 1, { PROTECTED_MINUTES: '0' }).status).toBe(3);
+    // 06:39 + 20m = 06:59: the deploy is over before 07:00 (STOP_MAX 20 since A8).
+    expect(preflightAt(399, 1, { PROTECTED_MINUTES: '0' }).status).toBe(0);
+    // 06:40 + 20m = 07:00: it could still be running at 07:00.
+    expect(preflightAt(400, 1, { PROTECTED_MINUTES: '0' }).status).toBe(3);
     // 10:00 itself is outside the window.
     expect(preflightAt(600, 1, { PROTECTED_MINUTES: '0' }).status).toBe(0);
   });
@@ -428,8 +430,57 @@ describe('deployment preflight', () => {
   });
 
   it('proceeds inside it only on its own override, and records why', () => {
-    const result = preflightAt(636, 2, { LIVE_STORE_CHECK_OVERRIDE: 'his word: board down' });
+    // 10:34, clear of both neighbouring checkpoints under STOP_MAX 20 (A8), so only the live-store check is in play.
+    const result = preflightAt(634, 2, { LIVE_STORE_CHECK_OVERRIDE: 'his word: board down' });
     expect(result.status).toBe(0);
     expect(result.out).toContain('LIVE-STORE CHECK OVERRIDE REASON: his word: board down');
+  });
+});
+
+describe('deployment preflight: A8 (2026-10-13)', () => {
+  function run(extra: Record<string, string>) {
+    try {
+      return { status: 0, out: sh(PREFLIGHT_SH, [], { PROTECTED_MINUTES: '5', ...extra }) };
+    } catch (error) {
+      const f = error as { status?: number; stdout?: string; stderr?: string };
+      return { status: f.status ?? 1, out: `${f.stdout ?? ''}${f.stderr ?? ''}` };
+    }
+  }
+
+  it('refuses while a deploy unit is already running, whatever the clock', () => {
+    // Saturday noon would otherwise pass everything.
+    const r = run({ PREFLIGHT_NOW_DOW: '6', PREFLIGHT_NOW_MINUTES: '720', PREFLIGHT_DEPLOYS_ACTIVE: '1' });
+    expect(r.status).toBe(3);
+    expect(r.out).toContain('already running');
+  });
+
+  it('admits the same Saturday start when no deploy is running', () => {
+    expect(run({ PREFLIGHT_NOW_DOW: '6', PREFLIGHT_NOW_MINUTES: '720', PREFLIGHT_DEPLOYS_ACTIVE: '0' }).status).toBe(0);
+  });
+
+  it('treats a holiday the calendar shows as no session: a weekday 08:00 start passes', () => {
+    const r = run({ PREFLIGHT_NOW_DOW: '1', PREFLIGHT_NOW_MINUTES: '480', PREFLIGHT_TRADING_DAY: '0', PREFLIGHT_DEPLOYS_ACTIVE: '0' });
+    expect(r.status).toBe(0);
+    expect(r.out).toContain('NO SESSION today');
+  });
+
+  it('keeps every weekday guard when the calendar says trading, or is unknown (the cautious direction)', () => {
+    for (const trading of ['1', 'unknown']) {
+      const r = run({ PREFLIGHT_NOW_DOW: '1', PREFLIGHT_NOW_MINUTES: '480', PREFLIGHT_TRADING_DAY: trading, PREFLIGHT_DEPLOYS_ACTIVE: '0' });
+      expect(r.status, trading).toBe(3);
+      expect(r.out).toContain('his trading window');
+    }
+  });
+
+  it('states the 20-minute stop span', () => {
+    const r = run({ PREFLIGHT_NOW_DOW: '6', PREFLIGHT_NOW_MINUTES: '720', PREFLIGHT_DEPLOYS_ACTIVE: '0' });
+    expect(r.out).toContain('the stop lands 2-20m from now');
+  });
+});
+
+describe('boot migrate unit (A8)', () => {
+  it('runs migrate --no-check at boot: deploy.sh runs its own quick_check before every stop', () => {
+    const unit = fs.readFileSync(path.join(ROOT, 'deploy', 'aws', 'systemd', 'mointel-migrate.service'), 'utf8');
+    expect(unit).toMatch(/^ExecStart=.*worker\/migrate\.ts --no-check\s*$/m);
   });
 });
