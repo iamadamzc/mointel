@@ -56,7 +56,8 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
         corporate_actions: {
           forward_splits: [{ symbol: 'acme', ex_date: '2026-09-15', old_rate: 1, new_rate: 2 }],
           unit_splits: [{ symbol: 'ACME', ex_date: '2026-09-18' }],
-          stock_dividends: [{ symbol: 'ACME', rate: 0.05 }],
+          // No ex_date: dated by its process_date through the real client's raw row (an undated row would throw).
+          stock_dividends: [{ symbol: 'ACME', rate: 0.05, process_date: '2026-09-20' }],
         },
         next_page_token: null,
       };
@@ -74,6 +75,7 @@ describe('fetchAnnouncedActions: the real announcedActions dep', () => {
     expect(actions).toEqual([
       { group: 'forward_splits', exDate: '2026-09-15', oldRate: 1, newRate: 2 },
       { group: 'unit_splits', exDate: '2026-09-18', oldRate: null, newRate: null },
+      { group: 'stock_dividends', exDate: '2026-09-20', oldRate: null, newRate: null },
     ]);
   });
 });
