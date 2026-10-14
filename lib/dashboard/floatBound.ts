@@ -171,6 +171,14 @@ export const FLOAT_DETAILS_WORDS = {
   definitionLabel: 'TMI Float: shares outstanding less insider holdings',
   definition:
     'The number above subtracts only the insider holdings the desk can see, so it is an upper bound on that figure, not on the shares that can trade on a given day, which can be more, because insiders can sell.',
+  /**
+   * L14 (his "add it to the list, fix it tonight", 2026-10-14T01:19:18.784Z): the definition row's text on a REFUSED
+   * panel (Not computed, Unknown, Cannot verify with no number), which shows no number for "the number above" to name.
+   * Marketing b76bd4bc (docs/marketing/float-l14-words-2026-10-14.md); Commercial reads the built string; he sees it
+   * before ship. NOT YET PASSED.
+   */
+  refusedDefinition:
+    'The desk can subtract only the insider holdings it can see, so a TMI Float it shows is an upper bound on that figure, not on the shares that can trade on a given day, which can be more, because insiders can sell.',
   countLabel: 'Filed share count',
   count: (shares: string, asOf: string, form: string, filed: string) => `${shares} shares as of ${asOf}, from a ${form} filed ${filed}.`,
   insidersLabel: "Less insiders' holdings",
@@ -410,7 +418,8 @@ function refusedDetails(reason: string): FloatDetails {
   return {
     rows: [
       { label: null, text: reason },
-      { label: FLOAT_DETAILS_WORDS.definitionLabel, text: FLOAT_DETAILS_WORDS.definition },
+      // L14: never "the number above" here; a refused panel shows no number.
+      { label: FLOAT_DETAILS_WORDS.definitionLabel, text: FLOAT_DETAILS_WORDS.refusedDefinition },
     ],
     insiders: [],
   };

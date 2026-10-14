@@ -91,9 +91,34 @@ describe('refused faces and the marker', () => {
     const v = floatCellView({ ...produced(), state: 'UNKNOWN', reason: 'NO_FILED_COUNT', bound: null, insiders: [] });
     expect(v.details.rows).toEqual([
       { label: null, text: 'No filed share count.' },
-      { label: FLOAT_DETAILS_WORDS.definitionLabel, text: FLOAT_DETAILS_WORDS.definition },
+      { label: FLOAT_DETAILS_WORDS.definitionLabel, text: FLOAT_DETAILS_WORDS.refusedDefinition },
     ]);
     expect(floatCellView(null).details.rows[0].text).toBe('The desk has not computed a TMI Float for this name.');
+  });
+
+  // L14 (his "fix it tonight", 2026-10-14T01:19:18.784Z): which panel prints which definition sentence.
+  it('"the number above" prints only where a number is above it', () => {
+    const def = (raw: Parameters<typeof floatCellView>[0]) =>
+      floatCellView(raw).details.rows.find((r) => r.label === FLOAT_DETAILS_WORDS.definitionLabel)?.text ?? null;
+    // 1. the bound: the number above is the TMI Float.
+    expect(def(produced())).toBe(FLOAT_DETAILS_WORDS.definition);
+    // 2 to 5: Not computed; Cannot verify from the produced-without-number guard; Unknown; Cannot verify with no count.
+    const refused = [
+      null,
+      { ...produced(), bound: null },
+      { ...produced(), state: 'UNKNOWN' as const, reason: 'NO_FILED_COUNT' as const, bound: null },
+      { ...produced(), state: 'CANNOT_VERIFY' as const, reason: 'BOUND_OUT_OF_RANGE' as const, bound: null },
+      { ...produced(), state: 'CANNOT_VERIFY' as const, reason: 'ISSUANCE_FLAGGED' as const, bound: null, countShares: null },
+    ];
+    for (const raw of refused) {
+      expect(def(raw)).toBe(FLOAT_DETAILS_WORDS.refusedDefinition);
+      expect(floatCellView(raw).details.rows.map((r) => r.text).join(' ')).not.toMatch(/the number above/i);
+    }
+    // The filed-count face keeps its own row label and sentence.
+    const filed = floatCellView({ ...produced(), state: 'CANNOT_VERIFY', reason: 'ISSUANCE_FLAGGED', bound: null, countChecks: { split: 'NONE', age: 'WITHIN' } });
+    expect(filed.kind).toBe('filedCount');
+    expect(filed.details.rows.find((r) => r.label === FLOAT_DETAILS_WORDS.definitionLabel)).toBeUndefined();
+    expect(filed.details.rows.map((r) => r.text).join(' ')).not.toMatch(/the number above/i);
   });
 
   it('every face ends its accessible name with "; details on click"', () => {
