@@ -1,0 +1,23 @@
+store A:/mointel/data/market-prod-2026-10-07.db: 5512986624 bytes, mtime 2026-10-07T15:13:47.202Z; clock fixed at 2026-10-14T03:13:51.561Z
+days 2026-10-02, 2026-10-05, 2026-10-06; kind PREMARKET; range $1-$20; 3 runs per input
+prompt v7 version 9 (a recap in 2 writer calls), writer gpt-5.6-luna; checker claude-opus-5-5 (Tests-TMI key, no fallback); every raw checker reply kept
+stop $2.5: a report launches only if spend + its worst case ($0.8232) fits
+
+2026-10-02-PREMARKET-v7-run1: PUBLISHED; 0 of 13 lines struck; allowed [AMOD, CYCU, MI]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1655; tokens writer:gpt-5.6-luna:2495/767 writer:gpt-5.6-luna:5088/1020 checker:claude-opus-5-5:30618/1970
+2026-10-02-PREMARKET-v7-run2: PUBLISHED; 0 of 13 lines struck; allowed [AMOD, CYCU, MI]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1747; tokens writer:gpt-5.6-luna:2495/535 writer:gpt-5.6-luna:5088/1267 checker:claude-opus-5-5:30672/2415
+2026-10-02-PREMARKET-v7-run3: PUBLISHED; 0 of 13 lines struck; allowed [AMOD, CYCU, MI]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1624; tokens writer:gpt-5.6-luna:2495/580 writer:gpt-5.6-luna:5088/969 checker:claude-opus-5-5:30584/1832
+2026-10-05-PREMARKET-v7-run1: PUBLISHED; 1 of 13 lines struck; allowed [MI, VRAX, OLOX]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1780; tokens writer:gpt-5.6-luna:2333/344 writer:gpt-5.6-luna:5628/1082 checker:claude-opus-5-5:30431/2651
+2026-10-05-PREMARKET-v7-run2: PUBLISHED; 1 of 13 lines struck; allowed [MI, VRAX, OLOX]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1904; tokens writer:gpt-5.6-luna:2333/332 writer:gpt-5.6-luna:5628/1137 checker:claude-opus-5-5:30451/3260
+2026-10-05-PREMARKET-v7-run3: PUBLISHED; 1 of 13 lines struck; allowed [MI, VRAX, OLOX]; outside the list in the draft Summary []; judgement or kind lines 0; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1781; tokens writer:gpt-5.6-luna:2333/389 writer:gpt-5.6-luna:5628/1288 checker:claude-opus-5-5:30473/2629
+2026-10-06-PREMARKET-v7-run1: PUBLISHED; 0 of 13 lines struck; allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary []; judgement or kind lines 4; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1675; tokens writer:gpt-5.6-luna:2422/401 writer:gpt-5.6-luna:4788/1013 checker:claude-opus-5-5:31316/1954
+2026-10-06-PREMARKET-v7-run2: PUBLISHED; 1 of 13 lines struck; allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary []; judgement or kind lines 3; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1741; tokens writer:gpt-5.6-luna:2422/385 writer:gpt-5.6-luna:4788/1146 checker:claude-opus-5-5:31344/2274
+2026-10-06-PREMARKET-v7-run3: PUBLISHED; 1 of 13 lines struck; allowed [XHG, VCIG, MTEN]; outside the list in the draft Summary []; judgement or kind lines 3; count sentence yes; rank in Summary no; "zero" no; writer calls 2 (errors 0); checker replies 1 (errors 0); $0.1698; tokens writer:gpt-5.6-luna:2422/400 writer:gpt-5.6-luna:4788/1512 checker:claude-opus-5-5:31309/2042
+
+reports run 9 of 9; published 9; Summary struck 0
+draft Summaries naming a name outside the list: 0 of 9
+drafted lines with a judgement word or a catalyst kind (read 107 a; each read by hand): 10
+draft Summaries with the covered-names count sentence (read 107 b): 9 of 9
+draft Summaries stating a rank: 0 of 9; saying "zero": 0
+reports with 2 writer calls: 9 of 9; writer calls that threw: 0
+checker calls that threw: 0; reports MISSED or ERROR: 0
+TOTAL spend $1.5605

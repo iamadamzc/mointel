@@ -1,0 +1,653 @@
+[
+  {
+    "tag": "2026-10-02-PREMARKET-v7-run1",
+    "day": "2026-10-02",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "6 counted names ran at least 50 percent above the prior close on the day, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD was a covered 50 percent mover: it peaked at 308 percent above the prior close and closed up 198 percent from the prior close. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU was a covered 50 percent mover: it peaked at 84 percent above the prior close and closed up 42 percent from the prior close. On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "6 counted names ran at least 50 percent above the prior close on the day, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD was a covered 50 percent mover: it peaked at 308 percent above the prior close and closed up 198 percent from the prior close. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU was a covered 50 percent mover: it peaked at 84 percent above the prior close and closed up 42 percent from the prior close.",
+    "allowed": [
+      "AMOD",
+      "CYCU",
+      "MI"
+    ],
+    "outsideList": [],
+    "judgementLines": [],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.16553299999999999,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2495,
+        "outputTokens": 767,
+        "cachedInputTokens": 0,
+        "reasoningTokens": 494,
+        "durationMs": 7835,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5088,
+        "outputTokens": 1020,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 283,
+        "durationMs": 10392,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30618,
+        "outputTokens": 1970,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17216,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-PREMARKET-v7-run2",
+    "day": "2026-10-02",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD was a covered 50 percent mover, peaking at 308 percent above the prior close and closing up 198 percent from the prior close. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU was a covered 50 percent mover, peaking at 84 percent above the prior close and closing up 42 percent from the prior close. On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, with a discretionary Nasdaq Panel monitor remaining in place. MI was up 14 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD was a covered 50 percent mover, peaking at 308 percent above the prior close and closing up 198 percent from the prior close. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU was a covered 50 percent mover, peaking at 84 percent above the prior close and closing up 42 percent from the prior close.",
+    "allowed": [
+      "AMOD",
+      "CYCU",
+      "MI"
+    ],
+    "outsideList": [],
+    "judgementLines": [],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.174667,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2495,
+        "outputTokens": 535,
+        "cachedInputTokens": 2492,
+        "reasoningTokens": 258,
+        "durationMs": 5225,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5088,
+        "outputTokens": 1267,
+        "cachedInputTokens": 5085,
+        "reasoningTokens": 516,
+        "durationMs": 10900,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30672,
+        "outputTokens": 2415,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19996,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-02-PREMARKET-v7-run3",
+    "day": "2026-10-02",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD reached 308 percent above the prior close and closed up 198 percent from the prior close. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU reached 84 percent above the prior close and closed up 42 percent from the prior close. On October 2, 2026, Cycurion disclosed that Nasdaq confirmed it had regained compliance with the $1.00 minimum-bid requirement after its August 28, 2026 1-for-8 reverse split and 10 consecutive trading days above $1.00, subject to a discretionary Nasdaq Panel monitor. MI was up 14 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "6 counted names ran at least 50 percent above the prior close by the regular-session high, 5 kept at least half of the peak gain at the close, and none gave the entire move back. AMOD reached 308 percent above the prior close and closed up 198 percent from the prior close. Alpha Modus reported completion of a shares-for-Bitcoin PIPE in which its subsidiary received 3,170 Bitcoin valued above $250 million; secondary coverage reported 51.6 million common shares and matching warrants were issued, and the SEC filed a current report on the completed transaction. CYCU reached 84 percent above the prior close and closed up 42 percent from the prior close.",
+    "allowed": [
+      "AMOD",
+      "CYCU",
+      "MI"
+    ],
+    "outsideList": [],
+    "judgementLines": [],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1623514,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2495,
+        "outputTokens": 580,
+        "cachedInputTokens": 2492,
+        "reasoningTokens": 325,
+        "durationMs": 6276,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5088,
+        "outputTokens": 969,
+        "cachedInputTokens": 5085,
+        "reasoningTokens": 258,
+        "durationMs": 9850,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30584,
+        "outputTokens": 1832,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 15609,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-run1",
+    "day": "2026-10-05",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The cited source shows Olenox Industries reported the figures; the research does not say CS Digital reported them."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "9 names ran at least 50 percent above the prior close by the regular-session high; 5 kept at least half of the peak gain at the close, and none gave the entire move back. MI was a covered 50 percent mover, reaching 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, reaching 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "9 names ran at least 50 percent above the prior close by the regular-session high; 5 kept at least half of the peak gain at the close, and none gave the entire move back. MI was a covered 50 percent mover, reaching 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, reaching 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close.",
+    "allowed": [
+      "MI",
+      "VRAX",
+      "OLOX"
+    ],
+    "outsideList": [],
+    "judgementLines": [],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.17804740000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2333,
+        "outputTokens": 344,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 167,
+        "durationMs": 3636,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5628,
+        "outputTokens": 1082,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 249,
+        "durationMs": 9243,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30431,
+        "outputTokens": 2651,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23747,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-run2",
+    "day": "2026-10-05",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L8"
+    ],
+    "strikes": [
+      {
+        "id": "S1L8",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "'April 1, 2026' contradicts the event time's ET reading, which is 20:00 ET on 2026-03-31."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "9 counted names ran at least 50 percent above the prior close, 5 of those kept at least half of the peak gain at the close, and none gave the entire move back. MI was a covered 50 percent mover, peaking at 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, peaking at 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "9 counted names ran at least 50 percent above the prior close, 5 of those kept at least half of the peak gain at the close, and none gave the entire move back. MI was a covered 50 percent mover, peaking at 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was a covered 50 percent mover, peaking at 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close.",
+    "allowed": [
+      "MI",
+      "VRAX",
+      "OLOX"
+    ],
+    "outsideList": [],
+    "judgementLines": [],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.190359,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2333,
+        "outputTokens": 332,
+        "cachedInputTokens": 2330,
+        "reasoningTokens": 153,
+        "durationMs": 3712,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5628,
+        "outputTokens": 1137,
+        "cachedInputTokens": 5625,
+        "reasoningTokens": 299,
+        "durationMs": 9295,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30451,
+        "outputTokens": 3260,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 28488,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-05-PREMARKET-v7-run3",
+    "day": "2026-10-05",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "Misattributes the report: the research has Olenox Industries reporting that CS Digital mined 15.63 Bitcoin, not CS Digital reporting it."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "9 counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close; none gave the entire move back. MI was a covered 50 percent mover, reaching 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was another covered 50 percent mover, reaching 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close. Of the 12 names the desk covers, 2 had fresh news in our sources.",
+    "narrative": "9 counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close; none gave the entire move back. MI was a covered 50 percent mover, reaching 1066 percent above the prior close and closing up 683 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. VRAX was another covered 50 percent mover, reaching 52 percent above the prior close and closing up 9 percent from the prior close; our sources found only older or secondary news, not a fresh catalyst. OLOX was up 84 percent after the close.",
+    "allowed": [
+      "MI",
+      "VRAX",
+      "OLOX"
+    ],
+    "outsideList": [],
+    "judgementLines": [],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1780766,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2333,
+        "outputTokens": 389,
+        "cachedInputTokens": 2330,
+        "reasoningTokens": 211,
+        "durationMs": 4063,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 5628,
+        "outputTokens": 1288,
+        "cachedInputTokens": 5625,
+        "reasoningTokens": 431,
+        "durationMs": 10811,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 30473,
+        "outputTokens": 2629,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 23757,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-run1",
+    "day": "2026-10-06",
+    "run": 1,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [],
+    "strikes": [],
+    "narrativeStruck": false,
+    "draftSummary": "11 counted names ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none gave the entire move back. XHG, a covered 50 percent mover, reached a peak 190 percent above the prior close and closed up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations; the evidence described a proposal and strategic initiative with a planned operational reduction, rather than a completed transaction or operating result. VCIG, another covered 50 percent mover, reached a peak 59 percent above the prior close and closed up 55 percent from the prior close. VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "11 counted names ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none gave the entire move back. XHG, a covered 50 percent mover, reached a peak 190 percent above the prior close and closed up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations; the evidence described a proposal and strategic initiative with a planned operational reduction, rather than a completed transaction or operating result. VCIG, another covered 50 percent mover, reached a peak 59 percent above the prior close and closed up 55 percent from the prior close.",
+    "allowed": [
+      "XHG",
+      "VCIG",
+      "MTEN"
+    ],
+    "outsideList": [],
+    "judgementLines": [
+      {
+        "id": "O",
+        "ticker": null,
+        "text": "11 counted names ran at least 50 percent above the prior close, and 5 of them kept at least half of the peak gain at the close; none gave the entire move back. XHG, a covered 50 percent mover, reached a peak 190 percent above the prior close and closed up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations; the evidence described a proposal and strategic initiative with a planned operational reduction, rather than a completed transaction or operating result. VCIG, another covered 50 percent mover, reached a peak 59 percent above the prior close and closed up 55 percent from the prior close. VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+        "matched": [
+          "operating"
+        ],
+        "research": null
+      },
+      {
+        "id": "S1L2",
+        "ticker": "VCIG",
+        "text": "VCI Global announced on October 6, 2026, the launch of its VGAIN Compute AI Token Platform, an expansion into AI infrastructure and LLM services. The sources provided no operating, customer, revenue or transaction-value metrics for the platform.",
+        "matched": [
+          "operating"
+        ],
+        "research": "VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services."
+      },
+      {
+        "id": "S1L3",
+        "ticker": "XHG",
+        "text": "XChange TEC announced on October 6, 2026, a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing its mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result."
+      },
+      {
+        "id": "S1L10",
+        "ticker": "KAPA",
+        "text": "Kairos reported on October 6, 2026, positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1674828,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2422,
+        "outputTokens": 401,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 166,
+        "durationMs": 4839,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4788,
+        "outputTokens": 1013,
+        "cachedInputTokens": 1946,
+        "reasoningTokens": 251,
+        "durationMs": 8305,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31316,
+        "outputTokens": 1954,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17738,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-run2",
+    "day": "2026-10-06",
+    "run": 2,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L3"
+    ],
+    "strikes": [
+      {
+        "id": "S1L3",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research says the evidence (the desk's reading) describes a proposal rather than a completed transaction; it does not say the company described it that way."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "11 counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close; none gave the entire move back. XHG was a covered 50 percent mover, with a peak of 190 percent above the prior close and a close up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations; the evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result. VCIG was a covered 50 percent mover, with a peak of 59 percent above the prior close and a close up 55 percent from the prior close. VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "11 counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close; none gave the entire move back. XHG was a covered 50 percent mover, with a peak of 190 percent above the prior close and a close up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations; the evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result. VCIG was a covered 50 percent mover, with a peak of 59 percent above the prior close and a close up 55 percent from the prior close.",
+    "allowed": [
+      "XHG",
+      "VCIG",
+      "MTEN"
+    ],
+    "outsideList": [],
+    "judgementLines": [
+      {
+        "id": "O",
+        "ticker": null,
+        "text": "11 counted names ran at least 50 percent above the prior close by the regular-session high, and 5 kept at least half of the peak gain at the close; none gave the entire move back. XHG was a covered 50 percent mover, with a peak of 190 percent above the prior close and a close up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations; the evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result. VCIG was a covered 50 percent mover, with a peak of 59 percent above the prior close and a close up 55 percent from the prior close. VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+        "matched": [
+          "operating"
+        ],
+        "research": null
+      },
+      {
+        "id": "S1L3",
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million, while gradually reducing its mainland China operations. The company described the initiative as a proposal rather than a completed transaction or operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result."
+      },
+      {
+        "id": "S1L10",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos Pharma reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.17413520000000002,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2422,
+        "outputTokens": 385,
+        "cachedInputTokens": 2419,
+        "reasoningTokens": 142,
+        "durationMs": 4898,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4788,
+        "outputTokens": 1146,
+        "cachedInputTokens": 4785,
+        "reasoningTokens": 374,
+        "durationMs": 10069,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31344,
+        "outputTokens": 2274,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 19816,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-06-PREMARKET-v7-run3",
+    "day": "2026-10-06",
+    "run": 3,
+    "status": "PUBLISHED",
+    "error": null,
+    "lines": 13,
+    "struck": [
+      "S1L7"
+    ],
+    "strikes": [
+      {
+        "id": "S1L7",
+        "reason": "UNSUPPORTED",
+        "by": "model",
+        "detail": "The research does not date the reverse split to August 11; that date is inferred from a source filing time. It also gives August 21 as the disclosure date, not as the date Nasdaq issued the notice."
+      }
+    ],
+    "narrativeStruck": false,
+    "draftSummary": "11 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG was a covered 50 percent mover, with a peak of 190 percent above the prior close and a close up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million, alongside a gradual reduction of its mainland China operations; the evidence described a proposal and strategic initiative rather than a completed transaction or operating result. VCIG was a covered 50 percent mover, with a peak of 59 percent above the prior close and a close up 55 percent from the prior close. VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+    "narrative": "11 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG was a covered 50 percent mover, with a peak of 190 percent above the prior close and a close up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million, alongside a gradual reduction of its mainland China operations; the evidence described a proposal and strategic initiative rather than a completed transaction or operating result. VCIG was a covered 50 percent mover, with a peak of 59 percent above the prior close and a close up 55 percent from the prior close.",
+    "allowed": [
+      "XHG",
+      "VCIG",
+      "MTEN"
+    ],
+    "outsideList": [],
+    "judgementLines": [
+      {
+        "id": "O",
+        "ticker": null,
+        "text": "11 counted names ran at least 50 percent above the prior close, 5 kept at least half of the peak gain at the close, and none gave the entire move back. XHG was a covered 50 percent mover, with a peak of 190 percent above the prior close and a close up 25 percent from the prior close. On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million, alongside a gradual reduction of its mainland China operations; the evidence described a proposal and strategic initiative rather than a completed transaction or operating result. VCIG was a covered 50 percent mover, with a peak of 59 percent above the prior close and a close up 55 percent from the prior close. VCI Global announced the launch of its VGAIN Compute AI Token Platform, described as an expansion into AI infrastructure and LLM services. MTEN was up 83 percent after the close. Of the 12 names the desk covers, 5 had fresh news in our sources.",
+        "matched": [
+          "operating"
+        ],
+        "research": null
+      },
+      {
+        "id": "S1L3",
+        "ticker": "XHG",
+        "text": "XHG. On October 6, 2026, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing its mainland China operations. The announcement described a proposal and strategic initiative, not a completed transaction or operating result.",
+        "matched": [
+          "operating"
+        ],
+        "research": "On October 6, XChange TEC announced a proposed U.S. AI business expansion involving planned investment of $5 million to $10 million while gradually reducing mainland China operations. The evidence describes a proposal and strategic initiative, alongside a planned operational reduction, rather than a completed transaction or operating result."
+      },
+      {
+        "id": "S1L10",
+        "ticker": "KAPA",
+        "text": "KAPA. On October 6, 2026, Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer. Secondary coverage reported 17.7-month median progression-free survival versus 2 months.",
+        "matched": [
+          "positive"
+        ],
+        "research": "Kairos reported positive, statistically significant interim efficacy data from its ongoing Phase 2 ENV-105 and apalutamide trial in metastatic castration-resistant prostate cancer; secondary coverage reported 17.7-month median progression-free survival versus 2 months."
+      }
+    ],
+    "countSentence": true,
+    "rankInSummary": false,
+    "zeroWord": false,
+    "writerCalls": 2,
+    "writerErrors": 0,
+    "checkerReplies": 1,
+    "checkerErrors": 0,
+    "costUsd": 0.1698124,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 2422,
+        "outputTokens": 400,
+        "cachedInputTokens": 2419,
+        "reasoningTokens": 165,
+        "durationMs": 4666,
+        "role": "writer"
+      },
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4788,
+        "outputTokens": 1512,
+        "cachedInputTokens": 4785,
+        "reasoningTokens": 749,
+        "durationMs": 12802,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 31309,
+        "outputTokens": 2042,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18163,
+        "role": "checker"
+      }
+    ]
+  }
+]
