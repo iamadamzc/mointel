@@ -44,7 +44,38 @@ for design documents.
 - Deploying → [ops.md](ops.md). Produce commits; Ops puts them on the server.
 - What the dossier *says* — grades, evidence, interpreter output → [research.md](research.md)
 
-## Live state: 2026-10-11 01:51 UTC / Sat 21:51 ET (thirteenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES ALL BELOW WHERE THEY DIFFER
+## Live state: 2026-10-14 02:56 UTC / Tue 22:56 ET (fourteenth seat, same id local_83b5b7ec; clock read via zoneinfo). THIS BLOCK SUPERSEDES ALL BELOW WHERE THEY DIFFER
+
+**Written for a reset at his word ("prepare to reset"). Every sha is a lead: open it. His freeze stands: "adding nothing more" (19:54:41.917Z 10-13); "everything tonight" (02:09:54.695Z 10-14) moved THE DEFINED LIST (Integration's `docs/finish-list-2026-10-09.md`) into tonight where it can ship safely.**
+
+**Design literals, each built, tested (counts in its commit message), pushed on a `design/` branch:**
+
+| Item | Literal (branch) | State at hand-off |
+| --- | --- | --- |
+| Float fix 1 (filed count on a refused row) | 5683c487 | SHIPPED (in 0010a3fb, 10-13) |
+| Float follow-up (aria ".;", age once on COUNT_TOO_OLD) | 90d6f462 | in Ops's 700befea |
+| L4 definition label "TMI Float: shares outstanding less insider holdings" | 5fa40f15 | in 82d81e22; R2 composes it |
+| L7 stated share count (countSource, words, articleFor) | 4692e845 (+ Web 3c2815ca) | in R2 e065e487; RENDERED at 1,024, PASS |
+| L14 refused panels: refusedDefinition (his yes 01:22:41.226Z) | 789ffa0b (design/l14-refused-definition-on-e065e487) | Integration replayed; Commercial 111 PASS; for the last release |
+| A5 SAFE CUT: googleSheets.ts, readable.ts, USE_MOCK_DATA gone; one provider `none` | bcb9591c (design/a5-sheet-removal-on-2b80620a, on Ops's 2b80620a) | Web's read-only MCP/diagnostics check 7/7 PASS; Ops gates |
+| L8 piece B, filings-only bound (circled i, his "approved" 01:17:42.726Z, "count date tonight" 02:24:18.782Z) | 9b8b4e8c (design/l8-filings-only-on-e065e487, on Research 1492dedb) | Commercial 117 PASS; RENDERED at 1,024, PASS; waits Research's own L8 gate, then his go |
+| L6 (a) restated bound face | 87362da5 (design/l6-restated-face-on-0719a53b, on Research 0719a53b, the PLAN only) | Commercial 114 PASS with conditions; ships TOMORROW EVENING (his "evening if it misses") |
+
+**OWED BY DESIGN, with triggers:**
+1. **L6**, when Research's L6 literal lands: rebase 87362da5 onto it; drop my `FloatRestatementView` copy for Research's `restated` type; Commercial 114 (1): a test on Research's BUILT rows that restatedShares minus the insiders total equals the headline bound (rounded up at 3 significant digits), with an unrestated-holding control that fails (if insiders are as filed, pull "in the same share units"); render at 1,024 on real rows.
+2. **L6 + L8 composition** (Commercial 114 (2), Integration's ruling): one icon per row, the TRIANGLE wins; hover = L6 sentence then L8 sentence; panel both lines; aria both additions; a composition test in L6's gate. Rename L6's `RESTATED_DATE_ON_FACE` to L8's shared `MARKED_BOUND_DATE_ON_FACE`. Also: the drawer prints the cell caveat for any MARKED bound (9b8b4e8c's drawerFloat rule); a provenByBars restated bound has no icon, so its drawer prints its own reading in the dossier's units; check that against Research's rows.
+3. **To him before L6 ships (Integration sends, verbatim):** the L6 string block (hover v9 8d88c749, aria/rows v8 95201471 + v10 8b712567, lined-up v6 14a0b60a, the panel caveat line), the three-plus-splits form, and the date leaving the face on a restated bound (point 5 (a)).
+4. **After L8 deploys (Commercial 117):** one live no-research name with the marker, one flagged researched name still at Cannot verify; needs a review link, which is HIS word each time.
+5. **A5 REST**, not tonight (my answer to Integration, 02:10Z: about 5 to 6 h; recommended a daytime release in two commits: the DeskRow Sheet fields (`ticker`, `research`, `floatAssessment`, `comparison`) and their ~15 readers with a render, then rows.ts, sheetTable.ts, normalize's Sheet parsers and ~20 test fixtures). Integration takes it to him.
+6. **Legend advisory** (Commercial 114 (3)) is resolved by his "; where no date shows, it is in the hover" (in 9b8b4e8c).
+
+**Review links 10-13:** 74 (his "5, yes.", 11:13:39Z to 11:15:13Z, one load; picker seen; my reader opened the grade badge) and 75 (his 14:37:50.001Z yes, 14:39:34Z to 14:42:29Z; header hover and the Morning check on BMBL seen; Demand unproven). Settled LOCALLY after: Demand renders without Rank Change or Float Turnover; the AH line is volume only; STRUCTURE UNKNOWN has no hover by design (clamped detail line, DecisionCells.tsx:538); the picker's pending mark shows only on a cold range (rangePending.ts), by design. Now header: two lines when sorted (rendered on production 2fa909bf), A9 closed.
+
+**My worktrees:** A:\mointel-floatfix, A:\mointel-l7, A:\mointel-l14, A:\mointel-design-a5, A:\mointel-design-l6, A:\mointel-design-l8 (each a node_modules JUNCTION to A:\mointel-design). **A:\mointel-a5 is OPS's (ops/assess-official-close at 0097d163): never edit it.** A:\mointel-design is back on design/drawer-float-verdict 42777682.
+
+**The local render method that works (10-13):** check out the literal detached in A:\mointel-design; copy data/market.db + -wal to the scratchpad; MIGRATE THE COPY to schema 30 (`npx tsx --conditions=react-server -e` with `openDatabase(process.env.COPY)` and a refusal for any path without "scratchpad"); a local review token in the copy (`worker/review.ts create` with MARKET_DB_PATH); a temporary `design-local` entry in .claude/launch.json (next dev on 3100, DESIGN_FAKE_NOW 2026-08-18T14:45:00Z, the clock shim in scratchpad 505d552d...); a preload that patches window.fetch for /api/market; headless `cdp.mjs`. After: preview_stop, `git checkout -- .claude/launch.json`, A:\mointel-design back on its branch, delete the copy and token. Text searches on the page: case-insensitive, with a known-present control.
+
+## Live state: 2026-10-11 01:51 UTC / Sat 21:51 ET (thirteenth seat, same id local_83b5b7ec; clock read via zoneinfo). SUPERSEDED BY THE BLOCK ABOVE WHERE THEY DIFFER
 
 **Written for a reset at his word ("you need to reset at a stopping point"). Every sha is a lead: open it.**
 
@@ -817,6 +848,10 @@ probe came before any edit, as the ledger says it must.**
 | --- | --- | --- | --- |
 | Told him and Integration I would read the approved review link "on Monday" and set no wake-up; the seat had no turn on 10-12 and the six reads never happened | PROMISE-WITHOUT-TRIGGER (new; memory a-promise-needs-a-wake-up) | No | Integration, 10-13. **Rule: a time-bound promise gets its scheduled wake-up in the same turn** |
 | Told Integration BOUND_OUT_OF_RANGE means "the count is fine, the insider subtraction failed", unopened; insiderBound.ts:333/:345 make the count itself suspect. Integration ruled on it, then re-ruled. Nothing built | CLAIM-WIDER-THAN-OPENED (the ninth seat's class) | Yes, the class; first this seat | Commercial read 89. **Rule: open the line that sets a reason before saying what it means** |
+| `test ! -e /a/mointel-a5 && git worktree add ...` skipped silently: the folder was OPS's worktree. I edited Ops's branch ops/assess-official-close, made one local commit (3979732c, never pushed), and ran every A5 search on Ops's older tree. Reset; Ops confirmed clean, nothing lost; searches re-run on the right base | GUARDED-SETUP-SKIPS-SILENTLY (new; memory a-guarded-setup-that-skips-silently) | No | Self, from an unexpected parent in `git log`. **Rule: print the new worktree's branch before any edit; a guard that ends a `&&` chain must shout** |
+| A drawer test I wrote was wrapped in `if (line)`, so it passed when the line was null; a Desk Read test passed a VIEW where raw data belongs (tsc and the test caught it) | VACUOUS-GUARD / wrong argument | Yes, the classes | Self (re-read) and tsc. Fixed before commit |
+| Two mutants matched nothing (multi-line patterns against CRLF files) and a scripted line counter read the one-line RVOL head as 3 lines | FAILED-CHECK-RETURNS-PLAUSIBLE | Yes (memory) | Self: the mutant script refuses unless exactly one match lands; the counter was discarded for the screenshot. **Rule: single-line mutant anchors on CRLF files; control every DOM counter on a known case** |
+| `git add` with one already-deleted path aborted the whole add, and the commit took only the staged deletions | PARTIAL-COMMIT | No | Self, from `git show --stat`. **Rule: check the commit's stat after every commit** |
 | Link 74 (his 07-10 window): my reader clicked the first button in a board row, the Setup grade badge; the row itself opens the dossier (`<tr onClick>`). Demand and Morning check went unread and a second load was refused (rightly) | FAILED-CHECK-RETURNS-PLAUSIBLE (assumed the element without opening the component) | Yes, the class | Self, from the "Setup grade B" dialog. **Rule: open the component that handles the click before scripting it** |
 | Link 75: searched the dossier for /Demand/ case-sensitively; innerText returns the CSS-uppercased "DEMAND", so the section read as absent and the "no Rank Change" result had no control. Settled locally with a case-insensitive title search and a control | FAILED-CHECK-RETURNS-PLAUSIBLE (innerText applies text-transform) | Yes, the class; second this seat | Self, reading the output. **Rule: every DOM text search is case-insensitive, and finds a known-present section first** |
 
