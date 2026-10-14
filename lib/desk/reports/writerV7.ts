@@ -56,15 +56,26 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * a session date), so a recap's Summary call gets no NAMES section (`buildRecapSummaryPromptV7`) and its name-lines call
  * gets no narrative facts, ticker list or shape rule (`buildRecapLinesPromptV7`); both carry the revision rule when it
  * applies (Commercial read 116). Intraday is unchanged: one call, the same prompt as version 8.
+ * 10: the Summary's length, his "a" (Integration chat 7d32ed42, uuid 0be89a81): the cut after the check keeps the first
+ * 4 (recap) or 3 (intraday) sentences, and v7 drafted past that with the count sentence last, so no reader got it (raw-3:
+ * 0 of 9 recaps; L12 f71c48c2: 0 of 8 intraday). RECAP_SHAPE_RULE gains its length sentence; an intraday report
+ * carries INTRADAY_SHAPE_RULE. Marketing 493a81ff, Commercial read 121 PASS.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 9;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 10;
 
 /**
  * L13 (b), recap only, after the ticker list. Marketing's wording (a zero is "none": `countBefore` in check.ts reads
  * "none" as 0 and has no "zero", so "Zero gave the entire move back" read as no count and was struck).
  */
 export const RECAP_SHAPE_RULE =
-  "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'.";
+  "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'. A recap's Summary is four sentences or fewer. It gives the counts and the named movers the facts give, then the after-hours name and its move, if the facts give one, and ends with how many of the names the desk covers had fresh news in our sources.";
+
+/**
+ * Version 10, intraday only, after the narrative facts: the length, in the order that survives the cut (`capNarrative`,
+ * sentences.ts: an intraday Summary keeps its first 3 sentences after the check). Marketing 493a81ff, Commercial read 121.
+ */
+export const INTRADAY_SHAPE_RULE =
+  "An intraday Summary is three sentences or fewer: the name ranked first in this range, with its own news; the next gainers the facts name, if any; and how many of the names the desk covers had fresh news in our sources.";
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -285,6 +296,7 @@ function narrativeSectionV7(input: WriterInputV7): string[] {
     'NARRATIVE FACTS:',
     `  ${narrativeSheetV7(input.narrative).join('\n  ')}`,
     ...(recapSummary ? [recapSummary, RECAP_SHAPE_RULE] : []),
+    ...(isRecap(input.kind) ? [] : [INTRADAY_SHAPE_RULE]),
     ...(input.revision ? [REVISION_RULE_V7] : []),
   ];
 }

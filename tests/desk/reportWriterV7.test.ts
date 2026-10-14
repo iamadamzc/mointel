@@ -12,6 +12,7 @@ import {
   NEVER_OPEN,
   RATING_SENTENCE,
   RECAP_LINES_ONLY,
+  INTRADAY_SHAPE_RULE,
   RECAP_SHAPE_RULE,
   RECAP_SUMMARY_ONLY,
   recapSummaryRule,
@@ -297,8 +298,9 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
   });
 
   it("L13 (b): a recap's Summary call carries the no-rank, count-as-a-digit rule right after its ticker list; an intraday report does not", () => {
+    // Version 10 appends the length sentence (Marketing 493a81ff, Commercial read 121), spelled out here.
     expect(RECAP_SHAPE_RULE).toBe(
-      "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'.",
+      "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'. A recap's Summary is four sentences or fewer. It gives the counts and the named movers the facts give, then the after-hours name and its move, if the facts give one, and ends with how many of the names the desk covers had fresh news in our sources.",
     );
     const { user } = buildRecapSummaryPromptV7(input(recap));
     expect(user).toContain(`${allowed}\n${RECAP_SHAPE_RULE}`);
@@ -326,26 +328,61 @@ const REVISION_RULE = 'This edition revises the earlier one: say nothing about w
 const BBB = { ...fact, ticker: 'BBB', assessmentRank: 4 } as ReportFact;
 const SHEETS = [factSheetV7(fact, research, pathOf(10, 19.4, 12)).join('\n  '), factSheetV7(BBB, null, null).join('\n  ')].join('\n\n');
 
-/** Version 8's single prompt for the intraday fixture, rebuilt here from its pieces: version 9 must send it unchanged. */
-const INTRADAY_PROMPT_V8: WriterPrompt = {
+/** Version 10's intraday length sentence, spelled out (Marketing 493a81ff, Commercial read 121). */
+const INTRADAY_LENGTH =
+  'An intraday Summary is three sentences or fewer: the name ranked first in this range, with its own news; the next gainers the facts name, if any; and how many of the names the desk covers had fresh news in our sources.';
+
+/**
+ * The single prompt for the intraday fixture, rebuilt here from its pieces: version 8's, unchanged by version 9, with
+ * version 10's length sentence right after the narrative facts.
+ */
+const INTRADAY_PROMPT_V10: WriterPrompt = {
   system: SYSTEM_V7,
   user: [
     'Into power hour: the session so far, going into the last hour.',
     '',
     'NARRATIVE FACTS:',
     `  ${narrativeSheetV7(intraday).join('\n  ')}`,
+    INTRADAY_LENGTH,
     '',
     'NAMES:',
     SHEETS,
   ].join('\n'),
 };
 
+describe('version 10: the Summary told its length (his "a", uuid 0be89a81), so the cut after the check keeps the count sentence', () => {
+  it('is version 10, and the intraday rule is the sentence Commercial passed', () => {
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(10);
+    expect(INTRADAY_SHAPE_RULE).toBe(INTRADAY_LENGTH);
+  });
+
+  it('an intraday prompt carries the intraday rule once, right after its facts; no recap call carries it', () => {
+    for (const kind of ['INTO_RTH', 'INTO_POWER_HOUR', 'AFTER_HOURS'] as const) {
+      const { user } = buildWriterPromptV7(input({ ...intraday, kind }));
+      expect(user.split(INTRADAY_SHAPE_RULE).length - 1).toBe(1);
+      expect(user).toContain(`${narrativeSheetV7({ ...intraday, kind }).join('\n  ')}\n${INTRADAY_SHAPE_RULE}\n`);
+      expect(user).not.toContain(RECAP_SHAPE_RULE);
+    }
+    for (const kind of ['EVENING', 'PREMARKET'] as const) {
+      const at = input({ ...recap, kind });
+      for (const prompt of [buildWriterPromptV7(at), buildRecapSummaryPromptV7(at), buildRecapLinesPromptV7(at)]) {
+        expect(prompt.user).not.toContain(INTRADAY_SHAPE_RULE);
+      }
+    }
+  });
+
+  it("a recap's Summary call carries the length sentence; its name-lines call does not", () => {
+    const length = "A recap's Summary is four sentences or fewer.";
+    for (const kind of ['EVENING', 'PREMARKET'] as const) {
+      const at = input({ ...recap, kind });
+      expect(buildRecapSummaryPromptV7(at).user).toContain(length);
+      expect(buildRecapLinesPromptV7(at).user).not.toContain(length);
+    }
+  });
+});
+
 describe('version 9: a recap is written in two calls (his "a, rebuid"); intraday is unchanged', () => {
   const allowed = 'The Summary may name only these tickers: NXL, AMOD. Every other name has its own line below; keep those names and their figures out of the Summary.';
-
-  it('is version 9', () => {
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(9);
-  });
 
   it('the two ending sentences are exact (Commercial read 116, condition 3, for the Summary call)', () => {
     expect(RECAP_SUMMARY_ONLY).toBe('This call writes only the Summary: return "lines": []. Write it only from the facts above.');
@@ -400,8 +437,8 @@ describe('version 9: a recap is written in two calls (his "a, rebuid"); intraday
     }
   });
 
-  it("the intraday prompt is version 8's, byte for byte", () => {
-    expect(buildWriterPromptV7(input(intraday))).toEqual(INTRADAY_PROMPT_V8);
+  it("the intraday prompt is version 8's plus version 10's length sentence, byte for byte", () => {
+    expect(buildWriterPromptV7(input(intraday))).toEqual(INTRADAY_PROMPT_V10);
   });
 
   it('writeReportV7 on a recap makes exactly two calls and merges them: the Summary from call 1, the lines from call 2', async () => {
@@ -468,10 +505,10 @@ describe('version 9: a recap is written in two calls (his "a, rebuid"); intraday
     }
   });
 
-  it("an intraday report makes exactly one call, with version 8's prompt", async () => {
+  it("an intraday report makes exactly one call, with version 10's prompt", async () => {
     const { model, prompts } = recording([JSON.stringify({ narrative: 'MI ranked first in this range.', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] })]);
     const result = await writeReportV7(input(intraday), model);
-    expect(prompts).toEqual([INTRADAY_PROMPT_V8]);
+    expect(prompts).toEqual([INTRADAY_PROMPT_V10]);
     expect(result).toEqual({
       ok: true,
       draft: { headline: '', overall: 'MI ranked first in this range.', sections: [{ heading: '', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] }] },
