@@ -23,7 +23,10 @@ face (Marketing 0a519b0f, Commercial 93), 2026-10-13T10:27:39.594Z ("yes, approv
 shown each verbatim), with the triangle sentence in his own words after his 10:28:14.413Z change,
 2026-10-13T10:46:44.599Z ("yes to both", shown the exact sentence at 10:39:13Z); then the paragraph
 on a later filing's dated count under "How we do it" (Marketing caf7523f, Commercial 103),
-2026-10-13T21:36:56.972Z ("yes to all three", shown it verbatim at 21:26:10Z). Any word changed
+2026-10-13T21:36:56.972Z ("yes to all three", shown it verbatim at 21:26:10Z); then ONE circled-i
+sentence for both cases, at the end of the first bullet, replacing the float fix 1 circled-i sentence
+in the filed-count bullet (Marketing 84d0b9fd, Commercial 110a), 2026-10-14T01:17:42.726Z ("approved",
+shown it verbatim with the live sentence it replaces at 01:17:22Z). Any word changed
 here is public copy and needs his yes before the commit.
 
 DO NOT SHIP until the float is turned on: "What a number does not tell you" names the issuance
@@ -63,8 +66,8 @@ A later filing can state a newer count with its own date: an 8-K, a prospectus, 
 
 The cell shows one of five things.
 
-- **≤ 12.3M** (the number varies). The TMI Float is no more than that, when the filings line up. The date of the filed count is shown beside it.
-- **A filed share count with an icon**, for example 12.3M sh. The desk could not verify a TMI Float, but it has the company's filed share count, and nothing is subtracted from it. A circled i means the count passed the split and age checks but shares may have been issued since, so the true count may be higher; the reason is in the hover. A triangle means the count may be in pre-split share units, there may have been a split that needs verification, or the count is more than 90 days old. Click it for the date, the filing and the reason.
+- **≤ 12.3M** (the number varies). The TMI Float is no more than that, when the filings line up. The date of the filed count is shown beside it. A circled i means the figure may be lower than the true one; the hover says why: shares may have been issued since the count, or there may be warrants, convertible notes or share-sale programs in place that the figure does not count.
+- **A filed share count with an icon**, for example 12.3M sh. The desk could not verify a TMI Float, but it has the company's filed share count, and nothing is subtracted from it. A triangle means the count may be in pre-split share units, there may have been a split that needs verification, or the count is more than 90 days old. Click it for the date, the filing and the reason.
 - **Unknown.** The desk could not start from a single filed share count: the company has none on file, we could not match it to an SEC filer, SEC's company-facts data returned nothing for it, or its count is split across several filings.
 - **Cannot verify.** We will not stand behind a number, and we show no count: there is no filed count to show, the float data could not be read, the figure did not pass our own sanity check, or the count is dated after the board or report. The reason is in the detail.
 - **Not computed.** We have not computed this name. That is different from Unknown.
