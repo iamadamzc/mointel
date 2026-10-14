@@ -33,7 +33,9 @@ import { selectFiledCount, type CompanyFactsShares, type FiledCount } from './fi
 import { SecRequestError } from './sec/client';
 import { htmlToText } from './sec/documents';
 import { newestStatedCount, statedCountFilings, type StatedCountCheck } from './statedCount';
+import { restateForCell } from './floatRestate';
 import { splitProofFromBars, splitProofR0, withAnnouncedSplits, type SpanBar } from './splitProof';
+import type { AnnouncedAction } from './splitRestate';
 import type { SupplyBlock } from './types';
 
 /** His ruling, 2026-10-05T21:22:37.844Z: the filed count may be at most 90 days old. NOT `FILED_SHARES_CURRENT_DAYS`. */
@@ -280,19 +282,40 @@ export function floatCellFor(input: {
   asOfDate: string;
   /** Rule I-D at `asOfDate`; required here, so no production path can leave it out. */
   issuanceFiled: boolean;
+  /**
+   * L6: the row's listed actions (undefined on a row stored before L6, null = the fetch failed) and the stored bars over
+   * the count span (count date through `asOfDate`). Absent = today's path. The job and the reader pass the same inputs.
+   */
+  restate?: { actions: readonly AnnouncedAction[] | null | undefined; countSpanBars: readonly SpanBar[] };
 }): FloatCell {
-  return floatCell({
+  const count = input.count.kind === 'COUNT' ? input.count : null;
+  const restated =
+    count && input.restate
+      ? restateForCell({
+          actions: input.restate.actions,
+          count: { shares: count.shares, asOf: count.asOf, filed: count.filed },
+          holdings: input.holdings,
+          splitSinceCount: input.splitSinceCount,
+          countSpanBars: input.restate.countSpanBars,
+          d: input.asOfDate,
+        })
+      : ({ kind: 'AS_TODAY' } as const);
+  // RESTATE replaces only today's split-since-count refusal: the count and holdings in restated units, the span NONE.
+  // REFUSE and AS_TODAY are today's inputs unchanged, so today's refusal (or today's cell) stands.
+  const holdings = restated.kind === 'RESTATE' ? restated.holdings : input.holdings;
+  const cell = floatCell({
     cik: input.cik,
-    count: input.count.kind === 'COUNT' ? { shares: input.count.shares, asOf: input.count.asOf, form: input.count.form } : null,
+    count: count ? { shares: restated.kind === 'RESTATE' ? restated.countShares : count.shares, asOf: count.asOf, form: count.form } : null,
     spreadAcrossFilings: input.count.kind === 'COUNT_SPLIT_ACROSS_FILINGS',
     companyFactsNotAvailable: input.count.kind === 'COMPANY_FACTS_NOT_AVAILABLE',
     checkpointDate: input.asOfDate,
     maxAgeDays: FLOAT_MAX_AGE_DAYS,
-    holdings: input.holdings,
-    holdingSplit: new Map(input.holdings.map((h) => [h.ownerCik, h.split])),
-    splitSinceCount: input.splitSinceCount,
+    holdings,
+    holdingSplit: new Map(holdings.map((h) => [h.ownerCik, h.split])),
+    splitSinceCount: restated.kind === 'RESTATE' ? 'NONE' : input.splitSinceCount,
     ledger: input.ledger,
     issuanceFiled: input.issuanceFiled,
     issuanceRule: FLOAT_ISSUANCE_RULE,
   });
+  return restated.kind === 'RESTATE' && cell.state === 'PRODUCED' ? { ...cell, restated: restated.restated } : cell;
 }

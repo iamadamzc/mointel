@@ -14,6 +14,7 @@ import type { MarketDatabase } from '../market/store/db';
 import { readLatestFloatBound } from '../market/store/floatBoundRepo';
 import { readCurrentAnalyses, researchTablesPresent } from '../market/store/researchRepo';
 import { FLOAT_MAX_AGE_DAYS, FLOAT_REUSE_DAYS, floatCellFor, issuanceFiledIn, type FloatBoundRow } from './floatJob';
+import type { Restatement } from './floatRestate';
 import { readSpanBars } from './history';
 import { NO_ANALYSIS, type FloatCell, type FloatCellReason, type FloatLedger, type SplitProof } from './insiderBound';
 import { splitProofFromBars, withAnnouncedSplits, type SpanBar } from './splitProof';
@@ -40,7 +41,11 @@ export function floatCellAt(row: FloatBoundRow | null, d: string, ledger: FloatL
   const splitSinceCount = row.count.kind === 'COUNT' ? splitSinceCountAt({ ...row, count: row.count }, d, countSpanBars) : row.splitSinceCount;
   // Rule I-D re-applied at D over the stored filings; one made after the row's read is unseen (the reuse span bounds it).
   const issuanceFiled = row.count.kind === 'COUNT' && issuanceFiledIn(row.issuanceFilings, row.count.asOf, d);
-  return floatCellFor({ cik: row.cik, count: row.count, holdings: row.holdings, splitSinceCount, ledger, asOfDate: d, issuanceFiled });
+  // L6: the same restatement the job ran, at D, from the row's listed actions (fetched through the reuse span) and the bars.
+  return floatCellFor({
+    cik: row.cik, count: row.count, holdings: row.holdings, splitSinceCount, ledger, asOfDate: d, issuanceFiled,
+    restate: { actions: row.announcedActions, countSpanBars },
+  });
 }
 
 /**
@@ -123,6 +128,13 @@ export interface FloatBound {
    * refused cell. A name researched later loses it at the next read, because the reader takes the dossier current at D.
    */
   filingsOnly?: true;
+  /**
+   * L6: PRODUCED only, the count restated across listed splits (floatRestate.ts `Restatement`, the fields Design's face
+   * reads: splits oldest first as { exDate, oldRate, newRate }, factor, restatedShares, provenByBars). `countShares`
+   * stays the FILED count; `bound` and every `insiders[].shares` are in the restated units, so restatedShares less the
+   * insiders is the bound (Commercial read 114 (1)). Absent on a bound that was not restated.
+   */
+  restated?: Restatement;
 }
 
 export interface FloatCountSource {
@@ -180,7 +192,7 @@ export function toFloatBound(row: FloatBoundRow, cell: FloatCell, countChecks: F
   const source = countSourceOf(row);
   const filed = { countShares: count?.shares ?? null, countForm: count?.form ?? null, countChecks, ...(source ? { countSource: source } : {}) };
   return cell.state === 'PRODUCED'
-    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell), ...filingsOnlyOf(cell) }
+    ? { state: 'PRODUCED', reason: null, bound: cell.bound, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: cell.holdings.filter((h) => h.shares > 0).length, filingsReadOn: row.asOfDate, holdingsFiledOn: filedOn(row, cell), ...filed, insiders: insidersOf(row, cell), ...filingsOnlyOf(cell), ...(cell.restated ? { restated: cell.restated } : {}) }
     : { state: cell.state, reason: cell.reason, bound: null, countAsOf: count?.asOf ?? null, countFiled: count?.filed ?? null, subtractedHolders: 0, filingsReadOn: row.asOfDate, holdingsFiledOn: [], ...filed, insiders: [] };
 }
 

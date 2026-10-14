@@ -9,6 +9,7 @@
  * dated AT OR BEFORE the count's as-of date. A holding dated after the count can include
  * shares the count does not, and subtracting it moves the bound too LOW.
  */
+import type { Restatement } from './floatRestate';
 import type { SupplyBlock } from './types';
 
 /* ----------------------------------------------------------------- parsing */
@@ -264,6 +265,11 @@ export type FloatCell =
        * a cell computed with a ledger carries no such field.
        */
       filingsOnly?: true;
+      /**
+       * L6: the count was restated across listed splits (floatRestate.ts); `bound` is measured from `restatedShares` and
+       * `holdings` are in the same units. Set only by `floatCellFor`, after `floatCell` produced: absent otherwise.
+       */
+      restated?: Restatement;
     }
   | { state: 'UNKNOWN' | 'CANNOT_VERIFY'; reason: FloatCellReason };
 
