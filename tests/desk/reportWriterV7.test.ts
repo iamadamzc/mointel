@@ -3,13 +3,17 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildRecapLinesPromptV7,
+  buildRecapSummaryPromptV7,
   buildWriterPromptV7,
   factSheetV7,
   narrativeSheetV7,
   NEVER_JOIN,
   NEVER_OPEN,
   RATING_SENTENCE,
+  RECAP_LINES_ONLY,
   RECAP_SHAPE_RULE,
+  RECAP_SUMMARY_ONLY,
   recapSummaryRule,
   REPORT_WRITER_PROMPT_VERSION_V7,
   RULED_STATE_PHRASES,
@@ -24,6 +28,7 @@ import type { NarrativeFacts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
 import type { ReportPath } from '@/lib/desk/reports/contract';
+import type { ReportModel, WriterPrompt } from '@/lib/desk/reports/writer';
 
 /*
  * The v7 writer (his direction, 2026-10-12: the TV desk reporter's voice, what must be included, human and coherent,
@@ -96,11 +101,18 @@ function input(narrative: NarrativeFacts): WriterInputV7 {
   } as unknown as WriterInputV7;
 }
 
+/** Every user prompt a report sends: one for intraday, the Summary call's and the lines call's for a recap (version 9). */
+function userPrompts(narrative: NarrativeFacts): string[] {
+  const at = input(narrative);
+  return narrative.kind === 'EVENING' || narrative.kind === 'PREMARKET'
+    ? [buildRecapSummaryPromptV7(at).user, buildRecapLinesPromptV7(at).user]
+    : [buildWriterPromptV7(at).user];
+}
+
 describe('v7 hands the model facts, not words', () => {
   it('no v6 per-state phrase appears in the sheets, for every news state', () => {
     for (const narrative of [intraday, recap]) {
-      const { user } = buildWriterPromptV7(input(narrative));
-      for (const words of V6_STATE_WORDS) expect(user).not.toContain(words);
+      for (const user of userPrompts(narrative)) for (const words of V6_STATE_WORDS) expect(user).not.toContain(words);
     }
   });
 
@@ -163,7 +175,7 @@ describe('v7 name sheet: no figure while the card prints one, and no clock time'
     const example = 'never write a clock time such as "2:30 PM"';
     expect(SYSTEM_V7.split(example).length - 1).toBe(1);
     expect(SYSTEM_V7.replace(example, '')).not.toMatch(/\b\d{1,2}:\d{2}\b/);
-    for (const narrative of [intraday, recap]) expect(buildWriterPromptV7(input(narrative)).user).not.toMatch(/\b\d{1,2}:\d{2}\b/);
+    for (const narrative of [intraday, recap]) for (const user of userPrompts(narrative)) expect(user).not.toMatch(/\b\d{1,2}:\d{2}\b/);
   });
 });
 
@@ -252,12 +264,12 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
   const allowed = 'The Summary may name only these tickers: NXL, AMOD. Every other name has its own line below; keep those names and their figures out of the Summary.';
   const noTicker = 'The Summary names no ticker. Every name has its own line below; keep those names and their figures out of the Summary.';
 
-  it('a recap lists the named movers and the after-hours name, between its facts and the names', () => {
+  it("a recap's Summary call lists the named movers and the after-hours name, after its facts; its lines call does not (version 9)", () => {
     for (const kind of ['EVENING', 'PREMARKET'] as const) {
-      const { user } = buildWriterPromptV7(input({ ...recap, kind }));
+      const { user } = buildRecapSummaryPromptV7(input({ ...recap, kind }));
       expect(user.split(allowed).length - 1).toBe(1);
       expect(user.indexOf(allowed)).toBeGreaterThan(user.indexOf('AMOD, up 62 percent after the close'));
-      expect(user.indexOf(allowed)).toBeLessThan(user.indexOf('NAMES:'));
+      expect(buildRecapLinesPromptV7(input({ ...recap, kind })).user).not.toContain(allowed);
     }
   });
 
@@ -282,16 +294,188 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(8);
   });
 
-  it('L13 (b): a recap carries the no-rank, count-as-a-digit rule right after its ticker list; an intraday report does not', () => {
+  it("L13 (b): a recap's Summary call carries the no-rank, count-as-a-digit rule right after its ticker list; an intraday report does not", () => {
     expect(RECAP_SHAPE_RULE).toBe(
       "A recap's Summary gives no rank and no change since the previous checkpoint; those are for the intraday reports. Give each count as a digit, and say a count of zero as 'none' ('none gave the entire move back'), never as the word 'zero'.",
     );
-    const { user } = buildWriterPromptV7(input(recap));
+    const { user } = buildRecapSummaryPromptV7(input(recap));
     expect(user).toContain(`${allowed}\n${RECAP_SHAPE_RULE}`);
     expect(buildWriterPromptV7(input(intraday)).user).not.toContain(RECAP_SHAPE_RULE);
+  });
+});
+
+/** A fake model that records every prompt it is sent and answers from a list, in order (an Error throws). */
+function recording(replies: Array<string | Error>): { model: ReportModel; prompts: WriterPrompt[] } {
+  const prompts: WriterPrompt[] = [];
+  const model: ReportModel = {
+    complete: async (prompt) => {
+      prompts.push(prompt);
+      const reply = replies[prompts.length - 1];
+      if (reply === undefined) throw new Error('the fake has no reply for this call');
+      if (reply instanceof Error) throw reply;
+      return reply;
+    },
+  };
+  return { model, prompts };
+}
+
+const EVENING_FRAME = 'The evening report: a recap of the regular session and the after-hours session that followed.';
+const REVISION_RULE = 'This edition revises the earlier one: say nothing about what changed or was revised since it.';
+const BBB = { ...fact, ticker: 'BBB', assessmentRank: 4 } as ReportFact;
+const SHEETS = [factSheetV7(fact, research, pathOf(10, 19.4, 12)).join('\n  '), factSheetV7(BBB, null, null).join('\n  ')].join('\n\n');
+
+/** Version 8's single prompt for the intraday fixture, rebuilt here from its pieces: version 9 must send it unchanged. */
+const INTRADAY_PROMPT_V8: WriterPrompt = {
+  system: SYSTEM_V7,
+  user: [
+    'Into power hour: the session so far, going into the last hour.',
+    '',
+    'NARRATIVE FACTS:',
+    `  ${narrativeSheetV7(intraday).join('\n  ')}`,
+    '',
+    'NAMES:',
+    SHEETS,
+  ].join('\n'),
+};
+
+describe('version 9: a recap is written in two calls (his "a, rebuid"); intraday is unchanged', () => {
+  const allowed = 'The Summary may name only these tickers: NXL, AMOD. Every other name has its own line below; keep those names and their figures out of the Summary.';
+
+  it('is version 9', () => {
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(9);
+  });
+
+  it('the two ending sentences are exact (Commercial read 116, condition 3, for the Summary call)', () => {
+    expect(RECAP_SUMMARY_ONLY).toBe('This call writes only the Summary: return "lines": []. Write it only from the facts above.');
+    expect(RECAP_LINES_ONLY).toBe('This call writes only the name lines; the Summary is written separately: return "narrative": null.');
+  });
+
+  it('the recap Summary prompt is the kind frame, the narrative facts, the list, the shape rule and its ending: no NAMES section, no rank', () => {
+    const prompt = buildRecapSummaryPromptV7(input(recap));
+    expect(prompt.system).toBe(SYSTEM_V7);
+    expect(prompt.user).toBe(
+      [EVENING_FRAME, '', 'NARRATIVE FACTS:', `  ${narrativeSheetV7(recap).join('\n  ')}`, allowed, RECAP_SHAPE_RULE, '', 'This call writes only the Summary: return "lines": []. Write it only from the facts above.'].join('\n'),
+    );
+    expect(prompt.user).not.toContain('NAMES');
+    expect(prompt.user).not.toContain('ranked #');
+    expect(prompt.user).not.toContain('since the previous checkpoint:');
+    for (const sheetOnly of ['ALEC', 'BBB', 'the card above your line', 'cited source']) expect(prompt.user).not.toContain(sheetOnly);
+    expect(prompt.user).toContain(allowed);
+    expect(prompt.user).toContain(RECAP_SHAPE_RULE);
+    expect(prompt.user.endsWith('This call writes only the Summary: return "lines": []. Write it only from the facts above.')).toBe(true);
+  });
+
+  it('the recap lines prompt is the kind frame, the NAMES sheets and its ending: no narrative facts, no list, no shape rule', () => {
+    const prompt = buildRecapLinesPromptV7(input(recap));
+    expect(prompt.system).toBe(SYSTEM_V7);
+    expect(prompt.user).toBe(
+      [EVENING_FRAME, '', 'NAMES:', SHEETS, '', 'This call writes only the name lines; the Summary is written separately: return "narrative": null.'].join('\n'),
+    );
+    expect(prompt.user).toContain('ALEC: ranked #3 in this range');
+    expect(prompt.user).toContain('BBB: ranked #4 in this range');
+    expect(prompt.user).not.toContain('NARRATIVE FACTS');
+    for (const line of narrativeSheetV7(recap)) expect(prompt.user).not.toContain(line);
+    for (const ticker of ['NXL', 'AMOD']) expect(prompt.user).not.toContain(ticker);
+    expect(prompt.user).not.toContain('The Summary may name only');
+    expect(prompt.user).not.toContain('The Summary names no ticker');
+    expect(prompt.user).not.toContain(RECAP_SHAPE_RULE);
+    expect(prompt.user.endsWith('This call writes only the name lines; the Summary is written separately: return "narrative": null.')).toBe(true);
+  });
+
+  it('the revision rule goes in BOTH recap calls when the edition revises, and in neither otherwise (Commercial read 116, condition 2)', () => {
+    const revised = { ...input({ ...recap, kind: 'PREMARKET' }), revision: true } as WriterInputV7;
+    const summary = buildRecapSummaryPromptV7(revised).user;
+    const lines = buildRecapLinesPromptV7(revised).user;
+    for (const user of [summary, lines]) {
+      expect(user.split(REVISION_RULE).length - 1).toBe(1);
+      expect(user.startsWith('The late evening report: a recap of the regular session and the after-hours session that followed. This edition revises the earlier one.')).toBe(true);
+    }
+    expect(lines).toContain('NAMES (only the names whose facts changed since the earlier edition):');
+    expect(summary).not.toContain('NAMES');
+    for (const kind of ['EVENING', 'PREMARKET'] as const) {
+      expect(buildRecapSummaryPromptV7(input({ ...recap, kind })).user).not.toContain(REVISION_RULE);
+      expect(buildRecapLinesPromptV7(input({ ...recap, kind })).user).not.toContain(REVISION_RULE);
+    }
+  });
+
+  it("the intraday prompt is version 8's, byte for byte", () => {
+    expect(buildWriterPromptV7(input(intraday))).toEqual(INTRADAY_PROMPT_V8);
+  });
+
+  it('writeReportV7 on a recap makes exactly two calls and merges them: the Summary from call 1, the lines from call 2', async () => {
+    for (const kind of ['EVENING', 'PREMARKET'] as const) {
+      const at = input({ ...recap, kind });
+      const { model, prompts } = recording([
+        JSON.stringify({ narrative: 'The Summary from the Summary call.', lines: [{ ticker: 'ZZZ', text: 'A line the Summary call should not have written.' }] }),
+        JSON.stringify({ narrative: 'A Summary the lines call should not have written.', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }, { ticker: 'BBB', text: 'BBB line.' }] }),
+      ]);
+      const result = await writeReportV7(at, model);
+      expect(prompts).toEqual([buildRecapSummaryPromptV7(at), buildRecapLinesPromptV7(at)]);
+      expect(result).toEqual({
+        ok: true,
+        draft: { headline: '', overall: 'The Summary from the Summary call.', sections: [{ heading: '', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }, { ticker: 'BBB', text: 'BBB line.' }] }] },
+      });
+    }
+  });
+
+  it('both recap calls parse as asked: "lines": [] on a non-revision Summary call, "narrative": null on a lines call; the intraday parse is unchanged (control)', async () => {
+    const { model, prompts } = recording([
+      JSON.stringify({ narrative: 'The Summary.', lines: [] }),
+      JSON.stringify({ narrative: null, lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] }),
+    ]);
+    expect(recap.movers50).toBeGreaterThan(0); // a recap whose facts say something
+    expect(await writeReportV7(input(recap), model)).toEqual({
+      ok: true,
+      draft: { headline: '', overall: 'The Summary.', sections: [{ heading: '', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] }] },
+    });
+    expect(prompts).toHaveLength(2);
+    // The control: a non-revision intraday reply with no lines still fails, and a null narrative with lines still parses.
+    const at = () => new Date('2026-10-05T18:31:00Z');
+    expect(await writeReportV7(input(intraday), recording([JSON.stringify({ narrative: 'The Summary.', lines: [] })]).model, at)).toEqual({
+      ok: false,
+      cause: { kind: 'WRITER_FAILED', at: '2026-10-05T18:31:00.000Z' },
+    });
+    expect(await writeReportV7(input(intraday), recording([JSON.stringify({ narrative: null, lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] })]).model)).toEqual({
+      ok: true,
+      draft: { headline: '', overall: null, sections: [{ heading: '', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] }] },
+    });
+  });
+
+  it('a revised recap may return no lines from its lines call, as a revised edition may today', async () => {
+    const revised = { ...input({ ...recap, kind: 'PREMARKET' }), revision: true } as WriterInputV7;
+    const { model, prompts } = recording([JSON.stringify({ narrative: 'The Summary.', lines: [] }), JSON.stringify({ narrative: null, lines: [] })]);
+    expect(await writeReportV7(revised, model)).toEqual({ ok: true, draft: { headline: '', overall: 'The Summary.', sections: [{ heading: '', lines: [] }] } });
+    expect(prompts).toHaveLength(2);
+  });
+
+  it('either recap call failing (it throws, or its reply does not parse) is WRITER_FAILED, with no retry', async () => {
+    const at = () => new Date('2026-10-05T18:31:00Z');
+    const failed = { ok: false, cause: { kind: 'WRITER_FAILED', at: '2026-10-05T18:31:00.000Z' } };
+    const good = { summary: JSON.stringify({ narrative: 'The Summary.', lines: [] }), lines: JSON.stringify({ narrative: null, lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] }) };
+    const cases: Array<{ replies: Array<string | Error>; calls: number }> = [
+      { replies: [new Error('down'), good.lines], calls: 1 },
+      { replies: ['not json', good.lines], calls: 1 },
+      { replies: [good.summary, new Error('down')], calls: 2 },
+      { replies: [good.summary, 'not json'], calls: 2 },
+      { replies: [good.summary, JSON.stringify({ narrative: null, lines: [] })], calls: 2 }, // no lines on a non-revision recap
+    ];
+    for (const { replies, calls } of cases) {
+      const { model, prompts } = recording(replies);
+      expect(await writeReportV7(input(recap), model, at)).toEqual(failed);
+      expect(prompts).toHaveLength(calls);
+    }
+  });
+
+  it("an intraday report makes exactly one call, with version 8's prompt", async () => {
+    const { model, prompts } = recording([JSON.stringify({ narrative: 'MI ranked first in this range.', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] })]);
+    const result = await writeReportV7(input(intraday), model);
+    expect(prompts).toEqual([INTRADAY_PROMPT_V8]);
+    expect(result).toEqual({
+      ok: true,
+      draft: { headline: '', overall: 'MI ranked first in this range.', sections: [{ heading: '', lines: [{ ticker: 'ALEC', text: 'ALEC line.' }] }] },
+    });
   });
 });
 

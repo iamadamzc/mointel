@@ -17,6 +17,8 @@
  * - NO MOVE IN A NAME LINE: the card prints the prices and the move above it (Design, from `sessionReports.ts`
  *   pathView), so the name sheet gives no move at all (version 3). The Summary keeps its given percents.
  * - NO CLOCK TIME: the voice dates every time and never writes one, so the sheets give dates, not times of day.
+ * - A RECAP IN TWO CALLS (version 9): the recap's Summary is written by a call that never sees the name sheets, and its
+ *   name lines by a call that never sees the narrative facts; the two replies are merged into one draft.
  * The checker is unchanged (v6's), and the reply shape is v6's (`parseDraftV6`).
  */
 
@@ -26,7 +28,7 @@ import type { ReportFact } from './facts';
 import { isRecap, type NarrativeFacts } from './narrative';
 import type { ReportResearch } from './research';
 import { eventWhen, sourceWhen } from './traced';
-import { NOTHING_LINE, framedChange, price, reportableChangeNotes, type ReportModel, type WriterPrompt, type WriterResult } from './writer';
+import { NOTHING_LINE, framedChange, price, reportableChangeNotes, type ReportDraft, type ReportModel, type WriterPrompt, type WriterResult } from './writer';
 import { dayWords } from './writerV5';
 import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
 
@@ -49,8 +51,13 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * the specimen header says it is intraday and a recap's Summary differs (Marketing's advisory on the L13 read).
  * 8: L13 (b), his "a and b" (queued input 20c5c7db): the re-check 7f9210be found the recap Summary adding the in-range
  * rank (5 of 9 drafts) and "Zero gave the entire move back"; a recap now also carries `RECAP_SHAPE_RULE`.
+ * 9: the recap is written in two calls, his "a, rebuid" (queued input 97ba9a9a): the re-checks 7f9210be and 1f1bdb35
+ * found the recap Summary still pulling from the name sheets (an in-range rank, a change since the previous checkpoint,
+ * a session date), so a recap's Summary call gets no NAMES section (`buildRecapSummaryPromptV7`) and its name-lines call
+ * gets no narrative facts, ticker list or shape rule (`buildRecapLinesPromptV7`); both carry the revision rule when it
+ * applies (Commercial read 116). Intraday is unchanged: one call, the same prompt as version 8.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 8;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 9;
 
 /**
  * L13 (b), recap only, after the ticker list. Marketing's wording (a zero is "none": `countBefore` in check.ts reads
@@ -267,7 +274,23 @@ export function recapSummaryRule(facts: NarrativeFacts): string | null {
     : `The Summary may name only these tickers: ${unique.join(', ')}. Every other name has its own line below; ${keepOut}`;
 }
 
-export function buildWriterPromptV7(input: WriterInputV7): WriterPrompt {
+function kindFrameV7(input: WriterInputV7): string {
+  return input.kind === 'PREMARKET' && input.revision ? `${KIND_FRAME_V7.PREMARKET} This edition revises the earlier one.` : KIND_FRAME_V7[input.kind];
+}
+
+/** The Summary's facts: the narrative sheet, then (a recap) the ticker list and the shape rule, then (a revision) its rule. */
+function narrativeSectionV7(input: WriterInputV7): string[] {
+  const recapSummary = recapSummaryRule(input.narrative);
+  return [
+    'NARRATIVE FACTS:',
+    `  ${narrativeSheetV7(input.narrative).join('\n  ')}`,
+    ...(recapSummary ? [recapSummary, RECAP_SHAPE_RULE] : []),
+    ...(input.revision ? [REVISION_RULE_V7] : []),
+  ];
+}
+
+/** The NAMES heading and every name's sheet. */
+function namesSectionV7(input: WriterInputV7): string[] {
   const none = input.revision ? 'No name changed since the earlier edition: return "lines": [].' : 'No names ranked in this range at this checkpoint.';
   const sheets =
     input.facts.length === 0
@@ -275,30 +298,68 @@ export function buildWriterPromptV7(input: WriterInputV7): WriterPrompt {
       : input.facts
           .map((fact) => factSheetV7(fact, input.research.get(fact.ticker) ?? null, input.paths.get(fact.ticker) ?? null).join('\n  '))
           .join('\n\n');
-  const recapSummary = recapSummaryRule(input.narrative);
-  const user = [
-    input.kind === 'PREMARKET' && input.revision ? `${KIND_FRAME_V7.PREMARKET} This edition revises the earlier one.` : KIND_FRAME_V7[input.kind],
-    '',
-    'NARRATIVE FACTS:',
-    `  ${narrativeSheetV7(input.narrative).join('\n  ')}`,
-    ...(recapSummary ? [recapSummary, RECAP_SHAPE_RULE] : []),
-    ...(input.revision ? [REVISION_RULE_V7] : []),
-    '',
-    input.revision ? 'NAMES (only the names whose facts changed since the earlier edition):' : 'NAMES:',
-    sheets,
-  ].join('\n');
+  return [input.revision ? 'NAMES (only the names whose facts changed since the earlier edition):' : 'NAMES:', sheets];
+}
+
+/** The single prompt: every intraday report, and a recap up to version 8 (the harnesses' v7 arm). */
+export function buildWriterPromptV7(input: WriterInputV7): WriterPrompt {
+  const user = [kindFrameV7(input), '', ...narrativeSectionV7(input), '', ...namesSectionV7(input)].join('\n');
   return { system: SYSTEM_V7, user };
 }
 
-/** One v7 draft, or WRITER_FAILED. The reply shape is v6's. No retry here: a retry is the caller's spend decision. */
-export async function writeReportV7(input: WriterInputV7, model: ReportModel, now: () => Date = () => new Date()): Promise<WriterResult> {
+/** Version 9: the last sentence of a recap's Summary call (Commercial read 116, condition 3). */
+export const RECAP_SUMMARY_ONLY = 'This call writes only the Summary: return "lines": []. Write it only from the facts above.';
+
+/** Version 9: the last sentence of a recap's name-lines call. */
+export const RECAP_LINES_ONLY = 'This call writes only the name lines; the Summary is written separately: return "narrative": null.';
+
+/**
+ * Version 9, a recap's FIRST call: the Summary from the narrative facts, the ticker list and the shape rule, with NO
+ * NAMES section, so no in-range rank, change note or name's date is there to be pulled into the Summary (7f9210be, 1f1bdb35).
+ */
+export function buildRecapSummaryPromptV7(input: WriterInputV7): WriterPrompt {
+  const user = [kindFrameV7(input), '', ...narrativeSectionV7(input), '', RECAP_SUMMARY_ONLY].join('\n');
+  return { system: SYSTEM_V7, user };
+}
+
+/**
+ * Version 9, a recap's SECOND call: the name lines from the NAMES section only; no narrative facts, no ticker list, no
+ * shape rule. The revision rule goes in both calls when it applies (Commercial read 116, condition 2).
+ */
+export function buildRecapLinesPromptV7(input: WriterInputV7): WriterPrompt {
+  const user = [kindFrameV7(input), ...(input.revision ? [REVISION_RULE_V7] : []), '', ...namesSectionV7(input), '', RECAP_LINES_ONLY].join('\n');
+  return { system: SYSTEM_V7, user };
+}
+
+/** One call's parsed reply, or null for a call that threw or a reply that does not parse. */
+async function draftOf(model: ReportModel, prompt: WriterPrompt, allowNoLines: boolean): Promise<ReportDraft | null> {
   let raw: string;
   try {
-    raw = await model.complete(buildWriterPromptV7(input));
+    raw = await model.complete(prompt);
   } catch {
-    return { ok: false, cause: { kind: 'WRITER_FAILED', at: now().toISOString() } };
+    return null;
   }
-  const parsed = parseDraftV6(raw, { allowNoLines: input.revision === true });
-  if (!parsed.ok) return { ok: false, cause: { kind: 'WRITER_FAILED', at: now().toISOString() } };
-  return { ok: true, draft: parsed.draft };
+  const parsed = parseDraftV6(raw, { allowNoLines });
+  return parsed.ok ? parsed.draft : null;
+}
+
+/**
+ * One v7 draft, or WRITER_FAILED. The reply shape is v6's. No retry here: a retry is the caller's spend decision.
+ * Intraday: one call (`buildWriterPromptV7`). A recap (version 9): two calls in turn, the Summary call then the name-lines
+ * call; the draft takes the Summary from the first and the lines from the second, and ignores the lines the first returns
+ * and the narrative the second returns. Either call failing is WRITER_FAILED, and a failed Summary call makes no second call.
+ */
+export async function writeReportV7(input: WriterInputV7, model: ReportModel, now: () => Date = () => new Date()): Promise<WriterResult> {
+  const failed: () => WriterResult = () => ({ ok: false, cause: { kind: 'WRITER_FAILED', at: now().toISOString() } });
+  const recap = isRecap(input.kind);
+  if (!recap) {
+    const draft = await draftOf(model, buildWriterPromptV7(input), input.revision === true);
+    return draft ? { ok: true, draft } : failed();
+  }
+  // The Summary call's "lines": [] must parse on every recap, revised or not (Commercial read 116, condition 1).
+  const summary = await draftOf(model, buildRecapSummaryPromptV7(input), true);
+  if (!summary) return failed();
+  const lines = await draftOf(model, buildRecapLinesPromptV7(input), input.revision === true);
+  if (!lines) return failed();
+  return { ok: true, draft: { headline: '', overall: summary.overall, sections: lines.sections } };
 }

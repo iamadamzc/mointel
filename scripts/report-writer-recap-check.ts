@@ -1,18 +1,23 @@
 /**
- * THE RECAP RE-CHECK (L13), SECOND RUN (his "a and b", queued input 20c5c7db, 2026-10-14T01:28:56.955Z, verified): v7
- * version 8 (RECAP_SHAPE_RULE added after the first run, 7f9210be, failed on the rank sentence). The first run was v7
- * version 7; its raw is docs/research/reports/recap-check/raw at 0374313a. Same harness otherwise:
+ * THE RECAP RE-CHECK (L13), THIRD RUN (his "a, rebuid", queued input 97ba9a9a): v7 version 9, the recap written in TWO
+ * writer calls (the Summary call with no NAMES section, then the name-lines call with no narrative facts; Commercial read
+ * 116 passed the design). The second run (version 8, raw-2 at dc79262e) failed by its rule (1f1bdb35): a rank and a
+ * change note, and a session date, pulled into the Summary. The first run was v7 version 7; its raw is
+ * docs/research/reports/recap-check/raw at 0374313a. This run writes to docs/research/reports/recap-check/raw-3.
+ * Same harness otherwise:
  * v7 on the 3 stored evening recap (PREMARKET) inputs,
  * 3 runs each, 9 reports, written by luna (production's writer), CHECKED BY THE CHECKER THAT SHIPS (Claude Opus 5.5
  * high, word list off; checker release e56f27c0, merged on this branch). Built from the L12 harness
- * (report-writer-retest.ts, 2c005491); the prompt swap and the stop are its, unchanged.
+ * (report-writer-retest.ts, 2c005491); its v6 prompt-equality check is kept exactly, and the swap now runs
+ * writeReportV7 (two calls) in place of the one v6 call.
  *
  * His yes: "yes to all three" (Integration chat 1f30f0a2, uuid 8e3e419f, 2026-10-13T21:36:56.972Z, verified at his
  * turn), item 2: "Put the new TV-voice report writer live, after fixing its recap summary? About a day of work and
  * $1.60." The stop he saw: "about $1.60 with a hard stop at $2.50" (same chat, 2026-10-13T20:52:10.751Z). HARD STOP $2.50.
  *
- * THE STOP ($2.50), PER REPORT, as L12: a report launches only if the spend so far plus ITS worst case (a luna writer
- * call at 10,000 in and 8,000 out, a Claude check at 40,000 in and the adapter's 32,000 max out) fits. A call with no
+ * THE STOP ($2.50), PER REPORT, as L12: a report launches only if the spend so far plus ITS worst case (TWO luna writer
+ * calls from version 9, each at 10,000 in and 8,000 out, and a Claude check at 40,000 in and the adapter's 32,000 max
+ * out) fits. A call with no
  * reported usage is charged its worst case. So the spend can never pass $2.50; a report the stop refuses is NOT RUN
  * and listed. No fallback: a failed Claude check is a MISSED report and counts against the result.
  *
@@ -24,7 +29,7 @@
  * Keys: the Tests-TMI Anthropic key read by name with readNamedKey, never printed; the desk's OpenAI key (luna) from
  * the environment (--env-file). Discipline: committed BEFORE any model call; the raw output committed BEFORE it is read.
  * Run from this worktree:
- *   node --env-file=../mointel/.env.local --import tsx scripts/report-writer-recap-check.ts <db> <out-dir> --key-file <path> [--dry]
+ *   node --env-file=../mointel/.env.local --import tsx scripts/report-writer-recap-check.ts <db> docs/research/reports/recap-check/raw-3 --key-file <path> [--dry]
  * --dry: stub models (no key, no spend) to prove the reads, the prompt equality and the output on the copy first.
  */
 import fs from 'node:fs';
@@ -40,7 +45,7 @@ import type { ReportRun } from '../lib/desk/reports/pipeline';
 import { CLAUDE_CHECKER_TIMEOUT_MS, createReportModelsV6 } from '../lib/desk/reports/runner';
 import type { ReportDraft, ReportModel, WriterPrompt } from '../lib/desk/reports/writer';
 import { buildWriterPromptV6, type WriterInputV6 } from '../lib/desk/reports/writerV6';
-import { buildWriterPromptV7, recapSummaryRule, REPORT_WRITER_PROMPT_VERSION_V7 } from '../lib/desk/reports/writerV7';
+import { RECAP_LINES_ONLY, RECAP_SUMMARY_ONLY, recapSummaryRule, REPORT_WRITER_PROMPT_VERSION_V7, writeReportV7 } from '../lib/desk/reports/writerV7';
 import { openDatabase } from '../lib/market/store/db';
 import type { MarketDatabase } from '../lib/market/store/db';
 import { readReportModelConfig } from '../lib/research/config';
@@ -52,7 +57,9 @@ const DAYS = ['2026-10-02', '2026-10-05', '2026-10-06'];
 const KIND: ReportKind = 'PREMARKET';
 const RUNS = 3;
 const OPUS = 'claude-opus-5-5';
-const EXPECTED_VERSION = 8;
+const EXPECTED_VERSION = 9;
+/** Version 9: a recap's writer calls per report (the Summary call and the name-lines call). */
+const WRITER_CALLS = 2;
 
 /** Per Mtok, as the L12 harness. */
 const PRICE: Record<string, { input: number; output: number }> = {
@@ -81,12 +88,16 @@ function cost(usage: ReportModelUsage, role: 'writer' | 'checker'): number {
 }
 
 /**
- * The prompt swap, as L12: REQUIRES the pipeline's prompt to equal the v6 prompt the harness builds from the same
- * inputs (fails before any call otherwise), then sends v7 built from the same inputs.
+ * The swap: REQUIRES the pipeline's prompt to equal the v6 prompt the harness builds from the same inputs (fails before
+ * any call otherwise, as L12), then runs the real v7 path (writeReportV7: version 9's two calls) against the inner model
+ * on the same inputs, and returns its merged draft in v6's reply shape ({ narrative, lines }) for the pipeline to parse.
+ * Every sent prompt and every raw reply (or the error of a call that threw) is kept. A v7 WRITER_FAILED throws, which
+ * the pipeline's v6 writer turns into WRITER_FAILED, so the report is MISSED as it would be in production.
  */
 class V7Writer implements ReportModel {
-  raw: string | null = null;
-  sentPrompt: WriterPrompt | null = null;
+  readonly calls: Array<{ prompt: WriterPrompt; raw: string | null; error: string | null }> = [];
+  /** What the pipeline was handed: the merged draft in v6's reply shape. */
+  merged: string | null = null;
   constructor(
     private readonly inner: ReportModel,
     private readonly input: WriterInputV6,
@@ -96,9 +107,22 @@ class V7Writer implements ReportModel {
     if (prompt.system !== expected.system || prompt.user !== expected.user) {
       throw new Error('PROMPT_MISMATCH: the pipeline built a different v6 prompt than the harness; no call made');
     }
-    this.sentPrompt = buildWriterPromptV7(this.input);
-    this.raw = await this.inner.complete(this.sentPrompt);
-    return this.raw;
+    const kept: ReportModel = {
+      complete: async (sent) => {
+        try {
+          const raw = await this.inner.complete(sent);
+          this.calls.push({ prompt: sent, raw, error: null });
+          return raw;
+        } catch (e) {
+          this.calls.push({ prompt: sent, raw: null, error: e instanceof Error ? e.message : String(e) });
+          throw e;
+        }
+      },
+    };
+    const written = await writeReportV7(this.input, kept);
+    if (!written.ok) throw new Error(`V7_WRITER_FAILED after ${this.calls.length} call(s)`);
+    this.merged = JSON.stringify({ narrative: written.draft.overall, lines: written.draft.sections.flatMap((s) => s.lines) });
+    return this.merged;
   }
 }
 
@@ -122,18 +146,31 @@ class KeptChecker implements CheckerModel {
  * --dry only: a PLANTED CONTROL, so the dry run proves each measure can see a present case: the Summary names one shown
  * ticker outside its list, says "positive" and carries the count sentence; the first name line classifies its news.
  * Expected on the dry: outside the list 9 of 9, at least 2 judgement lines a report, the count sentence 9 of 9, and
- * (second run) a rank word and the word "zero" in 9 of 9 Summaries.
+ * (second run) a rank word and the word "zero" in 9 of 9 Summaries; (third run) 2 writer calls in 9 of 9 reports.
+ * Version 9: the Summary call's prompt has no NAMES sheets, so the shown names come from the input; the planted Summary
+ * goes in the Summary call's reply with "lines": [] and the planted lines in the lines call's reply with "narrative":
+ * null, so the dry also shows both replies parse (Commercial read 116, condition 1). An unrecognised call throws.
  */
-function stubWriter(): ReportModel {
+function stubWriter(input: WriterInputV6): ReportModel {
   return {
     complete: async (prompt) => {
-      const shown = [...prompt.user.matchAll(/^([A-Z][A-Z.]{0,5}): ranked #/gm)].map((m) => m[1]!);
-      const allowed = allowedOf(/The Summary may name only these tickers: [^.]*\./.exec(prompt.user)?.[0] ?? '') ?? [];
-      const outside = shown.find((t) => !allowed.includes(t)) ?? 'NONE';
-      return JSON.stringify({
-        narrative: `Planted control: ${outside} had a positive event and ranked first in this range. Zero gave the entire move back. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
-        lines: shown.map((ticker, i) => ({ ticker, text: i === 0 ? 'Planted control: an operating catalyst.' : 'Dry run line.' })),
-      });
+      if (prompt.user.endsWith(RECAP_SUMMARY_ONLY)) {
+        const shown = input.facts.map((f) => f.ticker);
+        const allowed = allowedOf(/The Summary may name only these tickers: [^.]*\./.exec(prompt.user)?.[0] ?? '') ?? [];
+        const outside = shown.find((t) => !allowed.includes(t)) ?? 'NONE';
+        return JSON.stringify({
+          narrative: `Planted control: ${outside} had a positive event and ranked first in this range. Zero gave the entire move back. Of the 12 names the desk covers, 2 had fresh news in our sources.`,
+          lines: [],
+        });
+      }
+      if (prompt.user.endsWith(RECAP_LINES_ONLY)) {
+        const shown = [...prompt.user.matchAll(/^([A-Z][A-Z.]{0,5}): ranked #/gm)].map((m) => m[1]!);
+        return JSON.stringify({
+          narrative: null,
+          lines: shown.map((ticker, i) => ({ ticker, text: i === 0 ? 'Planted control: an operating catalyst.' : 'Dry run line.' })),
+        });
+      }
+      throw new Error('DRY: the stub writer was sent neither recap call');
     },
   };
 }
@@ -188,6 +225,9 @@ interface RunRecord {
   rankInSummary: boolean;
   /** Second run: the draft Summary says a count as the word "zero" (struck: countBefore has no "zero"). */
   zeroWord: boolean;
+  /** Third run: the writer calls this report made (2 for a recap from version 9) and how many threw. */
+  writerCalls: number;
+  writerErrors: number;
   checkerReplies: number;
   checkerErrors: number;
   costUsd: number;
@@ -236,11 +276,11 @@ async function main() {
   const NOW = new Date();
   const stat = fs.statSync(dbPath);
   const db = openDatabase(dbPath, { readonly: true, skipSchema: true });
-  const reserve = worstCase('writer') + worstCase('checker');
+  const reserve = WRITER_CALLS * worstCase('writer') + worstCase('checker');
   const summary: string[] = [
     `store ${dbPath}: ${stat.size} bytes, mtime ${stat.mtime.toISOString()}; clock fixed at ${NOW.toISOString()}`,
     `days ${DAYS.join(', ')}; kind ${KIND}; range $1-$20; ${RUNS} runs per input`,
-    `prompt v7 version ${REPORT_WRITER_PROMPT_VERSION_V7}, writer ${luna}; checker ${OPUS} (Tests-TMI key, no fallback); every raw checker reply kept`,
+    `prompt v7 version ${REPORT_WRITER_PROMPT_VERSION_V7} (a recap in ${WRITER_CALLS} writer calls), writer ${luna}; checker ${OPUS} (Tests-TMI key, no fallback); every raw checker reply kept`,
     `stop $${STOP_AT}: a report launches only if spend + its worst case ($${reserve.toFixed(4)}) fits${dry ? '; DRY: stub models, nothing spent' : ''}`,
     '',
   ];
@@ -252,7 +292,7 @@ async function main() {
     const usage: RunRecord['usage'] = [];
     const asWriter = (u: ReportModelUsage) => usage.push({ ...u, role: 'writer' });
     const asChecker = (u: ReportModelUsage) => usage.push({ ...u, role: 'checker' });
-    const inner = dry ? stubWriter() : createReportModelsV6({ ...config, claudeChecker: null }, asWriter).writer;
+    const inner = dry ? stubWriter(input) : createReportModelsV6({ ...config, claudeChecker: null }, asWriter).writer;
     const writer = new V7Writer(inner, input);
     const checker = new KeptChecker(
       dry
@@ -300,6 +340,8 @@ async function main() {
       countSentence: draftSummary !== null && /names the desk covers/.test(draftSummary) && /fresh news/.test(draftSummary),
       rankInSummary: draftSummary !== null && /\branked\b|\brank\b/i.test(draftSummary),
       zeroWord: draftSummary !== null && /\bzero\b/i.test(draftSummary),
+      writerCalls: writer.calls.length,
+      writerErrors: writer.calls.filter((c) => c.error !== null).length,
       checkerReplies: checker.replies.length,
       checkerErrors: checker.replies.filter((r) => r.error !== null).length,
       costUsd: usage.reduce((sum, u) => sum + cost(u, u.role), 0),
@@ -307,7 +349,21 @@ async function main() {
     };
     fs.writeFileSync(
       path.join(out, `${tag}.json`),
-      JSON.stringify({ record, sentPrompt: writer.sentPrompt, draft, rawWriterText: writer.raw, checkerReplies: checker.replies, result }, null, 2),
+      JSON.stringify(
+        {
+          record,
+          // Version 9: both writer calls, in order (the Summary call, then the name-lines call), each prompt and raw reply.
+          sentPrompts: writer.calls.map((c) => c.prompt),
+          draft,
+          rawWriterTexts: writer.calls.map((c) => c.raw),
+          writerErrors: writer.calls.map((c) => c.error),
+          mergedWriterReply: writer.merged,
+          checkerReplies: checker.replies,
+          result,
+        },
+        null,
+        2,
+      ),
     );
     return record;
   }
@@ -317,7 +373,7 @@ async function main() {
     `allowed [${(r.allowed ?? []).join(', ')}]; outside the list in the draft Summary [${r.outsideList.join(', ')}]; ` +
     `judgement or kind lines ${r.judgementLines.length}; count sentence ${r.countSentence ? 'yes' : 'NO'}; ` +
     `rank in Summary ${r.rankInSummary ? 'YES' : 'no'}; "zero" ${r.zeroWord ? 'YES' : 'no'}; ` +
-    `checker replies ${r.checkerReplies} (errors ${r.checkerErrors}); $${r.costUsd.toFixed(4)}; ` +
+    `writer calls ${r.writerCalls} (errors ${r.writerErrors}); checker replies ${r.checkerReplies} (errors ${r.checkerErrors}); $${r.costUsd.toFixed(4)}; ` +
     `tokens ${r.usage.map((u) => `${u.role}:${u.model}:${u.inputTokens}/${u.outputTokens}`).join(' ')}`;
 
   let stopped: string | null = null;
@@ -354,6 +410,7 @@ async function main() {
     `drafted lines with a judgement word or a catalyst kind (read 107 a; each read by hand): ${records.reduce((n, r) => n + r.judgementLines.length, 0)}`,
     `draft Summaries with the covered-names count sentence (read 107 b): ${records.filter((r) => r.countSentence).length} of ${records.filter((r) => r.draftSummary !== null).length}`,
     `draft Summaries stating a rank: ${records.filter((r) => r.rankInSummary).length} of ${records.filter((r) => r.draftSummary !== null).length}; saying "zero": ${records.filter((r) => r.zeroWord).length}`,
+    `reports with ${WRITER_CALLS} writer calls: ${records.filter((r) => r.writerCalls === WRITER_CALLS).length} of ${records.length}; writer calls that threw: ${records.reduce((n, r) => n + r.writerErrors, 0)}`,
     `checker calls that threw: ${records.reduce((n, r) => n + r.checkerErrors, 0)}; reports MISSED or ERROR: ${records.length - published.length}`,
     `TOTAL spend $${spend.toFixed(4)}${dry ? ' (dry: stub models, nothing spent)' : ''}`,
   );
