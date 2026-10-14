@@ -194,7 +194,7 @@ export function cyclePhaseOf(row: DeskRow | undefined | null): CyclePhase | null
  * How many rows sit in each phase.
  *
  * Computed here rather than read from `MarketSummary.freshFrontside` and its
- * siblings, which count the Sheet's cycle string (`lib/data/rows.ts:428`).
+ * siblings, which counted the Sheet's cycle string (the Sheet parser, gone with A5).
  * Mixing the two would put a sheet-derived count on a segment that applies a
  * phase-derived filter — click "fresh · 4", get zero rows. A count and the
  * filter it describes have to come from one source or they will disagree in

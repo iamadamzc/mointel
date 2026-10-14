@@ -146,7 +146,7 @@ describe('the Why cell is the desk own, whatever the Sheet says', () => {
   });
 
   it('a Sheet grade with no desk dossier is not a grade: the row reads not researched', () => {
-    const why = resolveWhy(row({ ...intel({ days: 0 }), analysis: null } as AutoIntelligence, { grade: 'A', line: 'Sheet line' }));
+    const why = resolveWhy(row({ ...intel({ days: 0 }), analysis: null } as AutoIntelligence));
     expect(why.code).toBe('NOT_RESEARCHED');
     expect(why.grade).toBe('—');
     expect(why.headline).toBe('Not researched');

@@ -258,7 +258,7 @@ export function buildDeskRow(
 
   // No Sheet cycle levels (Sheet switch-off 3c): the cycle comes from daily bars, and the research-derived
   // historical high and giveback no longer reach the ladder, the drawer or MCP.
-  const cycleLevels = deriveCycleLevels({ ticker: null, research: null, currentPrice: telemetry.price });
+  const cycleLevels = deriveCycleLevels();
 
   return {
     ticker,
