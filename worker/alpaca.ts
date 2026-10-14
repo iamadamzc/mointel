@@ -75,12 +75,15 @@ async function main(): Promise<void> {
     // universe carried over from yesterday cannot see a ticker that renamed
     // overnight. Startup keeps the age guard so restarts do not hammer Alpaca.
     const universe = await runtime.ensureUniverse({ force: trigger === 'roll' });
-    await runtime.refreshSheetSymbols();
 
-    const pinned = runtime.pinnedSheetSymbols;
-    const baselineSymbols = universe.length > 0 ? universe : pinned;
-    await runtime.ensureBaselines(baselineSymbols);
-    await runtime.bootstrapSession(pinned);
+    /*
+     * Sheet step 4 (A4): the worker no longer pins the TODAY sheet's list. The
+     * board is the engine's own ranking; the Sheet's names get no tracking or
+     * high-resolution priority of their own. The read and its timer are gone
+     * from here; the code behind them goes with the Sheet code removal (A5).
+     */
+    await runtime.ensureBaselines(universe);
+    await runtime.bootstrapSession([]);
     runtime.pruneRetention();
     runtime.flush();
 
@@ -159,7 +162,6 @@ async function main(): Promise<void> {
   stream.start();
 
   runtime.startFlushLoop();
-  runtime.startSheetSync();
 
   const shutdown = (signal: string) => {
     logger.info(`[alpaca] ${signal} received, shutting down`);
