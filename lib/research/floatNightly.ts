@@ -199,6 +199,8 @@ export interface NightlyArgs {
   dryRun: boolean;
 }
 
+const VALUE_FLAGS = new Set(['--date', '--max-rss-mb', '--max-sec-requests', '--limit', '--deadline', '--rate']);
+
 /** The script's flags, `--name value` or `--name=value`. Throws on an unknown flag or a bad value. */
 export function parseNightlyArgs(argv: readonly string[]): NightlyArgs {
   const args: NightlyArgs = {
@@ -224,6 +226,8 @@ export function parseNightlyArgs(argv: readonly string[]): NightlyArgs {
       args.dryRun = true;
       continue;
     }
+    // An unknown flag is named as one before any value is read (a trailing `--fast` is not "needs a value").
+    if (!VALUE_FLAGS.has(flag)) throw new Error(`unknown flag ${flag}`);
     const value = inline ?? argv[++i];
     if (value === undefined) throw new Error(`${flag}: needs a value`);
     switch (flag) {
