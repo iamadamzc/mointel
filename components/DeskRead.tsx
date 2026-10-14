@@ -13,7 +13,7 @@
  */
 
 import { RetryAnalysis } from '@/components/RetryAnalysis';
-import { priceSourceTitle } from '@/lib/dashboard/feedBanner';
+import { NO_LIVE_PRICE_TITLE, priceSourceTitle } from '@/lib/dashboard/feedBanner';
 import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
 import type {
@@ -184,7 +184,7 @@ export function DeskReadPanel({ read }: { read: DeskRead }) {
                 ? feedBanner
                   ? priceSourceTitle(feedBanner)
                   : 'Live Alpaca market data'
-                : 'Google Sheet value. No live market data for this ticker.'
+                : NO_LIVE_PRICE_TITLE
             }
           />
           {/* Aged live data still wins over the sheet, but never silently. */}

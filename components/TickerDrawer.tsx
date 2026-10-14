@@ -16,7 +16,7 @@ import { MorningCheck } from '@/components/MorningCheck';
 import type { MorningReadPayload } from '@/lib/market/types';
 import { SetupGradeBadge, SetupGradeReadings } from '@/components/SetupGradeBadge';
 import { COMPANY_WORDS, companyLine } from '@/lib/dashboard/companyLine';
-import { priceSourceTitle, telemetryTitle } from '@/lib/dashboard/feedBanner';
+import { NO_LIVE_PRICE_TITLE, priceSourceTitle, telemetryTitle } from '@/lib/dashboard/feedBanner';
 import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { StoredLevelLadder } from '@/components/ResistanceLevels';
 import { buildDeskRead, buildStructureSummary, resolveConclusions } from '@/lib/dashboard/deskRead';
@@ -319,7 +319,7 @@ function DrawerHeader({
                     ? feedBanner
                       ? priceSourceTitle(feedBanner)
                       : 'Live Alpaca market data'
-                    : 'Google Sheet value. No live market data for this ticker.'
+                    : NO_LIVE_PRICE_TITLE
                 }
               />
               {t.stale ? <StatusBadge label="stale" tone="warn" /> : null}

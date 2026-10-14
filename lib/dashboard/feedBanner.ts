@@ -139,6 +139,12 @@ export function chipText(banner: FeedBanner): string {
   return `Market: not reaching the desk, last data ${banner.time} ET`;
 }
 
+/**
+ * The price-source tooltip for a name with no live price. It said "Google Sheet value. ..." until the A5 rest
+ * (2026-10-14), false since the Sheet left: Marketing 5e896276, Commercial read 125, his yes before ship.
+ */
+export const NO_LIVE_PRICE_TITLE = 'No live market data for this ticker.';
+
 /** The price-source tooltip that said "Live Alpaca market data", while the banner is up. */
 export function priceSourceTitle(banner: FeedBanner): string {
   return banner.cause === 'NEVER'

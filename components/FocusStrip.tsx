@@ -14,7 +14,7 @@
  * conclusions on this strip cannot drift from the drawer for the same ticker.
  */
 
-import { priceSourceTitle } from '@/lib/dashboard/feedBanner';
+import { NO_LIVE_PRICE_TITLE, priceSourceTitle } from '@/lib/dashboard/feedBanner';
 import { useFeedBanner } from '@/lib/hooks/useFeedBanner';
 import { FocusToggle } from '@/components/FocusToggle';
 import { StatusBadge, changeTone, type Tone } from '@/components/StatusBadge';
@@ -185,7 +185,7 @@ function FocusCard({
                 ? feedBanner
                   ? priceSourceTitle(feedBanner)
                   : 'Live Alpaca market data'
-                : 'Google Sheet value. No live market data for this ticker.'
+                : NO_LIVE_PRICE_TITLE
             }
           >
             {t.stale ? `${t.sourceLabel} stale` : t.sourceLabel}
