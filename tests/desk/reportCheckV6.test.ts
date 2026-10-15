@@ -231,6 +231,24 @@ describe('narrativeFindings: the two wording rules (Integration 30th, from the w
     expect(reasons('AMOD added 62 percent.', recap)).toEqual(['UNFRAMED_PERCENT']);
   });
 
+  it('read 131: a company\'s growth figure attributed to its report is framed by its period; the change-note frame counts; a bare percent still strikes', () => {
+    // Only this rule is asserted: the other narrative rules (named tickers, figures) are not what read 131 changes.
+    const unframed = (text: string) => reasons(text, intraday).filter((r) => r === 'UNFRAMED_PERCENT');
+    // Report 46's clause, verbatim.
+    const maxcyte = 'On October 14, MaxCyte reported preliminary third-quarter 2026 core revenue of about $8.1 million, up 26 percent year over year, and raised full-year 2026 revenue guidance to about $34 million.';
+    expect(unframed(maxcyte)).toEqual([]);
+    for (const frame of ['year-over-year', 'from a year earlier', 'compared with the same quarter']) {
+      expect(unframed(`BBB said revenue was up 26 percent ${frame}.`)).toEqual([]);
+    }
+    // Control: the same growth frame NOT attributed to a report is a market claim with no market frame.
+    expect(unframed('BBB was up 26 percent year over year.')).toEqual(['UNFRAMED_PERCENT']);
+    // Control: attribution without a frame is still unframed.
+    expect(unframed('BBB reported that it was up 26 percent.')).toEqual(['UNFRAMED_PERCENT']);
+    // Report 47's change note: the sheet's own frame.
+    expect(unframed('NXGL was down 23.2 percent since the previous checkpoint.')).toEqual([]);
+    expect(unframed('NXGL was down 23.2 percent.')).toEqual(['UNFRAMED_PERCENT']);
+  });
+
   it('W2: a connective that makes the news the cause is struck (CAUSAL_WORDING)', () => {
     for (const word of ['after', 'on', 'following', 'amid', 'due to', 'on the back of', 'in response to', 'in the wake of']) {
       expect(causalOn(`BBB is up 51 percent from the prior close ${word} first-half results.`, intraday)).toEqual(['CAUSAL_WORDING']);
