@@ -12,7 +12,7 @@
     - SRZN 09-24: $16.16 to $35.86
     - RPGL 10-01: $16.39 to $26.37
 - **35 leave.** Every one started the day **under $1** and ran into the range. Examples:
-  - MI 10-05: $0.894 to $10.42, closed $7. A named covered mover, and the approved v7 specimen's own MI.
+  - MI 10-05: $0.894 to $10.42, closed $7.
   - DLXY 09-16: $0.415 to $4.45
   - PAAI 09-17: $0.90 to $3.47
   - BENF 09-23: $0.54 to $3.15
@@ -24,7 +24,7 @@
 
 ## Why
 
-His question named one side: "A stock that started the day inside $1-$20 would then stay counted however it closed". By the prior close, a stock that started the day under $1 is outside the range, however far it ran. Sub-$1 names that run past $1 are the most common 50 percent movers in this range: 35 of the 185 old-basis movers here. So the change removes far more movers than it adds.
+His question named one side: "A stock that started the day inside $1-$20 would then stay counted however it closed". By the prior close, a stock that started the day under $1 is outside the range, however far it ran. Names that started under $1 and ran into the range were 35 of the 185 old-basis movers here. So the change removes far more movers than it adds.
 
 ## An option that keeps both
 
