@@ -281,7 +281,29 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(7);
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(11);
+  });
+});
+
+describe('version 11: three lines for the intraday Summary (Marketing f6562b63, Commercial read 132a)', () => {
+  // Spelled out here, independent of the script that placed them.
+  const LINES = [
+    '- Never use a report label from the facts, such as "Intraday", in the Summary, and do not say when the report was written: the report\'s header says it.',
+    "- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.",
+    '- Join a move to its news with "with" ("up 20 percent from the prior close, with fresh news in our sources"), never with a word that says one caused the other.',
+  ];
+  const INTRADAY_BULLET =
+    '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.';
+
+  it('each line is in SYSTEM_V7 once, in order, right after the Intraday bullet under THE SUMMARY', () => {
+    for (const line of LINES) expect(SYSTEM_V7.split(line).length - 1).toBe(1);
+    expect(SYSTEM_V7).toContain([INTRADAY_BULLET, ...LINES].join('\n'));
+    // Under THE SUMMARY, and before the voice paragraph and the specimen (Marketing: not in either).
+    const summaryAt = SYSTEM_V7.indexOf('THE SUMMARY ("narrative")');
+    const firstLine = SYSTEM_V7.indexOf(LINES[0]!);
+    expect(summaryAt).toBeGreaterThanOrEqual(0);
+    expect(firstLine).toBeGreaterThan(summaryAt);
+    expect(SYSTEM_V7.indexOf('ONE EXAMPLE OF THE VOICE')).toBeGreaterThan(firstLine);
   });
 });
 
