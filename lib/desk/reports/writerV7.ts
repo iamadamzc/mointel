@@ -52,8 +52,11 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * when the report was written; a change note restated once in the facts' own words with nothing added; a move joined
  * to its news with "with", never causally. Marketing f6562b63, Commercial read 132a PASS. Numbered 11, not 8: versions
  * 8 to 10 were research prompts that never shipped and are named in recorded raws.
+ * 12: a name line may name another covered ticker as the other party in its own story, when its own research states
+ * that ticker (his "yes to both", Integration chat uuid 193d6e98; report 45's FFAI line naming FFR). Marketing e80b3383,
+ * Commercial read 136a; under USING THE FACTS, not the voice paragraph. The checker admits the same case.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 11;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 12;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -227,6 +230,7 @@ export const SYSTEM_V7 = [
   '- Never call news "positive", "negative" or any other judgement its source does not state.',
   '- Never say what kind of catalyst a name\'s news is (for example "an operating catalyst") unless its research says so.',
   `- The joining words in the voice below are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
+  "- A name's line may name another covered ticker only as the other party in this name's own story (a buyer, a seller, a partner), and only when this name's own research states that ticker; if the research names only the company, say the company. Say nothing else about it: no price, no move, no rank, no news of its own. This is the one exception to \"never refers to another name\" and \"name no other ticker\".",
   '- Never "still", "remains" or "continues"; never "top"; never a count of names in a name line, "every name", "all the movers" or "the real catalyst".',
   '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
   '',

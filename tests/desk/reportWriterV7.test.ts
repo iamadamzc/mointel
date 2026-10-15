@@ -281,7 +281,22 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(11);
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(12);
+  });
+
+  it('version 12: the counterparty exception, under USING THE FACTS right after the joining-words line, never in the voice paragraph', () => {
+    // Marketing e80b3383 (Commercial read 136a), spelled out.
+    const EXCEPTION =
+      '- A name\'s line may name another covered ticker only as the other party in this name\'s own story (a buyer, a seller, a partner), and only when this name\'s own research states that ticker; if the research names only the company, say the company. Say nothing else about it: no price, no move, no rank, no news of its own. This is the one exception to "never refers to another name" and "name no other ticker".';
+    expect(SYSTEM_V7.split(EXCEPTION).length - 1).toBe(1);
+    const usingAt = SYSTEM_V7.indexOf('USING THE FACTS:');
+    const joiningAt = SYSTEM_V7.indexOf('- The joining words in the voice below');
+    const at = SYSTEM_V7.indexOf(EXCEPTION);
+    expect(usingAt).toBeGreaterThanOrEqual(0);
+    expect(joiningAt).toBeGreaterThan(usingAt);
+    expect(at).toBeGreaterThan(joiningAt);
+    expect(SYSTEM_V7.slice(joiningAt, at).split('\n')).toHaveLength(2);
+    expect(SYSTEM_V7.indexOf('ONE EXAMPLE OF THE VOICE')).toBeGreaterThan(at);
   });
 });
 

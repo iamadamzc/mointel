@@ -591,6 +591,18 @@ function tickerRe(ticker: string): RegExp {
 }
 
 /**
+ * The covered tickers (this report's rows) that a name line's OWN research names as a ticker (his "yes to both", uuid
+ * 193d6e98; Commercial's spec): the other party in that name's story. Read from the catalyst summary the writer is
+ * given, and only a covered ticker it states as a ticker: a company named only by name admits nothing, so a line may
+ * not map a company to a covered ticker the research never states (Commercial read 136). None without research.
+ */
+export function counterpartyTickers(ticker: string | null, tickers: readonly string[], research: CheckInput['research']): Set<string> {
+  const summary = ticker === null ? null : research?.get(ticker)?.catalyst.summary ?? null;
+  if (!summary) return new Set();
+  return new Set(tickers.filter((t) => t !== ticker && tickerRe(t).test(summary)));
+}
+
+/**
  * `wordList`: whether the word list strikes (`WORD_LIST_STRIKES`). Only a v6 check (a narrative given) can switch it
  * off, because only the v6 checker asks read 82's questions; a v4 or v5 check keeps every word rule.
  */
@@ -686,7 +698,10 @@ export function ruleStrikes(input: CheckInput, options: { wordList?: boolean } =
     // so a line that omits it is still about one named name.
     // On the word list (Integration's ruling): with it off, the model's self-containedness answer carries this.
     if (wordList && LEANS_ON_ANOTHER.test(line.text.trim())) hit('NOT_SELF_CONTAINED', 'opens on another line');
-    const others = tickers.filter((t) => t !== line.ticker && tickerRe(t).test(line.text));
+    // His "yes to both" (uuid 193d6e98): a covered ticker the line's OWN research names is the other party in its story
+    // (report 45: FFAI's line naming FFR, the buyer of FFAI's assets) and is admitted; every other ticker still strikes.
+    const counterparties = counterpartyTickers(line.ticker, tickers, input.research);
+    const others = tickers.filter((t) => t !== line.ticker && !counterparties.has(t) && tickerRe(t).test(line.text));
     if (others.length > 0) hit('NOT_SELF_CONTAINED', `also names ${others.join(', ')}`);
   }
 
@@ -842,8 +857,10 @@ const CHECKER_SYSTEM_V5 = [
  * on the board" (REQUIRED); the "confirmed" example labelled as a counterparty's own action. 15: read 86 (859ed1a0)
  * widens the own-share-price sentence to a named company's or source's statements. 16: read 88 (8aefeb53) widens
  * the advice question by class (`OPINION_CLAUSE`: the desk's own opinion of price, value, attractiveness or suitability).
+ * 17: the self-containedness question admits a counterparty named in the line's own research (his "yes to both",
+ * uuid 193d6e98; report 45's FFAI line naming FFR); the rule half is `counterpartyTickers`.
  */
-export const REPORT_CHECKER_PROMPT_VERSION_V6 = 16;
+export const REPORT_CHECKER_PROMPT_VERSION_V6 = 17;
 
 /**
  * Read 82 (2)(i)'s two questions, VERBATIM, and its carve-out with six examples drawn from the 46 real deal lines
@@ -892,7 +909,7 @@ const SECOND_READ_V6 = [
   'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
   ADVICE_ASK,
   FORECAST_ASK,
-  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board)? Always false for the narrative and the headline.',
+  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board, unless that ticker is the counterparty named in this line's own research)? Always false for the narrative and the headline.',
   'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
   ...NOT_ADVICE_CARVE_OUTS,
   'v6 REPLY, replacing the shape above: JSON only, {"verdicts": [{"id": string, "supported": boolean, "note": string, "advice": boolean, "forecast": boolean, "leansOnAnother": boolean, "phrase": string}]}, one verdict per id, every id exactly once.',
