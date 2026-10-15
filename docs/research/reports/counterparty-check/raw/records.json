@@ -1,0 +1,162 @@
+[
+  {
+    "tag": "2026-10-14-INTO_RTH-counterparty-run1",
+    "status": "PUBLISHED",
+    "draftNamesParty": true,
+    "publishedNamesParty": true,
+    "publishedEmpty": false,
+    "partyFactsInPublished": false,
+    "ffaiStrikes": [],
+    "draftLine": "FFAI. On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The provided excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+    "published": "FFAI. On October 14, 2026, Faraday Future announced that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The provided excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+    "costUsd": 0.1402748,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 2442,
+        "cachedInputTokens": 4899,
+        "reasoningTokens": 1386,
+        "durationMs": 20334,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 24241,
+        "outputTokens": 1970,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 17302,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-INTO_RTH-counterparty-run2",
+    "status": "PUBLISHED",
+    "draftNamesParty": true,
+    "publishedNamesParty": true,
+    "publishedEmpty": false,
+    "partyFactsInPublished": false,
+    "ffaiStrikes": [],
+    "draftLine": "Faraday Future announced on October 14, 2026 that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+    "published": "Faraday Future announced on October 14, 2026 that it and FFR signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+    "costUsd": 0.1347592,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 1209,
+        "cachedInputTokens": 4899,
+        "reasoningTokens": 448,
+        "durationMs": 10913,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23797,
+        "outputTokens": 1857,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 24734,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-INTO_RTH-counterparty-run3",
+    "status": "PUBLISHED",
+    "draftNamesParty": true,
+    "publishedNamesParty": true,
+    "publishedEmpty": false,
+    "partyFactsInPublished": false,
+    "ffaiStrikes": [],
+    "draftLine": "On October 14, 2026, Faraday Future announced that it and FFR had signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+    "published": "On October 14, 2026, Faraday Future announced that it and FFR had signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+    "costUsd": 0.1363636,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 1256,
+        "cachedInputTokens": 4899,
+        "reasoningTokens": 482,
+        "durationMs": 10401,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23804,
+        "outputTokens": 1933,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 18407,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-INTO_RTH-counterparty-run4",
+    "status": "PUBLISHED",
+    "draftNamesParty": true,
+    "publishedNamesParty": true,
+    "publishedEmpty": false,
+    "partyFactsInPublished": false,
+    "ffaiStrikes": [],
+    "draftLine": "On October 14, 2026, Faraday Future announced that it and FFR had signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+    "published": "On October 14, 2026, Faraday Future announced that it and FFR had signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share. The excerpt did not state the closing date, all closing conditions, or the final number of shares to be issued.",
+    "costUsd": 0.1337744,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 1915,
+        "cachedInputTokens": 4899,
+        "reasoningTokens": 1034,
+        "durationMs": 17719,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23984,
+        "outputTokens": 1728,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 21994,
+        "role": "checker"
+      }
+    ]
+  },
+  {
+    "tag": "2026-10-14-INTO_RTH-counterparty-run5",
+    "status": "PUBLISHED",
+    "draftNamesParty": true,
+    "publishedNamesParty": true,
+    "publishedEmpty": false,
+    "partyFactsInPublished": false,
+    "ffaiStrikes": [],
+    "draftLine": "On October 14, 2026, Faraday Future announced that it and FFR had signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+    "published": "On October 14, 2026, Faraday Future announced that it and FFR had signed definitive agreements on October 12 for FFR to acquire FFAI's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.",
+    "costUsd": 0.132586,
+    "usage": [
+      {
+        "model": "gpt-5.6-luna",
+        "inputTokens": 4902,
+        "outputTokens": 1248,
+        "cachedInputTokens": 4899,
+        "reasoningTokens": 482,
+        "durationMs": 11553,
+        "role": "writer"
+      },
+      {
+        "model": "claude-opus-5-5",
+        "inputTokens": 23797,
+        "outputTokens": 1746,
+        "cachedInputTokens": 0,
+        "reasoningTokens": null,
+        "durationMs": 16663,
+        "role": "checker"
+      }
+    ]
+  }
+]

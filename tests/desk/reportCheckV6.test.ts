@@ -13,6 +13,7 @@ import {
   OWN_PRICE_NOT_COVERED,
   buildCheckerPrompt,
   checkReport,
+  counterpartyTickers,
   DEAL_EXAMPLES,
   FORECAST_QUESTION,
   narrativeFindings,
@@ -474,7 +475,8 @@ describe("read 82's independent read in the checker call (v6 13)", () => {
     expect(ATTRIBUTED_CARVE_OUT).toBe(
       "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.",
     );
-    expect(v6).toContain('or names another ticker on the board)');
+    // Version 17 (the counterparty exception, his "yes to both") extends the clause; the ticker half stays.
+    expect(v6).toContain('or names another ticker on the board, unless that ticker is the counterparty named in this line');
     expect(v6).not.toContain('speaks of another name');
     expect(v6).toContain(`"${DEAL_EXAMPLES[0]}" (an example of a counterparty's own action)`);
   });
@@ -558,5 +560,96 @@ describe('applyStrikes, v6 keepStruckCards (struck name lines keep their card, n
       ok: false,
       cause: { kind: 'ALL_STRUCK', at: '2026-10-02T13:26:00.000Z' },
     });
+  });
+});
+
+/*
+ * His "yes to both" (uuid 193d6e98; report 45): a name line may name another COVERED ticker that its OWN research states
+ * as the other party in its story (FFAI's line naming FFR, the buyer of FFAI's assets). Every other covered ticker still
+ * strikes; a company named only by name admits nothing; the other name's own facts stay out of the line.
+ */
+describe('NOT_SELF_CONTAINED: the counterparty its own research names', () => {
+  const researchFor = (summary: string) =>
+    new Map<string, ReportResearch>([
+      ['AAA', { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true }, structure: { classification: 'CLEAN', sharesOutstanding: null, supply: [] } } as unknown as ReportResearch],
+    ]);
+  // FFAI's research (version 3361), its tickers mapped onto this fixture's covered list: FFAI -> AAA, FFR -> BBB.
+  const FFAI_RESEARCH = "Faraday Future announced that it and BBB signed definitive agreements on October 12 for BBB to acquire AAA's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.";
+  const FFAI_LINE = 'On October 14, 2026, Faraday Future announced that it and BBB had signed definitive agreements for BBB to acquire its robotics assets in an all-stock transaction.';
+  const selfContained = (lineText: string, summary: string) =>
+    ruleStrikes({ ...input(GOOD_INTRADAY, lineText, intraday), research: researchFor(summary) })
+      .filter((s) => s.id === 'S1L1' && s.reason === 'NOT_SELF_CONTAINED')
+      .map((s) => s.detail);
+
+  it('admits the covered ticker the line\'s own research states (report 45, FFAI naming FFR)', () => {
+    expect(counterpartyTickers('AAA', TICKERS, researchFor(FFAI_RESEARCH))).toEqual(new Set(['BBB']));
+    expect(selfContained(FFAI_LINE, FFAI_RESEARCH)).toEqual([]);
+  });
+
+  it('control: the same line strikes when its research names the company only, never the ticker (Commercial read 136)', () => {
+    const byNameOnly = FFAI_RESEARCH.replace(/\bBBB\b/g, 'Faraday Future Robotics');
+    expect(counterpartyTickers('AAA', TICKERS, researchFor(byNameOnly))).toEqual(new Set());
+    expect(selfContained(FFAI_LINE, byNameOnly)).toEqual(['also names BBB']);
+  });
+
+  it('control: another covered ticker the research does NOT name still strikes, beside the admitted one', () => {
+    expect(selfContained(`${FFAI_LINE} CCC also rose.`, FFAI_RESEARCH)).toEqual(['also names CCC']);
+  });
+
+  it('control: with no research for the line, nothing is admitted', () => {
+    expect(counterpartyTickers('AAA', TICKERS, undefined)).toEqual(new Set());
+    expect(counterpartyTickers(null, TICKERS, researchFor(FFAI_RESEARCH))).toEqual(new Set());
+  });
+
+  it("the other name's own facts stay out: FFR's move in FFAI's line is still struck (its number has no row of FFAI's)", () => {
+    const strikes = ruleStrikes({ ...input(GOOD_INTRADAY, `${FFAI_LINE} BBB was up 40 percent from the prior close.`, intraday), research: researchFor(FFAI_RESEARCH) });
+    expect(strikes.some((s) => s.id === 'S1L1' && s.reason !== 'NOT_SELF_CONTAINED')).toBe(true);
+    expect(strikes.filter((s) => s.id === 'S1L1' && s.reason === 'NOT_SELF_CONTAINED')).toEqual([]);
+  });
+
+  it("the checker is asked the same exception, in the self-containedness question's own words", () => {
+    expect(buildCheckerPrompt(input(GOOD_INTRADAY, FFAI_LINE, intraday)).system).toContain(
+      "or names another ticker on the board, unless that ticker is the counterparty named in this line's own research)?",
+    );
+  });
+});
+
+/* Commercial's spec, controls (5) and points (b) and (c), added after its full text reached Research. */
+describe('NOT_SELF_CONTAINED counterparty: the spec controls', () => {
+  const research = (entries: Array<[string, string]>) =>
+    new Map<string, ReportResearch>(
+      entries.map(([ticker, summary]) => [ticker, { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true }, structure: { classification: 'CLEAN', sharesOutstanding: null, supply: [] } } as unknown as ReportResearch]),
+    );
+  const LINE = 'On October 14, 2026, Faraday Future announced that it and BBB had signed definitive agreements for BBB to acquire its robotics assets.';
+  const strikesOn = (lineText: string, map: Map<string, ReportResearch>) =>
+    ruleStrikes({ ...input(GOOD_INTRADAY, lineText, intraday), research: map })
+      .filter((s) => s.id === 'S1L1' && s.reason === 'NOT_SELF_CONTAINED')
+      .map((s) => s.detail);
+
+  it('(5) a covered ticker named in a DIFFERENT name\'s research strikes in this line', () => {
+    // CCC's research names BBB; AAA's does not. AAA's line naming BBB is not admitted.
+    const map = research([['AAA', 'Faraday Future signed agreements to sell its robotics assets.'], ['CCC', 'CCC and BBB signed a supply agreement.']]);
+    expect(strikesOn(LINE, map)).toEqual(['also names BBB']);
+  });
+
+  it('(5) the rule reads the covered list only: an uncovered ticker is not its to strike, before or after (the model question is the key there)', () => {
+    // ZZZZ is not covered. The rule never struck it (it filters the report's rows), and admitting nothing changes that.
+    const map = research([['AAA', 'Faraday Future and ZZZZ signed agreements.']]);
+    expect(counterpartyTickers('AAA', TICKERS, map)).toEqual(new Set());
+    expect(strikesOn('Faraday Future and ZZZZ signed agreements.', map)).toEqual([]);
+  });
+
+  it('(b) whole-word and case-sensitive: a short covered ticker is not found inside a word or in lower case', () => {
+    const tickers = ['AAA', 'TC', 'AI'];
+    const map = research([['AAA', 'The TCV investment, an ATC filing, tc in lower case, and said AIM.']]);
+    expect(counterpartyTickers('AAA', tickers, map)).toEqual(new Set());
+    const named = research([['AAA', 'TC agreed to buy the unit; AI licensed it.']]);
+    expect(counterpartyTickers('AAA', tickers, named)).toEqual(new Set(['TC', 'AI']));
+  });
+
+  it('(c) LIMIT: the other name\'s news without a number is not something the rule can strike; the model\'s support read is the key for it', () => {
+    const map = research([['AAA', 'Faraday Future announced that it and BBB signed definitive agreements for BBB to acquire its robotics assets.']]);
+    // BBB's own news (no number) in AAA's line: the rule admits the ticker and has no number to trace.
+    expect(strikesOn(`${LINE} BBB also launched a new humanoid robot.`, map)).toEqual([]);
   });
 });

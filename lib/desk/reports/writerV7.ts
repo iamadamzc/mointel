@@ -47,8 +47,20 @@ import { parseDraftV6, wholePercent, type WriterInputV6 } from './writerV6';
  * name list): a recap lists the tickers its Summary may name (`recapSummaryRule`); Commercial read 100's notes 1 to 3
  * (no judgement word the source does not state, no catalyst kind the research does not state, the "confirmed" clause cut);
  * the specimen header says it is intraday and a recap's Summary differs (Marketing's advisory on the L13 read).
+ * 11: three lines for the INTRADAY Summary (his "no, everything gets done tonight", Integration chat uuid 69769171;
+ * reports 45 to 47 published with no Summary, Commercial read 131): no report label such as "Intraday" and no saying
+ * when the report was written; a change note restated once in the facts' own words with nothing added; a move joined
+ * to its news with "with", never causally. Marketing f6562b63, Commercial read 132a PASS. Numbered 11, not 8: versions
+ * 8 to 10 were research prompts that never shipped and are named in recorded raws.
+ * 12: a name line may name another covered ticker as the other party in its own story, when its own research states
+ * that ticker (his "yes to both", Integration chat uuid 193d6e98; report 45's FFAI line naming FFR). Marketing e80b3383,
+ * Commercial read 136a; under USING THE FACTS, not the voice paragraph. The checker admits the same case.
+ * 13: two lines (his "b", Integration chat uuid 65ae2fbc; the v11 re-check 56e1a17a, Commercial read 139): a change note
+ * only for a name the Summary names, with no added name or price level (five of its six struck Summaries); and "our
+ * sources", never the desk's own words for its material (the bundle, supplied, excerpts, SEC-only coverage) in a
+ * published line, keeping the disclosure as "company filings only". Marketing c8de2a3f, Commercial read 140a, VERBATIM.
  */
-export const REPORT_WRITER_PROMPT_VERSION_V7 = 7;
+export const REPORT_WRITER_PROMPT_VERSION_V7 = 13;
 
 export type WriterInputV7 = WriterInputV6;
 
@@ -207,6 +219,10 @@ export const SYSTEM_V7 = [
   'THE SUMMARY ("narrative") must include, in whatever order reads best, in a few sentences, only what the narrative facts give:',
   '- On the evening recaps: how many counted names ran at least 50 percent above the prior close and how many of them kept at least half of the peak gain (or, if none ran, that none did); the named movers, each called a covered 50 percent mover (never the highest peaks among all movers), each with its own news; the after-hours name and its move, about that move only; and how many of the names the desk covers had fresh news in our sources.',
   '- Intraday: the name ranked first in this range (it may be down) and the next named gainers, each with its move and its own news; and how many of the names the desk covers had fresh news in our sources.',
+  "- Never use a report label from the facts, such as \"Intraday\", in the Summary, and do not say when the report was written: the report's header says it.",
+  "- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.",
+  "- A change note is restated only for a name the Summary names; never add a name or a price level the narrative facts do not carry.",
+  "- Join a move to its news with \"with\" (\"up 20 percent from the prior close, with fresh news in our sources\"), never with a word that says one caused the other.",
   '- For a name the Summary mentions, you may restate its own news (what happened, with the dates and figures in its own research in the NAMES section). Never put one name\'s facts on another, and never mention a name the narrative facts do not name.',
   '- Name only the tickers the narrative facts name. Use the given numbers exactly; every percent carries its frame in the same clause ("from the prior close", "above the prior close", "after the close"). A count goes with "ran at least 50 percent" and "gave the entire move back" whenever you use those phrases.',
   '',
@@ -219,8 +235,10 @@ export const SYSTEM_V7 = [
   '- Never call news "positive", "negative" or any other judgement its source does not state.',
   '- Never say what kind of catalyst a name\'s news is (for example "an operating catalyst") unless its research says so.',
   `- The joining words in the voice below are forbidden only where they connect a move to news, and a date's "on" is fine ("On October 5, the company disclosed"); never join a move and news with ${quoted(NEVER_JOIN_EXTRA)} either. Never open a line with ${quoted(NEVER_OPEN_EXTRA)} either.`,
+  "- A name's line may name another covered ticker only as the other party in this name's own story (a buyer, a seller, a partner), and only when this name's own research states that ticker; if the research names only the company, say the company. Say nothing else about it: no price, no move, no rank, no news of its own. This is the one exception to \"never refers to another name\" and \"name no other ticker\".",
   '- Never "still", "remains" or "continues"; never "top"; never a count of names in a name line, "every name", "all the movers" or "the real catalyst".',
   '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.',
+  "- Say \"our sources\", never the desk's own words for its material: not \"the bundle\", \"supplied\", \"collected\", \"the evidence\", \"excerpts\" or \"SEC-only coverage\". Where the research says its coverage was filings only, say \"company filings only\"; keep what the desk lacks, in plain words.",
   '',
   'REPLY',
   `- JSON only: {"narrative": string | null, "lines": [{"ticker": string | null, "text": string}]}, one line per name. With no names, one line: {"ticker": null, "text": "${NOTHING_LINE}"}. "narrative" is null only when the narrative facts give nothing to say.`,
