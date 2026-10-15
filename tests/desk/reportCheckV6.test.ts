@@ -475,7 +475,8 @@ describe("read 82's independent read in the checker call (v6 13)", () => {
     expect(ATTRIBUTED_CARVE_OUT).toBe(
       "A statement, plan, expectation, guidance or target attributed to a named company or source and reported as theirs (they said, expect, plan, set a target) is a fact about what they said, not a prediction by us. Not covered: the line adopting it in its own voice ('will', 'is set to', 'poised to'), a price prediction not attributed, or any of it aimed at a reader.",
     );
-    expect(v6).toContain('or names another ticker on the board)');
+    // Version 17 (the counterparty exception, his "yes to both") extends the clause; the ticker half stays.
+    expect(v6).toContain('or names another ticker on the board, unless that ticker is the counterparty named in this line');
     expect(v6).not.toContain('speaks of another name');
     expect(v6).toContain(`"${DEAL_EXAMPLES[0]}" (an example of a counterparty's own action)`);
   });
@@ -570,7 +571,7 @@ describe('applyStrikes, v6 keepStruckCards (struck name lines keep their card, n
 describe('NOT_SELF_CONTAINED: the counterparty its own research names', () => {
   const researchFor = (summary: string) =>
     new Map<string, ReportResearch>([
-      ['AAA', { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true } } as unknown as ReportResearch],
+      ['AAA', { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true }, structure: { classification: 'CLEAN', sharesOutstanding: null, supply: [] } } as unknown as ReportResearch],
     ]);
   // FFAI's research (version 3361), its tickers mapped onto this fixture's covered list: FFAI -> AAA, FFR -> BBB.
   const FFAI_RESEARCH = "Faraday Future announced that it and BBB signed definitive agreements on October 12 for BBB to acquire AAA's robotics assets and business in an all-stock transaction at an approximate $200 million valuation and $2.246 per share.";
@@ -617,7 +618,7 @@ describe('NOT_SELF_CONTAINED: the counterparty its own research names', () => {
 describe('NOT_SELF_CONTAINED counterparty: the spec controls', () => {
   const research = (entries: Array<[string, string]>) =>
     new Map<string, ReportResearch>(
-      entries.map(([ticker, summary]) => [ticker, { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true } } as unknown as ReportResearch]),
+      entries.map(([ticker, summary]) => [ticker, { catalyst: { summary, status: 'FRESH_FOUND', grade: 'MODERATE', eventTimestamp: '2026-10-14T12:00:00Z', sources: [], unknowns: [], whyTradersMayCare: null, plausiblyExplainsMove: true }, structure: { classification: 'CLEAN', sharesOutstanding: null, supply: [] } } as unknown as ReportResearch]),
     );
   const LINE = 'On October 14, 2026, Faraday Future announced that it and BBB had signed definitive agreements for BBB to acquire its robotics assets.';
   const strikesOn = (lineText: string, map: Map<string, ReportResearch>) =>

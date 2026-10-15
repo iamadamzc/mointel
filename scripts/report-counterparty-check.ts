@@ -2,7 +2,7 @@
  * THE COUNTERPARTY CHECK (his "yes to both", uuid 193d6e98, item 2; spend "yes", uuid 38463b77: about $0.75, HARD STOP
  * $2): a name line may name another covered ticker that its own research states as the other party in its story. The
  * one recorded case is report 45 (2026-10-14 INTO_RTH, checkpoint 776): FFAI's line naming FFR, the buyer of FFAI's
- * robotics assets, struck by the rule and the model alike. This runs that input 5 times on v7 version 12 with the
+ * robotics assets, struck by the rule and the model alike. This runs that input 5 times on v7 version 13 with the
  * counterparty rule and checker prompt (V6 17), production's own intraday path, the shipping checker (Claude Opus 5.5
  * high, Tests-TMI key, no fallback), and measures FFAI's PUBLISHED line.
  *   node --env-file=../mointel/.env.local --import tsx scripts/report-counterparty-check.ts <slim-10-14-store> <out-dir> --key-file <path> [--dry]
@@ -71,7 +71,7 @@ async function main() {
   if (!store || !out) throw new Error('usage: report-counterparty-check.ts <slim-10-14-store> <out-dir> --key-file <path> [--dry]');
   const dry = args.includes('--dry');
   const keyFile = args.includes('--key-file') ? args[args.indexOf('--key-file') + 1] : undefined;
-  if (Number(REPORT_WRITER_PROMPT_VERSION_V7) !== 12) throw new Error(`v7 is version ${REPORT_WRITER_PROMPT_VERSION_V7}, not 12; nothing run`);
+  if (Number(REPORT_WRITER_PROMPT_VERSION_V7) !== 13) throw new Error(`v7 is version ${REPORT_WRITER_PROMPT_VERSION_V7}, not 13; nothing run`);
   if (Number(REPORT_CHECKER_PROMPT_VERSION_V6) !== 17) throw new Error(`the checker prompt is ${REPORT_CHECKER_PROMPT_VERSION_V6}, not 17; nothing run`);
   if (writerPromptFor(KIND).family !== 'v7') throw new Error('INTO_RTH is not routed to v7 on this tree; nothing run');
   fs.mkdirSync(out, { recursive: true });

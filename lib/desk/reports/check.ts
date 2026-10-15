@@ -927,7 +927,7 @@ const SECOND_READ_V6 = [
   'v6: THREE MORE ANSWERS FOR EVERY LINE, the narrative (id O) included, each true or false and independent of "supported":',
   ADVICE_ASK,
   FORECAST_ASK,
-  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board, unless that ticker is the counterparty named in this line's own research)? Always false for the narrative and the headline.',
+  '- "leansOnAnother": for a name line, does it lean on another line so that it cannot stand alone on its card (it opens with "It", "Its", "Also", "The same", "This name", "They", "Both" or "Either", or names another ticker on the board, unless that ticker is the counterparty named in this line\'s own research)? Always false for the narrative and the headline.',
   'When any of the three is true, "phrase" quotes the words that make it so; otherwise "phrase" is "".',
   ...NOT_ADVICE_CARVE_OUTS,
   'v6 REPLY, replacing the shape above: JSON only, {"verdicts": [{"id": string, "supported": boolean, "note": string, "advice": boolean, "forecast": boolean, "leansOnAnother": boolean, "phrase": string}]}, one verdict per id, every id exactly once.',

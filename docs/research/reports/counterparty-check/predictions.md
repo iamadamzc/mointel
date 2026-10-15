@@ -2,6 +2,8 @@
 
 *Research-tmi (local_dd23765d). His "yes to both" (Integration chat 7d32ed42, uuid 193d6e98, 2026-10-15T01:04:50.431Z) item 2, the sentence "yes" (uuid 6f497f5d, 01:12:05.613Z), the spend "yes" (queued input, origin human, uuid 38463b77, 01:14:06.809Z: about $0.75, HARD STOP $2), each verified at his turn. Branch `research/counterparty-on-d45d01bd`: v7 version 11 + the counterparty exception (v7 12, checker prompt V6 17, rule `counterpartyTickers`, Commercial's spec controls) + the frame fix merged, so the check runs on what would ship together. Input: report 45's own (2026-10-14 INTO_RTH, checkpoint 776, Ops's slim copy), the ONLY counterparty case in the recorded checkpoints (Research's scan, sent to Integration). 5 runs, the shipping checker. Raw to `raw/`, committed before it is read.*
 
+*Updated 2026-10-15 UTC, before any call: his "b" (uuid 65ae2fbc) adds v7 version 13 (two lines, Marketing c8de2a3f, Commercial read 140a) to the same branch, and this check now runs on version 13, in one run with the v13 re-check (`docs/research/reports/v13-recheck/predictions.md`), each part under its own stop ($2 here). 4360b06c's two defects are fixed first (the checker clause's apostrophe; the "shorter than v6" test half dropped). The rule and predictions below are unchanged.*
+
 ## The pass rule
 
 **PASS** only when all hold:

@@ -18,7 +18,6 @@ import {
   writeReportV7,
   type WriterInputV7,
 } from '@/lib/desk/reports/writerV7';
-import { SYSTEM_V6 } from '@/lib/desk/reports/writerV6';
 import type { NarrativeFacts } from '@/lib/desk/reports/narrative';
 import type { ReportFact } from '@/lib/desk/reports/facts';
 import type { ReportResearch } from '@/lib/desk/reports/research';
@@ -241,8 +240,9 @@ describe('v7 system prompt: the character, the must-include list, the truth rule
     expect(SYSTEM_V7).toContain('each called a covered 50 percent mover (never the highest peaks among all movers)');
   });
 
-  it('is shorter than v6, and has no em dash', () => {
-    expect(SYSTEM_V7.length).toBeLessThan(SYSTEM_V6.length);
+  // The 'shorter than v6' half was this seat's design note on the draft (32c00a76), not a ruling; version 12 passed it by
+  // 178 characters and Integration agreed to drop it (2026-10-15). The em dash half is his rule.
+  it('has no em dash', () => {
     expect(SYSTEM_V7).not.toMatch(/\u2014/);
   });
 });
@@ -281,7 +281,7 @@ describe('version 7: the recap Summary fix (L13) and Commercial read 100 notes 1
     expect(SYSTEM_V7).toContain(
       "ONE EXAMPLE OF THE VOICE, NOT A TEMPLATE (an intraday report into power hour on October 5; its names and facts are not yours, so write only from the facts you are given. A recap's Summary instead follows the counts and the named movers it is given, and names only the tickers its facts list):",
     );
-    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(12);
+    expect(REPORT_WRITER_PROMPT_VERSION_V7).toBe(13);
   });
 
   it('version 12: the counterparty exception, under USING THE FACTS right after the joining-words line, never in the voice paragraph', () => {
@@ -312,13 +312,51 @@ describe('version 11: three lines for the intraday Summary (Marketing f6562b63, 
 
   it('each line is in SYSTEM_V7 once, in order, right after the Intraday bullet under THE SUMMARY', () => {
     for (const line of LINES) expect(SYSTEM_V7.split(line).length - 1).toBe(1);
-    expect(SYSTEM_V7).toContain([INTRADAY_BULLET, ...LINES].join('\n'));
+    // Version 13 puts its change-note line between the second and third (Marketing c8de2a3f: right after the change-note line).
+    expect(SYSTEM_V7).toContain([INTRADAY_BULLET, LINES[0], LINES[1]].join('\n'));
+    expect(SYSTEM_V7.indexOf(LINES[2]!)).toBeGreaterThan(SYSTEM_V7.indexOf(LINES[1]!));
+    expect(SYSTEM_V7.slice(SYSTEM_V7.indexOf(LINES[1]!), SYSTEM_V7.indexOf(LINES[2]!)).split('\n')).toHaveLength(3);
     // Under THE SUMMARY, and before the voice paragraph and the specimen (Marketing: not in either).
     const summaryAt = SYSTEM_V7.indexOf('THE SUMMARY ("narrative")');
     const firstLine = SYSTEM_V7.indexOf(LINES[0]!);
     expect(summaryAt).toBeGreaterThanOrEqual(0);
     expect(firstLine).toBeGreaterThan(summaryAt);
     expect(SYSTEM_V7.indexOf('ONE EXAMPLE OF THE VOICE')).toBeGreaterThan(firstLine);
+  });
+});
+
+describe('version 13: the change-note line and the plain-words line (his "b", Marketing c8de2a3f, Commercial read 140a)', () => {
+  // Spelled out here, independent of the script that placed them.
+  const NOTE_LINE =
+    '- A change note is restated only for a name the Summary names; never add a name or a price level the narrative facts do not carry.';
+  const WORDS_LINE =
+    '- Say "our sources", never the desk\'s own words for its material: not "the bundle", "supplied", "collected", "the evidence", "excerpts" or "SEC-only coverage". Where the research says its coverage was filings only, say "company filings only"; keep what the desk lacks, in plain words.';
+  const CHANGE_NOTE = "- A change note is restated once, in the facts' own words, and nothing is added to it: no time, and no 'when' clause.";
+  const FLOAT_LINE = '- No float number, no share count called float, no halt unless the sheet has one, no engine constant in capitals, no em dash and no spaced hyphen as a dash.';
+
+  it('the change-note line is in SYSTEM_V7 once, right after the change-note line under THE SUMMARY', () => {
+    expect(SYSTEM_V7.split(NOTE_LINE).length - 1).toBe(1);
+    expect(SYSTEM_V7).toContain([CHANGE_NOTE, NOTE_LINE].join('\n'));
+    expect(SYSTEM_V7.indexOf(NOTE_LINE)).toBeGreaterThan(SYSTEM_V7.indexOf('THE SUMMARY ("narrative")'));
+    expect(SYSTEM_V7.indexOf(NOTE_LINE)).toBeLessThan(SYSTEM_V7.indexOf('USING THE FACTS:'));
+  });
+
+  it('the plain-words line is in SYSTEM_V7 once, last under USING THE FACTS, before REPLY and the voice', () => {
+    expect(SYSTEM_V7.split(WORDS_LINE).length - 1).toBe(1);
+    expect(SYSTEM_V7).toContain([FLOAT_LINE, WORDS_LINE, '', 'REPLY'].join('\n'));
+    expect(SYSTEM_V7.indexOf(WORDS_LINE)).toBeGreaterThan(SYSTEM_V7.indexOf('USING THE FACTS:'));
+    expect(SYSTEM_V7.indexOf('ONE EXAMPLE OF THE VOICE')).toBeGreaterThan(SYSTEM_V7.indexOf(WORDS_LINE));
+  });
+
+  it('keeps the disclosure: filings-only coverage is said as "company filings only", not deleted (Commercial read 140a)', () => {
+    expect(SYSTEM_V7).toContain('Where the research says its coverage was filings only, say "company filings only"');
+    expect(SYSTEM_V7).toContain('keep what the desk lacks, in plain words');
+  });
+
+  it('names every pipeline word the v11 re-check found in published lines (56e1a17a); the specimen stays as approved', () => {
+    for (const word of ['"the bundle"', '"supplied"', '"collected"', '"the evidence"', '"excerpts"', '"SEC-only coverage"']) expect(SYSTEM_V7.slice(SYSTEM_V7.indexOf('USING THE FACTS:'), SYSTEM_V7.indexOf('REPLY'))).toContain(word);
+    // Commercial read 140: the specimen's "our evidence" is plain English and stays as he approved it.
+    expect(VOICE_SPECIMEN).toContain('nothing in our evidence showed it closed');
   });
 });
 
