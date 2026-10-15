@@ -443,7 +443,17 @@ function summaryAllowance(facts: NarrativeFacts, research?: ReadonlyMap<string, 
  * still reads all of these.
  */
 const MOVE = /\b(?:(?:up|down)\s+\d[\d,.]*\s+percent|(?:ran|rose|gained|added|jumped|climbed|surged|fell|dropped|slid|lost)(?:\s+to)?\s+\d[\d,.]*\s+percent|ran\s+(?:at least|past)\s+\d[\d,.]*\s+percent|print(?:ed|ing) a new high)\b/gi;
-const FRAME = /\b(?:the prior close|the previous close|the 16:00 close|the regular-session close|after the close|after hours|after-hours)\b/i;
+const FRAME = /\b(?:the prior close|the previous close|the 16:00 close|the regular-session close|after the close|after hours|after-hours|since the previous checkpoint)\b/i;
+/**
+ * Commercial read 131 item 1 (2026-10-14; reports 46 and 47 lost their Summaries to it): since the Summary may restate a
+ * named name's own catalyst, it can carry the COMPANY'S growth figure ("core revenue of about $8.1 million, up 26 percent
+ * year over year"). That percent is framed by its period, and passes only when the same clause attributes it to the
+ * company's report; a bare market percent with no frame still strikes (the controls in tests/desk/reportCheckV6.test.ts).
+ * "since the previous checkpoint" (above) is the sheet's own change-note frame, as the REVISION comment below says.
+ */
+const GROWTH_FRAME = /\b(?:year over year|year-over-year|from a year earlier|compared with the same quarter)\b/i;
+const REPORTED = /\b(?:reported|reports|said|says|announced|disclosed|posted)\b/i;
+const framedClause = (clause: string) => FRAME.test(clause) || (GROWTH_FRAME.test(clause) && REPORTED.test(clause));
 const CAUSAL = /\b(?:after|following|on|amid|due to|because of|driven by|thanks to|in response to|in the wake of)\b/gi;
 /** A connective that is a frame is not causal. */
 const FRAME_AT = /^(?:on (?:the day|the session)|after (?:the close|hours)|after-hours)\b/i;
@@ -452,6 +462,14 @@ const TOPIC_BEFORE_ON = /\b(?:news|reporting|report|reports|coverage|update|upda
 
 function clausesOf(text: string): string[] {
   return text.split(/[.;](?=\s|$)/).map((c) => c.trim()).filter((c) => c.length > 0);
+}
+
+/**
+ * UNFRAMED_PERCENT's own read of a text, the same clauses, moves and frames as `wordingFindings`: each clause holding a
+ * percent move with no frame. Exported for the read 131 replay over recorded Summaries (tests/desk/frameReplay.test.ts).
+ */
+export function unframedPercentClauses(text: string): string[] {
+  return clausesOf(text).filter((clause) => [...clause.matchAll(MOVE)].some((m) => /percent/i.test(m[0])) && !framedClause(clause));
 }
 
 /** The first causal connective in `segment` (the text after a move, up to the next move), or null. */
@@ -492,7 +510,7 @@ function wordingFindings(text: string, wordList: boolean): Array<{ reason: Strik
     const moves = [...clause.matchAll(MOVE)];
     if (moves.length === 0) continue;
     const percent = moves.find((m) => /percent/i.test(m[0]));
-    if (percent && !FRAME.test(clause)) out.push({ reason: 'UNFRAMED_PERCENT', detail: `"${percent[0]}" with no frame in its clause` });
+    if (percent && !framedClause(clause)) out.push({ reason: 'UNFRAMED_PERCENT', detail: `"${percent[0]}" with no frame in its clause` });
     // CAUSAL_WORDING is on the word list (`WORD_LIST_STRIKES`); a stated cause is still the model's UNSUPPORTED read.
     if (!wordList) continue;
     for (let i = 0; i < moves.length; i += 1) {
