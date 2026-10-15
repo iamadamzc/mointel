@@ -20,13 +20,17 @@
 2. **Across all 15: at most 2 published Summaries struck**, for any cause.
 3. **No PUBLISHED Summary names a board name the narrative facts do not name** (v13 line 1): 0 of 15.
 4. **The desk's own words in published lines (v13 line 2): 0.** The measure lists every published line or Summary with "the bundle", "bundle", "supplied", "collected sources/evidence/material", "the evidence", "excerpt(s)" or "SEC-only"; each is read by hand, and a hit that is not the desk's word for its material (a company that "supplied" units) is named and not counted. "our evidence" (the approved specimen's, Commercial read 140) is counted apart and is not a fail.
-5. **The disclosure is kept (read 140a): by hand,** on every published line whose research unknowns carry those words or say coverage was filings only. Where the research says the catalyst search covered filings only and the line speaks to coverage, it says "company filings only" (or the same fact in plain words); no such line states that coverage was complete or drops the limit while naming a finding. Commercial's own read of these lines decides it.
+5. **The disclosure is kept (read 140a): by hand,** on every published line whose research unknowns say the search covered filings only ("SEC-only", "filings only", "non-SEC", "no company IR"; 11 such lines in the dry, the harness's FILINGS-ONLY count). The wider set (every line whose unknowns carry any of the desk's words; 127 in the dry) is counted and listed for Commercial's spot read, not read line by line. Where the research says the catalyst search covered filings only and the line speaks to coverage, it says "company filings only" (or the same fact in plain words); no such line states that coverage was complete or drops the limit while naming a finding. Commercial's own read of these lines decides it.
 6. **Held from the v11 re-check:** no Summary struck for UNFRAMED_PERCENT; no draft with a report label; no PUBLISHED Summary with a change note plus "when" or a causal join; the count sentence in every unstruck published Summary; at most 1 failed check (MISSED or ERROR).
 7. **Commercial's own read** of every published Summary and name line of the 15, as read 135 (d), with the raw sent before Research reads it.
 
 If fewer than 12 of the 15 publish, the result is **NOT DECIDED** and goes to him as such. A PASS ships nothing by itself: the literal ships on his go by sha. His stated preference if (b) falls short (Integration) is to ship anyway; that is his call on the result, not this rule's.
 
 **Reported, not pass conditions:** drafts naming another board name (the writer's behaviour before the checker); drafts with the desk's words; every Summary strike with its reason and detail; first-ranked name in the published Summary; name lines struck; "our evidence" count; the v11 counts on the same inputs beside these.
+
+## The dry (stub models, $0), and what it proves
+
+Each measure saw its planted case: the Summary naming a board name the facts do not (drafts 9 of 9 planted, each struck by the rule as NOT_SELF_CONTAINED, so PUBLISHED 0); the desk's words in a published line (9 planted, 9 counted); "company filings only" (3 planted, 3 counted). Limit: the PUBLISHED other-names count has no published present case, because the rule strikes every planted one first; it uses the same ticker match as the draft count, which did see them.
 
 ## Predictions (this seat's, before any call)
 

@@ -146,6 +146,8 @@ const OUR_EVIDENCE = /\bour evidence\b/i;
 const FILINGS_ONLY = /\bcompany filings only\b/i;
 /** Research whose unknowns carry the desk's own words, or say coverage was filings only: the lines the disclosure check reads. */
 const UNKNOWN_SOURCE = /\bbundle\b|\bsupplied\b|\bcollected\b|\bexcerpts?\b|\bSEC-only\b|\bfilings only\b|\bonly SEC\b/i;
+/** Unknowns saying the catalyst search covered filings only: the lines rule 5's hand read covers (11 in the dry). */
+const FILINGS_ONLY_SOURCE = /\bSEC-only\b|\bfilings only\b|\bonly SEC\b|\bnon-SEC\b|\bno company IR\b/i;
 const LABEL = /\b(?:Intraday|Into the open|Into power hour|After hours)\s*[,:]/;
 const NOTE_PLUS_WHEN = /since the previous checkpoint[^.;]*\bwhen\b/i;
 const CAUSAL_JOIN = /\b(?:up|down)\s+\d[\d,.]*\s+percent[^.;]*?\b(?:after|following|due to|because of|in response to|amid)\b/i;
@@ -179,7 +181,7 @@ interface RunRecord {
   pipelineInDraft: number;
   ourEvidencePublished: number;
   /** The disclosure's substance (read 140a): each published line whose research unknowns carry such words, for the hand read. */
-  disclosureLines: Array<{ ticker: string | null; text: string; companyFilingsOnly: boolean; unknowns: string[] }>;
+  disclosureLines: Array<{ ticker: string | null; text: string; filingsOnly: boolean; companyFilingsOnly: boolean; unknowns: string[] }>;
   publishedLines: number;
   checkerErrors: number;
   costUsd: number;
@@ -292,7 +294,7 @@ async function main() {
         ourEvidencePublished: [narrative ?? '', ...pubLines.map((l) => l.text)].filter((t) => OUR_EVIDENCE.test(t)).length,
         disclosureLines: pubLines.flatMap((l) => {
           const unknowns = l.ticker ? read.inputs.research.get(l.ticker)?.catalyst.unknowns ?? [] : [];
-          return unknowns.some((u) => UNKNOWN_SOURCE.test(u)) ? [{ ticker: l.ticker, text: l.text, companyFilingsOnly: FILINGS_ONLY.test(l.text), unknowns }] : [];
+          return unknowns.some((u) => UNKNOWN_SOURCE.test(u)) ? [{ ticker: l.ticker, text: l.text, filingsOnly: unknowns.some((u) => FILINGS_ONLY_SOURCE.test(u)), companyFilingsOnly: FILINGS_ONLY.test(l.text), unknowns }] : [];
         }),
         publishedLines: pubLines.length,
         checkerErrors: checker.replies.filter((r) => r.error !== null).length,
@@ -324,7 +326,7 @@ async function main() {
       `  UNFRAMED_PERCENT Summary strikes ${pub.filter((r) => r.summaryStrikes.some((s) => s.reason === 'UNFRAMED_PERCENT')).length}; labels in drafts ${rows.filter((r) => r.labelInDraft).length}; PUBLISHED note+when ${pub.filter((r) => r.noteWhenPublished).length}; PUBLISHED causal join ${pub.filter((r) => r.causalJoinPublished).length}`,
       `  count sentence PUBLISHED ${pub.filter((r) => r.countPublished).length} of ${pub.length}; first-ranked PUBLISHED ${pub.filter((r) => r.firstRankedPublished).length} of ${pub.filter((r) => r.firstRanked).length}`,
       `  pipeline words: PUBLISHED lines ${pub.reduce((n, r) => n + r.pipelinePublished.length, 0)} of ${pub.reduce((n, r) => n + r.publishedLines + 1, 0)} (Summaries included); draft texts ${rows.reduce((n, r) => n + r.pipelineInDraft, 0)}; "our evidence" (allowed, counted apart) ${pub.reduce((n, r) => n + r.ourEvidencePublished, 0)}`,
-      `  disclosure lines (research unknowns carry such words) ${pub.reduce((n, r) => n + r.disclosureLines.length, 0)}; saying "company filings only" ${pub.reduce((n, r) => n + r.disclosureLines.filter((d) => d.companyFilingsOnly).length, 0)}; each read by hand`,
+      `  disclosure lines (research unknowns carry such words) ${pub.reduce((n, r) => n + r.disclosureLines.length, 0)}; of them FILINGS-ONLY (rule 5, each read by hand) ${pub.reduce((n, r) => n + r.disclosureLines.filter((d) => d.filingsOnly).length, 0)}, saying "company filings only" ${pub.reduce((n, r) => n + r.disclosureLines.filter((d) => d.filingsOnly && d.companyFilingsOnly).length, 0)}; any line saying it ${pub.reduce((n, r) => n + r.disclosureLines.filter((d) => d.companyFilingsOnly).length, 0)}`,
       `  checker calls that threw ${rows.reduce((n, r) => n + r.checkerErrors, 0)}; name lines struck ${rows.reduce((n, r) => n + r.nameLinesStruck, 0)}`,
     ];
   };
